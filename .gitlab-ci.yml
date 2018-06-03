@@ -6,11 +6,6 @@ all:
     - win10-amd64
   stage:  build
   script:
-    - SET CC=cl
-    - SET CXX=cl
-    - SET HOME=%SYSTEMDRIVE%%HOMEPATH%
-    - SET PATH=D:\sw\gs\bin;D:\sw\dynamicrio\bin64;%PATH%
-    - call "D:\sw\vc2017\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
-    - D:
-    - dir
     - set
+    - call tools\ci\build-vc2017-64.cmd
+
