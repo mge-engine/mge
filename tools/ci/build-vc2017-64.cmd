@@ -6,7 +6,8 @@ set CC=cl
 set CXX=cl
 SET HOME=%SYSTEMDRIVE%%HOMEPATH%
 SET PATH=D:\sw\gs\bin;D:\sw\dynamicrio\bin64;%PATH%
+ECHO %PROJECT_ROOT%
 CD /D "%PROJECT_ROOT%"
-IF NOT EXISTS "%PROJECT_ROOT%"\build ( MKDIR build )
+IF NOT EXISTS "%PROJECT_ROOT%\build" ( MKDIR build )
 CD build
 cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..

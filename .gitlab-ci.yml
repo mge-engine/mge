@@ -7,5 +7,5 @@ all:
   stage:  build
   script:
     - set
-    - call "%CI_PROJECT_DIR%"\tools\ci\build-vc2017-64.cmd
+    - call "%CI_PROJECT_DIR%"\tools\ci\build-vc2017-64.cmd %CI_PROJECT_DIR%
 
