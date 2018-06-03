@@ -1,0 +1,12 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
+#pragma once
+
+#define MGE_VERSION_MAJOR @MGE_VERSION_MAJOR@
+#define MGE_VERSION_MINOR @MGE_VERSION_MINOR@
+#define MGE_PATCHLEVEL @MGE_PATCHLEVEL@
+
+#define MGE_VERSION_STRING "@MGE_VERSION_MAJOR@.@MGE_VERSION_MINOR@.@MGE_PATCHLEVEL@"
+
+

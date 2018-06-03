@@ -1,11 +1,14 @@
 import os
 
+def
+
 def process_make_file(filename):
     f = open(filename)
     lines = f.readlines()
     f.close()
     curated_lines=[]
-    curated_lines.append("# Copyright (c) 2017 by Alexander Schroeder\n")
+
+    curated_lines.append("# Copyright (c) 2018 by Alexander Schroeder\n")
     headercomment = True
     for l in lines:
         if headercomment:
