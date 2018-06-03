@@ -1,0 +1,30 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
+
+CMAKE_MINIMUM_REQUIRED(VERSION 3.9.0)
+PROJECT(MGE)
+
+SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+
+IF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+    MESSAGE(FATAL_ERROR "In-source builds are not supported!")
+ENDIF()
+
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+
+INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/src/"
+                    "${CMAKE_BINARY_DIR}/src/")
+
+INCLUDE(functions)
+INCLUDE(options)
+INCLUDE(compiler)
+INCLUDE(checks)
+INCLUDE(thirdparty)
+
+ENABLE_TESTING()
+
+ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(doc)
+

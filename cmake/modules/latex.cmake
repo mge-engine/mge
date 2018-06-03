@@ -2,6 +2,4 @@
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
 
-mge.mpj
-build*/**/*
-.vscode/*
+INCLUDE(UseLATEX)
