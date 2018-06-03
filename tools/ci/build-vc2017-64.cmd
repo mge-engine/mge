@@ -9,4 +9,4 @@ SET PATH=D:\sw\gs\bin;D:\sw\dynamicrio\bin64;%PATH%
 CD /D "%PROJECT_ROOT%"
 IF NOT EXISTS "%PROJECT_ROOT%"\build ( MKDIR build )
 CD build
-cmake -GNinja -DCMAKE_BUILD_TYPE=RelWitheDebInfo ..
+cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
