@@ -2,5 +2,6 @@ stages:
   - build
 
 make:
+  tags: win10-amd64
   stage:  build
   script: set
