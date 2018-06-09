@@ -5,3 +5,7 @@
 mge.mpj
 build*/**/*
 .vscode/*
+mge.files
+mge.config
+mge.includes
+mge.creator
