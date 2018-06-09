@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
 
 all:
   tags:
@@ -8,3 +9,9 @@ all:
   script:
     - call "%CI_PROJECT_DIR%"\tools\ci\build-vc2017-64.cmd %CI_PROJECT_DIR%
 
+test:
+  tags:
+    - win10-amd64
+  stage: test
+  script:
+    - call "%CI_PROJECT_DIR%"\tools\ci\test-vc2017-64.cmd %CI_PROJECT_DIR%
