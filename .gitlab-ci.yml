@@ -1,7 +1,7 @@
 cache:
     untracked: true
 
-    stages:
+stages:
   - build
 
 build:
