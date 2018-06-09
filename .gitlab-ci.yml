@@ -1,6 +1,8 @@
-stages:
+cache:
+    untracked: true
+
+    stages:
   - build
-  - test
 
 build:
   tags:
@@ -8,14 +10,7 @@ build:
   stage:  build
   script:
     - call "%CI_PROJECT_DIR%"\tools\ci\build-vc2017-64.cmd %CI_PROJECT_DIR%
-  artifacts:
-    paths:
-      - build
-    expire_in: 20 minutes
-
-test:
-  tags:
-    - win10-amd64
-  stage: test
-  script:
     - call "%CI_PROJECT_DIR%"\tools\ci\test-vc2017-64.cmd %CI_PROJECT_DIR%
+    - call "%CI_PROJECT_DIR%"\tools\ci\coverage-vc2017-64.cmd %CI_PROJECT_DIR%
+  coverage: '/TOTAL (\d+\.\d+)%/'
+

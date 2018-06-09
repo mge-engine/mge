@@ -65,5 +65,6 @@ for f in allFiles:
             nonTestCovered = nonTestCovered + covered
             nonTestLines = nonTestLines + lines
 
-print("=== NON TEST COVERAGE %d OF %d %0.2f%% ===" % (nonTestCovered, nonTestLines, nonTestCovered*100.0 / nonTestLines))
-print("=== TOTAL COVERAGE %d OF %d %0.2f%% ===" % (totalCovered, totalLines, totalCovered*100.0 / totalLines))
+#print("=== NON TEST COVERAGE %d OF %d %0.2f%% ===" % (nonTestCovered, nonTestLines, nonTestCovered*100.0 / nonTestLines))
+#print("=== TOTAL COVERAGE %d OF %d %0.2f%% ===" % (totalCovered, totalLines, totalCovered*100.0 / totalLines))
+print("COVERAGE %0.2f%%" % (totalCovered*100.0 / totalLines))
