@@ -11,3 +11,5 @@ CONFIGURE_FILE (
         "config.hpp.in"
         "config.hpp"
 )
+
+ADD_SUBDIRECTORY(core)
