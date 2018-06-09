@@ -54,3 +54,18 @@ FUNCTION(COPY_FILE FILE DESTINATION)
     FILE(COPY ${FILE} DESTINATION ${DESTINATION})
 ENDFUNCTION()
 
+FUNCTION(TARGET_IS_TEST TARGET)
+    ADD_TEST(NAME ${TARGET}
+             COMMAND ${CMAKE_BINARY_DIR}/${TARGET} --gtest_output=xml:${TARGET}.xml
+             WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
+    IF(COVERAGE_TESTS)
+       ADD_CUSTOM_TARGET("${TARGET}-coverage-test"
+            COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/removelog.py" "${CMAKE_BINARY_DIR}/coverage/drcov.${TARGET}"
+            COMMAND ${DRRUN} -t drcov -logdir ${CMAKE_BINARY_DIR}/coverage -- ${CMAKE_BINARY_DIR}/${TARGET} --gtest_output=xml:${TARGET}-cov.xml
+            WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+        )
+        ADD_DEPENDENCIES(coverage-tests-run ${TARGET}-coverage-test)
+    ENDIF()
+ENDFUNCTION()
+
+

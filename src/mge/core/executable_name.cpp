@@ -4,7 +4,7 @@
 #  include <windows.h>
 #endif
 
-namespace moge {
+namespace mge {
     std::string executable_name()
     {
 #if defined(MGE_OS_LINUX) || defined(MGE_OS_MACOSX)
