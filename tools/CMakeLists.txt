@@ -8,7 +8,7 @@ ADD_CUSTOM_TARGET(fixcopyright
     )
 
 ADD_CUSTOM_TARGET(projectfiles
-    COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/projectfiles.py" >moge.files
+    COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/projectfiles.py" >mge.files
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 
