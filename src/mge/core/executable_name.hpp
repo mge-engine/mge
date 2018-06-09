@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace moge {
+namespace mge {
 
     /**
      * Get name of the current executable.
