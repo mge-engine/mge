@@ -10,5 +10,5 @@ ECHO %PROJECT_ROOT%
 CD /D "%PROJECT_ROOT%"
 MKDIR ..\build-msvc-64
 CD ..\build-msvc-64
-cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo "%PROJECT_ROOT%"
 cmake --build .
