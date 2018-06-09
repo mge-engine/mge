@@ -1,14 +1,13 @@
 import os
 
-def
-
 def process_make_file(filename):
     f = open(filename)
     lines = f.readlines()
     f.close()
     curated_lines=[]
-
+    curated_lines.append("# mge - Modern Game Engine\n")
     curated_lines.append("# Copyright (c) 2018 by Alexander Schroeder\n")
+    curated_lines.append("# All rights reserved.\n")
     headercomment = True
     for l in lines:
         if headercomment:
@@ -22,13 +21,51 @@ def process_make_file(filename):
         f.write(l)
     f.close()
 
-def process_source_file(filename):
+
+def process_cpp_source_file(filename):
     f = open(filename)
     lines = f.readlines()
     f.close()
     curated_lines=[]
-    curated_lines.append("/*\n")
-    curated_lines.append(" * Copyright (c) 2017 by Alexander Schroeder\n")
+    curated_lines.append("// mge - Modern Game Engine\n")
+    curated_lines.append("// Copyright (c) 2018 by Alexander Schroeder\n")
+    curated_lines.append("// All rights reserved.\n")
+    headercomment = True
+    for l in lines:
+        if headercomment:
+            if not l.startswith("//"):
+                curated_lines.append(l)
+                headercomment = False
+        else:
+            curated_lines.append(l)
+
+
+    if len(lines) > 0:
+
+        if "/*" in lines[0]:
+            headercomment = True
+            for l in lines:
+                if headercomment:
+                    if '*/' in l:
+                        headercomment = False
+                else:
+                    curated_lines.append(l)
+        else:
+            for l in lines:
+                curated_lines.append(l)
+        f = open(filename, "w")
+        for l in curated_lines:
+            f.write(l)
+        f.close()
+
+def process_c_source_file(filename):
+    f = open(filename)
+    lines = f.readlines()
+    f.close()
+    curated_lines=[]
+    curated_lines.append("/* mge - Modern Game Engine\n")
+    curated_lines.append(" * Copyright (c) 2018 by Alexander Schroeder\n")
+    curated_lines.append(" * All rights reserved.\n
     curated_lines.append(" */\n")
     if len(lines) > 0:
         if "/*" in lines[0]:
@@ -51,8 +88,12 @@ def process_source_file(filename):
 def process_file(filename):
     if "CMakeLists.txt" in filename or filename.endswith(".cmake"):
         process_make_file(filename)
+    elif filename.endswith(".py"):
+        process_make_file(filename)
     elif filename.endswith(".cpp") or filename.endswith(".hpp"):
-        process_source_file(filename)
+        process_cpp_source_file(filename)
+    elif filename.endswith(".c") or filename.endswith(".h"):
+        process_c_source_file(filename)
 
 def blacklisted(path):
     if path[0].startswith('.') and len(path)>1:

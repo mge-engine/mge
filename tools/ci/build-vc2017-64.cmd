@@ -11,4 +11,4 @@ CD /D "%PROJECT_ROOT%"
 MKDIR build
 CD build
 cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-cmake --build . all
+cmake --build .

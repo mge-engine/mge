@@ -6,6 +6,5 @@ all:
     - win10-amd64
   stage:  build
   script:
-    - set
     - call "%CI_PROJECT_DIR%"\tools\ci\build-vc2017-64.cmd %CI_PROJECT_DIR%
 
