@@ -4,6 +4,8 @@
 #pragma once
 
 #include "mge/config.hpp"
+#include "boost/core/noncopyable.hpp"
+
 #include <memory>
 
 #define MGE_DECLARE_REF(clazz)             \
@@ -11,13 +13,5 @@ class clazz;                               \
 typedef std::shared_ptr<clazz> clazz##_ref
 
 namespace mge {
-    class noncopyable
-    {
-    public:
-        noncopyable() = default;
-        ~noncopyable() = default;
-        noncopyable(const noncopyable&) = delete;
-        noncopyable(noncopyable&&) = delete;
-        noncopyable& operator =(const noncopyable&) = delete;
-    };
+    using noncopyable = boost::noncopyable;
 }
