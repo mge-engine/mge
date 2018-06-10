@@ -4,6 +4,7 @@
 
 SET(mgecore_sources
     executable_name.cpp
+    exception.cpp
 )
 
 ADD_LIBRARY(mgecore
@@ -11,7 +12,7 @@ ADD_LIBRARY(mgecore
             ${mgecore_sources})
 
 TARGET_ADD_DEFINE(mgecore BUILD_MGE_CORE)
-#TARGET_LINK_LIBRARIES(mgecore boost)
+TARGET_LINK_LIBRARIES(mgecore boost)
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mgecore dbghelp)
