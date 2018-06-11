@@ -4,7 +4,7 @@
 
 FIND_PACKAGE(Boost)
 IF(NOT "${Boost_FOUND}")
-    IF(NOT "${Boost_FOUND}")
+    IF(NOT EXISTS ${CMAKE_CURRENT_BINARY_DIR}/external/boost/boost/src/boost")
         MESSAGE("Need to download and install boost, not found on the system")
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/boost)
         SET(CMAKE_LIST_CONTENT "
