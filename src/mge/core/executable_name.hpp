@@ -4,6 +4,11 @@
 
 #include <string>
 
+/**
+ * @file mge/core/executable_name.hpp
+ * @brief Name of current executable.
+ */
+
 namespace mge {
 
     /**

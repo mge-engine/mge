@@ -1,6 +1,6 @@
 #include "mge/core/executable_name.hpp"
 
-#ifndef MGE_OS_WINDOWS
+#ifdef MGE_OS_WINDOWS
 #  include <windows.h>
 #endif
 

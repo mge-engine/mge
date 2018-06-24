@@ -6,6 +6,11 @@
 #include "mge/config.hpp"
 #include <boost/core/noncopyable.hpp>
 
+/**
+ * @file mge/core/types.hpp
+ * @brief Common definitions.
+ */
+
 #include <memory>
 
 #define MGE_DECLARE_REF(clazz)             \

@@ -4,78 +4,61 @@
 #pragma once
 
 /**
- * @file platform.hpp
+ * @file mge/config.hpp
  * @brief Platform definitions.
  */
 
 #ifdef _MSC_VER
-#  define MOGE_COMPILER_MSVC 1
+#  define MGE_COMPILER_MSVC 1
 #endif
 
 #if defined(__GNUC__)
-#  define MOGE_COMPILER_GNUC 1
+#  define MGE_COMPILER_GNUC 1
 #endif
 
 #ifdef __MINGW32__
-#  define MOGE_COMPILER_MINGW
+#  define MGE_COMPILER_MINGW
 #endif
 
 #ifdef __clang__
-#  define MOGE_COMPILER_CLANG
+#  define MGE_COMPILER_CLANG
 #endif
 
-/**
- * @def MOGE_OS_LINUX
- * @brief Macro defined if running on Linux.
- */
 #ifdef __linux__
-#  define MOGE_OS_LINUX 1
+#  define MGE_OS_LINUX 1
 #endif
 
-/**
- * @def MOGE_OS_WINDOWS
- * @brief Macro defined if running on Microsoft Windows.
- */
 #if defined(__WIN32__) || defined(_WIN32)
-#  define MOGE_OS_WINDOWS 1
+#  define MGE_OS_WINDOWS 1
 #endif
 
-/**
- * @def MOGE_OS_MACOSX
- * @brief Macro defined if running on MacOS X.
- */
 #ifdef __APPLE__
-#  define MOGE_OS_MACOSX
+#  define MGE_OS_MACOSX
 #endif
 
-/**
- * @def MOGE_OS_UNIX
- * @brief Macro defined if running some flavor of Unix.
- */
-#if defined(MOGE_OS_LINUX) || defined(MOGE_OS_MACOSX)
-#  define MOGE_OS_UNIX 1
+#if defined(MGE_OS_LINUX) || defined(MGE_OS_MACOSX)
+#  define MGE_OS_UNIX 1
 #endif
 
-#ifdef MOGE_OS_LINUX
+#ifdef MGE_OS_LINUX
 namespace linux {}
 namespace platform = linux;
-#elif defined MOGE_OS_MACOSX
+#elif defined MGE_OS_MACOSX
 namespace macos {}
 namespace platform = macos;
-#elif defined MOGE_OS_WINDOWS
+#elif defined MGE_OS_WINDOWS
 namespace win32 {}
 namespace platform = win32;
 #else
 #error Missing port.
 #endif
 
-#if defined(MOGE_COMPILER_GNUC) || defined(MOGE_COMPILER_CLANG)
-#define MOGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
-#elif defined(MOGE_COMPILER_MSVC)
-#define MOGE_FUNCTION_SIGNATURE __FUNCSIG__
+#if defined(MGE_COMPILER_GNUC) || defined(MGE_COMPILER_CLANG)
+#define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+#elif defined(MGE_COMPILER_MSVC)
+#define MGE_FUNCTION_SIGNATURE __FUNCSIG__
 #endif
 
-#cmakedefine MOGE_USE_WIN32_THREAD_MODEL
 
 
 
