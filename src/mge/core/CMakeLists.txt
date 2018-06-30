@@ -4,6 +4,7 @@
 
 SET(mgecore_sources
     executable_name.cpp
+    string_pool.cpp
     exception.cpp
 )
 
