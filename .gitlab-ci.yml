@@ -9,5 +9,5 @@ build:
     - call "%CI_PROJECT_DIR%"\tools\ci\build-vc2017-64.cmd %CI_PROJECT_DIR%
     - call "%CI_PROJECT_DIR%"\tools\ci\test-vc2017-64.cmd %CI_PROJECT_DIR%
     - call "%CI_PROJECT_DIR%"\tools\ci\coverage-vc2017-64.cmd %CI_PROJECT_DIR%
-  coverage: '/TOTAL (\d+\.\d+)%/'
+  coverage: '/COVERAGE (\d+\.\d+)%/'
 
