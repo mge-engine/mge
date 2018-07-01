@@ -28,6 +28,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd5031") # warning state moved by push into other file (caused by boost)
     ADD_DEFINITIONS("-wd4555") # expression has no side effect (caused by boost)
     ADD_DEFINITIONS("-wd4061") # enumerator not handled in case (caused by xatomic ms header)
+    ADD_DEFINITIONS("-wd4435") # object layout changed because of virtual base class (always issued by vc)
     IF("${MSVC_VERSION}" STREQUAL "1900")
         ADD_DEFINITIONS("-wd4702") # unreachable code
     ENDIF()
