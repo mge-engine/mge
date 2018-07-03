@@ -10,6 +10,11 @@
 #include <string>
 #include <cstring>
 
+/**
+ * @file mge/core/string_pool.hpp
+ * @brief String pool class.
+ */
+
 namespace mge {
 
     /**

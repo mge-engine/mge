@@ -13,6 +13,10 @@
 #include <thread>
 #include <iosfwd>
 
+/**
+ * @file mge/core/stacktrace.hpp
+ * @brief Stack trace class.
+ */
 
 namespace mge {
 
