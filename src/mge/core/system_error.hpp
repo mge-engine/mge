@@ -4,12 +4,26 @@
 #pragma once
 #include "mge/core/exception.hpp"
 namespace mge {
-    class system_error : public exception
+
+    /**
+     * @brief System error.
+     * A system error is thrown if a system call fails, as usually
+     * indicated by @c errno or @c GetLastError() returning an error
+     * code.
+     */
+    class MGE_CORE_EXPORT system_error : public exception
     {
     public:
         static void clear();
     };
 
+    /**
+     * Helper tag structure for system error exception info.
+     */
     struct tag_sysrc {};
-    typedef error_info<tag_sys
+
+    /**
+     * @brief Exception info for system error.
+     */
+    typedef error_info<tag_sysrc, uint32_t> sysrc_desc;
 }

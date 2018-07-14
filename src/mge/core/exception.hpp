@@ -15,28 +15,47 @@
  */
 namespace mge {
 
+    template <class TAG, class T>
+    using error_info = boost::error_info<TAG, T>;
+
     /**
      * @brief Base exception class.
      */
     class MGE_CORE_EXPORT exception
             : virtual public std::exception
-            ,  virtual public boost::exception
+            , virtual public boost::exception
     {
     public:
         /**
          * Constructor.
          */
         exception();
+        /**
+         * Copy constructor.
+         * @param e copied exception
+         */
         exception(const exception& e);
+        /**
+         * Move constructor.
+         * @param e moved exception
+         */
         exception(exception&& e);
+
+        /**
+         * Destructor.
+         */
         virtual ~exception();
 
         /**
          * Assignment.
-         * @return
+         * @return @c *this
          */
         exception& operator =(const exception&);
 
+        /**
+         * Extract info field.
+         * @return extracted info field
+         */
         template <typename EI>
         auto info() const
         {
@@ -90,7 +109,7 @@ namespace mge {
     /**
      * @brief Exception info for stack backtrace.
      */
-    typedef boost::error_info<stacktrace_excinfo_tag, stacktrace> excinfo_stack;
+    typedef error_info<stacktrace_excinfo_tag, stacktrace> excinfo_stack;
 
     /**
      * @brief Helper tag structure for exception description ("long text")
@@ -100,7 +119,7 @@ namespace mge {
     /**
      * @brief Exception info for long text.
      */
-    typedef boost::error_info<desc_excinfo_tag, std::string> excinfo_desc;
+    typedef error_info<desc_excinfo_tag, std::string> excinfo_desc;
 
 
 #define MGE_THROW(ex)                                               \
