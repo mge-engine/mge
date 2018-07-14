@@ -16,7 +16,7 @@
 namespace mge {
 
     /**
-     * Base exception class.
+     * @brief Base exception class.
      */
     class MGE_CORE_EXPORT exception
             : virtual public std::exception
@@ -51,52 +51,54 @@ namespace mge {
     };
 
     /**
-     * Exception info for called function. E.g. when throwing exception
+     * @brief Exception info for called function.
+     *
+     * E.g. when throwing exception
      * because of @c fopen has failed, this would be the
      * string "fopen".
      */
     typedef boost::errinfo_api_function excinfo_api_function;
     /**
+     * @brief
      * Exception info for system error code, i.e. @c errno
      * or @c GetLastError() results.
      */
     typedef boost::errinfo_errno excinfo_sysrc;
 
     /**
-     * Exception info for source code file of exception throw
+     * @brief Exception info for source code file of exception throw
      * location.
      */
     typedef boost::throw_file excinfo_source_file;
 
     /**
-     * Exception info for source code line of exception throw
+     * @brief Exception info for source code line of exception throw
      * location.
      */
     typedef boost::throw_line excinfo_source_line;
 
     /**
-     * Exception info for function of exception throw
-     * location.
+     * @brief Exception info for function of exception throw location.
      */
     typedef boost::throw_function excinfo_function;
 
     /**
-     * Helper structure for stacktrace exception info.
+     * @brief Helper structure for stacktrace exception info.
      */
     struct stacktrace_excinfo_tag {};
 
     /**
-     * Exception info for stack backtrace.
+     * @brief Exception info for stack backtrace.
      */
     typedef boost::error_info<stacktrace_excinfo_tag, stacktrace> excinfo_stack;
 
     /**
-     * Helper tag structure for exception description ("long text")
+     * @brief Helper tag structure for exception description ("long text")
      */
     struct desc_excinfo_tag {};
 
     /**
-     * Exception info for long text.
+     * @brief Exception info for long text.
      */
     typedef boost::error_info<desc_excinfo_tag, std::string> excinfo_desc;
 

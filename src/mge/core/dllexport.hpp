@@ -1,7 +1,7 @@
 #pragma once
 
 /**
- * @file   MGE/core/dllexport.hpp
+ * @file   mge/core/dllexport.hpp
  * @brief  Macros to declare import/export for dynamic libraries.
  */
 
