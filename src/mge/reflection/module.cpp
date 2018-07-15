@@ -15,7 +15,8 @@ namespace mge {
         module::module(const std::string& name)
             :m_module_id(0)
         {
-
+            auto &m = module_definition::get(name.c_str());
+            m_module_id = m.id();
         }
     }
 }

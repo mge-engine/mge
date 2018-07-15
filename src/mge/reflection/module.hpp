@@ -24,6 +24,7 @@ namespace mge {
              * @param name module name
              */
             module(const std::string& name);
+
             /**
              * @brief Construct module with given name.
              * @param name module name
