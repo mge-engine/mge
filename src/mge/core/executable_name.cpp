@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/executable_name.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 #ifdef MGE_OS_WINDOWS
 #  include <windows.h>

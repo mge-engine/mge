@@ -8,6 +8,7 @@ SET(mgecore_sources
     stacktrace.cpp
     exception.cpp
     system_error.cpp
+    stdexceptions.cpp
 )
 
 ADD_LIBRARY(mgecore

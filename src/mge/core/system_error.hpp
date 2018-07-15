@@ -14,6 +14,14 @@ namespace mge {
     class MGE_CORE_EXPORT system_error : public exception
     {
     public:
+        system_error();
+        system_error(const system_error& e);
+        system_error(system_error&& e);
+        ~system_error();
+
+        system_error& operator=(const system_error& e);
+
+
         static void clear();
     };
 
