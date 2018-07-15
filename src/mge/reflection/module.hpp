@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/types.hpp"
+#include <string>
 
 namespace mge {
     namespace reflection {
@@ -18,9 +19,19 @@ namespace mge {
              * Constructor.
              */
             module();
+            /**
+             * @brief Construct module with given name.
+             * @param name module name
+             */
+            module(const std::string& name);
+            /**
+             * @brief Construct module with given name.
+             * @param name module name
+             */
+            module(const char *name);
 
             /**
-             * The global module representing the global name space.
+             * @brief The global module representing the global name space.
              */
             static module global_module();
         private:
