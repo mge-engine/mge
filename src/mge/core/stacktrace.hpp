@@ -21,14 +21,16 @@
 namespace mge {
 
     /**
-     * A stack trace. A strack trace contains a number of elements
+     * @brief A stack trace.
+     *
+     * A strack trace contains a number of elements
      * where each element represents a stack frame in call graph.
      */
     class MGE_CORE_EXPORT stacktrace
     {
     public:
         /**
-         * An element of the stack trace.
+         * @brief Element of the stack trace.
          */
         struct element {
             /**

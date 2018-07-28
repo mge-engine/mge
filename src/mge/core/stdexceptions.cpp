@@ -28,5 +28,6 @@ namespace mge {
 
     DEFINE_EXCEPTION(illegal_state)
     DEFINE_EXCEPTION(illegal_argument)
+    DEFINE_EXCEPTION(out_of_range)
 #undef DEFINE_EXCEPTION
 }

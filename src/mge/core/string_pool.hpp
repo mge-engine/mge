@@ -18,6 +18,8 @@
 namespace mge {
 
     /**
+     * @brief A string pool.
+     *
      * A string pool keeps strings so that they can be processed by
      * just using @c char pointers.
      */

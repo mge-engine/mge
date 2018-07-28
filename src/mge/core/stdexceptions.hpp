@@ -17,6 +17,7 @@ namespace mge {
      */
     class MGE_CORE_EXPORT illegal_state : public ::mge::exception
     {
+    public:
         illegal_state();
         illegal_state(const illegal_state& e);
         illegal_state(illegal_state&& e);
@@ -34,6 +35,7 @@ namespace mge {
      */
     class MGE_CORE_EXPORT illegal_argument : public ::mge::exception
     {
+    public:
         illegal_argument();
         illegal_argument(const illegal_argument& e);
         illegal_argument(illegal_argument&& e);
@@ -41,5 +43,24 @@ namespace mge {
 
         illegal_argument& operator=(const illegal_argument& e);
     };
+
+
+    /**
+     * @brief Out of range exception.
+     *
+     * Out of range exception signals a failed attempt to access
+     * an element out of the defined range.
+     */
+    class MGE_CORE_EXPORT out_of_range : public ::mge::exception
+    {
+    public:
+        out_of_range();
+        out_of_range(const out_of_range& e);
+        out_of_range(out_of_range&& e);
+        ~out_of_range();
+
+        out_of_range& operator=(const out_of_range& e);
+    };
+
 
 }
