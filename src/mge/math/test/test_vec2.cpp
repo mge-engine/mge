@@ -7,6 +7,8 @@
 
 using namespace mge;
 
+
+
 TEST(vec2, at)
 {
     vec2f v(0.0f, 1.0f);
@@ -50,4 +52,10 @@ TEST(vec2, add_assign)
     EXPECT_EQ(v.y, 5.0f);
 }
 
-
+TEST(vec2, minus)
+{
+    vec2f v1(1.0f, 2.0f);
+    vec2f v2(-v1);
+    vec2f v3(-v2);
+    EXPECT_EQ(v3, v1);
+}

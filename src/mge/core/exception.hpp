@@ -8,6 +8,8 @@
 
 #include <boost/exception/all.hpp>
 #include <boost/exception/error_info.hpp>
+#include <sstream>
+#include <tuple>
 
 /**
  * @file mge/core/exception.hpp

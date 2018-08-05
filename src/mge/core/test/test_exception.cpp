@@ -36,3 +36,4 @@ TEST(exception, exception_with_message)
         EXPECT_STREQ("foobar", ex_catched.what());
     }
 }
+

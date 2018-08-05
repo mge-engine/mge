@@ -56,7 +56,8 @@ namespace mge {
         explicit vec2(const std::initializer_list<T>& l)
         {
             if(l.size() < 2) {
-                throw MOGE_EXCEPTION(out_of_range) << "initializer list has too few elements";
+                MGE_THROW(out_of_range()
+                          << mge::excinfo_desc("initializer list has too few elements"));
             }
             x = *l.begin();
             y = *(l.begin() + 1);
@@ -180,12 +181,6 @@ namespace mge {
             --y;
             return result;
         }
-
-        vec2<T> operator -() const
-        {
-            return vec2<T>(-x, -y);
-        }
-
 
         /**
          * Return dot product of this vector and @c v.
