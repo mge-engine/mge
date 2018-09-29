@@ -5,6 +5,7 @@
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/stacktrace.hpp"
+#include "mge/core/format_string.hpp"
 
 #include <boost/exception/all.hpp>
 #include <boost/exception/error_info.hpp>
@@ -123,12 +124,22 @@ namespace mge {
      */
     typedef error_info<desc_excinfo_tag, std::string> excinfo_desc;
 
+    /**
+     * Construct exception message from arguments.
+     */
+    template <typename... Args>
+    mge::excinfo_desc exception_message(Args ... args)
+    {
+        return mge::excinfo_desc(format_string(args...));
+    }
 
-#define MGE_THROW(ex)                                               \
+
+#define MGE_THROW(ex, ...)                                          \
     throw (ex) << mge::excinfo_source_file(__FILE__)                \
                << mge::excinfo_source_line(__LINE__)                \
                << mge::excinfo_stack(mge::stacktrace())             \
-               << mge::excinfo_function(MGE_FUNCTION_SIGNATURE)
+               << mge::excinfo_function(MGE_FUNCTION_SIGNATURE)     \
+               << mge::exception_message(__VA_ARGS__)
 
 
 

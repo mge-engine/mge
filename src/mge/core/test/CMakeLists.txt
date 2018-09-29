@@ -8,6 +8,7 @@ ADD_EXECUTABLE(coretest
   test_exception.cpp
   test_string_pool.cpp
   test_stacktrace.cpp
+  test_stream_values.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
