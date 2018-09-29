@@ -29,5 +29,6 @@ namespace mge {
     DEFINE_EXCEPTION(illegal_state)
     DEFINE_EXCEPTION(illegal_argument)
     DEFINE_EXCEPTION(out_of_range)
+    DEFINE_EXCEPTION(duplicate_element)
 #undef DEFINE_EXCEPTION
 }

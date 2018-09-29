@@ -62,5 +62,22 @@ namespace mge {
         out_of_range& operator=(const out_of_range& e);
     };
 
+    /**
+     * @brief Duplicate element exception.
+     *
+     * Duplicate element exception signals that an
+     * duplicate value was supplied where a duplicate is not allowed.
+     *
+     */
+    class MGE_CORE_EXPORT duplicate_element : public ::mge::exception
+    {
+    public:
+        duplicate_element();
+        duplicate_element(const duplicate_element& e);
+        duplicate_element(duplicate_element&& e);
+        ~duplicate_element();
+
+        duplicate_element& operator=(const duplicate_element& e);
+    };
 
 }
