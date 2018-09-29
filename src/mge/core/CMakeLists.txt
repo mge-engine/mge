@@ -9,6 +9,7 @@ SET(mgecore_sources
     exception.cpp
     system_error.cpp
     stdexceptions.cpp
+    component.cpp
 )
 
 ADD_LIBRARY(mgecore
