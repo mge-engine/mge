@@ -5,6 +5,8 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/types.hpp"
 
+#include <atomic>
+
 namespace mge {
     /**
      * @brief Singleton instance of a class.
