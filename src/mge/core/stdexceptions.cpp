@@ -30,5 +30,6 @@ namespace mge {
     DEFINE_EXCEPTION(illegal_argument)
     DEFINE_EXCEPTION(out_of_range)
     DEFINE_EXCEPTION(duplicate_element)
+    DEFINE_EXCEPTION(bad_cast)
 #undef DEFINE_EXCEPTION
 }

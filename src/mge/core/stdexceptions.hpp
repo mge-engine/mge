@@ -80,4 +80,23 @@ namespace mge {
         duplicate_element& operator=(const duplicate_element& e);
     };
 
+
+    /**
+     * @brief Bad cast exception.
+     *
+     * Thrown if a cast was attempted that fails the runtime check,
+     * i.e. the source value cannot be represented as the target
+     * type.
+     */
+    class MGE_CORE_EXPORT bad_cast : public ::mge::exception
+    {
+    public:
+        bad_cast();
+        bad_cast(const bad_cast& e);
+        bad_cast(bad_cast&& e);
+        ~bad_cast();
+
+        bad_cast& operator=(const bad_cast& e);
+    };
+
 }
