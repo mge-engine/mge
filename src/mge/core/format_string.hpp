@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include <string>
+#include <sstream>
 #include "mge/core/stream_values.hpp"
 
 namespace mge {

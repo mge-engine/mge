@@ -13,3 +13,10 @@ ADD_EXECUTABLE(coretest
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
 
+ADD_EXECUTABLE(corebenchmark
+  ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp
+  bench_format_string.cpp
+  bench_exception.cpp
+  bench_stacktrace.cpp
+)
+TARGET_LINK_LIBRARIES(corebenchmark mgecore googlebenchmark)
