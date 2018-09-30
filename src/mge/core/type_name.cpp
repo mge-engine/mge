@@ -48,16 +48,21 @@ namespace mge {
         } else {
             switch (status) {
             case -1:
-                throw MOGE_EXCEPTION(out_of_memory) << "Memory allocation failed";
+                MGE_THROW(mge::bad_alloc(),
+                          "Memory allocation failed");
             case -2:
-                throw MOGE_EXCEPTION(illegal_argument)
-                    << "'" << raw_name << "' is not a valid mangled type name";
+                MGE_THROW(mge::illegal_argument(),
+                          "'",
+                          raw_name,
+                          "' is not a valid mangled type name");
             case -3:
-                throw MOGE_EXCEPTION(illegal_state)
-                    << "Invalid arguments of demangling operation";
-             default:
-                throw MOGE_EXCEPTION(illegal_state)
-                    << "Unknown error " << status << "while determining type name";
+                MGE_THROW(mge::illegal_state(),
+                          Invalid arguments of demangling operation");
+            default:
+                MGE_THROW(mge::illegal_state(),
+                          "Unknown error ",
+                          status,
+                          "while determining type name");
              }
        }
 #else
