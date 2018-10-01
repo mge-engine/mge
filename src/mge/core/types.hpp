@@ -30,3 +30,9 @@ namespace mge {
      */
     typedef boost::noncopyable noncopyable;
 }
+
+/**
+ * Stringifies the argument.
+ * @param X argument to stringify
+ */
+#define MGE_STRINGIFY(X) #X
