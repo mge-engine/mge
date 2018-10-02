@@ -154,7 +154,7 @@ namespace mge {
         }
         static inline std::shared_ptr<Class> create(const std::string& implementation)
         {
-            component_base::create<Class>(implementation.c_str());
+            return component_base::create<Class>(implementation.c_str());
         }
         static inline void implementations(const std::function<void (const std::string&)>& callback)
         {
