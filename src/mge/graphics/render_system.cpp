@@ -9,4 +9,6 @@ namespace mge {
 
     render_system::~render_system()
     {}
+
+    MGE_REGISTER_COMPONENT(render_system);
 }

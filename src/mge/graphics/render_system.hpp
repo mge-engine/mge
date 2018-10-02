@@ -3,9 +3,12 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include "mge/core/component.hpp"
 
 namespace mge {
+
     class MGE_GRAPHICS_EXPORT render_system
+            : public component<render_system>
     {
     protected:
         render_system();
