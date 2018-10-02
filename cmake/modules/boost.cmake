@@ -12,7 +12,7 @@ IF(NOT "${Boost_FOUND}")
             INCLUDE(ExternalProject)
             EXTERNALPROJECT_ADD(boost
                             PREFIX boost
-                            URL https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.zip
+                            URL https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.zip
                             CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
                             INSTALL_COMMAND \"\"
             )
