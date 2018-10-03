@@ -14,3 +14,9 @@ TEST(crash, crash_with_message)
 {
     ASSERT_DEATH(mge::crash("foobar"), "foobar");
 }
+
+
+TEST(crash, crash_with_streamed_message)
+{
+    ASSERT_DEATH(mge::crash("foo","bar"), "foobar");
+}
