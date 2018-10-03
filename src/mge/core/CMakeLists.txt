@@ -14,6 +14,7 @@ SET(mgecore_sources
     thread.cpp
     crash.cpp
     log_severity.cpp
+    log_record.cpp
 )
 
 ADD_LIBRARY(mgecore

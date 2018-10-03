@@ -8,6 +8,9 @@
 
 namespace mge {
 
+    /**
+     * Severity of log entries.
+     */
     enum class MGE_CORE_EXPORT log_severity
     {
         NONE    =  0,
