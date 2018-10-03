@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/config.hpp"
 #include "mge/core/stacktrace.hpp"
+#include "mge/core/thread.hpp"
 
 #ifdef MGE_OS_WINDOWS
 #  include <windows.h>
@@ -30,6 +31,16 @@ namespace mge {
     stacktrace::stacktrace()
     {
         fill();
+    }
+
+    stacktrace::stacktrace(const std::thread& t)
+    {
+        fill(t);
+    }
+
+    stacktrace::stacktrace(const thread& t)
+    {
+        fill(t.m_running_thread);
     }
 
     stacktrace::stacktrace(const stacktrace& s)

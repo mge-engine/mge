@@ -20,6 +20,8 @@
 
 namespace mge {
 
+    class thread;
+
     /**
      * @brief A stack trace.
      *
@@ -89,6 +91,13 @@ namespace mge {
          * @param t thread to capture
          */
         stacktrace(const std::thread& t);
+
+        /**
+         * Create stacktrace of a thread.
+         * @param t thread to capture
+         */
+        stacktrace(const thread& t);
+
         /**
          * Copy constructor.
          * @param s copied stack trace

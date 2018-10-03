@@ -13,6 +13,7 @@ SET(mgecore_sources
     type_name.cpp
     thread.cpp
     crash.cpp
+    log_severity.cpp
 )
 
 ADD_LIBRARY(mgecore

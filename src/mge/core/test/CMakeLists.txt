@@ -11,6 +11,8 @@ ADD_EXECUTABLE(coretest
   test_stream_values.cpp
   test_type_name.cpp
   test_component.cpp
+  test_thread.cpp
+  test_log_severity.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
