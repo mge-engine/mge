@@ -4,6 +4,8 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/types.hpp"
+#include "mge/core/crash.hpp"
+#include "mge/core/type_name.hpp"
 
 #include <atomic>
 
@@ -49,7 +51,8 @@ namespace mge {
             if(m_instance.compare_exchange_strong(p, null)) {
                 delete p;
             } else {
-                // TODO: CRASH
+                crash("Inconsistency destroying singleton instance of",
+                      type_name<T>());
             }
         }
 

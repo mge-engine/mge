@@ -8,6 +8,8 @@
 #include <iostream>
 
 namespace mge {
+
+
     void crash()
     {
         exit(1);
@@ -19,4 +21,5 @@ namespace mge {
         std::cerr << message << std::endl;
         exit(1);
     }
+
 }
