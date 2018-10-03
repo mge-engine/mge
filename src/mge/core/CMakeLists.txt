@@ -11,6 +11,8 @@ SET(mgecore_sources
     stdexceptions.cpp
     component.cpp
     type_name.cpp
+    thread.cpp
+    crash.cpp
 )
 
 ADD_LIBRARY(mgecore

@@ -33,6 +33,16 @@ namespace mge {
         }
     }
 
+    void
+    application::start()
+    {
+    }
+
+    void
+    application::join()
+    {
+    }
+
     application *
     application::s_instance;
 
