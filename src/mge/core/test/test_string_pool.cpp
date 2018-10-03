@@ -34,3 +34,17 @@ TEST(string_pool, intern_cxx_string)
     EXPECT_STREQ(s1, s2);
     EXPECT_EQ(s1, s2);
 }
+
+TEST(string_pool, intern_many_times_doesnot_allocate)
+{
+    string_pool sp;
+
+    const char *s1 = sp.intern("FOO");
+    {
+        mge::allocation_count_scope scope;
+        for(int i=0; i<100; ++i) {
+            const char *s = sp.intern("FOO");
+        }
+        EXPECT_EQ(0u, scope.allocations_in_scope());
+    }
+}

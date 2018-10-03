@@ -4,6 +4,7 @@
 #pragma once
 
 #include "mge/config.hpp"
+#include "mge/core/new.hpp"
 #include <boost/core/noncopyable.hpp>
 
 /**

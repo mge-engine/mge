@@ -31,5 +31,6 @@ ADD_EXECUTABLE(corebenchmark
   bench_exception.cpp
   bench_lexical_cast.cpp
   bench_stacktrace.cpp
+  bench_memory.cpp
 )
 TARGET_LINK_LIBRARIES(corebenchmark mgecore googlebenchmark)
