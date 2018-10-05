@@ -12,14 +12,15 @@ namespace mge {
     {
     public:
         log_sink_collection()
-        {
+        {}
 
-        }
         typedef std::map<std::string, log_sink_ref> sink_map_t;
 
         void publish(const log_record& r)
         {
-
+            for(const auto& p: m_sinks) {
+                p.second->publish(r);
+            }
         }
 
     private:
@@ -41,7 +42,7 @@ namespace mge {
     {}
 
     log&
-    log::set_severity(log_severity severity)
+    log::begin_entry(log_severity severity)
     {
         flush_current_record();
         m_log_record.timestamp = std::chrono::system_clock::now();
@@ -72,7 +73,7 @@ namespace mge {
     }
 
     bool
-    log::enabled(const char *topic, log_severity s)
+    log::enabled(log_severity s)
     {
         return true;
     }

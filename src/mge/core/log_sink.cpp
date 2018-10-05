@@ -11,7 +11,7 @@ namespace mge {
     {}
 
     void
-    log_sink::publish(log_record& r)
+    log_sink::publish(const log_record& r)
     {
         if (m_synchronized) {
             std::lock_guard<std::mutex> guard(m_lock);

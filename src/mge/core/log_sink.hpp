@@ -15,11 +15,11 @@ namespace mge {
     {
     protected:
         log_sink(bool synchronized=true);
-        virtual void on_publish(log_record& r) = 0;
+        virtual void on_publish(const log_record& r) = 0;
     public:
         virtual ~log_sink() = default;
-        void publish(log_record& r);
-    private:
+        void publish(const log_record& r);
+    protected:
         bool       m_synchronized;
         std::mutex m_lock;
     };
