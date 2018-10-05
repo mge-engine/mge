@@ -8,12 +8,19 @@
 
 namespace mge {
 
+    MGE_DECLARE_REF(log_sink);
+
     class MGE_CORE_EXPORT log_sink
             : public component<log_sink>
     {
+    protected:
+        log_sink(bool synchronized=true);
+        virtual void on_publish(log_record& r) = 0;
     public:
-        log_sink() = default;
-        virtual ~log_sink () = default;
-        virtual void publish(log_record& r) = 0;
+        virtual ~log_sink() = default;
+        void publish(log_record& r);
+    private:
+        bool       m_synchronized;
+        std::mutex m_lock;
     };
 }

@@ -6,6 +6,21 @@
 
 namespace mge {
 
+    log_sink::log_sink(bool synchronized)
+        :m_synchronized(synchronized)
+    {}
+
+    void
+    log_sink::publish(log_record& r)
+    {
+        if (m_synchronized) {
+            std::lock_guard<std::mutex> guard(m_lock);
+            on_publish(r);
+        } else {
+            on_publish(r);
+        }
+    }
+
     MGE_REGISTER_COMPONENT(log_sink);
 
 }

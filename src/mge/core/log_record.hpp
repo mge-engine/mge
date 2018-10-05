@@ -13,33 +13,21 @@
 
 namespace mge {
 
-    class MGE_CORE_EXPORT log_record
+    struct MGE_CORE_EXPORT log_record
     {
-    public:
         typedef std::thread::id thread_id_type;
-        log_record();
-        log_record(const log_record& record);
-        ~log_record() = default;
+        typedef std::chrono::system_clock::time_point timestamp_type;
 
-        log_record& operator = (const log_record& record);
+        log_record& set_message(const char *m)
+        {
+            message = m;
+            return *this;
+        }
 
-        inline const char *category() const { return &m_category[0]; }
-        inline log_severity severity() const { return m_severity; }
-        inline const std::chrono::system_clock::time_point timestamp() const
-            { return m_timestamp; }
-        inline const char *message() const { return &m_messageline[0]; }
-        inline thread_id_type  thread() const { return m_thread; }
-        void init(const char *category,
-                  log_severity severity,
-                  thread_id_type thread_id);
-
-    private:
-        friend class log;
-
-        log_severity m_severity;
-        std::chrono::system_clock::time_point m_timestamp;
-        thread_id_type m_thread;
-        char m_category[256];
-        char m_messageline[512];
+        log_severity severity;
+        timestamp_type timestamp;
+        thread_id_type thread_id;
+        const char *category;
+        const char *message;
     };
 }

@@ -16,6 +16,7 @@ SET(mgecore_sources
     log_severity.cpp
     log_record.cpp
     log_sink.cpp
+    log.cpp
     memory.cpp
     new.cpp
 )
