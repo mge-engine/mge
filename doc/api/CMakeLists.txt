@@ -7,7 +7,7 @@ CONFIGURE_FILE (
         "mge.doxyconfig"
 )
 
-ADD_CUSTOM_TARGET(apidoc ALL
+ADD_CUSTOM_TARGET(apidoc
         COMMAND ${DOXYGEN_EXECUTABLE} mge.doxyconfig
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/doc/api
         COMMENT "Create API documentation using doxygen"
