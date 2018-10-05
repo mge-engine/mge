@@ -3,8 +3,11 @@
 // All rights reserved.
 #include "mge/core/thread.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/log.hpp"
 
 namespace mge {
+
+    MGE_DEFINE_LOG(THREAD)
 
     static thread_local thread *t_this_thread;
 
@@ -82,13 +85,13 @@ namespace mge {
         try {
             std::rethrow_exception(eptr);
         } catch(const mge::exception& e) {
-            // MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e << std::endl;
+            MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;
             throw;
         } catch(const std::exception& e) {
-            //MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;
+            MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;
             throw;
         } catch(...) {
-            // MGE_ERROR_LOG(THREAD) << "Thread aborted non-std exception" << std::endl;
+            MGE_ERROR_LOG(THREAD) << "Thread aborted non-std exception" << std::endl;
             throw;
         }
     }
