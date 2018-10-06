@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "mge/core/log_sink.hpp"
 #include "mge/core/log_formatter.hpp"
-#include <fstream>
+#include <iostream>
 
 namespace mge {
     class stdout_log_sink
@@ -12,7 +12,6 @@ namespace mge {
     public:
         stdout_log_sink()
             :log_sink(true)
-            ,m_stream("log.txt")
         {
             m_formatter = log_formatter::create("text");
         }
@@ -21,17 +20,15 @@ namespace mge {
 
         void on_publish(const log_record& r) override
         {
-            std::cout << "on publish" << std::endl;
             if(!m_formatter) {
                 m_formatter = log_formatter::create("text");
             }
             if(m_formatter) {
-                m_formatter->format(m_stream, r);
+                m_formatter->format(std::cout, r);
             }
         }
     private:
         log_formatter_ref m_formatter;
-        std::ofstream m_stream;
     };
 #ifdef stdout
 #  undef stdout
