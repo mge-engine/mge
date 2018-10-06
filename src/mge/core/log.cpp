@@ -18,12 +18,20 @@ namespace mge {
 
         void publish(const log_record& r)
         {
+            std::cout << "log sink coll" << std::endl;
+            if(m_sinks.empty()) {
+                init_sinks();
+            }
+
             for(const auto& p: m_sinks) {
                 p.second->publish(r);
             }
         }
-
     private:
+        void init_sinks()
+        {
+            m_sinks["stdout"] = log_sink::create("stdout");
+        }
         sink_map_t m_sinks;
     };
 
@@ -56,11 +64,6 @@ namespace mge {
         if(m_log_record.severity == log_severity::NONE) {
             return;
         }
-        if(m_log_record.message == nullptr
-           || !*m_log_record.message) {
-            return;
-        }
-
         publish(m_log_record.set_message(m_message.str().c_str()));
         m_log_record.set_message("");
         m_log_record.severity = log_severity::NONE;
@@ -69,7 +72,8 @@ namespace mge {
     void
     log::publish(const log_record& record)
     {
-        return;
+        std::cout << "log::publish" << std::endl;
+        s_log_sinks->publish(record);
     }
 
     bool

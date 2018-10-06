@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/log_record.hpp"
+#include "mge/core/log_severity.hpp"
 #include "mge/core/singleton.hpp"
 
 #include <sstream>
@@ -81,10 +82,10 @@ namespace mge {
 
 
 #define MGE_ERROR_LOG(topic)                                                    \
-    if(!mge::log_instance_##topic().enabled(log_severity::ERROR_SEVERITY))      \
+    if(!mge::log_instance_##topic().enabled(mge::log_severity::ERROR_SEVERITY))      \
     {}                                                                          \
     else                                                                        \
-    mge::log_context(mge::log_instance_##topic().begin_entry(log_severity::ERROR_SEVERITY)).stream()
+    mge::log_context(mge::log_instance_##topic().begin_entry(mge::log_severity::ERROR_SEVERITY)).stream()
 
 #define MGE_DEFINE_LOG(topic)                     \
     __declspec(dllexport)                         \

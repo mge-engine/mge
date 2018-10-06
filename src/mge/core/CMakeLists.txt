@@ -16,6 +16,9 @@ SET(mgecore_sources
     log_severity.cpp
     log_record.cpp
     log_sink.cpp
+    log_formatter.cpp
+    text_log_formatter.cpp
+    stdout_log_sink.cpp
     log.cpp
     memory.cpp
     new.cpp
