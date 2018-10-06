@@ -22,6 +22,7 @@ SET(mgecore_sources
     log.cpp
     memory.cpp
     new.cpp
+    configuration.cpp
 )
 
 ADD_LIBRARY(mgecore
