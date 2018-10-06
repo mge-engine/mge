@@ -2,7 +2,7 @@
  * Copyright (c) 2017 by Alexander Schroeder
  */
 #pragma once
-
+#include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 
 #include <vector>

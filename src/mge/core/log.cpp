@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/config.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/log_sink.hpp"
 #include "mge/core/singleton.hpp"
@@ -29,6 +30,20 @@ namespace mge {
     private:
         void init_sinks()
         {
+//#ifndef MGE_RELEASE
+//        std::string logfile_name(executable_name());
+//        logfile_name.append(".txt");
+//        config.set("handlers", "defaultfile,console");
+//        config.set("handler.defaultfile.class", "file");
+//        config.set("handler.defaultfile.formatter", "text");
+//        config.set("handler.defaultfile.file", logfile_name.c_str());
+//        config.set("handler.console.class", "console");
+//        config.set("handler.console.formatter", "text");
+//        config.set("level.ALL", "ALL");
+//#endif
+
+
+
             m_sinks["stdout"] = log_sink::create("stdout");
         }
         sink_map_t m_sinks;
