@@ -5,7 +5,8 @@
 
 namespace mge {
 
-    static const char *severity_string(log_severity s)
+    static inline const char *
+    severity_string(log_severity s)
     {
         switch(s) {
         case log_severity::DEBUG_SEVERITY:
