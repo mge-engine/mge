@@ -99,4 +99,61 @@ namespace mge {
         bad_cast& operator=(const bad_cast& e);
     };
 
+
+    /**
+     * @brief No such element exception.
+     *
+     * Thrown if an element is looked up but not found.
+     */
+    class MGE_CORE_EXPORT no_such_element : public ::mge::exception
+    {
+    public:
+        no_such_element();
+        no_such_element(const no_such_element& e);
+        no_such_element(no_such_element&& e);
+        ~no_such_element();
+
+        no_such_element& operator=(const no_such_element& e);
+    };
+
+
+    /**
+     * @brief Generic exception thrown if an error is detected.
+     *
+     * Thrown if a condition is detected at runtime that makes
+     * it impossible to recover or continue.
+     */
+    class MGE_CORE_EXPORT runtime_exception : public ::mge::exception
+    {
+    public:
+        runtime_exception();
+        runtime_exception(const runtime_exception& e);
+        runtime_exception(runtime_exception&& e);
+        ~runtime_exception();
+
+        runtime_exception& operator=(const runtime_exception& e);
+    };
+
 }
+
+#define MGE_DEFINE_EXCEPTION(clazz)                        \
+    clazz::clazz()                                         \
+    {}                                                     \
+                                                           \
+    clazz::clazz(const clazz& c)                           \
+        :mge::exception(c)                                 \
+    {}                                                     \
+                                                           \
+    clazz::clazz(clazz&& c)                                \
+        :mge::exception(std::move(c))                      \
+    {}                                                     \
+                                                           \
+    clazz&                                                 \
+    clazz::operator = (const clazz& c)                     \
+    {                                                      \
+        mge::exception::operator =(c);                     \
+        return *this;                                      \
+    }                                                      \
+                                                           \
+    clazz::~clazz()                                        \
+    {}

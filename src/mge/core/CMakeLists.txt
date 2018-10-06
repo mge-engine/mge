@@ -23,6 +23,9 @@ SET(mgecore_sources
     memory.cpp
     new.cpp
     configuration.cpp
+    configuration_database.cpp
+    configurable.cpp
+    path.cpp
 )
 
 ADD_LIBRARY(mgecore
@@ -30,7 +33,7 @@ ADD_LIBRARY(mgecore
             ${mgecore_sources})
 
 TARGET_ADD_DEFINE(mgecore BUILD_MGE_CORE)
-TARGET_LINK_LIBRARIES(mgecore boost)
+TARGET_LINK_LIBRARIES(mgecore boost sqlite3)
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mgecore dbghelp)
