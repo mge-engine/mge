@@ -30,7 +30,7 @@ namespace mge {
         virtual void format(std::ostream& os, const log_record& r)
         {
             size_t message_len = strlen(r.message);
-            const char *ep = r.message + message_len - 1;
+            const char *ep = r.message + message_len;
             while(*ep == '\n') {
                 --ep;
                 if(ep == r.message) {
@@ -45,7 +45,7 @@ namespace mge {
             os << std::put_time(lt, "%Y-%m-%d %H:%M:%S.");
             os << std::setw(9) << std::setfill('0') << int_ms.count() << std::setw(0)
                << std::setfill(' ') << " ";
-            os << severity_string(r.severity);
+            os << severity_string(r.severity) << ' ';
             os << std::setw(10) << std::left << std::setfill('0') << r.thread_id
                << std::setfill(' ') << std::internal << " ";
 

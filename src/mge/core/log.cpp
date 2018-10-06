@@ -18,7 +18,6 @@ namespace mge {
 
         void publish(const log_record& r)
         {
-            std::cout << "log sink coll" << std::endl;
             if(m_sinks.empty()) {
                 init_sinks();
             }
@@ -72,7 +71,6 @@ namespace mge {
     void
     log::publish(const log_record& record)
     {
-        std::cout << "log::publish" << std::endl;
         s_log_sinks->publish(record);
     }
 
