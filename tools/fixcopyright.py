@@ -40,35 +40,29 @@ def process_cpp_source_file(filename):
     lines = f.readlines()
     f.close()
     curated_lines=[]
-    headercomment = True
-    headercomment_found = False
-    for l in lines:
-        if headercomment:
-            if "#pragma once" in l:
-                curated_lines.append(l)
-            elif not l.startswith("//"):
-                curated_lines.append("// mge - Modern Game Engine\n")
-                curated_lines.append("// Copyright (c) 2018 by Alexander Schroeder\n")
-                curated_lines.append("// All rights reserved.\n")
-                curated_lines.append(l)
-                headercomment = False
-                headercomment_found = True
-        else:
-            curated_lines.append(l)
+    curated_lines.append("// mge - Modern Game Engine\n")
+    curated_lines.append("// Copyright (c) 2018 by Alexander Schroeder\n")
+    curated_lines.append("// All rights reserved.\n")
 
-    if not headercomment_found == 0:
-        if len(lines) > 0:
-            if "/*" in lines[0]:
-                headercomment = True
-                for l in lines:
-                    if headercomment:
-                        if '*/' in l:
-                            headercomment = False
-                    else:
-                        curated_lines.append(l)
+    state = 'initial'
+    for l in lines:
+        if state == 'initial':
+            if l.startswith('//'):
+                state = 'cxxheadercomment'
+            elif l.startswith('/*'):
+                state = 'cheadercomment'
             else:
-                for l in lines:
-                    curated_lines.append(l)
+                state = 'body'
+                curated_lines.append(l)
+        elif state == 'cxxheadercomment':
+            if not l.startswith('//'):
+                state = 'body'
+                curated_lines.append(l)
+        elif state == 'cheadercomment':
+            if l.endswith('*/'):
+                state = body
+        elif state == 'body':
+            curated_lines.append(l)
 
     write_file(filename, curated_lines)
 
@@ -82,18 +76,25 @@ def process_c_source_file(filename):
     curated_lines.append(" * All rights reserved.\n")
     curated_lines.append(" */\n")
 
-    if len(lines) > 0:
-        if "/*" in lines[0]:
-            headercomment = True
-            for l in lines:
-                if headercomment:
-                    if '*/' in l:
-                        headercomment = False
-                else:
-                    curated_lines.append(l)
-        else:
-            for l in lines:
+    state = 'initial'
+    for l in lines:
+        if state == 'initial':
+            if l.startswith('//'):
+                state = 'cxxheadercomment'
+            elif l.startswith('/*'):
+                state = 'cheadercomment'
+            else:
+                state = 'body'
                 curated_lines.append(l)
+        elif state == 'cxxheadercomment':
+            if not l.startswith('//'):
+                state = 'body'
+                curated_lines.append(l)
+        elif state == 'cheadercomment':
+            if l.endswith('*/'):
+                state = body
+        elif state == 'body':
+            curated_lines.append(l)
 
     write_file(filename, curated_lines)
 
@@ -126,7 +127,7 @@ if len(args) == 0:
     args.append('.')
 
 for rootdir in args:
-    print "Processing file/directory %s" % (rootdir)
+    print "processing file/directory %s" % (rootdir)
     for root, dirs, files in os.walk(rootdir):
         path = root.split(os.sep)
         for f in files:
@@ -139,4 +140,3 @@ for rootdir in args:
                 currentFile = "/".join(filelist)
                 print("processing %s" % currentFile)
                 process_file(currentFile)
-
