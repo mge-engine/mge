@@ -1,4 +1,6 @@
-# Copyright (c) 2017 by Alexander Schroeder
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 OPTION(COVERAGE_TESTS "Run coverage tests to determine code coverage" ON)
 OPTION(DYNAMICRIO_PATH "Path to Dynamic Rio Tools" "")
 IF(COVERAGE_TESTS)

@@ -1,4 +1,6 @@
-# Copyright (c) 2017 by Alexander Schroeder
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 
 # Copyright (c) 2010 Pau Garcia i Quiles, <pgquiles@elpauer.org>
 #

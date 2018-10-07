@@ -1,4 +1,6 @@
-# Copyright (c) 2017 by Alexander Schroeder
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX_CXX11_FLAGS}")
 IF(MSVC)
