@@ -6,4 +6,8 @@
 namespace mge {
      configurable::~configurable()
      {}
+
+     void
+     configurable::configure(const configuration &)
+     {}
 }

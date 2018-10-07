@@ -54,7 +54,7 @@ namespace mge {
         /**
          * Destructor.
          */
-        ~log();
+        ~log() = default;
 
         log& begin_entry(log_severity s);
         bool enabled(log_severity s);

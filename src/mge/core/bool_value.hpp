@@ -43,6 +43,7 @@ namespace mge {
             ++str;
             return *str == 0;
         } else if(*str == 'o' || *str=='O') {
+            ++str;
             if(*str != 'n' && *str != 'N') {
                 return false;
             }

@@ -17,9 +17,10 @@ namespace mge {
         virtual ~configurable();
 
         /**
-         * Configure the object.
+         * Configure the object. The default implementation
+         * does nothing.
          * @param config the configuration
          */
-        virtual void configure(const configuration& config) = 0;
+        virtual void configure(const configuration& config);
     };
 }

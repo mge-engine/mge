@@ -5,13 +5,15 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/log_record.hpp"
+#include "mge/core/configurable.hpp"
 
 namespace mge {
 
     MGE_DECLARE_REF(log_sink);
 
     class MGE_CORE_EXPORT log_sink
-            : public component<log_sink>
+            : public component<log_sink>,
+              public configurable
     {
     protected:
         log_sink(bool synchronized=true);
