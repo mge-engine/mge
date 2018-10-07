@@ -60,10 +60,11 @@ namespace mge {
                 sink_map_t sinks;
                 auto sink_names = config.list_value("sinks");
                 for(const auto& sink_name : sink_names) {
-                    std::string config_name("log.sink");
+                    std::string config_name("log.sink.");
                     config_name += sink_name;
                     configuration sink_config(config_name);
-                    auto sink = log_sink::create(sink_config.value("class"));
+                    std::string sink_class = sink_config.value("class");
+                    auto sink = log_sink::create(sink_class);
                     if(!sink) {
                         return;
                     }
@@ -72,7 +73,7 @@ namespace mge {
                 }
                 m_sinks = sinks;
                 m_configured = true;
-            } catch(...) {
+            } catch(const mge::exception& ex) {
                 // ignore failures in lookup
             }
         }
