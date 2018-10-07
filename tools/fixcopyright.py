@@ -114,7 +114,7 @@ def blacklisted(path):
         return True
     elif path[0].startswith("build"):
         return True
-    elif len(path) >= 2 and path[0] == 'src'and path[1] == 'external'
+    elif len(path) >= 2 and path[0] == 'src'and path[1] == 'external':
         return True
     else:
         return False
