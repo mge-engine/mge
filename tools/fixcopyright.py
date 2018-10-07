@@ -3,6 +3,7 @@
 # All rights reserved.
 import os
 import sys
+import copy
 
 dry_run = False
 
@@ -115,18 +116,27 @@ def blacklisted(path):
     else:
         return False
 
+
+args = copy.copy(sys.argv[1:])
 if "-n" in sys.argv:
     dry_run = True
+    args.remove('-n')
 
-for root, dirs, files in os.walk("."):
-    path = root.split(os.sep)
-    for f in files:
-        filelist = []
-        filelist.extend(path)
-        filelist.append(f)
-        filelist = filelist[1:]
-        if(not blacklisted(filelist)):
-            currentFile = "/".join(filelist)
-            print("processing %s" % currentFile)
-            process_file(currentFile)
+if len(args) == 0:
+    args.append('.')
+
+for rootdir in args:
+    print "Processing file/directory %s" % (rootdir)
+    for root, dirs, files in os.walk(rootdir):
+        path = root.split(os.sep)
+        for f in files:
+            filelist = []
+            filelist.extend(path)
+            filelist.append(f)
+            if rootdir == '.':
+                filelist = filelist[1:]
+            if(not blacklisted(filelist)):
+                currentFile = "/".join(filelist)
+                print("processing %s" % currentFile)
+                process_file(currentFile)
 
