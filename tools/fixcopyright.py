@@ -59,8 +59,8 @@ def process_cpp_source_file(filename):
                 state = 'body'
                 curated_lines.append(l)
         elif state == 'cheadercomment':
-            if l.endswith('*/'):
-                state = body
+            if l.strip().endswith('*/'):
+                state = 'body'
         elif state == 'body':
             curated_lines.append(l)
 
@@ -91,8 +91,8 @@ def process_c_source_file(filename):
                 state = 'body'
                 curated_lines.append(l)
         elif state == 'cheadercomment':
-            if l.endswith('*/'):
-                state = body
+            if l.strip().endswith('*/'):
+                state = 'body'
         elif state == 'body':
             curated_lines.append(l)
 

@@ -1,6 +1,6 @@
-/*
- * Copyright (c) 2017 by Alexander Schroeder
- */
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 
 #include "mge/core/configuration_database.hpp"
 #include "mge/core/executable_name.hpp"
