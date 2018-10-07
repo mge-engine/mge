@@ -2,6 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/log_formatter.hpp"
+#include <ctime>
+#include <iomanip>
 
 namespace mge {
 

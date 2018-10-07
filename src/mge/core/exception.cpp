@@ -13,31 +13,23 @@ namespace mge {
 
     exception::exception(const exception& e)
         : std::exception(e)
-        , boost::exception(e)
     {}
 
     exception::exception(exception&& e)
-        : std::exception(e)
-        , boost::exception(e)
+        : std::exception(std::move(e))
     {}
 
     exception&
     exception::operator =(const exception& e)
     {
         std::exception::operator =(e);
-        boost::exception::operator =(e);
         return *this;
     }
 
     const char *
     exception::what() const
     {
-        auto desc = this->info<excinfo_desc>();
-        if (desc) {
-            return desc->c_str();
-        } else {
-            return std::exception::what();
-        }
+        return std::exception::what();
     }
 
 }

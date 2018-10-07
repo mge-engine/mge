@@ -25,13 +25,13 @@ namespace mge {
         static void clear();
     };
 
-    /**
-     * Helper tag structure for system error exception info.
-     */
-    struct tag_sysrc {};
+//    /**
+//     * Helper tag structure for system error exception info.
+//     */
+//    struct tag_sysrc {};
 
-    /**
-     * @brief Exception info for system error.
-     */
-    typedef error_info<tag_sysrc, uint32_t> sysrc_desc;
+//    /**
+//     * @brief Exception info for system error.
+//     */
+//    typedef error_info<tag_sysrc, uint32_t> sysrc_desc;
 }
