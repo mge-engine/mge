@@ -17,6 +17,7 @@ ADD_EXECUTABLE(coretest
   test_log.cpp
   test_path.cpp
   test_configuration.cpp
+  test_text_log_formatter.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
