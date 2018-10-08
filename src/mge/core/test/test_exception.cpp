@@ -15,18 +15,30 @@ TEST(exception, construct)
     ex4 = ex3;
 }
 
+TEST(exception, extract_source_file)
+{
+    try {
+        MGE_THROW(mge::exception());
+        FAIL() << "No exception thrown";
+    } catch(const mge::exception& ex) {
+        auto file_info = ex.get<mge::exception::source_file>();
+        ASSERT_TRUE(file_info != boost::none);
+        EXPECT_STRNE("", file_info.value());
+    }
+}
 
-//TEST(exception, thrown_exception_has_stacktrace)
-//{
-//    try {
-//        MGE_THROW(mge::exception());
-//        FAIL() << "Expect exception to be thrown";
-//    } catch(const mge::exception& ex_catched) {
-//        //std::cout << boost::diagnostic_information(ex_catched, true);
-//        const mge::stacktrace *st = ex_catched.info<mge::excinfo_stack>();
-//        EXPECT_TRUE(st != nullptr);
-//    }
-//}
+
+TEST(exception, thrown_exception_has_stacktrace)
+{
+    try {
+        MGE_THROW(mge::exception());
+        FAIL() << "Expect exception to be thrown";
+    } catch(const mge::exception& ex_catched) {
+        const mge::stacktrace st = ex_catched.get<mge::exception::stack>().value();
+        std::cout << st;
+        EXPECT_TRUE(st.size() > 0);
+    }
+}
 
 //TEST(exception, exception_with_message)
 //{

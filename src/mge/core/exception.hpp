@@ -6,9 +6,15 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/format_string.hpp"
+
 #include <boost/any.hpp>
+#include <boost/optional.hpp>
+
 #include <sstream>
 #include <tuple>
+#include <map>
+#include <typeinfo>
+#include <typeindex>
 
 /**
  * @file mge/core/exception.hpp
@@ -23,6 +29,50 @@ namespace mge {
             : virtual public std::exception
     {
     public:
+        template <typename Tag, typename Value>
+        struct tag
+        {
+            typedef Tag     tag_type;
+            typedef Value   value_type;
+        };
+
+        struct source_file : public tag<source_file, const char *>
+        {
+            source_file(const char *value_)
+                :value(value_)
+            {}
+
+            const char *value;
+        };
+
+        struct function : public tag<function, const char *>
+        {
+            function(const char *value_)
+                :value(value_)
+            {}
+
+            const char *value;
+        };
+
+        struct source_line : public tag<source_line, int>
+        {
+            source_line(int value_)
+                :value(value_)
+            {}
+
+            int value;
+        };
+
+        struct stack : public tag<stack, mge::stacktrace>
+        {
+            stack(mge::stacktrace&& s)
+                :value(std::move(s))
+            {}
+
+            mge::stacktrace value;
+        };
+
+
         /**
          * Constructor.
          */
@@ -49,88 +99,49 @@ namespace mge {
          */
         exception& operator =(const exception&);
 
-//        /**
-//         * Extract info field.
-//         * @return extracted info field
-//         */
-//        template <typename EI>
-//        auto info() const
-//        {
-//            return boost::get_error_info<EI>(*this);
-//        }
+        /**
+         * Move assignment.
+         * @param e moved exception
+         * @return @c *this
+         */
+        exception& operator =(exception&&);
 
         /**
          * Overrides @c std::exception @c what function.
          * @return exception message
          */
         const char *what() const;
+
+        template <typename Info>
+        exception& operator <<(const Info& info)
+        {
+            m_infos[std::type_index(typeid(typename Info::tag_type))]
+                    = info.value;
+            return *this;
+        }
+
+        template <typename Info>
+        inline auto get() const
+        {
+            auto it = m_infos.find(std::type_index(typeid(typename Info::tag_type)));
+            boost::optional<Info::value_type> result;
+            if (it != m_infos.end()) {
+                result = boost::any_cast<Info::value_type>(it->second);
+            }
+            return result;
+        }
+
+    private:
+        typedef std::map<std::type_index, boost::any> exception_info_map_t;
+        exception_info_map_t m_infos;
     };
-
-//    /**
-//     * @brief Exception info for called function.
-//     *
-//     * E.g. when throwing exception
-//     * because of @c fopen has failed, this would be the
-//     * string "fopen".
-//     */
-//    typedef boost::errinfo_api_function excinfo_api_function;
-//    /**
-//     * @brief
-//     * Exception info for system error code, i.e. @c errno
-//     * or @c GetLastError() results.
-//     */
-//    typedef boost::errinfo_errno excinfo_sysrc;
-
-//    /**
-//     * @brief Exception info for source code file of exception throw
-//     * location.
-//     */
-//    typedef boost::throw_file excinfo_source_file;
-
-//    /**
-//     * @brief Exception info for source code line of exception throw
-//     * location.
-//     */
-//    typedef boost::throw_line excinfo_source_line;
-
-//    /**
-//     * @brief Exception info for function of exception throw location.
-//     */
-//    typedef boost::throw_function excinfo_function;
-
-//    /**
-//     * @brief Helper structure for stacktrace exception info.
-//     */
-//    struct stacktrace_excinfo_tag {};
-
-//    /**
-//     * @brief Exception info for stack backtrace.
-//     */
-//    typedef error_info<stacktrace_excinfo_tag, stacktrace> excinfo_stack;
-
-//    /**
-//     * @brief Helper tag structure for exception description ("long text")
-//     */
-//    struct desc_excinfo_tag {};
-
-//    /**
-//     * @brief Exception info for long text.
-//     */
-//    typedef error_info<desc_excinfo_tag, std::string> excinfo_desc;
-
-//    /**
-//     * Construct exception message from arguments.
-//     */
-//    template <typename... Args>
-//    mge::excinfo_desc exception_message(Args ... args)
-//    {
-//        return mge::excinfo_desc(format_string(args...));
-//    }
 
 
 #define MGE_THROW(ex, ...)                                          \
-    throw (ex)
-
+    throw (ex) << mge::exception::source_file(__FILE__)             \
+               << mge::exception::source_line(__LINE__)             \
+               << mge::exception::function(MGE_FUNCTION_SIGNATURE)  \
+               << mge::exception::stack(mge::stacktrace())
 
 //    << mge::excinfo_source_file(__FILE__)                \
 //               << mge::excinfo_source_line(__LINE__)                \
