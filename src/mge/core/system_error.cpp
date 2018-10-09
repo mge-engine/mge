@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/system_error.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 namespace mge {
     void
@@ -14,28 +15,14 @@ namespace mge {
 #endif
     }
 
-#define DEFINE_EXCEPTION(clazz)                            \
-    clazz::clazz()                                         \
-    {}                                                     \
-                                                           \
-    clazz::clazz(const clazz& c)                           \
-        :mge::exception(c)                                 \
-    {}                                                     \
-                                                           \
-    clazz::clazz(clazz&& c)                                \
-        :mge::exception(std::move(c))                      \
-    {}                                                     \
-                                                           \
-    clazz&                                                 \
-    clazz::operator = (const clazz& c)                     \
-    {                                                      \
-        mge::exception::operator =(c);                     \
-        return *this;                                      \
-    }                                                      \
-                                                           \
-    clazz::~clazz()                                        \
-    {}
+    system_error::error::error()
+    {
+#ifdef MGE_OS_WINDOWS
+        value = GetLastError();
+#else
+#  error not implemented
+#endif
+    }
 
-    DEFINE_EXCEPTION(system_error)
-#undef DEFINE_EXCEPTION
+    MGE_DEFINE_EXCEPTION(system_error)
 }

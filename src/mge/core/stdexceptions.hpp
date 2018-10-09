@@ -24,6 +24,14 @@ namespace mge {
         ~illegal_state();
 
         illegal_state& operator=(const illegal_state& e);
+
+        template <typename Info>
+        illegal_state& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
     };
 
 
@@ -42,6 +50,14 @@ namespace mge {
         ~illegal_argument();
 
         illegal_argument& operator=(const illegal_argument& e);
+
+        template <typename Info>
+        illegal_argument& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
     };
 
 
@@ -60,6 +76,14 @@ namespace mge {
         ~out_of_range();
 
         out_of_range& operator=(const out_of_range& e);
+
+        template <typename Info>
+        out_of_range& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
     };
 
     /**
@@ -78,6 +102,14 @@ namespace mge {
         ~duplicate_element();
 
         duplicate_element& operator=(const duplicate_element& e);
+
+        template <typename Info>
+        duplicate_element& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
     };
 
 
@@ -97,6 +129,14 @@ namespace mge {
         ~bad_cast();
 
         bad_cast& operator=(const bad_cast& e);
+
+        template <typename Info>
+        bad_cast& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
     };
 
 
@@ -139,6 +179,14 @@ namespace mge {
         ~runtime_exception();
 
         runtime_exception& operator=(const runtime_exception& e);
+
+        template <typename Info>
+        runtime_exception& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
     };
 
 }
