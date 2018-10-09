@@ -114,6 +114,13 @@ namespace mge {
         ~no_such_element();
 
         no_such_element& operator=(const no_such_element& e);
+
+        template <typename Info>
+        no_such_element& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
     };
 
 

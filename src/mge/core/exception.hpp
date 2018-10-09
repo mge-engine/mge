@@ -72,6 +72,16 @@ namespace mge {
             mge::stacktrace value;
         };
 
+        struct message : public tag<message, std::string>
+        {
+            template <typename ... Args>
+            message(Args ... args)
+            {
+                value = mge::format_string(args...);
+            }
+
+            std::string value;
+        };
 
         /**
          * Constructor.
@@ -134,6 +144,7 @@ namespace mge {
     private:
         typedef std::map<std::type_index, boost::any> exception_info_map_t;
         exception_info_map_t m_infos;
+        mutable std::string m_message;
     };
 
 
@@ -141,13 +152,8 @@ namespace mge {
     throw (ex) << mge::exception::source_file(__FILE__)             \
                << mge::exception::source_line(__LINE__)             \
                << mge::exception::function(MGE_FUNCTION_SIGNATURE)  \
-               << mge::exception::stack(mge::stacktrace())
-
-//    << mge::excinfo_source_file(__FILE__)                \
-//               << mge::excinfo_source_line(__LINE__)                \
-//               << mge::excinfo_stack(mge::stacktrace())             \
-//               << mge::excinfo_function(MGE_FUNCTION_SIGNATURE)     \
-//               << mge::exception_message(__VA_ARGS__)
+               << mge::exception::stack(mge::stacktrace())          \
+               << mge::exception::message(__VA_ARGS__)
 
 
 

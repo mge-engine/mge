@@ -73,7 +73,7 @@ namespace mge {
                 }
                 m_sinks = sinks;
                 m_configured = true;
-            } catch(const mge::exception& ex) {
+            } catch(const mge::exception&) {
                 // ignore failures in lookup
             }
         }

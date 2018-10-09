@@ -40,12 +40,12 @@ TEST(exception, thrown_exception_has_stacktrace)
     }
 }
 
-//TEST(exception, exception_with_message)
-//{
-//    try {
-//        MGE_THROW(mge::exception(),"foo","bar");
-//    } catch(const mge::exception& ex_catched) {
-//        EXPECT_STREQ("foobar", ex_catched.what());
-//    }
-//}
+TEST(exception, exception_with_message)
+{
+    try {
+        MGE_THROW(mge::exception(),"foo","bar");
+    } catch(const mge::exception& ex_catched) {
+        EXPECT_STREQ("foobar", ex_catched.what());
+    }
+}
 

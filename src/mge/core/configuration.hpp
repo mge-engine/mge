@@ -26,6 +26,14 @@ namespace mge {
         configuration_key_not_found(configuration_key_not_found&& e);
         virtual ~configuration_key_not_found();
         configuration_key_not_found& operator=(const configuration_key_not_found& e);
+
+        template <typename Info>
+        configuration_key_not_found& operator <<(const Info& info)
+        {
+            mge::no_such_element::operator << (info);
+            return *this;
+        }
+
     };
 
     /**
