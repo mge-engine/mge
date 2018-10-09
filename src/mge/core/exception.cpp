@@ -40,6 +40,16 @@ namespace mge {
     const char *
     exception::what() const
     {
+        if (!m_message.empty()) {
+            return m_message.c_str();
+        }
+
+        auto potential_message = get<mge::exception::message>();
+        if(potential_message) {
+            m_message = potential_message.value();
+            return m_message.c_str();
+        }
+
         return std::exception::what();
     }
 
