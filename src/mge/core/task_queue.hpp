@@ -24,9 +24,10 @@ namespace mge {
         }
 
         task_queue(task_queue&& q)
-            :m_lock(std::move(q.m_lock))
-            ,m_tasks(std::move(m_tasks))
-        {}
+        {
+            std::lock_guard<std::mutex> guard(q.m_lock);
+            m_tasks = std::move(q.m_tasks);
+        }
 
         ~task_queue() = default;
 
@@ -68,7 +69,7 @@ namespace mge {
         }
 
     private:
-        std::mutex m_lock;
+        mutable std::mutex m_lock;
         std::queue<task_ref> m_tasks;
     };
 
