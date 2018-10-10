@@ -10,6 +10,8 @@
 
 namespace mge {
 
+    MGE_DECLARE_REF(task);
+
     class MGE_CORE_EXPORT task
             : public noncopyable
     {

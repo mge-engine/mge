@@ -21,6 +21,7 @@ ADD_EXECUTABLE(coretest
   test_bool_value.cpp
   test_async_executor.cpp
   test_task.cpp
+  test_task_queue.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
