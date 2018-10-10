@@ -20,6 +20,7 @@ ADD_EXECUTABLE(coretest
   test_text_log_formatter.cpp
   test_bool_value.cpp
   test_async_executor.cpp
+  test_task.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
