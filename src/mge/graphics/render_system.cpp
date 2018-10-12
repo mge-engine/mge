@@ -18,5 +18,11 @@ namespace mge {
         return render_config.value("system", std::string("opengl"));
     }
 
+    render_system_ref
+    render_system::create()
+    {
+        return component<render_system>::create(default_name());
+    }
+
     MGE_REGISTER_COMPONENT(render_system);
 }
