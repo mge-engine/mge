@@ -10,7 +10,7 @@ namespace mge {
      * @return @c true if the string is matching case-insensitive
      * "true", "yes", "on" or if the string is a non-zero number
      */
-    inline bool bool_value(const char *str)
+    inline bool bool_value(const char *str) noexcept
     {
         if(str == nullptr) {
             return false;
@@ -62,7 +62,7 @@ namespace mge {
      * @return @c true if the string is matching case-insensitive
      * "true", "yes", "on" or if the string is a non-zero number
      */
-    inline bool bool_value(const std::string& s)
+    inline bool bool_value(const std::string& s) noexcept
     {
         return bool_value(s.c_str());
     }
