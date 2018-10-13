@@ -6,7 +6,8 @@ ADD_LIBRARY(mgegraphics
     SHARED
     render_system.cpp
     extent.cpp
-    rectangle.cpp)
+    rectangle.cpp
+    gamma_ramp.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore)
