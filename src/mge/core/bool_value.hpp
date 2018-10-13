@@ -58,7 +58,7 @@ namespace mge {
 
     /**
      * Compute a boolean from a string.
-     * @param str string to check
+     * @param s string to check
      * @return @c true if the string is matching case-insensitive
      * "true", "yes", "on" or if the string is a non-zero number
      */

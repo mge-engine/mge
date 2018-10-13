@@ -29,13 +29,32 @@ namespace mge {
             : virtual public std::exception
     {
     public:
+        /**
+         * @brief Exception value tag type.
+         *
+         * The tag type is used to attach values to the
+         * exception.
+         *
+         * To use it, create a type that will hold the information as a
+         * member @c value, and derive that type from the tag type as follows.
+         * @code
+         * // A 'foo' value will hold a string attached to an exception.
+         * struct foo : public tag<foo, std::string>
+         * {
+         *     std::string value;
+         * };
+         * @endcode
+         */
         template <typename Tag, typename Value>
         struct tag
         {
-            typedef Tag     tag_type;
-            typedef Value   value_type;
+            typedef Tag     tag_type;    //!< Tag type.
+            typedef Value   value_type;  //!< Value type of value stored under tag.
         };
 
+        /**
+         * @brief Source file name attached to exception.
+         */
         struct source_file : public tag<source_file, const char *>
         {
             source_file(const char *value_)
@@ -45,6 +64,9 @@ namespace mge {
             const char *value;
         };
 
+        /**
+         * @brief Function name attached to exception.
+         */
         struct function : public tag<function, const char *>
         {
             function(const char *value_)
@@ -54,6 +76,9 @@ namespace mge {
             const char *value;
         };
 
+        /**
+         * @brief Source file line number attached to exception.
+         */
         struct source_line : public tag<source_line, int>
         {
             source_line(int value_)
@@ -62,7 +87,9 @@ namespace mge {
 
             int value;
         };
-
+        /**
+         * @brief Stack backtrace attached to exception.
+         */
         struct stack : public tag<stack, mge::stacktrace>
         {
             stack(mge::stacktrace&& s)
@@ -72,6 +99,9 @@ namespace mge {
             mge::stacktrace value;
         };
 
+        /**
+         * @brief Message attached to exception.
+         */
         struct message : public tag<message, std::string>
         {
             template <typename ... Args>
@@ -114,7 +144,7 @@ namespace mge {
          * @param e moved exception
          * @return @c *this
          */
-        exception& operator =(exception&&);
+        exception& operator =(exception&& e);
 
         /**
          * Overrides @c std::exception @c what function.
