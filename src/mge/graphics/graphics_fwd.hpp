@@ -5,6 +5,8 @@
 #include "mge/core/types.hpp"
 namespace mge {
     class render_system;
+    class monitor;
 
     MGE_DECLARE_REF(render_system);
+    MGE_DECLARE_REF(monitor);
 }

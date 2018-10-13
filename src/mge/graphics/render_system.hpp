@@ -7,7 +7,7 @@
 
 #include "mge/core/configurable.hpp"
 #include "mge/core/component.hpp"
-
+#include <vector>
 namespace mge {
 
     /**
@@ -21,6 +21,8 @@ namespace mge {
     protected:
         render_system();
     public:
+        typedef std::vector<monitor_ref> monitor_collection_t;
+
         virtual ~render_system();
 
         /**
@@ -34,5 +36,18 @@ namespace mge {
          * @return configured name
          */
         static std::string default_name();
+
+        /**
+         * Get all monitors attached to the computer.
+         * @return list of monitors
+         */
+        virtual monitor_collection_t monitors() const = 0;
+
+        /**
+         * Retrieve the primary monitor.
+         * @return primary monitor
+         */
+        virtual monitor_ref primary_monitor() const = 0;
+
     };
 }

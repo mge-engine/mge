@@ -7,7 +7,8 @@ ADD_LIBRARY(mgegraphics
     render_system.cpp
     extent.cpp
     rectangle.cpp
-    gamma_ramp.cpp)
+    gamma_ramp.cpp
+    monitor.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore)
