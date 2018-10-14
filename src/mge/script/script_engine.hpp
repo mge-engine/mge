@@ -5,15 +5,25 @@
 
 #include "mge/script/dllexport.hpp"
 #include "mge/core/component.hpp"
+#include "mge/script/script_fwd.hpp"
 
 namespace mge {
 
-
+    /**
+     * A script engine is the entry point for creating a script
+     * and running it.
+     */
     class script_engine : public component<script_engine>
     {
     protected:
-        script_engine();
+        /**
+         * Constructor.
+         */
+        script_engine() = default;
     public:
-        virtual ~script_engine();
+        /**
+         * Destructor.
+         */
+        virtual ~script_engine() = default;
     };
 }

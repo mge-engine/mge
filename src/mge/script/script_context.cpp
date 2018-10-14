@@ -1,8 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "mge/script/script_engine.hpp"
+#include "mge/script/script_context.hpp"
 
 namespace mge {
-    MGE_REGISTER_COMPONENT(script_engine);
 }
