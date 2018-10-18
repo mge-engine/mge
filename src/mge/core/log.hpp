@@ -87,20 +87,27 @@ namespace mge {
     else                                                                        \
     mge::log_context(mge::log_instance_##topic().begin_entry(mge::log_severity::ERROR_SEVERITY)).stream()
 
-#define MGE_DEFINE_LOG(topic)                     \
-    __declspec(dllexport)                         \
-    log&                                          \
-    log_instance_##topic()                        \
-    {                                             \
-        static thread_local log instance(#topic); \
-        return instance;                          \
+
+#define MGE_WARNING_LOG(topic)                                                    \
+    if(!mge::log_instance_##topic().enabled(mge::log_severity::WARNING_SEVERITY))      \
+    {}                                                                          \
+    else                                                                        \
+    mge::log_context(mge::log_instance_##topic().begin_entry(mge::log_severity::WARNING_SEVERITY)).stream()
+
+#define MGE_DEFINE_LOG(topic)                          \
+    __declspec(dllexport)                              \
+    mge::log&                                          \
+    log_instance_##topic()                             \
+    {                                                  \
+        static thread_local mge::log instance(#topic); \
+        return instance;                               \
     }
 
 #define MGE_USE_LOG(topic)                        \
-    extern log& log_instance_##topic()
+    extern mge::log& log_instance_##topic()
 
 #define MGE_USE_IMPORTED_LOG(topic)               \
     __declspec(dllimport)                         \
-    log& log_instance_##topic()
+    mge::log& log_instance_##topic()
 
 }

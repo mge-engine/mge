@@ -9,6 +9,8 @@
 #include "mge/core/executable_name.hpp"
 #include "mge/core/configuration.hpp"
 
+MGE_DEFINE_LOG(MGE)
+
 namespace mge {
 
     class log_sink_manager

@@ -28,6 +28,7 @@ SET(mgecore_sources
     path.cpp
     async_executor.cpp
     task.cpp
+    shared_library.cpp
 )
 
 ADD_LIBRARY(mgecore

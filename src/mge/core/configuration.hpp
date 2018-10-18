@@ -133,7 +133,8 @@ namespace mge {
          * simply separated by ','.
          * @param key configuration key
          * @return vector of strings
-         * @throw configuration_key_not_found if the key is not found
+         * @throw A @c configuration_key_not_found exception is thrown if the
+         *        key is not found.
          */
         inline std::vector<std::string> list_value(const char *key) const
         {
@@ -145,7 +146,8 @@ namespace mge {
          * simply separated by ','.
          * @param key configuration key
          * @return vector of strings
-         * @throw configuration_key_not_found if the key is not found
+         * @throw A @c configuration_key_not_found exception is thrown if the
+         *        key is not found.
          */
         std::vector<std::string> list_value(const std::string& key) const;
 
@@ -153,7 +155,8 @@ namespace mge {
          * Get configuration value.
          * @param key configuration key
          * @return configuration value
-         * @throw configuration_key_not_found if no key is found
+         * @throw A @c configuration_key_not_found exception is thrown if the
+         *        key is not found.
          */
         const std::string& value(const std::string& key) const;
 
