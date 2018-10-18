@@ -14,7 +14,7 @@
 #  include <windows.h>
 #endif
 
-MGE_USE_LOG(MGE)
+MGE_USE_LOG(MGE);
 
 namespace mge {
 
@@ -63,7 +63,8 @@ namespace mge {
         }
         HMODULE handle = LoadLibrary(name.c_str());
         if (!handle) {
-            MOGE_THROW_SYSCALL_ERROR(LoadLibrary);
+            MGE_THROW(system_error());
+            // system_error::error());
         }
         std::shared_ptr<shared_library> library_ref
             = std::make_shared<shared_library_instantiate>(name, handle);

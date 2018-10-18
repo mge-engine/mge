@@ -5,9 +5,11 @@
 #include "mge/core/crash.hpp"
 #include "mge/core/log.hpp"
 
+MGE_DEFINE_LOG(THREAD)
+
 namespace mge {
 
-    MGE_DEFINE_LOG(THREAD)
+
 
     static thread_local thread *t_this_thread;
 

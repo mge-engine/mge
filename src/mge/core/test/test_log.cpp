@@ -4,9 +4,7 @@
 #include "test/googletest.hpp"
 #include "mge/core/log.hpp"
 
-namespace mge {
-    MGE_DEFINE_LOG(FOO);
-}
+MGE_DEFINE_LOG(FOO);
 
 TEST(log, simple_log)
 {

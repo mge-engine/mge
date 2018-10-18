@@ -8,9 +8,9 @@
 
 #include <iostream>
 
-namespace mge {
+MGE_DEFINE_LOG(CRASH)
 
-    MGE_DEFINE_LOG(CRASH)
+namespace mge {
 
     void crash()
     {
