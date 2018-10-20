@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mgeapplication_sources
+    update_thread.cpp
     application.cpp)
 
 ADD_LIBRARY(mgeapplication

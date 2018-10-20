@@ -38,5 +38,11 @@ namespace mge {
         virtual void join();
     private:
         static application *s_instance;
+
+        uint32_t m_update_rate;
+        uint32_t m_max_frame_skip;
+        volatile bool m_quit;
+        bool m_has_std_streams;
+
     };
 }
