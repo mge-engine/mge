@@ -8,5 +8,5 @@ build*/**/*
 mge.files
 mge.config
 mge.includes
-mge.creator
+mge.creator*
 mge.creator.user
