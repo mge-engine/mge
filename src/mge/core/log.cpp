@@ -112,6 +112,7 @@ namespace mge {
         publish(m_log_record.set_message(m_message.str().c_str()));
         m_log_record.set_message("");
         m_log_record.severity = log_severity::NONE;
+        m_message.str("");
     }
 
     void
