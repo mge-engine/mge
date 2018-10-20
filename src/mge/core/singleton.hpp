@@ -14,7 +14,7 @@ namespace mge {
      * @brief Singleton instance of a class.
      *
      * On demand initialization. Usually @c static variables
-     * of @c init_on_demand<T> are created for singleton objects
+     * of @c singleton<T> are created for singleton objects
      * that should be lazily constructed.
      *
      * Note that the constructor of @c T must allow constructing
