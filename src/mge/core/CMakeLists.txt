@@ -29,6 +29,7 @@ SET(mgecore_sources
     async_executor.cpp
     task.cpp
     shared_library.cpp
+    clock.cpp
 )
 
 ADD_LIBRARY(mgecore
