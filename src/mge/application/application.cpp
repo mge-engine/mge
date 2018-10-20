@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/crash.hpp"
 
 namespace mge {
     application::application()
@@ -17,7 +18,7 @@ namespace mge {
     application::~application()
     {
         if(s_instance != this) {
-            // TODO: Crash due to inconsistency
+            mge::crash("Multiple application instances found!");
         }
         s_instance = nullptr;
     }
