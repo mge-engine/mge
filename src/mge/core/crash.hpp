@@ -3,7 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include "mge/core/stream_values.hpp"
+#include "mge/core/format_string.hpp"
 #include <sstream>
 
 namespace mge {
@@ -25,10 +25,7 @@ namespace mge {
     template <typename... Args>
     inline void crash(Args ... args)
     {
-        std::stringstream ss;
-        stream_values(ss, args...);
-        std::string message(ss.str());
-        crash(message.c_str());
+        crash(format_string(args...).c_str());
     }
 
 }
