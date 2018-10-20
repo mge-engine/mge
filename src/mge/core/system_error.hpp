@@ -47,6 +47,8 @@ namespace mge {
         static void clear();
 
         const char *what() const override;
+    private:
+        mutable std::string m_message;
     };
 
 }

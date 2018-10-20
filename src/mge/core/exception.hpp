@@ -199,7 +199,7 @@ namespace mge {
     private:
         typedef std::map<std::type_index, boost::any> exception_info_map_t;
         exception_info_map_t m_infos;
-    protected:
+    private:
         mutable std::string m_message;
     };
 

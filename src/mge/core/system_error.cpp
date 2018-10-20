@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/core/system_error.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include <boost/algorithm/string/predicate.hpp>
 
 namespace mge {
     void
@@ -44,10 +45,21 @@ namespace mge {
             return m_message.c_str();
         }
 
+        m_message = mge::exception::what();
+        if(!m_message.empty()) {
+            if(boost::algorithm::ends_with(m_message, ":")) {
+               m_message.append(" ");
+            } else if(!boost::algorithm::ends_with(m_message, ": ")) {
+               m_message.append(": ");
+            }
+        }
+
         auto err = get<mge::system_error::error>();
         if(err) {
-            m_message = std::get<1>(err.value());
+            m_message.append(std::get<1>(err.value()));
             return m_message.c_str();
+        } else {
+            m_message.clear();
         }
 
         return mge::exception::what();
