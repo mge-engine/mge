@@ -14,10 +14,17 @@ namespace mge {
     class MGE_CORE_EXPORT system_error : public exception
     {
     public:
-        struct error : exception::tag<error, uint32_t>
+        struct error : exception::tag<error, std::tuple<uint32_t, std::string> >
         {
             error();
-            uint32_t value;
+
+            auto value() const noexcept
+            {
+                return std::make_tuple(m_error_value, m_error_message);
+            }
+
+            uint32_t    m_error_value;
+            std::string m_error_message;
         };
 
         system_error();
@@ -34,7 +41,12 @@ namespace mge {
             return *this;
         }
 
+        /**
+         * Clears the system error stored for the current thread.
+         */
         static void clear();
+
+        const char *what() const override;
     };
 
 }

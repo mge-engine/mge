@@ -58,10 +58,15 @@ namespace mge {
         struct source_file : public tag<source_file, const char *>
         {
             source_file(const char *value_)
-                :value(value_)
+                :m_value(value_)
             {}
 
-            const char *value;
+            const char *value() const noexcept
+            {
+                return m_value;
+            }
+
+            const char *m_value;
         };
 
         /**
@@ -70,10 +75,15 @@ namespace mge {
         struct function : public tag<function, const char *>
         {
             function(const char *value_)
-                :value(value_)
+                :m_value(value_)
             {}
 
-            const char *value;
+            const char *value() const noexcept
+            {
+                return m_value;
+            }
+
+            const char *m_value;
         };
 
         /**
@@ -82,10 +92,15 @@ namespace mge {
         struct source_line : public tag<source_line, int>
         {
             source_line(int value_)
-                :value(value_)
+                :m_value(value_)
             {}
 
-            int value;
+            int value() const noexcept
+            {
+                return m_value;
+            }
+
+            int m_value;
         };
         /**
          * @brief Stack backtrace attached to exception.
@@ -93,10 +108,15 @@ namespace mge {
         struct stack : public tag<stack, mge::stacktrace>
         {
             stack(mge::stacktrace&& s)
-                :value(std::move(s))
+                :m_value(std::move(s))
             {}
 
-            mge::stacktrace value;
+            const mge::stacktrace& value() const noexcept
+            {
+                return m_value;
+            }
+
+            mge::stacktrace m_value;
         };
 
         /**
@@ -107,10 +127,15 @@ namespace mge {
             template <typename ... Args>
             message(Args ... args)
             {
-                value = mge::format_string(args...);
+                m_value = mge::format_string(args...);
             }
 
-            std::string value;
+            const std::string& value() const noexcept
+            {
+                return m_value;
+            }
+
+            std::string m_value;
         };
 
         /**
@@ -150,13 +175,13 @@ namespace mge {
          * Overrides @c std::exception @c what function.
          * @return exception message
          */
-        const char *what() const;
+        const char *what() const override;
 
         template <typename Info>
         exception& operator <<(const Info& info)
         {
             m_infos[std::type_index(typeid(typename Info::tag_type))]
-                    = info.value;
+                    = info.value();
             return *this;
         }
 
@@ -174,6 +199,7 @@ namespace mge {
     private:
         typedef std::map<std::type_index, boost::any> exception_info_map_t;
         exception_info_map_t m_infos;
+    protected:
         mutable std::string m_message;
     };
 

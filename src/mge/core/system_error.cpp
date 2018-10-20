@@ -18,10 +18,39 @@ namespace mge {
     system_error::error::error()
     {
 #ifdef MGE_OS_WINDOWS
-        value = GetLastError();
+        m_error_value = GetLastError();
+
+        char *msgbuf;
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
+                      nullptr,
+                      (DWORD)m_error_value,
+                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      (LPTSTR)&msgbuf,
+                      0,
+                      nullptr);
+        std::stringstream ss;
+        ss << "(" << std::hex << m_error_value << std::dec << "): " << msgbuf;
+        LocalFree(msgbuf);
+        m_error_message = ss.str();
 #else
 #  error not implemented
 #endif
+    }
+
+    const char *
+    system_error::what() const
+    {
+        if (!m_message.empty()) {
+            return m_message.c_str();
+        }
+
+        auto err = get<mge::system_error::error>();
+        if(err) {
+            m_message = std::get<1>(err.value());
+            return m_message.c_str();
+        }
+
+        return mge::exception::what();
     }
 
     MGE_DEFINE_EXCEPTION(system_error)

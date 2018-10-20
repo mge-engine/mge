@@ -63,8 +63,7 @@ namespace mge {
         }
         HMODULE handle = LoadLibrary(name.c_str());
         if (!handle) {
-            MGE_THROW(system_error());
-            // system_error::error());
+            MGE_THROW(system_error()) << system_error::error();
         }
         std::shared_ptr<shared_library> library_ref
             = std::make_shared<shared_library_instantiate>(name, handle);
