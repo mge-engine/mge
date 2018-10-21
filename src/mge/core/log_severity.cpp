@@ -26,6 +26,9 @@ namespace mge {
         case log_severity::ALL:
             os << "ALL";
             break;
+        default:
+            os << "INVALID(" << (int)severity << ")";
+            break;
         }
         return os;
     }
