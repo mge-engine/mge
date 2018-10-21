@@ -8,6 +8,10 @@ allFiles={}
 currentFileCoverage = {}
 currentFile = ""
 filtered_coverage = open('coverage.info.filtered', 'w+')
+fullCoverage = False
+
+if "--full" in sys.argv:
+    fullCoverage = True
 
 excluded = []
 for e in sys.argv[2:]:
@@ -64,10 +68,12 @@ for f in allFiles:
         print("{0} is covered {2} of {3} ({1}%)".format(f, (covered * 100.0 / lines), covered, lines))
         totalCovered = totalCovered + covered
         totalLines = totalLines + lines
-        if not "test" in f and not "mock_" in f:
+        if not "test_" in f and not "mock_" in f:
             nonTestCovered = nonTestCovered + covered
             nonTestLines = nonTestLines + lines
 
-#print("=== NON TEST COVERAGE %d OF %d %0.2f%% ===" % (nonTestCovered, nonTestLines, nonTestCovered*100.0 / nonTestLines))
-#print("=== TOTAL COVERAGE %d OF %d %0.2f%% ===" % (totalCovered, totalLines, totalCovered*100.0 / totalLines))
-print("COVERAGE %0.2f%%" % (totalCovered*100.0 / totalLines))
+if fullCoverage:
+    print("=== NON TEST COVERAGE %d OF %d %0.2f%% ===" % (nonTestCovered, nonTestLines, nonTestCovered*100.0 / nonTestLines))
+    print("=== TOTAL COVERAGE %d OF %d %0.2f%% ===" % (totalCovered, totalLines, totalCovered*100.0 / totalLines))
+else:
+    print("COVERAGE %0.2f%%" % (totalCovered*100.0 / totalLines))
