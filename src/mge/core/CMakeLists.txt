@@ -30,6 +30,7 @@ SET(mgecore_sources
     task.cpp
     shared_library.cpp
     clock.cpp
+    module.cpp
 )
 
 ADD_LIBRARY(mgecore
