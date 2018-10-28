@@ -87,7 +87,7 @@ namespace mge {
         try {
             std::rethrow_exception(eptr);
         } catch(const mge::exception& e) {
-            MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;
+            MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << std::endl << e.details() << std::endl;
             throw;
         } catch(const std::exception& e) {
             MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;

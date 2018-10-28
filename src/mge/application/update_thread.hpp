@@ -7,6 +7,8 @@
 #include "mge/core/task_queue.hpp"
 #include "mge/core/singleton.hpp"
 namespace mge {
+    MGE_DECLARE_REF(update_thread);
+
     class MGE_APPLICATION_EXPORT update_thread
             : public mge::thread
     {
@@ -16,6 +18,7 @@ namespace mge {
         void run() override;
         static update_thread* instance();
     private:
+        void execute_work_item();
         task_queue m_tasks;
         static volatile update_thread *s_update_thread;
     };

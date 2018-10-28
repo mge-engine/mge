@@ -6,6 +6,7 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/format_string.hpp"
+#include "mge/core/type_name.hpp"
 
 #include <boost/any.hpp>
 #include <boost/optional.hpp>
@@ -22,6 +23,8 @@
  */
 namespace mge {
 
+    class exception;
+
     /**
      * @brief Base exception class.
      */
@@ -29,6 +32,22 @@ namespace mge {
             : virtual public std::exception
     {
     public:
+        /**
+         * @internal
+         * Helper class for detailed exception information.
+         */
+        struct exception_details
+        {
+        public:
+            exception_details(const mge::exception* ex) noexcept
+                :m_ex(ex)
+            {}
+            inline const mge::exception* ex() const noexcept { return m_ex; }
+        private:
+            const mge::exception *m_ex;
+        };
+
+
         /**
          * @brief Exception value tag type.
          *
@@ -138,6 +157,22 @@ namespace mge {
             std::string m_value;
         };
 
+        struct type_name : public tag<type_name, std::string>
+        {
+            type_name(const std::string& name)
+                :m_value(name)
+            {}
+
+            const std::string& value() const noexcept
+            {
+                return m_value;
+            }
+
+            std::string m_value;
+        };
+
+        struct cause;
+
         /**
          * Constructor.
          */
@@ -196,6 +231,10 @@ namespace mge {
             return result;
         }
 
+        exception_details details() const noexcept
+        {
+            return exception_details(this);
+        }
     private:
         typedef std::map<std::type_index, boost::any> exception_info_map_t;
         exception_info_map_t m_infos;
@@ -204,13 +243,43 @@ namespace mge {
     };
 
 
+    struct exception::cause : public tag<cause, mge::exception>
+    {
+        cause(const mge::exception& ex)
+            :m_value(ex)
+        {}
+
+        cause(mge::exception&& ex)
+            :m_value(std::move(ex))
+        {}
+
+        const mge::exception& value() const noexcept
+        {
+            return m_value;
+        }
+
+        mge::exception m_value;
+    };
+
+
 #define MGE_THROW(ex, ...)                                          \
     throw (ex) << mge::exception::source_file(__FILE__)             \
                << mge::exception::source_line(__LINE__)             \
                << mge::exception::function(MGE_FUNCTION_SIGNATURE)  \
                << mge::exception::stack(mge::stacktrace())          \
+               << mge::exception::type_name(mge::type_name<decltype(ex)>())   \
+               << mge::exception::message(__VA_ARGS__)
+
+#define MGE_THROW_WITH_CAUSE(ex, cause, ...)                        \
+    throw (ex) << mge::exception::source_file(__FILE__)             \
+               << mge::exception::source_line(__LINE__)             \
+               << mge::exception::function(MGE_FUNCTION_SIGNATURE)  \
+               << mge::exception::stack(mge::stacktrace())          \
+               << mge::exception::type_name(mge::type_name<decltype(ex)>())   \
+               << mge::exception::cause(cause)                       \
                << mge::exception::message(__VA_ARGS__)
 
 
-
+    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception& ex);
+    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception::exception_details& d);
 }
