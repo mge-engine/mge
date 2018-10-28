@@ -5,8 +5,10 @@
 #include "mge/core/log_formatter.hpp"
 #include "mge/core/configuration.hpp"
 #include <iostream>
+#include <mutex>
 
 namespace mge {
+
     class stdout_log_sink
             : public log_sink
     {
@@ -29,13 +31,16 @@ namespace mge {
             if(!m_formatter) {
                 return;
             }
-
-            if(m_formatter) {
-                m_formatter->format(std::cout, r);
+            {
+                std::lock_guard<decltype(m_output_lock)> guard(m_output_lock);
+                if(m_formatter) {
+                    m_formatter->format(std::cout, r);
+                }
             }
         }
     private:
         log_formatter_ref m_formatter;
+        std::mutex        m_output_lock;
     };
 #ifdef stdout
 #  undef stdout

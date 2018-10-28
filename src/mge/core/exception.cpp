@@ -53,4 +53,51 @@ namespace mge {
         return std::exception::what();
     }
 
+    std::ostream&
+    operator <<(std::ostream& os, const mge::exception& ex)
+    {
+        return os << ex.what();
+    }
+
+    std::ostream&
+    operator <<(std::ostream& os, const mge::exception::exception_details& d)
+    {
+        if(d.ex()) {
+            os << "Exception details:" << std::endl;
+            auto type = d.ex()->get<mge::exception::type_name>();
+            if(type) {
+                os << "Exception type: " << type.value() << std::endl;
+            } else {
+                os << "Exception type: unknown mge::exception" << std::endl;
+            }
+
+            auto file = d.ex()->get<mge::exception::source_file>();
+            auto line = d.ex()->get<mge::exception::source_line>();
+            if(file && line) {
+                os <<   "Exception location: " << file.value() << ":" << line.value() << std::endl;
+            }
+
+            auto function = d.ex()->get<mge::exception::function>();
+            if(function) {
+                os << "Exception raising function: " << function.value() << std::endl;
+            }
+
+            auto stack = d.ex()->get<mge::exception::stack>();
+            if(stack) {
+                os << "Exception stack: " << stack.value() << std::endl;
+            }
+
+            os << "Exception message: " << d.ex()->what() << std::endl;
+
+            auto cause = d.ex()->get<mge::exception::cause>();
+            if(cause) {
+                os << "Exception caused by: " << std::endl << cause.value().details();
+            }
+
+        } else {
+            os << "Invalid exception details" << std::endl;
+        }
+        return os;
+    }
+
 }

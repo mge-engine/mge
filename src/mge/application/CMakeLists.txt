@@ -13,3 +13,4 @@ ADD_LIBRARY(mgeapplication
 TARGET_ADD_DEFINE(mgeapplication BUILD_MGE_APPLICATION)
 TARGET_LINK_LIBRARIES(mgeapplication mgecore)
 
+ADD_SUBDIRECTORY(test)

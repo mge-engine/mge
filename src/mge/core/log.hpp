@@ -94,6 +94,18 @@ namespace mge {
     else                                                                        \
     mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::WARNING_SEVERITY)).stream()
 
+#define MGE_DEBUG_LOG(topic)                                                    \
+    if(!::log_instance_##topic().enabled(mge::log_severity::DEBUG_SEVERITY))      \
+    {}                                                                          \
+    else                                                                        \
+    mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::DEBUG_SEVERITY)).stream()
+
+#define MGE_INFO_LOG(topic)                                                    \
+    if(!::log_instance_##topic().enabled(mge::log_severity::INFO_SEVERITY))      \
+    {}                                                                          \
+    else                                                                        \
+    mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::INFO_SEVERITY)).stream()
+
 #define MGE_DEFINE_LOG(topic)                          \
     __declspec(dllexport)                              \
     mge::log&                                          \
