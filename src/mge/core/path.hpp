@@ -19,6 +19,8 @@ namespace mge {
         path(const path& p);
         path(const path& p, const char *f);
         path(const path& p, const std::string& f);
+        path(const std::initializer_list<const char *>& elements);
+
         path(path&& p);
         ~path();
 

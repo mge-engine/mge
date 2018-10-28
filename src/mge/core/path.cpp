@@ -19,6 +19,20 @@ namespace mge {
         normalize();
     }
 
+    path::path(const std::initializer_list<const char *>& elements)
+        :m_absolute(false)
+        ,m_cwd(false)
+    {
+        auto it = elements.begin();
+        construct(std::string(*it));
+        ++it;
+        while(it != elements.end()) {
+            operator /=(*it);
+            normalize();
+            ++it;
+        }
+    }
+
     void path::construct(const std::string& p)
     {
         boost::split(m_elements, p, boost::is_any_of("/\\"));
