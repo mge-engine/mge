@@ -127,7 +127,7 @@ namespace mge {
     }
 
     std::string
-    path::native_string() const
+    path::native() const
     {
         std::string str;
 #ifdef MGE_OS_WINDOWS

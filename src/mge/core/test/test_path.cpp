@@ -12,16 +12,16 @@ TEST(path, construct)
     EXPECT_EQ(std::string("c:/wurst/salat"), p.generic_string());
 }
 
-TEST(path, get_native_string)
+TEST(path, native)
 {
 #ifdef MGE_OS_WINDOWS
     path p("c:/wurst/salat");
-    EXPECT_EQ(std::string("c:\\wurst\\salat"), p.native_string());
+    EXPECT_EQ(std::string("c:\\wurst\\salat"), p.native());
 #else
     path p("brot/wurst");
-    EXPECT_EQ(std::string("brot/wurst"), p.native_string());
+    EXPECT_EQ(std::string("brot/wurst"), p.native());
     path p2("/usr/brot/wurst");
-    EXPECT_EQ(std::string("/usr/brot/wurst"), p2.native_string());
+    EXPECT_EQ(std::string("/usr/brot/wurst"), p2.native());
 #endif
 }
 

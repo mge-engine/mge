@@ -25,6 +25,8 @@ namespace mge {
         ~path();
 
         path& operator=(const path& p);
+
+
         path& operator /=(const char *path);
         path& operator /=(const std::string& path);
         path& operator /=(const path& path);
@@ -36,7 +38,7 @@ namespace mge {
         bool operator !=(const char *p) const;
         bool operator !=(const path& p) const;
 
-        std::string native_string() const;
+        std::string native() const;
         std::string generic_string() const;
         std::string extension() const;
         std::string file_name() const;
