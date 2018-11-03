@@ -32,6 +32,7 @@ SET(mgecore_sources
     clock.cpp
     module.cpp
     file_not_found.cpp
+    filesystem_error.cpp
 )
 
 ADD_LIBRARY(mgecore
