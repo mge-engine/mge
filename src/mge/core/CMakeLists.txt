@@ -34,6 +34,7 @@ SET(mgecore_sources
     file_not_found.cpp
     filesystem_error.cpp
     input_stream.cpp
+    file_access.cpp
 )
 
 ADD_LIBRARY(mgecore
