@@ -1,0 +1,61 @@
+#pragma once
+#include "mge/graphics/dllexport.hpp"
+#include <bitset>
+namespace mge {
+
+    class MGE_GRAPHICS_EXPORT window_options
+    {
+        enum option {
+            NONE = 0,
+            FULLSCREEN,
+            RESIZABLE,
+            MAXIMIZED,
+            MINIMIZED,
+            BORDER,
+            TITLE,
+            MAX = TITLE
+        };
+
+        window_options()
+        {}
+
+        template <typename ...Args>
+        explicit window_options(Args ... args)
+        {
+            window_options::option options[] =
+            { args...};
+            for(auto o: options) {
+                set_option(o);
+            }
+        }
+        window_options(const window_options& o)
+            :m_options(o.m_options)
+        {}
+
+        window_options(window_options&& o)
+            :m_options(std::move(o.m_options))
+        {}
+
+        inline window_options& operator =(const window_options& o)
+        {
+            m_options = o.m_options;
+            return *this;
+        }
+
+        inline window_options& operator =(window_options&& o)
+        {
+            m_options = std::move(o.m_options);
+            return *this;
+        }
+
+        ~window_options() = default;
+
+        window_options& set_option(option o, bool value=true);
+        bool option_set(option o) const;
+
+        static window_options standard_options();
+        static window_options fullscreen_options();
+    private:
+        std::bitset<(size_t)MAX> m_options;
+    };
+}

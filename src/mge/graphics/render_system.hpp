@@ -49,5 +49,6 @@ namespace mge {
          */
         virtual monitor_ref primary_monitor() const = 0;
 
+
     };
 }
