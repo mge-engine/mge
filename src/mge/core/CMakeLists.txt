@@ -31,6 +31,7 @@ SET(mgecore_sources
     shared_library.cpp
     clock.cpp
     module.cpp
+    file_not_found.cpp
 )
 
 ADD_LIBRARY(mgecore
