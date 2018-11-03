@@ -35,6 +35,12 @@ namespace mge {
                 p.second->publish(r);
             }
         }
+
+        uint8_t configured_severity(const char *topic)
+        {
+            return (uint8_t)log_severity::ALL;
+        }
+
     private:
         void store_default_config(configuration& config)
         {
@@ -47,7 +53,7 @@ namespace mge {
             config.set("sink.defaultfile.file", logfile_name);
             config.set("sink.console.formatter", "text");
             config.set("sink.console.class", "console");
-
+            config.set("level.ALL", "ALL");
             config.store();
         }
 
@@ -80,6 +86,7 @@ namespace mge {
             }
         }
 
+
         bool       m_configured;
         sink_map_t m_sinks;
     };
@@ -92,6 +99,7 @@ namespace mge {
         m_log_record.severity  = log_severity::NONE;
         m_log_record.thread_id = mge::this_thread::get_id();
         m_log_record.message = "";
+        m_severity_mask = s_log_sinks->configured_severity(topic);
     }
 
     log&
@@ -124,7 +132,7 @@ namespace mge {
     bool
     log::enabled(log_severity s)
     {
-        return true;
+        return (m_severity_mask & (uint8_t)s) != 0;
     }
 
 
