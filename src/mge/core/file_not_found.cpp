@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/file_not_found.hpp"
 #include "mge/core/stdexceptions.hpp"
 namespace mge {
