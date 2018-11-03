@@ -20,6 +20,8 @@ namespace mge {
 
         log_sink_manager()
             :m_configured(false)
+            ,m_global_level((uint8_t)log_severity::ALL)
+            ,m_config_version(0)
         {}
 
         void publish(const log_record& r)
@@ -36,9 +38,19 @@ namespace mge {
             }
         }
 
-        uint8_t configured_severity(const char *topic)
+        uint8_t configured_severity(const char *topic) const
         {
-            return (uint8_t)log_severity::ALL;
+            auto it = m_levels.find(topic);
+            if(it != m_levels.end()) {
+                return it->second | m_global_level;
+            } else {
+                return m_global_level;
+            }
+        }
+
+        uint32_t version() const
+        {
+            return m_config_version;
         }
 
     private:
@@ -80,6 +92,7 @@ namespace mge {
                     sinks[sink_name] = sink;
                 }
                 m_sinks = sinks;
+                ++m_config_version;
                 m_configured = true;
             } catch(const mge::exception&) {
                 // ignore failures in lookup
@@ -87,19 +100,25 @@ namespace mge {
         }
 
 
-        bool       m_configured;
-        sink_map_t m_sinks;
+        bool                           m_configured;
+        uint8_t                        m_global_level;
+        volatile uint32_t              m_config_version;
+        sink_map_t                     m_sinks;
+        std::map<std::string, uint8_t> m_levels;
     };
 
     static singleton<log_sink_manager> s_log_sinks;
 
     log::log(const char *topic)
+        :m_severity_mask(0)
+        ,m_config_version(0)
     {
         m_log_record.category  = topic;
         m_log_record.severity  = log_severity::NONE;
         m_log_record.thread_id = mge::this_thread::get_id();
         m_log_record.message = "";
         m_severity_mask = s_log_sinks->configured_severity(topic);
+        m_config_version = s_log_sinks->version();
     }
 
     log&
@@ -132,7 +151,13 @@ namespace mge {
     bool
     log::enabled(log_severity s)
     {
-        return (m_severity_mask & (uint8_t)s) != 0;
+        if(s_log_sinks->version() == m_config_version) {
+            return (m_severity_mask & (uint8_t)s) != 0;
+        } else {
+            m_severity_mask = s_log_sinks->configured_severity(m_log_record.category);
+            m_config_version = s_log_sinks->version();
+            return (m_severity_mask & (uint8_t)s) != 0;
+        }
     }
 
 

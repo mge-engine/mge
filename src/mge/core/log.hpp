@@ -67,6 +67,7 @@ namespace mge {
         log_record        m_log_record;
         std::stringstream m_message;
         uint8_t           m_severity_mask;
+        uint32_t          m_config_version;
     };
 
     inline
