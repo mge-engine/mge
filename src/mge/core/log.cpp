@@ -13,6 +13,15 @@ MGE_DEFINE_LOG(MGE)
 
 namespace mge {
 
+    static inline uint8_t severity_from_string(const std::string& value)
+    {
+        if(value == "ALL") {
+            return (uint8_t)log_severity::ALL;
+        } else {
+            return (uint8_t)log_severity::NONE;
+        }
+    }
+
     class log_sink_manager
     {
     public:
@@ -92,6 +101,12 @@ namespace mge {
                     sinks[sink_name] = sink;
                 }
                 m_sinks = sinks;
+                configuration level_config("log.level");
+                auto keys = level_config.keys();
+                for(const auto& k : keys) {
+                    m_levels[k] = severity_from_string(level_config.value(k));
+                }
+                m_global_level = m_levels["ALL"];
                 ++m_config_version;
                 m_configured = true;
             } catch(const mge::exception&) {
