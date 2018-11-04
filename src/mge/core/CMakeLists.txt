@@ -38,6 +38,7 @@ SET(mgecore_sources
     file_access_factory.cpp
     file.cpp
     io_error.cpp
+    system_file_access.cpp
 )
 
 ADD_LIBRARY(mgecore

@@ -51,4 +51,9 @@ namespace mge {
         mutable std::string m_message;
     };
 
+/**
+ * Throws the current system error.
+ */
+#define MGE_THROW_SYSTEM_ERROR MGE_THROW(mge::system_error() << mge::system_error::error())
+
 }
