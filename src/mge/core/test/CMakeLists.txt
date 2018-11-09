@@ -23,6 +23,7 @@ ADD_EXECUTABLE(coretest
   test_task.cpp
   test_task_queue.cpp
   test_clock.cpp
+  test_file.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)

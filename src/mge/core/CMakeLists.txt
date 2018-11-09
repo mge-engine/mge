@@ -32,6 +32,13 @@ SET(mgecore_sources
     clock.cpp
     module.cpp
     file_not_found.cpp
+    filesystem_error.cpp
+    input_stream.cpp
+    file_access.cpp
+    file_access_factory.cpp
+    file.cpp
+    io_error.cpp
+    system_file_access.cpp
 )
 
 ADD_LIBRARY(mgecore
@@ -39,7 +46,7 @@ ADD_LIBRARY(mgecore
             ${mgecore_sources})
 
 TARGET_ADD_DEFINE(mgecore BUILD_MGE_CORE)
-TARGET_LINK_LIBRARIES(mgecore boost sqlite3)
+TARGET_LINK_LIBRARIES(mgecore boost-all sqlite3)
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mgecore dbghelp)
