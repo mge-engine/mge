@@ -41,7 +41,7 @@ namespace mge {
         databasename.append(".db");
 
         p /= databasename;
-        std::string dbstring = p.native();
+        std::string dbstring = p.string();
 
         int open_rc = sqlite3_open(dbstring.c_str(), (sqlite3 **) &m_db);
 

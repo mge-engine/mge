@@ -24,7 +24,7 @@ namespace mge {
     std::string file_access::file_name() const
     {
         path p(m_path);
-        return p.file_name();
+        return p.filename().string();
     }
 
     void file_access::set_path(const std::string& path)
@@ -35,6 +35,6 @@ namespace mge {
     std::string file_access::file_extension() const
     {
         path p(m_path);
-        return p.extension();
+        return p.extension().string();
     }
 }

@@ -163,7 +163,7 @@ namespace mge {
 
     bool system_file_access::exists() const
     {
-        std::string file_name = m_system_path.native();
+        std::string file_name = m_system_path.string();
 #ifdef MGE_OS_WINDOWS
         DWORD attrs = GetFileAttributes(file_name.c_str());
         SetLastError(NO_ERROR);
@@ -178,7 +178,7 @@ namespace mge {
 
     bool system_file_access::is_file() const
     {
-        std::string file_name = m_system_path.native();
+        std::string file_name = m_system_path.string();
 #ifdef MGE_OS_WINDOWS
         DWORD attrs = GetFileAttributes(file_name.c_str());
         if(attrs == INVALID_FILE_ATTRIBUTES) {
@@ -196,7 +196,7 @@ namespace mge {
 
     bool system_file_access::is_directory() const
     {
-        std::string file_name = m_system_path.native();
+        std::string file_name = m_system_path.string();
 #ifdef MGE_OS_WINDOWS
         DWORD attrs = GetFileAttributes(file_name.c_str());
         if(attrs == INVALID_FILE_ATTRIBUTES) {
@@ -218,7 +218,7 @@ namespace mge {
 
     void system_file_access::mkdir()
     {
-        std::string file_name = m_system_path.native();
+        std::string file_name = m_system_path.string();
 #ifdef MGE_OS_WINDOWS
         BOOL rc = CreateDirectory(file_name.c_str(), NULL);
         if(!rc) {
@@ -256,7 +256,7 @@ namespace mge {
             MGE_THROW(mge::filesystem_error(),
                       "File '", file_path(), "' is not a directory");
         }
-        std::string file_name = m_system_path.native();
+        std::string file_name = m_system_path.string();
 #ifdef MGE_OS_WINDOWS
         BOOL rc = RemoveDirectory(file_name.c_str());
         if(!rc) {
@@ -287,13 +287,13 @@ namespace mge {
 
     input_stream_ref system_file_access::open_for_input() const
     {
-        std::string s = m_system_path.native();
+        std::string s = m_system_path.string();
         return ::std::make_shared<system_file_input_stream>(s);
     }
 
     void system_file_access::list(std::vector<file>& files)
     {
-        std::string pattern = m_system_path.native();
+        std::string pattern = m_system_path.string();
 #ifdef MGE_OS_WINDOWS
         pattern += "\\*";
         WIN32_FIND_DATA find_info;
@@ -303,7 +303,9 @@ namespace mge {
             do {
                 if(strcmp(find_info.cFileName, ".")!=0
                                 && strcmp(find_info.cFileName, "..")!=0) {
-                    path p(m_system_path, find_info.cFileName);
+                    std::string fname(find_info.cFileName);
+                    path p(m_system_path);
+                    p /= fname;
                     files.push_back(file(p.generic_string()));
                 }
             }while(FindNextFile(dir_handle, &find_info));

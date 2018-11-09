@@ -46,7 +46,7 @@ ADD_LIBRARY(mgecore
             ${mgecore_sources})
 
 TARGET_ADD_DEFINE(mgecore BUILD_MGE_CORE)
-TARGET_LINK_LIBRARIES(mgecore Boost::boost sqlite3)
+TARGET_LINK_LIBRARIES(mgecore boost-all sqlite3)
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mgecore dbghelp)
