@@ -4,37 +4,35 @@
 
 FIND_PACKAGE(Boost)
 IF(NOT "${Boost_FOUND}")
-    IF(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/external/boost/boost/src/boost")
-        MESSAGE("Need to download and install boost, not found on the system")
+    MESSAGE("-- Did not find boost in the system, look for previous build location")
+    IF(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/external/boost/boost/src/boost-stamp/boost-install")
+        MESSAGE("-- Need to download and install boost, not found on the system")
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/boost)
         SET(CMAKE_LIST_CONTENT "
-            CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-            INCLUDE(ExternalProject)
-            EXTERNALPROJECT_ADD(boost
+        CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
+        INCLUDE(ExternalProject)
+
+        EXTERNALPROJECT_ADD(boost
                             PREFIX boost
                             URL https://dl.bintray.com/boostorg/release/1.68.0/source/boost_1_68_0.zip
-                            CMAKE_ARGS -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-                            INSTALL_COMMAND \"\"
-            )
-            EXTERNALPROJECT_ADD_STEP(boost boost_copy_cmake_file
-                                     COMMAND \"${CMAKE_COMMAND}\" -E copy ${PROJECT_SOURCE_DIR}/cmake/external/boost/CMakeLists.txt ${CMAKE_CURRENT_BINARY_DIR}/external/boost/boost/src/boost/CMakeLists.txt
-                                     DEPENDEES patch
-                                     DEPENDERS configure
-            )
+                            URL_HASH SHA256=3b1db0b67079266c40b98329d85916e910bbadfc3db3e860c049056788d4d5cd
+                            BUILD_IN_SOURCE TRUE
+                            CONFIGURE_COMMAND \"bootstrap.bat\"
+                            BUILD_COMMAND \"\"
+                            INSTALL_COMMAND \"b2\"  \"--prefix=\${PROJECT_SOURCE_DIR}\\\\boost\\\\install\" \"--layout=system\" \"--without-python\" \"toolset=msvc\" \"variant=release\" \"link=shared\" \"threading=multi\" \"runtime-link=shared\" \"address-model=64\" \"install\"
+        )
         ")
         FILE(WRITE ${CMAKE_BINARY_DIR}/external/boost/CMakeLists.txt "${CMAKE_LIST_CONTENT}")
         EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" . -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
                         WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/boost
         )
         EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
-                        WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/boost
+                         WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/boost
         )
     ENDIF()
-    ADD_LIBRARY(boost INTERFACE)
-    SET_PROPERTY(TARGET boost
-                 APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_BINARY_DIR}/external/boost/boost/src/boost")
-ELSE()
-    ADD_LIBRARY(boost INTERFACE)
-    SET_PROPERTY(TARGET boost
-                 APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${boost_INCLUDE_DIRS}")
+    SET(BOOST_ROOT "${CMAKE_CURRENT_BINARY_DIR}/external/boost/boost/install")
+    FIND_PACKAGE(Boost)
+    IF(NOT "${Boost_FOUND}")
+        MESSAGE(FATAL "Boost could not be found and internal build process failed")
+    ENDIF()
 ENDIF()
