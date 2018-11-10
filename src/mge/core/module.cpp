@@ -4,6 +4,7 @@
 #include "mge/core/module.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/path.hpp"
+#include "mge/core/file.hpp"
 
 #include <vector>
 
@@ -14,8 +15,8 @@ namespace mge {
     public:
         module_registry()
         {
-            m_load_paths.emplace_back(path("."));
-            m_load_paths.emplace_back(path({".", "modules"}));
+            m_load_paths.emplace_back(file(path(".")));
+            m_load_paths.emplace_back(file(path({".", "modules"})));
 
             m_module_prefixes.emplace_back("mge_module");
             m_module_prefixes.emplace_back("libmge_module");
@@ -29,7 +30,7 @@ namespace mge {
         }
 
     private:
-        std::vector<path> m_load_paths;
+        std::vector<file> m_load_paths;
         std::vector<std::string> m_module_prefixes;
     };
 
