@@ -25,7 +25,6 @@ SET(mgecore_sources
     configuration.cpp
     configuration_database.cpp
     configurable.cpp
-    path.cpp
     async_executor.cpp
     task.cpp
     shared_library.cpp
