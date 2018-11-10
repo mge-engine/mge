@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/config.hpp"
 #include "mge/core/file_access_factory.hpp"
 #include "mge/core/file_access.hpp"

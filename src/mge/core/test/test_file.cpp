@@ -1,6 +1,6 @@
-/*
- * Copyright (c) 2017 by Alexander Schroeder
- */
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "test/googlemock.hpp"
 #include "mock_file_access.hpp"
 #include <memory>
