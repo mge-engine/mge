@@ -35,4 +35,13 @@ namespace mge {
         std::string ss_str(ss.str());
         EXPECT_STREQ(ss_str.c_str(), expected);
     }
+
+    template <typename E>
+    void test_stream_any_output(E e)
+    {
+        std::stringstream ss;
+        ss << e;
+        std::string ss_str(ss.str());
+        EXPECT_FALSE(ss_str.empty());
+    }
 }

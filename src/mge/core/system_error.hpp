@@ -15,7 +15,7 @@ namespace mge {
     class MGE_CORE_EXPORT system_error : public exception
     {
     public:
-        struct error : exception::tag<error, std::tuple<uint32_t, std::string> >
+        struct MGE_CORE_EXPORT error : exception::tag<error, std::tuple<uint32_t, std::string> >
         {
             error();
             error(const boost::system::error_code& ec);
