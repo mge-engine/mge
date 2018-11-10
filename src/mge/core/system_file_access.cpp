@@ -12,17 +12,12 @@
 #include "mge/core/file_not_found.hpp"
 #include "mge/core/filesystem_error.hpp"
 
+#include "boost/filesystem.hpp"
+
 #include <iostream>
 #include <cstdio>
 #include <cstring>
 
-#ifndef MGE_OS_WINDOWS
-#  include <sys/stat.h>
-#  include <unistd.h>
-#  include <dirent.h>
-#else
-#  include <windows.h>
-#endif
 
 namespace mge {
     class system_file_input_stream : public input_stream
@@ -163,52 +158,20 @@ namespace mge {
 
     bool system_file_access::exists() const
     {
-        std::string file_name = m_system_path.string();
-#ifdef MGE_OS_WINDOWS
-        DWORD attrs = GetFileAttributes(file_name.c_str());
-        SetLastError(NO_ERROR);
-        return attrs != INVALID_FILE_ATTRIBUTES;
-#else
-        struct stat stat_info;
-        int rc = ::stat(file_name.c_str(), &stat_info);
-        errno = 0;
-        return rc == 0;
-#endif
+        boost::system::error_code ec;
+        return boost::filesystem::exists(m_system_path, ec);
     }
 
     bool system_file_access::is_file() const
     {
-        std::string file_name = m_system_path.string();
-#ifdef MGE_OS_WINDOWS
-        DWORD attrs = GetFileAttributes(file_name.c_str());
-        if(attrs == INVALID_FILE_ATTRIBUTES) {
-            return false;
-        } else {
-            return (attrs & FILE_ATTRIBUTE_DIRECTORY) == 0;
-        }
-#else
-        struct stat stat_info;
-        int rc = ::stat(file_name.c_str(), &stat_info);
-        return rc == 0 && ((stat_info.st_mode & S_IFDIR) == 0);
-#endif
-
+        boost::system::error_code ec;
+        return boost::filesystem::is_regular_file(m_system_path, ec);
     }
 
     bool system_file_access::is_directory() const
     {
-        std::string file_name = m_system_path.string();
-#ifdef MGE_OS_WINDOWS
-        DWORD attrs = GetFileAttributes(file_name.c_str());
-        if(attrs == INVALID_FILE_ATTRIBUTES) {
-            return false;
-        } else {
-            return (attrs & FILE_ATTRIBUTE_DIRECTORY) != 0;
-        }
-#else
-        struct stat stat_info;
-        int rc = ::stat(file_name.c_str(), &stat_info);
-        return rc == 0 && ((stat_info.st_mode & S_IFDIR) != 0);
-#endif
+        boost::system::error_code ec;
+        return boost::filesystem::is_directory(m_system_path, ec);
     }
 
     bool system_file_access::is_system_file() const
@@ -218,12 +181,10 @@ namespace mge {
 
     void system_file_access::mkdir()
     {
-        std::string file_name = m_system_path.string();
-#ifdef MGE_OS_WINDOWS
-        BOOL rc = CreateDirectory(file_name.c_str(), NULL);
-        if(!rc) {
+        boost::system::error_code ec;
+        if(!boost::filesystem::create_directory(m_system_path, ec)) {
             try {
-                MGE_THROW_SYSTEM_ERROR;
+                MGE_THROW_SYSTEM_ERROR(ec);
             } catch(const exception& e) {
                 MGE_THROW(mge::filesystem_error(),
                           "Cannot create directory  '",
@@ -232,22 +193,6 @@ namespace mge {
                           e.what()) << mge::exception::cause(e);
             }
         }
-#else
-        int rc = ::mkdir(file_name.c_str(),
-                         S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
-        if (rc == -1) {
-            try {
-                MGE_THROW_SYSTEM_ERROR;
-            } catch(const exception& e) {
-                MGE_THROW(mge::filesystem_error(),
-                          "Cannot create directory  '",
-                          file_path(),
-                          "': ",
-                          e.what()) << mge::exception::cause(e);
-            }
-        }
-#endif
-        return;
     }
 
     void system_file_access::rmdir()
@@ -256,12 +201,11 @@ namespace mge {
             MGE_THROW(mge::filesystem_error(),
                       "File '", file_path(), "' is not a directory");
         }
-        std::string file_name = m_system_path.string();
-#ifdef MGE_OS_WINDOWS
-        BOOL rc = RemoveDirectory(file_name.c_str());
-        if(!rc) {
+
+        boost::system::error_code ec;
+        if(!boost::filesystem::remove(m_system_path, ec)) {
             try {
-                MGE_THROW_SYSTEM_ERROR;
+                MGE_THROW_SYSTEM_ERROR(ec);
             } catch(const exception& e) {
                 MGE_THROW(mge::filesystem_error(),
                           "Cannot remove directory  '",
@@ -270,19 +214,7 @@ namespace mge {
                           e.what()) << mge::exception::cause(e);
             }
         }
-#else
-        int rc = ::rmdir(file_name.c_str());
-        if (rc != 0) {
-            try {
-                MGE_THROW_SYSTEMERROR;
-            } catch(const exception& e) {
-                throw MGE_EXCEPTION(filesystem_error)
-                << "Cannot remove directory '"
-                << get_path() << "': "
-                << e.message();
-            }
-        }
-#endif
+
     }
 
     input_stream_ref system_file_access::open_for_input() const
@@ -293,40 +225,11 @@ namespace mge {
 
     void system_file_access::list(std::vector<file>& files)
     {
-        std::string pattern = m_system_path.string();
-#ifdef MGE_OS_WINDOWS
-        pattern += "\\*";
-        WIN32_FIND_DATA find_info;
-        HANDLE dir_handle = FindFirstFile(pattern.c_str(),
-                        &find_info);
-        if(dir_handle != INVALID_HANDLE_VALUE) {
-            do {
-                if(strcmp(find_info.cFileName, ".")!=0
-                                && strcmp(find_info.cFileName, "..")!=0) {
-                    std::string fname(find_info.cFileName);
-                    path p(m_system_path);
-                    p /= fname;
-                    files.push_back(file(p.generic_string()));
-                }
-            }while(FindNextFile(dir_handle, &find_info));
-            FindClose(dir_handle);
-            SetLastError(NO_ERROR);
+        for(boost::filesystem::directory_iterator it(m_system_path);
+            it != boost::filesystem::directory_iterator();
+            ++it) {
+            files.push_back(file(it->path().generic_string()));
         }
-#else
-        DIR *dir = opendir(pattern.c_str());
-
-        if (dir != NULL) {
-            struct dirent *dp;
-            while ((dp = readdir(dir)) != nullptr) {
-                if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..")
-                                != 0) {
-                    path p(m_system_path, dp->d_name);
-                    files.push_back(file(p.get_generic_string()));
-                }
-            }
-            closedir(dir);
-        }
-#endif
     }
 
     class system_file_access_factory : public file_access_factory
