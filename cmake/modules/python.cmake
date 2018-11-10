@@ -11,7 +11,7 @@ ENDIF()
 IF(PYTHONINTERP_FOUND)
     MESSAGE(STATUS "Python interpreter version ${PYTHON_VERSION_STRING} found")
 ELSE()
-    MESSAGE(FATAL_ERROR "A python interpreter is needed to compile moge")
+    MESSAGE(FATAL_ERROR "A python interpreter is needed to compile mge")
 ENDIF()
 
 IF(PYTHONLIBS_FOUND)
