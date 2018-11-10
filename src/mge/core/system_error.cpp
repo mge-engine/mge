@@ -38,6 +38,13 @@ namespace mge {
 #endif
     }
 
+    system_error::error::error(const boost::system::error_code& ec)
+    {
+        std::stringstream ss;
+        ss << "(" << std::hex << ec.value() << "): " << ec.message();
+        m_error_message = ss.str();
+    }
+
     const char *
     system_error::what() const
     {
