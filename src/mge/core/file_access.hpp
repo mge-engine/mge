@@ -5,11 +5,10 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/file_not_found.hpp"
 #include "mge/core/filesystem_error.hpp"
-#include "mge/core/types.hpp"
+#include "mge/core/path.hpp"
 #include "mge/core/types.hpp"
 #include "mge/core/exception.hpp"
 #include "mge/core/input_stream.hpp"
-#include "mge/core/dllexport.hpp"
 
 #include <string>
 #include <vector>
@@ -37,7 +36,7 @@ namespace mge {
         /**
          * Destructor.
          */
-        virtual ~file_access();
+        virtual ~file_access() = default;
 
         /**
          * Return whether a file exists.
@@ -83,19 +82,7 @@ namespace mge {
          * Get the path handled by this access object.
          * @return path
          */
-        const std::string& file_path() const;
-
-        /**
-         * Return file name extension.
-         * @return extension, may be empty
-         */
-        std::string file_extension() const;
-
-        /**
-         * Return file name (without directory part).
-         * @return file name
-         */
-        std::string file_name() const;
+        const mge::path& path() const;
 
         /**
          * Opens the file for input.
@@ -105,15 +92,8 @@ namespace mge {
 
     protected:
         /// Constructor to be used if path cannot be determined.
-        file_access();
-
-        /**
-         * Set path.
-         * @param path path
-         */
-        void set_path(const std::string& path);
-
-    private:
-        std::string m_path;
+        file_access() = default;
+    protected:
+        mge::path m_path;
     };
 }

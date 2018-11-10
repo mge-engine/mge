@@ -29,16 +29,16 @@ namespace mge {
     shared_library::~shared_library()
     {}
 
-    const std::string& shared_library::suffix()
+    const std::string& shared_library::extension()
     {
 #ifdef MGE_OS_WINDOWS
-        static std::string result("dll");
+        static std::string result(".dll");
         return result;
 #elif defined(MGE_OS_MACOSX)
-        static std::string result("dylib");
+        static std::string result(".dylib");
         return result;
 #elif defined(MGE_OS_LINUX)
-        static std::string result("so");
+        static std::string result(".so");
         return result;
 #endif
     }

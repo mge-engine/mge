@@ -21,7 +21,11 @@ namespace mge {
         void *symbol(const std::string& name);
         void *symbol(const char *name);
 
-        static const std::string& suffix();
+        /**
+         * Get file extension of shared library file.
+         * @return extension used for shared library
+         */
+        static const std::string& extension();
     protected:
         shared_library(const std::string& name, void *handle);
     private:

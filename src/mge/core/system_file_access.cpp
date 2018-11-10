@@ -126,7 +126,7 @@ namespace mge {
         system_file_access(const std::string& path);
         system_file_access(const std::string& path,
                            const std::string& name);
-        virtual ~system_file_access();
+        virtual ~system_file_access() = default;
 
         virtual bool exists() const;
         virtual bool is_file() const;
@@ -138,43 +138,37 @@ namespace mge {
         virtual void list(std::vector<file>& files);
 
         virtual input_stream_ref open_for_input() const;
-    private:
-        path m_system_path;
     };
 
     system_file_access::system_file_access(const std::string& path)
-                    : file_access(path), m_system_path(path)
+                    : file_access(path)
     {
     }
 
     system_file_access::system_file_access(const std::string& path,
                                            const std::string& name)
-                    : file_access(), m_system_path(path)
+                    : file_access()
     {
-        m_system_path /= name;
-        set_path(m_system_path.generic_string());
+        m_path /= name;
     }
 
-    system_file_access::~system_file_access()
-    {
-    }
 
     bool system_file_access::exists() const
     {
         boost::system::error_code ec;
-        return boost::filesystem::exists(m_system_path, ec);
+        return boost::filesystem::exists(m_path, ec);
     }
 
     bool system_file_access::is_file() const
     {
         boost::system::error_code ec;
-        return boost::filesystem::is_regular_file(m_system_path, ec);
+        return boost::filesystem::is_regular_file(m_path, ec);
     }
 
     bool system_file_access::is_directory() const
     {
         boost::system::error_code ec;
-        return boost::filesystem::is_directory(m_system_path, ec);
+        return boost::filesystem::is_directory(m_path, ec);
     }
 
     bool system_file_access::is_system_file() const
@@ -185,13 +179,13 @@ namespace mge {
     void system_file_access::mkdir()
     {
         boost::system::error_code ec;
-        if(!boost::filesystem::create_directory(m_system_path, ec)) {
+        if(!boost::filesystem::create_directory(m_path, ec)) {
             try {
                 MGE_THROW_SYSTEM_ERROR(ec);
             } catch(const exception& e) {
                 MGE_THROW(mge::filesystem_error(),
                           "Cannot create directory  '",
-                          file_path(),
+                          path(),
                           "': ",
                           e.what()) << mge::exception::cause(e);
             }
@@ -202,17 +196,17 @@ namespace mge {
     {
         if (!is_directory()) {
             MGE_THROW(mge::filesystem_error(),
-                      "File '", file_path(), "' is not a directory");
+                      "File '", path(), "' is not a directory");
         }
 
         boost::system::error_code ec;
-        if(!boost::filesystem::remove(m_system_path, ec)) {
+        if(!boost::filesystem::remove(m_path, ec)) {
             try {
                 MGE_THROW_SYSTEM_ERROR(ec);
             } catch(const exception& e) {
                 MGE_THROW(mge::filesystem_error(),
                           "Cannot remove directory  '",
-                          file_path(),
+                          path(),
                           "': ",
                           e.what()) << mge::exception::cause(e);
             }
@@ -222,13 +216,13 @@ namespace mge {
 
     input_stream_ref system_file_access::open_for_input() const
     {
-        std::string s = m_system_path.string();
+        std::string s = m_path.string();
         return ::std::make_shared<system_file_input_stream>(s);
     }
 
     void system_file_access::list(std::vector<file>& files)
     {
-        for(boost::filesystem::directory_iterator it(m_system_path);
+        for(boost::filesystem::directory_iterator it(m_path);
             it != boost::filesystem::directory_iterator();
             ++it) {
             files.push_back(file(it->path().generic_string()));

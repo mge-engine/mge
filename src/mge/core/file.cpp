@@ -62,7 +62,7 @@ namespace mge {
         m_access = s_file_access_provider->create_file_access(path);
     }
 
-    file::file(const path &path)
+    file::file(const mge::path &path)
     {
         m_access = s_file_access_provider->create_file_access(path.generic_string());
     }
@@ -102,9 +102,11 @@ namespace mge {
         m_access->rmdir();
     }
 
-    void file::list(std::vector<file>& files)
+    std::vector<file> file::list() const
     {
+        std::vector<file> files;
         m_access->list(files);
+        return files;
     }
 
     input_stream_ref file::open_for_input() const
@@ -112,24 +114,14 @@ namespace mge {
         return m_access->open_for_input();
     }
 
-    std::string file::file_extension() const
+    const path& file::path() const
     {
-        return m_access->file_extension();
-    }
-
-    std::string file::file_path() const
-    {
-        return m_access->file_path();
-    }
-
-    std::string file::file_name() const
-    {
-        return m_access->file_name();
+        return m_access->path();
     }
 
     std::ostream&
     operator <<(std::ostream& os, const file& f)
     {
-        return os << f.file_path();
+        return os << f.path();
     }
 }

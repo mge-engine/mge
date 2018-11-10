@@ -50,22 +50,10 @@ namespace mge {
         file(const std::string& path, const std::string& name);
 
         /**
-         * Get the extension of the file.
-         * @return extension string, may be empty if file has no extension
+         * Get file path.
+         * @return file path
          */
-        std::string file_extension() const;
-
-        /**
-         * Get path of file.
-         * @return path
-         */
-        std::string file_path() const;
-
-        /**
-         * Get file name (without directory).
-         * @return file name
-         */
-        std::string file_name() const;
+        const path& path() const;
 
         /**
          * Check if file exists.
@@ -106,7 +94,7 @@ namespace mge {
          * List contents of directory.
          * @param files files filled
          */
-        void list(std::vector<file>& files);
+        std::vector<file> list() const;
 
         /**
          * Opens file for input.

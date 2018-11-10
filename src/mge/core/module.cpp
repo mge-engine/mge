@@ -5,8 +5,12 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/path.hpp"
 #include "mge/core/file.hpp"
+#include "mge/core/log.hpp"
 
 #include <vector>
+#include <boost/algorithm/string.hpp>
+
+MGE_USE_LOG(MGE);
 
 namespace mge {
 
@@ -26,10 +30,33 @@ namespace mge {
 
         void load_all()
         {
-
+            for(const auto& p : m_load_paths) {
+                auto elements = p.list();
+                for(const auto& f : elements) {
+                    if(is_module_file(f)) {
+                        load_module(f);
+                    }
+                }
+            }
+        }
+    private:
+        bool is_module_file(const file& f) const
+        {
+            for(const auto& prefix : m_module_prefixes) {
+                if(boost::starts_with(f.path().filename().generic_string(), prefix)) {
+                    if(f.path().extension().generic_string() == shared_library::extension()) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
-    private:
+        void load_module(const file& module_file)
+        {
+            MGE_DEBUG_LOG(MGE) << "Loading module: " << module_file;
+            MGE_DEBUG_LOG(MGE) << "Module " << module_file << " loaded";
+        }
         std::vector<file> m_load_paths;
         std::vector<std::string> m_module_prefixes;
     };
