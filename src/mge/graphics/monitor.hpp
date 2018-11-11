@@ -67,6 +67,12 @@ namespace mge {
          * @param mode video mode
          */
         virtual void set_video_mode(const video_mode& mode) = 0;
+
+        /**
+         * Get current video mode.
+         * @return current video mode
+         */
+        virtual video_mode current_video_mode() const = 0;
     protected:
         monitor(const std::string& name,
                 bool primary);

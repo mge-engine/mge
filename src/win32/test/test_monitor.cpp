@@ -45,3 +45,11 @@ TEST(monitor, video_modes)
         EXPECT_TRUE(modes.size() >= 1);
     }
 }
+
+TEST(monitor, current_mode)
+{
+    auto m = win32::monitor::primary_monitor();
+    auto mode = m->current_video_mode();
+    EXPECT_LT(640, mode.width);
+    EXPECT_LT(480, mode.height);
+}

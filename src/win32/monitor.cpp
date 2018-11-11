@@ -133,11 +133,37 @@ namespace win32 {
         return result;
     }
 
+    mge::video_mode
+    monitor::current_video_mode() const
+    {
+        DEVMODEW dm;
+        mge::zero_memory(dm);
+        dm.dmSize = sizeof(DEVMODEW);
+        if(!EnumDisplaySettingsW(m_adapter_device.DeviceName,
+                                 ENUM_CURRENT_SETTINGS,
+                                 &dm))  {
+            MGE_THROW(mge::system_error(),
+                      "EnumDisplaySettingsW call for device ",
+                      mge::to_utf8(m_adapter_device.DeviceName),
+                      " failed");
+        }
+        mge::video_mode mode;
+        mode.width = dm.dmPelsWidth;
+        mode.height = dm.dmPelsHeight;
+        mode.refresh_rate = dm.dmDisplayFrequency;
+        return mode;
+    }
+
 
     mge::monitor_ref
     monitor::primary_monitor()
     {
-        mge::monitor_ref result;
-        return result;
+        auto monitors = all_monitors();
+        for(const auto& m: monitors) {
+            if(m->primary()) {
+                return m;
+            }
+        }
+        return mge::monitor_ref();
     }
 }
