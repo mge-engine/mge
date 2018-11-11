@@ -170,7 +170,7 @@ namespace mge {
 
 #define MGE_REGISTER_IMPLEMENTATION(clazz, component, ...)       \
     ::mge::implementation_registry_entry<component, clazz>       \
-    __mge_implementation_registry_entry_##clazz##_##component =  \
+    __mge_implementation_registry_entry_##clazz               =  \
     ::mge::implementation_registry_entry<component, clazz>       \
     (MGE_STRINGIFY(__VA_ARGS__))
 }
