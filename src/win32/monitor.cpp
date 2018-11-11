@@ -1,9 +1,14 @@
 #include "win32/monitor.hpp"
 #include "mge/core/to_utf8.hpp"
 #include "mge/core/copy_struct.hpp"
+#include "mge/core/zero_memory.hpp"
 #include "mge/core/system_error.hpp"
+#include "mge/core/log.hpp"
+
+MGE_USE_LOG(WIN32);
 
 namespace win32 {
+
 
     monitor::monitor(const DISPLAY_DEVICEW &adapter_device,
                      const DISPLAY_DEVICEW &device,
@@ -45,7 +50,42 @@ namespace win32 {
     monitor::all_monitors()
     {
         monitor_collection_t result;
+
+        DISPLAY_DEVICEW adapter_device;
+        for(DWORD adapter_index=0; ;++adapter_index) {
+            mge::zero_memory(adapter_device);
+            adapter_device.cb = sizeof(adapter_device);
+            if(!EnumDisplayDevicesW(nullptr, adapter_index, &adapter_device, 0)) {
+                break;
+            }
+            MGE_DEBUG_LOG(WIN32) << "Found adapter: " << mge::to_utf8(adapter_device.DeviceName)
+                                 << " - " << mge::to_utf8(adapter_device.DeviceString);
+            DISPLAY_DEVICEW display_device;
+            for (DWORD display_index=0; ;++display_index) {
+                mge::zero_memory(display_device);
+                display_device.cb = sizeof(display_device);
+                if(!EnumDisplayDevicesW(adapter_device.DeviceName, display_index, &display_device, 0)) {
+                    break;
+                }
+                result.emplace_back(std::make_shared<monitor>(adapter_device,
+                                                              display_device,
+                                                              result.empty()));
+            }
+        }
         return result;
+    }
+
+    mge::monitor::video_mode_collection_t
+    monitor::video_modes() const
+    {
+        mge::monitor::video_mode_collection_t result;
+        return result;
+    }
+
+    void
+    monitor::set_video_mode(const mge::video_mode& mode)
+    {
+        return;
     }
 
     mge::gamma_ramp

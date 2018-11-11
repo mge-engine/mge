@@ -14,8 +14,9 @@ namespace win32 {
         unsigned int physical_width() const override;
         unsigned int physical_height() const override;
         mge::gamma_ramp gamma_ramp() const override;
-        //void video_modes(std::vector<moge::video_mode>& modes);
-         //       void set_video_mode(const moge::video_mode& mode);
+
+        mge::monitor::video_mode_collection_t video_modes() const override;
+        void set_video_mode(const mge::video_mode& mode) override;
 
         typedef mge::render_system::monitor_collection_t monitor_collection_t;
         static monitor_collection_t all_monitors();

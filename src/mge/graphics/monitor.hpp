@@ -23,6 +23,8 @@ namespace mge {
          */
         monitor();
     public:
+        typedef std::vector<video_mode> video_mode_collection_t;
+
         /**
          * Destructor.
          */
@@ -56,9 +58,9 @@ namespace mge {
 
         /**
          * Supported video modes.
-         * @param modes vector filled with supported video modes
+         * @return vector filled with supported video modes
          */
-        virtual void video_modes(std::vector<video_mode>& modes) = 0;
+        virtual video_mode_collection_t video_modes() const = 0;
 
         /**
          * Sets a video mode.
