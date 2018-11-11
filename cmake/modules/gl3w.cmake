@@ -17,12 +17,7 @@ IF(OpenGL_FOUND)
                                 GIT_TAG 4f1d558410b0938840dc3db98e741d71f382ba22
                                 INSTALL_COMMAND \"\"
                                 BUILD_IN_SOURCE TRUE
-                                BUILD_BYPRODUCTS \"gl3w/src/gl3w/src/gl3w.c\"
             )
-            ADD_LIBRARY(gl3w
-                         gl3w/src/gl3w/src/gl3w.c)
-            TARGET_INCLUDE_DIRECTORIES(gl3w
-                                        PUBLIC gl3w/src/gl3w/include)
         ")
         FILE(WRITE ${CMAKE_BINARY_DIR}/external/gl3w/CMakeLists.txt "${CMAKE_LIST_CONTENT}")
         EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" . -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
@@ -33,15 +28,8 @@ IF(OpenGL_FOUND)
         )
         SET(GL3W_FOUND "TRUE" CACHE INTERNAL "GL3W_FOUND")
     ENDIF()
-    IF(MSVC)
-        SET(GL3W_LIBRARY "${CMAKE_BINARY_DIR}/external/gl3w/gl3w.lib")
-    ELSE()
-        SET(GL3W_LIBRARY "${CMAKE_BINARY_DIR}/external/gl3w/libgl3w.a")
-    ENDIF()
-    SET(GL3W_INCLUDE_DIR "${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/include")
-    ADD_LIBRARY(gl3w UNKNOWN IMPORTED)
-    SET_PROPERTY(TARGET gl3w
-                 PROPERTY IMPORTED_LOCATION "${GL3W_LIBRARY}")
-    SET_PROPERTY(TARGET gl3w
-                 APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${GL3W_INCLUDE_DIR}")
+    ADD_LIBRARY(gl3w STATIC
+        ${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/src/gl3w.c)
+    TARGET_INCLUDE_DIRECTORIES(gl3w PUBLIC
+        "${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/include")
 ENDIF()
