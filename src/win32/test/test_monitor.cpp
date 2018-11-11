@@ -22,12 +22,11 @@ TEST(monitor, all_monitors_contains_primary)
     }
     EXPECT_TRUE(primary_found) << "Primary monitor not found";
 }
-#if 0
+
 TEST(monitor, gamma_ramp)
 {
     mge::gamma_ramp ramp;
-    std::vector<mge::monitor_ref> ms;
-    win32::monitor::all_monitors(ms);
+    auto ms = win32::monitor::all_monitors();
     for(const auto& m : ms) {
         if(m->primary()) {
             ramp = m->gamma_ramp();
@@ -36,17 +35,13 @@ TEST(monitor, gamma_ramp)
     }
     EXPECT_TRUE(ramp.size() >= 256);
 }
-#endif
 
-#if 0
 TEST(monitor, video_modes)
 {
     auto ms = win32::monitor::all_monitors();
     ASSERT_FALSE(ms.empty());
     for(const auto& m : ms) {
-        std::vector<mge::video_mode> modes;
-        m->video_modes(modes);
+        auto modes = m->video_modes();
         EXPECT_TRUE(modes.size() >= 1);
     }
 }
-#endif

@@ -79,6 +79,21 @@ namespace win32 {
     monitor::video_modes() const
     {
         mge::monitor::video_mode_collection_t result;
+        for(DWORD i=0;;++i) {
+            DEVMODEW dm;
+            mge::zero_memory(dm);
+            dm.dmSize = sizeof(DEVMODEW);
+            if(!EnumDisplaySettingsW(m_adapter_device.DeviceName,
+                                     i,
+                                     &dm)) {
+                break;
+            }
+            mge::video_mode mode;
+            mode.width = dm.dmPelsWidth;
+            mode.height = dm.dmPelsHeight;
+            mode.refresh_rate = dm.dmDisplayFrequency;
+            result.emplace_back(mode);
+        }
         return result;
     }
 
