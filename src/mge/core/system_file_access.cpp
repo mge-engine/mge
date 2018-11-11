@@ -123,9 +123,10 @@ namespace mge {
     class system_file_access : public file_access
     {
     public:
-        system_file_access(const std::string& path);
-        system_file_access(const std::string& path,
-                           const std::string& name);
+        system_file_access(const mge::path& p)
+            :file_access(p)
+        {}
+
         virtual ~system_file_access() = default;
 
         virtual bool exists() const;
@@ -139,19 +140,6 @@ namespace mge {
 
         virtual input_stream_ref open_for_input() const;
     };
-
-    system_file_access::system_file_access(const std::string& path)
-                    : file_access(path)
-    {
-    }
-
-    system_file_access::system_file_access(const std::string& path,
-                                           const std::string& name)
-                    : file_access()
-    {
-        m_path /= name;
-    }
-
 
     bool system_file_access::exists() const
     {
@@ -222,10 +210,11 @@ namespace mge {
 
     void system_file_access::list(std::vector<file>& files)
     {
-        for(boost::filesystem::directory_iterator it(m_path);
-            it != boost::filesystem::directory_iterator();
-            ++it) {
-            files.push_back(file(it->path().generic_string()));
+        files.clear();
+        if(exists() && is_directory()) {
+            for(auto& p : boost::filesystem::directory_iterator(m_path)) {
+                files.push_back(file(p.path()));
+            }
         }
     }
 
@@ -234,9 +223,7 @@ namespace mge {
     public:
         system_file_access_factory() = default;
         virtual ~system_file_access_factory() = default;
-        file_access_ref create_file_access(const std::string& path) override;
-        file_access_ref create_file_access(const std::string& path,
-                                           const std::string& filename) override;
+        file_access_ref create_file_access(const mge::path& p) override;
     };
 
     MGE_REGISTER_IMPLEMENTATION(system_file_access_factory,
@@ -244,17 +231,9 @@ namespace mge {
                                 system, default, file);
 
     file_access_ref system_file_access_factory::create_file_access(
-        const std::string& path)
+        const mge::path& p)
     {
-        auto result = std::make_shared<system_file_access>(path);
-        return result;
-    }
-
-    file_access_ref system_file_access_factory::create_file_access(
-        const std::string& path, const std::string& filename)
-    {
-        auto result = std::make_shared<system_file_access>(
-            path, filename);
+        auto result = std::make_shared<system_file_access>(p);
         return result;
     }
 }

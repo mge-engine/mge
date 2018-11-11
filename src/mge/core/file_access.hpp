@@ -31,7 +31,7 @@ namespace mge {
          * Constructor.
          * @param path path of handled file
          */
-        file_access(const std::string& path);
+        file_access(const mge::path& path);
 
         /**
          * Destructor.

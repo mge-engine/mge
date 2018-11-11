@@ -20,7 +20,7 @@ namespace mge {
         module_registry()
         {
             m_load_paths.emplace_back(file(path(".")));
-            m_load_paths.emplace_back(file(path({".", "modules"})));
+            m_load_paths.emplace_back(file(path("./modules")));
 
             m_module_prefixes.emplace_back("mge_module");
             m_module_prefixes.emplace_back("libmge_module");
@@ -31,6 +31,7 @@ namespace mge {
         void load_all()
         {
             for(const auto& p : m_load_paths) {
+                MGE_DEBUG_LOG(MGE) << "Scanning module load path: " << p ;
                 auto elements = p.list();
                 for(const auto& f : elements) {
                     if(is_module_file(f)) {

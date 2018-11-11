@@ -23,19 +23,19 @@ namespace mge {
          * Create file.
          * @param path
          */
-        file(const char *path);
+        file(const char *p);
 
         /**
          * Create file.
          * @param path
          */
-        file(const std::string& path);
+        file(const std::string& p);
 
         /**
          * Create file from path.
          * @param path path
          */
-        file(const path& path);
+        file(const path& p);
 
         /**
          * Destructor.
@@ -47,7 +47,7 @@ namespace mge {
          * @param path file path
          * @param name file name
          */
-        file(const std::string& path, const std::string& name);
+        file(const std::string& p, const std::string& name);
 
         /**
          * Get file path.

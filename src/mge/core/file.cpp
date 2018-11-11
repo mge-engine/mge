@@ -5,6 +5,7 @@
 #include "mge/core/file_access_factory.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/path.hpp"
 
 namespace mge {
     class file_access_provider
@@ -13,7 +14,7 @@ namespace mge {
         file_access_provider() = default;
         ~file_access_provider() = default;
 
-        file_access_ref create_file_access(const std::string& path)
+        file_access_ref create_file_access(const mge::path& path)
         {
             if (!m_system_factory) {
                 m_system_factory = file_access_factory::create("system");
@@ -27,49 +28,36 @@ namespace mge {
             return result;
         }
 
-        file_access_ref create_file_access(const std::string& path,
-                                           const std::string& name)
-        {
-            if (!m_system_factory) {
-                m_system_factory = file_access_factory::create("system");
-                if (!m_system_factory) {
-                    MGE_THROW(illegal_state(),
-                              "System file access factory not initialized");
-                }
-            }
-
-            return m_system_factory->create_file_access(path,
-                                                        name);
-        }
-
         file_access_factory_ref m_system_factory;
     };
 
     static singleton<file_access_provider> s_file_access_provider;
 
     file::file(const file_access_ref& access)
-                    : m_access(access)
+        : m_access(access)
     {
     }
 
-    file::file(const char *path)
+    file::file(const char *p)
     {
-        m_access = s_file_access_provider->create_file_access(std::string(path));
+        m_access = s_file_access_provider->create_file_access(mge::path(p));
     }
 
-    file::file(const std::string& path)
+    file::file(const std::string& p)
     {
-        m_access = s_file_access_provider->create_file_access(path);
+        m_access = s_file_access_provider->create_file_access(mge::path(p));
     }
 
-    file::file(const mge::path &path)
+    file::file(const mge::path &p)
     {
-        m_access = s_file_access_provider->create_file_access(path.generic_string());
+        m_access = s_file_access_provider->create_file_access(p);
     }
 
-    file::file(const std::string& path, const std::string& name)
+    file::file(const std::string& p, const std::string& name)
     {
-        m_access = s_file_access_provider->create_file_access(path, name);
+        mge::path filepath(p);
+        filepath /= name;
+        m_access = s_file_access_provider->create_file_access(filepath);
     }
 
     bool file::exists() const
