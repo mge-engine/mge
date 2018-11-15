@@ -37,17 +37,11 @@ IF(NOT "${Boost_FOUND}")
     ENDIF()
 ENDIF()
 
-ADD_CUSTOM_TARGET(copy-boost-libs)
 FILE(GLOB all_boost_dlls "${Boost_LIBRARY_DIR_RELEASE}/*.dll")
 FOREACH(boost_dll ${all_boost_dlls})
-    GET_FILENAME_COMPONENT(boost_dll_name ${boost_dll} NAME)
-    ADD_CUSTOM_TARGET("${boost_dll_name}-copy")
-    ADD_CUSTOM_COMMAND(TARGET "${boost_dll_name}-copy" PRE_BUILD
-                       COMMAND ${CMAKE_COMMAND} -E copy ${boost_dll} ${CMAKE_BINARY_DIR})
-    ADD_DEPENDENCIES(copy-boost-libs "${boost_dll_name}-copy")
+    FILE(COPY ${boost_dll} DESTINATION ${CMAKE_BINARY_DIR})
 ENDFOREACH()
 ADD_LIBRARY(boost-all INTERFACE IMPORTED GLOBAL)
 SET_PROPERTY(TARGET boost-all
               PROPERTY INTERFACE_LINK_LIBRARIES Boost::boost Boost::disable_autolinking Boost::dynamic_linking Boost::filesystem)
-ADD_DEPENDENCIES(boost-all copy-boost-libs)
 
