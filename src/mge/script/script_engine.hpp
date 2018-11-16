@@ -20,6 +20,12 @@ namespace mge {
          * Constructor.
          */
         script_engine() = default;
+
+        /**
+         * Create a new script context, inheriting global definitions.
+         * @return new context
+         */
+        virtual script_context_ref create_context() = 0;
     public:
         /**
          * Destructor.
