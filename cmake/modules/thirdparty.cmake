@@ -12,5 +12,5 @@ INCLUDE(gl3w)
 INCLUDE(doxygen)
 INCLUDE(latex)
 INCLUDE(coverage)
-
+INCLUDE(lua)
 INCLUDE(googlebench)
