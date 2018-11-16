@@ -5,7 +5,7 @@
 IF(NOT "${Googlebenchmark_FOUND}")
     FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/googlebenchmark)
     SET(CMAKE_LIST_CONTENT "
-        CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+        CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
         INCLUDE(ExternalProject)
         EXTERNALPROJECT_ADD(googlebenchmark
                         PREFIX googlebenchmark
