@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 ADD_EXECUTABLE(win32test
   ${CMAKE_SOURCE_DIR}/src/test/test_simple_main.cpp
   test_monitor.cpp

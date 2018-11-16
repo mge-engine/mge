@@ -8,7 +8,7 @@ import copy
 dry_run = False
 
 def write_file(filename, lines):
-    print "updating %s" % filename
+    print("updating %s" % filename)
     if dry_run:
         return
     f = open(filename, "w")
@@ -129,7 +129,7 @@ if len(args) == 0:
     args.append('.')
 
 for rootdir in args:
-    print "processing file/directory %s" % (rootdir)
+    print("processing file/directory %s" % (rootdir))
     for root, dirs, files in os.walk(rootdir):
         path = root.split(os.sep)
         for f in files:

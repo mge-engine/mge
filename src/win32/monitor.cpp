@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "win32/monitor.hpp"
 #include "mge/core/to_utf8.hpp"
 #include "mge/core/copy_struct.hpp"

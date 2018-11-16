@@ -1,6 +1,6 @@
-/*
- * Copyright (c) 2017 by Alexander Schroeder
- */
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "test/googletest.hpp"
 #include "win32/monitor.hpp"
 #include "mge/graphics/monitor.hpp"

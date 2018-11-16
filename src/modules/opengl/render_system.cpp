@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "opengl.hpp"
 #include "mge/graphics/render_system.hpp"
 #ifdef MGE_OS_WINDOWS
