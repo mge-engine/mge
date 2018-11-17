@@ -186,8 +186,9 @@ namespace mge {
             mge::exception::operator << (info);
             return *this;
         }
-
     };
+
+
 
 }
 
