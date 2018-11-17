@@ -7,5 +7,6 @@
 namespace mge {
     namespace reflection {
         MGE_DECLARE_REF(module);
+        MGE_DECLARE_REF(type);
     }
 }

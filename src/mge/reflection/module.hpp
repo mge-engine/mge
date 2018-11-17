@@ -5,6 +5,7 @@
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/types.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
+#include "mge/reflection/visitor.hpp"
 #include "mge/core/type_name.hpp"
 #include <string>
 #include <map>
@@ -69,10 +70,29 @@ namespace mge {
                 }
             }
 
+            template <typename T>
+            type_ref type() const
+            {
+                auto it =  m_types.find(base_type_name<T>());
+                if(it != m_types.end()) {
+                    return it->second;
+                } else {
+                    return type_ref();
+                }
+            }
+
+            /**
+             * Set type ref in module.
+             * @param tr type ref
+             */
+            void type(const type_ref& tr);
+
             /**
              * @brief The global module representing the global name space.
              */
             static module& global_module();
+
+            void apply(visitor& v);
         private:
             void set_parent(const module_ref& parent);
 
@@ -81,6 +101,7 @@ namespace mge {
             std::string m_module_name;
             module_ref m_parent;
             std::map<std::string, module_ref> m_modules;
+            std::map<std::string, type_ref> m_types;
         };
     }
 }

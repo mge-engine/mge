@@ -5,7 +5,8 @@
 ADD_LIBRARY(mgereflection
             SHARED
             module.cpp
-            type.cpp)
+            type.cpp
+            visitor.cpp)
 
 
 TARGET_ADD_DEFINE(mgereflection BUILD_MGE_REFLECTION)

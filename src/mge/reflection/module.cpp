@@ -3,6 +3,7 @@
 // All rights reserved.
 
 #include "mge/reflection/module.hpp"
+#include "mge/reflection/type.hpp"
 #include "mge/core/stdexceptions.hpp"
 
 #include <boost/algorithm/string.hpp>
@@ -63,6 +64,25 @@ namespace mge {
         module::set_parent(const module_ref& parent)
         {
             m_parent = parent;
+        }
+
+        void
+        module::type(const type_ref& tr)
+        {
+            m_types[tr->name()] = tr;
+        }
+
+        void
+        module::apply(visitor& v)
+        {
+            v.start(*this);
+            for(const auto& m: m_modules) {
+                m.second->apply(v);
+            }
+            for(const auto& t: m_types) {
+                t.second->apply(v);
+            }
+            v.finish(*this);
         }
     }
 }

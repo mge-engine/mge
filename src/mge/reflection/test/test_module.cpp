@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "test/googletest.hpp"
 #include "mge/reflection/module.hpp"
-#include "boost/algorithm/string.hpp"
+
 TEST(module, global_module)
 {
     auto& m = mge::reflection::module::global_module();
