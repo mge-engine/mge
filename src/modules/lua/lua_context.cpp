@@ -139,7 +139,25 @@ namespace lua {
     std::string
     lua_context::string_value(const char *name)
     {
-        return "";
+        if(name == nullptr) {
+            MGE_THROW(mge::illegal_argument(),
+                      "Variable name must not be null");
+        } else {
+            int ty = lua_getglobal(m_lua_state, name);
+            if(ty == LUA_TNUMBER || ty == LUA_TSTRING || ty == LUA_TBOOLEAN) {
+                size_t len = 0;
+                const char *str = lua_tolstring(m_lua_state, 1, &len);
+                std::string result(str, str+len);
+                lua_pop(m_lua_state, 1);
+                return result;
+            } else {
+                lua_pop(m_lua_state, 1);
+                MGE_THROW(mge::bad_cast(),
+                          "Cannot convert value of type ",
+                          lua_typename(m_lua_state, ty),
+                          " to string");
+            }
+        }
     }
 
     bool
