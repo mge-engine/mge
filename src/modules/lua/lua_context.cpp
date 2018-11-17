@@ -163,7 +163,16 @@ namespace lua {
     bool
     lua_context::bool_value(const char *name)
     {
-        return false;
+        if(name == nullptr) {
+            MGE_THROW(mge::illegal_argument(),
+                      "Variable name must not be null");
+        } else {
+            lua_getglobal(m_lua_state, name);
+            int val = lua_toboolean(m_lua_state, 1);
+            lua_pop(m_lua_state, 1);
+            return val != 0;
+        }
+
     }
 
     float
