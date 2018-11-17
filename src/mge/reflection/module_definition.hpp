@@ -33,12 +33,6 @@ namespace mge {
             ~module_definition();
 
             /**
-             * @brief Get module identifier.
-             * @return identifier
-             */
-            identifier id() const;
-
-            /**
              * Module definition name.
              * @return name
              */
@@ -52,8 +46,6 @@ namespace mge {
             static module_definition& get(const char *name);
         private:
             std::string m_name;
-            identifier  m_id;
-            static sequence<identifier> s_sequence;
         };
     }
 }

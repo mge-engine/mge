@@ -4,8 +4,8 @@
 
 ADD_LIBRARY(mgereflection
             SHARED
-            module.cpp
-            module_definition.cpp)
+            module.cpp)
+
 
 TARGET_ADD_DEFINE(mgereflection BUILD_MGE_REFLECTION)
 TARGET_LINK_LIBRARIES(mgereflection mgecore)

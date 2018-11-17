@@ -6,6 +6,6 @@
 
 namespace mge {
     namespace reflection {
-        class module;
+        MGE_DECLARE_REF(module);
     }
 }

@@ -7,39 +7,11 @@
 
 namespace mge {
     namespace reflection {
-
-        template <typename T> class type_wrapper;
-
-        class MGE_REFLECTION_EXPORT class type
+        class MGE_REFLECTION_EXPORT type
         {
         public:
-            template <typename T>
-            static type_wrapper<T> get();
-        private:
-            identifier m_type_id;
+            static template <typename T>
+            type<T> get();
         };
-
-
-
-        template <typename T>
-        class type_wrapper
-        {
-        public:
-            typedef T wrapped_type;
-        private:
-            type m_type;
-        }
-    }
 }
-
-namespace mge {
-    namespace reflection {
-
-        template <typename T>
-        type_wrapper<T> type::get()
-        {
-
-        }
-
-    }
 }
