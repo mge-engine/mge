@@ -56,16 +56,14 @@ namespace mge {
 /**
  * Throws the current system error.
  */
-#define MGE_THROW_CURRENT_SYSTEM_ERROR      \
-    MGE_THROW(mge::system_error()           \
-        << mge::system_error::error())
+#define MGE_THROW_CURRENT_SYSTEM_ERROR    \
+    MGE_THROW(mge::system_error()) << mge::system_error::error()
 
 /**
  * Throws a system error that has been reported before.
  * @param error_code error code retrieved already before
  */
-#define MGE_THROW_SYSTEM_ERROR(error_code)          \
-    MGE_THROW(mge::system_error()                   \
-        << mge::system_error::error(error_code))
+#define MGE_THROW_SYSTEM_ERROR(error_code)     \
+    MGE_THROW(mge::system_error()) << mge::system_error::error(error_code)
 
 }
