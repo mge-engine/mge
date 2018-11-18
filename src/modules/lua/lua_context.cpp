@@ -1,4 +1,5 @@
 #include "lua_context.hpp"
+#include "lua_error.hpp"
 #include "mge/reflection/module.hpp"
 #include "mge/core/stdexceptions.hpp"
 
@@ -27,13 +28,38 @@ namespace lua {
         }
     }
 
+    class lua_context_binder : public mge::reflection::visitor
+    {
+    public:
+        lua_context_binder(lua_context *context)
+            :m_context(context)
+        {}
+
+        virtual ~lua_context_binder() = default;
+    private:
+        lua_context *m_context;
+    };
+
     void
-    lua_context::bind(mge::reflection::module m)
-    {}
+    lua_context::bind(const mge::reflection::module& m)
+    {
+        lua_context_binder binder(this);
+        m.apply(binder);
+    }
 
     void
     lua_context::eval(const char *script)
-    {}
+    {
+        if(!script) {
+            MGE_THROW(mge::illegal_argument(), "Script must not be null");
+        }
+        size_t script_len = strlen(script);
+        int rc = luaL_loadbuffer(m_lua_state, script, script_len, "");
+        CHECK_STATUS(rc, m_lua_state);
+        rc = lua_pcall(m_lua_state, 0, 0, 0);
+        CHECK_STATUS(rc, m_lua_state);
+
+    }
 
     template <typename I>
     static I global_variable(lua_State *L, const char *name, const char *type)

@@ -42,7 +42,7 @@ namespace mge {
          * scripting language, as far as the language supports those.
          * @param module module imported
          */
-        virtual void bind(reflection::module module) = 0;
+        virtual void bind(const reflection::module& module) = 0;
 
         /**
          * Evaluates a script.

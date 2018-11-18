@@ -12,7 +12,7 @@ namespace mge {
         {}
 
         void
-        type::apply(visitor& v)
+        type::apply(visitor& v) const
         {
             v.start(*this);
             if(m_is_enum) {

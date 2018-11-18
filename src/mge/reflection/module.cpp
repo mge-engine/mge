@@ -73,7 +73,7 @@ namespace mge {
         }
 
         void
-        module::apply(visitor& v)
+        module::apply(visitor& v) const
         {
             v.start(*this);
             for(const auto& m: m_modules) {

@@ -3,19 +3,19 @@
 namespace mge {
     namespace reflection {
         void
-        visitor::start(module &m)
+        visitor::start(const module &m)
         {}
 
         void
-        visitor::finish(module &m)
+        visitor::finish(const module &m)
         {}
 
         void
-        visitor::start(type &t)
+        visitor::start(const type &t)
         {}
 
         void
-        visitor::finish(type& t)
+        visitor::finish(const type& t)
         {}
 
         void

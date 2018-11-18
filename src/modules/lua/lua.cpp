@@ -9,7 +9,7 @@ namespace lua {
         virtual  ~lua_engine() = default;
         mge::script_context_ref create_context()
         {
-            mge::script_context_ref result;
+            mge::script_context_ref result = std::make_shared<lua_context>();
             return result;
         }
     };

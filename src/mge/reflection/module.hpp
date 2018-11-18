@@ -92,7 +92,7 @@ namespace mge {
              */
             static module& global_module();
 
-            void apply(visitor& v);
+            void apply(visitor& v) const;
         private:
             void set_parent(const module_ref& parent);
 

@@ -67,7 +67,7 @@ namespace mge {
                 return m_name;
             }
 
-            void apply(visitor& v);
+            void apply(visitor& v) const;
         private:
             template <typename T>
             static type_ref create()
