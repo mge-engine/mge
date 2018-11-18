@@ -5,7 +5,7 @@
 #include "mge/reflection/module.hpp"
 #include "mge/reflection/type.hpp"
 #include "mge/core/stdexceptions.hpp"
-
+#include "mge/reflection/bind_types.hpp"
 #include <boost/algorithm/string.hpp>
 
 #include <iostream>
@@ -14,17 +14,27 @@ namespace mge {
     namespace reflection {
 
         module::module()
-        {}
+        {
+        }
 
         module::module(const std::string& name)
             :m_module_name(name)
         {}
 
         static module_ref s_global_module = std::make_shared<module>();
+        static std::once_flag s_global_module_init;
+
+        static void init_global_module()
+        {
+            bind_builtin();
+            bind_std();
+            bind_core();
+        }
 
         module&
         module::global_module()
         {
+            std::call_once(s_global_module_init, init_global_module);
             return *s_global_module;
         }
 
@@ -32,7 +42,9 @@ namespace mge {
         module::get(const std::string& n)
         {
             if(n.empty()) {
-                return global_module();
+                // do not call 'global_module' as we may just
+                // bind the global known types
+                return *s_global_module;
             } else {
                 auto it = boost::make_split_iterator(n, boost::first_finder("::"));
                 decltype(it) end;

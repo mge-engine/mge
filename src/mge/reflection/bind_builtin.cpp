@@ -15,7 +15,6 @@ namespace mge {
             type::get<int32_t>();
             type::get<uint32_t>();
 
-
             type::get<int64_t>();
             type::get<uint64_t>();
 
@@ -24,9 +23,6 @@ namespace mge {
             type::get<float>();
             type::get<double>();
             type::get<long double>();
-
-            type::get<const char *>();
-            type::get<char *>();
         }
     }
 }

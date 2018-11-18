@@ -6,7 +6,11 @@ ADD_LIBRARY(mgereflection
             SHARED
             module.cpp
             type.cpp
-            visitor.cpp)
+            visitor.cpp
+
+            bind_builtin.cpp
+            bind_std.cpp
+            bind_core.cpp)
 
 
 TARGET_ADD_DEFINE(mgereflection BUILD_MGE_REFLECTION)
