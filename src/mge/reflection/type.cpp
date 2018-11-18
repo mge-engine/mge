@@ -5,10 +5,12 @@ namespace mge {
 
         type::type(const std::string& name,
                    std::type_index index,
-                   bool is_enum)
+                   bool is_enum,
+                   bool is_pod)
             :m_name(name)
             ,m_type_index(index)
             ,m_is_enum(is_enum)
+            ,m_is_pod(is_pod)
         {}
 
         void

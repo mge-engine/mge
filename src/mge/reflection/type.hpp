@@ -39,7 +39,8 @@ namespace mge {
 
             type(const std::string& name,
                  std::type_index index,
-                 bool is_enum);
+                 bool is_enum,
+                 bool is_pod);
             ~type() = default;
 
             template <typename T>
@@ -75,13 +76,15 @@ namespace mge {
                 auto t = std::make_shared<type>
                     (base_type_name<T>(),
                      std::type_index(typeid(T)),
-                     boost::is_enum<T>::value);
+                     boost::is_enum<T>::value,
+                     boost::is_pod<T>::value);
                 return t;
             }
 
             std::string m_name;
             std::type_index m_type_index;
             bool m_is_enum;
+            bool m_is_pod;
             std::map<std::string, int64_t> m_enum_values;
         };
 

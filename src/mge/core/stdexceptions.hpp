@@ -188,6 +188,29 @@ namespace mge {
         }
     };
 
+    /**
+     * @brief Not implemented exception.
+     *
+     * Raised if a code path is hit that has not been implemented.
+     */
+    class MGE_CORE_EXPORT not_yet_implemented : public ::mge::exception
+    {
+    public:
+        not_yet_implemented();
+        not_yet_implemented(const not_yet_implemented& e);
+        not_yet_implemented(not_yet_implemented&& e);
+        ~not_yet_implemented();
+
+        not_yet_implemented& operator=(const not_yet_implemented& e);
+
+        template <typename Info>
+        not_yet_implemented& operator <<(const Info& info)
+        {
+            mge::exception::operator << (info);
+            return *this;
+        }
+
+    };
 
 
 }
