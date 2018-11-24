@@ -4,6 +4,8 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/window_options.hpp"
+#include "mge/graphics/rectangle.hpp"
 namespace mge {
 
 
@@ -21,9 +23,13 @@ namespace mge {
             : public std::enable_shared_from_this<window>
     {
     protected:
-        window();
+        window(const rectangle& dimension,
+               const window_options& options);
     public:
-        ~window();
+        virtual ~window();
+    protected:
+        rectangle      m_rect;
+        window_options m_options;
     };
 
 }

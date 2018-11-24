@@ -8,6 +8,7 @@ namespace mge {
 
     class MGE_GRAPHICS_EXPORT window_options
     {
+    public:
         enum option {
             NONE = 0,
             FULLSCREEN,

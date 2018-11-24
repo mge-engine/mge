@@ -9,6 +9,7 @@ ADD_LIBRARY(mgegraphics
     rectangle.cpp
     gamma_ramp.cpp
     monitor.cpp
+    window.cpp
     window_options.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
