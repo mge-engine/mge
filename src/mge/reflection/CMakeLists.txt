@@ -7,6 +7,7 @@ ADD_LIBRARY(mgereflection
             module.cpp
             type.cpp
             visitor.cpp
+            signature.cpp
 
             bind_builtin.cpp
             bind_std.cpp

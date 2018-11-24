@@ -48,7 +48,7 @@ namespace mge {
             } else {
                 auto it = boost::make_split_iterator(n, boost::first_finder("::"));
                 decltype(it) end;
-                auto m = global_module().get_or_add(std::string(it->begin(), it->end()));
+                auto m = s_global_module->get_or_add(std::string(it->begin(), it->end()));
                 ++it;
                 while(it != end) {
                     m = m->get_or_add(std::string(it->begin(), it->end()));

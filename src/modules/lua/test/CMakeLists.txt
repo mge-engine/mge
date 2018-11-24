@@ -6,4 +6,4 @@ ADD_EXECUTABLE(luatest
     lua_test.cpp
     test_context.cpp)
 TARGET_LINK_LIBRARIES(luatest mgescript mgereflection mgecore gmock)
-#TARGET_IS_TEST(luatest)
+TARGET_IS_TEST(luatest)
