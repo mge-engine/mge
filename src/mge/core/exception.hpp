@@ -261,7 +261,11 @@ namespace mge {
         mge::exception m_value;
     };
 
-
+/** 
+ * Throw exception instance.
+ * @param ex exception instance
+ * @param ... additional exception parameters
+ */
 #define MGE_THROW(ex, ...)                                          \
     throw (ex) << mge::exception::source_file(__FILE__)             \
                << mge::exception::source_line(__LINE__)             \
