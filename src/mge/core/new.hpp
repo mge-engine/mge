@@ -48,32 +48,32 @@ inline void* operator new[]( std::size_t count )
     return mge::operator_new_array(count);
 }
 
-inline void* operator new  ( std::size_t count, const std::nothrow_t& tag)
+inline void* operator new  ( std::size_t count, const std::nothrow_t& tag) noexcept
 {
     return mge::operator_new_noexcept(count);
 }
 
-inline void* operator new[]( std::size_t count, const std::nothrow_t& tag)
+inline void* operator new[]( std::size_t count, const std::nothrow_t& tag) noexcept
 {
     return mge::operator_new_array_noexcept(count);
 }
 
-inline void operator delete  ( void* ptr )
+inline void operator delete  ( void* ptr ) throw()
 {
     mge::operator_delete(ptr);
 }
 
-inline void operator delete[]( void* ptr )
+inline void operator delete[]( void* ptr ) throw()
 {
     mge::operator_delete_array(ptr);
 }
 
-inline void operator delete  ( void* ptr, const std::nothrow_t& tag )
+inline void operator delete  ( void* ptr, const std::nothrow_t& tag ) noexcept
 {
     mge::operator_delete_noexcept(ptr);
 }
 
-inline void operator delete[]( void* ptr, const std::nothrow_t& tag )
+inline void operator delete[]( void* ptr, const std::nothrow_t& tag ) noexcept
 {
     mge::operator_delete_array_noexcept(ptr);
 }
