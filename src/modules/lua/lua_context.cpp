@@ -82,13 +82,13 @@ namespace lua {
             lua_settable(m_lua_state, -3);
         }
 
-        void start(const mge::reflection::type& t) override
+        void start(const mge::reflection::type_definition& t) override
         {
             lua_pushstring(m_lua_state, t.name().c_str());
             lua_newtable(m_lua_state);
         }
 
-        void finish(const mge::reflection::type& t) override
+        void finish(const mge::reflection::type_definition& t) override
         {
             lua_settable(m_lua_state, -3);
         }

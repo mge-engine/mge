@@ -7,7 +7,7 @@
 namespace mge {
     namespace reflection {
         MGE_DECLARE_REF(module);
-        MGE_DECLARE_REF(type);
+        MGE_DECLARE_REF(type_definition);
         MGE_DECLARE_REF(constructor);
         MGE_DECLARE_REF(destructor);
         MGE_DECLARE_REF(function);

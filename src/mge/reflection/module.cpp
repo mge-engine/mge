@@ -79,7 +79,7 @@ namespace mge {
         }
 
         void
-        module::type(const type_ref& tr)
+        module::type(const type_definition_ref& tr)
         {
             m_types[tr->name()] = tr;
         }

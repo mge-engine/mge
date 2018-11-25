@@ -10,5 +10,12 @@ namespace mge {
             ,m_size(size)
         {}
 
+        void
+        type_definition::apply(visitor& v) const
+        {
+            v.start(*this);
+            v.finish(*this);
+        }
+
     }
 }

@@ -11,11 +11,11 @@ namespace mge {
         {}
 
         void
-        visitor::start(const type &t)
+        visitor::start(const type_definition &t)
         {}
 
         void
-        visitor::finish(const type& t)
+        visitor::finish(const type_definition& t)
         {}
 
         void

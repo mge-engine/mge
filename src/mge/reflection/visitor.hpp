@@ -14,8 +14,8 @@ namespace mge {
 
             virtual void start(const module& m);
             virtual void finish(const module& m);
-            virtual void start(const type& t);
-            virtual void finish(const type& t);
+            virtual void start(const type_definition& t);
+            virtual void finish(const type_definition& t);
             virtual void enum_value(const std::string& name,
                                     int64_t value);
         };

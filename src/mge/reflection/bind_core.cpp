@@ -6,7 +6,9 @@ namespace mge {
     namespace reflection {
         void bind_core()
         {
-            type::get<mge::configuration>();
+            type<mge::configuration> t_configuration;
+
+#if 0
 
             type::get<mge::log_severity>()
                 .enum_value("NONE", log_severity::NONE)
@@ -15,6 +17,7 @@ namespace mge {
                 .enum_value("INFO_SEVERITY", log_severity::INFO_SEVERITY)
                 .enum_value("DEBUG_SEVERITY", log_severity::DEBUG_SEVERITY)
                 .enum_value("ALL", log_severity::ALL);
+#endif
         }
     }
 }

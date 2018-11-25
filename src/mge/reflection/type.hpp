@@ -3,14 +3,12 @@
 // All rights reserved.
 #pragma once
 #include "mge/reflection/dllexport.hpp"
-#include "mge/reflection/types.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/module.hpp"
-#include "mge/reflection/visitor.hpp"
 #include "mge/core/stdexceptions.hpp"
-
 #include "mge/reflection/signature.hpp"
-
+#include "mge/reflection/type_definition.hpp"
+#include "mge/reflection/detail.hpp"
 #include <string>
 #include <map>
 #include <typeindex>
@@ -22,8 +20,29 @@
 namespace mge {
     namespace reflection {
 
+        template <typename T>
+        class type
+        {
+        public:
+            type()
+            {
+                module& m = module::get<T>();
+                m_definition = m.type<T>();
+                if(!m_definition) {
+                    m_definition = std::make_shared<type_definition>
+                        (base_type_name<T>(),
+                         std::type_index(typeid(T)),
+                         detail::size_of_type<T>());
+                    m.type(m_definition);
+                }
+            }
 
-
+            const std::string name() const { return m_definition->name(); }
+            size_t size() const { return m_definition->size(); }
+        private:
+            type_definition_ref m_definition;
+        };
+#if 0
         /**
          * A type.
          */
@@ -32,7 +51,7 @@ namespace mge {
         public:
             template <typename T> static type& get()
             {
-                module& m = module::get<T>();
+
                 type_ref t = m.type<T>();
                 if(!t) {
                     t = create<T>();
@@ -106,6 +125,7 @@ namespace mge {
             bool m_is_pod;
             std::map<std::string, int64_t> m_enum_values;
         };
+#endif
 
 }
 }

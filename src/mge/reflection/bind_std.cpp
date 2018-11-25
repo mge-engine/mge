@@ -10,7 +10,7 @@ namespace mge {
     namespace reflection {
         void bind_std()
         {
-            type::get<std::string>();
+            type<std::string> t_std_string;
         }
     }
 }
