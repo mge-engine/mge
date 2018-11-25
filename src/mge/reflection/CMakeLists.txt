@@ -6,6 +6,7 @@ ADD_LIBRARY(mgereflection
             SHARED
             module.cpp
             type.cpp
+            type_definition.cpp
             visitor.cpp
             signature.cpp
             function_signature.cpp
