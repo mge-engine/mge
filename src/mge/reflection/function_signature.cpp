@@ -48,5 +48,11 @@ namespace mge {
         {
             return m_return_value_type;
         }
+
+        std::ostream&
+        operator <<(std::ostream& os, const function_signature& s)
+        {
+            return os << s.return_value_type().name() << " " << s.parameter_types();
+        }
     }
 }
