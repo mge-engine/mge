@@ -11,6 +11,7 @@ ADD_LIBRARY(mgereflection
             signature.cpp
             function_signature.cpp
             constructor.cpp
+            destructor.cpp
 
             bind_builtin.cpp
             bind_std.cpp

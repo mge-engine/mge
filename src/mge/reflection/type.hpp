@@ -52,9 +52,20 @@ namespace mge {
 
             self_type& constructor()
             {
-                auto cf = [](void *ptr, parameter_source&) {
+                auto cf = [](void *ptr, const parameter_source&) -> void {
                     new (ptr) T();
-                }
+                };
+                m_definition->constructor(signature(), cf);
+                return *this;
+            }
+
+            template <typename... Args>
+            self_type& constructor()
+            {
+                signature s({std::type_index(typeid(Args))...});
+                auto cf = [](void *ptr, const parameter_source& src) -> void {
+                    new (ptr) T(parameter<Args>(src)...);
+                };
                 m_definition->constructor(signature(), cf);
                 return *this;
             }

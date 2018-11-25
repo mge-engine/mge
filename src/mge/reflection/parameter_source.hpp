@@ -15,7 +15,7 @@ namespace mge {
         };
 
         template <typename T>
-        inline T parameter(parameter_source& source)
+        inline T parameter(const parameter_source& source)
         {
             MGE_THROW(mge::not_yet_implemented(),
                       "Cannot retrieve parameter of type ",

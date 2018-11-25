@@ -4,7 +4,7 @@
 #include "mge/reflection/parameter_source.hpp"
 #include <functional>
 namespace mge {
-    namespace reflection{
+    namespace reflection {
 
         class MGE_REFLECTION_EXPORT constructor
         {

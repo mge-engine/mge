@@ -6,7 +6,9 @@ namespace mge {
     namespace reflection {
         void bind_core()
         {
-            type<mge::configuration> t_configuration;
+            type<mge::configuration>()
+                .constructor()
+                .constructor<const std::string&>();
 
             type<mge::log_severity>()
                 .enum_value("NONE", log_severity::NONE);
