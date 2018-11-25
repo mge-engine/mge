@@ -48,6 +48,39 @@ namespace mge {
             {
                 return m_types.cend();
             }
+
+            bool operator ==(const signature& s) const
+            {
+                if(m_types.size() == s.m_types.size()) {
+                    for(size_t i=0; i< m_types.size(); ++i) {
+                        if(m_types[i] != s.m_types[i]) {
+                            return false;
+                        }
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            bool operator <(const signature& s) const
+            {
+                size_t i = 0;
+                while(i < m_types.size()) {
+                    if(i >= s.m_types.size()) {
+                        return false;
+                    } else {
+                        if(m_types[i] < s.m_types[i]) {
+                            return true;
+                        } else if(m_types[i] == s.m_types[i]) {
+                            ++i;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+                return false;
+            }
         private:
             container_type m_types;
         };

@@ -8,6 +8,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_definition.hpp"
+#include "mge/reflection/parameter_source.hpp"
 #include "mge/reflection/detail.hpp"
 #include <string>
 #include <map>
@@ -24,6 +25,8 @@ namespace mge {
         class type
         {
         public:
+            typedef type<T> self_type;
+
             type()
             {
                 module& m = module::get<T>();
@@ -32,16 +35,61 @@ namespace mge {
                     m_definition = std::make_shared<type_definition>
                         (base_type_name<T>(),
                          std::type_index(typeid(T)),
-                         detail::size_of_type<T>());
+                         detail::size_of_type<T>(),
+                         boost::is_enum<T>::value);
+                    m.type(m_definition);
+                }
+            }
+            const std::string name() const { return m_definition->name(); }
+            size_t size() const { return m_definition->size(); }
+
+            MGE_ENABLE_MEMBER_IF(boost::is_enum<T>::value)
+            self_type& enum_value(const char *name, T value)
+            {
+                m_definition->enum_value(name, (int64_t)value);
+                return *this;
+            }
+
+            self_type& constructor()
+            {
+                auto cf = [](void *ptr, parameter_source&) {
+                    new (ptr) T();
+                }
+                m_definition->constructor(signature(), cf);
+                return *this;
+            }
+
+        private:
+            type_definition_ref m_definition;
+        };
+
+        template <>
+        class type<void>
+        {
+        public:
+            typedef type<void> self_type;
+
+            type()
+            {
+                module& m = module::get<void>();
+                m_definition = m.type<void>();
+                if(!m_definition) {
+                    m_definition = std::make_shared<type_definition>
+                        (base_type_name<void>(),
+                         std::type_index(typeid(void)),
+                         detail::size_of_type<void>(),
+                         false);
                     m.type(m_definition);
                 }
             }
 
             const std::string name() const { return m_definition->name(); }
             size_t size() const { return m_definition->size(); }
+
         private:
             type_definition_ref m_definition;
         };
+
 #if 0
         /**
          * A type.

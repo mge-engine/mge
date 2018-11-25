@@ -8,6 +8,9 @@ namespace mge {
         {
             type<mge::configuration> t_configuration;
 
+            type<mge::log_severity>()
+                .enum_value("NONE", log_severity::NONE);
+
 #if 0
 
             type::get<mge::log_severity>()

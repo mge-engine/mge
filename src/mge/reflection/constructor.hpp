@@ -6,18 +6,44 @@
 namespace mge {
     namespace reflection{
 
-        class constructor
+        class MGE_REFLECTION_EXPORT constructor
         {
         public:
-            typedef std::function<void (void*, const parameter_source&)> constructor_function;
+            typedef std::function<void (void*, const parameter_source&)> function;
+
+            constructor() = default;
 
             constructor(const signature& s,
-                        const constructor_function& f)
+                        const function& f)
                 :m_parameter_types(s)
                 ,m_function(f)
             {}
 
+            constructor(const constructor& c)
+                :m_parameter_types(c.m_parameter_types)
+                ,m_function(c.m_function)
+            {}
+
+            constructor(constructor&& c)
+                :m_parameter_types(std::move(c.m_parameter_types))
+                ,m_function(std::move(c.m_function))
+            {}
+
             ~constructor() = default;
+
+            constructor& operator =(const constructor& c)
+            {
+                m_parameter_types = c.m_parameter_types;
+                m_function = c.m_function;
+                return *this;
+            }
+
+            constructor& operator =(constructor&& c)
+            {
+                m_parameter_types = std::move(c.m_parameter_types);
+                m_function = std::move(c.m_function);
+                return *this;
+            }
 
             void invoke(void *object, const parameter_source& parameters);
 
@@ -28,7 +54,7 @@ namespace mge {
 
         private:
             signature m_parameter_types;
-            constructor_function m_function;
+            function  m_function;
         };
 
 

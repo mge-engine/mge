@@ -1,5 +1,10 @@
 #pragma once
 #include "mge/reflection/dllexport.hpp"
+
+#define MGE_ENABLE_MEMBER_IF(cond)                      \
+    template <typename X=void,                          \
+              typename = std::enable_if<cond, X>::type>
+
 namespace mge {
     namespace reflection {
         namespace detail {
