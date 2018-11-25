@@ -8,6 +8,8 @@ ADD_LIBRARY(mgereflection
             type.cpp
             visitor.cpp
             signature.cpp
+            function_signature.cpp
+            constructor.cpp
 
             bind_builtin.cpp
             bind_std.cpp

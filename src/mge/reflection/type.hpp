@@ -9,6 +9,8 @@
 #include "mge/reflection/visitor.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include "mge/reflection/signature.hpp"
+
 #include <string>
 #include <map>
 #include <typeindex>
@@ -19,6 +21,8 @@
 
 namespace mge {
     namespace reflection {
+
+
 
         /**
          * A type.
@@ -39,6 +43,7 @@ namespace mge {
 
             type(const std::string& name,
                  std::type_index index,
+                 size_t size,
                  bool is_enum,
                  bool is_pod);
             ~type() = default;
@@ -76,13 +81,27 @@ namespace mge {
                 auto t = std::make_shared<type>
                     (base_type_name<T>(),
                      std::type_index(typeid(T)),
+                     sizeof(T),
                      boost::is_enum<T>::value,
                      boost::is_pod<T>::value);
                 return t;
             }
 
+            template <>
+            static type_ref create<void>()
+            {
+                auto t = std::make_shared<type>
+                    (base_type_name<void>(),
+                     std::type_index(typeid(void)),
+                     0,
+                     boost::is_enum<void>::value,
+                     boost::is_pod<void>::value);
+                return t;
+            }
+
             std::string m_name;
             std::type_index m_type_index;
+            size_t m_size;
             bool m_is_enum;
             bool m_is_pod;
             std::map<std::string, int64_t> m_enum_values;
