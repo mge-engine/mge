@@ -10,6 +10,7 @@
 #include "mge/reflection/type_definition.hpp"
 #include "mge/reflection/parameter_source.hpp"
 #include "mge/reflection/detail.hpp"
+#include "mge/reflection/field.hpp"
 #include <string>
 #include <map>
 #include <typeindex>
@@ -50,6 +51,15 @@ namespace mge {
                 return *this;
             }
 
+            template <typename F, typename U=T>
+            self_type& field(const char *name,
+                             F typename U::* f)
+            {
+                auto t = mge::reflection::type<U>();
+                definition()->field(name, t.definition());
+                return *this;
+            }
+
             self_type& constructor()
             {
                 auto cf = [](void *ptr, const parameter_source&) -> void {
@@ -70,6 +80,16 @@ namespace mge {
                 return *this;
             }
 
+            self_type& destructor()
+            {
+                auto cf = [](void *ptr) {
+                    reinterpret_cast<T*>(ptr)->~T();
+                };
+                m_definition->destructor(cf);
+                return *this;
+            }
+
+            const type_definition_ref& definition() const { return m_definition; }
         private:
             type_definition_ref m_definition;
         };
@@ -96,7 +116,7 @@ namespace mge {
 
             const std::string name() const { return m_definition->name(); }
             size_t size() const { return m_definition->size(); }
-
+            const type_definition_ref& definition() const { return m_definition; }
         private:
             type_definition_ref m_definition;
         };

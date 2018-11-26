@@ -12,10 +12,12 @@ ADD_LIBRARY(mgereflection
             function_signature.cpp
             constructor.cpp
             destructor.cpp
+            field.cpp
 
             bind_builtin.cpp
             bind_std.cpp
-            bind_core.cpp)
+            bind_core.cpp
+            bind_math.cpp)
 
 
 TARGET_ADD_DEFINE(mgereflection BUILD_MGE_REFLECTION)

@@ -38,5 +38,18 @@ namespace mge {
             m_constructors[s] = mge::reflection::constructor(s, f);
         }
 
+        void
+        type_definition::destructor(const destructor::function& df)
+        {
+            m_destructor = mge::reflection::destructor(df);
+        }
+
+        void
+        type_definition::field(const char *name,
+                               const type_definition_ref& type)
+        {
+            m_fields.emplace_back(name, type);
+        }
+
     }
 }

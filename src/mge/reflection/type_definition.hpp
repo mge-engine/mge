@@ -4,8 +4,10 @@
 #include "mge/reflection/function_signature.hpp"
 #include "mge/reflection/visitor.hpp"
 #include "mge/reflection/constructor.hpp"
-
+#include "mge/reflection/destructor.hpp"
+#include "mge/reflection/field.hpp"
 #include <map>
+#include <vector>
 
 namespace mge {
     namespace reflection {
@@ -31,6 +33,9 @@ namespace mge {
             void enum_value(const char *name, int64_t value);
             void constructor(const signature& signature,
                              const constructor::function& f);
+            void destructor(const destructor::function& f);
+            void field(const char *name,
+                       const type_definition_ref& type);
         private:
             std::string     m_name;
             std::type_index m_type_index;
@@ -38,6 +43,8 @@ namespace mge {
             bool            m_is_enum;
             std::map<std::string, int64_t> m_enum_values;
             std::map<signature, mge::reflection::constructor> m_constructors;
+            mge::reflection::destructor m_destructor;
+            std::vector<mge::reflection::field> m_fields;
         };
     }
 }
