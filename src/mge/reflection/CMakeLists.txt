@@ -13,6 +13,7 @@ ADD_LIBRARY(mgereflection
             constructor.cpp
             destructor.cpp
             field.cpp
+            method.cpp
 
             bind_builtin.cpp
             bind_std.cpp
