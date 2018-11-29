@@ -6,6 +6,7 @@
 #include "mge/reflection/constructor.hpp"
 #include "mge/reflection/destructor.hpp"
 #include "mge/reflection/field.hpp"
+#include "mge/reflection/method.hpp"
 #include <map>
 #include <vector>
 
@@ -34,8 +35,14 @@ namespace mge {
             void constructor(const signature& signature,
                              const constructor::function& f);
             void destructor(const destructor::function& f);
+            void method(const char *name,
+                        const function_signature& s,
+                        const method::function& f,
+                        bool is_const);
             void field(const char *name,
                        const type_definition_ref& type);
+
+            std::type_index index() const { return m_type_index; }
         private:
             std::string     m_name;
             std::type_index m_type_index;

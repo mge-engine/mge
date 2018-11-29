@@ -11,6 +11,7 @@
 #include "mge/reflection/parameter_source.hpp"
 #include "mge/reflection/detail.hpp"
 #include "mge/reflection/field.hpp"
+#include "mge/reflection/method.hpp"
 #include <string>
 #include <map>
 #include <typeindex>
@@ -22,11 +23,89 @@
 namespace mge {
     namespace reflection {
 
+
+        template <typename TypeOfT, typename T, bool NOCLASS>
+        struct class_type_base
+        {
+            typedef T reflected_type;
+            typedef TypeOfT self_type;
+        };
+
+        template<typename TypeOfT, typename T>
+        struct class_type_base<TypeOfT, T, false>
+        {
+            typedef T reflected_type;
+            typedef TypeOfT self_type;
+
+            template <typename ReturnType>
+            self_type& method(const char *name,
+                              ReturnType (reflected_type::* mptr)())
+            {
+                type<ReturnType> return_t;
+                return base();
+            }
+
+            template <typename ReturnType>
+            self_type& method(const char *name,
+                              ReturnType (reflected_type::* mptr)() const)
+            {
+                type<ReturnType> return_t;
+                return base();
+            }
+
+
+            template <typename ReturnType,
+                      typename... Args>
+            self_type& method(const char *name,
+                              ReturnType (reflected_type::* mptr)(Args...))
+            {
+                signature s({type<Args>().index()...});
+                function_signature fs(type<ReturnType>().index(),
+                                      s);
+                auto f = [mptr](return_value& rv,
+                                void* thisptr,
+                                const parameter_source& src) -> void {
+                    auto self = static_cast<reflected_type*>(thisptr);
+                    set_return_value(rv, ((self)->*(mptr))(parameter<Args>(src)...));
+                };
+                base().definition()->method(name, fs, f, false);
+                return base();
+            }
+
+            template <typename ReturnType,
+                      typename... Args>
+            self_type& method(const char *name,
+                              ReturnType (reflected_type::* mptr)(Args...) const)
+            {
+                signature s({type<Args>().index()...});
+                function_signature fs(type<ReturnType>().index(),
+                                      s);
+                auto f = [mptr](return_value& rv,
+                                void* thisptr,
+                                const parameter_source& src) -> void {
+                    auto self = static_cast<const reflected_type*>(thisptr);
+                    set_return_value(rv, ((self)->*(mptr))(parameter<Args>(src)...));
+                };
+                base().definition()->method(name, fs, f, true);
+                return base();
+            }
+
+
+            self_type& base()
+            {
+                return static_cast<self_type&>(*this);
+            }
+        };
+
         template <typename T>
         class type
+            : public class_type_base<type<T>, T, !boost::is_class<T>::value>
         {
+        private:
+            typedef class_type_base<type<T>, T, !boost::is_class<T>::value> method_base_type;
         public:
             typedef type<T> self_type;
+            typedef T reflected_type;
 
             type()
             {
@@ -60,6 +139,9 @@ namespace mge {
                 return *this;
             }
 
+
+
+
             self_type& constructor()
             {
                 auto cf = [](void *ptr, const parameter_source&) -> void {
@@ -80,6 +162,7 @@ namespace mge {
                 return *this;
             }
 
+
             self_type& destructor()
             {
                 auto cf = [](void *ptr) {
@@ -90,6 +173,7 @@ namespace mge {
             }
 
             const type_definition_ref& definition() const { return m_definition; }
+            std::type_index index() const { return definition()->index(); }
         private:
             type_definition_ref m_definition;
         };
@@ -99,6 +183,7 @@ namespace mge {
         {
         public:
             typedef type<void> self_type;
+            typedef void reflected_type;
 
             type()
             {
@@ -121,90 +206,5 @@ namespace mge {
             type_definition_ref m_definition;
         };
 
-#if 0
-        /**
-         * A type.
-         */
-        class MGE_REFLECTION_EXPORT type
-        {
-        public:
-            template <typename T> static type& get()
-            {
-
-                type_ref t = m.type<T>();
-                if(!t) {
-                    t = create<T>();
-                    m.type(t);
-                }
-                return *t;
-            }
-
-            type(const std::string& name,
-                 std::type_index index,
-                 size_t size,
-                 bool is_enum,
-                 bool is_pod);
-            ~type() = default;
-
-            template <typename T>
-            type& enum_value(const char *enum_name,
-                             const T& enum_value)
-            {
-                static_assert(boost::is_enum<T>::value, "Type must be enum");
-                if(!m_is_enum) {
-                    MGE_THROW(mge::illegal_state(),
-                              "Type '",
-                              name(),
-                              " is not an enum");
-                }
-                if(m_type_index != typeid(T)) {
-                    MGE_THROW(mge::illegal_state(),
-                              "Enum value is not of type ",
-                              name());
-                }
-                m_enum_values[enum_name] = (int64_t)enum_value;
-                return *this;
-            }
-
-            const std::string& name() const
-            {
-                return m_name;
-            }
-
-            void apply(visitor& v) const;
-        private:
-            template <typename T>
-            static type_ref create()
-            {
-                auto t = std::make_shared<type>
-                    (base_type_name<T>(),
-                     std::type_index(typeid(T)),
-                     sizeof(T),
-                     boost::is_enum<T>::value,
-                     boost::is_pod<T>::value);
-                return t;
-            }
-
-            template <>
-            static type_ref create<void>()
-            {
-                auto t = std::make_shared<type>
-                    (base_type_name<void>(),
-                     std::type_index(typeid(void)),
-                     0,
-                     boost::is_enum<void>::value,
-                     boost::is_pod<void>::value);
-                return t;
-            }
-
-            std::string m_name;
-            std::type_index m_type_index;
-            size_t m_size;
-            bool m_is_enum;
-            bool m_is_pod;
-            std::map<std::string, int64_t> m_enum_values;
-        };
-#endif
-
-}
+    }
 }

@@ -51,5 +51,14 @@ namespace mge {
             m_fields.emplace_back(name, type);
         }
 
+        void
+        type_definition::method(const char *name,
+                                const function_signature &s,
+                                const method::function &f,
+                                bool is_const)
+        {
+            return;
+        }
+
     }
 }

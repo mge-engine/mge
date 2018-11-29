@@ -10,7 +10,12 @@ namespace mge {
     namespace reflection {
         void bind_std()
         {
-            type<std::string> t_std_string;
+            type<std::string>()
+                .constructor()
+                .constructor<const char *>()
+                .method("size", &std::string::size)
+                .method("at", static_cast<const char & (std::string::*)(uint64_t) const>(&std::string::at));
+
         }
     }
 }
