@@ -9,6 +9,9 @@ namespace mge {
         void bind_math()
         {
             type<mge::vec2f>()
+                .constructor()
+                .constructor<float, float>()
+                .constructor<const vec2f&>()
                 .destructor()
                 .field("x", &vec2f::x)
                 .field("y", &vec2f::y);

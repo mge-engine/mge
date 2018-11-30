@@ -8,7 +8,6 @@ namespace mge {
     namespace reflection {
         class MGE_REFLECTION_EXPORT return_value
         {
-
         };
 
         template <typename T>
@@ -20,5 +19,6 @@ namespace mge {
                       mge::type_name<T>());
 
         }
+
     }
 }

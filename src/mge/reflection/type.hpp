@@ -41,7 +41,33 @@ namespace mge {
             self_type& method(const char *name,
                               ReturnType (reflected_type::* mptr)())
             {
-                type<ReturnType> return_t;
+                signature s;
+                function_signature fs(type<ReturnType>().index(),
+                                      s);
+                auto f = [mptr](return_value& rv,
+                                void* thisptr,
+                                const parameter_source& src) -> void {
+                    auto self = static_cast<reflected_type*>(thisptr);
+                    set_return_value(rv, ((self)->*(mptr))());
+                };
+                base().definition()->method(name, fs, f, false);
+                return base();
+            }
+
+            template <>
+            self_type& method(const char *name,
+                              void (reflected_type::* mptr)())
+            {
+                signature s;
+                function_signature fs(type<void>().index(),
+                                      s);
+                auto f = [mptr](return_value& rv,
+                                void* thisptr,
+                                const parameter_source& src) -> void {
+                    auto self = static_cast<reflected_type*>(thisptr);
+                    ((self)->*(mptr))();
+                };
+                base().definition()->method(name, fs, f, false);
                 return base();
             }
 
@@ -49,10 +75,35 @@ namespace mge {
             self_type& method(const char *name,
                               ReturnType (reflected_type::* mptr)() const)
             {
-                type<ReturnType> return_t;
+                signature s;
+                function_signature fs(type<ReturnType>().index(),
+                                      s);
+                auto f = [mptr](return_value& rv,
+                                void* thisptr,
+                                const parameter_source& src) -> void {
+                    auto self = static_cast<const reflected_type*>(thisptr);
+                    set_return_value(rv, ((self)->*(mptr))());
+                };
+                base().definition()->method(name, fs, f, false);
                 return base();
             }
 
+            template <>
+            self_type& method(const char *name,
+                              void (reflected_type::* mptr)() const)
+            {
+                signature s;
+                function_signature fs(type<void>().index(),
+                                      s);
+                auto f = [mptr](return_value& rv,
+                                void* thisptr,
+                                const parameter_source& src) -> void {
+                    auto self = static_cast<const reflected_type*>(thisptr);
+                    ((self)->*(mptr))();
+                };
+                base().definition()->method(name, fs, f, false);
+                return base();
+            }
 
             template <typename ReturnType,
                       typename... Args>
@@ -202,9 +253,12 @@ namespace mge {
             const std::string name() const { return m_definition->name(); }
             size_t size() const { return m_definition->size(); }
             const type_definition_ref& definition() const { return m_definition; }
+            std::type_index index() const { return definition()->index(); }
         private:
             type_definition_ref m_definition;
         };
 
     }
 }
+
+#define explicit_method(R, C, N, ARGS) method(#N, static_cast<R (C::*)ARGS>(&C::N))
