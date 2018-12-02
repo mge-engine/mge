@@ -27,6 +27,8 @@ namespace mge {
                const window_options& options);
     public:
         virtual ~window();
+        const rectangle& rect() const noexcept { return m_rect; }
+        const window_options& options() const noexcept { return m_options; }
     protected:
         rectangle      m_rect;
         window_options m_options;
