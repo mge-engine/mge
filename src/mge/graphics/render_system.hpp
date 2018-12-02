@@ -4,7 +4,8 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
-
+#include "mge/graphics/window_options.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mge/core/configurable.hpp"
 #include "mge/core/component.hpp"
 #include <vector>
@@ -49,6 +50,15 @@ namespace mge {
          */
         virtual monitor_ref primary_monitor() const = 0;
 
+        /**
+         * Create a window.
+         * @param rect window rect defining size
+         * @param options window options (border, title etc.)
+         * @return reference to new window
+         */
+        virtual window_ref create_window(const rectangle& rect,
+                                         const window_options& options) = 0;
+                                         
 
     };
 }

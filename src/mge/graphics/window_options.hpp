@@ -57,6 +57,10 @@ namespace mge {
         window_options& set_option(option o, bool value=true);
         bool option_set(option o) const;
 
+        /**
+         * Standard window options.
+         * @return standard options
+         */
         static window_options standard_options();
         static window_options fullscreen_options();
     private:

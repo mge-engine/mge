@@ -23,6 +23,13 @@ namespace opengl {
         {
             return platform::monitor::primary_monitor();
         }
+
+        mge::window_ref create_window(const mge::rectangle& rect,
+                                      const mge::window_options& options) override
+        {
+            mge::window_ref result;
+            return result;
+        }
     };
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
