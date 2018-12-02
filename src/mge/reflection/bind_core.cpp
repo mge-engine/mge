@@ -45,7 +45,27 @@ namespace mge {
                 .method("exists", &mge::file::exists)
                 .method("is_directory", &mge::file::is_directory)
                 .method("is_file", &mge::file::is_file)
-                .method("is_system_file", &mge::file::is_system_file);
+                .method("is_system_file", &mge::file::is_system_file)
+                .method("mkdir", &mge::file::mkdir)
+                .method("rmdir", &mge::file::rmdir)
+                .method("list", &mge::file::list)
+                .method("open_for_input", &mge::file::open_for_input);
+
+            type<mge::input_stream>()
+                .destructor()
+                .explicit_method(mge::input_stream::streamsize_type,
+                                 mge::input_stream,
+                                 read,
+                                 ())
+                .explicit_method(mge::input_stream::streamsize_type,
+                                 mge::input_stream,
+                                 read,
+                                 (void *, mge::input_stream::streamsize_type))
+                .method("position", &mge::input_stream::position)
+                .method("seek", &mge::input_stream::seek)
+                .method("istream", &mge::input_stream::istream)
+                .method("add_read_listener", &mge::input_stream::add_read_listener)
+                .method("remove_read_listener", &mge::input_stream::remove_read_listener);
 
             type<mge::log_severity>()
                 .enum_value("NONE", log_severity::NONE)

@@ -148,9 +148,38 @@ namespace mge {
             }
         };
 
+        template <typename TypeOfT, typename T, bool NOENUM>
+        struct enum_type_base
+        {
+            typedef T reflected_type;
+            typedef TypeOfT self_type;
+        };
+
+
+
+        template <typename TypeOfT, typename T>
+        struct enum_type_base<TypeOfT, T, true>
+        {
+            typedef T reflected_type;
+            typedef TypeOfT self_type;
+
+            self_type& base()
+            {
+                return static_cast<self_type&>(*this);
+            }
+
+            self_type& enum_value(const char *name, T value)
+            {
+  //              base().definition()->(name, (int64_t)value);
+                return base();
+            }
+
+        };
+
         template <typename T>
         class type
             : public class_type_base<type<T>, T, !boost::is_class<T>::value>
+            , public enum_type_base<type<T>, T, boost::is_enum<T>::value>
         {
         private:
             typedef class_type_base<type<T>, T, !boost::is_class<T>::value> method_base_type;
@@ -174,12 +203,6 @@ namespace mge {
             const std::string name() const { return m_definition->name(); }
             size_t size() const { return m_definition->size(); }
 
-            MGE_ENABLE_MEMBER_IF(boost::is_enum<T>::value)
-            self_type& enum_value(const char *name, T value)
-            {
-                m_definition->enum_value(name, (int64_t)value);
-                return *this;
-            }
 
             template <typename F, typename U=T>
             self_type& field(const char *name,
