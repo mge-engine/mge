@@ -1,7 +1,5 @@
 #include "lua_context.hpp"
 #include "lua_error.hpp"
-#include "mge/reflection/module.hpp"
-#include "mge/reflection/type.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
 
@@ -30,80 +28,6 @@ namespace lua {
         if(m_lua_state) {
             lua_close(m_lua_state);
         }
-    }
-
-    class lua_context_binder : public mge::reflection::visitor
-    {
-    public:
-        lua_context_binder(lua_context *context)
-            :m_context(context)
-        {
-            m_lua_state = context->state();
-        }
-
-        virtual ~lua_context_binder() = default;
-
-        void start(const mge::reflection::module& m) override
-        {
-            if(m.name().empty()) {
-                MGE_DEBUG_LOG(LUA) << "Entering global module";
-                lua_pushglobaltable(m_lua_state);
-            } else {
-                MGE_DEBUG_LOG(LUA) << "Entering module " << m.name();
-                lua_pushstring(m_lua_state, m.name().c_str());
-                lua_newtable(m_lua_state);
-            }
-        }
-
-        void finish(const mge::reflection::module& m) override
-        {
-            if(m.name().empty()) {
-                MGE_DEBUG_LOG(LUA) << "Leaving global module";
-                lua_pop(m_lua_state, 1);
-            } else {
-                MGE_DEBUG_LOG(LUA) << "Leaving module " << m.name();
-                lua_settable(m_lua_state, -3);
-            }
-
-        }
-
-        void enum_value(const std::string& name, int64_t value) override
-        {
-            const int64_t max_value = (int64_t)1 << 53;
-            const int64_t min_value = -max_value;
-            if(value > max_value || value < min_value) {
-                MGE_THROW(mge::illegal_argument(),
-                          "Cannot store value ",
-                          value,
-                          " as lua enum value: numeric overflow");
-            }
-            lua_pushstring(m_lua_state, name.c_str());
-            lua_pushnumber(m_lua_state, (lua_Number)value);
-            lua_settable(m_lua_state, -3);
-        }
-
-        void start(const mge::reflection::type_definition& t) override
-        {
-            lua_pushstring(m_lua_state, t.name().c_str());
-            lua_newtable(m_lua_state);
-        }
-
-        void finish(const mge::reflection::type_definition& t) override
-        {
-            lua_settable(m_lua_state, -3);
-        }
-
-
-    private:
-        lua_context *m_context;
-        lua_State   *m_lua_state;
-    };
-
-    void
-    lua_context::bind(const mge::reflection::module& m)
-    {
-        lua_context_binder binder(this);
-        m.apply(binder);
     }
 
     void

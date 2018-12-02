@@ -6,7 +6,6 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/type_name.hpp"
-#include "mge/reflection/reflection_fwd.hpp"
 
 #include <memory>
 #include <map>
@@ -36,13 +35,6 @@ namespace mge {
          * Destructor.
          */
         virtual ~script_context() = default;
-
-        /**
-         * Binds a module. Makes all exposed objects available to the
-         * scripting language, as far as the language supports those.
-         * @param module module imported
-         */
-        virtual void bind(const reflection::module& module) = 0;
 
         /**
          * Evaluates a script.

@@ -8,7 +8,6 @@ namespace lua {
     public:
         lua_context();
         virtual ~lua_context();
-        void bind(const mge::reflection::module& module) override;
         void eval(const char *script) override;
 
         signed char signed_char_value(const char *name) override;

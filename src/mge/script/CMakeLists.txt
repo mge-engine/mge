@@ -9,7 +9,7 @@ ADD_LIBRARY(mgescript
             script_source.cpp)
 
 TARGET_ADD_DEFINE(mgescript BUILD_MGE_SCRIPT)
-TARGET_LINK_LIBRARIES(mgescript mgereflection mgecore)
+TARGET_LINK_LIBRARIES(mgescript mgecore)
 
 #ADD_SUBDIRECTORY(test)
 
