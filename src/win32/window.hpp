@@ -1,6 +1,8 @@
 #pragma once
 #include "mge/graphics/window.hpp"
 #include "mge/core/thread.hpp"
+#include <vector>
+#include <functional>
 namespace win32 {
     class window : public mge::window
     {
@@ -25,9 +27,14 @@ namespace win32 {
 
     private:
         void create_window();
+        void wait_for_hwnd();
+        void send_dtor_message();
         static void create_window_class();
 
         HWND m_hwnd;
+        std::shared_ptr<msgthread> m_msgthread;
+        std::vector<std::function<void ()>> m_messages;
+        std::mutex m_messages_lock;
         static bool s_window_class_created;
     };
 }

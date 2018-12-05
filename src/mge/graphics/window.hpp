@@ -6,6 +6,9 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/window_options.hpp"
 #include "mge/graphics/rectangle.hpp"
+
+#include <functional>
+
 namespace mge {
 
 
@@ -26,12 +29,30 @@ namespace mge {
         window(const rectangle& dimension,
                const window_options& options);
     public:
+        typedef std::function<void()> close_listener;
+        typedef std::function<bool()> closing_listener;
+        typedef std::function<void(render_target&, float)> redraw_listener;
+
         virtual ~window();
         const rectangle& rect() const noexcept { return m_rect; }
         const window_options& options() const noexcept { return m_options; }
+        extent extent() const;
+        const render_target& render_target() const;
+        mge::render_target& render_target();
+
+        void show();
+        void hide();
+        bool visible() const;
+        void close();
+        void refresh(float interpolation);
     protected:
-        rectangle      m_rect;
-        window_options m_options;
+        virtual void on_show() = 0;
+        virtual void on_hide() = 0;
+
+        rectangle         m_rect;
+        window_options    m_options;
+        bool              m_visible;
+        render_target_ref m_render_target;
     };
 
 }
