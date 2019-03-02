@@ -26,6 +26,7 @@ public:
         update_called = 0;
         bad_interpolation = 0.0f;
         elapsed_time = 0.0;
+        quit_called = false;
     }
 
     ~my_application()
@@ -43,6 +44,9 @@ public:
             if(update_called == 10) {
                 MGE_THROW(mge::illegal_state());
             }
+        });
+        add_quit_listener([&](){
+            quit_called = true;
         });
         start_ts = mge::clock::now();
     }
@@ -69,6 +73,7 @@ public:
     float bad_interpolation;
     double elapsed_time;
     int64_t start_ts;
+    bool quit_called;
 
 };
 
@@ -80,6 +85,11 @@ TEST(applicationupdateloop, correct_number_of_update_calls)
 TEST(applicationupdateloop, correct_elapsed_time)
 {
     EXPECT_EQ(3.0, my_application::s_instance->elapsed_time);
+}
+
+TEST(applicationupdateloop, quit_listener_called)
+{
+    EXPECT_TRUE(my_application::s_instance->quit_called);
 }
 
 my_application* my_application::s_instance = 0;

@@ -2,7 +2,9 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "opengl.hpp"
+#include "window.hpp"
 #include "mge/graphics/render_system.hpp"
+
 #ifdef MGE_OS_WINDOWS
 #  include "win32/monitor.hpp"
 #endif
@@ -27,7 +29,7 @@ namespace opengl {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override
         {
-            mge::window_ref result;
+            mge::window_ref result = std::make_shared<window>(rect, options);
             return result;
         }
     };

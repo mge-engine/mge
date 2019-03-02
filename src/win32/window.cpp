@@ -20,6 +20,7 @@ namespace win32 {
                     const mge::window_options& options)
         : mge::window(rect, options)
         ,m_hwnd(0)
+        ,m_update_listener(0)
     {
         if(!s_window_class_created) {
             create_window_class();
@@ -91,6 +92,143 @@ namespace win32 {
     LRESULT CALLBACK
     window::wndproc (HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
     {
+        window *w = (window *) GetWindowLongPtr(hwnd, 0);
+        if (w == nullptr) {
+            switch(umsg) {
+            case WM_NCCREATE: {
+                CREATESTRUCT *cs = (CREATESTRUCT *)lparam;
+                SetWindowLongPtr(hwnd, 0, (LONG_PTR)cs->lpCreateParams);
+                break;
+            }
+            default:
+                break;
+            }
+            return DefWindowProcW(hwnd, umsg, wparam, lparam);
+        } else {
+            switch(umsg) {
+            case WM_CLOSE: {
+//                w->add_message([w]{
+//                    w->on_close();
+//                });
+                break;
+            }
+            case WM_KEYDOWN:
+            case WM_SYSKEYDOWN: {
+//                moge::key k = translate_key(wparam, lparam);
+//                if(k == moge::key::INVALID) {
+//                    break;
+//                }
+//                w->add_message([w,k] {
+//                    w->on_key_action(k, moge::key_action::PRESS);
+//                });
+                break;
+            }
+            case WM_KEYUP:
+            case WM_SYSKEYUP: {
+//                moge::key k = translate_key(wparam, lparam);
+//                if(k == moge::key::INVALID) {
+//                    break;
+//                }
+//                w->add_message([w,k]{
+//                    w->on_key_action(k, moge::key_action::RELEASE);
+//                });
+                break;
+            }
+            case WM_LBUTTONDOWN:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_action(1,
+//                                       moge::mouse_action::PRESS,
+//                                       GET_X_LPARAM(lparam),
+//                                       GET_Y_LPARAM(lparam));
+//                });
+//                break;
+//            case WM_LBUTTONUP:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_action(1,
+//                                       moge::mouse_action::RELEASE,
+//                                       GET_X_LPARAM(lparam),
+//                                       GET_Y_LPARAM(lparam));
+//                });
+                break;
+            case WM_LBUTTONDBLCLK:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_action(1,
+//                                       moge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+//                                       GET_X_LPARAM(lparam),
+//                                       GET_Y_LPARAM(lparam));
+//                });
+                break;
+            case WM_RBUTTONDOWN:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_action(2,
+//                                       moge::mouse_action::PRESS,
+//                                       GET_X_LPARAM(lparam),
+//                                       GET_Y_LPARAM(lparam));
+//                });
+                break;
+            case WM_RBUTTONUP:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_action(2,
+//                                       moge::mouse_action::RELEASE,
+//                                       GET_X_LPARAM(lparam),
+//                                       GET_Y_LPARAM(lparam));
+//                });
+                break;
+            case WM_RBUTTONDBLCLK:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_action(2,
+//                                       moge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+//                                       GET_X_LPARAM(lparam),
+//                                       GET_Y_LPARAM(lparam));
+//                });
+                break;
+            case WM_MOUSEMOVE:
+//                w->add_message([w, lparam]{
+//                    w->on_mouse_move(GET_X_LPARAM(lparam),
+//                                     GET_Y_LPARAM(lparam));
+//                });
+                break;
+            case WM_CHAR:
+//                if(wparam == 0x0D || wparam == 0x09 || wparam == 0x08) {
+//                    w->add_message([w, wparam]{
+//                        switch(wparam) {
+//                        case 0x0D:
+//                            w->on_key_action(moge::key::ENTER, moge::key_action::PRESS);
+//                            break;
+//                        case 0x08:
+//                            w->on_key_action(moge::key::BACKSPACE, moge::key_action::PRESS);
+//                            break;
+//                        case 0x09:
+//                            w->on_key_action(moge::key::TAB, moge::key_action::PRESS);
+//                            break;
+//                        }
+//                        w->on_character((uint32_t)wparam);
+//                        switch(wparam) {
+//                        case 0x0D:
+//                            w->on_key_action(moge::key::ENTER, moge::key_action::RELEASE);
+//                            break;
+//                        case 0x08:
+//                            w->on_key_action(moge::key::BACKSPACE, moge::key_action::RELEASE);
+//                            break;
+//                        case 0x09:
+//                            w->on_key_action(moge::key::TAB, moge::key_action::RELEASE);
+//                            break;
+//                        }
+//                    });
+//                } else {
+//                    w->add_message([w, wparam]{
+//                        w->on_character((uint32_t)wparam);
+//                    });
+//                }
+                break;
+            case WM_WANT_DESTROY:
+                MGE_DEBUG_LOG(WIN32) << "Destruction of window " << hwnd << " requested" << std::endl;
+                DestroyWindow(hwnd);
+                w->m_hwnd = nullptr;
+            default:
+                break;
+            }
+        }
         return DefWindowProcW(hwnd, umsg, wparam, lparam);
     }
 
@@ -179,6 +317,36 @@ namespace win32 {
             MGE_ERROR_LOG(WIN32) << "Exception in window thread: " << e;
         }
         MGE_DEBUG_LOG(WIN32) << "Leave message thread for window " << my_hwnd;
+    }
+
+    void
+    window::on_show()
+    {
+        ShowWindow(m_hwnd, SW_SHOW);
+        BringWindowToTop(m_hwnd);
+        SetForegroundWindow(m_hwnd);
+        SetFocus(m_hwnd);
+        m_update_listener = mge::application::instance().add_update_listener([&](uint64_t){
+            this->poll_events();
+        });
+    }
+
+    void
+    window::on_hide()
+    {
+        mge::application::instance().remove_update_listener(m_update_listener);
+        m_update_listener = 0;
+        ShowWindow(m_hwnd, SW_HIDE);
+    }
+
+    void
+    window::poll_events()
+    {
+        std::lock_guard<decltype(m_messages_lock)> guard(m_messages_lock);
+        for(const auto& f : m_messages) {
+            f();
+        }
+        m_messages.clear();
     }
 
 }

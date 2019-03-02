@@ -48,11 +48,14 @@ namespace mge {
          */
         typedef std::function<void(std::uint64_t)> update_listener;
 
+        typedef function_map<update_listener>::key_type update_listener_key_type;
         /**
          * A quit listener which shall be called when the
          * application shall quit.
          */
         typedef std::function<void()> quit_listener;
+
+        typedef function_map<quit_listener>::key_type quit_listener_key_type;
 
         /**
          * Destructor.
