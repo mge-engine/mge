@@ -34,17 +34,37 @@ namespace mge {
         typedef std::function<void(render_target&, float)> redraw_listener;
 
         virtual ~window();
+
+        /**
+         * Access window rectangle.
+         * @return window rectangle
+         */
         const rectangle& rect() const noexcept { return m_rect; }
+
+        /**
+         * Access window options.
+         * @return window options
+         */
         const window_options& options() const noexcept { return m_options; }
         extent extent() const;
         const render_target& render_target() const;
         mge::render_target& render_target();
         void set_redraw_listener(const redraw_listener& listener);
 
+        /**
+         * Shows the window.
+         */
         void show();
+
         void hide();
         bool visible() const;
         void close();
+
+        /**
+         * Refreshes the window content. Calls an attached redraw
+         * listener.
+         * @param interpolation interpolation time to new frame
+         */
         void refresh(float interpolation);
     protected:
         virtual void on_show() = 0;
