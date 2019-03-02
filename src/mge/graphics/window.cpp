@@ -42,4 +42,24 @@ namespace mge {
         }
     }
 
+    bool
+    window::visible() const
+    {
+        return m_visible;
+    }
+
+    void
+    window::set_redraw_listener(const window::redraw_listener& listener)
+    {
+        m_redraw_listener = listener;
+    }
+
+    void
+    window::refresh(float interpolation)
+    {
+        if(m_redraw_listener) {
+            m_redraw_listener(render_target(), interpolation);
+        }
+    }
+
 }

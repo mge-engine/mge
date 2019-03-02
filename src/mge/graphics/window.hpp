@@ -39,6 +39,7 @@ namespace mge {
         extent extent() const;
         const render_target& render_target() const;
         mge::render_target& render_target();
+        void set_redraw_listener(const redraw_listener& listener);
 
         void show();
         void hide();
@@ -53,6 +54,7 @@ namespace mge {
         window_options    m_options;
         bool              m_visible;
         render_target_ref m_render_target;
+        redraw_listener   m_redraw_listener;
     };
 
 }
