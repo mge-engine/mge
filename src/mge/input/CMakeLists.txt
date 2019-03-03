@@ -5,6 +5,7 @@
 SET(mgeinput_sources
     key.cpp
     key_action.cpp
+    mouse_action.cpp
 )
 
 ADD_LIBRARY(mgeinput
