@@ -38,7 +38,6 @@ SET(mgecore_sources
     file.cpp
     io_error.cpp
     system_file_access.cpp
-    key.cpp
 )
 
 ADD_LIBRARY(mgecore

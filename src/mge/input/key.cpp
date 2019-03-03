@@ -1,4 +1,4 @@
-#include "mge/core/key.hpp"
+#include "mge/input/key.hpp"
 #include <iostream>
 
 namespace mge {

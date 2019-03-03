@@ -1,5 +1,5 @@
 #pragma once
-#include "mge/core/dllexport.hpp"
+#include "mge/input/dllexport.hpp"
 #include <iosfwd>
 namespace mge {
 
@@ -116,5 +116,5 @@ namespace mge {
         KEY_MAX       //!< maximum possible key
     };
 
-    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const key& k);
+    MGE_INPUT_EXPORT std::ostream& operator <<(std::ostream& os, const key& k);
 }
