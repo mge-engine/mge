@@ -1,9 +1,11 @@
 #pragma once
 #include "mge/input/dllexport.hpp"
 #include <iosfwd>
+#include <cstdint>
+
 namespace mge {
 
-    enum class MGE_CORE_EXPORT key
+    enum class MGE_INPUT_EXPORT key
     {
         INVALID = -1, //!< INVALID
 
