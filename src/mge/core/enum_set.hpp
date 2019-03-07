@@ -18,8 +18,7 @@ namespace mge {
     private:
         typedef typename std::underlying_type<E>::type base_type;
     public:
-        inline enum_set()
-        {}
+        enum_set() = default;
 
         inline enum_set(const enum_set<E, M>& s)
             :m_bits(s.m_bits)
