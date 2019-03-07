@@ -135,13 +135,13 @@ namespace win32 {
                 break;
             }
             case WM_LBUTTONDOWN:
-//                w->add_message([w, lparam]{
-//                    w->on_mouse_action(1,
-//                                       moge::mouse_action::PRESS,
-//                                       GET_X_LPARAM(lparam),
-//                                       GET_Y_LPARAM(lparam));
-//                });
-//                break;
+                w->add_message([w, lparam]{
+                    w->on_mouse_action(1,
+                                       mge::mouse_action::PRESS,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
+                });
+                break;
 //            case WM_LBUTTONUP:
 //                w->add_message([w, lparam]{
 //                    w->on_mouse_action(1,
@@ -231,6 +231,14 @@ namespace win32 {
         }
         return DefWindowProcW(hwnd, umsg, wparam, lparam);
     }
+
+    void
+    window::add_message(std::function<void()>&& f)
+    {
+        std::lock_guard<decltype(m_messages_lock)> guard(m_messages_lock);
+        m_messages.push_back(f);
+    }
+
 
     void
     window::create_window_class()

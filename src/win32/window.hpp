@@ -27,6 +27,7 @@ namespace win32 {
         };
         void on_show() override;
         void on_hide() override;
+        void add_message(std::function<void()>&& f);
     private:
         void create_window();
         void wait_for_hwnd();
