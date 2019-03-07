@@ -22,7 +22,7 @@ namespace mge {
         {}
 
         inline enum_set(const enum_set<E, M>& s)
-            :m_bits(s.m_bits())
+            :m_bits(s.m_bits)
         {}
 
         inline enum_set(enum_set<E,M>&& s)

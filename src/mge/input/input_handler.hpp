@@ -16,7 +16,7 @@ namespace mge {
      * (i.e. modifiers, keys that are pressed and mouse buttons
      * that are pressed).
      */
-    class MGE_CORE_EXPORT input_handler
+    class MGE_INPUT_EXPORT input_handler
     {
     public:
         /**
@@ -31,7 +31,7 @@ namespace mge {
          * Handler function for mouse movement.
          */
         typedef std::function<void(int x, int y)> mouse_move_handler;
-    
+
         /**
          * Handler function for keyboard actions.
          */
