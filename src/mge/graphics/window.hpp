@@ -6,7 +6,7 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/window_options.hpp"
 #include "mge/graphics/rectangle.hpp"
-
+#include "mge/input/input_handler.hpp"
 #include <functional>
 
 namespace mge {
@@ -24,6 +24,7 @@ namespace mge {
      */
     class MGE_GRAPHICS_EXPORT window
             : public std::enable_shared_from_this<window>
+            , public input_handler
     {
     protected:
         window(const rectangle& dimension,
