@@ -9,11 +9,17 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 variables:
-  buildPlatform: 'x64'
-  buildConfiguration: 'RelWithDebInfo'
+  CMAKE_GENERATOR: 'Visual Studio 15 2017 Win64'
+  VCPKG_DEFAULT_TRIPLET: x64-windows-vc$(BUILD_TOOLSET_VERSION)
+  
+#variables:
+#  buildPlatform: 'x64'
+#  buildConfiguration: 'RelWithDebInfo'
 
 steps:
-- task: CMake@1
-  inputs:
-    cmakeArgs: '-DCMAKE_BUILD_TYPE=RelWithDebInfo ..'
+  - script: vcpkg install sqlite3:x64-windows
+
+#- task: CMake@1
+#  inputs:
+#    cmakeArgs: '-DCMAKE_BUILD_TYPE=RelWithDebInfo ..'
 
