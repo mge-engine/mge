@@ -11,6 +11,7 @@ pool:
 variables:
   CMAKE_GENERATOR: 'Visual Studio 15 2017 Win64'
   VCPKG_DEFAULT_TRIPLET: x64-windows
+  VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
 
 #variables:
 #  buildPlatform: 'x64'
