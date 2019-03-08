@@ -21,7 +21,7 @@ steps:
 
   - script: .\VulkanSDK.exe /S
 
-  - script: vcpkg install sqlite3 lua boost-filesystem boos-any boost-lexical-cast boost-math boost-algorithm vulkan
+  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm vulkan
 
   - task: CMake@1
     inputs:
