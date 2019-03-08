@@ -25,7 +25,7 @@ steps:
 
   - task: CMake@1
     inputs:
-      cmakeArgs: '-G"Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+      cmakeArgs: '-G"Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
 
   - task: CMake@1
     inputs:
