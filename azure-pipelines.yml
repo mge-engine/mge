@@ -10,14 +10,14 @@ pool:
 
 variables:
   CMAKE_GENERATOR: 'Visual Studio 15 2017 Win64'
-  VCPKG_DEFAULT_TRIPLET: x64-windows-vc$(BUILD_TOOLSET_VERSION)
-  
+  VCPKG_DEFAULT_TRIPLET: x64-windows
+
 #variables:
 #  buildPlatform: 'x64'
 #  buildConfiguration: 'RelWithDebInfo'
 
 steps:
-  - script: vcpkg install sqlite3:x64-windows
+  - script: vcpkg install sqlite3
 
 #- task: CMake@1
 #  inputs:
