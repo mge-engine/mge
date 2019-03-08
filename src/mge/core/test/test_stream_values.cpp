@@ -21,5 +21,9 @@ TEST(stream_values, stream_some_values_stable_alloccount)
     mge::stream_values(ss, "Mary ", "had ", 1, " little lamb");
     std::string s(ss.str());
     EXPECT_STREQ("Mary had 1 little lamb", s.c_str());
+#ifdef _DEBUG
+    EXPECT_EQ(4u, scope.allocations_in_scope());
+#else
     EXPECT_EQ(2u, scope.allocations_in_scope());
+#endif
 }
