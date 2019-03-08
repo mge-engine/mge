@@ -20,5 +20,5 @@ steps:
   - script: vcpkg install sqlite3 lua boost-filesystem vulkan
 
   - task: CMake@1
-    inputs:
+
 
