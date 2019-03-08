@@ -18,7 +18,7 @@ IF(NOT "${Googlebenchmark_FOUND}")
     EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" . -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
         WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/googlebenchmark
     )
-    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build . --config Release
         WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/googlebenchmark
     )
     SET(Googlebenchmark_FOUND "TRUE" CACHE INTERNAL "Googlebenchmark_FOUND")
