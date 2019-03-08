@@ -17,9 +17,9 @@ variables:
 #  buildConfiguration: 'RelWithDebInfo'
 
 steps:
-  - script: vcpkg install sqlite3
+  - script: vcpkg install sqlite3 lua boost-filesystem vulkan
 
-#- task: CMake@1
-#  inputs:
-#    cmakeArgs: '-DCMAKE_BUILD_TYPE=RelWithDebInfo ..'
+  - task: CMake@1
+      inputs:
+        cmakeArgs: '-DCMAKE_BUILD_TYPE=RelWithDebInfo ..'
 
