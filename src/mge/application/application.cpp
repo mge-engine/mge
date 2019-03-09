@@ -57,6 +57,18 @@ namespace mge {
     }
 
     void
+    application::add_application_thread(thread *t)
+    {
+        m_application_threads.add_thread(t);
+    }
+
+    void
+    application::remove_application_thread(thread *t)
+    {
+        m_application_threads.remove_thread(t);
+    }
+
+    void
     application::join()
     {
         MGE_DEBUG_LOG(APPLICATION) << "Waiting for application quit";
@@ -67,7 +79,7 @@ namespace mge {
             }
         }
         MGE_DEBUG_LOG(APPLICATION) << "Application shall quit, join all threads";
-        // TODO: join non daemon threads
+        m_application_threads.join_all();
         MGE_DEBUG_LOG(APPLICATION) << "Joining application update thread";
         if(m_update_thread && m_update_thread->joinable()) {
             m_update_thread->join();

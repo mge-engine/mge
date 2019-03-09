@@ -7,7 +7,7 @@
 #include "mge/core/component.hpp"
 #include "mge/core/function_map.hpp"
 #include "mge/core/async_executor.hpp"
-
+#include "mge/core/thread_group.hpp"
 #include "mge/application/dllexport.hpp"
 #include "mge/application/application_fwd.hpp"
 #include "mge/application/update_thread.hpp"
@@ -94,6 +94,20 @@ namespace mge {
          * @param f function to execute
          */
         void await(const std::function<void()>& f);
+
+        /**
+         * Add an application thread that will be joined in
+         * graceful shutdown.
+         * @param t thread
+         */
+        void add_application_thread(thread *t);
+
+        /**
+         * Remove an application thread that will be joined in
+         * graceful shutdown.
+         * @param t thread
+         */
+        void remove_application_thread(thread *t);
 
         /**
          * Runs the only found implementation of the application
@@ -260,6 +274,7 @@ namespace mge {
         std::vector<std::string> m_argv_values;
         std::string m_commandline;
         update_thread_ref m_update_thread;
+        thread_group m_application_threads;
         std::condition_variable m_quit_condition;
         std::mutex m_quit_lock;
         std::recursive_mutex m_lock;
