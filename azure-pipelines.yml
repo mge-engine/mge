@@ -5,13 +5,17 @@
 trigger:
   branches:
     include:
-      - *
+      - master
+      - issue/*
+      - release/*
+      - feature/*
 
 pr:
   autoCancel: true
   branches:
     include:
     - master
+    - release/*
 
 pool:
   vmImage: 'VS2017-Win2016'
