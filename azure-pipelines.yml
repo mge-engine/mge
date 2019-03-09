@@ -3,7 +3,9 @@
 # All rights reserved.
 
 trigger:
-  batch: true
+  branches:
+    include:
+      - *
 
 pr:
   autoCancel: true
