@@ -39,7 +39,7 @@ steps:
   - task: CMake@1
     displayName: "Build Project"
     inputs:
-      cmakeArgs: '--build . --config RelWithDebInfo --target all'
+      cmakeArgs: '--build . --config RelWithDebInfo'
 
   - task: CMake@1
     displayName: "Run tests"
