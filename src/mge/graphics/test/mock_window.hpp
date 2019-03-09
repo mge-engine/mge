@@ -18,5 +18,6 @@ namespace mge {
         virtual ~mock_window() = default;
         MOCK_METHOD0(on_show, void());
         MOCK_METHOD0(on_hide, void());
+        MOCK_METHOD0(request_close, void());
     };
 }

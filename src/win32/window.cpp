@@ -357,4 +357,13 @@ namespace win32 {
         m_messages.clear();
     }
 
+    void
+    window::request_close()
+    {
+        if(m_hwnd) {
+            PostMessage(m_hwnd, WM_CLOSE, 0, 0);
+        }
+
+    }
+
 }

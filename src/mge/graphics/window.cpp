@@ -85,14 +85,18 @@ namespace mge {
         clear_function(m_closing_listener);
     }
 
-
-
     void
     window::refresh(float interpolation)
     {
         if(m_redraw_listener) {
             m_redraw_listener(render_target(), interpolation);
         }
+    }
+
+    void
+    window::close()
+    {
+        request_close();
     }
 
     void

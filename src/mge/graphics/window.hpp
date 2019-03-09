@@ -141,6 +141,7 @@ namespace mge {
     protected:
         virtual void on_show() = 0;
         virtual void on_hide() = 0;
+        virtual void request_close() = 0;
         void on_close();
 
         rectangle         m_rect;
