@@ -13,6 +13,8 @@
 
 namespace mge {
 
+    class thread_group;
+
     /**
      * Thread class. Enhances std::thread by convenience methods.
      */
@@ -34,12 +36,6 @@ namespace mge {
         explicit thread();
 
         /**
-         * Move constructor.
-         * @param t moved instance
-         */
-        thread(thread&& t);
-
-        /**
          * Destructor.
          */
         virtual ~thread();
@@ -50,6 +46,12 @@ namespace mge {
          * unmanaged
          */
         static thread *this_thread();
+
+        /**
+         * Return thread group of thread.
+         * @return thread group, nullpointer if thread has no group
+         */
+        thread_group *group() const;
 
         /**
          * Starts the thread and calls this object's @c run method.
@@ -128,11 +130,13 @@ namespace mge {
         bool joinable();
     private:
         friend class stacktrace;
+        friend class thread_group;
 
         void on_start();
         void on_finish();
         void on_exception(const std::exception_ptr& eptr);
         running_thread_t m_running_thread;
+        thread_group *   m_group;
     };
 
     namespace this_thread

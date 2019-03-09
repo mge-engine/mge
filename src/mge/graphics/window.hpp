@@ -7,8 +7,9 @@
 #include "mge/graphics/window_options.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/input/input_handler.hpp"
-
+#include "mge/application/application.hpp"
 #include "mge/core/thread.hpp"
+#include "mge/core/task_queue.hpp"
 
 #include <functional>
 
@@ -132,13 +133,17 @@ namespace mge {
         public:
             display_thread(window *w);
             virtual ~display_thread();
+            void run() override;
+            void set_quit();
         private:
+            void exec_work_item();
             window *m_window;
-            bool    m_quit;
+            volatile bool m_quit;
         };
         friend class window::display_thread;
 
     protected:
+        void assign_thread();
         virtual void on_show() = 0;
         virtual void on_hide() = 0;
         virtual void request_close() = 0;
@@ -151,6 +156,9 @@ namespace mge {
         redraw_listener   m_redraw_listener;
         close_listener    m_close_listener;
         closing_listener  m_closing_listener;
+        task_queue        m_tasks;
+        std::shared_ptr<display_thread> m_display_thread;
+        application::quit_listener_key_type m_quit_listener;
     };
 
 }

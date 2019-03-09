@@ -14,17 +14,22 @@ namespace mge {
     static thread_local thread *t_this_thread;
 
     thread::thread()
+        :m_group(nullptr)
     {}
 
-    thread::thread(thread&& t)
-        :m_running_thread(std::move(t.m_running_thread))
-    {}
 
     thread::~thread()
     {
-        if (t_this_thread == this) {
-            crash("Cannot destroy thread object from itself");
-        }
+        MGE_CRASH_ASSERT(t_this_thread != this,
+                         "Cannot destroy thread object from itself");
+        MGE_CRASH_ASSERT(m_group == nullptr,
+                         "Thread is still contained in thread group");
+    }
+
+    thread_group *
+    thread::group() const
+    {
+        return m_group;
     }
 
     thread*

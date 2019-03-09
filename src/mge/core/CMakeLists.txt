@@ -12,6 +12,7 @@ SET(mgecore_sources
     component.cpp
     type_name.cpp
     thread.cpp
+    thread_group.cpp
     crash.cpp
     log_severity.cpp
     log_record.cpp

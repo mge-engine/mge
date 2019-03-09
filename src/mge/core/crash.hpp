@@ -29,3 +29,4 @@ namespace mge {
     }
 
 }
+#define MGE_CRASH_ASSERT(cond, ...) if(!(cond)) ::mge::crash("Assertion failed: ", #cond, ": ", __VA_ARGS__)

@@ -1,11 +1,18 @@
 #include "mge/graphics/window.hpp"
 #include "mge/core/clear_function.hpp"
+#include "mge/core/log.hpp"
+#include "mge/application/application.hpp"
+#include "mge/core/clock.hpp"
+
+MGE_DEFINE_LOG(WINDOW);
+
 namespace mge {
     window::window(const rectangle &rect,
                    const window_options &options)
         :m_rect(rect)
         ,m_options(options)
         ,m_visible(false)
+        ,m_quit_listener(0)
     {}
 
     window::~window()
@@ -26,11 +33,24 @@ namespace mge {
     }
 
     void
+    window::assign_thread()
+    {
+        return;
+    }
+
+    void
     window::show()
     {
         if(!m_visible) {
             on_show();
             m_visible = true;
+
+            m_display_thread = std::make_shared<display_thread>(this);
+            m_display_thread->start();
+
+            m_quit_listener = application::instance().add_quit_listener([&]{
+                m_display_thread->set_quit();
+            });
         }
     }
 
@@ -103,6 +123,88 @@ namespace mge {
     window::on_close()
     {
 
+    }
+
+    window::display_thread::display_thread(window *w)
+        :m_window(w)
+        ,m_quit(false)
+    {}
+
+    window::display_thread::~display_thread()
+    {}
+
+    void
+    window::display_thread::set_quit()
+    {
+        m_quit = true;
+    }
+
+    void
+    window::display_thread::run()
+    {
+        m_window->assign_thread();
+        application *app = nullptr;
+        try {
+            app = &application::instance();
+        } catch(const mge::exception& ex) {
+            MGE_ERROR_LOG(WINDOW) << "Acquiring application object failed: " << ex;
+            throw;
+        }
+        MGE_DEBUG_LOG(WINDOW) << "Display loop started";
+        auto next_game_tick = clock::now();
+        auto update_rate = app->update_rate();
+        auto skip_ticks = 1000000000 / update_rate;
+        auto max_frame_skip = app->max_frame_skip();
+        MGE_DEBUG_LOG(WINDOW) << "Update rate: " << update_rate << " Hz" << std::endl
+                              << "Skip ticks : " << skip_ticks << " ns" << std::endl
+                              << "Maximum skipped frames: " << max_frame_skip << std::endl;
+        while(!m_quit) {
+            next_game_tick = clock::now();
+            update_rate = app->update_rate();
+            skip_ticks = 1000000000 / update_rate;
+            max_frame_skip = app->max_frame_skip();
+            decltype(max_frame_skip) loops = 0;
+            for(;;) {
+                auto update_ts = clock::now();
+                if(!(update_ts > next_game_tick && loops < max_frame_skip)) {
+                    break;
+                }
+                exec_work_item();
+                next_game_tick += skip_ticks;
+                ++loops;
+            }
+            auto display_ts = clock::now();
+            float interpolation = 0.0f;
+            if(display_ts < next_game_tick) {
+                interpolation = 1.0f - (float) (next_game_tick - display_ts)
+                        / (float) skip_ticks;
+            } else {
+                interpolation = (float) (next_game_tick + skip_ticks - display_ts)
+                        / (float) skip_ticks;
+            }
+            try {
+                m_window->refresh(interpolation);
+            } catch(const mge::exception& ex) {
+                MGE_ERROR_LOG(WINDOW) << "Exception in window refresh: " << ex;
+                m_quit = true;
+            } catch(const std::exception& ex) {
+                MGE_ERROR_LOG(WINDOW) << "Exception in window refresh: " << ex.what();
+                m_quit = true;
+            } catch(...) {
+                MGE_ERROR_LOG(WINDOW) << "Error in window refresh";
+                m_quit = true;
+            }
+        }
+        MGE_DEBUG_LOG(WINDOW) << "Display loop finished";
+    }
+
+    void
+    window::display_thread::exec_work_item()
+    {
+        auto task = m_window->m_tasks.pop_front();
+        if(task) {
+            task->run();
+        }
     }
 
 }

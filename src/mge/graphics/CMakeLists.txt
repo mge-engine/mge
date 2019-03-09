@@ -13,6 +13,6 @@ ADD_LIBRARY(mgegraphics
     window_options.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
-TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput)
+TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)
 
 ADD_SUBDIRECTORY(test)
