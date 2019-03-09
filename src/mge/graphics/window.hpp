@@ -29,6 +29,7 @@ namespace mge {
     class MGE_GRAPHICS_EXPORT window
             : public std::enable_shared_from_this<window>
             , public input_handler
+            , public async_executor
     {
     protected:
         window(const rectangle& dimension,
@@ -126,7 +127,11 @@ namespace mge {
          */
         void refresh(float interpolation);
 
-
+        /**
+         * Execute function, if possible in display thread.
+         * @param f function to execute
+         */
+        void await(const std::function<void()>& f) override;
 
         class display_thread : public mge::thread
         {

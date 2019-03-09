@@ -51,6 +51,8 @@ namespace mge {
             m_quit_listener = application::instance().add_quit_listener([&]{
                 m_display_thread->set_quit();
             });
+
+            application::instance().add_application_thread(m_display_thread.get());
         }
     }
 
@@ -122,7 +124,21 @@ namespace mge {
     void
     window::on_close()
     {
-
+        if(m_closing_listener) {
+            if(!m_closing_listener()) {
+                return; // close rejected
+            }
+        }
+        if(m_close_listener) {
+            m_close_listener();
+        }
+        if(m_display_thread) {
+            m_display_thread->set_quit();
+            application::instance().remove_application_thread(m_display_thread.get());
+            if(m_display_thread->joinable()) {
+                m_display_thread->join();
+            }
+        }
     }
 
     window::display_thread::display_thread(window *w)
@@ -206,5 +222,23 @@ namespace mge {
             task->run();
         }
     }
+
+    void
+    window::await(const std::function<void ()> &f)
+    {
+        if(!m_display_thread) {
+            f();
+        } else if(mge::this_thread::get_id() == m_display_thread->get_id()) {
+            f();
+        } else {
+            task t(f);
+            std::shared_ptr<task> tref(&t, [](auto p){});
+            m_tasks.push_back(tref);
+            t.wait();
+        }
+    }
+
+
+
 
 }
