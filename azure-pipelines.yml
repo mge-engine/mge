@@ -48,3 +48,10 @@ steps:
     displayName: "Run tests"
     inputs:
       cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
+
+  - task: PublishTestResults@2
+    displayName: "Publish test results"
+    inputs:
+      testResultsFormat: 'xUnit'
+      testResultsFiles: 'RelWithDebInfo/*test.xml'
+      mergeTestResults: true
