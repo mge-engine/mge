@@ -62,6 +62,32 @@ namespace mge {
     }
 
     void
+    window::set_close_listener(const window::close_listener& listener)
+    {
+        m_close_listener = listener;
+    }
+
+    void
+    window::clear_close_listener()
+    {
+        clear_function(m_close_listener);
+    }
+
+    void
+    window::set_closing_listener(const window::closing_listener& listener)
+    {
+        m_closing_listener = listener;
+    }
+
+    void
+    window::clear_closing_listener()
+    {
+        clear_function(m_closing_listener);
+    }
+
+
+
+    void
     window::refresh(float interpolation)
     {
         if(m_redraw_listener) {

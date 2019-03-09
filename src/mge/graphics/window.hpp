@@ -64,8 +64,38 @@ namespace mge {
          */
         mge::render_target& render_target();
 
+        /**
+         * Set the redraw listener.
+         * @param listener redraw listener
+         */
         void set_redraw_listener(const redraw_listener& listener);
+
+        /**
+         * Clear the redraw listener.
+         */
         void clear_redraw_listener();
+
+        /**
+         * Set the close listener.
+         * @param listener close listener
+         */
+        void set_close_listener(const close_listener& listener);
+
+        /**
+         * Clear the close listener.
+         */
+        void clear_close_listener();
+
+        /**
+         * Set closing listener.
+         * @param listener
+         */
+        void set_closing_listener(const closing_listener& listener);
+
+        /**
+         * Clear the closing listener.
+         */
+        void clear_closing_listener();
 
         /**
          * Shows the window.
@@ -118,6 +148,8 @@ namespace mge {
         bool              m_visible;
         render_target_ref m_render_target;
         redraw_listener   m_redraw_listener;
+        close_listener    m_close_listener;
+        closing_listener  m_closing_listener;
     };
 
 }
