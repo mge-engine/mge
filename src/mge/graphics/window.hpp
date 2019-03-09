@@ -7,6 +7,9 @@
 #include "mge/graphics/window_options.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/input/input_handler.hpp"
+
+#include "mge/core/thread.hpp"
+
 #include <functional>
 
 namespace mge {
@@ -48,17 +51,41 @@ namespace mge {
          */
         const window_options& options() const noexcept { return m_options; }
         extent extent() const;
+
+        /**
+         * Access the render target.
+         * @return window's render target
+         */
         const render_target& render_target() const;
+
+        /**
+         * Access the render target.
+         * @return window's render target
+         */
         mge::render_target& render_target();
+
         void set_redraw_listener(const redraw_listener& listener);
+        void clear_redraw_listener();
 
         /**
          * Shows the window.
          */
         void show();
 
+        /**
+         * Hides the window.
+         */
         void hide();
+
+        /**
+         * Returns whether the window is visible (shown).
+         * @return @c true if the window is visible
+         */
         bool visible() const;
+
+        /**
+         * Closes the window.
+         */
         void close();
 
         /**
@@ -67,9 +94,24 @@ namespace mge {
          * @param interpolation interpolation time to new frame
          */
         void refresh(float interpolation);
+
+
+
+        class display_thread : public mge::thread
+        {
+        public:
+            display_thread(window *w);
+            virtual ~display_thread();
+        private:
+            window *m_window;
+            bool    m_quit;
+        };
+        friend class window::display_thread;
+
     protected:
         virtual void on_show() = 0;
         virtual void on_hide() = 0;
+        void on_close();
 
         rectangle         m_rect;
         window_options    m_options;

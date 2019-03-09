@@ -107,9 +107,9 @@ namespace win32 {
         } else {
             switch(umsg) {
             case WM_CLOSE: {
-//                w->add_message([w]{
-//                    w->on_close();
-//                });
+                w->add_message([w]{
+                    w->on_close();
+                });
                 break;
             }
             case WM_KEYDOWN:

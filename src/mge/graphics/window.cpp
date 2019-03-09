@@ -62,4 +62,10 @@ namespace mge {
         }
     }
 
+    void
+    window::on_close()
+    {
+
+    }
+
 }
