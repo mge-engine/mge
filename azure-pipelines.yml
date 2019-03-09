@@ -53,5 +53,5 @@ steps:
     displayName: "Publish test results"
     inputs:
       testResultsFormat: 'xUnit'
-      testResultsFiles: 'RelWithDebInfo/*test.xml'
+      testResultsFiles: '**/*test.xml'
       mergeTestResults: true
