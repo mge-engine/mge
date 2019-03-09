@@ -2,6 +2,9 @@
 #include "mge/core/crash.hpp"
 #include "mge/core/contains.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/log.hpp"
+
+MGE_USE_LOG(THREAD);
 
 namespace mge {
 
@@ -66,6 +69,29 @@ namespace mge {
                     t->m_group = nullptr;
                     return;
                 }
+            }
+        }
+    }
+
+    void
+    thread_group::join_all()
+    {
+        if(this_thread_in_group()) {
+            MGE_THROW(mge::illegal_state(),
+                      "Cannot join threads in thread group from contained thread");
+        }
+        {
+            std::lock_guard<decltype(m_mutex)> guard(m_mutex);
+            MGE_DEBUG_LOG(THREAD) << "Joining group of " << m_threads.size() << " threads";
+            int i=1;
+            for(const auto t : m_threads) {
+                if(t->joinable()) {
+                    t->join();
+                    MGE_DEBUG_LOG(THREAD) << "Thread " << i << " joined";
+                } else {
+                    MGE_DEBUG_LOG(THREAD) << "Thread " << i << " not in joinable state";
+                }
+                ++i;
             }
         }
     }

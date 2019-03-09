@@ -15,6 +15,7 @@ namespace mge {
 
         void add_thread(thread* t);
         void remove_thread(thread *t);
+        void join_all();
     private:
         bool this_thread_in_group();
 
