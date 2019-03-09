@@ -44,4 +44,4 @@ steps:
   - task: CMake@1
     displayName: "Run tests"
     inputs:
-      cmakeArgs: "--build , --config RelWithDebInfo --target RUN_TESTS"
+      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
