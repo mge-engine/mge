@@ -1,4 +1,5 @@
 #include "mge/graphics/window.hpp"
+#include "mge/core/clear_function.hpp"
 namespace mge {
     window::window(const rectangle &rect,
                    const window_options &options)
@@ -52,6 +53,12 @@ namespace mge {
     window::set_redraw_listener(const window::redraw_listener& listener)
     {
         m_redraw_listener = listener;
+    }
+
+    void
+    window::clear_redraw_listener()
+    {
+        clear_function(m_redraw_listener);
     }
 
     void

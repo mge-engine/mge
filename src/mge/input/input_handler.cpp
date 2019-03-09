@@ -1,4 +1,5 @@
 #include "mge/input/input_handler.hpp"
+#include "mge/core/clear_function.hpp"
 
 namespace mge {
     input_handler::input_handler()
