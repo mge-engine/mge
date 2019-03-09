@@ -18,13 +18,18 @@ IF(NOT "${Googlebenchmark_FOUND}")
     EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" . -G${CMAKE_GENERATOR} -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
         WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/googlebenchmark
     )
-    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build .
+    EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" --build . --config Release
         WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/external/googlebenchmark
     )
     SET(Googlebenchmark_FOUND "TRUE" CACHE INTERNAL "Googlebenchmark_FOUND")
 ENDIF()
 IF(MSVC)
-    SET(Googlebenchmark_LIBRARY     "${CMAKE_BINARY_DIR}/external/googlebenchmark/googlebenchmark/src/googlebenchmark-build/src/benchmark.lib")
+    GET_FILENAME_COMPONENT(_PLAIN_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM}" NAME)
+    IF("${_PLAIN_MAKE_PROGRAM}" STREQUAL "MSBuild.exe")
+        SET(Googlebenchmark_LIBRARY     "${CMAKE_BINARY_DIR}/external/googlebenchmark/googlebenchmark/src/googlebenchmark-build/src/Release/benchmark.lib")
+    ELSE()
+        SET(Googlebenchmark_LIBRARY     "${CMAKE_BINARY_DIR}/external/googlebenchmark/googlebenchmark/src/googlebenchmark-build/src/benchmark.lib")
+    ENDIF()
 ELSE()
     SET(Googlebenchmark_LIBRARY     "${CMAKE_BINARY_DIR}/external/googlebenchmark/googlebenchmark/src/googlebenchmark-build/src/libbenchmark.a")
 ENDIF()

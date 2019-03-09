@@ -1,5 +1,8 @@
 # mge - Modern Game Engine
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
-
-INCLUDE(UseLATEX)
+IF(BUILD_DOCUMENTATION)
+    INCLUDE(UseLATEX)
+ELSE()
+    MESSAGE(STATUS "Documentation build disabled")
+ENDIF()

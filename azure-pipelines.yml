@@ -1,0 +1,56 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
+
+trigger:
+  branches:
+    include:
+      - master
+      - issue/*
+      - release/*
+      - feature/*
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - master
+    - release/*
+
+pool:
+  vmImage: 'VS2017-Win2016'
+
+variables:
+  VCPKG_DEFAULT_TRIPLET: x64-windows
+  VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
+
+steps:
+  - script: curl --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
+    displayName: "Download Vulkan SDK"
+
+  - script: .\VulkanSDK.exe /S
+    displayName: "Install Vulkan SDK"
+
+  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm vulkan
+    displayName: "Install dependencies"
+
+  - task: CMake@1
+    displayName: "Configure project"
+    inputs:
+      cmakeArgs: '-G"Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
+
+  - task: CMake@1
+    displayName: "Build Project"
+    inputs:
+      cmakeArgs: '--build . --config RelWithDebInfo'
+
+  - task: CMake@1
+    displayName: "Run tests"
+    inputs:
+      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
+
+  - task: PublishTestResults@2
+    displayName: "Publish test results"
+    inputs:
+      testResultsFiles: '**/*test.xml'
+      mergeTestResults: false
