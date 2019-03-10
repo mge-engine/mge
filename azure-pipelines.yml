@@ -46,6 +46,7 @@ steps:
 
   - task: CMake@1
     displayName: "Run tests"
+    continueOnError: true
     inputs:
       cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
 
@@ -54,3 +55,4 @@ steps:
     inputs:
       testResultsFiles: '**/*test.xml'
       mergeTestResults: false
+
