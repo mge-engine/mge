@@ -10,7 +10,7 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 
-MGE_USE_LOG(MGE);
+MGE_DEFINE_LOG(MODULE)
 
 namespace mge {
 
@@ -31,7 +31,7 @@ namespace mge {
         void load_all()
         {
             for(const auto& p : m_load_paths) {
-                MGE_DEBUG_LOG(MGE) << "Scanning module load path: " << p ;
+                MGE_DEBUG_LOG(MODULE) << "Scanning module load path: " << p ;
                 auto elements = p.list();
                 for(const auto& f : elements) {
                     if(is_module_file(f)) {
@@ -55,13 +55,13 @@ namespace mge {
 
         void load_module(const file& module_file)
         {
-            MGE_DEBUG_LOG(MGE) << "Loading module: " << module_file;
+            MGE_DEBUG_LOG(MODULE) << "Loading module: " << module_file;
             try {
                 m_loaded_modules.emplace_back(shared_library::load(module_file.path().string()));
             } catch(...) {
-                MGE_WARNING_LOG(MGE) << "Load module " << module_file << " failed";
+                MGE_WARNING_LOG(MODULE) << "Load module " << module_file << " failed";
             }
-            MGE_DEBUG_LOG(MGE) << "Module " << module_file << " loaded";
+            MGE_DEBUG_LOG(MODULE) << "Module " << module_file << " loaded";
         }
         std::vector<file> m_load_paths;
         std::vector<std::string> m_module_prefixes;
