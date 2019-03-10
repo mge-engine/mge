@@ -12,6 +12,7 @@ namespace mge {
         render_target(async_executor *display_executor);
     public:
         virtual ~render_target() = default;
+        void await(const std::function<void()>& f) override;
     protected:
         async_executor *m_display_executor;
     };

@@ -4,5 +4,11 @@ namespace mge {
         :m_display_executor(display_executor)
     {}
 
+    void
+    render_target::await(const std::function<void()>& f)
+    {
+        m_display_executor->await(f);
+    }
+
 
 }
