@@ -337,7 +337,7 @@ namespace win32 {
                 }
                 break;
             case WM_WANT_DESTROY:
-                MGE_DEBUG_LOG(WIN32) << "Destruction of window " << hwnd << " requested" << std::endl;
+                MGE_DEBUG_LOG(WIN32) << "Destruction of window " << hwnd << " requested";
                 DestroyWindow(hwnd);
                 w->m_hwnd = nullptr;
             default:

@@ -81,6 +81,10 @@ namespace mge {
             if(function) {
                 os << "Exception raising function: " << function.value() << std::endl;
             }
+            auto called_function = d.ex()->get<mge::exception::called_function>();
+            if(called_function) {
+                os << "Calling library/system function: " << called_function.value() << std::endl;
+            }
 
             auto stack = d.ex()->get<mge::exception::stack>();
             if(stack) {

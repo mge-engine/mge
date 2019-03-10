@@ -1,4 +1,5 @@
 #include "window.hpp"
+#include "window_render_target.hpp"
 
 namespace opengl {
 
@@ -14,5 +15,8 @@ namespace opengl {
 
     void
     window::create_render_target()
-    {}
+    {
+        auto t = std::make_shared<window_render_target>(this);
+        m_render_target = t;
+    }
 }

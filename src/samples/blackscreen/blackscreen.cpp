@@ -1,5 +1,6 @@
 #include "mge/application/application.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "mge/graphics/window.hpp"
 #include "mge/core/log.hpp"
 
 using namespace mge;
@@ -16,7 +17,7 @@ public:
         MGE_DEBUG_LOG(BLACKSCREEN) << "Setup blackscreen";
         m_render_system = render_system::create();
         m_window = m_render_system->create_window();
-        set_quit();
+        m_window->show();
     }
 
 private:

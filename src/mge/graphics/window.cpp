@@ -178,9 +178,9 @@ namespace mge {
         auto update_rate = app->update_rate();
         auto skip_ticks = 1000000000 / update_rate;
         auto max_frame_skip = app->max_frame_skip();
-        MGE_DEBUG_LOG(WINDOW) << "Update rate: " << update_rate << " Hz" << std::endl
-                              << "Skip ticks : " << skip_ticks << " ns" << std::endl
-                              << "Maximum skipped frames: " << max_frame_skip << std::endl;
+        MGE_DEBUG_LOG(WINDOW) << "Update rate: " << update_rate << " Hz";
+        MGE_DEBUG_LOG(WINDOW) << "Skip ticks : " << skip_ticks << " ns";
+        MGE_DEBUG_LOG(WINDOW) << "Maximum skipped frames: " << max_frame_skip;
         while(!m_quit) {
             next_game_tick = clock::now();
             update_rate = app->update_rate();

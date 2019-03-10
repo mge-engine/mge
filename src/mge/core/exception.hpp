@@ -171,6 +171,21 @@ namespace mge {
             std::string m_value;
         };
 
+        struct called_function : public tag<called_function, std::string>
+        {
+            called_function(const std::string& name)
+                :m_value(name)
+            {}
+
+            const std::string& value() const noexcept
+            {
+                return m_value;
+            }
+
+            std::string m_value;
+        };
+
+
         struct cause;
 
         /**
@@ -261,7 +276,7 @@ namespace mge {
         mge::exception m_value;
     };
 
-/** 
+/**
  * Throw exception instance.
  * @param ex exception instance
  * @param ... additional exception parameters
@@ -283,6 +298,8 @@ namespace mge {
                << mge::exception::cause(cause)                       \
                << mge::exception::message(__VA_ARGS__)
 
+
+#define MGE_CALLED_FUNCTION(X) ::mge::exception::called_function(#X)
 
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception& ex);
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception::exception_details& d);

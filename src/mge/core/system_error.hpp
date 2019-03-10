@@ -53,6 +53,7 @@ namespace mge {
         mutable std::string m_message;
     };
 
+
 /**
  * Throws the current system error.
  */
