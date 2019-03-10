@@ -45,15 +45,22 @@ namespace mge {
             on_show();
             m_visible = true;
 
-            m_display_thread = std::make_shared<display_thread>(this);
-            m_display_thread->start();
+            install_display_thread();
 
-            m_quit_listener = application::instance().add_quit_listener([&]{
-                m_display_thread->set_quit();
-            });
-
-            application::instance().add_application_thread(m_display_thread.get());
         }
+    }
+
+    void
+    window::install_display_thread()
+    {
+        m_display_thread = std::make_shared<display_thread>(this);
+        m_display_thread->start();
+
+        m_quit_listener = application::instance().add_quit_listener([&]{
+            m_display_thread->set_quit();
+        });
+
+        application::instance().add_application_thread(m_display_thread.get());
     }
 
     void

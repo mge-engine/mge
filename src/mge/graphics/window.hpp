@@ -149,6 +149,8 @@ namespace mge {
 
     protected:
         void assign_thread();
+        virtual void install_display_thread();
+
         virtual void on_show() = 0;
         virtual void on_hide() = 0;
         virtual void request_close() = 0;

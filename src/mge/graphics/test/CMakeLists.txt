@@ -8,3 +8,4 @@ ADD_EXECUTABLE(graphicstest
 )
 TARGET_LINK_LIBRARIES(graphicstest mgegraphics mgecore gmock)
 TARGET_IS_TEST(graphicstest)
+
