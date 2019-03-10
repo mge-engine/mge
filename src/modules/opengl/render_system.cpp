@@ -4,16 +4,22 @@
 #include "opengl.hpp"
 #include "window.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "mge/core/log.hpp"
 
 #ifdef MGE_OS_WINDOWS
 #  include "win32/monitor.hpp"
 #endif
 
+MGE_USE_LOG(OPENGL);
+
 namespace opengl {
     class render_system : public mge::render_system
     {
     public:
-        render_system() = default;
+        render_system()
+        {
+            MGE_DEBUG_LOG(OPENGL) << "Creating OpenGL render system";
+        }
         virtual ~render_system() = default;
 
         monitor_collection_t monitors() const override

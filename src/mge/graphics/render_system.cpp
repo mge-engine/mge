@@ -1,8 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "mge/graphics/render_system.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/graphics/render_system.hpp"
+#include "mge/graphics/rectangle.hpp"
 
 namespace mge {
     render_system::render_system()
@@ -22,6 +23,16 @@ namespace mge {
     render_system::create()
     {
         return component<render_system>::create(default_name());
+    }
+
+    window_ref
+    render_system::create_window()
+    {
+        rectangle r(0, 0, 800, 450);
+        window_options options(window_options::RESIZABLE,
+                               window_options::BORDER,
+                               window_options::TITLE);
+        return create_window(r, options);
     }
 
     MGE_REGISTER_COMPONENT(render_system);

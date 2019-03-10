@@ -58,7 +58,11 @@ namespace mge {
          */
         virtual window_ref create_window(const rectangle& rect,
                                          const window_options& options) = 0;
-                                         
 
+        /**
+         * Create a window using default settings.
+         * @return reference to new window
+         */
+        window_ref create_window();
     };
 }

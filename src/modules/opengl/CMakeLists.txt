@@ -2,6 +2,7 @@
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
 SET(mge_opengl_module_SOURCES
+    common.cpp
     window.cpp
     render_system.cpp)
 ADD_LIBRARY(mge_module_opengl MODULE
