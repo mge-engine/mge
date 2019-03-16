@@ -17,6 +17,9 @@ public:
         MGE_DEBUG_LOG(BLACKSCREEN) << "Setup blackscreen";
         m_render_system = render_system::create();
         m_window = m_render_system->create_window();
+        m_window->set_close_listener([&]{
+            set_quit();
+        });
         m_window->show();
     }
 
