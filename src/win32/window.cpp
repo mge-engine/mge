@@ -179,7 +179,11 @@ namespace win32 {
                 // only if we can still join the thread
                 // and did not suffer a window create catastrophe
                 if(m_msgthread->joinable() && m_hwnd) {
+                    MGE_DEBUG_LOG(WIN32) << "Joining message thread (r";
                     send_dtor_message();
+                    m_msgthread->join();
+                } else if(m_msgthread->joinable()) {
+                    // window already gone, but thread still alive
                     m_msgthread->join();
                 }
             }
@@ -338,13 +342,14 @@ namespace win32 {
                 break;
             case WM_WANT_DESTROY:
                 MGE_DEBUG_LOG(WIN32) << "Destruction of window " << hwnd << " requested";
-                DestroyWindow(hwnd);
                 w->m_hwnd = nullptr;
-            default:
+                DestroyWindow(hwnd);
                 break;
+            default:
+                return DefWindowProcW(hwnd, umsg, wparam, lparam);
             }
         }
-        return DefWindowProcW(hwnd, umsg, wparam, lparam);
+        return 0;
     }
 
     void
@@ -479,7 +484,6 @@ namespace win32 {
         if(m_hwnd) {
             PostMessage(m_hwnd, WM_CLOSE, 0, 0);
         }
-
     }
 
 }
