@@ -10,6 +10,8 @@ namespace opengl {
     public:
         window_render_context(window *w);
         ~window_render_context();
+
+
 #ifdef MGE_OS_WINDOWS
     private:
         void choose_pixel_format();

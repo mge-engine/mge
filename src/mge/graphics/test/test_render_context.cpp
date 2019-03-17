@@ -12,6 +12,7 @@ namespace mge {
         test_render_context(async_executor *ex)
             :render_context(ex)
         {}
+
     };
 }
 

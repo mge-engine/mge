@@ -2,6 +2,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/core/log.hpp"
+#include <boost/algorithm/string.hpp>
 
 MGE_USE_LOG(OPENGL);
 
@@ -88,24 +89,21 @@ namespace opengl {
     void
     window_render_context::collect_opengl_info()
     {
-
+        int major_version = 0;
+        int minor_version = 0;
+        glGetIntegerv(GL_MAJOR_VERSION, &major_version);
+        glGetIntegerv(GL_MINOR_VERSION, &minor_version);
+        MGE_INFO_LOG(OPENGL) << "OpenGL version: " << major_version << "." << minor_version;
+        std::string glsl_version_str((const char *)glGetString(GL_SHADING_LANGUAGE_VERSION));
+        MGE_INFO_LOG(OPENGL) << "Shading language version: " << glsl_version_str;
+        std::string extension_string((const char *)glGetString(GL_EXTENSIONS));
+        auto it = boost::make_split_iterator(extension_string, boost::token_finder(boost::is_space()));
+        decltype(it) end_it;
+        MGE_INFO_LOG(OPENGL) << "OpenGL extensions:";
+        while(it != end_it) {
+            MGE_INFO_LOG(OPENGL) << *it;
+            ++it;
+        }
     }
-
-//    glGetIntegerv(GL_MAJOR_VERSION, &m_major_version);
-//    MOGE_INFO_LOG(OPENGL) << "GL_MAJOR_VERSION: " << m_major_version << std::endl;
-//    glGetIntegerv(GL_MINOR_VERSION, &m_minor_version);
-//    MOGE_INFO_LOG(OPENGL) << "GL_MINOR_VERSION: " << m_minor_version << std::endl;
-//    std::string glsl_version_str((const char *)glGetString(GL_SHADING_LANGUAGE_VERSION));
-//    MOGE_INFO_LOG(OPENGL) << "GL_SHADING_LANGUAGE_VERSION: " << glsl_version_str << std::endl;
-
-//    MOGE_INFO_LOG(OPENGL) << "GL_EXTENSIONS:" << std::endl;
-//    const GLubyte *extension_string = glGetString(GL_EXTENSIONS);
-//    moge::split(std::inserter(m_extensions, m_extensions.end()),
-//                std::string((const char *)extension_string),
-//                ' ');
-//    for(const auto& extension : m_extensions) {
-//        MOGE_INFO_LOG(OPENGL) << "    " << extension << std::endl;
-//    }
-
 #endif
 }
