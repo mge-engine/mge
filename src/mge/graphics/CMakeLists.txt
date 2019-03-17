@@ -4,6 +4,9 @@
 
 ADD_LIBRARY(mgegraphics
     SHARED
+    color_names.cpp
+    rgb_color.cpp
+    rgba_color.cpp
     render_system.cpp
     extent.cpp
     rectangle.cpp
