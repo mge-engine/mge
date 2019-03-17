@@ -1,4 +1,4 @@
-#include "window_render_target.hpp"
+#include "window_render_context.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/core/log.hpp"
@@ -7,8 +7,8 @@ MGE_USE_LOG(OPENGL);
 
 namespace opengl {
 #ifdef MGE_OS_WINDOWS
-    window_render_target::window_render_target(window *w)
-        :mge::render_target(w)
+    window_render_context::window_render_context(window *w)
+        :mge::render_context(w)
         ,m_hwnd(w->hwnd())
         ,m_hdc(nullptr)
         ,m_hglrc(nullptr)
@@ -26,7 +26,7 @@ namespace opengl {
         // clear_current();
     }
 
-    window_render_target::~window_render_target()
+    window_render_context::~window_render_context()
     {
         if(m_hdc && m_hwnd) {
             ReleaseDC(m_hwnd, m_hdc);
@@ -34,7 +34,7 @@ namespace opengl {
     }
 
     void
-    window_render_target::choose_pixel_format()
+    window_render_context::choose_pixel_format()
     {
         PIXELFORMATDESCRIPTOR pixel_format_desc;
         mge::zero_memory(pixel_format_desc);
@@ -58,7 +58,7 @@ namespace opengl {
     }
 
     void
-    window_render_target::create_glrc()
+    window_render_context::create_glrc()
     {
         m_hglrc = wglCreateContext(m_hdc);
         if (!m_hglrc) {
@@ -72,7 +72,7 @@ namespace opengl {
     static bool s_gl3w_initialized = false;
 
     void
-    window_render_target::init_gl3w()
+    window_render_context::init_gl3w()
     {
         if (!s_gl3w_initialized) {
             MGE_INFO_LOG(OPENGL) << "Initialize gl3w";
@@ -86,7 +86,7 @@ namespace opengl {
     }
 
     void
-    window_render_target::collect_opengl_info()
+    window_render_context::collect_opengl_info()
     {
 
     }

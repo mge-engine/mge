@@ -4,7 +4,7 @@
 ADD_EXECUTABLE(graphicstest
   ${CMAKE_SOURCE_DIR}/src/test/test_main.cpp
   test_render_system.cpp
-  test_render_target.cpp
+  test_render_context.cpp
   test_window.cpp
 )
 TARGET_LINK_LIBRARIES(graphicstest mgegraphics mgecore gmock)

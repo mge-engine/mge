@@ -17,19 +17,19 @@ namespace mge {
 
     window::~window()
     {
-        m_render_target.reset();
+        m_render_context.reset();
     }
 
-    const render_target&
-    window::render_target() const
+    const render_context&
+    window::render_context() const
     {
-        return *m_render_target;
+        return *m_render_context;
     }
 
-    render_target&
-    window::render_target()
+    render_context&
+    window::render_context()
     {
-        return *m_render_target;
+        return *m_render_context;
     }
 
     void
@@ -118,7 +118,7 @@ namespace mge {
     window::refresh(float interpolation)
     {
         if(m_redraw_listener) {
-            m_redraw_listener(render_target(), interpolation);
+            m_redraw_listener(render_context(), interpolation);
         }
     }
 

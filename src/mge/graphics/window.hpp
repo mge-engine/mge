@@ -37,7 +37,7 @@ namespace mge {
     public:
         typedef std::function<void()> close_listener;
         typedef std::function<bool()> closing_listener;
-        typedef std::function<void(render_target&, float)> redraw_listener;
+        typedef std::function<void(render_context&, float)> redraw_listener;
 
         virtual ~window();
 
@@ -58,13 +58,13 @@ namespace mge {
          * Access the render target.
          * @return window's render target
          */
-        const render_target& render_target() const;
+        const render_context& render_context() const;
 
         /**
          * Access the render target.
          * @return window's render target
          */
-        mge::render_target& render_target();
+        mge::render_context& render_context();
 
         /**
          * Set the redraw listener.
@@ -159,7 +159,7 @@ namespace mge {
         rectangle         m_rect;
         window_options    m_options;
         bool              m_visible;
-        render_target_ref m_render_target;
+        render_context_ref m_render_context;
         redraw_listener   m_redraw_listener;
         close_listener    m_close_listener;
         closing_listener  m_closing_listener;

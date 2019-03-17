@@ -10,7 +10,7 @@ ADD_LIBRARY(mgegraphics
     gamma_ramp.cpp
     monitor.cpp
     window.cpp
-    render_target.cpp
+    render_context.cpp
     window_options.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)

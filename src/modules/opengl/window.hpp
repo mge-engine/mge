@@ -15,6 +15,6 @@ namespace opengl {
                const mge::window_options& options);
         ~window();
     private:
-        void create_render_target();
+        void create_render_context();
     };
 }

@@ -7,10 +7,10 @@ namespace mge {
     class render_system;
     class monitor;
     class window;
-    class render_target;
+    class render_context;
 
     MGE_DECLARE_REF(render_system);
     MGE_DECLARE_REF(monitor);
     MGE_DECLARE_REF(window);
-    MGE_DECLARE_REF(render_target);
+    MGE_DECLARE_REF(render_context);
 }

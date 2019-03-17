@@ -1,5 +1,5 @@
 #include "window.hpp"
-#include "window_render_target.hpp"
+#include "window_render_context.hpp"
 
 namespace opengl {
 
@@ -7,16 +7,16 @@ namespace opengl {
                    const mge::window_options& options)
         :platform::window(rect, options)
     {
-        create_render_target();
+        create_render_context();
     }
 
     window::~window()
     {}
 
     void
-    window::create_render_target()
+    window::create_render_context()
     {
-        auto t = std::make_shared<window_render_target>(this);
-        m_render_target = t;
+        auto t = std::make_shared<window_render_context>(this);
+        m_render_context = t;
     }
 }
