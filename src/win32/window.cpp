@@ -386,8 +386,8 @@ namespace win32 {
         MGE_DEBUG_LOG(WIN32) << "Create window";
         RECT window_rect = {
             rect().left(),
-            rect().right(),
             rect().top(),
+            rect().right(),
             rect().bottom()
         };
         DWORD style;
@@ -403,6 +403,7 @@ namespace win32 {
             | WS_EX_WINDOWEDGE;
 
         AdjustWindowRectEx(&window_rect, style, 0, exstyle);
+
         m_hwnd = CreateWindowExW(exstyle,
                                  MGE_CLASS_NAME,
                                  L"",
