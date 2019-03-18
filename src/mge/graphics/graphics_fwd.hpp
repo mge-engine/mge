@@ -8,9 +8,11 @@ namespace mge {
     class monitor;
     class window;
     class render_context;
+    class command_list;
 
     MGE_DECLARE_REF(render_system);
     MGE_DECLARE_REF(monitor);
     MGE_DECLARE_REF(window);
     MGE_DECLARE_REF(render_context);
+    MGE_DECLARE_REF(command_list);
 }
