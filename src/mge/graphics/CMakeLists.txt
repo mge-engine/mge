@@ -14,6 +14,7 @@ ADD_LIBRARY(mgegraphics
     monitor.cpp
     window.cpp
     render_context.cpp
+    context_object.cpp
     window_options.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
