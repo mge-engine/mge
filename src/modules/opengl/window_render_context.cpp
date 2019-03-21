@@ -23,8 +23,6 @@ namespace opengl {
         create_glrc();
         init_gl3w();
         collect_opengl_info();
-//        m_swap_chain = std::make_shared<opengl::swap_chain>(m_hdc, m_hglrc);
-        // clear_current();
     }
 
     window_render_context::~window_render_context()
@@ -103,6 +101,22 @@ namespace opengl {
         while(it != end_it) {
             MGE_INFO_LOG(OPENGL) << *it;
             ++it;
+        }
+    }
+
+    void
+    window_render_context::assign_thread()
+    {
+        if (!wglMakeCurrent(m_hdc, m_hglrc)) {
+            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(wglMakeCurrent);
+        }
+    }
+
+    void
+    window_render_context::flush()
+    {
+        if(!SwapBuffers(m_hdc)) {
+            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(SwapBuffers);
         }
     }
 #endif

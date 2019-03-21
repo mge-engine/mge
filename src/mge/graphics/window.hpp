@@ -148,7 +148,7 @@ namespace mge {
         friend class window::display_thread;
 
     protected:
-        void assign_thread();
+        virtual void assign_thread();
         virtual void install_display_thread();
 
         virtual void on_show() = 0;

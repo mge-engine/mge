@@ -13,6 +13,8 @@ namespace mge {
             :render_context(ex)
         {}
 
+        void flush() override {}
+
     };
 }
 

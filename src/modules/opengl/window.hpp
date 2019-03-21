@@ -15,6 +15,7 @@ namespace opengl {
                const mge::window_options& options);
         ~window();
     private:
+        void assign_thread() override;
         void create_render_context();
     };
 }

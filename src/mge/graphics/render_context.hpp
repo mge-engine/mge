@@ -18,6 +18,18 @@ namespace mge {
     public:
         virtual ~render_context() = default;
         void await(const std::function<void()>& f) override;
+
+        /**
+         * Assigns the render context to this thread, in case of the
+         * underlying API needs such an assignment.
+         */
+        virtual void assign_thread();
+
+        /**
+         * Flush outstanding work, and return when work has been
+         * presented.
+         */
+        virtual void flush() = 0;
     protected:
         async_executor *m_display_executor;
     };

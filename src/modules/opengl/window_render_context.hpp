@@ -11,8 +11,9 @@ namespace opengl {
         window_render_context(window *w);
         ~window_render_context();
 
-
 #ifdef MGE_OS_WINDOWS
+        void assign_thread() override;
+        void flush() override;
     private:
         void choose_pixel_format();
         void create_glrc();

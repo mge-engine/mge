@@ -10,5 +10,9 @@ namespace mge {
         m_display_executor->await(f);
     }
 
+    void
+    render_context::assign_thread()
+    {}
+
 
 }
