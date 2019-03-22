@@ -2,7 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "dx11.hpp"
-// #include "window.hpp"
+#include "system_config.hpp"
+#include "window.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/core/log.hpp"
 
@@ -20,7 +21,13 @@ namespace dx11 {
         {
             MGE_DEBUG_LOG(DX11) << "Creating DirectX 11 render system";
         }
+
         virtual ~render_system() = default;
+
+        void configure(const mge::configuration& config) override
+        {
+            m_config.configure(config);
+        }
 
         monitor_collection_t monitors() const override
         {
@@ -35,9 +42,11 @@ namespace dx11 {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override
         {
-            mge::window_ref result; // = std::make_shared<window>(rect, options);
+            mge::window_ref result = std::make_shared<window>(rect, options, m_config);
             return result;
         }
+    private:
+        system_config m_config;
     };
 
     MGE_REGISTER_IMPLEMENTATION(render_system,

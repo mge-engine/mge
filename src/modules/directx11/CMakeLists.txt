@@ -5,6 +5,7 @@
 SET(mge_dx11_module_SOURCES
     common.cpp
     render_system.cpp
+    window.cpp
 )
 ADD_LIBRARY(mge_module_dx11 MODULE
     ${mge_dx11_module_SOURCES})
