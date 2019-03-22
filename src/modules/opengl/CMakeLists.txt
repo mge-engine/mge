@@ -4,7 +4,7 @@
 SET(mge_opengl_module_SOURCES
     common.cpp
     window.cpp
-    window_render_context.cpp
+    render_context.cpp
     render_system.cpp)
 ADD_LIBRARY(mge_module_opengl MODULE
             ${mge_opengl_module_SOURCES})

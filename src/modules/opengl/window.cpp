@@ -1,5 +1,5 @@
 #include "window.hpp"
-#include "window_render_context.hpp"
+#include "render_context.hpp"
 
 namespace opengl {
 
@@ -16,7 +16,7 @@ namespace opengl {
     void
     window::create_render_context()
     {
-        auto t = std::make_shared<window_render_context>(this);
+        auto t = std::make_shared<opengl::render_context>(this);
         m_render_context = t;
     }
 

@@ -1,4 +1,4 @@
-#include "window_render_context.hpp"
+#include "render_context.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/core/log.hpp"
@@ -8,7 +8,7 @@ MGE_USE_LOG(OPENGL);
 
 namespace opengl {
 #ifdef MGE_OS_WINDOWS
-    window_render_context::window_render_context(window *w)
+    render_context::render_context(window *w)
         :mge::render_context(w)
         ,m_hwnd(w->hwnd())
         ,m_hdc(nullptr)
@@ -25,7 +25,7 @@ namespace opengl {
         collect_opengl_info();
     }
 
-    window_render_context::~window_render_context()
+    render_context::~render_context()
     {
         if(m_hdc && m_hwnd) {
             ReleaseDC(m_hwnd, m_hdc);
@@ -33,7 +33,7 @@ namespace opengl {
     }
 
     void
-    window_render_context::choose_pixel_format()
+    render_context::choose_pixel_format()
     {
         PIXELFORMATDESCRIPTOR pixel_format_desc;
         mge::zero_memory(pixel_format_desc);
@@ -57,7 +57,7 @@ namespace opengl {
     }
 
     void
-    window_render_context::create_glrc()
+    render_context::create_glrc()
     {
         m_hglrc = wglCreateContext(m_hdc);
         if (!m_hglrc) {
@@ -71,7 +71,7 @@ namespace opengl {
     static bool s_gl3w_initialized = false;
 
     void
-    window_render_context::init_gl3w()
+    render_context::init_gl3w()
     {
         if (!s_gl3w_initialized) {
             MGE_INFO_LOG(OPENGL) << "Initialize gl3w";
@@ -85,7 +85,7 @@ namespace opengl {
     }
 
     void
-    window_render_context::collect_opengl_info()
+    render_context::collect_opengl_info()
     {
         int major_version = 0;
         int minor_version = 0;
@@ -105,7 +105,7 @@ namespace opengl {
     }
 
     void
-    window_render_context::assign_thread()
+    render_context::assign_thread()
     {
         if (!wglMakeCurrent(m_hdc, m_hglrc)) {
             MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(wglMakeCurrent);
@@ -113,7 +113,7 @@ namespace opengl {
     }
 
     void
-    window_render_context::flush()
+    render_context::flush()
     {
         if(!SwapBuffers(m_hdc)) {
             MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(SwapBuffers);
