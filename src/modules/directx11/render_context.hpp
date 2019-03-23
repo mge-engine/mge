@@ -1,0 +1,20 @@
+#pragma once
+#include "dx11.hpp"
+#include "system_config.hpp"
+#include "mge/graphics/render_context.hpp"
+#include "win32/com_unique_ptr.hpp"
+
+namespace dx11 {
+    class render_context : public mge::render_context
+    {
+    public:
+        render_context(async_executor *display_executor,
+                       const system_config& config);
+        ~render_context();
+    private:
+        COM_UNIQUE_PTR(ID3D11Device) m_device;
+        COM_UNIQUE_PTR(ID3D11DeviceContext) m_device_context;
+        COM_UNIQUE_PTR(ID3D11RenderTargetView) m_render_target_view;
+        COM_UNIQUE_PTR(IDXGISwapChain) m_swap_chain;
+    };
+}
