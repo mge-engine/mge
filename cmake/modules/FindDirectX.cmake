@@ -64,6 +64,10 @@ if(WIN32) # The only platform it makes sense to check for DirectX SDK
   else(CMAKE_CL_64)
     set(DirectX_LIBPATH_SUFFIX "x86")
   endif(CMAKE_CL_64)
+
+  message("------------- dx search path")
+  message("${DirectX_LIB_SEARCH_PATH}")
+  message("------------- dx search path")
   find_library(DirectX_LIBRARY NAMES d3d9 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
   find_library(DirectX_D3DX9_LIBRARY NAMES d3dx9 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
   find_library(DirectX_DXERR_LIBRARY NAMES DxErr HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
