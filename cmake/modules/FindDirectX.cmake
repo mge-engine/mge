@@ -1,152 +1,62 @@
-#-------------------------------------------------------------------
-# This file is part of the CMake build system for OGRE
-#     (Object-oriented Graphics Rendering Engine)
-# For the latest info, see http://www.ogre3d.org/
-#
-# The contents of this file are placed in the public domain. Feel
-# free to make use of it in any way you like.
-#-------------------------------------------------------------------
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
+MESSAGE("-- Looking for DirectX SDK (as part of Windows Kit")
 
-#
 
-# -----------------------------------------------------------------------------
-# Find DirectX SDK
-# Define:
-# DirectX_FOUND
-# DirectX_INCLUDE_DIR
-# DirectX_LIBRARY
-# DirectX_LIBRARY_DIR
-# DirectX_ROOT_DIR
 
-if(WIN32) # The only platform it makes sense to check for DirectX SDK
-  include(FindPkgMacros)
-  findpkg_begin(DirectX)
-
-  # Get path, convert backslashes as ${ENV_DXSDK_DIR}
-  getenv_path(DXSDK_DIR)
-  getenv_path(DIRECTX_HOME)
-  getenv_path(DIRECTX_ROOT)
-  getenv_path(DIRECTX_BASE)
-
-  # construct search paths
-  set(DirectX_PREFIX_PATH
-    "${DXSDK_DIR}" "${ENV_DXSDK_DIR}"
-    "${DIRECTX_HOME}" "${ENV_DIRECTX_HOME}"
-    "${DIRECTX_ROOT}" "${ENV_DIRECTX_ROOT}"
-    "${DIRECTX_BASE}" "${ENV_DIRECTX_BASE}"
-    "C:/apps_x86/Microsoft DirectX SDK*"
-    "C:/Program Files (x86)/Microsoft DirectX SDK*"
-    "C:/apps/Microsoft DirectX SDK*"
-    "C:/Program Files/Microsoft DirectX SDK*"
-    "$ENV{ProgramFiles}/Microsoft DirectX SDK*"
-  )
-
+IF(WIN32)
   # get all installed kits and reverse the list to prefer the latest
-  file(GLOB __windows_kits_libs
+  IF(CMAKE_CL_64)
+    MESSAGE("--   Using x64 windows sdk libraries")
+    SET(DirectX_LIBPATH_SUFFIX "x64")
+  ELSE()
+    MESSAGE("--   Using x86 windows sdk libraries")
+    SET(DirectX_LIBPATH_SUFFIX "x86")
+  ENDIF()
+  FILE(GLOB __windows_kits_libs
        LIST_DIRECTORIES TRUE
-       "C:/Program Files (x86)/Windows Kits/10/Lib/*/um")
-  list(REVERSE __windows_kits_libs)
-  file(GLOB __windows_kits_includes
+       "C:/Program Files (x86)/Windows Kits/10/Lib/*/um/${DirectX_LIBPATH_SUFFIX}")
+  LIST(REVERSE __windows_kits_libs)
+  FILE(GLOB __windows_kits_includes
        LIST_DIRECTORIES TRUE
        "C:/Program Files (x86)/Windows Kits/10/Include/*/shared")
-  list(REVERSE __windows_kits_includes)
+  LIST(REVERSE __windows_kits_includes)
+  SET(DirectX_INC_SEARCH_PATH
+      ${__windows_kits_includes})
+  SET(DirectX_LIB_SEARCH_PATH
+      ${__windows_kits_libs})
+  MESSAGE("--   DirectX_LIB_SEARCH_PATH ${DirectX_LIB_SEARCH_PATH}")
+  FIND_PATH(DirectX_INCLUDE_DIR NAMES d3d9.h HINTS ${DirectX_INC_SEARCH_PATH})
+  MESSAGE("--   DirectX_INCLUDE_DIR set to ${DirectX_INCLUDE_DIR}")
+  FIND_LIBRARY(DirectX_LIBRARY NAMES d3d9 HINTS ${DirectX_LIB_SEARCH_PATH})
+  MESSAGE("--   DirectX_LIBRARY set to ${DirectX_LIBRARY}")
+  FIND_LIBRARY(DirectX_D3DX9_LIBRARY NAMES d3dx9 HINTS ${DirectX_LIB_SEARCH_PATH})
+  FIND_LIBRARY(DirectX_DXERR_LIBRARY NAMES DxErr HINTS ${DirectX_LIB_SEARCH_PATH})
+  FIND_LIBRARY(DirectX_DXGUID_LIBRARY NAMES dxguid HINTS ${DirectX_LIB_SEARCH_PATH})
 
-  # Windows 8 SDK has custom layout
-  set(DirectX_INC_SEARCH_PATH
-    "C:/Program Files (x86)/Windows Kits/8.0/Include/shared"
-    "C:/Program Files (x86)/Windows Kits/8.0/Include/um"
-    ${__windows_kits_includes}
-  )
+  FIND_LIBRARY(DirectX_DXGI_LIBRARY NAMES dxgi HINTS ${DirectX_LIB_SEARCH_PATH})
+  MESSAGE("--   DirectX_DXGI_LIBRARY set to ${DirectX_DXGI_LIBRARY}")
+  FIND_LIBRARY(DirectX_D3DCOMPILER_LIBRARY NAMES d3dcompiler HINTS ${DirectX_LIB_SEARCH_PATH})
+  MESSAGE("--   DirectX_D3DCOMPILER_LIBRARY set to ${DirectX_D3DCOMPILER_LIBRARY}")
 
-  set(DirectX_LIB_SEARCH_PATH
-    "C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um"
-    ${__windows_kits_libs}
-  )
+  FIND_PATH(DirectX_D3D11_INCLUDE_DIR NAMES D3D11Shader.h HINTS ${DirectX_INC_SEARCH_PATH})
+  MESSAGE("--   DirectX_D3D11_INCLUDE_DIR set to ${DirectX_D3D11_INCLUDE_DIR}")
+  FIND_LIBRARY(DirectX_D3D11_LIBRARY NAMES d3d11 HINTS ${DirectX_LIB_SEARCH_PATH})
+  MESSAGE("--   DirectX_D3D11_LIBRARY set to ${DirectX_D3D11_LIBRARY}")
+  FIND_LIBRARY(DirectX_D3DX11_LIBRARY NAMES d3dx11 HINTS ${DirectX_LIB_SEARCH_PATH})
+  IF(DirectX_D3D11_INCLUDE_DIR AND DirectX_D3D11_LIBRARY)
+    SET(DirectX_D3D11_FOUND TRUE)
+    MESSAGE("--   DirectX 11 SDK was found")
+  ENDIF()
 
-  create_search_paths(DirectX)
-  # redo search if prefix path changed
-  clear_if_changed(DirectX_PREFIX_PATH
-    DirectX_LIBRARY
-    DirectX_INCLUDE_DIR
-  )
-
-  find_path(DirectX_INCLUDE_DIR NAMES d3d9.h HINTS ${DirectX_INC_SEARCH_PATH})
-  # dlls are in DirectX_ROOT_DIR/Developer Runtime/x64|x86
-  # lib files are in DirectX_ROOT_DIR/Lib/x64|x86
-  if(CMAKE_CL_64)
-    set(DirectX_LIBPATH_SUFFIX "x64")
-  else(CMAKE_CL_64)
-    set(DirectX_LIBPATH_SUFFIX "x86")
-  endif(CMAKE_CL_64)
-
-
-  find_library(DirectX_LIBRARY NAMES d3d9 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-  find_library(DirectX_D3DX9_LIBRARY NAMES d3dx9 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-  find_library(DirectX_DXERR_LIBRARY NAMES DxErr HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-  find_library(DirectX_DXGUID_LIBRARY NAMES dxguid HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-
-
-  # look for dxgi (needed by both 10 and 11)
-  find_library(DirectX_DXGI_LIBRARY NAMES dxgi HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-
-  # look for d3dcompiler (needed by 11)
-  find_library(DirectX_D3DCOMPILER_LIBRARY NAMES d3dcompiler HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-
-  findpkg_finish(DirectX)
-  set(DirectX_LIBRARIES ${DirectX_LIBRARIES}
-    ${DirectX_D3DX9_LIBRARY}
-    ${DirectX_DXERR_LIBRARY}
-    ${DirectX_DXGUID_LIBRARY}
-  )
-
-  mark_as_advanced(DirectX_D3DX9_LIBRARY DirectX_DXERR_LIBRARY DirectX_DXGUID_LIBRARY
-    DirectX_DXGI_LIBRARY DirectX_D3DCOMPILER_LIBRARY)
-
-
-  # look for D3D11 components
-  if (DirectX_FOUND)
-    find_path(DirectX_D3D11_INCLUDE_DIR NAMES D3D11Shader.h HINTS ${DirectX_INC_SEARCH_PATH})
-    get_filename_component(DirectX_LIBRARY_DIR "${DirectX_LIBRARY}" PATH)
-    message(STATUS "DX lib dir: ${DirectX_LIBRARY_DIR}")
-    find_library(DirectX_D3D11_LIBRARY NAMES d3d11 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-    find_library(DirectX_D3DX11_LIBRARY NAMES d3dx11 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-    if (DirectX_D3D11_INCLUDE_DIR AND DirectX_D3D11_LIBRARY)
-      set(DirectX_D3D11_FOUND TRUE)
-      set(DirectX_D3D11_INCLUDE_DIR ${DirectX_D3D11_INCLUDE_DIR})
-      set(DirectX_D3D11_LIBRARIES ${DirectX_D3D11_LIBRARIES}
-        ${DirectX_D3D11_LIBRARY}
-        ${DirectX_DXGI_LIBRARY}
-        ${DirectX_DXGUID_LIBRARY}
-        ${DirectX_D3DCOMPILER_LIBRARY}
-      )
-    endif ()
-    if (DirectX_D3DX11_LIBRARY)
-        set(DirectX_D3D11_LIBRARIES ${DirectX_D3D11_LIBRARIES} ${DirectX_D3DX11_LIBRARY})
-    endif ()
-    if (DirectX_DXERR_LIBRARY)
-        set(DirectX_D3D11_LIBRARIES ${DirectX_D3D11_LIBRARIES} ${DirectX_DXERR_LIBRARY})
-    endif ()
-    mark_as_advanced(DirectX_D3D11_INCLUDE_DIR DirectX_D3D11_LIBRARY DirectX_D3DX11_LIBRARY)
-
-    find_path(DirectX_D3D12_INCLUDE_DIR NAMES D3D12Shader.h HINTS ${DirectX_INC_SEARCH_PATH})
-    find_library(DirectX_D3D12_LIBRARY NAMES d3d12 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-    find_library(DirectX_D3DX12_LIBRARY NAMES d3dx12 HINTS ${DirectX_LIB_SEARCH_PATH} PATH_SUFFIXES ${DirectX_LIBPATH_SUFFIX})
-    if (DirectX_D3D12_INCLUDE_DIR AND DirectX_D3D12_LIBRARY)
-      set(DirectX_D3D12_FOUND TRUE)
-      set(DirectX_D3D12_INCLUDE_DIR ${DirectX_D3D12_INCLUDE_DIR})
-      set(DirectX_D3D12_LIBRARIES ${DirectX_D3D12_LIBRARIES}
-        ${DirectX_D3D12_LIBRARY}
-        ${DirectX_DXGI_LIBRARY}
-        ${DirectX_DXGUID_LIBRARY}
-        ${DirectX_D3DCOMPILER_LIBRARY}
-      )
-    endif()
-    if (DirectX_D3DX12_LIBRARY)
-        set(DirectX_D3D12_LIBRARIES ${DirectX_D3D12_LIBRARIES} ${DirectX_D3DX12_LIBRARY})
-    endif ()
-    if (DirectX_DXERR_LIBRARY)
-        set(DirectX_D3D12_LIBRARIES ${DirectX_D3D12_LIBRARIES} ${DirectX_DXERR_LIBRARY})
-    endif ()
-  endif ()
-
-endif(WIN32)
+  FIND_PATH(DirectX_D3D12_INCLUDE_DIR NAMES D3D12Shader.h HINTS ${DirectX_INC_SEARCH_PATH})
+  MESSAGE("--   DirectX_D3D12_INCLUDE_DIR set to ${DirectX_D3D12_INCLUDE_DIR}")
+  FIND_LIBRARY(DirectX_D3D12_LIBRARY NAMES D3D12 HINTS ${DirectX_LIB_SEARCH_PATH})
+  MESSAGE("--   DirectX_D3D12_LIBRARY set to ${DirectX_D3D12_LIBRARY}")
+  FIND_LIBRARY(DirectX_D3DX11_LIBRARY NAMES d3dx11 HINTS ${DirectX_LIB_SEARCH_PATH})
+  IF(DirectX_D3D12_INCLUDE_DIR AND DirectX_D3D12_LIBRARY)
+    SET(DirectX_D3D12_FOUND TRUE)
+    MESSAGE("--   DirectX 12 SDK was found")
+  ENDIF()
+ENDIF()

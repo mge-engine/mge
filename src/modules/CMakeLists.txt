@@ -3,12 +3,12 @@
 # All rights reserved.
 ADD_SUBDIRECTORY(opengl)
 IF(MSVC)
-#    IF(DirectX_D3D12_FOUND)
-#        ADD_SUBDIRECTORY(directx12)
-#    ENDIF()
-#    IF(DirectX_D3D11_FOUND)
+    IF(DirectX_D3D12_FOUND)
+        ADD_SUBDIRECTORY(directx12)
+    ENDIF()
+    IF(DirectX_D3D11_FOUND)
         ADD_SUBDIRECTORY(directx11)
-#   ENDIF()
+   ENDIF()
 ENDIF()
 
 ADD_SUBDIRECTORY(lua)
