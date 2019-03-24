@@ -25,6 +25,12 @@ variables:
   VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
 
 steps:
+  - script: "dir c:"
+    displayName: "Dump root directory info"
+
+  - script: set
+    displayName: "Dump environment"
+
   - script: curl --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
     displayName: "Download Vulkan SDK"
 
