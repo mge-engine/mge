@@ -32,8 +32,7 @@ namespace mge {
                 :m_map(m)
             {
                 if(m.m_iteration_scope != nullptr) {
-                    MGE_THROW(mge::illegal_state(),
-                              "Unsupported nested iteration scope");
+                    MGE_THROW(mge::illegal_state) << "Unsupported nested iteration scope";
                 }
                 m.m_iteration_scope = this;
             }
@@ -118,8 +117,7 @@ namespace mge {
          m_data(other.m_data)
         {
             if(other.m_iteration_scope != nullptr) {
-                MGE_THROW(mge::illegal_state(),
-                          "Cannot copy function map during iteration");
+                MGE_THROW(mge::illegal_state) << "Cannot copy function map during iteration";
 
             }
         }
@@ -134,8 +132,7 @@ namespace mge {
          m_data(std::move(other.m_data))
         {
             if(other.m_iteration_scope != nullptr) {
-                MGE_THROW(mge::illegal_state(),
-                          "Cannot copy function map during iteration");
+                MGE_THROW(mge::illegal_state) << "Cannot copy function map during iteration";
             }
         }
 
@@ -187,8 +184,7 @@ namespace mge {
         typename map_type::const_iterator begin() const
         {
             if (m_iteration_scope == nullptr) {
-                MGE_THROW(mge::illegal_state(),
-                          "Try to iterate on map without iteration scope");
+                MGE_THROW(mge::illegal_state) << "Try to iterate on map without iteration scope";
             }
             return m_data.begin();
         }
@@ -201,8 +197,7 @@ namespace mge {
         typename map_type::const_iterator end() const
         {
             if (m_iteration_scope == nullptr) {
-                MGE_THROW(mge::illegal_state(),
-                          "Try to iterate on map without iteration scope");
+                MGE_THROW(mge::illegal_state) <<  "Try to iterate on map without iteration scope";
             }
             return m_data.end();
         }

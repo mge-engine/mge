@@ -79,9 +79,8 @@ namespace mge {
             if(*it == ':') {
                 ++it;
                 if(it == full_type_name.end() || *it != ':') {
-                    MGE_THROW(mge::illegal_state(),
-                              "Bad type name: ",
-                              full_type_name);
+                    MGE_THROW(mge::illegal_state)
+                              << "Bad type name: " << full_type_name;
                 }
                 ++it;
                 namestart = it;
@@ -103,9 +102,7 @@ namespace mge {
             if(*it == ':') {
                 ++it;
                 if(it == full_type_name.end() || *it != ':') {
-                    MGE_THROW(mge::illegal_state(),
-                              "Bad type name: ",
-                              full_type_name);
+                    MGE_THROW(mge::illegal_state) << "Bad type name: " <<  full_type_name;
                 }
                 ++it;
                 namestart = it;

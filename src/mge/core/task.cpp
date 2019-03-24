@@ -9,8 +9,7 @@ namespace mge {
         :m_function(f)
     {
         if (!f) {
-           MGE_THROW(illegal_argument(),
-                     "Invalid function to call in task");
+           MGE_THROW(illegal_argument) << "Invalid function to call in task";
         }
     }
 
@@ -25,8 +24,7 @@ namespace mge {
                 m_function();
                 m_result.set_value();
             } else {
-                MGE_THROW(mge::illegal_state(),
-                          "Invalid function to call in task");
+                MGE_THROW(mge::illegal_state) << "Invalid function to call in task";
             }
         } catch(...) {
             try {

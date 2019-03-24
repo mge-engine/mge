@@ -25,9 +25,16 @@ namespace mge {
         io_error& operator=(const io_error& e);
 
         template <typename Info>
-        io_error& operator <<(const Info& info)
+        io_error& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        io_error& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 

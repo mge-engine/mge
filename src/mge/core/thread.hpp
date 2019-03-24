@@ -66,13 +66,13 @@ namespace mge {
         inline void start(const std::function<void()>& f)
         {
             if (!f) {
-                MGE_THROW(mge::illegal_argument(),
-                          "Invalid function parameter for thread start");
+                MGE_THROW(mge::illegal_argument)
+                        << "Invalid function parameter for thread start";
             }
 
             if (joinable()) {
-                MGE_THROW(mge::illegal_state(),
-                          "This thread has already been started");
+                MGE_THROW(mge::illegal_state)
+                          << "This thread has already been started";
             }
 
             m_running_thread = running_thread_t([f, this]{

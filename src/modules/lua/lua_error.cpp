@@ -10,7 +10,7 @@ namespace lua {
         if(status != LUA_OK) {
             std::string msg(lua_tostring(state, -1));
             lua_pop(state, 1);
-            MGE_THROW(lua::error(), msg);
+            MGE_THROW(lua::error) << msg;
         }
     }
 

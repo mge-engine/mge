@@ -24,9 +24,16 @@ namespace mge {
         filesystem_error& operator=(const filesystem_error& e);
 
         template <typename Info>
-        filesystem_error& operator <<(const Info& info)
+        filesystem_error& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        filesystem_error& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 

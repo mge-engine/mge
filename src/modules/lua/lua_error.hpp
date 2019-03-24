@@ -14,10 +14,17 @@ namespace lua {
 
         error &operator=(const error &e);
 
-        template <typename T>
-        error &operator<<(const T &t)
+        template <typename Info>
+        error& set_info(const Info& info)
         {
-            mge::exception::operator<<(t);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        error& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 

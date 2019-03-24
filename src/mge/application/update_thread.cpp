@@ -17,8 +17,8 @@ namespace mge {
     update_thread::update_thread()
     {
         if(s_update_thread != nullptr) {
-            MGE_THROW(mge::illegal_state(),
-                      "Update thread is supposed to be a singleton");
+            MGE_THROW(mge::illegal_state)
+                      << "Update thread is supposed to be a singleton";
         }
     }
 

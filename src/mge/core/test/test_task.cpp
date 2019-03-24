@@ -19,8 +19,7 @@ TEST(task, simple_run)
 TEST(task, exception_in_run)
 {
     mge::task t([]{
-        MGE_THROW(mge::runtime_exception(),
-                  "A runtime exception");
+        MGE_THROW(mge::runtime_exception) << "A runtime exception";
     });
     t.run();
     EXPECT_THROW(t.wait(), mge::runtime_exception);

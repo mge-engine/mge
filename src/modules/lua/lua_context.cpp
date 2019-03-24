@@ -34,7 +34,7 @@ namespace lua {
     lua_context::eval(const char *script)
     {
         if(!script) {
-            MGE_THROW(mge::illegal_argument(), "Script must not be null");
+            MGE_THROW_ARGUMENT_NOT_NULL(script);
         }
         size_t script_len = strlen(script);
         int rc = luaL_loadbuffer(m_lua_state, script, script_len, "");
@@ -47,7 +47,7 @@ namespace lua {
     static I global_variable(lua_State *L, const char *name, const char *type)
     {
         if(name == nullptr) {
-            MGE_THROW(mge::illegal_argument(), "Variable name must not be null");
+            MGE_THROW_ARGUMENT_NOT_NULL(name);
         } else {
             int ty = lua_getglobal(L, name);
             if(ty == LUA_TNUMBER || ty == LUA_TSTRING) {
@@ -56,24 +56,24 @@ namespace lua {
                 if(isnum) {
                     lua_pop(L, 1);
                     if(n < std::numeric_limits<I>::min() || n > std::numeric_limits<I>::max()) {
-                        MGE_THROW(mge::runtime_exception(),
-                                  "Cannot convert value to ",
-                                  type,
-                                  ": numeric overflow");
+                        MGE_THROW(mge::runtime_exception)
+                                  << "Cannot convert value to "
+                                  << type
+                                  << ": numeric overflow";
                     }
                     return (I)n;
                 } else {
                     lua_pop(L, 1);
-                    MGE_THROW(mge::bad_cast(),
-                              "Cannot convert value to ",type);
+                    MGE_THROW(mge::bad_cast)
+                              << "Cannot convert value to " << type;
                 }
             } else {
                 lua_pop(L, 1);
-                MGE_THROW(mge::bad_cast(),
-                          "Cannot convert value of type ",
-                          lua_typename(L, ty),
-                          " to ",
-                          type);
+                MGE_THROW(mge::bad_cast)
+                          << "Cannot convert value of type "
+                          << lua_typename(L, ty)
+                          << " to "
+                          << type;
             }
         }
     }
@@ -148,8 +148,7 @@ namespace lua {
     lua_context::string_value(const char *name)
     {
         if(name == nullptr) {
-            MGE_THROW(mge::illegal_argument(),
-                      "Variable name must not be null");
+            MGE_THROW_ARGUMENT_NOT_NULL(name);
         } else {
             int ty = lua_getglobal(m_lua_state, name);
             if(ty == LUA_TNUMBER || ty == LUA_TSTRING || ty == LUA_TBOOLEAN) {
@@ -160,10 +159,7 @@ namespace lua {
                 return result;
             } else {
                 lua_pop(m_lua_state, 1);
-                MGE_THROW(mge::bad_cast(),
-                          "Cannot convert value of type ",
-                          lua_typename(m_lua_state, ty),
-                          " to string");
+                MGE_THROW(mge::bad_cast) << "Cannot convert value of type " << lua_typename(m_lua_state, ty) << " to string";
             }
         }
     }
@@ -172,8 +168,7 @@ namespace lua {
     lua_context::bool_value(const char *name)
     {
         if(name == nullptr) {
-            MGE_THROW(mge::illegal_argument(),
-                      "Variable name must not be null");
+            MGE_THROW_ARGUMENT_NOT_NULL(name);
         } else {
             lua_getglobal(m_lua_state, name);
             int val = lua_toboolean(m_lua_state, 1);

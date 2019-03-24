@@ -5,20 +5,19 @@
 
 namespace mge {
 
-    exception::~exception()
-    {}
-
-    exception::exception()
-    {}
 
     exception::exception(const exception& e)
         : std::exception(e)
         ,m_infos(e.m_infos)
-    {}
+    {
+        copy_message_or_materialize(e);
+    }
 
     exception::exception(exception&& e)
         : std::exception(std::move(e))
         ,m_infos(std::move(e.m_infos))
+        ,m_raw_message_stream(std::move(e.m_raw_message_stream))
+        ,m_raw_message(std::move(e.m_raw_message))
     {}
 
     exception&
@@ -26,6 +25,7 @@ namespace mge {
     {
         std::exception::operator =(e);
         m_infos = e.m_infos;
+        copy_message_or_materialize(e);
         return *this;
     }
 
@@ -34,22 +34,38 @@ namespace mge {
     {
         std::exception::operator =(std::move(e));
         m_infos = std::move(e.m_infos);
+        m_raw_message_stream = std::move(e.m_raw_message_stream);
+        m_raw_message = std::move(e.m_raw_message);
         return *this;
+    }
+
+    void
+    exception::copy_message_or_materialize(const exception& e)
+    {
+        if(e.m_raw_message_stream) {
+            m_raw_message = e.m_raw_message_stream->str();
+        } else {
+            m_raw_message = e.m_raw_message;
+        }
+    }
+
+    void
+    exception::materialize_message() const
+    {
+        if(m_raw_message_stream) {
+            m_raw_message = m_raw_message_stream->str();
+            m_raw_message_stream.reset();
+        }
     }
 
     const char *
     exception::what() const
     {
-        if (!m_message.empty()) {
-            return m_message.c_str();
-        }
+        materialize_message();
 
-        auto potential_message = get<mge::exception::message>();
-        if(potential_message) {
-            m_message = potential_message.value();
-            return m_message.c_str();
+        if (!m_raw_message.empty()) {
+            return m_raw_message.c_str();
         }
-
         return std::exception::what();
     }
 
@@ -103,5 +119,7 @@ namespace mge {
         }
         return os;
     }
+
+
 
 }

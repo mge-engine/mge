@@ -143,11 +143,8 @@ namespace mge {
          */
         struct message : public tag<message, std::string>
         {
-            template <typename ... Args>
-            message(Args ... args)
-            {
-                m_value = mge::format_string(args...);
-            }
+            message()
+            {}
 
             const std::string& value() const noexcept
             {
@@ -191,7 +188,7 @@ namespace mge {
         /**
          * Constructor.
          */
-        exception();
+        exception() = default;
         /**
          * Copy constructor.
          * @param e copied exception
@@ -206,7 +203,7 @@ namespace mge {
         /**
          * Destructor.
          */
-        virtual ~exception();
+        virtual ~exception() = default;
 
         /**
          * Assignment.
@@ -227,17 +224,28 @@ namespace mge {
          */
         const char *what() const override;
 
+
+
         template <typename Info>
-        exception& operator <<(const Info& info)
+        exception& set_info(const Info& info)
         {
+            const auto message_key = std::type_index(typeid(typename exception::message::tag_type));
             m_infos[std::type_index(typeid(typename Info::tag_type))]
                     = info.value();
+            return *this;
+        }
+
+        template<>
+        exception& set_info<exception::message>(const exception::message& info)
+        {
+            m_raw_message = info.value();
             return *this;
         }
 
         template <typename Info>
         inline auto get() const
         {
+            const auto message_key = std::type_index(typeid(typename exception::message::tag_type));
             auto it = m_infos.find(std::type_index(typeid(typename Info::tag_type)));
             boost::optional<Info::value_type> result;
             if (it != m_infos.end()) {
@@ -246,15 +254,44 @@ namespace mge {
             return result;
         }
 
+        template<>
+        inline auto get<exception::message>() const
+        {
+            materialize_message();
+            return m_raw_message;
+        }
+
         exception_details details() const noexcept
         {
             return exception_details(this);
         }
+
+        template <typename T>
+        exception& operator <<(const T& value)
+        {
+            if(!m_raw_message_stream) {
+                m_raw_message_stream = std::make_unique<std::stringstream>();
+                if(!m_raw_message.empty()) {
+                    (*m_raw_message_stream) << m_raw_message;
+                    m_raw_message.clear();
+                }
+            }
+
+            (*m_raw_message_stream) << value;
+
+            return *this;
+        }
+
+
     private:
         typedef std::map<std::type_index, boost::any> exception_info_map_t;
         exception_info_map_t m_infos;
     private:
-        mutable std::string m_message;
+        void copy_message_or_materialize(const exception& e);
+        void materialize_message() const;
+
+        mutable std::unique_ptr<std::stringstream> m_raw_message_stream;
+        mutable std::string m_raw_message;
     };
 
 
@@ -278,29 +315,28 @@ namespace mge {
 
 /**
  * Throw exception instance.
- * @param ex exception instance
- * @param ... additional exception parameters
+ * @param ex exception type
  */
-#define MGE_THROW(ex, ...)                                          \
-    throw (ex) << mge::exception::source_file(__FILE__)             \
-               << mge::exception::source_line(__LINE__)             \
-               << mge::exception::function(MGE_FUNCTION_SIGNATURE)  \
-               << mge::exception::stack(mge::stacktrace())          \
-               << mge::exception::type_name(mge::type_name<decltype(ex)>())   \
-               << mge::exception::message(__VA_ARGS__)
+#define MGE_THROW(ex)                                                     \
+    throw ex().set_info(mge::exception::source_file(__FILE__))            \
+              .set_info(mge::exception::source_line(__LINE__))            \
+              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE)) \
+              .set_info(mge::exception::stack(mge::stacktrace()))         \
+              .set_info(mge::exception::type_name(mge::type_name<ex>()))
 
-#define MGE_THROW_WITH_CAUSE(ex, cause, ...)                        \
-    throw (ex) << mge::exception::source_file(__FILE__)             \
-               << mge::exception::source_line(__LINE__)             \
-               << mge::exception::function(MGE_FUNCTION_SIGNATURE)  \
-               << mge::exception::stack(mge::stacktrace())          \
-               << mge::exception::type_name(mge::type_name<decltype(ex)>())   \
-               << mge::exception::cause(cause)                       \
-               << mge::exception::message(__VA_ARGS__)
-
+#define MGE_THROW_WITH_CAUSE(ex, causing_exception)                       \
+    throw ex().set_info(mge::exception::source_file(__FILE__))            \
+              .set_info(mge::exception::source_line(__LINE__))            \
+              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE)) \
+              .set_info(mge::exception::stack(mge::stacktrace()))         \
+              .set_info(mge::exception::type_name(mge::type_name<ex>()))  \
+              .set_info(mge::exception::cause(causing_exception))
 
 #define MGE_CALLED_FUNCTION(X) ::mge::exception::called_function(#X)
+
 
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception& ex);
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception::exception_details& d);
 }
+
+

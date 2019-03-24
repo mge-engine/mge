@@ -379,8 +379,7 @@ namespace win32 {
         window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
         window_class.hIconSm = LoadIcon(module_handle, IDI_APPLICATION);
         if (!RegisterClassExW(&window_class)) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR
-                << mge::exception::message("Failed to register window class");
+            MGE_THROW_CURRENT_SYSTEM_ERROR << "Failed to register window class";
         }
         s_window_class_created = true;
     }
@@ -422,7 +421,7 @@ namespace win32 {
                                  this);
         MGE_DEBUG_LOG(WIN32) << "Window " << m_hwnd << " created";
         if(!m_hwnd) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << mge::exception::message("Call to CreateWindowEx failed");
+            MGE_THROW_CURRENT_SYSTEM_ERROR << "Call to CreateWindowEx failed";
         }
     }
 

@@ -8,7 +8,7 @@ static void bench_mge_throw(benchmark::State& state)
 {
     while (state.KeepRunning()) {
         try {
-            MGE_THROW(mge::exception());
+            MGE_THROW(mge::exception);
         } catch(const mge::exception&) {
             // noop
         }

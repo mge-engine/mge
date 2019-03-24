@@ -196,7 +196,7 @@ namespace mge {
         reference at(const size_type i)
         {
             if(i>=2) {
-                MGE_THROW(out_of_range());
+                MGE_THROW(out_of_range);
             }
             return (&x)[i];
         }
@@ -204,7 +204,7 @@ namespace mge {
         const_reference at(const size_type i) const
         {
             if(i>=2) {
-                MGE_THROW(out_of_range());
+                MGE_THROW(out_of_range);
             }
             return (&x)[i];
         }

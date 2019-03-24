@@ -21,8 +21,8 @@ namespace mge {
         ,m_quit(false)
     {
         if (s_instance) {
-            MGE_THROW(mge::illegal_state(),
-                      "Cannot create duplicate application object");
+            MGE_THROW(mge::illegal_state)
+                      << "Cannot create duplicate application object";
         }
         s_instance = this;
     }
@@ -41,8 +41,7 @@ namespace mge {
         if (s_instance) {
             return *s_instance;
         } else {
-            MGE_THROW(mge::illegal_state(),
-                      "No application object has been created");
+            MGE_THROW(mge::illegal_state) << "No application object has been created";
         }
     }
 
@@ -95,12 +94,10 @@ namespace mge {
     application::set_arguments(int argc_, const char **argv_)
     {
         if(m_argc) {
-            MGE_THROW(mge::illegal_state(),
-                      "Application arguments already set");
+            MGE_THROW(mge::illegal_state) << "Application arguments already set";
         }
         if(argc_ <= 0) {
-            MGE_THROW(mge::illegal_argument(),
-                      "Argument count must be greater than 0");
+            MGE_THROW(mge::illegal_argument) << "Argument count must be > 0";
         }
         m_argc = argc_;
         for(int i=0; i<argc_; ++i) {
@@ -125,13 +122,13 @@ namespace mge {
                 auto arg_it = it;
                 ++it;
                 if(it == m_argv_values.end()) {
-                    MGE_THROW(mge::illegal_argument(),
-                              "Configuration option expects an argument");
+                    MGE_THROW(mge::illegal_argument)
+                              << "Configuration option expects an argument";
                 }
                 auto p = it->find_first_of("=");
                 if(p == std::string::npos) {
-                    MGE_THROW(mge::illegal_argument(),
-                              "Configuration option in form key=value expected");
+                    MGE_THROW(mge::illegal_argument)
+                              << "Configuration option in form key=value expected";
                 }
                 // TODO: make it a string view
                 std::string key(it->begin(), it->begin()+p);
@@ -208,8 +205,8 @@ namespace mge {
         if(l) {
             return m_update_listeners.insert(l);
         } else {
-            MGE_THROW(mge::illegal_argument(),
-                      "Try to add invalid update listener");
+            MGE_THROW(mge::illegal_argument)
+                      << "Try to add invalid update listener";
         }
     }
 
@@ -231,8 +228,8 @@ namespace mge {
         if(listener) {
             return m_quit_listeners.insert(listener);
         } else {
-            MGE_THROW(illegal_argument(),
-                      "Try to add invalid quit listener");
+            MGE_THROW(illegal_argument)
+                      << "Try to add invalid quit listener";
         }
     }
 
@@ -246,8 +243,8 @@ namespace mge {
             implementations.emplace_back(s);
         });
         if (implementations.empty()) {
-            MGE_THROW(mge::no_such_element(),
-                      "No application implementation found");
+            MGE_THROW(mge::no_such_element)
+                      << "No application implementation found";
         }
 
         auto instance = application::create(implementations[0]);

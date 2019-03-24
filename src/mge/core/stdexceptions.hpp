@@ -26,12 +26,18 @@ namespace mge {
         illegal_state& operator=(const illegal_state& e);
 
         template <typename Info>
-        illegal_state& operator <<(const Info& info)
+        illegal_state& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
 
+        template <typename T>
+        illegal_state& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
     };
 
 
@@ -52,12 +58,18 @@ namespace mge {
         illegal_argument& operator=(const illegal_argument& e);
 
         template <typename Info>
-        illegal_argument& operator <<(const Info& info)
+        illegal_argument& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
 
+        template <typename T>
+        illegal_argument& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
     };
 
 
@@ -78,12 +90,18 @@ namespace mge {
         out_of_range& operator=(const out_of_range& e);
 
         template <typename Info>
-        out_of_range& operator <<(const Info& info)
+        out_of_range& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
 
+        template <typename T>
+        out_of_range& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
     };
 
     /**
@@ -104,9 +122,16 @@ namespace mge {
         duplicate_element& operator=(const duplicate_element& e);
 
         template <typename Info>
-        duplicate_element& operator <<(const Info& info)
+        duplicate_element& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        duplicate_element& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 
@@ -131,12 +156,18 @@ namespace mge {
         bad_cast& operator=(const bad_cast& e);
 
         template <typename Info>
-        bad_cast& operator <<(const Info& info)
+        bad_cast& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
 
+        template <typename T>
+        bad_cast& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
     };
 
 
@@ -156,11 +187,19 @@ namespace mge {
         no_such_element& operator=(const no_such_element& e);
 
         template <typename Info>
-        no_such_element& operator <<(const Info& info)
+        no_such_element& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
+
+        template <typename T>
+        no_such_element& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
+
     };
 
 
@@ -181,11 +220,19 @@ namespace mge {
         runtime_exception& operator=(const runtime_exception& e);
 
         template <typename Info>
-        runtime_exception& operator <<(const Info& info)
+        runtime_exception& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
+
+        template <typename T>
+        runtime_exception& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
+
     };
 
     /**
@@ -204,16 +251,24 @@ namespace mge {
         not_yet_implemented& operator=(const not_yet_implemented& e);
 
         template <typename Info>
-        not_yet_implemented& operator <<(const Info& info)
+        not_yet_implemented& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
             return *this;
         }
 
+        template <typename T>
+        not_yet_implemented& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
     };
 
 
 }
+
+#define MGE_THROW_ARGUMENT_NOT_NULL(N) MGE_THROW(mge::illegal_argument) << "Argument '" << #N << "' must not be null"
 
 #define MGE_DEFINE_EXCEPTION(clazz)                        \
     clazz::clazz()                                         \

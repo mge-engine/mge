@@ -42,7 +42,7 @@ public:
             }
             // test exception safety as fly-by
             if(update_called == 10) {
-                MGE_THROW(mge::illegal_state());
+                MGE_THROW(mge::illegal_state);
             }
         });
         add_quit_listener([&](){

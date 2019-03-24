@@ -20,7 +20,8 @@ namespace mge {
     {
         const color_name *c = find_color(name);
         if (c == nullptr) {
-            MGE_THROW(mge::illegal_argument(), "Unknown color name \"", name, "\"");
+            MGE_THROW(mge::illegal_argument)
+                    << "Unknown color name \"" << name << "\"";
         } else {
             r = c->r;
             g = c->g;

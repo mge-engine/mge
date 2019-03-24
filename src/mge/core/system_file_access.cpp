@@ -31,11 +31,11 @@ namespace mge {
             m_file = fopen(filename.c_str(), "rb");
             if (!m_file) {
                 if (errno == ENOENT) {
-                    MGE_THROW(mge::file_not_found(),
-                        "Cannot open file ", filename, " for reading");
+                    MGE_THROW(mge::file_not_found)
+                        << "Cannot open file '" << filename << "' for reading";
                 } else {
-                    MGE_THROW(mge::io_error(),
-                        "Cannot open file ", filename, " for reading");
+                    MGE_THROW(mge::io_error)
+                        << "Cannot open file '" << filename << "' for reading";
                 }
             }
         }
@@ -64,8 +64,7 @@ namespace mge {
             if (m_file) {
                 int whence = this->whence(dir);
                 if (fseek(m_file, offset, whence)) {
-                    MGE_THROW(mge::io_error(),
-                              "Seek operation failed");
+                    MGE_THROW(mge::io_error) << "Seek operation failed";
                 }
                 return system_file_input_stream::position();
             } else {
@@ -84,18 +83,15 @@ namespace mge {
                                               input_stream::streamsize_type size) override
         {
             if (size < 0) {
-                MGE_THROW(mge::illegal_argument(),
-                          "Read size must be >= 0");
+                MGE_THROW(mge::illegal_argument) <<  "Read size must be >= 0";
             }
 
             streamsize_type readbytes = (streamsize_type) fread(
                             destination, 1, (size_t) size, m_file);
             if (readbytes != size) {
                 if (!feof(m_file)) {
-                    MGE_THROW(mge::io_error(),
-                              "File read failed, failed to read",
-                              size,
-                              " bytes");
+                    MGE_THROW(mge::io_error)
+                              << "File read failed, failed to read " << size << " bytes";
                 }
             }
 
@@ -113,8 +109,7 @@ namespace mge {
             case POS_END:
                 return SEEK_END;
             default:
-                MGE_THROW(mge::io_error(),
-                          "Unsupported seek direction");
+                MGE_THROW(mge::io_error) << "Unsupported seek direction: " << dir;
             }
         }
         FILE *m_file;
@@ -171,11 +166,11 @@ namespace mge {
             try {
                 MGE_THROW_SYSTEM_ERROR(ec);
             } catch(const exception& e) {
-                MGE_THROW(mge::filesystem_error(),
-                          "Cannot create directory  '",
-                          path(),
-                          "': ",
-                          e.what()) << mge::exception::cause(e);
+                MGE_THROW_WITH_CAUSE(mge::filesystem_error, e)
+                    << "Cannot create directory '"
+                    << path()
+                    << "': "
+                    << e.what();
             }
         }
     }
@@ -183,8 +178,10 @@ namespace mge {
     void system_file_access::rmdir()
     {
         if (!is_directory()) {
-            MGE_THROW(mge::filesystem_error(),
-                      "File '", path(), "' is not a directory");
+            MGE_THROW(mge::filesystem_error)
+                      << "File '"
+                      << path()
+                      << "' is not a directory";
         }
 
         boost::system::error_code ec;
@@ -192,11 +189,11 @@ namespace mge {
             try {
                 MGE_THROW_SYSTEM_ERROR(ec);
             } catch(const exception& e) {
-                MGE_THROW(mge::filesystem_error(),
-                          "Cannot remove directory  '",
-                          path(),
-                          "': ",
-                          e.what()) << mge::exception::cause(e);
+                MGE_THROW_WITH_CAUSE(mge::filesystem_error, e)
+                          << "Cannot remove directory  '"
+                          << path()
+                          << "': "
+                          << e.what();
             }
         }
 

@@ -35,12 +35,10 @@ namespace mge {
     thread_group::add_thread(thread *t)
     {
         if(t == thread::this_thread()) {
-            MGE_THROW(mge::illegal_argument(),
-                      "A thread cannot add itself");
+            MGE_THROW(mge::illegal_argument) << "A thread cannot add itself";
         }
         if(t->group()) {
-            MGE_THROW(mge::illegal_argument(),
-                      "Thread is already in thread group");
+            MGE_THROW(mge::illegal_argument) << "Thread is already in thread group";
         }
 
         {
@@ -54,12 +52,10 @@ namespace mge {
     thread_group::remove_thread(thread *t)
     {
         if(t == thread::this_thread()) {
-            MGE_THROW(mge::illegal_argument(),
-                      "A thread cannot remove itself");
+            MGE_THROW(mge::illegal_argument) << "A thread cannot remove itself";
         }
         if(t->m_group != this) {
-            MGE_THROW(mge::illegal_argument(),
-                      "Thread is not in thread group");
+            MGE_THROW(mge::illegal_argument) << "Thread is not in thread group";
         }
         {
             std::lock_guard<decltype(m_mutex)> guard(m_mutex);
@@ -77,8 +73,7 @@ namespace mge {
     thread_group::join_all()
     {
         if(this_thread_in_group()) {
-            MGE_THROW(mge::illegal_state(),
-                      "Cannot join threads in thread group from contained thread");
+            MGE_THROW(mge::illegal_state) << "Cannot join threads in thread group from contained thread";
         }
         {
             std::lock_guard<decltype(m_mutex)> guard(m_mutex);

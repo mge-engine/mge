@@ -88,10 +88,8 @@ namespace mge {
                m_height = *i;
                ++i;
            } else {
-               MGE_THROW(illegal_argument(),
-                         "rectangle cannot be initialized with list of size ",
-                         l.size(),
-                         ".");
+               MGE_THROW(illegal_argument)
+                       << "Invalid size of initializer list: " << l.size();
            }
        }
 

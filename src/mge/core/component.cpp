@@ -31,10 +31,8 @@ namespace mge {
         {
             std::string component_name(c->name());
             if (contains(m_components, component_name)) {
-                MGE_THROW(mge::duplicate_element(),
-                          "Try to register duplicate component '",
-                          component_name,
-                          "'.");
+                MGE_THROW(mge::duplicate_element)
+                        << "Try to register duplicate component '" << component_name << "'";
             }
             m_components.insert(std::make_pair(component_name, c));
             update_pending_implementations(component_name);

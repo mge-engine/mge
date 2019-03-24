@@ -37,9 +37,16 @@ namespace mge {
         system_error& operator=(const system_error& e);
 
         template <typename Info>
-        system_error& operator <<(const Info& info)
+        system_error& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        system_error& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 
@@ -58,13 +65,16 @@ namespace mge {
  * Throws the current system error.
  */
 #define MGE_THROW_CURRENT_SYSTEM_ERROR    \
-    MGE_THROW(mge::system_error()) << mge::system_error::error()
+    MGE_THROW(mge::system_error).set_info(mge::system_error::error())
 
 /**
  * Throws a system error that has been reported before.
  * @param error_code error code retrieved already before
  */
 #define MGE_THROW_SYSTEM_ERROR(error_code)     \
-    MGE_THROW(mge::system_error()) << mge::system_error::error(error_code)
+    MGE_THROW(mge::system_error).set_info(mge::system_error::error(error_code))
+
+#define MGE_THROW_SYSCALL_FAILED(F)          \
+    MGE_THROW_CURRENT_SYSTEM_ERROR.set_info(MGE_CALLED_FUNCTION(F))
 
 }

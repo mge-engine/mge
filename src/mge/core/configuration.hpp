@@ -28,9 +28,16 @@ namespace mge {
         configuration_key_not_found& operator=(const configuration_key_not_found& e);
 
         template <typename Info>
-        configuration_key_not_found& operator <<(const Info& info)
+        configuration_key_not_found& set_info(const Info& info)
         {
-            mge::no_such_element::operator << (info);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        configuration_key_not_found& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 

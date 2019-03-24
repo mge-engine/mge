@@ -22,7 +22,7 @@ namespace mge {
     context_object::assert_same_context(const render_context &context) const
     {
         if(&context != m_context.get()) {
-            MGE_THROW(mge::illegal_state(), "Render context is different");
+            MGE_THROW(mge::illegal_state) << "Different render context";
         }
     }
 

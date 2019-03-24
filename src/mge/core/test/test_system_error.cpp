@@ -9,7 +9,7 @@
 TEST(system_error, construct)
 {
     mge::system_error err;
-    err << mge::system_error::error();
+    err.set_info(mge::system_error::error());
     mge::test_stream_any_output(err);
 
 }
@@ -18,6 +18,6 @@ TEST(system_error, construct_from_boost_error_code)
 {
     mge::system_error err;
     boost::system::error_code ec;
-    err << mge::system_error::error(ec);
+    err.set_info(mge::system_error::error(ec));
     mge::test_stream_any_output(err);
 }

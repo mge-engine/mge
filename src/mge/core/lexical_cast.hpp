@@ -13,8 +13,7 @@ namespace mge {
         try {
             return boost::lexical_cast<Target>(source);
         } catch(const boost::bad_lexical_cast& e) {
-            MGE_THROW(mge::bad_cast(),
-                      e.what());
+            MGE_THROW(mge::bad_cast) << e.what();
         }
     }
 }

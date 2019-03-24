@@ -18,7 +18,7 @@ TEST(exception, construct)
 TEST(exception, extract_source_file)
 {
     try {
-        MGE_THROW(mge::exception());
+        MGE_THROW(mge::exception);
         FAIL() << "No exception thrown";
     } catch(const mge::exception& ex) {
         auto file_info = ex.get<mge::exception::source_file>();
@@ -31,7 +31,7 @@ TEST(exception, extract_source_file)
 TEST(exception, thrown_exception_has_stacktrace)
 {
     try {
-        MGE_THROW(mge::exception());
+        MGE_THROW(mge::exception);
         FAIL() << "Expect exception to be thrown";
     } catch(const mge::exception& ex_catched) {
         const mge::stacktrace st = ex_catched.get<mge::exception::stack>().value();
@@ -43,7 +43,7 @@ TEST(exception, thrown_exception_has_stacktrace)
 TEST(exception, exception_with_message)
 {
     try {
-        MGE_THROW(mge::exception(),"foo","bar");
+        MGE_THROW(mge::exception) << "foo" << "bar";
     } catch(const mge::exception& ex_catched) {
         EXPECT_STREQ("foobar", ex_catched.what());
     }

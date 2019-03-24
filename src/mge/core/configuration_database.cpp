@@ -47,9 +47,7 @@ namespace mge {
 
         if (open_rc) {
             std::string open_error = sqlite3_errmsg((sqlite3 *) m_db);
-            MGE_THROW(runtime_exception(),
-                      "Cannot open configuration database: ",
-                      open_error);
+            MGE_THROW(runtime_exception) << "Cannot open configuration database: " << open_error;
         }
 
         check_schema();
@@ -97,9 +95,7 @@ namespace mge {
         if (rc != SQLITE_OK) {
             std::string error(errormessage);
             sqlite3_free(errormessage);
-            MGE_THROW(runtime_exception(),
-                      "Cannot query configuration database: ",
-                      error);
+            MGE_THROW(runtime_exception) << "Cannot query configuration database: " << error;
         }
         return exists == 1;
     }
@@ -120,9 +116,7 @@ namespace mge {
             if (rc != SQLITE_OK) {
                 std::string error(errormessage);
                 sqlite3_free(errormessage);
-                MGE_THROW(runtime_exception(),
-                          "Cannot create configuration database: ",
-                          error);
+                MGE_THROW(runtime_exception) << "Cannot create configuration database: " << error;
             }
             ++i;
         }
@@ -159,9 +153,7 @@ namespace mge {
             values.clear();
             std::string error(errormessage);
             sqlite3_free(errormessage);
-            MGE_THROW(runtime_exception(),
-                      "Cannot read configuration values: ",
-                      error);
+            MGE_THROW(runtime_exception) << "Cannot read configuration values: " << error;
         }
     }
 
@@ -183,9 +175,7 @@ namespace mge {
             values.clear();
             std::string error(errormessage);
             sqlite3_free(errormessage);
-            MGE_THROW(runtime_exception(),
-                      "Cannot read configuration values: ",
-                      error);
+            MGE_THROW(runtime_exception) << "Cannot read configuration values: " << error;
         }
 
         return;
@@ -230,9 +220,7 @@ namespace mge {
         if (rc != SQLITE_OK) {
             std::string error(errormessage);
             sqlite3_free(errormessage);
-            MGE_THROW(runtime_exception(),
-                      "Cannot store configuration value: ",
-                      error);
+            MGE_THROW(runtime_exception) << "Cannot store configuration value: " << error;
         }
     }
 
@@ -247,9 +235,7 @@ namespace mge {
         if (rc != SQLITE_OK) {
             std::string error(errormessage);
             sqlite3_free(errormessage);
-            MGE_THROW(runtime_exception(),
-                      "Cannot delete configuration key: ",
-                      error);
+            MGE_THROW(runtime_exception) << "Cannot delete configuration key: " << error;
         }
     }
 
@@ -274,9 +260,7 @@ namespace mge {
         if (rc != SQLITE_OK) {
             std::string error(errormessage);
             sqlite3_free(errormessage);
-            MGE_THROW(runtime_exception(),
-                      "Cannot clear configuration: ",
-                      error);
+            MGE_THROW(runtime_exception) << "Cannot clear configuration: " << error;
         }
     }
 }

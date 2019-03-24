@@ -16,7 +16,7 @@ namespace opengl {
     {
         m_hdc = GetDC(m_hwnd);
         if (!m_hdc) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(GetDC);
+            MGE_THROW_SYSCALL_FAILED(GetDC);
         }
 
         choose_pixel_format();
@@ -49,10 +49,10 @@ namespace opengl {
 
         int pixel_format = ChoosePixelFormat(m_hdc, &pixel_format_desc);
         if (pixel_format == 0) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(ChoosePixelFormat);
+            MGE_THROW_SYSCALL_FAILED(ChoosePixelFormat);
         }
         if (!SetPixelFormat(m_hdc, pixel_format, &pixel_format_desc)) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(SetPixelFormat);
+            MGE_THROW_SYSCALL_FAILED(SetPixelFormat);
         }
     }
 
@@ -61,10 +61,10 @@ namespace opengl {
     {
         m_hglrc = wglCreateContext(m_hdc);
         if (!m_hglrc) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(wglCreateContext);
+            MGE_THROW_SYSCALL_FAILED(wglCreateContext);
         }
         if (!wglMakeCurrent(m_hdc, m_hglrc)) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(wglMakeCurrent);
+            MGE_THROW_SYSCALL_FAILED(wglMakeCurrent);
         }
     }
 
@@ -77,8 +77,8 @@ namespace opengl {
             MGE_INFO_LOG(OPENGL) << "Initialize gl3w";
             auto rc = gl3wInit();
             if (rc) {
-                MGE_THROW(mge::exception(),
-                          "Initialization of gl3w library failed with rc ",rc);
+                MGE_THROW(mge::runtime_exception)
+                          << "Initialization of gl3w library failed with rc " << rc;
             }
             s_gl3w_initialized = true;
         }
@@ -108,7 +108,7 @@ namespace opengl {
     render_context::assign_thread()
     {
         if (!wglMakeCurrent(m_hdc, m_hglrc)) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(wglMakeCurrent);
+            MGE_THROW_SYSCALL_FAILED(wglMakeCurrent);
         }
     }
 
@@ -116,7 +116,7 @@ namespace opengl {
     render_context::flush()
     {
         if(!SwapBuffers(m_hdc)) {
-            MGE_THROW_CURRENT_SYSTEM_ERROR << MGE_CALLED_FUNCTION(SwapBuffers);
+            MGE_THROW_SYSCALL_FAILED(SwapBuffers);
         }
     }
 #endif

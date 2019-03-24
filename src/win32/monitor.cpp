@@ -27,10 +27,9 @@ namespace win32 {
         HDC dc;
         dc = CreateDCW(L"DISPLAY", adapter_device.DeviceName, NULL, NULL);
         if (!dc) {
-            MGE_THROW(mge::system_error(),
-                      "CreateDC call for device ",
-                      mge::to_utf8(adapter_device.DeviceName),
-                      " failed");
+            MGE_THROW(mge::system_error)
+                    << "CreateDC call for device " <<  mge::to_utf8(adapter_device.DeviceName)
+                    << " failed";
         }
         m_physical_width = (unsigned int) GetDeviceCaps(dc, HORZSIZE);
         m_physical_height = (unsigned int) GetDeviceCaps(dc, VERTSIZE);
@@ -114,17 +113,17 @@ namespace win32 {
                            nullptr,
                            nullptr);
         if (!dc) {
-            MGE_THROW(mge::system_error(),
-                      "CreateDC call for device ",
-                      mge::to_utf8(m_adapter_device.DeviceName),
-                      " failed");
+            MGE_THROW(mge::system_error)
+                      << "CreateDC call for device "
+                      << mge::to_utf8(m_adapter_device.DeviceName)
+                      << " failed";
         }
         BOOL rc = GetDeviceGammaRamp(dc, values);
         if (!rc) {
-            MGE_THROW(mge::system_error(),
-                      "GetDeviceGammaRamp call for device ",
-                      mge::to_utf8(m_adapter_device.DeviceName),
-                      " failed");
+            MGE_THROW(mge::system_error)
+                      << "GetDeviceGammaRamp call for device "
+                      << mge::to_utf8(m_adapter_device.DeviceName)
+                      << " failed";
         }
         DeleteDC(dc);
 
@@ -145,10 +144,10 @@ namespace win32 {
         if(!EnumDisplaySettingsW(m_adapter_device.DeviceName,
                                  ENUM_CURRENT_SETTINGS,
                                  &dm))  {
-            MGE_THROW(mge::system_error(),
-                      "EnumDisplaySettingsW call for device ",
-                      mge::to_utf8(m_adapter_device.DeviceName),
-                      " failed");
+            MGE_THROW(mge::system_error)
+                      << "EnumDisplaySettingsW call for device "
+                      << mge::to_utf8(m_adapter_device.DeviceName)
+                      << " failed";
         }
         mge::video_mode mode;
         mode.width = dm.dmPelsWidth;

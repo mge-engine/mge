@@ -19,8 +19,8 @@ namespace mge {
             if (!m_system_factory) {
                 m_system_factory = file_access_factory::create("system");
                 if (!m_system_factory) {
-                    MGE_THROW(illegal_state(),
-                              "System file access factory not initialized");
+                    MGE_THROW(illegal_state)
+                              << "System file access factory not initialized";
                 }
             }
 

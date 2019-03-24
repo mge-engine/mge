@@ -25,9 +25,16 @@ namespace mge {
         file_not_found& operator=(const file_not_found& e);
 
         template <typename Info>
-        file_not_found& operator <<(const Info& info)
+        file_not_found& set_info(const Info& info)
         {
-            mge::exception::operator << (info);
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        file_not_found& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
             return *this;
         }
 

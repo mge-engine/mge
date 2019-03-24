@@ -93,10 +93,10 @@ namespace mge {
 
         auto i = m_values.find(key);
         if(i==m_values.end()) {
-            MGE_THROW(configuration_key_not_found(),
-                      "Configuration key '",
-                      key,
-                      "' not found");
+            MGE_THROW(configuration_key_not_found)
+                      << "Configuration key '"
+                      << key
+                      << "' not found";
         } else {
             return i->second;
         }
