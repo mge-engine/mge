@@ -7,6 +7,7 @@
 # free to make use of it in any way you like.
 #-------------------------------------------------------------------
 
+#
 
 # -----------------------------------------------------------------------------
 # Find DirectX SDK
@@ -40,21 +41,26 @@ if(WIN32) # The only platform it makes sense to check for DirectX SDK
     "$ENV{ProgramFiles}/Microsoft DirectX SDK*"
   )
 
+  # get all installed kits and reverse the list to prefer the latest
+  file(GLOB __windows_kits_libs
+       LIST_DIRECTORIES TRUE
+       "C:/Program Files (x86)/Windows Kits/10/Lib/*/um")
+  list(REVERSE __windows_kits_libs)
+  file(GLOB __windows_kits_includes
+       LIST_DIRECTORIES TRUE
+       "C:/Program Files (x86)/Windows Kits/10/Include/*/shared")
+  list(REVERSE __windows_kits_includes)
+
   # Windows 8 SDK has custom layout
   set(DirectX_INC_SEARCH_PATH
     "C:/Program Files (x86)/Windows Kits/8.0/Include/shared"
     "C:/Program Files (x86)/Windows Kits/8.0/Include/um"
-    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17763.0/shared"
-    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/shared"
-    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10586.0/shared"
-    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.10240.0/shared"
+    ${__windows_kits_includes}
   )
+
   set(DirectX_LIB_SEARCH_PATH
     "C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um"
-    "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.17763.0/um"
-    "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0/um"
-    "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.10586.0/um"
-    "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.10240.0/um"
+    ${__windows_kits_libs}
   )
 
   create_search_paths(DirectX)
