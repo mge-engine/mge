@@ -38,11 +38,11 @@ TARGET_IS_TEST(coretest_crash)
 
 
 ADD_EXECUTABLE(corebenchmark
-#  bench_format_string.cpp
-#  bench_exception.cpp
-#  bench_lexical_cast.cpp
-#  bench_stacktrace.cpp
-#  bench_memory.cpp
+  bench_format_string.cpp
+  bench_exception.cpp
+  bench_lexical_cast.cpp
+  bench_stacktrace.cpp
+  bench_memory.cpp
   ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp
 )
-TARGET_LINK_LIBRARIES(corebenchmark mgecore googlebenchmark)
+TARGET_LINK_LIBRARIES(corebenchmark googlebenchmark mgecore)
