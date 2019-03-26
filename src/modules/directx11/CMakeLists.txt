@@ -4,6 +4,7 @@
 # Copyright (c) 2017 by Alexander Schroeder
 SET(mge_dx11_module_SOURCES
     common.cpp
+    error.cpp
     render_system.cpp
     render_context.cpp
     window.cpp
