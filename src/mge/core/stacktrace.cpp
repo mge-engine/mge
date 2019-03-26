@@ -189,7 +189,6 @@ namespace mge {
     const char *
     stacktrace::intern_str(const char *str)
     {
-        std::lock_guard<std::mutex> lock(s_strings_lock);
         return s_strings.intern(str);
     }
 
@@ -248,84 +247,86 @@ namespace mge {
         if (!backtrace_possible) {
             return;
         }
+        {
+            std::lock_guard<std::mutex> lock(s_strings_lock);
+            HANDLE current_process = GetCurrentProcess();
+            STACKFRAME64 frame = {};
 
-        HANDLE current_process = GetCurrentProcess();
-        STACKFRAME64 frame = {};
+            frame.AddrPC.Offset = context->Rip;
+            frame.AddrPC.Mode = AddrModeFlat;
+            frame.AddrFrame.Offset = context->Rsp;
+            frame.AddrFrame.Mode = AddrModeFlat;
+            frame.AddrStack.Offset = context->Rsp;
+            frame.AddrStack.Mode = AddrModeFlat;
 
-        frame.AddrPC.Offset = context->Rip;
-        frame.AddrPC.Mode = AddrModeFlat;
-        frame.AddrFrame.Offset = context->Rsp;
-        frame.AddrFrame.Mode = AddrModeFlat;
-        frame.AddrStack.Offset = context->Rsp;
-        frame.AddrStack.Mode = AddrModeFlat;
+            while (size() < 100) {
+                BOOL rc = StackWalk64(IMAGE_FILE_MACHINE_AMD64,
+                                GetCurrentProcess(), thread_handle,
+                                &frame,
+                                context,
+                                NULL, SymFunctionTableAccess64,
+                                SymGetModuleBase64,
+                                NULL);
+                if(!rc || frame.AddrPC.Offset == 0) {
+                    break;
+                }
 
-        while (size() < 100) {
-            BOOL rc = StackWalk64(IMAGE_FILE_MACHINE_AMD64,
-                            GetCurrentProcess(), thread_handle,
-                            &frame,
-                            context,
-                            NULL, SymFunctionTableAccess64,
-                            SymGetModuleBase64,
-                            NULL);
-            if(!rc || frame.AddrPC.Offset == 0) {
-                break;
+
+                IMAGEHLP_MODULE64 moduleinfo;
+                memset(&moduleinfo, 0, sizeof(moduleinfo));
+                moduleinfo.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
+                if (!SymGetModuleInfo64(current_process,
+                                        frame.AddrPC.Offset,
+                                        &moduleinfo)) {
+                    strcpy(moduleinfo.ImageName, "");
+                }
+
+                // get symbol information
+    #define MAX_SYMBOL_NAME_LEN  2000
+                DWORD64 symbolinfo_buffer[(sizeof(IMAGEHLP_SYMBOL64) + MAX_SYMBOL_NAME_LEN) / sizeof(DWORD64) + 1];
+                static IMAGEHLP_SYMBOL64* p_symbolinfo;
+                static DWORD64 symboldisplacement;
+                const char *methodname;
+
+                p_symbolinfo = (IMAGEHLP_SYMBOL64 *) symbolinfo_buffer;
+                p_symbolinfo->SizeOfStruct = sizeof(symbolinfo_buffer);
+                p_symbolinfo->MaxNameLength = MAX_SYMBOL_NAME_LEN;
+                symboldisplacement = 0;
+
+                if (SymGetSymFromAddr64(current_process,
+                                        frame.AddrPC.Offset,
+                                        &symboldisplacement,
+                                        p_symbolinfo)) {
+                    methodname = (const char *) &(p_symbolinfo->Name[0]);
+                } else {
+                    methodname = "";
+                }
+
+                static IMAGEHLP_LINE64 lineinfo;
+                static DWORD linedisplacement;
+                lineinfo.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
+                if (SymGetLineFromAddr64(current_process,
+                                        frame.AddrPC.Offset,
+                                        &linedisplacement, &lineinfo)) {
+                    m_elements.emplace_back(element((void *)frame.AddrPC.Offset,
+                                                    intern_str(methodname),
+                                                    intern_str(lineinfo.FileName),
+                                                    (int)lineinfo.LineNumber,
+                                                    intern_str(moduleinfo.ImageName)));
+                } else {
+                    m_elements.emplace_back(element((void *)frame.AddrPC.Offset,
+                                                    intern_str(methodname),
+                                                    intern_str(""),
+                                                    0,
+                                                    intern_str(moduleinfo.ImageName)));
+                }
+    #ifdef MGE_COMPILER_GNUC
+                m_elements.back().function = demangle(m_elements.back().function.c_str());
+    #endif
+
             }
-
-
-            IMAGEHLP_MODULE64 moduleinfo;
-            memset(&moduleinfo, 0, sizeof(moduleinfo));
-            moduleinfo.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
-            if (!SymGetModuleInfo64(current_process,
-                                    frame.AddrPC.Offset,
-                                    &moduleinfo)) {
-                strcpy(moduleinfo.ImageName, "");
+            CloseHandle(current_process);
             }
-
-            // get symbol information
-#define MAX_SYMBOL_NAME_LEN  2000
-            DWORD64 symbolinfo_buffer[(sizeof(IMAGEHLP_SYMBOL64) + MAX_SYMBOL_NAME_LEN) / sizeof(DWORD64) + 1];
-            static IMAGEHLP_SYMBOL64* p_symbolinfo;
-            static DWORD64 symboldisplacement;
-            const char *methodname;
-
-            p_symbolinfo = (IMAGEHLP_SYMBOL64 *) symbolinfo_buffer;
-            p_symbolinfo->SizeOfStruct = sizeof(symbolinfo_buffer);
-            p_symbolinfo->MaxNameLength = MAX_SYMBOL_NAME_LEN;
-            symboldisplacement = 0;
-
-            if (SymGetSymFromAddr64(current_process,
-                                    frame.AddrPC.Offset,
-                                    &symboldisplacement,
-                                    p_symbolinfo)) {
-                methodname = (const char *) &(p_symbolinfo->Name[0]);
-            } else {
-                methodname = "";
-            }
-
-            static IMAGEHLP_LINE64 lineinfo;
-            static DWORD linedisplacement;
-            lineinfo.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
-            if (SymGetLineFromAddr64(current_process,
-                                      frame.AddrPC.Offset,
-                                      &linedisplacement, &lineinfo)) {
-                m_elements.emplace_back(element((void *)frame.AddrPC.Offset,
-                                                intern_str(methodname),
-                                                intern_str(lineinfo.FileName),
-                                                (int)lineinfo.LineNumber,
-                                                intern_str(moduleinfo.ImageName)));
-            } else {
-                m_elements.emplace_back(element((void *)frame.AddrPC.Offset,
-                                                intern_str(methodname),
-                                                intern_str(""),
-                                                0,
-                                                intern_str(moduleinfo.ImageName)));
-            }
-#ifdef MGE_COMPILER_GNUC
-            m_elements.back().function = demangle(m_elements.back().function.c_str());
-#endif
-
-        }
-        CloseHandle(current_process);
     }
 #else
     void
