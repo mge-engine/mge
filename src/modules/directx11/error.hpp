@@ -6,12 +6,6 @@
 
 namespace dx11 {
 
-    /**
-     * @brief I/O error.
-     *
-     * Thrown on a generic input/output error
-     * happened.
-     */
     class error : public ::mge::exception
     {
     public:
@@ -36,5 +30,7 @@ namespace dx11 {
             return *this;
         }
 
+        static void check_hresult(HRESULT rc, const char *file, int line, const char *clazz, const char *method);
     };
 }
+#define CHECK_HRESULT(rc, clazz, method) ::dx11::error::check_hresult(rc, __FILE__, __LINE__, #clazz, #method)
