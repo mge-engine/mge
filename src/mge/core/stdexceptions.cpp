@@ -13,4 +13,5 @@ namespace mge {
     MGE_DEFINE_EXCEPTION(no_such_element)
     MGE_DEFINE_EXCEPTION(runtime_exception)
     MGE_DEFINE_EXCEPTION(not_yet_implemented)
+    MGE_DEFINE_EXCEPTION(null_pointer)
 }

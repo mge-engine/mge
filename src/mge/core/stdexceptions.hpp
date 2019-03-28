@@ -265,6 +265,35 @@ namespace mge {
         }
     };
 
+    /**
+     * @brief Null pointer exception.
+     *
+     * Raised if an unexpected null pointer is found.
+     */
+    class MGE_CORE_EXPORT null_pointer : public ::mge::exception
+    {
+    public:
+        null_pointer();
+        null_pointer(const null_pointer& e);
+        null_pointer(null_pointer&& e);
+        ~null_pointer();
+
+        null_pointer& operator=(const null_pointer& e);
+
+        template <typename Info>
+        null_pointer& set_info(const Info& info)
+        {
+            mge::exception::set_info (info);
+            return *this;
+        }
+
+        template <typename T>
+        null_pointer& operator << (const T& value)
+        {
+            mge::exception::operator <<(value);
+            return *this;
+        }
+    };
 
 }
 
