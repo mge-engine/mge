@@ -92,9 +92,80 @@ namespace dx12 {
     }
 
     void
+    render_context::create_command_queue()
+    {
+        MGE_DEBUG_LOG(DX12) << "Create command queue";
+        ID3D12CommandQueue *command_queue = nullptr;
+        D3D12_COMMAND_QUEUE_DESC qdesc = {};
+        qdesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+        qdesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+        HRESULT rc = m_device->CreateCommandQueue(&qdesc, IID_PPV_ARGS(&command_queue));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
+        m_command_queue.reset(command_queue);
+    }
+
+    void
+    render_context::create_swap_chain()
+    {
+        MGE_DEBUG_LOG(DX12) << "Create swap chain";
+
+        DXGI_SWAP_CHAIN_DESC1 swdesc = {};
+        swdesc.BufferCount = RENDER_TARGET_COUNT;
+        swdesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        swdesc.SampleDesc.Count = 1; // TODO: multisampling
+        swdesc.SwapEffect = (DXGI_SWAP_EFFECT)4; // DXGI_SWAP_EFFECT_FLIP_DISCARD;
+        IDXGISwapChain3 *swap_chain = nullptr;
+        HRESULT rc = m_dxgi_factory->CreateSwapChainForHwnd(m_command_queue.get(),
+                                                            m_window->hwnd(),
+                                                            &swdesc,
+                                                            nullptr,
+                                                            nullptr,
+                                                            (IDXGISwapChain1**)&swap_chain);
+        CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChain);
+        m_swap_chain.reset(swap_chain);
+        // fullscreen transition disable
+        rc = m_dxgi_factory->MakeWindowAssociation(m_window->hwnd(),
+                                                   DXGI_MWA_NO_ALT_ENTER);
+        m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
+
+        D3D12_DESCRIPTOR_HEAP_DESC heap_desc = {};
+        ID3D12DescriptorHeap *rtv_heap;
+        heap_desc.NumDescriptors = RENDER_TARGET_COUNT;
+        heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+        heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        rc = m_device->CreateDescriptorHeap(&heap_desc,
+                                            IID_PPV_ARGS(&rtv_heap));
+        CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
+        m_rtv_heap.reset(rtv_heap);
+
+        m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+
+        {
+            CD3DX12_CPU_DESCRIPTOR_HANDLE rtv_handle(m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
+
+            for (uint32_t n = 0; n < RENDER_TARGET_COUNT; n++) {
+                ID3D12Resource *rt;
+                rc = m_swap_chain->GetBuffer(n, IID_PPV_ARGS(&rt));
+                CHECK_HRESULT(rc, IDXGISwapChain, GetBuffer);
+                m_render_targets[n].reset(rt);
+                m_device->CreateRenderTargetView(m_render_targets[n].get(), nullptr, rtv_handle);
+                rtv_handle.Offset(1, m_rtv_descriptor_size);
+            }
+        }
+        ID3D12CommandAllocator *command_alloc = nullptr;
+        rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&command_alloc));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        m_command_allocator.reset(command_alloc);
+
+
+    }
+
+    void
     render_context::init_context(const system_config& config)
     {
         create_factory();
         select_adapter();
+        create_command_queue();
+        create_swap_chain();
     }
 }
