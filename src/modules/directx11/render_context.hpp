@@ -14,6 +14,7 @@ namespace dx11 {
         render_context(window *win,
                        const system_config& config);
         ~render_context();
+        void flush() override;
     private:
         void init_context(const system_config& config);
 

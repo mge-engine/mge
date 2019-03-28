@@ -77,7 +77,7 @@ namespace dx11 {
         MGE_DEBUG_LOG(DX11) << "Creating render target view";
         ID3D11RenderTargetView *tmp_render_target_view;
         rc = m_device->CreateRenderTargetView(back_buffer.get(), nullptr, &tmp_render_target_view);
-        //CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
+        CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
         back_buffer->Release();
         MGE_DEBUG_LOG(DX11) << "Set render target";
         m_device_context->OMSetRenderTargets(1, &tmp_render_target_view, nullptr);
@@ -91,6 +91,13 @@ namespace dx11 {
         viewport.MaxDepth = 0.0;
         MGE_DEBUG_LOG(DX11) << "Set view port";
         m_device_context->RSSetViewports(1, &viewport);
+    }
+
+    void
+    render_context::flush()
+    {
+        HRESULT rc = m_swap_chain->Present(0, 0);
+        CHECK_HRESULT(rc, IDXGISwapChain, Present);
     }
 
 }
