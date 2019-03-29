@@ -15,6 +15,7 @@ ADD_LIBRARY(mgegraphics
     window.cpp
     render_context.cpp
     context_object.cpp
+    hardware_buffer.cpp
     command_list.cpp
     memory_command_list.cpp
     window_options.cpp)
