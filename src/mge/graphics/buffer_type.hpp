@@ -1,5 +1,6 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include <iosfwd>
 namespace mge {
     
     /**
@@ -11,4 +12,7 @@ namespace mge {
         INDEX_BUFFER        = 0x02,
         CONSTANT_BUFFER     = 0x04
     };
+
+    MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os, const buffer_type& t);
+
 }

@@ -16,6 +16,10 @@ ADD_LIBRARY(mgegraphics
     render_context.cpp
     context_object.cpp
     hardware_buffer.cpp
+    index_buffer.cpp
+    buffer_type.cpp
+    buffer_usage.cpp
+    shader_type.cpp
     command_list.cpp
     memory_command_list.cpp
     window_options.cpp)

@@ -1,7 +1,8 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include <iosfwd>
 namespace mge {
-    
+
     /**
      * Usage of a buffer.
      */
@@ -12,4 +13,6 @@ namespace mge {
         DYNAMIC     = 3,      //!< buffer will change occasionally
         STREAMING   = 4,      //!< buffer will change frequently
     };
+
+    MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os, const buffer_usage& u);
 }
