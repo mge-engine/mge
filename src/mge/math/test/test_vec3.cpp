@@ -2,30 +2,30 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "test/googletest.hpp"
-#include "mge/math/vec2.hpp"
-
+#include "mge/math/vec3.hpp"
 
 using namespace mge;
 
-TEST(vec2, abs)
+TEST(vec3, abs)
 {
-    fvec2 v1(1.0f, -10.0f);
-    fvec2 v2(1.0f, 10.0f);
+    fvec3 v1(1.0f, -10.0f, -45.0f);
+    fvec3 v2(1.0f, 10.0f, 45.0f);
     EXPECT_EQ(v2, abs(v1));
 }
 
-TEST(vec2, add_assign)
+TEST(vec3, add_assign)
 {
-    fvec2 v(1.0f, 2.0f);
+    fvec3 v(1.0f, 2.0f, 5.0f);
     v += 3.0f;
     EXPECT_EQ(v.x, 4.0f);
     EXPECT_EQ(v.y, 5.0f);
+    EXPECT_EQ(v.z, 8.0f);
 }
 
-TEST(vec2, minus)
+TEST(vec3, minus)
 {
-    fvec2 v1(1.0f, 2.0f);
-    fvec2 v2(-v1);
-    fvec2 v3(-v2);
+    fvec3 v1(1.0f, 2.0f, 4.0f);
+    fvec3 v2(-v1);
+    fvec3 v3(-v2);
     EXPECT_EQ(v3, v1);
 }

@@ -74,4 +74,15 @@ FUNCTION(TARGET_IS_TEST TARGET)
     ENDIF()
 ENDFUNCTION()
 
+FUNCTION(DUMP_ALL)
+    MESSAGE(STATUS "==============================================================")
+    MESSAGE(STATUS "CMAKE VARIABLES")
+    MESSAGE(STATUS "==============================================================")
+    GET_CMAKE_PROPERTY(_variableNames VARIABLES)
+    FOREACH(_variableName ${_variableNames})
+        MESSAGE(STATUS "${_variableName}=${${_variableName}}")
+    ENDFOREACH()
+    MESSAGE(STATUS "==============================================================")
+ENDFUNCTION()
+
 

@@ -30,7 +30,7 @@ namespace mge {
          * @param corner1 first corner
          * @param corner2 second corner
          */
-        aabox(const vec3f& corner1, const vec3f& corner2);
+        aabox(const fvec3& corner1, const fvec3& corner2);
 
         /**
          * @brief Copy constructor.
@@ -49,22 +49,22 @@ namespace mge {
          * @brief Get box minimum corner.
          * @return minimum corner
          */
-        const vec3f& min() const;
+        const fvec3& min() const { return m_min; }
         /**
          * @brief Get box maximum corner.
          * @return maximum corner
          */
-        const vec3f& max() const;
+        const fvec3& max() const { return m_max; }
 
         /**
          * @brief Check whether vector is inside box.
          * @param v vector to check
          * @return @c true if inside box
          */
-        bool contains(const vec3f& v) const;
+        bool contains(const fvec3& v) const;
     private:
-        vec3f m_min;
-        vec3f m_max;
+        fvec3 m_min;
+        fvec3 m_max;
     };
 
     /**
