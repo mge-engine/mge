@@ -1,6 +1,9 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/buffer_access.hpp"
+#include "mge/graphics/buffer_usage.hpp"
 #include "mge/core/async_executor.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 #include <memory>
 namespace mge {
 
@@ -30,6 +33,31 @@ namespace mge {
          * presented.
          */
         virtual void flush() = 0;
+
+        /**
+         * Create an index buffer.
+         * @param usage         buffer usage
+         * @param cpu_access    cpu access flags
+         * @param gpu_access    gpu access flags
+         * @return index buffer
+         */
+        virtual index_buffer_ref create_index_buffer(buffer_usage usage,
+                                                     buffer_access cpu_access,
+                                                     buffer_access gpu_access) = 0;
+
+        /**
+         * Create an index buffer.
+         * @param usage         buffer usage
+         * @param cpu_access    cpu access flags
+         * @param gpu_access    gpu access flags
+         * @param data          buffer data
+         * @param data_size     buffer size
+         */
+        virtual index_buffer_ref create_index_buffer(buffer_usage usage,
+                                                     buffer_access cpu_access,
+                                                     buffer_access gpu_access,
+                                                     void *data,
+                                                     size_t data_size) = 0;
     protected:
         async_executor *m_display_executor;
     };

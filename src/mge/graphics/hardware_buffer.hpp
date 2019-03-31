@@ -21,6 +21,22 @@ namespace mge {
                         buffer_access gpu_access);
     public:
         virtual ~hardware_buffer();
+        /**
+         * Size of buffer in bytes.
+         * @return buffer size
+         */
+        virtual size_t size() const = 0;
+
+        /**
+         * Maps the buffer.
+         * @return mapped buffer
+         */
+        virtual void *map() = 0;
+
+        /**
+         * Unmaps the buffer.
+         */
+        virtual void unmap() = 0;
     protected:
         buffer_type  m_type;
         buffer_usage m_usage;

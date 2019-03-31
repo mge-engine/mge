@@ -15,6 +15,14 @@ namespace dx11 {
                        const system_config& config);
         ~render_context();
         void flush() override;
+        mge::index_buffer_ref create_index_buffer(mge::buffer_usage usage,
+                                                  mge::buffer_access cpu_access,
+                                                  mge::buffer_access gpu_access) override;
+        mge::index_buffer_ref create_index_buffer(mge::buffer_usage usage,
+                                                  mge::buffer_access cpu_access,
+                                                  mge::buffer_access gpu_access,
+                                                  void *data,
+                                                  size_t size) override;
     private:
         void init_context(const system_config& config);
 
