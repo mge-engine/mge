@@ -37,7 +37,7 @@ steps:
   - script: .\VulkanSDK.exe /S
     displayName: "Install Vulkan SDK"
 
-  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan directxtk
+  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
     displayName: "Install dependencies"
 
   - task: CMake@1
