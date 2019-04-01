@@ -12,3 +12,4 @@ mge.includes
 mge.creator*
 mge.creator.user
 CMakeLists.txt.user
+CMakeLists.txt.user.*
