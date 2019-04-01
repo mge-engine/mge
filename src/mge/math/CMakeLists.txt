@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mgemath_sources
+    vec2.cpp
     vec3.cpp
     aabox.cpp
 )

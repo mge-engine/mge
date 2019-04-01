@@ -29,3 +29,11 @@ TEST(vec3, minus)
     fvec3 v3(-v2);
     EXPECT_EQ(v3, v1);
 }
+
+TEST(vec3, print)
+{
+    fvec3 v(1.0f, 2.0f, 3.0f);
+    std::stringstream ss;
+    ss << v;
+    EXPECT_STREQ("[1, 2, 3]", ss.str().c_str());
+}

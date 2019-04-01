@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "test/googletest.hpp"
 #include "mge/math/vec2.hpp"
-
+#include <sstream>
 
 using namespace mge;
 
@@ -28,4 +28,12 @@ TEST(vec2, minus)
     fvec2 v2(-v1);
     fvec2 v3(-v2);
     EXPECT_EQ(v3, v1);
+}
+
+TEST(vec2, print)
+{
+    fvec2 v(1.0f, 2.0f);
+    std::stringstream ss;
+    ss << v;
+    EXPECT_STREQ("[1, 2]", ss.str().c_str());
 }
