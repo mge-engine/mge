@@ -7,5 +7,5 @@ ADD_EXECUTABLE(win32test
 )
 TARGET_LINK_LIBRARIES(win32test mge_win32 mgecore mgegraphics gmock)
 # interactive, will fail if no monitor present
-#TARGET_IS_TEST(win32test)
+TARGET_IS_TEST(win32test)
 
