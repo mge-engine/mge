@@ -8,4 +8,5 @@
 
 namespace mge {
     using glm::clamp;
+    using glm::length;
 }

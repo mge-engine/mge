@@ -12,5 +12,10 @@ namespace mge {
     typedef vec2 fvec2;
 
     MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fvec2& v);
+
+    inline float squared_length(const fvec2& v)
+    {
+        return v.x*v.x + v.y*v.y;
+    }
  }
 

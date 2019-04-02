@@ -10,3 +10,8 @@ ADD_EXECUTABLE(mathtest
 TARGET_LINK_LIBRARIES(mathtest mgemath mgecore gmock)
 TARGET_IS_TEST(mathtest)
 
+ADD_EXECUTABLE(mathbenchmark
+  bench_vec3.cpp
+  ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp
+)
+TARGET_LINK_LIBRARIES(mathbenchmark googlebenchmark mgemath mgecore)

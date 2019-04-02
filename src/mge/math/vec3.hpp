@@ -15,5 +15,11 @@ namespace mge {
 
     MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fvec3& v);
 
+    inline float squared_length(const fvec3& v)
+    {
+        return v.x*v.x + v.y*v.y + v.z*v.z;
+    }
+
+
  }
 
