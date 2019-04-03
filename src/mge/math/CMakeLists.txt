@@ -5,6 +5,7 @@
 SET(mgemath_sources
     vec2.cpp
     vec3.cpp
+    vec4.cpp
     aabox.cpp
 )
 ADD_LIBRARY(mgemath
