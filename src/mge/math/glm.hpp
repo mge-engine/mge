@@ -9,4 +9,7 @@
 namespace mge {
     using glm::clamp;
     using glm::length;
+    using glm::dot;
+    using glm::cross;
+    using glm::normalize;
 }

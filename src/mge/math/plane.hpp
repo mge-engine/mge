@@ -4,6 +4,11 @@
 #include <iosfwd>
 
 namespace mge {
+    /**
+     * A plane. A plane is defined by a normal vector \f$\vec{n}\f$ and a constant
+     * value \f$c\f$ such that the formulat \f$\vec{n} \cdot \vec{p} = c\f$
+     * is fullfilled for \f$p\f$ being a point on the plane (displacement).
+     */
     class MGE_MATH_EXPORT plane
     {
     public:
