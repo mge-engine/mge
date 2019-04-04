@@ -7,6 +7,7 @@ SET(mgemath_sources
     vec3.cpp
     vec4.cpp
     aabox.cpp
+    plane.cpp
 )
 ADD_LIBRARY(mgemath
             SHARED
