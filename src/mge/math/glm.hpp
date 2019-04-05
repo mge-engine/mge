@@ -5,6 +5,7 @@
 #pragma warning( disable : 4464)
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace mge {
     using glm::clamp;

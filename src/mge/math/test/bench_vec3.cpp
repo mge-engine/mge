@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2017 by Alexander Schroeder
- */
 #include "bench/googlebenchmark.hpp"
 #include "mge/math/vec3.hpp"
 
@@ -71,8 +68,8 @@ static void bench_fvec3_length_manually(benchmark::State& state) {
     lv.resize(vec.size());
     while (state.KeepRunning()) {
         for(uint32_t i=0; i<vec.size(); ++i) {
-            lv[i] = std::sqrt(vec[i].x * vec[i].x 
-                              + vec[i].y * vec[i].y 
+            lv[i] = std::sqrt(vec[i].x * vec[i].x
+                              + vec[i].y * vec[i].y
                               + vec[i].z * vec[i].z);
         }
     }
