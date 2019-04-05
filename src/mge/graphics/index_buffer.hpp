@@ -3,6 +3,9 @@
 namespace mge {
 
 
+    /**
+     * An index buffer. An index buffer
+     */
     class MGE_GRAPHICS_EXPORT index_buffer
             : public hardware_buffer
     {

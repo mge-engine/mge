@@ -31,16 +31,27 @@ namespace mge {
          * Maps the buffer.
          * @return mapped buffer
          */
-        virtual void *map() = 0;
+        void *map();
 
         /**
          * Unmaps the buffer.
          */
-        virtual void unmap() = 0;
+        void unmap();
+
+        /**
+         * Return whether buffer is currently mapped.
+         * @return @c true if mapped
+         */
+        bool mapped() const noexcept { return m_map_count != 0; }
     protected:
+        virtual void *on_map() = 0;
+        virtual void on_unmap() = 0;
+
         buffer_type  m_type;
         buffer_usage m_usage;
         buffer_access m_cpu_access;
         buffer_access m_gpu_access;
+        uint32_t m_map_count;
+        void *m_mapped_memory;
     };
 }
