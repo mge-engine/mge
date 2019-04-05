@@ -9,6 +9,7 @@ SET(mgemath_sources
     aabox.cpp
     plane.cpp
     sphere.cpp
+    ray.cpp
 )
 ADD_LIBRARY(mgemath
             SHARED
