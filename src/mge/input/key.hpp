@@ -5,7 +5,7 @@
 
 namespace mge {
 
-    enum class MGE_INPUT_EXPORT key
+    enum class MGE_INPUT_EXPORT key : int32_t
     {
         INVALID = -1, //!< INVALID
 

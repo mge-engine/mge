@@ -25,6 +25,7 @@ ADD_EXECUTABLE(coretest
   test_clock.cpp
   test_file.cpp
   test_system_error.cpp
+  test_copy_struct.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)

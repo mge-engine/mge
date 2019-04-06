@@ -6,6 +6,7 @@ namespace mge {
     class mock_render_context : public render_context
     {
     public:
+
         mock_render_context(async_executor *display_executor)
             :render_context(display_executor)
         {}
