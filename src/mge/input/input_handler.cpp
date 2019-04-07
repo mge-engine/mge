@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/input/input_handler.hpp"
 #include "mge/core/clear_function.hpp"
 

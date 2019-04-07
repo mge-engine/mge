@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "lua_test.hpp"
 #include "mge/script/script_context.hpp"
 #include "mge/core/exception.hpp"

@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/core/stdexceptions.hpp"

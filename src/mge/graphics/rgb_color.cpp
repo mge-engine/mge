@@ -1,6 +1,6 @@
-/*
- * Copyright (c) 2017 by Alexander Schroeder
- */
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/rgb_color.hpp"
 #include "mge/graphics/color_names.hpp"
 #include "mge/core/stdexceptions.hpp"

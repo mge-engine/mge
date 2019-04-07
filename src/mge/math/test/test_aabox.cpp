@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/math/aabox.hpp"
 #include "test/googletest.hpp"
 using namespace mge;

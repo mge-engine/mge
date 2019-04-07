@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/thread_group.hpp"
 #include "mge/core/crash.hpp"
 #include "mge/core/contains.hpp"

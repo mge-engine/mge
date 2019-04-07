@@ -1,7 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
-# Copyright (c) 2017 by Alexander Schroeder
 SET(mge_dx11_module_SOURCES
     common.cpp
     error.cpp

@@ -1,4 +1,6 @@
-//#include "window.hpp"
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "dx12.hpp"
 #include "system_config.hpp"
 //#include "window.hpp"

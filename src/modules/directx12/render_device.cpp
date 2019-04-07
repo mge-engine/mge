@@ -1,6 +1,6 @@
-/*
- * Copyright (c) 2017 by Alexander Schroeder
- */
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "render_device.hpp"
 #include "window.hpp"
 #include "error.hpp"

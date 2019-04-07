@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "test/googlemock.hpp"
 #include "mge/graphics/window.hpp"

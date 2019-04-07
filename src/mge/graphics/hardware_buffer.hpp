@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
@@ -5,7 +8,7 @@
 #include "mge/graphics/buffer_access.hpp"
 #include "mge/graphics/buffer_usage.hpp"
 #include "mge/graphics/buffer_type.hpp"
-
+#include <cstdint>
 namespace mge {
     /**
      * Base class for hardware buffers. Hardware buffers are used for

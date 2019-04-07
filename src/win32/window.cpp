@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "win32/window.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/zero_memory.hpp"

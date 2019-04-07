@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
 #include "mge/input/modifier.hpp"
