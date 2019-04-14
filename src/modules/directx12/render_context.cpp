@@ -49,7 +49,7 @@ namespace dx12 {
         MGE_DEBUG_LOG(DX12) << "Selecting adapter";
         IDXGIAdapter3 *adapter = nullptr;
         uint32_t index = 0;
-        while(m_dxgi_factory->EnumAdapters(index, (IDXGIAdapter **)&adapter)) {
+        while(m_dxgi_factory->EnumAdapters(index, (IDXGIAdapter **)&adapter) == S_OK) {
             MGE_DEBUG_LOG(DX12) << "Adapter " << index;
             DXGI_ADAPTER_DESC1 desc;
             HRESULT rc = adapter->GetDesc1(&desc);
@@ -190,6 +190,12 @@ namespace dx12 {
     {
         mge::index_buffer_ref result;
         return result;
+    }
+
+    void
+    render_context::shader_languages(std::vector<mge::shader_language>& languages) const
+    {
+        return;
     }
 
 }

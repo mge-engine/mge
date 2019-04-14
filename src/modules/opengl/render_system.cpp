@@ -38,6 +38,8 @@ namespace opengl {
             mge::window_ref result = std::make_shared<window>(rect, options);
             return result;
         }
+
+
     };
 
     MGE_REGISTER_IMPLEMENTATION(render_system,

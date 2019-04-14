@@ -144,4 +144,10 @@ namespace opengl {
         return result;
     }
 
+    void
+    render_context::shader_languages(std::vector<mge::shader_language>& languages) const
+    {
+        return;
+    }
+
 }

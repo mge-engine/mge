@@ -28,7 +28,7 @@ namespace dx12 {
                                                   mge::buffer_access gpu_access,
                                                   void *data,
                                                   size_t size) override;
-
+        void shader_languages(std::vector<mge::shader_language>& languages) const override;
     private:
         void init_context(const system_config& config);
         void create_factory();

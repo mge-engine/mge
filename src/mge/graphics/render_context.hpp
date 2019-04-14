@@ -7,7 +7,9 @@
 #include "mge/graphics/buffer_usage.hpp"
 #include "mge/core/async_executor.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include <memory>
+#include <vector>
 namespace mge {
 
     /**
@@ -61,6 +63,13 @@ namespace mge {
                                                      buffer_access gpu_access,
                                                      void *data,
                                                      size_t data_size) = 0;
+
+        /**
+         * Get supported shader languages.
+         * @param languages vector of languages
+         */
+        virtual void shader_languages(std::vector<shader_language>& languages) const = 0;
+
     protected:
         async_executor *m_display_executor;
     };

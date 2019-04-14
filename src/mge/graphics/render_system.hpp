@@ -6,6 +6,7 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/window_options.hpp"
 #include "mge/graphics/rectangle.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/core/configurable.hpp"
 #include "mge/core/component.hpp"
 #include <vector>
@@ -64,5 +65,6 @@ namespace mge {
          * @return reference to new window
          */
         window_ref create_window();
+
     };
 }

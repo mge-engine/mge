@@ -26,5 +26,7 @@ namespace mge {
                                        buffer_access,
                                        void*,
                                        size_t));
+        MOCK_CONST_METHOD1(shader_languages,
+                           void (std::vector<shader_language>&));
     };
 }

@@ -22,6 +22,7 @@ namespace opengl {
                                                   mge::buffer_access gpu_access,
                                                   void *data,
                                                   size_t size) override;
+        void shader_languages(std::vector<mge::shader_language>& languages) const override;
 #ifdef MGE_OS_WINDOWS
         void assign_thread() override;
         void flush() override;
