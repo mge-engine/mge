@@ -51,5 +51,5 @@ namespace dx11 {
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
                                 mge::render_system,
-                                directx11 dx11);
+                                directx11,dx11);
 }
