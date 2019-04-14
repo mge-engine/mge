@@ -39,6 +39,13 @@ namespace mge {
         return *this;
     }
 
+    bool
+    version::empty() const noexcept
+    {
+        version v;
+        return *this == v;
+    }
+
     version&
     version::operator =(version&& v)
     {

@@ -22,7 +22,8 @@ ADD_LIBRARY(mgegraphics
     shader_type.cpp
     command_list.cpp
     memory_command_list.cpp
-    window_options.cpp)
+    window_options.cpp
+    shader_language.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)

@@ -78,6 +78,12 @@ namespace mge {
         unsigned int patch() const noexcept { return std::get<2>(m_data); }
 
         /**
+         * Return whether the version is empty (ie. 0.0.0)
+         * @return true if the version is 0.0.0
+         */
+        bool empty() const noexcept;
+
+        /**
          * Compares two versions.
          * @param v version to compare
          * @return @c true if this version is less than @c v
