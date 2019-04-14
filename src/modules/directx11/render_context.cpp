@@ -66,7 +66,6 @@ namespace dx11 {
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
         m_swap_chain.reset(tmp_swap_chain);
-
         ID3D11Texture2D *tmp_back_buffer = nullptr;
         MGE_DEBUG_LOG(DX11) << "Getting swap chain back buffer";
 
@@ -81,7 +80,7 @@ namespace dx11 {
         ID3D11RenderTargetView *tmp_render_target_view;
         rc = m_device->CreateRenderTargetView(back_buffer.get(), nullptr, &tmp_render_target_view);
         CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
-        back_buffer->Release();
+        back_buffer.reset();
         MGE_DEBUG_LOG(DX11) << "Set render target";
         m_device_context->OMSetRenderTargets(1, &tmp_render_target_view, nullptr);
         m_render_target_view.reset(tmp_render_target_view);
