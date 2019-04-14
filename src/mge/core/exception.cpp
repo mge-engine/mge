@@ -4,12 +4,18 @@
 #include "mge/core/exception.hpp"
 
 namespace mge {
+    static thread_local exception *t_current_exception = nullptr;
 
+    exception::exception()
+    {
+        t_current_exception = this;
+    }
 
     exception::exception(const exception& e)
         : std::exception(e)
         ,m_infos(e.m_infos)
     {
+        t_current_exception = this;
         copy_message_or_materialize(e);
     }
 
@@ -18,7 +24,22 @@ namespace mge {
         ,m_infos(std::move(e.m_infos))
         ,m_raw_message_stream(std::move(e.m_raw_message_stream))
         ,m_raw_message(std::move(e.m_raw_message))
-    {}
+    {
+        t_current_exception = this;
+    }
+
+    exception::~exception()
+    {
+        if(t_current_exception == this) {
+            t_current_exception = nullptr;
+        }
+    }
+
+    mge::exception*
+    exception::current_exception()
+    {
+        return t_current_exception;
+    }
 
     exception&
     exception::operator =(const exception& e)

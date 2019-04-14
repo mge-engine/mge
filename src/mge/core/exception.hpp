@@ -188,7 +188,7 @@ namespace mge {
         /**
          * Constructor.
          */
-        exception() = default;
+        exception();
         /**
          * Copy constructor.
          * @param e copied exception
@@ -203,7 +203,7 @@ namespace mge {
         /**
          * Destructor.
          */
-        virtual ~exception() = default;
+        virtual ~exception();
 
         /**
          * Assignment.
@@ -224,7 +224,11 @@ namespace mge {
          */
         const char *what() const override;
 
-
+        /**
+         * Get current exception of this thread.
+         * @return pointer to current exception or @c nullptr if there is none
+         */
+        static mge::exception *current_exception();
 
         template <typename Info>
         exception& set_info(const Info& info)
