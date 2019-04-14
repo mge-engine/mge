@@ -72,6 +72,7 @@ namespace opengl {
     }
 
     static bool s_gl3w_initialized = false;
+    static mge::shader_language s_glsl_language;
 
     void
     render_context::init_gl3w()
@@ -96,6 +97,12 @@ namespace opengl {
         glGetIntegerv(GL_MINOR_VERSION, &minor_version);
         MGE_INFO_LOG(OPENGL) << "OpenGL version: " << major_version << "." << minor_version;
         std::string glsl_version_str((const char *)glGetString(GL_SHADING_LANGUAGE_VERSION));
+        auto vit = glsl_version_str.begin();
+        while(vit != glsl_version_str.end() && (*vit == '.' || std::isdigit(*vit))) {
+            ++vit;
+        }
+        std::string plain_glsl_version(glsl_version_str.begin(), vit);
+        s_glsl_language = mge::shader_language("glsl", mge::version(plain_glsl_version));
         MGE_INFO_LOG(OPENGL) << "Shading language version: " << glsl_version_str;
         std::string extension_string((const char *)glGetString(GL_EXTENSIONS));
         auto it = boost::make_split_iterator(extension_string, boost::token_finder(boost::is_space()));
@@ -146,6 +153,7 @@ namespace opengl {
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const
     {
+        languages.push_back(s_glsl_language);
         return;
     }
 

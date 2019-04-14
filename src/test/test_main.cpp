@@ -17,7 +17,7 @@ static void unexpected_handler_function(void)
 static void terminate_handler_function(void)
 {
     std::cerr << "Terminate handler called due to uncatched exception" << std::endl;
-    if(mge::exception::current_exception()) {
+    if (mge::exception::current_exception()) {
         std::cerr << mge::exception::current_exception()->details() << std::endl;
     } else {
         std::cerr << "No current exception" << std::endl;
