@@ -13,4 +13,4 @@ IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_opengl mge_win32 mgeapplication)
 ENDIF()
 TARGET_LINK_LIBRARIES(mge_module_opengl mgecore mgegraphics gl3w ${OPENGL_LIBRARIES})
-
+ADD_SUBDIRECTORY(test)

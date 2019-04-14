@@ -34,6 +34,13 @@ namespace mge {
         static render_system_ref create();
 
         /**
+         * Creates a render system named by given name.
+         * @param name name of render system, such as "opengl" or "vulkan"
+         * @return created render system, or invalid reference if unavailable
+         */
+        static render_system_ref create(const char *name);
+
+        /**
          * Returns default configured name.
          * @return configured name
          */

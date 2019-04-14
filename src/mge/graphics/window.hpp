@@ -146,9 +146,8 @@ namespace mge {
             volatile bool m_quit;
         };
         friend class window::display_thread;
-
-    protected:
         virtual void assign_thread();
+    protected:
         virtual void install_display_thread();
 
         virtual void on_show() = 0;

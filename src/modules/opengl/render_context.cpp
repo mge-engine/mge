@@ -99,9 +99,8 @@ namespace opengl {
         MGE_INFO_LOG(OPENGL) << "Shading language version: " << glsl_version_str;
         std::string extension_string((const char *)glGetString(GL_EXTENSIONS));
         auto it = boost::make_split_iterator(extension_string, boost::token_finder(boost::is_space()));
-        decltype(it) end_it;
         MGE_INFO_LOG(OPENGL) << "OpenGL extensions:";
-        while(it != end_it) {
+        while(!it.eof()) {
             MGE_INFO_LOG(OPENGL) << *it;
             ++it;
         }

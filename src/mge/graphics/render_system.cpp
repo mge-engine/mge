@@ -25,6 +25,12 @@ namespace mge {
         return component<render_system>::create(default_name());
     }
 
+    render_system_ref
+    render_system::create(const char *name)
+    {
+        return component<render_system>::create(name);
+    }
+
     window_ref
     render_system::create_window()
     {
