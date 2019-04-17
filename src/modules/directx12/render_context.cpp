@@ -195,7 +195,9 @@ namespace dx12 {
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const
     {
-        return;
+        // Shader model did not change anymore since DirectX11 and stays at 5.1
+        // https://docs.microsoft.com/en-us/windows/desktop/direct3d11/overviews-direct3d-11-devices-downlevel-intro
+        languages.push_back(mge::shader_language("HLSL", mge::version(5,1)));
     }
 
 }

@@ -93,6 +93,8 @@ namespace dx11 {
         viewport.MaxDepth = 0.0;
         MGE_DEBUG_LOG(DX11) << "Set view port";
         m_device_context->RSSetViewports(1, &viewport);
+
+
     }
 
     void
@@ -125,7 +127,9 @@ namespace dx11 {
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const
     {
-        return;
+        // just use 5.1 for DX11 here
+        // https://docs.microsoft.com/en-us/windows/desktop/direct3d11/overviews-direct3d-11-devices-downlevel-intro
+        languages.push_back(mge::shader_language("HLSL", mge::version(5,1)));
     }
 
 
