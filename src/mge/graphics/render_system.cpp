@@ -3,7 +3,6 @@
 // All rights reserved.
 #include "mge/core/configuration.hpp"
 #include "mge/graphics/render_system.hpp"
-#include "mge/graphics/rectangle.hpp"
 
 namespace mge {
     render_system::render_system()
@@ -43,3 +42,4 @@ namespace mge {
 
     MGE_REGISTER_COMPONENT(render_system);
 }
+

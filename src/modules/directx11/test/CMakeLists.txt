@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 ADD_EXECUTABLE(dx11test
     test_main.cpp
     dx11_test.cpp

@@ -10,6 +10,7 @@
 #include "mge/core/configurable.hpp"
 #include "mge/core/component.hpp"
 #include <vector>
+
 namespace mge {
 
     /**

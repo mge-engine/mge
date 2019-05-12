@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 ADD_EXECUTABLE(opengltest
     test_main.cpp
     test_render_system.cpp

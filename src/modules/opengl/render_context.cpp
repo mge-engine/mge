@@ -157,4 +157,11 @@ namespace opengl {
         return;
     }
 
+    mge::shader_ref
+    render_context::create_shader(mge::shader_type type)
+    {
+        mge::shader_ref result;
+        return result;
+    }
+    
 }

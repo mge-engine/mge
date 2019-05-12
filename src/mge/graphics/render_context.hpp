@@ -8,6 +8,8 @@
 #include "mge/core/async_executor.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_language.hpp"
+#include "mge/graphics/shader_type.hpp"
+
 #include <memory>
 #include <vector>
 namespace mge {
@@ -63,6 +65,8 @@ namespace mge {
                                                      buffer_access gpu_access,
                                                      void *data,
                                                      size_t data_size) = 0;
+
+        virtual shader_ref create_shader(shader_type type) = 0;
 
         /**
          * Get supported shader languages.
