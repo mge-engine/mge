@@ -7,6 +7,8 @@
 #include "mge/graphics/shader_type.hpp"
 #include "mge/core/buffer.hpp"
 
+#include <string>
+
 namespace mge {
 
     /**
@@ -37,6 +39,8 @@ namespace mge {
          * Store compiled code in buffer.
          * @oaram code compiled code
          */
-        virtual void save(const buffer& code) = 0;
+        virtual void save(buffer& code) = 0;
+    protected:
+        shader_type m_type;
     };
 }
