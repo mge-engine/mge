@@ -8,6 +8,11 @@
 #include "mge/core/buffer.hpp"
 
 namespace mge {
+
+    /**
+     * A shader is a piece of code executed on the GPU.
+     * The pipeline stage is determined by the shader type.
+     */
     class MGE_GRAPHICS_EXPORT shader
             : context_object
     {
@@ -21,10 +26,17 @@ namespace mge {
          * @param source_code shader source code
          */
         virtual void compile(const std::string& source_code) = 0;
+
         /**
          * Set compiled code.
          * @param code buffer with compiled code
          */
-        virtual void set_code(const buffer& code) = 0;
+        virtual void load(const buffer& code) = 0;
+
+        /**
+         * Store compiled code in buffer.
+         * @oaram code compiled code
+         */
+        virtual void save(const buffer& code) = 0;
     };
 }
