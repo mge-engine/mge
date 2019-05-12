@@ -1,5 +1,6 @@
 #pragma once
 #include "mge/core/exception.hpp"
+#include "opengl.hpp"
 namespace opengl {
     class error : public mge::exception
     {
@@ -23,5 +24,10 @@ namespace opengl {
             mge::exception::operator <<(value);
             return *this;
         }
+
+        static void check_error(const char *file, int line,
+                                const char *signature,
+                                const char *glFunction);
+        static void clear();
     };
 }
