@@ -26,18 +26,13 @@
 // THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 // (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-// Author: wan@google.com (Zhanyong Wan)
+
 //
 // Google C++ Mocking Framework (Google Mock)
 //
 // This file #includes all Google Mock implementation .cc files.  The
 // purpose is to allow a user to build Google Mock by compiling this
 // file alone.
-
-#ifdef _MSC_VER
-#  pragma warning (push, 0)
-#endif
 
 // This line ensures that gmock.h can be compiled on its own, even
 // when it's fused.
@@ -49,7 +44,3 @@
 #include "src/gmock-matchers.cc"
 #include "src/gmock-spec-builders.cc"
 #include "src/gmock.cc"
-
-#ifdef _MSC_VER
-#  pragma warning (pop)
-#endif
