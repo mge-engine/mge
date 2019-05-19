@@ -36,12 +36,6 @@ namespace mge {
         virtual void load(const buffer& code) = 0;
 
         /**
-         * Store compiled code in buffer.
-         * @oaram code compiled code
-         */
-        virtual void save(buffer& code) = 0;
-
-        /**
          * Get shader type.
          * @return shader type
          */

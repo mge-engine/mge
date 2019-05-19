@@ -14,7 +14,6 @@ namespace opengl {
         virtual ~shader();
         void compile(const std::string& source_code) override;
         void load(const mge::buffer& code) override;
-        void save(mge::buffer& code) override;
     private:
         void create_shader();
         GLenum gl_shader_type() const;

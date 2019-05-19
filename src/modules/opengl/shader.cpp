@@ -36,13 +36,7 @@ namespace opengl {
     void
     shader::load(const mge::buffer &code)
     {
-
-    }
-
-    void
-    shader::save(mge::buffer &code)
-    {
-
+        // glShaderBinary()
     }
 
     void
