@@ -163,5 +163,5 @@ namespace opengl {
         mge::shader_ref result;
         return result;
     }
-    
+
 }

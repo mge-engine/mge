@@ -4,6 +4,7 @@
 namespace opengl {
     class error : public mge::exception
     {
+    public:
         error();
         error(const error& e);
         error(error&& e);

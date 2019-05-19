@@ -16,7 +16,7 @@ namespace mge {
      * The pipeline stage is determined by the shader type.
      */
     class MGE_GRAPHICS_EXPORT shader
-            : context_object
+            : public context_object
     {
     protected:
         shader(render_context& context,
@@ -40,6 +40,12 @@ namespace mge {
          * @oaram code compiled code
          */
         virtual void save(buffer& code) = 0;
+
+        /**
+         * Get shader type.
+         * @return shader type
+         */
+        shader_type type() const { return m_type; }
     protected:
         shader_type m_type;
     };
