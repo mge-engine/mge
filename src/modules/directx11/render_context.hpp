@@ -28,6 +28,7 @@ namespace dx11 {
                                                   size_t size) override;
         mge::shader_ref create_shader(mge::shader_type type) override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
+        ID3D11Device *device() const { return m_device.get(); }
     private:
         void init_context(const system_config& config);
 
@@ -38,4 +39,9 @@ namespace dx11 {
         COM_UNIQUE_PTR(ID3D11RenderTargetView) m_render_target_view;
         COM_UNIQUE_PTR(IDXGISwapChain) m_swap_chain;
     };
+
+    inline ID3D11Device * dx11_device(const mge::render_context& context)
+    {
+        return reinterpret_cast<const render_context&>(context).device();
+    }
 }

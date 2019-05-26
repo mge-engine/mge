@@ -6,6 +6,7 @@ SET(mge_dx11_module_SOURCES
     error.cpp
     render_system.cpp
     render_context.cpp
+    shader.cpp
     window.cpp
 )
 ADD_LIBRARY(mge_module_dx11 MODULE

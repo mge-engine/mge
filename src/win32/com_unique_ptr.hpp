@@ -13,8 +13,15 @@ namespace mge {
         com_deleter() = default;
         inline void operator()(T *ptr) const { ptr->Release(); }
     };
+
+    template <typename T>
+    inline std::unique_ptr<T, mge::com_deleter<T>> make_com_unique_ptr(T* ptr)
+    {
+        return std::unique_ptr<T, mge::com_deleter<T>>(ptr);
+    }
 }
 
 #define COM_UNIQUE_PTR(T) std::unique_ptr<T, mge::com_deleter<T>>
+
 
 

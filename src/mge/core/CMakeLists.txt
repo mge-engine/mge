@@ -40,6 +40,8 @@ SET(mgecore_sources
     io_error.cpp
     system_file_access.cpp
     version.cpp
+    properties.cpp
+    property_object.cpp
 )
 
 ADD_LIBRARY(mgecore
