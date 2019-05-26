@@ -17,6 +17,16 @@ namespace mge {
         properties& operator =(const properties& p);
         properties& operator =(properties&& p);
 
+        bool exists(const char *key) const
+        {
+            return m_data.find(key) != m_data.end();
+        }
+
+        bool exists(const std::string& key) const
+        {
+            return m_data.find(key) != m_data.end();
+        }
+
         template <typename T>
         T get(const char *key) const
         {
