@@ -44,6 +44,7 @@ TEST(string_pool, intern_many_times_doesnot_allocate)
         mge::allocation_count_scope scope;
         for(int i=0; i<100; ++i) {
             const char *s = sp.intern("FOO");
+            EXPECT_EQ(s, s1);
         }
         EXPECT_EQ(0u, scope.allocations_in_scope());
     }

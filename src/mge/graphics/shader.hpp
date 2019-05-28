@@ -6,6 +6,7 @@
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/core/buffer.hpp"
+#include "mge/core/property_object.hpp"
 
 #include <string>
 
@@ -17,6 +18,7 @@ namespace mge {
      */
     class MGE_GRAPHICS_EXPORT shader
             : public context_object
+            , public property_object
     {
     protected:
         shader(render_context& context,

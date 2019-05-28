@@ -5,7 +5,7 @@
 #include "mge/core/stdexceptions.hpp"
 namespace dx12 {
     MGE_DEFINE_EXCEPTION(error);
-    
+
     void
     error::check_hresult(HRESULT rc, const char *file, int line, const char *clazz, const char *method)
     {
@@ -21,7 +21,7 @@ namespace dx12 {
                 .set_info(mge::exception::called_function(called_function.c_str()))
                 .set_info(mge::exception::stack(mge::stacktrace()))
                 .set_info(mge::exception::type_name(mge::type_name<dx12::error>()))
-                << "Call to " << called_function << " failed: " << rc;
+                << "Call to " << called_function << " failed: " << std::hex << rc;
         }
     }
 

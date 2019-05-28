@@ -3,6 +3,7 @@
 #include "win32/com_unique_ptr.hpp"
 
 #include <variant>
+
 namespace dx11 {
 
     class shader : public mge::shader
@@ -13,6 +14,7 @@ namespace dx11 {
         virtual ~shader();
 
         void compile(const std::string& source_code) override;
+        void load(const mge::buffer& code) override;
 
         typedef COM_UNIQUE_PTR(ID3D11VertexShader) vertex_shader_t;
         typedef COM_UNIQUE_PTR(ID3D11PixelShader) pixel_shader_t;
@@ -27,6 +29,7 @@ namespace dx11 {
                              domain_shader_t> shader_t;
     private:
         void create_shader();
+        std::string profile() const;
 
         shader_t m_shader;
         COM_UNIQUE_PTR(ID3D10Blob) m_code;

@@ -30,6 +30,8 @@ namespace dx11 {
             return *this;
         }
 
+        error& set_info_from_hresult(HRESULT rc, const char *file, int line, const char *clazz, const char *method);
+
         static void check_hresult(HRESULT rc, const char *file, int line, const char *clazz, const char *method);
     };
 }

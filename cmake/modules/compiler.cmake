@@ -9,6 +9,8 @@ IF(MSVC)
     ADD_DEFINITIONS("-D_CRT_SECURE_NO_WARNINGS -Wall")
     ADD_DEFINITIONS("-D_SCL_SECURE_NO_WARNINGS")
     ADD_DEFINITIONS("-Zc:implicitNoexcept-")
+    ADD_DEFINITIONS("-fp:fast")
+    ADD_DEFINITIONS("-Qpar")
     ADD_DEFINITIONS("-wd4710") # cannot inline function marked as inline
     ADD_DEFINITIONS("-wd4514") # unreferenced inline function removed
     ADD_DEFINITIONS("-wd4365") # unsigned/signed conflict
@@ -39,6 +41,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd5045") # Spectre
     ADD_DEFINITIONS("-wd4255") # () -> (void) in winuser.h
     ADD_DEFINITIONS("-wd4996") # std::tr1 usage (caused by boost)
+    ADD_DEFINITIONS("-wd4582") # constructor will not be implicitly called
     IF("${MSVC_VERSION}" STREQUAL "1900")
         ADD_DEFINITIONS("-wd4702") # unreachable code
     ENDIF()

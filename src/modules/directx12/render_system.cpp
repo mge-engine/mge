@@ -72,9 +72,9 @@ namespace dx12 {
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
                                 mge::render_system,
-                                directx12 dx12);
+                                directx12,dx12);
 
-    
+
 }
 
 

@@ -42,6 +42,6 @@ namespace dx11 {
 
     inline ID3D11Device * dx11_device(const mge::render_context& context)
     {
-        return reinterpret_cast<const render_context&>(context).device();
+        return static_cast<const render_context&>(context).device();
     }
 }
