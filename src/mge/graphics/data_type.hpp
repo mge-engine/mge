@@ -40,12 +40,26 @@ namespace mge {
         return mge::data_type::UNKNOWN;
     }
 
+    template <data_type T>
+    struct data_type_traits
+    {
+        typedef void value_type;
+    };
+
+
 #define MAP_TYPE(c_type, data_type_value)           \
     template <>                                     \
     inline data_type data_type_of_type<c_type>()    \
     {                                               \
         return data_type_value;                     \
-    }
+    }                                               \
+                                                    \
+    template <>                                     \
+    struct data_type_traits<data_type_value>        \
+    {                                               \
+        typedef c_type value_type;                  \
+    };
+
 
     MAP_TYPE(std::uint8_t, data_type::UINT8)
     MAP_TYPE(std::int8_t, data_type::INT8)
@@ -61,6 +75,30 @@ namespace mge {
     MAP_TYPE(mge::fvec2, data_type::FLOAT_VEC2)
     MAP_TYPE(mge::fvec3, data_type::FLOAT_VEC3)
     MAP_TYPE(mge::fvec4, data_type::FLOAT_VEC4)
+
+    inline size_t data_type_size(const data_type t)
+    {
+        switch(t) {
+#define RETURN_TYPESIZE(t) case t: return sizeof(data_type_traits<t>::value_type)
+        RETURN_TYPESIZE(data_type::UINT8);
+        RETURN_TYPESIZE(data_type::INT8);
+        RETURN_TYPESIZE(data_type::UINT16);
+        RETURN_TYPESIZE(data_type::INT16);
+        RETURN_TYPESIZE(data_type::UINT32);
+        RETURN_TYPESIZE(data_type::INT32);
+        RETURN_TYPESIZE(data_type::UINT64);
+        RETURN_TYPESIZE(data_type::INT64);
+        RETURN_TYPESIZE(data_type::FLOAT);
+        RETURN_TYPESIZE(data_type::DOUBLE);
+        RETURN_TYPESIZE(data_type::LONG_DOUBLE);
+        RETURN_TYPESIZE(data_type::FLOAT_VEC2);
+        RETURN_TYPESIZE(data_type::FLOAT_VEC3);
+        RETURN_TYPESIZE(data_type::FLOAT_VEC4);
+#undef RETURN_TYPESIZE
+        default:
+            return 0;
+        }
+    }
 
 #undef MAP_TYPE
 
