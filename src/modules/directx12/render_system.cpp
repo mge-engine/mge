@@ -59,9 +59,9 @@ namespace dx12 {
             if (SUCCEEDED(rc)) {
                 m_debug_controller.reset(debug_controller);
                 m_debug_controller->EnableDebugLayer();
-                MGE_DEBUG_LOG(DX12) << "Debug layer enabled" << std::endl;
+                MGE_DEBUG_LOG(DX12) << "Debug layer enabled";
             } else {
-                MGE_ERROR_LOG(DX12) << "Failed to enable debug layer: " << rc << std::endl;
+                MGE_ERROR_LOG(DX12) << "Failed to enable debug layer: " << std::hex << rc;
             }
 #endif
         }
