@@ -10,20 +10,60 @@
 #include "mge/graphics/buffer_type.hpp"
 #include <cstdint>
 namespace mge {
+
     /**
      * Base class for hardware buffers. Hardware buffers are used for
      * indices and vertex data.
+     *
+     * Hardware buffers are <i>context objects</i>, i.e. they can be
+     * created only after a context has been created (e.g. a window),
+     * and they are tied to the context.
+     *
+     * Graphics APIs usually assign a type to a buffer, that is whether
+     * it is used for vertex data (coordinates), index data (describing
+     * which vertices are to be drawn in which order), or constants
+     * supplied to the shader pipeline.
+     *
+     * The <i>buffer usage</i> hints how a buffer is used, and how often
+     * its data will be changed, which may affect the way how the graphics
+     * API tries to cache data.
+     * - The <i>default</i> usage applies no restrictions, but also gives
+     *   no further optimization hints to the graphics API.
+     * - An <i>immutable</i> usage restricts changes to the buffer, it
+     *   may for instance not be mapped for changing it, and the graphics
+     *   API may apply optimizations as the buffer content will never
+     *   change.
+     * - The <i>dynamic</i> usage declares that the buffer content may change
+     *   occasionally, the <i>streaming</i> usage declares that buffer content
+     *   changes frequently.
+     *
+     * Finally, each buffer can be created with restrictions on access by
+     * the CPU and the GPU. Again, optimizations by the graphics API are
+     * possible if the buffer is never read or written by the CPU.
+     *
      */
     class MGE_GRAPHICS_EXPORT hardware_buffer : public context_object
     {
     protected:
+        /**
+         * Construct hardware buffer.
+         * @param context       render context
+         * @param type          buffer type
+         * @param usage         buffer usage flag
+         * @param cpu_access    CPU access
+         * @param gpu_access    GPU access
+         */
         hardware_buffer(render_context& context,
                         buffer_type type,
                         buffer_usage usage,
                         buffer_access cpu_access,
                         buffer_access gpu_access);
     public:
+        /**
+         * Destructor.
+         */
         virtual ~hardware_buffer();
+
         /**
          * Size of buffer in bytes.
          * @return buffer size

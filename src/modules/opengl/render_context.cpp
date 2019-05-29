@@ -5,6 +5,8 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/core/log.hpp"
+#include "shader.hpp"
+#include "index_buffer.hpp"
 #include <boost/algorithm/string.hpp>
 
 MGE_USE_LOG(OPENGL);
@@ -135,8 +137,7 @@ namespace opengl {
                                         mge::buffer_access cpu_access,
                                         mge::buffer_access gpu_access)
     {
-        mge::index_buffer_ref result;
-        return result;
+        return std::make_shared<index_buffer>(*this, usage, cpu_access, gpu_access);
     }
 
     mge::index_buffer_ref
@@ -146,8 +147,7 @@ namespace opengl {
                                         void *data,
                                         size_t size)
     {
-        mge::index_buffer_ref result;
-        return result;
+        return std::make_shared<index_buffer>(*this, usage, cpu_access, gpu_access, data, size);
     }
 
     void
@@ -160,8 +160,7 @@ namespace opengl {
     mge::shader_ref
     render_context::create_shader(mge::shader_type type)
     {
-        mge::shader_ref result;
-        return result;
+        return std::make_shared<shader>(*this, type);
     }
 
 }

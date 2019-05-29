@@ -6,7 +6,7 @@
 
 namespace opengl {
 
-    class shader : mge::shader
+    class shader : public mge::shader
     {
     public:
         shader(mge::render_context& context,
