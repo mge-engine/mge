@@ -21,7 +21,12 @@ namespace mge {
         ,m_gpu_access(gpu_access)
         ,m_map_count(0)
         ,m_mapped_memory(nullptr)
-    {}
+    {
+        if(!mappable()) {
+            MGE_THROW(mge::illegal_argument)
+                << "Unsupported CPU access for unmapped buffer";
+        }
+    }
 
     hardware_buffer::hardware_buffer(render_context &context,
                                      buffer_type type,
