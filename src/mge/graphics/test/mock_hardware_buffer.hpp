@@ -22,6 +22,22 @@ namespace mge {
                              gpu_access)
         {}
 
+        mock_hardware_buffer(render_context& context,
+                             buffer_type type,
+                             buffer_usage usage,
+                             buffer_access cpu_access,
+                             buffer_access gpu_access,
+                             void *data,
+                             size_t data_size)
+            :hardware_buffer(context,
+                             type,
+                             usage,
+                             cpu_access,
+                             gpu_access,
+                             data,
+                             data_size)
+        {}
+
         ~mock_hardware_buffer() = default;
         MOCK_CONST_METHOD0(size, size_t());
         MOCK_METHOD0(on_map, void *());

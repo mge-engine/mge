@@ -23,6 +23,23 @@ namespace mge {
         ,m_mapped_memory(nullptr)
     {}
 
+    hardware_buffer::hardware_buffer(render_context &context,
+                                     buffer_type type,
+                                     buffer_usage usage,
+                                     buffer_access cpu_access,
+                                     buffer_access gpu_access,
+                                     void *data,
+                                     size_t data_size)
+        :context_object(context)
+        ,m_type(type)
+        ,m_usage(usage)
+        ,m_cpu_access(cpu_access)
+        ,m_gpu_access(gpu_access)
+        ,m_map_count(0)
+        ,m_mapped_memory(nullptr)
+    {}
+
+
     hardware_buffer::~hardware_buffer()
     {
         if(mapped()) {

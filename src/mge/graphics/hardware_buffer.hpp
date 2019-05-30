@@ -58,6 +58,25 @@ namespace mge {
                         buffer_usage usage,
                         buffer_access cpu_access,
                         buffer_access gpu_access);
+
+        /**
+         * Construct hardware buffer.
+         * @param context       render context
+         * @param type          buffer type
+         * @param usage         buffer usage flag
+         * @param cpu_access    CPU access
+         * @param gpu_access    GPU access
+         * @param data          buffer content
+         * @param data_size     buffer content size in bytes
+         */
+        hardware_buffer(render_context& context,
+                        buffer_type type,
+                        buffer_usage usage,
+                        buffer_access cpu_access,
+                        buffer_access gpu_access,
+                        void *data,
+                        size_t data_size);
+
     public:
         /**
          * Destructor.
