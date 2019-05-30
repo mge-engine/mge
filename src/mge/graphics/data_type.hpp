@@ -5,6 +5,8 @@
 #include "mge/math/vec4.hpp"
 #include <cstdint>
 #include <iosfwd>
+#include <bitset>
+#include <initializer_list>
 
 namespace mge {
 
@@ -102,4 +104,73 @@ namespace mge {
     }
 
     MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os, const data_type t);
+
+    /**
+     * Set of data types. Used to e.g. define supported set of types
+     * for certain operations.
+     */
+    class MGE_GRAPHICS_EXPORT data_type_set
+    {
+    private:
+        typedef std::bitset<static_cast<uint8_t>(data_type::LAST)> container_type;
+    public:
+        /**
+         * Proxy type to allow reference to single type.
+         */
+        typedef container_type::reference reference;
+        /**
+         * Construct empty set.
+         */
+        data_type_set();
+
+        /**
+         * Copy constructor.
+         * @param s copied set
+         */
+        data_type_set(const data_type_set& s);
+
+        /**
+         * Construct from initializer list.
+         * @param types initializer values
+         */
+        data_type_set(const std::initializer_list<data_type>& types);
+
+        /**
+         * Destructor.
+         */
+        ~data_type_set();
+        /**
+         * Accesses specific type. Behaviour is undefined for
+         * out of range or @c UNKNOWN data type.
+         * @param t type to check
+         * @return accessor to type value.
+         */
+        reference operator [](data_type t);
+
+        /**
+         * Retrieve value for type. Behaviour is undefined for
+         * out of range or @c UNKNOWN data type.
+         * @param t type to check
+         * @return @c true if set
+         */
+        bool operator[](data_type t) const;
+
+        /**
+         * Retrieve value for type. Exception is throw for
+         * out of range or @c UNKNOWN data type.
+         * @param t type to check
+         * @return @c true if set
+         */
+        bool test(data_type t) const;
+
+        /**
+         * Assignment.
+         * @param s assigned set
+         * @return @c *this
+         */
+        data_type_set& operator =(const data_type_set& s);
+
+    private:
+        container_type m_data;
+    };
 }
