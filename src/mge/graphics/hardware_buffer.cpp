@@ -54,5 +54,17 @@ namespace mge {
     }
 
 
+    bool
+    hardware_buffer::mapped() const noexcept
+    {
+        return m_map_count != 0;
+    }
+
+    bool
+    hardware_buffer::mappable() const noexcept
+    {
+        return m_cpu_access != buffer_access::NONE;
+    }
+
 
 }

@@ -85,9 +85,14 @@ namespace mge {
          * Return whether buffer is currently mapped.
          * @return @c true if mapped
          */
-        bool mapped() const noexcept { return m_map_count != 0; }
+        bool mapped() const noexcept;
 
-        //bool mappable() const noexcept
+        /**
+         * Returns whether a buffer is mappable. A buffer cannot be mapped if
+         * the CPU access is @c NONE.
+         * @return @c true if buffer can be mapped
+         */
+        bool mappable() const noexcept;
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;
