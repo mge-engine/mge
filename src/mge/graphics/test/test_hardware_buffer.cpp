@@ -57,3 +57,21 @@ TEST(hardware_buffer, unmappable_buffer)
                                      data.size() * sizeof(uint32_t));
     EXPECT_FALSE(unmappable_buffer.mappable());
 }
+
+TEST(hardware_buffer, mappable_buffer)
+{
+    mge::buffer_access cpu_access[] = { mge::buffer_access::READ,
+                                        mge::buffer_access::WRITE,
+                                        mge::buffer_access::READ_WRITE};
+    for(const auto& a : cpu_access) {
+        auto executor = std::make_shared<mge::mock_async_executor>();
+        auto context = std::make_shared<mge::mock_render_context>(executor.get());
+        mge::mock_hardware_buffer buffer(*context,
+                                         mge::buffer_type::INDEX_BUFFER,
+                                         mge::buffer_usage::DYNAMIC,
+                                         a,
+                                         mge::buffer_access::READ_WRITE);
+        EXPECT_TRUE(buffer.mappable());
+    }
+
+}
