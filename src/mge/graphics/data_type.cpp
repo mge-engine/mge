@@ -63,4 +63,17 @@ namespace mge {
         m_data = s.m_data;
         return *this;
     }
+
+    bool
+    data_type_set::operator ==(const data_type_set& s) const
+    {
+        return m_data == s.m_data;
+    }
+
+    bool
+    data_type_set::operator !=(const data_type_set& s) const
+    {
+        return m_data == s.m_data;
+    }
+
 }

@@ -170,6 +170,20 @@ namespace mge {
          */
         data_type_set& operator =(const data_type_set& s);
 
+
+        /**
+         * Comparison operator.
+         * @param s other set
+         * @return @c true if equal
+         */
+        bool operator ==(const data_type_set& s) const;
+
+        /**
+         * Comparison operator.
+         * @param s other set
+         * @return @c true if not equal
+         */
+        bool operator !=(const data_type_set& s) const;
     private:
         container_type m_data;
     };
