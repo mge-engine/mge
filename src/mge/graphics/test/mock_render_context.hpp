@@ -16,12 +16,14 @@ namespace mge {
 
         MOCK_METHOD0(flush,
                      void());
-        MOCK_METHOD3(create_index_buffer,
-                     index_buffer_ref (buffer_usage,
+        MOCK_METHOD4(create_index_buffer,
+                     index_buffer_ref (data_type,
+                                       buffer_usage,
                                        buffer_access,
                                        buffer_access));
-        MOCK_METHOD5(create_index_buffer,
-                     index_buffer_ref (buffer_usage,
+        MOCK_METHOD6(create_index_buffer,
+                     index_buffer_ref (data_type,
+                                       buffer_usage,
                                        buffer_access,
                                        buffer_access,
                                        void*,

@@ -9,6 +9,7 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
+#include "mge/graphics/data_type.hpp"
 
 #include <memory>
 #include <vector>
@@ -42,25 +43,29 @@ namespace mge {
         virtual void flush() = 0;
 
         /**
-         * Create an index buffer.
+         * Create an index (element array) buffer.
+         * @param type          data type of buffer elements
          * @param usage         buffer usage
          * @param cpu_access    cpu access flags
          * @param gpu_access    gpu access flags
          * @return index buffer
          */
-        virtual index_buffer_ref create_index_buffer(buffer_usage usage,
+        virtual index_buffer_ref create_index_buffer(data_type type,
+                                                     buffer_usage usage,
                                                      buffer_access cpu_access,
                                                      buffer_access gpu_access) = 0;
 
         /**
-         * Create an index buffer.
+         * Create an index (element array) buffer.
+         * @param type          data type of buffer elements
          * @param usage         buffer usage
          * @param cpu_access    cpu access flags
          * @param gpu_access    gpu access flags
          * @param data          buffer data
          * @param data_size     buffer size
          */
-        virtual index_buffer_ref create_index_buffer(buffer_usage usage,
+        virtual index_buffer_ref create_index_buffer(data_type type,
+                                                     buffer_usage usage,
                                                      buffer_access cpu_access,
                                                      buffer_access gpu_access,
                                                      void *data,

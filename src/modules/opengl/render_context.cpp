@@ -133,21 +133,23 @@ namespace opengl {
 #endif
 
     mge::index_buffer_ref
-    render_context::create_index_buffer(mge::buffer_usage usage,
+    render_context::create_index_buffer(mge::data_type type,
+                                        mge::buffer_usage usage,
                                         mge::buffer_access cpu_access,
                                         mge::buffer_access gpu_access)
     {
-        return std::make_shared<index_buffer>(*this, usage, cpu_access, gpu_access);
+        return std::make_shared<index_buffer>(*this, type, usage, cpu_access, gpu_access);
     }
 
     mge::index_buffer_ref
-    render_context::create_index_buffer(mge::buffer_usage usage,
+    render_context::create_index_buffer(mge::data_type type,
+                                        mge::buffer_usage usage,
                                         mge::buffer_access cpu_access,
                                         mge::buffer_access gpu_access,
                                         void *data,
                                         size_t size)
     {
-        return std::make_shared<index_buffer>(*this, usage, cpu_access, gpu_access, data, size);
+        return std::make_shared<index_buffer>(*this, type, usage, cpu_access, gpu_access, data, size);
     }
 
     void

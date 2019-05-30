@@ -5,6 +5,7 @@
 
 namespace mge {
     index_buffer::index_buffer(render_context &context,
+                               data_type type,
                                buffer_usage usage,
                                buffer_access cpu_access,
                                buffer_access gpu_access)
@@ -13,9 +14,13 @@ namespace mge {
                          usage,
                          cpu_access,
                          gpu_access)
-    {}
+        ,m_type(type)
+    {
+
+    }
 
     index_buffer::index_buffer(render_context &context,
+                               data_type type,
                                buffer_usage usage,
                                buffer_access cpu_access,
                                buffer_access gpu_access,
@@ -26,6 +31,7 @@ namespace mge {
                          usage,
                          cpu_access,
                          gpu_access)
+        ,m_type(type)
     {}
 
     index_buffer::~index_buffer()

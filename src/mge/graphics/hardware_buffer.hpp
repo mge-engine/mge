@@ -86,6 +86,8 @@ namespace mge {
          * @return @c true if mapped
          */
         bool mapped() const noexcept { return m_map_count != 0; }
+
+        //bool mappable() const noexcept
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;

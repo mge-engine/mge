@@ -3,8 +3,12 @@
 // All rights reserved.
 #include "mge/core/configuration.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "mge/core/log.hpp"
+
+MGE_DEFINE_LOG(GRAPHICS);
 
 namespace mge {
+
     render_system::render_system()
     {}
 

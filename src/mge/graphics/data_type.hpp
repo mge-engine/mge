@@ -75,6 +75,7 @@ namespace mge {
     MAP_TYPE(mge::fvec2, data_type::FLOAT_VEC2)
     MAP_TYPE(mge::fvec3, data_type::FLOAT_VEC3)
     MAP_TYPE(mge::fvec4, data_type::FLOAT_VEC4)
+#undef MAP_TYPE
 
     inline size_t data_type_size(const data_type t)
     {
@@ -99,8 +100,6 @@ namespace mge {
             return 0;
         }
     }
-
-#undef MAP_TYPE
 
     MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os, const data_type t);
 }

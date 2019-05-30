@@ -14,10 +14,12 @@ namespace opengl {
         render_context(window *w);
         ~render_context();
 
-        mge::index_buffer_ref create_index_buffer(mge::buffer_usage usage,
+        mge::index_buffer_ref create_index_buffer(mge::data_type type,
+                                                  mge::buffer_usage usage,
                                                   mge::buffer_access cpu_access,
                                                   mge::buffer_access gpu_access) override;
-        mge::index_buffer_ref create_index_buffer(mge::buffer_usage usage,
+        mge::index_buffer_ref create_index_buffer(mge::data_type type,
+                                                  mge::buffer_usage usage,
                                                   mge::buffer_access cpu_access,
                                                   mge::buffer_access gpu_access,
                                                   void *data,
