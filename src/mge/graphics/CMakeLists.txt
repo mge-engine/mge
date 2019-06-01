@@ -18,7 +18,7 @@ ADD_LIBRARY(mgegraphics
     hardware_buffer.cpp
     index_buffer.cpp
     buffer_type.cpp
-    buffer_usage.cpp
+    buffer_change_policy.cpp
     shader_type.cpp
     command_list.cpp
     memory_command_list.cpp

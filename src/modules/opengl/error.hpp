@@ -32,3 +32,9 @@ namespace opengl {
         static void clear();
     };
 }
+
+#define CHECK_OPENGL_ERROR(function)                    \
+    opengl::error::check_error(__FILE__,                \
+                               __LINE__,                \
+                               MGE_FUNCTION_SIGNATURE,  \
+                               #function)

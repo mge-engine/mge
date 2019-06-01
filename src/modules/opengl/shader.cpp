@@ -43,6 +43,7 @@ namespace opengl {
     shader::create_shader()
     {
         m_shader = glCreateShader(gl_shader_type());
+        CHECK_OPENGL_ERROR(glCreateShader);
     }
 
     GLenum

@@ -19,7 +19,7 @@ namespace dx11 {
         ~render_context();
         void flush() override;
         mge::index_buffer_ref create_index_buffer(mge::data_type type,
-                                                  mge::buffer_usage usage,
+                                                  mge::buffer_change_policy change_policy,
                                                   mge::buffer_access cpu_access,
                                                   mge::buffer_access gpu_access,
                                                   size_t element_count,

@@ -18,7 +18,7 @@ namespace mge {
                      void());
         MOCK_METHOD6(create_index_buffer,
                      index_buffer_ref (data_type,
-                                       buffer_usage,
+                                       buffer_change_policy,
                                        buffer_access,
                                        buffer_access,
                                        size_t,
