@@ -24,4 +24,10 @@ namespace mge {
     index_buffer::~index_buffer()
     {}
 
+    size_t
+    index_buffer::element_count() const
+    {
+        return size() / data_type_size(m_type);
+    }
+
 }
