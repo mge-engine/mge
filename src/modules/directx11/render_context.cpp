@@ -105,20 +105,12 @@ namespace dx11 {
     }
 
     mge::index_buffer_ref
-    render_context::create_index_buffer(mge::buffer_usage usage,
-                                        mge::buffer_access cpu_access,
-                                        mge::buffer_access gpu_access)
-    {
-        mge::index_buffer_ref result;
-        return result;
-    }
-
-    mge::index_buffer_ref
-    render_context::create_index_buffer(mge::buffer_usage usage,
+    render_context::create_index_buffer(mge::data_type type,
+                                        mge::buffer_usage usage,
                                         mge::buffer_access cpu_access,
                                         mge::buffer_access gpu_access,
-                                        void *data,
-                                        size_t size)
+                                        size_t element_count,
+                                        void *initial_data)
     {
         mge::index_buffer_ref result;
         return result;
@@ -138,5 +130,5 @@ namespace dx11 {
         mge::shader_ref result;
         return result;
     }
-    
+
 }

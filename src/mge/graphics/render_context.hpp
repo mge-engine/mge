@@ -53,23 +53,9 @@ namespace mge {
         virtual index_buffer_ref create_index_buffer(data_type type,
                                                      buffer_usage usage,
                                                      buffer_access cpu_access,
-                                                     buffer_access gpu_access) = 0;
-
-        /**
-         * Create an index (element array) buffer.
-         * @param type          data type of buffer elements
-         * @param usage         buffer usage
-         * @param cpu_access    cpu access flags
-         * @param gpu_access    gpu access flags
-         * @param data          buffer data
-         * @param data_size     buffer size
-         */
-        virtual index_buffer_ref create_index_buffer(data_type type,
-                                                     buffer_usage usage,
-                                                     buffer_access cpu_access,
                                                      buffer_access gpu_access,
-                                                     void *data,
-                                                     size_t data_size) = 0;
+                                                     size_t element_count,
+                                                     void *initial_data=nullptr) = 0;
 
         virtual shader_ref create_shader(shader_type type) = 0;
 

@@ -16,18 +16,13 @@ namespace mge {
 
         MOCK_METHOD0(flush,
                      void());
-        MOCK_METHOD4(create_index_buffer,
-                     index_buffer_ref (data_type,
-                                       buffer_usage,
-                                       buffer_access,
-                                       buffer_access));
         MOCK_METHOD6(create_index_buffer,
                      index_buffer_ref (data_type,
                                        buffer_usage,
                                        buffer_access,
                                        buffer_access,
-                                       void*,
-                                       size_t));
+                                       size_t,
+                                       void*));
         MOCK_METHOD1(create_shader, shader_ref(shader_type));
         MOCK_CONST_METHOD1(shader_languages,
                            void (std::vector<shader_language>&));

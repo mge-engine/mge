@@ -136,21 +136,13 @@ namespace opengl {
     render_context::create_index_buffer(mge::data_type type,
                                         mge::buffer_usage usage,
                                         mge::buffer_access cpu_access,
-                                        mge::buffer_access gpu_access)
+                                        mge::buffer_access gpu_access,
+                                        size_t element_count,
+                                        void *initial_data)
     {
-        return std::make_shared<index_buffer>(*this, type, usage, cpu_access, gpu_access);
+        return std::make_shared<index_buffer>(*this, type, usage, cpu_access, gpu_access, element_count, initial_data);
     }
 
-    mge::index_buffer_ref
-    render_context::create_index_buffer(mge::data_type type,
-                                        mge::buffer_usage usage,
-                                        mge::buffer_access cpu_access,
-                                        mge::buffer_access gpu_access,
-                                        void *data,
-                                        size_t size)
-    {
-        return std::make_shared<index_buffer>(*this, type, usage, cpu_access, gpu_access, data, size);
-    }
 
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const

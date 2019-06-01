@@ -8,29 +8,16 @@ namespace mge {
                                data_type type,
                                buffer_usage usage,
                                buffer_access cpu_access,
-                               buffer_access gpu_access)
-        :hardware_buffer(context,
-                         buffer_type::INDEX_BUFFER,
-                         usage,
-                         cpu_access,
-                         gpu_access)
-        ,m_type(type)
-    {
-
-    }
-
-    index_buffer::index_buffer(render_context &context,
-                               data_type type,
-                               buffer_usage usage,
-                               buffer_access cpu_access,
                                buffer_access gpu_access,
-                               void *data,
-                               size_t data_size)
+                               size_t element_count,
+                               void *initial_data)
         :hardware_buffer(context,
                          buffer_type::INDEX_BUFFER,
                          usage,
                          cpu_access,
-                         gpu_access)
+                         gpu_access,
+                         initial_data,
+                         data_type_size(type) * element_count)
         ,m_type(type)
     {}
 

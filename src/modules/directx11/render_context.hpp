@@ -18,14 +18,12 @@ namespace dx11 {
                        const system_config& config);
         ~render_context();
         void flush() override;
-        mge::index_buffer_ref create_index_buffer(mge::buffer_usage usage,
-                                                  mge::buffer_access cpu_access,
-                                                  mge::buffer_access gpu_access) override;
-        mge::index_buffer_ref create_index_buffer(mge::buffer_usage usage,
+        mge::index_buffer_ref create_index_buffer(mge::data_type type,
+                                                  mge::buffer_usage usage,
                                                   mge::buffer_access cpu_access,
                                                   mge::buffer_access gpu_access,
-                                                  void *data,
-                                                  size_t size) override;
+                                                  size_t element_count,
+                                                  void *initial_data) override;
         mge::shader_ref create_shader(mge::shader_type type) override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
         ID3D11Device *device() const { return m_device.get(); }

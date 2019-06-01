@@ -18,14 +18,9 @@ namespace mge {
                      data_type type,
                      buffer_usage usage,
                      buffer_access cpu_access,
-                     buffer_access gpu_access);
-        index_buffer(render_context& context,
-                     data_type type,
-                     buffer_usage usage,
-                     buffer_access cpu_access,
                      buffer_access gpu_access,
-                     void *data,
-                     size_t data_size);
+                     size_t count,
+                     void  *initial_data=nullptr);
     public:
         virtual ~index_buffer();
     protected:
