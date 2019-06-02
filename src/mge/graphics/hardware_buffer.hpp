@@ -112,6 +112,19 @@ namespace mge {
          * @return @c true if buffer can be mapped
          */
         bool mappable() const noexcept;
+
+        /**
+         * CPU access flags.
+         * @return CPU access flags
+         */
+        buffer_access cpu_access() const noexcept { return m_cpu_access; }
+
+        /**
+         * GPU access flags.
+         * @return GPU access flags.
+         */
+        buffer_access gpu_access() const noexcept { return m_gpu_access; }
+
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;

@@ -140,7 +140,13 @@ namespace opengl {
                                         size_t element_count,
                                         void *initial_data)
     {
-        return std::make_shared<index_buffer>(*this, type, change_policy, cpu_access, gpu_access, element_count, initial_data);
+        return std::make_shared<index_buffer>(*this,
+                                              type,
+                                              change_policy,
+                                              cpu_access,
+                                              gpu_access,
+                                              element_count,
+                                              initial_data);
     }
 
 

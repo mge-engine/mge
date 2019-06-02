@@ -46,6 +46,19 @@ TEST(hardware_buffer, mapped)
     buffer.unmap();
 }
 
+TEST(hardware_buffer, accessors)
+{
+    auto executor = std::make_shared<mge::mock_async_executor>();
+    auto context = std::make_shared<mge::mock_render_context>(executor.get());
+    mge::mock_hardware_buffer buffer(*context,
+                                     mge::buffer_type::INDEX_BUFFER,
+                                     mge::buffer_change_policy::DYNAMIC,
+                                     mge::buffer_access::READ,
+                                     mge::buffer_access::WRITE);
+    EXPECT_EQ(mge::buffer_access::READ, buffer.cpu_access());
+    EXPECT_EQ(mge::buffer_access::WRITE, buffer.gpu_access());
+}
+
 TEST(hardware_buffer, unmappable_buffer)
 {
     std::vector<uint32_t> data;
@@ -78,7 +91,6 @@ TEST(hardware_buffer, mappable_buffer)
                                          mge::buffer_access::READ_WRITE);
         EXPECT_TRUE(buffer.mappable());
     }
-
 }
 
 TEST(hardware_buffer, construct_unmapped_unmappable_throws)

@@ -19,20 +19,18 @@ namespace opengl {
                             initial_data)
         ,m_buffer(0)
     {
-        if(initial_data) {
-            await([&]{
-                glCreateBuffers(1, &m_buffer);
-                CHECK_OPENGL_ERROR(glCreateBuffers);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
-                CHECK_OPENGL_ERROR(glBindBuffer);
+        await([&]{
+            glCreateBuffers(1, &m_buffer);
+            CHECK_OPENGL_ERROR(glCreateBuffers);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
+            CHECK_OPENGL_ERROR(glBindBuffer);
 
+            glBufferData(GL_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
+            CHECK_OPENGL_ERROR(glBufferData);
 
-                glBufferData(GL_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
-
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
-                CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
-            });
-        }
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
+            CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+        });
     }
 
 
@@ -49,15 +47,28 @@ namespace opengl {
     void *
     index_buffer::on_map()
     {
+        void *mapped_buffer = nullptr;
         if(m_buffer) {
+            await([&]{
+                mapped_buffer = glMapNamedBuffer(m_buffer, gl_buffer_access(cpu_access()));
+                CHECK_OPENGL_ERROR(glMapNamedBuffer);
+            });
 
         }
-        return nullptr;
+        return mapped_buffer;
     }
 
     void
     index_buffer::on_unmap()
     {
+        if(m_buffer) {
+            await([&]{
+                auto rc = glUnmapNamedBuffer(m_buffer);
+                if(rc == GL_FALSE) {
+                    CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
+                }
+            });
+        }
         return;
     }
 
