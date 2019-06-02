@@ -1,5 +1,6 @@
 #include "index_buffer.hpp"
 #include "error.hpp"
+#include "common.hpp"
 
 namespace opengl {
     index_buffer::index_buffer(mge::render_context &context,
@@ -25,7 +26,8 @@ namespace opengl {
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
                 CHECK_OPENGL_ERROR(glBindBuffer);
 
-                glBufferData(GL_ARRAY_BUFFER, size(), initial_data, GL_STATIC_DRAW);
+
+                glBufferData(GL_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
 
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
                 CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
