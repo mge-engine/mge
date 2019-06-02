@@ -10,9 +10,12 @@
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/data_type.hpp"
+#include "mge/core/to_void_ptr.hpp"
 
 #include <memory>
 #include <vector>
+#include <array>
+
 namespace mge {
 
     /**
@@ -56,6 +59,20 @@ namespace mge {
                                                      buffer_access gpu_access,
                                                      size_t element_count,
                                                      void *initial_data=nullptr) = 0;
+
+        template <typename T, std::size_t N>
+        index_buffer_ref create_index_buffer(buffer_change_policy change_policy,
+                                             buffer_access cpu_access,
+                                             buffer_access gpu_access,
+                                             const std::array<T, N>& buffer)
+        {
+            return create_index_buffer(data_type_of_type<T>(),
+                                       change_policy,
+                                       cpu_access,
+                                       gpu_access,
+                                       N,
+                                       to_void_ptr(buffer.data()));
+        }
 
         virtual shader_ref create_shader(shader_type type) = 0;
 

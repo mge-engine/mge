@@ -5,6 +5,8 @@
 #include "test/googlemock.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/core/test/mock_async_executor.hpp"
+#include "mge/core/to_void_ptr.hpp"
+
 #include "mock_render_context.hpp"
 #include <memory>
 using namespace testing;
@@ -25,4 +27,24 @@ TEST(render_context, dispatches_await)
     auto context = std::make_shared<mge::test_render_context>(&executor);
     EXPECT_CALL(executor, await(_));
     context->await([] {});
+}
+
+TEST(render_context, dispatches_array_index_buffer_create)
+{
+    mge::mock_async_executor executor;
+    auto context = std::make_shared<mge::test_render_context>(&executor);
+    std::array<int, 3> data = {1, 2, 3};
+    EXPECT_CALL(*context, create_index_buffer(mge::data_type::INT32,
+                                              mge::buffer_change_policy::DYNAMIC,
+                                              mge::buffer_access::WRITE,
+                                              mge::buffer_access::READ,
+                                              3,
+                                              mge::to_void_ptr(data.data())));
+
+    context->create_index_buffer(mge::buffer_change_policy::DYNAMIC,
+                                 mge::buffer_access::WRITE,
+                                 mge::buffer_access::READ,
+                                 data);
+
+
 }

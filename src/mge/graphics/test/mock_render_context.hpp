@@ -26,5 +26,18 @@ namespace mge {
         MOCK_METHOD1(create_shader, shader_ref(shader_type));
         MOCK_CONST_METHOD1(shader_languages,
                            void (std::vector<shader_language>&));
+
+        template <typename T, std::size_t N>
+        index_buffer_ref create_index_buffer(buffer_change_policy change_policy,
+                                             buffer_access cpu_access,
+                                             buffer_access gpu_access,
+                                             const std::array<T, N>& buffer)
+        {
+            return render_context::create_index_buffer(change_policy,
+                                                       cpu_access,
+                                                       gpu_access,
+                                                       buffer);
+        }
+
     };
 }
