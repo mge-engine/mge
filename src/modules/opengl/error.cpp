@@ -56,7 +56,7 @@ namespace opengl {
                     .set_info(mge::exception::stack(mge::stacktrace()))
                     .set_info(mge::exception::type_name(mge::type_name<error>()))
                     .set_info(::mge::exception::called_function(glFunction))
-             << "OpenGL error: (" << (unsigned int)err << ") " << gl_error_text(err);
+             << "OpenGL error: [" << glFunction << "] (" << (unsigned int)err << ") " << gl_error_text(err);
         }
     }
 }

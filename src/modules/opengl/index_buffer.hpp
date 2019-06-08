@@ -20,5 +20,6 @@ namespace opengl {
         void on_unmap() override;
     private:
         GLuint m_buffer;
+        size_t m_size;
     };
 }

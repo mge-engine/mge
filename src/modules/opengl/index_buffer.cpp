@@ -1,6 +1,10 @@
 #include "index_buffer.hpp"
 #include "error.hpp"
 #include "common.hpp"
+#include "mge/core/log.hpp"
+
+MGE_USE_LOG(OPENGL);
+
 
 namespace opengl {
     index_buffer::index_buffer(mge::render_context &context,
@@ -18,14 +22,14 @@ namespace opengl {
                             element_count,
                             initial_data)
         ,m_buffer(0)
+        ,m_size(element_count * mge::data_type_size(type))
     {
         await([&]{
             glCreateBuffers(1, &m_buffer);
             CHECK_OPENGL_ERROR(glCreateBuffers);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
             CHECK_OPENGL_ERROR(glBindBuffer);
-
-            glBufferData(GL_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
             CHECK_OPENGL_ERROR(glBufferData);
 
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
@@ -50,8 +54,14 @@ namespace opengl {
         void *mapped_buffer = nullptr;
         if(m_buffer) {
             await([&]{
-                mapped_buffer = glMapNamedBuffer(m_buffer, gl_buffer_access(cpu_access()));
-                CHECK_OPENGL_ERROR(glMapNamedBuffer);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
+                CHECK_OPENGL_ERROR(glBindBuffer);
+
+                mapped_buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, gl_buffer_access(cpu_access()));
+                CHECK_OPENGL_ERROR(glMapBuffer);
+
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
+                CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
             });
 
         }
@@ -75,7 +85,7 @@ namespace opengl {
     size_t
     index_buffer::size() const
     {
-        return 0;
+        return m_size;
     }
 
 }

@@ -6,6 +6,7 @@ ADD_EXECUTABLE(opengltest
     test_render_system.cpp
     test_window.cpp
     test_shader_language.cpp
+    test_index_buffer.cpp
     opengl_test.cpp
 )
 TARGET_LINK_LIBRARIES(opengltest mgegraphics mgecore gmock)

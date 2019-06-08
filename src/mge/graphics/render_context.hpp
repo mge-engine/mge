@@ -74,6 +74,18 @@ namespace mge {
                                        to_void_ptr(buffer.data()));
         }
 
+        template <typename T, std::size_t N>
+        index_buffer_ref create_index_buffer(const std::array<T, N>& buffer)
+        {
+            return create_index_buffer(data_type_of_type<T>(),
+                                       buffer_change_policy::DEFAULT,
+                                       buffer_access::WRITE,
+                                       buffer_access::READ,
+                                       N,
+                                       to_void_ptr(buffer.data()));
+        }
+
+
         virtual shader_ref create_shader(shader_type type) = 0;
 
         /**
