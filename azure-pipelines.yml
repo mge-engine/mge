@@ -33,11 +33,11 @@ steps:
 
   - script: choco install ninja -y
     displayName: "Install Ninja Build Tool"
-    
-  - script: curl --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
+
+  - script: curl --show-error --output C:\VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
     displayName: "Download Vulkan SDK"
 
-  - script: .\VulkanSDK.exe /S
+  - script: C:\VulkanSDK.exe /S
     displayName: "Install Vulkan SDK"
 
   - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
