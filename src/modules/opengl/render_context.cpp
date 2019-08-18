@@ -8,6 +8,7 @@
 #include "shader.hpp"
 #include "index_buffer.hpp"
 #include <boost/algorithm/string.hpp>
+#include <cctype>
 
 MGE_USE_LOG(OPENGL);
 
