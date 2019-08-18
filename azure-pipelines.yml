@@ -23,8 +23,6 @@ pool:
 variables:
   VCPKG_DEFAULT_TRIPLET: x64-windows
   VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
-  CC: cl
-  CXX: cl
 
 steps:
   - script: set
@@ -32,9 +30,6 @@ steps:
 
   - script: type C:\InstalledSoftware.md
     displayName: "Dump installation details"
-
-  - script: choco install ninja -y
-    displayName: "Install Ninja Build Tool"
 
   - script: curl --show-error --output C:\VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
     displayName: "Download Vulkan SDK"
@@ -48,7 +43,7 @@ steps:
   - task: CMake@1
     displayName: "Configure project"
     inputs:
-      cmakeArgs: '-G"Visual Studio 15 2017 Win64" .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
+      cmakeArgs: '-G"Visual Studio 16 2019" -A "Win64" .. -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
 
   - task: CMake@1
     displayName: "Build Project"
