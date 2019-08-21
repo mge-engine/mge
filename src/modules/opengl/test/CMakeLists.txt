@@ -10,4 +10,4 @@ ADD_EXECUTABLE(opengltest
     opengl_test.cpp
 )
 TARGET_LINK_LIBRARIES(opengltest mgegraphics mgecore gmock)
-TARGET_IS_TEST(opengltest)
+TARGET_IS_TEST(opengltest NEEDSDISPLAY)
