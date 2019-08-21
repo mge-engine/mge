@@ -20,9 +20,13 @@ IF(WIN32)
   FILE(GLOB __windows_kits_includes
        LIST_DIRECTORIES TRUE
        "C:/Program Files (x86)/Windows Kits/10/Include/*/shared")
+  FILE(GLOB __windows_kits_um_includes
+       LIST_DIRECTORIES TRUE
+       "C:/Program Files (x86)/Windows Kits/10/Include/*/um")
   LIST(REVERSE __windows_kits_includes)
+  LIST(REVERSE __windows_kits_um_includes)
   SET(DirectX_INC_SEARCH_PATH
-      ${__windows_kits_includes})
+      "${__windows_kits_includes};${__windows_kits_um_includes}")
   SET(DirectX_LIB_SEARCH_PATH
       ${__windows_kits_libs})
   MESSAGE("--   DirectX_LIB_SEARCH_PATH ${DirectX_LIB_SEARCH_PATH}")
