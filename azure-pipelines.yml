@@ -35,12 +35,6 @@ steps:
   - script: if not exist C:\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output C:\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
     displayName: "Download Vulkan SDK"
 
-  - task: CacheBeta@0
-    inputs:
-      key: "vulkan-1.1.101.0"
-      path: 'C:\VulkanSDK-1.1.101.0-Installer.exe*'
-    displayName: Cache VulkanSDK Installer
-
   - script: C:\VulkanSDK-1.1.101.0-Installer.exe /S
     displayName: "Install Vulkan SDK"
 
