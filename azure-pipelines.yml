@@ -25,11 +25,6 @@ variables:
   VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
 
 steps:
-  - task: CacheBeta@0
-    inputs:
-      key: "VulkanSDK-1.1.101.0-Installer.exe"
-      path: C:\VulkanSDK-1.1.101.0-Installer.exe
-    displayName: Cache VulkanSDK Installer
 
   - script: set
     displayName: "Dump environment"
@@ -40,7 +35,13 @@ steps:
   - script: if not exist C:\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output C:\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
     displayName: "Download Vulkan SDK"
 
-  - script: C:\VulkanSDK-1.1.101.0-Installer.exe /S
+  - task: CacheBeta@0
+    inputs:
+      key: "VulkanSDK-1.1.101.0-Installer.exe"
+      path: C:\VulkanSDK-1.1.101.0-Installer.exe
+    displayName: Cache VulkanSDK Installer
+
+    - script: C:\VulkanSDK-1.1.101.0-Installer.exe /S
     displayName: "Install Vulkan SDK"
 
   - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
