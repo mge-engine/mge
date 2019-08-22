@@ -58,17 +58,17 @@ steps:
   - task: lucappa.cmake-ninja-vcpkg-tasks.d855c326-b1c0-4d6f-b1c7-440ade6835fb.run-vcpkg@0
     displayName: 'Run vcpkg'
     inputs:
-        vcpkgArguments: '--triplet x64-windows sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm'
-        vcpkgGitCommitId: $(vcpkgGitRef)
-        vcpkgGitURL: https://github.com/mge-engine/vcpkg.git
+      vcpkgArguments: '--triplet x64-windows sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm'
+      vcpkgGitCommitId: $(vcpkgGitRef)
+      vcpkgGitURL: https://github.com/mge-engine/vcpkg.git
 
   - task: lucappa.cmake-ninja-vcpkg-tasks.f2b1ec7d-bc54-4cc8-b9ed-1bc7f37c9dc6.run-cmake@0
     displayName: 'Run CMake and Ninja'
-      inputs:
-        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-        cmakeListsTxtPath: $(Build.SourcesDirectory)/CMakeLists.txt
-        useVcpkgToolchainFile: true
-        cmakeAppendedArgs: '-G Ninja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+    inputs:
+      cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+      cmakeListsTxtPath: $(Build.SourcesDirectory)/CMakeLists.txt
+      useVcpkgToolchainFile: true
+      cmakeAppendedArgs: '-G Ninja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo'
 
 #  - task: CMake@1
 #    displayName: "Configure project"
