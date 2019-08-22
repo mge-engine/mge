@@ -25,17 +25,20 @@ variables:
   VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
   VULKAN_INSTALLER_CACHE_FOLDER: $(Pipeline.Workspace)/vulkan-installer-cache
   VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD: $(Pipeline.Workspace)\vulkan-installer-cache
+  vcpkgGitRef: a3a6530631df905eb5c0e26d0b20d7d548e0c465
 
 steps:
   - task: CacheBeta@0
+    displayName: Cache Vulkan SDK Installer 
     inputs:
       key: vulkansdk-1-1-101-0
       path: $(VULKAN_INSTALLER_CACHE_FOLDER)
-    displayName: Cache Vulkan SDK Installer 
 
-
-  - script: echo $(VULKAN_INSTALLER_CACHE_FOLDER)
-    displayName: Print installer cache folder name
+  - task: CacheBeta@0
+    displayName: Cache vcpkg
+    inputs:
+        key: "$(vcpkgGitRef)" | "$(Agent.Name)"
+        path: '$(Build.BinariesDirectory)/vcpkg'
 
   - script: set
     displayName: "Dump environment"
@@ -52,28 +55,35 @@ steps:
   - script: $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe /S
     displayName: "Install Vulkan SDK"
 
-  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
-    displayName: "Install dependencies"
-
-  - task: CMake@1
-    displayName: "Configure project"
+  - task: lucappa.cmake-ninja-vcpkg-tasks.d855c326-b1c0-4d6f-b1c7-440ade6835fb.run-vcpkg@0
+    displayName: 'Run vcpkg'
     inputs:
-      cmakeArgs: '-G"Visual Studio 16 2019" -A x64 .. -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
+        vcpkgArguments: '--triplet x64-windows sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm'
+        vcpkgGitCommitId: $(vcpkgGitRef)
+        vcpkgGitURL: https://github.com/mge-engine/vcpkg.git
 
-  - task: CMake@1
-    displayName: "Build Project"
-    inputs:
-      cmakeArgs: '--build . --config RelWithDebInfo'
+#  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
+#    displayName: "Install dependencies"
 
-  - task: CMake@1
-    displayName: "Run tests"
-    continueOnError: true
-    inputs:
-      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
+#  - task: CMake@1
+#    displayName: "Configure project"
+#    inputs:
+#      cmakeArgs: '-G"Visual Studio 16 2019" -A x64 .. -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
 
-  - task: PublishTestResults@2
-    displayName: "Publish test results"
-    inputs:
-      testResultsFiles: '**/*test.xml'
-      mergeTestResults: false
+#  - task: CMake@1
+#    displayName: "Build Project"
+#    inputs:
+#      cmakeArgs: '--build . --config RelWithDebInfo'
+
+#  - task: CMake@1
+#    displayName: "Run tests"
+#    continueOnError: true
+#    inputs:
+#      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
+
+#  - task: PublishTestResults@2
+#    displayName: "Publish test results"
+#    inputs:
+#      testResultsFiles: '**/*test.xml'
+#      mergeTestResults: false
 
