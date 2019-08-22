@@ -24,6 +24,8 @@ variables:
   VCPKG_DEFAULT_TRIPLET: x64-windows
   VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
   VULKAN_INSTALLER_CACHE_FOLDER: $(Pipeline.Workspace)/vulkan-installer-cache
+  VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD: $(Pipeline.Workspace)\vulkan-installer-cache
+
 steps:
   - task: CacheBeta@0
     inputs:
@@ -41,13 +43,13 @@ steps:
   - script: type C:\InstalledSoftware.md
     displayName: "Dump installation details"
 
-  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER)
+  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)
     displayName: Make installer cache folder
 
-  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER)\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output $(VULKAN_INSTALLER_CACHE_FOLDER)\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
+  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
     displayName: "Download Vulkan SDK"
 
-  - script: $(VULKAN_INSTALLER_CACHE_FOLDER)\VulkanSDK-1.1.101.0-Installer.exe /S
+  - script: $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe /S
     displayName: "Install Vulkan SDK"
 
   - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
