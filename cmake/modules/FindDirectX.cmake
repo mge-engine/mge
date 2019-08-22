@@ -23,13 +23,14 @@ IF(WIN32)
   FILE(GLOB __windows_kits_um_includes
        LIST_DIRECTORIES TRUE
        "C:/Program Files (x86)/Windows Kits/10/Include/*/um")
-  LIST(REVERSE __windows_kits_includes)
-  LIST(REVERSE __windows_kits_um_includes)
   SET(DirectX_INC_SEARCH_PATH
       "${__windows_kits_includes};${__windows_kits_um_includes}")
+  LIST(SORT DirectX_INC_SEARCH_PATH)
+  LIST(REVERSE DirectX_INC_SEARCH_PATH)
   SET(DirectX_LIB_SEARCH_PATH
       ${__windows_kits_libs})
   MESSAGE("--   DirectX_LIB_SEARCH_PATH ${DirectX_LIB_SEARCH_PATH}")
+  MESSAGE("--   DirectX_INC_SEARCH_PATH ${DirectX_INC_SEARCH_PATH}")
   FIND_PATH(DirectX_INCLUDE_DIR NAMES d3d9.h HINTS ${DirectX_INC_SEARCH_PATH})
   MESSAGE("--   DirectX_INCLUDE_DIR set to ${DirectX_INCLUDE_DIR}")
   FIND_LIBRARY(DirectX_LIBRARY NAMES d3d9 HINTS ${DirectX_LIB_SEARCH_PATH})
