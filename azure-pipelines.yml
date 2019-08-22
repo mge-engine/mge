@@ -37,7 +37,7 @@ steps:
   - task: CacheBeta@0
     displayName: Cache vcpkg
     inputs:
-        key: "$(vcpkgGitRef)" | "$(Agent.Name)"
+        key:  vcpkg | "$(vcpkgGitRef)"
         path: '$(Build.BinariesDirectory)/vcpkg'
 
   - script: set
