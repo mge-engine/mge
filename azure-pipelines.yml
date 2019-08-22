@@ -62,13 +62,18 @@ steps:
         vcpkgGitCommitId: $(vcpkgGitRef)
         vcpkgGitURL: https://github.com/mge-engine/vcpkg.git
 
-#  - script: vcpkg install sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant vulkan glm
-#    displayName: "Install dependencies"
+  - task: lucappa.cmake-ninja-vcpkg-tasks.f2b1ec7d-bc54-4cc8-b9ed-1bc7f37c9dc6.run-cmake@0
+    displayName: 'Run CMake and Ninja'
+      inputs:
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+        cmakeListsTxtPath: $(Build.SourcesDirectory)/CMakeLists.txt
+        useVcpkgToolchainFile: true
+        cmakeAppendedArgs: '-G Ninja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo'
 
 #  - task: CMake@1
 #    displayName: "Configure project"
 #    inputs:
-#      cmakeArgs: '-G"Visual Studio 16 2019" -A x64 .. -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo  -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
+#      cmakeArgs: '-G"Visual Studio 16 2019" -A x64 ..   -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
 
 #  - task: CMake@1
 #    displayName: "Build Project"
