@@ -70,6 +70,9 @@ steps:
       useVcpkgToolchainFile: true
       cmakeAppendedArgs: '-G Ninja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo'
 
+  - script: dir
+    displayName: "Dump Directory"
+    
 #  - task: CMake@1
 #    displayName: "Configure project"
 #    inputs:
