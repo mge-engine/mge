@@ -80,11 +80,11 @@ steps:
 #    inputs:
 #      cmakeArgs: '--build . --config RelWithDebInfo'
 
-#  - task: CMake@1
-#    displayName: "Run tests"
-#    continueOnError: true
-#    inputs:
-#      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
+  - task: CMake@1
+    displayName: "Run tests"
+    continueOnError: true
+    inputs:
+      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
 
 #  - task: PublishTestResults@2
 #    displayName: "Publish test results"
