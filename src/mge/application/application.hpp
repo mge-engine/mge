@@ -17,7 +17,7 @@
 #include <iostream>
 
 #ifdef MGE_OS_WINDOWS
-#  include <windows.h>
+#  include <Windows.h>
 #endif
 
 namespace mge {
