@@ -42,6 +42,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd4255") # () -> (void) in winuser.h
     ADD_DEFINITIONS("-wd4996") # std::tr1 usage (caused by boost)
     ADD_DEFINITIONS("-wd4582") # constructor will not be implicitly called
+    ADD_DEFINITIONS("-showIncludes")
     IF("${MSVC_VERSION}" STREQUAL "1900")
         ADD_DEFINITIONS("-wd4702") # unreachable code
     ENDIF()
