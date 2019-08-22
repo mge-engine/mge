@@ -23,8 +23,10 @@ pool:
 variables:
   VCPKG_DEFAULT_TRIPLET: x64-windows
   VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
-
+  INSTALLER_CACHE_FOLDER: $(Pipeline.Workspace)/installer-cache
 steps:
+  - script: echo $(INSTALLER_CACHE_FOLDER)
+    displayName: Print installer cache folder name
 
   - script: set
     displayName: "Dump environment"
