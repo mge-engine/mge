@@ -50,9 +50,9 @@ steps:
   - script: type C:\InstalledSoftware.md
     displayName: "Dump installation details"
 
-  - script: .\tools\ci\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
+  - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
     displayName: Run vcpkg
-    
+
 #  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)
 #    displayName: Make installer cache folder
 
