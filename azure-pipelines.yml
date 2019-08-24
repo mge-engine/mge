@@ -28,8 +28,7 @@ variables:
   VCPKG_FOLDER: $(Pipeline.Workspace)\vcpkg
   VCPKG_VERSION: d85a40d478e683561578d1f63bb992f8805e16cc
   VCPKG_VERSION_PATCH: 1
-  VCPKG_PACKAGES: sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant glm 
-  VCPKG_X: vulkan 
+  VCPKG_PACKAGES: sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant glm vulkan
 
 steps:
   - task: CacheBeta@0
