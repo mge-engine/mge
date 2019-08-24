@@ -64,7 +64,7 @@ steps:
   - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
     displayName: Run vcpkg
 
-  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B $(BUILD_BINARIESDIRECTORY) -G Ninja . -DCMAKE_BUILD_TYPE=RelWithDebInfo"
+  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B $(BUILD_BINARIESDIRECTORY) -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo $(Pipeline.Workspace)/s"
     displayName: Configure Project (cmake)
 
 #  - task: CMake@1
