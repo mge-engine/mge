@@ -27,7 +27,7 @@ variables:
   VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD: $(Pipeline.Workspace)\vulkan-installer-cache
   VCPKG_FOLDER: $(Pipeline.Workspace)\vcpkg
   VCPKG_VERSION: d85a40d478e683561578d1f63bb992f8805e16cc
-  VCPKG_VERSION_PATCH: 1
+  VCPKG_VERSION_PATCH: 2
   VCPKG_PACKAGES: sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant glm vulkan
 
 steps:
@@ -49,9 +49,6 @@ steps:
   - script: type C:\InstalledSoftware.md
     displayName: "Dump installation details"
 
-  - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
-    displayName: Run vcpkg
-
   - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)
     displayName: Make installer cache folder
 
@@ -63,6 +60,9 @@ steps:
 
   - script: dir
     displayName: "Dump Directory"
+
+  - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
+    displayName: Run vcpkg
 
 #  - task: CMake@1
 #    displayName: "Configure project"
