@@ -3,3 +3,5 @@
 rem BUILD_BINARIESDIRECTORY
 
 %VCPKG_CLONE_DIR%\vcpkg.exe env --triplet x64-windows
+
+cl /help
