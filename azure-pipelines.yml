@@ -64,6 +64,9 @@ steps:
   - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
     displayName: Run vcpkg
 
+    - script: .\tools\ci\azure-devops\run_cmake.cmd $(VCPKG_FOLDER) 
+    displayName: Run cmake
+
 #  - task: CMake@1
 #    displayName: "Configure project"
 #    inputs:
