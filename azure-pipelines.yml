@@ -53,14 +53,14 @@ steps:
   - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
     displayName: Run vcpkg
 
-#  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)
-#    displayName: Make installer cache folder
+  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)
+    displayName: Make installer cache folder
 
-#  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
-#    displayName: "Download Vulkan SDK"
+  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
+    displayName: "Download Vulkan SDK"
 
-#  - script: $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe /S
-#    displayName: "Install Vulkan SDK"
+  - script: $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe /S
+    displayName: "Install Vulkan SDK"
 
   - script: dir
     displayName: "Dump Directory"
