@@ -23,4 +23,6 @@ pool:
 
 steps:
   - task: PythonScript@0
-  - scriptSource tools\ci\azure-devops\build.py 
+    scriptSource: 'filePath'
+    scriptPath: tools\ci\azure-devops\build.py 
+    
