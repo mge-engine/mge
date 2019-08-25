@@ -62,10 +62,10 @@ steps:
   - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
     displayName: Install dependencies using vcpkg
 
-  - script: dir /S $(VCPKG_FOLDER)\vcpkg
-    displayName: dir dir dir
+  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe integrate install
+    displayName: Integrate vcpkg dependencies
 
-  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B %BUILD_BINARIESDIRECTORY% -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_FOLDER)/vcpkg/scripts/buildsystems/vcpkg.cmake' $(Pipeline.Workspace)/s "
+  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B %BUILD_BINARIESDIRECTORY% -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_FOLDER)\vcpkg/scripts/buildsystems/vcpkg.cmake' $(Pipeline.Workspace)/s "
     displayName: Configure Project (cmake)
 
   - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "ninja -C %BUILD_BINARIESDIRECTORY% all"
