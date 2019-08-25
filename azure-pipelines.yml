@@ -1,0 +1,15 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
+name: $(TeamProject)-$(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:.rrrr)
+
+trigger:
+  branches:
+    include:
+      - master
+      - issue/*
+      - release/*
+      - feature/* 
+
+steps:
+  - script: echo hello
