@@ -43,6 +43,9 @@ steps:
         key:  vcpkg | "$(VCPKG_VERSION)" | "$(VCPKG_VERSION_PATCH)"
         path: $(Pipeline.Workspace)/vcpkg
 
+  - script: choco install ninja cmake
+    displayName: Install build tools
+
   - script: set
     displayName: "Dump environment"
   
