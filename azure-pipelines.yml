@@ -28,7 +28,7 @@ variables:
 
 
 steps:
-  task: CacheBeta@0
+  - task: CacheBeta@0
     displayName: Cache Vulkan SDK Installer 
     inputs:
       key: vulkansdk-1-1-101-0
