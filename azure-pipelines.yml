@@ -11,5 +11,16 @@ trigger:
       - release/*
       - feature/* 
 
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - master
+    - release/* 
+
+pool:
+  vmImage: 'windows-2019' 
+
 steps:
-  - script: echo hello
+  - task: PythonScript@0
+  - scriptSource tools\ci\azure-devops\build.py 
