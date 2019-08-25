@@ -1,8 +1,21 @@
 import sys
 import time
+import os
 
-print ("Hello World!")
-time.sleep(5)
-print ("Hello World Again!")
+class Builder:
 
-sys.exit(0)
+    def __init__(self):
+        pass
+
+    def dumpEnvironment(self):
+        for v in os.environ:
+            print v + ": " + os.environ[v]
+
+    def run(self):
+        self.dumpEnvironment()
+        pass
+
+if __name__ == "__main__":
+    builder = Builder()
+    builder.run()
+    sys.exit(0)

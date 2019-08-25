@@ -56,3 +56,10 @@ steps:
     inputs:
       scriptSource: 'filePath'
       scriptPath: tools\ci\azure-devops\build.py 
+
+#  - task: PublishTestResults@2
+#    displayName: "Publish test results"
+#    inputs:
+#      testResultsFiles: '**/*test.xml'
+#      mergeTestResults: false
+# sqlite3 lua boost-filesystem boost-any boost-lexical-cast boost-math boost-algorithm boost-variant glm vulkan
