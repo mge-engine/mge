@@ -12,10 +12,12 @@ namespace opengl {
         shader(mge::render_context& context,
                mge::shader_type type);
         virtual ~shader();
-        void compile(const std::string& source_code) override;
-        void load(const mge::buffer& code) override;
+    protected:
+        void on_compile(const std::string& source_code) override;
+        void on_load(const mge::buffer& code) override;
     private:
         void create_shader();
+        void throw_compilation_error();
         GLenum gl_shader_type() const;
         GLuint m_shader;
     };

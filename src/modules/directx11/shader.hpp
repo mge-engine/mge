@@ -13,9 +13,11 @@ namespace dx11 {
                mge::shader_type type);
         virtual ~shader();
 
-        void compile(const std::string& source_code) override;
-        void load(const mge::buffer& code) override;
-
+    protected:
+        void on_compile(const std::string& source_code) override;
+        void on_load(const mge::buffer& code) override;
+        
+    public:
         typedef COM_UNIQUE_PTR(ID3D11VertexShader) vertex_shader_t;
         typedef COM_UNIQUE_PTR(ID3D11PixelShader) pixel_shader_t;
         typedef COM_UNIQUE_PTR(ID3D11ComputeShader) compute_shader_t;

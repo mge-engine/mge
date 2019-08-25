@@ -29,20 +29,34 @@ namespace mge {
          * Compile from source code.
          * @param source_code shader source code
          */
-        virtual void compile(const std::string& source_code) = 0;
+        void compile(const std::string& source_code);
 
         /**
          * Set compiled code.
          * @param code buffer with compiled code
          */
-        virtual void load(const buffer& code) = 0;
+        void load(const buffer& code);
 
         /**
          * Get shader type.
          * @return shader type
          */
-        shader_type type() const { return m_type; }
+        shader_type type() const noexcept { return m_type; }
+        
+        /**
+         * Returns whether the shader has code set. Code in the shader can
+         * be set by compiling code, or by loading code from binary.
+         * 
+         * @return @c true if either @c compile or @c load have been used
+         *   to define the shader
+         */
+        bool defined() const noexcept { return m_defined; }
+
     protected:
+        virtual void on_compile(const std::string& source_code) = 0;
+        virtual void on_load(const mge::buffer& code) = 0;
+
         shader_type m_type;
+        bool        m_defined;
     };
 }

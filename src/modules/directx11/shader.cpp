@@ -13,7 +13,7 @@ namespace dx11 {
     {}
 
     void
-    shader::compile(const std::string &source_code)
+    shader::on_compile(const std::string &source_code)
     {
 
         ID3DBlob *code = nullptr;
@@ -48,7 +48,7 @@ namespace dx11 {
     }
 
     void
-    shader::load(const mge::buffer &code)
+    shader::on_load(const mge::buffer &code)
     {
         ID3DBlob *code_blob = nullptr;
         auto rc = D3DCreateBlob(code.size(), &code_blob);
