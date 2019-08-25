@@ -62,29 +62,16 @@ steps:
     displayName: "Dump Directory"
 
   - script: .\tools\ci\azure-devops\install_vcpkg.cmd $(VCPKG_FOLDER) $(VCPKG_VERSION) $(VCPKG_DEFAULT_TRIPLET) $(VCPKG_PACKAGES)
-    displayName: Run vcpkg
+    displayName: Install dependencies using vcpkg
 
   - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B %BUILD_BINARIESDIRECTORY% -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_FOLDER)/vcpkg/scripts/buildsystems/vcpkg.cmake' $(Pipeline.Workspace)/s "
     displayName: Configure Project (cmake)
 
-#  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B $(BUILD_BINARIESDIRECTORY) -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_FOLDER)/vcpkg/scripts/buildsystems/vcpkg.cmake' $(Pipeline.Workspace)/s "
-#    displayName: Configure Project (cmake)
+  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "ninja -C %BUILD_BINARIESDIRECTORY% all"
+    displayName: Build all
 
-    #  - task: CMake@1
-#    displayName: "Configure project"
-#    inputs:
-#      cmakeArgs: '-G"Visual Studio 16 2019" -A x64 ..   -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake'
-
-#  - task: CMake@1
-#    displayName: "Build Project"
-#    inputs:
-#      cmakeArgs: '--build . --config RelWithDebInfo'
-
-#  - task: CMake@1
-#    displayName: "Run tests"
-#    continueOnError: true
-#    inputs:
-#      cmakeArgs: "--build . --config RelWithDebInfo --target RUN_TESTS"
+  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "ninja -C %BUILD_BINARIESDIRECTORY% RUN_TESTS"
+    displayName: Run tests
 
 #  - task: PublishTestResults@2
 #    displayName: "Publish test results"
