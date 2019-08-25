@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "window.hpp"
+#include "shader.hpp"
 #include "error.hpp"
 #include "mge/core/log.hpp"
 
@@ -127,8 +128,7 @@ namespace dx11 {
     mge::shader_ref
     render_context::create_shader(mge::shader_type type)
     {
-        mge::shader_ref result;
-        return result;
+        return std::make_shared<shader>(*this, type);
     }
 
 }
