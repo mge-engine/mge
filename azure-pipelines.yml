@@ -21,7 +21,37 @@ pr:
 pool:
   vmImage: 'windows-2019' 
 
+variables:
+  - VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
+  - VULKAN_INSTALLER_CACHE_FOLDER: $(Pipeline.Workspace)/vulkan-installer-cache
+  - VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD: $(Pipeline.Workspace)\vulkan-installer-cache
+
+
 steps:
+  task: CacheBeta@0
+    displayName: Cache Vulkan SDK Installer 
+    inputs:
+      key: vulkansdk-1-1-101-0
+      path: $(VULKAN_INSTALLER_CACHE_FOLDER)
+
+  - script: set
+    displayName: "Dump environment"
+
+  - script: type C:\InstalledSoftware.md
+    displayName: "Dump installation details"
+ 
+  - script: choco install ninja cmake.portable
+    displayName: "Install tools"
+
+  - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD) mkdir $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)
+    displayName: "Create Vulkan installer cache folder"
+
+   - script: if not exist $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe curl --show-error --output $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe https://sdk.lunarg.com/sdk/download/1.1.101.0/windows/VulkanSDK-1.1.101.0-Installer.exe?u=
+     displayName: "Download Vulkan SDK"
+
+  - script: $(VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD)\VulkanSDK-1.1.101.0-Installer.exe /S
+    displayName: "Install Vulkan SDK"
+
   - task: PythonScript@0
     inputs:
       scriptSource: 'filePath'
