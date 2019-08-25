@@ -22,9 +22,9 @@ pool:
   vmImage: 'windows-2019' 
 
 variables:
-  - VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
-  - VULKAN_INSTALLER_CACHE_FOLDER: $(Pipeline.Workspace)/vulkan-installer-cache
-  - VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD: $(Pipeline.Workspace)\vulkan-installer-cache
+  VULKAN_SDK: 'C:\VulkanSDK\1.1.101.0'
+  VULKAN_INSTALLER_CACHE_FOLDER: $(Pipeline.Workspace)/vulkan-installer-cache
+  VULKAN_INSTALLER_CACHE_FOLDER_FOR_CMD: $(Pipeline.Workspace)\vulkan-installer-cache
 
 
 steps:
