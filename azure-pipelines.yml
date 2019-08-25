@@ -65,7 +65,7 @@ steps:
   - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe integrate install
     displayName: Integrate vcpkg dependencies
 
-  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B %BUILD_BINARIESDIRECTORY% -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=$(VCPKG_FOLDER)\vcpkg/scripts/buildsystems/vcpkg.cmake' $(Pipeline.Workspace)/s "
+  - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "cmake -B %BUILD_BINARIESDIRECTORY% -G Ninja  -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE=-DCMAKE_TOOLCHAIN_FILE=d:/a/1/vcpkg/vcpkg/scripts/buildsystems/vcpkg.cmake $(Pipeline.Workspace)/s "
     displayName: Configure Project (cmake)
 
   - script: $(VCPKG_FOLDER)\vcpkg\vcpkg.exe env --triplet x64-windows "ninja -C %BUILD_BINARIESDIRECTORY% all"
