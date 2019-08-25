@@ -9,7 +9,7 @@ class Builder:
 
     def dumpEnvironment(self):
         for v in os.environ:
-            print v + ": " + os.environ[v]
+            print(v + ": " + os.environ[v])
 
     def run(self):
         self.dumpEnvironment()
