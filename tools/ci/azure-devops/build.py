@@ -29,7 +29,7 @@ class Builder:
         if os.path.exists(self.vcpkgDirectory):
             self.exec(["git", "fetch"], cwd=self.vcpkgDirectory)
         else:
-            self.exec(["git", "clone", "VCPKG_SOURCE"], cwd=self.buildDirectory)
+            self.exec(["git", "clone", VCPKG_SOURCE], cwd=self.buildDirectory)
 
     def exec(self, command, env=None, cwd=None):
         environment = self.plainEnvironment
