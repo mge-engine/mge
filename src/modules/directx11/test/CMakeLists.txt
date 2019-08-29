@@ -12,4 +12,4 @@ ADD_EXECUTABLE(dx11test
     ${CMAKE_SOURCE_DIR}/src/modules/directx11/error.cpp
 )
 TARGET_LINK_LIBRARIES(dx11test mgegraphics mgecore gmock)
-TARGET_IS_TEST(dx11test)
+TARGET_IS_TEST(dx11test NEEDSDISPLAY)
