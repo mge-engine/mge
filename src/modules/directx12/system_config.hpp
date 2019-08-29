@@ -5,6 +5,7 @@
 #include "mge/core/configuration.hpp"
 
 namespace dx12 {
+    
     class system_config
     {
     public:
