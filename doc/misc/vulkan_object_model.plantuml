@@ -1,0 +1,79 @@
+@startuml
+class Host
+class Instance 
+class Device
+class PhysicalDevice
+class Queue
+Instance o-- PhysicalDevice : 1..n
+PhysicalDevice o-- Device : 0..n
+Device o-- Queue : 0..n
+Host -- Device : waits on idle >
+Host -- Queue : waits on idle >
+class CommandBuffer
+CommandBuffer -- Queue : submitted to >
+Device o-- CommandBuffer : 0..n
+class Semaphore
+Queue -- Semaphore : waits for >
+Queue -- Semaphore : signals >
+Device o-- Semaphore : 0..n
+class Fence
+Device o-- Fence : 0..n
+Host -- Fence : waits for >
+Queue -- Fence : signals >
+class CommandPool
+Device o-- CommandPool : 0..n
+CommandBuffer -- CommandPool : allocates from >
+class Event
+Device o-- Event : 0..n
+Host -- Event : signals >
+Host -- Event : waits for >
+CommandBuffer -- Event : signals >
+CommandBuffer -- Event : waits for >
+class PipelineBarrier
+CommandBuffer o-- PipelineBarrier : 0..n
+class MemoryBarrier
+class BufferMemoryBarrier
+class ImageMemoryBarrier
+PipelineBarrier -- BufferMemoryBarrier : observes
+PipelineBarrier -- MemoryBarrier : observes
+PipelineBarrier -- ImageMemoryBarrier : observes
+class RenderPass
+class SubPass
+Device o-- RenderPass : 0..n
+RenderPass o-- SubPass : 0..n
+class FrameBuffer
+Device o-- FrameBuffer : 0..n
+FrameBuffer -- RenderPass : uses
+class ShaderModule
+Device o-- ShaderModule : 0..n
+class ComputePipeline
+Device o-- ComputePipeline : 0..n
+class GraphicsPipeline
+Device o-- GraphicsPipeline : 0..n
+class PipelineCache
+GraphicsPipeline -- ShaderModule : executes >
+ComputePipeline -- ShaderModule : executes >
+PipelineCache -- GraphicsPipeline : caches >
+PipelineCache -- ComputePipeline : caches >
+GraphicsPipeline -- CommandBuffer : bound to >
+ComputePipeline -- CommandBuffer : bound to >
+class Buffer
+Device o-- Buffer : 0..n
+class BufferView
+Device o-- BufferView : 0..n
+BufferView -- Buffer : interprets
+Pipeline -- BufferView : accesses >
+ShaderModule -- BufferView : accesses >
+class Image
+Device o-- Image : 0..n
+Device o-- ImageView : 0..n
+ImageView -- Image : interprets >
+Pipeline -- ImageView : accesses >
+class Sampler
+Device o-- Sampler : 0..n
+ShaderModule -- Sampler : accesses >
+class QueryPool
+Device o-- QueryPool : 0..n
+QueryPool -- CommandBuffer : queries >
+hide members
+@enduml
