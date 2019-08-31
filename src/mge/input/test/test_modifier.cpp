@@ -11,3 +11,8 @@ TEST(modifier, print)
     mge::test_stream_output(mge::modifier_value::SHIFT, "SHIFT");
     mge::test_stream_output(mge::modifier_value::ALT, "ALT");
 }
+
+TEST(modifier, instantiate)
+{
+    mge::modifier m;
+}
