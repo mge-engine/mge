@@ -51,7 +51,7 @@ namespace mge {
 
 #define MAP_TYPE(c_type, data_type_value)           \
     template <>                                     \
-    inline data_type data_type_of_type<c_type>()    \
+    inline constexpr data_type data_type_of_type<c_type>()    \
     {                                               \
         return data_type_value;                     \
     }                                               \
@@ -79,7 +79,7 @@ namespace mge {
     MAP_TYPE(mge::fvec4, data_type::FLOAT_VEC4)
 #undef MAP_TYPE
 
-    inline size_t data_type_size(const data_type t)
+    inline constexpr size_t data_type_size(const data_type t)
     {
         switch(t) {
 #define RETURN_TYPESIZE(t) case t: return sizeof(data_type_traits<t>::value_type)
