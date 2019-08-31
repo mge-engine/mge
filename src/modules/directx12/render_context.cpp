@@ -184,6 +184,20 @@ namespace dx12 {
         return result;
     }
 
+    mge::vertex_buffer_ref 
+    render_context::create_vertex_buffer(const mge::vertex_layout& layout,
+                                         mge::buffer_change_policy change_policy,
+                                         mge::buffer_access cpu_access,
+                                         mge::buffer_access gpu_access,
+                                         size_t element_count,
+                                         void *initial_data)
+    {
+        mge::vertex_buffer_ref result;
+        return result;
+    }
+
+
+
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const
     {
