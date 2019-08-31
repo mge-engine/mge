@@ -31,6 +31,7 @@ namespace opengl {
         void create_glrc();
         void init_gl3w();
         void collect_opengl_info();
+        void clear_current();
 
         HWND  m_hwnd;
         HDC   m_hdc;
