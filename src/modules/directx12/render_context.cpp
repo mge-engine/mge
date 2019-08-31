@@ -199,4 +199,11 @@ namespace dx12 {
         return result;
     }
 
+    mge::pipeline_ref
+    render_context::create_pipeline()
+    {
+        mge::pipeline_ref result;
+        return result;
+    }
+
 }

@@ -131,4 +131,11 @@ namespace dx11 {
         return std::make_shared<shader>(*this, type);
     }
 
+    mge::pipeline_ref
+    render_context::create_pipeline()
+    {
+        mge::pipeline_ref result;
+        return result;
+    }
+
 }

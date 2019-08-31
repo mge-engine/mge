@@ -25,6 +25,7 @@ namespace dx11 {
                                                   size_t element_count,
                                                   void *initial_data) override;
         mge::shader_ref create_shader(mge::shader_type type) override;
+        mge::pipeline_ref create_pipeline() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
         ID3D11Device *device() const { return m_device.get(); }
     private:

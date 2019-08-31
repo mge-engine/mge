@@ -11,6 +11,7 @@ ADD_EXECUTABLE(graphicstest
   test_window.cpp
   test_hardware_buffer.cpp
   test_shader.cpp
+  test_pipeline.cpp
 )
 TARGET_LINK_LIBRARIES(graphicstest mgegraphics mgecore gmock)
 TARGET_IS_TEST(graphicstest)

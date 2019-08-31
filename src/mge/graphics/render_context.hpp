@@ -48,7 +48,7 @@ namespace mge {
         /**
          * Create an index (element array) buffer.
          * @param type          data type of buffer elements
-         * @param change_policy         buffer change_policy
+         * @param change_policy buffer change_policy
          * @param cpu_access    cpu access flags
          * @param gpu_access    gpu access flags
          * @return index buffer
@@ -60,6 +60,17 @@ namespace mge {
                                                      size_t element_count,
                                                      void *initial_data=nullptr) = 0;
 
+        /**
+         * @reate an index buffer.
+         * 
+         * @tparam T            type of array values
+         * @tparam N            number of array elements
+         * @param change_policy buffer change policy
+         * @param cpu_access    cpu access flags
+         * @param gpu_access    gpu access flags
+         * @param buffer        buffer data
+         * @return index buffer populated with the contents of @c buffer.
+         */
         template <typename T, std::size_t N>
         index_buffer_ref create_index_buffer(buffer_change_policy change_policy,
                                              buffer_access cpu_access,
@@ -74,6 +85,14 @@ namespace mge {
                                        to_void_ptr(buffer.data()));
         }
 
+        /**
+         * Create a index buffer object from an array of values.
+         * 
+         * @tparam T        type of array values
+         * @tparam N        number of array elements
+         * @param buffer    content of index buffer
+         * @return index buffer populated with the contents of @c buffer.
+         */
         template <typename T, std::size_t N>
         index_buffer_ref create_index_buffer(const std::array<T, N>& buffer)
         {
@@ -85,8 +104,20 @@ namespace mge {
                                        to_void_ptr(buffer.data()));
         }
 
-
+        /**
+         * Create a shader object.
+         * 
+         * @param type shader type
+         * @return created shader
+         */
         virtual shader_ref create_shader(shader_type type) = 0;
+
+        /**
+         * Create a pipeline object.
+         * 
+         * @return created pipeline
+         */
+        virtual pipeline_ref create_pipeline() = 0;
 
         /**
          * Get supported shader languages.

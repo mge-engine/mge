@@ -26,7 +26,8 @@ ADD_LIBRARY(mgegraphics
     shader_language.cpp
     data_type.cpp
     buffer_access.cpp
-    shader.cpp)
+    shader.cpp
+    pipeline.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)
