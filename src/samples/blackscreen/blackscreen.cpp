@@ -23,6 +23,12 @@ public:
         m_window->set_close_listener([&]{
             set_quit();
         });
+        m_window->set_key_action_handler([&](mge::key k, mge::key_action a, mge::modifier m) {
+            if(a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
+                set_quit();
+            }
+        });
+
         m_window->show();
     }
 

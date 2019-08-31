@@ -20,6 +20,7 @@ namespace mge {
 
     window::~window()
     {
+        uninstall_display_thread();
         m_render_context.reset();
     }
 
@@ -56,6 +57,7 @@ namespace mge {
     void
     window::install_display_thread()
     {
+        MGE_DEBUG_LOG(WINDOW) << "Install window display thread";
         m_display_thread = std::make_shared<display_thread>(this);
         m_display_thread->start();
 
@@ -64,6 +66,20 @@ namespace mge {
         });
 
         application::instance().add_application_thread(m_display_thread.get());
+    }
+
+    void
+    window::uninstall_display_thread()
+    {
+        if(m_display_thread) {
+            MGE_DEBUG_LOG(WINDOW) << "Uninstall window display thread";
+            m_display_thread->set_quit();
+            application::instance().remove_application_thread(m_display_thread.get());
+            if(m_display_thread->joinable()) {
+                m_display_thread->join();
+            }
+            m_display_thread.reset();
+        }
     }
 
     void
@@ -142,13 +158,7 @@ namespace mge {
         if(m_close_listener) {
             m_close_listener();
         }
-        if(m_display_thread) {
-            m_display_thread->set_quit();
-            application::instance().remove_application_thread(m_display_thread.get());
-            if(m_display_thread->joinable()) {
-                m_display_thread->join();
-            }
-        }
+        uninstall_display_thread();
     }
 
     window::display_thread::display_thread(window *w)

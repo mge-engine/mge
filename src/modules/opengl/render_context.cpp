@@ -29,6 +29,7 @@ namespace opengl {
         create_glrc();
         init_gl3w();
         collect_opengl_info();
+        clear_current();
     }
 
     render_context::~render_context()
@@ -113,6 +114,14 @@ namespace opengl {
         while(!it.eof()) {
             MGE_INFO_LOG(OPENGL) << *it;
             ++it;
+        }
+    }
+
+    void
+    render_context::clear_current()
+    {
+        if(!wglMakeCurrent(nullptr, nullptr)) {
+            MGE_THROW_SYSCALL_FAILED(wglMakeCurrent);
         }
     }
 

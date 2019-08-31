@@ -112,7 +112,6 @@ namespace mge {
     void
     thread::join()
     {
-        // TODO: encapsulate std::system_error
         m_running_thread.join();
     }
 

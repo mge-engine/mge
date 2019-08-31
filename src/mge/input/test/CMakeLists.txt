@@ -6,6 +6,7 @@ ADD_EXECUTABLE(inputtest
   test_key.cpp
   test_key_action.cpp
   test_modifier.cpp
+  test_input_handler.cpp
 )
 TARGET_LINK_LIBRARIES(inputtest mgeinput mgecore gmock)
 TARGET_IS_TEST(inputtest)

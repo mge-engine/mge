@@ -28,7 +28,7 @@ namespace mge {
         {}
 
         inline enum_set(enum_set<E,M>&& s)
-            :m_bits(std::move(s))
+            :m_bits(std::move(s.m_bits))
         {}
 
         inline enum_set<E,M>& operator =(const enum_set<E,M>& s)
@@ -45,6 +45,11 @@ namespace mge {
         bool test(E value) const
         {
              return m_bits.test(static_cast<base_type>(value));
+        }
+
+        bool empty() const 
+        {
+            return m_bits.none();
         }
     private:
         std::bitset<M> m_bits;
