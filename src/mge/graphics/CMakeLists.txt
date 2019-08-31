@@ -30,7 +30,10 @@ ADD_LIBRARY(mgegraphics
     pipeline.cpp
     vertex_format.cpp
     vertex_layout.cpp
-    vertex_buffer.cpp)
+    vertex_buffer.cpp
+    image_format.cpp
+    image.cpp 
+    memory_image.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)
