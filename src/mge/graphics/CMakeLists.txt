@@ -33,7 +33,10 @@ ADD_LIBRARY(mgegraphics
     vertex_buffer.cpp
     image_format.cpp
     image.cpp 
-    memory_image.cpp)
+    memory_image.cpp
+    texture_type.cpp
+    filter_function.cpp
+    texture.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)
