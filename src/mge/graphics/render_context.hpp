@@ -10,6 +10,7 @@
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/data_type.hpp"
+#include "mge/graphics/vertex_layout.hpp"
 #include "mge/core/to_void_ptr.hpp"
 
 #include <memory>
@@ -44,6 +45,13 @@ namespace mge {
          * presented.
          */
         virtual void flush() = 0;
+
+        virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
+                                                       buffer_change_policy change_policy,
+                                                       buffer_access cpu_access,
+                                                       buffer_access gpu_access,
+                                                       size_t element_count,
+                                                       void *initial_data=nullptr) = 0;
 
         /**
          * Create an index (element array) buffer.

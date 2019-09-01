@@ -14,6 +14,7 @@ namespace mge {
     class shader;
     class pipeline;
     class texture;
+    class image;
 
     MGE_DECLARE_REF(render_system);
     MGE_DECLARE_REF(monitor);
@@ -25,4 +26,5 @@ namespace mge {
     MGE_DECLARE_REF(shader);
     MGE_DECLARE_REF(pipeline);
     MGE_DECLARE_REF(texture);
+    MGE_DECLARE_REF(image);
 }

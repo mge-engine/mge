@@ -29,6 +29,7 @@ namespace opengl {
         create_glrc();
         init_gl3w();
         collect_opengl_info();
+        clear_current();
     }
 
     render_context::~render_context()
@@ -117,6 +118,14 @@ namespace opengl {
     }
 
     void
+    render_context::clear_current()
+    {
+        if(!wglMakeCurrent(nullptr, nullptr)) {
+            MGE_THROW_SYSCALL_FAILED(wglMakeCurrent);
+        }
+    }
+
+    void
     render_context::assign_thread()
     {
         if (!wglMakeCurrent(m_hdc, m_hglrc)) {
@@ -150,6 +159,17 @@ namespace opengl {
                                               initial_data);
     }
 
+    mge::vertex_buffer_ref 
+    render_context::create_vertex_buffer(const mge::vertex_layout& layout,
+                                         mge::buffer_change_policy change_policy,
+                                         mge::buffer_access cpu_access,
+                                         mge::buffer_access gpu_access,
+                                         size_t element_count,
+                                         void *initial_data)
+    {
+        mge::vertex_buffer_ref result;
+        return result;
+    }
 
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const

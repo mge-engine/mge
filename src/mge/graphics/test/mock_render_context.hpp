@@ -23,6 +23,15 @@ namespace mge {
                                        buffer_access,
                                        size_t,
                                        void*));
+
+        MOCK_METHOD6(create_vertex_buffer,
+                     mge::vertex_buffer_ref (const mge::vertex_layout&,
+                                             mge::buffer_change_policy,
+                                             mge::buffer_access,
+                                             mge::buffer_access,
+                                             size_t,
+                                             void *));
+
         MOCK_METHOD1(create_shader, shader_ref(shader_type));
         MOCK_METHOD0(create_pipeline, pipeline_ref());
         
