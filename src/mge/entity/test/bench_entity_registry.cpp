@@ -30,3 +30,34 @@ static void bench_entity_create_destroy(benchmark::State& state)
     }
 }
 BENCHMARK(bench_entity_create_destroy);
+
+static void bench_entity_create_destroy_1000(benchmark::State& state)
+{
+    mge::entity entities[1000];
+    mge::entity_registry r;
+    while(state.KeepRunning()) {
+        for(int i=0; i<1000; ++i) {
+            entities[i] = r.create();
+        }
+        for(int i=0; i<1000; ++i) {
+            r.destroy(entities[i]);
+        }
+    }
+}
+BENCHMARK(bench_entity_create_destroy_1000);
+
+static void bench_entity_create_destroy_1M(benchmark::State& state)
+{
+    std::vector<mge::entity> entities;
+    entities.resize(1000000);
+    mge::entity_registry r;
+    while(state.KeepRunning()) {
+        for(int i=0; i<1000000; ++i) {
+            entities[i] = r.create();
+        }
+        for(int i=0; i<1000000; ++i) {
+            r.destroy(entities[1000000 -i - 1]);
+        }
+    }
+}
+BENCHMARK(bench_entity_create_destroy_1M);

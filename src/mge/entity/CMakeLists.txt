@@ -10,5 +10,6 @@ ADD_LIBRARY(mgeentity
             ${mgeentity_sources})
 
 TARGET_ADD_DEFINE(mgeentity BUILD_MGE_ENTITY)
-TARGET_LINK_LIBRARIES(mgeentity mgecore)
+TARGET_LINK_LIBRARIES(mgeentity mgecore EnTT)
 ADD_SUBDIRECTORY(test)
+
