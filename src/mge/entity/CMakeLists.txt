@@ -3,7 +3,7 @@
 # All rights reserved.
 
 SET(mgeentity_sources
-    entity_registry.cpp
+    dummy.cpp
 )
 ADD_LIBRARY(mgeentity
             SHARED
