@@ -37,7 +37,7 @@ steps:
   - task: CacheBeta@0
     displayName: Cache vcpkg installation
     inputs:
-      key: vckg-e417ff69b746f7842b3b9d0fceacb080498e1c5d-1
+      key: vckg-e417ff69b746f7842b3b9d0fceacb080498e1c5d-2
       path: $(VCPKG_INSTALLER_CACHE_FOLDER)
 
   - script: set
