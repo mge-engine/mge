@@ -7,6 +7,7 @@
 #include "mge/core/log.hpp"
 #include "shader.hpp"
 #include "index_buffer.hpp"
+#include "vertex_buffer.hpp"
 #include <boost/algorithm/string.hpp>
 #include <cctype>
 
@@ -167,8 +168,13 @@ namespace opengl {
                                          size_t element_count,
                                          void *initial_data)
     {
-        mge::vertex_buffer_ref result;
-        return result;
+        return std::make_shared<vertex_buffer>(*this,
+                                               layout,
+                                               change_policy,
+                                               cpu_access,
+                                               gpu_access,
+                                               element_count,
+                                               initial_data);
     }
 
     void

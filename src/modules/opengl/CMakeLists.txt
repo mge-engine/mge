@@ -7,6 +7,7 @@ SET(mge_opengl_module_SOURCES
     render_context.cpp
     shader.cpp
     index_buffer.cpp
+    vertex_buffer.cpp
     error.cpp
     render_system.cpp)
 ADD_LIBRARY(mge_module_opengl MODULE
