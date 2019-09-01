@@ -31,8 +31,7 @@ namespace opengl {
             CHECK_OPENGL_ERROR(glBindBuffer);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
             CHECK_OPENGL_ERROR(glBufferData);
-
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
         });
     }
