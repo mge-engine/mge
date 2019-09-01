@@ -9,6 +9,7 @@ ADD_EXECUTABLE(opengltest
     test_shader.cpp
     test_index_buffer.cpp
     test_vertex_buffer.cpp
+    test_texture.cpp
     opengl_test.cpp
 )
 TARGET_LINK_LIBRARIES(opengltest mgegraphics mgecore gmock)

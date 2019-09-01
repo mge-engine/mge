@@ -8,6 +8,7 @@
 #include "shader.hpp"
 #include "index_buffer.hpp"
 #include "vertex_buffer.hpp"
+#include "texture.hpp"
 #include <boost/algorithm/string.hpp>
 #include <cctype>
 
@@ -182,6 +183,20 @@ namespace opengl {
                                                element_count,
                                                initial_data);
     }
+
+    mge::texture_ref 
+    render_context::create_texture(mge::texture_type type,
+                                   mge::filter_function mag_filter,
+                                   mge::filter_function min_filter,
+                                   bool mipmap_use) 
+    {
+        return std::make_shared<texture>(*this,
+                                         type,
+                                         mag_filter,
+                                         min_filter,
+                                         mipmap_use);
+    }
+
 
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const

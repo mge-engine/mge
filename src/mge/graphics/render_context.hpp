@@ -11,6 +11,8 @@
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/vertex_layout.hpp"
+#include "mge/graphics/texture_type.hpp"
+#include "mge/graphics/filter_function.hpp"
 #include "mge/core/to_void_ptr.hpp"
 
 #include <memory>
@@ -111,6 +113,20 @@ namespace mge {
                                        N,
                                        to_void_ptr(buffer.data()));
         }
+
+        /**
+         * Create a texture object.
+         * 
+         * @param type          texture type
+         * @param mag_filter    magnify filter function
+         * @param min_filter    minimize filter function
+         * @param mipmap_use    usage of mipmaps
+         * @return created texture
+         */
+        virtual texture_ref create_texture(texture_type type,
+                                           filter_function mag_filter,
+                                           filter_function min_filter,
+                                           bool mipmap_use) = 0;
 
         /**
          * Create a shader object.

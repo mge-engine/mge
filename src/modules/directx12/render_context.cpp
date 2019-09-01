@@ -196,6 +196,15 @@ namespace dx12 {
         return result;
     }
 
+    mge::texture_ref 
+    render_context::create_texture(mge::texture_type type,
+                                   mge::filter_function mag_filter,
+                                   mge::filter_function min_filter,
+                                   bool mipmap_use) 
+    {
+        mge::texture_ref result;
+        return result;
+    }
 
 
     void
