@@ -30,6 +30,12 @@ namespace mge {
     }
 
     void
+    context_object::assert_same_context(const context_object& cobj) const
+    {
+        assert_same_context(*cobj.context());
+    }
+
+    void
     context_object::await(const std::function<void ()> &f)
     {
         if(m_context) {

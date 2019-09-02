@@ -12,6 +12,7 @@ namespace opengl {
         shader(mge::render_context& context,
                mge::shader_type type);
         virtual ~shader();
+        inline GLuint gl_shader() const noexcept { return m_shader; }
     protected:
         void on_compile(const std::string& source_code) override;
         void on_load(const mge::buffer& code) override;

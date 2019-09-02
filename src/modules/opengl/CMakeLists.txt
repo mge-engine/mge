@@ -9,6 +9,7 @@ SET(mge_opengl_module_SOURCES
     index_buffer.cpp
     vertex_buffer.cpp
     texture.cpp
+    pipeline.cpp
     error.cpp
     render_system.cpp)
 ADD_LIBRARY(mge_module_opengl MODULE

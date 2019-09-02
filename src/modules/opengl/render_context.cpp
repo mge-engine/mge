@@ -9,6 +9,7 @@
 #include "index_buffer.hpp"
 #include "vertex_buffer.hpp"
 #include "texture.hpp"
+#include "pipeline.hpp"
 #include <boost/algorithm/string.hpp>
 #include <cctype>
 
@@ -214,8 +215,7 @@ namespace opengl {
     mge::pipeline_ref
     render_context::create_pipeline()
     {
-        mge::pipeline_ref result;
-        return result;
+        return std::make_shared<pipeline>(*this);
     }
 
 }
