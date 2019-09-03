@@ -15,10 +15,16 @@ namespace mge {
     context_object::~context_object()
     {}
 
-    render_context_ref
+    const render_context&
     context_object::context() const
     {
-        return m_context;
+        return *m_context;
+    }
+
+    render_context&
+    context_object::context()
+    {
+        return *m_context;
     }
 
     void
@@ -32,7 +38,7 @@ namespace mge {
     void
     context_object::assert_same_context(const context_object& cobj) const
     {
-        assert_same_context(*cobj.context());
+        assert_same_context(cobj.context());
     }
 
     void

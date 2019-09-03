@@ -37,7 +37,8 @@ namespace dx11 {
         mge::shader_ref create_shader(mge::shader_type type) override;
         mge::pipeline_ref create_pipeline() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
-        ID3D11Device *device() const { return m_device.get(); }
+        ID3D11Device *device() const noexcept { return m_device.get(); }
+        ID3D11DeviceContext *device_context() const noexcept { return m_device_context.get(); }
     private:
         void init_context(const system_config& config);
 
@@ -52,5 +53,10 @@ namespace dx11 {
     inline ID3D11Device * dx11_device(const mge::render_context& context)
     {
         return static_cast<const render_context&>(context).device();
+    }
+
+    inline ID3D11DeviceContext *dx11_device_context(const mge::render_context& context)
+    {
+        return static_cast<const render_context&>(context).device_context();
     }
 }

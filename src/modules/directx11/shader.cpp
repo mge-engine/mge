@@ -78,7 +78,7 @@ namespace dx11 {
     void
     shader::create_shader()
     {
-        auto device = dx11_device(*context());
+        auto device = dx11_device(context());
         HRESULT rc = 0;
         switch(type()) {
         case mge::shader_type::FRAGMENT:

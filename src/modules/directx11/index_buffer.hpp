@@ -16,6 +16,9 @@ namespace dx11 {
                      void  *initial_data);
         virtual ~index_buffer();
         size_t size() const noexcept override;
+    protected:
+        void *on_map() override;
+        void on_unmap() override;
     private:
         COM_UNIQUE_PTR(ID3D11Buffer) m_buffer;
         DXGI_FORMAT m_format;

@@ -89,4 +89,23 @@ namespace dx11 {
     {
         return m_size;
     }
+
+    void *
+    index_buffer::on_map()
+    {
+        D3D11_MAPPED_SUBRESOURCE mapped = {};
+        auto hr = dx11_device_context(context())->Map(m_buffer.get(),
+                                                      0,
+                                                      D3D11_MAP_READ_WRITE,
+                                                      0,
+                                                      &mapped);
+        CHECK_HRESULT(hr, ID3D11DeviceContext, Map);
+        return mapped.pData;
+    }
+
+    void
+    index_buffer::on_unmap()
+    {
+        dx11_device_context(context())->Unmap(m_buffer.get(), 0);
+    }
 }
