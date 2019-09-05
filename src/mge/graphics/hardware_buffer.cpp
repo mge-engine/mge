@@ -42,7 +42,15 @@ namespace mge {
         ,m_gpu_access(gpu_access)
         ,m_map_count(0)
         ,m_mapped_memory(nullptr)
-    {}
+    {
+        if(cpu_access == buffer_access::READ
+           || cpu_access == buffer_access::READ_WRITE) {
+            if(change_policy != buffer_change_policy::STAGING) {
+                MGE_THROW(mge::illegal_argument)
+                    << "CPU read access requires STAGING buffer policy, but found " << change_policy;
+            }
+        }
+    }
 
 
     hardware_buffer::~hardware_buffer()
