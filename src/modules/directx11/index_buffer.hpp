@@ -21,6 +21,7 @@ namespace dx11 {
         void on_unmap() override;
     private:
         void create_buffer(void *data);
+        bool for_read_mapping() const;
 
         COM_UNIQUE_PTR(ID3D11Buffer) m_buffer;
         DXGI_FORMAT m_format;

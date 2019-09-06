@@ -17,18 +17,36 @@ namespace dx11
     }
 
 
-    TEST_F(test_index_buffer, buffer_map_unmap)
+    TEST_F(test_index_buffer, normal_buffer_map_unmap)
     {
         auto buffer = window->render_context()
                 .create_index_buffer(mge::data_type::INT32,
                                      mge::buffer_change_policy::DYNAMIC,
-                                     mge::buffer_access::READ_WRITE,
-                                     mge::buffer_access::READ_WRITE,
+                                     mge::buffer_access::WRITE,
+                                     mge::buffer_access::READ,
                                      1024,
                                      nullptr);
         void *bufferdata = buffer->map();
         memset(bufferdata, 'A', 1024);
         buffer->unmap();
     }
+
+// "staging" buffer may be really mapped for reading, but currently
+// not implemented
+#if 0
+    TEST_F(test_index_buffer, staging_read_buffer_map_unmap)
+    {
+        auto buffer = window->render_context()
+                .create_index_buffer(mge::data_type::INT32,
+                                     mge::buffer_change_policy::STAGING,
+                                     mge::buffer_access::READ,
+                                     mge::buffer_access::WRITE,
+                                     1024,
+                                     nullptr);
+        void *bufferdata = buffer->map();
+        EXPECT_TRUE(bufferdata != nullptr);
+        buffer->unmap();
+    }
+#endif
 
 }
