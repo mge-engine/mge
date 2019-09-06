@@ -5,6 +5,7 @@
 #include "window.hpp"
 #include "shader.hpp"
 #include "error.hpp"
+#include "index_buffer.hpp"
 #include "mge/core/log.hpp"
 
 MGE_USE_LOG(DX11);
@@ -113,8 +114,13 @@ namespace dx11 {
                                         size_t element_count,
                                         void *initial_data)
     {
-        mge::index_buffer_ref result;
-        return result;
+        return std::make_shared<index_buffer>(*this,
+                                              type,
+                                              change_policy,
+                                              cpu_access,
+                                              gpu_access,
+                                              element_count,
+                                              initial_data);
     }
 
     mge::vertex_buffer_ref 

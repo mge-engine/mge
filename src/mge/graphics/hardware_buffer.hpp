@@ -125,6 +125,11 @@ namespace mge {
          */
         buffer_access gpu_access() const noexcept { return m_gpu_access; }
 
+        /**
+         * Change policy.
+         * @return buffer change policy
+         */
+        buffer_change_policy change_policy() const noexcept { return m_change_policy; }
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;

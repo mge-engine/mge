@@ -20,6 +20,8 @@ namespace dx11 {
         void *on_map() override;
         void on_unmap() override;
     private:
+        void create_buffer(void *data);
+
         COM_UNIQUE_PTR(ID3D11Buffer) m_buffer;
         DXGI_FORMAT m_format;
         size_t m_size;
