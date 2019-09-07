@@ -9,14 +9,14 @@ namespace dx11 {
 
     index_buffer::index_buffer(mge::render_context& context,
                                mge::data_type type,
-                               mge::buffer_change_policy change_policy,
+                               mge::usage usage,
                                mge::buffer_access cpu_access,
                                mge::buffer_access gpu_access,
                                size_t element_count,
                                void  *initial_data)
         :mge::index_buffer(context,
                            type,
-                           change_policy,
+                           usage,
                            cpu_access,
                            gpu_access,
                            element_count,
@@ -36,7 +36,7 @@ namespace dx11 {
     bool
     index_buffer::for_read_mapping() const
     {
-        return change_policy() == mge::buffer_change_policy::STAGING
+        return buffer_usage() == mge::usage::STAGING
                && (cpu_access() == mge::buffer_access::READ
                    || cpu_access() == mge::buffer_access::READ_WRITE);
     }
@@ -45,10 +45,10 @@ namespace dx11 {
     index_buffer::create_buffer(void *data)
     {
         D3D11_BUFFER_DESC buffer_desc = {};
-        buffer_desc.Usage     = D3D11_USAGE_DEFAULT;
+        buffer_desc.Usage     = dx11_usage(buffer_usage());
         buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
         buffer_desc.ByteWidth = mge::numeric_cast<UINT>(size());
-        buffer_desc.CPUAccessFlags = 0; //dx11_access(cpu_access());
+        buffer_desc.CPUAccessFlags = buffer_usage() == mge::usage::STAGING ? dx11_access(cpu_access()) : 0;
         buffer_desc.MiscFlags = 0;
         D3D11_SUBRESOURCE_DATA init_data = {};
         init_data.pSysMem = data;

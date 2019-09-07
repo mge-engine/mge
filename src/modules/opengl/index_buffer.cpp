@@ -9,14 +9,14 @@ MGE_USE_LOG(OPENGL);
 namespace opengl {
     index_buffer::index_buffer(mge::render_context &context,
                                mge::data_type type,
-                               mge::buffer_change_policy change_policy,
+                               mge::usage usage,
                                mge::buffer_access cpu_access,
                                mge::buffer_access gpu_access,
                                size_t element_count,
                                void *initial_data)
         : mge::index_buffer(context,
                             type,
-                            change_policy,
+                            usage,
                             cpu_access,
                             gpu_access,
                             element_count,
@@ -29,7 +29,7 @@ namespace opengl {
             CHECK_OPENGL_ERROR(glCreateBuffers);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
             CHECK_OPENGL_ERROR(glBindBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, size(), initial_data, gl_buffer_change_policy(change_policy));
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, size(), initial_data, gl_usage(usage));
             CHECK_OPENGL_ERROR(glBufferData);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));

@@ -7,7 +7,7 @@ namespace opengl {
     public:
         vertex_buffer(mge::render_context& context,
                       const mge::vertex_layout& layout,
-                      mge::buffer_change_policy change_policy,
+                      mge::usage usage,
                       mge::buffer_access cpu_access,
                       mge::buffer_access gpu_access,
                       size_t element_count,

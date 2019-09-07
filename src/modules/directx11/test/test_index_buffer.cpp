@@ -21,7 +21,7 @@ namespace dx11
     {
         auto buffer = window->render_context()
                 .create_index_buffer(mge::data_type::INT32,
-                                     mge::buffer_change_policy::DYNAMIC,
+                                     mge::usage::DEFAULT,
                                      mge::buffer_access::WRITE,
                                      mge::buffer_access::READ,
                                      1024,
@@ -38,7 +38,7 @@ namespace dx11
     {
         auto buffer = window->render_context()
                 .create_index_buffer(mge::data_type::INT32,
-                                     mge::buffer_change_policy::STAGING,
+                                     mge::usage::STAGING,
                                      mge::buffer_access::READ,
                                      mge::buffer_access::WRITE,
                                      1024,

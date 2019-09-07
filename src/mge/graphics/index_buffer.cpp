@@ -6,14 +6,14 @@
 namespace mge {
     index_buffer::index_buffer(render_context &context,
                                data_type type,
-                               buffer_change_policy change_policy,
+                               usage buffer_usage,
                                buffer_access cpu_access,
                                buffer_access gpu_access,
                                size_t element_count,
                                void *initial_data)
         :hardware_buffer(context,
                          buffer_type::INDEX_BUFFER,
-                         change_policy,
+                         buffer_usage,
                          cpu_access,
                          gpu_access,
                          initial_data,

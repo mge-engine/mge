@@ -8,16 +8,16 @@ MGE_DEFINE_LOG(OPENGL);
 
 namespace opengl {
 
-    GLuint gl_buffer_change_policy(mge::buffer_change_policy p)
+    GLuint gl_usage(mge::usage p)
     {
         switch(p) {
-        case mge::buffer_change_policy::DEFAULT:
+        case mge::usage::DEFAULT:
             return GL_STATIC_DRAW;
-        case mge::buffer_change_policy::IMMUTABLE:
+        case mge::usage::IMMUTABLE:
             return GL_STATIC_DRAW;
-        case mge::buffer_change_policy::DYNAMIC:
+        case mge::usage::DYNAMIC:
             return GL_DYNAMIC_DRAW;
-        case mge::buffer_change_policy::STAGING:
+        case mge::usage::STAGING:
             return GL_STREAM_DRAW;
         default:
             return GL_STATIC_DRAW;

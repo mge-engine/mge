@@ -16,7 +16,7 @@ namespace mge {
     protected:
         vertex_buffer(render_context& context,
                       const vertex_layout& layout,
-                      buffer_change_policy change_policy,
+                      usage usage,
                       buffer_access cpu_access,
                       buffer_access gpu_access,
                       size_t element_count,

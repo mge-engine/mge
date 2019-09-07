@@ -19,7 +19,7 @@ namespace mge {
          * Constructor
          * @param context       context of buffer
          * @param type          data type
-         * @param change_policy         buffer change_policy
+         * @param usage         buffer usage
          * @param cpu_access    CPU access rights
          * @param gpu_access    GPU access rights
          * @param element_count element count
@@ -27,7 +27,7 @@ namespace mge {
          */
         index_buffer(render_context& context,
                      data_type type,
-                     buffer_change_policy change_policy,
+                     usage usage,
                      buffer_access cpu_access,
                      buffer_access gpu_access,
                      size_t element_count,

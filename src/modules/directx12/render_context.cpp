@@ -174,7 +174,7 @@ namespace dx12 {
 
     mge::index_buffer_ref
     render_context::create_index_buffer(mge::data_type type,
-                                        mge::buffer_change_policy change_policy,
+                                        mge::usage usage,
                                         mge::buffer_access cpu_access,
                                         mge::buffer_access gpu_access,
                                         size_t element_count,
@@ -186,7 +186,7 @@ namespace dx12 {
 
     mge::vertex_buffer_ref 
     render_context::create_vertex_buffer(const mge::vertex_layout& layout,
-                                         mge::buffer_change_policy change_policy,
+                                         mge::usage usage,
                                          mge::buffer_access cpu_access,
                                          mge::buffer_access gpu_access,
                                          size_t element_count,

@@ -4,7 +4,7 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/buffer_access.hpp"
-#include "mge/graphics/buffer_change_policy.hpp"
+#include "mge/graphics/usage.hpp"
 #include "mge/core/async_executor.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_language.hpp"
@@ -49,7 +49,7 @@ namespace mge {
         virtual void flush() = 0;
 
         virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
-                                                       buffer_change_policy change_policy,
+                                                       usage usage,
                                                        buffer_access cpu_access,
                                                        buffer_access gpu_access,
                                                        size_t element_count,
@@ -58,13 +58,13 @@ namespace mge {
         /**
          * Create an index (element array) buffer.
          * @param type          data type of buffer elements
-         * @param change_policy buffer change_policy
+         * @param usage buffer usage
          * @param cpu_access    cpu access flags
          * @param gpu_access    gpu access flags
          * @return index buffer
          */
         virtual index_buffer_ref create_index_buffer(data_type type,
-                                                     buffer_change_policy change_policy,
+                                                     usage usage,
                                                      buffer_access cpu_access,
                                                      buffer_access gpu_access,
                                                      size_t element_count,
@@ -75,20 +75,20 @@ namespace mge {
          * 
          * @tparam T            type of array values
          * @tparam N            number of array elements
-         * @param change_policy buffer change policy
+         * @param usage buffer change policy
          * @param cpu_access    cpu access flags
          * @param gpu_access    gpu access flags
          * @param buffer        buffer data
          * @return index buffer populated with the contents of @c buffer.
          */
         template <typename T, std::size_t N>
-        index_buffer_ref create_index_buffer(buffer_change_policy change_policy,
+        index_buffer_ref create_index_buffer(usage usage,
                                              buffer_access cpu_access,
                                              buffer_access gpu_access,
                                              const std::array<T, N>& buffer)
         {
             return create_index_buffer(data_type_of_type<T>(),
-                                       change_policy,
+                                       usage,
                                        cpu_access,
                                        gpu_access,
                                        N,
@@ -107,7 +107,7 @@ namespace mge {
         index_buffer_ref create_index_buffer(const std::array<T, N>& buffer)
         {
             return create_index_buffer(data_type_of_type<T>(),
-                                       buffer_change_policy::DEFAULT,
+                                       usage::DEFAULT,
                                        buffer_access::WRITE,
                                        buffer_access::READ,
                                        N,

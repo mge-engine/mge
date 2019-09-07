@@ -3,14 +3,14 @@
 namespace mge {
     vertex_buffer::vertex_buffer(render_context& context,
                                  const vertex_layout& layout,
-                                 buffer_change_policy change_policy,
+                                 usage usage,
                                  buffer_access cpu_access,
                                  buffer_access gpu_access,
                                  size_t element_count,
                                  void *initial_data)
         :hardware_buffer(context,
                          buffer_type::VERTEX_BUFFER,
-                         change_policy,
+                         usage,
                          cpu_access,
                          gpu_access,
                          initial_data,

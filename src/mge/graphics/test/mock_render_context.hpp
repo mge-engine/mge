@@ -18,7 +18,7 @@ namespace mge {
                      void());
         MOCK_METHOD6(create_index_buffer,
                      index_buffer_ref (data_type,
-                                       buffer_change_policy,
+                                       usage,
                                        buffer_access,
                                        buffer_access,
                                        size_t,
@@ -26,7 +26,7 @@ namespace mge {
 
         MOCK_METHOD6(create_vertex_buffer,
                      mge::vertex_buffer_ref (const mge::vertex_layout&,
-                                             mge::buffer_change_policy,
+                                             mge::usage,
                                              mge::buffer_access,
                                              mge::buffer_access,
                                              size_t,
@@ -43,12 +43,12 @@ namespace mge {
                            void (std::vector<shader_language>&));
 
         template <typename T, std::size_t N>
-        index_buffer_ref create_index_buffer(buffer_change_policy change_policy,
+        index_buffer_ref create_index_buffer(usage usage,
                                              buffer_access cpu_access,
                                              buffer_access gpu_access,
                                              const std::array<T, N>& buffer)
         {
-            return render_context::create_index_buffer(change_policy,
+            return render_context::create_index_buffer(usage,
                                                        cpu_access,
                                                        gpu_access,
                                                        buffer);

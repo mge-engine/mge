@@ -11,12 +11,12 @@ namespace mge {
 
     hardware_buffer::hardware_buffer(render_context &context,
                                      buffer_type type,
-                                     buffer_change_policy change_policy,
+                                     usage usage,
                                      buffer_access cpu_access,
                                      buffer_access gpu_access)
         :context_object(context)
         ,m_type(type)
-        ,m_change_policy(change_policy)
+        ,m_usage(usage)
         ,m_cpu_access(cpu_access)
         ,m_gpu_access(gpu_access)
         ,m_map_count(0)
@@ -30,14 +30,14 @@ namespace mge {
 
     hardware_buffer::hardware_buffer(render_context &context,
                                      buffer_type type,
-                                     buffer_change_policy change_policy,
+                                     usage usage,
                                      buffer_access cpu_access,
                                      buffer_access gpu_access,
                                      void *data,
                                      size_t data_size)
         :context_object(context)
         ,m_type(type)
-        ,m_change_policy(change_policy)
+        ,m_usage(usage)
         ,m_cpu_access(cpu_access)
         ,m_gpu_access(gpu_access)
         ,m_map_count(0)
@@ -45,9 +45,9 @@ namespace mge {
     {
         if(cpu_access == buffer_access::READ
            || cpu_access == buffer_access::READ_WRITE) {
-            if(change_policy != buffer_change_policy::STAGING) {
+            if(usage != usage::STAGING) {
                 MGE_THROW(mge::illegal_argument)
-                    << "CPU read access requires STAGING buffer policy, but found " << change_policy;
+                    << "CPU read access requires STAGING buffer policy, but found " << usage;
             }
         }
     }

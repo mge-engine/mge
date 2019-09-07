@@ -6,7 +6,7 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/buffer_access.hpp"
-#include "mge/graphics/buffer_change_policy.hpp"
+#include "mge/graphics/usage.hpp"
 #include "mge/graphics/buffer_type.hpp"
 #include <cstdint>
 namespace mge {
@@ -24,17 +24,17 @@ namespace mge {
      * which vertices are to be drawn in which order), or constants
      * supplied to the shader pipeline.
      *
-     * The <i>buffer change_policy</i> hints how a buffer is used, and how often
+     * The <i>buffer usage</i> hints how a buffer is used, and how often
      * its data will be changed, which may affect the way how the graphics
      * API tries to cache data.
-     * - The <i>default</i> change_policy applies no restrictions, but also gives
+     * - The <i>default</i> usage applies no restrictions, but also gives
      *   no further optimization hints to the graphics API.
-     * - An <i>immutable</i> change_policy restricts changes to the buffer, it
+     * - An <i>immutable</i> usage restricts changes to the buffer, it
      *   may for instance not be mapped for changing it, and the graphics
      *   API may apply optimizations as the buffer content will never
      *   change.
-     * - The <i>dynamic</i> change_policy declares that the buffer content may change
-     *   occasionally, the <i>streaming</i> change_policy declares that buffer content
+     * - The <i>dynamic</i> usage declares that the buffer content may change
+     *   occasionally, the <i>streaming</i> usage declares that buffer content
      *   changes frequently.
      *
      * Finally, each buffer can be created with restrictions on access by
@@ -49,13 +49,13 @@ namespace mge {
          * Construct hardware buffer.
          * @param context       render context
          * @param type          buffer type
-         * @param change_policy         buffer change_policy flag
+         * @param buffer_usage  buffer usage
          * @param cpu_access    CPU access
          * @param gpu_access    GPU access
          */
         hardware_buffer(render_context& context,
                         buffer_type type,
-                        buffer_change_policy change_policy,
+                        usage buffer_usage,
                         buffer_access cpu_access,
                         buffer_access gpu_access);
 
@@ -63,7 +63,7 @@ namespace mge {
          * Construct hardware buffer.
          * @param context       render context
          * @param type          buffer type
-         * @param change_policy         buffer change_policy flag
+         * @param buffer_usage  buffer usage
          * @param cpu_access    CPU access
          * @param gpu_access    GPU access
          * @param data          buffer content
@@ -71,7 +71,7 @@ namespace mge {
          */
         hardware_buffer(render_context& context,
                         buffer_type type,
-                        buffer_change_policy change_policy,
+                        usage buffer_usage,
                         buffer_access cpu_access,
                         buffer_access gpu_access,
                         void *data,
@@ -129,13 +129,13 @@ namespace mge {
          * Change policy.
          * @return buffer change policy
          */
-        buffer_change_policy change_policy() const noexcept { return m_change_policy; }
+        usage buffer_usage() const noexcept { return m_usage; }
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;
 
         buffer_type  m_type;
-        buffer_change_policy m_change_policy;
+        usage m_usage;
         buffer_access m_cpu_access;
         buffer_access m_gpu_access;
         uint32_t m_map_count;

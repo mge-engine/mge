@@ -153,7 +153,7 @@ namespace opengl {
 
     mge::index_buffer_ref
     render_context::create_index_buffer(mge::data_type type,
-                                        mge::buffer_change_policy change_policy,
+                                        mge::usage usage,
                                         mge::buffer_access cpu_access,
                                         mge::buffer_access gpu_access,
                                         size_t element_count,
@@ -161,7 +161,7 @@ namespace opengl {
     {
         return std::make_shared<index_buffer>(*this,
                                               type,
-                                              change_policy,
+                                              usage,
                                               cpu_access,
                                               gpu_access,
                                               element_count,
@@ -170,7 +170,7 @@ namespace opengl {
 
     mge::vertex_buffer_ref 
     render_context::create_vertex_buffer(const mge::vertex_layout& layout,
-                                         mge::buffer_change_policy change_policy,
+                                         mge::usage usage,
                                          mge::buffer_access cpu_access,
                                          mge::buffer_access gpu_access,
                                          size_t element_count,
@@ -178,7 +178,7 @@ namespace opengl {
     {
         return std::make_shared<vertex_buffer>(*this,
                                                layout,
-                                               change_policy,
+                                               usage,
                                                cpu_access,
                                                gpu_access,
                                                element_count,
