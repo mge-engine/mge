@@ -7,6 +7,7 @@ namespace opengl {
     public:
         texture(mge::render_context& context,
                 mge::texture_type t,
+                mge::usage texture_usage,
                 mge::filter_function mag_filter,
                 mge::filter_function min_filter,
                 bool mipmap_use);

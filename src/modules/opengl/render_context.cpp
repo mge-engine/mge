@@ -187,12 +187,14 @@ namespace opengl {
 
     mge::texture_ref 
     render_context::create_texture(mge::texture_type type,
+                                   mge::usage texture_usage,
                                    mge::filter_function mag_filter,
                                    mge::filter_function min_filter,
                                    bool mipmap_use) 
     {
         return std::make_shared<texture>(*this,
                                          type,
+                                         texture_usage,
                                          mag_filter,
                                          min_filter,
                                          mipmap_use);

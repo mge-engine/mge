@@ -1,13 +1,14 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include <iosfwd>
+#include <cstdint>
 
 namespace mge {
 
     /**
      * Texture type, which describes the nature of a texture.
      */
-    enum class texture_type
+    enum class texture_type : uint8_t
     {
         TEXTURE_1D,
         TEXTURE_2D,

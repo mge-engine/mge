@@ -31,8 +31,9 @@ namespace mge {
                                              mge::buffer_access,
                                              size_t,
                                              void *));
-        MOCK_METHOD4(create_texture,
+        MOCK_METHOD5(create_texture,
                      mge::texture_ref (mge::texture_type,
+                                       mge::usage,
                                        mge::filter_function,
                                        mge::filter_function,
                                        bool));

@@ -5,11 +5,13 @@
 namespace opengl {
     texture::texture(mge::render_context& context,
                      mge::texture_type t,
+                     mge::usage texture_usage,
                      mge::filter_function mag_filter,
                      mge::filter_function min_filter,
                      bool mipmap_use)
         :mge::texture(context,
                       t,
+                      texture_usage,
                       mag_filter,
                       min_filter,
                       mipmap_use)

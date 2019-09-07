@@ -31,6 +31,7 @@ namespace dx11 {
                                                   size_t element_count,
                                                   void *initial_data) override;
         mge::texture_ref create_texture(mge::texture_type type,
+                                        mge::usage texture_usage,
                                         mge::filter_function mag_filter,
                                         mge::filter_function min_filter,
                                         bool mipmap_use) override;

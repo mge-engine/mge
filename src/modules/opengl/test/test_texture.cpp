@@ -10,6 +10,7 @@ namespace opengl {
     {
         auto texture = window->render_context()
             .create_texture(mge::texture_type::TEXTURE_2D,
+                            mge::usage::DEFAULT,
                             mge::filter_function::NEAREST,
                             mge::filter_function::NEAREST,
                             false);

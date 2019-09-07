@@ -40,8 +40,8 @@ namespace dx11 {
         }
         swap_chain_desc.BufferCount = 1;
         swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-        swap_chain_desc.BufferDesc.Width = m_window->rect().width();
-        swap_chain_desc.BufferDesc.Height = m_window->rect().height();
+        swap_chain_desc.BufferDesc.Width = static_cast<UINT>(m_window->rect().width());
+        swap_chain_desc.BufferDesc.Height = static_cast<UINT>(m_window->rect().height());
         swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swap_chain_desc.SampleDesc.Count = 4; // TODO: multisampling configurable
         swap_chain_desc.Windowed = TRUE; // TODO: fullscreen
@@ -71,7 +71,7 @@ namespace dx11 {
         ID3D11Texture2D *tmp_back_buffer = nullptr;
         MGE_DEBUG_LOG(DX11) << "Getting swap chain back buffer";
 
-        m_swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&tmp_back_buffer);
+        m_swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<LPVOID*>(&tmp_back_buffer));
         if (!tmp_back_buffer) {
             MGE_THROW(dx11::error) << "Failed to get back buffer from swap chain";
         }
@@ -89,8 +89,8 @@ namespace dx11 {
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0;
         viewport.TopLeftY = 0;
-        viewport.Width = (float)m_window->rect().width();
-        viewport.Height = (float)m_window->rect().height();
+        viewport.Width = static_cast<float>(m_window->rect().width());
+        viewport.Height = static_cast<float>(m_window->rect().height());
         viewport.MinDepth = 0.0;
         viewport.MaxDepth = 0.0;
         MGE_DEBUG_LOG(DX11) << "Set view port";
@@ -137,6 +137,7 @@ namespace dx11 {
 
     mge::texture_ref 
     render_context::create_texture(mge::texture_type type,
+                                   mge::usage texture_usage,
                                    mge::filter_function mag_filter,
                                    mge::filter_function min_filter,
                                    bool mipmap_use) 

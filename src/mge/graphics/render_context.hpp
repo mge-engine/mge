@@ -48,8 +48,18 @@ namespace mge {
          */
         virtual void flush() = 0;
 
+        /**
+         * Create a vertex buffer.
+         * @param layout        vertex buffer layout
+         * @param buffer_usage  buffer usage hint
+         * @param cpu_access    cpu access method
+         * @param gpu_access    gpu access method
+         * @param element_count number of elements
+         * @param initial_data  initial buffer data
+         * @return created vertex buffer
+         */
         virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
-                                                       usage usage,
+                                                       usage buffer_usage,
                                                        buffer_access cpu_access,
                                                        buffer_access gpu_access,
                                                        size_t element_count,
@@ -58,13 +68,13 @@ namespace mge {
         /**
          * Create an index (element array) buffer.
          * @param type          data type of buffer elements
-         * @param usage buffer usage
+         * @param buffer_usage  buffer usage
          * @param cpu_access    cpu access flags
          * @param gpu_access    gpu access flags
          * @return index buffer
          */
         virtual index_buffer_ref create_index_buffer(data_type type,
-                                                     usage usage,
+                                                     usage buffer_usage,
                                                      buffer_access cpu_access,
                                                      buffer_access gpu_access,
                                                      size_t element_count,
@@ -124,6 +134,7 @@ namespace mge {
          * @return created texture
          */
         virtual texture_ref create_texture(texture_type type,
+                                           usage texture_usage,
                                            filter_function mag_filter,
                                            filter_function min_filter,
                                            bool mipmap_use) = 0;
