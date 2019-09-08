@@ -61,3 +61,45 @@ static void bench_entity_create_destroy_1M(benchmark::State& state)
     }
 }
 BENCHMARK(bench_entity_create_destroy_1M);
+
+struct foo_info {
+    int x;
+    int y;
+};
+
+static void bench_set_field_1M(benchmark::State& state)
+{
+    std::vector<mge::entity> entities;
+    entities.resize(1000000);
+    mge::entity_registry r;
+    for(int i=0; i<1000000; ++i) {
+        entities[i] = r.create();
+    }
+    while(state.KeepRunning()) {
+        for(int i=0; i<1000000; ++i) {
+            r.assign<foo_info>(entities[i], i, i);
+        }
+    }
+}
+BENCHMARK(bench_set_field_1M);
+
+struct foo_object
+{
+    foo_info foo;
+    foo_info space[1000];
+};
+
+static void bench_set_field_direct_1M(benchmark::State& state)
+{
+    std::vector<foo_object> entities;
+    entities.resize(1000000);
+    while(state.KeepRunning()) {
+        for(int i=0; i<1000000; ++i) {
+            entities[i].foo.x = i;
+            entities[i].foo.y = i;
+        }
+    }
+}
+BENCHMARK(bench_set_field_direct_1M);
+
+
