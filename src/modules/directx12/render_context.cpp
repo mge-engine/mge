@@ -200,7 +200,8 @@ namespace dx12 {
     render_context::create_texture_2d(mge::usage texture_usage,
                                       mge::filter_function mag_filter,
                                       mge::filter_function min_filter,
-                                      bool mipmap_use)
+                                      bool mipmap_use,
+                                      const mge::image_ref& image)
     {
         mge::texture_2d_ref result;
         return result;

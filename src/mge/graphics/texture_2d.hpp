@@ -5,6 +5,7 @@
 #include "mge/graphics/filter_function.hpp"
 #include "mge/graphics/usage.hpp"
 #include "mge/graphics/image_format.hpp"
+#include "mge/graphics/image.hpp"
 #include "mge/graphics/extent.hpp"
 
 namespace mge {
@@ -16,7 +17,8 @@ namespace mge {
                    usage texture_usage,
                    filter_function mag_filter,
                    filter_function min_filter,
-                   bool mipmap_use);
+                   bool mipmap_use,
+                   const image_ref& image);
     public:
         virtual ~texture_2d() = default;
 

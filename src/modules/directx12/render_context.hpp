@@ -35,7 +35,8 @@ namespace dx12 {
         mge::texture_2d_ref create_texture_2d(mge::usage texture_usage,
                                            mge::filter_function mag_filter,
                                            mge::filter_function min_filter,
-                                           bool mipmap_use) override;
+                                           bool mipmap_use,
+                                           const mge::image_ref& image) override;
         mge::shader_ref create_shader(mge::shader_type type) override;
         mge::pipeline_ref create_pipeline() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;

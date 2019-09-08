@@ -17,6 +17,14 @@ namespace mge {
     render_context::assign_thread()
     {}
 
-
+    texture_2d_ref
+    render_context::create_texture_2d(usage texture_usage,
+                                      filter_function mag_filter,
+                                      filter_function min_filter,
+                                      bool mipmap_use)
+    {
+        mge::image_ref nullref;
+        return create_texture_2d(texture_usage, mag_filter, min_filter, mipmap_use, nullref);
+    }
 
 }

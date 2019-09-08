@@ -9,7 +9,8 @@ namespace opengl {
                     mge::usage texture_usage,
                     mge::filter_function mag_filter,
                     mge::filter_function min_filter,
-                    bool mipmap_use);
+                    bool mipmap_use,
+                    const mge::image_ref& image);
         virtual ~texture_2d();
     private:
         GLuint m_texture;

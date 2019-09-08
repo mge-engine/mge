@@ -126,18 +126,36 @@ namespace mge {
         }
 
         /**
-         * Create a texture object.
+         * Create a texture object
          * 
+         * @param usage      texture usage
+         * @param mag_filter magnify filter function
+         * @param min_filter minimize filter function
+         * @param mipmap_use usage of mipmaps
+         * @param image texture image, invalid reference if
+         *              image is added later
+         * @return created texture
+         */
+        virtual texture_2d_ref create_texture_2d(usage texture_usage,
+                                                 filter_function mag_filter,
+                                                 filter_function min_filter,
+                                                 bool mipmap_use,
+                                                 const image_ref& image) = 0;
+
+
+        /**
+         * Create a texture object
+         *
          * @param usage      texture usage
          * @param mag_filter magnify filter function
          * @param min_filter minimize filter function
          * @param mipmap_use usage of mipmaps
          * @return created texture
          */
-        virtual texture_2d_ref create_texture_2d(usage texture_usage,
-                                                 filter_function mag_filter,
-                                                 filter_function min_filter,
-                                                 bool mipmap_use) = 0;
+        texture_2d_ref create_texture_2d(usage texture_usage,
+                                         filter_function mag_filter,
+                                         filter_function min_filter,
+                                         bool mipmap_use);
 
         /**
          * Create a shader object.
