@@ -4,6 +4,7 @@
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/filter_function.hpp"
 #include "mge/graphics/usage.hpp"
+#include "mge/graphics/image_format.hpp"
 
 namespace mge {
 
