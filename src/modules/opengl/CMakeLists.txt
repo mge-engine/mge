@@ -8,7 +8,7 @@ SET(mge_opengl_module_SOURCES
     shader.cpp
     index_buffer.cpp
     vertex_buffer.cpp
-    texture.cpp
+    texture_2d.cpp
     pipeline.cpp
     error.cpp
     render_system.cpp)

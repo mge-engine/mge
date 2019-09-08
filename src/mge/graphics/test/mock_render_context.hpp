@@ -31,12 +31,11 @@ namespace mge {
                                              mge::buffer_access,
                                              size_t,
                                              void *));
-        MOCK_METHOD5(create_texture,
-                     mge::texture_ref (mge::texture_type,
-                                       mge::usage,
-                                       mge::filter_function,
-                                       mge::filter_function,
-                                       bool));
+        MOCK_METHOD4(create_texture_2d,
+                     mge::texture_2d_ref (mge::usage,
+                                          mge::filter_function,
+                                          mge::filter_function,
+                                          bool));
         MOCK_METHOD1(create_shader, shader_ref(shader_type));
         MOCK_METHOD0(create_pipeline, pipeline_ref());
         

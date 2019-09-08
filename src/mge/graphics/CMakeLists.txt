@@ -36,7 +36,7 @@ ADD_LIBRARY(mgegraphics
     memory_image.cpp
     texture_type.cpp
     filter_function.cpp
-    texture.cpp)
+    texture_2d.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)

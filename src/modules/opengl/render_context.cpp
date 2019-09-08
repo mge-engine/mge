@@ -8,7 +8,7 @@
 #include "shader.hpp"
 #include "index_buffer.hpp"
 #include "vertex_buffer.hpp"
-#include "texture.hpp"
+#include "texture_2d.hpp"
 #include "pipeline.hpp"
 #include <boost/algorithm/string.hpp>
 #include <cctype>
@@ -185,19 +185,17 @@ namespace opengl {
                                                initial_data);
     }
 
-    mge::texture_ref 
-    render_context::create_texture(mge::texture_type type,
-                                   mge::usage texture_usage,
-                                   mge::filter_function mag_filter,
-                                   mge::filter_function min_filter,
-                                   bool mipmap_use) 
+    mge::texture_2d_ref 
+    render_context::create_texture_2d(mge::usage texture_usage,
+                                      mge::filter_function mag_filter,
+                                      mge::filter_function min_filter,
+                                      bool mipmap_use)
     {
-        return std::make_shared<texture>(*this,
-                                         type,
-                                         texture_usage,
-                                         mag_filter,
-                                         min_filter,
-                                         mipmap_use);
+        return std::make_shared<texture_2d>(*this,
+                                            texture_usage,
+                                            mag_filter,
+                                            min_filter,
+                                            mipmap_use);
     }
 
 

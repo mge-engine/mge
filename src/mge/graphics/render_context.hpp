@@ -14,6 +14,7 @@
 #include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/filter_function.hpp"
 #include "mge/core/to_void_ptr.hpp"
+#include "mge/entity/entity_registry.hpp"
 
 #include <memory>
 #include <vector>
@@ -127,17 +128,16 @@ namespace mge {
         /**
          * Create a texture object.
          * 
-         * @param type          texture type
-         * @param mag_filter    magnify filter function
-         * @param min_filter    minimize filter function
-         * @param mipmap_use    usage of mipmaps
+         * @param usage      texture usage
+         * @param mag_filter magnify filter function
+         * @param min_filter minimize filter function
+         * @param mipmap_use usage of mipmaps
          * @return created texture
          */
-        virtual texture_ref create_texture(texture_type type,
-                                           usage texture_usage,
-                                           filter_function mag_filter,
-                                           filter_function min_filter,
-                                           bool mipmap_use) = 0;
+        virtual texture_2d_ref create_texture_2d(usage texture_usage,
+                                                 filter_function mag_filter,
+                                                 filter_function min_filter,
+                                                 bool mipmap_use) = 0;
 
         /**
          * Create a shader object.
@@ -161,6 +161,6 @@ namespace mge {
         virtual void shader_languages(std::vector<shader_language>& languages) const = 0;
 
     protected:
-        async_executor *m_display_executor;
+        async_executor      *m_display_executor;
     };
 }

@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/core/types.hpp"
 
 #include <functional>
 
@@ -14,6 +15,7 @@ namespace mge {
      * a shader program, a texture, or a command list.
      */
     class MGE_GRAPHICS_EXPORT context_object
+            : public noncopyable
     {
     protected:
         explicit context_object(render_context& context);

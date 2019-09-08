@@ -13,7 +13,7 @@ namespace mge {
     class vertex_buffer;
     class shader;
     class pipeline;
-    class texture;
+    class texture_2d;
     class image;
 
     MGE_DECLARE_REF(render_system);
@@ -25,6 +25,6 @@ namespace mge {
     MGE_DECLARE_REF(vertex_buffer);
     MGE_DECLARE_REF(shader);
     MGE_DECLARE_REF(pipeline);
-    MGE_DECLARE_REF(texture);
+    MGE_DECLARE_REF(texture_2d);
     MGE_DECLARE_REF(image);
 }
