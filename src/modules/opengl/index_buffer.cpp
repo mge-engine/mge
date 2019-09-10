@@ -10,15 +10,11 @@ namespace opengl {
     index_buffer::index_buffer(mge::render_context &context,
                                mge::data_type type,
                                mge::usage usage,
-                               mge::buffer_access cpu_access,
-                               mge::buffer_access gpu_access,
                                size_t element_count,
                                void *initial_data)
         : mge::index_buffer(context,
                             type,
                             usage,
-                            cpu_access,
-                            gpu_access,
                             element_count,
                             initial_data)
         ,m_buffer(0)
@@ -29,7 +25,10 @@ namespace opengl {
             CHECK_OPENGL_ERROR(glCreateBuffers);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
             CHECK_OPENGL_ERROR(glBindBuffer);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, size(), initial_data, gl_usage(usage));
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                         static_cast<GLsizeiptr>(size()),
+                         initial_data,
+                         gl_usage(usage));
             CHECK_OPENGL_ERROR(glBufferData);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
@@ -56,7 +55,7 @@ namespace opengl {
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);
                 CHECK_OPENGL_ERROR(glBindBuffer);
 
-                mapped_buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, gl_buffer_access(cpu_access()));
+                mapped_buffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_WRITE);
                 CHECK_OPENGL_ERROR(glMapBuffer);
 
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffer);

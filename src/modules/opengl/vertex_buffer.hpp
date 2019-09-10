@@ -8,8 +8,6 @@ namespace opengl {
         vertex_buffer(mge::render_context& context,
                       const mge::vertex_layout& layout,
                       mge::usage usage,
-                      mge::buffer_access cpu_access,
-                      mge::buffer_access gpu_access,
                       size_t element_count,
                       void *initial_data = nullptr);
         virtual ~vertex_buffer();

@@ -5,7 +5,6 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/context_object.hpp"
-#include "mge/graphics/buffer_access.hpp"
 #include "mge/graphics/usage.hpp"
 #include "mge/graphics/buffer_type.hpp"
 #include <cstdint>
@@ -50,30 +49,22 @@ namespace mge {
          * @param context       render context
          * @param type          buffer type
          * @param buffer_usage  buffer usage
-         * @param cpu_access    CPU access
-         * @param gpu_access    GPU access
          */
         hardware_buffer(render_context& context,
                         buffer_type type,
-                        usage buffer_usage,
-                        buffer_access cpu_access,
-                        buffer_access gpu_access);
+                        usage buffer_usage);
 
         /**
          * Construct hardware buffer.
          * @param context       render context
          * @param type          buffer type
          * @param buffer_usage  buffer usage
-         * @param cpu_access    CPU access
-         * @param gpu_access    GPU access
          * @param data          buffer content
          * @param data_size     buffer content size in bytes
          */
         hardware_buffer(render_context& context,
                         buffer_type type,
                         usage buffer_usage,
-                        buffer_access cpu_access,
-                        buffer_access gpu_access,
                         void *data,
                         size_t data_size);
 
@@ -114,18 +105,6 @@ namespace mge {
         bool mappable() const noexcept;
 
         /**
-         * CPU access flags.
-         * @return CPU access flags
-         */
-        buffer_access cpu_access() const noexcept { return m_cpu_access; }
-
-        /**
-         * GPU access flags.
-         * @return GPU access flags.
-         */
-        buffer_access gpu_access() const noexcept { return m_gpu_access; }
-
-        /**
          * Change policy.
          * @return buffer change policy
          */
@@ -136,8 +115,6 @@ namespace mge {
 
         buffer_type  m_type;
         usage m_usage;
-        buffer_access m_cpu_access;
-        buffer_access m_gpu_access;
         uint32_t m_map_count;
         void *m_mapped_memory;
     };

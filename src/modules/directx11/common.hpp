@@ -1,8 +1,6 @@
 #pragma once
 #include "dx11.hpp"
-#include "mge/graphics/buffer_access.hpp"
 #include "mge/graphics/usage.hpp"
-#include "mge/graphics/buffer_access.hpp"
 
 namespace dx11 {
     inline  DXGI_FORMAT dx11_format(mge::data_type type)
@@ -34,18 +32,4 @@ namespace dx11 {
         return D3D11_USAGE_DEFAULT;
     }
 
-    inline UINT dx11_access(mge::buffer_access access)
-    {
-        switch(access) {
-        case mge::buffer_access::NONE:
-            return 0;
-        case mge::buffer_access::READ:
-            return D3D11_CPU_ACCESS_READ;
-        case mge::buffer_access::WRITE:
-            return D3D11_CPU_ACCESS_WRITE;
-        case mge::buffer_access::READ_WRITE:
-            return D3D11_CPU_ACCESS_WRITE;
-        }
-        return 0;
-    }
 }

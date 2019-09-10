@@ -6,11 +6,8 @@ namespace opengl {
     {
     public:
         texture_2d(mge::render_context& context,
-                    mge::usage texture_usage,
-                    mge::filter_function mag_filter,
-                    mge::filter_function min_filter,
-                    bool mipmap_use,
                     const mge::image_ref& image);
+        texture_2d(mge::render_context& context);
         virtual ~texture_2d();
     private:
         GLuint m_texture;

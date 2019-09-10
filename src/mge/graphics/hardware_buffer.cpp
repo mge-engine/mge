@@ -11,45 +11,30 @@ namespace mge {
 
     hardware_buffer::hardware_buffer(render_context &context,
                                      buffer_type type,
-                                     usage usage,
-                                     buffer_access cpu_access,
-                                     buffer_access gpu_access)
+                                     usage usage)
         :context_object(context)
         ,m_type(type)
         ,m_usage(usage)
-        ,m_cpu_access(cpu_access)
-        ,m_gpu_access(gpu_access)
         ,m_map_count(0)
         ,m_mapped_memory(nullptr)
     {
         if(!mappable()) {
             MGE_THROW(mge::illegal_argument)
-                << "Unsupported CPU access for unmapped buffer";
+                << "Unsupported usage for unmapped buffer";
         }
     }
 
     hardware_buffer::hardware_buffer(render_context &context,
                                      buffer_type type,
                                      usage usage,
-                                     buffer_access cpu_access,
-                                     buffer_access gpu_access,
-                                     void *data,
-                                     size_t data_size)
+                                     void * /*data*/,
+                                     size_t /*data_size*/)
         :context_object(context)
         ,m_type(type)
         ,m_usage(usage)
-        ,m_cpu_access(cpu_access)
-        ,m_gpu_access(gpu_access)
         ,m_map_count(0)
         ,m_mapped_memory(nullptr)
     {
-        if(cpu_access == buffer_access::READ
-           || cpu_access == buffer_access::READ_WRITE) {
-            if(usage != usage::STAGING) {
-                MGE_THROW(mge::illegal_argument)
-                    << "CPU read access requires STAGING buffer policy, but found " << usage;
-            }
-        }
     }
 
 
@@ -93,7 +78,7 @@ namespace mge {
     bool
     hardware_buffer::mappable() const noexcept
     {
-        return m_cpu_access != buffer_access::NONE;
+        return m_usage != mge::usage::IMMUTABLE;
     }
 
 

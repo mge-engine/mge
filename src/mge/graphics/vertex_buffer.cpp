@@ -4,15 +4,11 @@ namespace mge {
     vertex_buffer::vertex_buffer(render_context& context,
                                  const vertex_layout& layout,
                                  usage usage,
-                                 buffer_access cpu_access,
-                                 buffer_access gpu_access,
                                  size_t element_count,
                                  void *initial_data)
         :hardware_buffer(context,
                          buffer_type::VERTEX_BUFFER,
                          usage,
-                         cpu_access,
-                         gpu_access,
                          initial_data,
                          layout.binary_size() * element_count)
         ,m_layout(layout)

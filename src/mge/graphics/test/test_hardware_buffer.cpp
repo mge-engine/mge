@@ -19,9 +19,7 @@ TEST(hardware_buffer, map_unmap)
     auto context = std::make_shared<mge::mock_render_context>(executor.get());
     mge::mock_hardware_buffer buffer(*context,
                                      mge::buffer_type::INDEX_BUFFER,
-                                     mge::usage::DYNAMIC,
-                                     mge::buffer_access::READ_WRITE,
-                                     mge::buffer_access::READ_WRITE);
+                                     mge::usage::DYNAMIC);
     void *testptr = reinterpret_cast<void *>(0x12341234);
     EXPECT_CALL(buffer, on_map()).Times(1).WillOnce(Return(testptr));
     EXPECT_CALL(buffer, on_unmap()).Times(1);
@@ -35,9 +33,7 @@ TEST(hardware_buffer, mapped)
     auto context = std::make_shared<mge::mock_render_context>(executor.get());
     mge::mock_hardware_buffer buffer(*context,
                                      mge::buffer_type::INDEX_BUFFER,
-                                     mge::usage::DYNAMIC,
-                                     mge::buffer_access::READ_WRITE,
-                                     mge::buffer_access::READ_WRITE);
+                                     mge::usage::DYNAMIC);
     void *testptr = reinterpret_cast<void *>(0x12341234);
     EXPECT_CALL(buffer, on_map()).Times(1).WillOnce(Return(testptr));
     EXPECT_CALL(buffer, on_unmap()).Times(1);
@@ -46,18 +42,6 @@ TEST(hardware_buffer, mapped)
     buffer.unmap();
 }
 
-TEST(hardware_buffer, accessors)
-{
-    auto executor = std::make_shared<mge::mock_async_executor>();
-    auto context = std::make_shared<mge::mock_render_context>(executor.get());
-    mge::mock_hardware_buffer buffer(*context,
-                                     mge::buffer_type::INDEX_BUFFER,
-                                     mge::usage::DYNAMIC,
-                                     mge::buffer_access::READ,
-                                     mge::buffer_access::WRITE);
-    EXPECT_EQ(mge::buffer_access::READ, buffer.cpu_access());
-    EXPECT_EQ(mge::buffer_access::WRITE, buffer.gpu_access());
-}
 
 TEST(hardware_buffer, unmappable_buffer)
 {
@@ -68,9 +52,7 @@ TEST(hardware_buffer, unmappable_buffer)
     auto context = std::make_shared<mge::mock_render_context>(executor.get());
     mge::mock_hardware_buffer unmappable_buffer(*context,
                                      mge::buffer_type::INDEX_BUFFER,
-                                     mge::usage::DYNAMIC,
-                                     mge::buffer_access::NONE,
-                                     mge::buffer_access::READ_WRITE,
+                                     mge::usage::IMMUTABLE,
                                      data.data(),
                                      data.size() * sizeof(uint32_t));
     EXPECT_FALSE(unmappable_buffer.mappable());
@@ -78,17 +60,15 @@ TEST(hardware_buffer, unmappable_buffer)
 
 TEST(hardware_buffer, mappable_buffer)
 {
-    mge::buffer_access cpu_access[] = { mge::buffer_access::READ,
-                                        mge::buffer_access::WRITE,
-                                        mge::buffer_access::READ_WRITE};
-    for(const auto& a : cpu_access) {
+    mge::usage usage[] = { mge::usage::DEFAULT,
+                           mge::usage::DYNAMIC,
+                           mge::usage::STAGING };
+    for(const auto& u : usage) {
         auto executor = std::make_shared<mge::mock_async_executor>();
         auto context = std::make_shared<mge::mock_render_context>(executor.get());
         mge::mock_hardware_buffer buffer(*context,
                                          mge::buffer_type::INDEX_BUFFER,
-                                         mge::usage::DYNAMIC,
-                                         a,
-                                         mge::buffer_access::READ_WRITE);
+                                         u);
         EXPECT_TRUE(buffer.mappable());
     }
 }
@@ -99,9 +79,7 @@ TEST(hardware_buffer, construct_unmapped_unmappable_throws)
     auto context = std::make_shared<mge::mock_render_context>(executor.get());
     EXPECT_THROW_WITH_MESSAGE(mge::mock_hardware_buffer buffer(*context,
                                                                mge::buffer_type::INDEX_BUFFER,
-                                                               mge::usage::DYNAMIC,
-                                                               mge::buffer_access::NONE,
-                                                               mge::buffer_access::READ_WRITE),
+                                                               mge::usage::IMMUTABLE),
                               mge::illegal_argument,
-                              "Unsupported CPU access for unmapped buffer");
+                              "Unsupported usage for unmapped buffer");
 }

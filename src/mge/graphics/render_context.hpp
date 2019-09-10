@@ -3,7 +3,6 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
-#include "mge/graphics/buffer_access.hpp"
 #include "mge/graphics/usage.hpp"
 #include "mge/core/async_executor.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
@@ -53,16 +52,12 @@ namespace mge {
          * Create a vertex buffer.
          * @param layout        vertex buffer layout
          * @param buffer_usage  buffer usage hint
-         * @param cpu_access    cpu access method
-         * @param gpu_access    gpu access method
          * @param element_count number of elements
          * @param initial_data  initial buffer data
          * @return created vertex buffer
          */
         virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
                                                        usage buffer_usage,
-                                                       buffer_access cpu_access,
-                                                       buffer_access gpu_access,
                                                        size_t element_count,
                                                        void *initial_data=nullptr) = 0;
 
@@ -76,8 +71,6 @@ namespace mge {
          */
         virtual index_buffer_ref create_index_buffer(data_type type,
                                                      usage buffer_usage,
-                                                     buffer_access cpu_access,
-                                                     buffer_access gpu_access,
                                                      size_t element_count,
                                                      void *initial_data=nullptr) = 0;
 
@@ -94,14 +87,10 @@ namespace mge {
          */
         template <typename T, std::size_t N>
         index_buffer_ref create_index_buffer(usage usage,
-                                             buffer_access cpu_access,
-                                             buffer_access gpu_access,
                                              const std::array<T, N>& buffer)
         {
             return create_index_buffer(data_type_of_type<T>(),
                                        usage,
-                                       cpu_access,
-                                       gpu_access,
                                        N,
                                        to_void_ptr(buffer.data()));
         }
@@ -119,8 +108,6 @@ namespace mge {
         {
             return create_index_buffer(data_type_of_type<T>(),
                                        usage::DEFAULT,
-                                       buffer_access::WRITE,
-                                       buffer_access::READ,
                                        N,
                                        to_void_ptr(buffer.data()));
         }
@@ -128,34 +115,16 @@ namespace mge {
         /**
          * Create a texture object
          * 
-         * @param usage      texture usage
-         * @param mag_filter magnify filter function
-         * @param min_filter minimize filter function
-         * @param mipmap_use usage of mipmaps
-         * @param image texture image, invalid reference if
-         *              image is added later
+         * @param image texture image
          * @return created texture
          */
-        virtual texture_2d_ref create_texture_2d(usage texture_usage,
-                                                 filter_function mag_filter,
-                                                 filter_function min_filter,
-                                                 bool mipmap_use,
-                                                 const image_ref& image) = 0;
-
+        virtual texture_2d_ref create_texture_2d(const image_ref& image) = 0;
 
         /**
-         * Create a texture object
-         *
-         * @param usage      texture usage
-         * @param mag_filter magnify filter function
-         * @param min_filter minimize filter function
-         * @param mipmap_use usage of mipmaps
+         * Create a dynamic texture object
          * @return created texture
          */
-        texture_2d_ref create_texture_2d(usage texture_usage,
-                                         filter_function mag_filter,
-                                         filter_function min_filter,
-                                         bool mipmap_use);
+        virtual texture_2d_ref create_texture_2d() = 0;
 
         /**
          * Create a shader object.

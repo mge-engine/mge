@@ -22,8 +22,6 @@ namespace opengl
         auto buffer = window->render_context()
                 .create_index_buffer(mge::data_type::INT32,
                                      mge::usage::DEFAULT,
-                                     mge::buffer_access::READ_WRITE,
-                                     mge::buffer_access::READ_WRITE,
                                      1024,
                                      nullptr);
         void *bufferdata = buffer->map();

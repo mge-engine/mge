@@ -12,28 +12,20 @@ namespace mge {
     public:
         mock_hardware_buffer(render_context& context,
                              buffer_type type,
-                             usage usage,
-                             buffer_access cpu_access,
-                             buffer_access gpu_access)
+                             usage usage)
             :hardware_buffer(context,
                              type,
-                             usage,
-                             cpu_access,
-                             gpu_access)
+                             usage)
         {}
 
         mock_hardware_buffer(render_context& context,
                              buffer_type type,
                              usage usage,
-                             buffer_access cpu_access,
-                             buffer_access gpu_access,
                              void *data,
                              size_t data_size)
             :hardware_buffer(context,
                              type,
                              usage,
-                             cpu_access,
-                             gpu_access,
                              data,
                              data_size)
         {}

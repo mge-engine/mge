@@ -175,8 +175,6 @@ namespace dx12 {
     mge::index_buffer_ref
     render_context::create_index_buffer(mge::data_type type,
                                         mge::usage usage,
-                                        mge::buffer_access cpu_access,
-                                        mge::buffer_access gpu_access,
                                         size_t element_count,
                                         void *initial_data)
     {
@@ -187,8 +185,6 @@ namespace dx12 {
     mge::vertex_buffer_ref 
     render_context::create_vertex_buffer(const mge::vertex_layout& layout,
                                          mge::usage usage,
-                                         mge::buffer_access cpu_access,
-                                         mge::buffer_access gpu_access,
                                          size_t element_count,
                                          void *initial_data)
     {
@@ -197,16 +193,18 @@ namespace dx12 {
     }
 
     mge::texture_2d_ref 
-    render_context::create_texture_2d(mge::usage texture_usage,
-                                      mge::filter_function mag_filter,
-                                      mge::filter_function min_filter,
-                                      bool mipmap_use,
-                                      const mge::image_ref& image)
+    render_context::create_texture_2d(const mge::image_ref& image)
     {
         mge::texture_2d_ref result;
         return result;
     }
 
+    mge::texture_2d_ref
+    render_context::create_texture_2d()
+    {
+        mge::texture_2d_ref result;
+        return result;
+    }
 
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const

@@ -25,7 +25,6 @@ ADD_LIBRARY(mgegraphics
     window_options.cpp
     shader_language.cpp
     data_type.cpp
-    buffer_access.cpp
     shader.cpp
     pipeline.cpp
     vertex_format.cpp

@@ -9,13 +9,11 @@ namespace dx11 {
     {
     public:
         texture_2d(mge::render_context& context,
-                   mge::usage usage,
-                   mge::filter_function mag_filter,
-                   mge::filter_function min_filter,
-                   bool mipmap_use,
                    const mge::image_ref& image);
+        texture_2d(mge::render_context& context);
         virtual ~texture_2d();
     private:
+        void create_texture(const mge::image_ref& image);
         typedef COM_UNIQUE_PTR(ID3D11Texture2D) texture_t;
         texture_t m_texture;
     };

@@ -14,11 +14,8 @@ namespace mge {
     {
     protected:
         texture_2d(render_context& d,
-                   usage texture_usage,
-                   filter_function mag_filter,
-                   filter_function min_filter,
-                   bool mipmap_use,
                    const image_ref& image);
+        texture_2d(render_context& d);
     public:
         virtual ~texture_2d() = default;
 

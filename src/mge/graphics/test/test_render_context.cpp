@@ -36,14 +36,10 @@ TEST(render_context, dispatches_array_index_buffer_create)
     std::array<int, 3> data = {1, 2, 3};
     EXPECT_CALL(*context, create_index_buffer(mge::data_type::INT32,
                                               mge::usage::DYNAMIC,
-                                              mge::buffer_access::WRITE,
-                                              mge::buffer_access::READ,
                                               3,
                                               mge::to_void_ptr(data.data())));
 
     context->create_index_buffer(mge::usage::DYNAMIC,
-                                 mge::buffer_access::WRITE,
-                                 mge::buffer_access::READ,
                                  data);
 
 

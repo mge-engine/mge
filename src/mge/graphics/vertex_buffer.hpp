@@ -17,8 +17,6 @@ namespace mge {
         vertex_buffer(render_context& context,
                       const vertex_layout& layout,
                       usage usage,
-                      buffer_access cpu_access,
-                      buffer_access gpu_access,
                       size_t element_count,
                       void *initial_data = nullptr);
     public:

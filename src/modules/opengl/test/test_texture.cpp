@@ -9,9 +9,7 @@ namespace opengl {
     TEST_F(test_texture, create)
     {
         auto texture = window->render_context()
-            .create_texture_2d(mge::usage::DEFAULT,
-                               mge::filter_function::NEAREST,
-                               mge::filter_function::NEAREST,
-                               false);
+            .create_texture_2d();
+        EXPECT_TRUE(texture.get() != nullptr);
     }
 }

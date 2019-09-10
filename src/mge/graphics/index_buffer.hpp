@@ -20,16 +20,12 @@ namespace mge {
          * @param context       context of buffer
          * @param type          data type
          * @param usage         buffer usage
-         * @param cpu_access    CPU access rights
-         * @param gpu_access    GPU access rights
          * @param element_count element count
          * @param initial_data  optional initial data
          */
         index_buffer(render_context& context,
                      data_type type,
                      usage usage,
-                     buffer_access cpu_access,
-                     buffer_access gpu_access,
                      size_t element_count,
                      void  *initial_data=nullptr);
     public:

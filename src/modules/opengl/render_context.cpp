@@ -154,16 +154,12 @@ namespace opengl {
     mge::index_buffer_ref
     render_context::create_index_buffer(mge::data_type type,
                                         mge::usage usage,
-                                        mge::buffer_access cpu_access,
-                                        mge::buffer_access gpu_access,
                                         size_t element_count,
                                         void *initial_data)
     {
         return std::make_shared<index_buffer>(*this,
                                               type,
                                               usage,
-                                              cpu_access,
-                                              gpu_access,
                                               element_count,
                                               initial_data);
     }
@@ -171,35 +167,28 @@ namespace opengl {
     mge::vertex_buffer_ref 
     render_context::create_vertex_buffer(const mge::vertex_layout& layout,
                                          mge::usage usage,
-                                         mge::buffer_access cpu_access,
-                                         mge::buffer_access gpu_access,
                                          size_t element_count,
                                          void *initial_data)
     {
         return std::make_shared<vertex_buffer>(*this,
                                                layout,
                                                usage,
-                                               cpu_access,
-                                               gpu_access,
                                                element_count,
                                                initial_data);
     }
 
     mge::texture_2d_ref 
-    render_context::create_texture_2d(mge::usage texture_usage,
-                                      mge::filter_function mag_filter,
-                                      mge::filter_function min_filter,
-                                      bool mipmap_use,
-                                      const mge::image_ref& image)
+    render_context::create_texture_2d(const mge::image_ref& image)
     {
         return std::make_shared<texture_2d>(*this,
-                                            texture_usage,
-                                            mag_filter,
-                                            min_filter,
-                                            mipmap_use,
                                             image);
     }
 
+    mge::texture_2d_ref
+    render_context::create_texture_2d()
+    {
+        return std::make_shared<texture_2d>(*this);
+    }
 
     void
     render_context::shader_languages(std::vector<mge::shader_language>& languages) const
