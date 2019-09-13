@@ -8,6 +8,4 @@ namespace mge {
         :command_list(context, false)
     {}
 
-    memory_command_list::~memory_command_list()
-    {}
 }
