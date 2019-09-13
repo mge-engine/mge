@@ -341,6 +341,14 @@ namespace mge {
 
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception& ex);
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception::exception_details& d);
+
+    /**
+     * Re-throws current exception. 
+     */
+    [[noreturn]] inline void rethrow()
+    {
+        throw;
+    }
 }
 
 

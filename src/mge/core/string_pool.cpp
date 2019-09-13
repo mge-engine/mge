@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/string_pool.hpp"
+#include "mge/core/exception.hpp"
 
 namespace mge {
 
@@ -49,12 +50,12 @@ namespace mge {
                 m_pool_set.insert(ins->c_str());
             } catch(const std::exception&) {
                 m_pool.pop_back();
-                throw;
+                mge::rethrow();
             }
             return ins->c_str();
         } catch(const std::exception&) {
             delete ins;
-            throw;
+            mge::rethrow();
         }
     }
 }

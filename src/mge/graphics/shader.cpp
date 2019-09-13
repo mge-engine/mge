@@ -23,7 +23,7 @@ namespace mge {
             on_compile(source_code);
             m_defined = true;
         } catch(...) {
-            throw;
+            mge::rethrow();
         }
     }
 
@@ -37,7 +37,7 @@ namespace mge {
             on_load(buf);
             m_defined = true;
         } catch(...) {
-            throw;
+            mge::rethrow();
         }
     }
 }

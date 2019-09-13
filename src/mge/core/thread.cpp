@@ -93,13 +93,13 @@ namespace mge {
             std::rethrow_exception(eptr);
         } catch(const mge::exception& e) {
             MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << std::endl << e.details() << std::endl;
-            throw;
+            mge::rethrow();
         } catch(const std::exception& e) {
             MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;
-            throw;
+            mge::rethrow();
         } catch(...) {
             MGE_ERROR_LOG(THREAD) << "Thread aborted non-std exception" << std::endl;
-            throw;
+            mge::rethrow();
         }
     }
 

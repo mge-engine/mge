@@ -184,7 +184,7 @@ namespace mge {
             app = &application::instance();
         } catch(const mge::exception& ex) {
             MGE_ERROR_LOG(WINDOW) << "Acquiring application object failed: " << ex;
-            throw;
+            mge::rethrow();
         }
         MGE_DEBUG_LOG(WINDOW) << "Display loop started";
         auto next_game_tick = clock::now();

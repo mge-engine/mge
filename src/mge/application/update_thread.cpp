@@ -89,7 +89,7 @@ namespace mge {
 
         } catch(...) {
             s_update_thread = nullptr;
-            throw;
+            mge::rethrow();
         }
     }
 }
