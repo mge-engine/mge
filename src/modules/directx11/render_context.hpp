@@ -30,6 +30,7 @@ namespace dx11 {
         mge::texture_2d_ref create_texture_2d() override;
         mge::shader_ref create_shader(mge::shader_type type) override;
         mge::pipeline_ref create_pipeline() override;
+        mge::command_list_ref create_command_list() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
         ID3D11Device *device() const noexcept { return m_device.get(); }
         ID3D11DeviceContext *device_context() const noexcept { return m_device_context.get(); }

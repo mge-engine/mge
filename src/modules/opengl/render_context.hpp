@@ -27,6 +27,7 @@ namespace opengl {
 
         mge::shader_ref create_shader(mge::shader_type type) override;
         mge::pipeline_ref create_pipeline() override;
+        mge::command_list_ref create_command_list() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
 #ifdef MGE_OS_WINDOWS
         void assign_thread() override;

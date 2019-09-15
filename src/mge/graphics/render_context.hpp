@@ -141,6 +141,14 @@ namespace mge {
          */
         virtual pipeline_ref create_pipeline() = 0;
 
+
+        /**
+         * Create a command list native to this kind of render context.
+         * 
+         * @return created command list
+         */
+        virtual command_list_ref create_command_list() = 0;
+
         /**
          * Get supported shader languages.
          * @param languages vector of languages

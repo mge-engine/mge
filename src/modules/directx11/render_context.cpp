@@ -164,4 +164,12 @@ namespace dx11 {
         return result;
     }
 
+    mge::command_list_ref
+    render_context::create_command_list()
+    {
+        mge::command_list_ref result;
+        return result;
+    }
+
+
 }
