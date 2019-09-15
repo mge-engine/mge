@@ -34,7 +34,7 @@ namespace mge {
 
         MOCK_METHOD1(create_shader, shader_ref(shader_type));
         MOCK_METHOD0(create_pipeline, pipeline_ref());
-        
+        MOCK_METHOD0(create_command_list, command_list_ref());
         MOCK_CONST_METHOD1(shader_languages,
                            void (std::vector<shader_language>&));
 
