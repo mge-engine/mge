@@ -6,6 +6,7 @@
 #include "mge/core/zero_memory.hpp"
 #include "mge/core/log.hpp"
 #include "mge/graphics/memory_command_list.hpp"
+#include "error.hpp"
 #include "shader.hpp"
 #include "index_buffer.hpp"
 #include "vertex_buffer.hpp"
@@ -13,6 +14,7 @@
 #include "pipeline.hpp"
 #include <boost/algorithm/string.hpp>
 #include <cctype>
+#include <variant>
 
 MGE_USE_LOG(OPENGL);
 
@@ -216,10 +218,29 @@ namespace opengl {
         return std::make_shared<mge::memory_command_list>(*this);
     }
 
+
+    template<class... Ts> struct visitor : Ts... { using Ts::operator()...; };
+    template<class... Ts> visitor(Ts...) -> visitor<Ts...>;
+
     void
     render_context::execute(const mge::command_list_ref& commands)
     {
         commands->assert_same_context(*this);
+        const mge::memory_command_list *memory_commands = 
+            static_cast<const mge::memory_command_list *>(commands.get());
+        await([&]{
+            for(const auto& c : *memory_commands) {
+                std::visit(visitor {
+                    [](const auto& arg) {},
+                    [&](const mge::memory_command_list::clear_data& d) {
+                        glClearColor(d.color.r, d.color.g, d.color.b, d.color.a);
+                        CHECK_OPENGL_ERROR(glClearColor);
+                        glClear(GL_COLOR_BUFFER_BIT);
+                        CHECK_OPENGL_ERROR(glClear(GL_COLOR_BUFFER_BIT));
+                    }
+                }, c);
+            }
+        });
     }
 
 

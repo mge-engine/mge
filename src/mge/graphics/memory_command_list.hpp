@@ -26,10 +26,11 @@ namespace mge {
             double value;
         };
 
-        typedef std::variant<clear_data,
-                             clear_depth_data> element;
+        using element_type = std::variant<clear_data,
+                                          clear_depth_data>;
+        using container_type = std::vector<element_type>;
+        using const_iterator = container_type::const_iterator;
 
-    public:
         /**
          * Constructor.
          * @param context render context
@@ -42,7 +43,9 @@ namespace mge {
         ~memory_command_list() = default;
 
         virtual void clear(const rgba_color& c) override;
+        inline const_iterator begin() const { return m_elements.begin(); }
+        inline const_iterator end() const { return m_elements.end(); }
     private:
-        std::vector<element> m_elements;
+        container_type m_elements;
     };
 }
