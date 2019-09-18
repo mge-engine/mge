@@ -37,6 +37,7 @@ namespace mge {
         MOCK_METHOD0(create_command_list, command_list_ref());
         MOCK_CONST_METHOD1(shader_languages,
                            void (std::vector<shader_language>&));
+        MOCK_METHOD1(execute, void(const mge::command_list_ref&));
 
         template <typename T, std::size_t N>
         index_buffer_ref create_index_buffer(usage usage,

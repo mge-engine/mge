@@ -5,6 +5,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "mge/core/log.hpp"
+#include "mge/graphics/memory_command_list.hpp"
 #include "shader.hpp"
 #include "index_buffer.hpp"
 #include "vertex_buffer.hpp"
@@ -212,9 +213,15 @@ namespace opengl {
     mge::command_list_ref
     render_context::create_command_list()
     {
-        mge::command_list_ref result;
-        return result;
+        return std::make_shared<mge::memory_command_list>(*this);
     }
+
+    void
+    render_context::execute(const mge::command_list_ref& commands)
+    {
+        commands->assert_same_context(*this);
+    }
+
 
 
 }

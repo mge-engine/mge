@@ -8,4 +8,11 @@ namespace mge {
         :command_list(context, false)
     {}
 
+    void 
+    memory_command_list::clear(const rgba_color& c)
+    {
+        clear_data data { c };
+        m_elements.push_back(data);
+    }
+
 }

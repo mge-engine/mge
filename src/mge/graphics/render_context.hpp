@@ -31,9 +31,25 @@ namespace mge {
             , public async_executor
     {
     protected:
+        /**
+         * Create a new render context that utilizes a given
+         * executor.
+         * 
+         * @param display_executor context executor
+         */
         render_context(async_executor *display_executor);
     public:
+        /**
+         * Destructor.
+         */
         virtual ~render_context() = default;
+
+        /**
+         * Executes a function in the context of the render context's
+         * asynchronous executor.
+         * 
+         * @param f function to execute
+         */
         void await(const std::function<void()>& f) override;
 
         /**
@@ -141,7 +157,6 @@ namespace mge {
          */
         virtual pipeline_ref create_pipeline() = 0;
 
-
         /**
          * Create a command list native to this kind of render context.
          * 
@@ -155,6 +170,12 @@ namespace mge {
          */
         virtual void shader_languages(std::vector<shader_language>& languages) const = 0;
 
+        /**
+         * Executes a command list.
+         * 
+         * @param commands command list with commands to execute
+         */
+        virtual void execute(const command_list_ref& commands) = 0;
     protected:
         async_executor      *m_display_executor;
     };

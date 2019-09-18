@@ -40,6 +40,8 @@ namespace mge {
          * Destructor.
          */
         ~memory_command_list() = default;
+
+        virtual void clear(const rgba_color& c) override;
     private:
         std::vector<element> m_elements;
     };

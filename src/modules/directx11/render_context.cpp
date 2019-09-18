@@ -171,5 +171,8 @@ namespace dx11 {
         return result;
     }
 
+    void
+    render_context::execute(const mge::command_list_ref& commands)
+    {}
 
 }
