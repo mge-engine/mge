@@ -1,8 +1,7 @@
 SET INCLUDE=
 SET LIB=
-call "d:\sw\vc2019\VC\Auxiliary\Build\vcvarsall.bat" x86_amd64
+call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
 set CC=cl
 set CXX=cl
 SET HOME=%SYSTEMDRIVE%%HOMEPATH%
-SET PATH=D:\sw\gs\bin;D:\sw\dynamicrio\bin64;%PATH%
 

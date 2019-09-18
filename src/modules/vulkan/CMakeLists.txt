@@ -10,7 +10,7 @@ ADD_LIBRARY(mge_module_vulkan MODULE
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan mge_win32 mgeapplication)
 ENDIF()
-TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vulkan)
+TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vkutils vulkan)
 
 
     
