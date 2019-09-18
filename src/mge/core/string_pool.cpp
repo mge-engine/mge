@@ -6,16 +6,6 @@
 
 namespace mge {
 
-    string_pool::string_pool()
-    {}
-
-    string_pool::~string_pool()
-    {
-        for(const auto e : m_pool) {
-            delete e;
-        }
-    }
-
     const char *
     string_pool::intern(const char *str)
     {
@@ -23,7 +13,7 @@ namespace mge {
         if (it != m_pool_set.end()) {
             return *it;
         } else {
-            return insert_element(str);
+            return insert_element(std::string(str));
         }
     }
 
@@ -34,27 +24,32 @@ namespace mge {
         if (it != m_pool_set.end()) {
             return *it;
         } else {
-            return insert_element(str.c_str());
+            return insert_element(std::string(str));
         }
     }
 
+    const char *
+    string_pool::intern(std::string&& str)
+    {
+        auto it = m_pool_set.find(str.c_str());
+        if (it != m_pool_set.end()) {
+            return *it;
+        } else {
+            return insert_element(std::move(str));
+        }
+
+    }
 
     const char *
-    string_pool::insert_element(const char *str)
+    string_pool::insert_element(std::string&& str)
     {
-        std::string *ins = nullptr;
+        m_pool.emplace_back(std::make_unique<std::string>(std::move(str)));
         try {
-            ins = new std::string(str);
-            m_pool.push_back(ins);
-            try {
-                m_pool_set.insert(ins->c_str());
-            } catch(const std::exception&) {
-                m_pool.pop_back();
-                mge::rethrow();
-            }
-            return ins->c_str();
-        } catch(const std::exception&) {
-            delete ins;
+            auto result = m_pool.back().get()->c_str();
+            m_pool_set.insert(result);
+            return result;
+        } catch(...) {
+            m_pool.pop_back();
             mge::rethrow();
         }
     }

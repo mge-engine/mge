@@ -30,11 +30,12 @@ namespace mge {
         /**
          * Constructor.
          */
-        string_pool();
+        string_pool() = default;
+        
         /**
          * Destructor.
          */
-        ~string_pool();
+        ~string_pool() = default;
 
         /**
          * Returns a canonical representation of the string @c str
@@ -53,8 +54,18 @@ namespace mge {
          *   string pool
          */
         const char *intern(const std::string& str);
+
+
+        /**
+         * Returns a canonical representation of the string @c str
+         * within this string pool.
+         * @param str string to intern
+         * @return string with same contents as str, contained in the
+         *   string pool
+         */
+        const char *intern(std::string&& str);
     private:
-        const char *insert_element(const char *);
+        const char *insert_element(std::string&& str);
 
         struct string_less
         {
@@ -64,7 +75,7 @@ namespace mge {
             }
         };
 
-        std::vector<std::string*> m_pool;
+        std::vector<std::unique_ptr<std::string>> m_pool;
         std::set<const char *, string_less> m_pool_set;
     };
 }
