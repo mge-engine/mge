@@ -15,3 +15,10 @@ ADD_EXECUTABLE(dx11test
 )
 TARGET_LINK_LIBRARIES(dx11test mgegraphics mgecore gmock)
 TARGET_IS_TEST(dx11test NEEDSDISPLAY)
+
+ADD_EXECUTABLE(dx11benchmark
+  bench_command_list.cpp
+  dx11_test.cpp
+  ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp
+)
+TARGET_LINK_LIBRARIES(dx11benchmark googlebenchmark mgegraphics mgecore gmock)
