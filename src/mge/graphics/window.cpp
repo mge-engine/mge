@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/window.hpp"
+#include "mge/graphics/render_context.hpp"
 #include "mge/core/clear_function.hpp"
 #include "mge/core/log.hpp"
 #include "mge/application/application.hpp"
@@ -39,7 +40,7 @@ namespace mge {
     void
     window::assign_thread()
     {
-        return;
+        render_context().assign_thread();
     }
 
     void
@@ -134,10 +135,17 @@ namespace mge {
     }
 
     void
-    window::refresh(float interpolation)
+    window::refresh(mge::thread *display_thread,
+                    float interpolation)
     {
         if(m_redraw_listener) {
-            m_redraw_listener(render_context(), interpolation);
+            redraw_context context {
+                this,
+                display_thread,
+                render_context(),
+                interpolation
+            };
+            m_redraw_listener(context);
         }
     }
 
@@ -219,7 +227,7 @@ namespace mge {
                         / (float) skip_ticks;
             }
             try {
-                m_window->refresh(interpolation);
+                m_window->refresh(this, interpolation);
             } catch(const mge::exception& ex) {
                 MGE_ERROR_LOG(WINDOW) << "Exception in window refresh: " << ex;
                 m_quit = true;

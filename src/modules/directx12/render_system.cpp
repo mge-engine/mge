@@ -54,7 +54,7 @@ namespace dx12 {
         {
 #ifndef MGE_RELEASE
             ID3D12Debug *debug_controller;
-            MGE_DEBUG_LOG(DX12) << "Try to enable debug layer" << std::endl;
+            MGE_DEBUG_LOG(DX12) << "Try to enable debug layer";
             HRESULT rc = D3D12GetDebugInterface(IID_PPV_ARGS(&debug_controller));
             if (SUCCEEDED(rc)) {
                 m_debug_controller.reset(debug_controller);

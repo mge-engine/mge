@@ -22,10 +22,4 @@ namespace opengl {
         auto t = std::make_shared<opengl::render_context>(this);
         m_render_context = t;
     }
-
-    void
-    window::assign_thread()
-    {
-        m_render_context->assign_thread();
-    }
 }

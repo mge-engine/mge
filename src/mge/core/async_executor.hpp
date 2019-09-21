@@ -26,7 +26,7 @@ namespace mge {
 
         /**
          * Get a synchronous executor.
-         * @return excutor that executes the given function synchronously
+         * @return executor that executes the given function synchronously
          */
         static async_executor& synchronous_executor();
     };

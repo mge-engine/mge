@@ -176,7 +176,8 @@ namespace mge {
          * @param commands command list with commands to execute
          */
         virtual void execute(const command_list_ref& commands) = 0;
+
     protected:
-        async_executor      *m_display_executor;
+        async_executor   *m_display_executor;
     };
 }
