@@ -45,6 +45,8 @@ namespace mge {
         virtual void clear(const rgba_color& c) override;
         inline const_iterator begin() const { return m_elements.begin(); }
         inline const_iterator end() const { return m_elements.end(); }
+    protected:
+        void on_finish() override;
     private:
         container_type m_elements;
     };

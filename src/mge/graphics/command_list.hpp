@@ -42,7 +42,35 @@ namespace mge {
          * @param c color to use for clearing
          */
         virtual void clear(const rgba_color& c) = 0;
+
+        /**
+         * Finishes recording of commands. The command list is immutable
+         * afterwards.
+         */
+        void finish();
+
+        /**
+         * Return whether this command list has finished recording.
+         * 
+         * @return @c true if command list has been finished
+         */
+        bool immutable() const noexcept { return m_finished; }
+
+        /**
+         * Return whether this command list has finished recording.
+         * 
+         * @return @c true if command list has been finished
+         */
+        bool finished() const noexcept { return m_finished; }
+    protected:
+        /**
+         * Assert the command list can still record commands.
+         */
+        void assert_not_immutable();
+
+        virtual void on_finish() = 0;
     private:
         bool m_native;
+        bool m_finished;
     };
 }

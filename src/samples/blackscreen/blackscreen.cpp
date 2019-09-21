@@ -34,6 +34,7 @@ public:
 
         m_clear_commands = m_window->render_context().create_command_list();
         m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+        m_clear_commands->finish();
         m_window->set_redraw_listener([&](window::redraw_context& context) {
             context.render_context.execute(m_clear_commands);
             context.render_context.flush();

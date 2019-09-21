@@ -7,6 +7,7 @@
 #include "error.hpp"
 #include "index_buffer.hpp"
 #include "texture_2d.hpp"
+#include "command_list.hpp"
 #include "mge/core/log.hpp"
 
 MGE_USE_LOG(DX11);
@@ -167,12 +168,15 @@ namespace dx11 {
     mge::command_list_ref
     render_context::create_command_list()
     {
-        mge::command_list_ref result;
-        return result;
+        return std::make_shared<command_list>(*this);
     }
 
     void
     render_context::execute(const mge::command_list_ref& commands)
-    {}
+    {
+        commands->assert_same_context(*this);
+        m_device_context->ExecuteCommandList(static_cast<const command_list&>(*commands).native_command_list(),
+                                             TRUE);
+    }
 
 }

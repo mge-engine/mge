@@ -42,8 +42,7 @@ namespace dx11 {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override
         {
-            mge::window_ref result = std::make_shared<window>(rect, options, m_config);
-            return result;
+            return std::make_shared<window>(rect, options, m_config);
         }
     private:
         system_config m_config;
