@@ -9,7 +9,7 @@ static void bench_command_list_create_destroy(benchmark::State& state)
 {
     dx11test_with_window::SetUpTestCase();
     while(state.KeepRunning()) {
-        //auto l = dx11test_with_window::window->render_context().create_command_list();
+        auto l = dx11test_with_window::window->render_context().create_command_list();
     }
     dx11test_with_window::TearDownTestCase();
 }

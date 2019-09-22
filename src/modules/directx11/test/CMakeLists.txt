@@ -18,7 +18,8 @@ TARGET_IS_TEST(dx11test NEEDSDISPLAY)
 
 ADD_EXECUTABLE(dx11benchmark
   bench_command_list.cpp
+  bench_compile_shader.cpp
   dx11_test.cpp
-  ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp
+  dx11bench_main.cpp
 )
 TARGET_LINK_LIBRARIES(dx11benchmark googlebenchmark mgegraphics mgecore gmock)
