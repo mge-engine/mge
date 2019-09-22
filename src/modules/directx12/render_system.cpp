@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "dx12.hpp"
 #include "system_config.hpp"
-//#include "window.hpp"
+#include "window.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/core/log.hpp"
 
@@ -45,8 +45,7 @@ namespace dx12 {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override
         {
-            mge::window_ref result;// = std::make_shared<window>(rect, options, m_config);
-            return result;
+            return std::make_shared<window>(rect, options, m_config);
         }
 
     private:

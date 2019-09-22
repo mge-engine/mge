@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "window.hpp"
 #include "error.hpp"
+#include "common.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/to_utf8.hpp"
@@ -85,10 +86,11 @@ namespace dx12 {
                                    IID_ID3D12Device,
                                    (void **)&device);
             if (SUCCEEDED(hr)) {
+                MGE_DEBUG_LOG(DX12) << "Using feature level " << level;
                 m_feature_level = level;
                 m_device.reset(device);
                 return true;
-            }
+            } 
         }
 
         return false;
