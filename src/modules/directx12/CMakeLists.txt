@@ -5,6 +5,7 @@ SET(mge_dx12_module_SOURCES
   common.cpp
   error.cpp
   window.cpp
+  command_list.cpp
   render_context.cpp
   render_system.cpp
 )

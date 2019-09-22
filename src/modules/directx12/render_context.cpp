@@ -8,6 +8,7 @@
 #include "mge/core/log.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/to_utf8.hpp"
+#include "command_list.hpp"
 
 MGE_USE_LOG(DX12);
 
@@ -116,23 +117,6 @@ namespace dx12 {
     render_context::create_swap_chain()
     {
         MGE_DEBUG_LOG(DX12) << "Create swap chain";
-
-
-// DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
-// swapChainDesc.Width = width;
-// swapChainDesc.Height = height;
-// swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-// swapChainDesc.Stereo = FALSE;
-// swapChainDesc.SampleDesc = { 1, 0 };
-// swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-// swapChainDesc.BufferCount = bufferCount;
-// swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
-// swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-// swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
-// // It is recommended to always allow tearing if tearing support is available.
-// swapChainDesc.Flags = CheckTearingSupport() ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
-
-
         DXGI_SWAP_CHAIN_DESC1 swdesc = {};
         swdesc.Width = m_window->rect().width();
         swdesc.Height = m_window->rect().height();
@@ -154,41 +138,57 @@ namespace dx12 {
                                                             (IDXGISwapChain1**)&swap_chain);
         CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChainForHwnd);
         m_swap_chain.reset(swap_chain);
-        // fullscreen transition disable
-        rc = m_dxgi_factory->MakeWindowAssociation(m_window->hwnd(),
-                                                   DXGI_MWA_NO_ALT_ENTER);
-        m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
+        // m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
 
+
+        // 
+
+        // MGE_DEBUG_LOG(DX12) << "Create command allocator";
+        // ID3D12CommandAllocator *command_alloc = nullptr;
+        // rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&command_alloc));
+        // CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        // m_command_allocator.reset(command_alloc);
+        
+    }
+
+    void
+    render_context::disable_fullscreen_transition()
+    {
+        auto rc = m_dxgi_factory->MakeWindowAssociation(m_window->hwnd(),
+                                                        DXGI_MWA_NO_ALT_ENTER);
+        CHECK_HRESULT(rc, IDXGIFactory4, MakeWindowAssociation);
+    }
+
+    void
+    render_context::create_descriptor_heap()
+    {
+        MGE_DEBUG_LOG(DX12) << "Created descriptor heap for render target views";
         D3D12_DESCRIPTOR_HEAP_DESC heap_desc = {};
         ID3D12DescriptorHeap *rtv_heap;
         heap_desc.NumDescriptors = RENDER_TARGET_COUNT;
         heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
         heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-        rc = m_device->CreateDescriptorHeap(&heap_desc,
-                                            IID_PPV_ARGS(&rtv_heap));
+        auto rc = m_device->CreateDescriptorHeap(&heap_desc,
+                                                 IID_PPV_ARGS(&rtv_heap));
         CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
         m_rtv_heap.reset(rtv_heap);
-
         m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+    }
 
-        {
-            CD3DX12_CPU_DESCRIPTOR_HANDLE rtv_handle(m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
+    void
+    render_context::create_render_target_views()
+    {
+        MGE_DEBUG_LOG(DX12) << "Create render target views";
+        CD3DX12_CPU_DESCRIPTOR_HANDLE rtv_handle(m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
 
-            for (uint32_t n = 0; n < RENDER_TARGET_COUNT; n++) {
-                ID3D12Resource *rt;
-                rc = m_swap_chain->GetBuffer(n, IID_PPV_ARGS(&rt));
-                CHECK_HRESULT(rc, IDXGISwapChain, GetBuffer);
-                m_render_targets[n].reset(rt);
-                m_device->CreateRenderTargetView(m_render_targets[n].get(), nullptr, rtv_handle);
-                rtv_handle.Offset(1, m_rtv_descriptor_size);
-            }
-        }
-        MGE_DEBUG_LOG(DX12) << "Create command allocator";
-        ID3D12CommandAllocator *command_alloc = nullptr;
-        rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&command_alloc));
-        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
-        m_command_allocator.reset(command_alloc);
-        
+        for (uint32_t n = 0; n < RENDER_TARGET_COUNT; n++) {
+            ID3D12Resource *rt;
+            auto rc = m_swap_chain->GetBuffer(n, IID_PPV_ARGS(&rt));
+            CHECK_HRESULT(rc, IDXGISwapChain, GetBuffer);
+            m_render_targets[n].reset(rt);
+            m_device->CreateRenderTargetView(m_render_targets[n].get(), nullptr, rtv_handle);
+            rtv_handle.Offset(1, m_rtv_descriptor_size);
+         }
     }
 
     void
@@ -198,6 +198,9 @@ namespace dx12 {
         select_adapter();
         create_command_queue();
         create_swap_chain();
+        disable_fullscreen_transition();
+        create_descriptor_heap();
+        create_render_target_views();
     }
 
     mge::index_buffer_ref
@@ -259,8 +262,7 @@ namespace dx12 {
     mge::command_list_ref
     render_context::create_command_list()
     {
-        mge::command_list_ref result;
-        return result;
+        return std::make_shared<command_list>(*this);
     }
 
     void
