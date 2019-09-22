@@ -102,11 +102,14 @@ namespace dx12 {
         MGE_DEBUG_LOG(DX12) << "Create command queue";
         ID3D12CommandQueue *command_queue = nullptr;
         D3D12_COMMAND_QUEUE_DESC qdesc = {};
-        qdesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
         qdesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+        qdesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+        qdesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+        qdesc.NodeMask = 0;
         HRESULT rc = m_device->CreateCommandQueue(&qdesc, IID_PPV_ARGS(&command_queue));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
         m_command_queue.reset(command_queue);
+        MGE_DEBUG_LOG(DX12) << "Command queue is " << (void *)m_command_queue.get();
     }
 
     void
@@ -114,19 +117,42 @@ namespace dx12 {
     {
         MGE_DEBUG_LOG(DX12) << "Create swap chain";
 
+
+// DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+// swapChainDesc.Width = width;
+// swapChainDesc.Height = height;
+// swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+// swapChainDesc.Stereo = FALSE;
+// swapChainDesc.SampleDesc = { 1, 0 };
+// swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+// swapChainDesc.BufferCount = bufferCount;
+// swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+// swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+// swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+// // It is recommended to always allow tearing if tearing support is available.
+// swapChainDesc.Flags = CheckTearingSupport() ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
+
+
         DXGI_SWAP_CHAIN_DESC1 swdesc = {};
-        swdesc.BufferCount = RENDER_TARGET_COUNT;
+        swdesc.Width = m_window->rect().width();
+        swdesc.Height = m_window->rect().height();
+        swdesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        swdesc.Stereo = FALSE;
+        swdesc.SampleDesc = { 1, 0 }; // TODO: multisampling
         swdesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        swdesc.SampleDesc.Count = 1; // TODO: multisampling
-        swdesc.SwapEffect = (DXGI_SWAP_EFFECT)4; // DXGI_SWAP_EFFECT_FLIP_DISCARD;
-        IDXGISwapChain3 *swap_chain = nullptr;
+        swdesc.BufferCount = RENDER_TARGET_COUNT;
+        swdesc.Scaling = DXGI_SCALING_STRETCH;
+        swdesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+        swdesc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
+        swdesc.Flags = 0; // TODO: DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING
+        IDXGISwapChain4 *swap_chain = nullptr;
         HRESULT rc = m_dxgi_factory->CreateSwapChainForHwnd(m_command_queue.get(),
                                                             m_window->hwnd(),
                                                             &swdesc,
                                                             nullptr,
                                                             nullptr,
                                                             (IDXGISwapChain1**)&swap_chain);
-        CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChain);
+        CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChainForHwnd);
         m_swap_chain.reset(swap_chain);
         // fullscreen transition disable
         rc = m_dxgi_factory->MakeWindowAssociation(m_window->hwnd(),
@@ -157,12 +183,12 @@ namespace dx12 {
                 rtv_handle.Offset(1, m_rtv_descriptor_size);
             }
         }
+        MGE_DEBUG_LOG(DX12) << "Create command allocator";
         ID3D12CommandAllocator *command_alloc = nullptr;
         rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&command_alloc));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
         m_command_allocator.reset(command_alloc);
-
-
+        
     }
 
     void

@@ -13,7 +13,7 @@ namespace dx12 {
     class render_context : public mge::render_context
     {
     public:
-        static const size_t RENDER_TARGET_COUNT = 2;
+        static constexpr size_t RENDER_TARGET_COUNT = 2;
 
         render_context(window *win,
                        const system_config& config);
@@ -48,7 +48,7 @@ namespace dx12 {
         COM_UNIQUE_PTR(IDXGIFactory4)          m_dxgi_factory;
         COM_UNIQUE_PTR(IDXGIAdapter3)          m_adapter;
         COM_UNIQUE_PTR(ID3D12Device)           m_device;
-        COM_UNIQUE_PTR(IDXGISwapChain3)        m_swap_chain;
+        COM_UNIQUE_PTR(IDXGISwapChain4)        m_swap_chain;
         COM_UNIQUE_PTR(ID3D12CommandQueue)     m_command_queue;
         COM_UNIQUE_PTR(ID3D12DescriptorHeap)   m_rtv_heap;
         COM_UNIQUE_PTR(ID3D12Resource)         m_render_targets[RENDER_TARGET_COUNT];
