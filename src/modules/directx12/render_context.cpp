@@ -8,7 +8,8 @@
 #include "mge/core/log.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/to_utf8.hpp"
-#include "command_list.hpp"
+#include "mge/core/system_error.hpp"
+#include "mge/graphics/memory_command_list.hpp"
 
 MGE_USE_LOG(DX12);
 
@@ -16,15 +17,21 @@ namespace dx12 {
     render_context::render_context(window *w, const system_config& config)
         : mge::render_context(w)
         ,m_window(w)
+        ,m_event(0)
         ,m_feature_level((D3D_FEATURE_LEVEL) 0)
         ,m_frame_index(0)
         ,m_rtv_descriptor_size(0)
+        ,m_fence_value(0)
     {
         init_context(config);
     }
 
     render_context::~render_context()
-    {}
+    {
+        if (m_event) {
+            CloseHandle(m_event);
+        }
+    }
 
     void
     render_context::flush()
@@ -192,6 +199,21 @@ namespace dx12 {
     }
 
     void
+    render_context::create_fence()
+    {
+        MGE_DEBUG_LOG(DX12) << "Create fence and fence event";
+        ID3D12Fence *fence = nullptr;
+        auto rc = m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+        CHECK_HRESULT(rc, ID3D12Device, CreateFence);
+        m_fence.reset(fence);
+
+        m_event = CreateEventEx(NULL, FALSE, FALSE, EVENT_ALL_ACCESS);
+        if(!m_event) {
+            MGE_THROW_SYSCALL_FAILED(CreateEventEx);
+        }
+    }
+
+    void
     render_context::init_context(const system_config& config)
     {
         create_factory();
@@ -202,6 +224,7 @@ namespace dx12 {
         create_descriptor_heap();
         create_render_target_views();
         create_command_allocator();
+        create_fence();
     }
 
     mge::index_buffer_ref
@@ -263,7 +286,7 @@ namespace dx12 {
     mge::command_list_ref
     render_context::create_command_list()
     {
-        return std::make_shared<command_list>(*this);
+        return std::make_shared<mge::memory_command_list>(*this);
     }
 
     void

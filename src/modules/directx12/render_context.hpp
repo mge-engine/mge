@@ -49,6 +49,7 @@ namespace dx12 {
         void create_descriptor_heap();
         void create_render_target_views();
         void create_command_allocator();
+        void create_fence();
 
         window *m_window;
 
@@ -60,10 +61,13 @@ namespace dx12 {
         COM_UNIQUE_PTR(ID3D12DescriptorHeap)   m_rtv_heap;
         COM_UNIQUE_PTR(ID3D12Resource)         m_buffers[RENDER_TARGET_COUNT];
         COM_UNIQUE_PTR(ID3D12CommandAllocator) m_command_allocator;
+        COM_UNIQUE_PTR(ID3D12Fence)            m_fence;
+        HANDLE                                 m_event;
 
         D3D_FEATURE_LEVEL m_feature_level;
         UINT              m_frame_index;
         UINT              m_rtv_descriptor_size;
+        uint64_t          m_fence_value;
     };
 
     inline ID3D12Device *dx12_device(const mge::render_context& context)
