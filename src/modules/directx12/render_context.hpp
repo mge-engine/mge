@@ -35,6 +35,9 @@ namespace dx12 {
         void execute(const mge::command_list_ref& commands) override;
         mge::pipeline_ref create_pipeline() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
+
+        ID3D12Device *device() const { return m_device.get(); }
+        ID3D12CommandAllocator *command_allocator() const { return m_command_allocator.get(); }
     private:
         void init_context(const system_config& config);
         void create_factory();
@@ -61,6 +64,15 @@ namespace dx12 {
         D3D_FEATURE_LEVEL m_feature_level;
         UINT              m_frame_index;
         UINT              m_rtv_descriptor_size;
-
     };
+
+    inline ID3D12Device *dx12_device(const mge::render_context& context)
+    {
+        return static_cast<const render_context&>(context).device();
+    }
+
+    inline ID3D12CommandAllocator *dx12_command_allocator(const mge::render_context& context)
+    {
+        return static_cast<const render_context&>(context).command_allocator();
+    }
 }
