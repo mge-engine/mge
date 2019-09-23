@@ -45,6 +45,7 @@ namespace dx12 {
         void disable_fullscreen_transition();
         void create_descriptor_heap();
         void create_render_target_views();
+        void create_command_allocator();
 
         window *m_window;
 
@@ -54,8 +55,7 @@ namespace dx12 {
         COM_UNIQUE_PTR(ID3D12CommandQueue)     m_command_queue;
         COM_UNIQUE_PTR(IDXGISwapChain4)        m_swap_chain;
         COM_UNIQUE_PTR(ID3D12DescriptorHeap)   m_rtv_heap;
-        COM_UNIQUE_PTR(ID3D12Resource)         m_render_targets[RENDER_TARGET_COUNT];
-        
+        COM_UNIQUE_PTR(ID3D12Resource)         m_buffers[RENDER_TARGET_COUNT];
         COM_UNIQUE_PTR(ID3D12CommandAllocator) m_command_allocator;
 
         D3D_FEATURE_LEVEL m_feature_level;

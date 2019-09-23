@@ -138,17 +138,7 @@ namespace dx12 {
                                                             (IDXGISwapChain1**)&swap_chain);
         CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChainForHwnd);
         m_swap_chain.reset(swap_chain);
-        // m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
-
-
-        // 
-
-        // MGE_DEBUG_LOG(DX12) << "Create command allocator";
-        // ID3D12CommandAllocator *command_alloc = nullptr;
-        // rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&command_alloc));
-        // CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
-        // m_command_allocator.reset(command_alloc);
-        
+        m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
     }
 
     void
@@ -185,10 +175,20 @@ namespace dx12 {
             ID3D12Resource *rt;
             auto rc = m_swap_chain->GetBuffer(n, IID_PPV_ARGS(&rt));
             CHECK_HRESULT(rc, IDXGISwapChain, GetBuffer);
-            m_render_targets[n].reset(rt);
-            m_device->CreateRenderTargetView(m_render_targets[n].get(), nullptr, rtv_handle);
-            rtv_handle.Offset(1, m_rtv_descriptor_size);
+            m_buffers[n].reset(rt);
+            m_device->CreateRenderTargetView(m_buffers[n].get(), nullptr, rtv_handle);
+            rtv_handle.Offset(m_rtv_descriptor_size);
          }
+    }
+
+    void
+    render_context::create_command_allocator()
+    {
+        MGE_DEBUG_LOG(DX12) << "Create command allocator";
+        ID3D12CommandAllocator *command_alloc = nullptr;
+        auto rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&command_alloc));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        m_command_allocator.reset(command_alloc);
     }
 
     void
@@ -201,6 +201,7 @@ namespace dx12 {
         disable_fullscreen_transition();
         create_descriptor_heap();
         create_render_target_views();
+        create_command_allocator();
     }
 
     mge::index_buffer_ref
