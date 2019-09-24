@@ -13,7 +13,7 @@ namespace vulkan {
         
         void configure(const mge::configuration& config)
         {
-           m_debug = config.value<bool>("debug", false);
+            m_debug = config.value<bool>("debug", false);
             if (config.contains_key("layers")) {
                 m_layers = config.list_value("layers");
             }
