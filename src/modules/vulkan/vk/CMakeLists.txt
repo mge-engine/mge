@@ -7,7 +7,10 @@ ADD_CUSTOM_COMMAND(
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/src/modules/vulkan/vk")
 
 ADD_LIBRARY(vkutils STATIC
+            library.cpp
             ${vulkan_generated_source})
+
+TARGET_LINK_LIBRARIES(vkutils mgecore vulkan)
 
 #EXECUTE_PROCESS(COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_SOURCE_DIR}/src/modules/vulkan/extract_functions.py "${Vulkan_INCLUDE_DIRS}/vulkan/vulkan.h" "${CMAKE_BINARY_DIR}/src/modules/vulkan/vulkan_function_members.hpp" "${CMAKE_BINARY_DIR}/src/modules/vulkan/vk/vulkan_function_resolve.hpp" "${CMAKE_BINARY_DIR}/src/modules/vulkan/vk/vulkan_generated.cpp")
 
