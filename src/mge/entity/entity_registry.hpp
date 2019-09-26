@@ -4,5 +4,5 @@
 #include "mge/entity/entt.hpp"
 
 namespace mge {
-    using entity_registry = entt::registry;
+    using entity_registry = entt::basic_registry<mge::entity>;
 }
