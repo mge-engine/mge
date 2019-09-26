@@ -9,5 +9,5 @@ using namespace testing;
 
 TEST(entity_registry, create_destroy)
 {
-    entity_registry r;
+    entity_registry registry;
 }

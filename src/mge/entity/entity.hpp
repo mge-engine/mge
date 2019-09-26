@@ -1,7 +1,8 @@
 #pragma once
 #include "mge/entity/dllexport.hpp"
+#include "mge/entity/entt.hpp"
 #include <cstdint>
 
 namespace mge {
-    typedef uint64_t entity;
+    using entity = entt::entity;
 }
