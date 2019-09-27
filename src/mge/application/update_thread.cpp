@@ -39,6 +39,21 @@ namespace mge {
     }
 
     void
+    update_thread::await(const std::function<void()>& f)
+    {
+        auto t = std::make_shared<task>(f);
+        m_tasks.push_back(t);
+        t->wait();
+    }
+
+    void
+    update_thread::await(const task_ref& t)
+    {
+        m_tasks.push_back(t);
+        t->wait();
+    }
+
+    void
     update_thread::run()
     {
         try {

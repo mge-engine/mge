@@ -68,6 +68,13 @@ namespace mge {
             m_tasks.push(t);
         }
 
+        void clear() 
+        {
+            std::lock_guard<decltype(m_lock)> guard(m_lock);
+            std::queue<task_ref> empty_queue;
+            m_tasks.swap(empty_queue);
+        }
+
     private:
         mutable std::mutex m_lock;
         std::queue<task_ref> m_tasks;

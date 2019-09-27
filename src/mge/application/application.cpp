@@ -19,6 +19,7 @@ namespace mge {
         ,m_update_rate(25)
         ,m_max_frame_skip(5)
         ,m_quit(false)
+        ,m_setup_complete(false)
     {
         if (s_instance) {
             MGE_THROW(mge::illegal_state)
@@ -53,6 +54,16 @@ namespace mge {
     application::start()
     {
         m_update_thread->start();
+        try {
+            while(!m_setup_tasks.empty()) {
+                auto t = m_setup_tasks.pop_front();
+                m_update_thread->await(t);
+            }
+            m_setup_complete = true;
+        } catch(...) {
+            m_setup_tasks.clear();
+            mge::rethrow();
+        }
     }
 
     void
@@ -141,11 +152,26 @@ namespace mge {
             }
         }
     }
+    void 
+    application::add_setup_task(const mge::task_ref& task)
+    {
+        if (m_setup_complete) {
+            MGE_THROW(illegal_state) << "Setup tasks have already been processed";
+        }
+        if(!task) {
+            MGE_THROW(illegal_argument) << "Invalid task reference";
+        }
+        m_setup_tasks.push_back(task);
+    }
 
     void
     application::await(const std::function<void()>& f)
     {
-        mge::async_executor::synchronous_executor().await(f);
+        if (m_update_thread->joinable()) {
+            m_update_thread->await(f);
+        } else {
+            mge::async_executor::synchronous_executor().await(f);
+        }
     }
 
     application *

@@ -96,6 +96,13 @@ namespace mge {
         void await(const std::function<void()>& f);
 
         /**
+         * Add setup task which will be executed in update thread
+         * after @c start
+         * @param task task to execute
+         */
+        void add_setup_task(const mge::task_ref& task);
+
+        /**
          * Add an application thread that will be joined in
          * graceful shutdown.
          * @param t thread
@@ -280,10 +287,12 @@ namespace mge {
         std::recursive_mutex m_lock;
         function_map<void(std::uint64_t)> m_update_listeners;
         function_map<void()> m_quit_listeners;
+        task_queue m_setup_tasks;
         uint32_t m_update_rate;
         uint32_t m_max_frame_skip;
         volatile bool m_quit;
         bool m_has_std_streams;
+        bool m_setup_complete;
     };
 }
 

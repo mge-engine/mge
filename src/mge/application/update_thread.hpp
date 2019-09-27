@@ -16,6 +16,8 @@ namespace mge {
         update_thread();
         virtual ~update_thread();
         void run() override;
+        void await(const std::function<void ()>& f);
+        void await(const task_ref& task);
         static update_thread* instance();
     private:
         void execute_work_item();
