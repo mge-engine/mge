@@ -6,6 +6,7 @@
 #include "shader.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "pipeline.hpp"
 #include "texture_2d.hpp"
 #include "command_list.hpp"
 #include "mge/core/log.hpp"
@@ -161,8 +162,7 @@ namespace dx11 {
     mge::pipeline_ref
     render_context::create_pipeline()
     {
-        mge::pipeline_ref result;
-        return result;
+        return std::make_shared<pipeline>(*this);
     }
 
     mge::command_list_ref
