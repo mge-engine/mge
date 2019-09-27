@@ -59,7 +59,19 @@ namespace opengl {
             if(!link_status) {
                 MGE_THROW(error) << "glLinkProgram failed";
             }
+            collect_attributes();
         });
+    }
+
+    void
+    pipeline::collect_attributes()
+    {
+        GLint active_attributes = 0;
+        GLint active_uniforms = 0;
+        glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTES, &active_attributes);
+        MGE_DEBUG_LOG(OPENGL) << "Active pipeline attributes: " << active_attributes;
+        glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &active_uniforms);
+        MGE_DEBUG_LOG(OPENGL) << "Active pipeline uniforms: " << active_uniforms;
     }
 
     void

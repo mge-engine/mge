@@ -12,6 +12,7 @@ namespace opengl {
         void on_set_shader(const mge::shader_ref& shader);
     private:
         void dump_info_log();
+        void collect_attributes();
         GLuint m_program;
     };
 }

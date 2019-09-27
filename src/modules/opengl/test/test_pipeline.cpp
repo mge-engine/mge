@@ -23,4 +23,32 @@ TEST_F(test_pipeline, link_empty)
                               "glLinkProgram failed");
 }
 
+TEST_F(test_pipeline, successful_simple_link)
+{
+    const char *vertex_shader_glsl =
+       "#version 330 core\n"
+       "layout(location = 0) in vec3 vertexPosition;\n"
+       "\n"
+       "void main() {\n"
+       "  gl_Position.xyz = vertexPosition;\n"
+       "  gl_Position.w = 1.0;\n"
+       "}";
+    const char *fragment_shader_glsl = 
+        "#version 330 core\n"
+        "uniform vec3 fragmentColor = vec3(1.0, 1.0, 1.0);\n"
+        "out vec3 color;\n"
+        "\n"
+        "void main() {\n"
+        "    color = fragmentColor;\n"
+        "}";
+    auto vs = window->render_context().create_shader(mge::shader_type::VERTEX);
+    vs->compile(vertex_shader_glsl);
+    auto fs = window->render_context().create_shader(mge::shader_type::FRAGMENT);
+    fs->compile(fragment_shader_glsl);
+    auto p = window->render_context().create_pipeline();
+    p->set_shader(vs);
+    p->set_shader(fs);
+    p->link();
+}
+
 }
