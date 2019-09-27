@@ -4,10 +4,11 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include <iosfwd>
+#include <cstdint>
 namespace mge {
 
 
-    enum class MGE_GRAPHICS_EXPORT shader_type
+    enum class MGE_GRAPHICS_EXPORT shader_type : uint8_t
     {
         VERTEX,                 //!< vertex
         FRAGMENT,               //!< fragment (pixel)

@@ -13,5 +13,7 @@ namespace dx11 {
 
     void
     pipeline::on_set_shader(const mge::shader_ref& shader)
-    {}
+    {
+        m_shaders[(size_t)shader->type()] = shader;
+    }
 }

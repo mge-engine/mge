@@ -9,6 +9,7 @@ ADD_EXECUTABLE(dx11test
     test_shader.cpp
     test_index_buffer.cpp
     test_command_list.cpp
+    test_pipeline.cpp
     test_error.cpp
 
     ${CMAKE_SOURCE_DIR}/src/modules/directx11/error.cpp
