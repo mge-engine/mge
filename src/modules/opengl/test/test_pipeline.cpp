@@ -49,6 +49,8 @@ TEST_F(test_pipeline, successful_simple_link)
     p->set_shader(vs);
     p->set_shader(fs);
     p->link();
+    EXPECT_EQ(1u, p->attributes().size());
+    EXPECT_EQ(std::string_view("vertexPosition"), p->attributes()[0].name);
 }
 
 }

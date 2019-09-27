@@ -5,9 +5,11 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/data_type.hpp"
 #include "mge/core/property_object.hpp"
 
 #include <string>
+#include <vector>
 
 namespace mge {
 
@@ -37,6 +39,26 @@ namespace mge {
     protected:
         pipeline(render_context& context);
     public:
+        /// Attribute description
+        struct attribute
+        {
+            std::string name; //!< attribute name
+            data_type   type; //!< attribute type
+            size_t      size; //!< attribute size (array size)
+        };
+
+        using attribute_list = std::vector<attribute>;
+
+        /// Uniform description
+        struct uniform
+        {
+            std::string name; //!< uniform name
+            data_type   type; //!< uniform type
+            size_t      size; //!< uniform size (array size)
+        };
+
+        using uniform_list = std::vector<uniform>;
+
         virtual ~pipeline();
 
         /**
@@ -59,9 +81,25 @@ namespace mge {
          * @return @c true if pipeline needs to be linked
          */
         bool needs_link() const noexcept { return m_needs_link; }
-    protected:
-        bool m_needs_link;
+        
+        /**
+         * Get meta data of the attributes.
+         * 
+         * @return attributes
+         */
+        const attribute_list& attributes() const noexcept { return m_attributes; }
 
+        /**
+         * Get meta data of uniforms.
+         * 
+         * @return uniforms 
+         */
+        const uniform_list& uniforms() const noexcept { return m_uniforms; }
+    protected:
+        bool            m_needs_link;
+        attribute_list  m_attributes;
+        uniform_list    m_uniforms;
+        
         virtual void on_link() = 0;
         virtual void on_set_shader(const shader_ref& shader) = 0;
     };

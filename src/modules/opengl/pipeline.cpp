@@ -68,10 +68,49 @@ namespace opengl {
     {
         GLint active_attributes = 0;
         GLint active_uniforms = 0;
+        GLint active_attributes_maxlength = 0;
+        GLint active_uniform_maxlength = 0;
         glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTES, &active_attributes);
-        MGE_DEBUG_LOG(OPENGL) << "Active pipeline attributes: " << active_attributes;
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTES));
+        // MGE_DEBUG_LOG(OPENGL) << "Active pipeline attributes: " << active_attributes;
+        glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &active_attributes_maxlength);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTE_MAX_LENGTH));
+        // MGE_DEBUG_LOG(OPENGL) << "Active pipeline attribute max length: " << active_attributes_maxlength;
+        
+        for (GLint i=0; i<active_attributes; ++i) {
+            std::string name; 
+            name.resize(active_attributes_maxlength+1);
+            GLenum type = 0u;
+            GLsizei length = 0;
+            GLint size = 0;
+            glGetActiveAttrib(m_program,
+                              i,
+                              (GLsizei)name.size(),
+                              &length,
+                              &size,
+                              &type,
+                              name.data());
+            CHECK_OPENGL_ERROR(glGetActiveAttrib);
+            name.resize(length);
+            m_attributes.emplace_back(mge::pipeline::attribute{name, data_type_of_gl_type(type), (size_t)size});
+            // MGE_DEBUG_LOG(OPENGL) << "Attribute[" << i << "] = {name=\"" << name << "\", type=" << std::hex << type << ", size=" << size << "}";
+        }
+
         glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &active_uniforms);
-        MGE_DEBUG_LOG(OPENGL) << "Active pipeline uniforms: " << active_uniforms;
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORMS));
+        //MGE_DEBUG_LOG(OPENGL) << "Active pipeline uniforms: " << active_uniforms;
+        glGetProgramiv(m_program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &active_uniform_maxlength);
+        for(GLint i=0; i<active_uniforms; ++i) {
+            std::string name;
+            name.resize(active_uniform_maxlength+1);
+            GLenum type = 0u;
+            GLsizei length = 0;
+            GLint size = 0;
+            glGetActiveUniform(m_program, i, (GLsizei)name.size(), &length, &size, &type, name.data());
+            CHECK_OPENGL_ERROR(glGetActiveUniform);
+            name.resize(length);
+            m_uniforms.emplace_back(mge::pipeline::uniform{name, data_type_of_gl_type(type), (size_t)size});
+        }
     }
 
     void
