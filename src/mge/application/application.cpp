@@ -141,7 +141,6 @@ namespace mge {
                     MGE_THROW(mge::illegal_argument)
                               << "Configuration option in form key=value expected";
                 }
-                // TODO: make it a string view
                 std::string key(it->begin(), it->begin()+p);
                 std::string value(it->begin()+p+1, it->end());
                 configuration::set_override(key, value);

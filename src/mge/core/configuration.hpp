@@ -293,6 +293,12 @@ namespace mge {
          */
         static void clear_override(const char *key);
 
+        /**
+         * Deletes transient override value.
+         * @param key configuration key
+         */
+        static void clear_override(const std::string& key);
+
     private:
         std::string       m_prefix;
         config_values_map m_values;

@@ -161,6 +161,15 @@ namespace mge {
         }
     }
 
+    void
+    configuration::clear_override(const std::string& key)
+    {
+        auto i = configuration_overrides().find(key);
+        if(i != configuration_overrides().end()) {
+            configuration_overrides().erase(i);
+        }
+    }
+
     configuration_key_not_found::configuration_key_not_found()
     {}
 
