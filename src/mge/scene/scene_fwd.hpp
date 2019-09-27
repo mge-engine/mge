@@ -5,12 +5,7 @@
 #include "mge/core/types.hpp"
 namespace mge {
     class scene;
-    class camera;
-    class scene_object;
-    class light;
+    class node;
 
     MGE_DECLARE_REF(scene);
-    MGE_DECLARE_REF(camera);
-    MGE_DECLARE_REF(scene_object);
-    MGE_DECLARE_REF(light);
 }

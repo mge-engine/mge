@@ -3,8 +3,11 @@
 // All rights reserved.
 #pragma once
 #include "mge/scene/dllexport.hpp"
+#include "mge/scene/node.hpp"
+#include "mge/entity/entity_registry.hpp"
 
 namespace mge {
+
     /**
      * A scene combines all objects displayed and interacting
      * with each other (and can be interacted with).
@@ -14,7 +17,5 @@ namespace mge {
     public:
         scene();
         virtual ~scene();
-    private:
-
     };
 }
