@@ -3,7 +3,8 @@
 #include "mge/graphics/pipeline.hpp"
 #include <array>
 namespace dx11 {
-    
+    class shader;
+
     class pipeline : public mge::pipeline
     {
     public:
@@ -13,7 +14,9 @@ namespace dx11 {
         void on_link() override;
         void on_set_shader(const mge::shader_ref& shader) override;
     private:
-        std::array<mge::shader_ref, (size_t)mge::shader_type::MAX_SHADER_TYPE> m_shaders;
+        void reflect_shader(dx11::shader *s);
+        
+        std::array<mge::shader_ref, (size_t)mge::shader_type::MAX_SHADER_TYPE + 1> m_shaders;
     };
 
 }

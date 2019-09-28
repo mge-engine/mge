@@ -7,15 +7,17 @@
 #include <cstdint>
 namespace mge {
 
-
+    /**
+     * Type of shader.
+     */
     enum class MGE_GRAPHICS_EXPORT shader_type : uint8_t
     {
-        VERTEX,                 //!< vertex
-        FRAGMENT,               //!< fragment (pixel)
-        COMPUTE,                //!< compute
-        TESSELATION_CONTROL,    //!< tesselation control (hull)
-        TESSELATION_EVALUATION, //!< tesselation evaluation (domain)
-        GEOMETRY,               //!< geometry
+        VERTEX                  = 0, //!< vertex
+        FRAGMENT                = 1, //!< fragment (pixel)
+        COMPUTE                 = 2, //!< compute
+        TESSELATION_CONTROL     = 3, //!< tesselation control (hull)
+        TESSELATION_EVALUATION  = 4, //!< tesselation evaluation (domain)
+        GEOMETRY                = 5, //!< geometry
         MAX_SHADER_TYPE = GEOMETRY
     };
 
