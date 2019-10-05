@@ -3,6 +3,7 @@
 # All rights reserved.
 ADD_LIBRARY(mgescene
     SHARED
+    mesh.cpp
     scene.cpp)
 
 TARGET_ADD_DEFINE(mgescene BUILD_MGE_GRAPHICS)
