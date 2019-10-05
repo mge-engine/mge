@@ -6,6 +6,8 @@
 namespace mge {
     class scene;
     class node;
+    class mesh;
 
     MGE_DECLARE_REF(scene);
+    MGE_DECLARE_REF(mesh);
 }
