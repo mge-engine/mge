@@ -1,4 +1,4 @@
-#include "mge/scene/mesh.hpp"
+#include "mge/graphics/mesh.hpp"
 
 namespace mge {
     mesh::mesh()

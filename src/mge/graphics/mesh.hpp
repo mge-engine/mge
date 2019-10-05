@@ -1,13 +1,16 @@
 #pragma once
-#include "mge/scene/dllexport.hpp"
+#include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/vertex_layout.hpp"
+
+
 namespace mge {
 
     /**
      * A mesh represents a geometry model that can be rendered without a state
-     * change, i.e. using the same material.
+     * change, i.e. using the same surface properties.
      */
-    class MGE_SCENE_EXPORT mesh 
+    class MGE_GRAPHICS_EXPORT mesh 
     {
     public:
         /**
@@ -37,5 +40,21 @@ namespace mge {
          * @return number of elements of the mesh's index buffer
          */
         virtual size_t num_indices() const noexcept = 0;
+
+        /**
+         * Get a vertex buffer containing the mesh vertices.
+         * 
+         * @param context render context
+         * @return vertex_buffer_ref vertices of mesh
+         */
+        virtual vertex_buffer_ref vertices(render_context& context) const = 0;
+
+        /**
+         * Get indices of mesh.
+         * 
+         * @param context render context
+         * @return index_buffer_ref reference to index buffer
+         */
+        virtual index_buffer_ref indices(render_context& context) const = 0;
     };
 }
