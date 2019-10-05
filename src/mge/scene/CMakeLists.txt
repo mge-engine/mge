@@ -4,7 +4,8 @@
 ADD_LIBRARY(mgescene
     SHARED
     node.cpp
-    scene.cpp)
+    scene.cpp
+    renderer.cpp)
 
 TARGET_ADD_DEFINE(mgescene BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgescene mgecore mgeinput mgeentity mgeapplication)
