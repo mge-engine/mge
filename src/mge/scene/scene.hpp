@@ -34,13 +34,34 @@ namespace mge {
          * @return pointer to scene if entity is valid
          */
         static scene* by_entity(mge::entity scene_entity);
-        
+
         /**
          * Destroys a node by entity.
          * 
          * @param node_entity entity of node
          */
         void destroy_node(mge::entity node_entity);
+
+        /**
+         * Get the entity of this scene.
+         * @return this scene's entity
+         */
+        mge::entity entity() const noexcept { return m_scene_entity; }
+
+        /**
+         * Create a new node.
+         * 
+         * @return node new node 
+         */
+        node create_node();
+
+        /**
+         * Return whether a node is valid.
+         * 
+         * @param n node to check
+         * @return @c true if the node is valid
+         */
+        bool is_node_valid(const node& n) const;
     private:
         mge::entity_registry m_registry;
         mge::entity          m_scene_entity;

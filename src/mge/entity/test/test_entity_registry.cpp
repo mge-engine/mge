@@ -28,3 +28,12 @@ TEST(entity_registry, entity_to_integer)
     auto e = registry.create();
     mge::to_integer(e);
 }
+
+TEST(entity_registry, entity_valid)
+{
+    entity_registry registry;
+    auto e = registry.create();
+    EXPECT_TRUE(registry.valid(e));
+    registry.destroy(e);
+    EXPECT_FALSE(registry.valid(e));
+}

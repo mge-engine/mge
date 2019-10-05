@@ -14,9 +14,7 @@ namespace mge {
 
     scene::~scene()
     {
-        // let's not remove the scene entity itself to 
-        // prevent recycling
-        scene_registry.remove<scene *>(m_scene_entity);
+        scene_registry.destroy(m_scene_entity);
     }
 
     void
@@ -28,12 +26,26 @@ namespace mge {
     scene *
     scene::by_entity(mge::entity scene_entity)
     {
-        auto scenepp = scene_registry.try_get<scene *>(scene_entity);
-        if (scenepp) {
-            return *scenepp;
-        } else {
-            return nullptr;
+        if (scene_registry.valid(scene_entity)) {
+            auto scenepp = scene_registry.try_get<scene *>(scene_entity);
+            if (scenepp) {
+                return *scenepp;
+            } 
         }
+        return nullptr;
+    }
+
+    node
+    scene::create_node()
+    {
+        auto node_entity = m_registry.create();
+        return node(m_scene_entity, node_entity);
+    }
+
+    bool
+    scene::is_node_valid(const node& n) const
+    {
+        return m_scene_entity == n.m_scene_entity && m_registry.valid(n.m_node_entity);
     }
 
 

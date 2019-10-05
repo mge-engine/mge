@@ -6,14 +6,44 @@
 namespace mge {
 
     /**
-     * Node object. Note a @c node is only a view on the actual
-     * node stored in a scene.
+     * A node is an element of the scene.
      */
     class MGE_SCENE_EXPORT node 
     {
     public:
+        /**
+         * Create invalid node.
+         */
         node();
-        ~node();
+
+        /**
+         * Copy constructor.
+         * 
+         * @param n source node
+         */
+        node(const node& n)
+            :m_scene_entity(n.m_scene_entity)
+            ,m_node_entity(n.m_scene_entity)
+        {}
+
+        /**
+         * Assignment.
+         * 
+         * @param n assigned node
+         * @return @c *this
+         */
+        node& operator =(const node& n)
+        {
+            m_scene_entity = n.m_scene_entity;
+            m_node_entity = n.m_node_entity;
+            return *this;
+        }
+
+        /**
+         * Destructor. Does not remove the node from the scene as the node
+         * is only a view.
+         */
+        ~node() = default;
 
         /**
          * Destroys the node.
@@ -26,8 +56,19 @@ namespace mge {
          * @return @c true if the node is valid and belongs to a valid scene
          */
         bool valid() const;
+
     private:
-        mge::entity m_node_entity;
+        friend class scene;
+
+        /**
+         * Constructor, used to create new node of scene.
+         * 
+         * @param scene_entity entity of scene
+         * @param node_entity  entity of node
+         */
+        node(mge::entity scene_entity, mge::entity node_entity);
+
         mge::entity m_scene_entity;
+        mge::entity m_node_entity;
     };
 }
