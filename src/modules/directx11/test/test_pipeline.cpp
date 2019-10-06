@@ -26,7 +26,7 @@ TEST_F(test_pipeline, link_empty)
 TEST_F(test_pipeline, successful_simple_link)
 {
     const char *vertex_shader_hlsl =
-        "float4 main(float4 vertexPosition : POSITION) : SV_POSITION\n"
+        "float4 main(float4 vertexPosition : vertexPosition) : SV_POSITION\n"
         "{\n"
         "  return vertexPosition;\n"
         "}";
@@ -45,7 +45,9 @@ TEST_F(test_pipeline, successful_simple_link)
     p->set_shader(vs);
     p->set_shader(fs);
     p->link();
-    //EXPECT_EQ(1u, p->attributes().size());
-    //EXPECT_EQ(std::string_view("vertexPosition"), p->attributes()[0].name);
+    EXPECT_EQ(1u, p->attributes().size());
+    EXPECT_EQ(std::string_view("vertexPosition"), p->attributes()[0].name);
+    EXPECT_EQ(mge::data_type::FLOAT_VEC4, p->attributes()[0].type);
+    EXPECT_EQ(1, p->attributes()[0].size);
 }
 }

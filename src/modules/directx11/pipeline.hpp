@@ -14,7 +14,7 @@ namespace dx11 {
         void on_link() override;
         void on_set_shader(const mge::shader_ref& shader) override;
     private:
-        void reflect_shader(dx11::shader *s);
+        void reflect_vertex_shader(dx11::shader *s);
         
         std::array<mge::shader_ref, (size_t)mge::shader_type::MAX_SHADER_TYPE + 1> m_shaders;
     };

@@ -2,6 +2,8 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/core/types.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/render_context.hpp"
+
 namespace mge {
 
     /**
@@ -13,6 +15,7 @@ namespace mge {
     public:
         virtual ~drawable();
 
+        virtual bool prepared() const;
         virtual void prepare(render_context& context) = 0;
         virtual void draw(render_context& context) = 0;
     protected:
