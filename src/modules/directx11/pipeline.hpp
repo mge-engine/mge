@@ -17,6 +17,7 @@ namespace dx11 {
         void reflect_vertex_shader(dx11::shader *s);
         
         std::array<mge::shader_ref, (size_t)mge::shader_type::MAX_SHADER_TYPE + 1> m_shaders;
+        size_t m_vertex_shader_uniform_count;
     };
 
 }

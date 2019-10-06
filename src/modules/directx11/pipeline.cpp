@@ -9,6 +9,7 @@ MGE_USE_LOG(DX11);
 namespace dx11 {
     pipeline::pipeline(mge::render_context& context)
         : mge::pipeline(context)
+        ,m_vertex_shader_uniform_count(0)
     {}
 
     pipeline::~pipeline()
@@ -49,6 +50,24 @@ namespace dx11 {
         }
     }
 
+    static mge::data_type 
+    data_type_of_variable(const D3D11_SHADER_TYPE_DESC& typedesc)
+    {
+        if(typedesc.Class == D3D_SVC_VECTOR) {
+            if(typedesc.Type == D3D_SVT_FLOAT) {
+                // dimension of vector is in "Columns"
+                if(typedesc.Columns == 2) {
+                    return mge::data_type::FLOAT_VEC2;
+                } else if(typedesc.Columns == 3) {
+                    return mge::data_type::FLOAT_VEC3;
+                } else if(typedesc.Columns == 4) {
+                    return mge::data_type::FLOAT_VEC4;
+                }
+            }
+        }
+
+        MGE_THROW(dx11::error) << "Unsupported shader variable type";
+    }
 
     void
     pipeline::reflect_vertex_shader(dx11::shader *s)
@@ -62,7 +81,7 @@ namespace dx11 {
             D3D11_SHADER_DESC shader_desc = {};
             shader_reflection->GetDesc(&shader_desc);
             // dump_shader_desc(shader_desc);
-
+            
             for (uint32_t i=0; i<shader_desc.InputParameters; ++i) {
                 D3D11_SIGNATURE_PARAMETER_DESC parameter_desc = {};
                 shader_reflection->GetInputParameterDesc(i, &parameter_desc);
@@ -72,6 +91,32 @@ namespace dx11 {
                 attr.size = 1;
                 m_attributes.push_back(attr);
             }
+
+            for (uint32_t i=0; i<shader_desc.ConstantBuffers; ++i) {
+                ID3D11ShaderReflectionConstantBuffer *cbuffer = 
+                    shader_reflection->GetConstantBufferByIndex(i);
+                D3D11_SHADER_BUFFER_DESC cbuffer_desc = {};
+                cbuffer->GetDesc(&cbuffer_desc);
+                if (strcmp(cbuffer_desc.Name, "$Globals") == 0) {
+                    for (uint32_t j = 0; j<cbuffer_desc.Variables; ++j) {
+                        ID3D11ShaderReflectionVariable *var = 
+                            cbuffer->GetVariableByIndex(j);
+                        D3D11_SHADER_VARIABLE_DESC var_desc = {};
+                        var->GetDesc(&var_desc);
+                        ID3D11ShaderReflectionType *var_type = var->GetType();
+                        D3D11_SHADER_TYPE_DESC type_desc = {};
+                        var_type->GetDesc(&type_desc);
+                        uniform u;
+                        u.name = var_desc.Name;
+                        u.type = data_type_of_variable(type_desc);
+                        u.size = 1;
+                        m_uniforms.push_back(u);
+                    }
+                } else {
+                    MGE_THROW(dx11::error) << "Constant buffers not yet supported";
+                }
+            }
+
             shader_reflection->Release();
         }
     }
@@ -86,6 +131,7 @@ namespace dx11 {
 
         dx11::shader *vs = static_cast<dx11::shader *>(m_shaders[(size_t)mge::shader_type::VERTEX].get());
         reflect_vertex_shader(vs);
+        m_vertex_shader_uniform_count = m_uniforms.size();
         //dx11::shader *ps = static_cast<dx11::shader *>(m_shaders[(size_t)mge::shader_type::FRAGMENT].get());
         //reflect_shader(ps);
     }
