@@ -10,6 +10,7 @@ SET(mgemath_sources
     plane.cpp
     sphere.cpp
     ray.cpp
+    mat4.cpp
 )
 ADD_LIBRARY(mgemath
             SHARED

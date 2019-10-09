@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/math/dllexport.hpp"
 #include "mge/math/glm.hpp"
+#include <iosfwd>
 
 namespace mge {
     typedef glm::fmat4 fmat4;
@@ -12,4 +13,5 @@ namespace mge {
     using glm::inverse;
     using glm::inversesqrt;
 
+    MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fmat4& m);
 }
