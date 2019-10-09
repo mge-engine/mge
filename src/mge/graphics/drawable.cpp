@@ -13,4 +13,8 @@ namespace mge {
     {
         return true;
     }
+
+    void
+    drawable::prepare(render_context& context)
+    {}
 }

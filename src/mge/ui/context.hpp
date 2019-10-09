@@ -1,6 +1,7 @@
 #pragma once
 #include "mge/ui/dllexport.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/drawable.hpp"
 #include "mge/input/input_handler.hpp"
 
 namespace mge {
@@ -10,7 +11,7 @@ namespace mge {
          * Context to envelope an UI subsystem. UI elements
          * belong to a context. 
          */
-        class MGE_UI_EXPORT context 
+        class MGE_UI_EXPORT context : public drawable
         {
         public:
             /**
@@ -21,9 +22,9 @@ namespace mge {
             /**
              * Destructor. Detaches attached input, if any.
              */
-            ~context();
+            virtual ~context();
 
-            void draw(render_context& render_context);
+            void draw(render_context& render_context) override;
 
             /**
              * Attaches the ui context to an input handler.

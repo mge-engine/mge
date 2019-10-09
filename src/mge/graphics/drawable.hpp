@@ -16,7 +16,7 @@ namespace mge {
         virtual ~drawable();
 
         virtual bool prepared() const;
-        virtual void prepare(render_context& context) = 0;
+        virtual void prepare(render_context& context);
         virtual void draw(render_context& context) = 0;
     protected:
         drawable();

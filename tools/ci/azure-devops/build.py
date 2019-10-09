@@ -5,7 +5,7 @@ import subprocess
 
 VCPKG_SOURCE="https://github.com/mge-engine/vcpkg.git"
 VCPKG_GITHASH="e417ff69b746f7842b3b9d0fceacb080498e1c5d"
-VCPKG_PACKAGES=["sqlite3", "lua", "boost-filesystem", "boost-any", "boost-lexical-cast", "boost-math", "boost-algorithm", "boost-variant", "glm", "vulkan", "entt"]
+VCPKG_PACKAGES=["sqlite3", "lua", "boost-filesystem", "boost-any", "boost-lexical-cast", "boost-math", "boost-algorithm", "boost-variant", "glm", "vulkan", "entt", "stb"]
 
 class Unbuffered(object):
    def __init__(self, stream):
