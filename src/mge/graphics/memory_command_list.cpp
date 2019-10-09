@@ -16,6 +16,20 @@ namespace mge {
     }
 
     void
+    memory_command_list::clear_depth(float value)
+    {
+        clear_depth_data data { value };
+        m_elements.push_back(data);
+    }
+
+    void
+    memory_command_list::clear_stencil(int32_t value)
+    {
+        clear_stencil_data data { value };
+        m_elements.push_back(data);
+    }
+
+    void
     memory_command_list::on_finish()
     {}
 

@@ -24,6 +24,18 @@ namespace dx11 {
     }
 
     void
+    command_list::clear_depth(float value)
+    {
+        //m_deferred_context->ClearDepthStencilView
+    }
+
+    void
+    command_list::clear_stencil(int32_t value)
+    {
+        //m_deferred_context->ClearDepthStencilView
+    }
+
+    void
     command_list::on_finish()
     {
         ID3D11CommandList *command_list;

@@ -43,6 +43,8 @@ namespace dx11 {
 
         COM_UNIQUE_PTR(ID3D11Device) m_device;
         COM_UNIQUE_PTR(ID3D11DeviceContext) m_device_context;
+        COM_UNIQUE_PTR(ID3D11Texture2D) m_depth_stencil_buffer;
+        COM_UNIQUE_PTR(ID3D11DepthStencilState) m_depth_stencil_state;
         COM_UNIQUE_PTR(ID3D11RenderTargetView) m_render_target_view;
         COM_UNIQUE_PTR(IDXGISwapChain) m_swap_chain;
     };

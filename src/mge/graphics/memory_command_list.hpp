@@ -26,8 +26,13 @@ namespace mge {
             double value;
         };
 
+        struct clear_stencil_data {
+            int32_t value;
+        };
+
         using element_type = std::variant<clear_data,
-                                          clear_depth_data>;
+                                          clear_depth_data,
+                                          clear_stencil_data>;
         using container_type = std::vector<element_type>;
         using const_iterator = container_type::const_iterator;
 
@@ -43,6 +48,9 @@ namespace mge {
         ~memory_command_list() = default;
 
         virtual void clear(const rgba_color& c) override;
+        virtual void clear_depth(float value) override;
+        virtual void clear_stencil(int32_t value) override;
+        
         inline const_iterator begin() const { return m_elements.begin(); }
         inline const_iterator end() const { return m_elements.end(); }
     protected:

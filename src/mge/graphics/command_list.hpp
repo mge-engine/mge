@@ -44,6 +44,20 @@ namespace mge {
         virtual void clear(const rgba_color& c) = 0;
 
         /**
+         * Schedule a clear depth command.
+         * 
+         * @param depth depth value to use for clearing
+         */
+        virtual void clear_depth(float depth) = 0;
+
+        /**
+         * Schedule a clear stencil command.
+         * 
+         * @param depth depth value to use for clearing
+         */
+        virtual void clear_stencil(int32_t value) = 0;
+
+        /**
          * Finishes recording of commands. The command list is immutable
          * afterwards.
          */

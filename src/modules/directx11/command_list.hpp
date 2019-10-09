@@ -11,6 +11,8 @@ namespace dx11 {
     public:
         command_list(render_context& context);
         virtual void clear(const mge::rgba_color& c) override;
+        virtual void clear_depth(float value) override;
+        virtual void clear_stencil(int32_t value) override;
 
         ID3D11CommandList *native_command_list() const { return m_command_list.get(); }
     protected:
