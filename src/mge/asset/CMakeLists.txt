@@ -2,7 +2,7 @@
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
 SET(mgeasset_sources
-    untyped_asset.cpp
+    asset.cpp
     asset_not_found.cpp
 )
 
