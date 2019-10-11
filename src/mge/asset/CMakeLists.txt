@@ -4,6 +4,7 @@
 SET(mgeasset_sources
     asset.cpp
     asset_access.cpp
+    asset_access_factory.cpp 
     asset_not_found.cpp
 )
 

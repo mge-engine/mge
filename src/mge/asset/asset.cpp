@@ -1,17 +1,49 @@
 #include "mge/asset/asset.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/asset/asset_access.hpp"
+#include "mge/asset/asset_access_factory.hpp"
+#include "mge/core/log.hpp"
+#include <map>
+
+MGE_DEFINE_LOG(ASSET)
 
 namespace mge {
 
     class asset_repository_manager
     {
     public:
+        asset_repository_manager()
+            :m_configured(false)
+        {
+            try_configure();
+        }
+
         asset_access_ref access(const mge::path path)
         {
+            if(!m_configured) {
+                configure();
+            }
             asset_access_ref result;
             return result;
         }
+
+        void configure()
+        {
+            MGE_DEBUG_LOG(ASSET) << "Configuring asset repository";
+            m_configured = true;
+        }
+
+    private:
+        void try_configure()
+        {
+            try {
+                configure();
+            } catch(const mge::exception&) {
+                // ignore
+            }
+        }
+        bool m_configured;
+        std::map<mge::path, asset_access_factory_ref> m_mtab;
     };
     static singleton<asset_repository_manager> repository_manager;    
 

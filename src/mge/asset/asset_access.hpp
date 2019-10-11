@@ -3,7 +3,8 @@
 #include "mge/core/types.hpp"
 #include "mge/core/input_stream.hpp"
 namespace mge {
-
+    MGE_DECLARE_REF(asset_access);
+    
     class asset_access : public noncopyable
     {
     public:
