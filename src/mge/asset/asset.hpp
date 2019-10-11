@@ -33,7 +33,7 @@ namespace mge {
         mge::input_stream_ref data() const;
     private:
         mge::path        m_path;
-        asset_access_ref m_access;
+        mutable asset_access_ref m_access;
     };
 
     MGE_ASSET_EXPORT asset operator ""_asset(const char *, size_t);
