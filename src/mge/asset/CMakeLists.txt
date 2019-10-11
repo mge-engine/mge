@@ -3,6 +3,7 @@
 # All rights reserved.
 SET(mgeasset_sources
     asset.cpp
+    asset_access.cpp
     asset_not_found.cpp
 )
 

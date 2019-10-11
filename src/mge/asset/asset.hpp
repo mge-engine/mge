@@ -2,6 +2,7 @@
 #include "mge/asset/dllexport.hpp"
 #include "mge/core/path.hpp"
 #include "mge/core/input_stream.hpp"
+#include "mge/asset/asset_fwd.hpp"
 namespace mge {
 
     class MGE_ASSET_EXPORT asset 
@@ -31,7 +32,8 @@ namespace mge {
 
         mge::input_stream_ref data() const;
     private:
-        mge::path m_path;
+        mge::path        m_path;
+        asset_access_ref m_access;
     };
 
     MGE_ASSET_EXPORT asset operator ""_asset(const char *, size_t);
