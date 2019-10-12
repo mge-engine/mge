@@ -102,6 +102,12 @@ namespace mge {
          */
         input_stream_ref open_for_input() const;
 
+        /**
+         * Return file size. 
+         * 
+         * @return file size, 0 if the file isn't a regular file
+         */
+        size_t size() const;
     private:
         file_access_ref m_access;
     };

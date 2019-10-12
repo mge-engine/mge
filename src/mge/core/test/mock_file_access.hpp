@@ -25,4 +25,5 @@ public:
     MOCK_METHOD1(list, void(std::vector<mge::file>&));
 
     MOCK_CONST_METHOD0(open_for_input, mge::input_stream_ref());
+    MOCK_CONST_METHOD0(size, size_t());
 };

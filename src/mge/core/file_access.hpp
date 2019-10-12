@@ -90,6 +90,12 @@ namespace mge {
          */
         virtual input_stream_ref open_for_input() const = 0;
 
+        /**
+         * File size.
+         * 
+         * @return file size, 0 if not a regular file
+         */
+        virtual size_t size() const = 0;
     protected:
         /// Constructor to be used if path cannot be determined.
         file_access() = default;

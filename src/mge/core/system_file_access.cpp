@@ -122,18 +122,19 @@ namespace mge {
             :file_access(p)
         {}
 
-        virtual ~system_file_access() = default;
+        ~system_file_access() = default;
 
-        virtual bool exists() const;
-        virtual bool is_file() const;
-        virtual bool is_directory() const;
-        virtual bool is_system_file() const;
+        bool exists() const override;
+        bool is_file() const override;
+        bool is_directory() const override;
+        bool is_system_file() const override;
 
-        virtual void mkdir();
-        virtual void rmdir();
-        virtual void list(std::vector<file>& files);
+        void mkdir() override;
+        void rmdir() override;
+        void list(std::vector<file>& files) override;
 
-        virtual input_stream_ref open_for_input() const;
+        input_stream_ref open_for_input() const override;
+        size_t size() const override;
     };
 
     bool system_file_access::exists() const
@@ -213,6 +214,12 @@ namespace mge {
                 files.push_back(file(p.path()));
             }
         }
+    }
+
+    size_t system_file_access::size() const
+    {
+        boost::system::error_code ec;
+        return boost::filesystem::file_size(m_path, ec);
     }
 
     class system_file_access_factory : public file_access_factory

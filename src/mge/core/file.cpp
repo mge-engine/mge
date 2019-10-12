@@ -97,6 +97,11 @@ namespace mge {
         return files;
     }
 
+    size_t file::size() const 
+    {
+        return m_access->size();
+    }
+
     input_stream_ref file::open_for_input() const
     {
         return m_access->open_for_input();
