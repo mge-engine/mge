@@ -6,6 +6,8 @@ SET(mgeui_sources
     context.cpp
     font.cpp
     window.cpp
+    menu_bar.cpp
+    menu.cpp
 )
 
 ADD_LIBRARY(mgeui
