@@ -21,10 +21,12 @@ namespace mge {
         ~command() = default;
 
         void set_pipeline(const pipeline_ref& pipeline);
-        void set_vertices(uint32_t index, const vertex_buffer_ref& buffer);
+        void set_vertices(const vertex_buffer_ref& buffer);
         void set_indices(const index_buffer_ref& buffer);
     private:
         pipeline_ref m_pipeline;
+        vertex_buffer_ref m_vertices;
+        index_buffer_ref m_indices;
     };
 
 }

@@ -37,3 +37,11 @@ TEST(vec2, print)
     ss << v;
     EXPECT_STREQ("[1, 2]", ss.str().c_str());
 }
+
+TEST(ivec2, print)
+{
+    ivec2 v(1, 2);
+    std::stringstream ss;
+    ss << v;
+    EXPECT_STREQ("[1, 2]", ss.str().c_str());
+}

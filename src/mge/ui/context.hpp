@@ -11,7 +11,9 @@ namespace mge {
          * Context to envelope an UI subsystem. UI elements
          * belong to a context. 
          */
-        class MGE_UI_EXPORT context : public drawable
+        class MGE_UI_EXPORT context 
+            : public drawable
+            , std::enable_shared_from_this<context>
         {
         public:
             /**

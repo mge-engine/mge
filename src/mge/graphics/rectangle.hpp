@@ -6,6 +6,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/extent.hpp"
+#include "mge/graphics/point.hpp"
 #include <iosfwd>
 
 namespace mge {
@@ -179,41 +180,51 @@ namespace mge {
            return m_y + m_height;
        }
 
-       /**
-        * Comparison operator.
-        * @param d compared rectangle
-        * @return @c true if equal
-        */
-       inline bool operator ==(const rectangle& d) const
-       {
-           return m_x == d.m_x && m_y == d.m_y && m_width == d.m_width
-                  && m_height == d.m_height;
-       }
+        /**
+          * Comparison operator.
+          * @param d compared rectangle
+          * @return @c true if equal
+          */
+        inline bool operator ==(const rectangle& d) const
+        {
+            return m_x == d.m_x && m_y == d.m_y && m_width == d.m_width
+                    && m_height == d.m_height;
+        }
 
-       /**
-        * Comparison operator.
-        * @param d compared rectangle
-        * @return @c true if not equal
-        */
-       inline bool operator !=(const rectangle& d) const
-       {
-           return !operator ==(d);
-       }
+        /**
+         * Comparison operator.
+         * @param d compared rectangle
+         * @return @c true if not equal
+         */
+        inline bool operator !=(const rectangle& d) const
+        {
+            return !operator ==(d);
+        }
 
        /**
         * Get rectangle extent.
         * @return extent
         */
-       inline extent extent() const
-       {
+        inline extent extent() const
+        {
            return mge::extent(m_width, m_height);
-       }
+        }
+
+        /**
+         * Get rectangle position.
+         * 
+         * @return upper left corner position
+         */
+        inline point position() const
+        {
+            return point(m_x, m_y);
+        }
 
     private:
-       uint32_t m_x;
-       uint32_t m_y;
-       uint32_t m_width;
-       uint32_t m_height;
+        uint32_t m_x;
+        uint32_t m_y;
+        uint32_t m_width;
+        uint32_t m_height;
     };
 
 

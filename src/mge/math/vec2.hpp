@@ -9,9 +9,12 @@
 namespace mge {
 
     using glm::vec2;
-    typedef vec2 fvec2;
-
+    using glm::i32vec2;
+    using fvec2 = glm::vec2;
+    using ivec2 = glm::i32vec2;
+    
     MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fvec2& v);
+    MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const ivec2& v);
 
     inline float squared_length(const fvec2& v)
     {

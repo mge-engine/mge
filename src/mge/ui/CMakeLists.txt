@@ -5,6 +5,7 @@
 SET(mgeui_sources
     context.cpp
     font.cpp
+    window.cpp
 )
 
 ADD_LIBRARY(mgeui
