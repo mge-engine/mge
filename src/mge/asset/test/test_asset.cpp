@@ -1,7 +1,7 @@
 #include "test/googletest.hpp"
 #include "mge/asset/asset.hpp"
 
-using namespace mge;
+using namespace mge::string_literals;
 
 TEST(asset, create)
 {

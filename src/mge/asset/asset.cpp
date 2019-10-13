@@ -66,8 +66,16 @@ namespace mge {
         return m_access->data();
     }
 
-    asset operator ""_asset(const char *s, size_t sz)
+    void
+    asset::gist(std::ostream& os) const
     {
-        return asset(std::string(s, s+sz));
+        os << "asset[" << path() << "]";
+    }
+
+    namespace string_literals {
+        asset operator ""_asset(const char *s, size_t sz)
+        {
+            return asset(std::string(s, s+sz));
+        }
     }
 }

@@ -28,3 +28,29 @@ TEST(gist, gist_class_type)
     EXPECT_TRUE(ss.str().starts_with("foobar@"));
 
 }
+
+struct foo
+{
+    void gist(std::ostream& os) const
+    {
+        os << "foo from gist";
+    }
+};
+
+struct bar : foo {};
+
+TEST(gist, gist_duck_typing)
+{
+    foo f;
+    std::stringstream ss;
+    ss << gist(f);
+    EXPECT_EQ("foo from gist"s, ss.str());
+}
+
+TEST(gist, gist_duck_typing_derived)
+{
+    bar f;
+    std::stringstream ss;
+    ss << gist(f);
+    EXPECT_EQ("foo from gist"s, ss.str());
+}
