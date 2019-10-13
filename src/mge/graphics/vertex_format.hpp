@@ -1,6 +1,7 @@
 #pragma once 
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/data_type.hpp"
+
 #include <iosfwd>
 
 namespace mge {
@@ -28,6 +29,15 @@ namespace mge {
         data_type type() const noexcept { return m_type; }
         uint8_t size() const noexcept { return m_size; }
         size_t binary_size() const;
+
+        inline bool operator <(const vertex_format& f) const
+        {
+            return m_type < f.m_type 
+                ? true
+                : m_type == f.m_type 
+                    ? m_size < f.m_size
+                    : false;
+        }
     private:
         data_type m_type;
         uint8_t   m_size;
