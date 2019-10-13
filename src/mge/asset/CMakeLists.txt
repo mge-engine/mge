@@ -7,6 +7,7 @@ SET(mgeasset_sources
     asset_access_factory.cpp 
     file_asset_factory.cpp
     asset_not_found.cpp
+    asset_type.cpp
 )
 
 ADD_LIBRARY(mgeasset

@@ -25,6 +25,11 @@ namespace mge {
         {
             return m_file.open_for_input();
         }
+
+        asset_type type() const override
+        {
+            return asset_type::UNKNOWN;
+        }
     private:
         file m_file;
     };

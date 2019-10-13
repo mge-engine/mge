@@ -66,6 +66,15 @@ namespace mge {
         return m_access->data();
     }
 
+    asset_type
+    asset::type() const
+    {
+        if(!m_access) {
+            m_access = repository_manager->access(m_path);
+        }
+        return m_access->type();
+    }
+
     void
     asset::gist(std::ostream& os) const
     {

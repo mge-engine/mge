@@ -3,6 +3,7 @@
 #include "mge/core/path.hpp"
 #include "mge/core/input_stream.hpp"
 #include "mge/asset/asset_fwd.hpp"
+#include "mge/asset/asset_type.hpp"
 #include "mge/core/gist.hpp"
 namespace mge {
 
@@ -95,6 +96,13 @@ namespace mge {
          * @return input data 
          */
         mge::input_stream_ref data() const;
+
+        /**
+         * Get the asset type.
+         * 
+         * @return asset type
+         */
+        asset_type type() const;
 
         /**
          * Supply gist info on asset.

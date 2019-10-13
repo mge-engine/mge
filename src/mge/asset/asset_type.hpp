@@ -1,5 +1,6 @@
 #pragma once
 #include "mge/asset/dllexport.hpp"
+#include <boost/operators.hpp>
 #include <string>
 #include <iosfwd>
 namespace mge {
@@ -10,25 +11,65 @@ namespace mge {
      * with limited options and complexity.
      */
     class MGE_ASSET_EXPORT asset_type 
+        : boost::totally_ordered<asset_type>
     {
     public:
-        asset_type(const char *type, const char *subtype);
-        asset_type(const std::string& type, const std::string& subtype);
-        asset_type(const asset_type& t);
-        asset_type(asset_type&& t);
-        asset_type& operator =(const asset_type& t);
-        asset_type& operator =(asset_type&& t);
+        static const asset_type UNKNOWN;
+
+        asset_type(const char *type, const char *subtype)
+            :m_type(type)
+            ,m_subtype(subtype)
+        {}
+
+        asset_type(const std::string& type, const std::string& subtype)
+            :m_type(type)
+            ,m_subtype(subtype)
+        {}
+
+        asset_type(const asset_type& t)
+            :m_type(t.m_type)
+            ,m_subtype(t.m_subtype)
+        {}
+
+        asset_type(asset_type&& t)
+            :m_type(std::move(t.m_type))
+            ,m_subtype(std::move(t.m_subtype))
+        {}
+
+        asset_type& operator =(const asset_type& t)
+        {
+            m_type    = t.m_type;
+            m_subtype = t.m_subtype;
+            return *this;
+        }
+
+        asset_type& operator =(asset_type&& t)
+        {
+            m_type    = std::move(t.m_type);
+            m_subtype = std::move(t.m_subtype);
+            return *this;
+        }
 
         const std::string& type() const { return m_type; }
         const std::string& subtype() const { return m_subtype; }
 
-        bool operator ==(const asset_type& t) const;
-        bool operator !=(const asset_type& t) const;
+        bool operator ==(const asset_type& t) const
+        {
+            return m_type == t.m_type && m_subtype == t.m_subtype;
+        }
 
+        bool operator <(const asset_type& t) const
+        {
+            return m_type < t.m_type 
+                ? true
+                : m_type == t.m_type 
+                    ? m_subtype < t.m_subtype
+                    : false;
+        }
     private:
         std::string m_type;
         std::string m_subtype;
-    }
+    };
 
     MGE_ASSET_EXPORT std::ostream& operator <<(std::ostream& os, const asset_type& t);
 }
