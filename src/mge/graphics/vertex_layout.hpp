@@ -10,7 +10,7 @@ namespace mge {
      * is a list of vertex formats.
      */
     class MGE_GRAPHICS_EXPORT vertex_layout 
-        : public std::vector<vertex_format>
+        : public mge::small_vector<vertex_format, 5>
     {
     public:
         /**
