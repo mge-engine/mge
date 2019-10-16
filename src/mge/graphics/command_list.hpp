@@ -58,6 +58,14 @@ namespace mge {
         virtual void clear_stencil(int32_t value) = 0;
 
         /**
+         * Apply a pipeline. Current pipeline is replaced
+         * by this pipeline.
+         * 
+         * @param pipeline pipeline to be applied
+         */
+        void set_pipeline(const pipeline_ref& pipeline);
+
+        /**
          * Finishes recording of commands. The command list is immutable
          * afterwards.
          */
@@ -83,8 +91,10 @@ namespace mge {
         void assert_not_immutable();
 
         virtual void on_finish() = 0;
+        virtual void on_set_pipeline(const pipeline_ref& p) = 0;
     private:
-        bool m_native;
-        bool m_finished;
+        pipeline_ref m_current_pipeline;
+        bool         m_native;
+        bool         m_finished;
     };
 }

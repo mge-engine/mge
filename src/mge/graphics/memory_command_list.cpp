@@ -30,6 +30,13 @@ namespace mge {
     }
 
     void
+    memory_command_list::on_set_pipeline(const pipeline_ref& pipeline)
+    {
+        set_pipeline_data data { pipeline };
+        m_elements.push_back(data);
+    }
+
+    void
     memory_command_list::on_finish()
     {}
 

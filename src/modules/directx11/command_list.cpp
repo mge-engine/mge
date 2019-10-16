@@ -45,5 +45,11 @@ namespace dx11 {
         //m_deferred_context.reset();
     }
 
+    void
+    command_list::on_set_pipeline(const mge::pipeline_ref& pipeline)
+    {
+        // TODO
+    }
+
 
 }

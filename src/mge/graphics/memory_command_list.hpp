@@ -30,9 +30,14 @@ namespace mge {
             int32_t value;
         };
 
+        struct set_pipeline_data {
+            pipeline_ref pipeline;
+        };
+
         using element_type = std::variant<clear_data,
                                           clear_depth_data,
-                                          clear_stencil_data>;
+                                          clear_stencil_data,
+                                          set_pipeline_data>;
         using container_type = std::vector<element_type>;
         using const_iterator = container_type::const_iterator;
 
@@ -55,6 +60,7 @@ namespace mge {
         inline const_iterator end() const { return m_elements.end(); }
     protected:
         void on_finish() override;
+        void on_set_pipeline(const pipeline_ref& pipeline);
     private:
         container_type m_elements;
     };
