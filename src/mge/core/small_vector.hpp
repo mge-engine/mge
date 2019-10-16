@@ -3,6 +3,7 @@
 #include <array>
 #include <variant>
 #include <iterator>
+#include "mge/core/stdexceptions.hpp"
 
 namespace mge {
 
@@ -48,7 +49,7 @@ namespace mge {
                 }
             }
 
-            explicit small_data(const small_data& d)
+            small_data(const small_data& d)
                 :data(d.data)
                 ,length(d.length)
             {}
@@ -234,7 +235,39 @@ namespace mge {
 
         // assign
         // at
-        // operator []
+
+        reference back() 
+        {
+            switch(m_data.index()) {
+            default:
+            case 0:
+                return *((pointer)nullptr);
+                break;
+            case 1:
+                return std::get<1>(m_data).data[std::get<1>(m_data).length - 1];
+                break;
+            case 2:
+                return std::get<2>(m_data).back();
+                break;
+            }
+        }
+
+        const_reference back() const
+        {
+            switch(m_data.index()) {
+            default:
+            case 0:
+                return *((const_pointer)nullptr);
+                break;
+            case 1:
+                return std::get<1>(m_data).data[std::get<1>(m_data).length - 1];
+                break;
+            case 2:
+                return std::get<2>(m_data).back();
+                break;
+            }
+        }
+
         const_reference operator[](size_type i) const
         {
             return *(cbegin() + i);
@@ -245,26 +278,71 @@ namespace mge {
             return *(begin() + i);
         }
 
-        // capacity
+
+        size_type capacity() const
+        {
+            return std::visit(
+                overloaded {
+                    [](const std::monostate&) -> size_type { return 0; },
+                    [](const small_data& d) -> size_type { return S; },
+                    [](const std::vector<T, Alloc>& v) -> size_type { return v.capacity(); },
+                }, 
+                m_data);
+        }
+
         // emplace
         // emplace_back
 
-        // empty
+
         bool empty() const
         {
             return m_data.index() == 0;
         }
 
+        pointer data() noexcept
+        {
+            return std::visit(
+                overloaded {
+                    [](std::monostate&) -> pointer { return nullptr; },
+                    [](small_data& d) -> pointer { return d.data.data(); },
+                    [](std::vector<T, Alloc>& v) -> pointer { return v.data(); },
+                }, 
+                m_data);
+        }
+
+        const_pointer data() const noexcept
+        {
+            return std::visit(
+                overloaded {
+                    [](const std::monostate&) -> const_pointer { return nullptr; },
+                    [](const small_data& d) -> const_pointer { return d.data.data(); },
+                    [](const std::vector<T, Alloc>& v) -> const_pointer { return v.data(); },
+                }, 
+                m_data);
+
+        }
 
         // erase
-        // front
-        // get_allocator
+
+        reference front()
+        {
+            return *begin();
+        }
+
+        const_reference front() const 
+        {
+            return *cbegin();
+        }
+
+        allocator_type get_allocator() const
+        {
+            return m_allocator;
+        }
+
         // insert
         // max_size
         // operator =
         // pop_back
-
-        // push_back
 
         void push_back(const value_type& val)
         {
@@ -298,10 +376,25 @@ namespace mge {
             }
         }
 
-        // reserve
-        // shrink_to_fit
-        // size
-        // swap
+        void reserve(size_type reserved_size)
+        {
+            if(m_data.index() == 2) {
+                std::get<2>(m_data).reserve(reserved_size);
+            }
+        }
+
+        void shrink_to_fit() 
+        {
+            if(m_data.index() == 2) {
+                std::get<2>(m_data).shrink_to_fit();
+            }
+        }
+
+        void swap(small_vector<T, S, Alloc>& v)
+        {
+            m_data.swap(v.m_data);
+        }
+
     private:
         void push_back_small_data(const value_type& val)
         {
