@@ -5,6 +5,9 @@
 #  pragma warning( disable : 4800 ) 
 #  pragma warning( disable : 4458 )
 #endif
+#ifdef min
+#  undef min
+#endif
 #define ENTT_ID_TYPE std::uint64_t
 #include <entt/entity/entity.hpp>
 #include <entt/entt.hpp>
