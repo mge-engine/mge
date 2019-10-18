@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "texture_2d.hpp"
 #include "error.hpp"
 

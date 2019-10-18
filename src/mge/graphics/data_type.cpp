@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/data_type.hpp"
 #include "mge/core/stdexceptions.hpp"
 

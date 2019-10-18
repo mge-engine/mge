@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/image_format.hpp"
 #include <iostream>
 namespace mge {

@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "dx11_test.hpp"
 #include "bench/googlebenchmark.hpp"
 #include "mge/graphics/render_context.hpp"

@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "dx11.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "win32/com_unique_ptr.hpp"

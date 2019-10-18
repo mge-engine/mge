@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/vertex_buffer.hpp"
 #include "opengl.hpp"
 

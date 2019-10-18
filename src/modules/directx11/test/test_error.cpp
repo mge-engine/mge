@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "test/googlemock.hpp"
 #include "modules/directx11/error.hpp"
 #include "mge/core/exception.hpp"

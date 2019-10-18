@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 SET(extract_functions "${CMAKE_SOURCE_DIR}/src/modules/vulkan/extract_functions.py")
 SET(vulkan_generated_source "${CMAKE_BINARY_DIR}/src/modules/vulkan/vulkan_generated.cpp")
 ADD_CUSTOM_COMMAND(

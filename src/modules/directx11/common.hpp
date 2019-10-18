@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "dx11.hpp"
 #include "mge/graphics/usage.hpp"
