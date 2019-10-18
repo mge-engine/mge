@@ -7,6 +7,7 @@
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/core/property_object.hpp"
+#include "mge/core/small_vector.hpp"
 
 #include <string>
 #include <vector>
@@ -47,7 +48,7 @@ namespace mge {
             size_t      size; //!< attribute size (array size)
         };
 
-        using attribute_list = std::vector<attribute>;
+        using attribute_list = small_vector<attribute, 5>;
 
         /// Uniform description
         struct uniform
@@ -57,7 +58,7 @@ namespace mge {
             size_t      size; //!< uniform size (array size)
         };
 
-        using uniform_list = std::vector<uniform>;
+        using uniform_list = small_vector<uniform, 5>;
 
         virtual ~pipeline();
 
