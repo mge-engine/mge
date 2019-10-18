@@ -70,6 +70,14 @@ namespace mge {
                 :length(0)
             {}
 
+            template< class... Args >
+            T& emplace_back(Args&&... args)
+            {
+                new (&data[length]) T(std::forward<Args>(args)...);
+                return data[length++];
+            }
+
+
             std::array<T, S> data;
             size_t           length;
         };
@@ -296,6 +304,28 @@ namespace mge {
         // emplace
         // emplace_back
 
+        template< class... Args >
+        reference emplace_back(Args&&... args)
+        {
+            switch(m_data.index()) {
+            case 0:
+                m_data = small_data();
+            case 1: {
+                auto& sd = std::get<1>(m_data);
+                if (sd.length < S) {
+                    sd.emplace_back(std::forward<Args>(args)...);
+                    break;
+                } else {
+                    // note that this is not completely safe in case
+                    // of oom as converting to vector may be destructive
+                    convert_to_vector();
+                }
+            }
+            case 2:
+                return std::get<2>(m_data).emplace_back(std::forward<Args>(args)...);
+                break;
+            }
+        }
 
         bool empty() const
         {
