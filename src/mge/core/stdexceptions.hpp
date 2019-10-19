@@ -299,6 +299,8 @@ namespace mge {
 
 #define MGE_THROW_ARGUMENT_NOT_NULL(N) MGE_THROW(mge::illegal_argument) << "Argument '" << #N << "' must not be null"
 
+#define MGE_THROW_NOT_IMPLEMENTED MGE_THROW(mge::not_yet_implemented)
+
 #define MGE_DEFINE_EXCEPTION(clazz)                        \
     clazz::clazz()                                         \
     {}                                                     \
