@@ -20,11 +20,7 @@ namespace dx12 {
     {
     public:
         render_system()
-        {
-#ifndef MGE_RELEASE
-            enable_debug_layer();
-#endif
-        }
+        {}
 
         ~render_system() override
         {}
@@ -32,6 +28,9 @@ namespace dx12 {
         void configure(const mge::configuration& config) override
         {
             m_config.configure(config);
+            if (m_config.debug()) {
+                enable_debug_layer();
+            }
         }
 
         monitor_collection_t monitors() const override
