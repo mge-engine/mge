@@ -60,6 +60,14 @@ namespace mge {
 
         using uniform_list = small_vector<uniform, 5>;
 
+        struct uniform_buffer
+        {
+            std::string name;
+            uniform_list uniforms;
+        };
+
+        using uniform_buffer_list = small_vector<uniform_buffer, 3>;
+
         virtual ~pipeline();
 
         /**
@@ -96,10 +104,18 @@ namespace mge {
          * @return uniforms 
          */
         const uniform_list& uniforms() const noexcept { return m_uniforms; }
+
+        /**
+         * Get uniform buffer meta data.
+         * @return uniform buffers
+         */
+        const uniform_buffer_list uniform_buffers() const noexcept { return m_uniform_buffers; }
+
     protected:
-        bool            m_needs_link;
-        attribute_list  m_attributes;
-        uniform_list    m_uniforms;
+        bool                m_needs_link;
+        attribute_list      m_attributes;
+        uniform_list        m_uniforms;
+        uniform_buffer_list m_uniform_buffers;
         
         virtual void on_link() = 0;
         virtual void on_set_shader(const shader_ref& shader) = 0;
