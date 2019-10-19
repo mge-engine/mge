@@ -307,24 +307,26 @@ namespace mge {
         template< class... Args >
         reference emplace_back(Args&&... args)
         {
-            switch(m_data.index()) {
-            case 0:
-                m_data = small_data();
-            case 1: {
-                auto& sd = std::get<1>(m_data);
-                if (sd.length < S) {
-                    sd.emplace_back(std::forward<Args>(args)...);
-                    break;
-                } else {
-                    // note that this is not completely safe in case
-                    // of oom as converting to vector may be destructive
-                    convert_to_vector();
-                }
-            }
-            case 2:
-                return std::get<2>(m_data).emplace_back(std::forward<Args>(args)...);
-                break;
-            }
+            return std::visit(
+                overloaded {
+                    [&](std::monostate&) -> reference {
+                        m_data = small_data();
+                        auto& sd = std::get<1>(m_data);
+                        return sd.emplace_back(std::forward<Args>(args)...);
+                    },
+                    [&](small_data& d) -> reference {
+                        if (d.length < S) {
+                            return d.emplace_back(std::forward<Args>(args)...);
+                        } else {
+                            convert_to_vector();
+                            return std::get<2>(m_data).emplace_back(std::forward<Args>(args)...);
+                        }
+                    },
+                    [&](std::vector<T, Alloc>& v) -> reference {
+                        return v.emplace_back(std::forward<Args>(args)...);
+                    },
+                },
+                m_data);
         }
 
         bool empty() const
