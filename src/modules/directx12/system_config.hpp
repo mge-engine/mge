@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/configuration.hpp"
+#include "dx12.hpp"
 
 namespace dx12 {
     
