@@ -45,7 +45,7 @@ namespace mge {
         {
             std::string name; //!< attribute name
             data_type   type; //!< attribute type
-            size_t      size; //!< attribute size (array size)
+            uint32_t    size; //!< attribute size (array size)
         };
 
         using attribute_list = small_vector<attribute, 5>;
@@ -55,7 +55,7 @@ namespace mge {
         {
             std::string name; //!< uniform name
             data_type   type; //!< uniform type
-            size_t      size; //!< uniform size (array size)
+            uint32_t    size; //!< uniform size (array size)
         };
 
         using uniform_list = small_vector<uniform, 5>;
