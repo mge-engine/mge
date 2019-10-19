@@ -36,4 +36,4 @@ namespace mge {
  * Stringifies the argument.
  * @param X argument to stringify
  */
-#define MGE_STRINGIFY(X) #X
+#define MGE_STRINGIFY(...) #__VA_ARGS__
