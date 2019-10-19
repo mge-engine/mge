@@ -2,11 +2,11 @@
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
 SET(mge_dx12_module_SOURCES
-  common.cpp
-  error.cpp
-  window.cpp
-  render_context.cpp
-  render_system.cpp
+    common.cpp
+    error.cpp
+    render_context.cpp
+    window.cpp
+    render_system.cpp
 )
 ADD_LIBRARY(mge_module_dx12 MODULE
     ${mge_dx12_module_SOURCES})

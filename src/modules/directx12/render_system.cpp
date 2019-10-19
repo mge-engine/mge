@@ -21,13 +21,15 @@ namespace dx12 {
     public:
         render_system()
         {
+#ifndef MGE_RELEASE
             enable_debug_layer();
+#endif
         }
 
-        ~render_system()
+        ~render_system() override
         {}
 
-        void configure(const mge::configuration& config)
+        void configure(const mge::configuration& config) override
         {
             m_config.configure(config);
         }
@@ -51,7 +53,7 @@ namespace dx12 {
     private:
         void enable_debug_layer()
         {
-#ifndef MGE_RELEASE
+
             ID3D12Debug *debug_controller;
             MGE_DEBUG_LOG(DX12) << "Try to enable debug layer";
             HRESULT rc = D3D12GetDebugInterface(IID_PPV_ARGS(&debug_controller));
@@ -62,7 +64,6 @@ namespace dx12 {
             } else {
                 MGE_ERROR_LOG(DX12) << "Failed to enable debug layer: " << std::hex << rc;
             }
-#endif
         }
 
         COM_UNIQUE_PTR(ID3D12Debug) m_debug_controller;
