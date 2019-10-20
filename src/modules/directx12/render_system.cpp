@@ -13,7 +13,6 @@
 
 MGE_USE_LOG(DX12);
 
-
 namespace dx12 {
 
     class render_system : public mge::render_system
@@ -28,6 +27,9 @@ namespace dx12 {
         void configure(const mge::configuration& config) override
         {
             m_config.configure(config);
+            if (m_config.debug()) {
+                enable_debug_layer();
+            }
         }
 
         monitor_collection_t monitors() const override
@@ -49,6 +51,15 @@ namespace dx12 {
         }
 
     private:
+        void enable_debug_layer()
+        {
+            COM_PTR(ID3D12Debug) debug_controller;
+            if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debug_controller)))) {
+                MGE_DEBUG_LOG(DX12) << "Enable debug layer";
+                debug_controller->EnableDebugLayer();
+            }
+
+        }
         system_config m_config;
     };
 
