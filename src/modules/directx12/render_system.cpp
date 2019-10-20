@@ -58,7 +58,6 @@ namespace dx12 {
                 MGE_DEBUG_LOG(DX12) << "Enable debug layer";
                 debug_controller->EnableDebugLayer();
             }
-
         }
         system_config m_config;
     };
