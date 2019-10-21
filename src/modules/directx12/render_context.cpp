@@ -30,6 +30,19 @@ namespace dx12 {
                                D3D_FEATURE_LEVEL_11_0,
                                IID_PPV_ARGS(&m_device));
         CHECK_HRESULT(rc, ,D3D12CreateDevice);
+
+        create_command_queue();
+    }
+
+    void
+    render_context::create_command_queue()
+    {
+        D3D12_COMMAND_QUEUE_DESC desc = {};
+        desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+        desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+
+        auto rc = m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
     }
 
     void

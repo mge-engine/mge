@@ -37,8 +37,10 @@ namespace dx12 {
     private:
         void select_adapter(IDXGIFactory4 *factory,
                             IDXGIAdapter1** adapter);
+        void create_command_queue();
 
-        COM_PTR(ID3D12Device) m_device;
+        COM_PTR(ID3D12Device)       m_device;
+        COM_PTR(ID3D12CommandQueue) m_command_queue;
     };
 
 }
