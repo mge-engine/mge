@@ -32,6 +32,7 @@ namespace dx12 {
         CHECK_HRESULT(rc, ,D3D12CreateDevice);
 
         create_command_queue();
+        create_swap_chain(factory.Get(), win);
     }
 
     void
@@ -43,6 +44,36 @@ namespace dx12 {
 
         auto rc = m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
+    }
+
+    void
+    render_context::create_swap_chain(IDXGIFactory4 *factory,
+                                      window *win)
+    {
+        DXGI_SWAP_CHAIN_DESC1 desc = {};
+        desc.BufferCount = frame_count();
+        desc.Width = win->extent().width();
+        desc.Height = win->extent().height();
+        desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+        desc.SampleDesc.Count = 1;
+
+        COM_PTR(IDXGISwapChain1) sc;
+        auto rc = factory->CreateSwapChainForHwnd(m_command_queue.Get(),
+                                                  win->hwnd(),
+                                                  &desc,
+                                                  nullptr,
+                                                  nullptr,
+                                                  &sc);
+        CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChainForHwnd);
+        rc = factory->MakeWindowAssociation(win->hwnd(), DXGI_MWA_NO_ALT_ENTER);
+        CHECK_HRESULT(rc, IDXGIFactory, MakeWindowAssociation);
+        rc = sc.As(&m_swap_chain);
+        CHECK_HRESULT(rc, , IDXGISwapChain4);
+
+
+
     }
 
     void

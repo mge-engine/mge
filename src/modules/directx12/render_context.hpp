@@ -35,12 +35,15 @@ namespace dx12 {
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
 
     private:
+        uint32_t frame_count() const { return 2; }
         void select_adapter(IDXGIFactory4 *factory,
                             IDXGIAdapter1** adapter);
         void create_command_queue();
+        void create_swap_chain(IDXGIFactory4 *factory, window *win);
 
         COM_PTR(ID3D12Device)       m_device;
         COM_PTR(ID3D12CommandQueue) m_command_queue;
+        COM_PTR(IDXGISwapChain3)    m_swap_chain;
     };
 
 }

@@ -60,7 +60,7 @@ namespace mge {
          * @return window options
          */
         const window_options& options() const noexcept { return m_options; }
-        extent extent() const;
+        extent extent() const noexcept { return m_rect.extent(); }
 
         /**
          * Access the render target.
