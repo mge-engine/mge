@@ -33,6 +33,12 @@ namespace dx12 {
         void execute(const mge::command_list_ref& commands) override;
         mge::pipeline_ref create_pipeline() override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
+
+    private:
+        void select_adapter(IDXGIFactory4 *factory,
+                            IDXGIAdapter1** adapter);
+
+        COM_PTR(ID3D12Device) m_device;
     };
 
 }

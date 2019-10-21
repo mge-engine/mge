@@ -1,5 +1,6 @@
 #include "render_context.hpp"
 #include "window.hpp"
+#include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
 
 namespace dx12 {
@@ -7,7 +8,60 @@ namespace dx12 {
     render_context::render_context(window *win,
                                    const system_config& config)
         : mge::render_context(win)
-    {}
+    {
+        HRESULT rc = 0;
+        UINT factory_flags = 0;
+        if (config.debug()) {
+            factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
+        }
+        COM_PTR(IDXGIFactory4) factory;
+        rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
+        CHECK_HRESULT(rc, ,CreateDXGIFactory2);
+
+        COM_PTR(IDXGIAdapter1) adapter;
+        if (config.warp()) {
+            rc = factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter));
+            CHECK_HRESULT(rc, IDXGIFactory4, EnumWarpAdapter);
+        } else {
+            select_adapter(factory.Get(), &adapter);
+
+        }
+        rc = D3D12CreateDevice(adapter.Get(),
+                               D3D_FEATURE_LEVEL_11_0,
+                               IID_PPV_ARGS(&m_device));
+        CHECK_HRESULT(rc, ,D3D12CreateDevice);
+    }
+
+    void
+    render_context::select_adapter(IDXGIFactory4 *factory,
+                                   IDXGIAdapter1 **adapter)
+    {
+        COM_PTR(IDXGIAdapter1) local_adapter;
+        *adapter = nullptr;
+
+        for (uint32_t i=0;
+             DXGI_ERROR_NOT_FOUND != factory->EnumAdapters1(i, &local_adapter);
+             i) {
+            DXGI_ADAPTER_DESC1 desc = {};
+            local_adapter->GetDesc1(&desc);
+            if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE) {
+                continue;
+            } else {
+                auto rc = D3D12CreateDevice(local_adapter.Get(),
+                                            D3D_FEATURE_LEVEL_11_0,
+                                            _uuidof(ID3D12Device),
+                                            nullptr);
+                if(SUCCEEDED(rc)) {
+                    break;
+                }
+            }
+        }
+
+        *adapter = local_adapter.Detach();
+        if (!adapter) {
+            MGE_THROW(dx12::error) << "Could not find suitable adapter";
+        }
+    }
 
     render_context::~render_context()
     {}
