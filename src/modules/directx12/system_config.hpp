@@ -11,14 +11,17 @@ namespace dx12 {
     {
     public:
         system_config()
-            :m_debug(false),
-             m_software_device(false)
+            :m_debug(false)
+            ,m_software_device(false)
+            ,m_warp(false)
+
         {}
 
         void configure(const mge::configuration& config)
         {
             m_debug = config.value<bool>("debug", false);
             m_software_device = config.value<bool>("software_device", false);
+            m_warp = config.value<bool>("warp", false);
         }
 
         bool debug() const
@@ -30,8 +33,14 @@ namespace dx12 {
         {
             return m_software_device;
         }
+
+        bool warp() const
+        {
+            return m_warp;
+        }
     private:
         bool m_debug;
         bool m_software_device;
+        bool m_warp;
     };
 }
