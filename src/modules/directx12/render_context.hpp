@@ -5,6 +5,7 @@
 #include "dx12.hpp"
 #include "system_config.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/graphics/memory_command_list.hpp"
 #include "win32/com_unique_ptr.hpp"
 #include "win32/com_ptr.hpp"
 
@@ -46,6 +47,7 @@ namespace dx12 {
         void create_command_allocator();
         void create_graphics_command_list();
         void create_sync_objects();
+        void wait_for_frame();
 
         mge::com_ptr<ID3D12Device>                m_device;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;

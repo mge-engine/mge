@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/memory_command_list.hpp"
+#include "mge/core/stdexceptions.hpp"
 namespace mge {
 
     memory_command_list::memory_command_list(render_context &context)
@@ -40,4 +41,9 @@ namespace mge {
     memory_command_list::on_finish()
     {}
 
+    void
+    memory_command_list::on_extend(const command_list_ref &commands)
+    {
+        MGE_THROW_NOT_IMPLEMENTED;
+    }
 }

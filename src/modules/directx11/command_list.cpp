@@ -29,12 +29,14 @@ namespace dx11 {
     void
     command_list::clear_depth(float value)
     {
+        MGE_THROW_NOT_IMPLEMENTED;
         //m_deferred_context->ClearDepthStencilView
     }
 
     void
     command_list::clear_stencil(int32_t value)
     {
+        MGE_THROW_NOT_IMPLEMENTED;
         //m_deferred_context->ClearDepthStencilView
     }
 
@@ -51,7 +53,13 @@ namespace dx11 {
     void
     command_list::on_set_pipeline(const mge::pipeline_ref& pipeline)
     {
-        // TODO
+        MGE_THROW_NOT_IMPLEMENTED;
+    }
+
+    void
+    command_list::on_extend(const mge::command_list_ref& commands)
+    {
+        MGE_THROW_NOT_IMPLEMENTED;
     }
 
 

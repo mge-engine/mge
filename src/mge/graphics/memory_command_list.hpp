@@ -61,6 +61,7 @@ namespace mge {
     protected:
         void on_finish() override;
         void on_set_pipeline(const pipeline_ref& pipeline);
+        void on_extend(const command_list_ref &commands) override;
     private:
         container_type m_elements;
     };

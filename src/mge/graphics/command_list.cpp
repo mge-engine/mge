@@ -38,5 +38,17 @@ namespace mge {
         }
     }
 
+    void
+    command_list::extend(const command_list_ref& commands)
+    {
+        if (!commands) {
+            return;
+        }
+        assert_not_immutable();
+        assert_same_context(*commands);
+        on_extend(commands);
+
+    }
+
 
 }

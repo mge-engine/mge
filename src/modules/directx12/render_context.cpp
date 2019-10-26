@@ -187,9 +187,26 @@ namespace dx12 {
     }
 
     void
+    render_context::wait_for_frame()
+    {
+        uint64_t fence = m_fence_value;
+        auto rc = m_command_queue->Signal(m_fence.Get(), fence);
+        ++m_fence_value;
+        CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
+        if (m_fence->GetCompletedValue() < fence) {
+            rc = m_fence->SetEventOnCompletion(fence, m_fence_event);
+            CHECK_HRESULT(rc, ID3D12Fence, SetEventOnCompletion);
+            WaitForSingleObject(m_fence_event, INFINITE);
+        }
+        m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
+    }
+
+    void
     render_context::flush()
     {
-        MGE_THROW_NOT_IMPLEMENTED;
+
+        wait_for_frame();
+
     }
 
     mge::vertex_buffer_ref
@@ -231,7 +248,7 @@ namespace dx12 {
     mge::command_list_ref
     render_context::create_command_list()
     {
-        MGE_THROW_NOT_IMPLEMENTED;
+        return std::make_shared<mge::memory_command_list>(*this);
     }
 
     void

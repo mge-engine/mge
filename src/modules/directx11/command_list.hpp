@@ -20,7 +20,8 @@ namespace dx11 {
         ID3D11CommandList *native_command_list() const { return m_command_list.get(); }
     protected:
         void on_finish() override;
-        void on_set_pipeline(const mge::pipeline_ref& pipeline);
+        void on_set_pipeline(const mge::pipeline_ref& pipeline) override;
+        void on_extend(const mge::command_list_ref& commands) override;
     private:
         mge::com_unique_ptr<ID3D11DeviceContext> m_deferred_context;
         mge::com_unique_ptr<ID3D11CommandList>   m_command_list;
