@@ -38,6 +38,14 @@ namespace dx12 {
         create_swap_chain(factory.Get(), win);
         create_descriptor_heap();
         create_frame_resources();
+        create_command_allocator();
+    }
+
+    void
+    render_context::create_command_allocator()
+    {
+        auto rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_command_allocator));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
     }
 
     void
