@@ -39,6 +39,21 @@ namespace dx12 {
         create_descriptor_heap();
         create_frame_resources();
         create_command_allocator();
+        create_direct_command_list();
+    }
+
+    void
+    render_context::create_direct_command_list()
+    {
+        auto rc = m_device->CreateCommandList
+                (0,
+                 D3D12_COMMAND_LIST_TYPE_DIRECT,
+                 m_command_allocator.Get(),
+                 nullptr,
+                 IID_PPV_ARGS(&m_command_list));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
+        rc = m_command_list->Close();
+        CHECK_HRESULT(rc, ID3D12CommandList, Close);
     }
 
     void
