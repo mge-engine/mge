@@ -2,6 +2,7 @@
 #include "window.hpp"
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/system_error.hpp"
 #include "win32/com_ptr.hpp"
 
 namespace dx12 {
@@ -9,6 +10,8 @@ namespace dx12 {
     render_context::render_context(window *win,
                                    const system_config& config)
         : mge::render_context(win)
+        ,m_fence_event(0)
+        ,m_fence_value(1)
         ,m_frame_index(0)
         ,m_rtv_descriptor_size(0)
     {
@@ -39,11 +42,23 @@ namespace dx12 {
         create_descriptor_heap();
         create_frame_resources();
         create_command_allocator();
-        create_direct_command_list();
+        create_graphics_command_list();
+        create_sync_objects();
     }
 
     void
-    render_context::create_direct_command_list()
+    render_context::create_sync_objects()
+    {
+        auto rc = m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence));
+        CHECK_HRESULT(rc, ID3D12Device, CreateFence);
+        m_fence_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        if (!m_fence_event) {
+
+        }
+    }
+
+    void
+    render_context::create_graphics_command_list()
     {
         auto rc = m_device->CreateCommandList
                 (0,
@@ -164,7 +179,12 @@ namespace dx12 {
     }
 
     render_context::~render_context()
-    {}
+    {
+        if (m_fence_event) {
+            CloseHandle(m_fence_event);
+            m_fence_event = 0;
+        }
+    }
 
     void
     render_context::flush()

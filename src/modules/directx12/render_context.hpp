@@ -44,7 +44,8 @@ namespace dx12 {
         void create_descriptor_heap();
         void create_frame_resources();
         void create_command_allocator();
-        void create_direct_command_list();
+        void create_graphics_command_list();
+        void create_sync_objects();
 
         mge::com_ptr<ID3D12Device>                m_device;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
@@ -53,9 +54,11 @@ namespace dx12 {
         std::vector<mge::com_ptr<ID3D12Resource>> m_render_targets;
         mge::com_ptr<ID3D12CommandAllocator>      m_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList>   m_command_list;
-
-        uint32_t m_frame_index;
-        uint32_t m_rtv_descriptor_size;
+        mge::com_ptr<ID3D12Fence>                 m_fence;
+        HANDLE                                    m_fence_event;
+        uint64_t                                  m_fence_value;
+        uint32_t                                  m_frame_index;
+        uint32_t                                  m_rtv_descriptor_size;
     };
 
 }
