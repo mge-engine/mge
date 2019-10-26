@@ -37,6 +37,22 @@ namespace dx12 {
         create_command_queue();
         create_swap_chain(factory.Get(), win);
         create_descriptor_heap();
+        create_frame_resources();
+    }
+
+    void
+    render_context::create_frame_resources()
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle
+                (m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
+        m_render_targets.resize(frame_count());
+
+        for (uint32_t i=0; i<m_render_targets.size(); ++i) {
+            auto rc = m_swap_chain->GetBuffer(i, IID_PPV_ARGS(&m_render_targets[i]));
+            CHECK_HRESULT(rc, IDXGISwapChain3, GetBuffer);
+            m_device->CreateRenderTargetView(m_render_targets[i].Get(), nullptr, rtv_handle);
+            rtv_handle.ptr += m_rtv_descriptor_size;
+        }
     }
 
     void
