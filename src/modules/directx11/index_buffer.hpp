@@ -24,7 +24,7 @@ namespace dx11 {
         void create_buffer(void *data);
         bool for_read_mapping() const;
 
-        COM_UNIQUE_PTR(ID3D11Buffer) m_buffer;
+        mge::com_unique_ptr<ID3D11Buffer> m_buffer;
         DXGI_FORMAT m_format;
         size_t m_size;
     };

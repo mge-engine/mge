@@ -3,7 +3,6 @@
 // All rights reserved.
 #pragma once
 #include <memory>
-#include "wrl/client.h"
 
 namespace mge {
 
@@ -20,9 +19,10 @@ namespace mge {
     {
         return std::unique_ptr<T, mge::com_deleter<T>>(ptr);
     }
-}
 
-#define COM_UNIQUE_PTR(T) std::unique_ptr<T, mge::com_deleter<T>>
-#define COM_PTR(T) Microsoft::WRL::ComPtr<T>
+    template <typename T>
+    using com_unique_ptr = std::unique_ptr<T, mge::com_deleter<T>>;
+
+}
 
 

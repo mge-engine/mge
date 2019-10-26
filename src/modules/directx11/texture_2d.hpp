@@ -17,7 +17,7 @@ namespace dx11 {
         virtual ~texture_2d();
     private:
         void create_texture(const mge::image_ref& image);
-        typedef COM_UNIQUE_PTR(ID3D11Texture2D) texture_t;
+        using texture_t = mge::com_unique_ptr<ID3D11Texture2D>;
         texture_t m_texture;
     };
 }

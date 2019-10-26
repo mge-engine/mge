@@ -24,11 +24,11 @@ namespace dx11 {
         void on_load(const mge::buffer& code) override;
         
     public:
-        typedef COM_UNIQUE_PTR(ID3D11VertexShader) vertex_shader_t;
-        typedef COM_UNIQUE_PTR(ID3D11PixelShader) pixel_shader_t;
-        typedef COM_UNIQUE_PTR(ID3D11ComputeShader) compute_shader_t;
-        typedef COM_UNIQUE_PTR(ID3D11HullShader) hull_shader_t;
-        typedef COM_UNIQUE_PTR(ID3D11DomainShader) domain_shader_t;
+        using vertex_shader_t = mge::com_unique_ptr<ID3D11VertexShader>;
+        using pixel_shader_t = mge::com_unique_ptr<ID3D11PixelShader>;
+        using compute_shader_t = mge::com_unique_ptr<ID3D11ComputeShader>;
+        using hull_shader_t = mge::com_unique_ptr<ID3D11HullShader>;
+        using domain_shader_t = mge::com_unique_ptr<ID3D11DomainShader>;
 
         typedef std::variant<vertex_shader_t,
                              pixel_shader_t,
@@ -41,7 +41,7 @@ namespace dx11 {
         std::string profile() const;
 
         shader_t m_shader;
-        COM_UNIQUE_PTR(ID3D10Blob) m_code;
+        mge::com_unique_ptr<ID3D10Blob> m_code;
     };
 
 

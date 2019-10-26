@@ -6,6 +6,7 @@
 #include "system_config.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "win32/com_unique_ptr.hpp"
+#include "win32/com_ptr.hpp"
 
 namespace dx12 {
     class window;
@@ -40,10 +41,15 @@ namespace dx12 {
                             IDXGIAdapter1** adapter);
         void create_command_queue();
         void create_swap_chain(IDXGIFactory4 *factory, window *win);
+        void create_descriptor_heap();
 
-        COM_PTR(ID3D12Device)       m_device;
-        COM_PTR(ID3D12CommandQueue) m_command_queue;
-        COM_PTR(IDXGISwapChain3)    m_swap_chain;
+        mge::com_ptr<ID3D12Device>         m_device;
+        mge::com_ptr<ID3D12CommandQueue>   m_command_queue;
+        mge::com_ptr<IDXGISwapChain3>      m_swap_chain;
+        mge::com_ptr<ID3D12DescriptorHeap> m_rtv_heap;
+
+        uint32_t m_frame_index;
+        uint32_t m_rtv_descriptor_size;
     };
 
 }

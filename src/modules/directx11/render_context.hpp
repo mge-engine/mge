@@ -41,12 +41,12 @@ namespace dx11 {
 
         window *m_window;
 
-        COM_UNIQUE_PTR(ID3D11Device) m_device;
-        COM_UNIQUE_PTR(ID3D11DeviceContext) m_device_context;
-        COM_UNIQUE_PTR(ID3D11Texture2D) m_depth_stencil_buffer;
-        COM_UNIQUE_PTR(ID3D11DepthStencilState) m_depth_stencil_state;
-        COM_UNIQUE_PTR(ID3D11RenderTargetView) m_render_target_view;
-        COM_UNIQUE_PTR(IDXGISwapChain) m_swap_chain;
+        mge::com_unique_ptr<ID3D11Device> m_device;
+        mge::com_unique_ptr<ID3D11DeviceContext> m_device_context;
+        mge::com_unique_ptr<ID3D11Texture2D> m_depth_stencil_buffer;
+        mge::com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state;
+        mge::com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
+        mge::com_unique_ptr<IDXGISwapChain> m_swap_chain;
     };
 
     inline ID3D11Device * dx11_device(const mge::render_context& context)

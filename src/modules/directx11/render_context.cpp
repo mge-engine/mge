@@ -68,6 +68,7 @@ namespace dx11 {
                                                    &tmp_device,
                                                    nullptr,
                                                    &tmp_device_context);
+        CHECK_HRESULT(rc, , D3D11CreateDeviceAndSwapChain);
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
         m_swap_chain.reset(tmp_swap_chain);
@@ -78,7 +79,7 @@ namespace dx11 {
         if (!tmp_back_buffer) {
             MGE_THROW(dx11::error) << "Failed to get back buffer from swap chain";
         }
-        COM_UNIQUE_PTR(ID3D11Texture2D) back_buffer;
+        mge::com_unique_ptr<ID3D11Texture2D> back_buffer;
         back_buffer.reset(tmp_back_buffer);
 
         D3D11_TEXTURE2D_DESC depth_buffer_desc = {};

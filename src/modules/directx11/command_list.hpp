@@ -22,7 +22,7 @@ namespace dx11 {
         void on_finish() override;
         void on_set_pipeline(const mge::pipeline_ref& pipeline);
     private:
-        COM_UNIQUE_PTR(ID3D11DeviceContext) m_deferred_context;
-        COM_UNIQUE_PTR(ID3D11CommandList)   m_command_list;
+        mge::com_unique_ptr<ID3D11DeviceContext> m_deferred_context;
+        mge::com_unique_ptr<ID3D11CommandList>   m_command_list;
     };
 }

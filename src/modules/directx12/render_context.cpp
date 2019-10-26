@@ -2,23 +2,26 @@
 #include "window.hpp"
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "win32/com_ptr.hpp"
 
 namespace dx12 {
 
     render_context::render_context(window *win,
                                    const system_config& config)
         : mge::render_context(win)
+        ,m_frame_index(0)
+        ,m_rtv_descriptor_size(0)
     {
         HRESULT rc = 0;
         UINT factory_flags = 0;
         if (config.debug()) {
             factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
         }
-        COM_PTR(IDXGIFactory4) factory;
+        mge::com_ptr<IDXGIFactory4> factory;
         rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
         CHECK_HRESULT(rc, ,CreateDXGIFactory2);
 
-        COM_PTR(IDXGIAdapter1) adapter;
+        mge::com_ptr<IDXGIAdapter1> adapter;
         if (config.warp()) {
             rc = factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter));
             CHECK_HRESULT(rc, IDXGIFactory4, EnumWarpAdapter);
@@ -33,6 +36,7 @@ namespace dx12 {
 
         create_command_queue();
         create_swap_chain(factory.Get(), win);
+        create_descriptor_heap();
     }
 
     void
@@ -59,7 +63,7 @@ namespace dx12 {
         desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         desc.SampleDesc.Count = 1;
 
-        COM_PTR(IDXGISwapChain1) sc;
+        mge::com_ptr<IDXGISwapChain1> sc;
         auto rc = factory->CreateSwapChainForHwnd(m_command_queue.Get(),
                                                   win->hwnd(),
                                                   &desc,
@@ -72,15 +76,28 @@ namespace dx12 {
         rc = sc.As(&m_swap_chain);
         CHECK_HRESULT(rc, , IDXGISwapChain4);
 
+        m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
 
+    }
 
+    void
+    render_context::create_descriptor_heap()
+    {
+        D3D12_DESCRIPTOR_HEAP_DESC rtv_heap_desc = {};
+
+        rtv_heap_desc.NumDescriptors = frame_count();
+        rtv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+        rtv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        auto rc = m_device->CreateDescriptorHeap(&rtv_heap_desc, IID_PPV_ARGS(&m_rtv_heap));
+        CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
+        m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
     }
 
     void
     render_context::select_adapter(IDXGIFactory4 *factory,
                                    IDXGIAdapter1 **adapter)
     {
-        COM_PTR(IDXGIAdapter1) local_adapter;
+        mge::com_ptr<IDXGIAdapter1> local_adapter;
         *adapter = nullptr;
 
         for (uint32_t i=0;

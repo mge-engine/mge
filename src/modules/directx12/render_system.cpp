@@ -9,7 +9,7 @@
 
 #include "win32/monitor.hpp"
 #include "win32/com_unique_ptr.hpp"
-
+#include "win32/com_ptr.hpp"
 
 MGE_USE_LOG(DX12);
 
@@ -53,7 +53,7 @@ namespace dx12 {
     private:
         void enable_debug_layer()
         {
-            COM_PTR(ID3D12Debug) debug_controller;
+            mge::com_ptr<ID3D12Debug> debug_controller;
             if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debug_controller)))) {
                 MGE_DEBUG_LOG(DX12) << "Enable debug layer";
                 debug_controller->EnableDebugLayer();
