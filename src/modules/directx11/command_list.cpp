@@ -57,9 +57,19 @@ namespace dx11 {
     }
 
     void
-    command_list::on_extend(const mge::command_list_ref& commands)
+    command_list::on_play(const mge::command_list_ref& commands)
     {
         MGE_THROW_NOT_IMPLEMENTED;
+    }
+
+    void
+    command_list::on_clear()
+    {
+        ID3D11CommandList *command_list;
+        auto hr = m_deferred_context->FinishCommandList(TRUE, &command_list);
+        CHECK_HRESULT(hr, ID3D11DeviceContext, FinishCommandList);
+        m_command_list.reset();
+        command_list->Release();
     }
 
 

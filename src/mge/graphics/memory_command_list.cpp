@@ -42,8 +42,15 @@ namespace mge {
     {}
 
     void
-    memory_command_list::on_extend(const command_list_ref &commands)
+    memory_command_list::on_play(const command_list_ref &commands)
     {
-        MGE_THROW_NOT_IMPLEMENTED;
+        play_command_list_data data { commands };
+        m_elements.push_back(data);
+    }
+
+    void
+    memory_command_list::on_clear()
+    {
+        m_elements.clear();
     }
 }

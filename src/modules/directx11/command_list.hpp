@@ -21,7 +21,8 @@ namespace dx11 {
     protected:
         void on_finish() override;
         void on_set_pipeline(const mge::pipeline_ref& pipeline) override;
-        void on_extend(const mge::command_list_ref& commands) override;
+        void on_play(const mge::command_list_ref& commands) override;
+        void on_clear() override;
     private:
         mge::com_unique_ptr<ID3D11DeviceContext> m_deferred_context;
         mge::com_unique_ptr<ID3D11CommandList>   m_command_list;

@@ -10,6 +10,7 @@ namespace dx12 {
     render_context::render_context(window *win,
                                    const system_config& config)
         : mge::render_context(win)
+        ,m_commands(*this)
         ,m_fence_event(0)
         ,m_fence_value(1)
         ,m_frame_index(0)
@@ -202,9 +203,20 @@ namespace dx12 {
     }
 
     void
+    render_context::materialize_commands()
+    {
+        auto rc = m_command_allocator->Reset();
+        CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+    }
+
+    void
     render_context::flush()
     {
-
+        materialize_commands();
+        ID3D12CommandList *commands[] = { m_command_list.Get() };
+        m_command_queue->ExecuteCommandLists(1, commands);
+        auto rc = m_swap_chain->Present(1, 0);
+        CHECK_HRESULT(rc, ID3D12SwapChain, Present);
         wait_for_frame();
 
     }

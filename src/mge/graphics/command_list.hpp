@@ -66,6 +66,18 @@ namespace mge {
         void set_pipeline(const pipeline_ref& pipeline);
 
         /**
+         * Play a command list within the command list.
+         * @param commands commands to play
+         */
+        void play(const command_list_ref& commands);
+
+        /**
+         * Empties the command list and brings it back to
+         * recording state.
+         */
+        void clear();
+
+        /**
          * Finishes recording of commands. The command list is immutable
          * afterwards.
          */
@@ -85,11 +97,6 @@ namespace mge {
          */
         bool finished() const noexcept { return m_finished; }
 
-        /**
-         * Add another command list.
-         * @param other the other command list
-         */
-        void extend(const command_list_ref& commands);
     protected:
         /**
          * Assert the command list can still record commands.
@@ -98,7 +105,8 @@ namespace mge {
 
         virtual void on_finish() = 0;
         virtual void on_set_pipeline(const pipeline_ref& p) = 0;
-        virtual void on_extend(const command_list_ref& commands) = 0;
+        virtual void on_play(const command_list_ref& commands) = 0;
+        virtual void on_clear() = 0;
     private:
         pipeline_ref m_current_pipeline;
         bool         m_native;

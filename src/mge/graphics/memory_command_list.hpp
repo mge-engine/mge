@@ -34,10 +34,15 @@ namespace mge {
             pipeline_ref pipeline;
         };
 
+        struct play_command_list_data {
+            command_list_ref commands;
+        };
+
         using element_type = std::variant<clear_data,
                                           clear_depth_data,
                                           clear_stencil_data,
-                                          set_pipeline_data>;
+                                          set_pipeline_data,
+                                          play_command_list_data>;
         using container_type = std::vector<element_type>;
         using const_iterator = container_type::const_iterator;
 
@@ -61,7 +66,8 @@ namespace mge {
     protected:
         void on_finish() override;
         void on_set_pipeline(const pipeline_ref& pipeline);
-        void on_extend(const command_list_ref &commands) override;
+        void on_play(const command_list_ref &commands) override;
+        void on_clear() override;
     private:
         container_type m_elements;
     };

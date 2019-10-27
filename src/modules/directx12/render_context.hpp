@@ -48,6 +48,7 @@ namespace dx12 {
         void create_graphics_command_list();
         void create_sync_objects();
         void wait_for_frame();
+        void materialize_commands();
 
         mge::com_ptr<ID3D12Device>                m_device;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
@@ -57,6 +58,7 @@ namespace dx12 {
         mge::com_ptr<ID3D12CommandAllocator>      m_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList>   m_command_list;
         mge::com_ptr<ID3D12Fence>                 m_fence;
+        mge::memory_command_list                  m_commands;
         HANDLE                                    m_fence_event;
         uint64_t                                  m_fence_value;
         uint32_t                                  m_frame_index;
