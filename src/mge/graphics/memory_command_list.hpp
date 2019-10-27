@@ -57,6 +57,7 @@ namespace mge {
          */
         ~memory_command_list() = default;
 
+        inline void clear() { mge::command_list::clear(); }
         virtual void clear(const rgba_color& c) override;
         virtual void clear_depth(float value) override;
         virtual void clear_stencil(int32_t value) override;

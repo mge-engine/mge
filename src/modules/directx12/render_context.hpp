@@ -59,7 +59,7 @@ namespace dx12 {
         mge::com_ptr<ID3D12GraphicsCommandList>   m_command_list;
         mge::com_ptr<ID3D12PipelineState>         m_pipeline_state;
         mge::com_ptr<ID3D12Fence>                 m_fence;
-        mge::memory_command_list                  m_commands;
+        std::shared_ptr<mge::memory_command_list> m_commands;
         HANDLE                                    m_fence_event;
         uint64_t                                  m_fence_value;
         uint32_t                                  m_frame_index;

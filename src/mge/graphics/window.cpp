@@ -139,13 +139,18 @@ namespace mge {
                     float interpolation)
     {
         if(m_redraw_listener) {
-            redraw_context context {
-                this,
-                display_thread,
-                render_context(),
-                interpolation
-            };
-            m_redraw_listener(context);
+            try {
+                redraw_context context {
+                    this,
+                    display_thread,
+                    render_context(),
+                    interpolation
+                };
+                m_redraw_listener(context);
+            } catch(const mge::exception& ex) {
+                MGE_DEBUG_LOG(WINDOW) << "Exception in redraw: " << ex.details();
+                m_redraw_listener = nullptr;
+            }
         }
     }
 

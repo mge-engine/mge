@@ -3,14 +3,16 @@
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/system_error.hpp"
+#include "mge/core/log.hpp"
 #include "win32/com_ptr.hpp"
+
+MGE_USE_LOG(DX12);
 
 namespace dx12 {
 
     render_context::render_context(window *win,
                                    const system_config& config)
         : mge::render_context(win)
-        ,m_commands(*this)
         ,m_fence_event(0)
         ,m_fence_value(1)
         ,m_frame_index(0)
@@ -54,7 +56,7 @@ namespace dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateFence);
         m_fence_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         if (!m_fence_event) {
-
+            MGE_THROW_CURRENT_SYSTEM_ERROR;
         }
     }
 
@@ -237,11 +239,17 @@ namespace dx12 {
     void
     render_context::flush()
     {
+        if (m_commands) {
+            m_commands->finish();
+        }
         materialize_commands();
         ID3D12CommandList *commands[] = { m_command_list.Get() };
         m_command_queue->ExecuteCommandLists(1, commands);
         auto rc = m_swap_chain->Present(1, 0);
         CHECK_HRESULT(rc, ID3D12SwapChain, Present);
+        if (m_commands) {
+            m_commands->clear();
+        }
         wait_for_frame();
 
     }
@@ -291,7 +299,10 @@ namespace dx12 {
     void
     render_context::execute(const mge::command_list_ref& commands)
     {
-        MGE_THROW_NOT_IMPLEMENTED;
+        if(!m_commands) {
+            m_commands = std::make_shared<mge::memory_command_list>(*this);
+        }
+        m_commands->play(commands);
     }
 
     mge::pipeline_ref
