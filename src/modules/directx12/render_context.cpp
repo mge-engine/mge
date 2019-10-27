@@ -207,6 +207,31 @@ namespace dx12 {
     {
         auto rc = m_command_allocator->Reset();
         CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+
+        rc = m_command_list->Reset(m_command_allocator.Get(), m_pipeline_state.Get());
+        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Type    = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        barrier.Flags   = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+        barrier.Transition.pResource    = m_render_targets[m_frame_index].Get();
+        barrier.Transition.StateBefore  = D3D12_RESOURCE_STATE_PRESENT;
+        barrier.Transition.StateAfter   = D3D12_RESOURCE_STATE_RENDER_TARGET;
+        barrier.Transition.Subresource  = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+
+        m_command_list->ResourceBarrier(1, &barrier);
+
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle = m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+        rtv_handle.ptr += m_frame_index * m_rtv_descriptor_size;
+
+        const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
+        m_command_list->ClearRenderTargetView(rtv_handle, clearColor, 0, nullptr);
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
+        barrier.Transition.StateAfter  = D3D12_RESOURCE_STATE_PRESENT;
+        m_command_list->ResourceBarrier(1, &barrier);
+
+        rc = m_command_list->Close();
+        CHECK_HRESULT(rc, ID3D12CommandList, Close);
     }
 
     void

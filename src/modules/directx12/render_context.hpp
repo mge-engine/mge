@@ -57,6 +57,7 @@ namespace dx12 {
         std::vector<mge::com_ptr<ID3D12Resource>> m_render_targets;
         mge::com_ptr<ID3D12CommandAllocator>      m_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList>   m_command_list;
+        mge::com_ptr<ID3D12PipelineState>         m_pipeline_state;
         mge::com_ptr<ID3D12Fence>                 m_fence;
         mge::memory_command_list                  m_commands;
         HANDLE                                    m_fence_event;
