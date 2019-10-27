@@ -142,6 +142,12 @@ namespace mge {
          */
         bool operator !=(const rgba_color& c) const;
 
+        /**
+         * Access color as array of floats.
+         * @return color values
+         */
+        const float *data() const noexcept { return &r; }
+
         float r; //!< red
         float g; //!< green
         float b; //!< blue

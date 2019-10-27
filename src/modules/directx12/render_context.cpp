@@ -204,6 +204,9 @@ namespace dx12 {
         m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
     }
 
+    template<class... Ts> struct visitor : Ts... { using Ts::operator()...; };
+    template<class... Ts> visitor(Ts...) -> visitor<Ts...>;
+
     void
     render_context::materialize_commands()
     {
@@ -226,8 +229,16 @@ namespace dx12 {
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle = m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
         rtv_handle.ptr += m_frame_index * m_rtv_descriptor_size;
 
-        const float clearColor[] = { 0.0f, 0.2f, 0.4f, 1.0f };
-        m_command_list->ClearRenderTargetView(rtv_handle, clearColor, 0, nullptr);
+        for(const auto& c : *m_commands) {
+            std::visit(visitor {
+                [](const auto& arg) {},
+                [&](const mge::memory_command_list::clear_data& d) {
+                    m_command_list->ClearRenderTargetView(rtv_handle, d.color.data(), 0, nullptr);
+                }
+            }, c);
+        }
+
+
         barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
         barrier.Transition.StateAfter  = D3D12_RESOURCE_STATE_PRESENT;
         m_command_list->ResourceBarrier(1, &barrier);
