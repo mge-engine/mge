@@ -8,6 +8,7 @@
 #ifdef MGE_OS_WINDOWS
 #  include "win32/monitor.hpp"
 #endif
+#include "window.hpp"
 
 MGE_USE_LOG(VULKAN);
 
@@ -41,8 +42,7 @@ namespace vulkan {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override
         {
-            mge::window_ref result;
-            return result;
+            return std::make_shared<window>(rect, options, m_config);
         }
 
         system_config m_config;

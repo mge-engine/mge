@@ -9,6 +9,7 @@
 #error missing port
 #endif
 #include "vulkan.hpp"
+#include "system_config.hpp"
 
 namespace vulkan {
 
@@ -16,9 +17,10 @@ namespace vulkan {
     {
     public:
         window(const mge::rectangle& rect,
-               const mge::window_options& options);
+               const mge::window_options& options,
+               const system_config& config);
         ~window();
     private:
-        void create_render_context();
+        void create_render_context(const system_config& config);
     };
 }
