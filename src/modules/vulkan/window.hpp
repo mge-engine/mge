@@ -8,7 +8,7 @@
 #else
 #error missing port
 #endif
-#include "vulkan.hpp"
+#include "vk/vulkan.hpp"
 #include "system_config.hpp"
 
 namespace vulkan {

@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "vulkan.hpp"
+#include "vk/vulkan.hpp"
 #include "system_config.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/core/log.hpp"
