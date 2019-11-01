@@ -4,6 +4,7 @@
 ADD_SUBDIRECTORY(vk)
 SET(mge_vulkan_module_SOURCES
     common.cpp
+    error.cpp
     render_context.cpp
     window.cpp
     render_system.cpp)

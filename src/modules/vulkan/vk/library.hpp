@@ -9,12 +9,18 @@
 
 namespace vk {
 
-    class library 
+    /**
+     * Vulkan library and entry point.
+     */
+    class library
     {
     public:
         library();
         ~library();
-        static const library_ref& instance();
+        static const library& instance();
+    private:
+        void resolve_functions();
+        mge::shared_library_ref m_library;
     };
 }
 
