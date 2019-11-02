@@ -19,7 +19,7 @@ namespace vk {
 #endif
         MGE_DEBUG_LOG(VULKAN) << "Loading vulkan library " << vulkan_library_name;
         m_library = mge::shared_library::load(vulkan_library_name);
-        resolve_functions();
+        resolve_create_instance();
     }
 
     library::~library()
@@ -33,17 +33,21 @@ namespace vk {
         void *ptr = library->symbol(name);
         target = (FPTR)ptr;
         if (target == nullptr) {
-            MGE_WARNING_LOG(VULKAN) << "Cannot resolve " << name << std::endl;
+            MGE_WARNING_LOG(VULKAN) << "Cannot resolve " << name;
+        } else {
+            MGE_DEBUG_LOG(VULKAN) << "Resolved " << name;
         }
     }
 
 
-    void library::resolve_functions()
+    void library::resolve_create_instance()
     {
-//        if(!vkCreateInstance) {
-//            MGE_ERROR_LOG(VULKAN) << "Could not resolve vkCreateInstance function, vulkan api broken!" << std::endl;
-//            MGE_THROW(::vulkan::error) << "vkCreateInstance function cannot be resolved";
-//        }
+        resolve_function(m_library, this->vkCreateInstance, "vkCreateInstance");
+        resolve_function(m_library, this->vkDestroyInstance, "vkDestroyInstance");
+        if (!this->vkCreateInstance) {
+            MGE_ERROR_LOG(VULKAN) << "Could not resolve vkCreateInstance function, vulkan api broken!" << std::endl;
+            MGE_THROW(::vulkan::error) << "vkCreateInstance function cannot be resolved";
+        }
     }
 
     const library&

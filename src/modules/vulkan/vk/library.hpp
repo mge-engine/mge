@@ -18,8 +18,11 @@ namespace vk {
         library();
         ~library();
         static const library& instance();
+        PFN_vkCreateInstance vkCreateInstance;
+        PFN_vkDestroyInstance vkDestroyInstance;
+
     private:
-        void resolve_functions();
+        void resolve_create_instance();
         mge::shared_library_ref m_library;
     };
 }
