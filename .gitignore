@@ -4,6 +4,7 @@
 
 mge.mpj
 build*/**/*
+out*/**/*
 .vscode/*
 .vs
 mge.files
