@@ -15,16 +15,32 @@ namespace vk {
     class library
     {
     public:
+        /**
+         * Constructor. Loads vulkan library and initializes
+         * functions as necessary to create and configure 
+         * an instance.
+         */
         library();
         ~library();
+
+        /** 
+         * Access loaded library.
+         * @return loaded library
+         */
         static const library& instance();
         
         PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr;
         
         PFN_vkCreateInstance vkCreateInstance;
-        PFN_vkDestroyInstance vkDestroyInstance;
+        PFN_vkEnumerateInstanceExtensionProperties vkEnumerateInstanceExtensionProperties;
 
     private:
+        template <typename FPTR>
+        bool resolve_instance_function(VkInstance instance,
+                                       FPTR& target,
+                                       const char* name);
+
+
         void resolve_get_instance_proc();
         void resolve_functions();
 

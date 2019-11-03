@@ -9,6 +9,7 @@
 #  include "win32/monitor.hpp"
 #endif
 #include "window.hpp"
+#include "vk/instance.hpp"
 
 MGE_USE_LOG(VULKAN);
 
@@ -27,6 +28,7 @@ namespace vulkan {
         void configure(const mge::configuration& config) override
         {
             m_config.configure(config);
+            create_instance();
         }
 
         monitor_collection_t monitors() const override
@@ -44,8 +46,14 @@ namespace vulkan {
         {
             return std::make_shared<window>(rect, options, m_config);
         }
+    private:
+        void create_instance()
+        {
+            m_instance = std::make_shared<vk::instance>();
+        }
 
-        system_config m_config;
+        system_config    m_config;
+        vk::instance_ref m_instance;
     };
 
     MGE_REGISTER_IMPLEMENTATION(render_system,

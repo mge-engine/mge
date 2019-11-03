@@ -3,6 +3,7 @@
 # All rights reserved.
 ADD_EXECUTABLE(vulkantest
 	test_main.cpp
+	test_window.cpp
 	vulkan_test.cpp
 )
 TARGET_LINK_LIBRARIES(vulkantest mgegraphics mgecore gmock)
