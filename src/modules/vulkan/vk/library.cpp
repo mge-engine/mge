@@ -5,6 +5,7 @@
 #include "error.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/array_size.hpp"
 
 MGE_USE_LOG(VULKAN);
 
@@ -22,6 +23,7 @@ namespace vk {
         resolve_get_instance_proc();
         resolve_functions();
         process_extensions();
+        process_validation_layers();
     }
 
     library::~library()
@@ -80,8 +82,11 @@ namespace vk {
 
         RESOLVE_FUNCTION(vkCreateInstance);
         RESOLVE_FUNCTION(vkEnumerateInstanceExtensionProperties);
+        RESOLVE_FUNCTION(vkEnumerateInstanceLayerProperties);
 
-        if (!this->vkCreateInstance||!this->vkEnumerateInstanceExtensionProperties) {
+        if (!this->vkCreateInstance
+            ||!this->vkEnumerateInstanceExtensionProperties
+            ||!this->vkEnumerateInstanceLayerProperties) {
             MGE_ERROR_LOG(VULKAN)<<"Could not resolve essential Vulkan function"<<std::endl;
             MGE_THROW(::vulkan::error)<<"Vulkan functions cannot be resolved";
         }
@@ -89,6 +94,10 @@ namespace vk {
 
     void library::process_extensions()
     {
+        const char* wanted_extensions[] = {
+            "VK_KHR_surface",
+            "VK_KHR_win32_surface"
+        };
         uint32_t count = 0;
         CHECK_VKRESULT(vkEnumerateInstanceExtensionProperties(nullptr, &count, nullptr), vkEnumerateDeviceExtensionProperties);
         MGE_DEBUG_LOG(VULKAN)<<"Found "<<count<<" extensions";
@@ -97,22 +106,39 @@ namespace vk {
                        vkEnumerateDeviceExtensionProperties);
         for (const auto& ep:m_extension_properties) {
             MGE_DEBUG_LOG(VULKAN)<<"Found extension: "<<ep.extensionName;
+            for (size_t i = 0; i<mge::array_size(wanted_extensions); ++i) {
+                if (strcmp(ep.extensionName, wanted_extensions[i])==0) {
+                    m_required_extensions.emplace_back(ep.extensionName);
+                }
+            }
         }
-            
     }
 
-    size_t library::required_extensions_count() const
+    void library::process_validation_layers()
     {
-        return 2;
+        uint32_t count = 0;
+        CHECK_VKRESULT(vkEnumerateInstanceLayerProperties(&count, nullptr), 
+                       vkEnumerateInstanceLayerProperties);
+        m_layer_properties.resize(count);
+        CHECK_VKRESULT(vkEnumerateInstanceLayerProperties(&count, m_layer_properties.data()), 
+                                                          vkEnumerateInstanceLayerProperties);
+        MGE_DEBUG_LOG(VULKAN)<<"Found "<<count<<" layers";
+        for (const auto& l:m_layer_properties) {
+            MGE_DEBUG_LOG(VULKAN)<<"Layer: "<<l.layerName;
+            MGE_DEBUG_LOG(VULKAN)<<"Description: "<<l.description;
+            m_layers.emplace_back(l.layerName);
+        }
+        
     }
 
-    const char** library::required_extensions() const
+    const std::vector<const char *>& library::required_extensions() const
     {
-        const char* extensions[] = {
-            "VK_KHR_surface",
-            "VK_KHR_win32_surface"
-        };
-        return extensions;
+        return m_required_extensions;
+    }
+
+    const std::vector<const char*>& library::layers() const
+    {
+        return m_layers;
     }
 
     const library&

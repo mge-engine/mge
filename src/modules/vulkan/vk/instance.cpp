@@ -4,9 +4,12 @@
 
 namespace vk {
 
-    instance::instance()
+    instance::instance(bool debug)
         : m_vk_instance(0)
+        , m_debug(debug)
     {
+        const auto& required_extensions = library::instance().required_extensions();
+
         VkApplicationInfo app_info = {};
         app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
         app_info.pApplicationName = "";
@@ -17,8 +20,8 @@ namespace vk {
         VkInstanceCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         create_info.pApplicationInfo = &app_info;
-        create_info.enabledExtensionCount = library::instance().required_extensions_count();
-        create_info.ppEnabledExtensionNames = library::instance().required_extensions();
+        create_info.enabledExtensionCount = static_cast<uint32_t>(required_extensions.size());
+        create_info.ppEnabledExtensionNames = required_extensions.data();
         create_info.enabledLayerCount = 0;
 
         library::instance().vkCreateInstance(&create_info, nullptr /*allocation callback*/, &m_vk_instance);

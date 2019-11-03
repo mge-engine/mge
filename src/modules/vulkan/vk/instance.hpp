@@ -6,7 +6,7 @@ namespace vk {
     class instance
     {
     public:
-        instance();
+        instance(bool debug);
         ~instance();
 
         PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr;
@@ -19,6 +19,7 @@ namespace vk {
         void resolve_instance_functions();
 
         VkInstance m_vk_instance;
+        bool       m_debug;
     };
 
 }

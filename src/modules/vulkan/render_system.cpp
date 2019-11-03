@@ -49,7 +49,7 @@ namespace vulkan {
     private:
         void create_instance()
         {
-            m_instance = std::make_shared<vk::instance>();
+            m_instance = std::make_shared<vk::instance>(m_config.debug());
         }
 
         system_config    m_config;

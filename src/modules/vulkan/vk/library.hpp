@@ -33,9 +33,10 @@ namespace vk {
         
         PFN_vkCreateInstance vkCreateInstance;
         PFN_vkEnumerateInstanceExtensionProperties vkEnumerateInstanceExtensionProperties;
-        
-        const char** required_extensions() const;
-        size_t required_extensions_count() const;
+        PFN_vkEnumerateInstanceLayerProperties vkEnumerateInstanceLayerProperties;
+
+        const std::vector<const char*>& required_extensions() const;
+        const std::vector<const char*>& layers() const;
     private:
         template <typename FPTR>
         bool resolve_instance_function(VkInstance instance,
@@ -46,9 +47,13 @@ namespace vk {
         void resolve_get_instance_proc();
         void resolve_functions();
         void process_extensions();
+        void process_validation_layers();
 
         mge::shared_library_ref m_library;
         std::vector<VkExtensionProperties> m_extension_properties;
+        std::vector<const char*> m_required_extensions;
+        std::vector<VkLayerProperties> m_layer_properties;
+        std::vector<const char*> m_layers;
     };
 }
 
