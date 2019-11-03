@@ -19,7 +19,7 @@ namespace vk {
 #endif
         MGE_DEBUG_LOG(VULKAN) << "Loading vulkan library " << vulkan_library_name;
         m_library = mge::shared_library::load(vulkan_library_name);
-        resolve_create_instance();
+        resolve_get_instance_proc();
     }
 
     library::~library()
@@ -39,8 +39,17 @@ namespace vk {
         }
     }
 
+    void library::resolve_get_instance_proc()
+    {
+        resolve_function(m_library, this->vkGetInstanceProcAddr, "vkGetInstanceProcAddr");
+        if (!this->vkGetInstanceProcAddr) {
+            MGE_ERROR_LOG(VULKAN) << "Could not resolve vkGetInstanceProcAddr function, Vulkan library is not usable";
+            MGE_THROW(::vulkan::error) << "vkGetInstanceProcAddr function cannot be resolved";
+        }
+    }
 
-    void library::resolve_create_instance()
+
+    void library::resolve_functions()
     {
         resolve_function(m_library, this->vkCreateInstance, "vkCreateInstance");
         resolve_function(m_library, this->vkDestroyInstance, "vkDestroyInstance");

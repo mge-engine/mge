@@ -8,6 +8,8 @@ namespace vk {
     public:
         instance();
         ~instance();
+    private:
+        VkInstance m_vk_instance;
     };
 
 }
