@@ -33,7 +33,9 @@ namespace vk {
         
         PFN_vkCreateInstance vkCreateInstance;
         PFN_vkEnumerateInstanceExtensionProperties vkEnumerateInstanceExtensionProperties;
-
+        
+        const char** required_extensions() const;
+        size_t required_extensions_count() const;
     private:
         template <typename FPTR>
         bool resolve_instance_function(VkInstance instance,
@@ -43,8 +45,10 @@ namespace vk {
 
         void resolve_get_instance_proc();
         void resolve_functions();
+        void process_extensions();
 
         mge::shared_library_ref m_library;
+        std::vector<VkExtensionProperties> m_extension_properties;
     };
 }
 

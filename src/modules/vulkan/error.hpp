@@ -4,6 +4,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/exception.hpp"
+#include "vk/vulkan.hpp"
+
 namespace vulkan {
     class error : public mge::exception
     {
@@ -28,6 +30,10 @@ namespace vulkan {
             mge::exception::operator <<(value);
             return *this;
         }
+
+        static void check_vkresult(VkResult rc, const char* file, int line, const char* function);
+    private:
+        error& set_info_from_vkresult(VkResult rc, const char* file, int line, const char* function);
     };
 }
-
+#define CHECK_VKRESULT(rc, function) ::vulkan::error::check_vkresult(rc, __FILE__, __LINE__, #function)
