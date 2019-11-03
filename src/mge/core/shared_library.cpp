@@ -78,6 +78,8 @@ namespace mge {
     shared_library::symbol(const char *name)
     {
 #ifdef MGE_OS_WINDOWS
+        // GetProcAddress does not clear the last error on success        
+        SetLastError(0);
         void *result = (void *)GetProcAddress((HMODULE)m_handle, name);
         auto rc = GetLastError();
         if(!result || rc) {
