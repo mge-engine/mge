@@ -13,14 +13,19 @@
 
 namespace vulkan {
 
+    class render_system;
+
     class window : public platform::window
     {
     public:
-        window(const mge::rectangle& rect,
+        window(render_system& s,
+               const mge::rectangle& rect,
                const mge::window_options& options,
                const system_config& config);
         ~window();
     private:
         void create_render_context(const system_config& config);
+
+        render_system& m_render_system;
     };
 }
