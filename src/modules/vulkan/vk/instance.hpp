@@ -14,6 +14,7 @@ namespace vk {
         PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr;
         PFN_vkDestroyInstance vkDestroyInstance;
         PFN_vkCreateDebugUtilsMessengerEXT vkCreateDebugUtilsMessengerEXT;
+        PFN_vkDestroyDebugUtilsMessengerEXT vkDestroyDebugUtilsMessengerEXT;
     private:
         template <typename PFN>
         bool resolve_function(PFN& fptr, const char* name);

@@ -45,6 +45,12 @@ namespace vk {
 
     instance::~instance()
     {
+        if (m_debug_utils_found && vkDestroyDebugUtilsMessengerEXT && m_vk_debug_utils_messenger) {
+            vkDestroyDebugUtilsMessengerEXT(m_vk_instance,
+                                            m_vk_debug_utils_messenger,
+                                            nullptr /* allocation callback */);
+        }
+
         if (m_vk_instance && vkDestroyInstance) {
             vkDestroyInstance(m_vk_instance, nullptr /* allocation callback */);
         }
@@ -73,6 +79,7 @@ namespace vk {
         RESOLVE_FUNCTION(vkDestroyInstance);
         if (m_debug_utils_found) {
             RESOLVE_FUNCTION(vkCreateDebugUtilsMessengerEXT);
+            RESOLVE_FUNCTION(vkDestroyDebugUtilsMessengerEXT);
         }
     }
 
