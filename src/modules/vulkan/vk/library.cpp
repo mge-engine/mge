@@ -106,6 +106,7 @@ namespace vk {
                        vkEnumerateDeviceExtensionProperties);
         for (const auto& ep:m_extension_properties) {
             MGE_DEBUG_LOG(VULKAN)<<"Found extension: "<<ep.extensionName;
+            m_extensions.push_back(ep.extensionName);
             for (size_t i = 0; i<mge::array_size(wanted_extensions); ++i) {
                 if (strcmp(ep.extensionName, wanted_extensions[i])==0) {
                     m_required_extensions.emplace_back(ep.extensionName);
@@ -139,6 +140,11 @@ namespace vk {
     const std::vector<const char*>& library::layers() const
     {
         return m_layers;
+    }
+
+    const std::vector<const char*>& library::extensions() const
+    {
+        return m_extensions;
     }
 
     const library&
