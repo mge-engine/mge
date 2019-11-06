@@ -115,12 +115,79 @@ namespace vk {
         }
     }
 
+    namespace {
+        static std::ostream& operator <<(std::ostream& os, const VkDebugUtilsMessageSeverityFlagBitsEXT s)
+        {
+            bool first = true;
+            os << "(";
+            if (s & VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+                os << "V";
+                first = false;
+            }
+            if (s & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+                if (first) {
+                    os << "I";
+                    first = false;
+                } else {
+                    os << ", I";
+                }
+            }
+            if (s & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+                if (first) {
+                    os << "W"; 
+                    first = false;
+                } else {
+                    os << ", W";
+                }
+            }
+            if (s & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+                if (first) {
+                    os << "E";
+                } else {
+                    os << ", E";
+                }
+            }
+            os << ")";
+            return os;
+        }
+
+        static std::ostream& operator <<(std::ostream& os, const VkDebugUtilsMessageTypeFlagBitsEXT& t)
+        {
+            bool first = true;
+            os << "<";
+            if (t & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT) {
+                os << "G"; 
+                first = false;
+            }
+            if (t & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT) {
+                if (first) {
+                    os << "V";
+                    first = false;
+                } else {
+                    os << ", V";
+                }
+            }
+            if (t & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT) {
+                if (first) {
+                    os << "P";
+                } else {
+                    os << ", P";
+                }
+            }
+            return os << ">";
+        }
+    }
+
     static VkBool32 VKAPI_PTR debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                              VkDebugUtilsMessageTypeFlagsEXT messageTypes,
                                              const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                              void* pUserData)
     {
-        MGE_DEBUG_LOG(VULKAN) << pCallbackData->pMessage;
+        MGE_DEBUG_LOG(VULKAN) 
+            << messageSeverity << " "
+            << (VkDebugUtilsMessageTypeFlagBitsEXT)messageTypes << ": "
+            << pCallbackData->pMessage;
+
         return VK_FALSE;
     }
 
