@@ -5,7 +5,7 @@
 
 namespace vk {
 
-    class instance
+    class instance : public std::enable_shared_from_this<instance>
     {
     public:
         instance(const vulkan::system_config& config);
@@ -13,8 +13,13 @@ namespace vk {
 
         PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr;
         PFN_vkDestroyInstance vkDestroyInstance;
+        PFN_vkGetDeviceProcAddr vkGetDeviceProcAddr;
+
+        PFN_vkEnumeratePhysicalDevices vkEnumeratePhysicalDevices;
+        
         PFN_vkCreateDebugUtilsMessengerEXT vkCreateDebugUtilsMessengerEXT;
         PFN_vkDestroyDebugUtilsMessengerEXT vkDestroyDebugUtilsMessengerEXT;
+
     private:
         template <typename PFN>
         bool resolve_function(PFN& fptr, const char* name);

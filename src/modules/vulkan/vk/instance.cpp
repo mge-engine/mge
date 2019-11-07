@@ -77,6 +77,9 @@ namespace vk {
     } while (false)
 
         RESOLVE_FUNCTION(vkDestroyInstance);
+        RESOLVE_FUNCTION(vkGetDeviceProcAddr);
+        RESOLVE_FUNCTION(vkEnumeratePhysicalDevices);
+
         if (m_debug_utils_found) {
             RESOLVE_FUNCTION(vkCreateDebugUtilsMessengerEXT);
             RESOLVE_FUNCTION(vkDestroyDebugUtilsMessengerEXT);

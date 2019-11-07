@@ -6,4 +6,5 @@
 namespace vk {
     class library;
     MGE_DECLARE_REF(instance);
+    MGE_DECLARE_REF(physical_device);
 }
