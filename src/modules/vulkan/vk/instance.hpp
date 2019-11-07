@@ -41,6 +41,7 @@ namespace vk {
             VkPhysicalDeviceProperties properties;
             VkPhysicalDeviceFeatures   features;
             std::vector<VkQueueFamilyProperties> queue_families;
+            uint32_t                   graphics_queue_family_index;
         };
 
         VkInstance                        m_vk_instance;

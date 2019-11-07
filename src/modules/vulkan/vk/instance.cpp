@@ -248,6 +248,14 @@ namespace vk {
             MGE_DEBUG_LOG(VULKAN) << "Physical device has " << queue_family_count << " queue families";
             m_physical_devices[i].queue_families.resize(queue_family_count);
             vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queue_family_count, m_physical_devices[i].queue_families.data());
+            m_physical_devices[i].graphics_queue_family_index = queue_family_count;
+            for (uint32_t q = 0; q < queue_family_count; ++q) {
+                if (m_physical_devices[i].queue_families[q].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                    m_physical_devices[i].graphics_queue_family_index = q;
+                    MGE_DEBUG_LOG(VULKAN) << "Graphics queue family index is " << q;
+                    break;
+                }
+            }
 
         }
     }
@@ -268,7 +276,6 @@ namespace vk {
 
     bool instance::physical_device_suitable(size_t index) 
     {
-        
         return true;
     }
 
