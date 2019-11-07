@@ -40,6 +40,7 @@ namespace vk {
             VkPhysicalDevice           device;
             VkPhysicalDeviceProperties properties;
             VkPhysicalDeviceFeatures   features;
+            std::vector<VkQueueFamilyProperties> queue_families;
         };
 
         VkInstance                        m_vk_instance;

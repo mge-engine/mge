@@ -238,9 +238,17 @@ namespace vk {
         CHECK_VKRESULT(vkEnumeratePhysicalDevices(m_vk_instance, &count, devices.data()), vkEnumeratePhysicalDevices);
         MGE_DEBUG_LOG(VULKAN) << "Found " << count << " physical devices";
         for (uint32_t i = 0; i < count; ++i) {
+            
             m_physical_devices[i].device = devices[i];
             vkGetPhysicalDeviceFeatures(devices[i], &m_physical_devices[i].features);
             vkGetPhysicalDeviceProperties(devices[i], &m_physical_devices[i].properties);
+            MGE_DEBUG_LOG(VULKAN) << "Physical device: " << m_physical_devices[i].properties.deviceName;
+            uint32_t queue_family_count = 0;
+            vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queue_family_count, nullptr);
+            MGE_DEBUG_LOG(VULKAN) << "Physical device has " << queue_family_count << " queue families";
+            m_physical_devices[i].queue_families.resize(queue_family_count);
+            vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queue_family_count, m_physical_devices[i].queue_families.data());
+
         }
     }
 
@@ -260,7 +268,7 @@ namespace vk {
 
     bool instance::physical_device_suitable(size_t index) 
     {
-        MGE_DEBUG_LOG(VULKAN) << "Physical device: " << m_physical_devices[index].properties.deviceName;
+        
         return true;
     }
 
