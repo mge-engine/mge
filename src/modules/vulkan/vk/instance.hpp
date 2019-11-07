@@ -35,15 +35,20 @@ namespace vk {
         void select_physical_device();
         bool physical_device_suitable(size_t index);
 
-        VkInstance                    m_vk_instance;
-        VkDebugUtilsMessengerEXT      m_vk_debug_utils_messenger;
-        std::vector<VkPhysicalDevice> m_physical_devices;
-        std::vector<const char*>      m_enabled_layers;
-        size_t                        m_physical_device_index;
-        VkPhysicalDeviceProperties    m_physical_device_properties;
-        VkPhysicalDeviceFeatures      m_physical_device_features;
-        bool                          m_debug;
-        bool                          m_debug_utils_found;
+        struct physical_device_info
+        {
+            VkPhysicalDevice           device;
+            VkPhysicalDeviceProperties properties;
+            VkPhysicalDeviceFeatures   features;
+        };
+
+        VkInstance                        m_vk_instance;
+        VkDebugUtilsMessengerEXT          m_vk_debug_utils_messenger;
+        std::vector<physical_device_info> m_physical_devices;
+        std::vector<const char*>          m_enabled_layers;
+        size_t                            m_physical_device_index;
+        bool                              m_debug;
+        bool                              m_debug_utils_found;
         
         
     };

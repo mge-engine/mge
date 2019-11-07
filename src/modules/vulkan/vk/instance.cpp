@@ -18,9 +18,6 @@ namespace vk {
         , m_debug(config.debug())
         , m_debug_utils_found(false)
     {
-        m_physical_device_features = {};
-        m_physical_device_properties = {};
-
         auto required_extensions = library::instance().required_extensions();
         compute_extensions(required_extensions, config);
         compute_enabled_layers(config);
@@ -237,8 +234,14 @@ namespace vk {
             MGE_THROW(vulkan::error) << "Found 0 physical devices, cannot initialize Vulkan";
         }
         m_physical_devices.resize(count);
-        CHECK_VKRESULT(vkEnumeratePhysicalDevices(m_vk_instance, &count, m_physical_devices.data()), vkEnumeratePhysicalDevices);
+        std::vector<VkPhysicalDevice> devices(count);
+        CHECK_VKRESULT(vkEnumeratePhysicalDevices(m_vk_instance, &count, devices.data()), vkEnumeratePhysicalDevices);
         MGE_DEBUG_LOG(VULKAN) << "Found " << count << " physical devices";
+        for (uint32_t i = 0; i < count; ++i) {
+            m_physical_devices[i].device = devices[i];
+            vkGetPhysicalDeviceFeatures(devices[i], &m_physical_devices[i].features);
+            vkGetPhysicalDeviceProperties(devices[i], &m_physical_devices[i].properties);
+        }
     }
 
     void instance::select_physical_device()
@@ -257,16 +260,7 @@ namespace vk {
 
     bool instance::physical_device_suitable(size_t index) 
     {
-        VkPhysicalDeviceFeatures features = {};
-        VkPhysicalDeviceProperties properties = {};
-
-        vkGetPhysicalDeviceFeatures(m_physical_devices[index], &features);
-        vkGetPhysicalDeviceProperties(m_physical_devices[index], &properties);
-
-
-        MGE_DEBUG_LOG(VULKAN) << "Physical device: " << properties.deviceName;
-        m_physical_device_features   = features;
-        m_physical_device_properties = properties;
+        MGE_DEBUG_LOG(VULKAN) << "Physical device: " << m_physical_devices[index].properties.deviceName;
         return true;
     }
 
