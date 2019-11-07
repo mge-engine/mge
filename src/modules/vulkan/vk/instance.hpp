@@ -16,7 +16,10 @@ namespace vk {
         PFN_vkGetDeviceProcAddr vkGetDeviceProcAddr;
 
         PFN_vkEnumeratePhysicalDevices vkEnumeratePhysicalDevices;
-        
+        PFN_vkGetPhysicalDeviceProperties vkGetPhysicalDeviceProperties;
+        PFN_vkGetPhysicalDeviceFeatures vkGetPhysicalDeviceFeatures;
+        PFN_vkGetPhysicalDeviceQueueFamilyProperties vkGetPhysicalDeviceQueueFamilyProperties;
+
         PFN_vkCreateDebugUtilsMessengerEXT vkCreateDebugUtilsMessengerEXT;
         PFN_vkDestroyDebugUtilsMessengerEXT vkDestroyDebugUtilsMessengerEXT;
 
@@ -28,12 +31,17 @@ namespace vk {
         void compute_extensions(std::vector<const char*>& extensions, const vulkan::system_config& config);
         void compute_enabled_layers(const vulkan::system_config& config);
         void setup_debug_callback();
+        void fetch_physical_devices();
+        void select_physical_device();
+        bool physical_device_suitable(size_t index) const;
 
-        VkInstance               m_vk_instance;
-        VkDebugUtilsMessengerEXT m_vk_debug_utils_messenger;
-        std::vector<const char*> m_enabled_layers;
-        bool                     m_debug;
-        bool                     m_debug_utils_found;
+        VkInstance                    m_vk_instance;
+        VkDebugUtilsMessengerEXT      m_vk_debug_utils_messenger;
+        std::vector<VkPhysicalDevice> m_physical_devices;
+        std::vector<const char*>      m_enabled_layers;
+        size_t                        m_physical_device_index;
+        bool                          m_debug;
+        bool                          m_debug_utils_found;
         
         
     };

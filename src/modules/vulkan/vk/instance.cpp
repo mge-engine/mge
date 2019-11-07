@@ -3,12 +3,18 @@
 #include "error.hpp"
 #include "mge/core/log.hpp"
 
+#ifdef max
+#  undef max
+#endif
+#include <limits>
+
 MGE_USE_LOG(VULKAN);
 
 namespace vk {
 
     instance::instance(const vulkan::system_config& config)
         :m_vk_instance(0)
+        , m_physical_device_index(std::numeric_limits<size_t>::max())
         , m_debug(config.debug())
         , m_debug_utils_found(false)
     {
@@ -41,6 +47,8 @@ namespace vk {
         if (m_debug_utils_found) {
             setup_debug_callback();
         }
+        fetch_physical_devices();
+        select_physical_device();
     }
 
     instance::~instance()
@@ -79,6 +87,9 @@ namespace vk {
         RESOLVE_FUNCTION(vkDestroyInstance);
         RESOLVE_FUNCTION(vkGetDeviceProcAddr);
         RESOLVE_FUNCTION(vkEnumeratePhysicalDevices);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceProperties);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceFeatures);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties);
 
         if (m_debug_utils_found) {
             RESOLVE_FUNCTION(vkCreateDebugUtilsMessengerEXT);
@@ -213,6 +224,44 @@ namespace vk {
         CHECK_VKRESULT(vkCreateDebugUtilsMessengerEXT(m_vk_instance, &create_info, nullptr, &m_vk_debug_utils_messenger),
                        vkCreateDebugUtilsMessengerEXT);
     }
+
+    void instance::fetch_physical_devices()
+    {
+        MGE_DEBUG_LOG(VULKAN) << "Fetching physical devices";
+        uint32_t count = 0;
+        CHECK_VKRESULT(vkEnumeratePhysicalDevices(m_vk_instance, &count, nullptr), vkEnumeratePhysicalDevices);
+        if (count == 0) {
+            MGE_THROW(vulkan::error) << "Found 0 physical devices, cannot initialize Vulkan";
+        }
+        m_physical_devices.resize(count);
+        CHECK_VKRESULT(vkEnumeratePhysicalDevices(m_vk_instance, &count, m_physical_devices.data()), vkEnumeratePhysicalDevices);
+    }
+
+    void instance::select_physical_device()
+    {
+        for (size_t i = 0; i < m_physical_devices.size(); ++i) {
+            if (physical_device_suitable(i)) {
+                m_physical_device_index = i;
+                break;
+            }
+        }
+
+        if (m_physical_device_index > m_physical_devices.size()) {
+            MGE_THROW(vulkan::error) << "No suitable physical device found";
+        }
+    }
+
+    bool instance::physical_device_suitable(size_t index) const
+    {
+        VkPhysicalDeviceFeatures features = {};
+        VkPhysicalDeviceProperties properties = {};
+
+        vkGetPhysicalDeviceFeatures(m_physical_devices[index], &features);
+        vkGetPhysicalDeviceProperties(m_physical_devices[index], &properties);
+
+        return true;
+    }
+
 
 
 }
