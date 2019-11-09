@@ -34,5 +34,6 @@ namespace vulkan {
 
     private:
         vk::surface_ref m_surface;
+        uint32_t        m_present_queue_family;
     };
 }

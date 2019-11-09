@@ -27,11 +27,14 @@ namespace vk {
         PFN_vkCreateWin32SurfaceKHR vkCreateWin32SurfaceKHR;
 #endif
         PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
+        PFN_vkGetPhysicalDeviceSurfaceSupportKHR vkGetPhysicalDeviceSurfaceSupportKHR;
 
         VkInstance vk_instance() const noexcept
         {
             return m_vk_instance;
         }
+
+        uint32_t present_queue_family_index(VkSurfaceKHR surface);
 
     private:
         template <typename PFN>

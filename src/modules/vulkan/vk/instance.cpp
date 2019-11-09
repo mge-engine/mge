@@ -91,6 +91,7 @@ namespace vk {
         RESOLVE_FUNCTION(vkGetPhysicalDeviceFeatures);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties);
         RESOLVE_FUNCTION(vkDestroySurfaceKHR);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
 #ifdef MGE_OS_WINDOWS
         RESOLVE_FUNCTION(vkCreateWin32SurfaceKHR);
 #endif
@@ -265,6 +266,25 @@ namespace vk {
             }
 
         }
+    }
+
+    uint32_t instance::present_queue_family_index(VkSurfaceKHR surface)
+    {
+        VkBool32 supported = 0;
+        const auto& di = m_physical_devices[m_physical_device_index];
+
+        for (uint32_t q = 0; q < di.queue_families.size(); ++q) {
+            auto rc = vkGetPhysicalDeviceSurfaceSupportKHR(di.device,
+                                                           q,
+                                                           surface,
+                                                           &supported);
+            CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfaceSupportKHR);
+            if (supported) {
+                return q;
+            }
+        }
+
+        MGE_THROW(vulkan::error) << "No queue family with present support found";
     }
 
     void instance::select_physical_device()

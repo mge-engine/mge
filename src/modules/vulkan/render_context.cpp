@@ -16,6 +16,7 @@ namespace vulkan {
         MGE_DEBUG_LOG(VULKAN) << "Create render context";
         m_surface = std::make_shared<vk::surface>(system.instance(),
                                                   win->hwnd());
+        m_present_queue_family = system.instance()->present_queue_family_index(m_surface->vk_surface());
     }
 
     render_context::~render_context()
