@@ -1,11 +1,22 @@
 #include "render_context.hpp"
+#include "render_system.hpp"
 #include "window.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/log.hpp"
+
+MGE_USE_LOG(VULKAN);
+
 namespace vulkan {
 
-    render_context::render_context(window *win, const system_config &config)
+    render_context::render_context(window *win, 
+                                   render_system& system,
+                                   const system_config &config)
         : mge::render_context(win)
-    {}
+    {
+        MGE_DEBUG_LOG(VULKAN) << "Create render context";
+        m_surface = std::make_shared<vk::surface>(system.instance(),
+                                                  win->hwnd());
+    }
 
     render_context::~render_context()
     {}

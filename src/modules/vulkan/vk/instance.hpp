@@ -1,4 +1,5 @@
 #pragma once
+#include "mge/config.hpp"
 #include "vulkan.hpp"
 #include "vk_fwd.hpp"
 #include "system_config.hpp"
@@ -22,6 +23,15 @@ namespace vk {
 
         PFN_vkCreateDebugUtilsMessengerEXT vkCreateDebugUtilsMessengerEXT;
         PFN_vkDestroyDebugUtilsMessengerEXT vkDestroyDebugUtilsMessengerEXT;
+#ifdef MGE_OS_WINDOWS
+        PFN_vkCreateWin32SurfaceKHR vkCreateWin32SurfaceKHR;
+#endif
+        PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
+
+        VkInstance vk_instance() const noexcept
+        {
+            return m_vk_instance;
+        }
 
     private:
         template <typename PFN>
@@ -42,6 +52,7 @@ namespace vk {
             VkPhysicalDeviceFeatures   features;
             std::vector<VkQueueFamilyProperties> queue_families;
             uint32_t                   graphics_queue_family_index;
+            uint32_t                   compute_queue_family_index;
         };
 
         VkInstance                        m_vk_instance;

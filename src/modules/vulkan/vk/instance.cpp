@@ -90,7 +90,10 @@ namespace vk {
         RESOLVE_FUNCTION(vkGetPhysicalDeviceProperties);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceFeatures);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties);
-
+        RESOLVE_FUNCTION(vkDestroySurfaceKHR);
+#ifdef MGE_OS_WINDOWS
+        RESOLVE_FUNCTION(vkCreateWin32SurfaceKHR);
+#endif
         if (m_debug_utils_found) {
             RESOLVE_FUNCTION(vkCreateDebugUtilsMessengerEXT);
             RESOLVE_FUNCTION(vkDestroyDebugUtilsMessengerEXT);
@@ -253,6 +256,10 @@ namespace vk {
                 if (m_physical_devices[i].queue_families[q].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
                     m_physical_devices[i].graphics_queue_family_index = q;
                     MGE_DEBUG_LOG(VULKAN) << "Graphics queue family index is " << q;
+                    break;
+                } else if (m_physical_devices[i].queue_families[q].queueFlags & VK_QUEUE_COMPUTE_BIT) {
+                    m_physical_devices[i].compute_queue_family_index = q;
+                    MGE_DEBUG_LOG(VULKAN) << "Compute queue family index is " << q;
                     break;
                 }
             }

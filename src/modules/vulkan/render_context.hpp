@@ -1,14 +1,17 @@
 #pragma once
 #include "mge/graphics/render_context.hpp"
 #include "system_config.hpp"
+#include "vk/surface.hpp"
 
 namespace vulkan {
     class window;
+    class render_system;
 
     class render_context : public mge::render_context
     {
     public:
         render_context(window *win,
+                       render_system& system,
                        const system_config& config);
         ~render_context();
 
@@ -28,5 +31,8 @@ namespace vulkan {
         mge::command_list_ref create_command_list() override;
         void execute(const mge::command_list_ref& commands) override;
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
+
+    private:
+        vk::surface_ref m_surface;
     };
 }
