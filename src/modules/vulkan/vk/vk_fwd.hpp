@@ -7,4 +7,5 @@ namespace vk {
     class library;
     MGE_DECLARE_REF(instance);
     MGE_DECLARE_REF(surface);
+    MGE_DECLARE_REF(device);
 }

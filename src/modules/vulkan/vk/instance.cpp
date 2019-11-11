@@ -68,10 +68,14 @@ namespace vk {
     bool instance::resolve_function(PFN& fptr, const char* name)
     {
         auto f = vkGetInstanceProcAddr(m_vk_instance, name);
-#pragma warning(push)
-#pragma warning(disable : 4191)
+#ifdef MGE_COMPILER_MSVC
+#  pragma warning(push)
+#  pragma warning(disable : 4191)
+#endif
         fptr = reinterpret_cast<PFN>(f);
-#pragma warning (pop)
+#ifdef MGE_COMPILER_MSVC
+#  pragma warning (pop)
+#endif
         return fptr != nullptr;
     }
 
@@ -92,6 +96,7 @@ namespace vk {
         RESOLVE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties);
         RESOLVE_FUNCTION(vkDestroySurfaceKHR);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
+        RESOLVE_FUNCTION(vkCreateDevice);
 #ifdef MGE_OS_WINDOWS
         RESOLVE_FUNCTION(vkCreateWin32SurfaceKHR);
 #endif
@@ -111,6 +116,11 @@ namespace vk {
                 }
             }
         }
+    }
+
+    VkPhysicalDevice instance::physical_device() const
+    {
+        return m_physical_devices[m_physical_device_index].device;
     }
 
     void instance::compute_enabled_layers(const vulkan::system_config& config)
@@ -285,6 +295,16 @@ namespace vk {
         }
 
         MGE_THROW(vulkan::error) << "No queue family with present support found";
+    }
+
+    uint32_t instance::graphics_queue_family_index() const
+    {
+        return m_physical_devices[m_physical_device_index].graphics_queue_family_index;
+    }
+
+    const std::vector<const char*>& instance::enabled_layers() const
+    {
+        return m_enabled_layers;
     }
 
     void instance::select_physical_device()

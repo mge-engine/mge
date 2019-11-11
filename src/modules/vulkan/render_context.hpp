@@ -2,6 +2,7 @@
 #include "mge/graphics/render_context.hpp"
 #include "system_config.hpp"
 #include "vk/surface.hpp"
+#include "vk/device.hpp"
 
 namespace vulkan {
     class window;
@@ -34,6 +35,7 @@ namespace vulkan {
 
     private:
         vk::surface_ref m_surface;
+        vk::device_ref  m_device;
         uint32_t        m_present_queue_family;
     };
 }

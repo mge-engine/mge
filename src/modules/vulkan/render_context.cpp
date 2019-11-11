@@ -17,6 +17,7 @@ namespace vulkan {
         m_surface = std::make_shared<vk::surface>(system.instance(),
                                                   win->hwnd());
         m_present_queue_family = system.instance()->present_queue_family_index(m_surface->vk_surface());
+        m_device = std::make_shared<vk::device>(system.instance());
     }
 
     render_context::~render_context()

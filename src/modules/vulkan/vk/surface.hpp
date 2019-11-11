@@ -15,6 +15,11 @@ namespace vk {
         surface(const instance_ref& instance, HWND hwnd);
 #endif
         ~surface();
+
+        VkSurfaceKHR vk_surface() const noexcept
+        {
+            return m_vk_surface; 
+        }
     private:
         instance_ref m_instance;
 #ifdef MGE_OS_WINDOWS
