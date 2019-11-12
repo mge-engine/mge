@@ -21,13 +21,17 @@ namespace vk {
         {
             return m_vk_surface; 
         }
+
     private:
+        void choose_surface_format();
+
         instance_ref m_instance;
 #ifdef MGE_OS_WINDOWS
         VkSurfaceKHR m_vk_surface;
 #endif
-        VkSurfaceCapabilitiesKHR m_capabilities;
+        VkSurfaceCapabilitiesKHR        m_capabilities;
         std::vector<VkSurfaceFormatKHR> m_formats;
-        std::vector<VkPresentModeKHR> m_present_modes;
+        std::vector<VkPresentModeKHR>   m_present_modes;
+        uint32_t                        m_format_index;
     };
 }

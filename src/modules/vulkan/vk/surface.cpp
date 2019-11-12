@@ -55,6 +55,8 @@ namespace vk {
             CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfacePresentModesKHR);
         }
 
+        choose_surface_format();
+
     }
 
     surface::~surface()
@@ -64,6 +66,18 @@ namespace vk {
                                             m_vk_surface,
                                             nullptr /* allocator */);
         }
+    }
+
+    void surface::choose_surface_format()
+    {
+        for (uint32_t i = 0; i < m_formats.size(); ++i) {
+            if (m_formats[i].format == VK_FORMAT_B8G8R8A8_UNORM && m_formats[i].colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+                m_format_index = i;
+                return;
+            }
+        }
+
+        MGE_THROW(vulkan::error) << "Found no suitable surface format";
     }
 
 }
