@@ -2,6 +2,7 @@
 #include "mge/core/types.hpp"
 #include "vulkan.hpp"
 #include "vk_fwd.hpp"
+#include <vector>
 
 namespace vk {
 
@@ -26,5 +27,7 @@ namespace vk {
         VkSurfaceKHR m_vk_surface;
 #endif
         VkSurfaceCapabilitiesKHR m_capabilities;
+        std::vector<VkSurfaceFormatKHR> m_formats;
+        std::vector<VkPresentModeKHR> m_present_modes;
     };
 }

@@ -20,9 +20,40 @@ namespace vk {
                                                       &m_vk_surface);
         CHECK_VKRESULT(rc, vkCreateWin32SurfaceKHR);
 
-        m_instance->vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_instance->vk_physical_device(),
+        rc = m_instance->vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_instance->vk_physical_device(),
+                                                                   m_vk_surface,
+                                                                   &m_capabilities);
+        CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfaceCapabilitiesKHR);
+
+        uint32_t format_count = 0;
+        rc = m_instance->vkGetPhysicalDeviceSurfaceFormatsKHR(m_instance->vk_physical_device(),
                                                               m_vk_surface,
-                                                              &m_capabilities);
+                                                              &format_count,
+                                                              nullptr);
+        CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfaceFormatsKHR);
+        if (format_count != 0) {
+            m_formats.resize(format_count);
+            rc = m_instance->vkGetPhysicalDeviceSurfaceFormatsKHR(m_instance->vk_physical_device(),
+                                                                  m_vk_surface,
+                                                                  &format_count,
+                                                                  m_formats.data());
+            CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfaceFormatsKHR);
+        }
+
+        uint32_t present_modes_count = 0;
+        rc = m_instance->vkGetPhysicalDeviceSurfacePresentModesKHR(m_instance->vk_physical_device(),
+                                                                   m_vk_surface,
+                                                                   &present_modes_count,
+                                                                   nullptr);
+        CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfacePresentModesKHR);
+        if (present_modes_count != 0) {
+            m_present_modes.resize(present_modes_count);
+            rc = m_instance->vkGetPhysicalDeviceSurfacePresentModesKHR(m_instance->vk_physical_device(),
+                                                                       m_vk_surface,
+                                                                       &present_modes_count,
+                                                                       m_present_modes.data());   
+            CHECK_VKRESULT(rc, vkGetPhysicalDeviceSurfacePresentModesKHR);
+        }
 
     }
 

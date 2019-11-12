@@ -100,6 +100,8 @@ namespace vk {
         RESOLVE_FUNCTION(vkDestroySurfaceKHR);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceCapabilitiesKHR);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceFormatsKHR);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfacePresentModesKHR);
         RESOLVE_FUNCTION(vkCreateDevice);
 #ifdef MGE_OS_WINDOWS
         RESOLVE_FUNCTION(vkCreateWin32SurfaceKHR);
