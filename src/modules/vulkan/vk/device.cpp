@@ -21,6 +21,8 @@ namespace vk {
         create_info.queueCreateInfoCount = 1;
         create_info.pEnabledFeatures = &device_features;
         
+        const auto& enabled_extensions = instance->enabled_extensions();
+
         create_info.enabledExtensionCount = 0;
         const auto& enabled_layers = instance->enabled_layers();
         if (!enabled_layers.empty()) {

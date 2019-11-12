@@ -49,6 +49,8 @@ namespace vk {
         }
         fetch_physical_devices();
         select_physical_device();
+
+        m_enabled_extensions.push_back("VK_KHR_swapchain");
     }
 
     instance::~instance()
@@ -94,6 +96,7 @@ namespace vk {
         RESOLVE_FUNCTION(vkGetPhysicalDeviceProperties);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceFeatures);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceQueueFamilyProperties);
+        RESOLVE_FUNCTION(vkEnumerateDeviceExtensionProperties);
         RESOLVE_FUNCTION(vkDestroySurfaceKHR);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
         RESOLVE_FUNCTION(vkCreateDevice);
@@ -275,6 +278,21 @@ namespace vk {
                 }
             }
 
+            uint32_t extension_count = 0;
+            vkEnumerateDeviceExtensionProperties(devices[i],
+                                                 nullptr,
+                                                 &extension_count,
+                                                 nullptr);
+            MGE_DEBUG_LOG(VULKAN) << "Physical device supports " << extension_count << " extensions";
+            m_physical_devices[i].extensions.resize(extension_count);
+            vkEnumerateDeviceExtensionProperties(devices[i],
+                                                 nullptr,
+                                                 &extension_count,
+                                                 m_physical_devices[i].extensions.data());
+            for (const auto& e : m_physical_devices[i].extensions) {
+                MGE_DEBUG_LOG(VULKAN) << "  Extension: " << e.extensionName;
+            }
+
         }
     }
 
@@ -305,6 +323,11 @@ namespace vk {
     const std::vector<const char*>& instance::enabled_layers() const
     {
         return m_enabled_layers;
+    }
+
+    const std::vector<const char*>& instance::enabled_extensions() const
+    {
+        return m_enabled_extensions;
     }
 
     void instance::select_physical_device()

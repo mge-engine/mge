@@ -20,6 +20,7 @@ namespace vk {
         PFN_vkGetPhysicalDeviceProperties vkGetPhysicalDeviceProperties;
         PFN_vkGetPhysicalDeviceFeatures vkGetPhysicalDeviceFeatures;
         PFN_vkGetPhysicalDeviceQueueFamilyProperties vkGetPhysicalDeviceQueueFamilyProperties;
+        PFN_vkEnumerateDeviceExtensionProperties vkEnumerateDeviceExtensionProperties;
 
         PFN_vkCreateDebugUtilsMessengerEXT vkCreateDebugUtilsMessengerEXT;
         PFN_vkDestroyDebugUtilsMessengerEXT vkDestroyDebugUtilsMessengerEXT;
@@ -28,7 +29,7 @@ namespace vk {
 #endif
         PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
         PFN_vkGetPhysicalDeviceSurfaceSupportKHR vkGetPhysicalDeviceSurfaceSupportKHR;
-
+        
         PFN_vkCreateDevice vkCreateDevice;
 
         VkInstance vk_instance() const noexcept
@@ -40,6 +41,7 @@ namespace vk {
 
         uint32_t graphics_queue_family_index() const;
         const std::vector<const char*>& enabled_layers() const;
+        const std::vector<const char*>& enabled_extensions() const;
         VkPhysicalDevice physical_device() const;
     private:
         template <typename PFN>
@@ -59,6 +61,7 @@ namespace vk {
             VkPhysicalDeviceProperties properties;
             VkPhysicalDeviceFeatures   features;
             std::vector<VkQueueFamilyProperties> queue_families;
+            std::vector<VkExtensionProperties> extensions;
             uint32_t                   graphics_queue_family_index;
             uint32_t                   compute_queue_family_index;
         };
@@ -67,6 +70,7 @@ namespace vk {
         VkDebugUtilsMessengerEXT          m_vk_debug_utils_messenger;
         std::vector<physical_device_info> m_physical_devices;
         std::vector<const char*>          m_enabled_layers;
+        std::vector<const char*>          m_enabled_extensions;
         size_t                            m_physical_device_index;
         bool                              m_debug;
         bool                              m_debug_utils_found;
