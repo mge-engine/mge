@@ -99,6 +99,7 @@ namespace vk {
         RESOLVE_FUNCTION(vkEnumerateDeviceExtensionProperties);
         RESOLVE_FUNCTION(vkDestroySurfaceKHR);
         RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceSupportKHR);
+        RESOLVE_FUNCTION(vkGetPhysicalDeviceSurfaceCapabilitiesKHR);
         RESOLVE_FUNCTION(vkCreateDevice);
 #ifdef MGE_OS_WINDOWS
         RESOLVE_FUNCTION(vkCreateWin32SurfaceKHR);
@@ -121,7 +122,7 @@ namespace vk {
         }
     }
 
-    VkPhysicalDevice instance::physical_device() const
+    VkPhysicalDevice instance::vk_physical_device() const
     {
         return m_physical_devices[m_physical_device_index].device;
     }

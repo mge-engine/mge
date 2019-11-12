@@ -29,7 +29,8 @@ namespace vk {
 #endif
         PFN_vkDestroySurfaceKHR vkDestroySurfaceKHR;
         PFN_vkGetPhysicalDeviceSurfaceSupportKHR vkGetPhysicalDeviceSurfaceSupportKHR;
-        
+        PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
+
         PFN_vkCreateDevice vkCreateDevice;
 
         VkInstance vk_instance() const noexcept
@@ -42,7 +43,7 @@ namespace vk {
         uint32_t graphics_queue_family_index() const;
         const std::vector<const char*>& enabled_layers() const;
         const std::vector<const char*>& enabled_extensions() const;
-        VkPhysicalDevice physical_device() const;
+        VkPhysicalDevice vk_physical_device() const;
     private:
         template <typename PFN>
         bool resolve_function(PFN& fptr, const char* name);

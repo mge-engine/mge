@@ -23,14 +23,16 @@ namespace vk {
         
         const auto& enabled_extensions = instance->enabled_extensions();
 
-        create_info.enabledExtensionCount = 0;
+        create_info.enabledExtensionCount = static_cast<uint32_t>(enabled_extensions.size());
+        create_info.ppEnabledExtensionNames = enabled_extensions.data();
+
         const auto& enabled_layers = instance->enabled_layers();
         if (!enabled_layers.empty()) {
             create_info.enabledLayerCount = static_cast<uint32_t>(enabled_layers.size());
             create_info.ppEnabledLayerNames = enabled_layers.data();
         }
 
-        auto rc = instance->vkCreateDevice(instance->physical_device(),
+        auto rc = instance->vkCreateDevice(instance->vk_physical_device(),
                                            &create_info,
                                            nullptr,
                                            &m_vk_device);
@@ -38,9 +40,9 @@ namespace vk {
         resolve_functions();
 
         vkGetDeviceQueue(m_vk_device,
-                       instance->graphics_queue_family_index(),
-                       0,
-                       &m_vk_graphics_queue);     
+                         instance->graphics_queue_family_index(),
+                         0,
+                         &m_vk_graphics_queue);     
         if (!m_vk_graphics_queue) {
             MGE_THROW(vulkan::error) << "vkGetDeviceQueue failed";
         }

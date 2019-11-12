@@ -20,6 +20,10 @@ namespace vk {
                                                       &m_vk_surface);
         CHECK_VKRESULT(rc, vkCreateWin32SurfaceKHR);
 
+        m_instance->vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_instance->vk_physical_device(),
+                                                              m_vk_surface,
+                                                              &m_capabilities);
+
     }
 
     surface::~surface()

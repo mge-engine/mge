@@ -25,5 +25,6 @@ namespace vk {
 #ifdef MGE_OS_WINDOWS
         VkSurfaceKHR m_vk_surface;
 #endif
+        VkSurfaceCapabilitiesKHR m_capabilities;
     };
 }
