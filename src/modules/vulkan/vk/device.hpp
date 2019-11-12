@@ -22,12 +22,14 @@ namespace vk {
 
         PFN_vkGetDeviceProcAddr vkGetDeviceProcAddr;
         PFN_vkDestroyDevice vkDestroyDevice;
+        PFN_vkGetDeviceQueue vkGetDeviceQueue;
     private:
         void resolve_functions();
         template <typename T> T resolve(const char* name);
 
         instance_ref m_instance;
         VkDevice     m_vk_device;
+        VkQueue      m_vk_graphics_queue;
     };
 
 }

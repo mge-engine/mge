@@ -34,10 +34,22 @@ namespace vk {
                                            &m_vk_device);
         CHECK_VKRESULT(rc, vkCreateDevice);
         resolve_functions();
+
+        vkGetDeviceQueue(m_vk_device,
+                       instance->graphics_queue_family_index(),
+                       0,
+                       &m_vk_graphics_queue);     
+        if (!m_vk_graphics_queue) {
+            MGE_THROW(vulkan::error) << "vkGetDeviceQueue failed";
+        }
     }
 
     device::~device()
-    {}
+    {
+        if (vkDestroyDevice && m_vk_device) {
+            vkDestroyDevice(m_vk_device, nullptr /* allocator */);
+        }
+    }
 
     template <typename T>
     T device::resolve(const char* name)
@@ -57,6 +69,7 @@ namespace vk {
     {
 #define RESOLVE(N) do { this->N = resolve<PFN_##N>(#N); if(!N) MGE_THROW(vulkan::error) << "Cannot resolve function " << #N; } while(false)
         RESOLVE(vkDestroyDevice);
+        RESOLVE(vkGetDeviceQueue);
     }
 
 }
