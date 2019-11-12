@@ -5,6 +5,7 @@
 namespace vk {
     device::device(const instance_ref& instance)
         :vkGetDeviceProcAddr(instance->vkGetDeviceProcAddr)
+        ,m_vk_device(VK_NULL_HANDLE) 
     {
         float queue_priority = 1.0f;
         VkDeviceQueueCreateInfo queue_create_info = {};

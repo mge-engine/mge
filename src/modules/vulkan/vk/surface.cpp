@@ -6,7 +6,7 @@ namespace vk {
     surface::surface(const instance_ref& instance, HWND hwnd)
         :m_instance(instance)
 #ifdef MGE_OS_WINDOWS
-        , m_vk_surface(0)
+        , m_vk_surface(VK_NULL_HANDLE)
 #endif
     {
         VkWin32SurfaceCreateInfoKHR create_info = {};
