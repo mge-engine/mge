@@ -5,12 +5,13 @@
 namespace vk {
     device::device(const instance_ref& instance)
         :vkGetDeviceProcAddr(instance->vkGetDeviceProcAddr)
-        ,m_vk_device(VK_NULL_HANDLE) 
+        , m_vk_device(VK_NULL_HANDLE) 
+        , m_graphics_queue_family_index(instance->graphics_queue_family_index())
     {
         float queue_priority = 1.0f;
         VkDeviceQueueCreateInfo queue_create_info = {};
         queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queue_create_info.queueFamilyIndex = instance->graphics_queue_family_index();
+        queue_create_info.queueFamilyIndex = m_graphics_queue_family_index;
         queue_create_info.queueCount = 1;
         queue_create_info.pQueuePriorities = &queue_priority;
 
@@ -75,6 +76,8 @@ namespace vk {
 #define RESOLVE(N) do { this->N = resolve<PFN_##N>(#N); if(!N) MGE_THROW(vulkan::error) << "Cannot resolve function " << #N; } while(false)
         RESOLVE(vkDestroyDevice);
         RESOLVE(vkGetDeviceQueue);
+        RESOLVE(vkCreateSwapchainKHR);
+        RESOLVE(vkDestroySwapchainKHR);
     }
 
 }

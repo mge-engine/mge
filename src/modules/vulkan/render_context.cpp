@@ -3,6 +3,7 @@
 #include "window.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
+#include "vk/swap_chain.hpp"
 
 MGE_USE_LOG(VULKAN);
 
@@ -18,6 +19,9 @@ namespace vulkan {
                                                   win->hwnd());
         m_present_queue_family = system.instance()->present_queue_family_index(m_surface->vk_surface());
         m_device = std::make_shared<vk::device>(system.instance());
+        m_swap_chain = std::make_shared<vk::swap_chain>(m_device,
+                                                        m_surface,
+                                                        win->extent());
     }
 
     render_context::~render_context()

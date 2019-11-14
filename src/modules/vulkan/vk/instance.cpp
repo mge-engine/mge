@@ -274,13 +274,15 @@ namespace vk {
                     m_physical_devices[i].graphics_queue_family_index = q;
                     MGE_DEBUG_LOG(VULKAN) << "Graphics queue family index is " << q;
                     break;
-                } else if (m_physical_devices[i].queue_families[q].queueFlags & VK_QUEUE_COMPUTE_BIT) {
+                }
+            }
+            for (uint32_t q = 0; q < queue_family_count; ++q) {
+                if (m_physical_devices[i].queue_families[q].queueFlags & VK_QUEUE_COMPUTE_BIT) {
                     m_physical_devices[i].compute_queue_family_index = q;
                     MGE_DEBUG_LOG(VULKAN) << "Compute queue family index is " << q;
                     break;
                 }
             }
-
             uint32_t extension_count = 0;
             vkEnumerateDeviceExtensionProperties(devices[i],
                                                  nullptr,

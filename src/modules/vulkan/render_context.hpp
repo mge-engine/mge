@@ -34,8 +34,9 @@ namespace vulkan {
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
 
     private:
-        vk::surface_ref m_surface;
-        vk::device_ref  m_device;
+        vk::surface_ref    m_surface;
+        vk::device_ref     m_device;
+        vk::swap_chain_ref m_swap_chain;
         uint32_t        m_present_queue_family;
     };
 }

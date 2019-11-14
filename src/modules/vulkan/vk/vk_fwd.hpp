@@ -8,4 +8,5 @@ namespace vk {
     MGE_DECLARE_REF(instance);
     MGE_DECLARE_REF(surface);
     MGE_DECLARE_REF(device);
+    MGE_DECLARE_REF(swap_chain);
 }
