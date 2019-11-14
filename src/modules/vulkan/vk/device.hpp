@@ -26,6 +26,7 @@ namespace vk {
 
         PFN_vkCreateSwapchainKHR vkCreateSwapchainKHR;
         PFN_vkDestroySwapchainKHR vkDestroySwapchainKHR;
+        PFN_vkGetSwapchainImagesKHR vkGetSwapchainImagesKHR;
 
         uint32_t graphics_queue_family_index() const
         {

@@ -78,6 +78,7 @@ namespace vk {
         RESOLVE(vkGetDeviceQueue);
         RESOLVE(vkCreateSwapchainKHR);
         RESOLVE(vkDestroySwapchainKHR);
+        RESOLVE(vkGetSwapchainImagesKHR);
     }
 
 }

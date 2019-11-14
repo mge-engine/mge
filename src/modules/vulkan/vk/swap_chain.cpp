@@ -45,6 +45,11 @@ namespace vk {
 
         auto rc = device->vkCreateSwapchainKHR(device->vk_device(), &create_info, nullptr, &m_vk_swap_chain);
         CHECK_VKRESULT(rc, vkCreateSwapchainKHR);
+
+        uint32_t image_count = 0;
+        device->vkGetSwapchainImagesKHR(device->vk_device(), m_vk_swap_chain, &image_count, nullptr);
+        m_swap_chain_images.resize(image_count);
+        device->vkGetSwapchainImagesKHR(device->vk_device(), m_vk_swap_chain, &image_count, m_swap_chain_images.data());
     }
 
     swap_chain::~swap_chain()

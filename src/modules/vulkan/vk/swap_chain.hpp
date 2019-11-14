@@ -2,6 +2,8 @@
 #include "vulkan.hpp"
 #include "vk_fwd.hpp"
 #include "mge/graphics/extent.hpp"
+#include <vector>
+
 namespace vk {
 
 
@@ -13,7 +15,9 @@ namespace vk {
                    const mge::extent& base_extent);
         ~swap_chain();
     private:
-        device_ref     m_device;
-        VkSwapchainKHR m_vk_swap_chain;
+        
+        device_ref           m_device;
+        VkSwapchainKHR       m_vk_swap_chain;
+        std::vector<VkImage> m_swap_chain_images;
     };
 }
