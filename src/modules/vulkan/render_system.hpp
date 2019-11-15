@@ -1,6 +1,5 @@
 #pragma once
-#include "vk/vulkan.hpp"
-#include "vk/instance.hpp"
+#include "vulkan.hpp"
 #include "system_config.hpp"
 #include "mge/graphics/render_system.hpp"
 #ifdef MGE_OS_WINDOWS
@@ -23,15 +22,7 @@ namespace vulkan {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override;
 
-        const vk::instance_ref& instance() const
-        {
-            return m_instance; 
-        }
-
     private:
-        void create_instance();
-
         system_config    m_config;
-        vk::instance_ref m_instance;
     };
 }

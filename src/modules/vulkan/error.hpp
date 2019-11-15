@@ -4,7 +4,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/exception.hpp"
-#include "vk/vulkan.hpp"
+#include "vulkan.hpp"
 
 namespace vulkan {
     class error : public mge::exception

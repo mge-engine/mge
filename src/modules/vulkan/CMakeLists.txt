@@ -1,7 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
-ADD_SUBDIRECTORY(vk)
 SET(mge_vulkan_module_SOURCES
     common.cpp
     error.cpp
@@ -13,7 +12,7 @@ ADD_LIBRARY(mge_module_vulkan MODULE
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan mge_win32 mgeapplication)
 ENDIF()
-TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vkutils vulkan)
+TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vulkan)
 ADD_SUBDIRECTORY(test)
 
     

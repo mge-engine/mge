@@ -1,9 +1,6 @@
 #pragma once
 #include "mge/graphics/render_context.hpp"
 #include "system_config.hpp"
-#include "vk/surface.hpp"
-#include "vk/device.hpp"
-#include "mge/core/small_vector.hpp"
 
 namespace vulkan {
     class window;
@@ -35,13 +32,5 @@ namespace vulkan {
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
 
     private:
-        void create_image_views();
-        using image_view_vector = mge::small_vector<vk::image_view_ref, 3>;
-
-        vk::surface_ref    m_surface;
-        vk::device_ref     m_device;
-        vk::swap_chain_ref m_swap_chain;
-        image_view_vector  m_swap_chain_image_views;
-        uint32_t           m_present_queue_family;
     };
 }

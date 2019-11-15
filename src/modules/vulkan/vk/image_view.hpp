@@ -9,6 +9,11 @@ namespace vk {
                    const surface_ref& surface,
                    VkImage image);
         ~image_view();
+
+        VkImageView vk_image_view() const
+        {
+            return m_vk_image_view;
+        }
     private:
         device_ref  m_device;
         VkImageView m_vk_image_view;

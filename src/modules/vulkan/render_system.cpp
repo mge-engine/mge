@@ -21,7 +21,6 @@ namespace vulkan {
     void render_system::configure(const mge::configuration& config)
     {
         m_config.configure(config);
-        create_instance();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -38,11 +37,6 @@ namespace vulkan {
                                                  const mge::window_options& options) 
     {
         return std::make_shared<window>(*this, rect, options, m_config);
-    }
-
-    void render_system::create_instance()
-    {
-        m_instance = std::make_shared<vk::instance>(m_config);
     }
 
 

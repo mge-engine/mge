@@ -16,23 +16,6 @@ namespace vulkan {
         : mge::render_context(win)
     {
         MGE_DEBUG_LOG(VULKAN) << "Create render context";
-        m_surface = std::make_shared<vk::surface>(system.instance(),
-                                                  win->hwnd());
-        m_present_queue_family = system.instance()->present_queue_family_index(m_surface->vk_surface());
-        m_device = std::make_shared<vk::device>(system.instance());
-        m_swap_chain = std::make_shared<vk::swap_chain>(m_device,
-                                                        m_surface,
-                                                        win->extent());
-        create_image_views();
-    }
-
-    void render_context::create_image_views()
-    {
-        MGE_DEBUG_LOG(VULKAN) << "Creating image views for swap chain";
-        const auto& images = m_swap_chain->images();
-        for (const auto& i : images) {
-            m_swap_chain_image_views.push_back(std::make_shared<vk::image_view>(m_device, m_surface, i));
-        }
     }
 
     render_context::~render_context()
