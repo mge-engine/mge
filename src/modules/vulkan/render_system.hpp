@@ -23,6 +23,9 @@ namespace vulkan {
                                       const mge::window_options& options) override;
 
     private:
+        void check_configure();
+        void create_instance();
+
         system_config    m_config;
     };
 }
