@@ -31,12 +31,14 @@ namespace mge {
 
         /**
          * Creates the render system identified by the configured name.
+         * The render system is configured using the "render.system" config entries.
          * @return created render system, or invalid reference if unavailable
          */
         static render_system_ref create();
 
         /**
-         * Creates a render system named by given name.
+         * Creates a render system named by given name. 
+         * Note that the render system is not configured and may not be usable.
          * @param name name of render system, such as "opengl" or "vulkan"
          * @return created render system, or invalid reference if unavailable
          */

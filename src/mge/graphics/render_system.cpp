@@ -25,7 +25,10 @@ namespace mge {
     render_system_ref
     render_system::create()
     {
-        return component<render_system>::create(default_name());
+        configuration render_system_config("render.system");
+        auto system = component<render_system>::create(default_name());
+        system->configure(render_system_config);
+        return system;
     }
 
     render_system_ref
