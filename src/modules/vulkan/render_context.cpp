@@ -3,8 +3,6 @@
 #include "window.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
-#include "vk/swap_chain.hpp"
-#include "vk/image_view.hpp"
 
 MGE_USE_LOG(VULKAN);
 
