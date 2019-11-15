@@ -79,6 +79,8 @@ namespace vk {
         RESOLVE(vkCreateSwapchainKHR);
         RESOLVE(vkDestroySwapchainKHR);
         RESOLVE(vkGetSwapchainImagesKHR);
+        RESOLVE(vkCreateImageView);
+        RESOLVE(vkDestroyImageView);
     }
 
 }

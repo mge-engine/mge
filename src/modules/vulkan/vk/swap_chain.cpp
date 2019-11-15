@@ -48,8 +48,8 @@ namespace vk {
 
         uint32_t image_count = 0;
         device->vkGetSwapchainImagesKHR(device->vk_device(), m_vk_swap_chain, &image_count, nullptr);
-        m_swap_chain_images.resize(image_count);
-        device->vkGetSwapchainImagesKHR(device->vk_device(), m_vk_swap_chain, &image_count, m_swap_chain_images.data());
+        m_images.resize(image_count);
+        device->vkGetSwapchainImagesKHR(device->vk_device(), m_vk_swap_chain, &image_count, m_images.data());
     }
 
     swap_chain::~swap_chain()

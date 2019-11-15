@@ -6,6 +6,7 @@ namespace vk {
     {
     public:
         image_view(const device_ref& device,
+                   const surface_ref& surface,
                    VkImage image);
         ~image_view();
     private:
