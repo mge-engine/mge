@@ -16,6 +16,7 @@ namespace vulkan {
     render_system::render_system()
     {
         MGE_DEBUG_LOG(VULKAN) << "Creating Vulkan render system";
+        m_library = std::make_shared<vulkan_library>();
     }
 
 

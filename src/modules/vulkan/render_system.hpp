@@ -2,6 +2,7 @@
 #include "vulkan.hpp"
 #include "system_config.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "vulkan_library.hpp"
 #ifdef MGE_OS_WINDOWS
 #  include "win32/monitor.hpp"
 #endif
@@ -26,6 +27,7 @@ namespace vulkan {
         void check_configure();
         void create_instance();
 
-        system_config    m_config;
+        system_config                   m_config;
+        std::shared_ptr<vulkan_library> m_library;
     };
 }

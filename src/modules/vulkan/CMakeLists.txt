@@ -6,7 +6,8 @@ SET(mge_vulkan_module_SOURCES
     error.cpp
     render_context.cpp
     window.cpp
-    render_system.cpp)
+    render_system.cpp
+    vulkan_library.cpp)
 ADD_LIBRARY(mge_module_vulkan MODULE
     ${mge_vulkan_module_SOURCES})
 IF(WIN32)
