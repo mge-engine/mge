@@ -5,6 +5,8 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
 
+MGE_USE_LOG(VULKAN);
+
 namespace vulkan {
     MGE_DEFINE_EXCEPTION(error);
 
@@ -69,7 +71,7 @@ namespace vulkan {
             .set_info(mge::exception::called_function(function))
             .set_info(mge::exception::stack(mge::stacktrace()))
             .set_info(mge::exception::type_name(mge::type_name<vulkan::error>()))
-            <<"Call to "<<function<<" failed: ("<<(int)rc<<") "<<vkresult_message(rc);
+            << "Call to " << function << " failed: (" << (int)rc << ") " << vkresult_message(rc);
         return *this;
     }
 
@@ -78,6 +80,7 @@ namespace vulkan {
         if (rc==VK_SUCCESS) {
             return;
         } else {
+            MGE_ERROR_LOG(VULKAN) << file << ":" << line << ": " << "Call to " << function << " failed: (" << (int)rc << ") " << vkresult_message(rc);
             vulkan::error err;
             throw err.set_info_from_vkresult(rc, file, line, function);
         }
