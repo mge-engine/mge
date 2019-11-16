@@ -8,6 +8,7 @@
 #  include "win32/monitor.hpp"
 #endif
 #include "window.hpp"
+#include "error.hpp"
 
 MGE_USE_LOG(VULKAN);
 
@@ -26,6 +27,7 @@ namespace vulkan {
             MGE_THROW(mge::illegal_state) << "Render system is already configured";
         }
         m_config.configure(config);
+        resolve_basic_instance_functions();
         create_instance();
     }
 
@@ -55,6 +57,41 @@ namespace vulkan {
 
     void render_system::create_instance()
     {
+    void render_system::resolve_basic_instance_functions()
+    {
+#ifdef MGE_COMPILER_MSVC
+#  pragma warning (push)
+#  pragma warning (disable: 4191)
+#endif
+#define RESOLVE(X)                                                                \
+        do {                                                                      \
+            auto f = m_library->vkGetInstanceProcAddr(VK_NULL_HANDLE, #X);        \
+            if (!f) {                                                             \
+                MGE_THROW(vulkan::error) << "Cannot resolve instance function: "  \
+                    << #X;                                                        \
+            }                                                                     \
+            MGE_DEBUG_LOG(VULKAN) << "Resolve " << #X << ": " << (void *)f;       \
+            this->X = reinterpret_cast<decltype(this->X)>(f);                     \
+        }  while (false);
+
+#define BASIC_INSTANCE_FUNCTION(X)  RESOLVE(X)
+#define INSTANCE_FUNCTION(X)
+#define DEVICE_FUNCTION(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#  include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+#undef RESOLVE
+#ifdef MGE_COMPILER_MSVC
+#  pragma warning (pop)
+#endif
+    }
+
 
     }
 
