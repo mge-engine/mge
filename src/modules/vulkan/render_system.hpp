@@ -23,11 +23,34 @@ namespace vulkan {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override;
 
+        VkInstance vk_instance() const noexcept
+        {
+            return m_vk_instance;
+        }
+
+
+#define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
+#define INSTANCE_FUNCTION(X)       PFN_##X X;
+#define DEVICE_FUNCTION(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#  include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+
     private:
         void check_configure();
         void create_instance();
+        void resolve_basic_instance_functions();
+        void resolve_normal_instance_functions();
 
         system_config                   m_config;
         std::shared_ptr<vulkan_library> m_library;
+        std::vector<const char*>        m_instance_extensions;
+        VkInstance                      m_vk_instance;
     };
 }
