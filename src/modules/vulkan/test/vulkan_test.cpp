@@ -18,6 +18,7 @@ namespace vulkan
             FAIL() << "Cannot create vulkan render system";
         }
         config.set("debug", "1");
+        config.set("validation", "1");
         render_system->configure(config);
     }
 
