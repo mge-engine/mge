@@ -43,13 +43,25 @@ namespace vulkan {
 #undef DEVICE_FUNCTION
 
     private:
+        using extension_property_vector = std::vector<VkExtensionProperties>;
+        using layer_property_vector = std::vector<VkLayerProperties>;
+
+        template <typename F, typename C>
+        void fill_enumeration(const F& function, C& container);
+
         void check_configure();
+        void scan_properties();
+        void init_instance_extensions();
         void create_instance();
         void resolve_basic_instance_functions();
         void resolve_normal_instance_functions();
 
         system_config                   m_config;
         std::shared_ptr<vulkan_library> m_library;
+
+        extension_property_vector       m_all_instance_extensions;
+        layer_property_vector           m_all_instance_layers;
+
         std::vector<const char*>        m_instance_extensions;
         VkInstance                      m_vk_instance;
     };

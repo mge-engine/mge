@@ -29,7 +29,10 @@ namespace vulkan {
             MGE_THROW(mge::illegal_state) << "Render system is already configured";
         }
         m_config.configure(config);
+        
         resolve_basic_instance_functions();
+        scan_properties();
+        init_instance_extensions();
         create_instance();
         resolve_normal_instance_functions();
     }
@@ -58,6 +61,31 @@ namespace vulkan {
         }
     }
 
+    void render_system::init_instance_extensions()
+    {
+        m_instance_extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+#ifdef MGE_OS_WINDOWS
+        m_instance_extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+#endif
+        if (m_config.validation() || m_config.debug()) {
+            m_instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+        }
+
+        for (const auto& name : m_instance_extensions) {
+            bool found = false;
+            for (const auto& e : m_all_instance_extensions) {
+                if (strcmp(e.extensionName, name) == 0) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                MGE_THROW(vulkan::error) << "Required extension " << n << " not found";
+            }
+        }
+
+    }
+
     void render_system::create_instance()
     {
         auto exe_name = mge::executable_name();
@@ -67,13 +95,6 @@ namespace vulkan {
         app_info.pEngineName = "mge";
         app_info.apiVersion = VK_API_VERSION_1_0;
 
-        m_instance_extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-#ifdef MGE_OS_WINDOWS
-        m_instance_extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-#endif
-        if (m_config.validation() || m_config.debug()) {
-            m_instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-        }
         VkInstanceCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         create_info.pApplicationInfo = &app_info;
@@ -159,6 +180,39 @@ namespace vulkan {
 #ifdef MGE_COMPILER_MSVC
 #  pragma warning (pop)
 #endif
+
+    }
+
+    template <typename F, typename C>
+    void render_system::fill_enumeration(const F& function, C& container)
+    {
+        uint32_t count = 0;
+        function(&count, nullptr);
+        if (count) {
+            container.resize(count);
+            function(&count, container.data());
+        }
+    }
+
+    void render_system::scan_properties()
+    {
+        fill_enumeration
+        ([&](uint32_t* count, VkExtensionProperties* data) {
+            CHECK_VK_CALL(vkEnumerateInstanceExtensionProperties(nullptr, count, data));
+         }, m_all_instance_extensions);
+
+        for (const auto& e : m_all_instance_extensions) {
+            MGE_DEBUG_LOG(VULKAN) << "Found instance extension: " << e.extensionName;
+        }
+
+        fill_enumeration
+        ([&](uint32_t* count, VkLayerProperties* data) {
+            CHECK_VK_CALL(vkEnumerateInstanceLayerProperties(count, data));
+         }, m_all_instance_layers);
+
+        for (const auto& l : m_all_instance_layers) {
+            MGE_DEBUG_LOG(VULKAN) << "Found instance layer: " << l.layerName << "(" << l.description << ")";
+        }
 
     }
 
