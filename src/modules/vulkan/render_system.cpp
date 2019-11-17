@@ -26,10 +26,14 @@ namespace vulkan {
 
     render_system::~render_system()
     {
-        if (m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
+        if (m_vk_instance && m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
             vkDestroyDebugUtilsMessengerEXT(m_vk_instance, 
                                             m_vk_debug_messenger, 
                                             nullptr);
+        }
+
+        if (m_vk_instance && vkDestroyInstance) {
+            vkDestroyInstance(m_vk_instance, nullptr);
         }
     }
 
