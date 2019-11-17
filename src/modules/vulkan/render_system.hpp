@@ -14,7 +14,7 @@ namespace vulkan {
     {
     public:
         render_system();
-        virtual ~render_system() = default;
+        virtual ~render_system();
 
         void configure(const mge::configuration& config) override;
 
@@ -55,6 +55,7 @@ namespace vulkan {
         void create_instance();
         void resolve_basic_instance_functions();
         void resolve_normal_instance_functions();
+        void init_debug_message_handling();
 
         system_config                   m_config;
         std::shared_ptr<vulkan_library> m_library;
@@ -64,5 +65,6 @@ namespace vulkan {
 
         std::vector<const char*>        m_instance_extensions;
         VkInstance                      m_vk_instance;
+        VkDebugUtilsMessengerEXT        m_vk_debug_messenger;
     };
 }

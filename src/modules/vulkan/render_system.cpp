@@ -17,9 +17,20 @@ namespace vulkan {
 
     render_system::render_system()
         :m_vk_instance(VK_NULL_HANDLE)
+        ,m_vk_debug_messenger(VK_NULL_HANDLE)
     {
         MGE_DEBUG_LOG(VULKAN) << "Creating Vulkan render system";
         m_library = std::make_shared<vulkan_library>();
+    }
+
+
+    render_system::~render_system()
+    {
+        if (m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
+            vkDestroyDebugUtilsMessengerEXT(m_vk_instance, 
+                                            m_vk_debug_messenger, 
+                                            nullptr);
+        }
     }
 
 
@@ -35,6 +46,7 @@ namespace vulkan {
         init_instance_extensions();
         create_instance();
         resolve_normal_instance_functions();
+        init_debug_message_handling();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -81,7 +93,6 @@ namespace vulkan {
             }
             if (!found) {
                 MGE_THROW(vulkan::error) << "Required extension " << name << " not found";
-                MGE_THROW(vulkan::error) << "Required extension " << n << " not found";
             }
         }
 
@@ -215,6 +226,41 @@ namespace vulkan {
             MGE_DEBUG_LOG(VULKAN) << "Found instance layer: " << l.layerName << "(" << l.description << ")";
         }
 
+    }
+
+    VKAPI_ATTR VkBool32 VKAPI_CALL debug_utils_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
+                                                        VkDebugUtilsMessageTypeFlagsEXT type,
+                                                        const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
+                                                        void* user_data)
+    {
+        if (severity && VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+            MGE_DEBUG_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        } else if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+            MGE_INFO_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        } else if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+            MGE_WARNING_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        } else {
+            MGE_ERROR_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        }
+
+        return VK_FALSE;
+    }
+
+    void render_system::init_debug_message_handling()
+    {
+        if (!m_config.debug() && !m_config.validation()) {
+            return;
+        }
+
+        VkDebugUtilsMessengerCreateInfoEXT create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+        create_info.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+        create_info.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT;
+        create_info.pfnUserCallback = &debug_utils_callback;
+        CHECK_VK_CALL(vkCreateDebugUtilsMessengerEXT(m_vk_instance,
+                                                     &create_info,
+                                                     nullptr,
+                                                     &m_vk_debug_messenger));
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
