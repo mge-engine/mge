@@ -61,23 +61,25 @@ namespace vulkan {
         void init_debug_message_handling();
         void load_physical_devices();
 
-        system_config                     m_config;
-        std::shared_ptr<vulkan_library>   m_library;
+        system_config                    m_config;
+        std::shared_ptr<vulkan_library>  m_library;
 
-        extension_property_vector         m_all_instance_extensions;
-        layer_property_vector             m_all_instance_layers;
+        extension_property_vector        m_all_instance_extensions;
+        layer_property_vector            m_all_instance_layers;
 
-        physical_device_vector            m_physical_devices;
-        uint32_t                          m_selected_physical_device;
+        physical_device_vector           m_physical_devices;
+        uint32_t                         m_selected_physical_device;
         
-        VkPhysicalDeviceProperties2       m_physical_device_properties;
-        VkPhysicalDeviceFeatures2         m_physical_device_features;
-        VkPhysicalDeviceMemoryProperties2 m_physical_device_memory_properties;
-        queue_family_property_vector      m_physical_device_queue_family_properties;
+        VkPhysicalDeviceProperties       m_physical_device_properties;
+        VkPhysicalDeviceFeatures         m_physical_device_features;
+        VkPhysicalDeviceMemoryProperties m_physical_device_memory_properties;
+        queue_family_property_vector     m_physical_device_queue_family_properties;
+        extension_property_vector        m_physical_device_extensions;
 
-        std::vector<const char*>          m_instance_extensions;
-        VkInstance                        m_vk_instance;
-        VkDebugUtilsMessengerEXT          m_vk_debug_messenger;
+
+        std::vector<const char*>         m_instance_extensions;
+        VkInstance                       m_vk_instance;
+        VkDebugUtilsMessengerEXT         m_vk_debug_messenger;
 
     };
 }
