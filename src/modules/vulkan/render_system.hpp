@@ -24,15 +24,25 @@ namespace vulkan {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override;
 
-        VkInstance vk_instance() const noexcept
+        VkInstance instance() const noexcept
         {
-            return m_vk_instance;
+            return m_instance;
+        }
+
+        VkPhysicalDevice physical_device() const noexcept
+        {
+            return m_physical_device;
+        }
+
+        VkDevice device() const noexcept
+        {
+            return m_device;
         }
 
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
 #define INSTANCE_FUNCTION(X)       PFN_##X X;
-#define DEVICE_FUNCTION(X)
+#define DEVICE_FUNCTION(X)         PFN_##X X;
 
 #include "vulkan_core.inc"
 #ifdef MGE_OS_WINDOWS
@@ -60,6 +70,10 @@ namespace vulkan {
         void resolve_normal_instance_functions();
         void init_debug_message_handling();
         void load_physical_devices();
+        void compute_queue_family_indices();
+        uint32_t best_queue_family_index(VkQueueFlagBits);
+        void create_device();
+        void resolve_device_functions();
 
         system_config                    m_config;
         std::shared_ptr<vulkan_library>  m_library;
@@ -79,8 +93,19 @@ namespace vulkan {
 
 
         std::vector<const char*>         m_instance_extensions;
-        VkInstance                       m_vk_instance;
-        VkDebugUtilsMessengerEXT         m_vk_debug_messenger;
+        VkInstance                       m_instance;
+        VkDebugUtilsMessengerEXT         m_debug_messenger;
+
+        struct
+        {
+            uint32_t graphics;
+            uint32_t compute;
+            uint32_t transfer;
+        }                               m_queue_family_indices;
+
+
+        std::vector<const char*>         m_enabled_device_extensions;
+        VkDevice                         m_device;
 
     };
 }

@@ -16,8 +16,9 @@ MGE_USE_LOG(VULKAN);
 namespace vulkan {
 
     render_system::render_system()
-        :m_vk_instance(VK_NULL_HANDLE)
-        ,m_vk_debug_messenger(VK_NULL_HANDLE)
+        :m_instance(VK_NULL_HANDLE)
+        ,m_debug_messenger(VK_NULL_HANDLE)
+        ,m_device(VK_NULL_HANDLE)
     {
         MGE_DEBUG_LOG(VULKAN) << "Creating Vulkan render system";
         m_library = std::make_shared<vulkan_library>();
@@ -26,14 +27,18 @@ namespace vulkan {
 
     render_system::~render_system()
     {
-        if (m_vk_instance && m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
-            vkDestroyDebugUtilsMessengerEXT(m_vk_instance, 
-                                            m_vk_debug_messenger, 
+        if (m_device && vkDestroyDevice) {
+            vkDestroyDevice(m_device, nullptr);
+        }
+
+        if (m_instance && m_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
+            vkDestroyDebugUtilsMessengerEXT(m_instance, 
+                                            m_debug_messenger, 
                                             nullptr);
         }
 
-        if (m_vk_instance && vkDestroyInstance) {
-            vkDestroyInstance(m_vk_instance, nullptr);
+        if (m_instance && vkDestroyInstance) {
+            vkDestroyInstance(m_instance, nullptr);
         }
     }
 
@@ -44,7 +49,10 @@ namespace vulkan {
             MGE_THROW(mge::illegal_state) << "Render system is already configured";
         }
         m_config.configure(config);
-        
+
+        // for presenting to a window
+        m_enabled_device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+
         resolve_basic_instance_functions();
         scan_properties();
         init_instance_extensions();
@@ -52,6 +60,9 @@ namespace vulkan {
         resolve_normal_instance_functions();
         init_debug_message_handling();
         load_physical_devices();
+        compute_queue_family_indices();
+        create_device();
+        resolve_device_functions();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -125,7 +136,7 @@ namespace vulkan {
             create_info.ppEnabledLayerNames = enabled_layers;
         }
 
-        CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_vk_instance));
+        CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_instance));
         
     }
 
@@ -172,7 +183,7 @@ namespace vulkan {
 #endif
 #define RESOLVE(X)                                                              \
         do {                                                                    \
-            auto f = m_library->vkGetInstanceProcAddr(m_vk_instance, #X);       \
+            auto f = m_library->vkGetInstanceProcAddr(m_instance, #X);       \
             if (!f) {                                                           \
                 MGE_WARNING_LOG(VULKAN) << "Cannot resolve " << #X;             \
             } else {                                                            \
@@ -262,16 +273,16 @@ namespace vulkan {
         create_info.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
         create_info.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT;
         create_info.pfnUserCallback = &debug_utils_callback;
-        CHECK_VK_CALL(vkCreateDebugUtilsMessengerEXT(m_vk_instance,
+        CHECK_VK_CALL(vkCreateDebugUtilsMessengerEXT(m_instance,
                                                      &create_info,
                                                      nullptr,
-                                                     &m_vk_debug_messenger));
+                                                     &m_debug_messenger));
     }
 
     void render_system::load_physical_devices()
     {
         fill_enumeration([&](uint32_t* count, VkPhysicalDevice* data) {
-                             CHECK_VK_CALL(vkEnumeratePhysicalDevices(m_vk_instance, count, data));
+                             CHECK_VK_CALL(vkEnumeratePhysicalDevices(m_instance, count, data));
                          }, m_physical_devices);
         if (m_physical_devices.empty()) {
             MGE_THROW(vulkan::error) << "No physical devices found";
@@ -293,6 +304,125 @@ namespace vulkan {
          }, m_physical_device_extensions);
 
         MGE_DEBUG_LOG(VULKAN) << "Selected physical device: " << m_physical_device_properties.deviceName;
+    }
+
+    uint32_t render_system::best_queue_family_index(VkQueueFlagBits flags)
+    {
+        if (flags & VK_QUEUE_COMPUTE_BIT) {
+            for (uint32_t i = 0; i < m_physical_device_queue_family_properties.size(); ++i) {
+                const auto& p = m_physical_device_queue_family_properties[i];
+                if ((p.queueFlags & flags) && ((p.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0)) {
+                    return i;
+                }
+            }
+        }
+
+        if (flags & VK_QUEUE_TRANSFER_BIT) {
+            for (uint32_t i = 0; i < m_physical_device_queue_family_properties.size(); ++i) {
+                const auto& p = m_physical_device_queue_family_properties[i];
+                if ((p.queueFlags & flags) 
+                    && ((p.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0) 
+                    && ((p.queueFlags & VK_QUEUE_COMPUTE_BIT) == 0) ) {
+                    return i;
+                }
+            }
+        }
+        for (uint32_t i = 0; i < m_physical_device_queue_family_properties.size(); ++i) {
+            const auto& p = m_physical_device_queue_family_properties[i];
+            if (p.queueFlags & flags)    {
+                return i;
+            }
+        }
+
+        return std::numeric_limits<uint32_t>::max();
+    }
+
+
+    void render_system::compute_queue_family_indices()
+    {
+        m_queue_family_indices.compute = best_queue_family_index(VK_QUEUE_COMPUTE_BIT);
+        m_queue_family_indices.transfer = best_queue_family_index(VK_QUEUE_TRANSFER_BIT);
+        m_queue_family_indices.graphics = best_queue_family_index(VK_QUEUE_GRAPHICS_BIT);
+
+        MGE_DEBUG_LOG(VULKAN) << "Compute queue family index: " << m_queue_family_indices.compute;
+        MGE_DEBUG_LOG(VULKAN) << "Transfer queue family index: " << m_queue_family_indices.transfer;
+        MGE_DEBUG_LOG(VULKAN) << "Graphics queue family index: " << m_queue_family_indices.graphics;
+
+    }
+
+    void render_system::create_device()
+    {
+        mge::small_vector<VkDeviceQueueCreateInfo, 3> queue_create_infos;
+        
+        const float default_queue_priority = 0.0f;
+
+        VkDeviceQueueCreateInfo graphics_queue_create_info = {};
+        graphics_queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        graphics_queue_create_info.queueFamilyIndex = m_queue_family_indices.graphics;
+        graphics_queue_create_info.queueCount = 1;
+        graphics_queue_create_info.pQueuePriorities = &default_queue_priority;
+        queue_create_infos.push_back(graphics_queue_create_info);
+
+        VkDeviceQueueCreateInfo compute_queue_create_info = {};
+        compute_queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        compute_queue_create_info.queueFamilyIndex = m_queue_family_indices.compute;
+        compute_queue_create_info.queueCount = 1;
+        compute_queue_create_info.pQueuePriorities = &default_queue_priority;
+        queue_create_infos.push_back(compute_queue_create_info);
+
+        VkDeviceQueueCreateInfo transfer_queue_create_info = {};
+        transfer_queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        transfer_queue_create_info.queueFamilyIndex = m_queue_family_indices.transfer;
+        transfer_queue_create_info.queueCount = 1;
+        transfer_queue_create_info.pQueuePriorities = &default_queue_priority;
+        queue_create_infos.push_back(transfer_queue_create_info);
+
+        VkDeviceCreateInfo create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        create_info.queueCreateInfoCount = static_cast<uint32_t>(queue_create_infos.size());
+        create_info.pQueueCreateInfos = queue_create_infos.data();
+        create_info.ppEnabledExtensionNames = m_enabled_device_extensions.data();
+        create_info.enabledExtensionCount = static_cast<uint32_t>(m_enabled_device_extensions.size());
+
+        CHECK_VK_CALL(vkCreateDevice(m_physical_device, &create_info, nullptr, &m_device));
+        MGE_DEBUG_LOG(VULKAN) << "Logical device created";
+    }
+
+    void render_system::resolve_device_functions()
+    {
+#ifdef MGE_COMPILER_MSVC
+#  pragma warning (push)
+#  pragma warning (disable: 4191)
+#endif
+#define RESOLVE(X)                                                                \
+        do {                                                                      \
+            auto f = vkGetDeviceProcAddr(m_device, #X);                           \
+            if (!f) {                                                             \
+                MGE_WARNING_LOG(VULKAN) << "Cannot resolve device function: "     \
+                    << #X;                                                        \
+            } else {                                                              \
+                 MGE_DEBUG_LOG(VULKAN) << "Resolve " << #X << ": " << (void*)f;   \
+            }                                                                     \
+            this->X = reinterpret_cast<decltype(this->X)>(f);                     \
+        }  while (false);
+
+#define BASIC_INSTANCE_FUNCTION(X)  
+#define INSTANCE_FUNCTION(X)
+#define DEVICE_FUNCTION(X) RESOLVE(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#  include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+#undef RESOLVE
+#ifdef MGE_COMPILER_MSVC
+#  pragma warning (pop)
+#endif
+
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
