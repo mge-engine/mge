@@ -26,10 +26,14 @@ namespace vulkan {
 
     render_system::~render_system()
     {
-        if (m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
+        if (m_vk_instance && m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
             vkDestroyDebugUtilsMessengerEXT(m_vk_instance, 
                                             m_vk_debug_messenger, 
                                             nullptr);
+        }
+
+        if (m_vk_instance && vkDestroyInstance) {
+            vkDestroyInstance(m_vk_instance, nullptr);
         }
     }
 
@@ -47,6 +51,7 @@ namespace vulkan {
         create_instance();
         resolve_normal_instance_functions();
         init_debug_message_handling();
+        load_physical_devices();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -245,7 +250,7 @@ namespace vulkan {
 
         return VK_FALSE;
     }
-
+    
     void render_system::init_debug_message_handling()
     {
         if (!m_config.debug() && !m_config.validation()) {
@@ -261,6 +266,32 @@ namespace vulkan {
                                                      &create_info,
                                                      nullptr,
                                                      &m_vk_debug_messenger));
+    }
+
+    void render_system::load_physical_devices()
+    {
+        fill_enumeration([&](uint32_t* count, VkPhysicalDevice* data) {
+                             CHECK_VK_CALL(vkEnumeratePhysicalDevices(m_vk_instance, count, data));
+                         }, m_physical_devices);
+        if (m_physical_devices.empty()) {
+            MGE_THROW(vulkan::error) << "No physical devices found";
+        }
+        m_selected_physical_device = 0;
+
+        vkGetPhysicalDeviceProperties(m_physical_devices[m_selected_physical_device], &m_physical_device_properties);
+        vkGetPhysicalDeviceFeatures(m_physical_devices[m_selected_physical_device], &m_physical_device_features);
+        vkGetPhysicalDeviceMemoryProperties(m_physical_devices[m_selected_physical_device], &m_physical_device_memory_properties);
+
+        fill_enumeration([&](uint32_t* count, VkQueueFamilyProperties* data) {
+            vkGetPhysicalDeviceQueueFamilyProperties(m_physical_devices[m_selected_physical_device], count, data);
+                         }, m_physical_device_queue_family_properties);
+
+        fill_enumeration
+        ([&](uint32_t* count, VkExtensionProperties* data) {
+            CHECK_VK_CALL(vkEnumerateDeviceExtensionProperties(m_physical_devices[m_selected_physical_device], nullptr, count, data));
+         }, m_physical_device_extensions);
+
+        MGE_DEBUG_LOG(VULKAN) << "Selected physical device: " << m_physical_device_properties.deviceName;
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
