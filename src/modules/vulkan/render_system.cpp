@@ -47,6 +47,7 @@ namespace vulkan {
         create_instance();
         resolve_normal_instance_functions();
         init_debug_message_handling();
+        load_physical_devices();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -245,7 +246,7 @@ namespace vulkan {
 
         return VK_FALSE;
     }
-
+    
     void render_system::init_debug_message_handling()
     {
         if (!m_config.debug() && !m_config.validation()) {
@@ -261,6 +262,21 @@ namespace vulkan {
                                                      &create_info,
                                                      nullptr,
                                                      &m_vk_debug_messenger));
+    }
+
+    void render_system::load_physical_devices()
+    {
+        fill_enumeration([&](uint32_t* count, VkPhysicalDevice* data) {
+                             CHECK_VK_CALL(vkEnumeratePhysicalDevices(m_vk_instance, count, data));
+                         }, m_physical_devices);
+        if (m_physical_devices.empty()) {
+            MGE_THROW(vulkan::error) << "No physical devices found";
+        }
+        m_selected_physical_device = 0;
+
+        vkGetPhysicalDeviceProperties2(m_physical_devices[m_selected_physical_device], &m_physical_device_properties);
+        vkGetPhysicalDeviceFeatures2(m_physical_devices[m_selected_physical_device], &m_physical_device_features);
+        vkGetPhysicalDeviceMemoryProperties2(m_physical_devices[m_selected_physical_device], &m_physical_device_memory_properties);
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
