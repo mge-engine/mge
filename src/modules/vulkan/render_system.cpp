@@ -80,6 +80,7 @@ namespace vulkan {
                 }
             }
             if (!found) {
+                MGE_THROW(vulkan::error) << "Required extension " << name << " not found";
                 MGE_THROW(vulkan::error) << "Required extension " << n << " not found";
             }
         }
