@@ -17,9 +17,20 @@ namespace vulkan {
 
     render_system::render_system()
         :m_vk_instance(VK_NULL_HANDLE)
+        ,m_vk_debug_messenger(VK_NULL_HANDLE)
     {
         MGE_DEBUG_LOG(VULKAN) << "Creating Vulkan render system";
         m_library = std::make_shared<vulkan_library>();
+    }
+
+
+    render_system::~render_system()
+    {
+        if (m_vk_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
+            vkDestroyDebugUtilsMessengerEXT(m_vk_instance, 
+                                            m_vk_debug_messenger, 
+                                            nullptr);
+        }
     }
 
 
@@ -29,9 +40,13 @@ namespace vulkan {
             MGE_THROW(mge::illegal_state) << "Render system is already configured";
         }
         m_config.configure(config);
+        
         resolve_basic_instance_functions();
+        scan_properties();
+        init_instance_extensions();
         create_instance();
         resolve_normal_instance_functions();
+        init_debug_message_handling();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -58,6 +73,31 @@ namespace vulkan {
         }
     }
 
+    void render_system::init_instance_extensions()
+    {
+        m_instance_extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
+#ifdef MGE_OS_WINDOWS
+        m_instance_extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
+#endif
+        if (m_config.validation() || m_config.debug()) {
+            m_instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+        }
+
+        for (const auto& name : m_instance_extensions) {
+            bool found = false;
+            for (const auto& e : m_all_instance_extensions) {
+                if (strcmp(e.extensionName, name) == 0) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                MGE_THROW(vulkan::error) << "Required extension " << name << " not found";
+            }
+        }
+
+    }
+
     void render_system::create_instance()
     {
         auto exe_name = mge::executable_name();
@@ -67,13 +107,6 @@ namespace vulkan {
         app_info.pEngineName = "mge";
         app_info.apiVersion = VK_API_VERSION_1_0;
 
-        m_instance_extensions.push_back(VK_KHR_SURFACE_EXTENSION_NAME);
-#ifdef MGE_OS_WINDOWS
-        m_instance_extensions.push_back(VK_KHR_WIN32_SURFACE_EXTENSION_NAME);
-#endif
-        if (m_config.validation() || m_config.debug()) {
-            m_instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-        }
         VkInstanceCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         create_info.pApplicationInfo = &app_info;
@@ -160,6 +193,74 @@ namespace vulkan {
 #  pragma warning (pop)
 #endif
 
+    }
+
+    template <typename F, typename C>
+    void render_system::fill_enumeration(const F& function, C& container)
+    {
+        uint32_t count = 0;
+        function(&count, nullptr);
+        if (count) {
+            container.resize(count);
+            function(&count, container.data());
+        }
+    }
+
+    void render_system::scan_properties()
+    {
+        fill_enumeration
+        ([&](uint32_t* count, VkExtensionProperties* data) {
+            CHECK_VK_CALL(vkEnumerateInstanceExtensionProperties(nullptr, count, data));
+         }, m_all_instance_extensions);
+
+        for (const auto& e : m_all_instance_extensions) {
+            MGE_DEBUG_LOG(VULKAN) << "Found instance extension: " << e.extensionName;
+        }
+
+        fill_enumeration
+        ([&](uint32_t* count, VkLayerProperties* data) {
+            CHECK_VK_CALL(vkEnumerateInstanceLayerProperties(count, data));
+         }, m_all_instance_layers);
+
+        for (const auto& l : m_all_instance_layers) {
+            MGE_DEBUG_LOG(VULKAN) << "Found instance layer: " << l.layerName << "(" << l.description << ")";
+        }
+
+    }
+
+    VKAPI_ATTR VkBool32 VKAPI_CALL debug_utils_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
+                                                        VkDebugUtilsMessageTypeFlagsEXT type,
+                                                        const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
+                                                        void* user_data)
+    {
+        if (severity && VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT) {
+            MGE_DEBUG_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        } else if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+            MGE_INFO_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        } else if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+            MGE_WARNING_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        } else {
+            MGE_ERROR_LOG(VULKAN) << "[" << callback_data->messageIdNumber << "][" << callback_data->pMessageIdName << "] : " << callback_data->pMessage;
+        }
+
+        return VK_FALSE;
+    }
+
+    void render_system::init_debug_message_handling()
+    {
+        if (!m_config.debug() && !m_config.validation()) {
+            return;
+        }
+
+        VkDebugUtilsMessengerCreateInfoEXT create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+        create_info.messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+        create_info.messageType = VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT;
+        create_info.pfnUserCallback = &debug_utils_callback;
+        CHECK_VK_CALL(vkCreateDebugUtilsMessengerEXT(m_vk_instance,
+                                                     &create_info,
+                                                     nullptr,
+                                                     &m_vk_debug_messenger));
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
