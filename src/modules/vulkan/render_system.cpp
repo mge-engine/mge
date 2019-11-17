@@ -276,19 +276,20 @@ namespace vulkan {
         if (m_physical_devices.empty()) {
             MGE_THROW(vulkan::error) << "No physical devices found";
         }
-        m_selected_physical_device = 0;
+        m_selected_physical_device_index = 0;
+        m_physical_device = m_physical_devices[m_selected_physical_device_index];
 
-        vkGetPhysicalDeviceProperties(m_physical_devices[m_selected_physical_device], &m_physical_device_properties);
-        vkGetPhysicalDeviceFeatures(m_physical_devices[m_selected_physical_device], &m_physical_device_features);
-        vkGetPhysicalDeviceMemoryProperties(m_physical_devices[m_selected_physical_device], &m_physical_device_memory_properties);
+        vkGetPhysicalDeviceProperties(m_physical_device, &m_physical_device_properties);
+        vkGetPhysicalDeviceFeatures(m_physical_device, &m_physical_device_features);
+        vkGetPhysicalDeviceMemoryProperties(m_physical_device, &m_physical_device_memory_properties);
 
         fill_enumeration([&](uint32_t* count, VkQueueFamilyProperties* data) {
-            vkGetPhysicalDeviceQueueFamilyProperties(m_physical_devices[m_selected_physical_device], count, data);
+            vkGetPhysicalDeviceQueueFamilyProperties(m_physical_device, count, data);
                          }, m_physical_device_queue_family_properties);
 
         fill_enumeration
         ([&](uint32_t* count, VkExtensionProperties* data) {
-            CHECK_VK_CALL(vkEnumerateDeviceExtensionProperties(m_physical_devices[m_selected_physical_device], nullptr, count, data));
+            CHECK_VK_CALL(vkEnumerateDeviceExtensionProperties(m_physical_device, nullptr, count, data));
          }, m_physical_device_extensions);
 
         MGE_DEBUG_LOG(VULKAN) << "Selected physical device: " << m_physical_device_properties.deviceName;

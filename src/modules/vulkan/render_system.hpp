@@ -68,8 +68,9 @@ namespace vulkan {
         layer_property_vector            m_all_instance_layers;
 
         physical_device_vector           m_physical_devices;
-        uint32_t                         m_selected_physical_device;
-        
+        uint32_t                         m_selected_physical_device_index;
+        VkPhysicalDevice                 m_physical_device;
+
         VkPhysicalDeviceProperties       m_physical_device_properties;
         VkPhysicalDeviceFeatures         m_physical_device_features;
         VkPhysicalDeviceMemoryProperties m_physical_device_memory_properties;
