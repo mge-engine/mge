@@ -47,6 +47,7 @@ namespace vulkan {
         using extension_property_vector = std::vector<VkExtensionProperties>;
         using layer_property_vector = std::vector<VkLayerProperties>;
         using physical_device_vector = mge::small_vector<VkPhysicalDevice, 3>;
+        using queue_family_property_vector = mge::small_vector<VkQueueFamilyProperties, 4>;
 
         template <typename F, typename C>
         void fill_enumeration(const F& function, C& container);
@@ -72,6 +73,7 @@ namespace vulkan {
         VkPhysicalDeviceProperties2       m_physical_device_properties;
         VkPhysicalDeviceFeatures2         m_physical_device_features;
         VkPhysicalDeviceMemoryProperties2 m_physical_device_memory_properties;
+        queue_family_property_vector      m_physical_device_queue_family_properties;
 
         std::vector<const char*>          m_instance_extensions;
         VkInstance                        m_vk_instance;

@@ -277,6 +277,11 @@ namespace vulkan {
         vkGetPhysicalDeviceProperties2(m_physical_devices[m_selected_physical_device], &m_physical_device_properties);
         vkGetPhysicalDeviceFeatures2(m_physical_devices[m_selected_physical_device], &m_physical_device_features);
         vkGetPhysicalDeviceMemoryProperties2(m_physical_devices[m_selected_physical_device], &m_physical_device_memory_properties);
+
+        fill_enumeration([&](uint32_t* count, VkQueueFamilyProperties* data) {
+            vkGetPhysicalDeviceQueueFamilyProperties(m_physical_devices[m_selected_physical_device], count, data);
+                         }, m_physical_device_queue_family_properties);
+
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
