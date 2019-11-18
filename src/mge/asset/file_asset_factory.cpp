@@ -15,7 +15,23 @@ namespace mge {
     public:
         file_asset_access(const file& asset_file)
             :m_file(asset_file)
-        {}
+            ,m_properties_file(asset_file)
+        {
+            auto p = asset_file.path();
+            if (!p.has_filename()) {
+                MGE_THROW(illegal_argument) << "Asset file name must have a file name component";
+            }
+
+            if (p.has_extension()) {
+                auto ext = p.extension();
+                auto ext_str = ext.string();
+                ext_str += ".properties";
+                p.replace_extension(path(ext_str));
+            } else {
+                p.replace_extension(path(".properties"));
+            }
+            m_properties_file = file(p);
+        }
 
         ~file_asset_access() = default;
 
@@ -36,7 +52,7 @@ namespace mge {
 
         bool has_properties() const override
         {
-            return false;
+            return m_properties_file.exists();
         }
 
         properties_ref properties() const override
@@ -46,6 +62,7 @@ namespace mge {
 
     private:
         file m_file;
+        file m_properties_file;
     };
 
     class file_asset_access_factory 
