@@ -1,6 +1,7 @@
 #pragma once
 #include "mge/graphics/render_context.hpp"
 #include "system_config.hpp"
+#include "vulkan.hpp"
 
 namespace vulkan {
     class window;
@@ -32,5 +33,17 @@ namespace vulkan {
         void shader_languages(std::vector<mge::shader_language>& languages) const override;
 
     private:
+        template <typename F, typename C>
+        void fill_enumeration(const F& function, C& container);
+    
+        using surface_format_vector = std::vector<VkSurfaceFormatKHR>;
+        using present_mode_vector = std::vector<VkPresentModeKHR>;
+        void create_surface(window* win);
+
+        render_system&           m_render_system;
+        VkSurfaceKHR             m_surface;
+        VkSurfaceCapabilitiesKHR m_surface_capabilties;
+        surface_format_vector    m_surface_formats;
+        present_mode_vector      m_surface_present_modes;
     };
 }
