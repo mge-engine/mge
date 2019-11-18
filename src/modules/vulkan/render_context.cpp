@@ -3,21 +3,83 @@
 #include "window.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
+#include "error.hpp"
 
 MGE_USE_LOG(VULKAN);
 
 namespace vulkan {
 
+    template <typename F, typename C>
+    void render_context::fill_enumeration(const F& function, C& container)
+    {
+        uint32_t count = 0;
+        function(&count, nullptr);
+        if (count) {
+            container.resize(count);
+            function(&count, container.data());
+        }
+    }
+
+
     render_context::render_context(window *win, 
                                    render_system& system,
                                    const system_config &config)
         : mge::render_context(win)
+        , m_render_system(system)
+        , m_surface(VK_NULL_HANDLE)
     {
         MGE_DEBUG_LOG(VULKAN) << "Create render context";
+        create_surface(win);
     }
 
     render_context::~render_context()
-    {}
+    {
+        if (m_surface) {
+            m_render_system.vkDestroySurfaceKHR(m_render_system.instance(), m_surface, nullptr);
+        }
+    }
+
+    void render_context::create_surface(window* win)
+    {
+#ifdef MGE_OS_WINDOWS
+        MGE_DEBUG_LOG(VULKAN) << "Create Vulkan surface";
+        VkWin32SurfaceCreateInfoKHR create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+        create_info.hinstance = GetModuleHandle(nullptr);
+        create_info.hwnd = win->hwnd();
+        create_info.flags = 0;
+        CHECK_VK_CALL(m_render_system.vkCreateWin32SurfaceKHR(m_render_system.instance(),
+                                                              &create_info,
+                                                              nullptr,
+                                                              &m_surface));
+
+        m_render_system.vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_render_system.physical_device(),
+                                                                  m_surface,
+                                                                  &m_surface_capabilties);
+
+        fill_enumeration
+        ([&](uint32_t* count, VkSurfaceFormatKHR* data) {
+            m_render_system.vkGetPhysicalDeviceSurfaceFormatsKHR(m_render_system.physical_device(), 
+                                                                 m_surface, 
+                                                                 count, 
+                                                                 data);
+         }, m_surface_formats);
+        MGE_DEBUG_LOG(VULKAN) << "Surface supports " << m_surface_formats.size() << " formats";
+        
+        fill_enumeration
+        ([&](uint32_t* count, VkPresentModeKHR* data) {
+            m_render_system.vkGetPhysicalDeviceSurfacePresentModesKHR(m_render_system.physical_device(),
+                                                                      m_surface,
+                                                                      count,
+                                                                      data);
+         }, m_surface_present_modes);
+
+        MGE_DEBUG_LOG(VULKAN) << "Surface supports " << m_surface_present_modes.size() << " present modes";
+
+#else
+#  error "Unsupported platform"
+#endif
+    }
 
     void
     render_context::flush()

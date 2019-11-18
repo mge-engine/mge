@@ -39,6 +39,11 @@ namespace vulkan {
             return m_device;
         }
 
+        queue_family_property_vector& queue_family_properties() const
+        {
+            return m_physical_device_queue_family_properties;
+        }
+
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
 #define INSTANCE_FUNCTION(X)       PFN_##X X;
@@ -74,6 +79,8 @@ namespace vulkan {
         uint32_t best_queue_family_index(VkQueueFlagBits);
         void create_device();
         void resolve_device_functions();
+        void retrieve_device_queues();
+
 
         system_config                    m_config;
         std::shared_ptr<vulkan_library>  m_library;
@@ -106,6 +113,10 @@ namespace vulkan {
 
         std::vector<const char*>         m_enabled_device_extensions;
         VkDevice                         m_device;
+
+        VkQueue                          m_graphics_queue;
+        VkQueue                          m_compute_queue;
+        VkQueue                          m_transfer_queue;
 
     };
 }
