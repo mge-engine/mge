@@ -17,8 +17,11 @@ namespace vulkan {
 
     render_system::render_system()
         :m_instance(VK_NULL_HANDLE)
-        ,m_debug_messenger(VK_NULL_HANDLE)
-        ,m_device(VK_NULL_HANDLE)
+        , m_debug_messenger(VK_NULL_HANDLE)
+        , m_device(VK_NULL_HANDLE)
+        , m_graphics_queue(VK_NULL_HANDLE)
+        , m_compute_queue(VK_NULL_HANDLE)
+        , m_transfer_queue(VK_NULL_HANDLE)
     {
         MGE_DEBUG_LOG(VULKAN) << "Creating Vulkan render system";
         m_library = std::make_shared<vulkan_library>();
@@ -63,6 +66,7 @@ namespace vulkan {
         compute_queue_family_indices();
         create_device();
         resolve_device_functions();
+        retrieve_device_queues();
     }
 
     render_system::monitor_collection_t render_system::monitors() const
@@ -423,6 +427,13 @@ namespace vulkan {
 #  pragma warning (pop)
 #endif
 
+    }
+
+    void render_system::retrieve_device_queues()
+    {
+        vkGetDeviceQueue(m_device, m_queue_family_indices.graphics, 0, &m_graphics_queue);
+        vkGetDeviceQueue(m_device, m_queue_family_indices.compute, 0, &m_compute_queue);
+        vkGetDeviceQueue(m_device, m_queue_family_indices.transfer, 0, &m_transfer_queue);
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
