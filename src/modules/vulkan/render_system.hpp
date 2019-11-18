@@ -39,6 +39,11 @@ namespace vulkan {
             return m_device;
         }
 
+        queue_family_property_vector& queue_family_properties() const
+        {
+            return m_physical_device_queue_family_properties;
+        }
+
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
 #define INSTANCE_FUNCTION(X)       PFN_##X X;
