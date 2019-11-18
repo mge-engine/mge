@@ -14,6 +14,11 @@ namespace vulkan {
     class render_system : public mge::render_system
     {
     public:
+        using extension_property_vector = std::vector<VkExtensionProperties>;
+        using layer_property_vector = std::vector<VkLayerProperties>;
+        using physical_device_vector = mge::small_vector<VkPhysicalDevice, 3>;
+        using queue_family_property_vector = mge::small_vector<VkQueueFamilyProperties, 4>;
+
         render_system();
         virtual ~render_system();
 
@@ -39,7 +44,7 @@ namespace vulkan {
             return m_device;
         }
 
-        queue_family_property_vector& queue_family_properties() const
+        const queue_family_property_vector& queue_family_properties() const
         {
             return m_physical_device_queue_family_properties;
         }
@@ -59,10 +64,6 @@ namespace vulkan {
 #undef DEVICE_FUNCTION
 
     private:
-        using extension_property_vector = std::vector<VkExtensionProperties>;
-        using layer_property_vector = std::vector<VkLayerProperties>;
-        using physical_device_vector = mge::small_vector<VkPhysicalDevice, 3>;
-        using queue_family_property_vector = mge::small_vector<VkQueueFamilyProperties, 4>;
 
         template <typename F, typename C>
         void fill_enumeration(const F& function, C& container);
