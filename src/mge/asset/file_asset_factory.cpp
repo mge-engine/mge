@@ -33,6 +33,17 @@ namespace mge {
         {
             return asset_type::UNKNOWN;
         }
+
+        bool has_properties() const override
+        {
+            return false;
+        }
+
+        properties_ref properties() const override
+        {
+            return properties_ref();
+        }
+
     private:
         file m_file;
     };

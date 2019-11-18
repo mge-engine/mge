@@ -5,11 +5,19 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/types.hpp"
 #include <unordered_map>
 #include <string>
 
 namespace mge {
 
+    MGE_DECLARE_REF(properties);
+
+    /**
+     * Properties represent a map of key-value pairs.
+     * Both key and value are strings, but utility 
+     * methods to cast values into other types exist.
+     */
     class MGE_CORE_EXPORT properties
     {
     public:
