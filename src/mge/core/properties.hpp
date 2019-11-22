@@ -6,6 +6,7 @@
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/types.hpp"
+#include "mge/core/input_stream.hpp"
 #include <unordered_map>
 #include <string>
 
@@ -24,6 +25,8 @@ namespace mge {
         properties();
         properties(const properties& p);
         properties(properties&& p);
+        properties(const input_stream_ref& input);
+
 
         properties& operator =(const properties& p);
         properties& operator =(properties&& p);
@@ -114,6 +117,8 @@ namespace mge {
         void erase(const std::string& key);
 
         void clear();
+
+        void load(std::istream& s);
     private:
         std::unordered_map<std::string, std::string> m_data;
     };

@@ -15,6 +15,11 @@ namespace mge {
         :m_data(std::move(p.m_data))
     {}
 
+    properties::properties(const input_stream_ref& input)
+    {
+        load(input->istream());
+    }
+
     properties&
     properties::operator =(const properties& p)
     {
@@ -45,6 +50,11 @@ namespace mge {
     properties::erase(const std::string& key)
     {
         m_data.erase(key);
+    }
+
+    void properties::load(std::istream& s)
+    {
+
     }
 
 }
