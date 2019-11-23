@@ -42,6 +42,7 @@ SET(mgecore_sources
     version.cpp
     properties.cpp
     property_object.cpp
+    output_stream.cpp
 )
 
 ADD_LIBRARY(mgecore
