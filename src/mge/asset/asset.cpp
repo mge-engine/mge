@@ -78,6 +78,22 @@ namespace mge {
         return m_access->type();
     }
 
+    bool asset::has_properties() const
+    {
+        if (!m_access) {
+            m_access = repository_manager->access(m_path);
+        }
+        return m_access->has_properties();
+    }
+
+    properties_ref asset::properties() const
+    {
+        if (!m_access) {
+            m_access = repository_manager->access(m_path);
+        }
+        return m_access->properties();
+    }
+
     void
     asset::gist(std::ostream& os) const
     {
