@@ -77,8 +77,6 @@ namespace mge {
         output_stream_buffer m_buffer;
     };
 
-
-
     void output_stream::write(uint8_t byte)
     {
         write(&byte, 1);
@@ -122,6 +120,7 @@ namespace mge {
 
     void output_stream::notify_write(streamsize_type written_bytes)
     {
+        decltype(m_write_listeners)::iteration_scope guard(m_write_listeners);
         for (const auto& [_, value] : m_write_listeners) {
             value(written_bytes);
         }
