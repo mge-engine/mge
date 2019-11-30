@@ -43,6 +43,8 @@ SET(mgecore_sources
     properties.cpp
     property_object.cpp
     output_stream.cpp
+    archive.cpp
+    open_mode.hpp
 )
 
 ADD_LIBRARY(mgecore
@@ -50,7 +52,7 @@ ADD_LIBRARY(mgecore
             ${mgecore_sources})
 
 TARGET_ADD_DEFINE(mgecore BUILD_MGE_CORE)
-TARGET_LINK_LIBRARIES(mgecore boost-all sqlite3)
+TARGET_LINK_LIBRARIES(mgecore boost-all sqlite3 libzip)
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mgecore dbghelp)
