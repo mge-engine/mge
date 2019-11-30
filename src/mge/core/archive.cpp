@@ -50,7 +50,6 @@ namespace mge {
 
     archive::~archive()
     {
-        zip_source_close(nullptr);
     }
 
 }
