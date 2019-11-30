@@ -1,6 +1,7 @@
 # mge - Modern Game Engine
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
+ADD_SUBDIRECTORY(zip)
 ADD_SUBDIRECTORY(opengl)
 IF(MSVC)
     MESSAGE("-- Compiler is Visual C++, checking whether to enable DirectX support")
