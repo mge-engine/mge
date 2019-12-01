@@ -32,7 +32,9 @@ namespace mge {
 
         virtual ~output_stream_buffer()
         {
-            sync();
+            // we cannot do sync here, as output stream buffer is
+            // destroyed after a elements of derived stream
+            // already have been destroyed
         }
 
         std::streambuf::int_type sync() override
