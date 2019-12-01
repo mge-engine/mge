@@ -1,4 +1,5 @@
 #include "mge/core/archive_access_factory.hpp"
+#include <string>
 #include <zip.h>
 // cannot use zip as namespace as that is already defined by zip.h
 namespace zip_archive {
@@ -56,6 +57,12 @@ namespace zip_archive {
     public:
         archive_access_factory() = default;
         ~archive_access_factory() = default;
+
+        bool handles_path(const mge::path& p) const override
+        {
+            return p.extension().string() == "zip";
+        }
+
         mge::archive_access_ref create_archive_access(const mge::file& f, 
                                                       mge::open_mode m) override
         {
