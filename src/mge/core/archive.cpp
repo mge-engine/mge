@@ -1,8 +1,23 @@
 #include "mge/core/archive.hpp"
-
-#include <zip.h>
+#include "mge/core/archive_access_factory.hpp"
+#include <map>
 
 namespace mge {
+
+    class factory_registry
+    {
+    public:
+        factory_registry()
+        {}
+
+        ~factory_registry()
+        {}
+    private:
+        std::map<std::string, archive_access_factory_ref> m_access_factories;
+    };
+
+
+
     archive::entry::entry(const mge::path& p, bool dir)
         : m_path(p)
         , m_directory(dir)
@@ -41,15 +56,31 @@ namespace mge {
     archive::archive(const file& f, archive::open_mode m)
         : m_file(f)
         , m_open_mode(m)
-    {}
+    {
+        open();
+    }
 
     archive::archive(const mge::path& p, archive::open_mode m)
         : m_file(p)
         , m_open_mode(m)
-    {}
+    {
+        open();
+    }
+
+    archive::archive(const char *p, archive::open_mode m)
+        : m_file(p)
+        , m_open_mode(m)
+    {
+        open();
+    }
 
     archive::~archive()
     {
+    }
+
+    void archive::open()
+    {
+
     }
 
 }
