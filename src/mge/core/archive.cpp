@@ -27,7 +27,12 @@ namespace mge {
     private:
         void update_factories()
         {
-
+            archive_access_factory::implementations([&](const std::string& n) { 
+                std::lock_guard<std::mutex> guard(m_lock);
+                if (m_access_factories.find(n) == m_access_factories.end()) {
+                    m_access_factories[n] = archive_access_factory::create(n);
+                }
+            });
         }
 
         archive_access_factory_ref find_factory(const path& p)
