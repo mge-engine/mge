@@ -1,8 +1,11 @@
 #include "mge/core/archive.hpp"
 #include "mge/core/archive_access_factory.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/log.hpp"
 
 #include <map>
+
+MGE_DEFINE_LOG(ARCHIVE);
 
 namespace mge {
 
@@ -30,6 +33,7 @@ namespace mge {
             archive_access_factory::implementations([&](const std::string& n) { 
                 std::lock_guard<std::mutex> guard(m_lock);
                 if (m_access_factories.find(n) == m_access_factories.end()) {
+                    MGE_DEBUG_LOG(ARCHIVE) << "Create archive access for " << n;
                     m_access_factories[n] = archive_access_factory::create(n);
                 }
             });
@@ -37,8 +41,10 @@ namespace mge {
 
         archive_access_factory_ref find_factory(const path& p)
         {
+            MGE_DEBUG_LOG(ARCHIVE) << "Find archive handler for " << p;
             std::lock_guard<std::mutex> guard(m_lock);
             for (const auto& e : m_access_factories) {
+                MGE_DEBUG_LOG(ARCHIVE) << "Check " << e.first;
                 if (e.second->handles_path(p)) {
                     return e.second;
                 }
@@ -114,7 +120,11 @@ namespace mge {
 
     void archive::open()
     {
-
+        auto factory = archive_factories->get_factory(m_file);
+        if (!factory) {
+            MGE_THROW(mge::illegal_state) << "Archive " << m_file << " is not valid";
+        }
+        m_access = factory->create_archive_access(m_file, m_open_mode);
     }
 
 }

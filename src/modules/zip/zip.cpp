@@ -1,7 +1,10 @@
 #include "mge/core/archive_access_factory.hpp"
+#include "mge/core/log.hpp"
 #include <string>
 #include <zip.h>
 // cannot use zip as namespace as that is already defined by zip.h
+MGE_DEFINE_LOG(ZIP);
+
 namespace zip_archive {
 
     class zip_archive_access : 
@@ -60,7 +63,8 @@ namespace zip_archive {
 
         bool handles_path(const mge::path& p) const override
         {
-            return p.extension().string() == "zip";
+            MGE_DEBUG_LOG(ZIP) << "Check " << p << " for being a zip file";
+            return p.extension().string() == ".zip";
         }
 
         mge::archive_access_ref create_archive_access(const mge::file& f, 
