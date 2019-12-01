@@ -10,17 +10,30 @@ namespace zip_archive {
         zip_archive_access(const mge::file &f, mge::open_mode m)
             : mge::archive_access(f, m)
             , m_zip_source(nullptr)
+            , m_zip(nullptr)
             , m_source_delete_needed(true)
+            
         {
             zip_error_t err = {};
             m_zip_source = zip_source_function_create(&zip_source_callback, this, &err);
             if (m_zip_source == nullptr) {
 
+            } else {
+                m_zip = zip_open_from_source(m_zip_source, ZIP_RDONLY, &err);
+                if (m_zip == nullptr) {
+
+                } else {
+                    m_source_delete_needed = false;
+                }
             }
         }
 
         virtual ~zip_archive_access()
         {
+            if(m_zip) {
+                zip_close(m_zip);
+            }
+
             if (m_zip_source && m_source_delete_needed) {
                 zip_source_free(m_zip_source);
             }
@@ -33,6 +46,7 @@ namespace zip_archive {
         }
 
         zip_source_t* m_zip_source;
+        zip_t       * m_zip;
         bool          m_source_delete_needed;
     };
 
