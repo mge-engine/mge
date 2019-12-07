@@ -37,9 +37,9 @@ namespace mge {
         /// Seek direction type.
         enum direction_type
         {
-            POS_BEG, //!< seek from beginning
-            POS_CUR, //!< seek from current position
-            POS_END  //!< seek from end
+            POS_BEG = 0, //!< seek from beginning
+            POS_CUR = 1, //!< seek from current position
+            POS_END = 2  //!< seek from end
         };
 
         /**

@@ -23,10 +23,12 @@ namespace mge {
     {
     public:
         using open_mode = mge::open_mode;
-        class entry
+        class MGE_CORE_EXPORT entry
         {
         public:
-            entry(const path& p, bool dir);
+            entry(const char *path, 
+                  std::streamsize size,
+                  uint32_t index);
             entry(const entry& e);
             entry(entry&& e);
             
@@ -41,9 +43,22 @@ namespace mge {
             {
                 return m_directory; 
             }
+
+            std::streamsize size() const
+            {
+                return m_size;
+            }
+
+            input_stream_ref open();
         private:
-            mge::path m_path;
-            bool      m_directory;
+            friend class archive;
+            void set_access(const archive_access_ref& access);
+
+            mge::path          m_path;
+            std::streamsize    m_size;
+            archive_access_ref m_access;
+            uint32_t           m_index;
+            bool               m_directory;
         };
 
         using archive_entries = std::vector<entry>;

@@ -58,25 +58,37 @@ namespace mge {
 
     static singleton<factory_registry> archive_factories;
 
-    archive::entry::entry(const mge::path& p, bool dir)
-        : m_path(p)
-        , m_directory(dir)
+    archive::entry::entry(const char *name,
+                          std::streamsize size,
+                          uint32_t index)
+        : m_path(name)
+        , m_size(size)
+        , m_index(index)
+        , m_directory(false)
     {}
 
     archive::entry::entry(const archive::entry& e)
         : m_path(e.m_path)
+        , m_size(e.m_size)
+        , m_access(e.m_access)
+        , m_index(e.m_index)
         , m_directory(e.m_directory)
     {}
 
     archive::entry::entry(archive::entry&& e)
         : m_path(std::move(e.m_path))
+        , m_size(e.m_size)
+        , m_access(std::move(e.m_access))
+        , m_index(e.m_index)
         , m_directory(e.m_directory)
     {}
-
 
     archive::entry& archive::entry::operator=(const archive::entry& e)
     {
         m_path = e.m_path;
+        m_size = e.m_size;
+        m_access = e.m_access;
+        m_index = e.m_index;
         m_directory = e.m_directory;
         return *this;
     }
@@ -84,6 +96,9 @@ namespace mge {
     archive::entry& archive::entry::operator=(archive::entry&& e)
     {
         m_path = std::move(e.m_path);
+        m_size = e.m_size;
+        m_access = std::move(e.m_access);
+        m_index = e.m_index;
         m_directory = e.m_directory;
         return *this;
     }
@@ -91,6 +106,11 @@ namespace mge {
     const mge::path& archive::entry::path() const
     {
         return m_path;
+    }
+
+    void archive::entry::set_access(const archive_access_ref& a)
+    {
+        m_access = a;
     }
 
     archive::archive(const file& f, archive::open_mode m)
@@ -126,6 +146,9 @@ namespace mge {
         }
         m_access = factory->create_archive_access(m_file, m_open_mode);
         m_entries = m_access->entries();
+        for(auto& e : m_entries) {
+            e.set_access(m_access);
+        }
     }
 
 }
