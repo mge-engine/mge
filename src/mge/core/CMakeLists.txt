@@ -46,7 +46,7 @@ SET(mgecore_sources
     archive.cpp
     archive_access.cpp
     archive_access_factory.cpp
-    open_mode.hpp
+    open_mode.cpp
 )
 
 ADD_LIBRARY(mgecore

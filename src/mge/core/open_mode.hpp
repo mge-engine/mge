@@ -1,6 +1,7 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include <iosfwd>
+#include <cstdint>
 namespace mge {
 
     /**
