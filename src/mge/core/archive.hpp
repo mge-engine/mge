@@ -10,9 +10,11 @@
 #include "mge/core/path.hpp"
 #include "mge/core/file.hpp"
 #include "mge/core/open_mode.hpp"
-#include "mge/core/archive_access.hpp"
+
 
 namespace mge {
+
+    MGE_DECLARE_REF(archive_access);
 
     /**
      * Handle to an archive.

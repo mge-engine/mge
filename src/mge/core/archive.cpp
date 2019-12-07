@@ -125,6 +125,7 @@ namespace mge {
             MGE_THROW(mge::illegal_state) << "Archive " << m_file << " is not valid";
         }
         m_access = factory->create_archive_access(m_file, m_open_mode);
+        m_entries = m_access->entries();
     }
 
 }

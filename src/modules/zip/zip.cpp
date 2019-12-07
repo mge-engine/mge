@@ -16,6 +16,7 @@ namespace zip_archive {
             , m_zip_source(nullptr)
             , m_zip(nullptr)
             , m_source_delete_needed(true)
+            , m_entries_refresh_needed(true)
             
         {
             zip_error_t err = {};
@@ -43,15 +44,30 @@ namespace zip_archive {
             }
         }
 
+        const mge::archive::archive_entries& entries() const override
+        {
+            if (m_entries_refresh_needed) {
+                refresh_entries();
+            }
+            return m_entries;
+        }
+
     private:
         static zip_int64_t zip_source_callback(void * arg1, void * arg2, zip_uint64_t arg3, zip_source_cmd_t cmd)
         {
             return -1;
         }
 
+        void refresh_entries() const
+        {
+
+        }
+
+        mutable mge::archive::archive_entries m_entries;
         zip_source_t* m_zip_source;
-        zip_t       * m_zip;
-        bool          m_source_delete_needed;
+        zip_t* m_zip;
+        bool m_source_delete_needed;
+        mutable bool m_entries_refresh_needed;
     };
 
     class archive_access_factory 
