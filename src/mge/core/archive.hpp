@@ -26,7 +26,8 @@ namespace mge {
         class MGE_CORE_EXPORT entry
         {
         public:
-            entry(const char *path, 
+            entry(const path& path,
+                  bool is_directory, 
                   std::streamsize size,
                   uint32_t index);
             entry(const entry& e);
@@ -73,6 +74,8 @@ namespace mge {
         {
             return m_entries;
         }
+
+        const entry& find_entry(const mge::path& p) const;
 
     private:
         void open();

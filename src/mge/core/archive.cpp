@@ -58,13 +58,14 @@ namespace mge {
 
     static singleton<factory_registry> archive_factories;
 
-    archive::entry::entry(const char *name,
+    archive::entry::entry(const mge::path& path,
+                          bool is_directory,
                           std::streamsize size,
                           uint32_t index)
-        : m_path(name)
+        : m_path(path)
         , m_size(size)
         , m_index(index)
-        , m_directory(false)
+        , m_directory(is_directory)
     {}
 
     archive::entry::entry(const archive::entry& e)
@@ -150,5 +151,20 @@ namespace mge {
             e.set_access(m_access);
         }
     }
+
+    const archive::entry& archive::find_entry(const path& p) const
+    {
+        auto it = std::find_if(m_entries.begin(),
+                               m_entries.end(),
+                               [&](const archive::entry& e) -> bool {
+                                   return e.path() == p;
+                               });
+        if (it == m_entries.end()) {
+            MGE_THROW(no_such_element) << "No such archive entry: " << p;
+        } else {
+            return *it;
+        }
+    }
+
 
 }

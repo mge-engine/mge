@@ -204,7 +204,15 @@ namespace zip_archive {
                 if (rc != 0) {
                     break;
                 }
-                m_entries.emplace_back(stat.name,
+                std::string n(stat.name);
+                bool is_directory = false;
+                if (n.back() == '/' && stat.size == 0) {
+                    is_directory = true;
+                    n.resize(n.size() - 1);
+                }
+
+                m_entries.emplace_back(mge::path(n),
+                                       is_directory,
                                        stat.size,
                                        stat.index);
             }
@@ -236,6 +244,8 @@ namespace zip_archive {
         mge::archive_access_ref create_archive_access(const mge::file& f, 
                                                       mge::open_mode m) override
         {
+            MGE_DEBUG_LOG(ZIP) << "Opening " << f << " with mode " << m;
+
             mge::archive_access_ref result = 
                 std::make_shared<zip_archive_access>(f, m);
             return result;
