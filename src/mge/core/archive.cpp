@@ -109,6 +109,11 @@ namespace mge {
         return m_path;
     }
 
+    input_stream_ref archive::entry::open()
+    {
+        return m_access->open(m_index);
+    }
+
     void archive::entry::set_access(const archive_access_ref& a)
     {
         m_access = a;

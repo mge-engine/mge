@@ -1,6 +1,10 @@
 #include "mge/core/archive_access_factory.hpp"
 #include "mge/core/log.hpp"
+#include "mge/core/io_error.hpp"
+
 #include <string>
+#include <mutex>
+
 #include <zip.h>
 #include <stdio.h>
 
@@ -39,6 +43,47 @@ namespace {
 
 
 namespace zip_archive {
+
+    class zip_input_stream
+        : public mge::input_stream
+    {
+    public:
+        zip_input_stream(zip_t *zip, uint32_t index)
+            : m_zip(zip)
+            , m_index(index)
+            , m_file(nullptr)
+        {   
+            m_file = zip_fopen_index(m_zip, m_index, 0);
+            if (!m_file) {
+                auto *err = zip_get_error(m_zip);
+                MGE_THROW(mge::io_error) 
+                    << "Error opening file in zip archive: " 
+                    << zip_error_strerror(err);
+            }
+        }
+
+        virtual ~zip_input_stream()
+        {
+            if (m_zip) {
+                zip_fclose(m_file);
+            }
+        }
+
+    protected:
+        streamsize_type on_read(void *destination,
+                                streamsize_type size)
+        {
+            if (size < 0) {
+                MGE_THROW(mge::io_error) 
+                    << "Invalid read size " << size;
+            }
+            return zip_fread(m_file, destination, size);
+        }
+    private:
+        zip_t      *m_zip;
+        uint32_t    m_index;
+        zip_file_t *m_file;
+    };
 
     class zip_archive_access : 
         public mge::archive_access
@@ -85,6 +130,21 @@ namespace zip_archive {
                 refresh_entries();
             }
             return m_entries;
+        }
+
+        mge::input_stream_ref open(uint32_t index)
+        {
+            if (index >= entries().size()) {
+                MGE_THROW(mge::illegal_argument) << 
+                    "Invalid archive index " << index;
+            }
+
+            {
+                std::lock_guard<std::mutex> guard(m_lock);
+                auto result = std::make_shared<zip_input_stream>
+                    (m_zip, index);
+                return result;
+            }
         }
 
     private:
@@ -197,6 +257,7 @@ namespace zip_archive {
 
         void refresh_entries() const
         {
+            std::lock_guard<std::mutex> guard(m_lock);
             auto num_entries = zip_get_num_entries(m_zip, 0);
             for (zip_int64_t i=0; i<num_entries; ++i) {
                 zip_stat_t stat = {};
@@ -224,6 +285,7 @@ namespace zip_archive {
         zip_t* m_zip;
         zip_error_t m_zip_error;
         mge::input_stream_ref m_input;
+        mutable std::mutex m_lock;
         bool m_source_delete_needed;
         mutable bool m_entries_refresh_needed;
     };

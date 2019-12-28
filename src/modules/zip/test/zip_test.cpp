@@ -31,3 +31,20 @@ TEST(ziptest, archive_entries)
     }
 }
 
+TEST(ziptest, find_entry)
+{
+    mge::archive a("assets/archive.zip", mge::open_mode::READ);
+    auto e = a.find_entry("dir1/dira/b.txt");
+    EXPECT_EQ(9u, e.size());
+}
+
+TEST(ziptest, read_entry)
+{
+    mge::archive a("assets/archive.zip", mge::open_mode::READ);
+    auto e = a.find_entry("dir1/dira/b.txt");
+    auto is = e.open();
+    std::string str;
+    is->istream() >> str;
+    EXPECT_EQ(std::string(""), str);
+}
+
