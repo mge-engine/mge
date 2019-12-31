@@ -21,7 +21,7 @@ TEST(ziptest, archive_entries)
     mge::archive::archive_entries ae = a.entries();
     EXPECT_EQ(6u, ae.size());
     for(const auto &e : ae) {
-        if (e.path() == mge::path("dir1") 
+        if (e.path() == mge::path("dir1")
             || e.path() == mge::path("dir1/dira")
             || e.path() == mge::path("dir1/dirb")) {
             EXPECT_TRUE(e.is_directory());
@@ -35,16 +35,17 @@ TEST(ziptest, find_entry)
 {
     mge::archive a("assets/archive.zip", mge::open_mode::READ);
     auto e = a.find_entry("dir1/dira/b.txt");
-    EXPECT_EQ(9u, e.size());
+    EXPECT_EQ(33u, e.size());
 }
 
 TEST(ziptest, read_entry)
 {
     mge::archive a("assets/archive.zip", mge::open_mode::READ);
+    std::cout << "find entry" << std::endl;
     auto e = a.find_entry("dir1/dira/b.txt");
     auto is = e.open();
     std::string str;
     is->istream() >> str;
-    EXPECT_EQ(std::string(""), str);
+    EXPECT_EQ(std::string("BBBBBBBBB"), str);
 }
 

@@ -4,6 +4,7 @@
 
 #include <string>
 #include <mutex>
+#include <iostream>
 
 #include <zip.h>
 #include <stdio.h>
@@ -17,7 +18,7 @@ namespace {
         switch (c) {
 #define HANDLE_CMD(CMD) case ZIP_SOURCE_ ## CMD: return os << #CMD
         HANDLE_CMD(OPEN);
-        HANDLE_CMD(READ);        
+        HANDLE_CMD(READ);
         HANDLE_CMD(CLOSE);
         HANDLE_CMD(STAT);
         HANDLE_CMD(ERROR);
@@ -34,7 +35,7 @@ namespace {
         HANDLE_CMD(REMOVE);
         HANDLE_CMD(GET_COMPRESSION_FLAGS);
         HANDLE_CMD(BEGIN_WRITE_CLONING);
-#undef HANDLE_CMD 
+#undef HANDLE_CMD
         default:
             return os << "INVALID(" << (int)c << ")";
         }
@@ -52,12 +53,12 @@ namespace zip_archive {
             : m_zip(zip)
             , m_index(index)
             , m_file(nullptr)
-        {   
+        {
             m_file = zip_fopen_index(m_zip, m_index, 0);
             if (!m_file) {
                 auto *err = zip_get_error(m_zip);
-                MGE_THROW(mge::io_error) 
-                    << "Error opening file in zip archive: " 
+                MGE_THROW(mge::io_error)
+                    << "Error opening file in zip archive: "
                     << zip_error_strerror(err);
             }
         }
@@ -74,10 +75,11 @@ namespace zip_archive {
                                 streamsize_type size)
         {
             if (size < 0) {
-                MGE_THROW(mge::io_error) 
+                MGE_THROW(mge::io_error)
                     << "Invalid read size " << size;
             }
-            return zip_fread(m_file, destination, size);
+            auto r = zip_fread(m_file, destination, size);
+            return r;
         }
     private:
         zip_t      *m_zip;
@@ -85,7 +87,7 @@ namespace zip_archive {
         zip_file_t *m_file;
     };
 
-    class zip_archive_access : 
+    class zip_archive_access :
         public mge::archive_access
     {
     public:
@@ -96,7 +98,7 @@ namespace zip_archive {
             , m_zip(nullptr)
             , m_source_delete_needed(true)
             , m_entries_refresh_needed(true)
-            
+
         {
             zip_error_init(&m_zip_error);
             m_zip_source = zip_source_function_create(&zip_source_callback, this, &m_zip_error);
@@ -135,7 +137,7 @@ namespace zip_archive {
         mge::input_stream_ref open(uint32_t index)
         {
             if (index >= entries().size()) {
-                MGE_THROW(mge::illegal_argument) << 
+                MGE_THROW(mge::illegal_argument) <<
                     "Invalid archive index " << index;
             }
 
@@ -202,14 +204,14 @@ namespace zip_archive {
         zip_int64_t cmd_seek(void *data, zip_uint64_t len)
         {
             zip_error_init(&m_zip_error);
-            zip_source_args_seek_t *seek_args = 
+            zip_source_args_seek_t *seek_args =
                 ZIP_SOURCE_GET_ARGS(zip_source_args_seek_t , data, len, &m_zip_error);
             if (has_error(&m_zip_error)) {
                 return -1;
             }
             // MGE_DEBUG_LOG(ZIP) << "Seek " << seek_args->whence << " at pos " << seek_args->offset;
 
-            mge::input_stream::direction_type dir = 
+            mge::input_stream::direction_type dir =
                 static_cast<mge::input_stream::direction_type>(seek_args->whence);
             return m_input->seek(seek_args->offset, dir);
         }
@@ -290,7 +292,7 @@ namespace zip_archive {
         mutable bool m_entries_refresh_needed;
     };
 
-    class archive_access_factory 
+    class archive_access_factory
         : public mge::archive_access_factory
     {
     public:
@@ -303,18 +305,18 @@ namespace zip_archive {
             return p.extension().string() == ".zip";
         }
 
-        mge::archive_access_ref create_archive_access(const mge::file& f, 
+        mge::archive_access_ref create_archive_access(const mge::file& f,
                                                       mge::open_mode m) override
         {
             MGE_DEBUG_LOG(ZIP) << "Opening " << f << " with mode " << m;
 
-            mge::archive_access_ref result = 
+            mge::archive_access_ref result =
                 std::make_shared<zip_archive_access>(f, m);
             return result;
         }
     };
 
-    MGE_REGISTER_IMPLEMENTATION(archive_access_factory, 
-        mge::archive_access_factory, 
+    MGE_REGISTER_IMPLEMENTATION(archive_access_factory,
+        mge::archive_access_factory,
         zip);
 }
