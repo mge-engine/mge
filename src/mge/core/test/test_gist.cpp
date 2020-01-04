@@ -54,3 +54,12 @@ TEST(gist, gist_duck_typing_derived)
     ss << gist(f);
     EXPECT_EQ("foo from gist"s, ss.str());
 }
+
+
+TEST(gist, shared_ptr_derived)
+{
+    auto b = std::make_shared<bar>();
+    std::stringstream ss;
+    ss << gist(b);
+    EXPECT_EQ("std::shared_ptr<bar> => foo from gist"s, ss.str());
+}
