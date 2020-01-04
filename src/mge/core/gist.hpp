@@ -4,9 +4,10 @@
 #pragma once
 #include "mge/core/types.hpp"
 #include "mge/core/type_name.hpp"
+#include "mge/core/type_traits.hpp"
 #include <iostream>
 #include <type_traits>
-
+#include <memory>
 namespace mge {
 
     template <typename T>
@@ -67,11 +68,23 @@ namespace mge {
             os << value;
         }
 
-        template <typename T, std::enable_if_t<std::is_class_v<T> && !has_gist_method<T>::value, bool> = true>
+        template <typename T, std::enable_if_t<std::is_class_v<T> && !mge::is_shared_ptr<T>::value && !has_gist_method<T>::value, bool> = true>
         void print_value(std::ostream& os, const T& value)
         {
             os << mge::type_name<T>() << "@" << (void *)&value;
         }
+
+        template <typename T, std::enable_if_t<std::is_class_v<T> && mge::is_shared_ptr<T>::value && !has_gist_method<T>::value, bool> = true>
+        void print_value(std::ostream& os, const T& value)
+        {
+            if (value) {
+                os << mge::type_name<T>() << " => ";
+                print_value(os, *value);
+            } else {
+                os << mge::type_name<T>() << " => nullptr";
+            }
+        }
+
     }
 
 

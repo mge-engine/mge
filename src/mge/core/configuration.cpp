@@ -17,14 +17,20 @@ namespace mge {
         return overrides;
     }
 
+    configuration::configuration(const configuration::transient_tag&)
+        :m_transient(true)
+    {}
+
     configuration::configuration()
+        :m_transient(false)
     {
         configuration_database::instance()
             .read_configuration_values(m_values);
     }
 
     configuration::configuration(const std::string& prefix)
-    :m_prefix(prefix)
+        :m_prefix(prefix)
+        ,m_transient(false)
     {
         configuration_database::instance()
             .read_configuration_values(prefix.c_str(), m_values);
@@ -32,26 +38,30 @@ namespace mge {
 
     configuration::configuration(std::string&& prefix)
         :m_prefix(std::move(prefix))
+        ,m_transient(false)
     {
         configuration_database::instance()
             .read_configuration_values(m_prefix.c_str(), m_values);
     }
 
     configuration::configuration(const configuration& c)
-    :m_prefix(c.m_prefix),
-     m_values(c.m_values)
+        :m_prefix(c.m_prefix)
+        ,m_values(c.m_values)
+        ,m_transient(c.m_transient)
     {}
 
     configuration::configuration(configuration&& c)
-    :m_prefix(std::move(c.m_prefix)),
-     m_values(std::move(c.m_values))
+        :m_prefix(std::move(c.m_prefix))
+        ,m_values(std::move(c.m_values))
+        ,m_transient(false)
     {}
 
     configuration&
     configuration::operator=(const configuration& c)
     {
-        m_prefix = c.m_prefix;
-        m_values = c.m_values;
+        m_prefix    = c.m_prefix;
+        m_values    = c.m_values;
+        m_transient = c.m_transient;
         return *this;
     }
 
@@ -59,6 +69,10 @@ namespace mge {
     void
     configuration::store()
     {
+        if (m_transient) {
+            MGE_THROW(mge::illegal_state) << "Cannot store transient configuration";
+        }
+
         if(m_prefix.empty()) {
             configuration_database::instance()
                 .store_configuration_values(m_values);

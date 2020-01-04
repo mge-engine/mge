@@ -42,6 +42,11 @@ SET(mgecore_sources
     version.cpp
     properties.cpp
     property_object.cpp
+    output_stream.cpp
+    archive.cpp
+    archive_access.cpp
+    archive_access_factory.cpp
+    open_mode.cpp
 )
 
 ADD_LIBRARY(mgecore

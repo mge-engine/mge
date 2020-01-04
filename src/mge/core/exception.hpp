@@ -76,7 +76,7 @@ namespace mge {
          */
         struct source_file : public tag<source_file, const char *>
         {
-            source_file(const char *value_)
+            source_file(const char *value_) noexcept
                 :m_value(value_)
             {}
 
@@ -93,7 +93,7 @@ namespace mge {
          */
         struct function : public tag<function, const char *>
         {
-            function(const char *value_)
+            function(const char *value_) noexcept
                 :m_value(value_)
             {}
 
@@ -110,7 +110,7 @@ namespace mge {
          */
         struct source_line : public tag<source_line, int>
         {
-            source_line(int value_)
+            source_line(int value_) noexcept
                 :m_value(value_)
             {}
 

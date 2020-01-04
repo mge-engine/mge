@@ -3,11 +3,13 @@
 // All rights reserved.
 #include "test/googletest.hpp"
 #include "mge/core/type_name.hpp"
+#include <memory>
 
 class FooBar
 {};
 struct WutzWutz
 {};
+
 enum class Enumi
 {
     FOO
@@ -23,11 +25,18 @@ TEST(type_name, class_type_name)
     EXPECT_STREQ("FooBar", name.c_str());
 }
 
+TEST(type_name, shared_ptr_struct_type_name)
+{
+    std::string name(mge::type_name<std::shared_ptr<WutzWutz>>());
+    EXPECT_STREQ("std::shared_ptr<WutzWutz>", name.c_str());
+}
+
 TEST(type_name, struct_type_name)
 {
     std::string name(mge::type_name<WutzWutz>());
     EXPECT_STREQ("WutzWutz", name.c_str());
 }
+
 
 TEST(type_name, enum_class_type_name)
 {

@@ -21,7 +21,7 @@ namespace mge {
         virtual asset_access_ref create_asset_access(const mge::path& p) = 0;
         
         void set_mountpoint(const mge::path mountpoint);
-        const mge::path& mountpoint() const { return m_mountpoint; }
+        const mge::path& mountpoint() const noexcept { return m_mountpoint; }
     private:
         mge::path m_mountpoint;
     };

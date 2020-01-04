@@ -11,6 +11,8 @@
 
 namespace mge {
     using boost::filesystem::path;
+    using boost::filesystem::canonical;
+    using boost::filesystem::weakly_canonical;
 }
 
 

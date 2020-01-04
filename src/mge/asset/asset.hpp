@@ -8,6 +8,8 @@
 #include "mge/asset/asset_fwd.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/gist.hpp"
+#include "mge/core/properties.hpp"
+
 namespace mge {
 
     /**
@@ -113,6 +115,20 @@ namespace mge {
          * @param os output stream
          */
         void gist(std::ostream& os) const;
+
+        
+        /**
+         * Check if the asset has properties.
+         * @return @c true if properties are present
+         */
+        bool has_properties() const;
+
+        /**
+         * Get the asset's properties.
+         * @return asset properties
+         */
+        properties_ref properties() const;
+
     private:
         mge::path        m_path;
         mutable asset_access_ref m_access;

@@ -6,6 +6,7 @@
 #include "mge/core/types.hpp"
 #include "mge/core/input_stream.hpp"
 #include "mge/asset/asset_type.hpp"
+#include "mge/core/properties.hpp"
 
 namespace mge {
     MGE_DECLARE_REF(asset_access);
@@ -18,5 +19,7 @@ namespace mge {
         virtual size_t size() const = 0;
         virtual input_stream_ref data() const = 0;
         virtual asset_type type() const = 0;
+        virtual bool has_properties() const = 0;
+        virtual properties_ref properties() const = 0;
     };
 }

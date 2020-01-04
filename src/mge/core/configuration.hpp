@@ -49,6 +49,11 @@ namespace mge {
     class MGE_CORE_EXPORT configuration
     {
     public:
+        struct transient_tag
+        {};
+
+        static constexpr transient_tag transient = {};
+
         /**
          * Map of configuration values.
          */
@@ -58,6 +63,12 @@ namespace mge {
          * List of configuration keys.
          */
         typedef std::vector<std::string> key_list;
+
+        /**
+         * Create a transient configuration. A transient configuration
+         * cannot be saved into the applications's configuration.
+         */
+        configuration(const configuration::transient_tag&);
 
         /**
          * Default constructor, creates empty configuration.
@@ -302,6 +313,7 @@ namespace mge {
     private:
         std::string       m_prefix;
         config_values_map m_values;
+        bool              m_transient;
     };
 
     template<>
