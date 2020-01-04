@@ -19,3 +19,9 @@ TEST(asset, literal)
     mge::path sample_path("test");
     EXPECT_EQ(sample_path, a.path());
 }
+
+TEST(asset, size)
+{
+    auto a = "assets/file_asset.txt"_asset;
+    EXPECT_EQ(0u, a.size());
+}
