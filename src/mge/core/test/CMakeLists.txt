@@ -49,6 +49,7 @@ ADD_EXECUTABLE(corebenchmark
   bench_lexical_cast.cpp
   bench_stacktrace.cpp
   bench_memory.cpp
+  bench_clock.cpp
   ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp
 )
 TARGET_LINK_LIBRARIES(corebenchmark googlebenchmark mgecore)
