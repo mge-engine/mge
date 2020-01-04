@@ -15,27 +15,25 @@ __cxa_demangle(const char* __mangled_name, char* __output_buffer,
 
 namespace mge {
 
+    static void remove_string(std::string& str, const char* to_replace)
+    {
+        auto l = strlen(to_replace);
+        auto pos = str.find(to_replace);
+        while (pos != std::string::npos) {
+            str.replace(pos, l, "");
+            pos = str.find(to_replace);
+        }
+    }
+
     MGE_CORE_EXPORT std::string type_name(const std::type_info& ti)
     {
         std::string raw_name(ti.name());
 #ifdef MGE_COMPILER_MSVC
-        if(strncmp(raw_name.c_str(), "class ", strlen("class "))==0) {
-            raw_name = std::string(raw_name, 6);
-        } else if(strncmp(raw_name.c_str(), "struct ", strlen("struct "))==0) {
-            raw_name = std::string(raw_name, 7);
-        } else if(strncmp(raw_name.c_str(), "enum ", strlen("enum "))==0) {
-            raw_name = std::string(raw_name, 5);
-        }
-        auto pos = raw_name.find("__ptr64");
-        while (pos != std::string::npos) {
-            raw_name.replace(pos, 7, "");
-            pos = raw_name.find("__ptr64");
-        }
-        pos = raw_name.find(" ");
-        while (pos != std::string::npos) {
-            raw_name.replace(pos, 1, "");
-            pos = raw_name.find(" ");
-        }
+        remove_string(raw_name, "class ");
+        remove_string(raw_name, "struct ");
+        remove_string(raw_name, "enum ");
+        remove_string(raw_name, "__ptr64");
+        remove_string(raw_name, " ");
         return raw_name;
 #elif defined(MGE_COMPILER_GNUC)
         __SIZE_TYPE__ sz = 511;
