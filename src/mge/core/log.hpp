@@ -6,6 +6,7 @@
 #include "mge/core/log_record.hpp"
 #include "mge/core/log_severity.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/streamutils.hpp"
 
 #include <sstream>
 #include <iomanip>
