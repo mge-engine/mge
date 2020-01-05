@@ -22,6 +22,6 @@ TEST(asset, literal)
 
 TEST(asset, size)
 {
-    auto a = "assets/file_asset.txt"_asset;
-    EXPECT_EQ(0u, a.size());
+    auto a = "file_asset.txt"_asset;
+    EXPECT_EQ(8u, a.size());
 }

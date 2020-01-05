@@ -65,7 +65,7 @@ namespace mge {
         file m_properties_file;
     };
 
-    class file_asset_access_factory 
+    class file_asset_access_factory
         : public asset_access_factory
     {
     public:
@@ -96,6 +96,11 @@ namespace mge {
                     << "(file '" << filepath << "' not found)";
             }
             return std::make_shared<file_asset_access>(asset_file);
+        }
+
+        void gist(std::ostream& os) const override
+        {
+            os << "file " << m_directory;
         }
 
         mge::path m_directory;
