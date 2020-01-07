@@ -57,12 +57,22 @@ namespace mge {
 
         properties_ref properties() const override
         {
-            return properties_ref();
+            if (!m_properties) {
+                load_properties();
+            }
+            return m_properties;
         }
 
     private:
+        void load_properties() const
+        {
+            auto is = m_properties_file.open_for_input();
+            m_properties = std::make_shared<mge::properties>(is);
+        }
+
         file m_file;
         file m_properties_file;
+        mutable properties_ref m_properties;
     };
 
     class file_asset_access_factory

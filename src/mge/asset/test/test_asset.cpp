@@ -5,6 +5,7 @@
 #include "mge/asset/asset.hpp"
 
 using namespace mge::string_literals;
+using namespace std::string_literals;
 
 TEST(asset, create)
 {
@@ -24,4 +25,17 @@ TEST(asset, size)
 {
     auto a = "file_asset.txt"_asset;
     EXPECT_EQ(8u, a.size());
+}
+
+TEST(asset, has_properties)
+{
+    auto a = "file_asset.txt"_asset;
+    EXPECT_TRUE(a.has_properties());
+}
+
+TEST(asset, properties)
+{
+    auto a = "file_asset.txt"_asset;
+    auto p = a.properties();
+    EXPECT_EQ("salat", p->get<std::string>("wurst"));
 }
