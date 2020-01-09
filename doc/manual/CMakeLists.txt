@@ -1,0 +1,5 @@
+IF(Doxygen_FOUND)
+    MESSAGE("-- doxygen was found")
+ELSE()
+    MESSAGE("-- Doxygen was not found, not building documentation")
+ENDIF()

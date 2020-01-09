@@ -2,4 +2,4 @@
 # Copyright (c) 2018 by Alexander Schroeder
 # All rights reserved.
 
-ADD_SUBDIRECTORY(api)
+ADD_SUBDIRECTORY(manual)
