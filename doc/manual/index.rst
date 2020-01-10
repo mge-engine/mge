@@ -1,17 +1,16 @@
+==========================
+MGE - A Modern Game Engine
+==========================
 
-===============================
-MGE Documentation
-===============================
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+
+    introduction
+    installation
+    mgecore
+    mgemath
+    mgegraphics
+    mgeasset
 
 
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

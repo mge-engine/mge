@@ -50,6 +50,8 @@ SET(mgecore_sources
 
     ${CMAKE_BINARY_DIR}/src/mge/version.hpp
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
+
+    array_size.hpp
 )
 
 ADD_LIBRARY(mgecore
@@ -66,6 +68,6 @@ ENDIF()
 IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
     TARGET_LINK_LIBRARIES(mgecore pthread dl)
 ENDIF()
-
+DOCUMENT_TARGET(mgecore)
 ADD_SUBDIRECTORY(test)
 
