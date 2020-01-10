@@ -47,6 +47,9 @@ SET(mgecore_sources
     archive_access.cpp
     archive_access_factory.cpp
     open_mode.cpp
+
+    ${CMAKE_BINARY_DIR}/src/mge/version.hpp
+    ${CMAKE_BINARY_DIR}/src/mge/config.hpp
 )
 
 ADD_LIBRARY(mgecore
