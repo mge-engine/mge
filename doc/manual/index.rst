@@ -12,11 +12,13 @@ Welcome to the docue
 
 .. toctree::
     :caption: User Manual
+    :maxdepth: 1
 
     installation
 
 .. toctree::
     :caption: Reference
+    :maxdepth: 1
 
     mgecore
     mgeapplication

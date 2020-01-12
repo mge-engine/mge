@@ -52,6 +52,7 @@ SET(mgecore_sources
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
 
     array_size.hpp
+    version.hpp
 )
 
 ADD_LIBRARY(mgecore

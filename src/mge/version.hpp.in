@@ -8,10 +8,27 @@
  * @brief Version definitions
  */
 
+/**
+ * @brief MGE major version.
+ */
 #define MGE_VERSION_MAJOR @MGE_VERSION_MAJOR@
+
+/**
+ * @brief MGE minor version
+ *
+ */
 #define MGE_VERSION_MINOR @MGE_VERSION_MINOR@
+
+/**
+ * @brief MGE patch level.
+ *
+ */
 #define MGE_PATCHLEVEL @MGE_PATCHLEVEL@
 
+/**
+ * @brief Complete MGE version, in the form "<major>.<minor>.<patchlevel>".
+ *
+ */
 #define MGE_VERSION_STRING "@MGE_VERSION_MAJOR@.@MGE_VERSION_MINOR@.@MGE_PATCHLEVEL@"
 
 

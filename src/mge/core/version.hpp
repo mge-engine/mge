@@ -96,7 +96,7 @@ namespace mge {
         /**
          * Compares two versions.
          * @param v version to compare
-         * @param @c true if this version and @c v are equal
+         * @return @c true if this version and @c v are equal
          */
         bool operator ==(const version& v) const noexcept;
     private:

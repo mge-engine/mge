@@ -5,7 +5,7 @@ IF(DOXYGEN_FOUND)
         FILE(TO_CMAKE_PATH __cmake_file "${FILE}")
     ENDFOREACH()
     SET(DOXYGEN_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/doxygen")
-    SET(DOXYGEN_INDEX_FILE "${DOXYGEN_OUTPUT_DIRECTORY}/html/index.html")
+    SET(DOXYGEN_XML_INDEX_FILE "${DOXYGEN_OUTPUT_DIRECTORY}/xml/index.xml")
     CONFIGURE_FILE(Doxyfile.in Doxyfile)
     FILE(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIRECTORY})
 
@@ -23,10 +23,20 @@ IF(DOXYGEN_FOUND)
         SET(SPHINX_OUTPUT_PDF ${CMAKE_CURRENT_BINARY_DIR}/manual-pdf)
         FILE(MAKE_DIRECTORY ${SPHINX_OUTPUT})
         ADD_CUSTOM_TARGET(manual-html ALL
+            DEPENDS ${DOXYGEN_XML_INDEX_FILE}
             COMMAND ${SPHINX_EXECUTABLE}
                 -b html
                 -Dbreathe_projects.mge=${DOXYGEN_OUTPUT_DIRECTORY}/xml
                 ${SPHINX_SOURCE} ${SPHINX_OUTPUT}
+            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+            COMMENT "Generate html manual"
+        )
+        ADD_CUSTOM_TARGET(manual-latex ALL
+            DEPENDS ${DOXYGEN_XML_INDEX_FILE}
+            COMMAND ${SPHINX_EXECUTABLE}
+                -b latex
+                -Dbreathe_projects.mge=${DOXYGEN_OUTPUT_DIRECTORY}/xml
+                ${SPHINX_SOURCE} ${SPHINX_OUTPUT_PDF}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
             COMMENT "Generate html manual"
         )
