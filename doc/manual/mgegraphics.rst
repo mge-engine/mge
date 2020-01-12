@@ -1,3 +1,5 @@
+.. _mgegraphics:
+
 ================
 Graphics Library
 ================
