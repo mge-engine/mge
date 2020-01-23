@@ -46,4 +46,10 @@ MGE provides the class :cpp:texpr:`mge::version` to manage semantic versions:
 
 .. cpp:function:: std::ostream& operator <<(std::ostream& os, const version& v)
 
-   Print operator
+   Print operator.
+
+   :returns: ``os`` argument
+
+   :param os:   target output stream
+   :param v:    version to print
+

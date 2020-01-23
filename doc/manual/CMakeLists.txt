@@ -8,13 +8,11 @@ IF(DOXYGEN_FOUND)
     SET(DOXYGEN_XML_INDEX_FILE "${DOXYGEN_OUTPUT_DIRECTORY}/xml/index.xml")
     CONFIGURE_FILE(Doxyfile.in Doxyfile)
     FILE(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIRECTORY})
-    ADD_CUSTOM_COMMAND(OUTPUT ${DOXYGEN_XML_INDEX_FILE}
-                       DEPENDS ${DOXYGEN_INPUT_FILES_LIST}
-                       COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-                       COMMENT "Generate doxygen documentation"
-    )
-    ADD_CUSTOM_TARGET(doxygen-docs ALL DEPENDS ${DOXYGEN_INDEX_FILE})
+    ADD_CUSTOM_TARGET(doxygen-docs
+                      COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+                      BYPRODUCTS ${DOXYGEN_XML_INDEX_FILE}
+                      COMMENT "Generate doxygen documentation")
+
 
     IF(SPHINX_FOUND)
         SET(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})

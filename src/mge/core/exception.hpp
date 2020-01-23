@@ -33,7 +33,6 @@ namespace mge {
     {
     public:
         /**
-         * @internal
          * Helper class for detailed exception information.
          */
         struct exception_details
@@ -230,6 +229,13 @@ namespace mge {
          */
         static mge::exception *current_exception();
 
+        /**
+         * @brief Set information associated with tag type.
+         *
+         * @tparam Info info tag type
+         * @param info information stored under the tag
+         * @return  @c *this
+         */
         template <typename Info>
         exception& set_info(const Info& info)
         {
@@ -246,6 +252,12 @@ namespace mge {
             return *this;
         }
 
+        /**
+         * @brief Retrieve information stored under a tag type.
+         *
+         * @tparam Info  tag type
+         * @return  the stored value
+         */
         template <typename Info>
         inline auto get() const
         {
@@ -265,11 +277,24 @@ namespace mge {
             return m_raw_message;
         }
 
+        /**
+         * @brief Get an exception details instance referring to this
+         * exception.
+         *
+         * @return exception details for this exception
+         */
         exception_details details() const noexcept
         {
             return exception_details(this);
         }
 
+        /**
+         * @brief Append value to message.
+         *
+         * @tparam T type of appended value
+         * @param value value to append
+         * @return @c *this
+         */
         template <typename T>
         exception& operator <<(const T& value)
         {
@@ -328,6 +353,11 @@ namespace mge {
               .set_info(mge::exception::stack(mge::stacktrace()))         \
               .set_info(mge::exception::type_name(mge::type_name<ex>()))
 
+/**
+ * Throw exception and adds a cause.
+ * @param ex exception type
+ * @param causing_exception exception causing this exception
+ */
 #define MGE_THROW_WITH_CAUSE(ex, causing_exception)                       \
     throw ex().set_info(mge::exception::source_file(__FILE__))            \
               .set_info(mge::exception::source_line(__LINE__))            \
@@ -343,7 +373,7 @@ namespace mge {
     MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception::exception_details& d);
 
     /**
-     * Re-throws current exception. 
+     * Re-throws current exception.
      */
     [[noreturn]] inline void rethrow()
     {

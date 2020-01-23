@@ -53,6 +53,9 @@ SET(mgecore_sources
 
     array_size.hpp
     version.hpp
+    exception.hpp
+    stdexceptions.hpp
+    component.hpp
 )
 
 ADD_LIBRARY(mgecore

@@ -140,22 +140,57 @@ namespace mge {
         std::string m_alias_names;
     };
 
+    /**
+     * @brief Base class for defining a component.
+     *
+     * Classes defining an interface are defined as subclass
+     * of this class. This class implements factory and
+     * introspection methods to instantiate an implementation.
+     *
+     * @tparam Class interface class
+     */
     template <typename Class>
     class component
             : public component_base
     {
     protected:
+        /**
+         * Default constructor.
+         */
         component() noexcept = default;
     public:
+        /**
+         * Destructor-
+         */
         virtual ~component() noexcept = default;
+
+        /**
+         * @brief Create an instance of a registered implementation.
+         *
+         * @param implementation name of the implementation
+         * @return @c std::shared_ptr<Class> referring to the implementation
+         */
         static inline std::shared_ptr<Class> create(const char *implementation)
         {
             return component_base::create<Class>(implementation);
         }
+
+        /**
+         * @brief Create an instance of a registered implementation.
+         *
+         * @param implementation name of the implementation
+         * @return @c std::shared_ptr<Class> referring to the implementation
+         */
         static inline std::shared_ptr<Class> create(const std::string& implementation)
         {
             return component_base::create<Class>(implementation.c_str());
         }
+
+        /**
+         * @brief Enumerate over all implementations.
+         *
+         * @param callback callback function called for each implementation name
+         */
         static inline void implementations(const std::function<void (const std::string&)>& callback)
         {
             component_base::implementations<Class>(callback);

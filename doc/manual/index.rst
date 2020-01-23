@@ -30,7 +30,10 @@ Welcome to the docue
     mgescene
     mgescript
     mgeui
-    genindex
+
+Appendix
+--------
+* :ref:`genindex`
 
 
 
