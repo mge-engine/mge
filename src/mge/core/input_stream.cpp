@@ -2,10 +2,12 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/input_stream.hpp"
-
+#include "mge/core/log.hpp"
 #include <cstring>
 
 #define MOGE_STREAMBUF_BUFFER_SIZE 1024
+
+MGE_USE_LOG(MGE);
 
 namespace mge {
 
@@ -108,13 +110,17 @@ namespace mge {
             if (gptr() < egptr()) {
                 return *(gptr());
             } else {
+                //MGE_DEBUG_LOG(MGE) << "underflow stream";
                 input_stream::streamsize_type bytes_read =
                                 m_stream->read(m_buffer,
                                                static_cast<input_stream::streamsize_type>(m_buffer_size));
+                //MGE_DEBUG_LOG(MGE) << "underflow: bytes read: " << bytes_read;
                 if (bytes_read == -1) {
+                    //MGE_DEBUG_LOG(MGE) << "underflow: eof";
                     setg(0, 0, 0);
                     return traits_type::eof();
                 } else {
+                    //MGE_DEBUG_LOG(MGE) << "underflow: set buffer";
                     m_buffer_used = (size_t)bytes_read;
                     setg(m_buffer, m_buffer, m_buffer + m_buffer_used);
                     return *(gptr());

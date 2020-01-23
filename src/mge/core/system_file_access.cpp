@@ -92,6 +92,10 @@ namespace mge {
                 if (!feof(m_file)) {
                     MGE_THROW(mge::io_error)
                               << "File read failed, failed to read " << size << " bytes";
+                } else {
+                    if (readbytes == 0) {
+                        readbytes = -1;
+                    }
                 }
             }
 

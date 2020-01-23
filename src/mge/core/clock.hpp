@@ -9,8 +9,8 @@ namespace mge {
     /**
      * Raw clock that counts time spans since the program start.
 
-     * In a lot of places, a raw clock counting in ticks or nanoseconds is required, and 
-     * easier to use than the time-unit based clocks of @c std::chrono. Also, this 
+     * In a lot of places, a raw clock counting in ticks or nanoseconds is required, and
+     * easier to use than the time-unit based clocks of @c std::chrono. Also, this
      * implementation can decouple from a low precision implementation of
      * @c std::chrono::high_resolution_clock if needed.
      */
@@ -22,7 +22,6 @@ namespace mge {
          * @return time in nanoseconds, resolution is system dependend
          */
         static uint64_t now();
-
         /**
          * Get current number of the high resolution tick counter.
          * @return current ticks

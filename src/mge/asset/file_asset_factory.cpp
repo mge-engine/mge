@@ -57,15 +57,25 @@ namespace mge {
 
         properties_ref properties() const override
         {
-            return properties_ref();
+            if (!m_properties) {
+                load_properties();
+            }
+            return m_properties;
         }
 
     private:
+        void load_properties() const
+        {
+            auto is = m_properties_file.open_for_input();
+            m_properties = std::make_shared<mge::properties>(is);
+        }
+
         file m_file;
         file m_properties_file;
+        mutable properties_ref m_properties;
     };
 
-    class file_asset_access_factory 
+    class file_asset_access_factory
         : public asset_access_factory
     {
     public:
@@ -96,6 +106,11 @@ namespace mge {
                     << "(file '" << filepath << "' not found)";
             }
             return std::make_shared<file_asset_access>(asset_file);
+        }
+
+        void gist(std::ostream& os) const override
+        {
+            os << "file " << m_directory;
         }
 
         mge::path m_directory;

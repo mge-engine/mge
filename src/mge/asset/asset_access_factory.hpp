@@ -10,18 +10,20 @@
 namespace mge {
     MGE_DECLARE_REF(asset_access_factory);
 
-    class MGE_ASSET_EXPORT asset_access_factory 
+    class MGE_ASSET_EXPORT asset_access_factory
         : public component<asset_access_factory>
         , public configurable
     {
     public:
         asset_access_factory() = default;
         virtual ~asset_access_factory() = default;
-        
+
         virtual asset_access_ref create_asset_access(const mge::path& p) = 0;
-        
-        void set_mountpoint(const mge::path mountpoint);
+        virtual void gist(std::ostream& os) const = 0;
+
+        void set_mountpoint(const mge::path& mountpoint);
         const mge::path& mountpoint() const noexcept { return m_mountpoint; }
+
     private:
         mge::path m_mountpoint;
     };

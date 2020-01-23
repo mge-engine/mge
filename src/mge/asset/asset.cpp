@@ -22,20 +22,23 @@ namespace mge {
             try_configure();
         }
 
-        asset_access_ref access(const mge::path path)
+        asset_access_ref access(const mge::path& path)
         {
+            mge::path asset_path(path);
+            if (!asset_path.is_absolute()) {
+                asset_path = mge::path("/") / asset_path;
+            }
+
             if(!m_configured) {
                 configure();
             }
 
-            auto lb = m_mtab.lower_bound(path);
-            if (lb == m_mtab.end()) {
-                MGE_THROW(mge::runtime_exception) << "Cannot resolve asset " << path;
+            auto lb = m_mtab.lower_bound(asset_path);
+            if (lb == m_mtab.begin()) {
+                MGE_THROW(mge::no_such_element) << "Cannot resolve asset '" << asset_path << "'";
             }
-            std::cout << "lb: " << lb->first << std::endl;
-
-            asset_access_ref result;
-            return result;
+            auto factory = (--lb)->second;
+            return factory->create_asset_access(asset_path);
         }
 
         void configure()
@@ -55,22 +58,26 @@ namespace mge {
                     }
                     factory->configure(repo_config);
                     mge::path mount_point = repo_config.value("mount_point");
+                    factory->set_mountpoint(mount_point);
                     m_mtab[mount_point] = factory;
                 }
             }
             mge::path default_path("assets/");
-            if (m_mtab.find(default_path) == m_mtab.end()) {
+            mge::path default_mount_point("/");
+            if (m_mtab.find(default_mount_point) == m_mtab.end() ) {
                 mge::configuration default_config(mge::configuration::transient);
                 default_config.set("directory", default_path.string());
                 auto default_factory = asset_access_factory::create("file");
                 default_factory->configure(default_config);
-                m_mtab[default_path] = default_factory;
+                default_factory->set_mountpoint(default_mount_point);
+                m_mtab[default_mount_point] = default_factory;
             }
-#if 0
+            MGE_DEBUG_LOG(ASSET) << "Asset mount table:";
+            MGE_DEBUG_LOG(ASSET) << mge::line(60);
             for (const auto& [key, value] : m_mtab) {
-                MGE_DEBUG_LOG(ASSET) << key << " => " << value;
+                MGE_DEBUG_LOG(ASSET) << key << " => " << gist(*value);
             }
-#endif
+            MGE_DEBUG_LOG(ASSET) << mge::line(60);
             m_configured = true;
         }
 
@@ -86,7 +93,7 @@ namespace mge {
         bool m_configured;
         std::map<mge::path, asset_access_factory_ref> m_mtab;
     };
-    static singleton<asset_repository_manager> repository_manager;    
+    static singleton<asset_repository_manager> repository_manager;
 
 
     size_t
