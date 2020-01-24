@@ -8,6 +8,7 @@
  * @brief Platform definitions.
  */
 
+
 #ifdef _MSC_VER
 #  define MGE_COMPILER_MSVC 1
 #endif
@@ -40,6 +41,8 @@
 #  define MGE_OS_UNIX 1
 #endif
 
+namespace mge {
+
 #ifdef MGE_OS_LINUX
 namespace linux {}
 namespace platform = linux;
@@ -53,6 +56,7 @@ namespace platform = win32;
 #error Missing port.
 #endif
 
+}
 #if defined(MGE_COMPILER_GNUC) || defined(MGE_COMPILER_CLANG)
 #define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
 #elif defined(MGE_COMPILER_MSVC)

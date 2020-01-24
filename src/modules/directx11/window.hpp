@@ -11,7 +11,7 @@
 #include "system_config.hpp"
 
 namespace dx11 {
-    class window : public platform::window
+    class window : public ::mge::platform::window
     {
     public:
         window(const mge::rectangle& rect,

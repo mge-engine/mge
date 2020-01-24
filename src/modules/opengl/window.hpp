@@ -11,7 +11,7 @@
 #include "opengl.hpp"
 
 namespace opengl {
-    class window : public platform::window
+    class window : public ::mge::platform::window
     {
     public:
         window(const mge::rectangle& rect,

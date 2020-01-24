@@ -11,7 +11,7 @@ namespace vulkan {
                    const mge::rectangle& rect,
                    const mge::window_options& options,
                    const system_config& config)
-        :platform::window(rect, options)
+        : mge::platform::window(rect, options)
         , m_render_system(system)
     {
         create_render_context(config);
@@ -22,7 +22,7 @@ namespace vulkan {
 
     void window::create_render_context(const system_config& config)
     {
-        m_render_context = std::make_shared<::vulkan::render_context>(this, 
+        m_render_context = std::make_shared<::vulkan::render_context>(this,
                                                                       m_render_system,
                                                                       config);
     }

@@ -35,8 +35,8 @@ namespace vulkan {
         }
 
         if (m_instance && m_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
-            vkDestroyDebugUtilsMessengerEXT(m_instance, 
-                                            m_debug_messenger, 
+            vkDestroyDebugUtilsMessengerEXT(m_instance,
+                                            m_debug_messenger,
                                             nullptr);
         }
 
@@ -71,16 +71,16 @@ namespace vulkan {
 
     render_system::monitor_collection_t render_system::monitors() const
     {
-        return ::platform::monitor::all_monitors();
+        return ::mge::platform::monitor::all_monitors();
     }
 
     mge::monitor_ref render_system::primary_monitor() const
     {
-        return platform::monitor::primary_monitor();
+        return ::mge::platform::monitor::primary_monitor();
     }
 
     mge::window_ref render_system::create_window(const mge::rectangle& rect,
-                                                 const mge::window_options& options) 
+                                                 const mge::window_options& options)
     {
         check_configure();
         return std::make_shared<window>(*this, rect, options, m_config);
@@ -141,7 +141,7 @@ namespace vulkan {
         }
 
         CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_instance));
-        
+
     }
 
     void render_system::resolve_basic_instance_functions()
@@ -265,7 +265,7 @@ namespace vulkan {
 
         return VK_FALSE;
     }
-    
+
     void render_system::init_debug_message_handling()
     {
         if (!m_config.debug() && !m_config.validation()) {
@@ -324,8 +324,8 @@ namespace vulkan {
         if (flags & VK_QUEUE_TRANSFER_BIT) {
             for (uint32_t i = 0; i < m_physical_device_queue_family_properties.size(); ++i) {
                 const auto& p = m_physical_device_queue_family_properties[i];
-                if ((p.queueFlags & flags) 
-                    && ((p.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0) 
+                if ((p.queueFlags & flags)
+                    && ((p.queueFlags & VK_QUEUE_GRAPHICS_BIT) == 0)
                     && ((p.queueFlags & VK_QUEUE_COMPUTE_BIT) == 0) ) {
                     return i;
                 }
@@ -357,7 +357,7 @@ namespace vulkan {
     void render_system::create_device()
     {
         mge::small_vector<VkDeviceQueueCreateInfo, 3> queue_create_infos;
-        
+
         const float default_queue_priority = 0.0f;
 
         VkDeviceQueueCreateInfo graphics_queue_create_info = {};
@@ -410,7 +410,7 @@ namespace vulkan {
             this->X = reinterpret_cast<decltype(this->X)>(f);                     \
         }  while (false);
 
-#define BASIC_INSTANCE_FUNCTION(X)  
+#define BASIC_INSTANCE_FUNCTION(X)
 #define INSTANCE_FUNCTION(X)
 #define DEVICE_FUNCTION(X) RESOLVE(X)
 

@@ -15,7 +15,7 @@ namespace vulkan {
 
     class render_system;
 
-    class window : public platform::window
+    class window : public ::mge::platform::window
     {
     public:
         window(render_system& s,

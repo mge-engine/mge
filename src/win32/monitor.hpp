@@ -5,7 +5,7 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/monitor.hpp"
 #include <windows.h>
-
+namespace mge {
 namespace win32 {
     class monitor : public mge::monitor
     {
@@ -32,4 +32,5 @@ namespace win32 {
         unsigned int m_physical_width;
         unsigned int m_physical_height;
     };
+}
 }

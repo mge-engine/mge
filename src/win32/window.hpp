@@ -7,6 +7,7 @@
 #include "mge/application/application.hpp"
 #include <vector>
 #include <functional>
+namespace mge {
 namespace win32 {
     class window : public mge::window
     {
@@ -46,4 +47,5 @@ namespace win32 {
         mge::application::update_listener_key_type m_update_listener;
         static bool s_window_class_created;
     };
+}
 }

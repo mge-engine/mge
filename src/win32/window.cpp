@@ -14,7 +14,7 @@
 #define WM_WANT_DESTROY (WM_USER + 1)
 
 MGE_USE_LOG(WIN32);
-
+namespace mge {
 namespace win32 {
 
     bool
@@ -488,4 +488,5 @@ namespace win32 {
         }
     }
 
+}
 }

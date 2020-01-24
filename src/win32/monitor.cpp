@@ -9,7 +9,7 @@
 #include "mge/core/log.hpp"
 
 MGE_USE_LOG(WIN32);
-
+namespace mge {
 namespace win32 {
 
 
@@ -168,4 +168,5 @@ namespace win32 {
         }
         return mge::monitor_ref();
     }
+}
 }

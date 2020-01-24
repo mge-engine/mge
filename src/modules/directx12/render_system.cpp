@@ -34,12 +34,12 @@ namespace dx12 {
 
         monitor_collection_t monitors() const override
         {
-            return ::platform::monitor::all_monitors();
+            return ::mge::platform::monitor::all_monitors();
         }
 
         mge::monitor_ref primary_monitor() const override
         {
-            return platform::monitor::primary_monitor();
+            return ::mge::platform::monitor::primary_monitor();
         }
 
         mge::window_ref create_window(const mge::rectangle& rect,
