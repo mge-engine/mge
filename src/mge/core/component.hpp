@@ -198,11 +198,24 @@ namespace mge {
     };
 
 
-
+/**
+ * @brief Register a class as component. The macro must be used within the
+ * definition namespaces of the argument class.
+ *
+ * @param clazz class name
+ */
 #define MGE_REGISTER_COMPONENT(clazz)      \
     ::mge::component_registry_entry<clazz> \
     __mge_component_registry_entry##clazz
 
+/**
+ * @brief Register an implementation. The macro must be used within the definition
+ * namespace of the argument class.
+ *
+ * @param clazz implementation class name
+ * @param component component class (interface class)
+ * @param ... alias names for registration
+ */
 #define MGE_REGISTER_IMPLEMENTATION(clazz, component, ...)       \
     ::mge::implementation_registry_entry<component, clazz>       \
     __mge_implementation_registry_entry_##clazz               =  \

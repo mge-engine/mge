@@ -4,6 +4,8 @@
 #include "mge/core/types.hpp"
 
 namespace mge {
+
+
     /**
      * Compute a boolean from a string.
      * @param str string to check
@@ -65,6 +67,76 @@ namespace mge {
     inline bool bool_value(const std::string& s) noexcept
     {
         return bool_value(s.c_str());
+    }
+
+    inline bool bool_value(std::string_view s) noexcept
+    {
+        if (s.empty()) {
+            return false;
+        }
+
+        auto str = s.cbegin();
+        auto send = s.cend();
+
+
+        if(*str=='t' || *str == 'T') {
+            ++str;
+            if (str == send) {
+                return false;
+            }
+            if(*str != 'r' && *str != 'R') {
+                return false;
+            }
+            ++str;
+            if (str == send) {
+                return false;
+            }
+            if (*str != 'u' && *str != 'U') {
+                return false;
+            }
+            ++str;
+            if (str == send) {
+                return false;
+            }
+            if (*str != 'e' && *str != 'E') {
+                return false;
+            }
+            ++str;
+            return str == send;
+        } else if(*str == 'y' || *str=='Y') {
+            ++str;
+            if (str == send) {
+                return false;
+            }
+            if (*str != 'e' && *str != 'E') {
+                return false;
+            }
+            ++str;
+            if (str == send) {
+                return false;
+            }
+            if (*str != 's' && *str != 'S') {
+                return false;
+            }
+            ++str;
+            return str == send;
+        } else if(*str == 'o' || *str=='O') {
+            ++str;
+            if (str == send) {
+                return false;
+            }
+            if(*str != 'n' && *str != 'N') {
+                return false;
+            }
+            ++str;
+            return str == send;
+        } else if(*str >= '0' && *str <= '9') {
+            int i = std::stoi(std::string(s));
+            if (i) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

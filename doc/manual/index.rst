@@ -31,9 +31,6 @@ Welcome to the docue
     mgescript
     mgeui
 
-Appendix
---------
-* :ref:`genindex`
 
 
 

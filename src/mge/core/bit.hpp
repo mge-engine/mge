@@ -10,6 +10,12 @@
 #include <cstdint>
 namespace mge {
 
+    /**
+     * @brief Number of bits set in a value.
+     *
+     * @param x        value to test
+     * @return number of bits set
+     */
     inline int popcount(uint8_t x)
     {
 #ifdef MGE_COMPILER_MSVC
@@ -21,6 +27,12 @@ namespace mge {
 #endif
     }
 
+    /**
+     * @brief Number of bits set in a value.
+     *
+     * @param x        value to test
+     * @return number of bits set
+     */
     inline int popcount(uint16_t x)
     {
 #ifdef MGE_COMPILER_MSVC
@@ -32,6 +44,12 @@ namespace mge {
 #endif
     }
 
+    /**
+     * @brief Number of bits set in a value.
+     *
+     * @param x        value to test
+     * @return number of bits set
+     */
     inline int popcount(uint32_t x)
     {
 #ifdef MGE_COMPILER_MSVC
@@ -43,6 +61,12 @@ namespace mge {
 #endif
     }
 
+    /**
+     * @brief Number of bits set in a value.
+     *
+     * @param x        value to test
+     * @return number of bits set
+     */
     inline int popcount(uint64_t x)
     {
 #ifdef MGE_COMPILER_MSVC

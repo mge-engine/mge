@@ -14,13 +14,22 @@ Component Base Class
 --------------------
 
 .. doxygenclass:: mge::component
-   :project: mge
-   :members:
+    :project: mge
+    :members:
 
 
 Registering Components and Implementations
 ------------------------------------------
 
+A component is registered using the macro :any:`MGE_REGISTER_COMPONENT`
+when the component class is defined. An implementation is registered
+using the :any:`MGE_REGISTER_IMPLEMENTATION` macro.
+
+.. doxygendefine:: MGE_REGISTER_COMPONENT
+    :project: mge
+
+.. doxygendefine:: MGE_REGISTER_IMPLEMENTATION
+    :project: mge
 
 Modules
 -------

@@ -11,9 +11,8 @@ IF(DOXYGEN_FOUND)
     ADD_CUSTOM_TARGET(doxygen-docs
                       COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
                       BYPRODUCTS ${DOXYGEN_XML_INDEX_FILE}
-                      COMMENT "Generate doxygen documentation")
-
-
+                      COMMENT "Generate doxygen documentation"
+                      DEPENDS ${DOXYGEN_INPUT_FILE_LIST})
     IF(SPHINX_FOUND)
         SET(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
         SET(SPHINX_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/manual-html)

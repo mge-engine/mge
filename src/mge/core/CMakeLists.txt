@@ -52,10 +52,16 @@ SET(mgecore_sources
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
 
     array_size.hpp
+    archive.hpp
+    archive_access_factory.hpp
+    archive_access.hpp
     version.hpp
     exception.hpp
     stdexceptions.hpp
     component.hpp
+    bit.hpp
+    bool_value.hpp
+    types.hpp
 )
 
 ADD_LIBRARY(mgecore

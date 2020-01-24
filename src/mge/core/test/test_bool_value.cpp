@@ -3,6 +3,9 @@
 // All rights reserved.
 #include "test/googletest.hpp"
 #include "mge/core/bool_value.hpp"
+#include <string_view>
+
+using namespace std::string_view_literals;
 
 TEST(bool_value, from_c_string_true)
 {
@@ -34,4 +37,24 @@ TEST(bool_value, from_string)
 
     EXPECT_TRUE(mge::bool_value(true_str));
     EXPECT_FALSE(mge::bool_value(false_str));
+}
+
+TEST(bool_value, from_string_view_true)
+{
+    EXPECT_TRUE(mge::bool_value("true"sv));
+    EXPECT_TRUE(mge::bool_value("yes"sv));
+    EXPECT_TRUE(mge::bool_value("1"sv));
+    EXPECT_TRUE(mge::bool_value("True"sv));
+    EXPECT_TRUE(mge::bool_value("on"sv));
+    EXPECT_TRUE(mge::bool_value("0111"sv));
+}
+
+TEST(bool_value, from_string_view_false)
+{
+    EXPECT_FALSE(mge::bool_value("false"sv));
+    EXPECT_FALSE(mge::bool_value("no"sv));
+    EXPECT_FALSE(mge::bool_value("0"sv));
+    EXPECT_FALSE(mge::bool_value("FALSE"sv));
+    EXPECT_FALSE(mge::bool_value("off"sv));
+
 }

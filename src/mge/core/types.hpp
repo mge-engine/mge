@@ -23,13 +23,13 @@
  */
 #define MGE_DECLARE_REF(clazz)             \
 class clazz;                               \
-typedef std::shared_ptr<clazz> clazz##_ref
+using clazz##_ref = std::shared_ptr<clazz>
 
 namespace mge {
     /**
      * @brief Type that cannot be copied or assigned.
      */
-    typedef boost::noncopyable noncopyable;
+    using noncopyable = boost::noncopyable;
 }
 
 /**
