@@ -14,32 +14,49 @@ identification macros are provided, in :file:`mge/config.hpp`.
 Compiler
 --------
 
-.. doxygendefine:: MGE_COMPILER_MSVC
-    :project: mge
-.. doxygendefine:: MGE_COMPILER_GNUC
-    :project: mge
-.. doxygendefine:: MGE_COMPILER_MINGW
-    :project: mge
-.. doxygendefine:: MGE_COMPILER_CLANG
-    :project: mge
+.. c:macro:: MGE_COMPILER_MSVC
+
+    Defined if the compiler is Microsoft Visual C++.
+
+.. c:macro:: MGE_COMPILER_GNUC
+
+    Defined if the compiler is GNU C++.
+
+.. c:macro:: MGE_COMPILER_MINGW
+
+    Defined if the compiler is MinGW (in this case also
+    `MGE_COMPILER_GNUC`` is defined).`
+
+.. c:macro:: MGE_COMPILER_CLANG
+
+    Defined if the compiler is ``clang``.
 
 Operating System
 ----------------
 
-.. doxygendefine:: MGE_OS_LINUX
-    :project: mge
-.. doxygendefine:: MGE_OS_WINDOWS
-    :project: mge
-.. doxygendefine:: MGE_OS_MACOSX
-    :project: mge
-.. doxygendefine:: MGE_OS_UNIX
-    :project: mge
+.. c:macro:: MGE_OS_LINUX
+
+    Defined if the operating system is Linux.
+
+.. c:macro:: MGE_OS_WINDOWS
+
+    Defined if the operating system is Microsoft Windows.
+
+.. c:macro:: MGE_OS_MACOSX
+
+    Defined if the operating system is Mac OS X.
+
+.. c:macro:: MGE_OS_UNIX
+
+    Defined if the operating system is a Unix-style system, like
+    Linux and Mac OS X.
 
 Platform Namespace
 ------------------
 
 By convention, platform specific code resides under a specific namespace,
 as follows:
+
 +-------------------+------------+
 | Platform          | Namespace  |
 +===================+============+
