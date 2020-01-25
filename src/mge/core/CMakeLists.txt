@@ -62,6 +62,9 @@ SET(mgecore_sources
     bit.hpp
     bool_value.hpp
     types.hpp
+    module.hpp
+    async_executor.hpp
+    gist.hpp
 )
 
 ADD_LIBRARY(mgecore

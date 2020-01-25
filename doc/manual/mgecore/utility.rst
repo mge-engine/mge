@@ -56,3 +56,12 @@ as ``true`` and produce ``false`` for anything else.
 .. doxygenfunction:: mge::bool_value(std::string_view)
     :project: mge
 
+Buffer
+------
+
+The type :any:`mge::buffer` is defined to be a ``std::vector<uint8_t>``
+as buffers of binary data are ubiquitously used througout the
+engine.
+
+.. doxygentypedef:: mge::buffer
+    :project: mge

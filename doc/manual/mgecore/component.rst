@@ -35,4 +35,10 @@ Modules
 -------
 
 Usually, implementations of interfaces reside in modules,
-i.e. shared libraries.
+i.e. shared libraries. Module functionality is wrapped up in
+the :any:`mge::module` class:
+
+.. doxygenclass:: mge::module
+    :project: mge
+    :members:
+
