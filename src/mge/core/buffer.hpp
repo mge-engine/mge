@@ -8,9 +8,10 @@
 #include <vector>
 namespace mge
 {
+    /// Helper type for binary buffers.
     using buffer = std::vector<uint8_t>;
 
-    GIST_OUTPUT(buffer)
+    MGE_GIST_OUTPUT(buffer)
     {
         return os << "buffer[" << g.value->size() << "]";
     }

@@ -36,16 +36,16 @@ namespace mge {
             }
 
             /* SFINAE operator-exists */
-            template <typename A> 
-            static decltype(test(&A::gist)) 
+            template <typename A>
+            static decltype(test(&A::gist))
             test(decltype(&A::gist), int) {
-                typedef decltype(test(&A::gist)) return_type; 
+                typedef decltype(test(&A::gist)) return_type;
                 return return_type();
             }
             /* SFINAE don't have it*/
             template<typename A>
             static std::false_type test(...) {
-                return std::false_type(); 
+                return std::false_type();
             }
 
             /* This will be either `std::true_type` or `std::false_type` */
@@ -95,8 +95,8 @@ namespace mge {
         return os;
     }
 
-#define GIST_OUTPUT(TYPE)                                                   \
+#define MGE_GIST_OUTPUT(TYPE)                                                   \
     template<>                                                              \
     inline                                                                  \
-    std::ostream& operator <<(std::ostream& os, const gist_type<TYPE>& g)   
+    std::ostream& operator <<(std::ostream& os, const gist_type<TYPE>& g)
 }
