@@ -18,7 +18,7 @@ IF(DOXYGEN_FOUND)
         SET(SPHINX_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/manual-html)
         SET(SPHINX_OUTPUT_PDF ${CMAKE_CURRENT_BINARY_DIR}/manual-pdf)
         FILE(MAKE_DIRECTORY ${SPHINX_OUTPUT})
-        ADD_CUSTOM_TARGET(manual-html ALL
+        ADD_CUSTOM_TARGET(manual-html
             DEPENDS ${DOXYGEN_XML_INDEX_FILE}
             COMMAND ${SPHINX_EXECUTABLE}
                 -b html
@@ -27,7 +27,7 @@ IF(DOXYGEN_FOUND)
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
             COMMENT "Generate html manual"
         )
-        ADD_CUSTOM_TARGET(manual-latex ALL
+        ADD_CUSTOM_TARGET(manual-latex
             DEPENDS ${DOXYGEN_XML_INDEX_FILE}
             COMMAND ${SPHINX_EXECUTABLE}
                 -b latex

@@ -66,3 +66,14 @@ as follows:
 +-------------------+------------+
 | Mac OS X          | ``macos``  |
 +-------------------+------------+
+
+Clock
+=====
+
+A raw clock that measures time span since program start is offered
+in :file:`mge/core/clock.hpp`.
+
+.. doxygenclass:: mge::clock
+    :project: mge
+    :members:
+

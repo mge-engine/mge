@@ -57,11 +57,31 @@ as ``true`` and produce ``false`` for anything else.
     :project: mge
 
 Buffer
-------
+======
 
 The type :any:`mge::buffer` is defined to be a ``std::vector<uint8_t>``
 as buffers of binary data are ubiquitously used througout the
 engine.
 
 .. doxygentypedef:: mge::buffer
+    :project: mge
+
+Line Printer
+============
+
+The function :any:`mge:line_printer` defined in
+:file:`mge/core/streamutils.hpp` makes it easy to print a line of designated
+length.
+
+.. doxygenfunction:: mge::line
+    :project: mge
+
+Clear Function
+==============
+
+The function :any:`mge:clear_function` defined in
+:file:`mge/core/clear_function.hpp` resets a ``std::function``
+object.
+
+.. doxygenfunction:: mge::clear_function
     :project: mge

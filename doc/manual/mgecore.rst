@@ -16,5 +16,6 @@ Core Library
     mgecore/file.rst
     mgecore/archive.rst
     mgecore/system.rst
+    mgecore/concurrency.rst
     mgecore/utility.rst
 
