@@ -11,6 +11,9 @@
 #include "mge/core/path.hpp"
 
 namespace mge {
+
+    MGE_DECLARE_REF(file);
+
     /**
      * Handle to a file (or directory).
      */
