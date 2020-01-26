@@ -46,7 +46,6 @@ standard output console. It takes one configuration option:
 formatter
     Name of formatter instance used for formatting the log record. |
 
-
 File Log Sink
 .............
 
