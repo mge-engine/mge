@@ -83,7 +83,10 @@ namespace mge {
         return m_log.m_message;
     }
 
-
+/**
+ * @brief Write to error log.
+ * @param topic log topic
+ */
 #define MGE_ERROR_LOG(topic)                                                    \
     if(!::log_instance_##topic().enabled(mge::log_severity::ERROR_SEVERITY))      \
     {}                                                                          \
@@ -91,24 +94,40 @@ namespace mge {
     mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::ERROR_SEVERITY)).stream()
 
 
+/**
+ * @brief Write to warning log.
+ * @param topic log topic
+ */
 #define MGE_WARNING_LOG(topic)                                                    \
     if(!::log_instance_##topic().enabled(mge::log_severity::WARNING_SEVERITY))      \
     {}                                                                          \
     else                                                                        \
     mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::WARNING_SEVERITY)).stream()
 
+/**
+ * @brief Write to debug log.
+ * @param topic log topic
+ */
 #define MGE_DEBUG_LOG(topic)                                                    \
     if(!::log_instance_##topic().enabled(mge::log_severity::DEBUG_SEVERITY))      \
     {}                                                                          \
     else                                                                        \
     mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::DEBUG_SEVERITY)).stream()
 
+/**
+ * @brief Write to info log.
+ * @param topic log topic
+ */
 #define MGE_INFO_LOG(topic)                                                    \
     if(!::log_instance_##topic().enabled(mge::log_severity::INFO_SEVERITY))      \
     {}                                                                          \
     else                                                                        \
     mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::INFO_SEVERITY)).stream()
 
+/**
+ * @brief Defines a log instance for a topic.
+ * @param topic log topic name
+ */
 #define MGE_DEFINE_LOG(topic)                          \
     __declspec(dllexport)                              \
     mge::log&                                          \
@@ -118,9 +137,17 @@ namespace mge {
         return instance;                               \
     }
 
+/**
+ * @brief Declare usage of a log.
+ * @param topic log topic name
+ */
 #define MGE_USE_LOG(topic)                        \
     extern mge::log& log_instance_##topic()
 
+/**
+ * @brief Declare usage of a log imported from a different shared library.
+ * @param topic log topic name
+ */
 #define MGE_USE_IMPORTED_LOG(topic)               \
     __declspec(dllimport)                         \
     mge::log& log_instance_##topic()

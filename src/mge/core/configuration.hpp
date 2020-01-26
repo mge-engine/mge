@@ -44,7 +44,7 @@ namespace mge {
     };
 
     /**
-     * Configuration.
+     * Configuration access.
      */
     class MGE_CORE_EXPORT configuration
     {
@@ -52,17 +52,20 @@ namespace mge {
         struct transient_tag
         {};
 
+        /**
+         * @brief Object to signal a configuration is transient.
+         */
         static constexpr transient_tag transient = {};
 
         /**
          * Map of configuration values.
          */
-        typedef std::map<std::string, std::string> config_values_map;
+        using config_values_map = std::map<std::string, std::string>;
 
         /**
          * List of configuration keys.
          */
-        typedef std::vector<std::string> key_list;
+        using key_list = std::vector<std::string>;
 
         /**
          * Create a transient configuration. A transient configuration

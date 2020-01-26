@@ -39,6 +39,14 @@ namespace mge {
         }
     }
 
+    /**
+     * @brief Create a line printer.
+     *
+     * @param length length of line
+     * @param c       character to compose the line of
+     * @return line printer that prints a line of designated
+     *              length
+     */
     inline line_printer line(uint32_t length, char c='-')
     {
         line_printer p = { length, c};

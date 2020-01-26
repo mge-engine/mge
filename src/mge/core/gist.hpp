@@ -20,6 +20,13 @@ namespace mge {
         const T* value;
     };
 
+    /**
+     * @brief Gist helper function.
+     *
+     * @tparam T object type
+     * @param t object to print the gist for
+     * @return gist helper object for @c t
+     */
     template <typename T>
     gist_type<T> gist(const T& t)
     {
@@ -95,6 +102,17 @@ namespace mge {
         return os;
     }
 
+/**
+ * @brief Helper macro for gist implementation.
+ *
+ * Provides the prototype for an out of class gist
+ * print helper operator. The parameters are
+ *
+ * - @c os output stream
+ * - @c g gist helper of type @c TYPE
+ *
+ * @param TYPE type the gist output is implemented for
+ */
 #define MGE_GIST_OUTPUT(TYPE)                                                   \
     template<>                                                              \
     inline                                                                  \

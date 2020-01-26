@@ -5,6 +5,13 @@
 #include <functional>
 namespace mge {
 
+    /**
+     * @brief Reset a @c std::function instance.
+     *
+     * @tparam R        function result
+     * @tparam Args     function arguments
+     * @param f         function to reset
+     */
     template< class R, class... Args >
     inline void clear_function(std::function<R(Args...)>& f)
     {
