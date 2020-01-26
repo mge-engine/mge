@@ -23,10 +23,58 @@
 
 
 namespace mge {
+    class system_file_output_stream : public output_stream
+    {
+    public:
+        system_file_output_stream(const std::string& filename)
+            : m_filename(filename)
+            , m_file(nullptr)
+        {
+            m_file = fopen(filename.c_str(), "wb");
+            if (!m_file) {
+                if (errno == ENOENT) {
+                    MGE_THROW(mge::file_not_found)
+                        << "Cannot open file '" << filename << "' for writing";
+                } else {
+                    MGE_THROW(mge::io_error)
+                        << "Cannot open file '" << filename << "' for writing";
+                }
+            }
+        }
+
+        ~system_file_output_stream()
+        {
+            if (m_file) {
+                fclose(m_file);
+            }
+        }
+    protected:
+        void on_write(const void *buffer, streamsize_type size) override
+        {
+            size_t written = fwrite(buffer, 1, size, m_file);
+            if (written != (size_t)size) {
+                MGE_THROW(io_error) << "Cannot write to file '" << m_filename << "'";
+            }
+        }
+
+        void on_flush() override
+        {
+            if (fflush(m_file)) {
+                MGE_THROW(io_error)
+                    << "Cannot flush file '" << m_filename << "'";
+            }
+        }
+    private:
+        std::string m_filename;
+        FILE *m_file;
+    };
+
+
     class system_file_input_stream : public input_stream
     {
     public:
         system_file_input_stream(const std::string& filename)
+            : m_file(nullptr)
         {
             m_file = fopen(filename.c_str(), "rb");
             if (!m_file) {
@@ -138,6 +186,7 @@ namespace mge {
         void list(std::vector<file>& files) override;
 
         input_stream_ref open_for_input() const override;
+        output_stream_ref open_for_output() const override;
         size_t size() const override;
     };
 
@@ -208,6 +257,12 @@ namespace mge {
     {
         std::string s = m_path.string();
         return ::std::make_shared<system_file_input_stream>(s);
+    }
+
+    output_stream_ref system_file_access::open_for_output() const
+    {
+        std::string s = m_path.string();
+        return ::std::make_shared<system_file_output_stream>(s);
     }
 
     void system_file_access::list(std::vector<file>& files)

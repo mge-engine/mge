@@ -65,6 +65,16 @@ SET(mgecore_sources
     module.hpp
     async_executor.hpp
     gist.hpp
+    log_severity.hpp
+    log.hpp
+    configuration.hpp
+    streamutils.hpp
+    async_executor.hpp
+    clear_function.hpp
+    buffer.hpp
+    clock.hpp
+    configurable.hpp
+
 )
 
 ADD_LIBRARY(mgecore

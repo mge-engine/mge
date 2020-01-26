@@ -97,7 +97,7 @@ namespace mge {
         return files;
     }
 
-    size_t file::size() const 
+    size_t file::size() const
     {
         return m_access->size();
     }
@@ -105,6 +105,11 @@ namespace mge {
     input_stream_ref file::open_for_input() const
     {
         return m_access->open_for_input();
+    }
+
+    output_stream_ref file::open_for_output() const
+    {
+        return m_access->open_for_output();
     }
 
     const path& file::path() const

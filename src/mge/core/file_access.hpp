@@ -9,6 +9,7 @@
 #include "mge/core/types.hpp"
 #include "mge/core/exception.hpp"
 #include "mge/core/input_stream.hpp"
+#include "mge/core/output_stream.hpp"
 
 #include <string>
 #include <vector>
@@ -90,9 +91,17 @@ namespace mge {
          */
         virtual input_stream_ref open_for_input() const = 0;
 
+
+        /**
+         * @brief Opens the file for output.
+         *
+         * @return handle to opened stream
+         */
+        virtual output_stream_ref open_for_output() const = 0;
+
         /**
          * File size.
-         * 
+         *
          * @return file size, 0 if not a regular file
          */
         virtual size_t size() const = 0;
