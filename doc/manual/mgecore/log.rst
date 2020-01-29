@@ -80,6 +80,9 @@ Log Formatter
 Text Formatter
 ..............
 
+The text log formatter, registered as ``text``, prints a simple string
+containing all log information in the log record.
+
 Custom Log Formatter
 ....................
 

@@ -77,3 +77,14 @@ in :file:`mge/core/clock.hpp`.
     :project: mge
     :members:
 
+Memory Management
+=================
+
+C-Style Memory Management
+-------------------------
+
+``new`` and ``delete`` Operators
+--------------------------------
+
+Allocation Statistics
+---------------------
