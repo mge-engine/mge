@@ -49,11 +49,46 @@ formatter
 File Log Sink
 .............
 
-The file log sink prints
+The file log sink prints log into a file. It accepts the following
+configuration parameters:
+
+formatter
+    Name of formatter instance used for formatting the log record. |
+logfile_name
+    Name of the log file.
+
+Custom Log Sink implementation
+..............................
+
+To implement a custom log sink, you need to implement the :any:`mge::log_sink`
+and register it as implementation.
+
+.. doxygenclass:: mge::log_sink
+    :project: mge
+    :members:
+
+A log sink takes a log record for each log call to publish:
+
+.. doxygenstruct:: mge::log_record
+    :project: mge
+    :members:
+
 
 Log Formatter
 -------------
 
+Text Formatter
+..............
+
+Custom Log Formatter
+....................
+
+A custom log formatter can be implemented by subclassing :any:`mge::log_formatter`
+class and register it as an implementation.
+
+.. doxygenclass:: mge::log_formatter
+    :project: mge
+    :members:
 
 Log Configuration
 -----------------

@@ -67,6 +67,9 @@ SET(mgecore_sources
     async_executor.hpp
     gist.hpp
     log_severity.hpp
+    log_sink.hpp
+    log_formatter.hpp
+    log_record.hpp
     log.hpp
     configuration.hpp
     streamutils.hpp

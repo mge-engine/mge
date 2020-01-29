@@ -27,6 +27,7 @@ IF(DOXYGEN_FOUND)
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
             COMMENT "Generate html manual"
         )
+        ADD_DEPENDENCIES(documentation manual-html)
         ADD_CUSTOM_TARGET(manual-latex
             DEPENDS ${DOXYGEN_XML_INDEX_FILE}
             COMMAND ${SPHINX_EXECUTABLE}
