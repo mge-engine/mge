@@ -7,8 +7,17 @@
 
 namespace mge {
 
+    /**
+     * @brief Checked cast to prevent silent over/underflow or rounding.
+     *
+     * @tparam T target type
+     * @tparam S source type
+     * @param src source value
+     * @return value casted to type @c T, an @c mge::out_of_range
+     *   exception is thrown if this is not lossless
+     */
     template <typename T, typename S>
-    inline T numeric_cast(const S src)
+    inline T checked_cast(const S src)
     {
         T tmp = static_cast<T>(src);
         S stmp = static_cast<S>(tmp);

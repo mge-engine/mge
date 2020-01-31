@@ -5,7 +5,7 @@
 #include "render_context.hpp"
 #include "error.hpp"
 #include "common.hpp"
-#include "mge/core/numeric_cast.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "mge/core/memory.hpp"
 
 namespace dx11 {
@@ -35,7 +35,7 @@ namespace dx11 {
         D3D11_BUFFER_DESC buffer_desc = {};
         buffer_desc.Usage     = dx11_usage(buffer_usage());
         buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-        buffer_desc.ByteWidth = mge::numeric_cast<UINT>(size());
+        buffer_desc.ByteWidth = mge::checked_cast<UINT>(size());
         buffer_desc.CPUAccessFlags = buffer_usage() == mge::usage::STAGING ? D3D11_CPU_ACCESS_READ : 0;
         buffer_desc.MiscFlags = 0;
         D3D11_SUBRESOURCE_DATA init_data = {};

@@ -20,15 +20,33 @@ namespace mge {
     MGE_CORE_EXPORT uint64_t allocation_count();
     MGE_CORE_EXPORT uint64_t thread_allocation_count();
 
+    /**
+     * @brief Counter for allocations.
+     *
+     * Makes available the number of allocations since the scope has
+     * been entered.
+     */
     class MGE_CORE_EXPORT allocation_count_scope
     {
     public:
+        /**
+         * @brief Construct a new allocation count scope object.
+         */
         inline allocation_count_scope()
             :m_count(thread_allocation_count())
         {}
 
+        /**
+        * @brief Destroy the allocation count scope object
+        *
+        */
         inline ~allocation_count_scope() = default;
 
+        /**
+         * @brief Get current allocations in scope.
+         *
+         * @return number of allocations since scope was entered
+         */
         uint64_t allocations_in_scope() const
         {
             return thread_allocation_count() - m_count;
