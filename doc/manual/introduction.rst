@@ -17,7 +17,8 @@ open alternative to existing systems.
 
 MGE makes use of STL and Boost, which are not always used - for various
 reasons - in game development. MGE makes heavy use of these libraries
-but used other methods and algorithms where appropriate or needed.
+but uses own data structures and algorithms where the scope of these
+generic support libraries ends.
 
 During the course of implementing a graphics and game engine, some
 general-purpose components have been created that may be of use outside
@@ -27,13 +28,16 @@ the domain of game programming:
   facilities for tracing and error reporting, configuration or
   componentization.
 - The entity component system is a general purpose mechanism, although
-  commonly used in game development.
+  commonly used in game development. MGE encapsulates the EnTT library
+  here, a high-performance and modern ECS.
 - The script library and plugins allow adding a scripting language,
   also a commonly needed functionality.
 
 The general design philosphy in MGE is that everything should stand
 for itself, and *manager* or other *uber-objects* are to be avoided.
-This also allows also going as low-level as wanted when using MGE.
+
+This also allows also going as low-level as wanted when using MGE, and
+not being tied to a render loop or update architecture.
 
 
 About this manual
