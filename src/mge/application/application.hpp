@@ -104,10 +104,17 @@ namespace mge {
 
         /**
          * Add setup task which will be executed in update thread
-         * after @c start
+         * after @c start method is done.
          * @param task task to execute
          */
         void add_setup_task(const mge::task_ref& task);
+
+        /**
+         * Add setup task which will be executed in update thread
+         * after @c start method is done.
+         * @param function function to execute
+         */
+        void add_setup_task(std::function<void()>&& function);
 
         /**
          * Add an application thread that will be joined in

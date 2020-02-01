@@ -151,7 +151,8 @@ namespace mge {
             }
         }
     }
-    void 
+
+    void
     application::add_setup_task(const mge::task_ref& task)
     {
         if (m_setup_complete) {
@@ -161,6 +162,13 @@ namespace mge {
             MGE_THROW(illegal_argument) << "Invalid task reference";
         }
         m_setup_tasks.push_back(task);
+    }
+
+    void
+    application::add_setup_task(std::function<void()>&& function)
+    {
+        auto tmp = std::make_shared<mge::task>(function);
+        add_setup_task(tmp);
     }
 
     void
