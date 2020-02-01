@@ -69,7 +69,7 @@ namespace vulkan {
         retrieve_device_queues();
     }
 
-    render_system::monitor_collection_t render_system::monitors() const
+    render_system::monitor_collection_type render_system::monitors() const
     {
         return ::mge::platform::monitor::all_monitors();
     }

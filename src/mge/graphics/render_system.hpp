@@ -25,7 +25,7 @@ namespace mge {
     protected:
         render_system();
     public:
-        using monitor_collection_t = std::vector<monitor_ref>;
+        using monitor_collection_type = std::vector<monitor_ref>;
 
         virtual ~render_system();
 
@@ -54,7 +54,7 @@ namespace mge {
          * Get all monitors attached to the computer.
          * @return list of monitors
          */
-        virtual monitor_collection_t monitors() const = 0;
+        virtual monitor_collection_type monitors() const = 0;
 
         /**
          * Retrieve the primary monitor.

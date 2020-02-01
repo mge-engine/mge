@@ -24,7 +24,7 @@ namespace vulkan {
 
         void configure(const mge::configuration& config) override;
 
-        monitor_collection_t monitors() const override;
+        monitor_collection_type monitors() const override;
         mge::monitor_ref primary_monitor() const override;
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override;

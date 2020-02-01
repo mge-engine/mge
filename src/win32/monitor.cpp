@@ -48,10 +48,10 @@ namespace win32 {
         return m_physical_width;
     }
 
-    monitor::monitor_collection_t
+    monitor::monitor_collection_type
     monitor::all_monitors()
     {
-        monitor_collection_t result;
+        monitor_collection_type result;
 
         DISPLAY_DEVICEW adapter_device;
         for(DWORD adapter_index=0; ;++adapter_index) {

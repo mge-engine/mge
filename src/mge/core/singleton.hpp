@@ -28,10 +28,10 @@ namespace mge {
     {
     public:
         using value_type = T;
-        using pointer_type = T*;
-        using const_pointer_type = const T*;
-        using reference_type = T&;
-        using const_reference_type = const T&;
+        using pointer = T*;
+        using const_pointer = const T*;
+        using reference = T&;
+        using const_reference = const T&;
 
         /**
          * Constructor. The contained object is not created.
@@ -60,7 +60,7 @@ namespace mge {
          * Access the contained object.
          * @return contained object
          */
-        inline pointer_type ptr()
+        inline pointer ptr()
         {
             T * p = m_instance.load();
             if(p) {
@@ -80,7 +80,7 @@ namespace mge {
          * Access the contained object.
          * @return contained object
          */
-        inline pointer_type operator ->()
+        inline pointer operator ->()
         {
             return ptr();
         }
@@ -89,7 +89,7 @@ namespace mge {
          * Access the contained object.
          * @return contained object
          */
-        inline const_pointer_type operator ->() const
+        inline const_pointer operator ->() const
         {
             return ptr();
         }
@@ -98,7 +98,7 @@ namespace mge {
              * Access the contained object.
              * @return contained object
              */
-        inline reference_type operator *()
+        inline reference operator *()
         {
             return *ptr();
         }
@@ -107,7 +107,7 @@ namespace mge {
          * Access the contained object.
          * @return contained object
          */
-        inline const_reference_type operator *() const
+        inline const_reference operator *() const
         {
             return *ptr();
         }

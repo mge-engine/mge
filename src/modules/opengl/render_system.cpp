@@ -22,7 +22,7 @@ namespace opengl {
         }
         virtual ~render_system() = default;
 
-        monitor_collection_t monitors() const override
+        monitor_collection_type monitors() const override
         {
             return ::mge::platform::monitor::all_monitors();
         }

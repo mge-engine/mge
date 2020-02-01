@@ -29,7 +29,7 @@ namespace dx11 {
             m_config.configure(config);
         }
 
-        monitor_collection_t monitors() const override
+        monitor_collection_type monitors() const override
         {
             return ::mge::platform::monitor::all_monitors();
         }
