@@ -17,7 +17,10 @@ namespace mge {
     {
     public:
         explicit task(const std::function<void()>& f);
-        ~task();
+        explicit task(std::function<void()>&& f);
+
+        ~task() = default;
+
         void run();
         void wait();
     private:

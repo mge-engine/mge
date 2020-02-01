@@ -5,6 +5,7 @@
 #include "mge/core/crash.hpp"
 #include "mge/core/stdexceptions.hpp"
 namespace mge {
+
     task::task(const std::function<void()>& f)
         :m_function(f)
     {
@@ -13,7 +14,8 @@ namespace mge {
         }
     }
 
-    task::~task()
+    task::task(std::function<void()>&& f)
+        :m_function(std::move(f))
     {}
 
     void
