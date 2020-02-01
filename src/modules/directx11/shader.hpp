@@ -22,7 +22,7 @@ namespace dx11 {
     protected:
         void on_compile(const std::string& source_code) override;
         void on_load(const mge::buffer& code) override;
-        
+
     public:
         using vertex_shader_t = mge::com_unique_ptr<ID3D11VertexShader>;
         using pixel_shader_t = mge::com_unique_ptr<ID3D11PixelShader>;
@@ -30,11 +30,11 @@ namespace dx11 {
         using hull_shader_t = mge::com_unique_ptr<ID3D11HullShader>;
         using domain_shader_t = mge::com_unique_ptr<ID3D11DomainShader>;
 
-        typedef std::variant<vertex_shader_t,
-                             pixel_shader_t,
-                             compute_shader_t,
-                             hull_shader_t,
-                             domain_shader_t> shader_t;
+        using shader_t = std::variant<vertex_shader_t,
+                                      pixel_shader_t,
+                                      compute_shader_t,
+                                      hull_shader_t,
+                                      domain_shader_t>;
         ID3D10Blob* code() const noexcept { return m_code.get(); }
     private:
         void create_shader();

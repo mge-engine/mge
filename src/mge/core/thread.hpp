@@ -24,11 +24,11 @@ namespace mge {
     {
     public:
         /// Type of 'running' thread. Usually @c std::thread.
-        typedef std::thread running_thread_t;
+        using running_thread_t = std::thread;
         /// Native thread handle type.
-        typedef running_thread_t::native_handle_type native_handle_type;
+        using native_handle_type = running_thread_t::native_handle_type;
         /// Thread id type.
-        typedef running_thread_t::id id;
+        using id = running_thread_t::id;
 
         /**
          * Constructor.

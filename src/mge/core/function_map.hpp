@@ -95,9 +95,9 @@ namespace mge {
             function_map<T>& m_map;
         };
 
-        typedef unsigned int key_type;
-        typedef std::function<T> value_type;
-        typedef std::map<unsigned int, std::function<T>> map_type;
+        using key_type = unsigned int;
+        using value_type = std::function<T>;
+        using map_type = std::map<unsigned int, std::function<T>>;
 
         /**
          * Constructor.

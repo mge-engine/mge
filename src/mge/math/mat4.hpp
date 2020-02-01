@@ -7,7 +7,7 @@
 #include <iosfwd>
 
 namespace mge {
-    typedef glm::fmat4 fmat4;
+    using fmat4 = glm::fmat4;
     using glm::transpose;
     using glm::determinant;
     using glm::inverse;

@@ -9,7 +9,7 @@ namespace mge {
     template <typename T>
     struct com_deleter
     {
-        typedef T *pointer;
+        using pointer = T *;
         com_deleter() = default;
         inline void operator()(T *ptr) const { ptr->Release(); }
     };

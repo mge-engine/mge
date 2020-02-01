@@ -19,7 +19,7 @@ namespace mge {
     class enum_set
     {
     private:
-        typedef typename std::underlying_type<E>::type base_type;
+        using base_type = typename std::underlying_type<E>::type;
     public:
         enum_set() = default;
 
@@ -47,7 +47,7 @@ namespace mge {
              return m_bits.test(static_cast<base_type>(value));
         }
 
-        bool empty() const 
+        bool empty() const
         {
             return m_bits.none();
         }

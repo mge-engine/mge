@@ -25,7 +25,7 @@ namespace mge {
     protected:
         render_system();
     public:
-        typedef std::vector<monitor_ref> monitor_collection_t;
+        using monitor_collection_t = std::vector<monitor_ref>;
 
         virtual ~render_system();
 
@@ -37,7 +37,7 @@ namespace mge {
         static render_system_ref create();
 
         /**
-         * Creates a render system named by given name. 
+         * Creates a render system named by given name.
          * Note that the render system is not configured and may not be usable.
          * @param name name of render system, such as "opengl" or "vulkan"
          * @return created render system, or invalid reference if unavailable

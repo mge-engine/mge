@@ -35,7 +35,7 @@ namespace mge {
         window(const rectangle& dimension,
                const window_options& options);
     public:
-        struct redraw_context 
+        struct redraw_context
         {
             window          *window;
             mge::thread     *display_thread;
@@ -43,9 +43,9 @@ namespace mge {
             float            interpolation;
         };
 
-        typedef std::function<void()> close_listener;
-        typedef std::function<bool()> closing_listener;
-        typedef std::function<void(window::redraw_context&)> redraw_listener;
+        using close_listener = std::function<void()>;
+        using closing_listener = std::function<bool()>;
+        using redraw_listener = std::function<void(window::redraw_context&)>;
 
         virtual ~window();
 
@@ -148,7 +148,7 @@ namespace mge {
         };
         friend class window::display_thread;
         virtual void assign_thread();
-    
+
     protected:
         virtual void install_display_thread();
         void uninstall_display_thread();

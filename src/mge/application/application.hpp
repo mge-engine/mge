@@ -46,16 +46,23 @@ namespace mge {
          * It is called at most with the update frequency (25 times a
          * second by default).
          */
-        typedef std::function<void(std::uint64_t)> update_listener;
+        using update_listener = std::function<void(std::uint64_t)>;
 
-        typedef function_map<update_listener>::key_type update_listener_key_type;
+        /**
+         * @brief Key type for update listener access.
+         */
+        using update_listener_key_type = function_map<update_listener>::key_type ;
+
         /**
          * A quit listener which shall be called when the
          * application shall quit.
          */
-        typedef std::function<void()> quit_listener;
+        using quit_listener = std::function<void()>;
 
-        typedef function_map<quit_listener>::key_type quit_listener_key_type;
+        /**
+         * @brief Key type for quit listener access.
+         */
+        using quit_listener_key_type = function_map<quit_listener>::key_type;
 
         /**
          * Destructor.

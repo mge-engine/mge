@@ -11,7 +11,7 @@ namespace mge {
 
     using glm::vec4;
 
-    typedef vec4 fvec4;
+    using fvec4 = vec4;
 
     MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fvec4& v);
 

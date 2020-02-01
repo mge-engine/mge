@@ -66,8 +66,8 @@ namespace mge {
         template <typename Tag, typename Value>
         struct tag
         {
-            typedef Tag     tag_type;    //!< Tag type.
-            typedef Value   value_type;  //!< Value type of value stored under tag.
+            using tag_type = Tag;      //!< Tag type.
+            using value_type = Value;  //!< Value type of value stored under tag.
         };
 
         /**
@@ -313,7 +313,7 @@ namespace mge {
 
 
     private:
-        typedef std::map<std::type_index, boost::any> exception_info_map_t;
+        using exception_info_map_t = std::map<std::type_index, boost::any>;
         exception_info_map_t m_infos;
     private:
         void copy_message_or_materialize(const exception& e);

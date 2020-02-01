@@ -68,19 +68,19 @@ namespace mge {
             const char *module;
         };
 
-        typedef std::vector<element> container_type;
-        typedef container_type::value_type value_type;
-        typedef container_type::allocator_type allocator_type;
-        typedef container_type::size_type size_type;
-        typedef container_type::difference_type difference_type;
-        typedef container_type::reference reference;
-        typedef container_type::const_reference const_reference;
-        typedef container_type::pointer pointer;
-        typedef container_type::const_pointer const_pointer;
-        typedef container_type::iterator iterator;
-        typedef container_type::const_iterator const_iterator;
-        typedef container_type::reverse_iterator reverse_iterator;
-        typedef container_type::const_reverse_iterator const_reverse_iterator;
+        using container_type = std::vector<element>;
+        using value_type = container_type::value_type;
+        using allocator_type = container_type::allocator_type;
+        using size_type = container_type::size_type;
+        using difference_type = container_type::difference_type;
+        using reference = container_type::reference;
+        using const_reference = container_type::const_reference;
+        using pointer = container_type::pointer;
+        using const_pointer = container_type::const_pointer;
+        using iterator = container_type::iterator;
+        using const_iterator = container_type::const_iterator;
+        using reverse_iterator = container_type::reverse_iterator;
+        using const_reverse_iterator = container_type::const_reverse_iterator;
 
         /**
          * Creates a stack backtrace of the current call site.

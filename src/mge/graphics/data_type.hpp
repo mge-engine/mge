@@ -48,7 +48,7 @@ namespace mge {
     template <data_type T>
     struct data_type_traits
     {
-        typedef void value_type;
+        using value_type = void;
     };
 
 
@@ -62,7 +62,7 @@ namespace mge {
     template <>                                     \
     struct data_type_traits<data_type_value>        \
     {                                               \
-        typedef c_type value_type;                  \
+        using value_type = c_type;                  \
     };
 
 
@@ -115,12 +115,12 @@ namespace mge {
     class MGE_GRAPHICS_EXPORT data_type_set
     {
     private:
-        typedef std::bitset<static_cast<uint8_t>(data_type::LAST)> container_type;
+        using container_type = std::bitset<static_cast<uint8_t>(data_type::LAST)>;
     public:
         /**
          * Proxy type to allow reference to single type.
          */
-        typedef container_type::reference reference;
+        using reference = container_type::reference;
         /**
          * Construct empty set.
          */

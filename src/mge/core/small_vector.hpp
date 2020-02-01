@@ -29,20 +29,20 @@ namespace mge {
     class small_vector
     {
     public:
-        typedef T value_type;
-        typedef Alloc allocator_type;
-        typedef value_type& reference;
-        typedef const value_type& const_reference;
-        typedef value_type* pointer;
-        typedef const value_type* const_pointer;
-        typedef ptrdiff_t difference_type;
-        typedef size_t size_type;
-        typedef T* iterator;
-        typedef const T* const_iterator;
-        typedef std::reverse_iterator<iterator> reverse_iterator;
-        typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+        using value_type = T;
+        using allocator_type = Alloc;
+        using reference = value_type&;
+        using const_reference = const value_type&;
+        using pointer = value_type*;
+        using const_pointer = const value_type*;
+        using difference_type = ptrdiff_t;
+        using size_type = size_t;
+        using iterator = T*;
+        using const_iterator = const T*;
+        using reverse_iterator = std::reverse_iterator<iterator>;
+        using const_reverse_iterator = std::reverse_iterator<const_iterator>;
     private:
-        struct small_data 
+        struct small_data
         {
             small_data(size_t l, const value_type& val)
                 :length(l)
@@ -123,35 +123,35 @@ namespace mge {
         }
 
 
-        const_iterator begin() const 
+        const_iterator begin() const
         {
             return cbegin();
         }
 
-        const_iterator cbegin() const 
+        const_iterator cbegin() const
         {
             return std::visit(
                 overloaded {
                     [](const std::monostate&) -> const_iterator { return nullptr; },
                     [](const small_data& d) -> const_iterator { return d.data.data(); },
                     [](const std::vector<T, Alloc>& v) -> const_iterator { return v.data(); },
-                }, 
+                },
                 m_data);
         }
 
-        iterator begin() 
+        iterator begin()
         {
             return std::visit(
                 overloaded {
                     [](std::monostate&) -> iterator { return nullptr; },
                     [](small_data& d) -> iterator { return d.data.data(); },
                     [](std::vector<T, Alloc>& v) -> iterator { return v.data(); },
-                }, 
+                },
                 m_data);
         }
 
 
-        const_iterator end() const 
+        const_iterator end() const
         {
             return cend();
         }
@@ -163,18 +163,18 @@ namespace mge {
                     [](const std::monostate&) -> const_iterator { return nullptr; },
                     [](const small_data& d) -> const_iterator { return d.data.data() + d.length; },
                     [](const std::vector<T, Alloc>& v) -> const_iterator { return v.data() + v.size(); },
-                }, 
+                },
                 m_data);
         }
 
-        iterator end() 
+        iterator end()
         {
             return std::visit(
                 overloaded {
                     [](std::monostate&) -> iterator { return nullptr; },
                     [](small_data& d) -> iterator { return d.data.data() + d.length; },
                     [](std::vector<T, Alloc>& v) -> iterator { return v.data() + v.size(); },
-                }, 
+                },
                 m_data);
         }
 
@@ -183,17 +183,17 @@ namespace mge {
             return crbegin();
         }
 
-        const_reverse_iterator crbegin() const 
+        const_reverse_iterator crbegin() const
         {
             return std::make_reverse_iterator(end());
         }
 
-        const_reverse_iterator rend() const 
+        const_reverse_iterator rend() const
         {
             return crend();
         }
 
-        const_reverse_iterator crend() const 
+        const_reverse_iterator crend() const
         {
             return std::make_reverse_iterator(begin());
         }
@@ -205,7 +205,7 @@ namespace mge {
                     [](const std::monostate&) -> size_t { return 0; },
                     [](const small_data& d) -> size_t { return d.length; },
                     [](const std::vector<T, Alloc>& v) -> size_t { return v.size(); },
-                }, 
+                },
                 m_data);
         }
 
@@ -247,7 +247,7 @@ namespace mge {
         // assign
         // at
 
-        reference back() 
+        reference back()
         {
             switch(m_data.index()) {
             default:
@@ -297,7 +297,7 @@ namespace mge {
                     [](const std::monostate&) -> size_type { return 0; },
                     [](const small_data& d) -> size_type { return S; },
                     [](const std::vector<T, Alloc>& v) -> size_type { return v.capacity(); },
-                }, 
+                },
                 m_data);
         }
 
@@ -341,7 +341,7 @@ namespace mge {
                     [](std::monostate&) -> pointer { return nullptr; },
                     [](small_data& d) -> pointer { return d.data.data(); },
                     [](std::vector<T, Alloc>& v) -> pointer { return v.data(); },
-                }, 
+                },
                 m_data);
         }
 
@@ -352,7 +352,7 @@ namespace mge {
                     [](const std::monostate&) -> const_pointer { return nullptr; },
                     [](const small_data& d) -> const_pointer { return d.data.data(); },
                     [](const std::vector<T, Alloc>& v) -> const_pointer { return v.data(); },
-                }, 
+                },
                 m_data);
 
         }
@@ -364,7 +364,7 @@ namespace mge {
             return *begin();
         }
 
-        const_reference front() const 
+        const_reference front() const
         {
             return *cbegin();
         }
@@ -418,7 +418,7 @@ namespace mge {
             }
         }
 
-        void shrink_to_fit() 
+        void shrink_to_fit()
         {
             if(m_data.index() == 2) {
                 std::get<2>(m_data).shrink_to_fit();
@@ -547,7 +547,7 @@ namespace mge {
         using data_type = std::variant<std::monostate,
                                        small_data,
                                        std::vector<T, Alloc>>;
-        
+
         data_type m_data;
         Alloc     m_allocator;
     };

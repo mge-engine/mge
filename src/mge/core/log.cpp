@@ -25,7 +25,7 @@ namespace mge {
     class log_sink_manager
     {
     public:
-        typedef std::map<std::string, log_sink_ref> sink_map_t;
+        using sink_map_t = std::map<std::string, log_sink_ref>;
 
         log_sink_manager()
             :m_configured(false)

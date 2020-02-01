@@ -18,14 +18,13 @@ namespace mge {
     class component_registry
     {
     public:
-        typedef std::map<std::string, component_registry_entry_base *> component_map_t;
-        typedef std::map<std::string, std::map<std::string, implementation_registry_entry_base*>> implementation_map_t;
-        typedef std::map<std::string, std::map<std::string, std::string>> alias_map_t;
-        component_registry()
-        {}
+        using component_map_t = std::map<std::string, component_registry_entry_base *>;
+        using implementation_map_t = std::map<std::string, std::map<std::string, implementation_registry_entry_base*>>;
+        using alias_map_t = std::map<std::string, std::map<std::string, std::string>>;
 
-        ~component_registry()
-        {}
+        component_registry() = default;
+
+        ~component_registry() = default;
 
         void register_component(component_registry_entry_base *c)
         {

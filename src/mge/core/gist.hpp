@@ -46,7 +46,7 @@ namespace mge {
             template <typename A>
             static decltype(test(&A::gist))
             test(decltype(&A::gist), int) {
-                typedef decltype(test(&A::gist)) return_type;
+                using return_type = decltype(test(&A::gist));
                 return return_type();
             }
             /* SFINAE don't have it*/
@@ -56,7 +56,7 @@ namespace mge {
             }
 
             /* This will be either `std::true_type` or `std::false_type` */
-            typedef decltype(test<T>(0,0)) type;
+            using type = decltype(test<T>(0,0));
             static constexpr bool value = type::value; /* Which is it? */
         };
 

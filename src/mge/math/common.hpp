@@ -70,7 +70,7 @@ namespace mge {
         /**
          * @brief type of square root
          */
-        typedef decltype(std::sqrt(T())) type;
+        using type = decltype(std::sqrt(T()));
     };
 
 }

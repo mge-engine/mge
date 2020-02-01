@@ -8,15 +8,28 @@
 
 namespace mge {
 
+    /**
+     * @brief Keyboard modifier.
+     */
     enum class MGE_INPUT_EXPORT modifier_value
     {
-        CONTROL = 0,
-        SHIFT = 1,
-        ALT = 2
+        CONTROL = 0,    //!< Control modifier key.
+        SHIFT = 1,      //!< Shift modifier key.
+        ALT = 2         //!< Alt modifier key.
     };
 
-    typedef enum_set<modifier_value, (size_t)  modifier_value::ALT> modifier;
+    /**
+     * @brief Modifier type, set of modifier keys pressed at the same time.
+     */
+    using modifier = enum_set<modifier_value, (size_t)  modifier_value::ALT>;
 
+    /**
+     * @brief Stream output operator.
+     *
+     * @param os    output stream
+     * @param v     modifier value
+     * @return @c os
+     */
     MGE_INPUT_EXPORT std::ostream& operator <<(std::ostream& os, const modifier_value& v);
 
 }

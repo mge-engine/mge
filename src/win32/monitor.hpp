@@ -22,7 +22,7 @@ namespace win32 {
         void set_video_mode(const mge::video_mode& mode) override;
         mge::video_mode current_video_mode() const override;
 
-        typedef mge::render_system::monitor_collection_t monitor_collection_t;
+        using monitor_collection_t = mge::render_system::monitor_collection_t;
         static monitor_collection_t all_monitors();
         static mge::monitor_ref primary_monitor();
 

@@ -27,11 +27,11 @@ namespace mge {
     class singleton : noncopyable
     {
     public:
-        typedef T value_type;
-        typedef T* pointer_type;
-        typedef const T* const_pointer_type;
-        typedef T& reference_type;
-        typedef const T& const_reference_type;
+        using value_type = T;
+        using pointer_type = T*;
+        using const_pointer_type = const T*;
+        using reference_type = T&;
+        using const_reference_type = const T&;
 
         /**
          * Constructor. The contained object is not created.

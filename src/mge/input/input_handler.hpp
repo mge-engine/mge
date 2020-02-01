@@ -25,26 +25,30 @@ namespace mge {
         /**
          * Handler function for mouse actions.
          */
-        typedef std::function<void(int button,
-                                   mouse_action action,
-                                   modifier m,
-                                   int x,
-                                   int y)> mouse_action_handler;
+        using mouse_action_handler =
+            std::function<void(int button,
+                               mouse_action action,
+                               modifier m,
+                               int x,
+                               int y)>;
         /**
          * Handler function for mouse movement.
          */
-        typedef std::function<void(int x, int y)> mouse_move_handler;
+        using mouse_move_handler = std::function<void(int x, int y)>;
 
         /**
          * Handler function for keyboard actions.
          */
-        typedef std::function<void(key k, key_action action, modifier m)>
-            key_action_handler;
+        using key_action_handler =
+            std::function<void(key k,
+                               key_action action,
+                               modifier m)>;
 
         /**
          * Handler function for character input.
          */
-        typedef std::function<void(unsigned int character)> character_handler;
+        using character_handler = std::function<void(unsigned int character)>;
+
     protected:
         /**
          * Constructor.

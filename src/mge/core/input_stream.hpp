@@ -20,19 +20,19 @@ namespace mge {
     class MGE_CORE_EXPORT input_stream
     {
     private:
-        typedef function_map<void (std::streamsize)> read_listener_map;
+        using read_listener_map = function_map<void (std::streamsize)>;
     public:
-        typedef read_listener_map::value_type read_listener;
+        using read_listener = read_listener_map::value_type;
 
         /**
          * Type of positions and offsets.
          */
-        typedef std::streamoff offset_type;
+        using offset_type = std::streamoff;
 
         /**
          * Type of number of bytes read.
          */
-        typedef std::streamsize streamsize_type;
+        using streamsize_type = std::streamsize ;
 
         /// Seek direction type.
         enum direction_type

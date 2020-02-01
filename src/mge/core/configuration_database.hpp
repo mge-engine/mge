@@ -12,7 +12,7 @@ namespace mge {
     class configuration_database
     {
     public:
-        typedef std::map<std::string, std::string> value_map;
+        using value_map = std::map<std::string, std::string>;
 
         configuration_database();
         ~configuration_database();

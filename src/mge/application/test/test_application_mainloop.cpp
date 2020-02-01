@@ -18,7 +18,7 @@ MGE_DEFINE_LOG(TEST);
 class my_application : public application
 {
 public:
-    typedef application super;
+    using super = application;
 
     my_application()
     {
