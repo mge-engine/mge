@@ -77,10 +77,10 @@ namespace win32 {
         return result;
     }
 
-    mge::monitor::video_mode_collection_t
+    mge::monitor::video_mode_collection_type
     monitor::video_modes() const
     {
-        mge::monitor::video_mode_collection_t result;
+        mge::monitor::video_mode_collection_type result;
         for(DWORD i=0;;++i) {
             DEVMODEW dm;
             mge::zero_memory(dm);

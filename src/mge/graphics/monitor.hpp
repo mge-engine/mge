@@ -23,7 +23,8 @@ namespace mge {
          */
         monitor();
     public:
-        typedef std::vector<video_mode> video_mode_collection_t;
+        /// Type of video mode collection.
+        using video_mode_collection_type = std::vector<video_mode>;
 
         /**
          * Destructor.
@@ -35,6 +36,7 @@ namespace mge {
          * @return name
          */
         const std::string& name() const;
+
         /**
          * Return whether this monitor is primary.
          * @return @c true if this monitor is primary
@@ -60,7 +62,7 @@ namespace mge {
          * Supported video modes.
          * @return vector filled with supported video modes
          */
-        virtual video_mode_collection_t video_modes() const = 0;
+        virtual video_mode_collection_type video_modes() const = 0;
 
         /**
          * Sets a video mode.
