@@ -8,6 +8,7 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/core/log.hpp"
+#include "mge/core/thread.hpp"
 
 using namespace mge;
 
@@ -36,16 +37,43 @@ public:
         m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
         m_clear_commands->finish();
         m_window->set_redraw_listener([&](window::redraw_context& context) {
-            context.render_context.execute(m_clear_commands);
-            context.render_context.flush();
+            this->draw(context);
         });
+        MGE_DEBUG_LOG(triangle) << "Initializing objects";
         m_window->show();
+        add_setup_task([&]{
+            this->initialize();
+        });
     }
 
+    void initialize()
+    {
+        using namespace std::chrono_literals;
+        MGE_DEBUG_LOG(triangle) << "Initializing objects";
+        m_draw_commands = m_window->render_context().create_command_list();
+        m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+        m_draw_commands->finish();
+        mge::this_thread::sleep_for(3s);
+        MGE_DEBUG_LOG(triangle) << "Initializing objects done";
+        m_initialized = true;
+    }
+
+    void draw(window::redraw_context& context)
+    {
+        if (m_initialized) {
+            context.render_context.execute(m_draw_commands);
+        } else {
+            context.render_context.execute(m_clear_commands);
+        }
+        context.render_context.flush();
+
+    }
 private:
     render_system_ref m_render_system;
     window_ref        m_window;
+    std::atomic<bool> m_initialized;
     command_list_ref  m_clear_commands;
+    command_list_ref  m_draw_commands;
 };
 
 MGE_REGISTER_IMPLEMENTATION(triangle, mge::application, triangle);
