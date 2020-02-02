@@ -32,7 +32,7 @@ namespace mge {
         /**
          * Type of number of bytes read.
          */
-        using streamsize_type = std::streamsize ;
+        using streamsize_type = std::streamsize;
 
         /// Seek direction type.
         enum direction_type
