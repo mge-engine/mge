@@ -35,16 +35,20 @@ namespace mge {
         window(const rectangle& dimension,
                const window_options& options);
     public:
+        /// Context information passed on redraw.
         struct redraw_context
         {
-            window          *window;
-            mge::thread     *display_thread;
-            render_context&  render_context;
-            float            interpolation;
+            window          *window;            //!< Window redrawn.
+            mge::thread     *display_thread;    //!< Window display thread.
+            render_context&  render_context;    //!< Render context of window.
+            float            interpolation;     //!< Interpolation to next frame.
         };
 
+        /// Listener for close.
         using close_listener = std::function<void()>;
+        /// Listener for closing.
         using closing_listener = std::function<bool()>;
+        /// Listener functon for redraw.
         using redraw_listener = std::function<void(window::redraw_context&)>;
 
         virtual ~window();
@@ -132,7 +136,7 @@ namespace mge {
          * Execute function, if possible in display thread.
          * @param f function to execute
          */
-        void await(const std::function<void()>& f) override;
+        void await(const void_function& f) override;
 
         class display_thread : public mge::thread
         {
