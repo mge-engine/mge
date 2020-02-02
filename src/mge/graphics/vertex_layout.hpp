@@ -20,6 +20,7 @@ namespace mge {
          * Constructor.
          */
         vertex_layout();
+
         /**
          * Copy constructor.
          * 
