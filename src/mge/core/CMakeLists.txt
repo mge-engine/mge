@@ -48,6 +48,7 @@ SET(mgecore_sources
     archive_access.cpp
     archive_access_factory.cpp
     open_mode.cpp
+    debug_break.cpp
 
     ${CMAKE_BINARY_DIR}/src/mge/version.hpp
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
@@ -78,7 +79,7 @@ SET(mgecore_sources
     buffer.hpp
     clock.hpp
     configurable.hpp
-
+    debug_break.hpp
 )
 
 ADD_LIBRARY(mgecore
