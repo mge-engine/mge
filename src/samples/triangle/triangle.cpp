@@ -50,8 +50,11 @@ public:
 
     void initialize()
     {
-        using namespace std::chrono_literals;
         MGE_DEBUG_LOG(triangle) << "Initializing objects";
+        auto pixel_shader = m_window->render_context().create_shader(shader_type::FRAGMENT);
+        auto vertex_shader = m_window->render_context().create_shader(shader_type::VERTEX);
+
+
         float triangle_coords[] = {
             0.0f, 0.5f, 0.0f,
             0.45f, -0.5, 0.0f,
