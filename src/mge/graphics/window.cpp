@@ -259,7 +259,7 @@ namespace mge {
     void
     window::await(const std::function<void ()> &f)
     {
-        if(!m_display_thread) {
+        if(!m_display_thread || !m_display_thread->joinable()) {
             f();
         } else if(mge::this_thread::get_id() == m_display_thread->get_id()) {
             f();
