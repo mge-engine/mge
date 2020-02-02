@@ -5,8 +5,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/core/types.hpp"
-
-#include <functional>
+#include "mge/core/void_function.hpp"
 
 namespace mge {
 
@@ -25,7 +24,7 @@ namespace mge {
         render_context& context();
         void assert_same_context(const render_context& context) const;
         void assert_same_context(const context_object& cobj) const;
-        void await(const std::function<void()>& f);
+        void await(const void_function& f);
     protected:
         render_context_ref m_context;
     };

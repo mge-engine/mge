@@ -34,7 +34,7 @@ namespace mge {
         /**
          * Create a new render context that utilizes a given
          * executor.
-         * 
+         *
          * @param display_executor context executor
          */
         render_context(async_executor *display_executor);
@@ -47,10 +47,10 @@ namespace mge {
         /**
          * Executes a function in the context of the render context's
          * asynchronous executor.
-         * 
+         *
          * @param f function to execute
          */
-        void await(const std::function<void()>& f) override;
+        void await(const void_function& f) override;
 
         /**
          * Assigns the render context to this thread, in case of the
@@ -92,7 +92,7 @@ namespace mge {
 
         /**
          * @reate an index buffer.
-         * 
+         *
          * @tparam T            type of array values
          * @tparam N            number of array elements
          * @param usage buffer change policy
@@ -113,7 +113,7 @@ namespace mge {
 
         /**
          * Create a index buffer object from an array of values.
-         * 
+         *
          * @tparam T        type of array values
          * @tparam N        number of array elements
          * @param buffer    content of index buffer
@@ -130,7 +130,7 @@ namespace mge {
 
         /**
          * Create a texture object
-         * 
+         *
          * @param image texture image
          * @return created texture
          */
@@ -144,7 +144,7 @@ namespace mge {
 
         /**
          * Create a shader object.
-         * 
+         *
          * @param type shader type
          * @return created shader
          */
@@ -152,14 +152,14 @@ namespace mge {
 
         /**
          * Create a pipeline object.
-         * 
+         *
          * @return created pipeline
          */
         virtual pipeline_ref create_pipeline() = 0;
 
         /**
          * Create a command list native to this kind of render context.
-         * 
+         *
          * @return created command list
          */
         virtual command_list_ref create_command_list() = 0;
@@ -172,7 +172,7 @@ namespace mge {
 
         /**
          * Executes a command list.
-         * 
+         *
          * @param commands command list with commands to execute
          */
         virtual void execute(const command_list_ref& commands) = 0;

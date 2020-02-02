@@ -42,7 +42,7 @@ namespace mge {
     }
 
     void
-    context_object::await(const std::function<void ()> &f)
+    context_object::await(const void_function &f)
     {
         if(m_context) {
             m_context->await(f);
