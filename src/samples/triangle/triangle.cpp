@@ -52,11 +52,12 @@ public:
     {
         using namespace std::chrono_literals;
         MGE_DEBUG_LOG(triangle) << "Initializing objects";
-        static float triangle_coords[] = {
+        float triangle_coords[] = {
             0.0f, 0.5f, 0.0f,
             0.45f, -0.5, 0.0f,
             -0.45f, -0.5f, 0.0f,
         };
+        int triangle_indices[] = { 0, 1, 2};
         mge::vertex_layout layout;
         layout.push_back(mge::vertex_format(mge::data_type::FLOAT_VEC3, 1));
         m_vertices = m_window->render_context()
@@ -64,7 +65,11 @@ public:
                 mge::usage::DEFAULT,
                 mge::array_size(triangle_coords),
                 triangle_coords);
-
+        m_indices = m_window->render_context()
+            .create_index_buffer(mge::data_type::INT32,
+                                 mge::usage::DEFAULT,
+                                 mge::array_size(triangle_indices),
+                                 triangle_indices);
         m_draw_commands = m_window->render_context().create_command_list();
         m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
         m_draw_commands->finish();
