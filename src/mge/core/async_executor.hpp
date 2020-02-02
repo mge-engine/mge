@@ -4,6 +4,7 @@
 #pragma once
 #include <functional>
 #include "mge/core/dllexport.hpp"
+#include "mge/core/void_function.hpp"
 
 namespace mge {
     /**
@@ -22,7 +23,7 @@ namespace mge {
          * Executes a function asynchronously.
          * @param f function to execute
          */
-        virtual void await(const std::function<void()>& f) = 0;
+        virtual void await(const void_function& f) = 0;
 
         /**
          * Get a synchronous executor.
