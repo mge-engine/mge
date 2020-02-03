@@ -8,11 +8,15 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/graphics/usage.hpp"
+#include "mge/graphics/shader.hpp"
+#include "mge/graphics/pipeline.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/thread.hpp"
 #include "mge/core/array_size.hpp"
+#include "mge/core/debug_break.hpp"
 
 using namespace mge;
+using namespace std::string_view_literals;
 
 MGE_DEFINE_LOG(triangle);
 
@@ -53,8 +57,35 @@ public:
         MGE_DEBUG_LOG(triangle) << "Initializing objects";
         auto pixel_shader = m_window->render_context().create_shader(shader_type::FRAGMENT);
         auto vertex_shader = m_window->render_context().create_shader(shader_type::VERTEX);
-
-
+        m_pipeline = m_window->render_context().create_pipeline();
+        MGE_DEBUG_LOG(triangle) << "render system is " << m_render_system->implementation_name();
+        if (m_render_system->implementation_name() == "opengl::render_system"sv) {
+            const char *vertex_shader_glsl =
+                            "#version 330 core\n"
+                            "layout(location = 0) in vec3 vertexPosition;\n"
+                            "\n"
+                            "void main() {\n"
+                            "  gl_Position.xyz = vertexPosition;\n"
+                            "  gl_Position.w = 1.0;\n"
+                            "}";
+            const char *fragment_shader_glsl =
+                "#version 330 core\n"
+                "out vec3 color;\n"
+                "\n"
+                "void main() {\n"
+                "    color = vec3(1,1,1);\n"
+                "}";
+            MGE_DEBUG_LOG(triangle) << "Compile fragment shader";
+            pixel_shader->compile(fragment_shader_glsl);
+            MGE_DEBUG_LOG(triangle) << "Compile vertex shader";
+            vertex_shader->compile(vertex_shader_glsl);
+            MGE_DEBUG_LOG(triangle) << "Shaders compiled";
+        }
+        m_pipeline->set_shader(pixel_shader);
+        m_pipeline->set_shader(vertex_shader);
+        MGE_DEBUG_LOG(triangle) << "Linking pipeline";
+        m_pipeline->link();
+        MGE_DEBUG_LOG(triangle) << "Pipeline linked";
         float triangle_coords[] = {
             0.0f, 0.5f, 0.0f,
             0.45f, -0.5, 0.0f,
@@ -96,9 +127,9 @@ private:
     std::atomic<bool> m_initialized;
     command_list_ref  m_clear_commands;
     command_list_ref  m_draw_commands;
-
+    pipeline_ref      m_pipeline;
     vertex_buffer_ref m_vertices;
-    index_buffer_ref m_indices;
+    index_buffer_ref  m_indices;
 };
 
 MGE_REGISTER_IMPLEMENTATION(triangle, mge::application, triangle);
