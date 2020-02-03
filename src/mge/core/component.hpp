@@ -9,6 +9,7 @@
 #include <functional>
 #include <memory>
 #include <type_traits>
+#include <string_view>
 
 namespace mge {
 
@@ -68,7 +69,7 @@ namespace mge {
         static bool implementation_registered(const std::string& component_name,
                                               const std::string& implementation_name);
 
-        inline const char *implementation_name() const noexcept
+        inline std::string_view implementation_name() const noexcept
         {
             if (m_impl_regentry) {
                 return m_impl_regentry->name();
@@ -78,7 +79,9 @@ namespace mge {
         }
 
     private:
-        const implementation_registry_entry_base *m_impl_regentry;
+        friend class component_registry;
+
+        implementation_registry_entry_base *m_impl_regentry;
     };
 
     template <typename Class>

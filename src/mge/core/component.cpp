@@ -87,7 +87,9 @@ namespace mge {
             if(impl_it != m_implementations.end()) {
                 auto regentry_it = impl_it->second.find(implementation_name);
                 if (regentry_it != impl_it->second.end()) {
-                    return regentry_it->second->create();
+                    auto result = regentry_it->second->create();
+                    result->m_impl_regentry = regentry_it->second;
+                    return result;
                 }
             }
 
