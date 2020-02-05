@@ -11,9 +11,6 @@ namespace mge {
         ,m_finished(false)
     {}
 
-    command_list::~command_list()
-    {}
-
     void
     command_list::finish()
     {

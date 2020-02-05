@@ -29,7 +29,7 @@ namespace mge {
         /**
          * Destructor.
          */
-        virtual ~command_list();
+        virtual ~command_list() = default;
 
         /**
          * Get whether this is a native command list.
