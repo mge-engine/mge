@@ -83,6 +83,22 @@ Memory Management
 C-Style Memory Management
 -------------------------
 
+Within the namespace ``mge``, the usual C-style memory management functions
+as known from ``<stdlib.h>`` are defined:
+
+.. doxygenfunction:: mge::malloc
+    :project: mge
+
+.. doxygenfunction:: mge::realloc
+    :project: mge
+
+.. doxygenfunction:: mge::calloc
+    :project: mge
+
+.. doxygenfunction:: mge::free
+    :project: mge
+
+
 ``new`` and ``delete`` Operators
 --------------------------------
 
