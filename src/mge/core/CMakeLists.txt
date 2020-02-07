@@ -65,6 +65,7 @@ SET(mgecore_sources
     bool_value.hpp
     types.hpp
     module.hpp
+    memory.hpp
     async_executor.hpp
     gist.hpp
     log_severity.hpp
