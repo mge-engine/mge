@@ -27,6 +27,12 @@ namespace dx11 {
     }
 
     void
+    command_list::draw(const mge::vertex_buffer_ref &vertices, const mge::index_buffer_ref &indices)
+    {
+        MGE_THROW_NOT_IMPLEMENTED;
+    }
+
+    void
     command_list::clear_depth(float value)
     {
         MGE_THROW_NOT_IMPLEMENTED;

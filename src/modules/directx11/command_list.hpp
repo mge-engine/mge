@@ -16,7 +16,7 @@ namespace dx11 {
         virtual void clear(const mge::rgba_color& c) override;
         virtual void clear_depth(float value) override;
         virtual void clear_stencil(int32_t value) override;
-
+        virtual void draw(const mge::vertex_buffer_ref &vertices, const mge::index_buffer_ref &indices) override;
         ID3D11CommandList *native_command_list() const { return m_command_list.get(); }
     protected:
         void on_finish() override;

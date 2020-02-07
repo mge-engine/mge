@@ -58,12 +58,22 @@ namespace mge {
         virtual void clear_stencil(int32_t value) = 0;
 
         /**
+         * Draws vertices using the current pipeline.
+         *
+         * @param vertices vertices to draw
+         * @param indices  indices to draw
+         */
+        virtual void draw(const vertex_buffer_ref& vertices,
+                          const index_buffer_ref& indices) = 0;
+
+        /**
          * Apply a pipeline. Current pipeline is replaced
          * by this pipeline.
          * 
          * @param pipeline pipeline to be applied
          */
         void set_pipeline(const pipeline_ref& pipeline);
+
 
         /**
          * Play a command list within the command list.

@@ -38,11 +38,18 @@ namespace mge {
             command_list_ref commands;
         };
 
+        struct draw_data {
+            vertex_buffer_ref vertices;
+            index_buffer_ref indices;
+        };
+
         using element_type = std::variant<clear_data,
                                           clear_depth_data,
                                           clear_stencil_data,
                                           set_pipeline_data,
-                                          play_command_list_data>;
+                                          play_command_list_data,
+                                          draw_data>;
+
         using container_type = std::vector<element_type>;
         using const_iterator = container_type::const_iterator;
 
@@ -61,7 +68,8 @@ namespace mge {
         virtual void clear(const rgba_color& c) override;
         virtual void clear_depth(float value) override;
         virtual void clear_stencil(int32_t value) override;
-        
+        virtual void draw(const vertex_buffer_ref &vertices, const index_buffer_ref &indices) override;
+
         inline const_iterator begin() const { return m_elements.begin(); }
         inline const_iterator end() const { return m_elements.end(); }
     protected:
