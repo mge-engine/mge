@@ -149,7 +149,10 @@ namespace opengl {
         if (m_debug) {
             if (m_extensions.find("GL_ARB_debug_output") != m_extensions.end()) {
                 MGE_INFO_LOG(OPENGL) << "Install debug callback";
+                glEnable(GL_DEBUG_OUTPUT);
+                CHECK_OPENGL_ERROR(glEnable(GL_DEBUG_OUTPUT));
                 glDebugMessageCallback(&debug_callback, this);
+                CHECK_OPENGL_ERROR(glDebugMessageCallback);
             }
         }
     }
@@ -174,7 +177,7 @@ namespace opengl {
     render_context::flush()
     {
         if(!SwapBuffers(m_hdc)) {
-            MGE_THROW_SYSCALL_FAILED(SwapBuffers);
+            MGE_WARNING_LOG(OPENGL) << "SwapBuffers failed";
         }
     }
 #endif
