@@ -20,11 +20,12 @@ MGE_USE_LOG(OPENGL);
 
 namespace opengl {
 #ifdef MGE_OS_WINDOWS
-    render_context::render_context(window *w)
+    render_context::render_context(window *w, bool debug)
         :mge::render_context(w)
         ,m_hwnd(w->hwnd())
         ,m_hdc(nullptr)
         ,m_hglrc(nullptr)
+        ,m_debug(debug)
     {
         m_hdc = GetDC(m_hwnd);
         if (!m_hdc) {
@@ -35,6 +36,7 @@ namespace opengl {
         create_glrc();
         init_gl3w();
         collect_opengl_info();
+        install_debug_callback();
         clear_current();
     }
 
@@ -123,8 +125,31 @@ namespace opengl {
             while(!it.eof()) {
                 if (!it->empty()) {
                     MGE_INFO_LOG(OPENGL) << *it;
+                    m_extensions.insert(std::string(it->begin(), it->end()));
                 }
                 ++it;
+            }
+        }
+    }
+
+    static void debug_callback(GLenum source,
+                               GLenum type,
+                               GLuint id,
+                               GLenum severity,
+                               GLsizei length,
+                               const GLchar *message,
+                               const void *user_param)
+    {
+        MGE_INFO_LOG(OPENGL) << (char *)message;
+    }
+
+    void
+    render_context::install_debug_callback()
+    {
+        if (m_debug) {
+            if (m_extensions.find("GL_ARB_debug_output") != m_extensions.end()) {
+                MGE_INFO_LOG(OPENGL) << "Install debug callback";
+                glDebugMessageCallback(&debug_callback, this);
             }
         }
     }

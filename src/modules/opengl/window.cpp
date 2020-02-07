@@ -7,19 +7,20 @@
 namespace opengl {
 
     window::window(const mge::rectangle& rect,
-                   const mge::window_options& options)
+                   const mge::window_options& options,
+                   bool debug)
         : mge::platform::window(rect, options)
     {
-        create_render_context();
+        create_render_context(debug);
     }
 
     window::~window()
     {}
 
     void
-    window::create_render_context()
+    window::create_render_context(bool debug)
     {
-        auto t = std::make_shared<opengl::render_context>(this);
+        auto t = std::make_shared<opengl::render_context>(this, debug);
         m_render_context = t;
     }
 }

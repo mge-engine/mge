@@ -7,11 +7,14 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/render_context.hpp"
 
+#include <unordered_set>
+#include <string>
+
 namespace opengl {
     class render_context : public mge::render_context
     {
     public:
-        render_context(window *w);
+        render_context(window *w, bool debug);
         ~render_context();
         mge::vertex_buffer_ref create_vertex_buffer(const mge::vertex_layout& layout,
                                                     mge::usage usage,
@@ -38,11 +41,14 @@ namespace opengl {
         void create_glrc();
         void init_gl3w();
         void collect_opengl_info();
+        void install_debug_callback();
         void clear_current();
 
         HWND  m_hwnd;
         HDC   m_hdc;
         HGLRC m_hglrc;
+        bool  m_debug;
+        std::unordered_set<std::string> m_extensions;
 #endif
     };
 }

@@ -5,6 +5,7 @@
 #include "window.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/core/log.hpp"
+#include "mge/core/configuration.hpp"
 
 #ifdef MGE_OS_WINDOWS
 #  include "win32/monitor.hpp"
@@ -35,11 +36,20 @@ namespace opengl {
         mge::window_ref create_window(const mge::rectangle& rect,
                                       const mge::window_options& options) override
         {
-            mge::window_ref result = std::make_shared<window>(rect, options);
+            mge::window_ref result = std::make_shared<window>(rect, options, m_debug);
             return result;
         }
 
+        void configure(const mge::configuration &config) override
+        {
+            m_debug = config.value<bool>("debug", false);
+#ifdef MGE_RELEASEWITHDEBUG
+            m_debug = true;
+#endif
+        }
 
+    private:
+        bool m_debug;
     };
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
