@@ -6,14 +6,17 @@
 #include "mge/config.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/render_context.hpp"
-
+#include "mge/graphics/draw_command.hpp"
 #include <unordered_set>
 #include <string>
+#include <tuple>
 
 namespace opengl {
     class render_context : public mge::render_context
     {
     public:
+        using vao_key_type = std::tuple<GLuint, GLuint, GLuint>;
+
         render_context(window *w, bool debug);
         ~render_context();
         mge::vertex_buffer_ref create_vertex_buffer(const mge::vertex_layout& layout,
@@ -37,17 +40,20 @@ namespace opengl {
         void assign_thread() override;
         void flush() override;
     private:
+        void draw_command(const mge::draw_command& cmd);
         void choose_pixel_format();
         void create_glrc();
         void init_gl3w();
         void collect_opengl_info();
         void install_debug_callback();
         void clear_current();
+        void clear_vaos();
 
         HWND  m_hwnd;
         HDC   m_hdc;
         HGLRC m_hglrc;
         bool  m_debug;
+        std::map<vao_key_type, GLuint> m_vaos;
         std::unordered_set<std::string> m_extensions;
 #endif
     };

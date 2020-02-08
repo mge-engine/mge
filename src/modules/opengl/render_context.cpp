@@ -42,8 +42,18 @@ namespace opengl {
 
     render_context::~render_context()
     {
+        clear_vaos();
         if(m_hdc && m_hwnd) {
             ReleaseDC(m_hwnd, m_hdc);
+        }
+    }
+
+    void
+    render_context::clear_vaos()
+    {
+        for(const auto& e : m_vaos) {
+            glDeleteVertexArrays(1, &e.second);
+            LOG_OPENGL_ERROR(glDeleteVertexArrays);
         }
     }
 
@@ -246,6 +256,11 @@ namespace opengl {
         return std::make_shared<mge::memory_command_list>(*this);
     }
 
+    void
+    render_context::draw_command(const mge::draw_command &cmd)
+    {
+
+    }
 
     template<class... Ts> struct visitor : Ts... { using Ts::operator()...; };
     template<class... Ts> visitor(Ts...) -> visitor<Ts...>;
@@ -265,6 +280,9 @@ namespace opengl {
                         CHECK_OPENGL_ERROR(glClearColor);
                         glClear(GL_COLOR_BUFFER_BIT);
                         CHECK_OPENGL_ERROR(glClear(GL_COLOR_BUFFER_BIT));
+                    },
+                    [&](const mge::memory_command_list::draw_data d) {
+                        draw_command(d.cmd);
                     }
                 }, c);
             }

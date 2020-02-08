@@ -62,4 +62,18 @@ namespace opengl {
              << "OpenGL error: [" << glFunction << "] (" << (unsigned int)err << ") " << gl_error_text(err);
         }
     }
+
+    void
+    error::log_error(const char *file,
+                       int line,
+                       const char *signature,
+                       const char *glFunction)
+    {
+        try {
+            check_error(file, line, signature, glFunction);
+        } catch(const mge::exception& ex) {
+            MGE_ERROR_LOG(OPENGL) << ex;
+        }
+    }
+
 }

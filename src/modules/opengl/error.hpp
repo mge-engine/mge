@@ -29,12 +29,23 @@ namespace opengl {
             return *this;
         }
 
-        static void check_error(const char *file, int line,
+        static void check_error(const char *file,
+                                int line,
                                 const char *signature,
                                 const char *glFunction);
+        static void log_error(const char *file,
+                              int line,
+                              const char *signature,
+                              const char *glFunction);
         static void clear();
     };
 }
+
+#define LOG_OPENGL_ERROR(function)                    \
+    opengl::error::log_error(__FILE__,                \
+                             __LINE__,                \
+                             MGE_FUNCTION_SIGNATURE,  \
+                             #function)
 
 #define CHECK_OPENGL_ERROR(function)                    \
     opengl::error::check_error(__FILE__,                \
