@@ -26,13 +26,13 @@ namespace dx11 {
     }
 
     void
-    command_list::draw(const mge::command& cmd)
+    command_list::draw(const mge::draw_command& cmd)
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
 
     void
-    command_list::draw(mge::command&& cmd)
+    command_list::draw(mge::draw_command&& cmd)
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }

@@ -5,7 +5,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/rgba_color.hpp"
-#include "mge/graphics/command.hpp"
+#include "mge/graphics/draw_command.hpp"
 
 namespace mge {
 
@@ -64,7 +64,7 @@ namespace mge {
          * @param vertices vertices to draw
          * @param indices  indices to draw
          */
-        virtual void draw(const command& cmd) = 0;
+        virtual void draw(const draw_command& cmd) = 0;
 
         /**
          * Draws vertices using the current pipeline.
@@ -72,7 +72,7 @@ namespace mge {
          * @param vertices vertices to draw
          * @param indices  indices to draw
          */
-        virtual void draw(command&& cmd) = 0;
+        virtual void draw(draw_command&& cmd) = 0;
 
         /**
          * Play a command list within the command list.

@@ -39,14 +39,14 @@ namespace mge {
             draw_data(const draw_data&) = default;
             draw_data& operator =(const draw_data&) = default;
             draw_data& operator =(draw_data&&) = default;
-            draw_data(command&& c)
+            draw_data(draw_command&& c)
                 :cmd(std::move(c))
             {}
-            draw_data(const command& c)
+            draw_data(const draw_command& c)
                 :cmd(c)
             {}
 
-            command cmd;
+            draw_command cmd;
         };
 
         using element_type = std::variant<clear_data,
@@ -73,8 +73,8 @@ namespace mge {
         virtual void clear(const rgba_color& c) override;
         virtual void clear_depth(float value) override;
         virtual void clear_stencil(int32_t value) override;
-        virtual void draw(const command &cmd) override;
-        virtual void draw(command&& cmd) override;
+        virtual void draw(const draw_command &cmd) override;
+        virtual void draw(draw_command&& cmd) override;
 
         inline const_iterator begin() const { return m_elements.begin(); }
         inline const_iterator end() const { return m_elements.end(); }

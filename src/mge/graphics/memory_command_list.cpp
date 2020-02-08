@@ -31,14 +31,14 @@ namespace mge {
     }
 
     void
-    memory_command_list::draw(const command& c)
+    memory_command_list::draw(const draw_command& c)
     {
         draw_data data(c);
         m_elements.push_back(data);
     }
 
     void
-    memory_command_list::draw(command&& c)
+    memory_command_list::draw(draw_command&& c)
     {
         draw_data data(c);
         m_elements.push_back(data);

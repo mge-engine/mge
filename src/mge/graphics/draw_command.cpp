@@ -1,14 +1,14 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "mge/graphics/command.hpp"
+#include "mge/graphics/draw_command.hpp"
 
 namespace mge {
 
-    command::command()
+    draw_command::draw_command()
     {}
 
-    command::command(const pipeline_ref &p,
+    draw_command::draw_command(const pipeline_ref &p,
                      const vertex_buffer_ref &v,
                      const index_buffer_ref &i)
         : m_pipeline(p)
@@ -16,20 +16,20 @@ namespace mge {
         , m_indices(i)
     {}
 
-    command::command(const command &c)
+    draw_command::draw_command(const draw_command &c)
         : m_pipeline(c.m_pipeline)
         , m_vertices(c.m_vertices)
         , m_indices(c.m_indices)
     {}
 
-    command::command(command &&c)
+    draw_command::draw_command(draw_command &&c)
         : m_pipeline(std::move(c.m_pipeline))
         , m_vertices(std::move(c.m_vertices))
         , m_indices(std::move(c.m_indices))
     {}
 
-    command&
-    command::operator =(const command& c)
+    draw_command&
+    draw_command::operator =(const draw_command& c)
     {
         m_pipeline = c.m_pipeline;
         m_vertices = c.m_vertices;
@@ -37,8 +37,8 @@ namespace mge {
         return *this;
     }
 
-    command&
-    command::operator =(command&& c)
+    draw_command&
+    draw_command::operator =(draw_command&& c)
     {
         m_pipeline = std::move(c.m_pipeline);
         m_vertices = std::move(c.m_vertices);
@@ -48,19 +48,19 @@ namespace mge {
 
 
     void
-    command::set_pipeline(const pipeline_ref& pipeline)
+    draw_command::set_pipeline(const pipeline_ref& pipeline)
     {
         m_pipeline = pipeline;
     }
 
     void
-    command::set_vertices(const vertex_buffer_ref &buffer)
+    draw_command::set_vertices(const vertex_buffer_ref &buffer)
     {
         m_vertices = buffer;
     }
 
     void
-    command::set_indices(const index_buffer_ref& buffer)
+    draw_command::set_indices(const index_buffer_ref& buffer)
     {
         m_indices = buffer;
     }

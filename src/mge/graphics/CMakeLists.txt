@@ -38,7 +38,7 @@ ADD_LIBRARY(mgegraphics
     texture_2d.cpp
     mesh.cpp
     memory_mesh.cpp
-    command.cpp
+    draw_command.cpp
     drawable.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)

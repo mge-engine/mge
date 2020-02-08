@@ -14,13 +14,13 @@ namespace mge {
     /**
      * Command to execute a pipeline using specified settings.
      */
-    class MGE_GRAPHICS_EXPORT command
+    class MGE_GRAPHICS_EXPORT draw_command
     {
     public:
         /**
          * Create empty command.
          */
-        command();
+        draw_command();
 
         /**
          * Construct command with pipline and buffer reference.
@@ -28,7 +28,7 @@ namespace mge {
          * @param v vertices
          * @param i indices
          */
-        command(const pipeline_ref& p,
+        draw_command(const pipeline_ref& p,
                 const vertex_buffer_ref& v,
                 const index_buffer_ref& i);
 
@@ -36,20 +36,20 @@ namespace mge {
          * Copy constructor.
          * @param c copied command
          */
-        command(const command& c);
+        draw_command(const draw_command& c);
         /**
          * Move constructor.
          * @param c moved command
          */
-        command(command&& c);
+        draw_command(draw_command&& c);
 
         /**
          * Destructor.
          */
-        ~command() = default;
+        ~draw_command() = default;
 
-        command& operator =(const command& c);
-        command& operator =(command&& c);
+        draw_command& operator =(const draw_command& c);
+        draw_command& operator =(draw_command&& c);
 
         void set_pipeline(const pipeline_ref& pipeline);
         void set_vertices(const vertex_buffer_ref& buffer);
