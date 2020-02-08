@@ -5,6 +5,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/command.hpp"
 
 namespace mge {
 
@@ -63,17 +64,15 @@ namespace mge {
          * @param vertices vertices to draw
          * @param indices  indices to draw
          */
-        virtual void draw(const vertex_buffer_ref& vertices,
-                          const index_buffer_ref& indices) = 0;
+        virtual void draw(const command& cmd) = 0;
 
         /**
-         * Apply a pipeline. Current pipeline is replaced
-         * by this pipeline.
-         * 
-         * @param pipeline pipeline to be applied
+         * Draws vertices using the current pipeline.
+         *
+         * @param vertices vertices to draw
+         * @param indices  indices to draw
          */
-        void set_pipeline(const pipeline_ref& pipeline);
-
+        virtual void draw(command&& cmd) = 0;
 
         /**
          * Play a command list within the command list.
@@ -114,11 +113,9 @@ namespace mge {
         void assert_not_immutable();
 
         virtual void on_finish() = 0;
-        virtual void on_set_pipeline(const pipeline_ref& p) = 0;
         virtual void on_play(const command_list_ref& commands) = 0;
         virtual void on_clear() = 0;
     private:
-        pipeline_ref m_current_pipeline;
         bool         m_native;
         bool         m_finished;
     };

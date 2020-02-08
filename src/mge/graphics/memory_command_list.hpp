@@ -30,23 +30,28 @@ namespace mge {
             int32_t value;
         };
 
-        struct set_pipeline_data {
-            pipeline_ref pipeline;
-        };
-
         struct play_command_list_data {
             command_list_ref commands;
         };
 
         struct draw_data {
-            vertex_buffer_ref vertices;
-            index_buffer_ref indices;
+            draw_data() = default;
+            draw_data(const draw_data&) = default;
+            draw_data& operator =(const draw_data&) = default;
+            draw_data& operator =(draw_data&&) = default;
+            draw_data(command&& c)
+                :cmd(std::move(c))
+            {}
+            draw_data(const command& c)
+                :cmd(c)
+            {}
+
+            command cmd;
         };
 
         using element_type = std::variant<clear_data,
                                           clear_depth_data,
                                           clear_stencil_data,
-                                          set_pipeline_data,
                                           play_command_list_data,
                                           draw_data>;
 
@@ -68,13 +73,13 @@ namespace mge {
         virtual void clear(const rgba_color& c) override;
         virtual void clear_depth(float value) override;
         virtual void clear_stencil(int32_t value) override;
-        virtual void draw(const vertex_buffer_ref &vertices, const index_buffer_ref &indices) override;
+        virtual void draw(const command &cmd) override;
+        virtual void draw(command&& cmd) override;
 
         inline const_iterator begin() const { return m_elements.begin(); }
         inline const_iterator end() const { return m_elements.end(); }
     protected:
         void on_finish() override;
-        void on_set_pipeline(const pipeline_ref& pipeline);
         void on_play(const command_list_ref &commands) override;
         void on_clear() override;
     private:

@@ -21,13 +21,6 @@ namespace mge {
     }
 
     void
-    command_list::set_pipeline(const pipeline_ref& p)
-    {
-        on_set_pipeline(p);
-        m_current_pipeline = p;
-    }
-
-    void
     command_list::assert_not_immutable()
     {
         if (immutable()) {

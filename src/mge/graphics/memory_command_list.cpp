@@ -31,17 +31,16 @@ namespace mge {
     }
 
     void
-    memory_command_list::draw(const vertex_buffer_ref &vertices,
-                              const index_buffer_ref &indices)
+    memory_command_list::draw(const command& c)
     {
-        draw_data data { vertices, indices };
+        draw_data data(c);
         m_elements.push_back(data);
     }
 
     void
-    memory_command_list::on_set_pipeline(const pipeline_ref& pipeline)
+    memory_command_list::draw(command&& c)
     {
-        set_pipeline_data data { pipeline };
+        draw_data data(c);
         m_elements.push_back(data);
     }
 

@@ -6,7 +6,6 @@
 #include "error.hpp"
 
 namespace dx11 {
-    
     command_list::command_list(render_context& context)
         : mge::command_list(context)
     {
@@ -27,7 +26,13 @@ namespace dx11 {
     }
 
     void
-    command_list::draw(const mge::vertex_buffer_ref &vertices, const mge::index_buffer_ref &indices)
+    command_list::draw(const mge::command& cmd)
+    {
+        MGE_THROW_NOT_IMPLEMENTED;
+    }
+
+    void
+    command_list::draw(mge::command&& cmd)
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
@@ -57,12 +62,6 @@ namespace dx11 {
     }
 
     void
-    command_list::on_set_pipeline(const mge::pipeline_ref& pipeline)
-    {
-        MGE_THROW_NOT_IMPLEMENTED;
-    }
-
-    void
     command_list::on_play(const mge::command_list_ref& commands)
     {
         MGE_THROW_NOT_IMPLEMENTED;
@@ -77,6 +76,4 @@ namespace dx11 {
         m_command_list.reset();
         command_list->Release();
     }
-
-
 }

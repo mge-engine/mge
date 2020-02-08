@@ -21,11 +21,43 @@ namespace mge {
          * Create empty command.
          */
         command();
+
+        /**
+         * Construct command with pipline and buffer reference.
+         * @param p pipeline
+         * @param v vertices
+         * @param i indices
+         */
+        command(const pipeline_ref& p,
+                const vertex_buffer_ref& v,
+                const index_buffer_ref& i);
+
+        /**
+         * Copy constructor.
+         * @param c copied command
+         */
+        command(const command& c);
+        /**
+         * Move constructor.
+         * @param c moved command
+         */
+        command(command&& c);
+
+        /**
+         * Destructor.
+         */
         ~command() = default;
+
+        command& operator =(const command& c);
+        command& operator =(command&& c);
 
         void set_pipeline(const pipeline_ref& pipeline);
         void set_vertices(const vertex_buffer_ref& buffer);
         void set_indices(const index_buffer_ref& buffer);
+
+        const pipeline_ref& pipeline() const { return m_pipeline; }
+        const vertex_buffer_ref& vertices() const { return m_vertices; }
+        const index_buffer_ref& indices() const { return m_indices; }
     private:
         pipeline_ref m_pipeline;
         vertex_buffer_ref m_vertices;
