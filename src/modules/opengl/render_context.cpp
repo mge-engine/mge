@@ -57,6 +57,12 @@ namespace opengl {
         }
     }
 
+    GLuint
+    render_context::lookup_vao(const mge::draw_command &cmd)
+    {
+        return 0;
+    }
+
     void
     render_context::choose_pixel_format()
     {

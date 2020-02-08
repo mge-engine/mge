@@ -48,6 +48,7 @@ namespace opengl {
         void install_debug_callback();
         void clear_current();
         void clear_vaos();
+        GLuint lookup_vao(const mge::draw_command& cmd);
 
         HWND  m_hwnd;
         HDC   m_hdc;
