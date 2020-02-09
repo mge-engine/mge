@@ -6,6 +6,7 @@
 #include "common.hpp"
 #include "shader.hpp"
 #include "mge/core/log.hpp"
+#include "render_context.hpp"
 
 MGE_USE_LOG(OPENGL);
 
@@ -25,11 +26,22 @@ namespace opengl {
 
     pipeline::~pipeline()
     {
+        clear_vaos();
+
         if(m_program) {
             await([&]{
                 glDeleteProgram(m_program);
                 error::clear();
             });
+        }
+    }
+
+    void
+    pipeline::clear_vaos()
+    {
+        if (m_program) {
+            opengl::render_context& ctx = static_cast<opengl::render_context&>(context());
+            ctx.clear_vaos_of_program(gl_program(*this));
         }
     }
 

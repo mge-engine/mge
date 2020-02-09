@@ -39,6 +39,8 @@ namespace opengl {
 #ifdef MGE_OS_WINDOWS
         void assign_thread() override;
         void flush() override;
+
+        void clear_vaos_of_program(GLuint program);
     private:
         void draw_command(const mge::draw_command& cmd);
         void choose_pixel_format();
@@ -49,6 +51,7 @@ namespace opengl {
         void clear_current();
         void clear_vaos();
         GLuint lookup_vao(const mge::draw_command& cmd);
+        GLuint create_vao(const mge::draw_command& cmd);
 
         HWND  m_hwnd;
         HDC   m_hdc;

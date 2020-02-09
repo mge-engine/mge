@@ -10,12 +10,30 @@ namespace opengl {
     public:
         pipeline(mge::render_context& context);
         virtual ~pipeline();
+        GLuint name() const { return m_program; }
     protected:
         void on_link();
         void on_set_shader(const mge::shader_ref& shader);
     private:
         void dump_info_log();
         void collect_attributes();
+        void clear_vaos();
+
         GLuint m_program;
     };
+
+    inline GLuint gl_program(const mge::pipeline& p)
+    {
+        const opengl::pipeline& ogl_p = static_cast<const opengl::pipeline&>(p);
+        return ogl_p.name();
+    }
+
+    inline GLuint gl_program(const mge::pipeline_ref& p)
+    {
+        if (p) {
+            return gl_program(*p);
+        } else {
+            return 0;
+        }
+    }
 }

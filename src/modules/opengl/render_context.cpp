@@ -58,9 +58,64 @@ namespace opengl {
     }
 
     GLuint
+    render_context::create_vao(const mge::draw_command &cmd)
+    {
+        GLuint vao = 0;
+        glCreateVertexArrays(1, &vao);
+        CHECK_OPENGL_ERROR(glCreateVertexArrays);
+        glBindVertexArray(vao);
+        CHECK_OPENGL_ERROR(glBindVertexArray);
+        glBindBuffer(GL_ARRAY_BUFFER, gl_vertex_buffer(cmd.vertices()));
+        CHECK_OPENGL_ERROR(glBindBuffer(GL_ARRAY_BUFFER));
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gl_index_buffer(cmd.indices()));
+        CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER));
+
+        const auto& layout = cmd.vertices()->layout();
+        uint32_t index = 0;
+        for (const auto& f : layout) {
+            switch(f.type()) {
+            case mge::data_type::FLOAT_VEC3:
+                glVertexAttribPointer(index,
+                                      3,
+                                      GL_FLOAT,
+                                      GL_FALSE,
+                                      0,
+                                      nullptr);
+                CHECK_OPENGL_ERROR(glVertexAttribPointer);
+                break;
+            default:
+                MGE_THROW(opengl::error) << "Unsupported vertex array element type " << f.type();
+            }
+        }
+        glBindVertexArray(0);
+        CHECK_OPENGL_ERROR(glBindVertexArray(0));
+        vao_key_type k(gl_program(cmd.pipeline()),
+                       gl_vertex_buffer(cmd.vertices()),
+                       gl_index_buffer(cmd.indices()));
+        m_vaos[k] = vao;
+        return vao;
+    }
+
+    GLuint
     render_context::lookup_vao(const mge::draw_command &cmd)
     {
-        return 0;
+        vao_key_type k(gl_program(cmd.pipeline()),
+                       gl_vertex_buffer(cmd.vertices()),
+                       gl_index_buffer(cmd.indices()));
+        auto it = m_vaos.find(k);
+        return it == m_vaos.end() ? 0 : it->second;
+    }
+
+    void
+    render_context::clear_vaos_of_program(GLuint program)
+    {
+        vao_key_type k(program, 0, 0);
+        auto it = m_vaos.lower_bound(k);
+        while (it != m_vaos.end() && std::get<0>(it->first) == program) {
+            glDeleteVertexArrays(1, &it->second);
+            LOG_OPENGL_ERROR(glDeleteVertexArrays);
+            it = m_vaos.erase(it);
+        }
     }
 
     void
@@ -265,7 +320,10 @@ namespace opengl {
     void
     render_context::draw_command(const mge::draw_command &cmd)
     {
-
+        auto vao = lookup_vao(cmd);
+        if (!vao) {
+            vao = create_vao(cmd);
+        }
     }
 
     template<class... Ts> struct visitor : Ts... { using Ts::operator()...; };
