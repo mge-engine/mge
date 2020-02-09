@@ -4,7 +4,7 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/context_object.hpp"
-#include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_program.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/core/property_object.hpp"
 #include "mge/core/small_vector.hpp"

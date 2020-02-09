@@ -4,7 +4,7 @@
 #include "dx11_test.hpp"
 #include "test/test_exception.hpp"
 #include "mge/graphics/window.hpp"
-#include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_program.hpp"
 #include "mge/graphics/pipeline.hpp"
 #include "mge/graphics/render_context.hpp"
 

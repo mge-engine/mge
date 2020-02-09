@@ -5,7 +5,7 @@ SET(mge_opengl_module_SOURCES
     common.cpp
     window.cpp
     render_context.cpp
-    shader.cpp
+    shader_program.cpp
     index_buffer.cpp
     vertex_buffer.cpp
     texture_2d.cpp

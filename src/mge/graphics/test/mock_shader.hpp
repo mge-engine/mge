@@ -4,7 +4,7 @@
 #pragma once
 #include "test/googlemock.hpp"
 #include "mge/graphics/render_context.hpp"
-#include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_program.hpp"
 
 namespace mge {
     class mock_shader_program : public shader_program

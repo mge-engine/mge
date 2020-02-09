@@ -8,7 +8,7 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/graphics/usage.hpp"
-#include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_program.hpp"
 #include "mge/graphics/pipeline.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/thread.hpp"

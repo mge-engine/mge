@@ -4,7 +4,7 @@
 #include "pipeline.hpp"
 #include "error.hpp"
 #include "common.hpp"
-#include "shader.hpp"
+#include "shader_program.hpp"
 #include "mge/core/log.hpp"
 #include "render_context.hpp"
 

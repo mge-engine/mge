@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "opengl_test.hpp"
 #include "mge/graphics/window.hpp"
-#include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_program.hpp"
 #include "mge/graphics/render_context.hpp"
 
 namespace opengl

@@ -4,7 +4,7 @@
 #include "dx11_test.hpp"
 #include "bench/googlebenchmark.hpp"
 #include "mge/graphics/render_context.hpp"
-#include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_program.hpp"
 
 namespace dx11 {
 
