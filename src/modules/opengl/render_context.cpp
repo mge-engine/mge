@@ -73,6 +73,8 @@ namespace opengl {
         const auto& layout = cmd.vertices()->layout();
         uint32_t index = 0;
         for (const auto& f : layout) {
+            glEnableVertexAttribArray(index);
+            CHECK_OPENGL_ERROR(glEnableVertexAttribArray);
             switch(f.type()) {
             case mge::data_type::FLOAT_VEC3:
                 glVertexAttribPointer(index,
@@ -324,6 +326,21 @@ namespace opengl {
         if (!vao) {
             vao = create_vao(cmd);
         }
+        glUseProgram(gl_program(cmd.pipeline()));
+        CHECK_OPENGL_ERROR(glUseProgram);
+        glBindVertexArray(vao);
+        CHECK_OPENGL_ERROR(glBindVertexArray);
+
+        glDrawElements(GL_TRIANGLES,
+                       (GLsizei)cmd.indices()->element_count(),
+                       GL_UNSIGNED_INT,
+                       nullptr);
+        CHECK_OPENGL_ERROR(glDrawElements(GL_TRIANGLES, ...));
+
+        glBindVertexArray(0);
+        CHECK_OPENGL_ERROR(glBindVertexArray(0));
+        glUseProgram(0);
+        CHECK_OPENGL_ERROR(glUseProgram(0));
     }
 
     template<class... Ts> struct visitor : Ts... { using Ts::operator()...; };

@@ -106,6 +106,7 @@ public:
                                  triangle_indices);
         m_draw_commands = m_window->render_context().create_command_list();
         m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+        m_draw_commands->draw(mge::draw_command(m_pipeline, m_vertices, m_indices));
         m_draw_commands->finish();
         MGE_DEBUG_LOG(triangle) << "Initializing objects done";
         m_initialized = true;
