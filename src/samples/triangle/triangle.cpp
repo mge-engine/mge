@@ -55,8 +55,8 @@ public:
     void initialize()
     {
         MGE_DEBUG_LOG(triangle) << "Initializing objects";
-        auto pixel_shader = m_window->render_context().create_shader(shader_type::FRAGMENT);
-        auto vertex_shader = m_window->render_context().create_shader(shader_type::VERTEX);
+        auto pixel_shader = m_window->render_context().create_shader_program(shader_type::FRAGMENT);
+        auto vertex_shader = m_window->render_context().create_shader_program(shader_type::VERTEX);
         m_pipeline = m_window->render_context().create_pipeline();
         MGE_DEBUG_LOG(triangle) << "render system is " << m_render_system->implementation_name();
         if (m_render_system->implementation_name() == "opengl::render_system"sv) {
@@ -81,8 +81,8 @@ public:
             vertex_shader->compile(vertex_shader_glsl);
             MGE_DEBUG_LOG(triangle) << "Shaders compiled";
         }
-        m_pipeline->set_shader(pixel_shader);
-        m_pipeline->set_shader(vertex_shader);
+        m_pipeline->set_shader_program(pixel_shader);
+        m_pipeline->set_shader_program(vertex_shader);
         MGE_DEBUG_LOG(triangle) << "Linking pipeline";
         m_pipeline->link();
         MGE_DEBUG_LOG(triangle) << "Pipeline linked";

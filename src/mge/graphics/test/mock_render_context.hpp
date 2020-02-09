@@ -32,7 +32,7 @@ namespace mge {
         MOCK_METHOD0(create_texture_2d,
                      mge::texture_2d_ref());
 
-        MOCK_METHOD1(create_shader, shader_ref(shader_type));
+        MOCK_METHOD1(create_shader_program, shader_program_ref(shader_type));
         MOCK_METHOD0(create_pipeline, pipeline_ref());
         MOCK_METHOD0(create_command_list, command_list_ref());
         MOCK_CONST_METHOD1(shader_languages,

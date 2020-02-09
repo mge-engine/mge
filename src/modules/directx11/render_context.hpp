@@ -28,7 +28,7 @@ namespace dx11 {
                                                   void *initial_data) override;
         mge::texture_2d_ref create_texture_2d(const mge::image_ref& image) override;
         mge::texture_2d_ref create_texture_2d() override;
-        mge::shader_ref create_shader(mge::shader_type type) override;
+        mge::shader_program_ref create_shader_program(mge::shader_type type) override;
         mge::pipeline_ref create_pipeline() override;
         mge::command_list_ref create_command_list() override;
         void execute(const mge::command_list_ref& commands) override;

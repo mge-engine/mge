@@ -3,6 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/scene/dllexport.hpp"
+#include "mge/graphics/rgba_color.hpp"
+#include "mge/entity/entity.hpp"
 
 namespace mge {
 

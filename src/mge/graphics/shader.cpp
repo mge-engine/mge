@@ -4,17 +4,17 @@
 #include "mge/graphics/shader.hpp"
 
 namespace mge {
-    shader::shader(render_context& context, shader_type type)
+    shader_program::shader_program(render_context& context, shader_type type)
         :context_object(context)
         ,m_type(type)
         ,m_defined(false)
     {}
 
-    shader::~shader()
+    shader_program::~shader_program()
     {}
 
     void
-    shader::compile(const std::string& source_code)
+    shader_program::compile(const std::string& source_code)
     {
         // compiling is destructive, old definition is not guaranteed
         // to prevail if compilation fails
@@ -28,7 +28,7 @@ namespace mge {
     }
 
     void
-    shader::load(const mge::buffer& buf)
+    shader_program::load(const mge::buffer& buf)
     {
         // loading is destructive, old definition is not guaranteed
         // to prevail if compilation fails

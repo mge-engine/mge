@@ -7,7 +7,7 @@ ADD_LIBRARY(mgescene
     scene.cpp
     renderer.cpp)
 
-TARGET_ADD_DEFINE(mgescene BUILD_MGE_GRAPHICS)
+TARGET_ADD_DEFINE(mgescene BUILD_MGE_SCENE)
 TARGET_LINK_LIBRARIES(mgescene mgecore mgeinput mgeentity mgeapplication)
 
 ADD_SUBDIRECTORY(test)

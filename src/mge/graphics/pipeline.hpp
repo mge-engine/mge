@@ -76,7 +76,7 @@ namespace mge {
          * 
          * @param shader shader object that is set
          */
-        void set_shader(const shader_ref& shader);
+        void set_shader_program(const shader_program_ref& shader_program);
 
         /**
          * Links the pipeline. A pipeline must be linked after setting all shader
@@ -118,6 +118,6 @@ namespace mge {
         uniform_buffer_list m_uniform_buffers;
         
         virtual void on_link() = 0;
-        virtual void on_set_shader(const shader_ref& shader) = 0;
+        virtual void on_set_shader_program(const shader_program_ref& shader_program) = 0;
     };
 }

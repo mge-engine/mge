@@ -148,7 +148,7 @@ namespace mge {
          * @param type shader type
          * @return created shader
          */
-        virtual shader_ref create_shader(shader_type type) = 0;
+        virtual shader_program_ref create_shader_program(shader_type type) = 0;
 
         /**
          * Create a pipeline object.

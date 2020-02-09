@@ -8,7 +8,7 @@
 #ifdef CDT_INDEXER
 #  define MGE_SCENE_EXPORT __declspec(dllexport)
 #else
-#  ifdef BUILD_MGE_GRAPHICS
+#  ifdef BUILD_MGE_SCENE
 #    define MGE_SCENE_EXPORT MGE_DLLEXPORT
 #  else
 #    define MGE_SCENE_EXPORT MGE_DLLIMPORT

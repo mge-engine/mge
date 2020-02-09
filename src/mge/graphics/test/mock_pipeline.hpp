@@ -15,7 +15,7 @@ namespace mge {
 
         ~mock_pipeline() = default;
 
-        MOCK_METHOD1(on_set_shader, void(const shader_ref&));
+        MOCK_METHOD1(on_set_shader_program, void(const shader_program_ref&));
         MOCK_METHOD0(on_link, void());
     };
 }

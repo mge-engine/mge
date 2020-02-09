@@ -6,7 +6,7 @@
 #include "mge/graphics/pipeline.hpp"
 #include <array>
 namespace dx11 {
-    class shader;
+    class shader_program;
 
     class pipeline : public mge::pipeline
     {
@@ -15,11 +15,12 @@ namespace dx11 {
         virtual ~pipeline();
     protected:
         void on_link() override;
-        void on_set_shader(const mge::shader_ref& shader) override;
+        void on_set_shader_program(const mge::shader_program_ref& shader) override;
     private:
-        void reflect_vertex_shader(dx11::shader *s);
+        void reflect_vertex_shader(dx11::shader_program *s);
         
-        std::array<mge::shader_ref, (size_t)mge::shader_type::MAX_SHADER_TYPE + 1> m_shaders;
+        std::array<mge::shader_program_ref,
+            (size_t)mge::shader_type::MAX_SHADER_TYPE + 1> m_shaders;
         size_t m_vertex_shader_uniform_count;
     };
 

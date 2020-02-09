@@ -9,17 +9,17 @@
 namespace dx11
 {
 
-class test_shader : public dx11test_with_window
+class test_shader_program : public dx11test_with_window
 {
 };
 
-TEST_F(test_shader, create)
+TEST_F(test_shader_program, create)
 {
-    auto s = window->render_context().create_shader(mge::shader_type::VERTEX);
+    auto s = window->render_context().create_shader_program(mge::shader_type::VERTEX);
     EXPECT_TRUE(s.get() != nullptr);
 }
 
-TEST_F(test_shader, compile)
+TEST_F(test_shader_program, compile)
 {
     const char *vertex_shader_hlsl =
         "uniform float translate_x;"
@@ -28,12 +28,12 @@ TEST_F(test_shader, compile)
         "  return float4(inPos.x + translate_x, inPos.y, inPos.z, inPos.w);\n"
         "}";
     auto s = window->render_context()
-        .create_shader(mge::shader_type::VERTEX);
+        .create_shader_program(mge::shader_type::VERTEX);
     s->compile(vertex_shader_hlsl);
     EXPECT_TRUE(s->defined());
 }
 
-TEST_F(test_shader, compile_with_syntax_error)
+TEST_F(test_shader_program, compile_with_syntax_error)
 {
     const char *vertex_shader_hlsl =
         "float4 main(float4 inPos : POSITION) : SV_POSITION\n"
@@ -42,7 +42,7 @@ TEST_F(test_shader, compile_with_syntax_error)
         "}";
 
     auto s = window->render_context()
-        .create_shader(mge::shader_type::VERTEX);
+        .create_shader_program(mge::shader_type::VERTEX);
     
     try {
         s->compile(vertex_shader_hlsl);

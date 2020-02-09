@@ -11,7 +11,7 @@ namespace mge {
     class command_list;
     class index_buffer;
     class vertex_buffer;
-    class shader;
+    class shader_program;
     class pipeline;
     class texture_2d;
     class image;
@@ -24,7 +24,7 @@ namespace mge {
     MGE_DECLARE_REF(command_list);
     MGE_DECLARE_REF(index_buffer);
     MGE_DECLARE_REF(vertex_buffer);
-    MGE_DECLARE_REF(shader);
+    MGE_DECLARE_REF(shader_program);
     MGE_DECLARE_REF(pipeline);
     MGE_DECLARE_REF(texture_2d);
     MGE_DECLARE_REF(image);

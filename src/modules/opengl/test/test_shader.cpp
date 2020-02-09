@@ -8,17 +8,17 @@
 
 namespace opengl
 {
-class test_shader : public opengltest_with_window
+class test_shader_program : public opengltest_with_window
 {
 };
 
-TEST_F(test_shader, create)
+TEST_F(test_shader_program, create)
 {
     auto s = window->render_context()
-        .create_shader(mge::shader_type::VERTEX);
+        .create_shader_program(mge::shader_type::VERTEX);
 }
 
-TEST_F(test_shader, compile)
+TEST_F(test_shader_program, compile)
 {
     const char *vertex_shader_glsl =
        "#version 330 core\n"
@@ -30,12 +30,12 @@ TEST_F(test_shader, compile)
        "}";
 
     auto s = window->render_context()
-        .create_shader(mge::shader_type::VERTEX);
+        .create_shader_program(mge::shader_type::VERTEX);
     s->compile(vertex_shader_glsl);
     EXPECT_TRUE(s->defined());
 }
 
-TEST_F(test_shader, compile_with_syntax_error)
+TEST_F(test_shader_program, compile_with_syntax_error)
 {
     const char *vertex_shader_glsl =
        "#version 330 core\n"
@@ -47,7 +47,7 @@ TEST_F(test_shader, compile_with_syntax_error)
        "}";
 
     auto s = window->render_context()
-        .create_shader(mge::shader_type::VERTEX);
+        .create_shader_program(mge::shader_type::VERTEX);
     try {
         s->compile(vertex_shader_glsl);
         FAIL() << "Compilation should throw";

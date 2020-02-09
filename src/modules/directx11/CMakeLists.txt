@@ -6,7 +6,7 @@ SET(mge_dx11_module_SOURCES
     error.cpp
     render_system.cpp
     render_context.cpp
-    shader.cpp
+    shader_program.cpp
     index_buffer.cpp
     texture_2d.cpp
     command_list.cpp

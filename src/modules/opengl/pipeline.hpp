@@ -13,7 +13,7 @@ namespace opengl {
         GLuint name() const { return m_program; }
     protected:
         void on_link();
-        void on_set_shader(const mge::shader_ref& shader);
+        void on_set_shader_program(const mge::shader_program_ref& shader);
     private:
         void dump_info_log();
         void collect_attributes();

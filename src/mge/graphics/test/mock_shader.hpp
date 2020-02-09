@@ -7,15 +7,15 @@
 #include "mge/graphics/shader.hpp"
 
 namespace mge {
-    class mock_shader : public shader
+    class mock_shader_program : public shader_program
     {
     public:
-        mock_shader(render_context& context,
-                    shader_type type)
-            :shader(context, type)
+        mock_shader_program(render_context& context,
+                            shader_type type)
+            :shader_program(context, type)
         {}
 
-        ~mock_shader() = default;
+        ~mock_shader_program() = default;
 
         MOCK_METHOD1(on_compile, void(const std::string&));
         MOCK_METHOD1(on_load, void(const mge::buffer&));

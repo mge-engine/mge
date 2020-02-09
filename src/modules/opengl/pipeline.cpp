@@ -46,14 +46,14 @@ namespace opengl {
     }
 
     void
-    pipeline::on_set_shader(const mge::shader_ref& shader_)
+    pipeline::on_set_shader_program(const mge::shader_program_ref& shader_)
     {
         assert_same_context(*shader_);
         if(!shader_->defined()) {
             MGE_THROW(mge::illegal_state) << "Cannot apply undefined shader to pipeline";
         }
 
-        const shader *opengl_shader = static_cast<const shader *>(shader_.get());
+        const shader_program *opengl_shader = static_cast<const shader_program *>(shader_.get());
         await([&]{
             glAttachShader(m_program, opengl_shader->gl_shader());
             CHECK_OPENGL_ERROR(glAttachShader);

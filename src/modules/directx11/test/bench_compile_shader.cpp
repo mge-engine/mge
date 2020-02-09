@@ -19,7 +19,7 @@ static void bench_compile_shader(benchmark::State& state)
         "  return float4(inPos.x + translate_x, inPos.y, inPos.z, inPos.w);\n"
         "}";
         auto s = dx11test_with_window::window->render_context()
-            .create_shader(mge::shader_type::VERTEX);
+            .create_shader_program(mge::shader_type::VERTEX);
         s->compile(vertex_shader_hlsl);
     }
     dx11test_with_window::TearDownTestCase();

@@ -6,12 +6,12 @@
 
 namespace opengl {
 
-    class shader : public mge::shader
+    class shader_program : public mge::shader_program
     {
     public:
-        shader(mge::render_context& context,
+        shader_program(mge::render_context& context,
                mge::shader_type type);
-        virtual ~shader();
+        virtual ~shader_program();
         inline GLuint gl_shader() const noexcept { return m_shader; }
     protected:
         void on_compile(const std::string& source_code) override;

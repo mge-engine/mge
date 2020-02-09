@@ -44,13 +44,13 @@ TEST_F(test_pipeline, successful_simple_link)
         "void main() {\n"
         "    color = fragmentColor;\n"
         "}";
-    auto vs = window->render_context().create_shader(mge::shader_type::VERTEX);
+    auto vs = window->render_context().create_shader_program(mge::shader_type::VERTEX);
     vs->compile(vertex_shader_glsl);
-    auto fs = window->render_context().create_shader(mge::shader_type::FRAGMENT);
+    auto fs = window->render_context().create_shader_program(mge::shader_type::FRAGMENT);
     fs->compile(fragment_shader_glsl);
     auto p = window->render_context().create_pipeline();
-    p->set_shader(vs);
-    p->set_shader(fs);
+    p->set_shader_program(vs);
+    p->set_shader_program(fs);
     p->link();
     EXPECT_EQ(1u, p->attributes().size());
     EXPECT_EQ(std::string_view("vertexPosition"), p->attributes()[0].name);

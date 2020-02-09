@@ -13,18 +13,18 @@
 namespace mge {
 
     /**
-     * A shader is a piece of code executed on the GPU.
+     * A shader program is a piece of code executed on the GPU.
      * The pipeline stage is determined by the shader type.
      */
-    class MGE_GRAPHICS_EXPORT shader
+    class MGE_GRAPHICS_EXPORT shader_program
             : public context_object
             , public property_object
     {
     protected:
-        shader(render_context& context,
+        shader_program(render_context& context,
                shader_type type);
     public:
-        virtual ~shader();
+        virtual ~shader_program();
         /**
          * Compile from source code.
          * @param source_code shader source code

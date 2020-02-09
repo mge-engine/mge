@@ -9,13 +9,13 @@ MGE_USE_LOG(OPENGL);
 
 namespace opengl {
 
-    shader::shader(mge::render_context& context,
+    shader_program::shader_program(mge::render_context& context,
                    mge::shader_type type)
-        :mge::shader(context, type)
+        :mge::shader_program(context, type)
         ,m_shader(0)
     {}
 
-    shader::~shader()
+    shader_program::~shader_program()
     {
         if(m_shader) {
             await([&]{
@@ -26,7 +26,7 @@ namespace opengl {
     }
 
     void
-    shader::on_compile(const std::string &source_code)
+    shader_program::on_compile(const std::string &source_code)
     {
         if(source_code.empty()) {
             MGE_THROW(opengl::error) << "Empty shader source code";
@@ -52,7 +52,7 @@ namespace opengl {
     }
 
     void
-    shader::throw_compilation_error()
+    shader_program::throw_compilation_error()
     {
         GLint log_length = 0;
         glGetShaderiv(m_shader, GL_INFO_LOG_LENGTH, &log_length);
@@ -70,20 +70,20 @@ namespace opengl {
     }
 
     void
-    shader::on_load(const mge::buffer &code)
+    shader_program::on_load(const mge::buffer &code)
     {
         // glShaderBinary()
     }
 
     void
-    shader::create_shader()
+    shader_program::create_shader()
     {
         m_shader = glCreateShader(gl_shader_type());
         CHECK_OPENGL_ERROR(glCreateShader);
     }
 
     GLenum
-    shader::gl_shader_type() const
+    shader_program::gl_shader_type() const
     {
         switch (type()) {
         case mge::shader_type::COMPUTE:

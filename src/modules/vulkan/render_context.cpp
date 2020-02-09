@@ -117,8 +117,8 @@ namespace vulkan {
         MGE_THROW_NOT_IMPLEMENTED;
     }
 
-    mge::shader_ref
-    render_context::create_shader(mge::shader_type type)
+    mge::shader_program_ref
+    render_context::create_shader_program(mge::shader_type type)
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }

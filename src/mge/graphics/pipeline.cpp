@@ -15,21 +15,21 @@ namespace mge {
     {}
 
     void
-    pipeline::set_shader(const shader_ref& shader)
+    pipeline::set_shader_program(const shader_program_ref& s)
     {
-        if(!shader) {
-            MGE_THROW_ARGUMENT_NOT_NULL(shader);
+        if(!s) {
+            MGE_THROW_ARGUMENT_NOT_NULL(s);
         }
 
-        if(shader->type() == shader_type::COMPUTE) {
+        if(s->type() == shader_type::COMPUTE) {
             MGE_THROW(mge::illegal_argument) << "Shader type must not be shader_type::COMPUTE";
         }
 
-        if(!shader->defined()) {
+        if(!s->defined()) {
             MGE_THROW(mge::illegal_argument) << "Shader must be defined before attaching to pipeline";
         }
 
-        on_set_shader(shader);
+        on_set_shader_program(s);
         m_needs_link = true;
     }
 

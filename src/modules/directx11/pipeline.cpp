@@ -2,7 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "pipeline.hpp"
-#include "shader.hpp"
+#include "shader_program.hpp"
 #include "error.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/bit.hpp"
@@ -73,7 +73,7 @@ namespace dx11 {
     }
 
     void
-    pipeline::reflect_vertex_shader(dx11::shader *s)
+    pipeline::reflect_vertex_shader(dx11::shader_program *s)
     {
         ID3D11ShaderReflection *shader_reflection = nullptr;
         D3DReflect(s->code()->GetBufferPointer(), 
@@ -132,7 +132,7 @@ namespace dx11 {
             MGE_THROW(mge::illegal_state) << "Cannot link empty pipeline";
         }
 
-        dx11::shader *vs = static_cast<dx11::shader *>(m_shaders[(size_t)mge::shader_type::VERTEX].get());
+        dx11::shader_program *vs = static_cast<dx11::shader_program *>(m_shaders[(size_t)mge::shader_type::VERTEX].get());
         reflect_vertex_shader(vs);
         m_vertex_shader_uniform_count = m_uniforms.size();
         //dx11::shader *ps = static_cast<dx11::shader *>(m_shaders[(size_t)mge::shader_type::FRAGMENT].get());
@@ -140,8 +140,8 @@ namespace dx11 {
     }
 
     void
-    pipeline::on_set_shader(const mge::shader_ref& shader)
+    pipeline::on_set_shader_program(const mge::shader_program_ref& s)
     {
-        m_shaders[(size_t)shader->type()] = shader;
+        m_shaders[(size_t)s->type()] = s;
     }
 }
