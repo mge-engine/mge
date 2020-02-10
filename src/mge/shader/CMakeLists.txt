@@ -3,6 +3,7 @@
 # All rights reserved.
 ADD_LIBRARY(mgeshader
     SHARED
+    location.cpp
     program.cpp)
 
 TARGET_ADD_DEFINE(mgeshader BUILD_MGE_SHADER)

@@ -55,7 +55,6 @@ namespace mge {
          */
         const char *intern(const std::string& str);
 
-
         /**
          * Returns a canonical representation of the string @c str
          * within this string pool.
