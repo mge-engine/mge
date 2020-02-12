@@ -2,6 +2,12 @@
 namespace mge {
 namespace shader {
 
+    location::location()
+        :m_file(s_files.intern(""))
+        ,m_line(0)
+        ,m_column(0)
+    {}
+
     location::location(const char *file, int line, int column)
         :m_file(s_files.intern(file))
         ,m_line(line)

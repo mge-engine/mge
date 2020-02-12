@@ -9,6 +9,7 @@ namespace shader {
     class MGE_SHADER_EXPORT location
     {
     public:
+        location();
         location(const char *file, int line, int column=0);
         location(const std::string& file, int line, int column=0);
         location(const location& l);
