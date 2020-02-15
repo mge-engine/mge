@@ -4,24 +4,25 @@ namespace mge {
 
 #define MGE_ENTITY_COMPONENT(type, name)                        \
     struct name##_tag {};                                       \
-    using name = mge::tagged<type, name##_tag>;                 \
+    using name##_type = mge::tagged<type, name##_tag>;                 \
                                                                 \
     template <typename... ArgTypes,                             \
               typename = std::enable_if_t<std::is_constructible<type, ArgTypes...>::value > > \
     void set_##name(ArgTypes&& ... args)                        \
     {                                                           \
-        registry().assign_or_replace<name>(entity(), std::forward< ArgTypes>( args )...); \
+        registry().assign_or_replace<name##_type>(entity(), std::forward< ArgTypes>( args )...); \
     }                                                           \
                                                                 \
-    auto get_##name() const                                     \
+    auto name() const                                           \
     {                                                           \
-        return registry().get<name>(entity()).get();            \
+        return registry().get<name##_type>(entity()).get();     \
     }                                                           \
                                                                 \
     void clear_##name()                                         \
     {                                                           \
-        registry().remove<name>(entity());                      \
+        registry().remove<name##_type>(entity());               \
     }
+
 
 #define MGE_ENTITY_BOOLEAN_COMPONENT(type, name)                \
     struct name {};                                             \

@@ -7,16 +7,20 @@
 #include "mge/entity/entity_registry.hpp"
 #include "mge/entity/component.hpp"
 #include "mge/scene/scene_fwd.hpp"
-#include "mge/math/vec3.hpp"
-#include "mge/math/mat4.hpp"
-#include "mge/math/transform.hpp"
+#include "mge/scene/movable_entity.hpp"
 
 namespace mge {
 
     /**
      * A node is an element of the scene.
+     *
+     * It is a movable entity in the way it can manage a custom
+     * position, orientation and scale, resulting in an own
+     * model transformation.
+     *
      */
     class MGE_SCENE_EXPORT node 
+            : public movable_entity<node>
     {
     public:
         /**
@@ -76,29 +80,6 @@ namespace mge {
          * @return node entity registry
          */
         mge::entity_registry& registry() const;
-
-
-        struct transform_tag {};
-        using transform_type = mge::tagged<fmat4, transform_tag>;
-
-        template <typename... ArgTypes,
-                  typename = std::enable_if_t<std::is_constructible<fmat4, ArgTypes...>::value > >
-        void set_transform(ArgTypes&& ... args)
-        {
-            registry().assign_or_replace<transform_type>(entity(), std::forward< ArgTypes>( args )...);
-        }
-
-        auto transform() const
-        {
-            auto & r = registry();
-            if (r.has<transform_type>(entity())) {
-                return r.get<transform_type>(entity()).get();
-            } else {
-                return mge::identity<fmat4>();
-            }
-        }
-
-
 
     private:
         friend class scene;

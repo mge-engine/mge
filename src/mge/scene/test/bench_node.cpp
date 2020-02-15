@@ -15,6 +15,7 @@ static void bench_node_set_transform(benchmark::State& state)
     while(state.KeepRunning()) {
         n.set_transform(mat);
         n.transform();
+        n.clear_transform();
     }
 }
 

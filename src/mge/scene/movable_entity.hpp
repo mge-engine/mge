@@ -2,28 +2,37 @@
 #include "mge/scene/dllexport.hpp"
 #include "mge/entity/entity_registry.hpp"
 #include "mge/entity/entity.hpp"
+#include "mge/entity/component.hpp"
+#include "mge/math/mat4.hpp"
+#include "mge/math/vec3.hpp"
+#include "mge/math/quat.hpp"
+
 namespace mge {
 
-    template <typename CRP>
+    template <typename B>
     class movable_entity
     {
     private:
-        using CRP = base;
-
-        mge::entity _entity() const
+        inline mge::entity_registry& registry() const
         {
-            static_cast<const base *>(this)->entity();
+            const B * base = static_cast<const B*>(this);
+            return base->registry();
         }
 
-        mge::entity_registry& _registry() const
+        inline mge::entity entity() const
         {
-            static_cast<const base *>(this)->registry();
+            const B * base = static_cast<const B*>(this);
+            return base->entity();
         }
 
     public:
         movable_entity() = default;
         ~movable_entity() = default;
 
+        MGE_ENTITY_COMPONENT(fvec3, position)
+        MGE_ENTITY_COMPONENT(fquat, orientation)
+        MGE_ENTITY_COMPONENT(fvec3, scale)
+        MGE_ENTITY_COMPONENT(fmat4, transform)
     };
 
 }
