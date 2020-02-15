@@ -32,6 +32,7 @@ ADD_EXECUTABLE(coretest
   test_small_vector.cpp
   test_types.cpp
   test_output_stream.cpp
+  test_tagged.cpp
 )
 TARGET_LINK_LIBRARIES(coretest mgecore gmock)
 TARGET_IS_TEST(coretest)
