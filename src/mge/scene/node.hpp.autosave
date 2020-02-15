@@ -83,7 +83,7 @@ namespace mge {
 
         template <typename... ArgTypes,
                   typename = std::enable_if_t<std::is_constructible<fmat4, ArgTypes...>::value > >
-        void set_transform(ArgTypes&& ... args)
+        void set_transform(ArgTypes&& ... args) 
         {
             registry().assign_or_replace<transform_type>(entity(), std::forward< ArgTypes>( args )...);
         }

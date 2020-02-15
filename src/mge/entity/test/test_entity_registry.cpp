@@ -37,3 +37,4 @@ TEST(entity_registry, entity_valid)
     registry.destroy(e);
     EXPECT_FALSE(registry.valid(e));
 }
+

@@ -49,6 +49,21 @@ namespace mge {
         mge::entity entity() const noexcept { return m_scene_entity; }
 
         /**
+         * Get registry for scene entities.
+         * @return global scene registry
+         */
+        static mge::entity_registry& registry() noexcept;
+
+        /**
+         * Get entity registry of scene nodes.
+         * @return entity registry of scene nodes
+         */
+        mge::entity_registry& node_registry()
+        {
+            return m_registry;
+        }
+
+        /**
          * Create a new node.
          * 
          * @return node new node 

@@ -35,6 +35,12 @@ namespace mge {
         return nullptr;
     }
 
+    mge::entity_registry&
+    scene::registry() noexcept
+    {
+        return scene_registry;
+    }
+
     node
     scene::create_node()
     {

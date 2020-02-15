@@ -5,6 +5,7 @@
 #include "mge/math/glm.hpp"
 #include "mge/math/vec3.hpp"
 namespace mge {
+    using glm::identity;
     using glm::translate;
     using glm::rotate;
     using glm::scale;

@@ -7,3 +7,9 @@ ADD_EXECUTABLE(scenetest
     test_scene.cpp)
 TARGET_LINK_LIBRARIES(scenetest mgescene mgecore gmock)
 TARGET_IS_TEST(scenetest)
+
+ADD_EXECUTABLE(scenebenchmark
+               bench_node.cpp
+              ${CMAKE_SOURCE_DIR}/src/bench/benchmark_main.cpp)
+TARGET_LINK_LIBRARIES(scenebenchmark
+    googlebenchmark mgescene mgeentity mgecore)

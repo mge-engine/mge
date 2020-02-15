@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/scene/node.hpp"
 #include "mge/scene/scene.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 namespace mge {
 
@@ -36,6 +37,18 @@ namespace mge {
             return sc->is_node_valid(*this);
         } else {
             return false;
+        }
+    }
+
+    entity_registry&
+    node::registry() const
+    {
+        scene *sc = scene::by_entity(m_scene_entity);
+        if(sc) {
+            return sc->node_registry();
+        } else {
+            MGE_THROW(mge::illegal_state)
+              << "Invalid node state: invalid scene";
         }
     }
 }
