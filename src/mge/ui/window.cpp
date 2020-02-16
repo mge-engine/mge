@@ -4,7 +4,8 @@
 #include "mge/ui/window.hpp"
 namespace mge {
     namespace ui {
-        window::window()
+        window::window(mge::ui::context& ctx)
+            :context_object(ctx)
         {}
 
         window::~window()

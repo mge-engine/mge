@@ -16,12 +16,41 @@ namespace mge {
     class MGE_GRAPHICS_EXPORT drawable : public noncopyable
     {
     public:
-        virtual ~drawable();
+        /**
+         * Destructor.
+         */
+        virtual ~drawable() = default;
 
-        virtual bool prepared() const;
-        virtual void prepare(render_context& context);
-        virtual void draw(render_context& context) = 0;
+        /**
+         * Retrieve whether the drawable has been prepared.
+         * @return @c true if prepared
+         */
+        bool prepared() const noexcept { return m_prepared; }
+
+        /**
+         * Prepare the drawable.
+         * @param context
+         */
+        void prepare(render_context& context);
+
+        /**
+         * @brief draw
+         * @param context
+         */
+        void draw(render_context& context);
+
     protected:
+        /**
+         * Set prepared status.
+         * @param prepared new status
+         */
+        void set_prepared(bool prepared) noexcept;
+
+        virtual void on_prepare(render_context& context);
+        virtual void on_draw(render_context& context) = 0;
+
         drawable();
+
+        bool m_prepared;
     };
 }

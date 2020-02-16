@@ -8,6 +8,7 @@ SET(mgeui_sources
     window.cpp
     menu_bar.cpp
     menu.cpp
+    context_object.cpp
 )
 
 ADD_LIBRARY(mgeui

@@ -14,7 +14,7 @@ namespace mge {
         }
 
         void
-        context::draw(mge::render_context& render_context)
+        context::on_draw(mge::render_context& render_context)
         {
         }
 
@@ -32,5 +32,6 @@ namespace mge {
         {
             m_input = nullptr;
         }
+
     }
 }

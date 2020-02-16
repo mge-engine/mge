@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/ui/dllexport.hpp"
 #include "mge/ui/ui_fwd.hpp"
+#include "mge/ui/context_object.hpp"
 #include "mge/graphics/rectangle.hpp"
 namespace mge {
     namespace ui {
@@ -11,6 +12,7 @@ namespace mge {
          * A window.
          */
         class window 
+            : public context_object
         {
         public:
             enum status : uint8_t {
@@ -28,7 +30,7 @@ namespace mge {
                 MINMAX          = 1 << 6
             };
 
-            window();
+            window(mge::ui::context& ctx);
             ~window();
 
             point position() const { return m_rect.position(); }

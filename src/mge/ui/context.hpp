@@ -6,6 +6,7 @@
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/drawable.hpp"
 #include "mge/input/input_handler.hpp"
+#include "mge/ui/window.hpp"
 
 namespace mge {
     namespace ui {
@@ -16,7 +17,7 @@ namespace mge {
          */
         class MGE_UI_EXPORT context 
             : public drawable
-            , std::enable_shared_from_this<context>
+            , public std::enable_shared_from_this<mge::ui::context>
         {
         public:
             /**
@@ -29,7 +30,7 @@ namespace mge {
              */
             virtual ~context();
 
-            void draw(render_context& render_context) override;
+            void on_draw(render_context& render_context);
 
             /**
              * Attaches the ui context to an input handler.
@@ -42,6 +43,12 @@ namespace mge {
              * Detaches current input.
              */
             void detach_input();
+
+            /**
+             * Create a window.
+             * @return created window
+             */
+            window_ref create_window();
         private:
             input_handler *m_input;
         };
