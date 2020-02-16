@@ -20,7 +20,7 @@ static void bench_node_set_transform(benchmark::State& state)
 }
 
 BENCHMARK(bench_node_set_transform);
-
+#endif
 
 static void bench_node_set_position(benchmark::State& state)
 {
@@ -36,4 +36,4 @@ static void bench_node_set_position(benchmark::State& state)
 }
 
 BENCHMARK(bench_node_set_position);
-#endif
+

@@ -7,7 +7,7 @@
 #include "mge/entity/entity_registry.hpp"
 #include "mge/entity/component.hpp"
 #include "mge/scene/scene_fwd.hpp"
-
+#include "mge/scene/movable.hpp"
 
 namespace mge {
 
@@ -20,6 +20,7 @@ namespace mge {
      *
      */
     class MGE_SCENE_EXPORT node 
+        : public movable
     {
     public:
         /**
