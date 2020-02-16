@@ -6,6 +6,7 @@
 #include "mge/scene/node.hpp"
 #include "mge/math/transform.hpp"
 
+#if 0
 static void bench_node_set_transform(benchmark::State& state)
 {
     mge::scene sc;
@@ -15,8 +16,24 @@ static void bench_node_set_transform(benchmark::State& state)
     while(state.KeepRunning()) {
         n.set_transform(mat);
         n.transform();
-        n.clear_transform();
     }
 }
 
 BENCHMARK(bench_node_set_transform);
+
+
+static void bench_node_set_position(benchmark::State& state)
+{
+    mge::scene sc;
+    mge::fvec3 pos;
+
+    auto n = sc.create_node();
+    while(state.KeepRunning()) {
+        pos = n.position();
+        pos += 0.01;
+        n.set_position(pos);
+    }
+}
+
+BENCHMARK(bench_node_set_position);
+#endif

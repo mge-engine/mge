@@ -10,12 +10,14 @@ namespace mge {
     node::node()
         :m_scene_entity(nil_entity)
         ,m_node_entity(nil_entity)
-    {}
+    {
+    }
 
     node::node(mge::entity scene_entity, mge::entity node_entity)
         :m_scene_entity(scene_entity)
         ,m_node_entity(node_entity)
-    {}
+    {
+    }
 
     void
     node::destroy()
