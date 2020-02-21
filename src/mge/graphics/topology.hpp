@@ -5,7 +5,7 @@ namespace mge {
     /**
      * @brief Draw mode, defines how vertices shall be interpreted.
      */
-    enum class draw_mode
+    enum class topology
     {
         TRIANGLES,
         TRIANGLE_STRIP,

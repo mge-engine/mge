@@ -6,17 +6,17 @@
 namespace mge {
 
     draw_command::draw_command()
-        : m_draw_mode(mge::draw_mode::TRIANGLES)
+        : m_topology(mge::topology::TRIANGLES)
     {}
 
     draw_command::draw_command(const pipeline_ref &p,
                                const vertex_buffer_ref &v,
                                const index_buffer_ref &i,
-                               mge::draw_mode mode)
+                               mge::topology mode)
         : m_pipeline(p)
         , m_vertices(v)
         , m_indices(i)
-        , m_draw_mode(mode)
+        , m_topology(mode)
     {}
 
 
@@ -24,14 +24,14 @@ namespace mge {
         : m_pipeline(c.m_pipeline)
         , m_vertices(c.m_vertices)
         , m_indices(c.m_indices)
-        , m_draw_mode(c.m_draw_mode)
+        , m_topology(c.m_topology)
     {}
 
     draw_command::draw_command(draw_command &&c)
         : m_pipeline(std::move(c.m_pipeline))
         , m_vertices(std::move(c.m_vertices))
         , m_indices(std::move(c.m_indices))
-        , m_draw_mode(std::move(c.m_draw_mode))
+        , m_topology(std::move(c.m_topology))
     {}
 
     draw_command&
@@ -40,7 +40,7 @@ namespace mge {
         m_pipeline = c.m_pipeline;
         m_vertices = c.m_vertices;
         m_indices = c.m_indices;
-        m_draw_mode = c.m_draw_mode;
+        m_topology = c.m_topology;
         return *this;
     }
 
@@ -50,7 +50,7 @@ namespace mge {
         m_pipeline = std::move(c.m_pipeline);
         m_vertices = std::move(c.m_vertices);
         m_indices = std::move(c.m_indices);
-        m_draw_mode = std::move(c.m_draw_mode);
+        m_topology = std::move(c.m_topology);
         return *this;
     }
 
@@ -74,9 +74,9 @@ namespace mge {
     }
 
     void
-    draw_command::set_draw_mode(mge::draw_mode mode)
+    draw_command::set_topology(mge::topology mode)
     {
-        m_draw_mode = mode;
+        m_topology = mode;
     }
 
     

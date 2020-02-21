@@ -7,7 +7,7 @@
 #include "mge/graphics/pipeline.hpp"
 #include "mge/graphics/vertex_buffer.hpp"
 #include "mge/graphics/index_buffer.hpp"
-#include "mge/graphics/draw_mode.hpp"
+#include "mge/graphics/topology.hpp"
 
 namespace mge {
 
@@ -28,12 +28,12 @@ namespace mge {
          * @param p pipeline
          * @param v vertices
          * @param i indices
-         * @param mode draw mode
+         * @param topology topology of buffer
          */
         draw_command(const pipeline_ref& p,
                      const vertex_buffer_ref& v,
                      const index_buffer_ref& i,
-                     mge::draw_mode mode = mge::draw_mode::TRIANGLES);
+                     mge::topology topology = mge::topology::TRIANGLES);
 
         /**
          * Copy constructor.
@@ -57,17 +57,17 @@ namespace mge {
         void set_pipeline(const pipeline_ref& pipeline);
         void set_vertices(const vertex_buffer_ref& buffer);
         void set_indices(const index_buffer_ref& buffer);
-        void set_draw_mode(mge::draw_mode mode);
+        void set_topology(mge::topology topology);
 
         const pipeline_ref& pipeline() const { return m_pipeline; }
         const vertex_buffer_ref& vertices() const { return m_vertices; }
         const index_buffer_ref& indices() const { return m_indices; }
-        mge::draw_mode draw_mode() const { return m_draw_mode; }
+        mge::topology topology() const { return m_topology; }
     private:
         pipeline_ref m_pipeline;
         vertex_buffer_ref m_vertices;
         index_buffer_ref m_indices;
-        mge::draw_mode m_draw_mode;
+        mge::topology m_topology;
     };
 
 }
