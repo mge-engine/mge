@@ -49,6 +49,7 @@ SET(mgecore_sources
     archive_access_factory.cpp
     open_mode.cpp
     debug_break.cpp
+    memory_resource.cpp
 
     ${CMAKE_BINARY_DIR}/src/mge/version.hpp
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
