@@ -2,8 +2,14 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/memory.hpp"
+#include "mge/core/log.hpp"
+
+MGE_DEFINE_LOG(MEMORY);
 
 namespace mge {
+
+
+
     void *malloc(size_t sz)
     {
         return ::malloc(sz);
