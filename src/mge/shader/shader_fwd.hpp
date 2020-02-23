@@ -15,6 +15,7 @@ namespace shader {
     class module;
     class program_element;
     class statement;
+    class function;
     class main_function;
     class expression;
 }

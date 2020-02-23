@@ -11,6 +11,7 @@ namespace shader {
     public:
         location();
         location(const mge::shader::module *m, uint32_t begin, uint32_t end);
+        location(const mge::shader::module *m);
         location(const location& l);
         ~location();
 

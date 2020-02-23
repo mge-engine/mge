@@ -8,6 +8,13 @@ namespace shader {
         ,m_end(0)
     {}
 
+    location::location(const mge::shader::module *m)
+        :m_module(m)
+        ,m_begin(0u)
+        ,m_end(0)
+    {}
+
+
     location::location(const mge::shader::module *m, uint32_t begin, uint32_t end)
         :m_module(m)
         ,m_begin(begin)
