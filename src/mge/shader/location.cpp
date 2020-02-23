@@ -3,34 +3,24 @@ namespace mge {
 namespace shader {
 
     location::location()
-        :m_file(s_files.intern(""))
-        ,m_line(0)
-        ,m_column(0)
+        :m_module(nullptr)
+        ,m_begin(0u)
+        ,m_end(0)
     {}
 
-    location::location(const char *file, int line, int column)
-        :m_file(s_files.intern(file))
-        ,m_line(line)
-        ,m_column(column)
+    location::location(const mge::shader::module *m, uint32_t begin, uint32_t end)
+        :m_module(m)
+        ,m_begin(begin)
+        ,m_end(end)
     {}
 
-    location::location(const std::string& file, int line, int column)
-        :m_file(s_files.intern(file))
-        ,m_line(line)
-        ,m_column(column)
-    {}
 
     location::location(const location &l)
-        :m_file(l.m_file)
-        ,m_line(l.m_line)
-        ,m_column(l.m_column)
+        :m_module(l.module())
+        ,m_begin(l.begin())
+        ,m_end(l.end())
     {}
 
-    location::location(location &&l)
-        :m_file(std::move(l.m_file))
-        ,m_line(std::move(l.m_line))
-        ,m_column(std::move(l.m_column))
-    {}
 
     location::~location()
     {}
@@ -38,13 +28,11 @@ namespace shader {
     location&
     location::operator =(const location& l)
     {
-        m_file   = l.m_file;
-        m_line   = l.m_line;
-        m_column = l.m_column;
+        m_module = l.m_module;
+        m_begin = l.m_begin;
+        m_end = l.m_end;
         return *this;
     }
 
-    string_pool
-    location::s_files;
 }
 }

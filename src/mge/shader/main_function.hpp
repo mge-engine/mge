@@ -8,7 +8,7 @@ namespace shader {
             : statement
     {
     public:
-        main_function();
+        main_function(program *p);
         virtual ~main_function();
 
         const statement_ref body() const { return m_body; }

@@ -1,20 +1,17 @@
 #pragma once
 #include "mge/shader/dllexport.hpp"
-#include "mge/shader/location.hpp"
+#include "mge/shader/shader_fwd.hpp"
 namespace mge {
 namespace shader {
 
     class MGE_SHADER_EXPORT program_element
     {
     public:
-        program_element();
-        explicit program_element(const location& l);
-        program_element(const program_element& e);
+        program_element(mge::shader::program *p);
         virtual ~program_element() = default;
-
-        location source_location() const { return m_source_location; }
+        mge::shader::program *program() const { return m_program; }
     private:
-        location m_source_location;
+        mge::shader::program *m_program;
     };
 }
 }

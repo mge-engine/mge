@@ -7,9 +7,29 @@
 using namespace mge;
 using namespace mge::shader;
 
-TEST(program, set_source)
+struct test_element
+{
+    program *p;
+    int i;
+
+    test_element(program *pp, int ii)
+    {
+        p = pp;
+        i = ii;
+    }
+};
+
+TEST(program, simple_create)
 {
     program p(program_type::VERTEX);
-    std::string src("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-    p.set_source(src);
+    auto pi = p.create<int>(42);
+    EXPECT_EQ(42, *pi);
+}
+
+TEST(program, element_create)
+{
+    program p(program_type::VERTEX);
+    auto te = p.create<test_element>(42);
+    EXPECT_EQ(&p, te->p);
+    EXPECT_EQ(42, te->i);
 }

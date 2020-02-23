@@ -1,11 +1,11 @@
 #pragma once
 #include "mge/core/types.hpp"
 #include "mge/shader/dllexport.hpp"
+#include "mge/shader/shader_fwd.hpp"
 #include "mge/shader/program_type.hpp"
 #include "mge/core/memory_resource.hpp"
-#include <memory_resource>
 #include <string_view>
-#include <string>
+#include <type_traits>
 
 namespace mge {
 namespace shader {
@@ -21,25 +21,35 @@ namespace shader {
         ~program();
         program_type type() const noexcept { return m_type; }
 
-        void set_source(const std::string& source);
+        template <typename T, typename... ArgTypes>
+        T* create(ArgTypes&&...args)
+        {
+            void *ptr = m_program_memory.allocate(sizeof(T), alignof(T));
+            try {
+                if constexpr (std::is_constructible<T, program *, ArgTypes...>::value) {
+                    return new (ptr) T(this, std::forward< ArgTypes >( args )...);
+                } else {
+                    return new (ptr) T(std::forward< ArgTypes >( args )...);
+                }
+            } catch(...) {
+                m_program_memory.deallocate(ptr, sizeof(T), alignof(T));
+                throw;
+            }
+        }
 
-//        template <typename T, typename... ArgTypes>
-//        T* create(ArgTypes&&...args) noexcept(std::is_nothrow_constructible<T, ArgTypes...>::value)
-//        {
-//            void *ptr = m_program_memory.allocate(sizeof(T), alignof(T));
-//            new (ptr) T(std::forward< ArgTypes >( args )...);
-//            return ptr;
-//        }
+        void add_module(const std::string& name, const std::string& text);
 
-        std::string_view source() const;
+        std::pmr::memory_resource *memory_resource();
+
     private:
-        using char_allocator_type = std::pmr::polymorphic_allocator<char>;
-        using string_type = std::basic_string<char, std::char_traits<char>, char_allocator_type>;
-        using string_allocator_type = std::pmr::polymorphic_allocator<string_type>;
+        typedef std::pmr::vector<module *> module_vector;
 
-        program_type m_type;
-        mge::tracing_memory_resource m_program_memory;
-        string_type m_source;
+
+        program_type                            m_type;
+        main_function                          *m_main;
+        mge::callback_memory_resource           m_program_memory_base;
+        std::pmr::unsynchronized_pool_resource  m_program_memory;
+        module_vector                           m_modules;
     };
 
 }

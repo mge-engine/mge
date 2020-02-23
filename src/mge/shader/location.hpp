@@ -1,6 +1,6 @@
 #pragma once
 #include "mge/shader/dllexport.hpp"
-#include "mge/core/string_pool.hpp"
+#include "mge/shader/shader_fwd.hpp"
 #include <iostream>
 
 namespace mge {
@@ -10,27 +10,24 @@ namespace shader {
     {
     public:
         location();
-        location(const char *file, int line, int column=0);
-        location(const std::string& file, int line, int column=0);
+        location(const mge::shader::module *m, uint32_t begin, uint32_t end);
         location(const location& l);
-        location(location&& l);
         ~location();
 
         location& operator =(const location& l);
         location& operator =(location&& l);
 
-        inline const char *file() const noexcept { return m_file; }
-        int line() const noexcept { return m_line; }
-        int column() const noexcept { return m_column; }
-    private:
-        const char *m_file;
-        int         m_line;
-        int         m_column;
+        const mge::shader::module *module() const { return m_module; }
+        uint32_t begin() const noexcept { return m_begin; }
+        uint32_t end() const noexcept { return m_end; }
 
-        static string_pool s_files;
+    private:
+        const mge::shader::module *m_module;
+        uint32_t m_begin;
+        uint32_t m_end;
     };
 
-    MGE_SHADER_EXPORT std::ostream& operator <<(std::ostream& os, const location& l);
+    // MGE_SHADER_EXPORT std::ostream& operator <<(std::ostream& os, const location& l);
 
 }
 }
