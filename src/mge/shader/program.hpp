@@ -37,13 +37,13 @@ namespace shader {
             }
         }
 
-        void add_module(const std::string& name, const std::string& text);
+        module* add_module(const std::string& name, const std::string& text);
+        module* module_by_name(const std::string& name);
 
         std::pmr::memory_resource *memory_resource();
 
     private:
         typedef std::pmr::vector<module *> module_vector;
-
 
         program_type                            m_type;
         main_function                          *m_main;

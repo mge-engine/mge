@@ -20,7 +20,24 @@ namespace shader {
         return &m_program_memory;
     }
 
-    void
+    module*
+    program::module_by_name(const std::string& name)
+    {
+        auto it = std::find_if(m_modules.begin(), m_modules.end(), [&](const module *e){
+            if(e->name() == name) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        if (it == m_modules.end()) {
+            return nullptr;
+        } else {
+            return *it;
+        }
+    }
+
+    module *
     program::add_module(const std::string& name, const std::string& text)
     {
         module *m = create<module>(name, text);
@@ -35,6 +52,7 @@ namespace shader {
             m_modules.erase(it);
         }
         m_modules.push_back(m);
+        return m;
     }
 
 
