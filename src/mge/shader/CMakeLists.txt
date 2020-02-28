@@ -7,7 +7,8 @@ ADD_LIBRARY(mgeshader
     module.cpp
     location.cpp
     program_element.cpp
-    module_element.cpp)
+    module_element.cpp
+    statement.cpp)
 
 TARGET_ADD_DEFINE(mgeshader BUILD_MGE_SHADER)
 TARGET_LINK_LIBRARIES(mgeshader mgecore)

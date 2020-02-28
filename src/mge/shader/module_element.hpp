@@ -11,14 +11,10 @@ namespace shader {
             : public program_element
     {
     public:
-        module_element(mge::shader::program* p,
-                       mge::shader::module* m,
+        module_element(mge::shader::module* m,
                        uint32_t begin,
                        uint32_t end);
-
-        module_element(mge::shader::program* p,
-                       mge::shader::module* m);
-
+        module_element(mge::shader::module* m);
         module_element(mge::shader::program* p);
 
         ~module_element() = default;

@@ -8,7 +8,9 @@ namespace shader {
             : public module_element
     {
     public:
-        statement()
+        statement(module *m);
+        statement(module *m, uint32_t begin, uint32_t end);
+        virtual ~statement() = default;
     };
 }
 }
