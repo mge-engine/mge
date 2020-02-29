@@ -6,4 +6,5 @@
 namespace mge {
     MGE_DECLARE_REF(asset);
     MGE_DECLARE_REF(asset_access);
+    class asset_type;
 }

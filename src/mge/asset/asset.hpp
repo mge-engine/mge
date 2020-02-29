@@ -116,7 +116,6 @@ namespace mge {
          */
         void gist(std::ostream& os) const;
 
-        
         /**
          * Check if the asset has properties.
          * @return @c true if properties are present

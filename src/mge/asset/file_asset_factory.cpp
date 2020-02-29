@@ -6,6 +6,7 @@
 #include "mge/core/file.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/asset/asset_type_mapper.hpp"
 
 namespace mge {
 
@@ -47,7 +48,7 @@ namespace mge {
 
         asset_type type() const override
         {
-            return asset_type::UNKNOWN;
+            return asset_type_mapper::type(m_file.path());
         }
 
         bool has_properties() const override

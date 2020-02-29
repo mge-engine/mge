@@ -19,6 +19,8 @@ namespace mge {
     public:
         static const asset_type UNKNOWN;
 
+        asset_type();
+
         asset_type(const char *type, const char *subtype)
             :m_type(type)
             ,m_subtype(subtype)

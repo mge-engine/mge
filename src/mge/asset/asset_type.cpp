@@ -10,4 +10,9 @@ namespace mge {
     {
         return os << t.type() << "/" << t.subtype();
     }
+
+    asset_type::asset_type()
+        :asset_type(asset_type::UNKNOWN)
+    {}
+
 }
