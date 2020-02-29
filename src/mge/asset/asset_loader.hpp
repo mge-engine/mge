@@ -3,6 +3,8 @@
 #include "mge/core/component.hpp"
 #include "mge/asset/asset_fwd.hpp"
 #include <functional>
+#include <any>
+
 namespace mge {
 
     /**
@@ -20,12 +22,19 @@ namespace mge {
          * @param a asset reference
          * @return pointer to loaded asset
          */
-        virtual void *load(const asset& a) const = 0;
+        virtual std::shared_ptr<std::any> load(const asset& a) const = 0;
 
         /**
          * Retrieve the handled asset types.
          * @param f callback invoked for each type
          */
         virtual void handled_types(std::function<void (const asset_type&)>&& f) = 0;
+
+        /**
+         * Retrieve loader for asset.
+         * @param a asset
+         * @return asset loader
+         */
+        static asset_loader_ref loader(const asset& a);
     };
 }

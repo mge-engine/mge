@@ -109,6 +109,7 @@ namespace mge {
          */
         asset_type type() const;
 
+
         /**
          * Supply gist info on asset.
          * 
