@@ -28,7 +28,7 @@ namespace mge {
          * Retrieve the handled asset types.
          * @param f callback invoked for each type
          */
-        virtual void handled_types(std::function<void (const asset_type&)>&& f) = 0;
+        virtual void handled_types(std::function<void (const asset_type&)>&& f) const = 0;
 
         /**
          * Retrieve loader for asset.
