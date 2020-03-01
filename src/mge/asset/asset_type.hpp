@@ -5,6 +5,7 @@
 #include "mge/asset/dllexport.hpp"
 #include <boost/operators.hpp>
 #include <string>
+#include <string_view>
 #include <iosfwd>
 namespace mge {
 
@@ -29,6 +30,11 @@ namespace mge {
         asset_type(const std::string& type, const std::string& subtype)
             :m_type(type)
             ,m_subtype(subtype)
+        {}
+
+        asset_type(const std::string_view& type, const std::string_view& subtype)
+            :m_type(type.begin(), type.end())
+            ,m_subtype(subtype.begin(), subtype.end())
         {}
 
         asset_type(const asset_type& t)
@@ -77,4 +83,14 @@ namespace mge {
     };
 
     MGE_ASSET_EXPORT std::ostream& operator <<(std::ostream& os, const asset_type& t);
+
+    namespace string_literals {
+        /**
+         * Literal to define asset type in source.
+         *
+         * @return asset created from string
+         */
+        MGE_ASSET_EXPORT asset_type operator ""_at(const char *, size_t);
+    }
+
 }
