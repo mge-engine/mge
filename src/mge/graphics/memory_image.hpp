@@ -12,6 +12,13 @@ namespace mge {
         memory_image(const mge::extent& e, const image_format& f);
         memory_image(const mge::extent& e, const image_format& f, void *data);
         virtual ~memory_image();
+
+        /**
+         * Get a scan line.
+         * @param line line requested, in range 0 .. height
+         * @return pointer to scan line
+         */
+        void *scanline(uint32_t line);
     protected:
         void *on_map() override;
         void on_unmap() override;

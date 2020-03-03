@@ -22,7 +22,7 @@ namespace mge {
          * @param a asset reference
          * @return pointer to loaded asset
          */
-        virtual std::shared_ptr<std::any> load(const asset& a) const = 0;
+        virtual std::any load(const asset& a) const = 0;
 
         /**
          * Retrieve the handled asset types.
