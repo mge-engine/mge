@@ -49,11 +49,21 @@ namespace zip_archive {
         : public mge::input_stream
     {
     public:
-        zip_input_stream(zip_t *zip, uint32_t index)
+        zip_input_stream(zip_t *zip, uint64_t index)
             : m_zip(zip)
             , m_index(index)
             , m_file(nullptr)
+            , m_pos(0)
         {
+            if(zip_stat_index(m_zip,
+                              m_index,
+                              0,
+                              &m_stat)) {
+                auto *err = zip_get_error(m_zip);
+                MGE_THROW(mge::io_error)
+                    << "Error opening file in zip archive: "
+                    << zip_error_strerror(err);
+            }
             m_file = zip_fopen_index(m_zip, m_index, 0);
             if (!m_file) {
                 auto *err = zip_get_error(m_zip);
@@ -79,12 +89,20 @@ namespace zip_archive {
                     << "Invalid read size " << size;
             }
             auto r = zip_fread(m_file, destination, size);
-            return r;
+            m_pos += r;
+            if (m_pos == static_cast<streamsize_type>(m_stat.size)
+                && r == 0) {
+                return -1;
+            } else {
+                return r;
+            }
         }
     private:
         zip_t      *m_zip;
-        uint32_t    m_index;
+        uint64_t    m_index;
         zip_file_t *m_file;
+        zip_stat_t  m_stat;
+        streamsize_type m_pos;
     };
 
     class zip_archive_access :
@@ -134,7 +152,7 @@ namespace zip_archive {
             return m_entries;
         }
 
-        mge::input_stream_ref open(uint32_t index)
+        mge::input_stream_ref open(uint64_t index)
         {
             if (index >= entries().size()) {
                 MGE_THROW(mge::illegal_argument) <<

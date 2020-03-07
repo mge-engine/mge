@@ -43,7 +43,7 @@ namespace mge {
             entry(const path& path,
                   bool is_directory,
                   std::streamsize size,
-                  uint32_t index);
+                  uint64_t index);
             /**
              * @brief Copy constructor.
              *
@@ -117,7 +117,7 @@ namespace mge {
             mge::path          m_path;
             std::streamsize    m_size;
             archive_access_ref m_access;
-            uint32_t           m_index;
+            uint64_t           m_index;
             bool               m_directory;
         };
 

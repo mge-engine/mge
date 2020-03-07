@@ -47,7 +47,7 @@ namespace mge {
          * @param index index in archive
          * @return reference to input stream
          */
-        virtual input_stream_ref open(uint32_t index) = 0;
+        virtual input_stream_ref open(uint64_t index) = 0;
     protected:
         file      m_file;
         open_mode m_open_mode;

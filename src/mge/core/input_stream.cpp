@@ -179,6 +179,14 @@ namespace mge {
         return result;
     }
 
+    bool
+    input_stream::eof()
+    {
+        char c;
+        auto r = read(&c, 0);
+        return r == -1;
+    }
+
     input_stream::offset_type input_stream::position()
     {
         return -1;

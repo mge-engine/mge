@@ -41,11 +41,23 @@ TEST(ziptest, find_entry)
 TEST(ziptest, read_entry)
 {
     mge::archive a("assets/archive.zip", mge::open_mode::READ);
-    std::cout << "find entry" << std::endl;
     auto e = a.find_entry("dir1/dira/b.txt");
     auto is = e.open();
     std::string str;
     is->istream() >> str;
     EXPECT_EQ(std::string("BBBBBBBBB"), str);
+}
+
+TEST(zip, input_stream_eof)
+{
+    mge::archive a("assets/archive.zip", mge::open_mode::READ);
+    auto e = a.find_entry("dir1/dira/b.txt");
+    auto is = e.open();
+    char c;
+    auto s = is->read(&c, 1);
+    while(s == 1) {
+        s = is->read(&c, 1);
+    }
+    EXPECT_EQ(-1, s);
 }
 

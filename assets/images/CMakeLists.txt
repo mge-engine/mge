@@ -3,13 +3,10 @@
 # All rights reserved.
 
 SET(asset_files
-    archive.zip
-    file_asset.txt
-    file_asset.txt.properties)
+    red.jpg)
 
 FOREACH(FILE ${asset_files})
     COPY_FILE("${CMAKE_CURRENT_SOURCE_DIR}/${FILE}"
               "${CMAKE_CURRENT_BINARY_DIR}/${FILE}")
 ENDFOREACH()
 
-ADD_SUBDIRECTORY(images)

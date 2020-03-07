@@ -61,7 +61,7 @@ namespace mge {
     archive::entry::entry(const mge::path& path,
                           bool is_directory,
                           std::streamsize size,
-                          uint32_t index)
+                          uint64_t index)
         : m_path(path)
         , m_size(size)
         , m_index(index)

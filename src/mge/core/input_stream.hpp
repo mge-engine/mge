@@ -92,6 +92,12 @@ namespace mge {
         std::istream& istream();
 
         /**
+         * Return whether stream is at end-of-file.
+         * @return @c true if stream is at eof
+         */
+        bool eof();
+
+        /**
          * Add a read listener.
          * @param l listener
          * @return listener key

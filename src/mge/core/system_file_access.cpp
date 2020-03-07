@@ -145,6 +145,10 @@ namespace mge {
                         readbytes = -1;
                     }
                 }
+            } else if (readbytes == 0) {
+                if(feof(m_file)) {
+                    return -1;
+                }
             }
 
             return readbytes;
