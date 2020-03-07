@@ -3,7 +3,11 @@
 # All rights reserved.
 
 SET(asset_files
-    red.jpg)
+    blue.tga
+    red.jpg
+    green.gif
+    green.bmp
+    green.png)
 
 FOREACH(FILE ${asset_files})
     COPY_FILE("${CMAKE_CURRENT_SOURCE_DIR}/${FILE}"

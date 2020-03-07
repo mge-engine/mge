@@ -18,7 +18,7 @@ namespace mge {
     pipeline::set_shader_program(const shader_program_ref& s)
     {
         if(!s) {
-            MGE_THROW_ARGUMENT_NOT_NULL(s);
+            MGE_THROW_ARGUMENT_NOT_NULL(shader);
         }
 
         if(s->type() == shader_type::COMPUTE) {

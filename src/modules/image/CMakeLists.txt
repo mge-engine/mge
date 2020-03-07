@@ -6,4 +6,4 @@ SET(mge_image_load_module_SOURCES
 ADD_LIBRARY(mge_module_image_load MODULE
             ${mge_image_load_module_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_image_load PRIVATE mgegraphics mgeasset mgecore)
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)

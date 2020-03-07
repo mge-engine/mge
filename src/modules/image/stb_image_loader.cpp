@@ -26,12 +26,6 @@ static mge::asset_type_mapper png_mapper(mge::asset_type("image", "png"),
                                          "png");
 static mge::asset_type_mapper tga_mapper(mge::asset_type("image", "tga"),
                                          "tga");
-static mge::asset_type_mapper psd_mapper(mge::asset_type("image", "psd"),
-                                         "psd");
-static mge::asset_type_mapper pbm_mapper(mge::asset_type("image", "pbm"),
-                                         "pbm");
-static mge::asset_type_mapper ppm_mapper(mge::asset_type("image", "ppm"),
-                                         "ppm");
 
 namespace imgload {
     class loader : public mge::asset_loader
@@ -109,10 +103,9 @@ namespace imgload {
             f(mge::asset_type("image","bmp"));
             f(mge::asset_type("image","png"));
             f(mge::asset_type("image","tga"));
-            f(mge::asset_type("image","psd"));
-            f(mge::asset_type("image","pgm"));
-            f(mge::asset_type("image","ppm"));
         }
 
     };
+
+    MGE_REGISTER_IMPLEMENTATION(loader, ::mge::asset_loader, tga, bmp, gif, png);
 }
