@@ -18,7 +18,8 @@ namespace mge {
 
     rgba_color::rgba_color(void *pixel, const image_format& format)
     {
-
+        auto map = mge::pixel_extractor(format);
+        map(r, g, b, a, pixel);
     }
 
     rgba_color::rgba_color(const rgb_color& c, float alpha)
