@@ -18,19 +18,12 @@ namespace mge {
                      bool take_ownership = false);
         virtual ~memory_image();
 
-        /**
-         * Get a scan line.
-         * @param line line requested, in range 0 .. height
-         * @return pointer to scan line
-         */
-        void *scanline(uint32_t line);
     protected:
         void *on_map() override;
         void on_unmap() override;
     private:
-
-        size_t buffer_size() const;
         uint8_t *m_data;
+        bool     m_initially_mapped;
     };
 
 }

@@ -8,6 +8,8 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/core/types.hpp"
 
+#include <atomic>
+
 namespace mge {
 
     /**
@@ -55,15 +57,39 @@ namespace mge {
         const extent& extent() const { return m_extent; }
 
         /**
+         * Get size of image data buffer, depends on size and format.
+         * @return size in bytes of image
+         */
+        size_t buffer_size() const;
+
+        /**
          * Return image format.
          * @return image format
          */
         image_format format() const { return m_format; }
+
+        /**
+         * Return whether image is mapped.
+         * @return @c true if mapped
+         */
+        bool mapped() const { return m_map_counter !=  0; }
+
+        void *data() const { return m_map_ptr; }
+
+        /**
+         * Return a scanline.
+         * @param line line index
+         * @return pointer to scanline
+         */
+        void *scanline(uint32_t line) const;
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;
     private:
-        mge::extent m_extent;
-        image_format m_format;
+        mge::extent           m_extent;
+        image_format          m_format;
+    protected:
+        void                 *m_map_ptr;
+        std::atomic<uint32_t> m_map_counter;
     };
 }

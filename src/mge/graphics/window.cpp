@@ -10,6 +10,7 @@
 
 MGE_DEFINE_LOG(WINDOW);
 
+
 namespace mge {
     window::window(const rectangle &rect,
                    const window_options &options)
