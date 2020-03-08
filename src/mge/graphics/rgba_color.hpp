@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/image_format.hpp"
 #include <iosfwd>
 
 namespace mge {
@@ -21,6 +22,14 @@ namespace mge {
         inline rgba_color()
         :r(0.0f), g(0.0f), b(0.0f), a(0.0f)
         {}
+
+        /**
+         * Construct rgba color from pixel data and given format
+         * of pixel data.
+         * @param pixel pixel data
+         * @param format format of pixel
+         */
+        rgba_color(void *pixel, const image_format& format);
 
         /**
          * Constructor

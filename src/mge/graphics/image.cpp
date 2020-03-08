@@ -59,5 +59,14 @@ namespace mge {
     }
 
 
-
+    rgba_color
+    image::pixel_color(uint32_t x, uint32_t y) const
+    {
+        if (x > extent().width()) {
+            MGE_THROW(illegal_argument) << "Invalid x position " << x;
+        }
+        uint8_t *sl = static_cast<uint8_t *>(scanline(y));
+        uint8_t *pl = sl + x * pixel_size(format());
+        return rgba_color(pl, format());
+    }
 }

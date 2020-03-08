@@ -16,6 +16,11 @@ namespace mge {
         a = ((float) (rgbavalue & 0xFF)) / 255.0f;
     }
 
+    rgba_color::rgba_color(void *pixel, const image_format& format)
+    {
+
+    }
+
     rgba_color::rgba_color(const rgb_color& c, float alpha)
     {
         r = c.r;

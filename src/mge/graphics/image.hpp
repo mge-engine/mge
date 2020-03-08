@@ -7,6 +7,7 @@
 #include "mge/graphics/image_format.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/core/types.hpp"
+#include "mge/graphics/rgba_color.hpp"
 
 #include <atomic>
 
@@ -82,6 +83,14 @@ namespace mge {
          * @return pointer to scanline
          */
         void *scanline(uint32_t line) const;
+
+        /**
+         * Get color of a pixel.
+         * @param x x position
+         * @param y y position
+         * @return pixel color
+         */
+        rgba_color pixel_color(uint32_t x, uint32_t y) const;
     protected:
         virtual void *on_map() = 0;
         virtual void on_unmap() = 0;
