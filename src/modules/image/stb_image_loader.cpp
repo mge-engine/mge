@@ -77,7 +77,7 @@ namespace imgload {
 
         std::any load(const mge::asset& a) const override
         {
-            std::any result;
+            mge::image_ref result;
             auto asset_data = a.data();
             int x = 0;
             int y = 0;

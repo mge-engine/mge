@@ -9,6 +9,8 @@
 #include "mge/graphics/image_format.hpp"
 #include "mge/graphics/memory_image.hpp"
 
+#include <memory>
+
 #include <jpeglib.h>
 
 MGE_DEFINE_LOG(JPEG);
@@ -115,7 +117,8 @@ namespace jpeg {
                 }
                 jpeg_finish_decompress(&cinfo);
                 jpeg_destroy_decompress(&cinfo);
-                return img;
+                mge::image_ref imgref = img;
+                return imgref;
             } catch(...) {
                 jpeg_destroy_decompress(&cinfo);
                 throw;

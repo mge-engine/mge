@@ -11,6 +11,8 @@ namespace mge {
                  const image_format& format)
         :m_extent(e)
         ,m_format(format)
+        ,m_map_ptr(nullptr)
+        ,m_map_counter(0)
     {}
 
     void *
