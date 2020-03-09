@@ -24,7 +24,7 @@ namespace opengl {
 
     TEST_F(test_texture, create_mapped)
     {
-        auto imageasset = "images/red.jpg"_asset;
+        auto imageasset = "images/green.png"_asset;
         auto loader = mge::asset_loader::loader(imageasset);
         EXPECT_TRUE(loader);
         auto i = loader->load(imageasset);
