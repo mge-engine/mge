@@ -8,7 +8,8 @@ namespace mge {
     namespace ui {
         class MGE_UI_EXPORT font
         {
-
+        public:
+            font(const char *family, )
         };
     }
 }

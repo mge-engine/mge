@@ -3,3 +3,11 @@
 // All rights reserved.
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
+
+namespace mge {
+    namespace ui {
+        class truetype_font
+        {
+        };
+    }
+}
