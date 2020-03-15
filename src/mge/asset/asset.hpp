@@ -129,6 +129,14 @@ namespace mge {
          */
         properties_ref properties() const;
 
+        /**
+         * Locates an asset by name. E.g. locate a font family by
+         * name.
+         * @param name name of asset to look up
+         * @param type asset type
+         * @return asset that was located
+         * @throws @c asset_not_found if asset could not be looked up
+         */
         static asset locate(const std::string& name, const asset_type& type);
 
     private:

@@ -1,8 +1,8 @@
-// mge - Modern Game Engine
-// Copyright (c) 2018 by Alexander Schroeder
-// All rights reserved.
-#pragma once
-#include "mge/asset/dllexport.hpp"
+    // mge - Modern Game Engine
+    // Copyright (c) 2018 by Alexander Schroeder
+    // All rights reserved.
+    #pragma once
+    #include "mge/asset/dllexport.hpp"
 #include "mge/core/types.hpp"
 #include "mge/core/input_stream.hpp"
 #include "mge/asset/asset_type.hpp"
@@ -11,7 +11,7 @@
 namespace mge {
     MGE_DECLARE_REF(asset_access);
     
-    class asset_access : public noncopyable
+    class MGE_ASSET_EXPORT asset_access : public noncopyable
     {
     public:
         asset_access();

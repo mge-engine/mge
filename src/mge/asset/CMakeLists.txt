@@ -9,7 +9,8 @@ SET(mgeasset_sources
     asset_not_found.cpp
     asset_type.cpp
     asset_loader.cpp
-    asset_type_mapper.cpp)
+    asset_type_mapper.cpp
+    asset_locator.cpp)
 
 ADD_LIBRARY(mgeasset
             SHARED
