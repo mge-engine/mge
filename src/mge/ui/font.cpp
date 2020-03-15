@@ -3,11 +3,20 @@
 // All rights reserved.
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
-
+#include "mge/ui/font.hpp"
+// HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts
 namespace mge {
     namespace ui {
-        class truetype_font
+
+        class font_implementation
         {
         };
+
+        font::font(const char *family,
+                   font::style style,
+                   font::weight weight,
+                   uint32_t size)
+        {}
+
     }
 }

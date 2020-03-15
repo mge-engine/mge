@@ -6,10 +6,33 @@
 #include "mge/ui/ui_fwd.hpp"
 namespace mge {
     namespace ui {
+
+        class font_implementation;
+        MGE_DECLARE_REF(font_implementation);
+
         class MGE_UI_EXPORT font
         {
         public:
-            font(const char *family, )
+            enum class style {
+                NORMAL,
+                ITALIC
+            };
+
+            enum class weight {
+                LIGHT,
+                NORMAL,
+                BOLD
+            };
+
+            font(const char *family,
+                 font::style style = font::style::NORMAL,
+                 font::weight weight = font::weight::NORMAL,
+                 uint32_t size = 12);
+            font(const font&) = default;
+            font(font&&) = default;
+            ~font() = default;
+        private:
+            font_implementation_ref m_implementation;
         };
     }
 }

@@ -16,7 +16,7 @@ namespace mge {
     {}
 
     namespace string_literals {
-        MGE_ASSET_EXPORT asset_type operator ""_at(const char *s, size_t sz)
+        MGE_ASSET_EXPORT asset_type operator ""_asset_type(const char *s, size_t sz)
         {
             auto p = std::find(s, s+sz, '/');
             if (p == s + sz) {

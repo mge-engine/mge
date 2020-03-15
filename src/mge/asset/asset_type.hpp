@@ -90,7 +90,7 @@ namespace mge {
          *
          * @return asset created from string
          */
-        MGE_ASSET_EXPORT asset_type operator ""_at(const char *, size_t);
+        MGE_ASSET_EXPORT asset_type operator ""_asset_type(const char *, size_t);
     }
 
 }

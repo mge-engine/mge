@@ -38,6 +38,7 @@ FUNCTION(COPY_FILE SOURCE TARGET)
     STRING(REPLACE "/" "_" __target_name "${__target_name}")
     STRING(REPLACE ":" "_" __target_name "${__target_name}")
     STRING(REPLACE "." "_" __target_name "${__target_name}")
+    STRING(REPLACE " " "_" __target_name "${__target_name}")
     ADD_CUSTOM_TARGET("${__target_name}"
                       ALL
                       DEPENDS ${TARGET})

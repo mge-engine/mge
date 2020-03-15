@@ -129,8 +129,10 @@ namespace mge {
          */
         properties_ref properties() const;
 
+        static asset locate(const std::string& name, const asset_type& type);
+
     private:
-        mge::path        m_path;
+        mge::path                m_path;
         mutable asset_access_ref m_access;
     };
 
