@@ -9,6 +9,7 @@
 
 #include "mge/core/file_access.hpp"
 #include "mge/core/path.hpp"
+#include "mge/core/buffer.hpp"
 
 namespace mge {
 
@@ -104,6 +105,12 @@ namespace mge {
          * @return an input stream reference to opened file
          */
         input_stream_ref open_for_input() const;
+
+        /**
+         * Get file data at once.
+         * @return
+         */
+        mge::buffer data() const;
 
         /**
          * @brief Opens a file for output.

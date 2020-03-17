@@ -6,6 +6,7 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/path.hpp"
+#include "mge/core/io_error.hpp"
 
 namespace mge {
     class file_access_provider
@@ -105,6 +106,19 @@ namespace mge {
     input_stream_ref file::open_for_input() const
     {
         return m_access->open_for_input();
+    }
+
+    mge::buffer file::data() const
+    {
+        auto stream = open_for_input();
+        input_stream::streamsize_type sz = static_cast<input_stream::streamsize_type>(size());
+        mge::buffer result;
+        result.resize(sz);
+        auto read_sz = stream->read(result.data(), sz);
+        if (read_sz != sz) {
+            MGE_THROW(io_error) << "Could not read file " << path();
+        }
+        return result;
     }
 
     output_stream_ref file::open_for_output() const
