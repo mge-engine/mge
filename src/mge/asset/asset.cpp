@@ -5,8 +5,11 @@
 #include "mge/core/singleton.hpp"
 #include "mge/asset/asset_access.hpp"
 #include "mge/asset/asset_access_factory.hpp"
+#include "mge/asset/asset_not_found.hpp"
+#include "mge/asset/asset_locator.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/core/singleton.hpp"
 #include <map>
 
 MGE_DEFINE_LOG(ASSET)
@@ -143,6 +146,36 @@ namespace mge {
     asset::gist(std::ostream& os) const
     {
         os << "asset[" << path() << "]";
+    }
+
+    namespace  {
+        class locator_registry
+        {
+        public:
+            mge::path locate(const std::string& name, const asset_type& type)
+            {
+                mge::path result;
+                for(const auto& [locator_name, locator] : m_locators) {
+
+                }
+                return mge::path();
+            }
+        private:
+            std::map<std::string, asset_locator_ref> m_locators;
+        };
+
+        static mge::singleton<locator_registry> s_locator_registry;
+    }
+
+    asset
+    asset::locate(const std::string& name, const asset_type& type)
+    {
+        auto p = s_locator_registry->locate(name, type);
+        if(p.empty()) {
+            MGE_THROW(asset_not_found) << "Asset with name '" << name << "' could not be looked up";
+        } else {
+            return asset(p);
+        }
     }
 
     namespace string_literals {

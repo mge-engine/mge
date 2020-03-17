@@ -3,6 +3,8 @@
 // All rights reserved.
 #include "test/googletest.hpp"
 #include "mge/asset/asset.hpp"
+#include "mge/asset/asset_type.hpp"
+#include "mge/asset/asset_not_found.hpp"
 
 using namespace mge::string_literals;
 using namespace std::string_literals;
@@ -38,4 +40,10 @@ TEST(asset, properties)
     auto a = "file_asset.txt"_asset;
     auto p = a.properties();
     EXPECT_EQ("salat", p->get<std::string>("wurst"));
+}
+
+TEST(asset, locate_throws)
+{
+    EXPECT_THROW(mge::asset::locate("foobar", "unknown/foobar"_asset_type),
+                 mge::asset_not_found);
 }
