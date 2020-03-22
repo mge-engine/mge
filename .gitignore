@@ -16,3 +16,4 @@ CMakeLists.txt.user
 CMakeLists.txt.user.*
 setenv.cmd
 mge_config_*.db
+*.py
