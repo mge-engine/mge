@@ -50,6 +50,7 @@ SET(mgecore_sources
     open_mode.cpp
     debug_break.cpp
     memory_resource.cpp
+    artifact.cpp
 
     ${CMAKE_BINARY_DIR}/src/mge/version.hpp
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
@@ -82,6 +83,7 @@ SET(mgecore_sources
     clock.hpp
     configurable.hpp
     debug_break.hpp
+    artifact.hpp
 )
 
 ADD_LIBRARY(mgecore
