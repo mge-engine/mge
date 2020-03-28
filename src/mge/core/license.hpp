@@ -30,7 +30,16 @@ namespace mge {
 
         license();
         license(license_type type);
-        license(std::string_view text);
+        license(license_type type,
+                std::string_view text);
+        ~license() = default;
+        license(const license&) = default;
+        license(license&&) = default;
 
+        std::string_view text() const;
+
+    private:
+        license_type m_type;
+        std::string  m_text;
     };
 }

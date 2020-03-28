@@ -51,6 +51,7 @@ SET(mgecore_sources
     debug_break.cpp
     memory_resource.cpp
     artifact.cpp
+    license.cpp
 
     ${CMAKE_BINARY_DIR}/src/mge/version.hpp
     ${CMAKE_BINARY_DIR}/src/mge/config.hpp
@@ -84,6 +85,7 @@ SET(mgecore_sources
     configurable.hpp
     debug_break.hpp
     artifact.hpp
+    license.hpp
 )
 
 ADD_LIBRARY(mgecore

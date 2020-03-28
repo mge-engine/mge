@@ -1,5 +1,6 @@
 #include "mge/core/artifact.hpp"
 
+
 namespace mge {
     artifact::artifact()
     {}
@@ -7,13 +8,13 @@ namespace mge {
     artifact::artifact(std::string_view name_,
                        std::string_view attribution_name_,
                        std::string_view attribution_url_,
-                       uint32_t year,
-                       const license& license_,
-                       const mge::version& version_)
+                       const mge::version& version_,
+                       const mge::license& license_)
         :m_name(name_)
         ,m_attribution_name(attribution_name_)
         ,m_attribution_url(attribution_url_)
         ,m_version(version_)
+        ,m_license(license_)
     {}
 
     const std::string&
