@@ -8,62 +8,63 @@
  * @brief Platform definitions.
  */
 
-
 #ifdef _MSC_VER
-#  define MGE_COMPILER_MSVC 1
+#    define MGE_COMPILER_MSVC 1
 #endif
 
 #if defined(__GNUC__)
-#  define MGE_COMPILER_GNUC 1
+#    define MGE_COMPILER_GNUC 1
 #endif
 
 #ifdef __MINGW32__
-#  define MGE_COMPILER_MINGW
+#    define MGE_COMPILER_MINGW
 #endif
 
 #ifdef __clang__
-#  define MGE_COMPILER_CLANG
+#    define MGE_COMPILER_CLANG
 #endif
 
 #ifdef __linux__
-#  define MGE_OS_LINUX 1
+#    define MGE_OS_LINUX 1
 #endif
 
 #if defined(__WIN32__) || defined(_WIN32)
-#  define MGE_OS_WINDOWS 1
+#    define MGE_OS_WINDOWS 1
 #endif
 
 #ifdef __APPLE__
-#  define MGE_OS_MACOSX
+#    define MGE_OS_MACOSX
 #endif
 
 #if defined(MGE_OS_LINUX) || defined(MGE_OS_MACOSX)
-#  define MGE_OS_UNIX 1
+#    define MGE_OS_UNIX 1
 #endif
 
-namespace mge {
+namespace mge
+{
 
 #ifdef MGE_OS_LINUX
-namespace linux {}
+namespace linux
+{
+}
 namespace platform = linux;
 #elif defined MGE_OS_MACOSX
-namespace macos {}
+namespace macos
+{
+}
 namespace platform = macos;
 #elif defined MGE_OS_WINDOWS
-namespace win32 {}
+namespace win32
+{
+}
 namespace platform = win32;
 #else
-#error Missing port.
+#    error Missing port.
 #endif
 
-}
+} // namespace mge
 #if defined(MGE_COMPILER_GNUC) || defined(MGE_COMPILER_CLANG)
-#define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+#    define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
 #elif defined(MGE_COMPILER_MSVC)
-#define MGE_FUNCTION_SIGNATURE __FUNCSIG__
+#    define MGE_FUNCTION_SIGNATURE __FUNCSIG__
 #endif
-
-
-
-
-
