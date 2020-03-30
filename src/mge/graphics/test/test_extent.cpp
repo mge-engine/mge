@@ -1,9 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+#include "mge/graphics/extent.hpp"
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
-#include "mge/graphics/extent.hpp"
 
 TEST(extent, print)
 {
@@ -14,5 +14,5 @@ TEST(extent, print)
 TEST(extent, area)
 {
     mge::extent ex(640, 480);
-    EXPECT_EQ(640*480, ex.area());
+    EXPECT_EQ(640 * 480, ex.area());
 }

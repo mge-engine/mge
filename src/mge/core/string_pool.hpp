@@ -3,12 +3,12 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include "mge/core/types.hpp"
 #include "mge/core/memory.hpp"
-#include <vector>
+#include "mge/core/types.hpp"
+#include <cstring>
 #include <set>
 #include <string>
-#include <cstring>
+#include <vector>
 
 /**
  * @file mge/core/string_pool.hpp
@@ -23,15 +23,14 @@ namespace mge {
      * A string pool keeps strings so that they can be processed by
      * just using @c char pointers.
      */
-    class MGE_CORE_EXPORT string_pool
-            : mge::noncopyable
+    class MGE_CORE_EXPORT string_pool : mge::noncopyable
     {
     public:
         /**
          * Constructor.
          */
         string_pool() = default;
-        
+
         /**
          * Destructor.
          */
@@ -53,7 +52,7 @@ namespace mge {
          * @return string with same contents as str, contained in the
          *   string pool
          */
-        const char *intern(const std::string& str);
+        const char *intern(const std::string &str);
 
         /**
          * Returns a canonical representation of the string @c str
@@ -62,19 +61,20 @@ namespace mge {
          * @return string with same contents as str, contained in the
          *   string pool
          */
-        const char *intern(std::string&& str);
+        const char *intern(std::string &&str);
+
     private:
-        const char *insert_element(std::string&& str);
+        const char *insert_element(std::string &&str);
 
         struct string_less
         {
-            bool operator ()(const char *a, const char *b) const
+            bool operator()(const char *a, const char *b) const
             {
                 return strcmp(a, b) < 0;
             }
         };
 
         std::vector<std::unique_ptr<std::string>> m_pool;
-        std::set<const char *, string_less> m_pool_set;
+        std::set<const char *, string_less>       m_pool_set;
     };
-}
+} // namespace mge

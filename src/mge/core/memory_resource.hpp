@@ -1,13 +1,16 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/log.hpp"
-#include <memory_resource>
 #include <functional>
+#include <memory_resource>
 
 namespace mge {
 
     class MGE_CORE_EXPORT tracing_memory_resource
-            : public std::pmr::memory_resource
+        : public std::pmr::memory_resource
     {
     public:
         tracing_memory_resource(std::pmr::memory_resource *base);
@@ -15,17 +18,18 @@ namespace mge {
 
     private:
         void *do_allocate(size_t bytes, size_t align) override;
-        void do_deallocate(void *ptr, size_t bytes, size_t align) override;
-        bool do_is_equal(const memory_resource &other) const noexcept;
+        void  do_deallocate(void *ptr, size_t bytes, size_t align) override;
+        bool  do_is_equal(const memory_resource &other) const noexcept;
 
         std::pmr::memory_resource *m_base;
     };
 
     class MGE_CORE_EXPORT callback_memory_resource
-            : public std::pmr::memory_resource
+        : public std::pmr::memory_resource
     {
     public:
-        using callback = std::function<void (size_t bytes, size_t align, void *ptr)>;
+        using callback =
+            std::function<void(size_t bytes, size_t align, void *ptr)>;
         callback_memory_resource(std::pmr::memory_resource *base);
         ~callback_memory_resource() = default;
 
@@ -34,13 +38,12 @@ namespace mge {
 
     private:
         void *do_allocate(size_t bytes, size_t align) override;
-        void do_deallocate(void *ptr, size_t bytes, size_t align) override;
-        bool do_is_equal(const memory_resource &other) const noexcept;
+        void  do_deallocate(void *ptr, size_t bytes, size_t align) override;
+        bool  do_is_equal(const memory_resource &other) const noexcept;
 
         std::pmr::memory_resource *m_base;
-        callback m_allocate_callback;
-        callback m_deallocate_callback;
+        callback                   m_allocate_callback;
+        callback                   m_deallocate_callback;
     };
 
-
-}
+} // namespace mge

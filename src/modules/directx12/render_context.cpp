@@ -1,31 +1,30 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "render_context.hpp"
-#include "window.hpp"
 #include "error.hpp"
+#include "mge/core/log.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/system_error.hpp"
-#include "mge/core/log.hpp"
 #include "win32/com_ptr.hpp"
+#include "window.hpp"
 
 MGE_USE_LOG(DX12);
 
 namespace dx12 {
 
-    render_context::render_context(window *win,
-                                   const system_config& config)
-        : mge::render_context(win)
-        ,m_fence_event(0)
-        ,m_fence_value(1)
-        ,m_frame_index(0)
-        ,m_rtv_descriptor_size(0)
+    render_context::render_context(window *win, const system_config &config)
+        : mge::render_context(win), m_fence_event(0), m_fence_value(1),
+          m_frame_index(0), m_rtv_descriptor_size(0)
     {
-        HRESULT rc = 0;
-        UINT factory_flags = 0;
+        HRESULT rc            = 0;
+        UINT    factory_flags = 0;
         if (config.debug()) {
             factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
         }
         mge::com_ptr<IDXGIFactory4> factory;
         rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
-        CHECK_HRESULT(rc, ,CreateDXGIFactory2);
+        CHECK_HRESULT(rc, , CreateDXGIFactory2);
 
         mge::com_ptr<IDXGIAdapter1> adapter;
         if (config.warp()) {
@@ -33,12 +32,10 @@ namespace dx12 {
             CHECK_HRESULT(rc, IDXGIFactory4, EnumWarpAdapter);
         } else {
             select_adapter(factory.Get(), &adapter);
-
         }
-        rc = D3D12CreateDevice(adapter.Get(),
-                               D3D_FEATURE_LEVEL_11_0,
+        rc = D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0,
                                IID_PPV_ARGS(&m_device));
-        CHECK_HRESULT(rc, ,D3D12CreateDevice);
+        CHECK_HRESULT(rc, , D3D12CreateDevice);
 
         create_command_queue();
         create_swap_chain(factory.Get(), win);
@@ -49,10 +46,10 @@ namespace dx12 {
         create_sync_objects();
     }
 
-    void
-    render_context::create_sync_objects()
+    void render_context::create_sync_objects()
     {
-        auto rc = m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_fence));
+        auto rc = m_device->CreateFence(0, D3D12_FENCE_FLAG_NONE,
+                                        IID_PPV_ARGS(&m_fence));
         CHECK_HRESULT(rc, ID3D12Device, CreateFence);
         m_fence_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         if (!m_fence_event) {
@@ -60,73 +57,64 @@ namespace dx12 {
         }
     }
 
-    void
-    render_context::create_graphics_command_list()
+    void render_context::create_graphics_command_list()
     {
-        auto rc = m_device->CreateCommandList
-                (0,
-                 D3D12_COMMAND_LIST_TYPE_DIRECT,
-                 m_command_allocator.Get(),
-                 nullptr,
-                 IID_PPV_ARGS(&m_command_list));
+        auto rc = m_device->CreateCommandList(
+            0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_command_allocator.Get(),
+            nullptr, IID_PPV_ARGS(&m_command_list));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
         rc = m_command_list->Close();
         CHECK_HRESULT(rc, ID3D12CommandList, Close);
     }
 
-    void
-    render_context::create_command_allocator()
+    void render_context::create_command_allocator()
     {
-        auto rc = m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_command_allocator));
+        auto rc = m_device->CreateCommandAllocator(
+            D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_command_allocator));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
     }
 
-    void
-    render_context::create_frame_resources()
+    void render_context::create_frame_resources()
     {
-        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle
-                (m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
         m_render_targets.resize(frame_count());
 
-        for (uint32_t i=0; i<m_render_targets.size(); ++i) {
-            auto rc = m_swap_chain->GetBuffer(i, IID_PPV_ARGS(&m_render_targets[i]));
+        for (uint32_t i = 0; i < m_render_targets.size(); ++i) {
+            auto rc =
+                m_swap_chain->GetBuffer(i, IID_PPV_ARGS(&m_render_targets[i]));
             CHECK_HRESULT(rc, IDXGISwapChain3, GetBuffer);
-            m_device->CreateRenderTargetView(m_render_targets[i].Get(), nullptr, rtv_handle);
+            m_device->CreateRenderTargetView(m_render_targets[i].Get(), nullptr,
+                                             rtv_handle);
             rtv_handle.ptr += m_rtv_descriptor_size;
         }
     }
 
-    void
-    render_context::create_command_queue()
+    void render_context::create_command_queue()
     {
         D3D12_COMMAND_QUEUE_DESC desc = {};
-        desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-        desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+        desc.Flags                    = D3D12_COMMAND_QUEUE_FLAG_NONE;
+        desc.Type                     = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
-        auto rc = m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
+        auto rc =
+            m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
     }
 
-    void
-    render_context::create_swap_chain(IDXGIFactory4 *factory,
-                                      window *win)
+    void render_context::create_swap_chain(IDXGIFactory4 *factory, window *win)
     {
         DXGI_SWAP_CHAIN_DESC1 desc = {};
-        desc.BufferCount = frame_count();
-        desc.Width = win->extent().width();
-        desc.Height = win->extent().height();
-        desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-        desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-        desc.SampleDesc.Count = 1;
+        desc.BufferCount           = frame_count();
+        desc.Width                 = win->extent().width();
+        desc.Height                = win->extent().height();
+        desc.Format                = DXGI_FORMAT_R8G8B8A8_UNORM;
+        desc.BufferUsage           = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        desc.SwapEffect            = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+        desc.SampleDesc.Count      = 1;
 
         mge::com_ptr<IDXGISwapChain1> sc;
-        auto rc = factory->CreateSwapChainForHwnd(m_command_queue.Get(),
-                                                  win->hwnd(),
-                                                  &desc,
-                                                  nullptr,
-                                                  nullptr,
-                                                  &sc);
+        auto                          rc = factory->CreateSwapChainForHwnd(
+            m_command_queue.Get(), win->hwnd(), &desc, nullptr, nullptr, &sc);
         CHECK_HRESULT(rc, IDXGIFactory, CreateSwapChainForHwnd);
         rc = factory->MakeWindowAssociation(win->hwnd(), DXGI_MWA_NO_ALT_ENTER);
         CHECK_HRESULT(rc, IDXGIFactory, MakeWindowAssociation);
@@ -134,30 +122,29 @@ namespace dx12 {
         CHECK_HRESULT(rc, , IDXGISwapChain4);
 
         m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
-
     }
 
-    void
-    render_context::create_descriptor_heap()
+    void render_context::create_descriptor_heap()
     {
         D3D12_DESCRIPTOR_HEAP_DESC rtv_heap_desc = {};
 
         rtv_heap_desc.NumDescriptors = frame_count();
-        rtv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-        rtv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-        auto rc = m_device->CreateDescriptorHeap(&rtv_heap_desc, IID_PPV_ARGS(&m_rtv_heap));
+        rtv_heap_desc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+        rtv_heap_desc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        auto rc = m_device->CreateDescriptorHeap(&rtv_heap_desc,
+                                                 IID_PPV_ARGS(&m_rtv_heap));
         CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
-        m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+        m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
+            D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
     }
 
-    void
-    render_context::select_adapter(IDXGIFactory4 *factory,
-                                   IDXGIAdapter1 **adapter)
+    void render_context::select_adapter(IDXGIFactory4 * factory,
+                                        IDXGIAdapter1 **adapter)
     {
         mge::com_ptr<IDXGIAdapter1> local_adapter;
         *adapter = nullptr;
 
-        for (uint32_t i=0;
+        for (uint32_t i = 0;
              DXGI_ERROR_NOT_FOUND != factory->EnumAdapters1(i, &local_adapter);
              i) {
             DXGI_ADAPTER_DESC1 desc = {};
@@ -167,9 +154,8 @@ namespace dx12 {
             } else {
                 auto rc = D3D12CreateDevice(local_adapter.Get(),
                                             D3D_FEATURE_LEVEL_11_0,
-                                            _uuidof(ID3D12Device),
-                                            nullptr);
-                if(SUCCEEDED(rc)) {
+                                            _uuidof(ID3D12Device), nullptr);
+                if (SUCCEEDED(rc)) {
                     break;
                 }
             }
@@ -189,11 +175,10 @@ namespace dx12 {
         }
     }
 
-    void
-    render_context::wait_for_frame()
+    void render_context::wait_for_frame()
     {
         uint64_t fence = m_fence_value;
-        auto rc = m_command_queue->Signal(m_fence.Get(), fence);
+        auto     rc    = m_command_queue->Signal(m_fence.Get(), fence);
         ++m_fence_value;
         CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
         if (m_fence->GetCompletedValue() < fence) {
@@ -204,40 +189,45 @@ namespace dx12 {
         m_frame_index = m_swap_chain->GetCurrentBackBufferIndex();
     }
 
-    template<class... Ts> struct visitor : Ts... { using Ts::operator()...; };
-    template<class... Ts> visitor(Ts...) -> visitor<Ts...>;
+    template <class... Ts> struct visitor : Ts...
+    {
+        using Ts::operator()...;
+    };
+    template <class... Ts> visitor(Ts...) -> visitor<Ts...>;
 
-    void
-    render_context::materialize_commands()
+    void render_context::materialize_commands()
     {
         auto rc = m_command_allocator->Reset();
         CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
 
-        rc = m_command_list->Reset(m_command_allocator.Get(), m_pipeline_state.Get());
+        rc = m_command_list->Reset(m_command_allocator.Get(),
+                                   m_pipeline_state.Get());
         CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
 
         D3D12_RESOURCE_BARRIER barrier = {};
-        barrier.Type    = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-        barrier.Flags   = D3D12_RESOURCE_BARRIER_FLAG_NONE;
-        barrier.Transition.pResource    = m_render_targets[m_frame_index].Get();
-        barrier.Transition.StateBefore  = D3D12_RESOURCE_STATE_PRESENT;
-        barrier.Transition.StateAfter   = D3D12_RESOURCE_STATE_RENDER_TARGET;
-        barrier.Transition.Subresource  = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        barrier.Type                   = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        barrier.Flags                  = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+        barrier.Transition.pResource   = m_render_targets[m_frame_index].Get();
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT;
+        barrier.Transition.StateAfter  = D3D12_RESOURCE_STATE_RENDER_TARGET;
+        barrier.Transition.Subresource =
+            D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
 
         m_command_list->ResourceBarrier(1, &barrier);
 
-        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle = m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
         rtv_handle.ptr += m_frame_index * m_rtv_descriptor_size;
 
-        for(const auto& c : *m_commands) {
-            std::visit(visitor {
-                [](const auto& arg) {},
-                [&](const mge::memory_command_list::clear_data& d) {
-                    m_command_list->ClearRenderTargetView(rtv_handle, d.color.data(), 0, nullptr);
-                }
-            }, c);
+        for (const auto &c : *m_commands) {
+            std::visit(
+                visitor{[](const auto &arg) {},
+                        [&](const mge::memory_command_list::clear_data &d) {
+                            m_command_list->ClearRenderTargetView(
+                                rtv_handle, d.color.data(), 0, nullptr);
+                        }},
+                c);
         }
-
 
         barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET;
         barrier.Transition.StateAfter  = D3D12_RESOURCE_STATE_PRESENT;
@@ -247,14 +237,13 @@ namespace dx12 {
         CHECK_HRESULT(rc, ID3D12CommandList, Close);
     }
 
-    void
-    render_context::flush()
+    void render_context::flush()
     {
         if (m_commands) {
             m_commands->finish();
         }
         materialize_commands();
-        ID3D12CommandList *commands[] = { m_command_list.Get() };
+        ID3D12CommandList *commands[] = {m_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, commands);
         auto rc = m_swap_chain->Present(1, 0);
         CHECK_HRESULT(rc, ID3D12SwapChain, Present);
@@ -262,35 +251,31 @@ namespace dx12 {
             m_commands->clear();
         }
         wait_for_frame();
-
     }
 
     mge::vertex_buffer_ref
-    render_context::create_vertex_buffer(const mge::vertex_layout& layout,
-                                         mge::usage usage,
-                                         size_t element_count,
+    render_context::create_vertex_buffer(const mge::vertex_layout &layout,
+                                         mge::usage usage, size_t element_count,
                                          void *initial_data)
     {
-       MGE_THROW_NOT_IMPLEMENTED;
+        MGE_THROW_NOT_IMPLEMENTED;
     }
 
     mge::index_buffer_ref
-    render_context::create_index_buffer(mge::data_type type,
-                                        mge::usage usage,
+    render_context::create_index_buffer(mge::data_type type, mge::usage usage,
                                         size_t element_count,
-                                        void *initial_data)
+                                        void * initial_data)
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
 
     mge::texture_2d_ref
-    render_context::create_texture_2d(const mge::image_ref& image)
+    render_context::create_texture_2d(const mge::image_ref &image)
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
 
-    mge::texture_2d_ref
-    render_context::create_texture_2d()
+    mge::texture_2d_ref render_context::create_texture_2d()
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
@@ -301,30 +286,27 @@ namespace dx12 {
         MGE_THROW_NOT_IMPLEMENTED;
     }
 
-    mge::command_list_ref
-    render_context::create_command_list()
+    mge::command_list_ref render_context::create_command_list()
     {
         return std::make_shared<mge::memory_command_list>(*this);
     }
 
-    void
-    render_context::execute(const mge::command_list_ref& commands)
+    void render_context::execute(const mge::command_list_ref &commands)
     {
-        if(!m_commands) {
+        if (!m_commands) {
             m_commands = std::make_shared<mge::memory_command_list>(*this);
         }
         m_commands->play(commands);
     }
 
-    mge::pipeline_ref
-    render_context::create_pipeline()
+    mge::pipeline_ref render_context::create_pipeline()
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
 
-    void
-    render_context::shader_languages(std::vector<mge::shader_language>& languages) const
+    void render_context::shader_languages(
+        std::vector<mge::shader_language> &languages) const
     {
         MGE_THROW_NOT_IMPLEMENTED;
     }
-}
+} // namespace dx12

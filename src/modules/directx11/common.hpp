@@ -3,12 +3,13 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
+#include "error.hpp"
 #include "mge/graphics/usage.hpp"
 
 namespace dx11 {
-    inline  DXGI_FORMAT dx11_format(mge::data_type type)
+    inline DXGI_FORMAT dx11_format(mge::data_type type)
     {
-        switch(type) {
+        switch (type) {
         case mge::data_type::INT16:
         case mge::data_type::UINT16:
             return DXGI_FORMAT_R16_UINT;
@@ -22,7 +23,7 @@ namespace dx11 {
 
     inline D3D11_USAGE dx11_usage(mge::usage policy)
     {
-        switch(policy) {
+        switch (policy) {
         case mge::usage::DEFAULT:
             return D3D11_USAGE_DEFAULT;
         case mge::usage::DYNAMIC:
@@ -35,4 +36,4 @@ namespace dx11 {
         return D3D11_USAGE_DEFAULT;
     }
 
-}
+} // namespace dx11

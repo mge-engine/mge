@@ -1,5 +1,8 @@
-#include "test/googletest.hpp"
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/asset/asset_type.hpp"
+#include "test/googletest.hpp"
 
 using namespace mge::string_literals;
 

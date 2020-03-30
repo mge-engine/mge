@@ -8,8 +8,8 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/streamutils.hpp"
 
-#include <sstream>
 #include <iomanip>
+#include <sstream>
 
 namespace mge {
 
@@ -19,13 +19,12 @@ namespace mge {
     class MGE_CORE_EXPORT log_context
     {
     public:
-        inline log_context(log& l)
-            :m_log(l)
-        {}
+        inline log_context(log &l) : m_log(l) {}
         inline ~log_context();
-        inline std::ostream& stream();
+        inline std::ostream &stream();
+
     private:
-        log& m_log;
+        log &m_log;
     };
 
     /**
@@ -41,8 +40,7 @@ namespace mge {
      * A logger has a minimum severity configured, log messages
      * below that severity are ignored.
      */
-    class MGE_CORE_EXPORT log
-            : public noncopyable
+    class MGE_CORE_EXPORT log : public noncopyable
     {
     public:
         /**
@@ -57,13 +55,14 @@ namespace mge {
          */
         ~log() = default;
 
-        log& begin_entry(log_severity s);
+        log &begin_entry(log_severity s);
         bool enabled(log_severity s);
+
     private:
         friend class log_context;
 
         void flush_current_record();
-        void publish(const log_record& r);
+        void publish(const log_record &r);
 
         log_record        m_log_record;
         std::stringstream m_message;
@@ -71,85 +70,79 @@ namespace mge {
         uint32_t          m_config_version;
     };
 
-    inline
-    log_context::~log_context()
-    {
-        m_log.flush_current_record();
-    }
+    inline log_context::~log_context() { m_log.flush_current_record(); }
 
-    inline std::ostream&
-    log_context::stream()
-    {
-        return m_log.m_message;
-    }
+    inline std::ostream &log_context::stream() { return m_log.m_message; }
 
 /**
  * @brief Write to error log.
  * @param topic log topic
  */
-#define MGE_ERROR_LOG(topic)                                                    \
-    if(!::log_instance_##topic().enabled(mge::log_severity::ERROR_SEVERITY))      \
-    {}                                                                          \
-    else                                                                        \
-    mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::ERROR_SEVERITY)).stream()
-
+#define MGE_ERROR_LOG(topic)                                                   \
+    if (!::log_instance_##topic().enabled(                                     \
+            mge::log_severity::ERROR_SEVERITY)) {                              \
+    } else                                                                     \
+        mge::log_context(::log_instance_##topic().begin_entry(                 \
+                             mge::log_severity::ERROR_SEVERITY))               \
+            .stream()
 
 /**
  * @brief Write to warning log.
  * @param topic log topic
  */
-#define MGE_WARNING_LOG(topic)                                                    \
-    if(!::log_instance_##topic().enabled(mge::log_severity::WARNING_SEVERITY))      \
-    {}                                                                          \
-    else                                                                        \
-    mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::WARNING_SEVERITY)).stream()
+#define MGE_WARNING_LOG(topic)                                                 \
+    if (!::log_instance_##topic().enabled(                                     \
+            mge::log_severity::WARNING_SEVERITY)) {                            \
+    } else                                                                     \
+        mge::log_context(::log_instance_##topic().begin_entry(                 \
+                             mge::log_severity::WARNING_SEVERITY))             \
+            .stream()
 
 /**
  * @brief Write to debug log.
  * @param topic log topic
  */
-#define MGE_DEBUG_LOG(topic)                                                    \
-    if(!::log_instance_##topic().enabled(mge::log_severity::DEBUG_SEVERITY))      \
-    {}                                                                          \
-    else                                                                        \
-    mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::DEBUG_SEVERITY)).stream()
+#define MGE_DEBUG_LOG(topic)                                                   \
+    if (!::log_instance_##topic().enabled(                                     \
+            mge::log_severity::DEBUG_SEVERITY)) {                              \
+    } else                                                                     \
+        mge::log_context(::log_instance_##topic().begin_entry(                 \
+                             mge::log_severity::DEBUG_SEVERITY))               \
+            .stream()
 
 /**
  * @brief Write to info log.
  * @param topic log topic
  */
 #define MGE_INFO_LOG(topic)                                                    \
-    if(!::log_instance_##topic().enabled(mge::log_severity::INFO_SEVERITY))      \
-    {}                                                                          \
-    else                                                                        \
-    mge::log_context(::log_instance_##topic().begin_entry(mge::log_severity::INFO_SEVERITY)).stream()
+    if (!::log_instance_##topic().enabled(mge::log_severity::INFO_SEVERITY)) { \
+    } else                                                                     \
+        mge::log_context(::log_instance_##topic().begin_entry(                 \
+                             mge::log_severity::INFO_SEVERITY))                \
+            .stream()
 
 /**
  * @brief Defines a log instance for a topic.
  * @param topic log topic name
  */
-#define MGE_DEFINE_LOG(topic)                          \
-    __declspec(dllexport)                              \
-    mge::log&                                          \
-    log_instance_##topic()                             \
-    {                                                  \
-        static thread_local mge::log instance(#topic); \
-        return instance;                               \
+#define MGE_DEFINE_LOG(topic)                                                  \
+    __declspec(dllexport) mge::log &log_instance_##topic()                     \
+    {                                                                          \
+        static thread_local mge::log instance(#topic);                         \
+        return instance;                                                       \
     }
 
 /**
  * @brief Declare usage of a log.
  * @param topic log topic name
  */
-#define MGE_USE_LOG(topic)                        \
-    extern mge::log& log_instance_##topic()
+#define MGE_USE_LOG(topic) extern mge::log &log_instance_##topic()
 
 /**
  * @brief Declare usage of a log imported from a different shared library.
  * @param topic log topic name
  */
-#define MGE_USE_IMPORTED_LOG(topic)               \
-    __declspec(dllimport)                         \
-    mge::log& log_instance_##topic()
+#define MGE_USE_IMPORTED_LOG(topic)                                            \
+    __declspec(dllimport) mge::log &log_instance_##topic()
 
-}
+} // namespace mge

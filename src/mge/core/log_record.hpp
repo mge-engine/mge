@@ -4,9 +4,9 @@
 #pragma once
 
 #include "mge/core/dllexport.hpp"
-#include "mge/core/types.hpp"
 #include "mge/core/log_severity.hpp"
 #include "mge/core/thread.hpp"
+#include "mge/core/types.hpp"
 
 #include <chrono>
 #include <thread>
@@ -29,7 +29,7 @@ namespace mge {
          * @param m message string
          * @return @c *this
          */
-        inline log_record& set_message(const char *m) noexcept
+        inline log_record &set_message(const char *m) noexcept
         {
             message = m;
             return *this;
@@ -46,4 +46,4 @@ namespace mge {
         /// Log message.
         const char *message;
     };
-}
+} // namespace mge

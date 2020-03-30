@@ -1,14 +1,14 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+#include "mge/graphics/render_system.hpp"
+#include "mge/core/configuration.hpp"
+#include "mge/core/log.hpp"
 #include "opengl.hpp"
 #include "window.hpp"
-#include "mge/graphics/render_system.hpp"
-#include "mge/core/log.hpp"
-#include "mge/core/configuration.hpp"
 
 #ifdef MGE_OS_WINDOWS
-#  include "win32/monitor.hpp"
+#    include "win32/monitor.hpp"
 #endif
 
 MGE_USE_LOG(OPENGL);
@@ -33,10 +33,12 @@ namespace opengl {
             return ::mge::platform::monitor::primary_monitor();
         }
 
-        mge::window_ref create_window(const mge::rectangle& rect,
-                                      const mge::window_options& options) override
+        mge::window_ref
+        create_window(const mge::rectangle &     rect,
+                      const mge::window_options &options) override
         {
-            mge::window_ref result = std::make_shared<window>(rect, options, m_debug);
+            mge::window_ref result =
+                std::make_shared<window>(rect, options, m_debug);
             return result;
         }
 
@@ -52,7 +54,5 @@ namespace opengl {
         bool m_debug;
     };
 
-    MGE_REGISTER_IMPLEMENTATION(render_system,
-                                mge::render_system,
-                                opengl);
-}
+    MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, opengl);
+} // namespace opengl

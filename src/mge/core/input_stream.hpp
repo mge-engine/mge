@@ -20,7 +20,8 @@ namespace mge {
     class MGE_CORE_EXPORT input_stream
     {
     private:
-        using read_listener_map = function_map<void (std::streamsize)>;
+        using read_listener_map = function_map<void(std::streamsize)>;
+
     public:
         using read_listener = read_listener_map::value_type;
 
@@ -68,8 +69,7 @@ namespace mge {
          * @param size        target buffer size
          * @return number of bytes read, 0 on EOF
          */
-        streamsize_type read(void *destination,
-                             streamsize_type size);
+        streamsize_type read(void *destination, streamsize_type size);
 
         /**
          * Get current position.
@@ -89,7 +89,7 @@ namespace mge {
          * Access the stream as an @c std::istream
          * @return a @c std::istream using this stream's data
          */
-        std::istream& istream();
+        std::istream &istream();
 
         /**
          * Return whether stream is at end-of-file.
@@ -102,21 +102,22 @@ namespace mge {
          * @param l listener
          * @return listener key
          */
-        unsigned int add_read_listener(const read_listener& l);
+        unsigned int add_read_listener(const read_listener &l);
 
         /**
          * Remove read listener.
          * @param key listener key
          */
         void remove_read_listener(unsigned int key);
+
     protected:
-        virtual streamsize_type on_read(void *destination,
+        virtual streamsize_type on_read(void *          destination,
                                         streamsize_type size) = 0;
+
     private:
         void notify_read(streamsize_type read_bytes);
 
         std_istream_ref   m_stdstream;
         read_listener_map m_read_listeners;
     };
-}
-
+} // namespace mge

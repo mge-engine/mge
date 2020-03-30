@@ -21,16 +21,16 @@
  * which is a @c std::shared_ptr of @c clazz.
  * @param clazz class to declare
  */
-#define MGE_DECLARE_REF(clazz)             \
-class clazz;                               \
-using clazz##_ref = std::shared_ptr<clazz>
+#define MGE_DECLARE_REF(clazz)                                                 \
+    class clazz;                                                               \
+    using clazz##_ref = std::shared_ptr<clazz>
 
 namespace mge {
     /**
      * @brief Type that cannot be copied or assigned.
      */
     using noncopyable = boost::noncopyable;
-}
+} // namespace mge
 
 /**
  * Stringifies the argument.

@@ -21,6 +21,6 @@ namespace mge {
          * does nothing.
          * @param config the configuration
          */
-        virtual void configure(const configuration& config);
+        virtual void configure(const configuration &config);
     };
-}
+} // namespace mge

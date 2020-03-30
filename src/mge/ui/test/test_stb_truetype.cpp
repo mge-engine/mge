@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/file.hpp"
+#include "test/googletest.hpp"
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb_truetype.h"
 #include <string_view>
@@ -53,10 +53,10 @@ TEST(stb_truetype, metadata)
 }
 #endif
 
-static void ft_check_buffer(const mge::buffer& data)
+static void ft_check_buffer(const mge::buffer &data)
 {
     static FT_Library library;
-    static bool initialized;
+    static bool       initialized;
     if (!initialized) {
         FT_Error err = FT_Init_FreeType(&library);
         if (err) {
@@ -65,12 +65,9 @@ static void ft_check_buffer(const mge::buffer& data)
         initialized = true;
     }
 
-    FT_Face face;
-    FT_Error err = FT_New_Memory_Face(library,
-                                      data.data(),
-                                      data.size(),
-                                      0,
-                                      &face);
+    FT_Face  face;
+    FT_Error err =
+        FT_New_Memory_Face(library, data.data(), data.size(), 0, &face);
     if (err) {
         MGE_THROW(mge::runtime_exception) << "Cannot initialize face: " << err;
     }
@@ -84,16 +81,16 @@ static void ft_check_buffer(const mge::buffer& data)
 
 TEST(freetype, metadata)
 {
-    mge::file fontdir("c:/windows/fonts");
-    auto files = fontdir.list();
+    mge::file       fontdir("c:/windows/fonts");
+    auto            files = fontdir.list();
     decltype(files) fontfiles;
-    for(const auto& f : files) {
+    for (const auto &f : files) {
         if (f.path().extension() == mge::path(".ttf")) {
             fontfiles.push_back(f);
         }
     }
 
-    for(const auto f : fontfiles) {
+    for (const auto f : fontfiles) {
         std::cout << "Checking " << f << std::endl;
         ft_check_buffer(f.data());
     }

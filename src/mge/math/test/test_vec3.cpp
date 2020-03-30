@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/math/vec3.hpp"
+#include "test/googletest.hpp"
 
 using namespace mge;
 
@@ -32,7 +32,7 @@ TEST(vec3, minus)
 
 TEST(vec3, print)
 {
-    fvec3 v(1.0f, 2.0f, 3.0f);
+    fvec3             v(1.0f, 2.0f, 3.0f);
     std::stringstream ss;
     ss << v;
     EXPECT_STREQ("[1, 2, 3]", ss.str().c_str());

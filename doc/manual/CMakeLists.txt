@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 IF(DOXYGEN_FOUND)
     GET_PROPERTY(DOXYGEN_INPUT_FILE_LIST GLOBAL PROPERTY ALL_PROJECT_SOURCES)
     FOREACH(FILE ${DOXYGEN_INPUT_FILE_LIST})

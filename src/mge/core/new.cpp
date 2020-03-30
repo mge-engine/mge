@@ -3,23 +3,17 @@
 // All rights reserved.
 #include "mge/core/new.hpp"
 #include "mge/core/memory.hpp"
-#include <stdexcept>
 #include <atomic>
+#include <stdexcept>
 
 namespace mge {
 
     static std::atomic<uint64_t> s_global_allocation_count;
     static thread_local uint64_t s_thread_allocation_count;
 
-    uint64_t allocation_count()
-    {
-        return s_global_allocation_count.load();
-    }
+    uint64_t allocation_count() { return s_global_allocation_count.load(); }
 
-    uint64_t thread_allocation_count()
-    {
-        return s_thread_allocation_count;
-    }
+    uint64_t thread_allocation_count() { return s_thread_allocation_count; }
 
     void *operator_new(std::size_t count)
     {
@@ -61,19 +55,23 @@ namespace mge {
 
     void operator_delete(void *ptr)
     {
-        if(ptr) mge::free(ptr);
+        if (ptr)
+            mge::free(ptr);
     }
     void operator_delete_array(void *ptr)
     {
-        if(ptr) mge::free(ptr);
+        if (ptr)
+            mge::free(ptr);
     }
     void operator_delete_noexcept(void *ptr) noexcept
     {
-        if(ptr) mge::free(ptr);
+        if (ptr)
+            mge::free(ptr);
     }
     void operator_delete_array_noexcept(void *ptr) noexcept
     {
-        if(ptr) mge::free(ptr);
+        if (ptr)
+            mge::free(ptr);
     }
 
-}
+} // namespace mge

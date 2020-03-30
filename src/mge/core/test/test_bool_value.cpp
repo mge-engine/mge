@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/bool_value.hpp"
+#include "test/googletest.hpp"
 #include <string_view>
 
 using namespace std::string_view_literals;
@@ -25,10 +25,7 @@ TEST(bool_value, from_c_string_false)
     EXPECT_FALSE(mge::bool_value("off"));
 }
 
-TEST(bool_value, from_nullptr)
-{
-    EXPECT_FALSE(mge::bool_value(nullptr));
-}
+TEST(bool_value, from_nullptr) { EXPECT_FALSE(mge::bool_value(nullptr)); }
 
 TEST(bool_value, from_string)
 {
@@ -56,5 +53,4 @@ TEST(bool_value, from_string_view_false)
     EXPECT_FALSE(mge::bool_value("0"sv));
     EXPECT_FALSE(mge::bool_value("FALSE"sv));
     EXPECT_FALSE(mge::bool_value("off"sv));
-
 }

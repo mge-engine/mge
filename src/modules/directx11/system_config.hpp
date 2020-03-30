@@ -11,43 +11,35 @@ namespace dx11 {
     class system_config
     {
     public:
-        system_config()
-            :m_debug(false),
-             m_software_device(false)
-        {}
+        system_config() : m_debug(false), m_software_device(false) {}
 
         /**
          * Evaluate configuration.
-         * 
+         *
          * @param config evaluated configuration
          */
-        void configure(const mge::configuration& config)
+        void configure(const mge::configuration &config)
         {
-            m_debug = config.value<bool>("debug", false);
+            m_debug           = config.value<bool>("debug", false);
             m_software_device = config.value<bool>("software_device", false);
         }
 
         /**
          * Return whether debugging shall be enabled.
-         * 
+         *
          * @return @c true if debugging is enabled
          */
-        bool debug() const noexcept
-        {
-            return m_debug;
-        }
+        bool debug() const noexcept { return m_debug; }
 
         /**
          * Return whether a software device is used.
-         * 
+         *
          * @return @c true if a software device is used
          */
-        bool software_device() const noexcept
-        {
-            return m_software_device;
-        }
+        bool software_device() const noexcept { return m_software_device; }
+
     private:
         bool m_debug;
         bool m_software_device;
     };
-}
+} // namespace dx11

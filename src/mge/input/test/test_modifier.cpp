@@ -1,9 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+#include "mge/input/modifier.hpp"
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
-#include "mge/input/modifier.hpp"
 
 TEST(modifier, print)
 {
@@ -12,7 +12,4 @@ TEST(modifier, print)
     mge::test_stream_output(mge::modifier_value::ALT, "ALT");
 }
 
-TEST(modifier, instantiate)
-{
-    mge::modifier m;
-}
+TEST(modifier, instantiate) { mge::modifier m; }

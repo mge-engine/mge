@@ -3,8 +3,7 @@
 // All rights reserved.
 #include "dx12_test.hpp"
 
-namespace dx12
-{
+namespace dx12 {
     class test_render_system : public dx12test
     {};
 
@@ -22,4 +21,4 @@ namespace dx12
         EXPECT_TRUE(primary_monitor.get() != nullptr);
     }
 
-}
+} // namespace dx12

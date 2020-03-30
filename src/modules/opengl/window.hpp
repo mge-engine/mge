@@ -4,9 +4,9 @@
 #pragma once
 #include "mge/graphics/window.hpp"
 #ifdef MGE_OS_WINDOWS
-#include "win32/window.hpp"
+#    include "win32/window.hpp"
 #else
-#error missing port
+#    error missing port
 #endif
 #include "opengl.hpp"
 
@@ -14,11 +14,11 @@ namespace opengl {
     class window : public ::mge::platform::window
     {
     public:
-        window(const mge::rectangle& rect,
-               const mge::window_options& options,
+        window(const mge::rectangle &rect, const mge::window_options &options,
                bool debug);
         ~window();
+
     private:
         void create_render_context(bool debug);
     };
-}
+} // namespace opengl

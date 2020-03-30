@@ -9,6 +9,5 @@ namespace mge {
      * A light.
      */
     class MGE_SCENE_EXPORT light
-    {
-    };
-}
+    {};
+} // namespace mge

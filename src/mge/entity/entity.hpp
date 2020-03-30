@@ -7,11 +7,12 @@
 #include <cstdint>
 
 namespace mge {
-    using entity = entt::entity;
+    using entity              = entt::entity;
     constexpr auto nil_entity = entt::null;
 
-    inline constexpr auto to_integer(const entity id) noexcept {
-        return std::underlying_type_t<entity>(id);\
+    inline constexpr auto to_integer(const entity id) noexcept
+    {
+        return std::underlying_type_t<entity>(id);
     }
 
-}
+} // namespace mge

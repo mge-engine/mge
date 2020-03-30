@@ -10,4 +10,4 @@ namespace mge {
 
     MGE_DECLARE_REF(scene);
     MGE_DECLARE_REF(mesh);
-}
+} // namespace mge

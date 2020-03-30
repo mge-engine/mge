@@ -2,9 +2,9 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/scene/dllexport.hpp"
-#include "mge/graphics/rgba_color.hpp"
 #include "mge/entity/entity.hpp"
+#include "mge/graphics/rgba_color.hpp"
+#include "mge/scene/dllexport.hpp"
 
 namespace mge {
 
@@ -14,7 +14,5 @@ namespace mge {
      * shinyness.
      */
     class MGE_SCENE_EXPORT material
-    {
-
-    };
-}
+    {};
+} // namespace mge

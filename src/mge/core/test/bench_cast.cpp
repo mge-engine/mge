@@ -4,9 +4,9 @@
 #include "bench/googlebenchmark.hpp"
 #include "mge/core/checked_cast.hpp"
 
-static void bench_mge_checked_cast_unchecked(benchmark::State& state)
+static void bench_mge_checked_cast_unchecked(benchmark::State &state)
 {
-    size_t source = 0;
+    size_t       source = 0;
     unsigned int target = 0;
     while (state.KeepRunning()) {
         ++source;
@@ -14,9 +14,9 @@ static void bench_mge_checked_cast_unchecked(benchmark::State& state)
     }
 }
 
-static void bench_mge_checked_cast_checked(benchmark::State& state)
+static void bench_mge_checked_cast_checked(benchmark::State &state)
 {
-    size_t source = 0;
+    size_t       source = 0;
     unsigned int target = 0;
     while (state.KeepRunning()) {
         ++source;

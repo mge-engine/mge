@@ -5,6 +5,4 @@
 
 #include <cstring>
 
-namespace mge {
-
-}
+namespace mge {}

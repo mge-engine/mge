@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/math/vec2.hpp"
+#include "test/googletest.hpp"
 #include <sstream>
 
 using namespace mge;
@@ -32,7 +32,7 @@ TEST(vec2, minus)
 
 TEST(vec2, print)
 {
-    fvec2 v(1.0f, 2.0f);
+    fvec2             v(1.0f, 2.0f);
     std::stringstream ss;
     ss << v;
     EXPECT_STREQ("[1, 2]", ss.str().c_str());
@@ -40,7 +40,7 @@ TEST(vec2, print)
 
 TEST(ivec2, print)
 {
-    ivec2 v(1, 2);
+    ivec2             v(1, 2);
     std::stringstream ss;
     ss << v;
     EXPECT_STREQ("[1, 2]", ss.str().c_str());

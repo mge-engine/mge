@@ -25,8 +25,10 @@ namespace mge {
          * Type of number of bytes read.
          */
         using streamsize_type = std::streamsize;
+
     private:
         using write_listener_map = function_map<void(streamsize_type)>;
+
     public:
         using write_listener = write_listener_map::value_type;
 
@@ -57,21 +59,20 @@ namespace mge {
          * @param buffer buffer to write
          * @param size   number of bytes to write
          */
-        void write(const void* buffer, streamsize_type size);
-    
+        void write(const void *buffer, streamsize_type size);
 
         /**
          * Access the stream as an @c std::ostream
          * @return a @c std::ostream using this stream's data
          */
-        std::ostream& ostream();
+        std::ostream &ostream();
 
         /**
          * Add a write listener.
          * @param l listener
          * @return listener key
          */
-        unsigned int add_write_listener(const write_listener& l);
+        unsigned int add_write_listener(const write_listener &l);
 
         /**
          * Remove write listener.
@@ -80,18 +81,19 @@ namespace mge {
         void remove_write_listener(unsigned int key);
 
         /**
-         * Enforces stream flush (i.e. force the streams data to 
+         * Enforces stream flush (i.e. force the streams data to
          * be really written).
          */
         void flush();
+
     protected:
-        virtual void on_write(const void* buffer,
-                              streamsize_type size) = 0;
-        virtual void on_flush() = 0;
+        virtual void on_write(const void *buffer, streamsize_type size) = 0;
+        virtual void on_flush()                                         = 0;
+
     private:
         void notify_write(streamsize_type written_bytes);
 
         std_ostream_ref    m_stdstream;
         write_listener_map m_write_listeners;
     };
-}
+} // namespace mge

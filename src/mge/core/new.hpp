@@ -3,14 +3,15 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include <new>
 #include <cstdint>
+#include <new>
 
 namespace mge {
     MGE_CORE_EXPORT void *operator_new(std::size_t count);
     MGE_CORE_EXPORT void *operator_new_array(std::size_t count);
     MGE_CORE_EXPORT void *operator_new_noexcept(std::size_t count) noexcept;
-    MGE_CORE_EXPORT void *operator_new_array_noexcept(std::size_t count) noexcept;
+    MGE_CORE_EXPORT void *
+    operator_new_array_noexcept(std::size_t count) noexcept;
 
     MGE_CORE_EXPORT void operator_delete(void *ptr);
     MGE_CORE_EXPORT void operator_delete_array(void *ptr);
@@ -32,14 +33,12 @@ namespace mge {
         /**
          * @brief Construct a new allocation count scope object.
          */
-        inline allocation_count_scope()
-            :m_count(thread_allocation_count())
-        {}
+        inline allocation_count_scope() : m_count(thread_allocation_count()) {}
 
         /**
-        * @brief Destroy the allocation count scope object
-        *
-        */
+         * @brief Destroy the allocation count scope object
+         *
+         */
         inline ~allocation_count_scope() = default;
 
         /**
@@ -51,48 +50,46 @@ namespace mge {
         {
             return thread_allocation_count() - m_count;
         }
+
     private:
         uint64_t m_count;
     };
-}
+} // namespace mge
 
-inline void* operator new ( std::size_t count )
+inline void *operator new(std::size_t count)
 {
     return mge::operator_new(count);
 }
 
-inline void* operator new[]( std::size_t count )
+inline void *operator new[](std::size_t count)
 {
     return mge::operator_new_array(count);
 }
 
-inline void* operator new  ( std::size_t count, const std::nothrow_t& tag) noexcept
+inline void *operator new(std::size_t count, const std::nothrow_t &tag) noexcept
 {
     return mge::operator_new_noexcept(count);
 }
 
-inline void* operator new[]( std::size_t count, const std::nothrow_t& tag) noexcept
+inline void *operator new[](std::size_t           count,
+                            const std::nothrow_t &tag) noexcept
 {
     return mge::operator_new_array_noexcept(count);
 }
 
-inline void operator delete  ( void* ptr ) throw()
-{
-    mge::operator_delete(ptr);
-}
+inline void operator delete(void *ptr) throw() { mge::operator_delete(ptr); }
 
-inline void operator delete[]( void* ptr ) throw()
+inline void operator delete[](void *ptr) throw()
 {
     mge::operator_delete_array(ptr);
 }
 
-inline void operator delete  ( void* ptr, const std::nothrow_t& tag ) noexcept
+inline void operator delete(void *ptr, const std::nothrow_t &tag) noexcept
 {
     mge::operator_delete_noexcept(ptr);
 }
 
-inline void operator delete[]( void* ptr, const std::nothrow_t& tag ) noexcept
+inline void operator delete[](void *ptr, const std::nothrow_t &tag) noexcept
 {
     mge::operator_delete_array_noexcept(ptr);
 }
-

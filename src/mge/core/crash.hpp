@@ -22,11 +22,12 @@ namespace mge {
      * Formats message and crashes.
      * @param args values printed as message before crash.
      */
-    template <typename... Args>
-    inline void crash(Args ... args)
+    template <typename... Args> inline void crash(Args... args)
     {
         crash(format_string(args...).c_str());
     }
 
-}
-#define MGE_CRASH_ASSERT(cond, ...) if(!(cond)) ::mge::crash("Assertion failed: ", #cond, ": ", __VA_ARGS__)
+} // namespace mge
+#define MGE_CRASH_ASSERT(cond, ...)                                            \
+    if (!(cond))                                                               \
+    ::mge::crash("Assertion failed: ", #cond, ": ", __VA_ARGS__)

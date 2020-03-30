@@ -11,7 +11,7 @@ namespace mge {
     public:
         renderer();
         ~renderer();
-        void prepare(scene& s);
-        void render(scene& s);
+        void prepare(scene &s);
+        void render(scene &s);
     };
-}
+} // namespace mge

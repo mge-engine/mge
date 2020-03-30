@@ -2,8 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/dllexport.hpp"
 #include "mge/core/types.hpp"
+#include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/render_context.hpp"
 
@@ -31,13 +31,13 @@ namespace mge {
          * Prepare the drawable.
          * @param context
          */
-        void prepare(render_context& context);
+        void prepare(render_context &context);
 
         /**
          * @brief draw
          * @param context
          */
-        void draw(render_context& context);
+        void draw(render_context &context);
 
     protected:
         /**
@@ -46,11 +46,11 @@ namespace mge {
          */
         void set_prepared(bool prepared) noexcept;
 
-        virtual void on_prepare(render_context& context);
-        virtual void on_draw(render_context& context) = 0;
+        virtual void on_prepare(render_context &context);
+        virtual void on_draw(render_context &context) = 0;
 
         drawable();
 
         bool m_prepared;
     };
-}
+} // namespace mge

@@ -2,8 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/input/dllexport.hpp"
 #include "mge/core/enum_set.hpp"
+#include "mge/input/dllexport.hpp"
 #include <iosfwd>
 
 namespace mge {
@@ -13,15 +13,15 @@ namespace mge {
      */
     enum class MGE_INPUT_EXPORT modifier_value
     {
-        CONTROL = 0,    //!< Control modifier key.
-        SHIFT = 1,      //!< Shift modifier key.
-        ALT = 2         //!< Alt modifier key.
+        CONTROL = 0, //!< Control modifier key.
+        SHIFT   = 1, //!< Shift modifier key.
+        ALT     = 2  //!< Alt modifier key.
     };
 
     /**
      * @brief Modifier type, set of modifier keys pressed at the same time.
      */
-    using modifier = enum_set<modifier_value, (size_t)  modifier_value::ALT>;
+    using modifier = enum_set<modifier_value, (size_t)modifier_value::ALT>;
 
     /**
      * @brief Stream output operator.
@@ -30,6 +30,7 @@ namespace mge {
      * @param v     modifier value
      * @return @c os
      */
-    MGE_INPUT_EXPORT std::ostream& operator <<(std::ostream& os, const modifier_value& v);
+    MGE_INPUT_EXPORT std::ostream &operator<<(std::ostream &        os,
+                                              const modifier_value &v);
 
-}
+} // namespace mge

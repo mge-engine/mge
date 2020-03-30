@@ -4,10 +4,7 @@
 #include "mge/core/configurable.hpp"
 
 namespace mge {
-     configurable::~configurable()
-     {}
+    configurable::~configurable() {}
 
-     void
-     configurable::configure(const configuration &)
-     {}
-}
+    void configurable::configure(const configuration &) {}
+} // namespace mge

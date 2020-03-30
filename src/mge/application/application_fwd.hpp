@@ -6,4 +6,4 @@
 namespace mge {
     class application;
     MGE_DECLARE_REF(application);
-}
+} // namespace mge

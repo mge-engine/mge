@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/stacktrace.hpp"
+#include "test/googletest.hpp"
 
 #include <iostream>
 

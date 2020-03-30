@@ -2,13 +2,13 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/script/dllexport.hpp"
-#include "mge/script/script_fwd.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/type_name.hpp"
+#include "mge/script/dllexport.hpp"
+#include "mge/script/script_fwd.hpp"
 
-#include <memory>
 #include <map>
+#include <memory>
 #include <type_traits>
 
 namespace mge {
@@ -22,14 +22,15 @@ namespace mge {
      * code.
      */
     class MGE_SCRIPT_EXPORT script_context
-            : public noncopyable,
-              public std::enable_shared_from_this<script_context>
+        : public noncopyable,
+          public std::enable_shared_from_this<script_context>
     {
     protected:
         /**
          * Constructor.
          */
         script_context() = default;
+
     public:
         /**
          * Destructor.
@@ -113,16 +114,19 @@ namespace mge {
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, unsigned long long>::value, T>::type
+        typename std::enable_if<std::is_same<T, unsigned long long>::value,
+                                T>::type
         value(const char *name)
         {
             return unsigned_long_long_value(name);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<
-            typename std::remove_const<typename std::remove_reference<T>::type>::type,
-            std::string>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_const<
+                             typename std::remove_reference<T>::type>::type,
+                         std::string>::value,
+            T>::type
         value(const char *name)
         {
             return string_value(name);
@@ -164,24 +168,25 @@ namespace mge {
             r = value<decltype(r)>(name);
             return (T)r;
         }
+
     protected:
-        virtual signed char signed_char_value(const char *name) = 0;
-        virtual char char_value(const char *name) = 0;
-        virtual unsigned char unsigned_char_value(const char *name) = 0;
-        virtual short short_value(const char *name) = 0;
+        virtual signed char    signed_char_value(const char *name)    = 0;
+        virtual char           char_value(const char *name)           = 0;
+        virtual unsigned char  unsigned_char_value(const char *name)  = 0;
+        virtual short          short_value(const char *name)          = 0;
         virtual unsigned short unsigned_short_value(const char *name) = 0;
-        virtual int int_value(const char *name) = 0;
-        virtual unsigned int unsigned_int_value(const char *name) = 0;
-        virtual long long_value(const char *name) = 0;
-        virtual unsigned long unsigned_long_value(const char *name) = 0;
-        virtual long long long_long_value(const char *name) = 0;
-        virtual unsigned long long unsigned_long_long_value(const char *name) = 0;
-        virtual std::string string_value(const char *name) = 0;
-        virtual bool bool_value(const char *name) = 0;
-        virtual float float_value(const char *name) = 0;
-        virtual double double_value(const char *name) = 0;
-        virtual long double long_double_value(const char *name) = 0;
+        virtual int            int_value(const char *name)            = 0;
+        virtual unsigned int   unsigned_int_value(const char *name)   = 0;
+        virtual long           long_value(const char *name)           = 0;
+        virtual unsigned long  unsigned_long_value(const char *name)  = 0;
+        virtual long long      long_long_value(const char *name)      = 0;
+        virtual unsigned long long
+                            unsigned_long_long_value(const char *name) = 0;
+        virtual std::string string_value(const char *name)             = 0;
+        virtual bool        bool_value(const char *name)               = 0;
+        virtual float       float_value(const char *name)              = 0;
+        virtual double      double_value(const char *name)             = 0;
+        virtual long double long_double_value(const char *name)        = 0;
     };
 
-
-}
+} // namespace mge

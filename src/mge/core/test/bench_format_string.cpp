@@ -4,7 +4,7 @@
 #include "bench/googlebenchmark.hpp"
 #include "mge/core/format_string.hpp"
 
-static void bench_format_string(benchmark::State& state)
+static void bench_format_string(benchmark::State &state)
 {
     while (state.KeepRunning()) {
         std::string s(mge::format_string("foo", 1, 1.23, "bar"));
@@ -12,5 +12,3 @@ static void bench_format_string(benchmark::State& state)
 }
 
 BENCHMARK(bench_format_string);
-
-

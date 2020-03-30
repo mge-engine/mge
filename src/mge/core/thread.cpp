@@ -9,14 +9,9 @@ MGE_DEFINE_LOG(THREAD)
 
 namespace mge {
 
-
-
     static thread_local thread *t_this_thread;
 
-    thread::thread()
-        :m_group(nullptr)
-    {}
-
+    thread::thread() : m_group(nullptr) {}
 
     thread::~thread()
     {
@@ -26,93 +21,62 @@ namespace mge {
                          "Thread is still contained in thread group");
     }
 
-    thread_group *
-    thread::group() const
+    thread_group *thread::group() const { return m_group; }
+
+    thread *thread::this_thread() { return t_this_thread; }
+
+    void thread::start()
     {
-        return m_group;
+        start([this] { this->run(); });
     }
 
-    thread*
-    thread::this_thread()
-    {
-        return t_this_thread;
-    }
+    thread::id thread::get_id() const { return m_running_thread.get_id(); }
 
-    void
-    thread::start()
-    {
-        start([this]{ this->run(); });
-    }
-
-    thread::id
-    thread::get_id() const
-    {
-        return m_running_thread.get_id();
-    }
-
-    thread::native_handle_type
-    thread::native_handle()
+    thread::native_handle_type thread::native_handle()
     {
         return m_running_thread.native_handle();
     }
 
-    unsigned int
-    thread::hardware_concurrency() noexcept
+    unsigned int thread::hardware_concurrency() noexcept
     {
         return running_thread_t::hardware_concurrency();
     }
 
-    void
-    thread::detach()
-    {
-        m_running_thread.detach();
-    }
+    void thread::detach() { m_running_thread.detach(); }
 
-    void
-    thread::run()
-    {}
+    void thread::run() {}
 
-    void
-    thread::on_start()
-    {
-        t_this_thread = this;
-    }
+    void thread::on_start() { t_this_thread = this; }
 
-    void
-    thread::on_finish()
+    void thread::on_finish()
     {
-        if(t_this_thread != this) {
+        if (t_this_thread != this) {
             crash("Inconsistency: thread object no longer assigned on exit");
         }
     }
 
-    void
-    thread::on_exception(const std::exception_ptr &eptr)
+    void thread::on_exception(const std::exception_ptr &eptr)
     {
         try {
             std::rethrow_exception(eptr);
-        } catch(const mge::exception& e) {
-            MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << std::endl << e.details() << std::endl;
+        } catch (const mge::exception &e) {
+            MGE_ERROR_LOG(THREAD)
+                << "Thread aborted with exception:" << std::endl
+                << e.details() << std::endl;
             mge::rethrow();
-        } catch(const std::exception& e) {
-            MGE_ERROR_LOG(THREAD) << "Thread aborted with exception:" << e.what() << std::endl;
+        } catch (const std::exception &e) {
+            MGE_ERROR_LOG(THREAD)
+                << "Thread aborted with exception:" << e.what() << std::endl;
             mge::rethrow();
-        } catch(...) {
-            MGE_ERROR_LOG(THREAD) << "Thread aborted non-std exception" << std::endl;
+        } catch (...) {
+            MGE_ERROR_LOG(THREAD)
+                << "Thread aborted non-std exception" << std::endl;
             mge::rethrow();
         }
     }
 
-    bool
-    thread::joinable()
-    {
-        return m_running_thread.joinable();
-    }
+    bool thread::joinable() { return m_running_thread.joinable(); }
 
-    void
-    thread::join()
-    {
-        m_running_thread.join();
-    }
+    void thread::join() { m_running_thread.join(); }
 
-}
+} // namespace mge

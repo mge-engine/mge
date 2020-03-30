@@ -3,12 +3,12 @@
 // All rights reserved.
 #pragma once
 
-#include "mge/input/dllexport.hpp"
-#include "mge/input/mouse_action.hpp"
-#include "mge/input/key_action.hpp"
-#include "mge/input/key.hpp"
-#include "mge/input/modifier.hpp"
 #include "mge/core/function_map.hpp"
+#include "mge/input/dllexport.hpp"
+#include "mge/input/key.hpp"
+#include "mge/input/key_action.hpp"
+#include "mge/input/modifier.hpp"
+#include "mge/input/mouse_action.hpp"
 
 namespace mge {
 
@@ -25,12 +25,8 @@ namespace mge {
         /**
          * Handler function for mouse actions.
          */
-        using mouse_action_handler =
-            std::function<void(int button,
-                               mouse_action action,
-                               modifier m,
-                               int x,
-                               int y)>;
+        using mouse_action_handler = std::function<void(
+            int button, mouse_action action, modifier m, int x, int y)>;
         /**
          * Handler function for mouse movement.
          */
@@ -40,9 +36,7 @@ namespace mge {
          * Handler function for keyboard actions.
          */
         using key_action_handler =
-            std::function<void(key k,
-                               key_action action,
-                               modifier m)>;
+            std::function<void(key k, key_action action, modifier m)>;
 
         /**
          * Handler function for character input.
@@ -54,6 +48,7 @@ namespace mge {
          * Constructor.
          */
         input_handler();
+
     public:
         /**
          * Destructor.
@@ -64,24 +59,24 @@ namespace mge {
          * Sets the handler used to dispatch mouse actions.
          * @param handler mouse action handler
          */
-        void set_mouse_action_handler(const mouse_action_handler& handler);
+        void set_mouse_action_handler(const mouse_action_handler &handler);
         /**
          * Sets the handler used to dispatch mouse movement.
          * @param handler mouse movement handler
          */
-        void set_mouse_move_handler(const mouse_move_handler& handler);
+        void set_mouse_move_handler(const mouse_move_handler &handler);
 
         /**
          * Sets the handler used to dispatch key actions.
          * @param handler key action handler
          */
-        void set_key_action_handler(const key_action_handler& handler);
+        void set_key_action_handler(const key_action_handler &handler);
 
         /**
          * Sets the handler used to dispatch character input.
          * @param handler character input handler
          */
-        void set_character_handler(const character_handler& handler);
+        void set_character_handler(const character_handler &handler);
 
         void clear_mouse_action_handler();
         void clear_mouse_move_handler();
@@ -99,7 +94,8 @@ namespace mge {
          * Returns current modifier state.
          * @return modifier state
          */
-        const modifier& current_modifier();
+        const modifier &current_modifier();
+
     protected:
         void on_mouse_action(int button, mouse_action action, int x, int y);
         void on_key_action(key k, key_action action);
@@ -107,14 +103,15 @@ namespace mge {
         void on_character(unsigned int ch);
         void add_modifier(modifier_value m);
         void remove_modifier(modifier_value m);
+
     private:
         void update_key_state(key k, key_action action);
 
-        modifier m_current_modifier;
-        mouse_action_handler m_mouse_action_handler;
-        mouse_move_handler m_mouse_move_handler;
-        key_action_handler m_key_action_handler;
-        character_handler m_character_handler;
+        modifier                       m_current_modifier;
+        mouse_action_handler           m_mouse_action_handler;
+        mouse_move_handler             m_mouse_move_handler;
+        key_action_handler             m_key_action_handler;
+        character_handler              m_character_handler;
         std::bitset<(int)key::KEY_MAX> m_pressed_keys;
     };
-}
+} // namespace mge

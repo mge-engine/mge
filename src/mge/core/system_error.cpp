@@ -6,13 +6,12 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 namespace mge {
-    void
-    system_error::clear()
+    void system_error::clear()
     {
 #ifdef MGE_OS_WINDOWS
         SetLastError(0);
 #else
-#  error Not implemented.
+#    error Not implemented.
 #endif
     }
 
@@ -22,47 +21,44 @@ namespace mge {
         m_error_value = GetLastError();
 
         char *msgbuf;
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,
-                      nullptr,
-                      (DWORD)m_error_value,
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                          FORMAT_MESSAGE_FROM_SYSTEM,
+                      nullptr, (DWORD)m_error_value,
                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-                      (LPTSTR)&msgbuf,
-                      0,
-                      nullptr);
+                      (LPTSTR)&msgbuf, 0, nullptr);
         std::stringstream ss;
         ss << "(" << std::hex << m_error_value << std::dec << "): " << msgbuf;
         LocalFree(msgbuf);
         m_error_message = ss.str();
 #else
-#  error not implemented
+#    error not implemented
 #endif
     }
 
-    system_error::error::error(const boost::system::error_code& ec)
+    system_error::error::error(const boost::system::error_code &ec)
     {
         std::stringstream ss;
         ss << "(" << std::hex << ec.value() << "): " << ec.message();
         m_error_message = ss.str();
     }
 
-    const char *
-    system_error::what() const
+    const char *system_error::what() const
     {
         if (!m_message.empty()) {
             return m_message.c_str();
         }
 
         m_message = mge::exception::what();
-        if(!m_message.empty()) {
-            if(boost::algorithm::ends_with(m_message, ":")) {
-               m_message.append(" ");
-            } else if(!boost::algorithm::ends_with(m_message, ": ")) {
-               m_message.append(": ");
+        if (!m_message.empty()) {
+            if (boost::algorithm::ends_with(m_message, ":")) {
+                m_message.append(" ");
+            } else if (!boost::algorithm::ends_with(m_message, ": ")) {
+                m_message.append(": ");
             }
         }
 
         auto err = get<mge::system_error::error>();
-        if(err) {
+        if (err) {
             m_message.append(std::get<1>(err.value()));
             return m_message.c_str();
         } else {
@@ -73,4 +69,4 @@ namespace mge {
     }
 
     MGE_DEFINE_EXCEPTION(system_error)
-}
+} // namespace mge

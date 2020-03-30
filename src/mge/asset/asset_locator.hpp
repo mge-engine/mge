@@ -2,11 +2,11 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/asset/asset.hpp"
 #include "mge/asset/dllexport.hpp"
-#include "mge/core/types.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/path.hpp"
-#include "mge/asset/asset.hpp"
+#include "mge/core/types.hpp"
 
 namespace mge {
     MGE_DECLARE_REF(asset_locator);
@@ -16,8 +16,7 @@ namespace mge {
      * and retrieves a path that can be used to construct
      * an asset.
      */
-    class MGE_ASSET_EXPORT asset_locator
-            : public mge::component<asset_locator>
+    class MGE_ASSET_EXPORT asset_locator : public mge::component<asset_locator>
     {
     public:
         asset_locator();
@@ -30,7 +29,7 @@ namespace mge {
          * @return path to construct an asset, empty path if asset
          *              was not found
          */
-        virtual path locate(const std::string& name,
-                            const asset_type& type) = 0;
+        virtual path locate(const std::string &name,
+                            const asset_type & type) = 0;
     };
-}
+} // namespace mge

@@ -7,9 +7,9 @@
  * @brief  File handling.
  */
 
+#include "mge/core/buffer.hpp"
 #include "mge/core/file_access.hpp"
 #include "mge/core/path.hpp"
-#include "mge/core/buffer.hpp"
 
 namespace mge {
 
@@ -21,7 +21,7 @@ namespace mge {
     class MGE_CORE_EXPORT file
     {
     public:
-        file(const file_access_ref& access);
+        file(const file_access_ref &access);
 
         /**
          * Create file.
@@ -33,13 +33,13 @@ namespace mge {
          * Create file.
          * @param path
          */
-        file(const std::string& p);
+        file(const std::string &p);
 
         /**
          * Create file from path.
          * @param path path
          */
-        file(const path& p);
+        file(const path &p);
 
         /**
          * Destructor.
@@ -51,13 +51,13 @@ namespace mge {
          * @param path file path
          * @param name file name
          */
-        file(const std::string& p, const std::string& name);
+        file(const std::string &p, const std::string &name);
 
         /**
          * Get file path.
          * @return file path
          */
-        const path& path() const;
+        const path &path() const;
 
         /**
          * Check if file exists.
@@ -125,6 +125,7 @@ namespace mge {
          * @return file size, 0 if the file isn't a regular file
          */
         size_t size() const;
+
     private:
         file_access_ref m_access;
     };
@@ -135,7 +136,6 @@ namespace mge {
      * @param f file
      * @return @c os
      */
-    MGE_CORE_EXPORT std::ostream&
-    operator <<(std::ostream& os, const file& f);
+    MGE_CORE_EXPORT std::ostream &operator<<(std::ostream &os, const file &f);
 
-}
+} // namespace mge

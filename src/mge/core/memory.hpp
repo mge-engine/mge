@@ -44,4 +44,4 @@ namespace mge {
      */
     MGE_CORE_EXPORT void *calloc(size_t num, size_t size);
 
-}
+} // namespace mge

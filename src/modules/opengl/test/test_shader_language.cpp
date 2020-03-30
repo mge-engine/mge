@@ -1,10 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "opengl_test.hpp"
 #include "mge/graphics/render_context.hpp"
-namespace opengl
-{
+#include "opengl_test.hpp"
+namespace opengl {
     class test_shader_language : public opengltest_with_window
     {};
 
@@ -29,4 +28,4 @@ namespace opengl
         EXPECT_GE(l[0].version(), mge::version("3"));
     }
 
-}
+} // namespace opengl

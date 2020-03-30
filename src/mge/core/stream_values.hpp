@@ -7,15 +7,12 @@
 
 namespace mge {
 
-    inline void stream_values(std::ostream& os)
-    {}
+    inline void stream_values(std::ostream &os) {}
 
     template <typename T, typename... Args>
-    inline void stream_values(std::ostream& os,
-                              T value,
-                              Args... args)
+    inline void stream_values(std::ostream &os, T value, Args... args)
     {
         os << value;
         stream_values(os, args...);
     }
-}
+} // namespace mge

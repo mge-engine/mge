@@ -3,19 +3,18 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include <tuple>
-#include <string>
-#include <iosfwd>
 #include <boost/operators.hpp>
+#include <iosfwd>
+#include <string>
+#include <tuple>
 
 namespace mge {
     /**
      * A semantic version, which is a tuple of major, minor
      * and patch level.
      */
-    class MGE_CORE_EXPORT version
-        : public boost::less_than_comparable<version>
-        , public boost::equality_comparable<version>
+    class MGE_CORE_EXPORT version : public boost::less_than_comparable<version>,
+                                    public boost::equality_comparable<version>
     {
     public:
         /**
@@ -31,36 +30,37 @@ namespace mge {
          * Constuct version from a string
          * @param version version string
          */
-        version(const std::string& version);
+        version(const std::string &version);
         /**
          * Constuct version from fields.
          * @param major major version
          * @param minor minor version
          * @param patch patch level
          */
-        version(unsigned int major, unsigned int minor=0u, unsigned int patch=0u);
+        version(unsigned int major, unsigned int minor = 0u,
+                unsigned int patch = 0u);
         /**
          * Copy constructor.
          * @param v copied version
          */
-        version(const version& v);
+        version(const version &v);
         /**
          * Move constructor.
          * @param v moved version
          */
-        version(version&& v);
+        version(version &&v);
 
         /**
          * Assignment operator.
          * @param v assigned version
          */
-        version& operator =(const version& v);
+        version &operator=(const version &v);
 
         /**
          * Move assignment operator.
          * @param v assigned version
          */
-        version& operator =(version&& v);
+        version &operator=(version &&v);
 
         /**
          * Get major version.
@@ -91,19 +91,19 @@ namespace mge {
          * @param v version to compare
          * @return @c true if this version is less than @c v
          */
-        bool operator <(const version& v) const noexcept;
+        bool operator<(const version &v) const noexcept;
 
         /**
          * Compares two versions.
          * @param v version to compare
          * @return @c true if this version and @c v are equal
          */
-        bool operator ==(const version& v) const noexcept;
+        bool operator==(const version &v) const noexcept;
+
     private:
-        void from_string(const std::string& s);
+        void from_string(const std::string &s);
         std::tuple<unsigned int, unsigned int, unsigned int> m_data;
     };
-
 
     /**
      * Print operator.
@@ -111,5 +111,6 @@ namespace mge {
      * @param v version to print
      * @return @c os
      */
-    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const version& v);
-}
+    MGE_CORE_EXPORT std::ostream &operator<<(std::ostream & os,
+                                             const version &v);
+} // namespace mge

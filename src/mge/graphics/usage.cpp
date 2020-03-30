@@ -4,10 +4,9 @@
 #include "mge/graphics/usage.hpp"
 #include <iostream>
 namespace mge {
-    std::ostream& operator <<(std::ostream& os, const usage& u)
+    std::ostream &operator<<(std::ostream &os, const usage &u)
     {
-        switch(u)
-        {
+        switch (u) {
         case usage::DEFAULT:
             return os << "DEFAULT";
         case usage::IMMUTABLE:
@@ -20,4 +19,4 @@ namespace mge {
             return os << "INVALID(" << (int)u << ")";
         }
     }
-}
+} // namespace mge

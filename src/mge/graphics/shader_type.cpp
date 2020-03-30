@@ -4,9 +4,9 @@
 #include "mge/graphics/shader_type.hpp"
 #include <iostream>
 namespace mge {
-    std::ostream& operator <<(std::ostream& os, const shader_type& t)
+    std::ostream &operator<<(std::ostream &os, const shader_type &t)
     {
-        switch(t) {
+        switch (t) {
         case shader_type::VERTEX:
             return os << "VERTEX";
         case shader_type::FRAGMENT:
@@ -24,4 +24,4 @@ namespace mge {
         }
     }
 
-}
+} // namespace mge

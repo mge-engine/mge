@@ -11,7 +11,7 @@ namespace opengl {
 
     GLuint gl_usage(mge::usage p)
     {
-        switch(p) {
+        switch (p) {
         case mge::usage::DEFAULT:
             return GL_STATIC_DRAW;
         case mge::usage::IMMUTABLE:
@@ -25,10 +25,9 @@ namespace opengl {
         }
     }
 
-    mge::data_type 
-    data_type_of_gl_type(GLenum t)
+    mge::data_type data_type_of_gl_type(GLenum t)
     {
-        switch(t) {
+        switch (t) {
         case GL_FLOAT_VEC2:
             return mge::data_type::FLOAT_VEC2;
         case GL_FLOAT_VEC3:
@@ -36,7 +35,8 @@ namespace opengl {
         case GL_FLOAT_VEC4:
             return mge::data_type::FLOAT_VEC4;
         default:
-            MGE_THROW(mge::illegal_argument) << std::hex << t << " is not a valid data type";
+            MGE_THROW(mge::illegal_argument)
+                << std::hex << t << " is not a valid data type";
         }
     }
-}
+} // namespace opengl

@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2018 by Alexander Schroeder
+# All rights reserved.
 FUNCTION(DOCUMENT_TARGET TGT)
     GET_PROPERTY(__all_sources GLOBAL PROPERTY ALL_PROJECT_SOURCES)
     GET_TARGET_PROPERTY(__target_sources ${TGT} SOURCES)

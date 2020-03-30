@@ -7,10 +7,9 @@
  * @brief  Archive file.
  */
 
-#include "mge/core/path.hpp"
 #include "mge/core/file.hpp"
 #include "mge/core/open_mode.hpp"
-
+#include "mge/core/path.hpp"
 
 namespace mge {
 
@@ -40,22 +39,20 @@ namespace mge {
              * @param size          size of the entry
              * @param index         index of entry in archive
              */
-            entry(const path& path,
-                  bool is_directory,
-                  std::streamsize size,
+            entry(const path &path, bool is_directory, std::streamsize size,
                   uint64_t index);
             /**
              * @brief Copy constructor.
              *
              * @param e copied entry
              */
-            entry(const entry& e);
+            entry(const entry &e);
             /**
              * @brief Move constructor.
              *
              * @param e moved entry
              */
-            entry(entry&& e);
+            entry(entry &&e);
 
             /**
              * @brief Destructor.
@@ -68,41 +65,35 @@ namespace mge {
              * @param e assigned entry
              * @return @c *this
              */
-            entry& operator=(const entry& e);
+            entry &operator=(const entry &e);
             /**
              * @brief Move assignment.
              *
              * @param e moved entry
              * @return @c *this
              */
-            entry& operator=(entry&& e);
+            entry &operator=(entry &&e);
 
             /**
              * @brief Get path of entry.
              *
              * @return entry path
              */
-            const mge::path& path() const;
+            const mge::path &path() const;
 
             /**
              * @brief Check if entry is directory.
              *
              * @return @c true if the entry is a directory
              */
-            bool is_directory() const noexcept
-            {
-                return m_directory;
-            }
+            bool is_directory() const noexcept { return m_directory; }
 
             /**
              * @brief Entry size.
              *
              * @return size of entry in bytes (if file)
              */
-            std::streamsize size() const
-            {
-                return m_size;
-            }
+            std::streamsize size() const { return m_size; }
 
             /**
              * @brief Open stream for entry data.
@@ -110,9 +101,10 @@ namespace mge {
              * @return stream for reading entry data
              */
             input_stream_ref open();
+
         private:
             friend class archive;
-            void set_access(const archive_access_ref& access);
+            void set_access(const archive_access_ref &access);
 
             mge::path          m_path;
             std::streamsize    m_size;
@@ -132,28 +124,28 @@ namespace mge {
          * @param path path to archive
          * @param mode open mode
          */
-        archive(const path& path, open_mode mode = open_mode::READ);
+        archive(const path &path, open_mode mode = open_mode::READ);
         /**
          * @brief Construct a new archive object
          *
          * @param file archive file
          * @param mode open mode
          */
-        archive(const file& file, open_mode mode = open_mode::READ);
+        archive(const file &file, open_mode mode = open_mode::READ);
         /**
          * @brief Construct a new archive object
          *
          * @param path path to archive file
          * @param mode open mode
          */
-        archive(const char* path, open_mode mode = open_mode::READ);
+        archive(const char *path, open_mode mode = open_mode::READ);
         /**
          * @brief Construct a new archive object
          *
          * @param path path to archive file
          * @param mode open mode
          */
-        archive(const std::string& path, open_mode mode = open_mode::READ);
+        archive(const std::string &path, open_mode mode = open_mode::READ);
 
         /**
          * @brief Destructor.
@@ -166,10 +158,7 @@ namespace mge {
          *
          * @return flat list of archive entries
          */
-        const archive_entries& entries() const
-        {
-            return m_entries;
-        }
+        const archive_entries &entries() const { return m_entries; }
 
         /**
          * @brief Find archive entry by path
@@ -178,7 +167,7 @@ namespace mge {
          * @return entry that has the path, @c no_such_element is thrown if
          *   no entry is found
          */
-        const entry& find_entry(const mge::path& p) const;
+        const entry &find_entry(const mge::path &p) const;
 
     private:
         void open();
@@ -188,6 +177,4 @@ namespace mge {
         archive_access_ref m_access;
         archive_entries    m_entries;
     };
-}
-
-
+} // namespace mge

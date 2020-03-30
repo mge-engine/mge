@@ -2,10 +2,10 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/dllexport.hpp"
-#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/core/types.hpp"
 #include "mge/core/void_function.hpp"
+#include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 
 namespace mge {
 
@@ -13,19 +13,20 @@ namespace mge {
      * An object that is valid in the context of a @c render_context like
      * a shader program, a texture, or a command list.
      */
-    class MGE_GRAPHICS_EXPORT context_object
-            : public noncopyable
+    class MGE_GRAPHICS_EXPORT context_object : public noncopyable
     {
     protected:
-        explicit context_object(render_context& context);
+        explicit context_object(render_context &context);
+
     public:
         virtual ~context_object();
-        const render_context& context() const;
-        render_context& context();
-        void assert_same_context(const render_context& context) const;
-        void assert_same_context(const context_object& cobj) const;
-        void await(const void_function& f);
+        const render_context &context() const;
+        render_context &      context();
+        void assert_same_context(const render_context &context) const;
+        void assert_same_context(const context_object &cobj) const;
+        void await(const void_function &f);
+
     protected:
         render_context_ref m_context;
     };
-}
+} // namespace mge

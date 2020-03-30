@@ -1,7 +1,10 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
-#include "mge/core/dllexport.hpp"
 #include "mge/core/archive_access.hpp"
 #include "mge/core/component.hpp"
+#include "mge/core/dllexport.hpp"
 #include "mge/core/file.hpp"
 namespace mge {
 
@@ -9,9 +12,9 @@ namespace mge {
 
     /**
      * @brief Factory to create archive access.
-     * 
-     * One factory class handles one kind of archive, such as 
-     * "zip" and can create an archive access object that can be 
+     *
+     * One factory class handles one kind of archive, such as
+     * "zip" and can create an archive access object that can be
      * used to read from the archive or to write to it.
      */
     class MGE_CORE_EXPORT archive_access_factory
@@ -28,21 +31,22 @@ namespace mge {
         virtual ~archive_access_factory() = default;
         /**
          * @brief Get whether the access factory handles given path.
-         * 
+         *
          * @param p path to check
          * @return true if access factory can create archive access for the path
          * @return false if access factory cannot be used for archive access
          */
-        virtual bool handles_path(const path& p) const = 0;
+        virtual bool handles_path(const path &p) const = 0;
 
         /**
          * @brief Create a archive access object.
-         * 
+         *
          * @param f     archive file name
          * @param m     access mode
-         * 
+         *
          * @return Create access object.
          */
-        virtual archive_access_ref create_archive_access(const file& f, open_mode m) = 0;
+        virtual archive_access_ref create_archive_access(const file &f,
+                                                         open_mode   m) = 0;
     };
-}
+} // namespace mge

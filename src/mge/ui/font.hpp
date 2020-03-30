@@ -13,26 +13,28 @@ namespace mge {
         class MGE_UI_EXPORT font
         {
         public:
-            enum class style {
+            enum class style
+            {
                 NORMAL,
                 ITALIC
             };
 
-            enum class weight {
+            enum class weight
+            {
                 LIGHT,
                 NORMAL,
                 BOLD
             };
 
-            font(const char *family,
-                 font::style style = font::style::NORMAL,
+            font(const char *family, font::style style = font::style::NORMAL,
                  font::weight weight = font::weight::NORMAL,
-                 uint32_t size = 12);
-            font(const font&) = default;
-            font(font&&) = default;
-            ~font() = default;
+                 uint32_t     size   = 12);
+            font(const font &) = default;
+            font(font &&)      = default;
+            ~font()            = default;
+
         private:
             font_implementation_ref m_implementation;
         };
-    }
-}
+    } // namespace ui
+} // namespace mge

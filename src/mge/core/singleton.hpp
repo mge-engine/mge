@@ -2,10 +2,10 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/dllexport.hpp"
-#include "mge/core/types.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/dllexport.hpp"
 #include "mge/core/type_name.hpp"
+#include "mge/core/types.hpp"
 
 #include <atomic>
 
@@ -23,22 +23,19 @@ namespace mge {
      * the instance pointer the conflict is resolved and the superfluous
      * instance is destroyed.
      */
-    template <typename T>
-    class singleton : noncopyable
+    template <typename T> class singleton : noncopyable
     {
     public:
-        using value_type = T;
-        using pointer = T*;
-        using const_pointer = const T*;
-        using reference = T&;
-        using const_reference = const T&;
+        using value_type      = T;
+        using pointer         = T *;
+        using const_pointer   = const T *;
+        using reference       = T &;
+        using const_reference = const T &;
 
         /**
          * Constructor. The contained object is not created.
          */
-        singleton()
-            :m_instance(nullptr)
-        {}
+        singleton() : m_instance(nullptr) {}
 
         /**
          * Destructor. Exchanges the contained instance pointer
@@ -46,9 +43,9 @@ namespace mge {
          */
         ~singleton()
         {
-            T * p = m_instance.load();
+            T *p    = m_instance.load();
             T *null = nullptr;
-            if(m_instance.compare_exchange_strong(p, null)) {
+            if (m_instance.compare_exchange_strong(p, null)) {
                 delete p;
             } else {
                 crash("Inconsistency destroying singleton instance of",
@@ -62,13 +59,13 @@ namespace mge {
          */
         inline pointer ptr()
         {
-            T * p = m_instance.load();
-            if(p) {
+            T *p = m_instance.load();
+            if (p) {
                 return p;
             }
-            p = new T();
-            T * null = nullptr;
-            if(m_instance.compare_exchange_strong(null, p)) {
+            p       = new T();
+            T *null = nullptr;
+            if (m_instance.compare_exchange_strong(null, p)) {
                 return p;
             } else {
                 delete p;
@@ -80,38 +77,27 @@ namespace mge {
          * Access the contained object.
          * @return contained object
          */
-        inline pointer operator ->()
-        {
-            return ptr();
-        }
+        inline pointer operator->() { return ptr(); }
 
         /**
          * Access the contained object.
          * @return contained object
          */
-        inline const_pointer operator ->() const
-        {
-            return ptr();
-        }
-
-        /**
-             * Access the contained object.
-             * @return contained object
-             */
-        inline reference operator *()
-        {
-            return *ptr();
-        }
+        inline const_pointer operator->() const { return ptr(); }
 
         /**
          * Access the contained object.
          * @return contained object
          */
-        inline const_reference operator *() const
-        {
-            return *ptr();
-        }
+        inline reference operator*() { return *ptr(); }
+
+        /**
+         * Access the contained object.
+         * @return contained object
+         */
+        inline const_reference operator*() const { return *ptr(); }
+
     private:
-        std::atomic<T*> m_instance;
+        std::atomic<T *> m_instance;
     };
-}
+} // namespace mge

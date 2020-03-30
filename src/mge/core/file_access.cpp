@@ -5,15 +5,8 @@
 #include "mge/core/path.hpp"
 
 namespace mge {
-    file_access::file_access(const mge::path& p)
-        : m_path(p)
-    {}
+    file_access::file_access(const mge::path &p) : m_path(p) {}
 
+    const path &file_access::path() const { return m_path; }
 
-    const path&
-    file_access::path() const
-    {
-        return m_path;
-    }
-
-}
+} // namespace mge

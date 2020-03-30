@@ -6,8 +6,7 @@
 #include "mge/core/gist.hpp"
 #include <cstdint>
 #include <vector>
-namespace mge
-{
+namespace mge {
     /// Helper type for binary buffers.
     using buffer = std::vector<uint8_t>;
 
@@ -15,4 +14,4 @@ namespace mge
     {
         return os << "buffer[" << g.value->size() << "]";
     }
-}
+} // namespace mge

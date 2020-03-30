@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 namespace mge {
@@ -12,4 +15,4 @@ namespace mge {
         LINES,
         LINE_STRIP
     };
-}
+} // namespace mge

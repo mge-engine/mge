@@ -5,8 +5,8 @@
 
 #include "mge/core/dllexport.hpp"
 #include "mge/core/types.hpp"
-#include <string>
 #include <memory>
+#include <string>
 
 namespace mge {
 
@@ -16,20 +16,22 @@ namespace mge {
     {
     public:
         ~shared_library();
-        static shared_library_ref load(const std::string& name);
+        static shared_library_ref load(const std::string &name);
 
-        void *symbol(const std::string& name);
+        void *symbol(const std::string &name);
         void *symbol(const char *name);
 
         /**
          * Get file extension of shared library file.
          * @return extension used for shared library
          */
-        static const std::string& extension();
+        static const std::string &extension();
+
     protected:
-        shared_library(const std::string& name, void *handle);
+        shared_library(const std::string &name, void *handle);
+
     private:
         std::string m_name;
-        void       *m_handle;
+        void *      m_handle;
     };
-}
+} // namespace mge

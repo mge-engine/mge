@@ -11,10 +11,10 @@ namespace mge {
      */
     enum class usage
     {
-        DEFAULT     = 1,      //!< default usage, no specific restrictions
-        IMMUTABLE   = 2,      //!< resource is initialized once, and never changed
-        DYNAMIC     = 3,      //!< resource will change frequently
-        STAGING     = 4,      //!< resource will used to copy data to/frorm the GPU
+        DEFAULT   = 1, //!< default usage, no specific restrictions
+        IMMUTABLE = 2, //!< resource is initialized once, and never changed
+        DYNAMIC   = 3, //!< resource will change frequently
+        STAGING   = 4, //!< resource will used to copy data to/frorm the GPU
     };
 
     /**
@@ -23,6 +23,6 @@ namespace mge {
      * @param u     usage
      * @return @c os
      */
-    MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os,
-                                                  const usage& u);
-}
+    MGE_GRAPHICS_EXPORT std::ostream &operator<<(std::ostream &os,
+                                                 const usage & u);
+} // namespace mge

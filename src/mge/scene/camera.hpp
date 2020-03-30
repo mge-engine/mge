@@ -2,11 +2,11 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/scene/dllexport.hpp"
 #include "mge/math/vec3.hpp"
+#include "mge/scene/dllexport.hpp"
 
 namespace mge {
-    
+
     class MGE_SCENE_EXPORT camera
     {
     public:
@@ -19,4 +19,4 @@ namespace mge {
         fvec3 m_up;
     };
 
-}
+} // namespace mge

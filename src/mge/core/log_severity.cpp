@@ -5,9 +5,9 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream& operator <<(std::ostream& os, const log_severity& severity)
+    std::ostream &operator<<(std::ostream &os, const log_severity &severity)
     {
-        switch(severity) {
+        switch (severity) {
         case log_severity::NONE:
             os << "NONE";
             break;
@@ -32,4 +32,4 @@ namespace mge {
         }
         return os;
     }
-}
+} // namespace mge

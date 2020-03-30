@@ -3,8 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
-#include <iosfwd>
 #include <cstdint>
+#include <iosfwd>
 
 namespace mge {
 
@@ -19,7 +19,7 @@ namespace mge {
         TEXTURE_CUBE_MAP
     };
 
-    MGE_GRAPHICS_EXPORT std::ostream& operator << (std::ostream& os,
-                                                   const texture_type& t);
+    MGE_GRAPHICS_EXPORT std::ostream &operator<<(std::ostream &      os,
+                                                 const texture_type &t);
 
-}
+} // namespace mge

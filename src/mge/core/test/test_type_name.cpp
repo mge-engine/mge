@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/type_name.hpp"
+#include "test/googletest.hpp"
 #include <memory>
 
 class FooBar
@@ -16,8 +16,9 @@ enum class Enumi
 };
 
 namespace NameSpace {
-    class FooInSpace {};
-}
+    class FooInSpace
+    {};
+} // namespace NameSpace
 
 TEST(type_name, class_type_name)
 {
@@ -37,7 +38,6 @@ TEST(type_name, struct_type_name)
     EXPECT_STREQ("WutzWutz", name.c_str());
 }
 
-
 TEST(type_name, enum_class_type_name)
 {
     std::string name(mge::type_name<Enumi>());
@@ -52,9 +52,8 @@ TEST(type_name, pod_type_name)
 
 TEST(type_name, pointer_type_name)
 {
-    std::string name(mge::type_name<FooBar**>());
+    std::string name(mge::type_name<FooBar **>());
     EXPECT_STREQ("FooBar**", name.c_str());
-
 }
 
 TEST(type_name, namespace_name)

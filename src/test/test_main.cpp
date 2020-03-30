@@ -1,15 +1,14 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
+#include "mge/core/exception.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/module.hpp"
-#include "mge/core/exception.hpp"
-#include <exception>
+#include "test/googletest.hpp"
 #include <boost/exception/diagnostic_information.hpp>
+#include <exception>
 
 MGE_DEFINE_LOG(TEST);
-
 
 int main(int argc, char **argv)
 {
@@ -18,12 +17,12 @@ int main(int argc, char **argv)
         mge::module::load_all();
         ::testing::InitGoogleTest(&argc, argv);
         return RUN_ALL_TESTS();
-    } catch(const std::exception& ex) {
+    } catch (const std::exception &ex) {
         std::cerr << "Exception caught: " << ex.what() << std::endl;
         return 1;
-    } catch(...) {
-        std::cerr << boost::current_exception_diagnostic_information() << std::endl;
+    } catch (...) {
+        std::cerr << boost::current_exception_diagnostic_information()
+                  << std::endl;
         return 1;
     }
-
 }

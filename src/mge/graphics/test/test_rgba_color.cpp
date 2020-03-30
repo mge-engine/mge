@@ -1,9 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
-#include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/rgb_color.hpp"
+#include "mge/graphics/rgba_color.hpp"
+#include "test/googletest.hpp"
 
 using namespace mge;
 
@@ -18,7 +18,7 @@ TEST(rgba_color, default_construct)
 
 TEST(rgba_color, from_rgb_color)
 {
-    rgb_color c(0.1f, 0.2f, 0.3f);
+    rgb_color  c(0.1f, 0.2f, 0.3f);
     rgba_color ca(c, 1.0f);
     EXPECT_EQ(0.1f, ca.r);
     EXPECT_EQ(0.2f, ca.g);
@@ -37,7 +37,7 @@ TEST(rgba_color, equals)
 
 TEST(rgba_color, stream_output)
 {
-    rgba_color c1(0.1f, 0.2f, 0.3f, 1.0f);
+    rgba_color        c1(0.1f, 0.2f, 0.3f, 1.0f);
     std::stringstream ss;
     ss << c1;
     EXPECT_EQ(ss.str(), "rgba_color[r=0.1, g=0.2, b=0.3, a=1]");

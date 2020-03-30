@@ -1,9 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+#include "mge/input/key_action.hpp"
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
-#include "mge/input/key_action.hpp"
 
 TEST(key_action, print)
 {

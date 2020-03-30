@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/small_vector.hpp"
+#include "test/googletest.hpp"
 
 TEST(small_vector, default_ctor)
 {
@@ -19,5 +19,4 @@ TEST(small_vector, ctor_with_default)
     EXPECT_EQ(3, v1.size());
     EXPECT_EQ(300, v2.size());
     EXPECT_EQ(0, v3.size());
-    
 }

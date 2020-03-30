@@ -5,16 +5,14 @@
 #include "mge/core/configuration.hpp"
 #include "mge/graphics/window.hpp"
 
-namespace vulkan
-{
+namespace vulkan {
     mge::render_system_ref vulkantest::render_system;
 
     void vulkantest::SetUpTestCase()
     {
         mge::configuration config;
         render_system = mge::render_system::create("vulkan");
-        if (!render_system)
-        {
+        if (!render_system) {
             FAIL() << "Cannot create vulkan render system";
         }
         config.set("debug", "1");
@@ -22,17 +20,14 @@ namespace vulkan
         render_system->configure(config);
     }
 
-    void vulkantest::TearDownTestCase()
-    {
-        render_system.reset();
-    }
+    void            vulkantest::TearDownTestCase() { render_system.reset(); }
     mge::window_ref vulkantest_with_window::window;
 
     void vulkantest_with_window::SetUpTestCase()
     {
         vulkantest::SetUpTestCase();
         window = render_system->create_window(mge::rectangle(0, 0, 1600, 900),
-            mge::window_options());
+                                              mge::window_options());
         window->assign_thread();
     }
 
@@ -41,4 +36,4 @@ namespace vulkan
         window.reset();
         vulkantest::TearDownTestCase();
     }
-}
+} // namespace vulkan

@@ -9,35 +9,33 @@ MGE_USE_LOG(OPENGL);
 
 namespace opengl {
 
-    shader_program::shader_program(mge::render_context& context,
-                   mge::shader_type type)
-        :mge::shader_program(context, type)
-        ,m_shader(0)
+    shader_program::shader_program(mge::render_context &context,
+                                   mge::shader_type     type)
+        : mge::shader_program(context, type), m_shader(0)
     {}
 
     shader_program::~shader_program()
     {
-        if(m_shader) {
-            await([&]{
+        if (m_shader) {
+            await([&] {
                 glDeleteShader(m_shader);
                 error::clear();
             });
         }
     }
 
-    void
-    shader_program::on_compile(const std::string &source_code)
+    void shader_program::on_compile(const std::string &source_code)
     {
-        if(source_code.empty()) {
+        if (source_code.empty()) {
             MGE_THROW(opengl::error) << "Empty shader source code";
         }
-        await([&]{
-            if(!m_shader) {
+        await([&] {
+            if (!m_shader) {
                 create_shader();
             }
 
-            const char *src_ptr = source_code.c_str();
-            GLint src_length = static_cast<GLint>(source_code.size());
+            const char *src_ptr    = source_code.c_str();
+            GLint       src_length = static_cast<GLint>(source_code.size());
             glShaderSource(m_shader, 1, &src_ptr, &src_length);
             CHECK_OPENGL_ERROR(glShaderSource);
 
@@ -51,39 +49,32 @@ namespace opengl {
         });
     }
 
-    void
-    shader_program::throw_compilation_error()
+    void shader_program::throw_compilation_error()
     {
         GLint log_length = 0;
         glGetShaderiv(m_shader, GL_INFO_LOG_LENGTH, &log_length);
 
-        std::vector<GLchar> log((size_t) log_length + 1);
+        std::vector<GLchar> log((size_t)log_length + 1);
         glGetShaderInfoLog(m_shader, log_length, &log_length, &log[0]);
 
-        MGE_ERROR_LOG(OPENGL)
-            << "Shader compilation failed: " << std::endl
-            << &(log[0]) << std::endl;
+        MGE_ERROR_LOG(OPENGL) << "Shader compilation failed: " << std::endl
+                              << &(log[0]) << std::endl;
 
-
-        MGE_THROW(opengl::error) << "Shader compilation failed:"
-              << &(log[0]);
+        MGE_THROW(opengl::error) << "Shader compilation failed:" << &(log[0]);
     }
 
-    void
-    shader_program::on_load(const mge::buffer &code)
+    void shader_program::on_load(const mge::buffer &code)
     {
         // glShaderBinary()
     }
 
-    void
-    shader_program::create_shader()
+    void shader_program::create_shader()
     {
         m_shader = glCreateShader(gl_shader_type());
         CHECK_OPENGL_ERROR(glCreateShader);
     }
 
-    GLenum
-    shader_program::gl_shader_type() const
+    GLenum shader_program::gl_shader_type() const
     {
         switch (type()) {
         case mge::shader_type::COMPUTE:
@@ -99,8 +90,7 @@ namespace opengl {
         case mge::shader_type::TESSELATION_EVALUATION:
             return GL_TESS_EVALUATION_SHADER;
         default:
-            MGE_THROW(::opengl::error)
-              << "Invalid shader type: " << type();
+            MGE_THROW(::opengl::error) << "Invalid shader type: " << type();
         }
     }
-}
+} // namespace opengl

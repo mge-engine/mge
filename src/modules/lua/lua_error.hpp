@@ -2,8 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/exception.hpp"
 #include "lua.hpp"
+#include "mge/core/exception.hpp"
 
 namespace lua {
 
@@ -12,22 +12,20 @@ namespace lua {
     public:
         error();
         error(const error &e);
-        error(error&& e);
+        error(error &&e);
         ~error();
 
         error &operator=(const error &e);
 
-        template <typename Info>
-        error& set_info(const Info& info)
+        template <typename Info> error &set_info(const Info &info)
         {
-            mge::exception::set_info (info);
+            mge::exception::set_info(info);
             return *this;
         }
 
-        template <typename T>
-        error& operator << (const T& value)
+        template <typename T> error &operator<<(const T &value)
         {
-            mge::exception::operator <<(value);
+            mge::exception::operator<<(value);
             return *this;
         }
 
@@ -35,4 +33,4 @@ namespace lua {
     };
 
 #define CHECK_STATUS(status, state) lua::error::check_status(status, state);
-}
+} // namespace lua

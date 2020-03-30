@@ -9,4 +9,4 @@ namespace mge {
     MGE_DECLARE_REF(asset_loader);
 
     class asset_type;
-}
+} // namespace mge

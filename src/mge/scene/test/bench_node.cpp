@@ -2,9 +2,9 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "bench/googlebenchmark.hpp"
-#include "mge/scene/scene.hpp"
-#include "mge/scene/node.hpp"
 #include "mge/math/transform.hpp"
+#include "mge/scene/node.hpp"
+#include "mge/scene/scene.hpp"
 
 #if 0
 static void bench_node_set_transform(benchmark::State& state)
@@ -22,13 +22,13 @@ static void bench_node_set_transform(benchmark::State& state)
 BENCHMARK(bench_node_set_transform);
 #endif
 
-static void bench_node_set_position(benchmark::State& state)
+static void bench_node_set_position(benchmark::State &state)
 {
     mge::scene sc;
     mge::fvec3 pos;
 
     auto n = sc.create_node();
-    while(state.KeepRunning()) {
+    while (state.KeepRunning()) {
         pos = n.position();
         pos += 0.01;
         n.set_position(pos);
@@ -36,4 +36,3 @@ static void bench_node_set_position(benchmark::State& state)
 }
 
 BENCHMARK(bench_node_set_position);
-

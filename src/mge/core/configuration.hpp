@@ -3,44 +3,43 @@
 // All rights reserved.
 #pragma once
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
-#include "mge/core/dllexport.hpp"
-#include "mge/core/stdexceptions.hpp"
-#include "mge/core/lexical_cast.hpp"
 #include "mge/core/bool_value.hpp"
+#include "mge/core/dllexport.hpp"
+#include "mge/core/lexical_cast.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 namespace mge {
 
     /**
-    * Exception to signal a configuration key was not found.
-    */
-    class MGE_CORE_EXPORT configuration_key_not_found
-        : public no_such_element
+     * Exception to signal a configuration key was not found.
+     */
+    class MGE_CORE_EXPORT configuration_key_not_found : public no_such_element
     {
     public:
         configuration_key_not_found();
-        configuration_key_not_found(const configuration_key_not_found& e);
-        configuration_key_not_found(configuration_key_not_found&& e);
+        configuration_key_not_found(const configuration_key_not_found &e);
+        configuration_key_not_found(configuration_key_not_found &&e);
         virtual ~configuration_key_not_found();
-        configuration_key_not_found& operator=(const configuration_key_not_found& e);
+        configuration_key_not_found &
+        operator=(const configuration_key_not_found &e);
 
         template <typename Info>
-        configuration_key_not_found& set_info(const Info& info)
+        configuration_key_not_found &set_info(const Info &info)
         {
-            mge::exception::set_info (info);
+            mge::exception::set_info(info);
             return *this;
         }
 
         template <typename T>
-        configuration_key_not_found& operator << (const T& value)
+        configuration_key_not_found &operator<<(const T &value)
         {
-            mge::exception::operator <<(value);
+            mge::exception::operator<<(value);
             return *this;
         }
-
     };
 
     /**
@@ -71,7 +70,7 @@ namespace mge {
          * Create a transient configuration. A transient configuration
          * cannot be saved into the applications's configuration.
          */
-        configuration(const configuration::transient_tag&);
+        configuration(const configuration::transient_tag &);
 
         /**
          * Default constructor, creates empty configuration.
@@ -82,32 +81,32 @@ namespace mge {
          * Constructor.
          * @param prefix configuration prefix (or section)
          */
-        explicit configuration(const std::string& prefix);
+        explicit configuration(const std::string &prefix);
 
         /**
          * Constructor (move variant).
          * @param prefix configuration prefix (or section)
          */
-        explicit configuration(std::string&& prefix);
+        explicit configuration(std::string &&prefix);
 
         /**
          * Copy constructor.
          * @param c copied configuration
          */
-        configuration(const configuration& c);
+        configuration(const configuration &c);
 
         /**
          * Copy constructor (move variant).
          * @param c copied configuration
          */
-        configuration(configuration&& c);
+        configuration(configuration &&c);
 
         /**
          * Assignment operator.
          * @param c assigned configuration
          * @return @c *this
          */
-        configuration& operator = (const configuration& c);
+        configuration &operator=(const configuration &c);
 
         /**
          * Return whether configuration value exist for a key.
@@ -121,7 +120,7 @@ namespace mge {
          * @param key configuration key
          * @return @c true if value exists
          */
-        bool contains_key(const std::string& key) const;
+        bool contains_key(const std::string &key) const;
 
         /**
          * Get configuration keys.
@@ -130,7 +129,7 @@ namespace mge {
         key_list keys() const
         {
             key_list result;
-            for(auto p: m_values) {
+            for (auto p : m_values) {
                 result.push_back(p.first);
             }
             return result;
@@ -170,7 +169,7 @@ namespace mge {
          * @throw A @c configuration_key_not_found exception is thrown if the
          *        key is not found.
          */
-        std::vector<std::string> list_value(const std::string& key) const;
+        std::vector<std::string> list_value(const std::string &key) const;
 
         /**
          * Get configuration value.
@@ -179,8 +178,7 @@ namespace mge {
          * @throw A @c configuration_key_not_found exception is thrown if the
          *        key is not found.
          */
-        const std::string& value(const std::string& key) const;
-
+        const std::string &value(const std::string &key) const;
 
         /**
          * Get configuration value.
@@ -189,12 +187,12 @@ namespace mge {
          * @return configuration value, @c default_value if no such entry
          *         is found
          */
-        inline std::string value(const char *key,
-                                 const std::string& default_value) const
+        inline std::string value(const char *       key,
+                                 const std::string &default_value) const
         {
             try {
                 return value(key);
-            } catch(const configuration_key_not_found&) {
+            } catch (const configuration_key_not_found &) {
                 return default_value;
             }
         }
@@ -207,11 +205,11 @@ namespace mge {
          *         is found
          */
         template <typename T>
-        inline T value(const char *key, const T& default_value) const
+        inline T value(const char *key, const T &default_value) const
         {
             try {
                 return lexical_cast<T>(value(key));
-            } catch(const configuration_key_not_found&) {
+            } catch (const configuration_key_not_found &) {
                 return default_value;
             }
         }
@@ -221,12 +219,10 @@ namespace mge {
          * @param key configuration key
          * @return configuration value
          */
-        template <typename T>
-        inline T value(const char *key) const
+        template <typename T> inline T value(const char *key) const
         {
             return lexical_cast<T>(value(key));
         }
-
 
         /**
          * Get configuration value.
@@ -236,11 +232,11 @@ namespace mge {
          *         is found
          */
         template <typename T>
-        inline T value(const std::string& key, const T& default_value) const
+        inline T value(const std::string &key, const T &default_value) const
         {
             try {
                 return lexical_cast<T>(value(key));
-            } catch(const configuration_key_not_found&) {
+            } catch (const configuration_key_not_found &) {
                 return default_value;
             }
         }
@@ -250,29 +246,23 @@ namespace mge {
          * @param key configuration key
          * @return configuration value
          */
-        template <typename T>
-        inline T value(const std::string& key) const
+        template <typename T> inline T value(const std::string &key) const
         {
             return lexical_cast<T>(value(key));
         }
-
 
         /**
          * Return whether configuration has no entries.
          * @return @c true if configuration has no entries
          */
-        inline bool empty() const
-        {
-            return m_values.empty();
-        }
+        inline bool empty() const { return m_values.empty(); }
 
         /**
          * Set a configuration value.
          * @param key configuration key
          * @param value configuration value
          */
-        template <typename T>
-        inline void set(const char *key, const T& value)
+        template <typename T> inline void set(const char *key, const T &value)
         {
             m_values[key] = lexical_cast<std::string>(value);
         }
@@ -299,7 +289,8 @@ namespace mge {
          * @param key   configuration key
          * @param value configuration value
          */
-        static void set_override(const std::string& key, const std::string& value);
+        static void set_override(const std::string &key,
+                                 const std::string &value);
 
         /**
          * Deletes transient override value.
@@ -311,7 +302,7 @@ namespace mge {
          * Deletes transient override value.
          * @param key configuration key
          */
-        static void clear_override(const std::string& key);
+        static void clear_override(const std::string &key);
 
     private:
         std::string       m_prefix;
@@ -319,41 +310,36 @@ namespace mge {
         bool              m_transient;
     };
 
-    template<>
-    inline bool
-    configuration::value<bool>(const char *key) const
+    template <> inline bool configuration::value<bool>(const char *key) const
     {
         return bool_value(value(key));
     }
 
-    template<>
-    inline bool
-    configuration::value<bool>(const char *key, const bool &default_value) const
+    template <>
+    inline bool configuration::value<bool>(const char *key,
+                                           const bool &default_value) const
     {
         try {
             return bool_value(value(key));
-        } catch(const configuration_key_not_found&) {
+        } catch (const configuration_key_not_found &) {
             return default_value;
         }
     }
 
-
-    template<>
-    inline bool
-    configuration::value<bool>(const std::string& key) const
+    template <>
+    inline bool configuration::value<bool>(const std::string &key) const
     {
         return bool_value(value(key));
     }
 
-    template<>
-    inline bool
-    configuration::value<bool>(const std::string& key, const bool &default_value) const
+    template <>
+    inline bool configuration::value<bool>(const std::string &key,
+                                           const bool &default_value) const
     {
         try {
             return bool_value(value(key));
-        } catch(const configuration_key_not_found&) {
+        } catch (const configuration_key_not_found &) {
             return default_value;
         }
     }
-}
-
+} // namespace mge

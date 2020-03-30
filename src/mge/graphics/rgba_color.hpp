@@ -19,9 +19,7 @@ namespace mge {
         /**
          * Default constructor.
          */
-        inline rgba_color()
-        :r(0.0f), g(0.0f), b(0.0f), a(0.0f)
-        {}
+        inline rgba_color() : r(0.0f), g(0.0f), b(0.0f), a(0.0f) {}
 
         /**
          * Construct rgba color from pixel data and given format
@@ -29,7 +27,7 @@ namespace mge {
          * @param pixel pixel data
          * @param format format of pixel
          */
-        rgba_color(void *pixel, const image_format& format);
+        rgba_color(void *pixel, const image_format &format);
 
         /**
          * Constructor
@@ -41,9 +39,9 @@ namespace mge {
          * Copy constructor.
          * @param c copied color value
          */
-        inline rgba_color(const rgba_color& c) = default;
+        inline rgba_color(const rgba_color &c) = default;
 
-        rgba_color(const rgb_color& c, float alpha=1.0f);
+        rgba_color(const rgb_color &c, float alpha = 1.0f);
 
         /**
          * Create RGBA color from color name.
@@ -58,7 +56,7 @@ namespace mge {
          * @param alpha alpha value
          */
         inline rgba_color(const float value, const float alpha)
-        :r(value), g(value), b(value), a(alpha)
+            : r(value), g(value), b(value), a(alpha)
         {}
 
         /**
@@ -66,7 +64,7 @@ namespace mge {
          * @param format format of the data
          * @param data raw data
          */
-        //rgba_color(const pixel_format& format, void *data);
+        // rgba_color(const pixel_format& format, void *data);
 
         /**
          * Creates a color
@@ -76,7 +74,7 @@ namespace mge {
          * @param a_ alpha
          */
         inline rgba_color(float r_, float g_, float b_, float a_)
-        :r(r_), g(g_), b(b_), a(a_)
+            : r(r_), g(g_), b(b_), a(a_)
         {}
 
         /**
@@ -84,10 +82,7 @@ namespace mge {
          * @param values color value array
          */
         inline rgba_color(const float *values)
-        :r(values[0]),
-         g(values[1]),
-         b(values[2]),
-         a(values[3])
+            : r(values[0]), g(values[1]), b(values[2]), a(values[3])
         {}
 
         /**
@@ -95,61 +90,37 @@ namespace mge {
          * @param c color to assign.
          * @return @c *this
          */
-        inline rgba_color& operator =(const rgba_color& c) = default;
+        inline rgba_color &operator=(const rgba_color &c) = default;
 
-        void set_red(const float r_)
-        {
-            r = r_;
-        }
+        void set_red(const float r_) { r = r_; }
 
-        void set_green(const float g_)
-        {
-            g = g_;
-        }
+        void set_green(const float g_) { g = g_; }
 
-        void set_blue(const float b_)
-        {
-            b = b_;
-        }
+        void set_blue(const float b_) { b = b_; }
 
-        void set_alpha(const float a_)
-        {
-            a = a_;
-        }
+        void set_alpha(const float a_) { a = a_; }
 
-        float red() const
-        {
-            return r;
-        }
+        float red() const { return r; }
 
-        float green() const
-        {
-            return g;
-        }
+        float green() const { return g; }
 
-        float blue() const
-        {
-            return b;
-        }
+        float blue() const { return b; }
 
-        float alpha() const
-        {
-            return a;
-        }
+        float alpha() const { return a; }
 
         /**
          * Compare with other color.
          * @param c color for comparison
          * @return @c true if colors equal
          */
-        bool operator ==(const rgba_color& c) const;
+        bool operator==(const rgba_color &c) const;
 
         /**
          * Compare with other color.
          * @param c color for comparison
          * @return @c true if colors not equal
          */
-        bool operator !=(const rgba_color& c) const;
+        bool operator!=(const rgba_color &c) const;
 
         /**
          * Access color as array of floats.
@@ -169,7 +140,7 @@ namespace mge {
      * @param c color to dump
      * @return @c o
      */
-    MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& o,
-                                                  const rgba_color& c);
+    MGE_GRAPHICS_EXPORT std::ostream &operator<<(std::ostream &    o,
+                                                 const rgba_color &c);
 
-}
+} // namespace mge

@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/configuration.hpp"
+#include "test/googletest.hpp"
 
 #include <fstream>
 
@@ -41,7 +41,7 @@ TEST_F(configuration_test, retrieve)
     }
     {
         configuration c;
-        std::string value = c.value("configuration_test.key");
+        std::string   value = c.value("configuration_test.key");
         EXPECT_EQ(std::string("value"), value);
     }
 }
@@ -55,12 +55,11 @@ TEST_F(configuration_test, retrieve_string)
     }
     {
         configuration c;
-        std::string key("configuration_test.key");
-        std::string value = c.value(key);
+        std::string   key("configuration_test.key");
+        std::string   value = c.value(key);
         EXPECT_EQ(std::string("value"), value);
     }
 }
-
 
 TEST_F(configuration_test, bool_retrieve)
 {
@@ -71,7 +70,7 @@ TEST_F(configuration_test, bool_retrieve)
     }
     {
         configuration c;
-        bool value = c.value<bool>("configuration_test.key", false);
+        bool          value = c.value<bool>("configuration_test.key", false);
         EXPECT_TRUE(value);
     }
 }
@@ -85,12 +84,11 @@ TEST_F(configuration_test, bool_retrieve_string_key)
     }
     {
         configuration c;
-        std::string key("configuration_test.key");
-        bool value = c.value<bool>(key, false);
+        std::string   key("configuration_test.key");
+        bool          value = c.value<bool>(key, false);
         EXPECT_TRUE(value);
     }
 }
-
 
 TEST_F(configuration_test, bool_retrieve_no_default)
 {
@@ -101,11 +99,10 @@ TEST_F(configuration_test, bool_retrieve_no_default)
     }
     {
         configuration c;
-        bool value = c.value<bool>("configuration_test.key");
+        bool          value = c.value<bool>("configuration_test.key");
         EXPECT_TRUE(value);
     }
 }
-
 
 TEST_F(configuration_test, bool_retrieve_no_default_string_key)
 {
@@ -116,13 +113,11 @@ TEST_F(configuration_test, bool_retrieve_no_default_string_key)
     }
     {
         configuration c;
-        std::string key("configuration_test.key");
-        bool value = c.value<bool>(key);
+        std::string   key("configuration_test.key");
+        bool          value = c.value<bool>(key);
         EXPECT_TRUE(value);
     }
 }
-
-
 
 TEST_F(configuration_test, list_retrieve)
 {
@@ -133,7 +128,7 @@ TEST_F(configuration_test, list_retrieve)
     }
     {
         configuration c;
-        auto listvalue = c.list_value("configuration_test.key");
+        auto          listvalue = c.list_value("configuration_test.key");
         ASSERT_EQ(2u, listvalue.size());
         EXPECT_EQ(std::string("value1"), listvalue[0]);
         EXPECT_EQ(std::string("value2"), listvalue[1]);
@@ -162,28 +157,27 @@ TEST_F(configuration_test, get_keys)
         c.store();
     }
     {
-        configuration c;
+        configuration           c;
         configuration::key_list l = c.keys();
         EXPECT_EQ(std::string("configuration_test.keyA"), l[0]);
         EXPECT_EQ(std::string("configuration_test.keyB"), l[1]);
     }
 }
 
-TEST_F( configuration_test, get_non_existent )
+TEST_F(configuration_test, get_non_existent)
 {
     configuration c;
     EXPECT_THROW(c.value<std::string>("anonexistentkey"),
                  configuration_key_not_found);
 }
 
-TEST_F( configuration_test, contains_key_for_non_existent )
+TEST_F(configuration_test, contains_key_for_non_existent)
 {
     configuration c;
     EXPECT_FALSE(c.contains_key("anonexistentkey"));
 }
 
-
-TEST_F( configuration_test, clear )
+TEST_F(configuration_test, clear)
 {
     configuration c;
     c.set("configuration_test.key", "value");
@@ -192,7 +186,7 @@ TEST_F( configuration_test, clear )
     EXPECT_TRUE(c.empty());
 }
 
-TEST_F( configuration_test, clear_clears_persistence )
+TEST_F(configuration_test, clear_clears_persistence)
 {
     configuration c;
     c.set("configuration_test.key", "value");
@@ -201,6 +195,3 @@ TEST_F( configuration_test, clear_clears_persistence )
     configuration c2;
     EXPECT_TRUE(c2.empty());
 }
-
-
-

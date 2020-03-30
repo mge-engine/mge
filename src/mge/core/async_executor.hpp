@@ -2,9 +2,9 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include <functional>
 #include "mge/core/dllexport.hpp"
 #include "mge/core/void_function.hpp"
+#include <functional>
 
 namespace mge {
     /**
@@ -23,12 +23,12 @@ namespace mge {
          * Executes a function asynchronously.
          * @param f function to execute
          */
-        virtual void await(const void_function& f) = 0;
+        virtual void await(const void_function &f) = 0;
 
         /**
          * Get a synchronous executor.
          * @return executor that executes the given function synchronously
          */
-        static async_executor& synchronous_executor();
+        static async_executor &synchronous_executor();
     };
-}
+} // namespace mge

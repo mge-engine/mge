@@ -1,13 +1,13 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+#include "mge/input/key.hpp"
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
-#include "mge/input/key.hpp"
 
 TEST(key, print)
 {
-#define CHECK_KEY(K) mge::test_stream_output(mge::key::K,#K);
+#define CHECK_KEY(K) mge::test_stream_output(mge::key::K, #K);
     CHECK_KEY(INVALID);
     CHECK_KEY(SPACE);
     CHECK_KEY(ZERO);
@@ -104,7 +104,7 @@ TEST(key, print)
 
 TEST(key, print_invalid)
 {
-    int value = 12345;
+    int       value    = 12345;
     mge::key *valueptr = reinterpret_cast<mge::key *>(&value);
     mge::test_stream_output(*valueptr, "INVALID(12345)");
 }

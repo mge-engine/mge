@@ -9,46 +9,36 @@ namespace opengl {
     {
     public:
         error();
-        error(const error& e);
-        error(error&& e);
+        error(const error &e);
+        error(error &&e);
         ~error();
 
-        error& operator=(const error& e);
+        error &operator=(const error &e);
 
-        template <typename Info>
-        error& set_info(const Info& info)
+        template <typename Info> error &set_info(const Info &info)
         {
-            mge::exception::set_info (info);
+            mge::exception::set_info(info);
             return *this;
         }
 
-        template <typename T>
-        error& operator << (const T& value)
+        template <typename T> error &operator<<(const T &value)
         {
-            mge::exception::operator <<(value);
+            mge::exception::operator<<(value);
             return *this;
         }
 
-        static void check_error(const char *file,
-                                int line,
-                                const char *signature,
-                                const char *glFunction);
-        static void log_error(const char *file,
-                              int line,
-                              const char *signature,
+        static void check_error(const char *file, int line,
+                                const char *signature, const char *glFunction);
+        static void log_error(const char *file, int line, const char *signature,
                               const char *glFunction);
         static void clear();
     };
-}
+} // namespace opengl
 
-#define LOG_OPENGL_ERROR(function)                    \
-    opengl::error::log_error(__FILE__,                \
-                             __LINE__,                \
-                             MGE_FUNCTION_SIGNATURE,  \
+#define LOG_OPENGL_ERROR(function)                                             \
+    opengl::error::log_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE,       \
                              #function)
 
-#define CHECK_OPENGL_ERROR(function)                    \
-    opengl::error::check_error(__FILE__,                \
-                               __LINE__,                \
-                               MGE_FUNCTION_SIGNATURE,  \
+#define CHECK_OPENGL_ERROR(function)                                           \
+    opengl::error::check_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE,     \
                                #function)

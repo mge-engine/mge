@@ -3,8 +3,7 @@
 // All rights reserved.
 #include "dx11_test.hpp"
 
-namespace dx11
-{
+namespace dx11 {
     class test_render_system : public dx11test
     {};
 
@@ -22,4 +21,4 @@ namespace dx11
         EXPECT_TRUE(primary_monitor.get() != nullptr);
     }
 
-}
+} // namespace dx11

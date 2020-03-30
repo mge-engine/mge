@@ -3,8 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include "mge/core/types.hpp"
 #include "mge/core/shared_library.hpp"
+#include "mge/core/types.hpp"
 
 #include <vector>
 
@@ -20,7 +20,8 @@ namespace mge {
          * @param name module name
          */
     protected:
-        module(const std::string& name);
+        module(const std::string &name);
+
     public:
         ~module();
 
@@ -43,7 +44,7 @@ namespace mge {
          *
          * @return module name
          */
-        const std::string& name() const;
+        const std::string &name() const;
 
         /**
          * @brief Module shared library.
@@ -51,8 +52,9 @@ namespace mge {
          * @return Shared library implemnting the module.
          */
         const mge::shared_library_ref library() const;
+
     private:
         std::string        m_name;
         shared_library_ref m_library;
     };
-}
+} // namespace mge

@@ -4,12 +4,12 @@
 #pragma once
 #include "mge/graphics/window.hpp"
 #ifdef MGE_OS_WINDOWS
-#include "win32/window.hpp"
+#    include "win32/window.hpp"
 #else
-#error missing port
+#    error missing port
 #endif
-#include "vulkan.hpp"
 #include "system_config.hpp"
+#include "vulkan.hpp"
 
 namespace vulkan {
 
@@ -18,14 +18,13 @@ namespace vulkan {
     class window : public ::mge::platform::window
     {
     public:
-        window(render_system& s,
-               const mge::rectangle& rect,
-               const mge::window_options& options,
-               const system_config& config);
+        window(render_system &s, const mge::rectangle &rect,
+               const mge::window_options &options, const system_config &config);
         ~window();
-    private:
-        void create_render_context(const system_config& config);
 
-        render_system& m_render_system;
+    private:
+        void create_render_context(const system_config &config);
+
+        render_system &m_render_system;
     };
-}
+} // namespace vulkan

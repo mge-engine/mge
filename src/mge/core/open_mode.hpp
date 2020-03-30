@@ -1,20 +1,23 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include <iosfwd>
 #include <cstdint>
+#include <iosfwd>
 namespace mge {
 
     /**
      * @brief Open mode for files or archives.
-     * 
+     *
      */
     enum class open_mode : uint8_t
     {
-        READ,       //!< Opened read only.
-        WRITE,      //!< Opened write only.
-        READ_WRITE  //!< Opened for read and write.
+        READ,      //!< Opened read only.
+        WRITE,     //!< Opened write only.
+        READ_WRITE //!< Opened for read and write.
     };
 
-    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, 
-                                              const open_mode& m);
-}
+    MGE_CORE_EXPORT std::ostream &operator<<(std::ostream &   os,
+                                             const open_mode &m);
+} // namespace mge

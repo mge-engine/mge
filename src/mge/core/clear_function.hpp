@@ -12,9 +12,9 @@ namespace mge {
      * @tparam Args     function arguments
      * @param f         function to reset
      */
-    template< class R, class... Args >
-    inline void clear_function(std::function<R(Args...)>& f)
+    template <class R, class... Args>
+    inline void clear_function(std::function<R(Args...)> &f)
     {
         f = nullptr;
     }
-}
+} // namespace mge

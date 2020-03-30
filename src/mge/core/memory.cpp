@@ -8,26 +8,12 @@ MGE_DEFINE_LOG(MEMORY);
 
 namespace mge {
 
+    void *malloc(size_t sz) { return ::malloc(sz); }
 
+    void free(void *ptr) { ::free(ptr); }
 
-    void *malloc(size_t sz)
-    {
-        return ::malloc(sz);
-    }
+    void *realloc(void *ptr, size_t newsz) { return ::realloc(ptr, newsz); }
 
-    void free(void *ptr)
-    {
-        ::free(ptr);
-    }
+    void *calloc(size_t num, size_t size) { return ::calloc(num, size); }
 
-    void *realloc(void *ptr, size_t newsz)
-    {
-        return ::realloc(ptr, newsz);
-    }
-
-    void *calloc(size_t num, size_t size)
-    {
-        return ::calloc(num, size);
-    }
-
-}
+} // namespace mge

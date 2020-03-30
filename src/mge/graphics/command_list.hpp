@@ -2,10 +2,10 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/context_object.hpp"
-#include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/draw_command.hpp"
+#include "mge/graphics/rgba_color.hpp"
 
 namespace mge {
 
@@ -15,8 +15,7 @@ namespace mge {
      * either implemented natively, i.e. the graphics subsystem
      * implements command queues and command lists, or abstract.
      */
-    class MGE_GRAPHICS_EXPORT command_list
-            : public context_object
+    class MGE_GRAPHICS_EXPORT command_list : public context_object
     {
     protected:
         /**
@@ -25,7 +24,8 @@ namespace mge {
          * @param native    flag whether this command list is native
          *                  or abstract
          */
-        command_list(render_context& context, bool native=true);
+        command_list(render_context &context, bool native = true);
+
     public:
         /**
          * Destructor.
@@ -42,18 +42,18 @@ namespace mge {
          * Schedules a clear command of the color buffer.
          * @param c color to use for clearing
          */
-        virtual void clear(const rgba_color& c) = 0;
+        virtual void clear(const rgba_color &c) = 0;
 
         /**
          * Schedule a clear depth command.
-         * 
+         *
          * @param depth depth value to use for clearing
          */
         virtual void clear_depth(float depth) = 0;
 
         /**
          * Schedule a clear stencil command.
-         * 
+         *
          * @param depth depth value to use for clearing
          */
         virtual void clear_stencil(int32_t value) = 0;
@@ -64,7 +64,7 @@ namespace mge {
          * @param vertices vertices to draw
          * @param indices  indices to draw
          */
-        virtual void draw(const draw_command& cmd) = 0;
+        virtual void draw(const draw_command &cmd) = 0;
 
         /**
          * Draws vertices using the current pipeline.
@@ -72,13 +72,13 @@ namespace mge {
          * @param vertices vertices to draw
          * @param indices  indices to draw
          */
-        virtual void draw(draw_command&& cmd) = 0;
+        virtual void draw(draw_command &&cmd) = 0;
 
         /**
          * Play a command list within the command list.
          * @param commands commands to play
          */
-        void play(const command_list_ref& commands);
+        void play(const command_list_ref &commands);
 
         /**
          * Empties the command list and brings it back to
@@ -94,14 +94,14 @@ namespace mge {
 
         /**
          * Return whether this command list has finished recording.
-         * 
+         *
          * @return @c true if command list has been finished
          */
         bool immutable() const noexcept { return m_finished; }
 
         /**
          * Return whether this command list has finished recording.
-         * 
+         *
          * @return @c true if command list has been finished
          */
         bool finished() const noexcept { return m_finished; }
@@ -112,11 +112,12 @@ namespace mge {
          */
         void assert_not_immutable();
 
-        virtual void on_finish() = 0;
-        virtual void on_play(const command_list_ref& commands) = 0;
-        virtual void on_clear() = 0;
+        virtual void on_finish()                               = 0;
+        virtual void on_play(const command_list_ref &commands) = 0;
+        virtual void on_clear()                                = 0;
+
     private:
-        bool         m_native;
-        bool         m_finished;
+        bool m_native;
+        bool m_finished;
     };
-}
+} // namespace mge

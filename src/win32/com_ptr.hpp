@@ -6,10 +6,8 @@
 #include <windows.h>
 #include <wrl/client.h>
 
-
 namespace mge {
 
-template <typename T>
-using com_ptr = ::Microsoft::WRL::ComPtr<T>;
+    template <typename T> using com_ptr = ::Microsoft::WRL::ComPtr<T>;
 
 }

@@ -6,30 +6,34 @@
 
 #include <sstream>
 
-static void bench_lexical_cast_noop(benchmark::State& state) {
+static void bench_lexical_cast_noop(benchmark::State &state)
+{
     std::string s1("horst");
     std::string s2;
-  while (state.KeepRunning()) {
-      s2 = mge::lexical_cast<decltype(s2)>(s1);
-  }
+    while (state.KeepRunning()) {
+        s2 = mge::lexical_cast<decltype(s2)>(s1);
+    }
 }
-static void bench_lexical_cast_string_to_int(benchmark::State& state) {
+static void bench_lexical_cast_string_to_int(benchmark::State &state)
+{
     std::string s1("123");
-    int s2;
-  while (state.KeepRunning()) {
-      s2 = mge::lexical_cast<decltype(s2)>(s1);
-  }
+    int         s2;
+    while (state.KeepRunning()) {
+        s2 = mge::lexical_cast<decltype(s2)>(s1);
+    }
 }
 
-static void bench_lexical_cast_int_to_string(benchmark::State& state) {
-    int s1 = 123;
+static void bench_lexical_cast_int_to_string(benchmark::State &state)
+{
+    int         s1 = 123;
     std::string s2;
-  while (state.KeepRunning()) {
-      s2 = mge::lexical_cast<decltype(s2)>(s1);
-  }
+    while (state.KeepRunning()) {
+        s2 = mge::lexical_cast<decltype(s2)>(s1);
+    }
 }
 
-static void bench_int_to_string_stringstream(benchmark::State& state) {
+static void bench_int_to_string_stringstream(benchmark::State &state)
+{
     int s1 = 123;
     while (state.KeepRunning()) {
         std::stringstream ss;

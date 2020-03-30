@@ -3,10 +3,10 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/gamma_ramp.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/video_mode.hpp"
-#include "mge/graphics/gamma_ramp.hpp"
 
 #include <vector>
 
@@ -22,6 +22,7 @@ namespace mge {
          * Constructor.
          */
         monitor();
+
     public:
         /// Type of video mode collection.
         using video_mode_collection_type = std::vector<video_mode>;
@@ -35,7 +36,7 @@ namespace mge {
          * Get monitor name.
          * @return name
          */
-        const std::string& name() const;
+        const std::string &name() const;
 
         /**
          * Return whether this monitor is primary.
@@ -68,17 +69,17 @@ namespace mge {
          * Sets a video mode.
          * @param mode video mode
          */
-        virtual void set_video_mode(const video_mode& mode) = 0;
+        virtual void set_video_mode(const video_mode &mode) = 0;
 
         /**
          * Get current video mode.
          * @return current video mode
          */
         virtual video_mode current_video_mode() const = 0;
+
     protected:
-        monitor(const std::string& name,
-                bool primary);
+        monitor(const std::string &name, bool primary);
         std::string m_name;
-        bool m_primary;
+        bool        m_primary;
     };
-}
+} // namespace mge

@@ -2,11 +2,11 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/buffer_type.hpp"
+#include "mge/graphics/context_object.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
-#include "mge/graphics/context_object.hpp"
 #include "mge/graphics/usage.hpp"
-#include "mge/graphics/buffer_type.hpp"
 #include <cstdint>
 namespace mge {
 
@@ -50,8 +50,7 @@ namespace mge {
          * @param type          buffer type
          * @param buffer_usage  buffer usage
          */
-        hardware_buffer(render_context& context,
-                        buffer_type type,
+        hardware_buffer(render_context &context, buffer_type type,
                         usage buffer_usage);
 
         /**
@@ -62,11 +61,8 @@ namespace mge {
          * @param data          buffer content
          * @param data_size     buffer content size in bytes
          */
-        hardware_buffer(render_context& context,
-                        buffer_type type,
-                        usage buffer_usage,
-                        void *data,
-                        size_t data_size);
+        hardware_buffer(render_context &context, buffer_type type,
+                        usage buffer_usage, void *data, size_t data_size);
 
     public:
         /**
@@ -109,13 +105,14 @@ namespace mge {
          * @return buffer change policy
          */
         usage buffer_usage() const noexcept { return m_usage; }
-    protected:
-        virtual void *on_map() = 0;
-        virtual void on_unmap() = 0;
 
-        buffer_type  m_type;
-        usage m_usage;
-        uint32_t m_map_count;
-        void *m_mapped_memory;
+    protected:
+        virtual void *on_map()   = 0;
+        virtual void  on_unmap() = 0;
+
+        buffer_type m_type;
+        usage       m_usage;
+        uint32_t    m_map_count;
+        void *      m_mapped_memory;
     };
-}
+} // namespace mge

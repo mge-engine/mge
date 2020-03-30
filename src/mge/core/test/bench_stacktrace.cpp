@@ -4,7 +4,7 @@
 #include "bench/googlebenchmark.hpp"
 #include "mge/core/stacktrace.hpp"
 
-static void bench_stacktrace(benchmark::State& state)
+static void bench_stacktrace(benchmark::State &state)
 {
     while (state.KeepRunning()) {
         mge::stacktrace bt;

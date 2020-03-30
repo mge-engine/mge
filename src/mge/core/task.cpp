@@ -6,41 +6,35 @@
 #include "mge/core/stdexceptions.hpp"
 namespace mge {
 
-    task::task(const std::function<void()>& f)
-        :m_function(f)
+    task::task(const std::function<void()> &f) : m_function(f)
     {
         if (!f) {
-           MGE_THROW(illegal_argument) << "Invalid function to call in task";
+            MGE_THROW(illegal_argument) << "Invalid function to call in task";
         }
     }
 
-    task::task(std::function<void()>&& f)
-        :m_function(std::move(f))
-    {}
+    task::task(std::function<void()> &&f) : m_function(std::move(f)) {}
 
-    void
-    task::run()
+    void task::run()
     {
         try {
-            if(m_function) {
+            if (m_function) {
                 m_function();
                 m_result.set_value();
             } else {
-                MGE_THROW(mge::illegal_state) << "Invalid function to call in task";
+                MGE_THROW(mge::illegal_state)
+                    << "Invalid function to call in task";
             }
-        } catch(...) {
+        } catch (...) {
             try {
                 m_result.set_exception(std::current_exception());
-            } catch(...) {
-                mge::crash("Exception forwarding current exception from task run");
+            } catch (...) {
+                mge::crash(
+                    "Exception forwarding current exception from task run");
             }
         }
     }
 
-    void
-    task::wait()
-    {
-        m_result.get_future().get();
-    }
+    void task::wait() { m_result.get_future().get(); }
 
-}
+} // namespace mge

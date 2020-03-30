@@ -12,8 +12,7 @@ namespace mge {
     /**
      * A map to store @c std::function object by a key (@c unsigned @c int)
      */
-    template<typename T>
-    class function_map
+    template <typename T> class function_map
     {
     public:
         /**
@@ -28,11 +27,11 @@ namespace mge {
              * Create iteration scope.
              * @param m function map
              */
-            explicit iteration_scope(function_map<T>& m)
-                :m_map(m)
+            explicit iteration_scope(function_map<T> &m) : m_map(m)
             {
-                if(m.m_iteration_scope != nullptr) {
-                    MGE_THROW(mge::illegal_state) << "Unsupported nested iteration scope";
+                if (m.m_iteration_scope != nullptr) {
+                    MGE_THROW(mge::illegal_state)
+                        << "Unsupported nested iteration scope";
                 }
                 m.m_iteration_scope = this;
             }
@@ -43,12 +42,12 @@ namespace mge {
              */
             ~iteration_scope()
             {
-                for(const auto& p: m_insert_data) {
+                for (const auto &p : m_insert_data) {
                     m_map.m_data[p.first] = p.second;
                 }
-                for(const auto& k: m_delete_data) {
+                for (const auto &k : m_delete_data) {
                     auto it = m_map.m_data.find(k);
-                    if(it != m_map.m_data.end()) {
+                    if (it != m_map.m_data.end()) {
                         m_map.m_data.erase(it);
                     }
                 }
@@ -60,7 +59,7 @@ namespace mge {
              * @param k key
              * @param f function
              */
-            void add_insert(unsigned int k, const std::function<T>& f)
+            void add_insert(unsigned int k, const std::function<T> &f)
             {
                 m_insert_data.push_back(std::make_pair(k, f));
             }
@@ -69,10 +68,7 @@ namespace mge {
              * Add a delete operation.
              * @param k key
              */
-            void add_delete(unsigned int k)
-            {
-                m_delete_data.push_back(k);
-            }
+            void add_delete(unsigned int k) { m_delete_data.push_back(k); }
 
             /**
              * Helper function for delete operation.
@@ -81,8 +77,8 @@ namespace mge {
              */
             bool handle_delete(unsigned int k)
             {
-                for(const auto& p: m_insert_data) {
-                    if(k == p.first) {
+                for (const auto &p : m_insert_data) {
+                    if (k == p.first) {
                         m_delete_data.push_back(k);
                         return true;
                     }
@@ -90,35 +86,32 @@ namespace mge {
                 return false;
             }
 
-            std::vector<std::pair<unsigned int, std::function<T>>> m_insert_data;
+            std::vector<std::pair<unsigned int, std::function<T>>>
+                                      m_insert_data;
             std::vector<unsigned int> m_delete_data;
-            function_map<T>& m_map;
+            function_map<T> &         m_map;
         };
 
-        using key_type = unsigned int;
+        using key_type   = unsigned int;
         using value_type = std::function<T>;
-        using map_type = std::map<unsigned int, std::function<T>>;
+        using map_type   = std::map<unsigned int, std::function<T>>;
 
         /**
          * Constructor.
          */
-        function_map()
-        :m_sequence(1),
-         m_iteration_scope(nullptr)
-        {}
+        function_map() : m_sequence(1), m_iteration_scope(nullptr) {}
 
         /**
          * Copy constructor.
          * @param other copied instance
          */
-        function_map(const function_map& other)
-        :m_sequence(other.m_sequence),
-         m_iteration_scope(nullptr),
-         m_data(other.m_data)
+        function_map(const function_map &other)
+            : m_sequence(other.m_sequence), m_iteration_scope(nullptr),
+              m_data(other.m_data)
         {
-            if(other.m_iteration_scope != nullptr) {
-                MGE_THROW(mge::illegal_state) << "Cannot copy function map during iteration";
-
+            if (other.m_iteration_scope != nullptr) {
+                MGE_THROW(mge::illegal_state)
+                    << "Cannot copy function map during iteration";
             }
         }
 
@@ -126,13 +119,13 @@ namespace mge {
          * Move constructor.
          * @param other moved instance
          */
-        function_map(function_map&& other)
-        :m_sequence(other.m_sequence),
-         m_iteration_scope(nullptr),
-         m_data(std::move(other.m_data))
+        function_map(function_map &&other)
+            : m_sequence(other.m_sequence), m_iteration_scope(nullptr),
+              m_data(std::move(other.m_data))
         {
-            if(other.m_iteration_scope != nullptr) {
-                MGE_THROW(mge::illegal_state) << "Cannot copy function map during iteration";
+            if (other.m_iteration_scope != nullptr) {
+                MGE_THROW(mge::illegal_state)
+                    << "Cannot copy function map during iteration";
             }
         }
 
@@ -141,10 +134,10 @@ namespace mge {
          * @param f inserted function
          * @return autogenerated key
          */
-        key_type insert(const std::function<T>& f)
+        key_type insert(const std::function<T> &f)
         {
             unsigned int k = m_sequence++;
-            if(m_iteration_scope) {
+            if (m_iteration_scope) {
                 m_iteration_scope->add_insert(k, f);
             } else {
                 m_data[k] = f;
@@ -160,15 +153,15 @@ namespace mge {
         bool erase(key_type k)
         {
             auto it = m_data.find(k);
-            if(it != m_data.end()) {
-                if(m_iteration_scope) {
+            if (it != m_data.end()) {
+                if (m_iteration_scope) {
                     m_iteration_scope->add_delete(k);
                 } else {
                     m_data.erase(it);
                 }
                 return true;
             } else {
-                if(m_iteration_scope) {
+                if (m_iteration_scope) {
                     return m_iteration_scope->handle_delete(k);
                 } else {
                     return false;
@@ -179,12 +172,14 @@ namespace mge {
         /**
          * Returns an iterator the the first element. It is necessary
          * that an @c iteration_scope is active.
-         * @return iterator to first element, content type is @c std::pair<key_type, T>
+         * @return iterator to first element, content type is @c
+         * std::pair<key_type, T>
          */
         typename map_type::const_iterator begin() const
         {
             if (m_iteration_scope == nullptr) {
-                MGE_THROW(mge::illegal_state) << "Try to iterate on map without iteration scope";
+                MGE_THROW(mge::illegal_state)
+                    << "Try to iterate on map without iteration scope";
             }
             return m_data.begin();
         }
@@ -197,7 +192,8 @@ namespace mge {
         typename map_type::const_iterator end() const
         {
             if (m_iteration_scope == nullptr) {
-                MGE_THROW(mge::illegal_state) <<  "Try to iterate on map without iteration scope";
+                MGE_THROW(mge::illegal_state)
+                    << "Try to iterate on map without iteration scope";
             }
             return m_data.end();
         }
@@ -207,4 +203,4 @@ namespace mge {
         map_type         m_data;
     };
 
-}
+} // namespace mge

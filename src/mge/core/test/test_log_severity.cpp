@@ -1,9 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/log_severity.hpp"
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
-#include "mge/core/log_severity.hpp"
 
 TEST(log_severity, stream_output)
 {

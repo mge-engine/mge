@@ -4,34 +4,21 @@
 #include "mge/ui/context.hpp"
 namespace mge {
     namespace ui {
-        context::context()
-            :m_input(nullptr)
-        {}
+        context::context() : m_input(nullptr) {}
 
-        context::~context()
-        {
-            detach_input();
-        }
+        context::~context() { detach_input(); }
 
-        void
-        context::on_draw(mge::render_context& render_context)
-        {
-        }
+        void context::on_draw(mge::render_context &render_context) {}
 
-        void
-        context::attach_input(mge::input_handler& input)
+        void context::attach_input(mge::input_handler &input)
         {
-            if(m_input) {
+            if (m_input) {
                 detach_input();
             }
             m_input = &input;
         }
 
-        void
-        context::detach_input()
-        {
-            m_input = nullptr;
-        }
+        void context::detach_input() { m_input = nullptr; }
 
-    }
-}
+    } // namespace ui
+} // namespace mge

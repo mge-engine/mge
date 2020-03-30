@@ -32,7 +32,6 @@ namespace mge {
          * @param path path
          * @return file access object
          */
-        virtual file_access_ref create_file_access(const mge::path& p) = 0;
+        virtual file_access_ref create_file_access(const mge::path &p) = 0;
     };
-}
-
+} // namespace mge

@@ -2,10 +2,10 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/types.hpp"
 #include "mge/config.hpp"
+#include "mge/core/types.hpp"
 #ifdef MGE_COMPILER_MSVC
-#  include <intrin.h>
+#    include <intrin.h>
 #endif
 #include <cstdint>
 namespace mge {
@@ -57,7 +57,8 @@ namespace mge {
 #else
         x = x - ((x >> 1) & 0x55555555);
         x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
-        return static_cast<int>((((x + (x >> 4)) & 0x0F0F0F0F) * 0x01010101) >> 24);
+        return static_cast<int>((((x + (x >> 4)) & 0x0F0F0F0F) * 0x01010101) >>
+                                24);
 #endif
     }
 
@@ -74,10 +75,9 @@ namespace mge {
 #else
         x = x - ((x >> 1) & 0x5555555555555555);
         x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333);
-        return static_cast<int>((((x + (x >> 4)) & 0x0F0F0F0F0F0F0F0F) * 0x0101010101010101) >> 56);
+        return static_cast<int>(
+            (((x + (x >> 4)) & 0x0F0F0F0F0F0F0F0F) * 0x0101010101010101) >> 56);
 #endif
     }
 
-
-
-}
+} // namespace mge

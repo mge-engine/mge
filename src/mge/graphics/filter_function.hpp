@@ -13,6 +13,6 @@ namespace mge {
         LINEAR
     };
 
-    MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os,
-                                                  const filter_function& f);
-}
+    MGE_GRAPHICS_EXPORT std::ostream &operator<<(std::ostream &         os,
+                                                 const filter_function &f);
+} // namespace mge

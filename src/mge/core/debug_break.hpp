@@ -8,4 +8,4 @@ namespace mge {
      * @brief Break into the attached debugger.
      */
     MGE_CORE_EXPORT void debug_break();
-}
+} // namespace mge

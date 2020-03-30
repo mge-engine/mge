@@ -3,8 +3,7 @@
 // All rights reserved.
 #include "opengl_test.hpp"
 
-namespace opengl
-{
+namespace opengl {
     class test_render_system : public opengltest
     {};
 
@@ -22,4 +21,4 @@ namespace opengl
         EXPECT_TRUE(primary_monitor.get() != nullptr);
     }
 
-}
+} // namespace opengl

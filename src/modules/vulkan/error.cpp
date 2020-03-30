@@ -2,15 +2,15 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "error.hpp"
-#include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 MGE_USE_LOG(VULKAN);
 
 namespace vulkan {
     MGE_DEFINE_EXCEPTION(error);
 
-    static const char* vkresult_message(VkResult rc)
+    static const char *vkresult_message(VkResult rc)
     {
         switch (rc) {
         case VK_SUCCESS:
@@ -30,7 +30,8 @@ namespace vulkan {
         case VK_ERROR_OUT_OF_DEVICE_MEMORY:
             return "A device memory allocation has failed";
         case VK_ERROR_INITIALIZATION_FAILED:
-            return "Initialization of an object could not be completed for implementation-specific reasons";
+            return "Initialization of an object could not be completed for "
+                   "implementation-specific reasons";
         case VK_ERROR_DEVICE_LOST:
             return "The logical or physical device has been lost";
         case VK_ERROR_MEMORY_MAP_FAILED:
@@ -42,7 +43,8 @@ namespace vulkan {
         case VK_ERROR_FEATURE_NOT_PRESENT:
             return "A requested feature is not supported";
         case VK_ERROR_INCOMPATIBLE_DRIVER:
-            return "The requested version of Vulkan is not supported by the driver or is otherwise incompatible";
+            return "The requested version of Vulkan is not supported by the "
+                   "driver or is otherwise incompatible";
         case VK_ERROR_TOO_MANY_OBJECTS:
             return "Too many objects of the type have already been created";
         case VK_ERROR_FORMAT_NOT_SUPPORTED:
@@ -50,13 +52,17 @@ namespace vulkan {
         case VK_ERROR_SURFACE_LOST_KHR:
             return "A surface is no longer available";
         case VK_SUBOPTIMAL_KHR:
-            return "A swapchain no longer matches the surface properties exactly, but can still be used";
+            return "A swapchain no longer matches the surface properties "
+                   "exactly, but can still be used";
         case VK_ERROR_OUT_OF_DATE_KHR:
-            return "A surface has changed in such a way that it is no longer compatible with the swapchain";
+            return "A surface has changed in such a way that it is no longer "
+                   "compatible with the swapchain";
         case VK_ERROR_INCOMPATIBLE_DISPLAY_KHR:
-            return "The display used by a swapchain does not use the same presentable image layout";
+            return "The display used by a swapchain does not use the same "
+                   "presentable image layout";
         case VK_ERROR_NATIVE_WINDOW_IN_USE_KHR:
-            return "The requested window is already connected to a VkSurfaceKHR, or to some other non-Vulkan API";
+            return "The requested window is already connected to a "
+                   "VkSurfaceKHR, or to some other non-Vulkan API";
         case VK_ERROR_VALIDATION_FAILED_EXT:
             return "A validation layer found an error";
         default:
@@ -64,26 +70,32 @@ namespace vulkan {
         }
     }
 
-    error& error::set_info_from_vkresult(VkResult rc, const char* file, int line, const char* function)
+    error &error::set_info_from_vkresult(VkResult rc, const char *file,
+                                         int line, const char *function)
     {
         set_info(mge::exception::source_file(file))
-            .set_info(mge::exception::source_line(line))
-            .set_info(mge::exception::called_function(function))
-            .set_info(mge::exception::stack(mge::stacktrace()))
-            .set_info(mge::exception::type_name(mge::type_name<vulkan::error>()))
-            << "Call to " << function << " failed: (" << (int)rc << ") " << vkresult_message(rc);
+                .set_info(mge::exception::source_line(line))
+                .set_info(mge::exception::called_function(function))
+                .set_info(mge::exception::stack(mge::stacktrace()))
+                .set_info(
+                    mge::exception::type_name(mge::type_name<vulkan::error>()))
+            << "Call to " << function << " failed: (" << (int)rc << ") "
+            << vkresult_message(rc);
         return *this;
     }
 
-    void error::check_vkresult(VkResult rc, const char* file, int line, const char* function)
+    void error::check_vkresult(VkResult rc, const char *file, int line,
+                               const char *function)
     {
-        if (rc==VK_SUCCESS) {
+        if (rc == VK_SUCCESS) {
             return;
         } else {
-            MGE_ERROR_LOG(VULKAN) << file << ":" << line << ": " << "Call to " << function << " failed: (" << (int)rc << ") " << vkresult_message(rc);
+            MGE_ERROR_LOG(VULKAN) << file << ":" << line << ": "
+                                  << "Call to " << function << " failed: ("
+                                  << (int)rc << ") " << vkresult_message(rc);
             vulkan::error err;
             throw err.set_info_from_vkresult(rc, file, line, function);
         }
     }
 
-}
+} // namespace vulkan

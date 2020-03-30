@@ -2,18 +2,18 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/application/application.hpp"
-#include "mge/graphics/render_system.hpp"
-#include "mge/graphics/window.hpp"
-#include "mge/graphics/render_context.hpp"
-#include "mge/graphics/rgba_color.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/usage.hpp"
-#include "mge/graphics/shader_program.hpp"
-#include "mge/graphics/pipeline.hpp"
-#include "mge/core/log.hpp"
-#include "mge/core/thread.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/debug_break.hpp"
+#include "mge/core/log.hpp"
+#include "mge/core/thread.hpp"
+#include "mge/graphics/command_list.hpp"
+#include "mge/graphics/pipeline.hpp"
+#include "mge/graphics/render_context.hpp"
+#include "mge/graphics/render_system.hpp"
+#include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/shader_program.hpp"
+#include "mge/graphics/usage.hpp"
+#include "mge/graphics/window.hpp"
 
 using namespace mge;
 using namespace std::string_view_literals;
@@ -29,52 +29,51 @@ public:
     {
         MGE_DEBUG_LOG(triangle) << "Setup triangle";
         m_render_system = render_system::create();
-        m_window = m_render_system->create_window();
-        m_window->set_close_listener([&]{
-            set_quit();
-        });
-        m_window->set_key_action_handler([&](mge::key k, mge::key_action a, mge::modifier m) {
-            if(a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
-                set_quit();
-            }
-        });
+        m_window        = m_render_system->create_window();
+        m_window->set_close_listener([&] { set_quit(); });
+        m_window->set_key_action_handler(
+            [&](mge::key k, mge::key_action a, mge::modifier m) {
+                if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
+                    set_quit();
+                }
+            });
 
         m_clear_commands = m_window->render_context().create_command_list();
         m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
         m_clear_commands->finish();
-        m_window->set_redraw_listener([&](window::redraw_context& context) {
-            this->draw(context);
-        });
+        m_window->set_redraw_listener(
+            [&](window::redraw_context &context) { this->draw(context); });
         MGE_DEBUG_LOG(triangle) << "Initializing objects";
         m_window->show();
-        add_setup_task([&]{
-            this->initialize();
-        });
+        add_setup_task([&] { this->initialize(); });
     }
 
     void initialize()
     {
         MGE_DEBUG_LOG(triangle) << "Initializing objects";
-        auto pixel_shader = m_window->render_context().create_shader_program(shader_type::FRAGMENT);
-        auto vertex_shader = m_window->render_context().create_shader_program(shader_type::VERTEX);
+        auto pixel_shader = m_window->render_context().create_shader_program(
+            shader_type::FRAGMENT);
+        auto vertex_shader = m_window->render_context().create_shader_program(
+            shader_type::VERTEX);
         m_pipeline = m_window->render_context().create_pipeline();
-        MGE_DEBUG_LOG(triangle) << "render system is " << m_render_system->implementation_name();
-        if (m_render_system->implementation_name() == "opengl::render_system"sv) {
+        MGE_DEBUG_LOG(triangle)
+            << "render system is " << m_render_system->implementation_name();
+        if (m_render_system->implementation_name() ==
+            "opengl::render_system"sv) {
             const char *vertex_shader_glsl =
-                            "#version 330 core\n"
-                            "layout(location = 0) in vec3 vertexPosition;\n"
-                            "\n"
-                            "void main() {\n"
-                            "  gl_Position.xyz = vertexPosition;\n"
-                            "  gl_Position.w = 1.0;\n"
-                            "}";
-            const char *fragment_shader_glsl =
                 "#version 330 core\n"
-                "out vec3 color;\n"
+                "layout(location = 0) in vec3 vertexPosition;\n"
                 "\n"
                 "void main() {\n"
-                "    color = vec3(1,1,1);\n"
+                "  gl_Position.xyz = vertexPosition;\n"
+                "  gl_Position.w = 1.0;\n"
                 "}";
+            const char *fragment_shader_glsl = "#version 330 core\n"
+                                               "out vec3 color;\n"
+                                               "\n"
+                                               "void main() {\n"
+                                               "    color = vec3(1,1,1);\n"
+                                               "}";
             MGE_DEBUG_LOG(triangle) << "Compile fragment shader";
             pixel_shader->compile(fragment_shader_glsl);
             MGE_DEBUG_LOG(triangle) << "Compile vertex shader";
@@ -87,32 +86,27 @@ public:
         m_pipeline->link();
         MGE_DEBUG_LOG(triangle) << "Pipeline linked";
         float triangle_coords[] = {
-            0.0f, 0.5f, 0.0f,
-            0.45f, -0.5, 0.0f,
-            -0.45f, -0.5f, 0.0f,
+            0.0f, 0.5f, 0.0f, 0.45f, -0.5, 0.0f, -0.45f, -0.5f, 0.0f,
         };
-        int triangle_indices[] = { 0, 1, 2};
+        int                triangle_indices[] = {0, 1, 2};
         mge::vertex_layout layout;
         layout.push_back(mge::vertex_format(mge::data_type::FLOAT_VEC3, 1));
-        m_vertices = m_window->render_context()
-            .create_vertex_buffer(layout,
-                mge::usage::DEFAULT,
-                mge::array_size(triangle_coords),
-                triangle_coords);
-        m_indices = m_window->render_context()
-            .create_index_buffer(mge::data_type::INT32,
-                                 mge::usage::DEFAULT,
-                                 mge::array_size(triangle_indices),
-                                 triangle_indices);
+        m_vertices = m_window->render_context().create_vertex_buffer(
+            layout, mge::usage::DEFAULT, mge::array_size(triangle_coords),
+            triangle_coords);
+        m_indices = m_window->render_context().create_index_buffer(
+            mge::data_type::INT32, mge::usage::DEFAULT,
+            mge::array_size(triangle_indices), triangle_indices);
         m_draw_commands = m_window->render_context().create_command_list();
         m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-        m_draw_commands->draw(mge::draw_command(m_pipeline, m_vertices, m_indices));
+        m_draw_commands->draw(
+            mge::draw_command(m_pipeline, m_vertices, m_indices));
         m_draw_commands->finish();
         MGE_DEBUG_LOG(triangle) << "Initializing objects done";
         m_initialized = true;
     }
 
-    void draw(window::redraw_context& context)
+    void draw(window::redraw_context &context)
     {
         if (m_initialized) {
             context.render_context.execute(m_draw_commands);
@@ -120,8 +114,8 @@ public:
             context.render_context.execute(m_clear_commands);
         }
         context.render_context.flush();
-
     }
+
 private:
     render_system_ref m_render_system;
     window_ref        m_window;

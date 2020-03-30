@@ -3,8 +3,8 @@
 // All rights reserved.
 #pragma once
 
-#include "mge/script/dllexport.hpp"
 #include "mge/core/component.hpp"
+#include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
 namespace mge {
@@ -20,6 +20,7 @@ namespace mge {
          * Constructor.
          */
         script_engine() = default;
+
     public:
         /**
          * Create a new script context, inheriting global definitions.
@@ -32,4 +33,4 @@ namespace mge {
          */
         virtual ~script_engine() = default;
     };
-}
+} // namespace mge

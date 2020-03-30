@@ -2,8 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "error.hpp"
-#include "mge/core/stdexceptions.hpp"
 #include "mge/core/log.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 MGE_USE_LOG(OPENGL);
 
@@ -12,7 +12,7 @@ namespace opengl {
 
     static const char *gl_error_text(GLenum error_code)
     {
-        switch(error_code) {
+        switch (error_code) {
         case GL_NO_ERROR:
             return "No error";
         case GL_INVALID_ENUM:
@@ -32,48 +32,44 @@ namespace opengl {
         default:
             return "Unknown error";
         }
-
     }
 
-    void
-    error::clear()
+    void error::clear()
     {
         auto err = glGetError();
-        if(err != GL_NO_ERROR) {
-            MGE_WARNING_LOG(OPENGL) << "Ignoring OpenGL error: ("
-                                    << (unsigned int)err << ") "  << gl_error_text(err);
+        if (err != GL_NO_ERROR) {
+            MGE_WARNING_LOG(OPENGL)
+                << "Ignoring OpenGL error: (" << (unsigned int)err << ") "
+                << gl_error_text(err);
         }
     }
 
-    void
-    error::check_error(const char *file,
-                       int line,
-                       const char *signature,
-                       const char *glFunction)
+    void error::check_error(const char *file, int line, const char *signature,
+                            const char *glFunction)
     {
         auto err = glGetError();
-        if(err != GL_NO_ERROR) {
-            throw error().set_info(mge::exception::source_file(file))
+        if (err != GL_NO_ERROR) {
+            throw error()
+                    .set_info(mge::exception::source_file(file))
                     .set_info(mge::exception::source_line(line))
                     .set_info(mge::exception::function(signature))
                     .set_info(mge::exception::stack(mge::stacktrace()))
-                    .set_info(mge::exception::type_name(mge::type_name<error>()))
+                    .set_info(
+                        mge::exception::type_name(mge::type_name<error>()))
                     .set_info(::mge::exception::called_function(glFunction))
-             << "OpenGL error: [" << glFunction << "] (" << (unsigned int)err << ") " << gl_error_text(err);
+                << "OpenGL error: [" << glFunction << "] (" << (unsigned int)err
+                << ") " << gl_error_text(err);
         }
     }
 
-    void
-    error::log_error(const char *file,
-                       int line,
-                       const char *signature,
-                       const char *glFunction)
+    void error::log_error(const char *file, int line, const char *signature,
+                          const char *glFunction)
     {
         try {
             check_error(file, line, signature, glFunction);
-        } catch(const mge::exception& ex) {
+        } catch (const mge::exception &ex) {
             MGE_ERROR_LOG(OPENGL) << ex;
         }
     }
 
-}
+} // namespace opengl

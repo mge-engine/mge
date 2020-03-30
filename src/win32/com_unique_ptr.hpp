@@ -6,8 +6,7 @@
 
 namespace mge {
 
-    template <typename T>
-    struct com_deleter
+    template <typename T> struct com_deleter
     {
         using pointer = T *;
         com_deleter() = default;
@@ -15,7 +14,7 @@ namespace mge {
     };
 
     template <typename T>
-    inline std::unique_ptr<T, mge::com_deleter<T>> make_com_unique_ptr(T* ptr)
+    inline std::unique_ptr<T, mge::com_deleter<T>> make_com_unique_ptr(T *ptr)
     {
         return std::unique_ptr<T, mge::com_deleter<T>>(ptr);
     }
@@ -23,6 +22,4 @@ namespace mge {
     template <typename T>
     using com_unique_ptr = std::unique_ptr<T, mge::com_deleter<T>>;
 
-}
-
-
+} // namespace mge

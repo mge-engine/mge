@@ -9,7 +9,8 @@ namespace mge {
     class MGE_GRAPHICS_EXPORT window_options
     {
     public:
-        enum option {
+        enum option
+        {
             NONE = 0,
             FULLSCREEN,
             RESIZABLE,
@@ -20,33 +21,27 @@ namespace mge {
             MAX = TITLE
         };
 
-        window_options()
-        {}
+        window_options() {}
 
-        template <typename ...Args>
-        explicit window_options(Args ... args)
+        template <typename... Args> explicit window_options(Args... args)
         {
-            window_options::option options[] =
-            { args...};
-            for(auto o: options) {
+            window_options::option options[] = {args...};
+            for (auto o : options) {
                 set_option(o);
             }
         }
-        window_options(const window_options& o)
-            :m_options(o.m_options)
+        window_options(const window_options &o) : m_options(o.m_options) {}
+
+        window_options(window_options &&o) : m_options(std::move(o.m_options))
         {}
 
-        window_options(window_options&& o)
-            :m_options(std::move(o.m_options))
-        {}
-
-        inline window_options& operator =(const window_options& o)
+        inline window_options &operator=(const window_options &o)
         {
             m_options = o.m_options;
             return *this;
         }
 
-        inline window_options& operator =(window_options&& o)
+        inline window_options &operator=(window_options &&o)
         {
             m_options = std::move(o.m_options);
             return *this;
@@ -54,8 +49,8 @@ namespace mge {
 
         ~window_options() = default;
 
-        window_options& set_option(option o, bool value=true);
-        bool option_set(option o) const;
+        window_options &set_option(option o, bool value = true);
+        bool            option_set(option o) const;
 
         /**
          * Standard window options.
@@ -63,7 +58,8 @@ namespace mge {
          */
         static window_options standard_options();
         static window_options fullscreen_options();
+
     private:
         std::bitset<(size_t)MAX> m_options;
     };
-}
+} // namespace mge

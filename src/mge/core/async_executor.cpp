@@ -7,16 +7,12 @@ namespace mge {
 
     class synchronous_executor : public async_executor
     {
-        void await(const std::function<void()>& f)
-        {
-            f();
-        }
+        void await(const std::function<void()> &f) { f(); }
     };
 
-    async_executor&
-    async_executor::synchronous_executor()
+    async_executor &async_executor::synchronous_executor()
     {
         static class synchronous_executor ex;
         return ex;
     }
-}
+} // namespace mge

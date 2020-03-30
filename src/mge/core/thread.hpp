@@ -3,13 +3,13 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
-#include "mge/core/types.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/types.hpp"
 
-#include <thread>
-#include <iostream>
-#include <utility>
 #include <functional>
+#include <iostream>
+#include <thread>
+#include <utility>
 
 namespace mge {
 
@@ -18,9 +18,8 @@ namespace mge {
     /**
      * Thread class. Enhances std::thread by convenience methods.
      */
-    class MGE_CORE_EXPORT thread
-            : noncopyable
-            , public std::enable_shared_from_this<thread>
+    class MGE_CORE_EXPORT thread : noncopyable,
+                                   public std::enable_shared_from_this<thread>
     {
     public:
         /// Type of 'running' thread. Usually @c std::thread.
@@ -63,24 +62,24 @@ namespace mge {
          * thread.
          * @param f thread function
          */
-        inline void start(const std::function<void()>& f)
+        inline void start(const std::function<void()> &f)
         {
             if (!f) {
                 MGE_THROW(mge::illegal_argument)
-                        << "Invalid function parameter for thread start";
+                    << "Invalid function parameter for thread start";
             }
 
             if (joinable()) {
                 MGE_THROW(mge::illegal_state)
-                          << "This thread has already been started";
+                    << "This thread has already been started";
             }
 
-            m_running_thread = running_thread_t([f, this]{
+            m_running_thread = running_thread_t([f, this] {
                 try {
                     this->on_start();
                     f();
                     this->on_finish();
-                } catch(...) {
+                } catch (...) {
                     this->on_exception(std::current_exception());
                 }
             });
@@ -128,29 +127,27 @@ namespace mge {
          * @return @c true if thread can be joined
          */
         bool joinable();
+
     private:
         friend class stacktrace;
         friend class thread_group;
 
-        void on_start();
-        void on_finish();
-        void on_exception(const std::exception_ptr& eptr);
+        void             on_start();
+        void             on_finish();
+        void             on_exception(const std::exception_ptr &eptr);
         running_thread_t m_running_thread;
         thread_group *   m_group;
     };
 
-    namespace this_thread
-    {
-        inline mge::thread::id get_id()
-        {
-            return ::std::this_thread::get_id();
-        }
+    namespace this_thread {
+        inline mge::thread::id get_id() { return ::std::this_thread::get_id(); }
 
-        template< class Rep, class Period >
-        inline void sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
+        template <class Rep, class Period>
+        inline void
+        sleep_for(const std::chrono::duration<Rep, Period> &sleep_duration)
         {
             ::std::this_thread::sleep_for(sleep_duration);
         }
-    }
+    } // namespace this_thread
 
-}
+} // namespace mge

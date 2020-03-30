@@ -8,10 +8,10 @@
 
 namespace mge {
     using fmat4 = glm::fmat4;
-    using glm::transpose;
     using glm::determinant;
     using glm::inverse;
     using glm::inversesqrt;
+    using glm::transpose;
 
-    MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fmat4& m);
-}
+    MGE_MATH_EXPORT std::ostream &operator<<(std::ostream &os, const fmat4 &m);
+} // namespace mge

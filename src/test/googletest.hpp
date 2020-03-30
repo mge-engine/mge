@@ -4,11 +4,11 @@
 #pragma once
 
 #ifdef _MSC_VER
-#  pragma warning (push, 0)
+#    pragma warning(push, 0)
 #endif
 
 #include "gtest/gtest.h"
 
 #ifdef _MSC_VER
-#  pragma warning (pop)
+#    pragma warning(pop)
 #endif

@@ -6,11 +6,12 @@
 #include <cstdint>
 namespace mge {
     namespace ui {
-        class MGE_UI_EXPORT menu 
+        class MGE_UI_EXPORT menu
         {
         public:
-            enum status : uint8_t {
-                COLLAPSED =  1 << 0
+            enum status : uint8_t
+            {
+                COLLAPSED = 1 << 0
             };
 
             menu();
@@ -18,8 +19,9 @@ namespace mge {
 
             void collapse();
             void expand();
+
         private:
             uint8_t m_status;
         };
-    }
-}
+    } // namespace ui
+} // namespace mge

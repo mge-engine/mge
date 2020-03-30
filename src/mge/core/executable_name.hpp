@@ -21,5 +21,4 @@ namespace mge {
      */
     MGE_CORE_EXPORT std::string executable_name();
 
-}
-
+} // namespace mge

@@ -2,8 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "lua_test.hpp"
-#include "mge/script/script_context.hpp"
 #include "mge/core/exception.hpp"
+#include "mge/script/script_context.hpp"
 namespace lua {
 
     class test_context : public lua_test
@@ -30,14 +30,16 @@ namespace lua {
         auto ctx = engine->create_context();
         try {
             ctx->eval("i = 1\n"
-                  "while i < 3 <3 >5 do\n"
-                  "  print(i)\n"
-                  "  i = i + 1\n"
-                  "end");
+                      "while i < 3 <3 >5 do\n"
+                      "  print(i)\n"
+                      "  i = i + 1\n"
+                      "end");
             FAIL() << "Exception expected";
-        } catch(const mge::exception& ex) {
-            EXPECT_TRUE(strstr(ex.what(), "attempt to compare boolean with number") != nullptr);
+        } catch (const mge::exception &ex) {
+            EXPECT_TRUE(
+                strstr(ex.what(), "attempt to compare boolean with number") !=
+                nullptr);
         }
     }
 
-}
+} // namespace lua

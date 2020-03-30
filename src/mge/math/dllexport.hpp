@@ -6,11 +6,11 @@
 #include "mge/core/dllexport.hpp"
 
 #ifdef CDT_INDEXER
-#  define MGE_MATH_EXPORT __declspec(dllexport)
+#    define MGE_MATH_EXPORT __declspec(dllexport)
 #else
-#  ifdef BUILD_MGE_MATH
-#    define MGE_MATH_EXPORT MGE_DLLEXPORT
-#  else
-#    define MGE_MATH_EXPORT MGE_DLLIMPORT
-#  endif
+#    ifdef BUILD_MGE_MATH
+#        define MGE_MATH_EXPORT MGE_DLLEXPORT
+#    else
+#        define MGE_MATH_EXPORT MGE_DLLIMPORT
+#    endif
 #endif

@@ -1,15 +1,12 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/string_pool.hpp"
+#include "test/googletest.hpp"
 
 using mge::string_pool;
 
-TEST(string_pool, construct)
-{
-    string_pool sp;
-}
+TEST(string_pool, construct) { string_pool sp; }
 
 TEST(string_pool, intern_c_string)
 {
@@ -42,7 +39,7 @@ TEST(string_pool, intern_many_times_doesnot_allocate)
     const char *s1 = sp.intern("FOO");
     {
         mge::allocation_count_scope scope;
-        for(int i=0; i<100; ++i) {
+        for (int i = 0; i < 100; ++i) {
             const char *s = sp.intern("FOO");
             EXPECT_EQ(s, s1);
         }

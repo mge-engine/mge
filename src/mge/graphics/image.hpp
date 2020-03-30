@@ -2,11 +2,11 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/types.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
-#include "mge/graphics/image_format.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
-#include "mge/core/types.hpp"
+#include "mge/graphics/image_format.hpp"
 #include "mge/graphics/rgba_color.hpp"
 
 #include <atomic>
@@ -24,8 +24,8 @@ namespace mge {
          * @param extent extent of image
          * @param format image format
          */
-        image(const extent& extent,
-              const image_format& format);
+        image(const extent &extent, const image_format &format);
+
     public:
         /**
          * Destructor.
@@ -55,7 +55,7 @@ namespace mge {
          * Return image extent.
          * @return image extent
          */
-        const extent& extent() const { return m_extent; }
+        const extent &extent() const { return m_extent; }
 
         /**
          * Get size of image data buffer, depends on size and format.
@@ -73,7 +73,7 @@ namespace mge {
          * Return whether image is mapped.
          * @return @c true if mapped
          */
-        bool mapped() const { return m_map_counter !=  0; }
+        bool mapped() const { return m_map_counter != 0; }
 
         void *data() const { return m_map_ptr; }
 
@@ -91,14 +91,17 @@ namespace mge {
          * @return pixel color
          */
         rgba_color pixel_color(uint32_t x, uint32_t y) const;
+
     protected:
-        virtual void *on_map() = 0;
-        virtual void on_unmap() = 0;
+        virtual void *on_map()   = 0;
+        virtual void  on_unmap() = 0;
+
     private:
-        mge::extent           m_extent;
-        image_format          m_format;
+        mge::extent  m_extent;
+        image_format m_format;
+
     protected:
-        void                 *m_map_ptr;
+        void *                m_map_ptr;
         std::atomic<uint32_t> m_map_counter;
     };
-}
+} // namespace mge

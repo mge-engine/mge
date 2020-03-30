@@ -4,18 +4,18 @@
 #pragma once
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
-#include "mge/core/stacktrace.hpp"
 #include "mge/core/format_string.hpp"
+#include "mge/core/stacktrace.hpp"
 #include "mge/core/type_name.hpp"
 
 #include <boost/any.hpp>
 #include <boost/optional.hpp>
 
+#include <map>
 #include <sstream>
 #include <tuple>
-#include <map>
-#include <typeinfo>
 #include <typeindex>
+#include <typeinfo>
 
 /**
  * @file mge/core/exception.hpp
@@ -28,8 +28,7 @@ namespace mge {
     /**
      * @brief Base exception class.
      */
-    class MGE_CORE_EXPORT exception
-            : virtual public std::exception
+    class MGE_CORE_EXPORT exception : virtual public std::exception
     {
     public:
         /**
@@ -38,14 +37,12 @@ namespace mge {
         struct exception_details
         {
         public:
-            exception_details(const mge::exception* ex) noexcept
-                :m_ex(ex)
-            {}
-            inline const mge::exception* ex() const noexcept { return m_ex; }
+            exception_details(const mge::exception *ex) noexcept : m_ex(ex) {}
+            inline const mge::exception *ex() const noexcept { return m_ex; }
+
         private:
             const mge::exception *m_ex;
         };
-
 
         /**
          * @brief Exception value tag type.
@@ -63,11 +60,10 @@ namespace mge {
          * };
          * @endcode
          */
-        template <typename Tag, typename Value>
-        struct tag
+        template <typename Tag, typename Value> struct tag
         {
-            using tag_type = Tag;      //!< Tag type.
-            using value_type = Value;  //!< Value type of value stored under tag.
+            using tag_type   = Tag;   //!< Tag type.
+            using value_type = Value; //!< Value type of value stored under tag.
         };
 
         /**
@@ -75,14 +71,9 @@ namespace mge {
          */
         struct source_file : public tag<source_file, const char *>
         {
-            source_file(const char *value_) noexcept
-                :m_value(value_)
-            {}
+            source_file(const char *value_) noexcept : m_value(value_) {}
 
-            const char *value() const noexcept
-            {
-                return m_value;
-            }
+            const char *value() const noexcept { return m_value; }
 
             const char *m_value;
         };
@@ -92,14 +83,9 @@ namespace mge {
          */
         struct function : public tag<function, const char *>
         {
-            function(const char *value_) noexcept
-                :m_value(value_)
-            {}
+            function(const char *value_) noexcept : m_value(value_) {}
 
-            const char *value() const noexcept
-            {
-                return m_value;
-            }
+            const char *value() const noexcept { return m_value; }
 
             const char *m_value;
         };
@@ -109,14 +95,9 @@ namespace mge {
          */
         struct source_line : public tag<source_line, int>
         {
-            source_line(int value_) noexcept
-                :m_value(value_)
-            {}
+            source_line(int value_) noexcept : m_value(value_) {}
 
-            int value() const noexcept
-            {
-                return m_value;
-            }
+            int value() const noexcept { return m_value; }
 
             int m_value;
         };
@@ -125,14 +106,9 @@ namespace mge {
          */
         struct stack : public tag<stack, mge::stacktrace>
         {
-            stack(mge::stacktrace&& s)
-                :m_value(std::move(s))
-            {}
+            stack(mge::stacktrace &&s) : m_value(std::move(s)) {}
 
-            const mge::stacktrace& value() const noexcept
-            {
-                return m_value;
-            }
+            const mge::stacktrace &value() const noexcept { return m_value; }
 
             mge::stacktrace m_value;
         };
@@ -142,45 +118,30 @@ namespace mge {
          */
         struct message : public tag<message, std::string>
         {
-            message()
-            {}
+            message() {}
 
-            const std::string& value() const noexcept
-            {
-                return m_value;
-            }
+            const std::string &value() const noexcept { return m_value; }
 
             std::string m_value;
         };
 
         struct type_name : public tag<type_name, std::string>
         {
-            type_name(const std::string& name)
-                :m_value(name)
-            {}
+            type_name(const std::string &name) : m_value(name) {}
 
-            const std::string& value() const noexcept
-            {
-                return m_value;
-            }
+            const std::string &value() const noexcept { return m_value; }
 
             std::string m_value;
         };
 
         struct called_function : public tag<called_function, std::string>
         {
-            called_function(const std::string& name)
-                :m_value(name)
-            {}
+            called_function(const std::string &name) : m_value(name) {}
 
-            const std::string& value() const noexcept
-            {
-                return m_value;
-            }
+            const std::string &value() const noexcept { return m_value; }
 
             std::string m_value;
         };
-
 
         struct cause;
 
@@ -192,12 +153,12 @@ namespace mge {
          * Copy constructor.
          * @param e copied exception
          */
-        exception(const exception& e);
+        exception(const exception &e);
         /**
          * Move constructor.
          * @param e moved exception
          */
-        exception(exception&& e);
+        exception(exception &&e);
 
         /**
          * Destructor.
@@ -208,14 +169,14 @@ namespace mge {
          * Assignment.
          * @return @c *this
          */
-        exception& operator =(const exception&);
+        exception &operator=(const exception &);
 
         /**
          * Move assignment.
          * @param e moved exception
          * @return @c *this
          */
-        exception& operator =(exception&& e);
+        exception &operator=(exception &&e);
 
         /**
          * Overrides @c std::exception @c what function.
@@ -236,17 +197,17 @@ namespace mge {
          * @param info information stored under the tag
          * @return  @c *this
          */
-        template <typename Info>
-        exception& set_info(const Info& info)
+        template <typename Info> exception &set_info(const Info &info)
         {
-            const auto message_key = std::type_index(typeid(typename exception::message::tag_type));
-            m_infos[std::type_index(typeid(typename Info::tag_type))]
-                    = info.value();
+            const auto message_key =
+                std::type_index(typeid(typename exception::message::tag_type));
+            m_infos[std::type_index(typeid(typename Info::tag_type))] =
+                info.value();
             return *this;
         }
 
-        template<>
-        exception& set_info<exception::message>(const exception::message& info)
+        template <>
+        exception &set_info<exception::message>(const exception::message &info)
         {
             m_raw_message = info.value();
             return *this;
@@ -258,11 +219,12 @@ namespace mge {
          * @tparam Info  tag type
          * @return  the stored value
          */
-        template <typename Info>
-        inline auto get() const
+        template <typename Info> inline auto get() const
         {
-            const auto message_key = std::type_index(typeid(typename exception::message::tag_type));
-            auto it = m_infos.find(std::type_index(typeid(typename Info::tag_type)));
+            const auto message_key =
+                std::type_index(typeid(typename exception::message::tag_type));
+            auto it =
+                m_infos.find(std::type_index(typeid(typename Info::tag_type)));
             boost::optional<Info::value_type> result;
             if (it != m_infos.end()) {
                 result = boost::any_cast<Info::value_type>(it->second);
@@ -270,8 +232,7 @@ namespace mge {
             return result;
         }
 
-        template<>
-        inline auto get<exception::message>() const
+        template <> inline auto get<exception::message>() const
         {
             materialize_message();
             return m_raw_message;
@@ -295,12 +256,11 @@ namespace mge {
          * @param value value to append
          * @return @c *this
          */
-        template <typename T>
-        exception& operator <<(const T& value)
+        template <typename T> exception &operator<<(const T &value)
         {
-            if(!m_raw_message_stream) {
+            if (!m_raw_message_stream) {
                 m_raw_message_stream = std::make_unique<std::stringstream>();
-                if(!m_raw_message.empty()) {
+                if (!m_raw_message.empty()) {
                     (*m_raw_message_stream) << m_raw_message;
                     m_raw_message.clear();
                 }
@@ -311,33 +271,25 @@ namespace mge {
             return *this;
         }
 
-
     private:
         using exception_info_map_t = std::map<std::type_index, boost::any>;
         exception_info_map_t m_infos;
+
     private:
-        void copy_message_or_materialize(const exception& e);
+        void copy_message_or_materialize(const exception &e);
         void materialize_message() const;
 
         mutable std::unique_ptr<std::stringstream> m_raw_message_stream;
-        mutable std::string m_raw_message;
+        mutable std::string                        m_raw_message;
     };
-
 
     struct exception::cause : public tag<cause, mge::exception>
     {
-        cause(const mge::exception& ex)
-            :m_value(ex)
-        {}
+        cause(const mge::exception &ex) : m_value(ex) {}
 
-        cause(mge::exception&& ex)
-            :m_value(std::move(ex))
-        {}
+        cause(mge::exception &&ex) : m_value(std::move(ex)) {}
 
-        const mge::exception& value() const noexcept
-        {
-            return m_value;
-        }
+        const mge::exception &value() const noexcept { return m_value; }
 
         mge::exception m_value;
     };
@@ -346,39 +298,37 @@ namespace mge {
  * Throw exception instance.
  * @param ex exception type
  */
-#define MGE_THROW(ex)                                                     \
-    throw ex().set_info(mge::exception::source_file(__FILE__))            \
-              .set_info(mge::exception::source_line(__LINE__))            \
-              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE)) \
-              .set_info(mge::exception::stack(mge::stacktrace()))         \
-              .set_info(mge::exception::type_name(mge::type_name<ex>()))
+#define MGE_THROW(ex)                                                          \
+    throw ex()                                                                 \
+        .set_info(mge::exception::source_file(__FILE__))                       \
+        .set_info(mge::exception::source_line(__LINE__))                       \
+        .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))            \
+        .set_info(mge::exception::stack(mge::stacktrace()))                    \
+        .set_info(mge::exception::type_name(mge::type_name<ex>()))
 
 /**
  * Throw exception and adds a cause.
  * @param ex exception type
  * @param causing_exception exception causing this exception
  */
-#define MGE_THROW_WITH_CAUSE(ex, causing_exception)                       \
-    throw ex().set_info(mge::exception::source_file(__FILE__))            \
-              .set_info(mge::exception::source_line(__LINE__))            \
-              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE)) \
-              .set_info(mge::exception::stack(mge::stacktrace()))         \
-              .set_info(mge::exception::type_name(mge::type_name<ex>()))  \
-              .set_info(mge::exception::cause(causing_exception))
+#define MGE_THROW_WITH_CAUSE(ex, causing_exception)                            \
+    throw ex()                                                                 \
+        .set_info(mge::exception::source_file(__FILE__))                       \
+        .set_info(mge::exception::source_line(__LINE__))                       \
+        .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))            \
+        .set_info(mge::exception::stack(mge::stacktrace()))                    \
+        .set_info(mge::exception::type_name(mge::type_name<ex>()))             \
+        .set_info(mge::exception::cause(causing_exception))
 
 #define MGE_CALLED_FUNCTION(X) ::mge::exception::called_function(#X)
 
-
-    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception& ex);
-    MGE_CORE_EXPORT std::ostream& operator <<(std::ostream& os, const mge::exception::exception_details& d);
+    MGE_CORE_EXPORT std::ostream &operator<<(std::ostream &        os,
+                                             const mge::exception &ex);
+    MGE_CORE_EXPORT               std::ostream &
+                                  operator<<(std::ostream &os, const mge::exception::exception_details &d);
 
     /**
      * Re-throws current exception.
      */
-    [[noreturn]] inline void rethrow()
-    {
-        throw;
-    }
-}
-
-
+    [[noreturn]] inline void rethrow() { throw; }
+} // namespace mge

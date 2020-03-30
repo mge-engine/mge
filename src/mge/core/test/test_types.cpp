@@ -1,15 +1,15 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googletest.hpp"
 #include "mge/core/types.hpp"
+#include "test/googletest.hpp"
 #include <string>
 
 using namespace std::string_literals;
 
 TEST(stringify_macro, list_of_args)
 {
-    std::string s(MGE_STRINGIFY(A,    B,    C));
+    std::string s(MGE_STRINGIFY(A, B, C));
     EXPECT_EQ("A, B, C"s, s);
 }
 

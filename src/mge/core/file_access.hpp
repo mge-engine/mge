@@ -3,13 +3,13 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/exception.hpp"
 #include "mge/core/file_not_found.hpp"
 #include "mge/core/filesystem_error.hpp"
-#include "mge/core/path.hpp"
-#include "mge/core/types.hpp"
-#include "mge/core/exception.hpp"
 #include "mge/core/input_stream.hpp"
 #include "mge/core/output_stream.hpp"
+#include "mge/core/path.hpp"
+#include "mge/core/types.hpp"
 
 #include <string>
 #include <vector>
@@ -23,7 +23,8 @@ namespace mge {
     MGE_DECLARE_REF(file_access);
 
     /**
-     * File access handler. Handles file access of one file, identified by a path.
+     * File access handler. Handles file access of one file, identified by a
+     * path.
      */
     class MGE_CORE_EXPORT file_access : public noncopyable
     {
@@ -32,7 +33,7 @@ namespace mge {
          * Constructor.
          * @param path path of handled file
          */
-        file_access(const mge::path& path);
+        file_access(const mge::path &path);
 
         /**
          * Destructor.
@@ -77,20 +78,19 @@ namespace mge {
          * List directory contents.
          * @param files list of files filled
          */
-        virtual void list(std::vector<file>& files) = 0;
+        virtual void list(std::vector<file> &files) = 0;
 
         /**
          * Get the path handled by this access object.
          * @return path
          */
-        const mge::path& path() const;
+        const mge::path &path() const;
 
         /**
          * Opens the file for input.
          * @return handle to opened stream
          */
         virtual input_stream_ref open_for_input() const = 0;
-
 
         /**
          * @brief Opens the file for output.
@@ -105,10 +105,12 @@ namespace mge {
          * @return file size, 0 if not a regular file
          */
         virtual size_t size() const = 0;
+
     protected:
         /// Constructor to be used if path cannot be determined.
         file_access() = default;
+
     protected:
         mge::path m_path;
     };
-}
+} // namespace mge

@@ -5,10 +5,9 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream& operator <<(std::ostream& os, const buffer_type& t)
+    std::ostream &operator<<(std::ostream &os, const buffer_type &t)
     {
-        switch (t)
-        {
+        switch (t) {
         case buffer_type::VERTEX_BUFFER:
             return os << "VERTEX_BUFFER";
         case buffer_type::INDEX_BUFFER:
@@ -19,4 +18,4 @@ namespace mge {
             return os << "INVALID(" << (int)t << ")";
         }
     }
-}
+} // namespace mge

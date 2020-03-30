@@ -1,51 +1,45 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#pragma once 
-#include "mge/graphics/dllexport.hpp"
+#pragma once
 #include "mge/graphics/data_type.hpp"
+#include "mge/graphics/dllexport.hpp"
 
 #include <iosfwd>
 
 namespace mge {
- 
+
     class MGE_GRAPHICS_EXPORT vertex_format
     {
     public:
-        inline vertex_format()
-            :m_type(data_type::UNKNOWN)
-            ,m_size(0u)
-        {}
-        
-        inline vertex_format(data_type type,
-                            size_t size)
-            :m_type(type)
-            ,m_size(static_cast<uint8_t>(size))
+        inline vertex_format() : m_type(data_type::UNKNOWN), m_size(0u) {}
+
+        inline vertex_format(data_type type, size_t size)
+            : m_type(type), m_size(static_cast<uint8_t>(size))
         {}
 
-        vertex_format(const vertex_format& f) = default;
-        vertex_format(vertex_format&& f) = default;
+        vertex_format(const vertex_format &f) = default;
+        vertex_format(vertex_format &&f)      = default;
 
-        vertex_format& operator =(const vertex_format& f) = default;
-        vertex_format& operator =(vertex_format&& f) = default;
+        vertex_format &operator=(const vertex_format &f) = default;
+        vertex_format &operator=(vertex_format &&f) = default;
 
         data_type type() const noexcept { return m_type; }
-        uint8_t size() const noexcept { return m_size; }
-        size_t binary_size() const;
+        uint8_t   size() const noexcept { return m_size; }
+        size_t    binary_size() const;
 
-        inline bool operator <(const vertex_format& f) const
+        inline bool operator<(const vertex_format &f) const
         {
-            return m_type < f.m_type 
-                ? true
-                : m_type == f.m_type 
-                    ? m_size < f.m_size
-                    : false;
+            return m_type < f.m_type
+                       ? true
+                       : m_type == f.m_type ? m_size < f.m_size : false;
         }
+
     private:
         data_type m_type;
         uint8_t   m_size;
     };
 
-    MGE_GRAPHICS_EXPORT std::ostream& operator <<(std::ostream& os, 
-                                                  const vertex_format& fmt);
-}
+    MGE_GRAPHICS_EXPORT std::ostream &operator<<(std::ostream &       os,
+                                                 const vertex_format &fmt);
+} // namespace mge

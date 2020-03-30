@@ -3,25 +3,25 @@
 // All rights reserved.
 #include "mge/core/file.hpp"
 #include "mge/core/file_access_factory.hpp"
+#include "mge/core/io_error.hpp"
+#include "mge/core/path.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
-#include "mge/core/path.hpp"
-#include "mge/core/io_error.hpp"
 
 namespace mge {
     class file_access_provider
     {
     public:
-        file_access_provider() = default;
+        file_access_provider()  = default;
         ~file_access_provider() = default;
 
-        file_access_ref create_file_access(const mge::path& path)
+        file_access_ref create_file_access(const mge::path &path)
         {
             if (!m_system_factory) {
                 m_system_factory = file_access_factory::create("system");
                 if (!m_system_factory) {
                     MGE_THROW(illegal_state)
-                              << "System file access factory not initialized";
+                        << "System file access factory not initialized";
                 }
             }
 
@@ -34,17 +34,14 @@ namespace mge {
 
     static singleton<file_access_provider> s_file_access_provider;
 
-    file::file(const file_access_ref& access)
-        : m_access(access)
-    {
-    }
+    file::file(const file_access_ref &access) : m_access(access) {}
 
     file::file(const char *p)
     {
         m_access = s_file_access_provider->create_file_access(mge::path(p));
     }
 
-    file::file(const std::string& p)
+    file::file(const std::string &p)
     {
         m_access = s_file_access_provider->create_file_access(mge::path(p));
     }
@@ -54,42 +51,24 @@ namespace mge {
         m_access = s_file_access_provider->create_file_access(p);
     }
 
-    file::file(const std::string& p, const std::string& name)
+    file::file(const std::string &p, const std::string &name)
     {
         mge::path filepath(p);
         filepath /= name;
         m_access = s_file_access_provider->create_file_access(filepath);
     }
 
-    bool file::exists() const
-    {
-        return m_access->exists();
-    }
+    bool file::exists() const { return m_access->exists(); }
 
-    bool file::is_file() const
-    {
-        return m_access->is_file();
-    }
+    bool file::is_file() const { return m_access->is_file(); }
 
-    bool file::is_directory() const
-    {
-        return m_access->is_directory();
-    }
+    bool file::is_directory() const { return m_access->is_directory(); }
 
-    bool file::is_system_file() const
-    {
-        return m_access->is_system_file();
-    }
+    bool file::is_system_file() const { return m_access->is_system_file(); }
 
-    void file::mkdir()
-    {
-        m_access->mkdir();
-    }
+    void file::mkdir() { m_access->mkdir(); }
 
-    void file::rmdir()
-    {
-        m_access->rmdir();
-    }
+    void file::rmdir() { m_access->rmdir(); }
 
     std::vector<file> file::list() const
     {
@@ -98,10 +77,7 @@ namespace mge {
         return files;
     }
 
-    size_t file::size() const
-    {
-        return m_access->size();
-    }
+    size_t file::size() const { return m_access->size(); }
 
     input_stream_ref file::open_for_input() const
     {
@@ -110,8 +86,9 @@ namespace mge {
 
     mge::buffer file::data() const
     {
-        auto stream = open_for_input();
-        input_stream::streamsize_type sz = static_cast<input_stream::streamsize_type>(size());
+        auto                          stream = open_for_input();
+        input_stream::streamsize_type sz =
+            static_cast<input_stream::streamsize_type>(size());
         mge::buffer result;
         result.resize(sz);
         auto read_sz = stream->read(result.data(), sz);
@@ -126,14 +103,10 @@ namespace mge {
         return m_access->open_for_output();
     }
 
-    const path& file::path() const
-    {
-        return m_access->path();
-    }
+    const path &file::path() const { return m_access->path(); }
 
-    std::ostream&
-    operator <<(std::ostream& os, const file& f)
+    std::ostream &operator<<(std::ostream &os, const file &f)
     {
         return os << f.path();
     }
-}
+} // namespace mge

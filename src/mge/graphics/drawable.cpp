@@ -5,13 +5,9 @@
 
 namespace mge {
 
-    drawable::drawable()
-        :m_prepared(false)
-    {}
+    drawable::drawable() : m_prepared(false) {}
 
-
-    void
-    drawable::prepare(render_context& context)
+    void drawable::prepare(render_context &context)
     {
         if (prepared()) {
             on_prepare(context);
@@ -19,23 +15,19 @@ namespace mge {
         }
     }
 
-    void
-    drawable::on_draw(render_context &context)
+    void drawable::on_draw(render_context &context)
     {
-        if(!prepared()) {
+        if (!prepared()) {
             prepare(context);
         }
         on_draw(context);
     }
 
-    void
-    drawable::on_prepare(render_context &context)
-    {}
+    void drawable::on_prepare(render_context &context) {}
 
-    void
-    drawable::set_prepared(bool prepared) noexcept
+    void drawable::set_prepared(bool prepared) noexcept
     {
         m_prepared = prepared;
     }
 
-}
+} // namespace mge

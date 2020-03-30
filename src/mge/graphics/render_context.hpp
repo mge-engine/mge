@@ -2,22 +2,22 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/dllexport.hpp"
-#include "mge/graphics/usage.hpp"
 #include "mge/core/async_executor.hpp"
+#include "mge/core/to_void_ptr.hpp"
+#include "mge/entity/entity_registry.hpp"
+#include "mge/graphics/data_type.hpp"
+#include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/filter_function.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
-#include "mge/graphics/data_type.hpp"
-#include "mge/graphics/vertex_layout.hpp"
 #include "mge/graphics/texture_type.hpp"
-#include "mge/graphics/filter_function.hpp"
-#include "mge/core/to_void_ptr.hpp"
-#include "mge/entity/entity_registry.hpp"
+#include "mge/graphics/usage.hpp"
+#include "mge/graphics/vertex_layout.hpp"
 
+#include <array>
 #include <memory>
 #include <vector>
-#include <array>
 
 namespace mge {
 
@@ -27,8 +27,8 @@ namespace mge {
      * textures and buffers.
      */
     class MGE_GRAPHICS_EXPORT render_context
-            : public std::enable_shared_from_this<render_context>
-            , public async_executor
+        : public std::enable_shared_from_this<render_context>,
+          public async_executor
     {
     protected:
         /**
@@ -38,6 +38,7 @@ namespace mge {
          * @param display_executor context executor
          */
         render_context(async_executor *display_executor);
+
     public:
         /**
          * Destructor.
@@ -50,7 +51,7 @@ namespace mge {
          *
          * @param f function to execute
          */
-        void await(const void_function& f) override;
+        void await(const void_function &f) override;
 
         /**
          * Assigns the render context to this thread, in case of the
@@ -72,10 +73,10 @@ namespace mge {
          * @param initial_data  initial buffer data
          * @return created vertex buffer
          */
-        virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
-                                                       usage buffer_usage,
-                                                       size_t element_count,
-                                                       void *initial_data=nullptr) = 0;
+        virtual vertex_buffer_ref
+        create_vertex_buffer(const vertex_layout &layout, usage buffer_usage,
+                             size_t element_count,
+                             void * initial_data = nullptr) = 0;
 
         /**
          * Create an index (element array) buffer.
@@ -85,10 +86,10 @@ namespace mge {
          * @param gpu_access    gpu access flags
          * @return index buffer
          */
-        virtual index_buffer_ref create_index_buffer(data_type type,
-                                                     usage buffer_usage,
-                                                     size_t element_count,
-                                                     void *initial_data=nullptr) = 0;
+        virtual index_buffer_ref
+        create_index_buffer(data_type type, usage buffer_usage,
+                            size_t element_count,
+                            void * initial_data = nullptr) = 0;
 
         /**
          * @reate an index buffer.
@@ -102,12 +103,10 @@ namespace mge {
          * @return index buffer populated with the contents of @c buffer.
          */
         template <typename T, std::size_t N>
-        index_buffer_ref create_index_buffer(usage usage,
-                                             const std::array<T, N>& buffer)
+        index_buffer_ref create_index_buffer(usage                   usage,
+                                             const std::array<T, N> &buffer)
         {
-            return create_index_buffer(data_type_of_type<T>(),
-                                       usage,
-                                       N,
+            return create_index_buffer(data_type_of_type<T>(), usage, N,
                                        to_void_ptr(buffer.data()));
         }
 
@@ -120,12 +119,10 @@ namespace mge {
          * @return index buffer populated with the contents of @c buffer.
          */
         template <typename T, std::size_t N>
-        index_buffer_ref create_index_buffer(const std::array<T, N>& buffer)
+        index_buffer_ref create_index_buffer(const std::array<T, N> &buffer)
         {
-            return create_index_buffer(data_type_of_type<T>(),
-                                       usage::DEFAULT,
-                                       N,
-                                       to_void_ptr(buffer.data()));
+            return create_index_buffer(data_type_of_type<T>(), usage::DEFAULT,
+                                       N, to_void_ptr(buffer.data()));
         }
 
         /**
@@ -134,7 +131,7 @@ namespace mge {
          * @param image texture image
          * @return created texture
          */
-        virtual texture_2d_ref create_texture_2d(const image_ref& image) = 0;
+        virtual texture_2d_ref create_texture_2d(const image_ref &image) = 0;
 
         /**
          * Create a dynamic texture object
@@ -168,16 +165,17 @@ namespace mge {
          * Get supported shader languages.
          * @param languages vector of languages
          */
-        virtual void shader_languages(std::vector<shader_language>& languages) const = 0;
+        virtual void
+        shader_languages(std::vector<shader_language> &languages) const = 0;
 
         /**
          * Executes a command list.
          *
          * @param commands command list with commands to execute
          */
-        virtual void execute(const command_list_ref& commands) = 0;
+        virtual void execute(const command_list_ref &commands) = 0;
 
     protected:
-        async_executor   *m_display_executor;
+        async_executor *m_display_executor;
     };
-}
+} // namespace mge

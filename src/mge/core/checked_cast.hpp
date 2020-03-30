@@ -16,16 +16,14 @@ namespace mge {
      * @return value casted to type @c T, an @c mge::out_of_range
      *   exception is thrown if this is not lossless
      */
-    template <typename T, typename S>
-    inline T checked_cast(const S src)
+    template <typename T, typename S> inline T checked_cast(const S src)
     {
-        T tmp = static_cast<T>(src);
+        T tmp  = static_cast<T>(src);
         S stmp = static_cast<S>(tmp);
-        if(src != stmp) {
-            MGE_THROW(mge::out_of_range)
-                << src << " cannot be casted into "
-                << mge::type_name<T>() << " type";
+        if (src != stmp) {
+            MGE_THROW(mge::out_of_range) << src << " cannot be casted into "
+                                         << mge::type_name<T>() << " type";
         }
         return tmp;
     }
-}
+} // namespace mge

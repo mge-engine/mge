@@ -4,7 +4,7 @@
 #include "bench/googlebenchmark.hpp"
 #include "mge/core/clock.hpp"
 
-static void bench_clock_now(benchmark::State& state)
+static void bench_clock_now(benchmark::State &state)
 {
     while (state.KeepRunning()) {
         auto n = mge::clock::now();
@@ -13,7 +13,7 @@ static void bench_clock_now(benchmark::State& state)
 
 BENCHMARK(bench_clock_now);
 
-static void bench_clock_tick(benchmark::State& state)
+static void bench_clock_tick(benchmark::State &state)
 {
     while (state.KeepRunning()) {
         auto n = mge::clock::tick();

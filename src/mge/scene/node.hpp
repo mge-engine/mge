@@ -2,12 +2,12 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/scene/dllexport.hpp"
+#include "mge/entity/component.hpp"
 #include "mge/entity/entity.hpp"
 #include "mge/entity/entity_registry.hpp"
-#include "mge/entity/component.hpp"
-#include "mge/scene/scene_fwd.hpp"
+#include "mge/scene/dllexport.hpp"
 #include "mge/scene/movable.hpp"
+#include "mge/scene/scene_fwd.hpp"
 
 namespace mge {
 
@@ -19,8 +19,7 @@ namespace mge {
      * model transformation.
      *
      */
-    class MGE_SCENE_EXPORT node 
-        : public movable
+    class MGE_SCENE_EXPORT node : public movable
     {
     public:
         /**
@@ -30,24 +29,23 @@ namespace mge {
 
         /**
          * Copy constructor.
-         * 
+         *
          * @param n source node
          */
-        node(const node& n)
-            :m_scene_entity(n.m_scene_entity)
-            ,m_node_entity(n.m_scene_entity)
+        node(const node &n)
+            : m_scene_entity(n.m_scene_entity), m_node_entity(n.m_scene_entity)
         {}
 
         /**
          * Assignment.
-         * 
+         *
          * @param n assigned node
          * @return @c *this
          */
-        node& operator =(const node& n)
+        node &operator=(const node &n)
         {
             m_scene_entity = n.m_scene_entity;
-            m_node_entity = n.m_node_entity;
+            m_node_entity  = n.m_node_entity;
             return *this;
         }
 
@@ -64,7 +62,7 @@ namespace mge {
 
         /**
          * Checks that the node is valid.
-         * 
+         *
          * @return @c true if the node is valid and belongs to a valid scene
          */
         bool valid() const;
@@ -79,14 +77,14 @@ namespace mge {
          * Access node entity registry.
          * @return node entity registry
          */
-        mge::entity_registry& registry() const;
+        mge::entity_registry &registry() const;
 
     private:
         friend class scene;
 
         /**
          * Constructor, used to create new node of scene.
-         * 
+         *
          * @param scene_entity entity of scene
          * @param node_entity  entity of node
          */
@@ -95,4 +93,4 @@ namespace mge {
         mge::entity m_scene_entity;
         mge::entity m_node_entity;
     };
-}
+} // namespace mge

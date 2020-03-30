@@ -30,38 +30,39 @@ namespace mge {
          * @param corner1 first corner
          * @param corner2 second corner
          */
-        aabox(const fvec3& corner1, const fvec3& corner2);
+        aabox(const fvec3 &corner1, const fvec3 &corner2);
 
         /**
          * @brief Copy constructor.
          * @param b copied box
          */
-        aabox(const aabox& b);
+        aabox(const aabox &b);
 
         /**
          * @brief Assignment operator.
          * @param b assigned box
          * @return @c *this
          */
-        aabox& operator = (const aabox& b);
+        aabox &operator=(const aabox &b);
 
         /**
          * @brief Get box minimum corner.
          * @return minimum corner
          */
-        const fvec3& min() const { return m_min; }
+        const fvec3 &min() const { return m_min; }
         /**
          * @brief Get box maximum corner.
          * @return maximum corner
          */
-        const fvec3& max() const { return m_max; }
+        const fvec3 &max() const { return m_max; }
 
         /**
          * @brief Check whether vector is inside box.
          * @param v vector to check
          * @return @c true if inside box
          */
-        bool contains(const fvec3& v) const;
+        bool contains(const fvec3 &v) const;
+
     private:
         fvec3 m_min;
         fvec3 m_max;
@@ -73,5 +74,5 @@ namespace mge {
      * @param b box
      * @return @c os
      */
-    MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const aabox& b);
-}
+    MGE_MATH_EXPORT std::ostream &operator<<(std::ostream &os, const aabox &b);
+} // namespace mge

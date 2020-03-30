@@ -14,15 +14,15 @@ namespace mge {
     class MGE_SCRIPT_EXPORT script_source
     {
     public:
-        script_source(const std::string& name,
-                      const std::string& source);
+        script_source(const std::string &name, const std::string &source);
 
         ~script_source() = default;
 
-        const std::string& name() const noexcept { return m_name; }
-        const std::string& source() const noexcept { return m_source; }
+        const std::string &name() const noexcept { return m_name; }
+        const std::string &source() const noexcept { return m_source; }
+
     private:
         std::string m_name;
         std::string m_source;
     };
-}
+} // namespace mge

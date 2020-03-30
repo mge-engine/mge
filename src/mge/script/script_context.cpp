@@ -3,5 +3,4 @@
 // All rights reserved.
 #include "mge/script/script_context.hpp"
 
-namespace mge {
-}
+namespace mge {}

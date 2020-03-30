@@ -2,13 +2,13 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/dllexport.hpp"
 #include "mge/config.hpp"
-#include <iostream>
+#include "mge/core/dllexport.hpp"
 #include <cstdlib>
+#include <iostream>
 
 #ifdef MGE_COMPILER_MSVC
-#  include <malloc.h>
+#    include <malloc.h>
 #endif
 
 namespace mge {
@@ -19,14 +19,14 @@ namespace mge {
             char     c;
         };
 
-        inline std::ostream& operator <<(std::ostream& os, const line_printer& p)
+        inline std::ostream &operator<<(std::ostream &os, const line_printer &p)
         {
-            uint32_t remaining = p.length;
-            const uint32_t partlen = 128;
-            if(remaining > partlen) {
+            uint32_t       remaining = p.length;
+            const uint32_t partlen   = 128;
+            if (remaining > partlen) {
                 char part[partlen + 1];
                 memset(part, p.c, partlen);
-                part[partlen]='\0';
+                part[partlen] = '\0';
                 while (remaining > partlen) {
                     os << part;
                     remaining -= partlen;
@@ -34,10 +34,10 @@ namespace mge {
             }
             char *mem = (char *)alloca(remaining + 1);
             memset(mem, p.c, remaining);
-            mem[remaining]='\0';
+            mem[remaining] = '\0';
             return os << mem;
         }
-    }
+    } // namespace
 
     /**
      * @brief Create a line printer.
@@ -47,9 +47,9 @@ namespace mge {
      * @return line printer that prints a line of designated
      *              length
      */
-    inline line_printer line(uint32_t length, char c='-')
+    inline line_printer line(uint32_t length, char c = '-')
     {
-        line_printer p = { length, c};
+        line_printer p = {length, c};
         return p;
     }
-}
+} // namespace mge

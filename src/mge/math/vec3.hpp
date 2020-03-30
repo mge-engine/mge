@@ -3,8 +3,8 @@
 // All rights reserved.
 #pragma once
 
-#include "mge/math/glm.hpp"
 #include "mge/math/dllexport.hpp"
+#include "mge/math/glm.hpp"
 #include <iosfwd>
 
 namespace mge {
@@ -13,13 +13,11 @@ namespace mge {
 
     using fvec3 = vec3;
 
-    MGE_MATH_EXPORT std::ostream& operator <<(std::ostream& os, const fvec3& v);
+    MGE_MATH_EXPORT std::ostream &operator<<(std::ostream &os, const fvec3 &v);
 
-    inline auto squared_length(const fvec3& v)
+    inline auto squared_length(const fvec3 &v)
     {
-        return v.x*v.x + v.y*v.y + v.z*v.z;
+        return v.x * v.x + v.y * v.y + v.z * v.z;
     }
 
-
- }
-
+} // namespace mge

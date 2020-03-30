@@ -1,18 +1,18 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googlemock.hpp"
 #include "mock_file_access.hpp"
+#include "test/googlemock.hpp"
 #include <memory>
 
 using mge::file;
-using mge::input_stream_ref;
 using mge::input_stream;
+using mge::input_stream_ref;
 
 TEST(file, exists_calls_file_access)
 {
-    std::shared_ptr<MOCK_file_access> mfa = std::make_shared<
-            MOCK_file_access>("ignored");
+    std::shared_ptr<MOCK_file_access> mfa =
+        std::make_shared<MOCK_file_access>("ignored");
     file f(mfa);
     EXPECT_CALL(*mfa, exists()).Times(1).WillRepeatedly(testing::Return(true));
     EXPECT_TRUE(f.exists());
@@ -20,8 +20,8 @@ TEST(file, exists_calls_file_access)
 
 TEST(file, is_file_calls_file_access)
 {
-    std::shared_ptr<MOCK_file_access> mfa = std::make_shared<
-            MOCK_file_access>("ignored");
+    std::shared_ptr<MOCK_file_access> mfa =
+        std::make_shared<MOCK_file_access>("ignored");
     file f(mfa);
     EXPECT_CALL(*mfa, is_file()).Times(1).WillRepeatedly(testing::Return(true));
     EXPECT_TRUE(f.is_file());
@@ -29,21 +29,23 @@ TEST(file, is_file_calls_file_access)
 
 TEST(file, is_directory_calls_file_access)
 {
-    std::shared_ptr<MOCK_file_access> mfa = std::make_shared<
-            MOCK_file_access>("ignored");
+    std::shared_ptr<MOCK_file_access> mfa =
+        std::make_shared<MOCK_file_access>("ignored");
     file f(mfa);
-    EXPECT_CALL(*mfa, is_directory()).Times(1).WillRepeatedly(
-            testing::Return(true));
+    EXPECT_CALL(*mfa, is_directory())
+        .Times(1)
+        .WillRepeatedly(testing::Return(true));
     EXPECT_TRUE(f.is_directory());
 }
 
 TEST(file, is_system_file_calls_file_access)
 {
-    std::shared_ptr<MOCK_file_access> mfa = std::make_shared<
-            MOCK_file_access>("ignored");
+    std::shared_ptr<MOCK_file_access> mfa =
+        std::make_shared<MOCK_file_access>("ignored");
     file f(mfa);
-    EXPECT_CALL(*mfa, is_system_file()).Times(1).WillRepeatedly(
-            testing::Return(true));
+    EXPECT_CALL(*mfa, is_system_file())
+        .Times(1)
+        .WillRepeatedly(testing::Return(true));
     EXPECT_TRUE(f.is_system_file());
 }
 
@@ -52,8 +54,8 @@ TEST(file, is_system_file_calls_file_access)
 #ifndef MGE_COMPILER_MINGW
 TEST(file, mkdir_calls_file_access)
 {
-    std::shared_ptr<MOCK_file_access> mfa
-        = std::make_shared<MOCK_file_access>("ignored");
+    std::shared_ptr<MOCK_file_access> mfa =
+        std::make_shared<MOCK_file_access>("ignored");
     file f(mfa);
     EXPECT_CALL(*mfa, mkdir()).Times(1);
     f.mkdir();

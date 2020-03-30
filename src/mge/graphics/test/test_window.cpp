@@ -1,12 +1,13 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
-#include "test/googlemock.hpp"
 #include "mge/graphics/test/mock_window.hpp"
+#include "test/googlemock.hpp"
 
 TEST(window, create)
 {
-    mge::mock_window w(mge::rectangle(0,0,640,480), mge::window_options::standard_options());
+    mge::mock_window w(mge::rectangle(0, 0, 640, 480),
+                       mge::window_options::standard_options());
 }
 
 TEST(window, default_visibility)
@@ -33,7 +34,6 @@ TEST(window, show_shown)
     w->show();
     EXPECT_TRUE(w->visible());
 }
-
 
 TEST(window, hide)
 {

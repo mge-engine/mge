@@ -5,11 +5,9 @@
 
 namespace mge {
 
-
-    window_options&
-    window_options::set_option(option o, bool value)
+    window_options &window_options::set_option(option o, bool value)
     {
-        if(o != window_options::NONE) {
+        if (o != window_options::NONE) {
             uint32_t oval = (uint32_t)o;
             oval--;
             m_options[oval] = value;
@@ -17,10 +15,9 @@ namespace mge {
         return *this;
     }
 
-    bool
-    window_options::option_set(window_options::option o) const
+    bool window_options::option_set(window_options::option o) const
     {
-        if(o == window_options::NONE) {
+        if (o == window_options::NONE) {
             return false;
         } else {
             uint32_t oval = (uint32_t)o;
@@ -29,20 +26,17 @@ namespace mge {
         }
     }
 
-    window_options
-    window_options::standard_options()
+    window_options window_options::standard_options()
     {
         return window_options()
-                .set_option(RESIZABLE)
-                .set_option(BORDER)
-                .set_option(TITLE);
+            .set_option(RESIZABLE)
+            .set_option(BORDER)
+            .set_option(TITLE);
     }
 
-    window_options
-    window_options::fullscreen_options()
+    window_options window_options::fullscreen_options()
     {
-        return window_options()
-                .set_option(FULLSCREEN);
+        return window_options().set_option(FULLSCREEN);
     }
 
-}
+} // namespace mge

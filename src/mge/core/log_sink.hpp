@@ -2,10 +2,10 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/dllexport.hpp"
 #include "mge/core/component.hpp"
-#include "mge/core/log_record.hpp"
 #include "mge/core/configurable.hpp"
+#include "mge/core/dllexport.hpp"
+#include "mge/core/log_record.hpp"
 
 namespace mge {
 
@@ -14,9 +14,8 @@ namespace mge {
     /**
      * @brief Log sink, i.e. log destination.
      */
-    class MGE_CORE_EXPORT log_sink
-            : public component<log_sink>,
-              public configurable
+    class MGE_CORE_EXPORT log_sink : public component<log_sink>,
+                                     public configurable
     {
     protected:
         /**
@@ -25,14 +24,15 @@ namespace mge {
          * @param synchronized whether the publish function must be
          *                     synchronized.
          */
-        log_sink(bool synchronized=true);
+        log_sink(bool synchronized = true);
 
         /**
          * @brief Callback to publish a log record.
          *
          * @param r log record to publish
          */
-        virtual void on_publish(const log_record& r) = 0;
+        virtual void on_publish(const log_record &r) = 0;
+
     public:
         virtual ~log_sink() = default;
         /**
@@ -40,9 +40,10 @@ namespace mge {
          *
          * @param r log record
          */
-        void publish(const log_record& r);
+        void publish(const log_record &r);
+
     protected:
         bool       m_synchronized;
         std::mutex m_lock;
     };
-}
+} // namespace mge

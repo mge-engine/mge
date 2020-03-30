@@ -7,13 +7,14 @@
 namespace mge {
     namespace ui {
 
-        class MGE_UI_EXPORT menu_bar 
+        class MGE_UI_EXPORT menu_bar
         {
         public:
             menu_bar();
             ~menu_bar();
+
         private:
             font_ref m_font;
         };
-    }
-}
+    } // namespace ui
+} // namespace mge

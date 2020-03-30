@@ -1,43 +1,32 @@
+// mge - Modern Game Engine
+// Copyright (c) 2018 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/artifact.hpp"
 
-
 namespace mge {
-    artifact::artifact()
+    artifact::artifact() {}
+
+    artifact::artifact(std::string_view    name_,
+                       std::string_view    attribution_name_,
+                       std::string_view    attribution_url_,
+                       const mge::version &version_,
+                       const mge::license &license_)
+        : m_name(name_), m_attribution_name(attribution_name_),
+          m_attribution_url(attribution_url_), m_version(version_),
+          m_license(license_)
     {}
 
-    artifact::artifact(std::string_view name_,
-                       std::string_view attribution_name_,
-                       std::string_view attribution_url_,
-                       const mge::version& version_,
-                       const mge::license& license_)
-        :m_name(name_)
-        ,m_attribution_name(attribution_name_)
-        ,m_attribution_url(attribution_url_)
-        ,m_version(version_)
-        ,m_license(license_)
-    {}
+    const std::string &artifact::name() const { return m_name; }
 
-    const std::string&
-    artifact::name() const
-    {
-        return m_name;
-    }
-
-    const std::string&
-    artifact::attribution_name() const
+    const std::string &artifact::attribution_name() const
     {
         return m_attribution_name;
     }
 
-    const std::string&
-    artifact::attribution_url() const
+    const std::string &artifact::attribution_url() const
     {
         return m_attribution_url;
     }
 
-    const mge::version&
-    artifact::version() const
-    {
-        return m_version;
-    }
-}
+    const mge::version &artifact::version() const { return m_version; }
+} // namespace mge

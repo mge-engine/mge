@@ -18,5 +18,5 @@ namespace mge {
         MGE_DECLARE_REF(button);
         MGE_DECLARE_REF(image);
 
-    }
-}
+    } // namespace ui
+} // namespace mge

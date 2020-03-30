@@ -29,4 +29,4 @@ namespace mge {
     MGE_DECLARE_REF(texture_2d);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(drawable);
-}
+} // namespace mge

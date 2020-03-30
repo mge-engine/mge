@@ -16,4 +16,4 @@ namespace mge {
         unsigned int height;
         unsigned int refresh_rate;
     };
-}
+} // namespace mge

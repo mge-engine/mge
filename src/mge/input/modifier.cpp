@@ -5,9 +5,9 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream& operator <<(std::ostream& os, const modifier_value& v)
+    std::ostream &operator<<(std::ostream &os, const modifier_value &v)
     {
-        switch(v) {
+        switch (v) {
         case modifier_value::ALT:
             return os << "ALT";
         case modifier_value::SHIFT:
@@ -18,4 +18,4 @@ namespace mge {
             return os << "INVALID(" << (int)v << ")";
         }
     }
-}
+} // namespace mge

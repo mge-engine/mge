@@ -6,9 +6,10 @@
 
 namespace mge {
 
-std::ostream& operator <<(std::ostream& os, const extent& e)
-{
-    return os << "extent[width=" << e.width() << ", height=" << e.height() << "]";
-}
+    std::ostream &operator<<(std::ostream &os, const extent &e)
+    {
+        return os << "extent[width=" << e.width() << ", height=" << e.height()
+                  << "]";
+    }
 
-}
+} // namespace mge

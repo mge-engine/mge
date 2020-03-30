@@ -7,10 +7,9 @@
 
 namespace mge {
 
-    static inline const char *
-    severity_string(log_severity s)
+    static inline const char *severity_string(log_severity s)
     {
-        switch(s) {
+        switch (s) {
         case log_severity::DEBUG_SEVERITY:
             return "D";
         case log_severity::INFO_SEVERITY:
@@ -27,27 +26,28 @@ namespace mge {
     class text_log_formatter : public log_formatter
     {
     public:
-        text_log_formatter() = default;
+        text_log_formatter()          = default;
         virtual ~text_log_formatter() = default;
 
-        virtual void format(std::ostream& os, const log_record& r)
+        virtual void format(std::ostream &os, const log_record &r)
         {
-            size_t message_len = strlen(r.message);
-            const char *ep = r.message + message_len;
-            while(*ep == '\n') {
+            size_t      message_len = strlen(r.message);
+            const char *ep          = r.message + message_len;
+            while (*ep == '\n') {
                 --ep;
-                if(ep == r.message) {
+                if (ep == r.message) {
                     break;
                 }
             }
             auto t = std::chrono::system_clock::to_time_t(r.timestamp);
-            auto subseconds = r.timestamp - std::chrono::system_clock::from_time_t(t);
+            auto subseconds =
+                r.timestamp - std::chrono::system_clock::from_time_t(t);
             auto int_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    subseconds);
+                subseconds);
             auto lt = std::localtime(&t);
             os << std::put_time(lt, "%Y-%m-%d %H:%M:%S.");
-            os << std::setw(9) << std::setfill('0') << int_ms.count() << std::setw(0)
-               << std::setfill(' ') << " ";
+            os << std::setw(9) << std::setfill('0') << int_ms.count()
+               << std::setw(0) << std::setfill(' ') << " ";
             os << severity_string(r.severity) << ' ';
             os << std::setw(10) << std::left << std::setfill('0') << r.thread_id
                << std::setfill(' ') << std::internal << " ";
@@ -60,4 +60,4 @@ namespace mge {
     };
 
     MGE_REGISTER_IMPLEMENTATION(text_log_formatter, log_formatter, text);
-}
+} // namespace mge
