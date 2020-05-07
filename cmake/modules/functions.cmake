@@ -49,12 +49,12 @@ ENDFUNCTION()
 
 FUNCTION(TARGET_IS_TEST TARGET)
 
-    IF(ARGC GREATER 1)
+    SET(_FLAGS ${ARGV})
+    LIST(POP_FRONT _FLAGS)
+    IF(NEEDSDISPLAY IN_LIST _FLAGS)
         IF(HEADLESS_ENVIRONMENT)
-            IF(ARGV1 STREQUAL "NEEDSDISPLAY")
-                MESSAGE("-- Skipping ${TARGET} test due to headless environment")
-                RETURN()
-            ENDIF()
+            MESSAGE("-- Skipping ${TARGET} test due to headless environment")
+            RETURN()
         ENDIF()
     ENDIF()
 
@@ -68,13 +68,17 @@ FUNCTION(TARGET_IS_TEST TARGET)
     ADD_TEST(NAME ${TARGET}
              COMMAND ${_BINARY_DIR}/${TARGET} --gtest_output=xml:${TARGET}.xml
              WORKING_DIRECTORY "${_BINARY_DIR}")
-    IF(COVERAGE_TESTS)
-       ADD_CUSTOM_TARGET("${TARGET}-coverage-test"
-            COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/removelog.py" "${CMAKE_BINARY_DIR}/coverage/drcov.${TARGET}"
-            COMMAND ${DRRUN} -t drcov -logdir ${CMAKE_BINARY_DIR}/coverage -- ${_BINARY_DIR}/${TARGET} --gtest_output=xml:${TARGET}-cov.xml
-            WORKING_DIRECTORY "${_BINARY_DIR}"
-        )
-        ADD_DEPENDENCIES(coverage-tests-run ${TARGET}-coverage-test)
+    IF(COVERAGE_TESTS_ENABLED)
+        IF(NOCOVERAGE IN_LIST _FLAGS)
+            MESSAGE("-- Not running test ${TARGET} as coverage test")
+        ELSE()
+            ADD_CUSTOM_TARGET("${TARGET}-coverage-test"
+                COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/removelog.py" "${CMAKE_BINARY_DIR}/coverage/drcov.${TARGET}"
+                COMMAND ${DRRUN} -t drcov -logdir ${CMAKE_BINARY_DIR}/coverage -- ${_BINARY_DIR}/${TARGET} --gtest_output=xml:${TARGET}-cov.xml
+                WORKING_DIRECTORY "${_BINARY_DIR}"
+            )
+            ADD_DEPENDENCIES(coverage-tests-run ${TARGET}-coverage-test)
+        ENDIF()
     ENDIF()
 ENDFUNCTION()
 
