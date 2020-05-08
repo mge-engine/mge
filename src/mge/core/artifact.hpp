@@ -15,7 +15,7 @@ namespace mge {
     MGE_DECLARE_REF(artifact);
 
     /**
-     * An artifact. An artificat is a component or piece of work that can
+     * An artifact. An artifact is a component or piece of work that can
      * be individually attributed.
      */
     class MGE_CORE_EXPORT artifact
