@@ -7,4 +7,4 @@ ADD_EXECUTABLE(vulkantest
 	vulkan_test.cpp
 )
 TARGET_LINK_LIBRARIES(vulkantest mgegraphics mgecore gmock)
-TARGET_IS_TEST(vulkantest NEEDSDISPLAY)
+TARGET_IS_TEST(vulkantest NEEDSDISPLAY NOCOVERAGE)

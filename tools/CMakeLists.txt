@@ -13,14 +13,14 @@ ADD_CUSTOM_TARGET(projectfiles
     )
 
 ADD_CUSTOM_TARGET(coverage-report
-  DEPENDS coverage-tests-run
+  DEPENDS coverage-tests
   COMMAND ${DRCOV2LCOV} -dir ${CMAKE_BINARY_DIR}/coverage
   COMMAND  ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/coverage-report.py" ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/external ${CMAKE_BINARY_DIR}
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
 ADD_CUSTOM_TARGET(full-coverage-report
-  DEPENDS coverage-tests-run
+  DEPENDS coverage-tests
   COMMAND ${DRCOV2LCOV} -dir ${CMAKE_BINARY_DIR}/coverage
   COMMAND  ${PYTHON_EXECUTABLE} "${CMAKE_SOURCE_DIR}/tools/coverage-report.py" ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/external ${CMAKE_BINARY_DIR} --full
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

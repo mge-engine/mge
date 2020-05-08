@@ -31,4 +31,4 @@ ELSE()
     MESSAGE("-- Unsupported operating system for coverage tests")
 ENDIF()
 
-ADD_CUSTOM_TARGET(coverage-tests-run)
+ADD_CUSTOM_TARGET(coverage-tests)

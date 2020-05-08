@@ -77,7 +77,7 @@ FUNCTION(TARGET_IS_TEST TARGET)
                 COMMAND ${DRRUN} -t drcov -logdir ${CMAKE_BINARY_DIR}/coverage -- ${_BINARY_DIR}/${TARGET} --gtest_output=xml:${TARGET}-cov.xml
                 WORKING_DIRECTORY "${_BINARY_DIR}"
             )
-            ADD_DEPENDENCIES(coverage-tests-run ${TARGET}-coverage-test)
+            ADD_DEPENDENCIES(coverage-tests ${TARGET}-coverage-test)
         ENDIF()
     ENDIF()
 ENDFUNCTION()
