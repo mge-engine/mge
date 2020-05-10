@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/small_vector.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/index_buffer.hpp"
@@ -58,6 +59,9 @@ namespace mge {
         void set_indices(const index_buffer_ref &buffer);
         void set_topology(mge::topology topology);
 
+        void bind_uniform(uint32_t buffer, uint32_t uniform, void *data);
+        void bind_uniform_buffer(uint32_t buffer, void *data);
+
         const pipeline_ref &     pipeline() const { return m_pipeline; }
         const vertex_buffer_ref &vertices() const { return m_vertices; }
         const index_buffer_ref & indices() const { return m_indices; }
@@ -68,6 +72,16 @@ namespace mge {
         vertex_buffer_ref m_vertices;
         index_buffer_ref  m_indices;
         mge::topology     m_topology;
+
+        mge::small_vector<void *, 3> m_uniform_buffer_data;
+        struct uniform_data
+        {
+            uint32_t uniform_buffer;
+            uint32_t uniform;
+            void *   data;
+        };
+
+        mge::small_vector<uniform_data, 16> m_uniform_data;
     };
 
 } // namespace mge
