@@ -59,4 +59,47 @@ namespace mge {
 
     void draw_command::set_topology(mge::topology mode) { m_topology = mode; }
 
+    void draw_command::bind_uniform_buffer(uint32_t buffer, void *data)
+    {
+        if (m_uniform_buffer_data.size() <= buffer) {
+            m_uniform_buffer_data.resize(buffer + 1);
+        }
+        m_uniform_buffer_data[buffer] = data;
+    }
+
+    void draw_command::bind_uniform(uint32_t buffer, uint32_t uniform,
+                                    void *data)
+    {
+        if (data) {
+            auto it = m_uniform_data.begin();
+            while (it != m_uniform_data.end()) {
+                if (it->uniform_buffer == buffer && it->uniform == uniform) {
+                    it->data = data;
+                    return;
+                }
+            }
+            uniform_data d{buffer, uniform, data};
+            m_uniform_data.push_back(d);
+        } else {
+            auto it = m_uniform_data.begin();
+            while (it != m_uniform_data.end()) {
+                if (it->uniform_buffer == buffer && it->uniform == uniform) {
+                    m_uniform_data.erase(it);
+                    return;
+                }
+                ++it;
+            }
+        }
+    }
+
+    size_t draw_command::uniform_buffer_count() const
+    {
+        return m_uniform_buffer_data.size();
+    }
+
+    void *draw_command::uniform_buffer(size_t i) const
+    {
+        return m_uniform_buffer_data.at(i);
+    }
+
 } // namespace mge

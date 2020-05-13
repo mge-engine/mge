@@ -67,13 +67,17 @@ namespace mge {
         const index_buffer_ref & indices() const { return m_indices; }
         mge::topology            topology() const { return m_topology; }
 
+        size_t uniform_buffer_count() const;
+        void * uniform_buffer(size_t i) const;
+
     private:
         pipeline_ref      m_pipeline;
         vertex_buffer_ref m_vertices;
         index_buffer_ref  m_indices;
         mge::topology     m_topology;
 
-        mge::small_vector<void *, 3> m_uniform_buffer_data;
+        std::vector<void *> m_uniform_buffer_data;
+
         struct uniform_data
         {
             uint32_t uniform_buffer;
@@ -81,7 +85,7 @@ namespace mge {
             void *   data;
         };
 
-        mge::small_vector<uniform_data, 16> m_uniform_data;
+        std::vector<uniform_data> m_uniform_data;
     };
 
 } // namespace mge
