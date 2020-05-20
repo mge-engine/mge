@@ -35,9 +35,10 @@ namespace mge {
          * Create a new render context that utilizes a given
          * executor.
          *
+         * @param system render system
          * @param display_executor context executor
          */
-        render_context(async_executor *display_executor);
+        render_context(render_system *system, async_executor *display_executor);
 
     public:
         /**
@@ -148,6 +149,16 @@ namespace mge {
         virtual shader_program_ref create_shader_program(shader_type type) = 0;
 
         /**
+         * @brief Create a shader progam object
+         *
+         * @param type          shader type
+         * @param asset_name
+         * @return shader_program_ref
+         */
+        shader_program_ref create_shader_program(shader_type type,
+                                                 const char *asset_name);
+
+        /**
          * Create a pipeline object.
          *
          * @return created pipeline
@@ -175,7 +186,18 @@ namespace mge {
          */
         virtual void execute(const command_list_ref &commands) = 0;
 
+        /**
+         * @brief Render system of context,
+         *
+         * @return render system of context
+         */
+        mge::render_system &render_system() noexcept
+        {
+            return *m_render_system;
+        }
+
     protected:
-        async_executor *m_display_executor;
+        mge::render_system *m_render_system;
+        async_executor *    m_display_executor;
     };
 } // namespace mge

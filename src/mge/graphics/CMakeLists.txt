@@ -31,7 +31,7 @@ ADD_LIBRARY(mgegraphics
     vertex_layout.cpp
     vertex_buffer.cpp
     image_format.cpp
-    image.cpp 
+    image.cpp
     memory_image.cpp
     texture_type.cpp
     filter_function.cpp
@@ -42,6 +42,6 @@ ADD_LIBRARY(mgegraphics
     drawable.cpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
-TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication)
+TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication mgeasset)
 
 ADD_SUBDIRECTORY(test)

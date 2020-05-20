@@ -20,8 +20,9 @@ MGE_USE_LOG(OPENGL);
 
 namespace opengl {
 #ifdef MGE_OS_WINDOWS
-    render_context::render_context(window *w, bool debug)
-        : mge::render_context(w), m_hwnd(w->hwnd()), m_hdc(nullptr),
+    render_context::render_context(mge::render_system *system, window *w,
+                                   bool debug)
+        : mge::render_context(system, w), m_hwnd(w->hwnd()), m_hdc(nullptr),
           m_hglrc(nullptr), m_debug(debug)
     {
         m_hdc = GetDC(m_hwnd);

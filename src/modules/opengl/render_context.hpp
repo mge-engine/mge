@@ -17,7 +17,7 @@ namespace opengl {
     public:
         using vao_key_type = std::tuple<GLuint, GLuint, GLuint>;
 
-        render_context(window *w, bool debug);
+        render_context(mge::render_system *system, window *w, bool debug);
         ~render_context();
         mge::vertex_buffer_ref
         create_vertex_buffer(const mge::vertex_layout &layout, mge::usage usage,

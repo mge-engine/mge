@@ -15,10 +15,12 @@ namespace opengl {
     {
     public:
         window(const mge::rectangle &rect, const mge::window_options &options,
-               bool debug);
+               mge::render_system *system, bool debug);
         ~window();
 
     private:
         void create_render_context(bool debug);
+
+        mge::render_system *m_render_system;
     };
 } // namespace opengl

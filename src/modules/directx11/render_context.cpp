@@ -15,8 +15,9 @@ MGE_USE_LOG(DX11);
 
 namespace dx11 {
 
-    render_context::render_context(window *w, const system_config &config)
-        : mge::render_context(w), m_window(w)
+    render_context::render_context(mge::render_system *system, window *w,
+                                   const system_config &config)
+        : mge::render_context(system, w), m_window(w)
     {
         init_context(config);
     }

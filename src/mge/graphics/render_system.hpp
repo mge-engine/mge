@@ -2,12 +2,14 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/asset/asset.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/configurable.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/shader_language.hpp"
+#include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/window_options.hpp"
 
 #include <vector>
@@ -77,5 +79,14 @@ namespace mge {
          * @return reference to new window
          */
         window_ref create_window();
+
+        /**
+         * Locates a shader of a given type that has a certain name.
+         *
+         * @param type type
+         * @param name shader name, may be a path
+         * @return asset shader asset
+         */
+        virtual asset locate_shader(shader_type type, const char *name) = 0;
     };
 } // namespace mge

@@ -2,8 +2,10 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
+#include "mge/asset/asset_not_found.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/log.hpp"
+
 #include "opengl.hpp"
 #include "window.hpp"
 
@@ -38,7 +40,7 @@ namespace opengl {
                       const mge::window_options &options) override
         {
             mge::window_ref result =
-                std::make_shared<window>(rect, options, m_debug);
+                std::make_shared<window>(rect, options, this, m_debug);
             return result;
         }
 
@@ -48,6 +50,13 @@ namespace opengl {
 #ifdef MGE_RELEASEWITHDEBUG
             m_debug = true;
 #endif
+        }
+
+        mge::asset locate_shader(mge::shader_type type,
+                                 const char *     name) override
+        {
+            MGE_THROW(mge::asset_not_found)
+                << "Shader '" << name << "' of type " << type << " not found";
         }
 
     private:

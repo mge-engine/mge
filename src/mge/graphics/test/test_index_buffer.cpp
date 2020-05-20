@@ -5,12 +5,16 @@
 #include "mge/core/test/mock_async_executor.hpp"
 #include "mge/graphics/test/mock_index_buffer.hpp"
 #include "mge/graphics/test/mock_render_context.hpp"
+#include "mge/graphics/test/mock_render_system.hpp"
+
 using namespace testing;
 namespace mge {
     TEST(index_buffer, create)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
         mock_index_buffer buffer(*context, mge::data_type::INT32,
                                  mge::usage::DEFAULT, 17 * sizeof(int),
                                  nullptr);
@@ -18,8 +22,10 @@ namespace mge {
 
     TEST(index_buffer, element_count)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
         mock_index_buffer buffer(*context, mge::data_type::INT32,
                                  mge::usage::DEFAULT, 17 * sizeof(int),
                                  nullptr);

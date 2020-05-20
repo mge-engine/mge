@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
 #include "dx11.hpp"
+#include "mge/asset/asset_not_found.hpp"
 #include "mge/core/log.hpp"
 #include "system_config.hpp"
 #include "window.hpp"
@@ -43,7 +44,14 @@ namespace dx11 {
         create_window(const mge::rectangle &     rect,
                       const mge::window_options &options) override
         {
-            return std::make_shared<window>(rect, options, m_config);
+            return std::make_shared<window>(rect, options, this, m_config);
+        }
+
+        mge::asset locate_shader(mge::shader_type type,
+                                 const char *     name) override
+        {
+            MGE_THROW(mge::asset_not_found)
+                << "Shader '" << name << "' of type " << type << " not found";
         }
 
     private:

@@ -52,39 +52,18 @@ public:
     {
         MGE_DEBUG_LOG(cube) << "Initializing objects";
         auto pixel_shader = m_window->render_context().create_shader_program(
-            shader_type::FRAGMENT);
+            shader_type::FRAGMENT, "samples/textured_cube/textured_cube");
         auto vertex_shader = m_window->render_context().create_shader_program(
-            shader_type::VERTEX);
+            shader_type::VERTEX, "samples/textured_cube/textured_cube");
         m_pipeline = m_window->render_context().create_pipeline();
         MGE_DEBUG_LOG(cube)
             << "render system is " << m_render_system->implementation_name();
-        if (m_render_system->implementation_name() ==
-            "opengl::render_system"sv) {
-            const char *vertex_shader_glsl =
-                "#version 330 core\n"
-                "layout(location = 0) in vec3 vertexPosition;\n"
-                "\n"
-                "void main() {\n"
-                "  gl_Position.xyz = vertexPosition;\n"
-                "  gl_Position.w = 1.0;\n"
-                "}";
-            const char *fragment_shader_glsl = "#version 330 core\n"
-                                               "out vec3 color;\n"
-                                               "\n"
-                                               "void main() {\n"
-                                               "    color = vec3(1,1,1);\n"
-                                               "}";
-            MGE_DEBUG_LOG(cube) << "Compile fragment shader";
-            pixel_shader->compile(fragment_shader_glsl);
-            MGE_DEBUG_LOG(cube) << "Compile vertex shader";
-            vertex_shader->compile(vertex_shader_glsl);
-            MGE_DEBUG_LOG(cube) << "Shaders compiled";
-        }
         m_pipeline->set_shader_program(pixel_shader);
         m_pipeline->set_shader_program(vertex_shader);
         MGE_DEBUG_LOG(cube) << "Linking pipeline";
         m_pipeline->link();
         MGE_DEBUG_LOG(cube) << "Pipeline linked";
+#if 0
         float cube_coords[] = {
             -1.0f, 1.0f,  1.0f,  1.0f,  1.0f,  1.0f, -1.0f, -1.0f,
             1.0f,  1.0f,  -1.0f, 1.0f,  -1.0f, 1.0f, -1.0f, 1.0f,
@@ -107,6 +86,7 @@ public:
         m_draw_commands->draw(
             mge::draw_command(m_pipeline, m_vertices, m_indices));
         m_draw_commands->finish();
+#endif
         MGE_DEBUG_LOG(cube) << "Initializing objects done";
         m_initialized = true;
     }

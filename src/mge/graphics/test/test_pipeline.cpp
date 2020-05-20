@@ -7,6 +7,7 @@
 #include "mge/core/test/mock_async_executor.hpp"
 #include "mge/graphics/test/mock_pipeline.hpp"
 #include "mge/graphics/test/mock_render_context.hpp"
+#include "mge/graphics/test/mock_render_system.hpp"
 #include "mge/graphics/test/mock_shader.hpp"
 
 using namespace testing;
@@ -14,8 +15,10 @@ namespace mge {
 
     TEST(pipeline, needs_link_after_create)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
 
         mock_pipeline p(*context);
         EXPECT_TRUE(p.needs_link());
@@ -23,8 +26,10 @@ namespace mge {
 
     TEST(pipeline, set_null_shader_ref_throws)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
 
         mock_pipeline      p(*context);
         shader_program_ref sh;
@@ -35,9 +40,11 @@ namespace mge {
 
     TEST(pipeline, set_compute_shader_throws)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
-        auto shader   = std::make_shared<mock_shader_program>(
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
+        auto shader = std::make_shared<mock_shader_program>(
             *context, shader_type::COMPUTE);
 
         mock_pipeline p(*context);
@@ -48,9 +55,11 @@ namespace mge {
 
     TEST(pipeline, set_undefined_shader_throws)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
-        auto shader   = std::make_shared<mock_shader_program>(
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
+        auto shader = std::make_shared<mock_shader_program>(
             *context, shader_type::VERTEX);
 
         mock_pipeline p(*context);
@@ -61,9 +70,11 @@ namespace mge {
 
     TEST(pipeline, set_shader_succeeds)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
-        auto shader   = std::make_shared<mock_shader_program>(
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
+        auto shader = std::make_shared<mock_shader_program>(
             *context, shader_type::VERTEX);
         EXPECT_CALL(*shader, on_compile(_)).Times(1);
         shader->compile("foobar");
@@ -74,8 +85,10 @@ namespace mge {
 
     TEST(pipeline, link_succeeds)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
         mock_pipeline p(*context);
         EXPECT_CALL(p, on_link()).Times(1);
         p.link();
@@ -84,8 +97,10 @@ namespace mge {
 
     TEST(pipeline, link_fails)
     {
-        auto executor = std::make_shared<mock_async_executor>();
-        auto context  = std::make_shared<mock_render_context>(executor.get());
+        mock_render_system system;
+        auto               executor = std::make_shared<mock_async_executor>();
+        auto               context =
+            std::make_shared<mock_render_context>(&system, executor.get());
         mock_pipeline p(*context);
         EXPECT_CALL(p, on_link())
             .Times(1)

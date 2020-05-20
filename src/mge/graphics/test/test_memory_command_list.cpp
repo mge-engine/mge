@@ -10,27 +10,33 @@
 #include "mge/graphics/memory_command_list.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/test/mock_render_context.hpp"
+#include "mge/graphics/test/mock_render_system.hpp"
 
 using namespace testing;
+namespace mge {
+    TEST(memory_command_list, create)
+    {
+        mock_render_system system;
+        auto executor = std::make_shared<mge::mock_async_executor>();
+        auto context =
+            std::make_shared<mge::mock_render_context>(&system, executor.get());
 
-TEST(memory_command_list, create)
-{
-    auto executor = std::make_shared<mge::mock_async_executor>();
-    auto context  = std::make_shared<mge::mock_render_context>(executor.get());
+        mge::memory_command_list l(*context);
+        EXPECT_FALSE(l.native());
+        EXPECT_FALSE(l.finished());
+        EXPECT_FALSE(l.immutable());
+    }
 
-    mge::memory_command_list l(*context);
-    EXPECT_FALSE(l.native());
-    EXPECT_FALSE(l.finished());
-    EXPECT_FALSE(l.immutable());
-}
+    TEST(memory_command_list, clear)
+    {
+        mock_render_system system;
+        auto executor = std::make_shared<mge::mock_async_executor>();
+        auto context =
+            std::make_shared<mge::mock_render_context>(&system, executor.get());
 
-TEST(memory_command_list, clear)
-{
-    auto executor = std::make_shared<mge::mock_async_executor>();
-    auto context  = std::make_shared<mge::mock_render_context>(executor.get());
-
-    mge::memory_command_list l(*context);
-    l.clear(mge::rgba_color(0xFFFFFFFF));
-    l.finish();
-    EXPECT_EQ(1u, std::distance(l.begin(), l.end()));
-}
+        mge::memory_command_list l(*context);
+        l.clear(mge::rgba_color(0xFFFFFFFF));
+        l.finish();
+        EXPECT_EQ(1u, std::distance(l.begin(), l.end()));
+    }
+} // namespace mge

@@ -13,8 +13,9 @@ MGE_USE_LOG(DX12);
 
 namespace dx12 {
 
-    render_context::render_context(window *win, const system_config &config)
-        : mge::render_context(win), m_fence_event(0), m_fence_value(1),
+    render_context::render_context(mge::render_system *system, window *win,
+                                   const system_config &config)
+        : mge::render_context(system, win), m_fence_event(0), m_fence_value(1),
           m_frame_index(0), m_rtv_descriptor_size(0)
     {
         HRESULT rc            = 0;

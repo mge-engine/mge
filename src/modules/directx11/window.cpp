@@ -7,8 +7,8 @@
 namespace dx11 {
     window::window(const mge::rectangle &     rect,
                    const mge::window_options &options,
-                   const system_config &      config)
-        : mge::platform::window(rect, options)
+                   mge::render_system *system, const system_config &config)
+        : mge::platform::window(rect, options), m_render_system(system)
     {
         create_render_context(config);
     }
@@ -17,7 +17,8 @@ namespace dx11 {
 
     void window::create_render_context(const system_config &config)
     {
-        m_render_context = std::make_shared<dx11::render_context>(this, config);
+        m_render_context = std::make_shared<dx11::render_context>(
+            m_render_system, this, config);
     }
 
 } // namespace dx11

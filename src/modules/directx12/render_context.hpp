@@ -15,7 +15,8 @@ namespace dx12 {
     class render_context : public mge::render_context
     {
     public:
-        render_context(window *win, const system_config &config);
+        render_context(mge::render_system *system, window *win,
+                       const system_config &config);
         ~render_context();
 
         void flush() override;

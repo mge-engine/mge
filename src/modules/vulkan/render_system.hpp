@@ -2,11 +2,13 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/asset/asset_not_found.hpp"
 #include "mge/core/small_vector.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "system_config.hpp"
 #include "vulkan.hpp"
 #include "vulkan_library.hpp"
+
 #ifdef MGE_OS_WINDOWS
 #    include "win32/monitor.hpp"
 #endif
@@ -32,6 +34,13 @@ namespace vulkan {
         mge::window_ref
         create_window(const mge::rectangle &     rect,
                       const mge::window_options &options) override;
+
+        mge::asset locate_shader(mge::shader_type type,
+                                 const char *     name) override
+        {
+            MGE_THROW(mge::asset_not_found)
+                << "Shader '" << name << "' of type " << type << " not found";
+        }
 
         VkInstance instance() const noexcept { return m_instance; }
 

@@ -23,9 +23,9 @@ namespace vulkan {
         }
     }
 
-    render_context::render_context(window *win, render_system &system,
+    render_context::render_context(vulkan::render_system *system, window *win,
                                    const system_config &config)
-        : mge::render_context(win), m_render_system(system),
+        : mge::render_context(system, win), m_render_system(*system),
           m_surface(VK_NULL_HANDLE)
     {
         MGE_DEBUG_LOG(VULKAN) << "Create render context";

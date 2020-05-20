@@ -20,6 +20,6 @@ namespace vulkan {
     void window::create_render_context(const system_config &config)
     {
         m_render_context = std::make_shared<::vulkan::render_context>(
-            this, m_render_system, config);
+            &m_render_system, this, config);
     }
 } // namespace vulkan

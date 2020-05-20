@@ -15,10 +15,12 @@ namespace dx12 {
     {
     public:
         window(const mge::rectangle &rect, const mge::window_options &options,
-               const system_config &config);
+               mge::render_system *system, const system_config &config);
         ~window();
 
     private:
         void create_render_context(const system_config &config);
+
+        mge::render_system *m_render_system;
     };
 } // namespace dx12

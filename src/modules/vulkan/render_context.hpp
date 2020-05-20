@@ -13,7 +13,7 @@ namespace vulkan {
     class render_context : public mge::render_context
     {
     public:
-        render_context(window *win, render_system &system,
+        render_context(vulkan::render_system *system, window *win,
                        const system_config &config);
         ~render_context();
 
@@ -44,7 +44,7 @@ namespace vulkan {
         using present_mode_vector   = std::vector<VkPresentModeKHR>;
         void create_surface(window *win);
 
-        render_system &          m_render_system;
+        vulkan::render_system &  m_render_system;
         VkSurfaceKHR             m_surface;
         VkSurfaceCapabilitiesKHR m_surface_capabilties;
         surface_format_vector    m_surface_formats;
