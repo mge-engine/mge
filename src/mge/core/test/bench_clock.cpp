@@ -8,6 +8,7 @@ static void bench_clock_now(benchmark::State &state)
 {
     while (state.KeepRunning()) {
         auto n = mge::clock::now();
+        MGE_UNUSED(n);
     }
 }
 
@@ -17,6 +18,7 @@ static void bench_clock_tick(benchmark::State &state)
 {
     while (state.KeepRunning()) {
         auto n = mge::clock::tick();
+        MGE_UNUSED(n);
     }
 }
 

@@ -15,7 +15,7 @@ namespace dx11 {
     {}
 
     pipeline::~pipeline() {}
-
+#if 0
     static void dump_shader_desc(const D3D11_SHADER_DESC &desc)
     {
         MGE_DEBUG_LOG(DX11) << "Version: " << desc.Version;
@@ -27,7 +27,7 @@ namespace dx11 {
         MGE_DEBUG_LOG(DX11) << "Input Parameters  : " << desc.InputParameters;
         MGE_DEBUG_LOG(DX11) << "Output Parameters : " << desc.OutputParameters;
     }
-
+#endif
     static mge::data_type
     data_type_of_parameter(const D3D11_SIGNATURE_PARAMETER_DESC &desc)
     {

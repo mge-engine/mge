@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "bench/googlebenchmark.hpp"
+#include "mge/core/types.hpp"
 #include "mge/entity/entity_registry.hpp"
 
 static void bench_entity_system_create(benchmark::State &state)
@@ -17,6 +18,7 @@ static void bench_entity_create(benchmark::State &state)
     mge::entity_registry r;
     while (state.KeepRunning()) {
         auto e = r.create();
+        MGE_UNUSED(e);
     }
 }
 BENCHMARK(bench_entity_create);

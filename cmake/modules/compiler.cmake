@@ -10,6 +10,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-D_SCL_SECURE_NO_WARNINGS")
     ADD_DEFINITIONS("-Zc:implicitNoexcept-")
     ADD_DEFINITIONS("-fp:fast")
+    ADD_DEFINITIONS("-WX")
     ADD_DEFINITIONS("-Qpar")
     ADD_DEFINITIONS("-wd4710") # cannot inline function marked as inline
     ADD_DEFINITIONS("-wd4514") # unreferenced inline function removed

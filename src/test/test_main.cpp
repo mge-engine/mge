@@ -5,13 +5,7 @@
 #include "mge/core/log.hpp"
 #include "mge/core/module.hpp"
 #include "test/googletest.hpp"
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(disable : 5204)
-#endif
 #include <boost/exception/diagnostic_information.hpp>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(default : 5204)
-#endif
 #include <exception>
 
 MGE_DEFINE_LOG(TEST);

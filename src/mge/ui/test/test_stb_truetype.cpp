@@ -66,8 +66,8 @@ static void ft_check_buffer(const mge::buffer &data)
     }
 
     FT_Face  face;
-    FT_Error err =
-        FT_New_Memory_Face(library, data.data(), data.size(), 0, &face);
+    FT_Error err = FT_New_Memory_Face(
+        library, data.data(), static_cast<FT_Long>(data.size()), 0, &face);
     if (err) {
         MGE_THROW(mge::runtime_exception) << "Cannot initialize face: " << err;
     }

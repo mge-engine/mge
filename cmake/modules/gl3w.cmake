@@ -36,4 +36,7 @@ IF(OpenGL_FOUND)
         ${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/src/gl3w.c)
     TARGET_INCLUDE_DIRECTORIES(gl3w PUBLIC
         "${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/include")
+    IF(MSVC)
+        TARGET_COMPILE_OPTIONS(gl3w PRIVATE "-wd4152")
+    ENDIF()
 ENDIF()

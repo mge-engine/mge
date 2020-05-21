@@ -3,7 +3,14 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(disable : 5204)
+#endif
 #include <boost/operators.hpp>
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(default : 5204)
+#endif
+
 #include <iosfwd>
 #include <string>
 #include <tuple>

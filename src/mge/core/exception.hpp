@@ -7,10 +7,14 @@
 #include "mge/core/format_string.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/type_name.hpp"
-
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(disable : 5204)
+#endif
 #include <boost/any.hpp>
 #include <boost/optional.hpp>
-
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(default : 5204)
+#endif
 #include <map>
 #include <sstream>
 #include <tuple>

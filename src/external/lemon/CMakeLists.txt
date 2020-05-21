@@ -8,3 +8,6 @@ SET(lemon_sources
 
 ADD_EXECUTABLE(lemon
                ${lemon_sources})
+IF(MSVC)
+    TARGET_COMPILE_OPTIONS(lemon PRIVATE "-wd4702")
+ENDIF()

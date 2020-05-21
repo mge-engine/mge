@@ -7,7 +7,7 @@
 #    pragma warning(push, 0)
 #endif
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #ifdef _MSC_VER
 #    pragma warning(pop)

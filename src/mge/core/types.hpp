@@ -37,3 +37,9 @@ namespace mge {
  * @param X argument to stringify
  */
 #define MGE_STRINGIFY(...) #__VA_ARGS__
+
+/**
+ * @brief Marks a variable as unused.
+ * @param X variable
+ */
+#define MGE_UNUSED(X) X
