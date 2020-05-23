@@ -2,15 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/configuration.hpp"
+#include "boost/boost_algorithm_string.hpp"
 #include "mge/core/configuration_database.hpp"
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(disable : 5204)
-#endif
-#include <boost/algorithm/string.hpp>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(default : 5204)
-#endif
-
 #include <iostream>
 
 namespace mge {

@@ -6,6 +6,7 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/task_queue.hpp"
 #include "mge/core/thread.hpp"
+
 namespace mge {
     MGE_DECLARE_REF(update_thread);
 

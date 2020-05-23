@@ -5,7 +5,6 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/types.hpp"
-
 #include <functional>
 #include <iostream>
 #include <thread>

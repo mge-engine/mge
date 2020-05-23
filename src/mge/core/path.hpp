@@ -2,16 +2,9 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "boost/boost_filesystem.hpp"
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(disable : 5204)
-#endif
-#include <boost/filesystem.hpp>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(default : 5204)
-#endif
-
 #include <iosfwd>
 #include <string>
 #include <vector>

@@ -21,7 +21,7 @@ TEST(exception, extract_source_file)
         FAIL() << "No exception thrown";
     } catch (const mge::exception &ex) {
         auto file_info = ex.get<mge::exception::source_file>();
-        ASSERT_TRUE(file_info != boost::none);
+        ASSERT_TRUE(file_info != std::nullopt);
         EXPECT_STRNE("", file_info.value());
     }
 }

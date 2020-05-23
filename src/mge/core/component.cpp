@@ -6,18 +6,11 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include "boost/boost_algorithm_string.hpp"
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(disable : 5204)
-#endif
-#include <boost/algorithm/string.hpp>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(default : 5204)
-#endif
-
 namespace mge {
 
     class component_registry

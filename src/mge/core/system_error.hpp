@@ -2,15 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "boost/boost_system_error.hpp"
 #include "mge/core/exception.hpp"
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(disable : 5204)
-#endif
-#include <boost/system/system_error.hpp>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(default : 5204)
-#endif
-
 namespace mge {
 
     /**

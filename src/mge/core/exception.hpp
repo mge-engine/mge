@@ -7,15 +7,9 @@
 #include "mge/core/format_string.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/type_name.hpp"
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(disable : 5204)
-#endif
-#include <boost/any.hpp>
-#include <boost/optional.hpp>
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(default : 5204)
-#endif
+#include <any>
 #include <map>
+#include <optional>
 #include <sstream>
 #include <tuple>
 #include <typeindex>
@@ -229,9 +223,9 @@ namespace mge {
                 std::type_index(typeid(typename exception::message::tag_type));
             auto it =
                 m_infos.find(std::type_index(typeid(typename Info::tag_type)));
-            boost::optional<Info::value_type> result;
+            std::optional<Info::value_type> result;
             if (it != m_infos.end()) {
-                result = boost::any_cast<Info::value_type>(it->second);
+                result = std::any_cast<Info::value_type>(it->second);
             }
             return result;
         }
@@ -276,7 +270,7 @@ namespace mge {
         }
 
     private:
-        using exception_info_map_t = std::map<std::type_index, boost::any>;
+        using exception_info_map_t = std::map<std::type_index, std::any>;
         exception_info_map_t m_infos;
 
     private:
