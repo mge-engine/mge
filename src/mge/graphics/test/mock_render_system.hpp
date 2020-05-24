@@ -16,6 +16,6 @@ namespace mge {
         MOCK_METHOD2(create_window,
                      window_ref(const rectangle &, const window_options &));
         MOCK_METHOD0(create_window, window_ref());
-        MOCK_METHOD2(locate_shader, asset(shader_type, const char *name));
+        MOCK_METHOD2(locate_shader, asset(shader_type, std::string_view));
     };
 } // namespace mge

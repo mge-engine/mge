@@ -40,5 +40,7 @@ namespace mge {
         return create_window(r, options);
     }
 
+    bool render_system::binary_shader(const asset &) const { return false; }
+
     MGE_REGISTER_COMPONENT(render_system);
 } // namespace mge

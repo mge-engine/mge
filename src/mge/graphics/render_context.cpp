@@ -17,11 +17,17 @@ namespace mge {
     void render_context::assign_thread() {}
 
     shader_program_ref
-    render_context::create_shader_program(shader_type type,
-                                          const char *asset_name)
+    render_context::create_shader_program(shader_type      type,
+                                          std::string_view asset_name)
     {
         auto asset  = m_render_system->locate_shader(type, asset_name);
         auto shader = create_shader_program(type);
+
+        if (m_render_system->binary_shader(asset)) {
+
+        } else {
+        }
+
         return shader;
     }
 

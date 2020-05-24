@@ -53,7 +53,7 @@ namespace opengl {
         }
 
         mge::asset locate_shader(mge::shader_type type,
-                                 const char *     name) override
+                                 std::string_view name) override
         {
             MGE_THROW(mge::asset_not_found)
                 << "Shader '" << name << "' of type " << type << " not found";

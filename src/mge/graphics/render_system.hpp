@@ -12,6 +12,7 @@
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/window_options.hpp"
 
+#include <string_view>
 #include <vector>
 
 namespace mge {
@@ -87,6 +88,15 @@ namespace mge {
          * @param name shader name, may be a path
          * @return asset shader asset
          */
-        virtual asset locate_shader(shader_type type, const char *name) = 0;
+        virtual asset locate_shader(shader_type      type,
+                                    std::string_view shader_name) = 0;
+
+        /**
+         * Get whether a shader program asset is binary or has to be compiled.
+         *
+         * @param shader_asset shader asset
+         * @return @c true if shader asset is binary (bytecode)
+         */
+        virtual bool binary_shader(const asset &shader_asset) const;
     };
 } // namespace mge

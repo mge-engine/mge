@@ -17,6 +17,7 @@
 
 #include <array>
 #include <memory>
+#include <string_view>
 #include <vector>
 
 namespace mge {
@@ -155,8 +156,9 @@ namespace mge {
          * @param asset_name
          * @return shader_program_ref
          */
-        shader_program_ref create_shader_program(shader_type type,
-                                                 const char *asset_name);
+        shader_program_ref
+        create_shader_program(shader_type            type,
+                              const std::string_view asset_name);
 
         /**
          * Create a pipeline object.
