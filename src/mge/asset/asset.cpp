@@ -154,8 +154,22 @@ namespace mge {
                         return result;
                     }
                 }
-
-                return mge::path();
+                size_t implementations_count = 0;
+                asset_locator::implementations(
+                    [&](const std::string &) { ++implementations_count; });
+                if (implementations_count != m_locators.size()) {
+                    asset_locator::implementations(
+                        [&](const std::string &implementation_name) {
+                            if (m_locators.find(implementation_name) ==
+                                m_locators.end()) {
+                                m_locators[implementation_name] =
+                                    asset_locator::create(implementation_name);
+                            }
+                        });
+                    return locate(name, type);
+                } else {
+                    return mge::path();
+                }
             }
 
         private:

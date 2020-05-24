@@ -20,6 +20,9 @@ namespace mge {
      */
     class MGE_ASSET_EXPORT asset_locator : public mge::component<asset_locator>
     {
+    private:
+        using base = mge::component<asset_locator>;
+
     public:
         asset_locator();
         virtual ~asset_locator();
@@ -32,5 +35,8 @@ namespace mge {
          *              was not found
          */
         virtual path locate(std::string_view name, const asset_type &type) = 0;
+
+        using base::create;
+        using base::implementations;
     };
 } // namespace mge
