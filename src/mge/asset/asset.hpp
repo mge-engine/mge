@@ -126,7 +126,7 @@ namespace mge {
          * @return asset that was located
          * @throws @c asset_not_found if asset could not be looked up
          */
-        static asset locate(const std::string &name, const asset_type &type);
+        static asset locate(std::string_view name, const asset_type &type);
 
     private:
         mge::path                m_path;

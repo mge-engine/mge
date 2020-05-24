@@ -145,11 +145,16 @@ namespace mge {
         class locator_registry
         {
         public:
-            mge::path locate(const std::string &name, const asset_type &type)
+            mge::path locate(std::string_view name, const asset_type &type)
             {
                 mge::path result;
                 for (const auto &[locator_name, locator] : m_locators) {
+                    result = locator->locate(name, type);
+                    if (!result.empty()) {
+                        return result;
+                    }
                 }
+
                 return mge::path();
             }
 
@@ -160,7 +165,7 @@ namespace mge {
         static mge::singleton<locator_registry> s_locator_registry;
     } // namespace
 
-    asset asset::locate(const std::string &name, const asset_type &type)
+    asset asset::locate(std::string_view name, const asset_type &type)
     {
         auto p = s_locator_registry->locate(name, type);
         if (p.empty()) {

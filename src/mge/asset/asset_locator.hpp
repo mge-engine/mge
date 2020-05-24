@@ -8,6 +8,8 @@
 #include "mge/core/path.hpp"
 #include "mge/core/types.hpp"
 
+#include <string_view>
+
 namespace mge {
     MGE_DECLARE_REF(asset_locator);
 
@@ -29,7 +31,6 @@ namespace mge {
          * @return path to construct an asset, empty path if asset
          *              was not found
          */
-        virtual path locate(const std::string &name,
-                            const asset_type & type) = 0;
+        virtual path locate(std::string_view name, const asset_type &type) = 0;
     };
 } // namespace mge
