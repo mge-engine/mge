@@ -19,6 +19,7 @@ namespace mge {
         virtual ~asset_access_factory() = default;
 
         virtual asset_access_ref create_asset_access(const mge::path &p) = 0;
+        virtual bool             asset_exists(const mge::path &p)        = 0;
         virtual void             gist(std::ostream &os) const            = 0;
 
         void             set_mountpoint(const mge::path &mountpoint);

@@ -60,7 +60,7 @@ namespace mge {
         ~asset() = default;
 
         /**
-         * Move ssignment.
+         * Move assignment.
          *
          * @param a assigned asset
          * @return @c *this
@@ -71,12 +71,28 @@ namespace mge {
             m_access = std::move(a.m_access);
             return *this;
         }
+
         /**
          * Get asset path.
          *
          * @return asset path
          */
         const mge::path &path() const { return m_path; }
+
+        /**
+         * Get whether this asset exists.
+         *
+         * @return @c true if the asset exists
+         */
+        bool exists() const;
+
+        /**
+         * Get whether path can be found as asset.
+         *
+         * @param path asset path
+         * @return @c true if asset exists
+         */
+        static bool exists(const mge::path &path);
 
         /**
          * Get asset size in bytes.

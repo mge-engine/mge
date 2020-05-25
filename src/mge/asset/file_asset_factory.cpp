@@ -89,6 +89,16 @@ namespace mge {
             }
         }
 
+        bool asset_exists(const mge::path &p) override
+        {
+            auto relpath  = p.lexically_relative(mountpoint());
+            auto filepath = m_directory;
+            filepath /= relpath;
+
+            file asset_file(filepath);
+            return asset_file.exists();
+        }
+
         asset_access_ref create_asset_access(const mge::path &p) override
         {
             auto relpath  = p.lexically_relative(mountpoint());

@@ -12,13 +12,31 @@
 #include <map>
 
 MGE_DEFINE_LOG(ASSET)
-
 namespace mge {
 
     class asset_repository_manager
     {
     public:
         asset_repository_manager() : m_configured(false) { try_configure(); }
+
+        bool asset_exists(const mge::path &path)
+        {
+            mge::path asset_path(path);
+            if (!asset_path.is_absolute()) {
+                asset_path = mge::path("/") / asset_path;
+            }
+
+            if (!m_configured) {
+                configure();
+            }
+
+            auto lb = m_mtab.lower_bound(asset_path);
+            if (lb == m_mtab.begin()) {
+                return false;
+            }
+            auto factory = (--lb)->second;
+            return factory->asset_exists(path);
+        }
 
         asset_access_ref access(const mge::path &path)
         {
@@ -102,6 +120,16 @@ namespace mge {
             m_access = repository_manager->access(m_path);
         }
         return m_access->size();
+    }
+
+    bool asset::exists() const
+    {
+        return repository_manager->asset_exists(m_path);
+    }
+
+    bool asset::exists(const mge::path &path)
+    {
+        return repository_manager->asset_exists(path);
     }
 
     mge::input_stream_ref asset::data() const
