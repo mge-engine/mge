@@ -113,6 +113,18 @@ namespace mge {
         : public implementation_registry_entry_base
     {
     public:
+        inline implementation_registry_entry()
+            : m_component_name(type_name<ComponentType>()),
+              m_name(type_name<ImplementationType>())
+        {
+            static_assert(
+                std::is_base_of<ComponentType, ImplementationType>::value,
+                "Implementation is not derived from component type");
+            static_assert(std::is_base_of<component_base, ComponentType>::value,
+                          "Implementation is not derived from mge::component");
+            register_implementation(this);
+        }
+
         inline implementation_registry_entry(const char *alias_names)
             : m_component_name(type_name<ComponentType>()),
               m_name(type_name<ImplementationType>()),
