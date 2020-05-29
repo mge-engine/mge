@@ -18,8 +18,9 @@
 namespace mge {
 
     /**
-     * The render system defines the entry point into a specific presentation
-     * technology, like OpenGL, DirectX or Vulkan.
+     * The render system abstracts the presentation technology. It allows
+     * inspection of the system's capabilities (like montitors) and creating
+     * windows to present graphics and handle input.
      */
     class MGE_GRAPHICS_EXPORT render_system : public component<render_system>,
                                               public configurable

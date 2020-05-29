@@ -39,9 +39,11 @@ ADD_LIBRARY(mgegraphics
     mesh.cpp
     memory_mesh.cpp
     draw_command.cpp
-    drawable.cpp)
+    drawable.cpp
+
+    render_system.hpp)
 
 TARGET_ADD_DEFINE(mgegraphics BUILD_MGE_GRAPHICS)
 TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput mgeapplication mgeasset)
-
+DOCUMENT_TARGET(mgegraphics)
 ADD_SUBDIRECTORY(test)
