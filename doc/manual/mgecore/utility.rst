@@ -15,6 +15,19 @@ File :file:`mge/core/types.hpp` provides some utilities for type declarations.
 .. doxygentypedef:: mge::noncopyable
     :project: mge
 
+Checked Cast
+============
+
+Numeric casts in C++ have the danger of over- or underflow, especially when
+casting to a smaller integer type or from signed to unsigned types. File
+:file:`mge/core/checked_cast.hpp` provides the cpp:any:`mge::checked_cast`
+helper function:
+
+.. doxygenfunction:: mge::checked_cast
+    :project: mge
+
+
+
 Array Size
 ==========
 
@@ -84,4 +97,15 @@ The function :any:`mge:clear_function` defined in
 object.
 
 .. doxygenfunction:: mge::clear_function
+    :project: mge
+
+Contains
+========
+
+The function :any:`mge::contains` defined in
+:file:`mge/core/contains.hpp` determines whether a value is contained
+in a container. While ``std::map`` defines a ``find`` member function,
+e.g. vector classes don't implement one, leaving a find tedious to write.
+
+.. doxygenfunction:: mge::contains(const Container&, const Element&)
     :project: mge

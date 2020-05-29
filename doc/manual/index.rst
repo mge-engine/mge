@@ -2,7 +2,7 @@
 MGE - A Modern Game Engine
 ==========================
 
-Welcome to the docue
+Welcome to the documentation of MGE, a _modern game engine_.
 
 
 .. toctree::
@@ -30,6 +30,7 @@ Welcome to the docue
     mgescene
     mgescript
     mgeui
+    configuration
 
 
 
