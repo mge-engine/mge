@@ -109,3 +109,27 @@ e.g. vector classes don't implement one, leaving a find tedious to write.
 
 .. doxygenfunction:: mge::contains(const Container&, const Element&)
     :project: mge
+
+Copy Structure
+==============
+
+The function :any:`mge::copy_struct` is a helper the helps copying
+structures which just contain data, and no object type requiring
+copy constructors.
+
+.. doxygenfunction:: mge::copy_struct(T&, const T&)
+    :project: mge
+
+.. doxygenfunction:: mge::copy_struct(T *, const T&)
+    :project: mge
+
+Enum Set
+========
+
+Given an enum type ``E`` an enum set is a set where each value of
+the enum can be set and cleared. For efficiency, the enum type
+should start with 0 and have contiguous values.
+
+.. doxygenclass:: mge::enum_set
+    :project: mge
+    :members:

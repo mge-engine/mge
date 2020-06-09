@@ -18,4 +18,5 @@ Core Library
     mgecore/system.rst
     mgecore/concurrency.rst
     mgecore/utility.rst
+    mgecore/debug.rst
 

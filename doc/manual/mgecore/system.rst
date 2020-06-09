@@ -102,5 +102,35 @@ as known from ``<stdlib.h>`` are defined:
 ``new`` and ``delete`` Operators
 --------------------------------
 
+MGE defines its own ``new`` and ``delete`` operators, which itself call the C
+style memory management replacements. These operators are defined in
+:file:`mge/core/new.hpp`.
+
+
 Allocation Statistics
 ---------------------
+
+There exist a few basic statistics that can be gathered about memory
+allocation, also defined in :file:`mge/core/new.hpp`.
+
+.. doxygenfunction:: mge::allocation_count
+    :project: mge
+
+.. doxygenfunction:: mge::thread_allocation_count
+    :project: mge
+
+An :any:`mge::allocation_count_scope` instance can be used to get a more
+fine-grained number of allocations.
+
+.. doxygenclass:: mge::allocation_count_scope
+    :project: mge
+    :members:
+
+Executable Name
+===============
+
+The function :any:`mge::executable_name` can be used to retrieve the
+name of the executable. It is defined in :file:`mge/core/executable_name.hpp`.
+
+.. doxygenfunction:: mge::executable_name
+    :project: mge
