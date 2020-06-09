@@ -7,6 +7,7 @@ ADD_EXECUTABLE(coretest
   test_array_size.cpp
   test_executable_name.cpp
   test_exception.cpp
+  test_enum_set.cpp
   test_string_pool.cpp
   test_stacktrace.cpp
   test_stream_values.cpp

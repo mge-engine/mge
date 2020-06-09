@@ -33,7 +33,9 @@ namespace mge {
         DERIVATIVE_WORKS = 3,
     };
 
-    using license_permission = mge::enum_set<license_permission_value, 3>;
+    using license_permission =
+        mge::enum_set<license_permission_value,
+                      license_permission_value::DERIVATIVE_WORKS>;
 
     enum class license_requirement_value : uint8_t
     {
@@ -44,7 +46,9 @@ namespace mge {
         SOURCE_CODE = 4
     };
 
-    using license_requirement = mge::enum_set<license_requirement_value, 4>;
+    using license_requirement =
+        mge::enum_set<license_requirement_value,
+                      license_requirement_value::SOURCE_CODE>;
 
     /**
      * Properties of a license.

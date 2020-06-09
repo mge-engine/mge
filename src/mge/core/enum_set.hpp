@@ -12,38 +12,97 @@
 namespace mge {
 
     /**
-     * A bitset defined using an enum E and a maximum enum value
+     * @brief A bitset defined using an enum E and a maximum enum value
      * M.
+     *
+     * @tparam E enum type
+     * @tparam M maximum value of enum
      */
-    template <typename E, size_t M> class enum_set
+    template <typename E, E M> class enum_set
     {
     private:
         using base_type = typename std::underlying_type<E>::type;
 
+        static constexpr size_t bitset_size() { return (size_t)M; }
+
     public:
+        /**
+         * @brief Construct a new enum set object.
+         */
         enum_set() = default;
 
+        /**
+         * @brief Copy constructor.
+         *
+         * @param s copied set
+         */
         inline enum_set(const enum_set<E, M> &s) : m_bits(s.m_bits) {}
 
+        /**
+         * @brief Move constructor.
+         *
+         * @param s moved set
+         */
         inline enum_set(enum_set<E, M> &&s) : m_bits(std::move(s.m_bits)) {}
 
+        /**
+         * @brief Assignment.
+         *
+         * @param s assigned set
+         * @return @c *this
+         */
         inline enum_set<E, M> &operator=(const enum_set<E, M> &s)
         {
             m_bits = s.m_bits;
             return *this;
         }
 
+        /**
+         * @brief Set value of an enum value.
+         *
+         * @param value enum value
+         */
         inline void set(E value) { m_bits.set(static_cast<base_type>(value)); }
 
+        /**
+         * @brief Test one enum value.
+         *
+         * @param value enum value
+         * @return @c true if set
+         */
         bool test(E value) const
         {
             return m_bits.test(static_cast<base_type>(value));
         }
 
+        /**
+         * @brief Get whether no value is set.
+         *
+         * @return @c true if no value set
+         */
         bool empty() const { return m_bits.none(); }
 
+        /**
+         * @brief Clears the whole set.
+         */
+        void reset() { m_bits.reset(); }
+
+        /**
+         * @brief Conversion to base bitset.
+         *
+         * @return underlying bitseta
+         */
+        operator const std::bitset<bitset_size()> &() const { return m_bits; }
+
+        /**
+         * @brief Conversion to base bitset.
+         *
+         * @return underlying bitset
+         */
+        operator std::bitset<bitset_size()> &() { return m_bits; }
+
     private:
-        std::bitset<M> m_bits;
+        std::bitset<bitset_size()> m_bits;
     };
 
 } // namespace mge

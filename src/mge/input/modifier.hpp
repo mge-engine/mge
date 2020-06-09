@@ -21,7 +21,7 @@ namespace mge {
     /**
      * @brief Modifier type, set of modifier keys pressed at the same time.
      */
-    using modifier = enum_set<modifier_value, (size_t)modifier_value::ALT>;
+    using modifier = enum_set<modifier_value, modifier_value::ALT>;
 
     /**
      * @brief Stream output operator.
