@@ -10,7 +10,7 @@ namespace mge {
     /**
      * Crashes the program with a dump and without a message.
      */
-    void MGE_CORE_EXPORT crash();
+    [[noreturn]] void MGE_CORE_EXPORT crash();
 
     /**
      * Crashes the program with a dump and a message.
@@ -28,6 +28,13 @@ namespace mge {
     }
 
 } // namespace mge
+
+/**
+ * @define MGE_CRASH_ASSERT
+ * @brief Crashes if the condition is evaluated to false.
+ * @param cond condition to check
+ * @param ... further elements of crash message
+ */
 #define MGE_CRASH_ASSERT(cond, ...)                                            \
     if (!(cond))                                                               \
     ::mge::crash("Assertion failed: ", #cond, ": ", __VA_ARGS__)

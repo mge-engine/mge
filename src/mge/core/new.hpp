@@ -18,7 +18,18 @@ namespace mge {
     MGE_CORE_EXPORT void operator_delete_noexcept(void *ptr) noexcept;
     MGE_CORE_EXPORT void operator_delete_array_noexcept(void *ptr) noexcept;
 
+    /**
+     * @brief Get global number of allocations.
+     *
+     * @return number of allocations
+     */
     MGE_CORE_EXPORT uint64_t allocation_count();
+
+    /**
+     * @brief Get thread local allocation count.
+     *
+     * @return number of allocations
+     */
     MGE_CORE_EXPORT uint64_t thread_allocation_count();
 
     /**
