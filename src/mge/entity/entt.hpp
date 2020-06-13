@@ -7,6 +7,7 @@
 #    pragma warning(disable : 4464)
 #    pragma warning(disable : 4800)
 #    pragma warning(disable : 4458)
+#    pragma warning(disable : 4293)
 #endif
 #ifdef min
 #    undef min
@@ -18,4 +19,5 @@
 #    pragma warning(default : 4464)
 #    pragma warning(default : 4800)
 #    pragma warning(default : 4458)
+#    pragma warning(default : 4293)
 #endif
