@@ -12,8 +12,9 @@ Prerequisites
 MGE depends ony a number of tools and packages, which need to be installed
 before building.
 
-Software Packages
-~~~~~~~~~~~~~~~~~
+
+Essential Software Packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MGE uses the following software packages, which are supposed to be in
 the PATH of the command line used to build. We usually strive to use a
@@ -21,12 +22,27 @@ most recent tool chain and environment, and deviating from that may
 result in issues:
 
 Git
+    Git is a distributed version-control system for tracking changes in
+    source code. The source code of MGE is managed using git, and also
+    the build process fetches third-party components using git.
 
 CMake
+    CMake is a cross-platform build system or build configurator. MGE provides
+    a set of CMake scripts which can be used with cmake to set up a native
+    build system for your platform.
 
 Python 3
+    Several helper scripts use Python, like the extraction tools to generate
+    the Vulkan API helper functions.
 
-Sphinx and Breathe
+Optional Software Packages
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Ninja
+    While cmake can be used to generate Visual Studio project files, or also
+    a build environment suitable for *nmake*, ninja is the preferred build tool.
+
+
 
 
 
