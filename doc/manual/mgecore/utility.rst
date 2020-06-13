@@ -26,8 +26,6 @@ helper function:
 .. doxygenfunction:: mge::checked_cast
     :project: mge
 
-
-
 Array Size
 ==========
 
@@ -45,13 +43,13 @@ Bit Operations
 The file :file:`mge/core/bit.hpp` contains a number of helper functions
 for commonly used bit operations and abstractions for compiler intrinsics.
 
-.. doxygenfunction:: mge::popcount(uint8_t)
+.. doxygenfunction:: mge::popcount(uint8_t x)
     :project: mge
-.. doxygenfunction:: mge::popcount(uint16_t)
+.. doxygenfunction:: mge::popcount(uint16_t x)
     :project: mge
-.. doxygenfunction:: mge::popcount(uint32_t)
+.. doxygenfunction:: mge::popcount(uint32_t x)
     :project: mge
-.. doxygenfunction:: mge::popcount(uint64_t)
+.. doxygenfunction:: mge::popcount(uint64_t x)
     :project: mge
 
 Boolean Value
@@ -62,11 +60,11 @@ The :cpp:any:`mge::bool_value` function defined in
 the value of a boolean setting or option. These functions accept "true", "yes", "on" and any non-zero number
 as ``true`` and produce ``false`` for anything else.
 
-.. doxygenfunction:: mge::bool_value(const char *)
+.. doxygenfunction:: mge::bool_value(const char *str) noexcept
     :project: mge
-.. doxygenfunction:: mge::bool_value(const std::string&)
+.. doxygenfunction:: mge::bool_value(const std::string &s) noexcept
     :project: mge
-.. doxygenfunction:: mge::bool_value(std::string_view)
+.. doxygenfunction:: mge::bool_value(std::string_view s) noexcept
     :project: mge
 
 Buffer
@@ -121,6 +119,18 @@ copy constructors.
     :project: mge
 
 .. doxygenfunction:: mge::copy_struct(T *, const T&)
+    :project: mge
+
+Format String
+=============
+
+.. doxygenfunction:: mge::format_string
+    :project: mge
+
+Stream Values
+=============
+
+.. doxygenfunction:: mge::stream_values(std::ostream&, T, Args...)
     :project: mge
 
 Enum Set

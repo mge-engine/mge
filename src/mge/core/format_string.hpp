@@ -8,6 +8,13 @@
 
 namespace mge {
 
+    /**
+     * @brief Collate string representation of arg
+     *
+     * @tparam Args argument types
+     * @param args arguments
+     * @return arguments printed, and collated as string
+     */
     template <typename... Args> inline std::string format_string(Args... args)
     {
         std::stringstream ss;

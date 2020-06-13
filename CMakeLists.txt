@@ -28,7 +28,6 @@ INCLUDE(documentation)
 INCLUDE(compiler)
 INCLUDE(checks)
 
-
 ENABLE_TESTING()
 
 ADD_SUBDIRECTORY(src)

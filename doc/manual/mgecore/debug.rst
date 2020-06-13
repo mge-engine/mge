@@ -11,13 +11,13 @@ Sometimes it is necessary to just terminate the application as no recovery
 from errors is possible. The :any:`mge::crash` functions provide this
 functionality:
 
-.. doxygenfunction:: mge::crash()
+.. doxygenfunction:: void mge::crash()
     :project: mge
 
-.. doxygenfunction:: mge::crash(const char *)
+.. doxygenfunction:: void mge::crash(const char *message)
     :project: mge
 
-.. doxygenfunction:: mge::crash(Args...)
+.. doxygenfunction:: template<typename ...Args> void crash(Args... args)
     :project: mge
 
 A :any:`MGE_CRASH_ASSERT` macro is defined to help to catch unrecoverable
