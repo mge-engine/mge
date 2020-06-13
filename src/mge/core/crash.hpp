@@ -17,13 +17,13 @@ namespace mge {
      * Crashes the program with a dump and a message.
      * @param message message displayed
      */
-    void MGE_CORE_EXPORT crash(const char *message);
+    MGE_NORETURN void MGE_CORE_EXPORT crash(const char *message);
 
     /**
      * Formats message and crashes.
      * @param args values printed as message before crash.
      */
-    template <typename... Args> inline void crash(Args... args)
+    template <typename... Args> MGE_NORETURN inline void crash(Args... args)
     {
         crash(format_string(args...).c_str());
     }

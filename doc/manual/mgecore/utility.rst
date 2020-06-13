@@ -105,7 +105,7 @@ The function :any:`mge::contains` defined in
 in a container. While ``std::map`` defines a ``find`` member function,
 e.g. vector classes don't implement one, leaving a find tedious to write.
 
-.. doxygenfunction:: mge::contains(const Container&, const Element&)
+.. doxygenfunction:: mge::contains(const Container &c, const Element &e)
     :project: mge
 
 Copy Structure
@@ -115,10 +115,10 @@ The function :any:`mge::copy_struct` is a helper the helps copying
 structures which just contain data, and no object type requiring
 copy constructors.
 
-.. doxygenfunction:: mge::copy_struct(T&, const T&)
+.. doxygenfunction:: mge::copy_struct(T &target, const T &source)
     :project: mge
 
-.. doxygenfunction:: mge::copy_struct(T *, const T&)
+.. doxygenfunction:: mge::copy_struct(T *target, const T &source)
     :project: mge
 
 Format String
@@ -130,7 +130,7 @@ Format String
 Stream Values
 =============
 
-.. doxygenfunction:: mge::stream_values(std::ostream&, T, Args...)
+.. doxygenfunction:: mge::stream_values(std::ostream &os, T value, Args... args)
     :project: mge
 
 Enum Set

@@ -49,4 +49,19 @@ Such a file access object is internally created by the factory, which implements
 
 A file access factory implementing the native file system exists always.
 
+Input and Output Streams
+------------------------
+
+It is a common task to read and write data from and to files or other sources,
+MGE provides some helper classes - :any:`mge::input_stream` and
+:any:`mge::output_stream`.
+
+.. doxygenclass:: mge::input_stream
+    :project: mge
+    :members:
+
+.. doxygenclass:: mge::output_stream
+    :project: mge
+    :members:
+
 

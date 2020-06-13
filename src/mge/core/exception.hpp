@@ -328,5 +328,5 @@ namespace mge {
     /**
      * Re-throws current exception.
      */
-    [[noreturn]] inline void rethrow() { throw; }
+    MGE_NORETURN inline void rethrow() { throw; }
 } // namespace mge

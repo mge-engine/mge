@@ -52,8 +52,8 @@ listed below:
 Throwing Exceptions
 ===================
 
-To throw an exception, you will usually use the :cpp:any:`MGE_THROW`
-or the :cpp:any:`MGE_THROW_WITH_CAUSE` macro.
+To throw an exception, the :cpp:any:`MGE_THROW`
+or the :cpp:any:`MGE_THROW_WITH_CAUSE` macro can be used.
 
 This macro adds the following information to the exception:
 
