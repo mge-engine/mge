@@ -68,3 +68,5 @@ namespace platform = win32;
 #elif defined(MGE_COMPILER_MSVC)
 #    define MGE_FUNCTION_SIGNATURE __FUNCSIG__
 #endif
+
+#define MGE_NORETURN [[noreturn]]

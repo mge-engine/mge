@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/config.hpp"
 #include "mge/core/format_string.hpp"
 #include <sstream>
 
@@ -10,7 +11,7 @@ namespace mge {
     /**
      * Crashes the program with a dump and without a message.
      */
-    [[noreturn]] void MGE_CORE_EXPORT crash();
+    MGE_NORETURN void MGE_CORE_EXPORT crash();
 
     /**
      * Crashes the program with a dump and a message.
