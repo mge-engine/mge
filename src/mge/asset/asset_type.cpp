@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/asset/asset_type.hpp"
+#include <iostream>
 
 namespace mge {
     const asset_type asset_type::UNKNOWN("unknown", "unknown");
