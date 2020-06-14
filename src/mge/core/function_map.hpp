@@ -11,6 +11,7 @@ namespace mge {
 
     /**
      * A map to store @c std::function object by a key (@c unsigned @c int)
+     * @tparam T function signature
      */
     template <typename T> class function_map
     {

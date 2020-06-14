@@ -143,3 +143,50 @@ should start with 0 and have contiguous values.
 .. doxygenclass:: mge::enum_set
     :project: mge
     :members:
+
+Function Map
+============
+
+A helper class to map a function to a key (an ``unsigned int``). This mechanism
+is internally used for listener registration and alike scenarios.
+
+.. doxygenclass:: mge::function_map
+    :project: mge
+    :members:
+
+Gist
+====
+
+A *gist* is a small information on something, i.e. not a complete dump but
+a in information with less detail. E.g. for vector, where a dump would be
+printing all members, a gist is just printing how many elements the
+vector has.
+
+A gist is used as follows:
+
+.. code-block:: c++
+
+    MyComplicatedObject o;
+    std::cout << "Gist of object: " << gist(o) << std::endl;
+
+To implement a gist, one has two options - gist method or gist operator.
+
+Gist method
+...........
+
+A method with the signature ``void gist(std::ostream& os) const`` is picked
+up automatically by the gist global method.
+
+Gist type operator
+..................
+
+The helper type :any:`mge::gist_type` exist to provide a value wrapper for
+gist printing.
+
+.. doxygenstruct:: mge::gist_type
+    :project: mge
+
+A helper macro exist for gist implementation:
+
+.. doxygendefine:: MGE_GIST_OUTPUT
+    :project: mge

@@ -10,20 +10,21 @@
 #include <type_traits>
 namespace mge {
 
+    /**
+     * @brief Helper type for gist output.
+     *
+     * @tparam T contained type
+     */
     template <typename T> struct gist_type
     {
         explicit gist_type(const T *value_) : value(value_) {}
 
+        /**
+         * @brief Access to the value to be printed.
+         */
         const T *value;
     };
 
-    /**
-     * @brief Gist helper function.
-     *
-     * @tparam T object type
-     * @param t object to print the gist for
-     * @return gist helper object for @c t
-     */
     template <typename T> gist_type<T> gist(const T &t)
     {
         return gist_type<T>(&t);
