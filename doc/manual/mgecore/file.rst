@@ -64,4 +64,8 @@ MGE provides some helper classes - :any:`mge::input_stream` and
     :project: mge
     :members:
 
+An error in streams is usually signalled by an :any:`mge::io_error`.
+
+.. doxygenclass:: mge::io_error
+    :project: mge
 

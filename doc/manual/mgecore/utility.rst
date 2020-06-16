@@ -185,6 +185,7 @@ gist printing.
 
 .. doxygenstruct:: mge::gist_type
     :project: mge
+    :members:
 
 A helper macro exist for gist implementation:
 
