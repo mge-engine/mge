@@ -66,6 +66,21 @@ namespace mge {
          */
         const mge::license &license() const;
 
+        /**
+         * @brief
+         *
+         * @param name_
+         * @param attribution_name
+         * @param attribution_url
+         * @param version
+         * @param license
+         * @return registered artifact;
+         */
+        static mge::artifact_ref register_artifact(
+            std::string_view name, std::string_view attribution_name,
+            std::string_view attribution_url, const mge::version &version,
+            const mge::license &license);
+
     private:
         std::string  m_name;
         std::string  m_attribution_name;
@@ -73,4 +88,16 @@ namespace mge {
         mge::version m_version;
         mge::license m_license;
     };
+
 } // namespace mge
+
+/**
+ * @brief Register a new artifact.
+ * @param name artificat name
+ * @param attribution_name name for attribution
+ * @param attribution_url URL for attribution
+ */
+#define MGE_ARTIFACT(name, attribution_name, attribution_url, version,         \
+                     license)                                                  \
+    static auto mge_##name##_artifact = ::mge::artifact::register_artifact(    \
+        #name, attribution_name, attribution_url, version, license)
