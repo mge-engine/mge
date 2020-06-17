@@ -3,6 +3,7 @@
 // All rights reserved.
 
 #include "mge/core/configuration_database.hpp"
+#include "mge/core/artifact.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/path.hpp"
 #include "mge/core/stdexceptions.hpp"
@@ -11,6 +12,9 @@
 
 #include <cstring>
 #include <fcntl.h>
+
+MGE_ARTIFACT(sqlite3, "D. Richard Hipp", "https://www.sqlite.org",
+             SQLITE_VERSION, mge::license(mge::license_type::PUBLIC_DOMAIN));
 
 namespace mge {
     configuration_database::configuration_database() : m_db(nullptr)

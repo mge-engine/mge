@@ -4,6 +4,7 @@
 #include "mge/core/artifact.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/version.hpp"
 #include <mutex>
 
 namespace mge {
@@ -73,3 +74,6 @@ namespace mge {
     }
 
 } // namespace mge
+
+MGE_ARTIFACT(mge, "Alexander Schroeder", "https://github.com/mge-engine/mge",
+             MGE_VERSION_STRING, mge::license(mge::license_type::MIT));
