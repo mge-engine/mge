@@ -15,6 +15,7 @@ namespace mge {
         UNKNOWN,       //!< Yet unknown license.
         MIT,           //!< MIT License
         BSD,           //!< BSD License
+        BOOST,         //!< Boost Software License
         GPL2,          //!< GPL 2 License
         LGPL2,         //!< LGPL 2 License
         GPL3,          //!< GPL 3 License
@@ -78,6 +79,11 @@ namespace mge {
         ~license()               = default;
         license(const license &) = default;
         license(license &&)      = default;
+
+        static license public_domain()
+        {
+            return license(license_type::PUBLIC_DOMAIN);
+        }
 
         std::string_view          text() const;
         license_type              type() const;

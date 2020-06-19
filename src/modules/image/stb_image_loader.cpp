@@ -5,6 +5,7 @@
 #include "mge/asset/asset_loader.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/asset/asset_type_mapper.hpp"
+#include "mge/core/artifact.hpp"
 #include "mge/core/buffer.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/log.hpp"
@@ -20,6 +21,10 @@
 #include <stb_image.h>
 
 MGE_DEFINE_LOG(IMGLOAD)
+
+MGE_ARTIFACT(stb_image, "Sean Barrett", "http://nothings.org/stb",
+             mge::version("2.22"), mge::license::public_domain())
+    ->used_by("mge");
 
 static mge::asset_type_mapper gif_mapper(mge::asset_type("image", "gif"),
                                          "gif");

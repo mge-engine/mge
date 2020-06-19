@@ -12,6 +12,7 @@ SET(mgemath_sources
     ray.cpp
     mat4.cpp
     quat.cpp
+    math.cpp
 )
 ADD_LIBRARY(mgemath
             SHARED

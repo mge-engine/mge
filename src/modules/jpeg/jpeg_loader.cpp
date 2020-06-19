@@ -5,13 +5,13 @@
 #include "mge/asset/asset_loader.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/asset/asset_type_mapper.hpp"
+#include "mge/core/artifact.hpp"
 #include "mge/core/buffer.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/log.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/image_format.hpp"
 #include "mge/graphics/memory_image.hpp"
-
 #include <memory>
 
 #include <jpeglib.h>

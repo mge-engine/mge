@@ -13,6 +13,7 @@
 #    undef min
 #endif
 #define ENTT_ID_TYPE std::uint64_t
+#include <entt/config/version.h>
 #include <entt/entity/entity.hpp>
 #include <entt/entt.hpp>
 #ifdef MGE_COMPILER_MSVC

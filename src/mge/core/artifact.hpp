@@ -19,6 +19,7 @@ namespace mge {
      * be individually attributed.
      */
     class MGE_CORE_EXPORT artifact
+        : public std::enable_shared_from_this<artifact>
     {
     public:
         /**
@@ -81,6 +82,9 @@ namespace mge {
             std::string_view attribution_url, const mge::version &version,
             const mge::license &license);
 
+        artifact_ref depends_on(std::string_view name);
+        artifact_ref used_by(std::string_view name);
+
     private:
         std::string  m_name;
         std::string  m_attribution_name;
@@ -99,5 +103,5 @@ namespace mge {
  */
 #define MGE_ARTIFACT(name, attribution_name, attribution_url, version,         \
                      license)                                                  \
-    static auto mge_##name##_artifact = ::mge::artifact::register_artifact(    \
+    auto mge_##name##_artifact = ::mge::artifact::register_artifact(           \
         #name, attribution_name, attribution_url, version, license)
