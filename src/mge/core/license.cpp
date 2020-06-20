@@ -2,6 +2,7 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/license.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include <iostream>
 
 namespace mge {
@@ -29,6 +30,8 @@ namespace mge {
             return os << "CC";
         case license_type::COMMERCIAL:
             return os << "COMMERCIAL";
+        case license_type::OPEN_SOURCE:
+            return os << "OPEN_SOURCE";
         case license_type::OTHER:
             return os << "OTHER";
         default:
@@ -40,13 +43,15 @@ namespace mge {
 
     license::license(license_type type) : m_type(type) {}
 
+    license::license(license_type type, std::string_view text,
+                     const mge::version &version)
+        : m_type(type), m_text(text), m_version(version)
+    {}
+
     license_type license::type() const { return m_type; }
 
     std::string_view license::text() const { return m_text; }
 
-    const license_properties &license::properties() const
-    {
-        return m_properties;
-    }
+    mge::version license::version() const { return m_version; }
 
 } // namespace mge

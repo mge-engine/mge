@@ -27,41 +27,6 @@ namespace mge {
         OTHER          //!< Other license.
     };
 
-    enum class license_permission_value : uint8_t
-    {
-        USAGE            = 0,
-        REPRODUCTION     = 1,
-        DISTRIBUTION     = 2,
-        DERIVATIVE_WORKS = 3,
-    };
-
-    using license_permission =
-        mge::enum_set<license_permission_value,
-                      license_permission_value::DERIVATIVE_WORKS>;
-
-    enum class license_requirement_value : uint8_t
-    {
-        NONE        = 0,
-        NOTICE      = 1,
-        ATTRIBUTION = 2,
-        SHARE_ALIKE = 3,
-        SOURCE_CODE = 4
-    };
-
-    using license_requirement =
-        mge::enum_set<license_requirement_value,
-                      license_requirement_value::SOURCE_CODE>;
-
-    /**
-     * Properties of a license.
-     */
-    struct license_properties
-    {
-        license_permission  permissions;
-        license_requirement requirements;
-        bool                noncommercial;
-    };
-
     MGE_CORE_EXPORT std::ostream &operator<<(std::ostream &os,
                                              license_type  type);
 
@@ -75,8 +40,7 @@ namespace mge {
         license();
         license(license_type type);
         license(license_type type, std::string_view text,
-                const mge::version &      version,
-                const license_properties &properties);
+                const mge::version &version);
         ~license()               = default;
         license(const license &) = default;
         license(license &&)      = default;
@@ -86,14 +50,14 @@ namespace mge {
             return license(license_type::PUBLIC_DOMAIN);
         }
 
-        std::string_view          text() const;
-        license_type              type() const;
-        mge::version              version() const;
-        const license_properties &properties() const;
+        std::string_view text() const;
+        license_type     type() const;
+        mge::version     version() const;
 
     private:
-        license_type       m_type;
-        std::string        m_text;
-        license_properties m_properties;
+        license_type m_type;
+        std::string  m_text;
+        mge::version m_version;
     };
+
 } // namespace mge
