@@ -26,6 +26,10 @@ MGE_ARTIFACT(stb_image, "Sean Barrett", "http://nothings.org/stb",
              mge::version("2.22"), mge::license::public_domain())
     ->used_by("mge");
 
+static mge::asset_type_mapper jpeg_mapper(mge::asset_type("image", "jpeg"),
+                                          "jpeg");
+static mge::asset_type_mapper jpg_mapper(mge::asset_type("image", "jpg"),
+                                         "jpg");
 static mge::asset_type_mapper gif_mapper(mge::asset_type("image", "gif"),
                                          "gif");
 static mge::asset_type_mapper bmp_mapper(mge::asset_type("image", "bmp"),
@@ -105,9 +109,11 @@ namespace imgload {
             f(mge::asset_type("image", "bmp"));
             f(mge::asset_type("image", "png"));
             f(mge::asset_type("image", "tga"));
+            f(mge::asset_type("image", "jpg"));
+            f(mge::asset_type("image", "jpeg"));
         }
     };
 
-    MGE_REGISTER_IMPLEMENTATION(loader, ::mge::asset_loader, tga, bmp, gif,
-                                png);
+    MGE_REGISTER_IMPLEMENTATION(loader, ::mge::asset_loader, tga, bmp, gif, png,
+                                jpg, jpeg);
 } // namespace imgload
