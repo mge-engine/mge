@@ -23,6 +23,7 @@ namespace mge {
         PUBLIC_DOMAIN, //!< Public Domain software
         CC,            //!< Any creative commons license
         COMMERCIAL,    //!< Any commercial license
+        OPEN_SOURCE,   //!< Any Open Source compatible license
         OTHER          //!< Other license.
     };
 
