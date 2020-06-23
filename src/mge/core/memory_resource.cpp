@@ -110,4 +110,16 @@ namespace mge {
         }
     }
 
+    void callback_memory_resource::set_allocate_callback(
+        callback_memory_resource::callback allocate_callback)
+    {
+        m_allocate_callback = allocate_callback;
+    }
+
+    void callback_memory_resource::set_deallocate_callback(
+        callback_memory_resource::callback deallocate_callback)
+    {
+        m_deallocate_callback = deallocate_callback;
+    }
+
 } // namespace mge

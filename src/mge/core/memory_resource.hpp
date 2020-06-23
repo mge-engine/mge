@@ -9,6 +9,9 @@
 
 namespace mge {
 
+    /**
+     * A tracing memory resource that traces all its allocations.
+     */
     class MGE_CORE_EXPORT tracing_memory_resource
         : public std::pmr::memory_resource
     {
