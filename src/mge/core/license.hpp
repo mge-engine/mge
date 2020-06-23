@@ -37,22 +37,61 @@ namespace mge {
     class MGE_CORE_EXPORT license
     {
     public:
+        /**
+         * @brief Create license of type UNKNOWN.
+         */
         license();
+        /**
+         * @brief Create license of well-known type.
+         *
+         * @param type license type, licenses that require further
+         *   explanation like generic open source or commercial
+         *   will raise an error.
+         */
         license(license_type type);
+
+        /**
+         * @brief Construct a license
+         *
+         * @param type license type, COMMERCIAL or OPEN_SOURCE
+         * @param text license text
+         * @param version version of the license, if any
+         */
         license(license_type type, std::string_view text,
                 const mge::version &version);
         ~license()               = default;
         license(const license &) = default;
         license(license &&)      = default;
 
+        /**
+         * @brief Get license for public domain works.
+         *
+         * @return license describing public domain works
+         */
         static license public_domain()
         {
             return license(license_type::PUBLIC_DOMAIN);
         }
 
+        /**
+         * @brief Get license text.
+         *
+         * @return license text
+         */
         std::string_view text() const;
-        license_type     type() const;
-        mge::version     version() const;
+        /**
+         * @brief Get license type.
+         *
+         * @return license type
+         */
+        license_type type() const;
+
+        /**
+         * @brief Get license version
+         *
+         * @return license version
+         */
+        mge::version version() const;
 
     private:
         license_type m_type;
