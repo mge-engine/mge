@@ -26,17 +26,40 @@ namespace mge {
 
         std::pmr::memory_resource *m_base;
     };
-
+    /**
+     * @brief A callback memory resource that allows to install callbacks on
+     * allocation and de-allocation.
+     *
+     */
     class MGE_CORE_EXPORT callback_memory_resource
         : public std::pmr::memory_resource
     {
     public:
+        /**
+         * @brief Callback function type.
+         */
         using callback =
             std::function<void(size_t bytes, size_t align, void *ptr)>;
         callback_memory_resource(std::pmr::memory_resource *base);
         ~callback_memory_resource() = default;
 
+        /**
+         * @brief Set the allocate callback.
+         *
+         * The function is not thread safe.
+         *
+         * @param allocate_callback new allocate callback or @c nullptr to clear
+         */
         void set_allocate_callback(callback allocate_callback);
+
+        /**
+         * @brief Set the deallocate callback.
+         *
+         * The function is not thread safe.
+         *
+         * @param deallocate_callback new deallocate callback or @c nullptr to
+         * clear
+         */
         void set_deallocate_callback(callback deallocate_callback);
 
     private:

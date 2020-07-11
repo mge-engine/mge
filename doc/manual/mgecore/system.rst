@@ -134,3 +134,4 @@ name of the executable. It is defined in :file:`mge/core/executable_name.hpp`.
 
 .. doxygenfunction:: mge::executable_name
     :project: mge
+

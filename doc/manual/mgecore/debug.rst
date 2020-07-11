@@ -34,3 +34,23 @@ The function :any:`mge::debug_break` achieves that.
 
 .. doxygenfunction:: mge::debug_break()
     :project: mge
+
+Tracing Memory Resource
+========================
+
+A tracing memory resource traces all allocations and deallocations
+in the trace topic *MEMORY*.
+
+.. doxygenclass:: mge::tracing_memory_resource
+    :project: mge
+    :members:
+
+Callback Memory Resource
+========================
+
+A callback memory resource allows to have a function called on
+each allocation/deallocation to gather statistics.
+
+.. doxygenclass:: mge::callback_memory_resource
+    :project: mge
+    :members:

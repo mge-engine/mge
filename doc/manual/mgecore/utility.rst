@@ -191,3 +191,36 @@ A helper macro exist for gist implementation:
 
 .. doxygendefine:: MGE_GIST_OUTPUT
     :project: mge
+
+Property Handling
+=================
+
+Properties
+..........
+
+A key-value map of strings is sometimes useful, and the
+:any:`mge::properties` can be used to handle such a list
+efficiently:
+
+.. doxygenclass:: mge::properties
+    :project: mge
+    :members:
+
+Property Object
+...............
+
+Sometimes an object is needed that holds proprties in addition
+to other functionality. :any:`mge::property_object` serves this
+purpose:
+
+.. doxygenclass:: mge::property_object
+    :project: mge
+    :members:
+
+Sequence
+========
+
+..doxygenclass:: mge::sequence
+    :project: mge
+    :members:
+

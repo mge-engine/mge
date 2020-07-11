@@ -18,6 +18,8 @@ Core Library
     mgecore/system.rst
     mgecore/concurrency.rst
     mgecore/utility.rst
+    mgecore/containers.rst
     mgecore/debug.rst
     mgecore/artifact.rst
+
 
