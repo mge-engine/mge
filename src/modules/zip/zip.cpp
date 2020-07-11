@@ -38,7 +38,6 @@ namespace {
             HANDLE_CMD(TELL_WRITE);
             HANDLE_CMD(SUPPORTS);
             HANDLE_CMD(REMOVE);
-            HANDLE_CMD(GET_COMPRESSION_FLAGS);
             HANDLE_CMD(BEGIN_WRITE_CLONING);
 #undef HANDLE_CMD
         default:
@@ -175,7 +174,6 @@ namespace zip_archive {
                 ZIP_SOURCE_COMMIT_WRITE, ZIP_SOURCE_ROLLBACK_WRITE,
                 ZIP_SOURCE_WRITE, ZIP_SOURCE_SEEK_WRITE, ZIP_SOURCE_TELL_WRITE,
                 ZIP_SOURCE_SUPPORTS, ZIP_SOURCE_REMOVE,
-                ZIP_SOURCE_GET_COMPRESSION_FLAGS,
                 ZIP_SOURCE_BEGIN_WRITE_CLONING, -1);
         }
 
