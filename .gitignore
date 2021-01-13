@@ -1,0 +1,14 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
+
+build*/**/*
+.vscode/*
+.vs
+mge.files
+mge.config
+mge.includes
+mge.creator*
+mge.creator.user
+CMakeLists.txt.user
+CMakeLists.txt.user.*
