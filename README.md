@@ -11,13 +11,14 @@ the supported graphics mechanisms at some level.
 ## Table Of Contents
 
 * About MGE
-  * Purpose
+  * [Purpose](doc/Purpose.md)
   * [License](LICENSE.md)
 * User Information
   * Installing MGE
   * User Guide
   * Reference Guide
-  * Issue Reporting
+  * Reporting Issues
 * Developer Information
   * Contributing to MGE
   * Architecture & Design Documents
+    * [Project Structure](doc/design/ProjectStructure.md)
