@@ -2,4 +2,8 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-ADD_SUBDIRECTORY(mge)
+CONFIGURE_FILE (
+        "version.hpp.in"
+        "version.hpp"
+)
+
