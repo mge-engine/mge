@@ -3,3 +3,7 @@
 # All rights reserved.
 
 ADD_SUBDIRECTORY(mge)
+
+SET(MGE_FILES
+    dllexport.hpp
+    config.hpp)
