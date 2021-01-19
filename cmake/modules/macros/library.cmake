@@ -2,8 +2,6 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-
-
 FUNCTION(MGE_LIBRARY)
     # -- argument parsing
     SET(OPTIONS "")

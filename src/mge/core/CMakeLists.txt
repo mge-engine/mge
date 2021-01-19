@@ -3,10 +3,10 @@
 # All rights reserved.
 
 MGE_LIBRARY(
-    TARGET
-        mgecore
-    TYPE
-        SHARED
+    TARGET  mgecore
+    TYPE    SHARED
     SOURCES
         executable_name.cpp)
+
+ADD_SUBDIRECTORY(test)
 
