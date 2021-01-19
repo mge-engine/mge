@@ -12,3 +12,6 @@ mge.creator*
 mge.creator.user
 CMakeLists.txt.user
 CMakeLists.txt.user.*
+# - can accidentally be created if in-source build is tried
+CMakeFiles
+CMakeCache.txt
