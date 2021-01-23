@@ -28,6 +28,7 @@ All code resides in name space `mge`.
 The smallest possible scopes shall be used:
 * Global enum (not enum classes) shall be avoided.
 * Internal implementation in public headers should be placed in the nameless namespace.
+* If internal implementation has to be spread over files for technical reasons, the `detail` namespace is used.
 
 ## Development Practices
 * Headless functionality should be accompanied with a unit test.

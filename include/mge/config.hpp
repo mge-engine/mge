@@ -37,4 +37,9 @@ namespace mge {
 #    error Missing port
 #endif
 
-#define MGE_NORETURN [[noreturn]]
+#define MGE_NO_RETURN [[noreturn]]
+#if defined(MGE_COMPILER_MSVC)
+#    define MGE_NO_INLINE __declspec(noinline)
+#else
+#    error Missing port
+#endif
