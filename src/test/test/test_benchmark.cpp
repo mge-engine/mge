@@ -9,10 +9,31 @@
 #include <random>
 #include <thread>
 
-TEST(benchmark, slow_cycle)
+TEST(benchmark, thread_sleep_cycle)
 {
     mge::benchmark().run("sleep200", [&]() {
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    });
+}
+
+TEST(benchmark, memory_cycle)
+{
+    char *buffer = new char[10 * 1024];
+    mge::benchmark().run("memset", [&]() {
+        memset(buffer, 'A', 10 * 1024);
+        mge::do_not_optimize_away(buffer);
+    });
+    delete[] buffer;
+}
+
+TEST(benchmark, throw_catch_cycle)
+{
+    mge::benchmark().run("throw_catch", [&]() {
+        try {
+            throw std::logic_error("test");
+        } catch (const std::exception &e) {
+            mge::do_not_optimize_away(e.what());
+        }
     });
 }
 

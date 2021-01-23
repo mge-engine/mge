@@ -5,6 +5,7 @@
 #include "mge/config.hpp"
 #include <chrono>
 #include <functional>
+#include <iostream>
 #include <string>
 
 namespace mge {
@@ -29,7 +30,7 @@ namespace mge {
             virtual ~stage() = default;
 
             virtual uint64_t initial_iterations() const;
-
+            virtual void     set_iterations(uint64_t iterations);
             virtual uint64_t update(benchmark &b, uint64_t iterations,
                                     benchmark::clock::time_point start,
                                     benchmark::clock::time_point end) = 0;
@@ -43,6 +44,7 @@ namespace mge {
         {
             reset();
             while (auto loops = next_iterations()) {
+                // std::cout << "Looping " << loops << " loops" << std::endl;
                 start_measuring();
                 while (loops-- > 0) {
                     op();
@@ -51,6 +53,14 @@ namespace mge {
             }
             return *this;
         }
+        /**
+         * @brief Get clock resolution of benchmark clock.
+         *
+         * @return duration of smallest measurement possible
+         */
+        clock::duration clock_resolution() const;
+
+        void set_measure_iterations(uint64_t iterations);
 
     private:
         const uint8_t WARMUP    = 0;
