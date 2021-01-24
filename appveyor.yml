@@ -21,7 +21,7 @@ init:
 platform: x64
 
 before_build:
-  -cmd: cmake --version
+  - cmd: cmake --version
 
 build_script:
-  -cmd: echo "HELLO"
+  - cmd: echo "HELLO"
