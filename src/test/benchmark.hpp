@@ -6,6 +6,7 @@
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <string>
 
 namespace mge {
@@ -37,12 +38,20 @@ namespace mge {
         };
 
     public:
+        struct result
+        {
+            std::string                   benchmark;
+            std::map<std::string, double> kpi;
+        };
+
         benchmark();
+
+        ~benchmark();
 
         template <typename O>
         MGE_NO_INLINE benchmark &run(const char *name, O &&op)
         {
-            reset();
+            reset(name);
             while (auto loops = next_iterations()) {
                 // std::cout << "Looping " << loops << " loops" << std::endl;
                 start_measuring();
@@ -53,6 +62,9 @@ namespace mge {
             }
             return *this;
         }
+
+        benchmark &show_results();
+
         /**
          * @brief Get clock resolution of benchmark clock.
          *
@@ -62,6 +74,12 @@ namespace mge {
 
         void set_measure_iterations(uint64_t iterations);
 
+        const std::string &current() const;
+
+        const auto &results() const;
+
+        void submit(const benchmark::result &r);
+
     private:
         const uint8_t WARMUP    = 0;
         const uint8_t CALIBRATE = 1;
@@ -69,19 +87,23 @@ namespace mge {
         const uint8_t DONE      = 3;
 
         uint64_t next_iterations() const;
-        void     reset();
+        void     reset(const char *name);
         void     compute_clock_resolution();
         void     start_measuring();
         void     stop_measuring();
         uint64_t update(uint64_t iterations, clock::time_point start,
                         clock::time_point end);
+        void     print_results();
 
         using stage_vector = std::vector<std::unique_ptr<stage>>;
 
-        clock::time_point m_measure_start;
-        uint64_t          m_next_iterations;
-        clock::duration   m_clock_resolution;
-        uint8_t           m_current_stage;
-        stage_vector      m_stages;
+        clock::time_point   m_measure_start;
+        uint64_t            m_next_iterations;
+        clock::duration     m_clock_resolution;
+        uint8_t             m_current_stage;
+        bool                m_print_results;
+        stage_vector        m_stages;
+        std::string         m_current;
+        std::vector<result> m_results;
     };
 } // namespace mge
