@@ -12,12 +12,13 @@ skip_branch_with_pr: true
 # Maximum number of concurrent jobs for the project
 max_jobs: 1
 
-#---------------------------------#
-#    environment configuration    #
-#---------------------------------#
-
 # Build worker image (VM template)
 image: Visual Studio 2019
 
 init:
   - git config --global core.autocrlf input
+
+platform: x64
+
+build_script:
+  -cmd: echo "HELLO"
