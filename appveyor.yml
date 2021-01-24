@@ -25,6 +25,7 @@ before_build:
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
+  - cmd: echo %CD%
   - cmd: .\vckpg.exe install --triplet x64-windows gtest
 
 build_script:
