@@ -21,7 +21,10 @@ init:
 platform: x64
 
 before_build:
+  - cmd: echo "Installation details:"
   - cmd: cmake --version
+  - cmd: ninja --version
+  - cmd: git --version
 
 build_script:
   - cmd: echo "HELLO"
