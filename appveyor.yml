@@ -21,10 +21,9 @@ init:
 platform: x64
 
 before_build:
-  - cmd: echo "Installation details:"
-  - cmd: cmake --version
-  - cmd: ninja --version
-  - cmd: git --version
+  - cmd: git clone https://github.com/mge-engine/vcpkg.git
+  - cmd: cd vcpkg
+  - cmd: echo %cd%
 
 build_script:
-  - cmd: echo "HELLO"
+  - cmd: echo "build"
