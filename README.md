@@ -8,6 +8,8 @@ the supported graphics mechanisms at some level.
 
 ## Status
 
+![Build status](https://ci.appveyor.com/api/projects/status/ipy7uwolc2qvk27v/branch/main?svg=true)](https://ci.appveyor.com/project/aschroeder/mge/branch/main)
+
 ## Table Of Contents
 
 * About MGE
