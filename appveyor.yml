@@ -21,12 +21,10 @@ init:
 platform: x64
 
 before_build:
-  - cmd: set
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
-  - cmd: echo %CD%
-  - cmd: .\vckpg.exe install --triplet x64-windows gtest
+  - cmd: .\vcpkg.exe install --triplet x64-windows gtest
 
 build_script:
   - cmd: echo "build"
