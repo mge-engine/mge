@@ -23,7 +23,7 @@ platform: x64
 before_build:
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
-  - cmd: echo %cd%
+  - cmd: .\bootstrap-vcpkg.bat
 
 build_script:
   - cmd: echo "build"
