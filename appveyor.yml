@@ -27,4 +27,6 @@ before_build:
   - cmd: .\vcpkg.exe install --triplet x64-windows gtest
 
 build_script:
-  - cmd: echo "build"
+  - cmd: mkdir build
+  - cmd: cd build
+  - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
