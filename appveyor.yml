@@ -30,6 +30,7 @@ before_build:
 build_script:
   - cmd: mkdir build
   - cmd: cd build
+  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: set CC=cl.exe
   - cmd: set CXX=cl.exe
   - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
