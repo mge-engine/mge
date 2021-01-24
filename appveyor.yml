@@ -30,4 +30,4 @@ before_build:
 build_script:
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+  - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
