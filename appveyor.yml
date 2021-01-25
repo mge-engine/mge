@@ -38,3 +38,6 @@ build_script:
 
 test_script:
   - cmd: ctest
+
+after_test:
+  - ps: ls test*.xml
