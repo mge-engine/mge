@@ -34,7 +34,7 @@ build_script:
   - cmd: set CC=cl.exe
   - cmd: set CXX=cl.exe
   - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
-  - cmd: cmake --build . all
+  - cmd: cmake --build . --target all
 
 test_script:
   - cmd: ctest
