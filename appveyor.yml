@@ -14,9 +14,6 @@ max_jobs: 1
 # Build worker image (VM template)
 image: Visual Studio 2019
 
-cache:
-  - vcpkg -> appveyor.yml
-
 init:
   - git config --global core.autocrlf input
 
