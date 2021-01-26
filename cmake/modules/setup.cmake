@@ -5,8 +5,10 @@
 INCLUDE(compiler/msvc)
 
 INCLUDE(settings/debugrelease)
+INCLUDE(thirdparty/version)
 
 INCLUDE(macros/library)
 INCLUDE(macros/test)
+
 
 INCLUDE(thirdparty/googletest)

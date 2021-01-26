@@ -24,7 +24,14 @@
 #define MGE_PATCHLEVEL @MGE_PATCHLEVEL @
 
 /**
- * @brief Complete MGE version, in the form "<major>.<minor>.<patchlevel>".
+ * @brief Build number.
+ */
+#define MGE_BUILD_NUMBER "@MGE_BUILD_NUMBER@"
+
+/**
+ * @brief Complete MGE version, in the form
+ * "<major>.<minor>.<patchlevel>-<build-number>".
  */
 #define MGE_VERSION_STRING                                                     \
-    "@MGE_VERSION_MAJOR@.@MGE_VERSION_MINOR@.@MGE_PATCHLEVEL@"
+    "@MGE_VERSION_MAJOR@.@MGE_VERSION_MINOR@.@MGE_PATCHLEVEL@"                 \
+    "-@MGE_BUILD_NUMBER@"
