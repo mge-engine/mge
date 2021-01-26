@@ -1,6 +1,7 @@
 # mge - Modern Game Engine
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
+version: {branch}-{build}
 
 branches:
   except:
@@ -9,15 +10,13 @@ branches:
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
 
-version: {branch}-{build}
-
 # Maximum number of concurrent jobs for the project
 max_jobs: 1
 
 # Build worker image (VM template)
 image: Visual Studio 2019
 
-ache:
+cache:
   - vcpkg -> appveyor.yml
 
 init:
