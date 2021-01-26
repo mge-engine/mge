@@ -40,6 +40,6 @@ test_script:
   - cmd: ctest
 
 after_test:
-  - ps: ls test*.xml
+  - ps: $testreportfiles = @(Get-ChildItem test*.xml)
   - ps: $wc = New-Object 'System.Net.WebClient'
-  - ps: $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test_executable_name.xml))
+  - ps: foreach($f in $testreportfiles) { $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $f)) }
