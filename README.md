@@ -8,7 +8,7 @@ the supported graphics mechanisms at some level.
 
 ## Status
 
-![Build status](https://ci.appveyor.com/api/projects/status/ipy7uwolc2qvk27v/branch/main?svg=true)]
+![Build status](https://ci.appveyor.com/api/projects/status/ipy7uwolc2qvk27v/branch/main?svg=true)
 
 ## Table Of Contents
 
