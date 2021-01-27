@@ -8,3 +8,8 @@ MGE_TEST(
     LIBRARIES   mgecore
 )
 
+MGE_TEST(
+    TARGET      test_type_name
+    SOURCES     test_type_name.cpp
+    LIBRARIES   mgecore
+)

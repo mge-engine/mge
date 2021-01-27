@@ -6,7 +6,8 @@ MGE_LIBRARY(
     TARGET  mgecore
     TYPE    SHARED
     SOURCES
-        executable_name.cpp)
+        executable_name.cpp
+        type_name.cpp)
 
 ADD_SUBDIRECTORY(test)
 
