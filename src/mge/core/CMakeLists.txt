@@ -7,7 +7,8 @@ MGE_LIBRARY(
     TYPE    SHARED
     SOURCES
         executable_name.cpp
-        type_name.cpp)
+        type_name.cpp
+        log.cpp)
 
 ADD_SUBDIRECTORY(test)
 
