@@ -12,3 +12,4 @@ INCLUDE(macros/test)
 
 
 INCLUDE(thirdparty/googletest)
+INCLUDE(thirdparty/boost)

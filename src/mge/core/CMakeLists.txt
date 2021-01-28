@@ -9,6 +9,6 @@ MGE_LIBRARY(
         executable_name.cpp
         type_name.cpp
         log.cpp)
-
+TARGET_LINK_LIBRARIES(mgecore boost-all)
 ADD_SUBDIRECTORY(test)
 

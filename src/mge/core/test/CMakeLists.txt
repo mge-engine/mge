@@ -14,3 +14,9 @@ FOREACH(TEST_NAME ${MGECORE_TESTS})
         LIBRARIES   mgecore
     )
 ENDFOREACH()
+
+MGE_TEST(
+        TARGET bench_common
+        SOURCES bench_common.cpp
+        LIBRARIES mgecore benchmark
+)

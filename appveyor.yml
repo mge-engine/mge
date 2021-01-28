@@ -24,6 +24,7 @@ before_build:
   - cmd: cd vcpkg
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
   - cmd: .\vcpkg.exe install --triplet x64-windows gtest
+  - cmd: .\vcpkg.exe install --triplet x64-windows boost-preprocessor boost-filesystem
   - cmd: cd ..
 
 build_script:
