@@ -243,8 +243,8 @@ namespace mge {
                 benchmark::result r;
 
                 r.benchmark = b.current();
+                auto m      = time_per_op_median(series);
 
-                auto   m         = time_per_op_median(series);
                 double ns_per_op = static_cast<double>(m.duration.count()) /
                                    static_cast<double>(m.iterations);
                 if (ns_per_op < 9e-17) {
@@ -265,7 +265,6 @@ namespace mge {
                     r.kpi["median op/frame"] =
                         std::numeric_limits<double>::infinity();
                 }
-
                 b.submit(r);
             }
 
@@ -316,11 +315,17 @@ namespace mge {
     void benchmark::print_results()
     {
         for (const auto &r : m_results) {
-            std::cout << r.benchmark << std::endl;
-            for (const auto &[kpi, measure] : r.kpi) {
-                std::cout << "\t" << kpi << "\t" << measure << std::endl;
-            }
+            std::cout << r;
         }
+    }
+
+    std::ostream &operator<<(std::ostream &os, const benchmark::result &r)
+    {
+        os << r.benchmark << std::endl;
+        for (const auto &[kpi, measure] : r.kpi) {
+            os << "\t" << kpi << "\t" << measure << std::endl;
+        }
+        return os;
     }
 
     void benchmark::compute_clock_resolution()
@@ -350,6 +355,8 @@ namespace mge {
         }
         m_next_iterations = 10;
         m_current_stage   = WARMUP;
+        m_stages.clear();
+
         m_stages.emplace_back(
             std::make_unique<benchmark_stages::warmup_stage>());
         m_stages.emplace_back(

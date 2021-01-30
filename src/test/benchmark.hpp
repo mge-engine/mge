@@ -53,7 +53,6 @@ namespace mge {
         {
             reset(name);
             while (auto loops = next_iterations()) {
-                // std::cout << "Looping " << loops << " loops" << std::endl;
                 start_measuring();
                 while (loops-- > 0) {
                     op();
@@ -106,4 +105,6 @@ namespace mge {
         std::string         m_current;
         std::vector<result> m_results;
     };
+
+    std::ostream &operator<<(std::ostream &os, const benchmark::result &r);
 } // namespace mge

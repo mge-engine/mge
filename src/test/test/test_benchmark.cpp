@@ -12,10 +12,17 @@
 TEST(benchmark, memory_cycle)
 {
     char *buffer = new char[10 * 1024];
-    mge::benchmark().run("memset", [&]() {
-        memset(buffer, 'A', 10 * 1024);
-        mge::do_not_optimize_away(buffer);
-    });
+    mge::benchmark()
+        .show_results()
+        .run("memset1",
+             [&]() {
+                 memset(buffer, 'A', 1 * 1024);
+                 mge::do_not_optimize_away(buffer);
+             })
+        .run("memset10", [&]() {
+            memset(buffer, 'A', 10 * 1024);
+            mge::do_not_optimize_away(buffer);
+        });
     delete[] buffer;
 }
 
