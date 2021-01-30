@@ -52,6 +52,13 @@ namespace mge {
         /**
          * @brief Set trace level.
          *
+         * @param l trace level
+         */
+        void set_level(trace_level l);
+
+        /**
+         * @brief Set trace level.
+         *
          * @param l trace level, or combination of levels
          */
         void set_level(uint8_t l);

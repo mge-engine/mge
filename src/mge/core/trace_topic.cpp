@@ -28,6 +28,11 @@ namespace mge {
         m_enabled_levels &= l_int_inverted;
     }
 
+    void trace_topic::set_level(trace_level l)
+    {
+        m_enabled_levels = static_cast<uint8_t>(l);
+    }
+
     void trace_topic::set_level(uint8_t l)
     {
         uint8_t l_all    = static_cast<uint8_t>(trace_level::ALL);
