@@ -8,7 +8,9 @@ MGE_LIBRARY(
     SOURCES
         executable_name.cpp
         type_name.cpp
-        log.cpp)
+        trace_level.cpp
+        trace_topic.cpp
+        trace.cpp)
 TARGET_LINK_LIBRARIES(mgecore boost-all)
 ADD_SUBDIRECTORY(test)
 

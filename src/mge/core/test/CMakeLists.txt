@@ -5,7 +5,9 @@
 SET(MGECORE_TESTS
     executable_name
     type_name
-    log)
+    trace
+    trace_level
+    trace_topic)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
@@ -15,8 +17,3 @@ FOREACH(TEST_NAME ${MGECORE_TESTS})
     )
 ENDFOREACH()
 
-MGE_TEST(
-        TARGET bench_common
-        SOURCES bench_common.cpp
-        LIBRARIES mgecore benchmark
-)
