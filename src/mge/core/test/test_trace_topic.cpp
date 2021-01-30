@@ -24,8 +24,28 @@ TEST(trace_topic, core_topic_name)
     EXPECT_STREQ("CORE", MGE_NS_TRACE_TOPIC(mge, CORE).name());
 }
 
-TEST(trace_topic, globa)
+TEST(trace_topic, global)
 {
     EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, MGE).global());
     EXPECT_FALSE(MGE_NS_TRACE_TOPIC(mge, CORE).global());
+}
+
+TEST(trace_topic, enable_disable)
+{
+    EXPECT_FALSE(
+        MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
+    MGE_NS_TRACE_TOPIC(mge, CORE).enable(mge::trace_level::DEBUG);
+    EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
+    MGE_NS_TRACE_TOPIC(mge, CORE).disable(mge::trace_level::DEBUG);
+    EXPECT_FALSE(
+        MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
+}
+
+TEST(trace_topic, set_level)
+{
+    EXPECT_FALSE(
+        MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
+    MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::DEBUG);
+    EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
+    MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::NONE);
 }

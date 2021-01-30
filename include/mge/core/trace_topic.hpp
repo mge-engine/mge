@@ -36,6 +36,27 @@ namespace mge {
         bool enabled(trace_level l) const noexcept;
 
         /**
+         * @brief Enable trace level.
+         *
+         * @param l enabled trace level
+         */
+        void enable(trace_level l);
+
+        /**
+         * @brief Disable trace level
+         *
+         * @param l disabled trace level
+         */
+        void disable(trace_level l);
+
+        /**
+         * @brief Set trace level.
+         *
+         * @param l trace level, or combination of levels
+         */
+        void set_level(uint8_t l);
+
+        /**
          * @brief Name of trace topic.
          *
          * @return topic name

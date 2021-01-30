@@ -5,12 +5,17 @@
 #include "mge/core/clock.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/trace_level.hpp"
+#include <string_view>
 
 namespace mge {
 
-    class MGECORE_EXPORT trace_record
+    struct MGECORE_EXPORT trace_record
     {
     public:
         clock::time_point time;
+        uint32_t          sequence;
+        trace_level       level;
+        std::string_view  message;
     };
+
 } // namespace mge

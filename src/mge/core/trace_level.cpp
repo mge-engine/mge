@@ -7,6 +7,8 @@ namespace mge {
     std::ostream &operator<<(std::ostream &os, const trace_level &l)
     {
         switch (l) {
+        case trace_level::NONE:
+            return os << "NONE";
         case trace_level::DEBUG:
             return os << "DEBUG";
         case trace_level::INFO:
@@ -17,6 +19,8 @@ namespace mge {
             return os << "ERROR";
         case trace_level::FATAL:
             return os << "FATAL";
+        case trace_level::ALL:
+            return os << "ALL";
         default:
             return os << "INVALID(" << static_cast<int>(l) << ")";
         }

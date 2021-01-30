@@ -10,6 +10,7 @@
 namespace mge {
     enum class trace_level : uint8_t
     {
+        NONE    = 0,
         DEBUG   = 1,
         INFO    = 2,
         WARNING = 4,
