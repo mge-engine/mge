@@ -5,4 +5,4 @@
 
 namespace mge {
     trace_formatter::~trace_formatter() {}
-}
+} // namespace mge
