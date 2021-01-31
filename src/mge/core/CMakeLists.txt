@@ -11,6 +11,7 @@ MGE_LIBRARY(
         trace_level.cpp
         trace_topic.cpp
         trace_sink.cpp
+        memory_trace_sink.cpp
         trace_formatter.cpp
         trace.cpp)
 TARGET_LINK_LIBRARIES(mgecore boost-all)
