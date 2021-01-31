@@ -39,13 +39,37 @@ namespace mge {
         m_enabled_levels = l & l_all;
     }
 
-    const char *trace_topic::name() const noexcept { return m_topic; }
+    std::string_view trace_topic::name() const noexcept { return m_topic; }
 
     bool trace_topic::global() const noexcept
     {
-        return this == &__trace_topic_MGE;
+        return this == &__trace_topic_MGE();
     }
 
-    void trace_topic::publish(const trace_record &r) {}
+    void trace_topic::publish(const trace_record &r)
+    {
+        for (auto &s : m_sinks) {
+            s->publish(r);
+        }
 
+        for (auto &s : __trace_topic_MGE().m_sinks) {
+            s->publish(r);
+        }
+    }
+
+    void trace_topic::add_sink(const std::shared_ptr<trace_sink> &sink)
+    {
+        m_sinks.emplace_back(sink);
+    }
+
+    void trace_topic::remove_sink(const std::shared_ptr<trace_sink> &sink)
+    {
+        for (sink_vector::iterator i = m_sinks.begin(); i != m_sinks.end();
+             ++i) {
+            if (&(*sink) == &(*(*i))) {
+                m_sinks.erase(i);
+                break;
+            }
+        }
+    }
 } // namespace mge

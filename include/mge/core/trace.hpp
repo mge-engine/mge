@@ -14,7 +14,7 @@ namespace mge {
     class MGECORE_EXPORT trace
     {
     public:
-        trace(const trace_topic &topic, const trace_level level);
+        trace(trace_topic &topic, const trace_level level);
         ~trace();
 
         template <typename T> trace &operator<<(const T &value)
@@ -28,8 +28,8 @@ namespace mge {
     private:
         void flush();
 
-        const trace_topic &m_topic;
-        bool               m_enabled;
+        trace_topic &m_topic;
+        bool         m_enabled;
 
         struct entry
         {
@@ -42,6 +42,7 @@ namespace mge {
         std::optional<std::stringstream> m_stream;
     };
 
-#define MGE_TRACE(TOPIC, LEVEL) trace(TOPIC, mge::trace_level::LEVEL)
+#define MGE_TRACE(TOPIC, LEVEL)                                                \
+    trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
 
 } // namespace mge

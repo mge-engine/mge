@@ -8,7 +8,7 @@ namespace mge {
 
     static std::atomic<uint32_t> s_trace_sequence;
 
-    trace::trace(const trace_topic &topic, const trace_level level)
+    trace::trace(trace_topic &topic, const trace_level level)
         : m_topic(topic), m_enabled(topic.enabled(level))
     {
         if (m_enabled) {
@@ -28,6 +28,18 @@ namespace mge {
         }
     }
 
-    void trace::flush() {}
+    void trace::flush()
+    {
+        trace_record r;
+
+        std::string msg = m_stream->str();
+
+        r.level    = m_entry->level;
+        r.sequence = m_entry->sequence;
+        r.time     = m_entry->time;
+        r.topic    = &m_topic;
+        r.message  = std::string_view(msg.begin(), msg.end());
+        m_topic.publish(r);
+    }
 
 } // namespace mge

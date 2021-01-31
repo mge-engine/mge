@@ -11,17 +11,20 @@ namespace mge {
 
 TEST(trace_topic, mge_topic)
 {
-    EXPECT_FALSE(mge::__trace_topic_MGE.enabled(mge::trace_level::ALL));
+    EXPECT_FALSE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
 }
 
 TEST(trace_topic, core_topic)
 {
-    EXPECT_FALSE(mge::__trace_topic_CORE.enabled(mge::trace_level::ALL));
+    EXPECT_FALSE(mge::__trace_topic_CORE().enabled(mge::trace_level::ALL));
 }
 
 TEST(trace_topic, core_topic_name)
 {
-    EXPECT_STREQ("CORE", MGE_NS_TRACE_TOPIC(mge, CORE).name());
+    auto core_name = std::string("CORE");
+
+    EXPECT_EQ(std::string_view(core_name.begin(), core_name.end()),
+              MGE_NS_TRACE_TOPIC(mge, CORE).name());
 }
 
 TEST(trace_topic, global)

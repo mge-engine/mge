@@ -3,8 +3,13 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/singleton.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_record.hpp"
+#include "mge/core/trace_sink.hpp"
+
+#include <memory>
+#include <vector>
 
 namespace mge {
     /**
@@ -18,11 +23,13 @@ namespace mge {
         /**
          * @brief Constructor.
          *
-         * @tparam N
+         * @tparam N length of string
          */
         template <std::size_t N>
         constexpr trace_topic(const char (&name)[N])
-            : m_topic(static_cast<const char *>(name)), m_enabled_levels(0)
+            : m_topic(static_cast<const char *>(name),
+                      static_cast<const char *>(name) + N - 1),
+              m_enabled_levels(0)
         {}
 
         ~trace_topic();
@@ -69,7 +76,7 @@ namespace mge {
          *
          * @return topic name
          */
-        const char *name() const noexcept;
+        std::string_view name() const noexcept;
 
         /**
          * @brief Return whether topic is the global topic.
@@ -86,21 +93,42 @@ namespace mge {
          */
         void publish(const trace_record &r);
 
+        /**
+         * @brief Add a trace sink.
+         *
+         * @param sink trace sink to add
+         */
+        void add_sink(const std::shared_ptr<trace_sink> &sink);
+
+        /**
+         * @brief Remove a sink.
+         *
+         * @param sink sink to remove
+         */
+        void remove_sink(const std::shared_ptr<trace_sink> &sink);
+
     private:
-        const char *m_topic;
-        uint8_t     m_enabled_levels;
+        using sink_vector = std::vector<std::shared_ptr<trace_sink>>;
+        std::string_view m_topic;
+        uint8_t          m_enabled_levels;
+        sink_vector      m_sinks;
     };
 
-#define MGE_USE_TRACE(TOPIC)                                                   \
-    extern ::mge::trace_topic __trace_topic_##TOPIC(#TOPIC)
+#define MGE_USE_TRACE(TOPIC) ::mge::trace_topic &__trace_topic_##TOPIC()
+
 #define MGE_USE_IMPORTED_TRACE(TOPIC)                                          \
-    extern MGE_DLLIMPORT ::mge::trace_topic __trace_topic_##TOPIC
+    MGE_DLLIMPORT ::mge::trace_topic &__trace_topic_##TOPIC()
 
 #define MGE_DEFINE_TRACE(TOPIC)                                                \
-    mge::trace_topic MGE_DLLEXPORT __trace_topic_##TOPIC(#TOPIC)
+    static mge::trace_topic s__trace_topic##TOPIC(#TOPIC);                     \
+    MGE_DLLEXPORT mge::trace_topic &__trace_topic_##TOPIC()                    \
+    {                                                                          \
+        return s__trace_topic##TOPIC;                                          \
+    }                                                                          \
+    MGE_DLLEXPORT mge::trace_topic &__trace_topic_##TOPIC()
 
-#define MGE_TRACE_TOPIC(TOPIC) __trace_topic_##TOPIC
+#define MGE_TRACE_TOPIC(TOPIC) __trace_topic_##TOPIC()
 
-#define MGE_NS_TRACE_TOPIC(NS, TOPIC) NS::__trace_topic_##TOPIC
+#define MGE_NS_TRACE_TOPIC(NS, TOPIC) NS::__trace_topic_##TOPIC()
 
 } // namespace mge
