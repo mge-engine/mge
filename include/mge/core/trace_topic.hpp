@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/trace_level.hpp"
+#include "mge/core/trace_record.hpp"
 
 namespace mge {
     /**
@@ -77,6 +78,13 @@ namespace mge {
          * @return @c false if it is any other topic
          */
         bool global() const noexcept;
+
+        /**
+         * @brief Publish a trace record.
+         *
+         * @param r record
+         */
+        void publish(const trace_record &r);
 
     private:
         const char *m_topic;

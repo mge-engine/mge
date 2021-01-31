@@ -46,4 +46,6 @@ namespace mge {
         return this == &__trace_topic_MGE;
     }
 
+    void trace_topic::publish(const trace_record &r) {}
+
 } // namespace mge
