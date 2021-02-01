@@ -2,10 +2,13 @@
 // Copyright (c) 2019 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/dllexport.hpp"
+#include "mge/core/memory.hpp"
 #include "mge/core/trace_record.hpp"
+
 #pragma once
 namespace mge {
 
+    MGE_DECLARE_REF(trace_formatter);
     class MGECORE_EXPORT trace_formatter
     {
     public:

@@ -9,6 +9,7 @@ SET(MGECORE_TESTS
     trace_level
     trace_topic
     memory_trace_sink
+    stream_trace_sink
     simple_trace_formatter)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})

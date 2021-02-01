@@ -12,6 +12,7 @@ MGE_LIBRARY(
         trace_topic.cpp
         trace_sink.cpp
         memory_trace_sink.cpp
+        stream_trace_sink.cpp
         trace_formatter.cpp
         simple_trace_formatter.cpp
         trace.cpp)
