@@ -45,4 +45,14 @@ namespace mge {
 #define MGE_TRACE(TOPIC, LEVEL)                                                \
     trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
 
+#define MGE_DEBUG_TRACE(TOPIC) MGE_TRACE(TOPIC, DEBUG)
+
+#define MGE_INFO_TRACE(TOPIC) MGE_TRACE(TOPIC, INFO)
+
+#define MGE_WARNING_TRACE(TOPIC) MGE_TRACE(TOPIC, WARNING)
+
+#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE(TOPIC, ERROR)
+
+#define MGE_FATAL_TRACE(TOPIC) MGE_TRACE(TOPIC, FATAL)
+
 } // namespace mge
