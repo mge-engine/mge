@@ -23,7 +23,7 @@ FUNCTION(MGE_TEST)
         LIST(APPEND MGE_TEST_SOURCES
              "${CMAKE_SOURCE_DIR}/src/test/test_main.cpp")
         LIST(APPEND MGE_TEST_LIBRARIES
-             googlemock)
+             googletest googlemock)
     ENDIF()
     # -- build test executable
     ADD_EXECUTABLE("${MGE_TEST_TARGET}"

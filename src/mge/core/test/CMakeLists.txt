@@ -2,14 +2,21 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-MGE_TEST(
-    TARGET      test_executable_name
-    SOURCES     test_executable_name.cpp
-    LIBRARIES   mgecore
-)
+SET(MGECORE_TESTS
+    executable_name
+    type_name
+    trace
+    trace_level
+    trace_topic
+    memory_trace_sink
+    stream_trace_sink
+    simple_trace_formatter)
 
-MGE_TEST(
-    TARGET      test_type_name
-    SOURCES     test_type_name.cpp
-    LIBRARIES   mgecore
-)
+FOREACH(TEST_NAME ${MGECORE_TESTS})
+    MGE_TEST(
+        TARGET      test_${TEST_NAME}
+        SOURCES     test_${TEST_NAME}.cpp
+        LIBRARIES   mgecore
+    )
+ENDFOREACH()
+
