@@ -16,11 +16,13 @@ namespace mge {
     public:
         basic_parameter(std::string_view section, std::string_view name,
                         std::string_view description);
-        virtual ~basic_parameter() = default;
+        virtual ~basic_parameter();
 
         std::string_view section() const noexcept;
         std::string_view name() const noexcept;
         std::string_view description() const noexcept;
+
+        virtual void set(const std::string &value) = 0;
 
     private:
         std::string_view m_section;
@@ -49,7 +51,7 @@ namespace mge {
 
         typename T get() const { return std::any_cast<T>(m_value); }
 
-        void set(const std::string &value)
+        void set(const std::string &value) override
         {
             T val   = boost::lexical_cast<T>(value);
             m_value = val;
