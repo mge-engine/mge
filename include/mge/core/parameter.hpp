@@ -47,6 +47,14 @@ namespace mge {
 
         bool has_value() const { return m_value.has_value(); }
 
+        typename T get() const { return std::any_cast<T>(m_value); }
+
+        void set(const std::string &value)
+        {
+            T val   = boost::lexical_cast<T>(value);
+            m_value = val;
+        }
+
     private:
         std::any m_value;
     };
