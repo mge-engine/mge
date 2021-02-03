@@ -16,6 +16,9 @@ namespace mge {
         void register_parameter(basic_parameter &p);
         void unregister_parameter(basic_parameter &p);
 
+        basic_parameter &find_parameter(std::string_view section,
+                                        std::string_view name);
+
     private:
         using parameter_map = std::map<std::string_view, basic_parameter *>;
         using section_map   = std::map<std::string_view, parameter_map>;
@@ -49,6 +52,20 @@ namespace mge {
         }
     }
 
+    basic_parameter &
+    configuration_instance::find_parameter(std::string_view section,
+                                           std::string_view name)
+    {
+        auto pmap_it = m_sections.find(section);
+        if (pmap_it != m_sections.end()) {
+            auto p_it = pmap_it->second.find(name);
+            if (p_it != pmap_it->second.end()) {
+                return *p_it->second;
+            }
+        }
+        throw std::runtime_error("Unknown parameter");
+    }
+
     static singleton<configuration_instance> s_configuration_instance;
 
     void configuration::register_parameter(basic_parameter &p)
@@ -59,6 +76,12 @@ namespace mge {
     void configuration::unregister_parameter(basic_parameter &p)
     {
         s_configuration_instance->unregister_parameter(p);
+    }
+
+    basic_parameter &configuration::find_parameter(std::string_view section,
+                                                   std::string_view name)
+    {
+        return s_configuration_instance->find_parameter(section, name);
     }
 
 } // namespace mge
