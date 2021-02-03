@@ -21,6 +21,7 @@ TEST(parameter, from_string_get)
     MGE_PARAMETER(test, test_parameter1).from_string("1");
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).get());
+    MGE_PARAMETER(test, test_parameter1).reset();
 }
 
 TEST(parameter, from_string_to_string)
@@ -30,4 +31,5 @@ TEST(parameter, from_string_to_string)
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
     EXPECT_EQ(std::string("1"),
               MGE_PARAMETER(test, test_parameter1).to_string());
+    MGE_PARAMETER(test, test_parameter1).reset();
 }

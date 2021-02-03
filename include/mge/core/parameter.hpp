@@ -24,6 +24,7 @@ namespace mge {
         std::string_view description() const noexcept;
 
         virtual bool        has_value() const                     = 0;
+        virtual void        reset()                               = 0;
         virtual void        from_string(const std::string &value) = 0;
         virtual std::string to_string() const                     = 0;
 
@@ -66,6 +67,8 @@ namespace mge {
             ss << get();
             return ss.str();
         }
+
+        void reset() override { m_value.reset(); }
 
     private:
         std::any m_value;
