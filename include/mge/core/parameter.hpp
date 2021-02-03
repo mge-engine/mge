@@ -7,6 +7,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include <any>
+#include <sstream>
 #include <string_view>
 
 namespace mge {
@@ -22,7 +23,9 @@ namespace mge {
         std::string_view name() const noexcept;
         std::string_view description() const noexcept;
 
-        virtual void set(const std::string &value) = 0;
+        virtual bool        has_value() const                     = 0;
+        virtual void        from_string(const std::string &value) = 0;
+        virtual std::string to_string() const                     = 0;
 
     private:
         std::string_view m_section;
@@ -47,14 +50,21 @@ namespace mge {
 
         virtual ~parameter() = default;
 
-        bool has_value() const { return m_value.has_value(); }
+        bool has_value() const override { return m_value.has_value(); }
 
         typename T get() const { return std::any_cast<T>(m_value); }
 
-        void set(const std::string &value) override
+        void from_string(const std::string &value) override
         {
             T val   = boost::lexical_cast<T>(value);
             m_value = val;
+        }
+
+        std::string to_string() const override
+        {
+            std::stringstream ss;
+            ss << get();
+            return ss.str();
         }
 
     private:

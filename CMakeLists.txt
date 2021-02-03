@@ -6,6 +6,12 @@ IF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     MESSAGE(FATAL_ERROR "In-source builds are not supported")
 ENDIF()
 
+# Global settings
+# - enable testing
+# - enable exporting compile_commands.json (for editors etc.)
+ENABLE_TESTING()
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
     SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/../vcpkg/scripts/buildsystems/vcpkg.cmake")
 ENDIF()
@@ -43,10 +49,5 @@ ADD_SUBDIRECTORY(include)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(doc)
 
-# Global settings
-# - enable testing
-# - enable exporting compile_commands.json (for editors etc.)
-ENABLE_TESTING()
-SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 

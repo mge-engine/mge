@@ -15,10 +15,19 @@ TEST(parameter, simple_access)
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
 }
 
-TEST(parameter, set_get)
+TEST(parameter, from_string_get)
 {
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
-    MGE_PARAMETER(test, test_parameter1).set("1");
+    MGE_PARAMETER(test, test_parameter1).from_string("1");
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).get());
+}
+
+TEST(parameter, from_string_to_string)
+{
+    EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
+    MGE_PARAMETER(test, test_parameter1).from_string("1");
+    EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
+    EXPECT_EQ(std::string("1"),
+              MGE_PARAMETER(test, test_parameter1).to_string());
 }

@@ -15,6 +15,9 @@ namespace mge {
 
         static basic_parameter &find_parameter(std::string_view section,
                                                std::string_view name);
+
+        static void load();
+        static void store();
     };
 
 } // namespace mge
