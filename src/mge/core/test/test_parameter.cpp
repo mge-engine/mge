@@ -29,7 +29,7 @@ TEST(parameter, from_string_to_string)
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
     MGE_PARAMETER(test, test_parameter1).from_string("1");
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
-    EXPECT_EQ(std::string("wurst"),
+    EXPECT_EQ(std::string("1"),
               MGE_PARAMETER(test, test_parameter1).to_string());
     MGE_PARAMETER(test, test_parameter1).reset();
 }
