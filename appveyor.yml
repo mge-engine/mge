@@ -25,6 +25,7 @@ before_build:
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
   - cmd: .\vcpkg.exe install --triplet x64-windows gtest
   - cmd: .\vcpkg.exe install --triplet x64-windows boost-preprocessor boost-filesystem boost-circular-buffer
+  - cmd: .\vcpkg.exe install --triplet x64-windows boost-lexical-cast boost-property-tree
   - cmd: cd ..
 
 build_script:

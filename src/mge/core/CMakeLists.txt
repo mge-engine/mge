@@ -8,6 +8,8 @@ MGE_LIBRARY(
     SOURCES
         executable_name.cpp
         type_name.cpp
+        configuration.cpp
+        parameter.cpp
         trace_level.cpp
         trace_topic.cpp
         trace_sink.cpp
