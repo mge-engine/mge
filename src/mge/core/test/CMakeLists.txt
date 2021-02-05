@@ -12,7 +12,8 @@ SET(MGECORE_TESTS
     stream_trace_sink
     simple_trace_formatter
     parameter
-    configuration)
+    configuration
+    statistics)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
