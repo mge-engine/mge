@@ -20,16 +20,11 @@ init:
 platform: x64
 
 before_build:
+  - cmd: SET PATH=C:\Python39-x64;%PATH%
+  - cmd: python tools/ci/vcpkg.py
   - cmd: choco install -y doxygen.install
   - cmd: SET PATH=%PATH%;C:\PROGRA~1\doxygen\bin
   - cmd: pip install -U sphinx
-  - cmd: git clone https://github.com/mge-engine/vcpkg.git
-  - cmd: cd vcpkg
-  - cmd: .\bootstrap-vcpkg.bat -disableMetrics
-  - cmd: .\vcpkg.exe install --triplet x64-windows gtest
-  - cmd: .\vcpkg.exe install --triplet x64-windows boost-preprocessor boost-filesystem boost-circular-buffer
-  - cmd: .\vcpkg.exe install --triplet x64-windows boost-lexical-cast boost-property-tree
-  - cmd: cd ..
 
 build_script:
   - cmd: set
@@ -50,5 +45,9 @@ on_finish:
   - ps: foreach($f in $testreportfiles) { $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $f)) }
 
 cache:
+<<<<<<< HEAD
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
+=======
+  - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
+>>>>>>> origin/main
