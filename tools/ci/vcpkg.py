@@ -1,6 +1,7 @@
 
 import os
 import sys
+import subprocess
 
 version = 1
 vcpkg_githash = "70422b96724101d67e88923539cf2ea2c880c39a"
@@ -11,12 +12,13 @@ vcpkg_packages = [
 
 
 def install_vcpkg():
-    pass
+    subprocess.run(["git", "clone", "https://github.com/mge-engine/vcpkg.git"])
 
 
 if os.path.exists("vcpkg") and os.path.isdir("vcpkg"):
     print("vcpkg path exists")
 else:
+    print("vcpkg path not found, performing complete install")
     install_vcpkg()
 
 sys.exit(1)
