@@ -13,4 +13,5 @@ INCLUDE(macros/test)
 
 INCLUDE(thirdparty/googletest)
 INCLUDE(thirdparty/boost)
+INCLUDE(thirdparty/doxygen)
 INCLUDE(thirdparty/sphinx)
