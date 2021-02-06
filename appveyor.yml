@@ -24,7 +24,7 @@ before_build:
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: SET PATH=%PATH%;C:\PROGRA~1\doxygen\bin
-  - cmd: pip install -U sphinx
+  - cmd: python -m pip install -U sphinx
 
 build_script:
   - cmd: set
