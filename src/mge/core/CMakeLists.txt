@@ -17,7 +17,8 @@ MGE_LIBRARY(
         stream_trace_sink.cpp
         trace_formatter.cpp
         simple_trace_formatter.cpp
-        trace.cpp)
+        trace.cpp
+        statistics.cpp)
 TARGET_LINK_LIBRARIES(mgecore boost-all)
 ADD_SUBDIRECTORY(test)
 
