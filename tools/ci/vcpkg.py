@@ -31,7 +31,7 @@ def install_vcpkg():
     print("Installing following packages:", flush=True)
     for p in vcpkg_packages:
         print("    %s" % p, flush=True)
-    subprocess.run(install_command, cwd="vcpkg")
+    subprocess.run(install_command, cwd="vcpkg", shell=True)
     version_file = open("vcpkg/build-version", "w")
     version_file.write(version)
     version_file.close()
@@ -41,13 +41,13 @@ def is_vcpkg_installed():
     try:
         with open("vcpkg/build-version") as f:
             installed_version = f.read().replace("\n", "")
-            print("found installed vcpkg version %s" %
+            print("Found installed vcpkg version %s" %
                   (installed_version), flush=True)
             if installed_version == version:
-                print("required version matches installed version", flush=True)
+                print("Required version matches installed version", flush=True)
                 return True
             else:
-                print("required version is %s, need to install vcpkg" %
+                print("Required version is %s, need to install vcpkg" %
                       version, flush=True)
                 return False
     except:
@@ -57,23 +57,12 @@ def is_vcpkg_installed():
 try:
     if not is_vcpkg_installed():
         if os.path.exists("vcpkg") and os.path.isdir("vcpkg"):
-            print("vcpkg path exists, renoving it", flush=True)
+            print("Vcpkg path exists, removing it", flush=True)
             shutil.rmtree("vcpkg")
-        print("performing complete install", flush=True)
+        print("Performing complete install", flush=True)
         install_vcpkg()
 except:
     print(sys.exc_info, flush=True)
     sys.exit(1)
 
 sys.exit(0)
-
-
-#   - cmd: git clone https://github.com/mge-engine/vcpkg.git
-#  - cmd: cd vcpkg
-#  - cmd: git checkout 70422b96724101d67e88923539cf2ea2c880c39a
-#  - cmd: .\bootstrap-vcpkg.bat -disableMetrics
-#  - cmd: .\vcpkg.exe install --triplet x64-windows gtest
-#  - cmd: .\vcpkg.exe install --triplet x64-windows boost-preprocessor boost-filesystem boost-circular-buffer
-#  - cmd: .\vcpkg.exe install --triplet x64-windows boost-lexical-cast boost-property-tree
-#  - cmd: cd ..
-# advice.detachedHead
