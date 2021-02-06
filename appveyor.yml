@@ -43,3 +43,4 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
+# test
