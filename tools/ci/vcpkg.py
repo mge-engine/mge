@@ -12,21 +12,21 @@ vcpkg_packages = [
 
 
 def install_vcpkg():
-    print("Cloning vcpkg git mirror")
+    print("Cloning vcpkg git mirror", flush=True)
     subprocess.run(["git", "clone", "https://github.com/mge-engine/vcpkg.git"])
     subprocess.run(
         ["git", "config", "advice.detachedHead", "false"], cwd="vcpkg")
-    print("Checking out configured version %s" % (vcpkg_githash))
+    print("Checking out configured version %s" % (vcpkg_githash), flush=True)
     subprocess.run(["git", "checkout", vcpkg_githash], cwd="vcpkg")
-    print("Bootstrapping vcpkg")
+    print("Bootstrapping vcpkg", flush=True)
     subprocess.run([".\\bootstrap-vcpkg.bat", "-disableMetrics"],
                    cwd="vcpkg", shell=True)
 
 
 if os.path.exists("vcpkg") and os.path.isdir("vcpkg"):
-    print("vcpkg path exists")
+    print("vcpkg path exists", flush=True)
 else:
-    print("vcpkg path not found, performing complete install")
+    print("vcpkg path not found, performing complete install", flush=True)
     install_vcpkg()
     sys.exit(1)
 
