@@ -5,9 +5,13 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/overloaded.hpp"
+#include <functional>
 #include <string>
 #include <variant>
+#include <vector>
+
 namespace mge {
+
     /**
      * @brief A statistics entry.
      *
@@ -19,10 +23,43 @@ namespace mge {
     {
     public:
         template <size_t N>
+        statistics(statistics &parent, const char (&name)[N])
+            : m_name(std::string_view(&name[0], &name[N - 1])), m_owned(true)
+        {
+            parent.add_child(this);
+        }
+
+        template <size_t N>
         statistics(const char (&name)[N])
-            : m_name(std::string_view(&name[0], &name[N - 1]))
-        {}
-        statistics(std::string &&name) : m_name(std::move(name)) {}
+            : m_name(std::string_view(&name[0], &name[N - 1])), m_owned(true)
+        {
+            root().add_child(this);
+        }
+
+        statistics(std::string &&name) : m_name(std::move(name)), m_owned(true)
+        {
+            root().add_child(this);
+        }
+
+        statistics(statistics &parent, std::string &&name)
+            : m_name(std::move(name)), m_owned(true)
+        {
+            parent.add_child(this);
+        }
+
+        statistics(const std::string &name) : m_name(name), m_owned(true)
+        {
+            root().add_child(this);
+        }
+
+        statistics(statistics &parent, const std::string &name)
+            : m_name(name), m_owned(true)
+        {
+            parent.add_child(this);
+        }
+
+        virtual ~statistics();
+
         std::string_view name() const
         {
             return std::visit(
@@ -31,19 +68,29 @@ namespace mge {
                                return std::string_view(n.begin(), n.end());
                            }},
                 m_name);
-            /*
-            std::visit(overloaded {
-            [](auto arg) { std::cout << arg << ' '; },
-            [](double arg) { std::cout << std::fixed << arg << ' '; },
-            [](const std::string& arg) { std::cout << std::quoted(arg) << ' ';
-        },
-        }, v);
-        */
         }
 
-    public:
+        /**
+         * @brief Root statistics node.
+         *
+         * @return root node of statistics
+         */
+        static statistics &root();
+
+        /**
+         * Release ownership. Statistics object can be destroyed.
+         */
+        void release();
+
     protected:
+        statistics();
+
     private:
+        void add_child(statistics *s);
+
         std::variant<std::string_view, std::string> m_name;
+        std::vector<statistics *>                   m_children;
+        bool                                        m_owned;
     };
+
 } // namespace mge
