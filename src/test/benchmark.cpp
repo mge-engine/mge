@@ -168,7 +168,7 @@ namespace mge {
                 ++current_loop;
                 if (current_loop == loops) {
                     if (!stable) {
-                        if (max_unstable_loops_add) {
+                        if (max_unstable_loops_add == 0) {
                             std::stringstream msg;
                             msg << "Benchmark '" << b.current()
                                 << "' unstable after " << current_loop
