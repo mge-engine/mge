@@ -17,7 +17,7 @@ def is_doxygen_installed():
             return False
     except:
         print("Cannot determine doxygen version %s" %
-              (sys.exc_info()), flush=True)
+              str(sys.exc_info()), flush=True)
         return False
 
 
@@ -31,5 +31,5 @@ try:
         install_doxygen()
     sys.exit(0)
 except:
-    print("Exception %s" % (sys.exc_info()), flush=True)
+    print("Exception %s" % str(sys.exc_info()), flush=True)
     sys.exit(1)
