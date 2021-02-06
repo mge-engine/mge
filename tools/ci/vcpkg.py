@@ -19,7 +19,7 @@ def install_vcpkg():
     print("Checking out configured version %s" % (vcpkg_githash))
     subprocess.run(["git", "checkout", vcpkg_githash], cwd="vcpkg")
     print("Bootstrapping vcpkg")
-    subprocess.run([".\bootstrap-vcpkg.bat", "-disableMetrics"],
+    subprocess.run([".\\bootstrap-vcpkg.bat", "-disableMetrics"],
                    cwd="vcpkg", shell=True)
 
 
