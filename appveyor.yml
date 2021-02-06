@@ -22,7 +22,7 @@ platform: x64
 before_build:
   - cmd: SET PATH=C:\Python39-x64;%PATH%
   - cmd: python tools/ci/vcpkg.py
-  - cmd: pythpm tools/ci/doxygen.py
+  - cmd: python tools/ci/doxygen.py
   - cmd: SET PATH=%PATH%;C:\PROGRA~1\doxygen\bin
   - cmd: pip install -U sphinx
 
