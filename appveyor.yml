@@ -21,6 +21,7 @@ platform: x64
 
 before_build:
   - cmd: SET PATH=C:\Python39-x64\bin;%PATH%
+  - cmd: dir C:\Python39-x64
   - cmd: python --version
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
