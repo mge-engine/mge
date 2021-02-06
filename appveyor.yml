@@ -49,6 +49,6 @@ on_finish:
   - ps: $wc = New-Object 'System.Net.WebClient'
   - ps: foreach($f in $testreportfiles) { $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $f)) }
 
-  cache:
+cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
