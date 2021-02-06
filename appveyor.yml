@@ -24,6 +24,7 @@ before_build:
   - cmd: python tools/ci/vcpkg.py
   - cmd: choco install -y doxygen.install
   - cmd: SET PATH=%PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: doxygen --version
   - cmd: pip install -U sphinx
 
 build_script:
@@ -45,9 +46,4 @@ on_finish:
   - ps: foreach($f in $testreportfiles) { $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $f)) }
 
 cache:
-<<<<<<< HEAD
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
-=======
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
->>>>>>> origin/main
