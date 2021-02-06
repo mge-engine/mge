@@ -20,8 +20,10 @@ init:
 platform: x64
 
 before_build:
+  - cmd: python3 --version
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
+  - cmd: git checkout 70422b96724101d67e88923539cf2ea2c880c39a
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
   - cmd: .\vcpkg.exe install --triplet x64-windows gtest
   - cmd: .\vcpkg.exe install --triplet x64-windows boost-preprocessor boost-filesystem boost-circular-buffer
