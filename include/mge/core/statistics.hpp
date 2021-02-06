@@ -5,7 +5,9 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/overloaded.hpp"
+#include <any>
 #include <atomic>
+#include <chrono>
 #include <functional>
 #include <string>
 #include <variant>
@@ -23,21 +25,83 @@ namespace mge {
     class MGECORE_EXPORT statistics
     {
     public:
+        using value =
+            std::variant<std::string, std::string_view, uint64_t, int64_t,
+                         float, double, std::chrono::duration<int64_t>,
+                         std::chrono::duration<double>>;
+
+        using counter = std::atomic<uint64_t>;
         class MGECORE_EXPORT description
         {
         public:
+            class MGECORE_EXPORT field_description
+            {
+            public:
+                field_description();
+
+                field_description(
+                    std::string_view                           field_name,
+                    std::function<statistics::value(void *)> &&getter);
+                field_description(
+                    std::string_view                                field_name,
+                    const std::function<statistics::value(void *)> &getter);
+                field_description(const field_description &desc);
+                field_description(field_description &&desc);
+                ~field_description();
+                field_description &operator=(const field_description &desc);
+                field_description &operator=(field_description &&desc);
+
+                std::string_view name() const { return m_name; }
+
+                template <typename S>
+                inline statistics::value get(S &statistics_object) const
+                {
+                    void *raw_statistics =
+                        reinterpret_cast<void *>(&statistics_object);
+                    return m_getter(raw_statistics);
+                }
+
+            private:
+                std::string_view                         m_name;
+                std::function<statistics::value(void *)> m_getter;
+            };
+
+            using size_type = std::vector<field_description>::size_type;
+
             description(std::string_view name, std::string_view comment);
+
+            description(std::string_view name, std::string_view comment,
+                        std::initializer_list<field_description> fields);
             ~description();
 
             std::string_view name() const noexcept { return m_name; }
             std::string_view comment() const noexcept { return m_comment; }
 
-        private:
-            std::string_view m_name;
-            std::string_view m_comment;
-        };
+            template <typename C>
+            static field_description field(std::string_view    name,
+                                           statistics::counter C::*p)
+            {
+                return field_description(name, [p](void *raw_class_p) {
+                    C *class_p = reinterpret_cast<C *>(raw_class_p);
 
-        using counter = std::atomic<uint64_t>;
+                    statistics::value r = (class_p->*p).load();
+
+                    return r;
+                });
+            }
+
+            const field_description &at(size_type index) const
+            {
+                return m_fields.at(index);
+            }
+
+            size_type size() const { return m_fields.size(); }
+
+        private:
+            std::string_view               m_name;
+            std::string_view               m_comment;
+            std::vector<field_description> m_fields;
+        };
 
         template <size_t N>
         statistics(statistics &parent, const char (&name)[N])

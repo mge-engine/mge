@@ -36,14 +36,17 @@ TEST(statistics, death_on_destroy_owned)
 class my_stats : public mge::statistics
 {
 public:
-    my_stats() : mge::statistics("my_stats"sv) {}
+    my_stats() : mge::statistics("my_stats"sv) { count = 17; }
 
     const description &describe() const override
     {
-        static statistics::description desc("my_stats"sv,
-                                            "my test statistics"sv);
+        static mge::statistics::description desc(
+            "my_stats"sv, "my test statistics"sv,
+            {mge::statistics::description::field("count"sv, &my_stats::count)});
         return desc;
     }
+
+    statistics::counter count;
 };
 
 TEST(statistics, describe)
@@ -51,5 +54,11 @@ TEST(statistics, describe)
     my_stats s;
     EXPECT_EQ("my_stats"sv, s.describe().name());
     EXPECT_EQ("my test statistics"sv, s.describe().comment());
+    EXPECT_EQ(1u, s.describe().size());
+    EXPECT_EQ("count"sv, s.describe().at(0).name());
+    mge::statistics::value val1(static_cast<uint64_t>(17));
+    mge::statistics::value val2(s.describe().at(0).get(s));
+    EXPECT_TRUE(std::holds_alternative<uint64_t>(val2));
+    EXPECT_EQ(val1, val2);
     s.release();
 }
