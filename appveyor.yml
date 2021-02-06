@@ -22,9 +22,8 @@ platform: x64
 before_build:
   - cmd: SET PATH=C:\Python39-x64;%PATH%
   - cmd: python tools/ci/vcpkg.py
-  - cmd: choco install -y doxygen.install
+  - cmd: pythpm tools/ci/doxygen.py
   - cmd: SET PATH=%PATH%;C:\PROGRA~1\doxygen\bin
-  - cmd: doxygen --version
   - cmd: pip install -U sphinx
 
 build_script:
@@ -47,3 +46,4 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
+  - C:\PROGRA~1\doxygen -> tools/ci/doxygen.py
