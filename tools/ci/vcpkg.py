@@ -14,7 +14,7 @@ vcpkg_packages = [
 def install_vcpkg():
     print("Cloning vcpkg git mirrow")
     subprocess.run(["git", "clone", "https://github.com/mge-engine/vcpkg.git"])
-    print("Checking out configured version %s", % (vcpkg_githash))
+    print("Checking out configured version %s" % (vcpkg_githash))
     subprocess.run(["git", "checkout", vcpkg_githash], cwd="vcpkg")
 
 
