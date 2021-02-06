@@ -22,7 +22,7 @@ platform: x64
 before_build:
   - cmd: choco install -y doxygen.install
   - cmd: refreshenv
-  - cmd: "C:\Program Files\doxygen\doxygen" --version
+  - cmd: "C:\\Program Files\\doxygen\\doxygen" --version
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
