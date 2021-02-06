@@ -22,6 +22,7 @@ platform: x64
 before_build:
   - cmd: choco install -y doxygen.install
   - cmd: SET PATH=%PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: pip install -U sphinx
   - cmd: git clone https://github.com/mge-engine/vcpkg.git
   - cmd: cd vcpkg
   - cmd: .\bootstrap-vcpkg.bat -disableMetrics
