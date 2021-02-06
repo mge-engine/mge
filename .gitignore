@@ -15,3 +15,5 @@ CMakeLists.txt.user.*
 # - can accidentally be created if in-source build is tried
 CMakeFiles
 CMakeCache.txt
+# -- created by CI tools
+vcpkg/*
