@@ -5,6 +5,7 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/overloaded.hpp"
+#include <atomic>
 #include <functional>
 #include <string>
 #include <variant>
@@ -22,7 +23,7 @@ namespace mge {
     class MGECORE_EXPORT statistics
     {
     public:
-        class description
+        class MGECORE_EXPORT description
         {
         public:
             description(std::string_view name, std::string_view comment);
@@ -36,6 +37,8 @@ namespace mge {
             std::string_view m_comment;
         };
 
+        using counter = std::atomic<uint64_t>;
+
         template <size_t N>
         statistics(statistics &parent, const char (&name)[N])
             : m_name(std::string_view(&name[0], &name[N - 1])), m_owned(true)
@@ -46,6 +49,17 @@ namespace mge {
         template <size_t N>
         statistics(const char (&name)[N])
             : m_name(std::string_view(&name[0], &name[N - 1])), m_owned(true)
+        {
+            root().add_child(this);
+        }
+
+        statistics(statistics &parent, std::string_view name)
+            : m_name(name), m_owned(true)
+        {
+            parent.add_child(this);
+        }
+
+        statistics(std::string_view name) : m_name(name), m_owned(true)
         {
             root().add_child(this);
         }

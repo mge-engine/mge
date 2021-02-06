@@ -32,3 +32,24 @@ TEST(statistics, death_on_destroy_owned)
 {
     ASSERT_DEATH({ mge::statistics s("foobar"); }, ".*");
 }
+
+class my_stats : public mge::statistics
+{
+public:
+    my_stats() : mge::statistics("my_stats"sv) {}
+
+    const description &describe() const override
+    {
+        static statistics::description desc("my_stats"sv,
+                                            "my test statistics"sv);
+        return desc;
+    }
+};
+
+TEST(statistics, describe)
+{
+    my_stats s;
+    EXPECT_EQ("my_stats"sv, s.describe().name());
+    EXPECT_EQ("my test statistics"sv, s.describe().comment());
+    s.release();
+}

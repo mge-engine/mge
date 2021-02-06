@@ -20,7 +20,7 @@ namespace mge {
     public:
         root_statistics()          = default;
         virtual ~root_statistics() = default;
-        virtual const statistics::description &describe() const
+        virtual const statistics::description &describe() const override
         {
             static statistics::description desc(
                 ""sv, "Root of statistics object tree"sv);
