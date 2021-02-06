@@ -11,16 +11,19 @@ vcpkg_packages = [
 ]
 
 
+def install_vcpkg():
+    print("Cloning vcpkg git mirrow")
+    subprocess.run(["git", "clone", "https://github.com/mge-engine/vcpkg.git"])
+    print("Checking out configured version %s", % (vcpkg_githash))
+    subprocess.run(["git", "checkout", vcpkg_githash], cwd="vcpkg")
+
+
 if os.path.exists("vcpkg") and os.path.isdir("vcpkg"):
     print("vcpkg path exists")
 else:
     print("vcpkg path not found, performing complete install")
     install_vcpkg()
     sys.exit(1)
-
-
-def install_vcpkg():
-    subprocess.run(["git", "clone", "https://github.com/mge-engine/vcpkg.git"])
 
 
 sys.exit(1)
