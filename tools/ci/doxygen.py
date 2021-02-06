@@ -29,7 +29,8 @@ def install_doxygen():
 try:
     if not is_doxygen_installed():
         install_doxygen()
-    sys.exit(0)
 except:
     print("Exception %s" % str(sys.exc_info()), flush=True)
     sys.exit(1)
+
+sys.exit(0)
