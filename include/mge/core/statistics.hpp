@@ -22,6 +22,20 @@ namespace mge {
     class MGECORE_EXPORT statistics
     {
     public:
+        class description
+        {
+        public:
+            description(std::string_view name, std::string_view comment);
+            ~description();
+
+            std::string_view name() const noexcept { return m_name; }
+            std::string_view comment() const noexcept { return m_comment; }
+
+        private:
+            std::string_view m_name;
+            std::string_view m_comment;
+        };
+
         template <size_t N>
         statistics(statistics &parent, const char (&name)[N])
             : m_name(std::string_view(&name[0], &name[N - 1])), m_owned(true)
@@ -81,6 +95,13 @@ namespace mge {
          * Release ownership. Statistics object can be destroyed.
          */
         void release();
+
+        /**
+         * @brief Describes fields of this statistics record.
+         *
+         * @return element and field description
+         */
+        virtual const description &describe() const;
 
     protected:
         statistics();
