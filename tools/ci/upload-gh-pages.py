@@ -36,16 +36,36 @@ def upload_enabled_special_commit():
     return False
 
 
+def upload_enabled_sys_argv():
+    try:
+        if sys.argv[1] == '-f':
+            branch = "main"
+            print("Updating gh-pages due to force flag", flush=True)
+            return True
+    except:
+        pass
+    return False
+
+
+def copy2_verbose(src, dst):
+    print('Copying {0}'.format(src), flush=True)
+    shutil.copy2(src, dst)
+
+
 def upload(branch):
+    if os.path.exists("gh-pages"):
+        print("Remove old gh-pages directory", flush=True)
+        subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
     print("Remove old files", flush=True)
     subprocess.run(["git", "rm", "-rf", branch +
                     "/manual-html"], cwd="gh-pages")
-    shutil.copytree("docsrc/manual/manual-html", branch)
-    subprocess.run(["dir", "/s", branch], shell=True, cwd="gh-pages")
-    #os.makedirs("gh-pages/" + branch + "/manual-html")
+    subprocess.run(["dir", "..\\docsrc\\manual\\manual-html"],
+                   shell=True, cwd="gh-pages")
+    shutil.copytree("docsrc/manual/manual-html",
+                    "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
     nojekyllfilename = "gh-pages/" + branch + "/manual-html/.nojekyll"
     print("Touching -nojekyll file %s" % (nojekyllfilename), flush=True)
     with open(nojekyllfilename, "w") as nojekyll:
@@ -55,14 +75,14 @@ def upload(branch):
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
     print("Commit git changes", flush=True)
     subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
+    subprocess.run(["git", "push", "origin"], cwd="gh-pages")
 
 
 try:
     if upload_enabled():
         upload(branch)
-    elif upload_enabled_special_commit():
+    elif upload_enabled_special_commit() or upload_enabled_sys_argv():
         upload("main")
-
     else:
         print("No upload to gh-pages from this build")
 except:
