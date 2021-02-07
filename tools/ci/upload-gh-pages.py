@@ -56,7 +56,7 @@ def upload(branch):
     subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
     print("Copy generated documentation", flush=True)
     shutil.copytree("docsrc/manual/manual-html", branch, dirs_exist_ok=True)
-    subprocess.run(["dir", branch], shell=True, cwd="gh-pages")
+    subprocess.run(["dir", "/s", branch], shell=True, cwd="gh-pages")
     print("Adding to commit", flush=True)
     subprocess.run(
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
