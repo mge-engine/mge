@@ -2,4 +2,4 @@
 
 ## Project Documentation
 
-Project documentation can be found [here](manual-html/index.html)
+Project documentation can be found [here](main/manual-html/index.html)
