@@ -1,5 +1,6 @@
 import sys
 import os
+import subprocess
 
 upload_branches = ["main"]
 
@@ -9,14 +10,14 @@ def upload_enabled():
         env = os.environ.copy()
         if env["APPVEYOR_REPO_BRANCH"] in upload_branches:
             print("Branch is %s, upload enabled" %
-                  (env["APPVEYOR_REPO_BRANCH"]))
+                  (env["APPVEYOR_REPO_BRANCH"]), flush=True)
             return True
     except:
         pass
     try:
         env = os.environ.copy()
         if "update gh-pages" in env["APPVEYOR_REPO_COMMIT_MESSAGE"]:
-            print("Updating gh-pages due to special commit message")
+            print("Updating gh-pages due to special commit message", flush=True)
             return True
     except:
         pass
@@ -24,7 +25,9 @@ def upload_enabled():
 
 
 def upload():
-    pass
+    print("Cloning gh-pages branch", flush=True)
+    subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
+                    "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
 
 
 try:

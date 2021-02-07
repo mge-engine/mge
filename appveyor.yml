@@ -45,7 +45,7 @@ test_script:
   - cmd: ctest
 
 on_success:
-  - cmd: python tools/ci/upload-gh-pages.py
+  - cmd: python ../tools/ci/upload-gh-pages.py
 
 on_finish:
   - ps: $testreportfiles = @(Get-ChildItem test*.xml)
