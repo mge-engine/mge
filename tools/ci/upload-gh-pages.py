@@ -20,6 +20,10 @@ def upload_enabled():
             return True
     except:
         pass
+    return False
+
+
+def upload_enabled_special_commit():
     try:
         env = os.environ.copy()
         if "update gh-pages" in env["APPVEYOR_REPO_COMMIT_MESSAGE"]:
@@ -31,7 +35,7 @@ def upload_enabled():
     return False
 
 
-def upload():
+def upload(branch):
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
@@ -46,7 +50,10 @@ def upload():
 
 try:
     if upload_enabled():
-        upload()
+        upload(branch)
+    elif upload_enabled_special_commit():
+        upload("main")
+
     else:
         print("No upload to gh-pages from this build")
 except:
