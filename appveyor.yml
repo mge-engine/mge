@@ -29,6 +29,7 @@ before_build:
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
   - cmd: SET PATH=C:\projects\mge\sphinx\Scripts;%ORIG_PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: SET
 
 build_script:
   - cmd: mkdir build
@@ -42,6 +43,9 @@ build_script:
 
 test_script:
   - cmd: ctest
+
+on_success:
+  - cmd: python tools/ci/upload-gh-pages.py
 
 on_finish:
   - ps: $testreportfiles = @(Get-ChildItem test*.xml)
