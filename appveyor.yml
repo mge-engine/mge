@@ -8,6 +8,10 @@ branches:
   except:
     - gh-pages
 
+environment:
+  access_token:
+    secure: 0dmwrQvts99H4voAv/D6e9ZVvV6LZA7/lc/AoaGWZRXoxLsMnzwuSkgoZ/DzyXxk
+
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
 
@@ -23,21 +27,33 @@ init:
 platform: x64
 
 before_build:
-  - cmd: SET PATH=C:\Python39-x64;%PATH%
+  - cmd: SET ORIG_PATH=%PATH%
+  - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
   - cmd: python tools/ci/vcpkg.py
+  - cmd: python tools/ci/doxygen.py
+  - cmd: python tools/ci/sphinx.py
+  - cmd: SET PATH=C:\projects\mge\sphinx\Scripts;%ORIG_PATH%;C:\PROGRA~1\doxygen\bin
+#  - cmd: SET
 
 build_script:
-  - cmd: set
   - cmd: mkdir build
   - cmd: cd build
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: set CC=cl.exe
   - cmd: set CXX=cl.exe
   - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
-  - cmd: cmake --build . --target all
+  - cmd: cmake --build . --parallel 4 --target all
+  - cmd: cmake --build . --target documentation
 
 test_script:
   - cmd: ctest
+
+on_success:
+  - git config --global credential.helper store
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
+  - git config --global user.email "schroeder.alexander@googlemail.com"
+  - git config --global user.name "Alexander Schroeder"
+  - cmd: python ../tools/ci/upload-gh-pages.py
 
 on_finish:
   - ps: $testreportfiles = @(Get-ChildItem test*.xml)
@@ -46,3 +62,5 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
+  - C:\projects\mge\sphinx -> tools/ci/sphinx.py
+  - C:\PROGRA~1\doxygen -> tools/ci/doxygen.py
