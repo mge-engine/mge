@@ -69,7 +69,7 @@ def upload(branch):
     nojekyllfilename = "gh-pages/" + branch + "/manual-html/.nojekyll"
     print("Touching -nojekyll file %s" % (nojekyllfilename), flush=True)
     with open(nojekyllfilename, "w") as nojekyll:
-        nojekyll.write("no jekyll here please")
+        pass
     print("Adding files to git", flush=True)
     subprocess.run(
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
