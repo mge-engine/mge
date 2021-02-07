@@ -31,7 +31,20 @@ def install_sphinx():
     print("Installing virtualenv", flush=True)
     subprocess.run(["python", "-m", "pip", "install",
                     "virtualenv"], shell=True)
-    subprocess.run(["python", "-m", "virtualenv", sphinx_dir], shell=True)
+    subprocess.run(["python", "-m", "virtualenv", sphinx_dir], shell=True,)
+    # manually activate
+    sphinx_env = os.environ.copy()
+    try:
+        del(sphinx_env["PYTHONPATH"])
+    except:
+        pass
+    sphinx_env["PATH"] = os.path.abspath(
+        sphinx_dir + "/Scripts") + ";" + sphinx_env["PATH"]
+    sphinx_env["VIRTUAL_ENV"] = os.path.abspath(sphinx_dir)
+    subprocess.run(["python", "-m", "pip", "install",
+                    "sphinx"], shell=True, env=sphinx_env)
+    subprocess.run(["python", "-m", "pip", "install",
+                    "breathe"], shell=True, env=sphinx_env)
 
 
 try:
