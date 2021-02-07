@@ -8,7 +8,7 @@ import shutil
 # -- version            increment each time config changes
 # -- vcpkg_githash      git hash of vcpkg to check out
 # -- vcpkg_packages     array of package names to install
-version = "1"
+version = "2"
 vcpkg_githash = "70422b96724101d67e88923539cf2ea2c880c39a"
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
@@ -32,6 +32,10 @@ def install_vcpkg():
     for p in vcpkg_packages:
         print("    %s" % p, flush=True)
     subprocess.run(install_command, cwd="vcpkg", shell=True)
+    print("Removing temporary vcpkg files", flush=True)
+    shutil.rmtree("vcpkg/buildtrees")
+    shutil.rmtree("vcpkg/downloads")
+    print("Writing version stamp", flush=True)
     version_file = open("vcpkg/build-version", "w")
     version_file.write(version)
     version_file.close()
