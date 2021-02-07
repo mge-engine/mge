@@ -1,6 +1,7 @@
 import sys
 import os
 import subprocess
+import shutil
 
 upload_branches = ["main"]
 branch = ""
@@ -39,13 +40,25 @@ def upload(branch):
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
+    print("Remove old files", flush=True)
     subprocess.run(["git", "rm", "-rf", branch +
                     "/manual-html"], cwd="gh-pages")
-    with open("gh-pages/" + branch + "/manual-html/.nojekyll") as nojekyll:
+    nojekyllfilename = "gh-pages/" + branch + "/manual-html/.nojekyll"
+    print("Touching nojekyll file", flush=True)
+    with open("gh-pages/" + branch + "/manual-html/.nojekyll", "w") as nojekyll:
         nojekyll.write("no jekyll here please")
+    print("Adding .nojekyll file to git", flush=True)
     subprocess.run(
         ["git", "add", branch + "/manual-html/.nojekyll"], cwd="gh-pages")
+    print("Commit git changes (nojekyll file)", flush=True)
     subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
+    print("Copy generated documentation", flush=True)
+    shutil.copytree("docsrc/manual/manual-html", branch, dirs_exist_ok=True)
+    print("Adding to commit", flush=True)
+    subprocess.run(
+        ["git", "add", branch + "/manual-html"], cwd="gh-pages")
+    print("Amending commit", flush=True)
+    subprocess.run(["git", "commit", "--amend", "-C", "HEAD"], cwd="gh-pages")
 
 
 try:
