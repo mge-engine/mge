@@ -8,8 +8,9 @@ doxygen_version = "1.9.1"
 
 def is_doxygen_installed():
     try:
+
         installed_version = subprocess.check_output(
-            [".\\doxygen.exe", "--version"], cwd="C:\\PROGRA~1\\doxygen\\bin")
+            ["C:\\PROGRA~1\\doxygen\\bin\\doxygen.exe", "--version"])
         print("Doxygen %s found" % installed_version, flush=True)
         if installed_version.startswith(doxygen_version):
             return True

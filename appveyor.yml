@@ -29,7 +29,6 @@ before_build:
   - cmd: python -m virtualenv python-env
 
 build_script:
-  - cmd: set
   - cmd: mkdir build
   - cmd: cd build
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -48,4 +47,5 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
-  - C:\PROGRA~1\doxygen -> tools/ci/doxygen.py
+  - C:\PROGRA~1\doxygen
+#-> tools/ci/doxygen.py
