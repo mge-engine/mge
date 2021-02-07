@@ -44,7 +44,7 @@ def upload(branch):
     subprocess.run(["git", "rm", "-rf", branch +
                     "/manual-html"], cwd="gh-pages")
     print("Recreating directory", flush=True)
-    os.makedirs("gh-pages/" + branch + "/manual-html)
+    os.makedirs("gh-pages/" + branch + "/manual-html")
     nojekyllfilename = "gh-pages/" + branch + "/manual-html/.nojekyll"
     print("Touching -nojekyll file %s" % (nojekyllfilename), flush=True)
     with open(nojekyllfilename, "w") as nojekyll:
