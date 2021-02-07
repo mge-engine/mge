@@ -8,6 +8,10 @@ branches:
   except:
     - gh-pages
 
+environment:
+  access_token:
+    secure: 0dmwrQvts99H4voAv/D6e9ZVvV6LZA7/lc/AoaGWZRXoxLsMnzwuSkgoZ/DzyXxk
+
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
 
@@ -45,6 +49,10 @@ test_script:
   - cmd: ctest
 
 on_success:
+  - git config --global credential.helper store
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
+  - git config --global user.email "schroeder.alexander@googlemail.com"
+  - git config --global user.name "Alexander Schroeder"
   - cmd: python ../tools/ci/upload-gh-pages.py
 
 on_finish:
