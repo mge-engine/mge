@@ -1,6 +1,6 @@
 # MGE
 
-Welcome to the project pages of MGE, which are work in progress
+Welcome to the project pages of MGE, which are in its infancy and much work in progress
 
 ## Documentation
 
