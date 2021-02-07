@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>MGE - A Modern Game Engine &mdash; MGE 0.1 documentation</title>
+  <title>Introduction &mdash; MGE 0.1 documentation</title>
   
 
   
@@ -38,7 +38,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction" href="introduction.html" /> 
+    <link rel="next" title="Core Library" href="mgecore.html" />
+    <link rel="prev" title="MGE - A Modern Game Engine" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -52,7 +53,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> MGE
+            <a href="index.html" class="icon icon-home"> MGE
           
 
           
@@ -83,8 +84,12 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-mge">What is MGE?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#about-this-manual">About this manual</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul>
@@ -104,7 +109,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">MGE</a>
+          <a href="index.html">MGE</a>
         
       </nav>
 
@@ -135,15 +140,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>MGE - A Modern Game Engine</li>
+      <li>Introduction</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -156,20 +161,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="mge-a-modern-game-engine">
-<h1>MGE - A Modern Game Engine<a class="headerlink" href="#mge-a-modern-game-engine" title="Permalink to this headline">¶</a></h1>
-<p>Welcome to MGE, a modern graphics/game engine.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-mge">
+<h2>What is MGE?<a class="headerlink" href="#what-is-mge" title="Permalink to this headline">¶</a></h2>
+<p>MGE stands for <em>Modern Game Engine</em>. It is called <em>modern</em> because
+it is a newcomer and relies on modern concepts, such as the latest
+C++ standard.</p>
+<p>There exist likely already too many game and graphics engines,
+so why create another one? The primary root was personal enjoyment
+in programming and education about the workings of graphics and games.
+MGE is still in its very infancy, and not ready to be an alternative
+to established engines and environments.</p>
+<p>MGE makes use of STL and Boost, which are a sometimes shyed away from
+- for various reasons - in game development. MGE makes heavy use of these
+libraries but uses own data structures and algorithms where the scope of these
+generic support libraries ends.</p>
+<p>During the course of implementing a graphics and game engine, some
+general-purpose components have been created that may be of use outside
+the domain of game programming:</p>
+<ul class="simple">
+<li><p>The core library combines general purpose tools and utilities like
+facilities for tracing and error reporting, configuration or
+componentization.</p></li>
 </ul>
+<p>The general design philosphy in MGE is that everything should stand
+for itself, and <em>manager</em> or other <em>uber-objects</em> are to be avoided.</p>
+<p>This also allows also going as low-level as wanted when using MGE, and
+not being tied to a render loop or update architecture.</p>
 </div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="mgecore.html">Core Library</a></li>
+<div class="section" id="about-this-manual">
+<h2>About this manual<a class="headerlink" href="#about-this-manual" title="Permalink to this headline">¶</a></h2>
+<p>The first half of the manual, the user guide part, describes how to
+install, configure and use MGE and its tools.</p>
+<p>The second half, the refeence part, features reference chapters for
+each main library of MGE:</p>
+<ul class="simple">
+<li><p>Chapter <span class="xref std std-ref">mgecore</span> describes the core library, which contains
+basic facilities and utilities.</p></li>
 </ul>
 </div>
 </div>
@@ -180,7 +209,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="introduction.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="mgecore.html" class="btn btn-neutral float-right" title="Core Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="MGE - A Modern Game Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
