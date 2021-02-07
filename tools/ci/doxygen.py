@@ -11,7 +11,7 @@ def is_doxygen_installed():
 
         installed_version = subprocess.check_output(
             ["C:\\PROGRA~1\\doxygen\\bin\\doxygen.exe", "--version"])
-        installed_version = installed_version.decode()
+        installed_version = installed_version.decode().replace("\n", "")
         print("Doxygen %s found" % installed_version, flush=True)
         if installed_version.startswith(doxygen_version):
             return True
