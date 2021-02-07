@@ -45,6 +45,9 @@ def install_sphinx():
                     "sphinx"], shell=True, env=sphinx_env)
     subprocess.run(["python", "-m", "pip", "install",
                     "breathe"], shell=True, env=sphinx_env)
+    version_file = open(sphinx_dir + "/build-version", "w")
+    version_file.write(sphinx_version)
+    version_file.close()
 
 
 try:
@@ -54,4 +57,4 @@ except:
     print("Exception %s" % str(sys.exc_info()), flush=True)
     sys.exit(1)
 
-sys.exit(1)
+sys.exit(0)

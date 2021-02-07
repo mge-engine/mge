@@ -48,4 +48,5 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
+  - C:\projects\mge\sphinx -> tools/ci/sphinx.py
   - C:\PROGRA~1\doxygen -> tools/ci/doxygen.py
