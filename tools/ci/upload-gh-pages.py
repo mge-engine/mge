@@ -66,10 +66,6 @@ def upload(branch):
                    shell=True, cwd="gh-pages")
     shutil.copytree("docsrc/manual/manual-html",
                     "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
-    nojekyllfilename = "gh-pages/" + branch + "/manual-html/.nojekyll"
-    print("Touching -nojekyll file %s" % (nojekyllfilename), flush=True)
-    with open(nojekyllfilename, "w") as nojekyll:
-        pass
     print("Adding files to git", flush=True)
     subprocess.run(
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
