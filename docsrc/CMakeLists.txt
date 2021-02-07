@@ -3,3 +3,5 @@
 # All rights reserved.
 
 ADD_CUSTOM_TARGET(documentation)
+
+ADD_SUBDIRECTORY(manual)

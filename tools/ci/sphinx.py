@@ -3,7 +3,7 @@ import sys
 import subprocess
 import shutil
 
-sphinx_version = "1"
+sphinx_version = "2"
 sphinx_dir = "sphinx"
 
 
@@ -45,6 +45,8 @@ def install_sphinx():
                     "sphinx"], shell=True, env=sphinx_env)
     subprocess.run(["python", "-m", "pip", "install",
                     "breathe"], shell=True, env=sphinx_env)
+    subprocess.run(["python", "-m", "pip", "install",
+                    "sphinx_rtd_theme"], shell=True, env=sphinx_env)
     version_file = open(sphinx_dir + "/build-version", "w")
     version_file.write(sphinx_version)
     version_file.close()
