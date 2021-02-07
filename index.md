@@ -1,5 +1,6 @@
-# MGE Project
+Welcome to the MGE project pages.
+## Documentation
 
-## Project Documentation
+Documentation is provided  for the following versions:
 
-Project documentation can be found [here](main/manual-html/index.html)
+* [development](main/manual-html/index.html)
