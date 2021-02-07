@@ -43,25 +43,18 @@ def upload(branch):
     print("Remove old files", flush=True)
     subprocess.run(["git", "rm", "-rf", branch +
                     "/manual-html"], cwd="gh-pages")
-    print("Recreating directory", flush=True)
-    os.makedirs("gh-pages/" + branch + "/manual-html")
+    shutil.copytree("docsrc/manual/manual-html", branch)
+    subprocess.run(["dir", "/s", branch], shell=True, cwd="gh-pages")
+    #os.makedirs("gh-pages/" + branch + "/manual-html")
     nojekyllfilename = "gh-pages/" + branch + "/manual-html/.nojekyll"
     print("Touching -nojekyll file %s" % (nojekyllfilename), flush=True)
     with open(nojekyllfilename, "w") as nojekyll:
         nojekyll.write("no jekyll here please")
-    print("Adding .nojekyll file to git", flush=True)
-    subprocess.run(
-        ["git", "add", branch + "/manual-html/.nojekyll"], cwd="gh-pages")
-    print("Commit git changes (nojekyll file)", flush=True)
-    subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
-    print("Copy generated documentation", flush=True)
-    shutil.copytree("docsrc/manual/manual-html", branch, dirs_exist_ok=True)
-    subprocess.run(["dir", "/s", branch], shell=True, cwd="gh-pages")
-    print("Adding to commit", flush=True)
+    print("Adding files to git", flush=True)
     subprocess.run(
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
-    print("Amending commit", flush=True)
-    subprocess.run(["git", "commit", "--amend", "-C", "HEAD"], cwd="gh-pages")
+    print("Commit git changes", flush=True)
+    subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
 
 
 try:
