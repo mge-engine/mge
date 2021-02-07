@@ -2,7 +2,7 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-version: 1.{branch}-{build}
+version: "{branch}-{build}"
 
 branches:
   except:
