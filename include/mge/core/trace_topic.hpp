@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+/** @file */
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/singleton.hpp"
@@ -114,6 +115,11 @@ namespace mge {
         sink_vector      m_sinks;
     };
 
+/**
+ * @def MGE_USE_TRACE
+ * @brief Use an already defined trace topic locally.
+ * @param TOPIC name of trace topic
+ */
 #define MGE_USE_TRACE(TOPIC) ::mge::trace_topic &__trace_topic_##TOPIC()
 
 #define MGE_USE_IMPORTED_TRACE(TOPIC)                                          \

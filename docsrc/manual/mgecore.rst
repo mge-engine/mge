@@ -12,3 +12,4 @@ which are not directly related to graphics or game programming.
 
     core/definitions.rst
     core/utilityfunctions.rst
+    core/tracing.rst
