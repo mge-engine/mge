@@ -50,18 +50,65 @@ and disabling trace at a global level.
 Defining a Trace Topic
 ----------------------
 
+In a source file, a trace topic must be defined. This is best done using
+the predefined macro :any:`MGE_DEFINE_TRACE`.
+
 .. doxygendefine:: MGE_DEFINE_TRACE
-    :project: mge
 
 Using a Trace Topic
 -------------------
 
+If you just want to use a trace topic for tracing, a forward declaration
+must be done. This is done using :any:`MGE_USE_TRACE`, or :any:`MGE_USE_IMPORTED_TRACE`
+in case the topic is defined in another dynamic library.
+
 .. doxygendefine:: MGE_USE_TRACE
-    :project: mge
+
+.. doxygendefine:: MGE_USE_IMPORTED_TRACE
+
+If you need to inspect a trace topic directly, the following macros can be used:
+
+.. doxygendefine:: MGE_TRACE_TOPIC
+
+.. doxygendefine:: MGE_NS_TRACE_TOPIC
 
 Trace Topic Reference
 ---------------------
 
 .. doxygenclass:: mge::trace_topic
-    :project: mge
     :members:
+
+Trace Processing
+================
+
+Trace Record
+------------
+
+A trace record describes a trace event. Note that a trace record contains
+temporary information and must not be stored - except if the fields are
+materialized.
+
+.. doxygenstruct:: mge::trace_record
+    :members:
+
+Trace Sink
+----------
+
+A trace sink defines the destination of trace records.
+
+.. doxygenclass:: mge::trace_sink
+    :members:
+
+Two variants are implemented, a sink for temporary record storage and a sink that
+writes trace records to a stream.
+
+.. doxygenclass:: mge::memory_trace_sink
+    :members:
+
+.. doxygenclass:: mge::stream_trace_sink
+    :members:
+
+Trace Formatter
+---------------
+
+To write
