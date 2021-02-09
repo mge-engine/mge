@@ -49,6 +49,8 @@ def install_sphinx():
                     "breathe"], shell=True, env=sphinx_env)
     subprocess.run(["python", "-m", "pip", "install",
                     "sphinx_rtd_theme"], shell=True, env=sphinx_env)
+    subprocess.run(["python", "-m", "pip", "install",
+                    "furo"], shell=True, env=sphinx_env)
     version_file = open(sphinx_dir + "/build-version", "w")
     version_file.write(sphinx_version)
     version_file.close()
