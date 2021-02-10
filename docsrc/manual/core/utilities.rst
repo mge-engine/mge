@@ -1,5 +1,5 @@
 *****************
-Utility Functions
+Utilities
 *****************
 
 General Utilities
@@ -25,3 +25,22 @@ Type Name
 
 .. doxygenfunction:: mge::namespace_name()
 
+Programming Helpers
+===================
+
+Reference Declaration
+---------------------
+
+As a convention, in MGE, `type_ref` is an alias for `std::shared_ptr<type>`.
+This declaration can be eased using the macro :any:`MGE_DECLARE_REF`
+
+.. doxygendefine:: MGE_DECLARE_REF
+
+Singleton
+---------
+
+To implement the singleton pattern, a helper class :any:`mge::singleton`
+can be used:
+
+.. doxygenclass:: mge::singleton
+    :members:

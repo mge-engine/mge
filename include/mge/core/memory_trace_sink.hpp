@@ -64,8 +64,7 @@ namespace mge {
          */
         size_type size() const;
         /**
-         * @brief Clears the sink-
-         *
+         * @brief Clears the sink.
          */
         void clear();
 

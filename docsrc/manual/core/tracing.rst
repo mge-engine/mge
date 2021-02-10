@@ -17,28 +17,28 @@ and trace sinks configured.
 
 To use tracing, :file:`mge/core/trace.hpp` needs to be included.
 
+
 Severity
 ========
 
 Trace messages can have a different severities, indicated by a trace level.
 
-+----------+------------------------------+
-| Severity | Purpose                      |
-+==========+==============================+
-| ERROR    | Severe malfunction message.  |
-+----------+------------------------------+
-| WARNING  | Potential problem.           |
-+----------+------------------------------+
-| INFO     | General information message. |
-+----------+------------------------------+
-| DEBUG    | Detailed debug information.  |
-+----------+------------------------------+
++----------+-----------------------------------+
+| Severity | Purpose                           |
++==========+===================================+
+| ERROR    | Severe malfunction message.       |
++----------+-----------------------------------+
+| WARNING  | Potential problem.                |
++----------+-----------------------------------+
+| INFO     | General information message.      |
++----------+-----------------------------------+
+| DEBUG    | Detailed debug information.       |
++----------+-----------------------------------+
+| FATAL    | Fatal message, program will exit. |
++----------+-----------------------------------+
 
-.. cpp:enum-class:: mge::trace_level
+.. doxygenenum:: mge::trace_level
 
-    Log message severity. Note the shortcuts :any:`trace_level::ERROR`
-    and :any:`trace_level::DEBUG` are only defined if the environment
-    does not define an ``ERROR`` or ``DEBUG`` macro.
 
 Trace Topic
 ===========
@@ -78,6 +78,36 @@ Trace Topic Reference
 .. doxygenclass:: mge::trace_topic
     :members:
 
+Writing Trace Messages
+======================
+
+A :any:`mge::trace` object covers the trace writing process.
+
+.. doxygenclass:: mge::trace
+    :members:
+
+For composing trace, various macros can be used:
+
+.. doxygendefine:: MGE_TRACE
+
+.. doxygendefine:: MGE_DEBUG_TRACE
+
+.. doxygendefine:: MGE_INFO_TRACE
+
+.. doxygendefine:: MGE_WARNING_TRACE
+
+.. doxygendefine:: MGE_ERROR_TRACE
+
+.. doxygendefine:: MGE_FATAL_TRACE
+
+As an example, writing trace into a trace topic `TEST` looks like this:
+
+.. code-block:: c++
+
+    MGE_ERROR_TRACE(TEST) << "This is a test of error trace";
+
+Note that a line break isn't needed at the end.
+
 Trace Processing
 ================
 
@@ -111,4 +141,13 @@ writes trace records to a stream.
 Trace Formatter
 ---------------
 
-To write
+To write trace to a stream, it is formatted. This is achieved by implementations
+of the :any:`mge::trace_formatter` interface.
+
+.. doxygenclass:: mge::trace_formatter
+    :members:
+
+A simple trace formatter is provided.
+
+.. doxygenclass:: mge::simple_trace_formatter
+    :members:

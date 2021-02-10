@@ -11,5 +11,7 @@ which are not directly related to graphics or game programming.
     :maxdepth: 1
 
     core/definitions.rst
-    core/utilityfunctions.rst
     core/tracing.rst
+    core/configuration.rst
+    core/statistics.rst
+    core/utilities.rst
