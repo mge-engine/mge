@@ -20,3 +20,9 @@ Welcome to MGE, a modern graphics/game engine.
     :maxdepth: 1
 
     mgecore
+
+.. toctree::
+    :caption: Appendix
+    :maxdepth: 1
+
+    license
