@@ -12,8 +12,7 @@ version = "3"
 vcpkg_githash = "70422b96724101d67e88923539cf2ea2c880c39a"
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
-    "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
-    "boost-stacktrace"
+    "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree"
 ]
 
 

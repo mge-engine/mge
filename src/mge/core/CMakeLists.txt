@@ -20,6 +20,7 @@ MGE_LIBRARY(
         trace.cpp
         statistics.cpp
         string_pool.cpp
+        stacktrace.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
