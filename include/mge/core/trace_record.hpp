@@ -10,13 +10,16 @@
 namespace mge {
 
     class trace_topic;
+    /**
+     * @brief A trace record.
+     */
     struct MGECORE_EXPORT trace_record
     {
-        const trace_topic *topic;
-        std::string_view   message;
-        clock::time_point  time;
-        uint32_t           sequence;
-        trace_level        level;
+        const trace_topic *topic;    //!< trace topic
+        std::string_view   message;  //!< trace message
+        clock::time_point  time;     //!< time of the trace event
+        uint32_t           sequence; //!< sequence number of trace event
+        trace_level        level;    //!< trace event trace level
     };
 
 } // namespace mge

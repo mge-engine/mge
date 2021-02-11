@@ -6,6 +6,12 @@
 #include <boost/circular_buffer.hpp>
 
 namespace mge {
+    /**
+     * @brief Memory trace sink.
+     * A memory trace sink stores trace records in a circular buffer. It is used
+     * to capture trace records which may get finally published using another
+     * sink.
+     */
     class MGECORE_EXPORT memory_trace_sink : public trace_sink
     {
     private:
@@ -24,18 +30,49 @@ namespace mge {
         using record_buffer = boost::circular_buffer<record>;
 
     public:
+        /**
+         * @brief Type of this sink's capacity.
+         */
         using capacity_type = record_buffer::capacity_type;
-        using size_type     = record_buffer::size_type;
+        /**
+         * @brief Type of this sink's size.
+         */
+        using size_type = record_buffer::size_type;
+
         memory_trace_sink();
         ~memory_trace_sink();
 
         void publish(const trace_record &r) override;
 
+        /**
+         * @brief Capacity of this sink.
+         *
+         * @return current capacity of this sink, i.e. number of trace records
+         * that can be stored
+         */
         capacity_type capacity() const;
-        void          set_capacity(capacity_type c);
-        size_type     size() const;
-        void          clear();
+        /**
+         * @brief Set the capacity of this sink.
+         *
+         * @param c new capacity
+         */
+        void set_capacity(capacity_type c);
+        /**
+         * @brief Size of this sink, i.e. number of stored records.
+         *
+         * @return number of stored records
+         */
+        size_type size() const;
+        /**
+         * @brief Clears the sink.
+         */
+        void clear();
 
+        /**
+         * @brief Forwards all entries to another sink.
+         *
+         * @param sink target sink
+         */
         void forward(trace_sink &sink);
 
     private:

@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+/** @file */
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/singleton.hpp"
@@ -114,11 +115,26 @@ namespace mge {
         sink_vector      m_sinks;
     };
 
+/**
+ * @def MGE_USE_TRACE
+ * @brief Use an already defined trace topic locally.
+ * @param TOPIC name of trace topic
+ */
 #define MGE_USE_TRACE(TOPIC) ::mge::trace_topic &__trace_topic_##TOPIC()
 
+/**
+ * @def MGE_USE_IMPORTED_TRACE
+ * @brief Use an already defined trace from another library locally.
+ * @param TOPIC name of trace topic
+ */
 #define MGE_USE_IMPORTED_TRACE(TOPIC)                                          \
     MGE_DLLIMPORT ::mge::trace_topic &__trace_topic_##TOPIC()
 
+/**
+ * @def MGE_DEFINE_TRACE
+ * @brief Define a trace topic.
+ * @param TOPIC name of trace topic
+ */
 #define MGE_DEFINE_TRACE(TOPIC)                                                \
     static mge::trace_topic s__trace_topic##TOPIC(#TOPIC);                     \
     MGE_DLLEXPORT mge::trace_topic &__trace_topic_##TOPIC()                    \
@@ -127,8 +143,19 @@ namespace mge {
     }                                                                          \
     MGE_DLLEXPORT mge::trace_topic &__trace_topic_##TOPIC()
 
+/**
+ * @def MGE_TRACE_TOPIC
+ * @brief Access a trace topic.
+ * @param TOPIC name of trace topic
+ */
 #define MGE_TRACE_TOPIC(TOPIC) __trace_topic_##TOPIC()
 
+/**
+ * @def MGE_NS_TRACE_TOPIC
+ * @brief Access a trace topic defined in another namespace.
+ * @param NS namespace
+ * @param TOPIC name of trace topic
+ */
 #define MGE_NS_TRACE_TOPIC(NS, TOPIC) NS::__trace_topic_##TOPIC()
 
 } // namespace mge

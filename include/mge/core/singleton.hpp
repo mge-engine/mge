@@ -10,7 +10,9 @@ namespace mge {
     /**
      * @brief Singleton instance of a class.
      *
-     * On demand initialization. Usually @c static variables
+     * @tparam T type of the singleton
+     *
+     * On demand initialization. Usually static variables
      * of @c singleton<T> are created for singleton objects
      * that should be lazily constructed.
      *
@@ -23,10 +25,25 @@ namespace mge {
     template <typename T> class singleton
     {
     public:
-        using value_type      = T;
-        using pointer         = T *;
-        using const_pointer   = const T *;
-        using reference       = T &;
+        /**
+         * @brief Value type.
+         */
+        using value_type = T;
+        /**
+         * @brief Pointer to value.
+         */
+        using pointer = T *;
+        /**
+         * @brief Pointer to constant value.
+         */
+        using const_pointer = const T *;
+        /**
+         * @brief Reference to value.
+         */
+        using reference = T &;
+        /**
+         * @brief Constant reference to value.
+         */
         using const_reference = const T &;
 
         /**

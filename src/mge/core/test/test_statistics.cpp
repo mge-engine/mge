@@ -46,7 +46,7 @@ public:
         return desc;
     }
 
-    statistics::counter count;
+    statistics::counter_type count;
 };
 
 TEST(statistics, describe)
@@ -56,8 +56,8 @@ TEST(statistics, describe)
     EXPECT_EQ("my test statistics"sv, s.describe().comment());
     EXPECT_EQ(1u, s.describe().size());
     EXPECT_EQ("count"sv, s.describe().at(0).name());
-    mge::statistics::value val1(static_cast<uint64_t>(17));
-    mge::statistics::value val2(s.describe().at(0).get(s));
+    mge::statistics::value_type val1(static_cast<uint64_t>(17));
+    mge::statistics::value_type val2(s.describe().at(0).get(s));
     EXPECT_TRUE(std::holds_alternative<uint64_t>(val2));
     EXPECT_EQ(val1, val2);
     s.release();

@@ -7,6 +7,7 @@ INCLUDE(compiler/msvc)
 INCLUDE(settings/debugrelease)
 INCLUDE(settings/version)
 
+INCLUDE(macros/documentation)
 INCLUDE(macros/library)
 INCLUDE(macros/test)
 

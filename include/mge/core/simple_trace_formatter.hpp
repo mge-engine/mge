@@ -5,6 +5,9 @@
 #include <optional>
 
 namespace mge {
+    /**
+     * @brief Simple fixed format trace formatter.
+     */
     class MGECORE_EXPORT simple_trace_formatter : public trace_formatter
     {
     public:

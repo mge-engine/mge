@@ -12,14 +12,14 @@ namespace mge {
     statistics::description::field_description::~field_description() {}
 
     statistics::description::field_description::field_description(
-        std::string_view                           field_name,
-        std::function<statistics::value(void *)> &&getter)
+        std::string_view                                field_name,
+        std::function<statistics::value_type(void *)> &&getter)
         : m_name(field_name), m_getter(std::move(getter))
     {}
 
     statistics::description::field_description::field_description(
-        std::string_view                                field_name,
-        const std::function<statistics::value(void *)> &getter)
+        std::string_view                                     field_name,
+        const std::function<statistics::value_type(void *)> &getter)
         : m_name(field_name), m_getter(getter)
     {}
 
