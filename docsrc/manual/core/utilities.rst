@@ -25,6 +25,20 @@ Type Name
 
 .. doxygenfunction:: mge::namespace_name()
 
+Data structures
+===============
+
+String Pool
+-----------
+
+A string pool allows a set of constant and non-changing strings to be managed.
+It is useful if there is more than one occurence of a string in a context.
+
+.. doxygenclass:: mge::string_pool
+    :members:
+
+
+
 Programming Helpers
 ===================
 

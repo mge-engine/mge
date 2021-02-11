@@ -13,7 +13,9 @@ SET(MGECORE_TESTS
     simple_trace_formatter
     parameter
     configuration
-    statistics)
+    statistics
+    stacktrace
+    string_pool)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(

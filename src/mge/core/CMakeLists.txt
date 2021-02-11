@@ -19,6 +19,7 @@ MGE_LIBRARY(
         simple_trace_formatter.cpp
         trace.cpp
         statistics.cpp
+        string_pool.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
@@ -41,6 +42,7 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/trace_sink.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/trace_topic.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/trace.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/string_pool.hpp
     )
 
 TARGET_LINK_LIBRARIES(mgecore boost-all)
