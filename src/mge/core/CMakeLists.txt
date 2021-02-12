@@ -44,8 +44,9 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/trace_topic.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/trace.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/string_pool.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/stacktrace.hpp
     )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all)
+TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)
 ADD_SUBDIRECTORY(test)
 
