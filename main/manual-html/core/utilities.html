@@ -250,6 +250,330 @@
 </p>
 </dd></dl>
 </div>
+<div class="section" id="stack-backtrace">
+<h3>Stack Backtrace<a class="headerlink" href="#stack-backtrace" title="Permalink to this headline">¶</a></h3>
+<p>A stack backtrace can be useful in diagnostics to determine the position of an
+error. To retrieve a stack backtrace programatically, <a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::stacktrace</span></code></a>
+can be used.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge10stacktraceE">
+<span id="_CPPv3N3mge10stacktraceE"></span><span id="_CPPv2N3mge10stacktraceE"></span><span id="mge::stacktrace"></span><span class="target" id="classmge_1_1stacktrace"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">stacktrace</code><a class="headerlink" href="#_CPPv4N3mge10stacktraceE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A stack backtrace. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge10stacktrace9size_typeE">
+<span id="_CPPv3N3mge10stacktrace9size_typeE"></span><span id="_CPPv2N3mge10stacktrace9size_typeE"></span><span class="target" id="classmge_1_1stacktrace_1adadbcb24f3fc68ddf7056921f48d7eaf"></span><em class="property">using </em><code class="sig-name descname">size_type</code> = frame_vector::size_type<a class="headerlink" href="#_CPPv4N3mge10stacktrace9size_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>stack trace size </p>
+</dd></dl>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge10stacktrace14const_iteratorE">
+<span id="_CPPv3N3mge10stacktrace14const_iteratorE"></span><span id="_CPPv2N3mge10stacktrace14const_iteratorE"></span><span class="target" id="classmge_1_1stacktrace_1af5aff913c80a1a7f5d18d69108d645b0"></span><em class="property">using </em><code class="sig-name descname">const_iterator</code> = frame_vector::const_iterator<a class="headerlink" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>iterator on frames </p>
+</dd></dl>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge10stacktrace22const_reverse_iteratorE">
+<span id="_CPPv3N3mge10stacktrace22const_reverse_iteratorE"></span><span id="_CPPv2N3mge10stacktrace22const_reverse_iteratorE"></span><span class="target" id="classmge_1_1stacktrace_1ad028a12b81c7891b62411c1bebac2a99"></span><em class="property">using </em><code class="sig-name descname">const_reverse_iterator</code> = frame_vector::const_reverse_iterator<a class="headerlink" href="#_CPPv4N3mge10stacktrace22const_reverse_iteratorE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>iterator on frames </p>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktrace10stacktraceEv">
+<span id="_CPPv3N3mge10stacktrace10stacktraceEv"></span><span id="_CPPv2N3mge10stacktrace10stacktraceEv"></span><span id="mge::stacktrace::stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1ace1081ab87cc926fb6b82abb9aee1abe"></span><code class="sig-name descname">stacktrace</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct stacktrace of current thread. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace">
+<span id="_CPPv3N3mge10stacktrace10stacktraceERK10stacktrace"></span><span id="_CPPv2N3mge10stacktrace10stacktraceERK10stacktrace"></span><span id="mge::stacktrace::stacktrace__stacktraceCR"></span><span class="target" id="classmge_1_1stacktrace_1af24f6e34b657d7b1a0f76773225f31a2"></span><code class="sig-name descname">stacktrace</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace" title="mge::stacktrace::stacktrace">stacktrace</a> &amp;<em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Copy constructor. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code>: copied stack trace </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktraceD0Ev">
+<span id="_CPPv3N3mge10stacktraceD0Ev"></span><span id="_CPPv2N3mge10stacktraceD0Ev"></span><span id="mge::stacktrace::~stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1a10a176ae5c5318b6bb6a30074869d3c6"></span><code class="sig-name descname">~stacktrace</code><span class="sig-paren">(</span><span class="sig-paren">)</span> = default<a class="headerlink" href="#_CPPv4N3mge10stacktraceD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktraceaSERK10stacktrace">
+<span id="_CPPv3N3mge10stacktraceaSERK10stacktrace"></span><span id="_CPPv2N3mge10stacktraceaSERK10stacktrace"></span><span id="mge::stacktrace::assign-operator__stacktraceCR"></span><span class="target" id="classmge_1_1stacktrace_1abb31d69cb4510ac8d95d839414f7be7a"></span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace">stacktrace</a> &amp;<code class="sig-name descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace">stacktrace</a> &amp;<em>s</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktraceaSERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Assignment. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code>: assigned stack trace </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace4sizeEv">
+<span id="_CPPv3NK3mge10stacktrace4sizeEv"></span><span id="_CPPv2NK3mge10stacktrace4sizeEv"></span><span id="mge::stacktrace::sizeC"></span><span class="target" id="classmge_1_1stacktrace_1ae616a3e0f55233f36296c8b0ab2fa356"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace9size_typeE" title="mge::stacktrace::size_type">size_type</a> <code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace4sizeEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Number of frames. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>number of frames </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace5beginEv">
+<span id="_CPPv3NK3mge10stacktrace5beginEv"></span><span id="_CPPv2NK3mge10stacktrace5beginEv"></span><span id="mge::stacktrace::beginC"></span><span class="target" id="classmge_1_1stacktrace_1a9d981585ba2190e95af15db0d6dbdaf2"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator">const_iterator</a> <code class="sig-name descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5beginEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Begin of frames. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>begin of frames </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace6rbeginEv">
+<span id="_CPPv3NK3mge10stacktrace6rbeginEv"></span><span id="_CPPv2NK3mge10stacktrace6rbeginEv"></span><span id="mge::stacktrace::rbeginC"></span><span class="target" id="classmge_1_1stacktrace_1a0aeb733ec62be628986a01d3aae0d715"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace22const_reverse_iteratorE" title="mge::stacktrace::const_reverse_iterator">const_reverse_iterator</a> <code class="sig-name descname">rbegin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace6rbeginEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Reverse begin of frames. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>reverse begin of frames </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace3endEv">
+<span id="_CPPv3NK3mge10stacktrace3endEv"></span><span id="_CPPv2NK3mge10stacktrace3endEv"></span><span id="mge::stacktrace::endC"></span><span class="target" id="classmge_1_1stacktrace_1a3007023251a8c5e42d81bfa3c3a0d662"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator">const_iterator</a> <code class="sig-name descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace3endEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>End of frames. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>end of frames </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace4rendEv">
+<span id="_CPPv3NK3mge10stacktrace4rendEv"></span><span id="_CPPv2NK3mge10stacktrace4rendEv"></span><span id="mge::stacktrace::rendC"></span><span class="target" id="classmge_1_1stacktrace_1a341ce858c2141aaf5071613ba7c54c9a"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator">const_iterator</a> <code class="sig-name descname">rend</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace4rendEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Reverse end of frames. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>reverse end of frames </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktraceeqERK10stacktrace">
+<span id="_CPPv3NK3mge10stacktraceeqERK10stacktrace"></span><span id="_CPPv2NK3mge10stacktraceeqERK10stacktrace"></span><span id="mge::stacktrace::eq-operator__stacktraceCRC"></span><span class="target" id="classmge_1_1stacktrace_1ae79a950ffe0ea2f2a8e63b9c85d0e7b3"></span>bool <code class="sig-name descname">operator==</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace">stacktrace</a> &amp;<em>s</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktraceeqERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Comparison. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>true if adresses match </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code>: compared stack trace </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktraceneERK10stacktrace">
+<span id="_CPPv3NK3mge10stacktraceneERK10stacktrace"></span><span id="_CPPv2NK3mge10stacktraceneERK10stacktrace"></span><span id="mge::stacktrace::neq-operator__stacktraceCRC"></span><span class="target" id="classmge_1_1stacktrace_1a8175d6bf2ed9b3355791fafdf2bfd4ac"></span>bool <code class="sig-name descname">operator!=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace">stacktrace</a> &amp;<em>s</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge10stacktraceneERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Comparison. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>true if adresses do not match </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code>: compared stack trace </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge10stacktrace5frameE">
+<span id="_CPPv3N3mge10stacktrace5frameE"></span><span id="_CPPv2N3mge10stacktrace5frameE"></span><span id="mge::stacktrace::frame"></span><span class="target" id="classmge_1_1stacktrace_1_1frame"></span><em class="property">class </em><code class="sig-name descname">frame</code><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frameE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A frame on the stack backtrace. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t">
+<span id="_CPPv3N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t"></span><span id="_CPPv2N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t"></span><span id="mge::stacktrace::frame::frame__voidCP.std::string_view.std::string_view.std::string_view.uint32_t"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a8314750954f77a930d737afad627c7ad"></span><code class="sig-name descname">frame</code><span class="sig-paren">(</span><em class="property">const</em> void *<em>address</em>, std::string_view <em>module</em>, std::string_view <em>name</em>, std::string_view <em>file</em>, uint32_t <em>line</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct a new frame object. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">address</span></code>: address (program counter) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">module</span></code>: module name (executable/shared library) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: name of frame (function) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file</span></code>: source code file </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">line</span></code>: source code line </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktrace5frame5frameERK5frame">
+<span id="_CPPv3N3mge10stacktrace5frame5frameERK5frame"></span><span id="_CPPv2N3mge10stacktrace5frame5frameERK5frame"></span><span id="mge::stacktrace::frame::frame__frameCR"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1acc19e5f5b35aeaca7790d2e85ccd57d7"></span><code class="sig-name descname">frame</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge10stacktrace5frame5frameERK5frame" title="mge::stacktrace::frame::frame">frame</a> &amp;<em>f</em><span class="sig-paren">)</span> = default<a class="headerlink" href="#_CPPv4N3mge10stacktrace5frame5frameERK5frame" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Copy constructor. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code>: copied frame </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10stacktrace5frameaSERK5frame">
+<span id="_CPPv3N3mge10stacktrace5frameaSERK5frame"></span><span id="_CPPv2N3mge10stacktrace5frameaSERK5frame"></span><span id="mge::stacktrace::frame::assign-operator__frameCR"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a503e7fc52b50f17345feaf34869bdc2a"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frameE" title="mge::stacktrace::frame">frame</a> &amp;<code class="sig-name descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge10stacktrace5frameE" title="mge::stacktrace::frame">frame</a> &amp;<em>f</em><span class="sig-paren">)</span> = default<a class="headerlink" href="#_CPPv4N3mge10stacktrace5frameaSERK5frame" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Assignment. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>f assigned frame </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace5frame7addressEv">
+<span id="_CPPv3NK3mge10stacktrace5frame7addressEv"></span><span id="_CPPv2NK3mge10stacktrace5frame7addressEv"></span><span id="mge::stacktrace::frame::addressC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1ae4ca22f730d1d84a6f780b4201f43c54"></span><em class="property">const</em> void *<code class="sig-name descname">address</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame7addressEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get frame address. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>frame address </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace5frame4nameEv">
+<span id="_CPPv3NK3mge10stacktrace5frame4nameEv"></span><span id="_CPPv2NK3mge10stacktrace5frame4nameEv"></span><span id="mge::stacktrace::frame::nameC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1aab1517beb7c64d239b6b712e9b941f5e"></span>std::string_view <code class="sig-name descname">name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame4nameEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Frame name (method or function name) </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>method or function name </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace5frame11source_fileEv">
+<span id="_CPPv3NK3mge10stacktrace5frame11source_fileEv"></span><span id="_CPPv2NK3mge10stacktrace5frame11source_fileEv"></span><span id="mge::stacktrace::frame::source_fileC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a0b65bc1ec1f489afe9943499230319bb"></span>std::string_view <code class="sig-name descname">source_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame11source_fileEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Source file name. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>source file name </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace5frame11source_lineEv">
+<span id="_CPPv3NK3mge10stacktrace5frame11source_lineEv"></span><span id="_CPPv2NK3mge10stacktrace5frame11source_lineEv"></span><span id="mge::stacktrace::frame::source_lineC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a219b95fcb0372e015ec636a716d3de61"></span>uint32_t <code class="sig-name descname">source_line</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame11source_lineEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Source line number. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>source line number </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10stacktrace5frame6moduleEv">
+<span id="_CPPv3NK3mge10stacktrace5frame6moduleEv"></span><span id="_CPPv2NK3mge10stacktrace5frame6moduleEv"></span><span id="mge::stacktrace::frame::moduleC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a25988a9eee07e962f43049fa739f0536"></span>std::string_view <code class="sig-name descname">module</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame6moduleEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Module name (executable or library) </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>module name </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+</dd></dl>
+<p>A stacktrace can be printed using the standard <cite>&lt;&lt;</cite> stream operator.</p>
+</div>
+</div>
+<div class="section" id="data-structures">
+<h2>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="string-pool">
+<h3>String Pool<a class="headerlink" href="#string-pool" title="Permalink to this headline">¶</a></h3>
+<p>A string pool allows a set of constant and non-changing strings to be managed.
+It is useful if there is more than one occurence of a string in a context.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge11string_poolE">
+<span id="_CPPv3N3mge11string_poolE"></span><span id="_CPPv2N3mge11string_poolE"></span><span id="mge::string_pool"></span><span class="target" id="classmge_1_1string__pool"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">string_pool</code><a class="headerlink" href="#_CPPv4N3mge11string_poolE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>String pool. Manages stable string views with deduplication. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge11string_pool9size_typeE">
+<span id="_CPPv3N3mge11string_pool9size_typeE"></span><span id="_CPPv2N3mge11string_pool9size_typeE"></span><span class="target" id="classmge_1_1string__pool_1af27047ae090a33cba08e7001b847a827"></span><em class="property">using </em><code class="sig-name descname">size_type</code> = string_map::size_type<a class="headerlink" href="#_CPPv4N3mge11string_pool9size_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Size of pool. </p>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11string_pool11string_poolEv">
+<span id="_CPPv3N3mge11string_pool11string_poolEv"></span><span id="_CPPv2N3mge11string_pool11string_poolEv"></span><span id="mge::string_pool::string_pool"></span><span class="target" id="classmge_1_1string__pool_1a480bf4f0976bf4326848ca004fe3acdf"></span><code class="sig-name descname">string_pool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool11string_poolEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create empty pool. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11string_pool3getENSt11string_viewE">
+<span id="_CPPv3N3mge11string_pool3getENSt11string_viewE"></span><span id="_CPPv2N3mge11string_pool3getENSt11string_viewE"></span><span id="mge::string_pool::get__std::string_view"></span><span class="target" id="classmge_1_1string__pool_1aabe09d40aa200082fcf156727b23f3c5"></span>std::string_view <code class="sig-name descname">get</code><span class="sig-paren">(</span>std::string_view <em>str</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get pooled string. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>pooled string </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: unpooled string </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11string_pool3getERKNSt6stringE">
+<span id="_CPPv3N3mge11string_pool3getERKNSt6stringE"></span><span id="_CPPv2N3mge11string_pool3getERKNSt6stringE"></span><span id="mge::string_pool::get__ssCR"></span><span class="target" id="classmge_1_1string__pool_1a342002328fb9212b40c947504a087fae"></span>std::string_view <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>str</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getERKNSt6stringE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get pooled string. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>pooled string </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: unpooled string </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11string_pool3getEPKc">
+<span id="_CPPv3N3mge11string_pool3getEPKc"></span><span id="_CPPv2N3mge11string_pool3getEPKc"></span><span id="mge::string_pool::get__cCP"></span><span class="target" id="classmge_1_1string__pool_1aa38d2e9a5d32863ad620ef78a887fb22"></span>std::string_view <code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>str</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getEPKc" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get pooled string. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>pooled string </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: unpooled string </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge11string_pool4sizeEv">
+<span id="_CPPv3NK3mge11string_pool4sizeEv"></span><span id="_CPPv2NK3mge11string_pool4sizeEv"></span><span id="mge::string_pool::sizeC"></span><span class="target" id="classmge_1_1string__pool_1ae2fea7fe9ce06153f3b5aa6134a39a57"></span><a class="reference internal" href="#_CPPv4N3mge11string_pool9size_typeE" title="mge::string_pool::size_type">size_type</a> <code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge11string_pool4sizeEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get pool size. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>pool size </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+</div>
 </div>
 <div class="section" id="programming-helpers">
 <h2>Programming Helpers<a class="headerlink" href="#programming-helpers" title="Permalink to this headline">¶</a></h2>
@@ -436,6 +760,11 @@ can be used:</p>
 <li><a class="reference internal" href="#general-utilities">General Utilities</a><ul>
 <li><a class="reference internal" href="#executable-name">Executable Name</a></li>
 <li><a class="reference internal" href="#type-name">Type Name</a></li>
+<li><a class="reference internal" href="#stack-backtrace">Stack Backtrace</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-structures">Data structures</a><ul>
+<li><a class="reference internal" href="#string-pool">String Pool</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#programming-helpers">Programming Helpers</a><ul>

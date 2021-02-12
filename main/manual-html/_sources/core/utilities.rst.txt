@@ -25,6 +25,30 @@ Type Name
 
 .. doxygenfunction:: mge::namespace_name()
 
+Stack Backtrace
+---------------
+
+A stack backtrace can be useful in diagnostics to determine the position of an
+error. To retrieve a stack backtrace programatically, :any:`mge::stacktrace`
+can be used.
+
+.. doxygenclass:: mge::stacktrace
+    :members:
+
+A stacktrace can be printed using the standard `<<` stream operator.
+
+Data structures
+===============
+
+String Pool
+-----------
+
+A string pool allows a set of constant and non-changing strings to be managed.
+It is useful if there is more than one occurence of a string in a context.
+
+.. doxygenclass:: mge::string_pool
+    :members:
+
 Programming Helpers
 ===================
 
