@@ -15,7 +15,8 @@ SET(MGECORE_TESTS
     configuration
     statistics
     stacktrace
-    string_pool)
+    string_pool
+    exception)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
