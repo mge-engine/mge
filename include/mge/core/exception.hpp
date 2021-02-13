@@ -7,7 +7,6 @@
 #include "mge/core/stacktrace.hpp"
 #include <any>
 #include <exception>
-#include <iostream>
 #include <optional>
 #include <sstream>
 #include <string_view>
@@ -37,9 +36,11 @@ namespace mge {
             const mge::exception *m_ex;
         };
 
+    private:
         struct tag_base
         {};
 
+    public:
         /**
          * @brief Exception value tag type.
          *
@@ -70,6 +71,10 @@ namespace mge {
          */
         struct source_file : public tag<source_file, std::string_view>
         {
+            /**
+             * @brief Capture source file name.
+             * @param value_ source file name
+             */
             source_file(const std::string_view &value_) noexcept
                 : m_value(value_)
             {}
@@ -84,6 +89,10 @@ namespace mge {
          */
         struct function : public tag<function, std::string_view>
         {
+            /**
+             * @brief Capture current function name.
+             * @param value_ current function name
+             */
             function(const std::string_view &value_) noexcept : m_value(value_)
             {}
 
@@ -97,6 +106,10 @@ namespace mge {
          */
         struct source_line : public tag<source_line, uint32_t>
         {
+            /**
+             * @brief Capture source line number.
+             * @param value_ source line number
+             */
             source_line(uint32_t value_) noexcept : m_value(value_) {}
 
             uint32_t value() const noexcept { return m_value; }
@@ -109,6 +122,11 @@ namespace mge {
          */
         struct stack : public tag<stack, mge::stacktrace>
         {
+            /**
+             * @brief Capture stack backtrace.
+             *
+             * @param s stack backtrace
+             */
             stack(mge::stacktrace &&s) : m_value(std::move(s)) {}
 
             const mge::stacktrace &value() const noexcept { return m_value; }
@@ -133,6 +151,11 @@ namespace mge {
          */
         struct type_name : public tag<type_name, std::string>
         {
+            /**
+             * @brief Capture exception type name (subclass of mge::exception).
+             *
+             * @param name type name
+             */
             type_name(const std::string &name) : m_value(name) {}
 
             const std::string &value() const noexcept { return m_value; }
@@ -145,6 +168,11 @@ namespace mge {
          */
         struct called_function : public tag<called_function, std::string_view>
         {
+            /**
+             * @brief Capture called function that raised the error.
+             *
+             * @param name called function
+             */
             called_function(const std::string_view &name) : m_value(name) {}
 
             std::string_view value() const noexcept { return m_value; }
@@ -257,6 +285,14 @@ namespace mge {
             return exception_details(this);
         }
 
+        /**
+         * @brief Set exception information.
+         * This is same as calling @c set_info.
+         *
+         * @tparam T type of appended value, is a @c tag type
+         * @param value value to set
+         * @return @c *this
+         */
         template <class T>
         typename std::enable_if<std::is_base_of<tag_base, T>::value,
                                 exception &>::type
@@ -308,8 +344,18 @@ namespace mge {
      */
     struct exception::cause : public tag<cause, mge::exception>
     {
+        /**
+         * @brief Capture causing exception.
+         *
+         * @param ex causing exception
+         */
         cause(const mge::exception &ex) : m_value(ex) {}
 
+        /**
+         * @brief Capture causing exception.
+         *
+         * @param ex causing exception
+         */
         cause(mge::exception &&ex) : m_value(std::move(ex)) {}
 
         const mge::exception &value() const noexcept { return m_value; }
