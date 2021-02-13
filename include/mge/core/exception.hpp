@@ -7,9 +7,11 @@
 #include "mge/core/stacktrace.hpp"
 #include <any>
 #include <exception>
+#include <iostream>
 #include <optional>
 #include <sstream>
 #include <string_view>
+#include <type_traits>
 #include <typeindex>
 #include <typeinfo>
 
@@ -35,6 +37,9 @@ namespace mge {
             const mge::exception *m_ex;
         };
 
+        struct tag_base
+        {};
+
         /**
          * @brief Exception value tag type.
          *
@@ -54,7 +59,7 @@ namespace mge {
          * };
          * @endcode
          */
-        template <typename Tag, typename Value> struct tag
+        template <typename Tag, typename Value> struct tag : public tag_base
         {
             using tag_type   = Tag;   //!< Tag type.
             using value_type = Value; //!< Value type of value stored under tag.
@@ -65,7 +70,9 @@ namespace mge {
          */
         struct source_file : public tag<source_file, std::string_view>
         {
-            source_file(std::string_view value_) noexcept : m_value(value_) {}
+            source_file(const std::string_view &value_) noexcept
+                : m_value(value_)
+            {}
 
             std::string_view value() const noexcept { return m_value; }
 
@@ -77,7 +84,8 @@ namespace mge {
          */
         struct function : public tag<function, std::string_view>
         {
-            function(std::string_view value_) noexcept : m_value(value_) {}
+            function(const std::string_view &value_) noexcept : m_value(value_)
+            {}
 
             std::string_view value() const noexcept { return m_value; }
 
@@ -137,7 +145,7 @@ namespace mge {
          */
         struct called_function : public tag<called_function, std::string_view>
         {
-            called_function(std::string_view name) : m_value(name) {}
+            called_function(const std::string_view &name) : m_value(name) {}
 
             std::string_view value() const noexcept { return m_value; }
 
@@ -200,7 +208,7 @@ namespace mge {
          * @param info information stored under the tag
          * @return  @c *this
          */
-        template <typename Info> exception &set_info(const Info &info)
+        template <typename Info> inline exception &set_info(const Info &info)
         {
             m_infos[std::type_index(typeid(typename Info::tag_type))] =
                 info.value();
@@ -229,8 +237,6 @@ namespace mge {
          */
         template <typename Info> inline auto get() const
         {
-            const auto message_key =
-                std::type_index(typeid(typename exception::message::tag_type));
             auto it =
                 m_infos.find(std::type_index(typeid(typename Info::tag_type)));
             std::optional<Info::value_type> result;
@@ -251,6 +257,15 @@ namespace mge {
             return exception_details(this);
         }
 
+        template <class T>
+        typename std::enable_if<std::is_base_of<tag_base, T>::value,
+                                exception &>::type
+        operator<<(const T &value)
+        {
+            set_info(value);
+            return *this;
+        }
+
         /**
          * @brief Append value to message.
          *
@@ -258,7 +273,10 @@ namespace mge {
          * @param value value to append
          * @return @c *this
          */
-        template <typename T> exception &operator<<(const T &value)
+        template <class T>
+        typename std::enable_if<!std::is_base_of<tag_base, T>::value,
+                                exception &>::type
+        operator<<(const T &value)
         {
             if (!m_raw_message_stream) {
                 m_raw_message_stream = std::make_unique<std::stringstream>();
@@ -299,6 +317,43 @@ namespace mge {
         mge::exception m_value;
     };
 
+/**
+ * Throw exception instance.
+ * @param ex exception type
+ */
+#define MGE_THROW(ex)                                                          \
+    throw(ex().set_info(mge::exception::source_file(__FILE__))                 \
+              .set_info(mge::exception::source_line(__LINE__))                 \
+              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))      \
+              .set_info(mge::exception::stack(mge::stacktrace()))              \
+              .set_info(mge::exception::type_name(mge::type_name<ex>())))
+
+/**
+ * Throw exception and adds a cause.
+ * @param ex exception type
+ * @param causing_exception exception causing this exception
+ */
+#define MGE_THROW_WITH_CAUSE(ex, causing_exception)                            \
+    throw ex()                                                                 \
+        .set_info(mge::exception::source_file(__FILE__))                       \
+        .set_info(mge::exception::source_line(__LINE__))                       \
+        .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))            \
+        .set_info(mge::exception::stack(mge::stacktrace()))                    \
+        .set_info(mge::exception::type_name(mge::type_name<ex>()))             \
+        .set_info(mge::exception::cause(causing_exception))
+
+/**
+ * @def MGE_CALLED_FUNCTION
+ * @brief Helper to add called function to exception information.
+ * @param X name of called function
+ * This helper is usually used to attach additional information
+ * to the exception, e.g. in case of system or foreign API errors.
+ * @code
+ * MGE_THROW(mge::exception) << MGE_CALLED_FUNCTION(fopen);
+ * @endcode
+ */
+#define MGE_CALLED_FUNCTION(X) ::mge::exception::called_function(#X)
+
     /**
      * @brief Print exception message.
      *
@@ -306,7 +361,8 @@ namespace mge {
      * @param ex exception
      * @return @c os
      */
-    MGECORE_EXPORT std::ostream &operator<<(std::ostream &os, exception &ex);
+    MGECORE_EXPORT std::ostream &operator<<(std::ostream &   os,
+                                            const exception &ex);
 
     /**
      * @brief Print exception details.
@@ -316,7 +372,7 @@ namespace mge {
      * @return @c os
      */
     MGECORE_EXPORT std::ostream &
-    operator<<(std::ostream &os, exception::exception_details &details);
+    operator<<(std::ostream &os, const exception::exception_details &details);
     /**
      * @brief Re-throws the current exception.
      *
