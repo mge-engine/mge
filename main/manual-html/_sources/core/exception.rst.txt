@@ -33,3 +33,10 @@ can be used like this:
         << "Cannot generate buffers";
 
 .. doxygendefine:: MGE_CALLED_FUNCTION
+
+Standard Exceptions
+===================
+
+For a lot of use cases, standard exceptions are provided.
+
+.. doxygenclass:: mge::illegal_state

@@ -157,6 +157,7 @@ informations to the exception, such as location information and stack traces.</p
 <dt id="_CPPv4N3mge9exceptionE">
 <span id="_CPPv3N3mge9exceptionE"></span><span id="_CPPv2N3mge9exceptionE"></span><span id="mge::exception"></span><span class="target" id="classmge_1_1exception"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">exception</code> : <em class="property">public</em> <em class="property">virtual</em> std::exception<a class="headerlink" href="#_CPPv4N3mge9exceptionE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>An exception. </p>
+<p>Subclassed by mge::bad_cast, mge::duplicate_element, mge::illegal_argument, <a class="reference internal" href="#classmge_1_1illegal__state"><span class="std std-ref">mge::illegal_state</span></a>, mge::no_such_element, mge::not_yet_implemented, mge::null_pointer, mge::out_of_range, mge::runtime_exception</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
@@ -561,6 +562,15 @@ can be used like this:</p>
 </p>
 </dd></dl>
 </div>
+<div class="section" id="standard-exceptions">
+<h2>Standard Exceptions<a class="headerlink" href="#standard-exceptions" title="Permalink to this headline">¶</a></h2>
+<p>For a lot of use cases, standard exceptions are provided.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge13illegal_stateE">
+<span id="_CPPv3N3mge13illegal_stateE"></span><span id="_CPPv2N3mge13illegal_stateE"></span><span id="mge::illegal_state"></span><span class="target" id="classmge_1_1illegal__state"></span><em class="property">class </em><code class="sig-name descname">illegal_state</code> : <em class="property">public</em> mge::<a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception">exception</a><a class="headerlink" href="#_CPPv4N3mge13illegal_stateE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Thrown if the program detects an illegal state. </p>
+</dd></dl>
+</div>
 </div>
 
       </article>
@@ -620,6 +630,7 @@ can be used like this:</p>
 <li><a class="reference internal" href="#">Exception Handling</a><ul>
 <li><a class="reference internal" href="#base-exception-class">Base Exception class</a></li>
 <li><a class="reference internal" href="#throwing-exceptions">Throwing Exceptions</a></li>
+<li><a class="reference internal" href="#standard-exceptions">Standard Exceptions</a></li>
 </ul>
 </li>
 </ul>
