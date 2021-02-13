@@ -3,7 +3,10 @@
 // All rights reserved.
 #include "mge/core/exception.hpp"
 #include "mge/core/type_name.hpp"
+#include "test/googlemock.hpp"
 #include "test/googletest.hpp"
+
+using namespace testing;
 
 TEST(exception, rethrow) { EXPECT_DEATH(mge::rethrow(), ""); }
 
@@ -18,14 +21,15 @@ TEST(exception, set_info)
         .set_info(mge::exception::type_name(mge::type_name<decltype(ex)>()));
     std::stringstream msg;
     msg << ex.details();
-    EXPECT_EQ(
-        std::string("Exception details:\nException type: "
-                    "mge::exception\nException location: "
-                    "G:\\w\\mge\\mge\\src\\mge\\core\\test\\test_exception.cpp:"
-                    "16\nException raising function: void __cdecl "
-                    "exception_set_info_Test::TestBody(void)\nException "
-                    "message: Unknown exception\n"),
-        msg.str());
+    EXPECT_THAT(
+        msg.str(),
+        MatchesRegex(
+            "Exception details:\nException type: "
+            "mge::exception\nException location: "
+            ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception.cpp:"
+            "19\nException raising function: void __cdecl "
+            "exception_set_info_Test::TestBody\\(void\\)\nException "
+            "message: Unknown exception\n"));
 }
 
 TEST(exception, set_info_using_operator)
@@ -34,6 +38,7 @@ TEST(exception, set_info_using_operator)
     ex << MGE_CALLED_FUNCTION(FOOBAR) << "test message";
     std::stringstream msg;
     msg << ex.details();
+
     EXPECT_EQ(std::string("Exception details:\nException type: unknown "
                           "mge::exception\nCalling library/system function: "
                           "FOOBAR\nException message: test message\n"),
