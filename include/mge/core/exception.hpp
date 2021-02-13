@@ -13,7 +13,6 @@
 #include <type_traits>
 #include <typeindex>
 #include <typeinfo>
-
 namespace mge {
 
     /**
