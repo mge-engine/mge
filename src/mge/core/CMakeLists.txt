@@ -21,6 +21,7 @@ MGE_LIBRARY(
         statistics.cpp
         string_pool.cpp
         stacktrace.cpp
+        exception.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
@@ -45,6 +46,7 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/trace.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/string_pool.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/stacktrace.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/exception.hpp
     )
 
 TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)

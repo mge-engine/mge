@@ -14,4 +14,5 @@ which are not directly related to graphics or game programming.
     core/tracing.rst
     core/configuration.rst
     core/statistics.rst
+    core/exception.rst
     core/utilities.rst
