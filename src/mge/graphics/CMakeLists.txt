@@ -8,10 +8,12 @@ MGE_LIBRARY(
     SOURCES
         render_system.cpp
         dimension.cpp
+        window_options.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/dllexport.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/render_system.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/dimension.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/graphics/window_options.hpp
 )
 TARGET_LINK_LIBRARIES(mgegraphics mgecore boost-all)
 ADD_SUBDIRECTORY(test)
