@@ -43,3 +43,8 @@ namespace mge {
 #else
 #    error Missing port
 #endif
+
+/**
+ * Stringifies the arguments.
+ */
+#define MGE_STRINGIFY(...) #__VA_ARGS__
