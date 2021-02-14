@@ -68,3 +68,13 @@ can be used:
 
 .. doxygenclass:: mge::singleton
     :members:
+
+Container Element Check
+-----------------------
+
+:any:`mge::contains` can be used to check whether an element is in a
+container. Be aware this may have different complexity, depending on
+the container.
+
+.. doxygenfunction:: mge::contains(const Container &, const Element &)
+

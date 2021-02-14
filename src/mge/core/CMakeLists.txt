@@ -23,6 +23,7 @@ MGE_LIBRARY(
         stacktrace.cpp
         exception.cpp
         stdexceptions.cpp
+        component.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
@@ -49,6 +50,8 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/stacktrace.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/exception.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/stdexceptions.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/component.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/contains.hpp
     )
 
 TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)
