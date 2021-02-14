@@ -1,0 +1,342 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Utilities" href="utilities.html" /><link rel="prev" title="Exception Handling" href="exception.html" />
+
+    <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
+        <title>Components - MGE 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer="defer" src="../_static/jquery.js"></script>
+    <script defer="defer" src="../_static/underscore.js"></script>
+    <script defer="defer" src="../_static/doctools.js"></script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">MGE 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="components">
+<h1>Components<a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h1>
+<p>Components and implementations are the base of MGEs plugin system.</p>
+<p>A <em>component</em> is the definition of an interface and registered under a name
+as component. Implementations of that interface can be registered, and an
+implementation can be selected when creating an instance.</p>
+<div class="section" id="component-base-class">
+<h2>Component Base Class<a class="headerlink" href="#component-base-class" title="Permalink to this headline">¶</a></h2>
+<dl class="cpp class">
+<dt id="_CPPv4I0EN3mge9componentE">
+<span id="_CPPv3I0EN3mge9componentE"></span><span id="_CPPv2I0EN3mge9componentE"></span>template&lt;typename <code class="sig-name descname">Class</code>&gt;<br/><span class="target" id="classmge_1_1component"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">component</code> : <em class="property">public</em> mge::component_base<a class="headerlink" href="#_CPPv4I0EN3mge9componentE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Base class for defining a component. </p>
+<p>Classes defining an interface are defined as subclass of this class. This class implements factory and introspection methods to instantiate an implementation.</p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Class</span></code>: interface class </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9componentD0Ev">
+<span id="_CPPv3N3mge9componentD0Ev"></span><span id="_CPPv2N3mge9componentD0Ev"></span><span id="mge::component::~component"></span><span class="target" id="classmge_1_1component_1a77c04da40f30aa430d3fd3ae7cca70e1"></span><code class="sig-name descname">~component</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">noexcept</em> = default<a class="headerlink" href="#_CPPv4N3mge9componentD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Destructor- </p>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9component6createEPKc">
+<span id="_CPPv3N3mge9component6createEPKc"></span><span id="_CPPv2N3mge9component6createEPKc"></span><span id="mge::component::create__cCP"></span><span class="target" id="classmge_1_1component_1a657f21a51795e904bc4e79625ff5c961"></span>std::shared_ptr&lt;<a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class">Class</a>&gt; <code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>implementation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createEPKc" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create an instance of a registered implementation. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">implementation</span></code>: name of the implementation </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9component6createENSt11string_viewE">
+<span id="_CPPv3N3mge9component6createENSt11string_viewE"></span><span id="_CPPv2N3mge9component6createENSt11string_viewE"></span><span id="mge::component::create__std::string_view"></span><span class="target" id="classmge_1_1component_1a287db37f34a1e8e1cf8baf6c3da985d1"></span>std::shared_ptr&lt;<a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class">Class</a>&gt; <code class="sig-name descname">create</code><span class="sig-paren">(</span>std::string_view <em>implementation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create an instance of a registered implementation. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">implementation</span></code>: name of the implementation </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9component6createERKNSt6stringE">
+<span id="_CPPv3N3mge9component6createERKNSt6stringE"></span><span id="_CPPv2N3mge9component6createERKNSt6stringE"></span><span id="mge::component::create__ssCR"></span><span class="target" id="classmge_1_1component_1ab7ec6369ac0a4c63f1adbe927e6fffde"></span>std::shared_ptr&lt;<a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class">Class</a>&gt; <code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>implementation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createERKNSt6stringE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create an instance of a registered implementation. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">implementation</span></code>: name of the implementation </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE">
+<span id="_CPPv3N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span id="_CPPv2N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span class="target" id="classmge_1_1component_1a0354486c6ccccb7e3427392ff8e17e73"></span>void <code class="sig-name descname">implementations</code><span class="sig-paren">(</span><em class="property">const</em> std::function&lt;void<span class="sig-paren">(</span>std::string_view<span class="sig-paren">)</span>&gt; &amp;<em>callback</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Enumerate over all implementations. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">callback</span></code>: callback function called for each implementation name </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+</div>
+<div class="section" id="registering-components-and-implementations">
+<h2>Registering Components and Implementations<a class="headerlink" href="#registering-components-and-implementations" title="Permalink to this headline">¶</a></h2>
+<p>A component is registered using the macro <a class="reference internal" href="#c.MGE_REGISTER_COMPONENT" title="MGE_REGISTER_COMPONENT"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_REGISTER_COMPONENT</span></code></a>
+when the component class is defined. An implementation is registered
+using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" title="MGE_REGISTER_IMPLEMENTATION"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></code></a> macro.</p>
+<dl class="cpp macro">
+<dt id="c.MGE_REGISTER_COMPONENT">
+<span class="target" id="component_8hpp_1a3e202a943f8f06a84a47dab57ea6851d"></span><code class="sig-name descname">MGE_REGISTER_COMPONENT</code><span class="sig-paren">(</span><em>clazz</em><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_COMPONENT" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Register a class as component. The macro must be used within the definition namespaces of the argument class. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clazz</span></code>: class name </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp macro">
+<dt id="c.MGE_REGISTER_IMPLEMENTATION">
+<span class="target" id="component_8hpp_1a819def5e7df0b6572cdb47309183798f"></span><code class="sig-name descname">MGE_REGISTER_IMPLEMENTATION</code><span class="sig-paren">(</span><em>clazz</em>, <em>component</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_IMPLEMENTATION" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Register an implementation. The macro must be used within the definition namespace of the argument class. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">clazz</span></code>: implementation class name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">component</span></code>: component class (interface class) </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code>: alias names for registration </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="utilities.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Utilities</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="exception.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Exception Handling</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Alexander Schroeder
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/core/component.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Components</a><ul>
+<li><a class="reference internal" href="#component-base-class">Component Base Class</a></li>
+<li><a class="reference internal" href="#registering-components-and-implementations">Registering Components and Implementations</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>

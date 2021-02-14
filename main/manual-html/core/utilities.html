@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="MIT License" href="../license.html" /><link rel="prev" title="Exception Handling" href="exception.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="MIT License" href="../license.html" /><link rel="prev" title="Components" href="component.html" />
 
     <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
         <title>Utilities - MGE 0.1 documentation</title>
@@ -126,6 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Utilities</a></li>
 </ul>
 </li>
@@ -700,6 +701,32 @@ can be used:</p>
 </div>
 </dd></dl>
 </div>
+<div class="section" id="container-element-check">
+<h3>Container Element Check<a class="headerlink" href="#container-element-check" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains"><code class="xref any cpp cpp-function docutils literal notranslate"><span class="pre">mge::contains()</span></code></a> can be used to check whether an element is in a
+container. Be aware this may have different complexity, depending on
+the container.</p>
+<dl class="cpp function">
+<dt id="_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element">
+<span id="_CPPv3I00EN3mge8containsERK9ContainerRK7Element"></span><span id="_CPPv2I00EN3mge8containsERK9ContainerRK7Element"></span>template&lt;typename <code class="sig-name descname">Container</code>, typename <code class="sig-name descname">Element</code>&gt;<br/><span class="target" id="namespacemge_1a017df6664bd0986e1a41afdd71b63da5"></span>bool <code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">contains</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains::Container">Container</a> &amp;<em>c</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains::Element">Element</a> &amp;<em>e</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Check whether an element is contained in a container. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the container contains the element </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Container</span></code>: container type </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Element</span></code>: container element type </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: container </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span></code>: element </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
 </div>
 </div>
 
@@ -716,14 +743,14 @@ can be used:</p>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="exception.html">
+          <a class="prev-page" href="component.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Exception Handling</div>
+                <div class="title">Components</div>
                 
               </div>
             </a>
@@ -771,6 +798,7 @@ can be used:</p>
 <li><a class="reference internal" href="#programming-helpers">Programming Helpers</a><ul>
 <li><a class="reference internal" href="#reference-declaration">Reference Declaration</a></li>
 <li><a class="reference internal" href="#singleton">Singleton</a></li>
+<li><a class="reference internal" href="#container-element-check">Container Element Check</a></li>
 </ul>
 </li>
 </ul>
