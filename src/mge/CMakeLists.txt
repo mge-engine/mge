@@ -3,3 +3,4 @@
 # All rights reserved.
 
 ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(graphics)
