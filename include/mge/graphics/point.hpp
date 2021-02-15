@@ -13,20 +13,22 @@ namespace mge {
     class MGEGRAPHICS_EXPORT point
     {
     public:
+        point() : x(0), y(0) {}
         /**
          * @brief Create point.
          * @param x_ x coordinate
          * @param y_ y coordinate
          */
         point(uint32_t x_, uint32_t y_) : x(y_), y(y_) {}
-        ~point()             = default;
+        ~point() = default;
+
         point(const point &) = default;
         point(point &&)      = default;
         point &operator=(const point &) = default;
         point &operator=(point &&) = default;
 
-        uint32_t x;
-        uint32_t y;
+        uint32_t x; //!< x coordinate
+        uint32_t y; //!< y coordinate
     };
 
     /**

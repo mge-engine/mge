@@ -4,6 +4,7 @@
 
 SET(MGEGRAPHICS_TESTS
     extent
+    point
 )
 
 FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})
