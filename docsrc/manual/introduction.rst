@@ -46,5 +46,7 @@ The second half, features reference chapters for each main library of MGE:
 - Chapter :ref:`mge-core` describes the core library, which contains
   basic facilities and utilities.
 
+- Chapter :ref:`mge-graphics` describes the graphics library, which handle
+  all technical means to put things on the screen.
 
 

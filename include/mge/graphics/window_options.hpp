@@ -16,7 +16,7 @@ namespace mge {
             RESIZABLE,
             MAXIMIZED,
             MINIMIZED,
-            BORDER,
+            DECORATED,
             TITLE,
             MAX = TITLE
         };

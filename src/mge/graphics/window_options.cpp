@@ -28,7 +28,7 @@ namespace mge {
     {
         return window_options()
             .set_option(RESIZABLE)
-            .set_option(BORDER)
+            .set_option(DECORATED)
             .set_option(TITLE);
     }
 

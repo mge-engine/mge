@@ -3,7 +3,7 @@
 # All rights reserved.
 
 SET(MGEGRAPHICS_TESTS
-    dimension
+    extent
 )
 
 FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})
