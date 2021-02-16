@@ -8,6 +8,7 @@
 namespace mge {
     class MGEGRAPHICS_EXPORT window_options
     {
+    public:
         enum option
         {
             NONE = 0,

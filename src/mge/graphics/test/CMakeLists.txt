@@ -5,6 +5,7 @@
 SET(MGEGRAPHICS_TESTS
     extent
     point
+    window
 )
 
 FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})

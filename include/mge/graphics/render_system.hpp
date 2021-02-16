@@ -31,5 +31,12 @@ namespace mge {
          */
         virtual window_ref create_window(const extent &        extent,
                                          const window_options &options) = 0;
+
+        /**
+         * @brief Create default render system.
+         *
+         * @return default render system
+         */
+        static render_system_ref create();
     };
 } // namespace mge
