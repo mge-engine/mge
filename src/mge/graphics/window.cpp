@@ -1,0 +1,31 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
+#include "mge/graphics/window.hpp"
+
+namespace mge {
+    window::window(const mge::extent &, const window_options &)
+        : m_visible(false)
+    {}
+
+    window::~window() {}
+
+    void window::show()
+    {
+        if (!m_visible) {
+            on_show();
+            m_visible = true;
+        }
+    }
+
+    void window::hide()
+    {
+        if (m_visible) {
+            on_hide();
+            m_visible = false;
+        }
+    }
+
+    bool window::visible() const { return m_visible; }
+
+} // namespace mge
