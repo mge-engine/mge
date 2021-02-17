@@ -19,7 +19,7 @@ namespace mge {
          * @param x_ x coordinate
          * @param y_ y coordinate
          */
-        point(uint32_t x_, uint32_t y_) : x(y_), y(y_) {}
+        point(uint32_t x_, uint32_t y_) : x(x_), y(y_) {}
         ~point() = default;
 
         point(const point &) = default;
