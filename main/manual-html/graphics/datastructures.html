@@ -1,0 +1,262 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="MIT License" href="../license.html" /><link rel="prev" title="Window" href="window.html" />
+
+    <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
+        <title>&lt;no title&gt; - MGE 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer="defer" src="../_static/jquery.js"></script>
+    <script defer="defer" src="../_static/underscore.js"></script>
+    <script defer="defer" src="../_static/doctools.js"></script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">MGE 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core/definitions.html">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/component.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <p>The graphics library contains some commonly used data structures and types.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge6extentE">
+<span id="_CPPv3N3mge6extentE"></span><span id="_CPPv2N3mge6extentE"></span><span id="mge::extent"></span><span class="target" id="classmge_1_1extent"></span><em class="property">class </em><code class="sig-name descname">extent</code><a class="headerlink" href="#_CPPv4N3mge6extentE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Extent defined by width and height. </p>
+</dd></dl>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge5pointE">
+<span id="_CPPv3N3mge5pointE"></span><span id="_CPPv2N3mge5pointE"></span><span id="mge::point"></span><span class="target" id="classmge_1_1point"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">point</code><a class="headerlink" href="#_CPPv4N3mge5pointE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A point. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge5point5pointE8uint32_t8uint32_t">
+<span id="_CPPv3N3mge5point5pointE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge5point5pointE8uint32_t8uint32_t"></span><span id="mge::point::point__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1point_1ae61c1e223c7b94d4512f8b3632e64559"></span><code class="sig-name descname">point</code><span class="sig-paren">(</span>uint32_t <em>x_</em>, uint32_t <em>y_</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5point5pointE8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create point. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x_</span></code>: x coordinate </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_</span></code>: y coordinate </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge5point1xE">
+<span id="_CPPv3N3mge5point1xE"></span><span id="_CPPv2N3mge5point1xE"></span><span id="mge::point::x__uint32_t"></span><span class="target" id="classmge_1_1point_1a6e7731de91a916cb3ce98b3b83b70bad"></span>uint32_t <code class="sig-name descname">x</code><a class="headerlink" href="#_CPPv4N3mge5point1xE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>x coordinate </p>
+</dd></dl>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge5point1yE">
+<span id="_CPPv3N3mge5point1yE"></span><span id="_CPPv2N3mge5point1yE"></span><span id="mge::point::y__uint32_t"></span><span class="target" id="classmge_1_1point_1a992166968c9c1d73bb26703c5b996ed0"></span>uint32_t <code class="sig-name descname">y</code><a class="headerlink" href="#_CPPv4N3mge5point1yE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>y coordinate </p>
+</dd></dl>
+</div>
+</dd></dl>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../license.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">MIT License</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="window.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Window</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Alexander Schroeder
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/graphics/datastructures.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul class="simple">
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
