@@ -68,7 +68,7 @@ namespace mge {
 /**
  * @def MGE_TRACE
  * @brief Invoke trace.
- * @oaram TOPIC trace topic
+ * @param TOPIC trace topic
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
 #define MGE_TRACE(TOPIC, LEVEL)                                                \
