@@ -8,7 +8,7 @@
 /**
  * @def MGEGRAPHICS_EXPORT
  * @brief Macro to declare class or function to be exported by/imported from
- * core library.
+ * graphics library.
  */
 #ifdef BUILD_MGEGRAPHICS
 #    define MGEGRAPHICS_EXPORT MGE_DLLEXPORT
