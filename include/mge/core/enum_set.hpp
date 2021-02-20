@@ -65,6 +65,26 @@ namespace mge {
         inline void set(E value) { m_bits.set(static_cast<base_type>(value)); }
 
         /**
+         * @brief Resets value of an enum value.
+         *
+         * @param value enum value
+         */
+        inline void reset(E value)
+        {
+            m_bits.reset(static_cast<base_type>(value));
+        }
+
+        /**
+         * @brief Flips value of an enum value.
+         *
+         * @param value enum value
+         */
+        inline void flip(E value)
+        {
+            m_bits.flip(static_cast<base_type>(value));
+        }
+
+        /**
          * @brief Test one enum value.
          *
          * @param value enum value

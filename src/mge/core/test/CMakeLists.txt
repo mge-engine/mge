@@ -17,7 +17,8 @@ SET(MGECORE_TESTS
     stacktrace
     string_pool
     exception
-    component)
+    component
+    enum_set)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
