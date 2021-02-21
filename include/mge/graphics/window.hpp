@@ -27,18 +27,19 @@ namespace mge {
          * Get window position.
          * @return window position.
          */
-        point position() const;
+        virtual point position() const;
 
         /**
          * Get window extent.
          * @return window extent
          */
-        extent extent() const;
+        virtual mge::extent extent() const;
 
         /**
          * Shows the window.
          */
         void show();
+
         /**
          * Hides the window.
          */
@@ -63,7 +64,8 @@ namespace mge {
          */
         virtual void on_hide() = 0;
 
-    private:
-        bool m_visible;
+        mge::point  m_position;
+        mge::extent m_extent;
+        bool        m_visible;
     };
 } // namespace mge

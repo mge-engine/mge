@@ -28,4 +28,8 @@ namespace mge {
 
     bool window::visible() const { return m_visible; }
 
+    point window::position() const { return m_position; }
+
+    mge::extent window::extent() const { return m_extent; }
+
 } // namespace mge
