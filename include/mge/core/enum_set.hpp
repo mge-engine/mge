@@ -26,6 +26,7 @@ namespace mge {
         static constexpr size_t bitset_size() { return (size_t)M; }
 
     public:
+
         /**
          * @brief Construct a new enum set object.
          */
@@ -102,6 +103,30 @@ namespace mge {
          */
         bool empty() const { return m_bits.none(); }
 
+
+        /**
+         * @brief Resets values set in argument
+         * @param modifiers value to be reset
+         */
+        void reset(const enum_set<E, M> &other)
+        {
+            for (uint32_t pos = 0; pos < other.m_bits.size(); ++pos) {
+                if (other.m_bits.test(pos)) {
+                    m_bits.reset(pos);
+                }
+            }
+        }
+
+        /**
+         * @brief Return whether this set includes the other.
+         * @param other other set
+         * @return @c true if other is contained in this set
+         */
+        bool includes(const enum_set<E, M> &other) const
+        {
+            return (m_bits & other.m_bits) == other.m_bits;
+        }
+
         /**
          * @brief Clears the whole set.
          */
@@ -120,6 +145,17 @@ namespace mge {
          * @return underlying bitset
          */
         operator std::bitset<bitset_size()> &() { return m_bits; }
+
+        /**
+         * @brief Combine this enum set with another.
+         * @param other other set
+         * @return this set combined (or combination)
+         */
+        enum_set<E, M> &operator|=(const enum_set<E, M> &other)
+        {
+            m_bits |= other.m_bits;
+            return *this;
+        }
 
     private:
         std::bitset<bitset_size()> m_bits;

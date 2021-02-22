@@ -8,6 +8,9 @@ MGE_LIBRARY(
     SOURCES
         key.cpp
         modifier.cpp
+        keyboard_state.cpp
+        mouse_state.cpp
+        input_state.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/input/dllexport.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/input/key.hpp
