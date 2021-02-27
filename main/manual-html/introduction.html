@@ -133,6 +133,16 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphics/datastructures.html">Data Structures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/keyboard.html">Keyboard Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="application/application.html">Application</a></li>
 </ul>
 </li>
 </ul>
@@ -176,11 +186,20 @@ the domain of game programming:</p>
 <li><p>The core library combines general purpose tools and utilities like
 facilities for tracing and error reporting, configuration or
 componentization.</p></li>
+<li><p>The graphics library delivers an abstraction of a modern presentation
+pipeline, using concepts like shader programs, parallel queues and
+command buffers.</p></li>
+<li><p>The input library makes it easy to process user input, from various
+devices including gamepads and joysticks.</p></li>
+<li><p>The application library provides a framework for the common game application,
+supporting concepts like single-threaded or multi-threaded simulation and
+render loop.</p></li>
 </ul>
 <p>The general design philosphy in MGE is that everything should stand
 for itself, and <em>manager</em> or other <em>uber-objects</em> are to be avoided.</p>
 <p>This also allows also going as low-level as wanted when using MGE, and
-not being tied to a render loop or update architecture.</p>
+not being tied to a render loop or update architecture, although common
+implementations of these concepts are provided.</p>
 </div>
 <div class="section" id="about-this-manual">
 <h2>About this manual<a class="headerlink" href="#about-this-manual" title="Permalink to this headline">¶</a></h2>
@@ -188,10 +207,14 @@ not being tied to a render loop or update architecture.</p>
 install, configure and use MGE and its tools.</p>
 <p>The second half, features reference chapters for each main library of MGE:</p>
 <ul class="simple">
-<li><p>Chapter <a class="reference internal" href="mgecore.html#mge-core"><span class="std std-ref">Core Library</span></a> describes the core library, which contains
+<li><p><a class="reference internal" href="mgecore.html#mge-core"><span class="std std-ref">Core Library</span></a> describes the core library, which contains
 basic facilities and utilities.</p></li>
-<li><p>Chapter <a class="reference internal" href="mgegraphics.html#mge-graphics"><span class="std std-ref">Graphics Library</span></a> describes the graphics library, which handle
+<li><p><a class="reference internal" href="mgegraphics.html#mge-graphics"><span class="std std-ref">Graphics Library</span></a> describes the graphics library, which handles
 all technical means to put things on the screen.</p></li>
+<li><p><a class="reference internal" href="mgeinput.html#mge-input"><span class="std std-ref">Input Library</span></a> describes the input library, which is used to manager
+input devices and their state.</p></li>
+<li><p><a class="reference internal" href="mgeapplication.html#mge-application"><span class="std std-ref">Application Library</span></a> describes the application library, which provides
+facilities to structure application utilizing the MGE toolkit.</p></li>
 </ul>
 </div>
 </div>

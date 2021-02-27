@@ -1,10 +1,10 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Window" href="window.html" /><link rel="prev" title="Graphics Library" href="../mgegraphics.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Application Library" href="../mgeapplication.html" /><link rel="prev" title="Input State" href="state.html" />
 
     <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
-        <title>Render System - MGE 0.1 documentation</title>
+        <title>Keyboard Handling - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -130,15 +130,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="state.html">Input State</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Keyboard Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -163,52 +163,49 @@
         <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="render-system">
-<h1>Render System<a class="headerlink" href="#render-system" title="Permalink to this headline">¶</a></h1>
-<p>The render system is the basic entry point into
-the graphics library.</p>
-<dl class="cpp class">
-<dt id="_CPPv4N3mge13render_systemE">
-<span id="_CPPv3N3mge13render_systemE"></span><span id="_CPPv2N3mge13render_systemE"></span><span id="mge::render_system"></span><span class="target" id="classmge_1_1render__system"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">render_system</code> : <em class="property">public</em> mge::<a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component">component</a>&lt;<a class="reference internal" href="#_CPPv4N3mge13render_systemE" title="mge::render_system">render_system</a>&gt;<a class="headerlink" href="#_CPPv4N3mge13render_systemE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Render system interface. </p>
-<p>The render system defines a mechanism to produce graphics output, that is:</p>
-<p><ul class="simple">
-<li><p>open and manage windows to present graphics output</p></li>
-<li><p>manage the capabilities of the render system</p></li>
-<li><p>create and manage the objects of a graphics pipeline, such as shaders and buffers </p></li>
+        <div class="section" id="keyboard-handling">
+<h1>Keyboard Handling<a class="headerlink" href="#keyboard-handling" title="Permalink to this headline">¶</a></h1>
+<p>Constants for pressed keys are defined in the <cite>key</cite> enumeration.</p>
+<dl class="cpp enum-class">
+<dt id="_CPPv4N3mge3keyE">
+<span id="_CPPv3N3mge3keyE"></span><span id="_CPPv2N3mge3keyE"></span><em class="property">enum class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">key</code><a class="headerlink" href="#_CPPv4N3mge3keyE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Key codes for keys. These are of course to numerous to list
+here, the enumeration follows the following guidelines:</p>
+<ul class="simple">
+<li><p>all enum values are uppercase</p></li>
+<li><p>key codes for keys that produce an ASCII char are equal to that character,
+e.g <cite>mge::key::A</cite> has a value of 0x41</p></li>
+<li><p>function keys are named <cite>F&lt;n&gt;</cite> for n in [1,12]</p></li>
+<li><p>names of special keys are as usually written on a PC keyboard
+(<cite>PAUSE</cite>, <cite>HOME</cite> and so on)</p></li>
+<li><p>Key pad keys are prefixed with <cite>KP_</cite> (like <cite>KP_1</cite>, <cite>KP_ENTER</cite>).</p></li>
 </ul>
-</p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Functions</p>
-<dl class="cpp function">
-<dt id="_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options">
-<span id="_CPPv3N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="_CPPv2N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="mge::render_system::create_window__extentCR.window_optionsCR"></span><span class="target" id="classmge_1_1render__system_1a3bbf4612abb1d1e7dea1c656f043905d"></span>window_ref <code class="sig-name descname">create_window</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="mge::render_system::create_window::extent">extent</a> &amp;<em>extent</em>, <em class="property">const</em> <a class="reference internal" href="window.html#_CPPv4N3mge14window_optionsE" title="mge::window_options">window_options</a> &amp;<em>options</em><span class="sig-paren">)</span> = 0<a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Create a window. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>created window </p>
-</dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">extent</span></code>: window size </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">options</span></code>: window options </p></li>
-</ul>
-</dd>
-</dl>
-</p>
 </dd></dl>
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
-<dl class="cpp function">
-<dt id="_CPPv4N3mge13render_system6createEv">
-<span id="_CPPv3N3mge13render_system6createEv"></span><span id="_CPPv2N3mge13render_system6createEv"></span><span id="mge::render_system::create"></span><span class="target" id="classmge_1_1render__system_1aea3b63ca6c59db3dba890a2d6b2279cb"></span>render_system_ref <code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createEv" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Create default render system. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>default render system </p>
-</dd>
-</dl>
-</p>
+<p>Modifiers are captured in the modifier set.</p>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge8modifierE">
+<span id="_CPPv3N3mge8modifierE"></span><span id="_CPPv2N3mge8modifierE"></span><em class="property">using </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">modifier</code> = mge::enum_set&lt;mge::<a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value">modifier_value</a>, mge::<a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value">modifier_value</a>::<a class="reference internal" href="#_CPPv4N3mge14modifier_value3ALTE" title="mge::modifier_value::ALT">ALT</a>&gt;<a class="headerlink" href="#_CPPv4N3mge8modifierE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Modifiers.</p>
 </dd></dl>
-</div>
+<dl class="cpp enum-class">
+<dt id="_CPPv4N3mge14modifier_valueE">
+<span id="_CPPv3N3mge14modifier_valueE"></span><span id="_CPPv2N3mge14modifier_valueE"></span><em class="property">enum class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">modifier_value</code><a class="headerlink" href="#_CPPv4N3mge14modifier_valueE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Codes for modifier keys.</p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N3mge14modifier_value7CONTROLE">
+<span id="_CPPv3N3mge14modifier_value7CONTROLE"></span><span id="_CPPv2N3mge14modifier_value7CONTROLE"></span><em class="property">enumerator </em><code class="sig-name descname">CONTROL</code><a class="headerlink" href="#_CPPv4N3mge14modifier_value7CONTROLE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Control key.</p>
+</dd></dl>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N3mge14modifier_value5SHIFTE">
+<span id="_CPPv3N3mge14modifier_value5SHIFTE"></span><span id="_CPPv2N3mge14modifier_value5SHIFTE"></span><em class="property">enumerator </em><code class="sig-name descname">SHIFT</code><a class="headerlink" href="#_CPPv4N3mge14modifier_value5SHIFTE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Shift key.</p>
+</dd></dl>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N3mge14modifier_value3ALTE">
+<span id="_CPPv3N3mge14modifier_value3ALTE"></span><span id="_CPPv2N3mge14modifier_value3ALTE"></span><em class="property">enumerator </em><code class="sig-name descname">ALT</code><a class="headerlink" href="#_CPPv4N3mge14modifier_value3ALTE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Alt key.</p>
+</dd></dl>
 </dd></dl>
 </div>
 
@@ -216,23 +213,23 @@ the graphics library.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="window.html">
+          <a class="next-page" href="../mgeapplication.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Window</div>
+                <div class="title">Application Library</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../mgegraphics.html">
+          <a class="prev-page" href="state.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Graphics Library</div>
+                <div class="title">Input State</div>
                 
               </div>
             </a>
@@ -246,7 +243,7 @@ the graphics library.</p>
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/graphics/system.rst.txt"
+            <a class="muted-link" href="../_sources/input/keyboard.rst.txt"
                rel="nofollow">
               Show Source
             </a>
