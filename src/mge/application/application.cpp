@@ -39,8 +39,6 @@ namespace mge {
 
     void application::teardown() {}
 
-    void application::update() {}
-
     void application::run() {}
 
     void application::main(std::string_view application_name, int argc,
@@ -67,6 +65,27 @@ namespace mge {
                       << std::endl;
             return;
         }
+    }
+
+    application::update_listener_key
+    application::add_update_listener(const application::update_listener &l)
+    {
+        return m_update_listeners.insert(l);
+    }
+
+    void application::remove_update_listener(application::update_listener_key k)
+    {
+        m_update_listeners.erase(k);
+    }
+
+    void application::set_redraw_listener(const application::redraw_listener &l)
+    {
+        m_redraw_listener = l;
+    }
+
+    void application::clear_redraw_listener()
+    {
+        m_redraw_listener = redraw_listener();
     }
 
     bool application::is_quit() const { return m_quit; }

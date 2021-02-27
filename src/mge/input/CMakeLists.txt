@@ -15,6 +15,9 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/input/dllexport.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/input/key.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/input/modifier.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/input/input_state.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/input/keyboard_state.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/input/mouse_state.hpp
 
 )
 TARGET_LINK_LIBRARIES(mgeinput boost-all)
