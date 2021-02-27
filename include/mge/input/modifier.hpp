@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
+/** @file */
 #pragma once
 #include "mge/core/enum_set.hpp"
 #include "mge/input/dllexport.hpp"

@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+/** @file */
 #pragma once
 #include "mge/input/dllexport.hpp"
 #include <cstdint>
@@ -8,6 +9,9 @@
 
 namespace mge {
 
+    /**
+     * @brief Key constants used in keyboard press events.
+     */
     enum class MGEINPUT_EXPORT key : int32_t
     {
         INVALID = -1, //!< INVALID
