@@ -28,11 +28,23 @@ the domain of game programming:
   facilities for tracing and error reporting, configuration or
   componentization.
 
+- The graphics library delivers an abstraction of a modern presentation
+  pipeline, using concepts like shader programs, parallel queues and
+  command buffers.
+
+- The input library makes it easy to process user input, from various
+  devices including gamepads and joysticks.
+
+- The application library provides a framework for the common game application,
+  supporting concepts like single-threaded or multi-threaded simulation and
+  render loop.
+
 The general design philosphy in MGE is that everything should stand
 for itself, and *manager* or other *uber-objects* are to be avoided.
 
 This also allows also going as low-level as wanted when using MGE, and
-not being tied to a render loop or update architecture.
+not being tied to a render loop or update architecture, although common
+implementations of these concepts are provided.
 
 
 About this manual
@@ -43,10 +55,14 @@ install, configure and use MGE and its tools.
 
 The second half, features reference chapters for each main library of MGE:
 
-- Chapter :ref:`mge-core` describes the core library, which contains
+- :ref:`mge-core` describes the core library, which contains
   basic facilities and utilities.
 
-- Chapter :ref:`mge-graphics` describes the graphics library, which handle
+- :ref:`mge-graphics` describes the graphics library, which handles
   all technical means to put things on the screen.
 
+- :ref:`mge-input` describes the input library, which is used to manager
+  input devices and their state.
 
+- :ref:`mge-application` describes the application library, which provides
+  facilities to structure application utilizing the MGE toolkit.
