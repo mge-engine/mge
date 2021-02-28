@@ -18,7 +18,8 @@ SET(MGECORE_TESTS
     string_pool
     exception
     component
-    enum_set)
+    enum_set
+    callback_map)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
