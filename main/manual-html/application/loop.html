@@ -1,0 +1,351 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Application" href="application.html" /><link rel="prev" title="Application Library" href="../mgeapplication.html" />
+
+    <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
+        <title>Interaction Loop - MGE 0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+    <link rel="stylesheet" href="../_static/pygments.css">
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+    
+
+
+<style>
+  :root {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+
+  /* For allowing end-user-specific overrides */
+  .override-light {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  .override-dark {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script defer="defer" src="../_static/jquery.js"></script>
+    <script defer="defer" src="../_static/underscore.js"></script>
+    <script defer="defer" src="../_static/doctools.js"></script>
+    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+  <body dir="">
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z"/>
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+      class="feather feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">MGE 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html">
+  <input class="sidebar-search" placeholder=Search name="q">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../core/definitions.html">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/component.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Interaction Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html">Application</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <main class="main">
+    <div class="content">
+      <article role="main">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        </label>
+        <div class="section" id="interaction-loop">
+<h1>Interaction Loop<a class="headerlink" href="#interaction-loop" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="game-loop-concept">
+<h2>Game Loop Concept<a class="headerlink" href="#game-loop-concept" title="Permalink to this headline">¶</a></h2>
+<p>The interaction loop of a game application can be usually described by
+the following flow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+-------------------------------------------------+
+|                                                 |
++-&gt; (!quit) -&gt; (input) -&gt; (update) -&gt; (present) --+
+</pre></div>
+</div>
+<p>While there is no <strong>quit</strong> signalled, the application processes the following
+steps in a loop:</p>
+<dl class="simple">
+<dt>input</dt><dd><p>Input is processed, state of input devices is retrieved.</p>
+</dd>
+<dt>update</dt><dd><p>The state of the application is updated.</p>
+</dd>
+<dt>present</dt><dd><p>The state of the application is presented at the screen.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="abstractions">
+<h2>Abstractions<a class="headerlink" href="#abstractions" title="Permalink to this headline">¶</a></h2>
+<p>The target of the loop is abstracted in the interface class <code class="docutils literal notranslate"><span class="pre">mge::loop_target</span></code>:</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge11loop_targetE">
+<span id="_CPPv3N3mge11loop_targetE"></span><span id="_CPPv2N3mge11loop_targetE"></span><span id="mge::loop_target"></span><span class="target" id="classmge_1_1loop__target"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">loop_target</code><a class="headerlink" href="#_CPPv4N3mge11loop_targetE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Loop target pattern for interactive update. </p>
+<p>Subclassed by <a class="reference internal" href="application.html#classmge_1_1application"><span class="std std-ref">mge::application</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge11loop_target7is_quitEv">
+<span id="_CPPv3NK3mge11loop_target7is_quitEv"></span><span id="_CPPv2NK3mge11loop_target7is_quitEv"></span><span id="mge::loop_target::is_quitC"></span><span class="target" id="classmge_1_1loop__target_1aaaa261588e9d8df1703fa1f64e6f2524"></span>bool <code class="sig-name descname">is_quit</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> = 0<a class="headerlink" href="#_CPPv4NK3mge11loop_target7is_quitEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Retrieve whether the interactive loop shall quit. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the interaction loop shall quit </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11loop_target5inputEv">
+<span id="_CPPv3N3mge11loop_target5inputEv"></span><span id="_CPPv2N3mge11loop_target5inputEv"></span><span id="mge::loop_target::input"></span><span class="target" id="classmge_1_1loop__target_1a1541347ca4cda0abdeda54da74f55739"></span>void <code class="sig-name descname">input</code><span class="sig-paren">(</span><span class="sig-paren">)</span> = 0<a class="headerlink" href="#_CPPv4N3mge11loop_target5inputEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Retrieve and process input in an loop step. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11loop_target6updateEd">
+<span id="_CPPv3N3mge11loop_target6updateEd"></span><span id="_CPPv2N3mge11loop_target6updateEd"></span><span id="mge::loop_target::update__double"></span><span class="target" id="classmge_1_1loop__target_1a3fdb49e9c978d4522f3282cad4a4f9f8"></span>void <code class="sig-name descname">update</code><span class="sig-paren">(</span>double <em>delta</em><span class="sig-paren">)</span> = 0<a class="headerlink" href="#_CPPv4N3mge11loop_target6updateEd" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Update state in a step. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delta</span></code>: delta in seconds </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11loop_target7presentEd">
+<span id="_CPPv3N3mge11loop_target7presentEd"></span><span id="_CPPv2N3mge11loop_target7presentEd"></span><span id="mge::loop_target::present__double"></span><span class="target" id="classmge_1_1loop__target_1a7c5bd8dde5fbad1ecfe3a9c38c4e90d5"></span>void <code class="sig-name descname">present</code><span class="sig-paren">(</span>double <em>peek</em><span class="sig-paren">)</span> = 0<a class="headerlink" href="#_CPPv4N3mge11loop_target7presentEd" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Presents the state. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">peek</span></code>: percentage of peek into next step if a fixed step mechanism is used, in range [0,1). </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+<p>The loop itself is implemented by implementing a component of <code class="docutils literal notranslate"><span class="pre">mge::loop</span></code> interface:</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge4loopE">
+<span id="_CPPv3N3mge4loopE"></span><span id="_CPPv2N3mge4loopE"></span><span id="mge::loop"></span><span class="target" id="classmge_1_1loop"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">loop</code> : <em class="property">public</em> mge::<a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component">component</a>&lt;<a class="reference internal" href="#_CPPv4N3mge4loopE" title="mge::loop">loop</a>&gt;<a class="headerlink" href="#_CPPv4N3mge4loopE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Interaction loop abstraction. </p>
+<p>While the loop target does not signal quitting, input is collected from target, state is updated and presented. </p>
+<p>Subclassed by mge::simple_loop</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge4loop3runER11loop_target">
+<span id="_CPPv3N3mge4loop3runER11loop_target"></span><span id="_CPPv2N3mge4loop3runER11loop_target"></span><span id="mge::loop::run__loop_targetR"></span><span class="target" id="classmge_1_1loop_1a45a3e3b5310bd6b726a8dfb94a41ceb4"></span>void <code class="sig-name descname">run</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11loop_targetE" title="mge::loop_target">loop_target</a> &amp;<em>t</em><span class="sig-paren">)</span> = 0<a class="headerlink" href="#_CPPv4N3mge4loop3runER11loop_target" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Run the loop. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: loop target </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+</div>
+<div class="section" id="simple-loop">
+<h2>Simple Loop<a class="headerlink" href="#simple-loop" title="Permalink to this headline">¶</a></h2>
+<p>A simple loop is provided which does not use fixed step update, and also
+does not provide any peek on presentation.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">simple_loop</span> <span class="o">=</span> <span class="n">mge</span><span class="p">::</span><span class="n">loop</span><span class="p">::</span><span class="n">create</span><span class="p">(</span><span class="s2">"simple"</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The simple loop processes the interaction loop as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> will be called with the delta time compared with
+previous frame</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">present</span></code> will always be called with a peek value of <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</div>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="application.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Application</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../mgeapplication.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Application Library</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Alexander Schroeder
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/application/loop.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Interaction Loop</a><ul>
+<li><a class="reference internal" href="#game-loop-concept">Game Loop Concept</a></li>
+<li><a class="reference internal" href="#abstractions">Abstractions</a></li>
+<li><a class="reference internal" href="#simple-loop">Simple Loop</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </main>
+</div>
+  </body>
+</html>
