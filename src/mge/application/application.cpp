@@ -3,7 +3,9 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/core/stdexceptions.hpp"
-
+#ifdef MGE_OS_WINDOWS
+#    include <windows.h>
+#endif
 #include <iostream>
 
 namespace mge {
@@ -18,6 +20,12 @@ namespace mge {
             --argc;
             ++argv;
         }
+
+#ifdef MGE_OS_WINDOWS
+        // prevent error popups and report all errors to process
+        SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |
+                     SEM_NOOPENFILEERRORBOX);
+#endif
     }
 
     application::~application() {}

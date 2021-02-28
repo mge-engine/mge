@@ -5,6 +5,7 @@
 #include "mge/application/dllexport.hpp"
 #include "mge/core/callback_map.hpp"
 #include "mge/core/component.hpp"
+#include <chrono>
 #include <functional>
 #include <string>
 #include <string_view>
@@ -15,6 +16,11 @@ namespace mge {
     class MGEAPPLICATION_EXPORT application : component<application>
     {
     public:
+        using clock =
+            std::conditional<std::chrono::high_resolution_clock::is_steady,
+                             std::chrono::high_resolution_clock,
+                             std::chrono::steady_clock>::type;
+
         using update_listener_collection = callback_map<void()>;
         using update_listener     = update_listener_collection::function_type;
         using update_listener_key = update_listener_collection::key_type;
