@@ -1,8 +1,9 @@
 // mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
+// Copyright (c) 2021 by Alexander Schroederprogress
 // All rights reserved.
 #pragma once
 #include "mge/application/dllexport.hpp"
+#include "mge/application/loop_target.hpp"
 #include "mge/core/callback_map.hpp"
 #include "mge/core/component.hpp"
 #include <chrono>
@@ -13,13 +14,12 @@
 
 namespace mge {
 
-    class MGEAPPLICATION_EXPORT application : component<application>
+    class MGEAPPLICATION_EXPORT application
+        : public component<application>
+        , public loop_target
     {
     public:
-        using clock =
-            std::conditional<std::chrono::high_resolution_clock::is_steady,
-                             std::chrono::high_resolution_clock,
-                             std::chrono::steady_clock>::type;
+        using clock = std::chrono::high_resolution_clock;
 
         using update_listener_collection = callback_map<void()>;
         using update_listener     = update_listener_collection::function_type;
@@ -50,7 +50,7 @@ namespace mge {
          *
          * @return @c true if application shall quit
          */
-        bool is_quit() const;
+        bool is_quit() const override;
 
         /**
          * @brief Signal that application shall quit.
@@ -76,6 +76,12 @@ namespace mge {
          * This executes the input loop until the quit flag is set.
          */
         virtual void run();
+
+        void input() override;
+
+        void update(double delta) override;
+
+        void present(double peek) override;
 
         /**
          * @brief Run an application implementation.

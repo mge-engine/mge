@@ -99,4 +99,10 @@ namespace mge {
     bool application::is_quit() const { return m_quit; }
 
     void application::set_quit() { m_quit = true; }
+
+    void application::input() {}
+
+    void application::update(double delta) {}
+
+    void application::present(double peek) {}
 } // namespace mge
