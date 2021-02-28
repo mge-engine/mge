@@ -611,6 +611,20 @@ This declaration can be eased using the macro <a class="reference internal" href
 </p>
 </dd></dl>
 </div>
+<div class="section" id="noncopyable">
+<h3>Noncopyable<a class="headerlink" href="#noncopyable" title="Permalink to this headline">¶</a></h3>
+<p>A noncopyable object is one that has its copy constructor and
+assignment operatpr deleted.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge11noncopyableE">
+<span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><em class="property">class </em><code class="sig-name descname">noncopyable</code><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Object that can’t be copied. </p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; void()&gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; T, K, C &gt;</span></a></p>
+</dd></dl>
+</div>
+</div>
+<div class="section" id="patterns-and-algorithms">
+<h2>Patterns and Algorithms<a class="headerlink" href="#patterns-and-algorithms" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="singleton">
 <h3>Singleton<a class="headerlink" href="#singleton" title="Permalink to this headline">¶</a></h3>
 <p>To implement the singleton pattern, a helper class <a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::singleton</span></code></a>
@@ -742,6 +756,67 @@ the container.</p>
 </p>
 </dd></dl>
 </div>
+<div class="section" id="callback-map">
+<h3>Callback Map<a class="headerlink" href="#callback-map" title="Permalink to this headline">¶</a></h3>
+<p>A callback map is used to manage callbacks or _listeners_. It manages
+a map of keys and callbacks, where the callback key can be used to remove
+a callback again, as function objects can’t be compared.</p>
+<dl class="cpp class">
+<dt id="_CPPv4I000EN3mge12callback_mapE">
+<span id="_CPPv3I000EN3mge12callback_mapE"></span><span id="_CPPv2I000EN3mge12callback_mapE"></span>template&lt;typename <code class="sig-name descname">T</code>, typename <code class="sig-name descname">K</code> = unsigned int, typename <code class="sig-name descname">C</code> = std::map&lt;<em class="property">typename</em> <a class="reference internal" href="#_CPPv4I000EN3mge12callback_mapE" title="mge::callback_map::K">K</a>, std::function&lt;<em class="property">typename</em> <a class="reference internal" href="#_CPPv4I000EN3mge12callback_mapE" title="mge::callback_map::T">T</a>&gt;&gt;&gt;<br/><span class="target" id="classmge_1_1callback__map"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">callback_map</code> : <em class="property">public</em> mge::<a class="reference internal" href="#_CPPv4N3mge11noncopyableE" title="mge::noncopyable">noncopyable</a><a class="headerlink" href="#_CPPv4I000EN3mge12callback_mapE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Callback map. </p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: function signature </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">K</span></code>: key type </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C</span></code>: container typpe </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12callback_map6insertERK13function_type">
+<span id="_CPPv3N3mge12callback_map6insertERK13function_type"></span><span id="_CPPv2N3mge12callback_map6insertERK13function_type"></span><span id="mge::callback_map::insert__function_typeCR"></span><span class="target" id="classmge_1_1callback__map_1a0b2131615935585d1a1669b1f803872c"></span>key_type <code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="property">const</em> function_type &amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12callback_map6insertERK13function_type" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Inserts a callback. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>key that can be used to erase the callback </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code>: callback </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12callback_map5eraseE8key_type">
+<span id="_CPPv3N3mge12callback_map5eraseE8key_type"></span><span id="_CPPv2N3mge12callback_map5eraseE8key_type"></span><span id="mge::callback_map::erase__key_type"></span><span class="target" id="classmge_1_1callback__map_1a6e197034e1e3ab4cfd8671fcd3a50cdb"></span>function_type <code class="sig-name descname">erase</code><span class="sig-paren">(</span>key_type <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12callback_map5eraseE8key_type" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Erase callback using a registered key. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>erased value, it is empty if the key was not found </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: key </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge12callback_map5emptyEv">
+<span id="_CPPv3NK3mge12callback_map5emptyEv"></span><span id="_CPPv2NK3mge12callback_map5emptyEv"></span><span id="mge::callback_map::emptyC"></span><span class="target" id="classmge_1_1callback__map_1a1f2fe32d7463484c7c6fea241aa527ac"></span>bool <code class="sig-name descname">empty</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge12callback_map5emptyEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Retrieve whether map is empty. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if empty </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+</div>
 </div>
 </div>
 
@@ -812,8 +887,13 @@ the container.</p>
 </li>
 <li><a class="reference internal" href="#programming-helpers">Programming Helpers</a><ul>
 <li><a class="reference internal" href="#reference-declaration">Reference Declaration</a></li>
+<li><a class="reference internal" href="#noncopyable">Noncopyable</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#patterns-and-algorithms">Patterns and Algorithms</a><ul>
 <li><a class="reference internal" href="#singleton">Singleton</a></li>
 <li><a class="reference internal" href="#container-element-check">Container Element Check</a></li>
+<li><a class="reference internal" href="#callback-map">Callback Map</a></li>
 </ul>
 </li>
 </ul>
