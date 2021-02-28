@@ -60,13 +60,25 @@ This declaration can be eased using the macro :any:`MGE_DECLARE_REF`
 
 .. doxygendefine:: MGE_DECLARE_REF
 
+Noncopyable
+-----------
+
+A noncopyable object is one that has its copy constructor and
+assignment operatpr deleted.
+
+..  doxygenclass:: mge::noncopyable
+    :members:
+
+Patterns and Algorithms
+=======================
+
 Singleton
 ---------
 
 To implement the singleton pattern, a helper class :any:`mge::singleton`
 can be used:
 
-.. doxygenclass:: mge::singleton
+..  doxygenclass:: mge::singleton
     :members:
 
 Container Element Check
@@ -78,3 +90,12 @@ the container.
 
 .. doxygenfunction:: mge::contains(const Container &, const Element &)
 
+Callback Map
+------------
+
+A callback map is used to manage callbacks or _listeners_. It manages
+a map of keys and callbacks, where the callback key can be used to remove
+a callback again, as function objects can't be compared.
+
+.. doxygenclass:: mge::callback_map
+    :members:
