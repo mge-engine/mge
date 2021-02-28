@@ -3,7 +3,8 @@
 # All rights reserved.
 
 SET(MGEAPPLICATION_TESTS
-    application)
+    application
+    simple_loop)
 
 FOREACH(TEST_NAME ${MGEAPPLICATION_TESTS})
     MGE_TEST(
