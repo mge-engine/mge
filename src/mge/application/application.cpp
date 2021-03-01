@@ -75,6 +75,17 @@ namespace mge {
         }
     }
 
+    application::input_listener_key
+    application::add_input_listener(const application::input_listener &l)
+    {
+        return m_input_listeners.insert(l);
+    }
+
+    void application::remove_input_listener(application::input_listener_key k)
+    {
+        m_input_listeners.erase(k);
+    }
+
     application::update_listener_key
     application::add_update_listener(const application::update_listener &l)
     {
@@ -86,23 +97,39 @@ namespace mge {
         m_update_listeners.erase(k);
     }
 
-    void application::set_redraw_listener(const application::redraw_listener &l)
+    application::redraw_listener_key
+    application::add_redraw_listener(const application::redraw_listener &l)
     {
-        m_redraw_listener = l;
+        return m_redraw_listeners.insert(l);
     }
 
-    void application::clear_redraw_listener()
+    void application::remove_redraw_listener(application::redraw_listener_key k)
     {
-        m_redraw_listener = redraw_listener();
+        m_redraw_listeners.erase(k);
     }
 
     bool application::is_quit() const { return m_quit; }
 
     void application::set_quit() { m_quit = true; }
 
-    void application::input() {}
+    void application::input()
+    {
+        for (const auto &l : m_input_listeners) {
+            l();
+        }
+    }
 
-    void application::update(double delta) {}
+    void application::update(double delta)
+    {
+        for (const auto &l : m_update_listeners) {
+            l(delta);
+        }
+    }
 
-    void application::present(double peek) {}
+    void application::present(double peek)
+    {
+        for (const auto &l : m_redraw_listeners) {
+            l(peek);
+        }
+    }
 } // namespace mge

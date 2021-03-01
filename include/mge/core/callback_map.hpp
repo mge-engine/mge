@@ -4,6 +4,8 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/noncopyable.hpp"
 
+#include <boost/iterator/iterator_facade.hpp>
+
 #include <functional>
 #include <map>
 namespace mge {
@@ -20,9 +22,33 @@ namespace mge {
     class callback_map : public noncopyable
     {
     public:
+        using self_type = callback_map<T, K, C>;
+
         using function_type  = std::function<T>;
         using key_type       = K;
         using container_type = C;
+
+        class const_iterator
+            : public boost::iterator_facade<self_type::const_iterator,
+                                            const function_type,
+                                            boost::forward_traversal_tag>
+        {
+        public:
+            const_iterator(const typename container_type &m, bool end)
+                : m_it(end ? m.cend() : m.cbegin())
+            {}
+            const_iterator(const const_iterator &) = default;
+            const_iterator &operator=(const const_iterator &) = default;
+
+        private:
+            friend class boost::iterator_core_access;
+
+            void increment() { ++m_it; }
+            bool equal(const const_iterator &i) const { return m_it == i.m_it; }
+            const function_type &dereference() const { return m_it->second; }
+
+            typename container_type::const_iterator m_it;
+        };
 
         callback_map() : m_sequence(0) {}
 
@@ -63,6 +89,9 @@ namespace mge {
          * @return @c true if empty
          */
         bool empty() const { return m_data.empty(); }
+
+        const_iterator begin() const { return const_iterator(m_data, false); }
+        const_iterator end() const { return const_iterator(m_data, true); }
 
     private:
         key_type       m_sequence;

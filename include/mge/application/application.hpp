@@ -14,18 +14,21 @@
 
 namespace mge {
 
-    class MGEAPPLICATION_EXPORT application
-        : public component<application>
-        , public loop_target
+    class MGEAPPLICATION_EXPORT application : public component<application>,
+                                              public loop_target
     {
     public:
-        using clock = std::chrono::high_resolution_clock;
-
-        using update_listener_collection = callback_map<void()>;
+        using update_listener_collection = callback_map<void(double)>;
         using update_listener     = update_listener_collection::function_type;
         using update_listener_key = update_listener_collection::key_type;
 
-        using redraw_listener = std::function<void()>;
+        using redraw_listener_collection = callback_map<void(double)>;
+        using redraw_listener     = redraw_listener_collection::function_type;
+        using redraw_listener_key = redraw_listener_collection::key_type;
+
+        using input_listener_collection = callback_map<void()>;
+        using input_listener     = input_listener_collection::function_type;
+        using input_listener_key = input_listener_collection::key_type;
 
         application();
         ~application();
@@ -93,10 +96,26 @@ namespace mge {
                          const char **argv);
 
         /**
+         * @brief Add an input listener.
+         *
+         * @param l update listener
+         * @return key for update listener registration
+         */
+        input_listener_key add_input_listener(const input_listener &l);
+
+        /**
+         * @brief Remove update listener.
+         *
+         * @param k listener key
+         */
+        void remove_input_listener(input_listener_key k);
+
+
+        /**
          * @brief Add an update listener.
          *
          * @param l update listener
-         * @return update_listener_key key for update listener registration
+         * @return key for update listener registration
          */
         update_listener_key add_update_listener(const update_listener &l);
 
@@ -107,13 +126,26 @@ namespace mge {
          */
         void remove_update_listener(update_listener_key k);
 
-        void set_redraw_listener(const redraw_listener &l);
-        void clear_redraw_listener();
+        /**
+         * @brief Add a redraw listener.
+         *
+         * @param l listener
+         * @return key for redraw listener registration
+         */
+        redraw_listener_key add_redraw_listener(const redraw_listener &l);
+
+        /**
+         * @brief Remove redraw listener.
+         * @param k listener key
+         */
+        void remove_redraw_listener(redraw_listener_key k);
 
     private:
         std::vector<std::string>   m_arguments;
         volatile bool              m_quit;
+        input_listener_collection  m_input_listeners;
         update_listener_collection m_update_listeners;
-        redraw_listener            m_redraw_listener;
+        redraw_listener_collection m_redraw_listeners;
+
     };
 } // namespace mge
