@@ -5,6 +5,7 @@
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/stacktrace.hpp"
+#include "mge/core/type_name.hpp"
 #include <any>
 #include <exception>
 #include <optional>
