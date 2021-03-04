@@ -257,11 +257,37 @@ typical MGE application.</p>
 </p>
 </dd></dl>
 <dl class="cpp function">
+<dt id="_CPPv4N3mge11application18add_input_listenerERK14input_listener">
+<span id="_CPPv3N3mge11application18add_input_listenerERK14input_listener"></span><span id="_CPPv2N3mge11application18add_input_listenerERK14input_listener"></span><span id="mge::application::add_input_listener__input_listenerCR"></span><span class="target" id="classmge_1_1application_1ab29b5e195d9cdf5ef1e4070b7b3620aa"></span>input_listener_key <code class="sig-name descname">add_input_listener</code><span class="sig-paren">(</span><em class="property">const</em> input_listener &amp;<em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application18add_input_listenerERK14input_listener" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Add an input listener. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>key for update listener registration </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l</span></code>: update listener </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application21remove_input_listenerE18input_listener_key">
+<span id="_CPPv3N3mge11application21remove_input_listenerE18input_listener_key"></span><span id="_CPPv2N3mge11application21remove_input_listenerE18input_listener_key"></span><span id="mge::application::remove_input_listener__input_listener_key"></span><span class="target" id="classmge_1_1application_1ab26ec20c84d560770b3148e73773c949"></span>void <code class="sig-name descname">remove_input_listener</code><span class="sig-paren">(</span>input_listener_key <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application21remove_input_listenerE18input_listener_key" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Remove update listener. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: listener key </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
 <dt id="_CPPv4N3mge11application19add_update_listenerERK15update_listener">
 <span id="_CPPv3N3mge11application19add_update_listenerERK15update_listener"></span><span id="_CPPv2N3mge11application19add_update_listenerERK15update_listener"></span><span id="mge::application::add_update_listener__update_listenerCR"></span><span class="target" id="classmge_1_1application_1a10fbb077f7e63f4240e3ec5ad0dab80e"></span>update_listener_key <code class="sig-name descname">add_update_listener</code><span class="sig-paren">(</span><em class="property">const</em> update_listener &amp;<em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application19add_update_listenerERK15update_listener" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Add an update listener. </p>
 <p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>update_listener_key key for update listener registration </p>
+<dt><strong>Return</strong></dt><dd><p>key for update listener registration </p>
 </dd>
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">l</span></code>: update listener </p></li>
@@ -274,6 +300,32 @@ typical MGE application.</p>
 <dt id="_CPPv4N3mge11application22remove_update_listenerE19update_listener_key">
 <span id="_CPPv3N3mge11application22remove_update_listenerE19update_listener_key"></span><span id="_CPPv2N3mge11application22remove_update_listenerE19update_listener_key"></span><span id="mge::application::remove_update_listener__update_listener_key"></span><span class="target" id="classmge_1_1application_1adb151a6d6743f43e1fd88aea5acc7c51"></span>void <code class="sig-name descname">remove_update_listener</code><span class="sig-paren">(</span>update_listener_key <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_update_listenerE19update_listener_key" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Remove update listener. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: listener key </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener">
+<span id="_CPPv3N3mge11application19add_redraw_listenerERK15redraw_listener"></span><span id="_CPPv2N3mge11application19add_redraw_listenerERK15redraw_listener"></span><span id="mge::application::add_redraw_listener__redraw_listenerCR"></span><span class="target" id="classmge_1_1application_1a4bf04571fe124074ab85bb92da2be0f3"></span>redraw_listener_key <code class="sig-name descname">add_redraw_listener</code><span class="sig-paren">(</span><em class="property">const</em> redraw_listener &amp;<em>l</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Add a redraw listener. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>key for redraw listener registration </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l</span></code>: listener </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key">
+<span id="_CPPv3N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="_CPPv2N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="mge::application::remove_redraw_listener__redraw_listener_key"></span><span class="target" id="classmge_1_1application_1aea7a762d9c4f8d27dacd3fb5742ee9a1"></span>void <code class="sig-name descname">remove_redraw_listener</code><span class="sig-paren">(</span>redraw_listener_key <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Remove redraw listener. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: listener key </p></li>
