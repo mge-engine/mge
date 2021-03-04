@@ -12,7 +12,7 @@ namespace mge {
     class MGEAPPLICATION_EXPORT loop_target
     {
     public:
-        virtual ~loop_target();
+        virtual ~loop_target() = default;
 
         /**
          * @brief Retrieve whether the interactive loop shall quit.
