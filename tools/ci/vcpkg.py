@@ -8,8 +8,8 @@ import shutil
 # -- version            increment each time config changes
 # -- vcpkg_githash      git hash of vcpkg to check out
 # -- vcpkg_packages     array of package names to install
-version = "3"
-vcpkg_githash = "70422b96724101d67e88923539cf2ea2c880c39a"
+version = "4"
+vcpkg_githash = "d745992e603a0ff1e3d07530335fbf7aee0b82ae"
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree"
