@@ -60,14 +60,6 @@ namespace mge {
          */
         void *symbol(const std::string &name) const;
 
-        /**
-         * @brief Resolve a symbol in a shared library.
-         *
-         * @param name symbol name
-         * @return resolved symbol or null pointer if nothing found
-         */
-        void *symbol(std::string_view name) const;
-
     private:
         void load();
 

@@ -33,6 +33,18 @@ namespace mge {
         m_handle = reinterpret_cast<void *>(handle);
     }
 
-    void *shared_library::symbol(const char *name) const { return nullptr; }
+    void *shared_library::symbol(const char *name) const
+    {
+        HMODULE handle  = reinterpret_cast<HMODULE>(m_handle);
+        auto    address = GetProcAddress(handle, name);
+        return reinterpret_cast<void *>(address);
+    }
+
+    void *shared_library::symbol(const std::string &name) const
+    {
+        HMODULE handle  = reinterpret_cast<HMODULE>(m_handle);
+        auto    address = GetProcAddress(handle, name.c_str());
+        return reinterpret_cast<void *>(address);
+    }
 
 } // namespace mge
