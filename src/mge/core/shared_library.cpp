@@ -33,4 +33,6 @@ namespace mge {
         m_handle = reinterpret_cast<void *>(handle);
     }
 
+    void *shared_library::symbol(const char *name) const { return nullptr; }
+
 } // namespace mge
