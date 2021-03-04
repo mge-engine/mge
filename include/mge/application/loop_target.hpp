@@ -12,13 +12,13 @@ namespace mge {
     class MGEAPPLICATION_EXPORT loop_target
     {
     public:
-        virtual ~loop_target() = default;
+        virtual ~loop_target();
 
         /**
          * @brief Retrieve whether the interactive loop shall quit.
          * @return @c true if the interaction loop shall quit
          */
-        virtual bool is_quit() const      = 0;
+        virtual bool is_quit() const = 0;
 
         /**
          * @brief Retrieve and process input in an loop step.

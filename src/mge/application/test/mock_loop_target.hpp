@@ -7,8 +7,8 @@
 class MOCK_loop_target : public mge::loop_target
 {
 public:
-    MOCK_loop_target()          = default;
-    virtual ~MOCK_loop_target() = default;
+    MOCK_loop_target() = default;
+    // virtual ~MOCK_loop_target() = default;
 
     MOCK_METHOD(bool, is_quit, (), (const));
     MOCK_METHOD(void, input, ());
