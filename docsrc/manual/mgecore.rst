@@ -16,4 +16,5 @@ which are not directly related to graphics or game programming.
     core/statistics.rst
     core/exception.rst
     core/component.rst
+    core/system.rst
     core/utilities.rst
