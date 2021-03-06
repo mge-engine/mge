@@ -60,6 +60,9 @@ namespace mge {
             mge::exception::operator<<(value);
             return *this;
         }
+
+    private:
+        void set_error_code(error_code_type ec);
     };
 
 } // namespace mge
