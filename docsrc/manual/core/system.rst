@@ -8,11 +8,17 @@ abstraction is not already covered by the standard library.
 System Error
 ============
 
+The system error captures the last - or a provided - system
+error and also resolves its message.
+
 ..  doxygenclass:: mge::system_error
     :members:
 
 Shared Library
 ==============
+
+Shared libraries can be loaded and inspected using the :any:`mge::shared_librar`
+class:
 
 ..  doxygenclass:: mge::shared_library
     :members:
