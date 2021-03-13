@@ -2,11 +2,17 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/noncopyable.hpp"
+#include <filesystem>
 #include <string>
 #include <string_view>
+
+#ifdef MGE_OS_WINDOWS
+#    include <windows.h>
+#endif
 
 namespace mge {
 
@@ -18,31 +24,27 @@ namespace mge {
     class MGECORE_EXPORT shared_library : noncopyable
     {
     public:
+#ifdef MGE_OS_WINDOWS
+        using handle_type = HMODULE;
+
+        static constexpr handle_type nil_handle = 0;
+#else
+#    error Missing port
+#endif
+
         /**
          * @brief Load shared library.
          *
          * @param name library file name
          */
-        shared_library(const char *name);
-        /**
-         * @brief Load shared library.
-         *
-         * @param name library file name
-         */
-        shared_library(std::string_view name);
-        /**
-         * @brief Load shared library.
-         *
-         * @param name library file name
-         */
-        shared_library(const std::string &name);
+        shared_library(const std::filesystem::path &name);
 
         /**
          * @brief File name.
          *
          * @return file name of loaded library
          */
-        const std::string &name() const { return m_name; }
+        const std::filesystem::path &name() const { return m_name; }
 
         /**
          * @brief Resolve a symbol in a shared library.
@@ -63,7 +65,7 @@ namespace mge {
     private:
         void load();
 
-        std::string m_name;
-        void *      m_handle;
+        std::filesystem::path m_name;
+        handle_type           m_handle;
     };
 } // namespace mge

@@ -26,6 +26,8 @@ MGE_LIBRARY(
         component.cpp
         shared_library.cpp
         system_error.cpp
+        module.cpp
+        crash.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
@@ -58,6 +60,8 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/callback_map.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/shared_library.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/system_error.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/module.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/crash.hpp
     )
 
 TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)

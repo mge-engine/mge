@@ -23,6 +23,8 @@ namespace mge {
     class MGEGRAPHICS_EXPORT render_system : public component<render_system>
     {
     public:
+        virtual ~render_system() = default;
+
         /**
          * @brief Create a window
          * @param extent  window size

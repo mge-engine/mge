@@ -4,9 +4,16 @@
 /** @file */
 #pragma once
 
+#include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
+
+#ifdef MGE_OS_WINDOWS
+#    if defined(ERROR)
+#        undef ERROR
+#    endif
+#endif
 
 namespace mge {
     /**

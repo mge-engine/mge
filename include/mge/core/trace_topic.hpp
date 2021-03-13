@@ -141,7 +141,7 @@ namespace mge {
     {                                                                          \
         return s__trace_topic##TOPIC;                                          \
     }                                                                          \
-    MGE_DLLEXPORT mge::trace_topic &__trace_topic_##TOPIC()
+    extern int s_trace_dummy
 
 /**
  * @def MGE_TRACE_TOPIC

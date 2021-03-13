@@ -14,5 +14,7 @@ INCLUDE(macros/test)
 
 INCLUDE(thirdparty/googletest)
 INCLUDE(thirdparty/boost)
+INCLUDE(thirdparty/opengl)
+INCLUDE(thirdparty/gl3w)
 INCLUDE(thirdparty/doxygen)
 INCLUDE(thirdparty/sphinx)

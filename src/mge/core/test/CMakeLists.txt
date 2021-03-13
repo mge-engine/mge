@@ -19,7 +19,8 @@ SET(MGECORE_TESTS
     exception
     component
     enum_set
-    callback_map)
+    callback_map
+    crash)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
