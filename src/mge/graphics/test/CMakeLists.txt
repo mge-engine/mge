@@ -6,6 +6,7 @@ SET(MGEGRAPHICS_TESTS
     extent
     point
     window
+    video_mode
 )
 
 FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})
