@@ -55,7 +55,7 @@ For loading the configuration, the following process is used:
 #. :any:`mge::executable_name` is used to retrieve the base name
    of the configuration
 #. a valid configuration file is looked up, in the formats supported
-   by :any:`boost::property_tree`, the first match is used:
+   by `boost::property_tree`, the first match is used:
 
    * `<executable_name>.json`
 

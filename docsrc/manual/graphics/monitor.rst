@@ -12,7 +12,7 @@ the :any:`mge::monitor` class.
 .. doxygenclass:: mge::monitor
     :members:
 
-A monitor has a _video mode_ set, and a list of supported video modes.
+A monitor has a *video mode* set, and a list of supported video modes.
 
 .. doxygenclass:: mge::video_mode
     :members:
