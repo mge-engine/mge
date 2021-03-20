@@ -24,6 +24,7 @@ namespace mge {
         private:
             DISPLAY_DEVICEW m_adapter_device;
             DISPLAY_DEVICEW m_display_device;
+            bool            m_primary;
         };
     } // namespace win32
 } // namespace mge
