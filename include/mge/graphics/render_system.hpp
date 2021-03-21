@@ -40,5 +40,8 @@ namespace mge {
          * @return default render system
          */
         static render_system_ref create();
+
+        using monitor_collection = std::vector<monitor_ref>;
+
     };
 } // namespace mge

@@ -105,6 +105,16 @@ Copy of Structures
 
 Plain structures, and POD types do not define an assignment operator.
 Fumbling around with `memcpy` and `sizeof` may be a source of error,
-so this is encapsulated in :any:`mge::copy_struct`
+so this is encapsulated in :any:`mge::copy_struct`.
 
 .. doxygenfunction:: mge::copy_struct
+
+Clear Memory of Structures
+--------------------------
+
+Unlike constructed objects, plain structures can be uninitialized and
+it may be necessary to fill them with zeros. Again, handling
+`sizeof` can be a source of error, so this is encapsulated in
+:any:`mge::zero_memory`.
+
+.. doxygenfunction:: mge::zero_memory

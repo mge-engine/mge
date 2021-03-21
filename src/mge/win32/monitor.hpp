@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/monitor.hpp"
+#include "mge/graphics/render_system.hpp"
 
 #include <windows.h>
 
@@ -10,6 +11,8 @@ namespace mge {
         class monitor : public mge::monitor
         {
         public:
+            using monitor_collection = mge::render_system::monitor_collection;
+
             monitor(const DISPLAY_DEVICEW &adapter_device,
                     const DISPLAY_DEVICEW &display_device, bool primary);
 
@@ -21,10 +24,17 @@ namespace mge {
             video_mode            current_mode() const override;
             video_mode_collection supported_modes() const override;
 
+            static monitor_collection all_monitors();
+
         private:
-            DISPLAY_DEVICEW m_adapter_device;
-            DISPLAY_DEVICEW m_display_device;
-            bool            m_primary;
+            void compute_physical_size();
+            void compute_video_modes();
+
+            DISPLAY_DEVICEW       m_adapter_device;
+            DISPLAY_DEVICEW       m_display_device;
+            video_mode_collection m_video_modes;
+            extent                m_physical_size;
+            bool                  m_primary;
         };
     } // namespace win32
 } // namespace mge

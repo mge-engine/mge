@@ -22,6 +22,17 @@ namespace mge {
         static constexpr uint32_t ANY_REFRESH_RATE =
             std::numeric_limits<uint32_t>::max();
 
+        /**
+         * @brief Create video mode.
+         *
+         * @param width         width in pixels
+         * @param height        height in pixels
+         * @param refresh_rate_ refresh rate in Hz
+         */
+        video_mode(uint32_t width, uint32_t height, uint32_t refresh_rate_)
+            : extent(width, height), refresh_rate(refresh_rate_)
+        {}
+
         video_mode() : refresh_rate(ANY_REFRESH_RATE) {}
         video_mode(const video_mode &) = default;
         video_mode &operator=(const video_mode &) = default;

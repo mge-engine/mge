@@ -9,8 +9,6 @@
 #include <memory>
 #include <string_view>
 
-#include <boost/preprocessor/slot/counter.hpp>
-
 using namespace std::string_view_literals;
 
 namespace mge {

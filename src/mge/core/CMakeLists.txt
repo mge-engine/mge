@@ -63,6 +63,7 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/module.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/crash.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/copy_struct.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/zero_memory.hpp
     )
 
 TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)
