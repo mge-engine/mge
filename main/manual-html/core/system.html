@@ -133,6 +133,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
@@ -202,7 +203,7 @@ error and also resolves its message.</p>
 </div>
 <div class="section" id="shared-library">
 <h2>Shared Library<a class="headerlink" href="#shared-library" title="Permalink to this headline">¶</a></h2>
-<p>Shared libraries can be loaded and inspected using the <code class="xref any docutils literal notranslate"><span class="pre">mge::shared_librar</span></code>
+<p>Shared libraries can be loaded and inspected using the <a class="reference internal" href="#_CPPv4N3mge14shared_libraryE" title="mge::shared_library"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::shared_library</span></code></a>
 class:</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge14shared_libraryE">
@@ -211,32 +212,8 @@ class:</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge14shared_library14shared_libraryEPKc">
-<span id="_CPPv3N3mge14shared_library14shared_libraryEPKc"></span><span id="_CPPv2N3mge14shared_library14shared_libraryEPKc"></span><span id="mge::shared_library::shared_library__cCP"></span><span class="target" id="classmge_1_1shared__library_1a3cf77d01879266e97df8450ecff074cc"></span><code class="sig-name descname">shared_library</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14shared_library14shared_libraryEPKc" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Load shared library. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: library file name </p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-<dl class="cpp function">
-<dt id="_CPPv4N3mge14shared_library14shared_libraryENSt11string_viewE">
-<span id="_CPPv3N3mge14shared_library14shared_libraryENSt11string_viewE"></span><span id="_CPPv2N3mge14shared_library14shared_libraryENSt11string_viewE"></span><span id="mge::shared_library::shared_library__std::string_view"></span><span class="target" id="classmge_1_1shared__library_1ad26751d96b96df1620ac739bc3f704a4"></span><code class="sig-name descname">shared_library</code><span class="sig-paren">(</span>std::string_view <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14shared_library14shared_libraryENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Load shared library. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: library file name </p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-<dl class="cpp function">
-<dt id="_CPPv4N3mge14shared_library14shared_libraryERKNSt6stringE">
-<span id="_CPPv3N3mge14shared_library14shared_libraryERKNSt6stringE"></span><span id="_CPPv2N3mge14shared_library14shared_libraryERKNSt6stringE"></span><span id="mge::shared_library::shared_library__ssCR"></span><span class="target" id="classmge_1_1shared__library_1ad425003284c1b6841db3567548d1f22a"></span><code class="sig-name descname">shared_library</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14shared_library14shared_libraryERKNSt6stringE" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge14shared_library14shared_libraryERKNSt10filesystem4pathE">
+<span id="_CPPv3N3mge14shared_library14shared_libraryERKNSt10filesystem4pathE"></span><span id="_CPPv2N3mge14shared_library14shared_libraryERKNSt10filesystem4pathE"></span><span id="mge::shared_library::shared_library__std::filesystem::pathCR"></span><span class="target" id="classmge_1_1shared__library_1a5c1dedf840b84b7a7a44c7ce1ae6c4af"></span><code class="sig-name descname">shared_library</code><span class="sig-paren">(</span><em class="property">const</em> std::filesystem::path &amp;<em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14shared_library14shared_libraryERKNSt10filesystem4pathE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Load shared library. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
@@ -248,7 +225,7 @@ class:</p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4NK3mge14shared_library4nameEv">
-<span id="_CPPv3NK3mge14shared_library4nameEv"></span><span id="_CPPv2NK3mge14shared_library4nameEv"></span><span id="mge::shared_library::nameC"></span><span class="target" id="classmge_1_1shared__library_1a1153d6c02d8eb7fe050da29bc720c0f4"></span><em class="property">const</em> std::string &amp;<code class="sig-name descname">name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge14shared_library4nameEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge14shared_library4nameEv"></span><span id="_CPPv2NK3mge14shared_library4nameEv"></span><span id="mge::shared_library::nameC"></span><span class="target" id="classmge_1_1shared__library_1acb0acf20bab978bc205f2b9e6d823c0d"></span><em class="property">const</em> std::filesystem::path &amp;<code class="sig-name descname">name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK3mge14shared_library4nameEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>File name. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p>file name of loaded library </p>

@@ -133,6 +133,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
@@ -621,7 +622,7 @@ assignment operatpr deleted.</p>
 <dt id="_CPPv4N3mge11noncopyableE">
 <span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><em class="property">class </em><code class="sig-name descname">noncopyable</code><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Object that can’t be copied. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; void(double)&gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; void()&gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; T, K, C &gt;</span></a>, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; void(double)&gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; void()&gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; T, K, C &gt;</span></a>, mge::module, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a></p>
 </dd></dl>
 </div>
 </div>
@@ -823,6 +824,52 @@ a callback again, as function objects can’t be compared.</p>
 <dd></dd></dl>
 </dd></dl>
 </div>
+<div class="section" id="copy-of-structures">
+<h3>Copy of Structures<a class="headerlink" href="#copy-of-structures" title="Permalink to this headline">¶</a></h3>
+<p>Plain structures, and POD types do not define an assignment operator.
+Fumbling around with <cite>memcpy</cite> and <cite>sizeof</cite> may be a source of error,
+so this is encapsulated in <a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct"><code class="xref any cpp cpp-function docutils literal notranslate"><span class="pre">mge::copy_struct()</span></code></a>.</p>
+<dl class="cpp function">
+<dt id="_CPPv4I0EN3mge11copy_structEvR1TRK1T">
+<span id="_CPPv3I0EN3mge11copy_structER1TRK1T"></span><span id="_CPPv2I0EN3mge11copy_structER1TRK1T"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br/><span class="target" id="namespacemge_1a243e8674ff0f331d1de8691eab409b03"></span>void <code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">copy_struct</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct::T">T</a> &amp;<em>target</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct::T">T</a> &amp;<em>source</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Plain memory copy of a structure into another. </p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: type copied </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">target</span></code>: target value </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code>: source value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+<div class="section" id="clear-memory-of-structures">
+<h3>Clear Memory of Structures<a class="headerlink" href="#clear-memory-of-structures" title="Permalink to this headline">¶</a></h3>
+<p>Unlike constructed objects, plain structures can be uninitialized and
+it may be necessary to fill them with zeros. Again, handling
+<cite>sizeof</cite> can be a source of error, so this is encapsulated in
+<a class="reference internal" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="mge::zero_memory"><code class="xref any cpp cpp-function docutils literal notranslate"><span class="pre">mge::zero_memory()</span></code></a>.</p>
+<dl class="cpp function">
+<dt id="_CPPv4I0EN3mge11zero_memoryEvR1T">
+<span id="_CPPv3I0EN3mge11zero_memoryER1T"></span><span id="_CPPv2I0EN3mge11zero_memoryER1T"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br/><span class="target" id="namespacemge_1a135de7a97cbc84ed7d49952e80fc2c53"></span>void <code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">zero_memory</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="mge::zero_memory::T">T</a> &amp;<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Clears the memory of a structure. </p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: type of cleared value </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: cleared value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
 </div>
 </div>
 
@@ -900,6 +947,8 @@ a callback again, as function objects can’t be compared.</p>
 <li><a class="reference internal" href="#singleton">Singleton</a></li>
 <li><a class="reference internal" href="#container-element-check">Container Element Check</a></li>
 <li><a class="reference internal" href="#callback-map">Callback Map</a></li>
+<li><a class="reference internal" href="#copy-of-structures">Copy of Structures</a></li>
+<li><a class="reference internal" href="#clear-memory-of-structures">Clear Memory of Structures</a></li>
 </ul>
 </li>
 </ul>

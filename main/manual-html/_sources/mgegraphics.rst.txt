@@ -11,5 +11,6 @@ abstraction.
     :maxdepth: 1
 
     graphics/system.rst
+    graphics/monitor.rst
     graphics/window.rst
     graphics/datastructures.rst

@@ -17,7 +17,7 @@ error and also resolves its message.
 Shared Library
 ==============
 
-Shared libraries can be loaded and inspected using the :any:`mge::shared_librar`
+Shared libraries can be loaded and inspected using the :any:`mge::shared_library`
 class:
 
 ..  doxygenclass:: mge::shared_library

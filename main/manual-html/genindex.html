@@ -132,6 +132,7 @@
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="graphics/system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/datastructures.html">Data Structures</a></li>
 </ul>
@@ -258,6 +259,8 @@
         <li><a href="core/configuration.html#_CPPv4N3mge13configuration5storeEv">mge::configuration::store (C++ function)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element">mge::contains (C++ function)</a>
+</li>
+        <li><a href="core/utilities.html#_CPPv4I0EN3mge11copy_structEvR1TRK1T">mge::copy_struct (C++ function)</a>
 </li>
         <li><a href="core/exception.html#_CPPv4N3mge9exceptionE">mge::exception (C++ class)</a>
 </li>
@@ -387,6 +390,20 @@
 </li>
         <li><a href="input/keyboard.html#_CPPv4N3mge14modifier_value5SHIFTE">mge::modifier_value::SHIFT (C++ enumerator)</a>
 </li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge7monitorE">mge::monitor (C++ class)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4NK3mge7monitor12current_modeEv">mge::monitor::current_mode (C++ function)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4NK3mge7monitor4nameEv">mge::monitor::name (C++ function)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4NK3mge7monitor13physical_sizeEv">mge::monitor::physical_size (C++ function)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4NK3mge7monitor7primaryEv">mge::monitor::primary (C++ function)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4NK3mge7monitor15supported_modesEv">mge::monitor::supported_modes (C++ function)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge7monitor21video_mode_collectionE">mge::monitor::video_mode_collection (C++ type)</a>
+</li>
         <li><a href="input/state.html#_CPPv4N3mge11mouse_stateE">mge::mouse_state (C++ class)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4I0EN3mge14namespace_nameENSt6stringEv">mge::namespace_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge14namespace_nameERKNSt9type_infoE">[1]</a>
@@ -425,7 +442,7 @@
 </li>
         <li><a href="core/system.html#_CPPv4NK3mge14shared_library4nameEv">mge::shared_library::name (C++ function)</a>
 </li>
-        <li><a href="core/system.html#_CPPv4N3mge14shared_library14shared_libraryENSt11string_viewE">mge::shared_library::shared_library (C++ function)</a>, <a href="core/system.html#_CPPv4N3mge14shared_library14shared_libraryEPKc">[1]</a>, <a href="core/system.html#_CPPv4N3mge14shared_library14shared_libraryERKNSt6stringE">[2]</a>
+        <li><a href="core/system.html#_CPPv4N3mge14shared_library14shared_libraryERKNSt10filesystem4pathE">mge::shared_library::shared_library (C++ function)</a>
 </li>
         <li><a href="core/system.html#_CPPv4NK3mge14shared_library6symbolEPKc">mge::shared_library::symbol (C++ function)</a>, <a href="core/system.html#_CPPv4NK3mge14shared_library6symbolERKNSt6stringE">[1]</a>
 </li>
@@ -443,10 +460,10 @@
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge9singletonptEv">mge::singleton::operator-&gt; (C++ function)</a>, <a href="core/utilities.html#_CPPv4NK3mge9singletonptEv">[1]</a>
 </li>
-        <li><a href="core/utilities.html#_CPPv4N3mge9singleton7pointerE">mge::singleton::pointer (C++ type)</a>
-</li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="core/utilities.html#_CPPv4N3mge9singleton7pointerE">mge::singleton::pointer (C++ type)</a>
+</li>
         <li><a href="core/utilities.html#_CPPv4N3mge9singleton3ptrEv">mge::singleton::ptr (C++ function)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge9singleton9referenceE">mge::singleton::reference (C++ type)</a>
@@ -637,6 +654,16 @@
 </li>
         <li><a href="core/utilities.html#_CPPv4I0EN3mge9type_nameENSt6stringEv">mge::type_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge9type_nameERKNSt9type_infoE">[1]</a>
 </li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge10video_modeE">mge::video_mode (C++ class)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge10video_mode16ANY_REFRESH_RATEE">mge::video_mode::ANY_REFRESH_RATE (C++ member)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge10video_mode6extentE">mge::video_mode::extent (C++ member)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge10video_mode12refresh_rateE">mge::video_mode::refresh_rate (C++ member)</a>
+</li>
+        <li><a href="graphics/monitor.html#_CPPv4N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t">mge::video_mode::video_mode (C++ function)</a>
+</li>
         <li><a href="graphics/window.html#_CPPv4N3mge6windowE">mge::window (C++ class)</a>
 </li>
         <li><a href="graphics/window.html#_CPPv4NK3mge6window6extentEv">mge::window::extent (C++ function)</a>
@@ -654,6 +681,8 @@
         <li><a href="graphics/window.html#_CPPv4N3mge14window_options18fullscreen_optionsEv">mge::window_options::fullscreen_options (C++ function)</a>
 </li>
         <li><a href="graphics/window.html#_CPPv4N3mge14window_options16standard_optionsEv">mge::window_options::standard_options (C++ function)</a>
+</li>
+        <li><a href="core/utilities.html#_CPPv4I0EN3mge11zero_memoryEvR1T">mge::zero_memory (C++ function)</a>
 </li>
         <li><a href="core/exception.html#c.MGE_CALLED_FUNCTION">MGE_CALLED_FUNCTION (C macro)</a>
 </li>
