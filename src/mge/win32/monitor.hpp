@@ -33,6 +33,8 @@ namespace mge {
             DISPLAY_DEVICEW       m_adapter_device;
             DISPLAY_DEVICEW       m_display_device;
             video_mode_collection m_video_modes;
+            std::string           m_name;
+            video_mode            m_current_mode;
             extent                m_physical_size;
             bool                  m_primary;
         };
