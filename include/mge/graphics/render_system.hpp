@@ -43,5 +43,11 @@ namespace mge {
 
         using monitor_collection = std::vector<monitor_ref>;
 
+        /**
+         * @brief Get monitors of the system.
+         *
+         * @return attached monitors
+         */
+        virtual monitor_collection monitors() = 0;
     };
 } // namespace mge
