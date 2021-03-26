@@ -13,8 +13,8 @@ def install_vulkan():
     if os.path.exists(vulkan_installer_cache_dir):
         shutil.rmtree(vulkan_installer_cache_dir)
         os.mkdir('vulkan-installer')
-    subprocess.run("curl", "--show-error", "--output",
-                   '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?u=" % (vulkan_version, vulkan_version))
+    subprocess.run(["curl", "--show-error", "--output",
+                    '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?u=" % (vulkan_version, vulkan_version)], )
 
 
 try:
