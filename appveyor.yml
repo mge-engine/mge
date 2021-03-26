@@ -27,9 +27,9 @@ init:
 platform: x64
 
 before_build:
+  - cmd: python tools/ci/vulkan.py
   - cmd: SET ORIG_PATH=%PATH%
   - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
-  - cmd: python tools/ci/vulkan.py
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
@@ -64,4 +64,5 @@ on_finish:
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg.py
   - C:\projects\mge\sphinx -> tools/ci/sphinx.py
+  - C:\projects\mge\vulkan-installer -> tools/ci/vulkan.py
   - C:\PROGRA~1\doxygen -> tools/ci/doxygen.py
