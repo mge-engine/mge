@@ -34,6 +34,7 @@ before_build:
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
   - cmd: SET PATH=C:\projects\mge\sphinx\Scripts;%ORIG_PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: SET
 
 build_script:
   - cmd: mkdir build
