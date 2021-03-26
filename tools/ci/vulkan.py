@@ -13,6 +13,10 @@ def vulkan_installer_exists():
     return os.path.exists(vulkan_installer)
 
 
+def vulkan_installed():
+    return os.path.exists("C:\\VulkanSDK\%s" % vulkan_version)
+
+
 def download_vulkan():
     if os.path.exists(vulkan_installer_cache_dir):
         shutil.rmtree(vulkan_installer_cache_dir)
@@ -28,10 +32,12 @@ def install_vulkan():
 
 
 try:
-    if not vulkan_installer_exists():
-        download_vulkan()
-
-    install_vulkan()
+    if not vulkan_installed():
+        if not vulkan_installer_exists():
+            download_vulkan()
+        install_vulkan()
+    else:
+        print("Vulkan is already installed", flush=True)
 except:
     print("Exception %s" % str(sys.exc_info()), flush=True)
     sys.exit(1)
