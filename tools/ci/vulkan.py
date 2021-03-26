@@ -20,7 +20,8 @@ def install_vulkan():
     print("Downloading vulkan installer", flush=True)
     subprocess.run(["curl", "--show-error", "--output",
                     '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?u=" % (vulkan_version, vulkan_version)], )
-    subprocess.run([vulkan_installer, "-?"])
+    print("Run vulkan installer", flush=True)
+    subprocess.run([vulkan_installer, "/S"])
 
 
 try:
