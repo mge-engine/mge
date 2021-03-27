@@ -5,6 +5,7 @@
 INCLUDE(compiler/msvc)
 
 INCLUDE(settings/debugrelease)
+INCLUDE(settings/headless)
 INCLUDE(settings/version)
 
 INCLUDE(macros/documentation)
