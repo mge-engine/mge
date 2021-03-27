@@ -1,6 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2021 by Alexander Schroeder
-# Modifications from original: All rights reserved.
+# All rights reserved.
 
 #=============================================================================
 # Copyright 2007-2009 Kitware, Inc.
