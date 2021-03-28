@@ -1,11 +1,12 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tracing" href="tracing.html" /><link rel="prev" title="Core Library" href="../mgecore.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tracing" href="tracing.html" /><link rel="prev" title="Core Library" href="../mgecore.html" />
 
-    <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
+    <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
         <title>Definitions - MGE 0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
     
@@ -36,12 +37,7 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script defer="defer" src="../_static/jquery.js"></script>
-    <script defer="defer" src="../_static/underscore.js"></script>
-    <script defer="defer" src="../_static/doctools.js"></script>
-    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -183,23 +179,23 @@ operating systems, compilers and CPU architectures</p>
 <h3>Compiler<a class="headerlink" href="#compiler" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt id="c.MGE_COMPILER_MSVC">
-<code class="sig-name descname">MGE_COMPILER_MSVC</code><a class="headerlink" href="#c.MGE_COMPILER_MSVC" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_COMPILER_MSVC</span></code><a class="headerlink" href="#c.MGE_COMPILER_MSVC" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the compiler is Microsoft Visual C++.</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_COMPILER_GNUC">
-<code class="sig-name descname">MGE_COMPILER_GNUC</code><a class="headerlink" href="#c.MGE_COMPILER_GNUC" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_COMPILER_GNUC</span></code><a class="headerlink" href="#c.MGE_COMPILER_GNUC" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the compiler is GNU C++.</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_COMPILER_MINGW">
-<code class="sig-name descname">MGE_COMPILER_MINGW</code><a class="headerlink" href="#c.MGE_COMPILER_MINGW" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_COMPILER_MINGW</span></code><a class="headerlink" href="#c.MGE_COMPILER_MINGW" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the compiler is MinGW (in this case also
 <cite>MGE_COMPILER_GNUC</cite> is defined).`</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_COMPILER_CLANG">
-<code class="sig-name descname">MGE_COMPILER_CLANG</code><a class="headerlink" href="#c.MGE_COMPILER_CLANG" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_COMPILER_CLANG</span></code><a class="headerlink" href="#c.MGE_COMPILER_CLANG" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the compiler is <code class="docutils literal notranslate"><span class="pre">clang</span></code>.</p>
 </dd></dl>
 </div>
@@ -207,22 +203,22 @@ operating systems, compilers and CPU architectures</p>
 <h3>Operating System<a class="headerlink" href="#operating-system" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt id="c.MGE_OS_LINUX">
-<code class="sig-name descname">MGE_OS_LINUX</code><a class="headerlink" href="#c.MGE_OS_LINUX" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_OS_LINUX</span></code><a class="headerlink" href="#c.MGE_OS_LINUX" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the operating system is Linux.</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_OS_WINDOWS">
-<code class="sig-name descname">MGE_OS_WINDOWS</code><a class="headerlink" href="#c.MGE_OS_WINDOWS" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_OS_WINDOWS</span></code><a class="headerlink" href="#c.MGE_OS_WINDOWS" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the operating system is Microsoft Windows.</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_OS_MACOSX">
-<code class="sig-name descname">MGE_OS_MACOSX</code><a class="headerlink" href="#c.MGE_OS_MACOSX" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_OS_MACOSX</span></code><a class="headerlink" href="#c.MGE_OS_MACOSX" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the operating system is Mac OS X.</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_OS_UNIX">
-<code class="sig-name descname">MGE_OS_UNIX</code><a class="headerlink" href="#c.MGE_OS_UNIX" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_OS_UNIX</span></code><a class="headerlink" href="#c.MGE_OS_UNIX" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Defined if the operating system is a Unix-style system, like
 Linux and Mac OS X.</p>
 </dd></dl>
@@ -263,14 +259,14 @@ interprets them (and what conditions need to be warned on).</p>
 <h3>Common Attributes<a class="headerlink" href="#common-attributes" title="Permalink to this headline">¶</a></h3>
 <dl class="c macro">
 <dt id="c.MGE_NO_RETURN">
-<code class="sig-name descname">MGE_NO_RETURN</code><a class="headerlink" href="#c.MGE_NO_RETURN" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_NO_RETURN</span></code><a class="headerlink" href="#c.MGE_NO_RETURN" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Attribute that describes a function does not return
 (<a class="reference external" href="https://en.cppreference.com/w/cpp/language/attributes/noreturn">[[noreturn]]</a>
 in C++11).</p>
 </dd></dl>
 <dl class="c macro">
 <dt id="c.MGE_NO_INLINE">
-<code class="sig-name descname">MGE_NO_INLINE</code><a class="headerlink" href="#c.MGE_NO_INLINE" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_NO_INLINE</span></code><a class="headerlink" href="#c.MGE_NO_INLINE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Attribute forcing a function not to be inlined.</p>
 </dd></dl>
 </div>
@@ -279,12 +275,12 @@ in C++11).</p>
 <p>The file <code class="file docutils literal notranslate"><span class="pre">mge/dllexport.hpp</span></code> defines some macros used for symbol visiblity.</p>
 <dl class="cpp macro">
 <dt id="c.MGE_DLLEXPORT">
-<span class="target" id="dllexport_8hpp_1a62ee7763c38abe892c4a53bed7c01537"></span><code class="sig-name descname">MGE_DLLEXPORT</code><a class="headerlink" href="#c.MGE_DLLEXPORT" title="Permalink to this definition">¶</a><br/></dt>
+<span class="target" id="dllexport_8hpp_1a62ee7763c38abe892c4a53bed7c01537"></span><code class="sig-name descname"><span class="pre">MGE_DLLEXPORT</span></code><a class="headerlink" href="#c.MGE_DLLEXPORT" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Macro to declare class or function to be exported from DLL. </p>
 </dd></dl>
 <dl class="cpp macro">
 <dt id="c.MGE_DLLIMPORT">
-<span class="target" id="dllexport_8hpp_1a15a25ae5ed32a82ecef114a1159dd000"></span><code class="sig-name descname">MGE_DLLIMPORT</code><a class="headerlink" href="#c.MGE_DLLIMPORT" title="Permalink to this definition">¶</a><br/></dt>
+<span class="target" id="dllexport_8hpp_1a15a25ae5ed32a82ecef114a1159dd000"></span><code class="sig-name descname"><span class="pre">MGE_DLLIMPORT</span></code><a class="headerlink" href="#c.MGE_DLLIMPORT" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Macro to declare class or function to be imported from DLL. </p>
 </dd></dl>
 </div>
@@ -293,7 +289,7 @@ in C++11).</p>
 <h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
 <dl class="c macro">
 <dt id="c.MGE_FUNCTION_SIGNATURE">
-<code class="sig-name descname">MGE_FUNCTION_SIGNATURE</code><a class="headerlink" href="#c.MGE_FUNCTION_SIGNATURE" title="Permalink to this definition">¶</a><br/></dt>
+<code class="sig-name descname"><span class="pre">MGE_FUNCTION_SIGNATURE</span></code><a class="headerlink" href="#c.MGE_FUNCTION_SIGNATURE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Expands to the function signature as text.</p>
 </dd></dl>
 </div>
@@ -378,5 +374,9 @@ in C++11).</p>
     </aside>
   </main>
 </div>
-  </body>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
 </html>

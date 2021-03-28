@@ -1,11 +1,12 @@
 <!doctype html>
 <html class="no-js">
   <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="System Abstractions" href="system.html" /><link rel="prev" title="Exception Handling" href="exception.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="System Abstractions" href="system.html" /><link rel="prev" title="Exception Handling" href="exception.html" />
 
-    <meta name="generator" content="sphinx-3.4.3, furo 2020.12.30.beta24"/>
+    <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
         <title>Components - MGE 0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=33d2fc4f3f180ec1ffc6524e273e21d7d58cbe49">
+      <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
     
@@ -36,12 +37,7 @@
   --color-code-foreground: #d0d0d0;
   
   }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=26485485040e7aaf717c13fd0188a5ad2c2deb60">
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script defer="defer" src="../_static/jquery.js"></script>
-    <script defer="defer" src="../_static/underscore.js"></script>
-    <script defer="defer" src="../_static/doctools.js"></script>
-    <script defer src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></head>
+</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
   <body dir="">
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -176,7 +172,7 @@ implementation can be selected when creating an instance.</p>
 <h2>Component Base Class<a class="headerlink" href="#component-base-class" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp class">
 <dt id="_CPPv4I0EN3mge9componentE">
-<span id="_CPPv3I0EN3mge9componentE"></span><span id="_CPPv2I0EN3mge9componentE"></span>template&lt;typename <code class="sig-name descname">Class</code>&gt;<br/><span class="target" id="classmge_1_1component"></span><em class="property">class </em><code class="sig-prename descclassname">mge<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">component</code> : <em class="property">public</em> mge::component_base<a class="headerlink" href="#_CPPv4I0EN3mge9componentE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge9componentE"></span><span id="_CPPv2I0EN3mge9componentE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">Class</span></code><span class="pre">&gt;</span><br/><span class="target" id="classmge_1_1component"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">component</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><span class="pre">component_base</span><a class="headerlink" href="#_CPPv4I0EN3mge9componentE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Base class for defining a component. </p>
 <p>Classes defining an interface are defined as subclass of this class. This class implements factory and introspection methods to instantiate an implementation.</p>
 <p><dl class="simple">
@@ -190,7 +186,7 @@ implementation can be selected when creating an instance.</p>
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge9componentD0Ev">
-<span id="_CPPv3N3mge9componentD0Ev"></span><span id="_CPPv2N3mge9componentD0Ev"></span><span id="mge::component::~component"></span><span class="target" id="classmge_1_1component_1a77c04da40f30aa430d3fd3ae7cca70e1"></span><code class="sig-name descname">~component</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">noexcept</em> = default<a class="headerlink" href="#_CPPv4N3mge9componentD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9componentD0Ev"></span><span id="_CPPv2N3mge9componentD0Ev"></span><span id="mge::component::~component"></span><span class="target" id="classmge_1_1component_1a77c04da40f30aa430d3fd3ae7cca70e1"></span><em class="property"><span class="pre">virtual</span></em> <code class="sig-name descname"><span class="pre">~component</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">noexcept</span></em> <span class="pre">=</span> <span class="pre">default</span><a class="headerlink" href="#_CPPv4N3mge9componentD0Ev" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Destructor- </p>
 </dd></dl>
 </div>
@@ -198,7 +194,7 @@ implementation can be selected when creating an instance.</p>
 <p class="breathe-sectiondef-title rubric">Public Static Functions</p>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge9component6createEPKc">
-<span id="_CPPv3N3mge9component6createEPKc"></span><span id="_CPPv2N3mge9component6createEPKc"></span><span id="mge::component::create__cCP"></span><span class="target" id="classmge_1_1component_1a657f21a51795e904bc4e79625ff5c961"></span>std::shared_ptr&lt;<a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class">Class</a>&gt; <code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>implementation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createEPKc" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9component6createEPKc"></span><span id="_CPPv2N3mge9component6createEPKc"></span><span id="mge::component::create__cCP"></span><span class="target" id="classmge_1_1component_1a657f21a51795e904bc4e79625ff5c961"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">shared_ptr</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class"><span class="pre">Class</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">implementation</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createEPKc" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Create an instance of a registered implementation. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
@@ -212,7 +208,7 @@ implementation can be selected when creating an instance.</p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge9component6createENSt11string_viewE">
-<span id="_CPPv3N3mge9component6createENSt11string_viewE"></span><span id="_CPPv2N3mge9component6createENSt11string_viewE"></span><span id="mge::component::create__std::string_view"></span><span class="target" id="classmge_1_1component_1a287db37f34a1e8e1cf8baf6c3da985d1"></span>std::shared_ptr&lt;<a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class">Class</a>&gt; <code class="sig-name descname">create</code><span class="sig-paren">(</span>std::string_view <em>implementation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9component6createENSt11string_viewE"></span><span id="_CPPv2N3mge9component6createENSt11string_viewE"></span><span id="mge::component::create__std::string_view"></span><span class="target" id="classmge_1_1component_1a287db37f34a1e8e1cf8baf6c3da985d1"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">shared_ptr</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class"><span class="pre">Class</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">implementation</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Create an instance of a registered implementation. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
@@ -226,7 +222,7 @@ implementation can be selected when creating an instance.</p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge9component6createERKNSt6stringE">
-<span id="_CPPv3N3mge9component6createERKNSt6stringE"></span><span id="_CPPv2N3mge9component6createERKNSt6stringE"></span><span id="mge::component::create__ssCR"></span><span class="target" id="classmge_1_1component_1ab7ec6369ac0a4c63f1adbe927e6fffde"></span>std::shared_ptr&lt;<a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class">Class</a>&gt; <code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>implementation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createERKNSt6stringE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9component6createERKNSt6stringE"></span><span id="_CPPv2N3mge9component6createERKNSt6stringE"></span><span id="mge::component::create__ssCR"></span><span class="target" id="classmge_1_1component_1ab7ec6369ac0a4c63f1adbe927e6fffde"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">shared_ptr</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class"><span class="pre">Class</span></a><span class="pre">&gt;</span> <code class="sig-name descname"><span class="pre">create</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><em><span class="pre">implementation</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createERKNSt6stringE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Create an instance of a registered implementation. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
@@ -240,7 +236,7 @@ implementation can be selected when creating an instance.</p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE">
-<span id="_CPPv3N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span id="_CPPv2N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span class="target" id="classmge_1_1component_1a0354486c6ccccb7e3427392ff8e17e73"></span>void <code class="sig-name descname">implementations</code><span class="sig-paren">(</span><em class="property">const</em> std::function&lt;void<span class="sig-paren">(</span>std::string_view<span class="sig-paren">)</span>&gt; &amp;<em>callback</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span id="_CPPv2N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span class="target" id="classmge_1_1component_1a0354486c6ccccb7e3427392ff8e17e73"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">implementations</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">function</span><span class="pre">&lt;</span><span class="pre">void</span><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span><span class="sig-paren">)</span><span class="pre">&gt;</span> <span class="pre">&amp;</span><em><span class="pre">callback</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Enumerate over all implementations. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
@@ -260,7 +256,7 @@ when the component class is defined. An implementation is registered
 using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" title="MGE_REGISTER_IMPLEMENTATION"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></code></a> macro.</p>
 <dl class="cpp macro">
 <dt id="c.MGE_REGISTER_COMPONENT">
-<span class="target" id="component_8hpp_1a3e202a943f8f06a84a47dab57ea6851d"></span><code class="sig-name descname">MGE_REGISTER_COMPONENT</code><span class="sig-paren">(</span><em>clazz</em><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_COMPONENT" title="Permalink to this definition">¶</a><br/></dt>
+<span class="target" id="component_8hpp_1a3e202a943f8f06a84a47dab57ea6851d"></span><code class="sig-name descname"><span class="pre">MGE_REGISTER_COMPONENT</span></code><span class="sig-paren">(</span><em><span class="pre">clazz</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_COMPONENT" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Register a class as component. The macro must be used within the definition namespaces of the argument class. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
@@ -272,7 +268,7 @@ using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" ti
 </dd></dl>
 <dl class="cpp macro">
 <dt id="c.MGE_REGISTER_IMPLEMENTATION">
-<span class="target" id="component_8hpp_1a819def5e7df0b6572cdb47309183798f"></span><code class="sig-name descname">MGE_REGISTER_IMPLEMENTATION</code><span class="sig-paren">(</span><em>clazz</em>, <em>component</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_IMPLEMENTATION" title="Permalink to this definition">¶</a><br/></dt>
+<span class="target" id="component_8hpp_1a819def5e7df0b6572cdb47309183798f"></span><code class="sig-name descname"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></code><span class="sig-paren">(</span><em><span class="pre">clazz</span></em>, <em><span class="pre">component</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_IMPLEMENTATION" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Register an implementation. The macro must be used within the definition namespace of the argument class. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
@@ -356,5 +352,9 @@ using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" ti
     </aside>
   </main>
 </div>
-  </body>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
 </html>
