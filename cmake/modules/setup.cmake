@@ -8,13 +8,9 @@ INCLUDE(settings/debugrelease)
 INCLUDE(settings/headless)
 INCLUDE(settings/version)
 
-INCLUDE(macros/documentation)
-INCLUDE(macros/library)
-INCLUDE(macros/test)
-INCLUDE(macros/fixcopyright)
-
-
 INCLUDE(thirdparty/python)
+INCLUDE(thirdparty/git)
+INCLUDE(thirdparty/clang-format)
 INCLUDE(thirdparty/googletest)
 INCLUDE(thirdparty/boost)
 INCLUDE(thirdparty/opengl)
@@ -23,3 +19,10 @@ INCLUDE(thirdparty/vulkan)
 INCLUDE(thirdparty/directx)
 INCLUDE(thirdparty/doxygen)
 INCLUDE(thirdparty/sphinx)
+
+INCLUDE(macros/documentation)
+INCLUDE(macros/library)
+INCLUDE(macros/test)
+INCLUDE(macros/fixcopyright)
+INCLUDE(macros/format)
+

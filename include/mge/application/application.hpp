@@ -110,7 +110,6 @@ namespace mge {
          */
         void remove_input_listener(input_listener_key k);
 
-
         /**
          * @brief Add an update listener.
          *
@@ -146,6 +145,5 @@ namespace mge {
         input_listener_collection  m_input_listeners;
         update_listener_collection m_update_listeners;
         redraw_listener_collection m_redraw_listeners;
-
     };
 } // namespace mge

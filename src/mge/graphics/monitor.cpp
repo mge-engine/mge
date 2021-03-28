@@ -5,4 +5,4 @@
 
 namespace mge {
     monitor::~monitor() {}
-}
+} // namespace mge

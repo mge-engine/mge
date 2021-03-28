@@ -3,9 +3,9 @@
 // All rights reserved.
 #pragma once
 #include "mge/application/dllexport.hpp"
+#include "mge/application/loop_target.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/noncopyable.hpp"
-#include "mge/application/loop_target.hpp"
 
 namespace mge {
 
@@ -29,4 +29,4 @@ namespace mge {
         virtual void run(loop_target &t) = 0;
     };
 
-}
+} // namespace mge

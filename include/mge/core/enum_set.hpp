@@ -26,7 +26,6 @@ namespace mge {
         static constexpr size_t bitset_size() { return (size_t)M; }
 
     public:
-
         /**
          * @brief Construct a new enum set object.
          */
@@ -102,7 +101,6 @@ namespace mge {
          * @return @c true if no value set
          */
         bool empty() const { return m_bits.none(); }
-
 
         /**
          * @brief Resets values set in argument

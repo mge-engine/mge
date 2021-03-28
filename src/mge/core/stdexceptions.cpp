@@ -14,4 +14,4 @@ namespace mge {
     MGE_DEFINE_EXCEPTION_CLASS(not_yet_implemented)
     MGE_DEFINE_EXCEPTION_CLASS(null_pointer)
 
-}
+} // namespace mge

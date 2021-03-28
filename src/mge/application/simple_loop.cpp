@@ -24,7 +24,7 @@ namespace mge {
                 t.input();
 
                 double_secs delta = current - before;
-                before     = current;
+                before            = current;
 
                 t.update(delta.count());
 
@@ -34,4 +34,4 @@ namespace mge {
     };
 
     MGE_REGISTER_IMPLEMENTATION(simple_loop, loop, simple);
-}
+} // namespace mge
