@@ -4,10 +4,6 @@
 FIND_PACKAGE(OpenGL)
 
 IF(OpenGL_FOUND)
-    FIND_PACKAGE(PythonInterp)
-    IF(NOT PYTHONINTERP_FOUND)
-        MESSAGE(FATAL_ERROR "A python interpreter is needed to build the gl3w layer")
-    ENDIF()
     IF(NOT GL3W_FOUND)
         MESSAGE("-- Did not find gl3w, need to build it from source")
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/gl3w)
