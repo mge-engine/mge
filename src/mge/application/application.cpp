@@ -3,12 +3,16 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
 #endif
 #include <iostream>
 
 namespace mge {
+
+    MGE_DEFINE_TRACE(APPLICATION);
+
     MGE_REGISTER_COMPONENT(application);
 
     application::application() : m_quit(false) {}
@@ -53,6 +57,8 @@ namespace mge {
                            const char **argv)
     {
         try {
+            MGE_DEBUG_TRACE(APPLICATION)
+                << "Creating application '" << application_name << "'";
             auto app = application::create(application_name);
             app->initialize(argc, argv);
             app->setup();
