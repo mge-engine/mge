@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
-# Copyright (c) 2018 by Alexander Schroeder
+# Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 import os
 import sys
@@ -18,7 +18,7 @@ def write_file(filename, lines):
     f.close()
 
 
-def process_make_file(filename):
+def process_script(filename):
     f = open(filename)
     lines = f.readlines()
     f.close()
@@ -104,9 +104,9 @@ def process_c_source_file(filename):
 
 def process_file(filename):
     if "CMakeLists.txt" in filename or filename.endswith(".cmake"):
-        process_make_file(filename)
+        process_script(filename)
     elif filename.endswith(".py"):
-        process_make_file(filename)
+        process_script(filename)
     elif filename.endswith(".cpp") or filename.endswith(".hpp"):
         process_cpp_source_file(filename)
     elif filename.endswith(".c") or filename.endswith(".h"):
@@ -117,6 +117,8 @@ def blacklisted(path):
     if path[0].startswith('.') and len(path) > 1:
         return True
     elif path[0].startswith("build"):
+        return True
+    elif path[0].startswith("sphinx"):
         return True
     elif len(path) >= 2 and path[0] == 'src' and path[1] == 'external':
         return True

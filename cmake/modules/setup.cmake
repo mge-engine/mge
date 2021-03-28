@@ -11,8 +11,10 @@ INCLUDE(settings/version)
 INCLUDE(macros/documentation)
 INCLUDE(macros/library)
 INCLUDE(macros/test)
+INCLUDE(macros/fixcopyright)
 
 
+INCLUDE(thirdparty/python)
 INCLUDE(thirdparty/googletest)
 INCLUDE(thirdparty/boost)
 INCLUDE(thirdparty/opengl)

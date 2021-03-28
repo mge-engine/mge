@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2019 by Alexander Schroeder
+// Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/trace.hpp"
 #include <atomic>

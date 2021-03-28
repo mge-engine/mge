@@ -38,6 +38,10 @@ Microsoft Visual C++ 2019
     Several helper scripts use Python, like the extraction tools to generate
     the Vulkan API helper functions.
 
+`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>` _
+    Vulkan is a low-overhead, cross-platform graphics and computing API. It is
+    used as a possible graphics backend of MGE.
+
 .. note::
    It's useful to use a package manager like `Scoop <https://scoop.sh/>`_ or
    `Chocolatey <https://chocolatey.org/>`_ for installing the required tools,
@@ -49,8 +53,6 @@ Optional Software Packages
 `Ninja <https://ninja-build.org/>`_
     While cmake can be used to generate Visual Studio project files, or also
     a build environment suitable for *nmake*, ninja is the preferred build tool.
-
-
 
 Build Steps
 ***********
