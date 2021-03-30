@@ -100,7 +100,7 @@ namespace mge {
  * @brief Invoke error trace.
  * @param TOPIC trace topic
  */
-#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE(TOPIC, ERROR)
+#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE(TOPIC, LEVEL_ERROR)
 
 /**
  * @def MGE_FATAL_TRACE

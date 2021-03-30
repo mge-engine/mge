@@ -26,3 +26,8 @@ TEST(application, argv_throws_for_invalid_index)
     app.initialize(3, app_argv);
     EXPECT_THROW(app.argv(17), mge::exception);
 }
+
+class foobar_app : public mge::application
+{};
+
+MGE_REGISTER_IMPLEMENTATION(foobar_app, mge::application, "foobar");

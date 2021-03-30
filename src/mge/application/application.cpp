@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/application/application.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #ifdef MGE_OS_WINDOWS
@@ -14,6 +15,9 @@ namespace mge {
     MGE_DEFINE_TRACE(APPLICATION);
 
     MGE_REGISTER_COMPONENT(application);
+
+    MGE_DEFINE_PARAMETER(std::string, application, name,
+                         "Application name to instantiate");
 
     application::application() : m_quit(false) {}
 
@@ -30,6 +34,9 @@ namespace mge {
         SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |
                      SEM_NOOPENFILEERRORBOX);
 #endif
+        if (!configuration::loaded()) {
+            configuration::load();
+        }
     }
 
     application::~application() {}
@@ -56,27 +63,45 @@ namespace mge {
     void application::main(std::string_view application_name, int argc,
                            const char **argv)
     {
+        std::string_view used_application_name(application_name);
+        std::string      application_name_parameter_value;
         try {
+            if (!configuration::loaded()) {
+                configuration::load();
+            }
+
+            if (used_application_name.empty()) {
+                if (MGE_PARAMETER(application, name).has_value()) {
+                    application_name_parameter_value =
+                        MGE_PARAMETER(application, name).get();
+                    used_application_name = application_name_parameter_value;
+                }
+            }
+
             MGE_DEBUG_TRACE(APPLICATION)
-                << "Creating application '" << application_name << "'";
-            auto app = application::create(application_name);
+                << "Creating application '" << used_application_name << "'";
+            auto app = application::create(used_application_name);
+            MGE_DEBUG_TRACE(APPLICATION) << "Initializing application";
             app->initialize(argc, argv);
+            MGE_DEBUG_TRACE(APPLICATION) << "Application setup";
             app->setup();
+            MGE_DEBUG_TRACE(APPLICATION) << "Application run";
             app->run();
+            MGE_DEBUG_TRACE(APPLICATION) << "Application teardown";
             app->teardown();
         } catch (const mge::exception &ex) {
-            std::cerr << "Exception in application " << application_name
-                      << std::endl
-                      << "    " << ex.details() << std::endl;
+            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
+                                         << used_application_name << "':";
+            MGE_ERROR_TRACE(APPLICATION) << ex.details();
             return;
         } catch (const std::exception &ex) {
-            std::cerr << "Exception in application " << application_name
-                      << std::endl
-                      << "    " << ex.what() << std::endl;
+            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
+                                         << used_application_name << "':";
+            MGE_ERROR_TRACE(APPLICATION) << ex.what();
             return;
         } catch (...) {
-            std::cerr << "Unknown exception in application " << application_name
-                      << std::endl;
+            MGE_ERROR_TRACE(APPLICATION) << "Unknown Exception in application '"
+                                         << used_application_name << "'";
             return;
         }
     }

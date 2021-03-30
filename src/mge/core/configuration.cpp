@@ -26,7 +26,8 @@ namespace mge {
     class configuration_instance
     {
     public:
-        configuration_instance()  = default;
+        configuration_instance() : m_loaded(false) {}
+
         ~configuration_instance() = default;
 
         void register_parameter(basic_parameter &p);
@@ -37,6 +38,7 @@ namespace mge {
 
         void load();
         void store();
+        bool loaded() const { return m_loaded; }
 
     private:
         fs::path find_config_file();
@@ -49,6 +51,7 @@ namespace mge {
 
         section_map m_sections;
         pt::ptree   m_raw_settings;
+        bool        m_loaded;
     };
 
     void configuration_instance::register_parameter(basic_parameter &p)
@@ -142,6 +145,7 @@ namespace mge {
             boost::property_tree::read_info(input, m_raw_settings);
         }
         set_registered_parameters();
+        m_loaded = true;
     }
 
     void configuration_instance::set_registered_parameters()
@@ -162,7 +166,10 @@ namespace mge {
         auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
         if (ov.has_value()) {
             p.from_string(ov.get());
+        } else {
+            p.reset();
         }
+        p.notify_change();
     }
 
     void configuration_instance::store()
@@ -236,5 +243,7 @@ namespace mge {
     void configuration::load() { s_configuration_instance->load(); }
 
     void configuration::store() { s_configuration_instance->store(); }
+
+    bool configuration::loaded() { return s_configuration_instance->loaded(); }
 
 } // namespace mge

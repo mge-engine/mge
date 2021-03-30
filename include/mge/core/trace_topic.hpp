@@ -4,13 +4,16 @@
 /** @file */
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/parameter.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_record.hpp"
 #include "mge/core/trace_sink.hpp"
-
 #include <memory>
+#include <string_view>
 #include <vector>
+
+using namespace std::string_view_literals;
 
 namespace mge {
     /**
@@ -30,8 +33,15 @@ namespace mge {
         constexpr trace_topic(const char (&name)[N])
             : m_topic(static_cast<const char *>(name),
                       static_cast<const char *>(name) + N - 1),
-              m_enabled_levels(0)
-        {}
+              m_enabled_levels(0),
+              m_level_config("trace"sv,
+                             m_topic == "MGE"sv ? "global"sv : m_topic, ""sv)
+        {
+            initialize();
+            m_level_config.set_change_handler(
+                [&] { this->update_configuration(); });
+            configure();
+        }
 
         ~trace_topic();
 
@@ -109,10 +119,17 @@ namespace mge {
         void remove_sink(const std::shared_ptr<trace_sink> &sink);
 
     private:
+        void update_configuration();
+        void initialize();
+        void configure();
+
         using sink_vector = std::vector<std::shared_ptr<trace_sink>>;
+
         std::string_view m_topic;
         uint8_t          m_enabled_levels;
         sink_vector      m_sinks;
+
+        parameter<std::string> m_level_config;
     };
 
 /**

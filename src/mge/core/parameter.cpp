@@ -22,9 +22,34 @@ namespace mge {
     {
         return m_section;
     }
+
     std::string_view basic_parameter::name() const noexcept { return m_name; }
+
     std::string_view basic_parameter::description() const noexcept
     {
         return m_description;
     }
+
+    void basic_parameter::notify_change()
+    {
+        std::lock_guard<std::mutex> guard(m_change_lock);
+
+        if (m_change_callback) {
+            m_change_callback();
+        }
+    }
+
+    basic_parameter::change_callback basic_parameter::change_handler() const
+    {
+        std::lock_guard<std::mutex> guard(m_change_lock);
+        return m_change_callback;
+    }
+
+    void basic_parameter::set_change_handler(
+        const basic_parameter::change_callback &callback)
+    {
+        std::lock_guard<std::mutex> guard(m_change_lock);
+        m_change_callback = callback;
+    }
+
 } // namespace mge

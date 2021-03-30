@@ -35,6 +35,12 @@ namespace mge {
          * @brief Store configuration.
          */
         static void store();
+
+        /**
+         * @brief Return whether configuration already has been loaded.
+         * @return @c true if already loaded
+         */
+        static bool loaded();
     };
 
 } // namespace mge

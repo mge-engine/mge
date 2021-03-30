@@ -7,6 +7,8 @@
 #include <boost/lexical_cast.hpp>
 
 #include <any>
+#include <functional>
+#include <mutex>
 #include <sstream>
 #include <string_view>
 
@@ -19,6 +21,8 @@ namespace mge {
     class MGECORE_EXPORT basic_parameter
     {
     public:
+        using change_callback = std::function<void()>;
+
         /**
          * @brief Construct a parameter.
          *
@@ -73,10 +77,33 @@ namespace mge {
          */
         virtual std::string to_string() const = 0;
 
+        /**
+         * @brief Call to notify a change.
+         * If a change listener is registered, call that.
+         */
+        void notify_change();
+
+        /**
+         * @brief Return current change handler.
+         *
+         * @return change handler
+         */
+        change_callback change_handler() const;
+
+        /**
+         * @brief Set the change handler.
+         *
+         * @param handler new change handler
+         */
+        void set_change_handler(const change_callback &handler);
+
     private:
         std::string_view m_section;
         std::string_view m_name;
         std::string_view m_description;
+
+        mutable std::mutex m_change_lock;
+        change_callback    m_change_callback;
     };
 
     /**
@@ -126,6 +153,21 @@ namespace mge {
          * @return stored value
          */
         typename T get() const { return std::any_cast<T>(m_value); }
+
+        /**
+         * @brief Retrieve typed value, checking default.
+         *
+         * @param default_value default value
+         * @return config value or default value if not set
+         */
+        typename T get(const T &default_value) const
+        {
+            if (has_value()) {
+                return get();
+            } else {
+                return default_value;
+            }
+        }
 
         void from_string(const std::string &value) override
         {
