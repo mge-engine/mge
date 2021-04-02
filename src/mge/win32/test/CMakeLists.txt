@@ -3,7 +3,8 @@
 # All rights reserved.
 
 SET(WIN32_TESTS
-    win32_monitor)
+    win32_monitor
+    win32_window)
 
 FOREACH(TEST_NAME ${WIN32_TESTS})
     MGE_TEST(

@@ -28,6 +28,7 @@ MGE_LIBRARY(
         system_error.cpp
         module.cpp
         crash.cpp
+        thread.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
@@ -64,6 +65,7 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/core/crash.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/copy_struct.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/core/zero_memory.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/core/thread.hpp
     )
 
 TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)

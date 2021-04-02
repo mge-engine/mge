@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/clock.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/thread.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_topic.hpp"
 #include <optional>
@@ -56,9 +57,10 @@ namespace mge {
 
         struct entry
         {
-            clock::time_point time;
-            uint32_t          sequence;
-            trace_level       level;
+            clock::time_point      time;
+            uint32_t               sequence;
+            trace_level            level;
+            mge::thread::system_id thread;
         };
 
         std::optional<entry>             m_entry;

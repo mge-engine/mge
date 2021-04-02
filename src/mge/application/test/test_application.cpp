@@ -30,4 +30,11 @@ TEST(application, argv_throws_for_invalid_index)
 class foobar_app : public mge::application
 {};
 
-MGE_REGISTER_IMPLEMENTATION(foobar_app, mge::application, "foobar");
+MGE_REGISTER_IMPLEMENTATION(foobar_app, mge::application, foobar);
+
+TEST(application, main)
+{
+    const char *app_argv[] = {"foobar", "foo", "bar"};
+
+    mge::application::main("foobar"sv, 3, app_argv);
+}

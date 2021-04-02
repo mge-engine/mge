@@ -79,9 +79,9 @@ namespace mge {
             }
 
             MGE_DEBUG_TRACE(APPLICATION)
-                << "Creating application '" << used_application_name << "'";
+                << "Create application '" << used_application_name << "'";
             auto app = application::create(used_application_name);
-            MGE_DEBUG_TRACE(APPLICATION) << "Initializing application";
+            MGE_DEBUG_TRACE(APPLICATION) << "Application initialize";
             app->initialize(argc, argv);
             MGE_DEBUG_TRACE(APPLICATION) << "Application setup";
             app->setup();
@@ -100,7 +100,7 @@ namespace mge {
             MGE_ERROR_TRACE(APPLICATION) << ex.what();
             return;
         } catch (...) {
-            MGE_ERROR_TRACE(APPLICATION) << "Unknown Exception in application '"
+            MGE_ERROR_TRACE(APPLICATION) << "Unknown exception in application '"
                                          << used_application_name << "'";
             return;
         }

@@ -1,10 +1,17 @@
 #include "mge/win32/window.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
 
 #define MGE_CLASS_NAME  ((LPCWSTR)L"mge")
 #define WM_WANT_DESTROY (WM_USER + 1)
 
 namespace mge {
+
+#define _OLD_WIN32 WIN32
+#undef WIN32
+    MGE_USE_TRACE(WIN32);
+#define WIN32 _OLD_WIN32
+
     namespace win32 {
 
         window::window(const mge::extent &extent, const window_options &options)
@@ -17,6 +24,8 @@ namespace mge {
 
         void window::create_window_class()
         {
+            MGE_DEBUG_TRACE(WIN32) << "Create window class";
+
             WNDCLASSEXW window_class;
             HINSTANCE   module_handle;
 
