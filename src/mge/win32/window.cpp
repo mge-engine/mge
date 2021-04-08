@@ -16,7 +16,9 @@ namespace mge {
 
         window::window(const mge::extent &extent, const window_options &options)
             : mge::window(extent, options), m_hwnd(0)
-        {}
+        {
+            create_window();
+        }
 
         window::~window() {}
 
@@ -41,9 +43,46 @@ namespace mge {
             window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
             window_class.hIconSm = LoadIcon(module_handle, IDI_APPLICATION);
             if (!RegisterClassExW(&window_class)) {
-                //
+                MGE_ERROR_TRACE(WIN32) << "Registering window class failed";
             }
             s_window_class_created = true;
+        }
+
+        void window::create_window()
+        {
+            MGE_DEBUG_TRACE(WIN32) << "Create window";
+
+            RECT window_rect = {0, 0, (LONG)extent().width,
+                                (LONG)extent().height};
+
+            DWORD style, exstyle;
+
+            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU |
+                    WS_MINIMIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+            exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+
+            AdjustWindowRectEx(&window_rect, style, 0, exstyle);
+
+            m_hwnd = CreateWindowExW(exstyle, MGE_CLASS_NAME, L"", style, 0, 0,
+                                     window_rect.right - window_rect.left,
+                                     window_rect.bottom - window_rect.top, NULL,
+                                     NULL, GetModuleHandle(NULL), this);
+
+            MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
+            if (application::instance()) {
+                m_process_input_listener =
+                    application::instance()->add_input_listener(
+                        [&]() { this->process_input(); });
+            }
+        }
+
+        void window::process_input()
+        {
+            MSG msg;
+            while (m_hwnd && GetMessage(&msg, m_hwnd, 0, 0)) {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
         }
 
         LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam,

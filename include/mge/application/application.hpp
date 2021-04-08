@@ -139,9 +139,18 @@ namespace mge {
          */
         void remove_redraw_listener(redraw_listener_key k);
 
+        /**
+         * @brief Access singleton/current instance.
+         *
+         * @return current application instance
+         */
+        static application *instance();
+
     private:
-        std::vector<std::string>   m_arguments;
-        volatile bool              m_quit;
+        std::vector<std::string> m_arguments;
+        volatile bool            m_quit;
+        static application *     s_instance;
+
         input_listener_collection  m_input_listeners;
         update_listener_collection m_update_listeners;
         redraw_listener_collection m_redraw_listeners;

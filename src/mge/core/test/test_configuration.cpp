@@ -26,8 +26,12 @@ TEST(configuration, find_parameter_throws_on_unknown)
 TEST(configuration, store)
 {
     std::filesystem::path cfgfile("test_configuration.json");
+    std::filesystem::path cfgfile2("test_configuration.xml");
     if (std::filesystem::exists(cfgfile)) {
         std::filesystem::remove(cfgfile);
+    }
+    if (std::filesystem::exists(cfgfile2)) {
+        std::filesystem::remove(cfgfile2);
     }
 
     MGE_PARAMETER(test, test_parameter1)

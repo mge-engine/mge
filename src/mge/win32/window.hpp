@@ -3,6 +3,7 @@
 // All rights reserved.
 
 #include "mge/graphics/window.hpp"
+#include "mge/application/application.hpp"
 
 #include <windows.h>
 
@@ -20,9 +21,13 @@ namespace mge {
         private:
             static LRESULT CALLBACK wndproc(HWND hwnd, UINT umsg, WPARAM wparam,
                                             LPARAM lparam);
-            static void             create_window_class();
+
+            void        create_window();
+            static void create_window_class();
+            void        process_input();
 
             HWND m_hwnd;
+            application::input_listener_key m_process_input_listener;
         };
 
     } // namespace win32
