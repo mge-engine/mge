@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/configuration.hpp"
 #include "mge/core/trace_topic.hpp"
 #include "test/googletest.hpp"
 
@@ -11,6 +12,8 @@ namespace mge {
 
 TEST(trace_topic, mge_topic)
 {
+    EXPECT_TRUE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
+    mge::configuration::load();
     EXPECT_FALSE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
 }
 

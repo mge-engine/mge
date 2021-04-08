@@ -22,6 +22,7 @@ TEST(stream_trace_sink, format)
 
     r.level    = mge::trace_level::WARNING;
     r.sequence = 3;
+    r.thread   = 0x1234;
     r.time     = mge::clock::time_point(0h);
     r.topic    = &(MGE_NS_TRACE_TOPIC(mge, CORE));
     r.message  = std::string_view(m.begin(), m.end());
@@ -33,7 +34,7 @@ TEST(stream_trace_sink, format)
         sink.publish(r);
     }
 
-    EXPECT_EQ(std::string("[   0.000000]          3 W              CORE My "
-                          "hoovercraft is full of eels\n"),
+    EXPECT_EQ(std::string("[   0.000000]          3     1234 W              "
+                          "CORE My hoovercraft is full of eels\n"),
               s.str());
 }

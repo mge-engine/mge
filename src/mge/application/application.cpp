@@ -19,7 +19,18 @@ namespace mge {
     MGE_DEFINE_PARAMETER(std::string, application, name,
                          "Application name to instantiate");
 
-    application::application() : m_quit(false) {}
+    application *application::s_instance;
+
+    application::application() : m_quit(false)
+    {
+
+        if (s_instance) {
+            MGE_THROW(illegal_state)
+                << "Can only have one application instance";
+        }
+
+        s_instance = this;
+    }
 
     void application::initialize(int argc, const char **argv)
     {
@@ -39,7 +50,9 @@ namespace mge {
         }
     }
 
-    application::~application() {}
+    application::~application() { s_instance = nullptr; }
+
+    application *application::instance() { return s_instance; }
 
     int application::argc() const
     {
