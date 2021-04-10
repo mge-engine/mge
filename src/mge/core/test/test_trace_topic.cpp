@@ -9,20 +9,27 @@ namespace mge {
     MGE_USE_IMPORTED_TRACE(MGE);
     MGE_USE_IMPORTED_TRACE(CORE);
 } // namespace mge
-#if 0
-TEST(trace_topic, mge_topic)
+
+class trace_topic_test : public ::testing::Test
 {
-    EXPECT_TRUE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
-    mge::configuration::load();
+public:
+    trace_topic_test()          = default;
+    virtual ~trace_topic_test() = default;
+
+    static void SetUpTestCase() { mge::configuration::load(); }
+};
+
+TEST_F(trace_topic_test, mge_topic)
+{
     EXPECT_FALSE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
 }
 
-TEST(trace_topic, core_topic)
+TEST_F(trace_topic_test, core_topic)
 {
     EXPECT_FALSE(mge::__trace_topic_CORE().enabled(mge::trace_level::ALL));
 }
 
-TEST(trace_topic, core_topic_name)
+TEST_F(trace_topic_test, core_topic_name)
 {
     auto core_name = std::string("CORE");
 
@@ -30,13 +37,13 @@ TEST(trace_topic, core_topic_name)
               MGE_NS_TRACE_TOPIC(mge, CORE).name());
 }
 
-TEST(trace_topic, global)
+TEST_F(trace_topic_test, global)
 {
     EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, MGE).global());
     EXPECT_FALSE(MGE_NS_TRACE_TOPIC(mge, CORE).global());
 }
 
-TEST(trace_topic, enable_disable)
+TEST_F(trace_topic_test, enable_disable)
 {
 
     EXPECT_FALSE(
@@ -48,16 +55,11 @@ TEST(trace_topic, enable_disable)
         MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
 }
 
-TEST(trace_topic, set_level)
+TEST_F(trace_topic_test, set_level)
 {
     EXPECT_FALSE(
         MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
     MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::DEBUG);
     EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
     MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::NONE);
-}
-#endif
-TEST(trace_topic, initial_global_setting)
-{
-    EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, MGE).enabled(mge::trace_level::ALL));
 }
