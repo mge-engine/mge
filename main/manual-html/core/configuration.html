@@ -176,7 +176,7 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 <dt id="_CPPv4N3mge15basic_parameterE">
 <span id="_CPPv3N3mge15basic_parameterE"></span><span id="_CPPv2N3mge15basic_parameterE"></span><span id="mge::basic_parameter"></span><span class="target" id="classmge_1_1basic__parameter"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">basic_parameter</span></code><a class="headerlink" href="#_CPPv4N3mge15basic_parameterE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Configuration parameter. Implements the interface to describe, read and write a parameter. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; T &gt;</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; std::string &gt;</span></a>, <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; T &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
@@ -260,6 +260,33 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 </dl>
 </p>
 </dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge15basic_parameter13notify_changeEv">
+<span id="_CPPv3N3mge15basic_parameter13notify_changeEv"></span><span id="_CPPv2N3mge15basic_parameter13notify_changeEv"></span><span id="mge::basic_parameter::notify_change"></span><span class="target" id="classmge_1_1basic__parameter_1a13cf5235c54b1fe7b599dfd97468750b"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">notify_change</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15basic_parameter13notify_changeEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Call to notify a change. If a change listener is registered, call that. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge15basic_parameter14change_handlerEv">
+<span id="_CPPv3NK3mge15basic_parameter14change_handlerEv"></span><span id="_CPPv2NK3mge15basic_parameter14change_handlerEv"></span><span id="mge::basic_parameter::change_handlerC"></span><span class="target" id="classmge_1_1basic__parameter_1a7cd5af10670c1be24bcdb84ffd36e5fd"></span><span class="pre">change_callback</span> <code class="sig-name descname"><span class="pre">change_handler</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge15basic_parameter14change_handlerEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Return current change handler. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>change handler </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge15basic_parameter18set_change_handlerERK15change_callback">
+<span id="_CPPv3N3mge15basic_parameter18set_change_handlerERK15change_callback"></span><span id="_CPPv2N3mge15basic_parameter18set_change_handlerERK15change_callback"></span><span id="mge::basic_parameter::set_change_handler__change_callbackCR"></span><span class="target" id="classmge_1_1basic__parameter_1a8cb7854de5b463e0958767437234ec81"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">set_change_handler</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">change_callback</span> <span class="pre">&amp;</span><em><span class="pre">handler</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15basic_parameter18set_change_handlerERK15change_callback" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Set the change handler. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">handler</span></code>: new change handler </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
 </div>
 </dd></dl>
 </div>
@@ -337,6 +364,20 @@ methods are used to convert the parameter value back and forth, this uses a
 <dd><p>Retrieve typed value. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p>stored value </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge9parameter3getERK1T">
+<span id="_CPPv3NK3mge9parameter3getERK1T"></span><span id="_CPPv2NK3mge9parameter3getERK1T"></span><span id="mge::parameter::get__TCRC"></span><span class="target" id="classmge_1_1parameter_1a808d80d19c4164990aaeb3f51500bb7d"></span><em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="pre">T</span></a> <code class="sig-name descname"><span class="pre">get</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="pre">T</span></a> <span class="pre">&amp;</span><em><span class="pre">default_value</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge9parameter3getERK1T" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Retrieve typed value, checking default. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>config value or default value if not set </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">default_value</span></code>: default value </p></li>
+</ul>
 </dd>
 </dl>
 </p>
@@ -439,6 +480,16 @@ are intentionally meant to be value within their compilation unit only.</p>
 <dt id="_CPPv4N3mge13configuration5storeEv">
 <span id="_CPPv3N3mge13configuration5storeEv"></span><span id="_CPPv2N3mge13configuration5storeEv"></span><span id="mge::configuration::store"></span><span class="target" id="classmge_1_1configuration_1ac21ca6b195aaa61a43a4181a84777e8c"></span><em class="property"><span class="pre">static</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">store</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration5storeEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Store configuration. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge13configuration6loadedEv">
+<span id="_CPPv3N3mge13configuration6loadedEv"></span><span id="_CPPv2N3mge13configuration6loadedEv"></span><span id="mge::configuration::loaded"></span><span class="target" id="classmge_1_1configuration_1ab6c17aceb9cb2b56c1a53f515d93bb2e"></span><em class="property"><span class="pre">static</span></em> <span class="pre">bool</span> <code class="sig-name descname"><span class="pre">loaded</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration6loadedEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Return whether configuration already has been loaded. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if already loaded </p>
+</dd>
+</dl>
+</p>
 </dd></dl>
 </div>
 </dd></dl>
