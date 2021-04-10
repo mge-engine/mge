@@ -9,7 +9,7 @@ namespace mge {
     MGE_USE_IMPORTED_TRACE(MGE);
     MGE_USE_IMPORTED_TRACE(CORE);
 } // namespace mge
-
+#if 0
 TEST(trace_topic, mge_topic)
 {
     EXPECT_TRUE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
@@ -38,6 +38,7 @@ TEST(trace_topic, global)
 
 TEST(trace_topic, enable_disable)
 {
+
     EXPECT_FALSE(
         MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
     MGE_NS_TRACE_TOPIC(mge, CORE).enable(mge::trace_level::DEBUG);
@@ -54,4 +55,9 @@ TEST(trace_topic, set_level)
     MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::DEBUG);
     EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
     MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::NONE);
+}
+#endif
+TEST(trace_topic, initial_global_setting)
+{
+    EXPECT_TRUE(MGE_NS_TRACE_TOPIC(mge, MGE).enabled(mge::trace_level::ALL));
 }
