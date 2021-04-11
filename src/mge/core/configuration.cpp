@@ -36,7 +36,7 @@ namespace mge {
         basic_parameter &find_parameter(std::string_view section,
                                         std::string_view name);
 
-        void load();
+        void load(bool allow_missing);
         void store();
         bool loaded() const { return m_loaded; }
 
@@ -128,21 +128,22 @@ namespace mge {
         return fs::path();
     }
 
-    void configuration_instance::load()
+    void configuration_instance::load(bool allow_missing)
     {
         auto configfile_path = find_config_file();
-        if (configfile_path.empty()) {
+        if (configfile_path.empty() && !allow_missing) {
             return;
-        }
-        std::ifstream input(configfile_path);
-        if (configfile_path.extension() == ".xml") {
-            boost::property_tree::read_xml(input, m_raw_settings);
-        } else if (configfile_path.extension() == ".json") {
-            boost::property_tree::read_json(input, m_raw_settings);
-        } else if (configfile_path.extension() == ".ini") {
-            boost::property_tree::read_ini(input, m_raw_settings);
-        } else if (configfile_path.extension() == ".info") {
-            boost::property_tree::read_info(input, m_raw_settings);
+        } else {
+            std::ifstream input(configfile_path);
+            if (configfile_path.extension() == ".xml") {
+                boost::property_tree::read_xml(input, m_raw_settings);
+            } else if (configfile_path.extension() == ".json") {
+                boost::property_tree::read_json(input, m_raw_settings);
+            } else if (configfile_path.extension() == ".ini") {
+                boost::property_tree::read_ini(input, m_raw_settings);
+            } else if (configfile_path.extension() == ".info") {
+                boost::property_tree::read_info(input, m_raw_settings);
+            }
         }
         set_registered_parameters();
         m_loaded = true;
@@ -240,7 +241,10 @@ namespace mge {
         return s_configuration_instance->find_parameter(section, name);
     }
 
-    void configuration::load() { s_configuration_instance->load(); }
+    void configuration::load(bool allow_missing)
+    {
+        s_configuration_instance->load(allow_missing);
+    }
 
     void configuration::store() { s_configuration_instance->store(); }
 

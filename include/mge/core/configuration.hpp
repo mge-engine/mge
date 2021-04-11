@@ -29,8 +29,9 @@ namespace mge {
                                                std::string_view name);
         /**
          * @brief Load configuration.
+         * @param allow_missing succeeds even if no configuration is found
          */
-        static void load();
+        static void load(bool allow_missing = true);
         /**
          * @brief Store configuration.
          */

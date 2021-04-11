@@ -16,7 +16,7 @@ public:
     trace_topic_test()          = default;
     virtual ~trace_topic_test() = default;
 
-    static void SetUpTestCase() { mge::configuration::load(); }
+    static void SetUpTestCase() { mge::configuration::load(true); }
 };
 
 TEST_F(trace_topic_test, mge_topic)
