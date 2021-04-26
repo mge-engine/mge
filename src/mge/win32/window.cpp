@@ -73,6 +73,9 @@ namespace mge {
                 m_process_input_listener =
                     application::instance()->add_input_listener(
                         [&]() { this->process_input(); });
+            } else {
+                MGE_THROW(mge::illegal_state)
+                    << "Cannot create window without application instance";
             }
         }
 
@@ -85,10 +88,27 @@ namespace mge {
             }
         }
 
+        void window::on_show()
+        {
+            if (m_hwnd) {
+                ShowWindow(m_hwnd, SW_SHOW);
+                BringWindowToTop(m_hwnd);
+                SetForegroundWindow(m_hwnd);
+                SetFocus(m_hwnd);
+            }
+        }
+
+        void window::on_hide()
+        {
+            if (m_hwnd) {
+                ShowWindow(m_hwnd, SW_HIDE);
+            }
+        }
+
         LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam,
                                          LPARAM lparam)
         {
-            return 0;
+            return DefWindowProcW(hwnd, umsg, wparam, lparam);
         }
 
     } // namespace win32

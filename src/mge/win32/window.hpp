@@ -2,8 +2,9 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 
-#include "mge/graphics/window.hpp"
 #include "mge/application/application.hpp"
+#include "mge/graphics/window.hpp"
+#include "mge/input/input_state.hpp"
 
 #include <windows.h>
 
@@ -18,6 +19,10 @@ namespace mge {
 
             HWND hwnd() const noexcept { return m_hwnd; }
 
+        protected:
+            void on_show() override;
+            void on_hide() override;
+
         private:
             static LRESULT CALLBACK wndproc(HWND hwnd, UINT umsg, WPARAM wparam,
                                             LPARAM lparam);
@@ -26,8 +31,9 @@ namespace mge {
             static void create_window_class();
             void        process_input();
 
-            HWND m_hwnd;
+            HWND                            m_hwnd;
             application::input_listener_key m_process_input_listener;
+            input_state                     m_input_state;
         };
 
     } // namespace win32

@@ -13,3 +13,8 @@ FOREACH(TEST_NAME ${MGEAPPLICATION_TESTS})
         LIBRARIES   mgeapplication mgecore
     )
 ENDFOREACH()
+
+MGE_TEST(TARGET test_applicationtest
+         SOURCES test_applicationtest.cpp
+         NOMAIN
+         LIBRARIES mgeapplication mgecore)

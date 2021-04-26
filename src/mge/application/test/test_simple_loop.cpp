@@ -32,9 +32,9 @@ TEST(simple_loop, one_successful_loop)
     {
         InSequence s;
 
-        EXPECT_CALL(t, input());
-        EXPECT_CALL(t, update(_));
-        EXPECT_CALL(t, present(0.0));
+        EXPECT_CALL(t, input(_));
+        EXPECT_CALL(t, update(_, _));
+        EXPECT_CALL(t, present(_, 0.0));
     }
     l->run(t);
 }

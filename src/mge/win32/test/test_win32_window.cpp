@@ -1,4 +1,30 @@
+#include "mge/application/application.hpp"
+#include "mge/application/loop.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/win32/window.hpp"
+#include "test/applicationtest.hpp"
 #include "test/googletest.hpp"
 
-TEST(window, create) {}
+class windowtest_application : public mge::test_application
+{
+public:
+    void setup()
+    {
+        m_window = std::make_shared<mge::win32::window>(
+            mge::extent(640, 480), mge::window_options::standard_options());
+        m_window->show();
+    }
+
+    void run()
+    {
+        auto l = mge::loop::create("simple");
+        l->run(*this);
+    }
+
+    mge::window_ref m_window;
+};
+
+TEST(win32_window, basic) { EXPECT_TRUE(false); }
+
+MGE_REGISTER_IMPLEMENTATION(windowtest_application, mge::application,
+                            windowtest);

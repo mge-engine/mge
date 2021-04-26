@@ -80,20 +80,25 @@ namespace mge {
          */
         virtual void run();
 
-        void input() override;
+        void input(uint64_t cycle) override;
 
-        void update(double delta) override;
+        void update(uint64_t cycle, double delta) override;
 
-        void present(double peek) override;
+        void present(uint64_t cycle, double peek) override;
+
+        void set_return_code(int return_code);
+
+        int return_code() const noexcept;
 
         /**
          * @brief Run an application implementation.
          * @param application application implementation name
          * @param argc argument count
          * @param argv argument values
+         * @return return code passed to operating system
          */
-        static void main(std::string_view application, int argc,
-                         const char **argv);
+        static int main(std::string_view application, int argc,
+                        const char **argv);
 
         /**
          * @brief Add an input listener.
@@ -146,8 +151,12 @@ namespace mge {
          */
         static application *instance();
 
+    protected:
+        const std::vector<std::string> &arguments() const;
+
     private:
         std::vector<std::string> m_arguments;
+        int                      m_return_code;
         volatile bool            m_quit;
         static application *     s_instance;
 

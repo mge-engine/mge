@@ -21,7 +21,7 @@ namespace mge {
 
     application *application::s_instance;
 
-    application::application() : m_quit(false)
+    application::application() : m_return_code(0), m_quit(false)
     {
 
         if (s_instance) {
@@ -73,8 +73,8 @@ namespace mge {
 
     void application::run() {}
 
-    void application::main(std::string_view application_name, int argc,
-                           const char **argv)
+    int application::main(std::string_view application_name, int argc,
+                          const char **argv)
     {
         std::string_view used_application_name(application_name);
         std::string      application_name_parameter_value;
@@ -94,6 +94,9 @@ namespace mge {
             MGE_DEBUG_TRACE(APPLICATION)
                 << "Create application '" << used_application_name << "'";
             auto app = application::create(used_application_name);
+            if (!app) {
+                return 1;
+            }
             MGE_DEBUG_TRACE(APPLICATION) << "Application initialize";
             app->initialize(argc, argv);
             MGE_DEBUG_TRACE(APPLICATION) << "Application setup";
@@ -102,20 +105,21 @@ namespace mge {
             app->run();
             MGE_DEBUG_TRACE(APPLICATION) << "Application teardown";
             app->teardown();
+            return app->return_code();
         } catch (const mge::exception &ex) {
             MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
                                          << used_application_name << "':";
             MGE_ERROR_TRACE(APPLICATION) << ex.details();
-            return;
+            return 1;
         } catch (const std::exception &ex) {
             MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
                                          << used_application_name << "':";
             MGE_ERROR_TRACE(APPLICATION) << ex.what();
-            return;
+            return 1;
         } catch (...) {
             MGE_ERROR_TRACE(APPLICATION) << "Unknown exception in application '"
                                          << used_application_name << "'";
-            return;
+            return 1;
         }
     }
 
@@ -156,24 +160,36 @@ namespace mge {
 
     void application::set_quit() { m_quit = true; }
 
-    void application::input()
+    void application::input(uint64_t cycle)
     {
         for (const auto &l : m_input_listeners) {
             l();
         }
     }
 
-    void application::update(double delta)
+    void application::update(uint64_t cycle, double delta)
     {
         for (const auto &l : m_update_listeners) {
             l(delta);
         }
     }
 
-    void application::present(double peek)
+    void application::present(uint64_t cycle, double peek)
     {
         for (const auto &l : m_redraw_listeners) {
             l(peek);
         }
+    }
+
+    void application::set_return_code(int return_code)
+    {
+        m_return_code = return_code;
+    }
+
+    int application::return_code() const noexcept { return m_return_code; }
+
+    const std::vector<std::string> &application::arguments() const
+    {
+        return m_arguments;
     }
 } // namespace mge

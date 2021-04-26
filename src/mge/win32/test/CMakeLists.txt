@@ -10,6 +10,6 @@ FOREACH(TEST_NAME ${WIN32_TESTS})
     MGE_TEST(
         TARGET      test_${TEST_NAME}
         SOURCES     test_${TEST_NAME}.cpp
-        LIBRARIES   mge_win32 mgecore mgegraphics
+        LIBRARIES   mge_win32 mgecore mgegraphics mgeapplication
     )
 ENDFOREACH()

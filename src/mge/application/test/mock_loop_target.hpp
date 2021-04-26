@@ -11,7 +11,7 @@ public:
     // virtual ~MOCK_loop_target() = default;
 
     MOCK_METHOD(bool, is_quit, (), (const));
-    MOCK_METHOD(void, input, ());
-    MOCK_METHOD(void, update, (double));
-    MOCK_METHOD(void, present, (double));
+    MOCK_METHOD(void, input, (uint64_t));
+    MOCK_METHOD(void, update, (uint64_t, double));
+    MOCK_METHOD(void, present, (uint64_t, double));
 };

@@ -16,19 +16,21 @@ namespace mge {
 
         void run(loop_target &t) override
         {
-            auto before = clock::now();
+            auto     before = clock::now();
+            uint64_t cycle  = 0;
 
             while (!t.is_quit()) {
+                ++cycle;
                 auto current = clock::now();
 
-                t.input();
+                t.input(cycle);
 
                 double_secs delta = current - before;
                 before            = current;
 
-                t.update(delta.count());
+                t.update(cycle, delta.count());
 
-                t.present(0.0);
+                t.present(cycle, 0.0);
             }
         }
     };
