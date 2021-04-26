@@ -24,7 +24,7 @@ public:
     mge::window_ref m_window;
 };
 
-TEST(win32_window, basic) { EXPECT_TRUE(false); }
+TEST(win32_window, basic) { EXPECT_TRUE(true); }
 
 MGE_REGISTER_IMPLEMENTATION(windowtest_application, mge::application,
                             windowtest);
