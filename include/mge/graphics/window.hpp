@@ -13,6 +13,7 @@ namespace mge {
      * @brief A window.
      */
     class MGEGRAPHICS_EXPORT window
+        : public std::enable_shared_from_this<window>
     {
     protected:
         /**

@@ -8,6 +8,10 @@
 #include <iosfwd>
 #include <numeric>
 
+#ifdef max
+#    undef max
+#endif
+
 namespace mge {
 
     /**

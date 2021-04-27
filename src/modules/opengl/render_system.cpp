@@ -2,6 +2,8 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
+#include "window.hpp"
+#include <memory>
 
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/monitor.hpp"
@@ -17,7 +19,8 @@ namespace mge {
             mge::window_ref create_window(const mge::extent &        extent,
                                           const mge::window_options &options)
             {
-                mge::window_ref ref;
+                auto ref =
+                    std::make_shared<mge::opengl::window>(extent, options);
                 return ref;
             }
 
