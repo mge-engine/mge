@@ -13,6 +13,7 @@ MGE_LIBRARY(
         window.cpp
         monitor.cpp
         video_mode.cpp
+        render_context.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/dllexport.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/render_system.hpp
@@ -22,6 +23,7 @@ MGE_LIBRARY(
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/window.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/monitor.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/graphics/video_mode.hpp
+        ${CMAKE_SOURCE_DIR}/include/mge/graphics/render_context.hpp
 
 )
 TARGET_LINK_LIBRARIES(mgegraphics mgecore boost-all)
