@@ -3,8 +3,10 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
+
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
 #endif
@@ -88,6 +90,9 @@ namespace mge {
                     application_name_parameter_value =
                         MGE_PARAMETER(application, name).get();
                     used_application_name = application_name_parameter_value;
+                }
+                if (used_application_name.empty()) {
+                    used_application_name = mge::executable_name();
                 }
             }
 

@@ -12,6 +12,7 @@
 #include <string_view>
 #include <vector>
 
+using namespace std::string_view_literals;
 namespace mge {
 
     class MGEAPPLICATION_EXPORT application : public component<application>,
@@ -101,6 +102,18 @@ namespace mge {
                         const char **argv);
 
         /**
+         * @brief Run default application implementation.
+         *
+         * @param argc argument count
+         * @param argv argument values
+         * @return return code passed to operating system
+         */
+        static inline int main(int argc, const char **argv)
+        {
+            return main(""sv, argc, argv);
+        }
+
+        /**
          * @brief Add an input listener.
          *
          * @param l update listener
@@ -165,3 +178,9 @@ namespace mge {
         redraw_listener_collection m_redraw_listeners;
     };
 } // namespace mge
+
+#define MGE_MAINFUNCTION                                                       \
+    int main(int argc, const char **argv)                                      \
+    {                                                                          \
+        return mge::application::main(argc, argv);                             \
+    }
