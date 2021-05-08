@@ -28,7 +28,7 @@ MGE_LIBRARY(
         system_error.cpp
         module.cpp
         crash.cpp
-        thread.cpp
+        #thread.cpp
 
         ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
         ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
