@@ -2,29 +2,36 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
+SET(mgegraphics_sources
+    render_system.cpp
+    extent.cpp
+    point.cpp
+    window_options.cpp
+    window.cpp
+    monitor.cpp
+    video_mode.cpp
+    render_context.cpp
+)
+
+SET(mgegraphics_headers
+    dllexport.hpp
+    render_system.hpp
+    extent.hpp
+    point.hpp
+    window_options.hpp
+    window.hpp
+    monitor.hpp
+    video_mode.hpp
+    render_context.hpp
+)
+
 MGE_LIBRARY(
     TARGET  mgegraphics
     TYPE    SHARED
     SOURCES
-        render_system.cpp
-        extent.cpp
-        point.cpp
-        window_options.cpp
-        window.cpp
-        monitor.cpp
-        video_mode.cpp
-        render_context.cpp
-
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/dllexport.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/render_system.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/extent.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/point.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/window_options.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/window.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/monitor.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/video_mode.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/graphics/render_context.hpp
-
+    ${mgegraphics_sources}
+    ${mgegraphics_headers}
 )
+
 TARGET_LINK_LIBRARIES(mgegraphics mgecore boost-all)
 ADD_SUBDIRECTORY(test)

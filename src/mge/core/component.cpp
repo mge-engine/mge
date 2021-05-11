@@ -2,7 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/component.hpp"
-#include "mge/boost/boost_algorithm_string.hpp"
+#include "boost/boost_algorithm_string.hpp"
 #include "mge/core/contains.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"

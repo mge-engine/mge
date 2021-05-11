@@ -2,18 +2,25 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
+SET(mgeapplication_headers
+    dllexport.hpp
+    application.hpp
+    loop_target.hpp
+    loop.hpp
+)
+
+SET(mgeapplication_sources
+    application.cpp
+    loop.cpp
+    simple_loop.cpp
+)
+
 MGE_LIBRARY(
     TARGET  mgeapplication
     TYPE    SHARED
     SOURCES
-        application.cpp
-        loop.cpp
-        simple_loop.cpp
-
-        ${CMAKE_SOURCE_DIR}/include/mge/application/dllexport.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/application/application.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/application/loop_target.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/application/loop.hpp
+    ${mgeapplication_sources}
+    ${mgeapplication_headers}
 )
 TARGET_LINK_LIBRARIES(mgeapplication mgecore boost-all)
 

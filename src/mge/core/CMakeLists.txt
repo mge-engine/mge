@@ -2,71 +2,78 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
+SET(mgecore_sources
+    executable_name.cpp
+    type_name.cpp
+    configuration.cpp
+    parameter.cpp
+    trace_level.cpp
+    trace_topic.cpp
+    trace_sink.cpp
+    memory_trace_sink.cpp
+    stream_trace_sink.cpp
+    trace_formatter.cpp
+    simple_trace_formatter.cpp
+    trace.cpp
+    statistics.cpp
+    string_pool.cpp
+    stacktrace.cpp
+    exception.cpp
+    stdexceptions.cpp
+    component.cpp
+    shared_library.cpp
+    system_error.cpp
+    module.cpp
+    crash.cpp
+    thread.cpp
+)
+
+SET(mgecore_headers
+    ${CMAKE_SOURCE_DIR}/src/mge/config.hpp
+    ${CMAKE_SOURCE_DIR}/src/mge/dllexport.hpp
+    executable_name.hpp
+    make_string_view.hpp
+    memory.hpp
+    overloaded.hpp
+    configuration.hpp
+    dllexport.hpp
+    parameter.hpp
+    type_name.hpp
+    memory_trace_sink.hpp
+    simple_trace_formatter.hpp
+    singleton.hpp
+    statistics.hpp
+    stream_trace_sink.hpp
+    trace_formatter.hpp
+    trace_level.hpp
+    trace_record.hpp
+    trace_sink.hpp
+    trace_topic.hpp
+    trace.hpp
+    string_pool.hpp
+    stacktrace.hpp
+    exception.hpp
+    stdexceptions.hpp
+    component.hpp
+    contains.hpp
+    noncopyable.hpp
+    callback_map.hpp
+    shared_library.hpp
+    system_error.hpp
+    module.hpp
+    crash.hpp
+    copy_struct.hpp
+    zero_memory.hpp
+    thread.hpp
+ )
+
 MGE_LIBRARY(
     TARGET  mgecore
     TYPE    SHARED
     SOURCES
-        executable_name.cpp
-        type_name.cpp
-        configuration.cpp
-        parameter.cpp
-        trace_level.cpp
-        trace_topic.cpp
-        trace_sink.cpp
-        memory_trace_sink.cpp
-        stream_trace_sink.cpp
-        trace_formatter.cpp
-        simple_trace_formatter.cpp
-        trace.cpp
-        statistics.cpp
-        string_pool.cpp
-        stacktrace.cpp
-        exception.cpp
-        stdexceptions.cpp
-        component.cpp
-        shared_library.cpp
-        system_error.cpp
-        module.cpp
-        crash.cpp
-        #thread.cpp
-
-        ${CMAKE_SOURCE_DIR}/include/mge/config.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/dllexport.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/executable_name.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/make_string_view.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/memory.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/overloaded.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/configuration.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/dllexport.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/parameter.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/type_name.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/memory_trace_sink.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/simple_trace_formatter.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/singleton.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/statistics.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/stream_trace_sink.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/trace_formatter.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/trace_level.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/trace_record.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/trace_sink.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/trace_topic.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/trace.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/string_pool.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/stacktrace.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/exception.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/stdexceptions.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/component.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/contains.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/noncopyable.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/callback_map.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/shared_library.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/system_error.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/module.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/crash.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/copy_struct.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/zero_memory.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/core/thread.hpp
-    )
+    ${mgecore_sources}
+    ${mgecore_headers}
+)
 
 TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)
 ADD_SUBDIRECTORY(test)

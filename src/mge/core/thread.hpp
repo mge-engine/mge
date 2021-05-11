@@ -39,7 +39,7 @@ namespace mge {
         explicit thread();
 
         virtual ~thread();
-
+#if 0
         /**
          * @brief Get the current thread.
          *
@@ -96,6 +96,7 @@ namespace mge {
         void on_exception(const std::exception_ptr &eptr);
 
         std::thread m_running_thread;
+#endif
     };
 
     namespace this_thread {

@@ -2,23 +2,30 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
+SET(mgeinput_sources
+   key.cpp
+   modifier.cpp
+   keyboard_state.cpp
+   mouse_state.cpp
+   input_state.cpp
+)
+
+SET(mgeinput_headers
+    dllexport.hpp
+    key.hpp
+    modifier.hpp
+    input_state.hpp
+    keyboard_state.hpp
+    mouse_state.hpp
+)
+
+
 MGE_LIBRARY(
     TARGET  mgeinput
     TYPE    SHARED
     SOURCES
-        key.cpp
-        modifier.cpp
-        keyboard_state.cpp
-        mouse_state.cpp
-        input_state.cpp
-
-        ${CMAKE_SOURCE_DIR}/include/mge/input/dllexport.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/input/key.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/input/modifier.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/input/input_state.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/input/keyboard_state.hpp
-        ${CMAKE_SOURCE_DIR}/include/mge/input/mouse_state.hpp
-
+    ${mgeinput_sources}
+    ${mgeinput_headers}
 )
 TARGET_LINK_LIBRARIES(mgeinput boost-all)
 ADD_SUBDIRECTORY(test)

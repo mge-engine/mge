@@ -32,20 +32,13 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-
-
 # Include directories
-# - src     for private includes
-# - include for public includes
 # both in source and in build directory for generated includes
 INCLUDE_DIRECTORIES("${CMAKE_SOURCE_DIR}/src/"
-                    "${CMAKE_BINARY_DIR}/src/"
-                    "${CMAKE_SOURCE_DIR}/include/"
-                    "${CMAKE_BINARY_DIR}/include/")
+                    "${CMAKE_BINARY_DIR}/src/")
 
 INCLUDE(setup)
 
-ADD_SUBDIRECTORY(include)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(docsrc)
 ADD_SUBDIRECTORY(doc)
