@@ -125,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/component.html">Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -226,16 +227,24 @@ typical MGE application.</p>
 <dd><p>Run the application. This executes the input loop until the quit flag is set. </p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11application5inputEv">
-<span id="_CPPv3N3mge11application5inputEv"></span><span id="_CPPv2N3mge11application5inputEv"></span><span id="mge::application::input"></span><span class="target" id="classmge_1_1application_1a1c81f29e262c1e6745a5ad8b446f2afa"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">input</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">override</span></em><a class="headerlink" href="#_CPPv4N3mge11application5inputEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11application5inputE8uint64_t">
+<span id="_CPPv3N3mge11application5inputE8uint64_t"></span><span id="_CPPv2N3mge11application5inputE8uint64_t"></span><span id="mge::application::input__uint64_t"></span><span class="target" id="classmge_1_1application_1a15fe9696bed6594addd609a346a42bec"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">input</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">override</span></em><a class="headerlink" href="#_CPPv4N3mge11application5inputE8uint64_t" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Retrieve and process input in an loop step. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
+</ul>
+</dd>
+</dl>
+</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11application6updateEd">
-<span id="_CPPv3N3mge11application6updateEd"></span><span id="_CPPv2N3mge11application6updateEd"></span><span id="mge::application::update__double"></span><span class="target" id="classmge_1_1application_1a822d7ebce2305e8afc9c760886f2b20c"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="pre">double</span> <em><span class="pre">delta</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">override</span></em><a class="headerlink" href="#_CPPv4N3mge11application6updateEd" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11application6updateE8uint64_td">
+<span id="_CPPv3N3mge11application6updateE8uint64_td"></span><span id="_CPPv2N3mge11application6updateE8uint64_td"></span><span id="mge::application::update__uint64_t.double"></span><span class="target" id="classmge_1_1application_1a23a187bfd1696e089beb3f840a27d6b7"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em>, <span class="pre">double</span> <em><span class="pre">delta</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">override</span></em><a class="headerlink" href="#_CPPv4N3mge11application6updateE8uint64_td" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Update state in a step. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">delta</span></code>: delta in seconds </p></li>
 </ul>
 </dd>
@@ -243,11 +252,12 @@ typical MGE application.</p>
 </p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11application7presentEd">
-<span id="_CPPv3N3mge11application7presentEd"></span><span id="_CPPv2N3mge11application7presentEd"></span><span id="mge::application::present__double"></span><span class="target" id="classmge_1_1application_1a6c18fac27132c6a284f9908874973560"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">present</span></code><span class="sig-paren">(</span><span class="pre">double</span> <em><span class="pre">peek</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">override</span></em><a class="headerlink" href="#_CPPv4N3mge11application7presentEd" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11application7presentE8uint64_td">
+<span id="_CPPv3N3mge11application7presentE8uint64_td"></span><span id="_CPPv2N3mge11application7presentE8uint64_td"></span><span id="mge::application::present__uint64_t.double"></span><span class="target" id="classmge_1_1application_1a176dba854c2b7f20950400c1cc7c8cdb"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">present</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em>, <span class="pre">double</span> <em><span class="pre">peek</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">override</span></em><a class="headerlink" href="#_CPPv4N3mge11application7presentE8uint64_td" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Presents the state. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">peek</span></code>: percentage of peek into next step if a fixed step mechanism is used, in range [0,1). </p></li>
 </ul>
 </dd>
@@ -337,11 +347,28 @@ typical MGE application.</p>
 <p class="breathe-sectiondef-title rubric">Public Static Functions</p>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge11application4mainENSt11string_viewEiPPKc">
-<span id="_CPPv3N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="_CPPv2N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="mge::application::main__std::string_view.i.cCPP"></span><span class="target" id="classmge_1_1application_1a300ac8d7adb6fc012f62505ec4a365a7"></span><em class="property"><span class="pre">static</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">application</span></em>, <span class="pre">int</span> <em><span class="pre">argc</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><span class="pre">*</span><em><span class="pre">argv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="_CPPv2N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="mge::application::main__std::string_view.i.cCPP"></span><span class="target" id="classmge_1_1application_1a94e49cb7519e4d932a45a27b7e6bc207"></span><em class="property"><span class="pre">static</span></em> <span class="pre">int</span> <code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">application</span></em>, <span class="pre">int</span> <em><span class="pre">argc</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><span class="pre">*</span><em><span class="pre">argv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Run an application implementation. </p>
 <p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>return code passed to operating system </p>
+</dd>
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">application</span></code>: application implementation name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">argc</span></code>: argument count </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">argv</span></code>: argument values </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application4mainEiPPKc">
+<span id="_CPPv3N3mge11application4mainEiPPKc"></span><span id="_CPPv2N3mge11application4mainEiPPKc"></span><span id="mge::application::main__i.cCPP"></span><span class="target" id="classmge_1_1application_1a35e6e8579de648a8a825f1988141dd09"></span><em class="property"><span class="pre">static</span></em> <em class="property"><span class="pre">inline</span></em> <span class="pre">int</span> <code class="sig-name descname"><span class="pre">main</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">argc</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><span class="pre">*</span><em><span class="pre">argv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainEiPPKc" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Run default application implementation. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>return code passed to operating system </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">argc</span></code>: argument count </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">argv</span></code>: argument values </p></li>
 </ul>

@@ -18,3 +18,4 @@ which are not directly related to graphics or game programming.
     core/component.rst
     core/system.rst
     core/utilities.rst
+    core/concurrency.rst

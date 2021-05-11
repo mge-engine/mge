@@ -124,6 +124,7 @@
 <li class="toctree-l2"><a class="reference internal" href="core/component.html">Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/concurrency.html">Concurrency</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -184,15 +185,15 @@
 </li>
         <li><a href="application/application.html#_CPPv4NK3mge11application4argvEi">mge::application::argv (C++ function)</a>
 </li>
-        <li><a href="application/application.html#_CPPv4N3mge11application5inputEv">mge::application::input (C++ function)</a>
+        <li><a href="application/application.html#_CPPv4N3mge11application5inputE8uint64_t">mge::application::input (C++ function)</a>
 </li>
         <li><a href="application/application.html#_CPPv4N3mge11application8instanceEv">mge::application::instance (C++ function)</a>
 </li>
         <li><a href="application/application.html#_CPPv4NK3mge11application7is_quitEv">mge::application::is_quit (C++ function)</a>
 </li>
-        <li><a href="application/application.html#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc">mge::application::main (C++ function)</a>
+        <li><a href="application/application.html#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc">mge::application::main (C++ function)</a>, <a href="application/application.html#_CPPv4N3mge11application4mainEiPPKc">[1]</a>
 </li>
-        <li><a href="application/application.html#_CPPv4N3mge11application7presentEd">mge::application::present (C++ function)</a>
+        <li><a href="application/application.html#_CPPv4N3mge11application7presentE8uint64_td">mge::application::present (C++ function)</a>
 </li>
         <li><a href="application/application.html#_CPPv4N3mge11application21remove_input_listenerE18input_listener_key">mge::application::remove_input_listener (C++ function)</a>
 </li>
@@ -208,7 +209,7 @@
 </li>
         <li><a href="application/application.html#_CPPv4N3mge11application8teardownEv">mge::application::teardown (C++ function)</a>
 </li>
-        <li><a href="application/application.html#_CPPv4N3mge11application6updateEd">mge::application::update (C++ function)</a>
+        <li><a href="application/application.html#_CPPv4N3mge11application6updateE8uint64_td">mge::application::update (C++ function)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4I0EN3mge14base_type_nameENSt6stringEv">mge::base_type_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge14base_type_nameERKNSt9type_infoE">[1]</a>
 </li>
@@ -360,13 +361,13 @@
 </li>
         <li><a href="application/loop.html#_CPPv4N3mge11loop_targetE">mge::loop_target (C++ class)</a>
 </li>
-        <li><a href="application/loop.html#_CPPv4N3mge11loop_target5inputEv">mge::loop_target::input (C++ function)</a>
+        <li><a href="application/loop.html#_CPPv4N3mge11loop_target5inputE8uint64_t">mge::loop_target::input (C++ function)</a>
 </li>
         <li><a href="application/loop.html#_CPPv4NK3mge11loop_target7is_quitEv">mge::loop_target::is_quit (C++ function)</a>
 </li>
-        <li><a href="application/loop.html#_CPPv4N3mge11loop_target7presentEd">mge::loop_target::present (C++ function)</a>
+        <li><a href="application/loop.html#_CPPv4N3mge11loop_target7presentE8uint64_td">mge::loop_target::present (C++ function)</a>
 </li>
-        <li><a href="application/loop.html#_CPPv4N3mge11loop_target6updateEd">mge::loop_target::update (C++ function)</a>
+        <li><a href="application/loop.html#_CPPv4N3mge11loop_target6updateE8uint64_td">mge::loop_target::update (C++ function)</a>
 </li>
         <li><a href="core/tracing.html#_CPPv4N3mge17memory_trace_sinkE">mge::memory_trace_sink (C++ class)</a>
 </li>
@@ -464,12 +465,12 @@
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge9singleton15const_referenceE">mge::singleton::const_reference (C++ type)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="core/utilities.html#_CPPv4N3mge9singletonmlEv">mge::singleton::operator* (C++ function)</a>, <a href="core/utilities.html#_CPPv4NK3mge9singletonmlEv">[1]</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge9singletonptEv">mge::singleton::operator-&gt; (C++ function)</a>, <a href="core/utilities.html#_CPPv4NK3mge9singletonptEv">[1]</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="core/utilities.html#_CPPv4N3mge9singleton7pointerE">mge::singleton::pointer (C++ type)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge9singleton3ptrEv">mge::singleton::ptr (C++ function)</a>
@@ -593,6 +594,14 @@
         <li><a href="core/system.html#_CPPv4N3mge12system_error10error_codeE">mge::system_error::error_code (C++ struct)</a>
 </li>
         <li><a href="core/system.html#_CPPv4N3mge12system_error10error_code10error_codeE15error_code_type">mge::system_error::error_code::error_code (C++ function)</a>
+</li>
+        <li><a href="core/concurrency.html#_CPPv4N3mge6threadE">mge::thread (C++ class)</a>
+</li>
+        <li><a href="core/concurrency.html#_CPPv4N3mge6thread2idE">mge::thread::id (C++ type)</a>
+</li>
+        <li><a href="core/concurrency.html#_CPPv4N3mge6thread18native_handle_typeE">mge::thread::native_handle_type (C++ type)</a>
+</li>
+        <li><a href="core/concurrency.html#_CPPv4N3mge6thread6threadEv">mge::thread::thread (C++ function)</a>
 </li>
         <li><a href="core/tracing.html#_CPPv4N3mge5traceE">mge::trace (C++ class)</a>
 </li>

@@ -125,6 +125,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/component.html">Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -205,16 +206,24 @@ steps in a loop:</p>
 </p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11loop_target5inputEv">
-<span id="_CPPv3N3mge11loop_target5inputEv"></span><span id="_CPPv2N3mge11loop_target5inputEv"></span><span id="mge::loop_target::input"></span><span class="target" id="classmge_1_1loop__target_1a1541347ca4cda0abdeda54da74f55739"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">input</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target5inputEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11loop_target5inputE8uint64_t">
+<span id="_CPPv3N3mge11loop_target5inputE8uint64_t"></span><span id="_CPPv2N3mge11loop_target5inputE8uint64_t"></span><span id="mge::loop_target::input__uint64_t"></span><span class="target" id="classmge_1_1loop__target_1a3bf7dec83c3f3f1975d89d865ec9272a"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">input</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target5inputE8uint64_t" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Retrieve and process input in an loop step. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
+</ul>
+</dd>
+</dl>
+</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11loop_target6updateEd">
-<span id="_CPPv3N3mge11loop_target6updateEd"></span><span id="_CPPv2N3mge11loop_target6updateEd"></span><span id="mge::loop_target::update__double"></span><span class="target" id="classmge_1_1loop__target_1a3fdb49e9c978d4522f3282cad4a4f9f8"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="pre">double</span> <em><span class="pre">delta</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target6updateEd" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11loop_target6updateE8uint64_td">
+<span id="_CPPv3N3mge11loop_target6updateE8uint64_td"></span><span id="_CPPv2N3mge11loop_target6updateE8uint64_td"></span><span id="mge::loop_target::update__uint64_t.double"></span><span class="target" id="classmge_1_1loop__target_1ab7999cec2ba8233b7ffe1bfbedc1e709"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em>, <span class="pre">double</span> <em><span class="pre">delta</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target6updateE8uint64_td" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Update state in a step. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">delta</span></code>: delta in seconds </p></li>
 </ul>
 </dd>
@@ -222,11 +231,12 @@ steps in a loop:</p>
 </p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11loop_target7presentEd">
-<span id="_CPPv3N3mge11loop_target7presentEd"></span><span id="_CPPv2N3mge11loop_target7presentEd"></span><span id="mge::loop_target::present__double"></span><span class="target" id="classmge_1_1loop__target_1a7c5bd8dde5fbad1ecfe3a9c38c4e90d5"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">present</span></code><span class="sig-paren">(</span><span class="pre">double</span> <em><span class="pre">peek</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target7presentEd" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11loop_target7presentE8uint64_td">
+<span id="_CPPv3N3mge11loop_target7presentE8uint64_td"></span><span id="_CPPv2N3mge11loop_target7presentE8uint64_td"></span><span id="mge::loop_target::present__uint64_t.double"></span><span class="target" id="classmge_1_1loop__target_1a5a6420a2afaa147ef905cf5497fbbe21"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">present</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em>, <span class="pre">double</span> <em><span class="pre">peek</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target7presentE8uint64_td" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Presents the state. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">peek</span></code>: percentage of peek into next step if a fixed step mechanism is used, in range [0,1). </p></li>
 </ul>
 </dd>

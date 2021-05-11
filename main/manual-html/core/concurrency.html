@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Application Library" href="../mgeapplication.html" /><link rel="prev" title="Input State" href="state.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Graphics Library" href="../mgegraphics.html" /><link rel="prev" title="Utilities" href="utilities.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Keyboard Handling - MGE 0.1 documentation</title>
+        <title>Concurrency - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -89,7 +89,7 @@
       <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -116,16 +116,16 @@
 </ul>
 <p class="caption"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../core/definitions.html">Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/tracing.html">Tracing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/configuration.html">Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/statistics.html">Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/exception.html">Exception Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/component.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Concurrency</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -135,9 +135,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="state.html">Input State</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Keyboard Handling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -160,76 +160,70 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="keyboard-handling">
-<h1>Keyboard Handling<a class="headerlink" href="#keyboard-handling" title="Permalink to this headline">¶</a></h1>
-<p>Constants for pressed keys are defined in the <cite>key</cite> enumeration.</p>
-<dl class="cpp enum-class">
-<dt id="_CPPv4N3mge3keyE">
-<span id="_CPPv3N3mge3keyE"></span><span id="_CPPv2N3mge3keyE"></span><em class="property"><span class="pre">enum</span> <span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">key</span></code><a class="headerlink" href="#_CPPv4N3mge3keyE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Key codes for keys. These are of course to numerous to list
-here, the enumeration follows the following guidelines:</p>
-<ul class="simple">
-<li><p>all enum values are uppercase</p></li>
-<li><p>key codes for keys that produce an ASCII char are equal to that character,
-e.g <cite>mge::key::A</cite> has a value of 0x41</p></li>
-<li><p>function keys are named <cite>F&lt;n&gt;</cite> for n in [1,12]</p></li>
-<li><p>names of special keys are as usually written on a PC keyboard
-(<cite>PAUSE</cite>, <cite>HOME</cite> and so on)</p></li>
-<li><p>Key pad keys are prefixed with <cite>KP_</cite> (like <cite>KP_1</cite>, <cite>KP_ENTER</cite>).</p></li>
-</ul>
-</dd></dl>
-<p>Modifiers are captured in the modifier set.</p>
+        <div class="section" id="concurrency">
+<h1>Concurrency<a class="headerlink" href="#concurrency" title="Permalink to this headline">¶</a></h1>
+<p>MGE uses multi-threading to achieve concurrency.</p>
+<div class="section" id="threading-utilities">
+<h2>Threading Utilities<a class="headerlink" href="#threading-utilities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="thread">
+<h3>Thread<a class="headerlink" href="#thread" title="Permalink to this headline">¶</a></h3>
+<p>The thread class enhances the <cite>std::thread</cite> interface by some convenience
+methods.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge6threadE">
+<span id="_CPPv3N3mge6threadE"></span><span id="_CPPv2N3mge6threadE"></span><span id="mge::thread"></span><span class="target" id="classmge_1_1thread"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">thread</span></code> <span class="pre">:</span> <em class="property"><span class="pre">private</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="pre">noncopyable</span></a><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge6threadE" title="mge::thread"><span class="pre">thread</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge6threadE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A thread.</p>
+<p>This class enhances <code class="docutils literal notranslate"><span class="pre">std::thread</span></code> by some convenience methods. A thread cannot be copied, or created on the stack. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
 <dl class="cpp type">
-<dt id="_CPPv4N3mge8modifierE">
-<span id="_CPPv3N3mge8modifierE"></span><span id="_CPPv2N3mge8modifierE"></span><em class="property"><span class="pre">using</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">modifier</span></code> <span class="pre">=</span> <span class="pre">mge</span><span class="pre">::</span><span class="pre">enum_set</span><span class="pre">&lt;</span><span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value"><span class="pre">modifier_value</span></a><span class="pre">,</span> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value"><span class="pre">modifier_value</span></a><span class="pre">::</span><a class="reference internal" href="#_CPPv4N3mge14modifier_value3ALTE" title="mge::modifier_value::ALT"><span class="pre">ALT</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge8modifierE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Modifiers.</p>
+<dt id="_CPPv4N3mge6thread2idE">
+<span id="_CPPv3N3mge6thread2idE"></span><span id="_CPPv2N3mge6thread2idE"></span><span class="target" id="classmge_1_1thread_1aef3bd88dae22fd74d607c59fe4f68380"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">id</span></code> <span class="pre">=</span> <span class="pre">std</span><span class="pre">::</span><span class="pre">thread</span><span class="pre">::</span><span class="pre">id</span><a class="headerlink" href="#_CPPv4N3mge6thread2idE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Logical thread id. </p>
 </dd></dl>
-<dl class="cpp enum-class">
-<dt id="_CPPv4N3mge14modifier_valueE">
-<span id="_CPPv3N3mge14modifier_valueE"></span><span id="_CPPv2N3mge14modifier_valueE"></span><em class="property"><span class="pre">enum</span> <span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">modifier_value</span></code><a class="headerlink" href="#_CPPv4N3mge14modifier_valueE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Codes for modifier keys.</p>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge14modifier_value7CONTROLE">
-<span id="_CPPv3N3mge14modifier_value7CONTROLE"></span><span id="_CPPv2N3mge14modifier_value7CONTROLE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">CONTROL</span></code><a class="headerlink" href="#_CPPv4N3mge14modifier_value7CONTROLE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Control key.</p>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge6thread18native_handle_typeE">
+<span id="_CPPv3N3mge6thread18native_handle_typeE"></span><span id="_CPPv2N3mge6thread18native_handle_typeE"></span><span class="target" id="classmge_1_1thread_1aea49607b009cd9fdc7bd92550ff580ee"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">native_handle_type</span></code> <span class="pre">=</span> <span class="pre">std</span><span class="pre">::</span><span class="pre">thread</span><span class="pre">::</span><span class="pre">native_handle_type</span><a class="headerlink" href="#_CPPv4N3mge6thread18native_handle_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Native handle type. </p>
 </dd></dl>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge14modifier_value5SHIFTE">
-<span id="_CPPv3N3mge14modifier_value5SHIFTE"></span><span id="_CPPv2N3mge14modifier_value5SHIFTE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">SHIFT</span></code><a class="headerlink" href="#_CPPv4N3mge14modifier_value5SHIFTE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Shift key.</p>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread6threadEv">
+<span id="_CPPv3N3mge6thread6threadEv"></span><span id="_CPPv2N3mge6thread6threadEv"></span><span id="mge::thread::thread"></span><span class="target" id="classmge_1_1thread_1a4246020dc62f10ebae0547879b1f8011"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">thread</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread6threadEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Constructor. </p>
 </dd></dl>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge14modifier_value3ALTE">
-<span id="_CPPv3N3mge14modifier_value3ALTE"></span><span id="_CPPv2N3mge14modifier_value3ALTE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">ALT</span></code><a class="headerlink" href="#_CPPv4N3mge14modifier_value3ALTE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Alt key.</p>
+</div>
 </dd></dl>
-</dd></dl>
+</div>
+</div>
 </div>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../mgeapplication.html">
+          <a class="next-page" href="../mgegraphics.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Application Library</div>
+                <div class="title">Graphics Library</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="state.html">
+          <a class="prev-page" href="utilities.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Input State</div>
+                <div class="title">Utilities</div>
                 
               </div>
             </a>
@@ -243,7 +237,7 @@ e.g <cite>mge::key::A</cite> has a value of 0x41</p></li>
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/input/keyboard.rst.txt"
+            <a class="muted-link" href="../_sources/core/concurrency.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -251,8 +245,30 @@ e.g <cite>mge::key::A</cite> has a value of 0x41</p></li>
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Concurrency</a><ul>
+<li><a class="reference internal" href="#threading-utilities">Threading Utilities</a><ul>
+<li><a class="reference internal" href="#thread">Thread</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
