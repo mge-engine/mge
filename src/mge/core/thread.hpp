@@ -9,6 +9,8 @@
 #include <thread>
 namespace mge {
 
+    class thread_group;
+
     /** A thread.
      *
      * This class enhances @c std::thread by some convenience methods.
@@ -28,6 +30,11 @@ namespace mge {
          */
         using native_handle_type = std::thread::native_handle_type;
 
+        /**
+         * @brief Thread type used for running thread.
+         */
+        using running_thread_type = std::thread;
+
 #ifdef MGE_OS_WINDOWS
         using system_id = uint32_t;
 #else
@@ -39,7 +46,7 @@ namespace mge {
         explicit thread();
 
         virtual ~thread();
-#if 0
+
         /**
          * @brief Get the current thread.
          *
@@ -48,8 +55,34 @@ namespace mge {
          */
         static thread *this_thread();
 
-        void start();
+        /**
+         * @brief Get @c std::thread id
+         *
+         * @return id of running thread
+         */
+        thread::id get_id() const;
 
+        /**
+         * @brief Get hardware concurrency of current environment.
+         *
+         * @return environment hardware concurrency
+         */
+        static uint32_t hardware_concurrency();
+
+        /**
+         * @brief Starts the thread.
+         * This will start the thread and invoke the @c run method.
+         */
+        void start()
+        {
+            start([this] { this->run(); });
+        }
+
+        /**
+         * @brief Start the thread and run the supplied function.
+         *
+         * @param f function to run in the thread
+         */
         inline void start(std::function<void()> &&f)
         {
             if (!f) {
@@ -88,15 +121,17 @@ namespace mge {
          * thread cannot join itself).
          * @return @c true if thread can be joined
          */
-        bool joinable();
+        bool joinable() const noexcept;
 
     private:
         void on_start();
         void on_finish();
         void on_exception(const std::exception_ptr &eptr);
 
-        std::thread m_running_thread;
-#endif
+        void assert_this_thread_is_this_thread();
+
+        thread_group *      m_group;
+        running_thread_type m_running_thread;
     };
 
     namespace this_thread {
