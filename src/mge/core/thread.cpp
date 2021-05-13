@@ -1,13 +1,27 @@
 #include "mge/core/thread.hpp"
+#include <atomic>
+#include <sstream>
 
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
 #endif
 namespace mge {
 
-    static thread_local thread *t_this_thread;
+    static thread_local thread * t_this_thread;
+    static std::atomic<uint32_t> s_namegen_counter;
 
-    thread::thread() : m_group(nullptr) {}
+    static inline auto gen_thread_name()
+    {
+        std::ostringstream ss;
+        ss << "thread-" << ++s_namegen_counter;
+        return ss.str();
+    }
+
+    thread::thread() : m_name(gen_thread_name()), m_group(nullptr) {}
+
+    thread::thread(const std::string &name, thread_group *group)
+        : m_name(name), m_group(group)
+    {}
 
     thread::~thread() {}
 

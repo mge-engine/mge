@@ -22,7 +22,8 @@ SET(MGECORE_TESTS
     callback_map
     crash
     copy_struct
-    thread_group)
+    thread_group
+    thread)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(

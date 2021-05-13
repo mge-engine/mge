@@ -45,6 +45,13 @@ namespace mge {
          */
         explicit thread();
 
+        /**
+         * @brief Constructor.
+         * @param name thread name
+         * @param group thread group
+         */
+        thread(const std::string &name, thread_group *group = nullptr);
+
         virtual ~thread();
 
         /**
@@ -123,6 +130,13 @@ namespace mge {
          */
         bool joinable() const noexcept;
 
+        /**
+         * @brief Access thread's name.
+         *
+         * @return thread name
+         */
+        const std::string &name() const noexcept { return m_name; }
+
     private:
         void on_start();
         void on_finish();
@@ -130,6 +144,7 @@ namespace mge {
 
         void assert_this_thread_is_this_thread();
 
+        std::string         m_name;
         thread_group *      m_group;
         running_thread_type m_running_thread;
     };
