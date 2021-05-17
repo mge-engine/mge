@@ -15,6 +15,9 @@
 using namespace std::string_view_literals;
 namespace mge {
 
+    /**
+     * @brief Application framework.
+     */
     class MGEAPPLICATION_EXPORT application : public component<application>,
                                               public loop_target
     {
