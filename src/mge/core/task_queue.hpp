@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/dllexport.hpp"
 #include "mge/core/task.hpp"
 #include <mutex>
@@ -11,7 +14,7 @@ namespace mge {
     class task_queue
     {
     public:
-        task_queue() {}
+        task_queue() = default;
 
         task_queue(const task_queue &q)
         {

@@ -28,6 +28,7 @@ SET(mgecore_sources
     thread.cpp
     thread_group.cpp
     task.cpp
+    task_executor.cpp
 )
 
 SET(mgecore_headers
@@ -69,6 +70,8 @@ SET(mgecore_headers
     thread.hpp
     thread_group.hpp
     task.hpp
+    task_queue.hpp
+    task_executor.hpp
  )
 
 MGE_LIBRARY(

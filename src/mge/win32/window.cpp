@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/win32/window.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"

@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "test/applicationtest.hpp"
 
 class applicationtest_application : public mge::test_application

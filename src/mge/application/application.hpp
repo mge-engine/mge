@@ -6,6 +6,7 @@
 #include "mge/application/loop_target.hpp"
 #include "mge/core/callback_map.hpp"
 #include "mge/core/component.hpp"
+#include "mge/core/task_executor.hpp"
 #include <chrono>
 #include <functional>
 #include <string>
@@ -17,9 +18,11 @@ namespace mge {
 
     /**
      * @brief Application framework.
+     *
      */
     class MGEAPPLICATION_EXPORT application : public component<application>,
-                                              public loop_target
+                                              public loop_target,
+                                              public task_executor
     {
     public:
         using update_listener_collection = callback_map<void(double)>;
@@ -93,6 +96,8 @@ namespace mge {
         void set_return_code(int return_code);
 
         int return_code() const noexcept;
+
+        void execute(const task_ref &task) override;
 
         /**
          * @brief Run an application implementation.

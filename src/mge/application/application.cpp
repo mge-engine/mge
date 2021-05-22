@@ -52,6 +52,8 @@ namespace mge {
         }
     }
 
+    void application::execute(const task_ref &task) {}
+
     application::~application() { s_instance = nullptr; }
 
     application *application::instance() { return s_instance; }
