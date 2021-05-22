@@ -31,6 +31,8 @@ namespace mge {
                 << "Can only have one application instance";
         }
 
+        m_main_thread_id = mge::this_thread::get_id();
+
         s_instance = this;
     }
 

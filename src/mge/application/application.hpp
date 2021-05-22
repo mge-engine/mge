@@ -7,6 +7,7 @@
 #include "mge/core/callback_map.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/task_executor.hpp"
+#include "mge/core/thread.hpp"
 #include <chrono>
 #include <functional>
 #include <string>
@@ -179,7 +180,9 @@ namespace mge {
         std::vector<std::string> m_arguments;
         int                      m_return_code;
         volatile bool            m_quit;
-        static application *     s_instance;
+        mge::thread::id          m_main_thread_id;
+
+        static application *s_instance;
 
         input_listener_collection  m_input_listeners;
         update_listener_collection m_update_listeners;
