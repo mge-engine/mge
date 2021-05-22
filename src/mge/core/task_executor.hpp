@@ -25,6 +25,13 @@ namespace mge {
          * @param task task to execute
          */
         virtual void execute(const task_ref &task) = 0;
+
+        /**
+         * @brief Get a synchrononous executor.
+         *
+         * @return task_executor_ref synchronous executor
+         */
+        static task_executor_ref synchronous_executor();
     };
 
 } // namespace mge
