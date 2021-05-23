@@ -18,7 +18,6 @@ namespace mge {
 
     /**
      * @brief An exception.
-     *
      */
     class MGECORE_EXPORT exception : virtual public std::exception
     {
