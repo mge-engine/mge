@@ -4,8 +4,10 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/point.hpp"
 #include "mge/graphics/window_options.hpp"
+
 #include <memory>
 namespace mge {
 
@@ -54,6 +56,13 @@ namespace mge {
 
         virtual ~window();
 
+        /**
+         * @brief Access render context of window.
+         *
+         * @return render context
+         */
+        mge::render_context &render_context();
+
     protected:
         /**
          * Called when window is shown.
@@ -65,8 +74,9 @@ namespace mge {
          */
         virtual void on_hide() = 0;
 
-        mge::point  m_position;
-        mge::extent m_extent;
-        bool        m_visible;
+        mge::point              m_position;
+        mge::extent             m_extent;
+        mge::render_context_ref m_render_context;
+        bool                    m_visible;
     };
 } // namespace mge

@@ -27,8 +27,6 @@ SET(mgecore_sources
     crash.cpp
     thread.cpp
     thread_group.cpp
-    task.cpp
-    task_executor.cpp
 )
 
 SET(mgecore_headers
@@ -69,10 +67,7 @@ SET(mgecore_headers
     zero_memory.hpp
     thread.hpp
     thread_group.hpp
-    task.hpp
-    task_queue.hpp
-    task_executor.hpp
- )
+)
 
 MGE_LIBRARY(
     TARGET  mgecore

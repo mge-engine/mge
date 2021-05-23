@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-
+#pragma once
 #include "mge/application/application.hpp"
 #include "mge/graphics/window.hpp"
 #include "mge/input/input_state.hpp"

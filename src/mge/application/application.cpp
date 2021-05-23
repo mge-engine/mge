@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/application/application.hpp"
+#include "mge/application/loop.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/stdexceptions.hpp"
@@ -20,6 +21,8 @@ namespace mge {
 
     MGE_DEFINE_PARAMETER(std::string, application, name,
                          "Application name to instantiate");
+    MGE_DEFINE_PARAMETER(std::string, application, loop,
+                         "Application loop implementation to instantiate");
 
     application *application::s_instance;
 
@@ -54,8 +57,6 @@ namespace mge {
         }
     }
 
-    void application::execute(const task_ref &task) {}
-
     application::~application() { s_instance = nullptr; }
 
     application *application::instance() { return s_instance; }
@@ -75,9 +76,22 @@ namespace mge {
 
     void application::setup() {}
 
+    void application::async_setup() {}
+
     void application::teardown() {}
 
-    void application::run() {}
+    void application::run()
+    {
+        std::string loop_implementation("simple");
+        if (MGE_PARAMETER(application, loop).has_value()) {
+            loop_implementation = MGE_PARAMETER(application, loop).get();
+        }
+        MGE_DEBUG_TRACE(APPLICATION)
+            << "Using loop implementation: " << loop_implementation;
+        auto loop_instance = mge::loop::create(loop_implementation);
+        loop_instance->run(*this);
+        MGE_DEBUG_TRACE(APPLICATION) << "Main loop finished";
+    }
 
     int application::main(std::string_view application_name, int argc,
                           const char **argv)

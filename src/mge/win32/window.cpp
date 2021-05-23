@@ -72,6 +72,7 @@ namespace mge {
                                      NULL, GetModuleHandle(NULL), this);
 
             MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
+
             if (application::instance()) {
                 m_process_input_listener =
                     application::instance()->add_input_listener(

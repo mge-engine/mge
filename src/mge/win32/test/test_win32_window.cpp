@@ -18,12 +18,6 @@ public:
         m_window->show();
     }
 
-    void run()
-    {
-        auto l = mge::loop::create("simple");
-        l->run(*this);
-    }
-
     mge::window_ref m_window;
 };
 
