@@ -15,7 +15,7 @@ namespace mge {
      *
      * @tparam T function signature
      * @tparam K key type
-     * @tparam C container typpe
+     * @tparam C container type
      */
     template <typename T, typename K = unsigned int,
               typename C = std::map<typename K, std::function<typename T>>>
