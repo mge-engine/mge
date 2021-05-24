@@ -67,6 +67,13 @@ namespace mge {
          */
         bool pressed(const modifier &m, const key &k) const;
 
+        /**
+         * @brief Get current modifier state.
+         *
+         * @return modifier state
+         */
+        const mge::modifier &current_modifier() const;
+
     private:
         mge::modifier     m_modifier;
         std::vector<bool> m_pressed;

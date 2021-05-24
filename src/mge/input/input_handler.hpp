@@ -2,6 +2,7 @@
 
 #include "mge/core/callback_map.hpp"
 #include "mge/input/dllexport.hpp"
+#include "mge/input/input_state.hpp"
 #include "mge/input/key.hpp"
 #include "mge/input/key_action.hpp"
 #include "mge/input/modifier.hpp"
@@ -16,29 +17,30 @@ namespace mge {
      * (i.e. modifiers, keys that are pressed and mouse buttons
      * that are pressed).
      */
-    class MGE_INPUT_EXPORT input_handler
+    class MGEINPUT_EXPORT input_handler
     {
     public:
         /**
          * Handler function for mouse actions.
          */
-        using mouse_action_handler = std::function<void(
-            int button, mouse_action action, modifier m, int x, int y)>;
+        using mouse_action_handler =
+            std::function<void(uint32_t button, mouse_action action,
+                               const modifier &m, uint32_t x, uint32_t y)>;
         /**
          * Handler function for mouse movement.
          */
-        using mouse_move_handler = std::function<void(int x, int y)>;
+        using mouse_move_handler = std::function<void(uint32_t x, uint32_t y)>;
 
         /**
          * Handler function for keyboard actions.
          */
         using key_action_handler =
-            std::function<void(key k, key_action action, modifier m)>;
+            std::function<void(key k, key_action action, const modifier &m)>;
 
         /**
          * Handler function for character input.
          */
-        using character_handler = std::function<void(unsigned int character)>;
+        using character_handler = std::function<void(uint32_t character)>;
 
     protected:
         /**
@@ -80,35 +82,25 @@ namespace mge {
         void clear_key_action_handler();
         void clear_character_handler();
 
-        /**
-         * Return whether a certain key is pressed.
-         * @param k key to check
-         * @return bool if key is currently pressed
-         */
-        bool key_down(key k) const;
-
-        /**
-         * Returns current modifier state.
-         * @return modifier state
-         */
-        const modifier &current_modifier();
+        const input_state &state() const;
+        const modifier &   current_modifier() const;
 
     protected:
-        void on_mouse_action(int button, mouse_action action, int x, int y);
+        void on_mouse_action(uint32_t button, mouse_action action, uint32_t x,
+                             uint32_t y);
         void on_key_action(key k, key_action action);
-        void on_mouse_move(int x, int y);
-        void on_character(unsigned int ch);
-        void add_modifier(modifier_value m);
-        void remove_modifier(modifier_value m);
+        void on_mouse_move(uint32_t x, uint32_t y);
+        void on_character(uint32_t ch);
 
     private:
         void update_key_state(key k, key_action action);
 
-        modifier                       m_current_modifier;
-        mouse_action_handler           m_mouse_action_handler;
-        mouse_move_handler             m_mouse_move_handler;
-        key_action_handler             m_key_action_handler;
-        character_handler              m_character_handler;
-        std::bitset<(int)key::KEY_MAX> m_pressed_keys;
+        mouse_action_handler m_mouse_action_handler;
+        mouse_move_handler   m_mouse_move_handler;
+        key_action_handler   m_key_action_handler;
+        character_handler    m_character_handler;
+
+    protected:
+        input_state m_input_state;
     };
 } // namespace mge

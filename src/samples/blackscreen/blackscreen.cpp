@@ -4,6 +4,7 @@
 #include "mge/application/application.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "mge/graphics/window.hpp"
 
 MGE_DEFINE_TRACE(BLACKSCREEN);
 
@@ -16,10 +17,10 @@ namespace mge {
         void setup() override
         {
             MGE_DEBUG_TRACE(BLACKSCREEN) << "Setup blackscreen";
-            /*
-
             m_render_system = render_system::create();
             m_window        = m_render_system->create_window();
+            m_window->set_close_listener([&] { set_quit(); });
+            /*
             m_window->set_close_listener([&] { set_quit(); });
             m_window->set_key_action_handler(
                 [&](mge::key k, mge::key_action a, mge::modifier m) {

@@ -10,6 +10,7 @@ SET(mgeinput_sources
    mouse_state.cpp
    mouse_action.cpp
    input_state.cpp
+   input_handler.cpp
 )
 
 SET(mgeinput_headers
@@ -18,6 +19,7 @@ SET(mgeinput_headers
     key_action.hpp
     modifier.hpp
     input_state.hpp
+    input_handler.hpp
     keyboard_state.hpp
     mouse_state.hpp
     mouse_action.hpp
