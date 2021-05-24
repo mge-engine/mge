@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/void_function.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
@@ -26,6 +27,18 @@ namespace mge {
         window(const extent &extent, const window_options &options);
 
     public:
+        /** @brief Listener type for close action.
+         */
+        using close_listener = void_function;
+
+        /**
+         * @brief Listener to check on closing action.
+         *
+         * This listener will be called on close action. If the listener
+         * returns @c false, the window will not be closed.
+         */
+        using closing_listener = std::function<bool()>;
+
         /**
          * Get window position.
          * @return window position.
@@ -63,7 +76,49 @@ namespace mge {
          */
         mge::render_context &render_context();
 
+        /**
+         * @brief Access render context of window.
+         *
+         * @return render context
+         */
+        const mge::render_context &render_context() const;
+
+        /**
+         * @brief Set the close listener.
+         *
+         * @param listener callback to call when window is closed
+         */
+        void set_close_listener(const close_listener &listener);
+
+        /**
+         * @brief Clears the currently set close listener.
+         */
+        void clear_close_listener();
+
+        /**
+         * @brief Set the closing listener.
+         *
+         * The closing listener can abort the window close by returning @c
+         * false.
+         *
+         * @param listener callback to call when window is requested to be
+         * closed
+         */
+        void set_closing_listener(const closing_listener &listener);
+
+        /**
+         * @brief Clears the currently set closing listener.
+         */
+        void clear_closing_listener();
+
     protected:
+        /**
+         * @brief Called when window is closed.
+         *
+         * @return @c true if window is closed
+         */
+        bool on_close();
+
         /**
          * Called when window is shown.
          */
@@ -77,6 +132,8 @@ namespace mge {
         mge::point              m_position;
         mge::extent             m_extent;
         mge::render_context_ref m_render_context;
+        close_listener          m_close_listener;
+        closing_listener        m_closing_listener;
         bool                    m_visible;
     };
 } // namespace mge

@@ -16,4 +16,6 @@ public:
 
     MOCK_METHOD(void, on_show, (), (override));
     MOCK_METHOD(void, on_hide, (), (override));
+
+    using window::on_close;
 };

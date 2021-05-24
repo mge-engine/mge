@@ -6,6 +6,9 @@
 #include <bitset>
 
 namespace mge {
+    /**
+     * @brief Window options that can be specified when window is created.
+     */
     class MGEGRAPHICS_EXPORT window_options
     {
     public:

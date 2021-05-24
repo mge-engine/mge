@@ -6,10 +6,10 @@
 
 namespace mge {
     window::window(const mge::extent &, const window_options &)
-        : m_visible(false)
+        : m_closing_listener([] { return true; }), m_visible(false)
     {}
 
-    window::~window() {}
+    window::~window() { m_render_context.reset(); }
 
     void window::show()
     {
@@ -35,4 +35,39 @@ namespace mge {
 
     mge::render_context &window::render_context() { return *m_render_context; }
 
+    const mge::render_context &window::render_context() const
+    {
+        return *m_render_context;
+    }
+
+    void window::set_close_listener(const window::close_listener &listener)
+    {
+        m_close_listener = listener;
+    }
+
+    void window::clear_close_listener() { m_close_listener = void_function(); }
+
+    void window::set_closing_listener(const window::closing_listener &listener)
+    {
+        if (!m_closing_listener) {
+            clear_closing_listener();
+        }
+        m_closing_listener = listener;
+    }
+
+    void window::clear_closing_listener()
+    {
+        m_close_listener = [] { return true; };
+    }
+
+    bool window::on_close()
+    {
+        if (!m_closing_listener()) {
+            return false;
+        }
+        if (m_close_listener) {
+            m_close_listener();
+        }
+        return true;
+    }
 } // namespace mge

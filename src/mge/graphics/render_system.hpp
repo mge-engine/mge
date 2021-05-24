@@ -26,6 +26,13 @@ namespace mge {
         virtual ~render_system() = default;
 
         /**
+         * @brief Create window with default settings.
+         *
+         * @return created window
+         */
+        window_ref create_window();
+
+        /**
          * @brief Create a window
          * @param extent  window size
          * @param options window options

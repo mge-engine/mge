@@ -18,4 +18,10 @@ namespace mge {
         render_system_ref result;
         return result;
     }
+
+    window_ref render_system::create_window()
+    {
+        return create_window(mge::extent(800, 600),
+                             window_options::standard_options());
+    }
 } // namespace mge
