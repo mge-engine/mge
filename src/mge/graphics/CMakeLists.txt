@@ -33,5 +33,5 @@ MGE_LIBRARY(
     ${mgegraphics_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgegraphics mgecore boost-all)
+TARGET_LINK_LIBRARIES(mgegraphics mgecore mgeinput boost-all)
 ADD_SUBDIRECTORY(test)

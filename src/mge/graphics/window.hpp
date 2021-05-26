@@ -8,6 +8,7 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/point.hpp"
 #include "mge/graphics/window_options.hpp"
+#include "mge/input/input_handler.hpp"
 
 #include <memory>
 namespace mge {
@@ -16,7 +17,8 @@ namespace mge {
      * @brief A window.
      */
     class MGEGRAPHICS_EXPORT window
-        : public std::enable_shared_from_this<window>
+        : public std::enable_shared_from_this<window>,
+          public input_handler
     {
     protected:
         /**

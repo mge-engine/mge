@@ -20,8 +20,6 @@ namespace mge {
             m_render_system = render_system::create();
             m_window        = m_render_system->create_window();
             m_window->set_close_listener([&] { set_quit(); });
-            /*
-            m_window->set_close_listener([&] { set_quit(); });
             m_window->set_key_action_handler(
                 [&](mge::key k, mge::key_action a, mge::modifier m) {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
@@ -29,6 +27,7 @@ namespace mge {
                     }
                 });
 
+            /*
             m_clear_commands = m_window->render_context().create_command_list();
             m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
             m_clear_commands->finish();
@@ -36,8 +35,8 @@ namespace mge {
                 context.render_context.execute(m_clear_commands);
                 context.render_context.flush();
             });
-            m_window->show();
             */
+            m_window->show();
         }
 
     private:

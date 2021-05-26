@@ -25,4 +25,5 @@ INCLUDE(macros/library)
 INCLUDE(macros/test)
 INCLUDE(macros/fixcopyright)
 INCLUDE(macros/format)
+INCLUDE(macros/copy_file)
 

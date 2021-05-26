@@ -1,0 +1,1 @@
+echo Disable trace to console
