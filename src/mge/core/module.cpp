@@ -57,8 +57,13 @@ namespace mge {
 
         for (const auto &p : paths) {
             MGE_TRACE(CORE, DEBUG) << "Searching for modules in " << p;
-            fs::path current_path(p);
-            load_paths.push_back(fs::canonical(current_path));
+            try {
+                fs::path current_path(p);
+                load_paths.push_back(fs::canonical(current_path));
+            } catch (const std::exception &e) {
+                MGE_TRACE(CORE, WARNING) << "Exception inspecting module path "
+                                         << p << ": " << e.what();
+            }
         }
 
         return load_paths;
@@ -81,14 +86,20 @@ namespace mge {
     {
         std::vector<fs::path> result;
         for (const auto &module_path : module_paths) {
-            if (fs::is_directory(module_path)) {
-                for (const auto &de : fs::directory_iterator(module_path)) {
-                    if (de.is_regular_file()) {
-                        if (is_module(de.path())) {
-                            result.push_back(de.path());
+            try {
+                if (fs::is_directory(module_path)) {
+                    for (const auto &de : fs::directory_iterator(module_path)) {
+                        if (de.is_regular_file()) {
+                            if (is_module(de.path())) {
+                                result.push_back(de.path());
+                            }
                         }
                     }
                 }
+            } catch (std::exception &e) {
+                MGE_TRACE(CORE, WARNING)
+                    << "Exception enumerating modules in path " << module_path
+                    << ": " << e.what();
             }
         }
         return result;

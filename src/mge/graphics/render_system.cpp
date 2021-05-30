@@ -11,12 +11,9 @@ namespace mge {
 
     render_system_ref render_system::create()
     {
-        if (!MGE_PARAMETER(graphics, render_system).has_value()) {
-            MGE_THROW(illegal_state)
-                << "Parameter 'graphics.render_system' not set";
-        }
-        render_system_ref result;
-        return result;
+        std::string implementation_name =
+            MGE_PARAMETER(graphics, render_system).get("opengl");
+        return component<render_system>::create(implementation_name);
     }
 
     window_ref render_system::create_window()

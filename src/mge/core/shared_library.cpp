@@ -60,6 +60,7 @@ namespace mge {
         : m_handle(nil_handle)
     {
         m_name = std::filesystem::canonical(name);
+        load();
     }
 
     void shared_library::load()

@@ -6,12 +6,16 @@
 #include "mge/core/contains.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/core/type_name.hpp"
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
+
 namespace mge {
+
+    MGE_USE_TRACE(CORE);
 
     class component_registry
     {
@@ -31,7 +35,8 @@ namespace mge {
         void register_component(component_registry_entry_base *c)
         {
             auto component_name = c->name();
-            // std::cout << "Registering " << component_name << std::endl;
+            MGE_TRACE(CORE, DEBUG)
+                << "Registering component " << component_name;
             if (contains(m_components, component_name)) {
                 MGE_THROW(mge::duplicate_element)
                     << "Try to register duplicate component '" << component_name
@@ -44,8 +49,8 @@ namespace mge {
         void register_implementation(implementation_registry_entry_base *i)
         {
             auto component_name = i->component_name();
-            // std::cout << "Register implementation for " << component_name <<
-            // std::endl;
+            MGE_TRACE(CORE, DEBUG) << "Registering implementation " << i->name()
+                                   << " of component " << component_name;
             if (!component_registered(component_name)) {
                 m_pending_implementations.emplace_back(i);
             }
@@ -101,6 +106,10 @@ namespace mge {
         create(std::string_view component_name,
                std::string_view implementation_name)
         {
+            MGE_TRACE(CORE, DEBUG)
+                << "Create instance of " << component_name
+                << " using implementation " << implementation_name;
+
             auto impl_it = m_implementations.find(component_name);
             if (impl_it != m_implementations.end()) {
                 auto regentry_it = impl_it->second.find(implementation_name);

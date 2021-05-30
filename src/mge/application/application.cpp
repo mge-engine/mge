@@ -5,6 +5,7 @@
 #include "mge/application/loop.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/executable_name.hpp"
+#include "mge/core/module.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 
@@ -102,6 +103,8 @@ namespace mge {
             if (!configuration::loaded()) {
                 configuration::load();
             }
+
+            module::load_all();
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {

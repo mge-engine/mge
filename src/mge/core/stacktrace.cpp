@@ -236,6 +236,7 @@ namespace mge {
                 os << " of " << f.module();
             }
             os << "\n";
+            ++fno;
         }
         return os;
     }

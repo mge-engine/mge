@@ -6,6 +6,7 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/type_name.hpp"
 #include <functional>
+#include <iostream>
 #include <memory>
 #include <string_view>
 
