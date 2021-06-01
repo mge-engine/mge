@@ -20,6 +20,7 @@ namespace mge {
         window::window(const mge::extent &extent, const window_options &options)
             : mge::window(extent, options), m_hwnd(0)
         {
+            create_window_class();
             create_window();
         }
 
@@ -29,6 +30,10 @@ namespace mge {
 
         void window::create_window_class()
         {
+            if (s_window_class_created) {
+                return;
+            }
+
             MGE_DEBUG_TRACE(WIN32) << "Create window class";
 
             WNDCLASSEXW window_class;
@@ -95,6 +100,7 @@ namespace mge {
         void window::on_show()
         {
             if (m_hwnd) {
+                MGE_DEBUG_TRACE(WIN32) << "ShowWindow(SW_SHOW) " << m_hwnd;
                 ShowWindow(m_hwnd, SW_SHOW);
                 BringWindowToTop(m_hwnd);
                 SetForegroundWindow(m_hwnd);
@@ -105,6 +111,7 @@ namespace mge {
         void window::on_hide()
         {
             if (m_hwnd) {
+                MGE_DEBUG_TRACE(WIN32) << "ShowWindow(SW_HIDE) " << m_hwnd;
                 ShowWindow(m_hwnd, SW_HIDE);
             }
         }
@@ -112,8 +119,31 @@ namespace mge {
         LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam,
                                          LPARAM lparam)
         {
-            return DefWindowProcW(hwnd, umsg, wparam, lparam);
+            window *w = (window *)GetWindowLongPtr(hwnd, 0);
+            if (w == nullptr) {
+                switch (umsg) {
+                case WM_NCCREATE: {
+                    CREATESTRUCT *cs = (CREATESTRUCT *)lparam;
+                    SetWindowLongPtr(hwnd, 0, (LONG_PTR)cs->lpCreateParams);
+                    break;
+                }
+                default:
+                    break;
+                }
+                return DefWindowProcW(hwnd, umsg, wparam, lparam);
+            } else {
+                switch (umsg) {
+                case WM_WANT_DESTROY:
+                    MGE_DEBUG_TRACE(WIN32)
+                        << "Destroy of window " << hwnd << "requested";
+                    w->m_hwnd = 0;
+                    DestroyWindow(hwnd);
+                    break;
+                default:
+                    return DefWindowProcW(hwnd, umsg, wparam, lparam);
+                }
+            }
+            return 0;
         }
-
     } // namespace win32
 } // namespace mge
