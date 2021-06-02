@@ -5,8 +5,9 @@
 #include "mge/graphics/render_context.hpp"
 
 namespace mge {
-    window::window(const mge::extent &, const window_options &)
-        : m_closing_listener([] { return true; }), m_visible(false)
+    window::window(const mge::extent &extent_, const window_options &)
+        : m_extent(extent_), m_closing_listener([] { return true; }),
+          m_visible(false)
     {}
 
     window::~window() { m_render_context.reset(); }

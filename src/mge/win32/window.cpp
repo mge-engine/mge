@@ -91,7 +91,7 @@ namespace mge {
         void window::process_input()
         {
             MSG msg;
-            while (m_hwnd && GetMessage(&msg, m_hwnd, 0, 0)) {
+            if (m_hwnd && GetMessage(&msg, m_hwnd, 0, 0)) {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
             }
@@ -133,6 +133,9 @@ namespace mge {
                 return DefWindowProcW(hwnd, umsg, wparam, lparam);
             } else {
                 switch (umsg) {
+                case WM_CLOSE:
+                    w->on_close();
+                    break;
                 case WM_WANT_DESTROY:
                     MGE_DEBUG_TRACE(WIN32)
                         << "Destroy of window " << hwnd << "requested";
