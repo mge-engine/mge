@@ -4,6 +4,7 @@
 #include "mge/win32/window.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
+#include <windowsx.h>
 
 #define MGE_CLASS_NAME  ((LPCWSTR)L"mge")
 #define WM_WANT_DESTROY (WM_USER + 1)
@@ -123,7 +124,7 @@ namespace mge {
             }
         }
 
-        mge::key translate_key(WPARAM wparam, LPARAM lparam)
+        static mge::key translate_key(WPARAM wparam, LPARAM lparam)
         {
             if (wparam == VK_PROCESSKEY) {
                 return mge::key::INVALID;
@@ -263,6 +264,91 @@ namespace mge {
                         << "Destroy of window " << hwnd << "requested";
                     w->m_hwnd = 0;
                     DestroyWindow(hwnd);
+                    break;
+                case WM_KEYDOWN:
+                case WM_SYSKEYDOWN: {
+                    mge::key k = translate_key(wparam, lparam);
+                    if (k != mge::key::INVALID) {
+                        w->on_key_action(k, mge::key_action::PRESS);
+                    }
+                    break;
+                }
+                case WM_KEYUP:
+                case WM_SYSKEYUP: {
+                    mge::key k = translate_key(wparam, lparam);
+                    if (k != mge::key::INVALID) {
+                        w->on_key_action(k, mge::key_action::RELEASE);
+                    }
+                    break;
+                }
+                case WM_LBUTTONDOWN:
+                    w->on_mouse_action(1, mge::mouse_action::PRESS,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
+                    break;
+                case WM_LBUTTONUP:
+                    w->on_mouse_action(1, mge::mouse_action::RELEASE,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
+                    break;
+                case WM_LBUTTONDBLCLK:
+                    w->on_mouse_action(
+                        1, mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+                        GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    break;
+                case WM_RBUTTONDOWN:
+                    w->on_mouse_action(2, mge::mouse_action::PRESS,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
+                    break;
+                case WM_RBUTTONUP:
+                    w->on_mouse_action(2, mge::mouse_action::RELEASE,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
+                    break;
+                case WM_RBUTTONDBLCLK:
+                    w->on_mouse_action(
+                        2, mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+                        GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    break;
+                case WM_MOUSEMOVE:
+                    w->on_mouse_move(GET_X_LPARAM(lparam),
+                                     GET_Y_LPARAM(lparam));
+                    break;
+                case WM_CHAR:
+                    if (wparam == 0x0D || wparam == 0x09 || wparam == 0x08) {
+                        switch (wparam) {
+                        case 0x0D:
+                            w->on_key_action(mge::key::ENTER,
+                                             mge::key_action::PRESS);
+                            break;
+                        case 0x08:
+                            w->on_key_action(mge::key::BACKSPACE,
+                                             mge::key_action::PRESS);
+                            break;
+                        case 0x09:
+                            w->on_key_action(mge::key::TAB,
+                                             mge::key_action::PRESS);
+                            break;
+                        }
+                        w->on_character((uint32_t)wparam);
+                        switch (wparam) {
+                        case 0x0D:
+                            w->on_key_action(mge::key::ENTER,
+                                             mge::key_action::RELEASE);
+                            break;
+                        case 0x08:
+                            w->on_key_action(mge::key::BACKSPACE,
+                                             mge::key_action::RELEASE);
+                            break;
+                        case 0x09:
+                            w->on_key_action(mge::key::TAB,
+                                             mge::key_action::RELEASE);
+                            break;
+                        }
+                    } else {
+                        w->on_character((uint32_t)wparam);
+                    }
                     break;
                 default:
                     return DefWindowProcW(hwnd, umsg, wparam, lparam);
