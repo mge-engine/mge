@@ -4,54 +4,33 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include "mge/core/noncopyable.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 #include <boost/iterator/iterator_facade.hpp>
 
+#include <cstdint>
 #include <functional>
 #include <map>
+#include <vector>
+
 namespace mge {
 
     /**
      * @brief Callback map
      *
-     * @tparam T function signature
-     * @tparam K key type
-     * @tparam C container type
+     * @tparam Args function arguments
      */
-    template <typename T, typename K = unsigned int,
-              typename C = std::map<typename K, std::function<typename T>>>
-    class callback_map : public noncopyable
+    template <typename... Args> class callback_map : public noncopyable
     {
     public:
-        using self_type = callback_map<T, K, C>;
+        using self_type = callback_map<Args...>;
 
-        using function_type  = std::function<T>;
-        using key_type       = K;
-        using container_type = C;
+        using function_type      = std::function<void(Args...)>;
+        using key_type           = uint32_t;
+        using container_type     = std::map<key_type, function_type>;
+        using key_container_type = std::vector<key_type>;
 
-        class const_iterator
-            : public boost::iterator_facade<self_type::const_iterator,
-                                            const function_type,
-                                            boost::forward_traversal_tag>
-        {
-        public:
-            const_iterator(const typename container_type &m, bool end)
-                : m_it(end ? m.cend() : m.cbegin())
-            {}
-            const_iterator(const const_iterator &) = default;
-            const_iterator &operator=(const const_iterator &) = default;
-
-        private:
-            friend class boost::iterator_core_access;
-
-            void increment() { ++m_it; }
-            bool equal(const const_iterator &i) const { return m_it == i.m_it; }
-            const function_type &dereference() const { return m_it->second; }
-
-            typename container_type::const_iterator m_it;
-        };
-
-        callback_map() : m_sequence(0) {}
+        callback_map() : m_sequence(0), m_calling(false) {}
 
         /**
          * @brief Inserts a callback.
@@ -61,6 +40,10 @@ namespace mge {
          */
         key_type insert(const function_type &f)
         {
+            if (m_calling) {
+                MGE_THROW(illegal_state)
+                    << "Cannot insert new callback during callback processing";
+            }
             key_type new_key = ++m_sequence;
             m_data[new_key]  = f;
             return new_key;
@@ -73,29 +56,129 @@ namespace mge {
          * @return erased value, it is empty if the key
          *   was not found
          */
-        function_type erase(key_type k)
+        void erase(key_type k)
         {
-            auto it = m_data.find(k);
-            if (it != m_data.end()) {
-                auto result = it->second;
-                m_data.erase(it);
-                return result;
+            if (m_calling) {
+                m_delayed_erase.emplace_back(k);
             } else {
-                return function_type();
+                auto it = m_data.find(k);
+                if (it != m_data.end()) {
+                    m_data.erase(it);
+                }
             }
         }
-        /**
-         * @brief Retrieve whether map is empty.
-         *
-         * @return @c true if empty
-         */
-        bool empty() const { return m_data.empty(); }
 
-        const_iterator begin() const { return const_iterator(m_data, false); }
-        const_iterator end() const { return const_iterator(m_data, true); }
+        void operator()(Args... args) const
+        {
+            m_calling = true;
+            try {
+                for (const auto &[key, value] : m_data) {
+                    value(args...);
+                }
+                m_calling = false;
+                for (const auto &k : m_delayed_erase) {
+                    const_cast<self_type *>(this)->erase(k);
+                }
+                m_delayed_erase.clear();
+            } catch (...) {
+                m_calling = false;
+                try {
+                    for (const auto &k : m_delayed_erase) {
+                        const_cast<self_type *>(this)->erase(k);
+                    }
+                    m_delayed_erase.clear();
+                } catch (...) {
+                    // prevent double exception, but just drop this one
+                }
+                throw;
+            }
+        }
 
     private:
-        key_type       m_sequence;
-        container_type m_data;
+        key_type                   m_sequence;
+        container_type             m_data;
+        mutable key_container_type m_delayed_erase;
+        mutable bool               m_calling;
+    };
+
+    template <> class callback_map<void> : public noncopyable
+    {
+    public:
+        using self_type = callback_map<void>;
+
+        using function_type      = std::function<void(void)>;
+        using key_type           = uint32_t;
+        using container_type     = std::map<key_type, function_type>;
+        using key_container_type = std::vector<key_type>;
+
+        callback_map() : m_sequence(0), m_calling(false) {}
+
+        /**
+         * @brief Inserts a callback.
+         *
+         * @param f callback
+         * @return key that can be used to erase the callback
+         */
+        key_type insert(const function_type &f)
+        {
+            if (m_calling) {
+                MGE_THROW(illegal_state)
+                    << "Cannot insert new callback during callback processing";
+            }
+            key_type new_key = ++m_sequence;
+            m_data[new_key]  = f;
+            return new_key;
+        }
+
+        /**
+         * @brief Erase callback using a registered key.
+         *
+         * @param k key
+         * @return erased value, it is empty if the key
+         *   was not found
+         */
+        void erase(key_type k)
+        {
+            if (m_calling) {
+                m_delayed_erase.emplace_back(k);
+            } else {
+                auto it = m_data.find(k);
+                if (it != m_data.end()) {
+                    m_data.erase(it);
+                }
+            }
+        }
+
+        void operator()(void) const
+        {
+            m_calling = true;
+            try {
+                for (const auto &[key, value] : m_data) {
+                    value();
+                }
+                m_calling = false;
+                for (const auto &k : m_delayed_erase) {
+                    const_cast<self_type *>(this)->erase(k);
+                }
+                m_delayed_erase.clear();
+            } catch (...) {
+                m_calling = false;
+                try {
+                    for (const auto &k : m_delayed_erase) {
+                        const_cast<self_type *>(this)->erase(k);
+                    }
+                    m_delayed_erase.clear();
+                } catch (...) {
+                    // prevent double exception, but just drop this one
+                }
+                throw;
+            }
+        }
+
+    private:
+        key_type                   m_sequence;
+        container_type             m_data;
+        mutable key_container_type m_delayed_erase;
+        mutable bool               m_calling;
     };
 } // namespace mge

@@ -18,13 +18,25 @@ namespace mge {
     namespace win32 {
 
         window::window(const mge::extent &extent, const window_options &options)
-            : mge::window(extent, options), m_hwnd(0)
+            : mge::window(extent, options), m_hwnd(0), m_quit_listener(0),
+              m_process_input_listener(0)
         {
             create_window_class();
             create_window();
+            m_quit_listener =
+                mge::application::instance()->add_quit_listener([=, this] {
+                    if (m_hwnd) {
+                        PostMessage(m_hwnd, WM_WANT_DESTROY, 0, 0);
+                    }
+                });
         }
 
-        window::~window() {}
+        window::~window()
+        {
+            mge::application::instance()->remove_input_listener(
+                m_process_input_listener);
+            mge::application::instance()->remove_quit_listener(m_quit_listener);
+        }
 
         volatile bool s_window_class_created;
 
@@ -78,14 +90,9 @@ namespace mge {
 
             MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
 
-            if (application::instance()) {
-                m_process_input_listener =
-                    application::instance()->add_input_listener(
-                        [&]() { this->process_input(); });
-            } else {
-                MGE_THROW(mge::illegal_state)
-                    << "Cannot create window without application instance";
-            }
+            m_process_input_listener =
+                application::instance()->add_input_listener(
+                    [&]() { this->process_input(); });
         }
 
         void window::process_input()
@@ -114,6 +121,121 @@ namespace mge {
                 MGE_DEBUG_TRACE(WIN32) << "ShowWindow(SW_HIDE) " << m_hwnd;
                 ShowWindow(m_hwnd, SW_HIDE);
             }
+        }
+
+        mge::key translate_key(WPARAM wparam, LPARAM lparam)
+        {
+            if (wparam == VK_PROCESSKEY) {
+                return mge::key::INVALID;
+            }
+            if (wparam >= (WPARAM)mge::key::ZERO &&
+                wparam <= (WPARAM)mge::key::NINE) {
+                return (mge::key)wparam;
+            }
+            if (wparam >= (WPARAM)mge::key::A &&
+                wparam <= (WPARAM)mge::key::Z) {
+                return (mge::key)wparam;
+            }
+            switch (wparam) {
+            case VK_SPACE:
+                return mge::key::SPACE;
+            case VK_F1:
+                return mge::key::F1;
+            case VK_F2:
+                return mge::key::F2;
+            case VK_F3:
+                return mge::key::F3;
+            case VK_F4:
+                return mge::key::F4;
+            case VK_F5:
+                return mge::key::F5;
+            case VK_F6:
+                return mge::key::F6;
+            case VK_F7:
+                return mge::key::F7;
+            case VK_F8:
+                return mge::key::F8;
+            case VK_F9:
+                return mge::key::F9;
+            case VK_F10:
+                return mge::key::F10;
+            case VK_F11:
+                return mge::key::F11;
+            case VK_F12:
+                return mge::key::F12;
+            case VK_INSERT:
+                return mge::key::INSERT;
+            case VK_DELETE:
+                return mge::key::DELETE_KEY;
+            case VK_HOME:
+                return mge::key::HOME;
+            case VK_END:
+                return mge::key::END;
+            case VK_PRIOR:
+                return mge::key::PAGE_UP;
+            case VK_NEXT:
+                return mge::key::PAGE_DOWN;
+            case VK_UP:
+                return mge::key::CURSOR_UP;
+            case VK_DOWN:
+                return mge::key::CURSOR_DOWN;
+            case VK_LEFT:
+                return mge::key::CURSOR_LEFT;
+            case VK_RIGHT:
+                return mge::key::CURSOR_RIGHT;
+            case VK_CAPITAL:
+                return mge::key::CAPS_LOCK;
+            case VK_SCROLL:
+                return mge::key::SCROLL_LOCK;
+            case VK_PAUSE:
+                return mge::key::PAUSE;
+            case VK_PRINT:
+                return mge::key::PRINT_SCREEN;
+            case VK_NUMLOCK:
+                return mge::key::NUM_LOCK;
+            case VK_LSHIFT:
+                return mge::key::LEFT_SHIFT;
+            case VK_RSHIFT:
+                return mge::key::RIGHT_SHIFT;
+            case VK_LCONTROL:
+                return mge::key::LEFT_CONTROL;
+            case VK_RCONTROL:
+                return mge::key::RIGHT_CONTROL;
+            case VK_LMENU:
+                return mge::key::LEFT_ALT;
+            case VK_RMENU:
+                return mge::key::RIGHT_ALT;
+            case VK_MENU:
+                return mge::key::MENU;
+            case VK_NUMPAD0:
+                return mge::key::KP_0;
+            case VK_NUMPAD1:
+                return mge::key::KP_1;
+            case VK_NUMPAD2:
+                return mge::key::KP_2;
+            case VK_NUMPAD3:
+                return mge::key::KP_3;
+            case VK_NUMPAD4:
+                return mge::key::KP_4;
+            case VK_NUMPAD5:
+                return mge::key::KP_5;
+            case VK_NUMPAD6:
+                return mge::key::KP_6;
+            case VK_NUMPAD7:
+                return mge::key::KP_7;
+            case VK_NUMPAD8:
+                return mge::key::KP_8;
+            case VK_NUMPAD9:
+                return mge::key::KP_9;
+            case VK_ESCAPE:
+                return mge::key::ESCAPE;
+            case 13:
+                return mge::key::ENTER;
+            }
+
+            MGE_DEBUG_TRACE(WIN32) << "Bad key: " << wparam;
+
+            return mge::key::INVALID;
         }
 
         LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam,

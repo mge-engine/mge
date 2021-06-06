@@ -32,6 +32,7 @@ namespace mge {
             void        process_input();
 
             HWND                            m_hwnd;
+            application::quit_listener_key  m_quit_listener;
             application::input_listener_key m_process_input_listener;
             input_state                     m_input_state;
         };

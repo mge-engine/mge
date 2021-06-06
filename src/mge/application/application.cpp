@@ -60,7 +60,15 @@ namespace mge {
 
     application::~application() { s_instance = nullptr; }
 
-    application *application::instance() { return s_instance; }
+    application *application::instance()
+    {
+        if (!s_instance) {
+            MGE_THROW(mge::illegal_state)
+                << "Application instance requested, but none available";
+        }
+
+        return s_instance;
+    }
 
     int application::argc() const
     {
@@ -182,29 +190,31 @@ namespace mge {
         m_redraw_listeners.erase(k);
     }
 
+    application::quit_listener_key
+    application::add_quit_listener(const application::quit_listener &l)
+    {
+        return m_quit_listeners.insert(l);
+    }
+
+    void application::remove_quit_listener(application::quit_listener_key k)
+    {
+        m_quit_listeners.erase(k);
+    }
+
     bool application::is_quit() const { return m_quit; }
 
     void application::set_quit() { m_quit = true; }
 
-    void application::input(uint64_t cycle)
-    {
-        for (const auto &l : m_input_listeners) {
-            l();
-        }
-    }
+    void application::input(uint64_t cycle) { m_input_listeners(); }
 
     void application::update(uint64_t cycle, double delta)
     {
-        for (const auto &l : m_update_listeners) {
-            l(delta);
-        }
+        m_update_listeners(delta);
     }
 
     void application::present(uint64_t cycle, double peek)
     {
-        for (const auto &l : m_redraw_listeners) {
-            l(peek);
-        }
+        m_redraw_listeners(cycle, peek);
     }
 
     void application::set_return_code(int return_code)
@@ -218,4 +228,5 @@ namespace mge {
     {
         return m_arguments;
     }
+
 } // namespace mge

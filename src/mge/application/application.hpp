@@ -24,17 +24,21 @@ namespace mge {
                                               public loop_target
     {
     public:
-        using update_listener_collection = callback_map<void(double)>;
+        using update_listener_collection = callback_map<double>;
         using update_listener     = update_listener_collection::function_type;
         using update_listener_key = update_listener_collection::key_type;
 
-        using redraw_listener_collection = callback_map<void(double)>;
+        using redraw_listener_collection = callback_map<uint64_t, double>;
         using redraw_listener     = redraw_listener_collection::function_type;
         using redraw_listener_key = redraw_listener_collection::key_type;
 
-        using input_listener_collection = callback_map<void()>;
+        using input_listener_collection = callback_map<void>;
         using input_listener     = input_listener_collection::function_type;
         using input_listener_key = input_listener_collection::key_type;
+
+        using quit_listener_collection = callback_map<void>;
+        using quit_listener     = quit_listener_collection::function_type;
+        using quit_listener_key = quit_listener_collection::key_type;
 
         application();
         ~application();
@@ -168,6 +172,21 @@ namespace mge {
         void remove_redraw_listener(redraw_listener_key k);
 
         /**
+         * @brief Add a quit listener.
+         *
+         * @param l update listener
+         * @return key for update listener registration
+         */
+        quit_listener_key add_quit_listener(const quit_listener &l);
+
+        /**
+         * @brief Remove update listener.
+         *
+         * @param k listener key
+         */
+        void remove_quit_listener(quit_listener_key k);
+
+        /**
          * @brief Access singleton/current instance.
          *
          * @return current application instance
@@ -188,6 +207,7 @@ namespace mge {
         input_listener_collection  m_input_listeners;
         update_listener_collection m_update_listeners;
         redraw_listener_collection m_redraw_listeners;
+        quit_listener_collection   m_quit_listeners;
     };
 } // namespace mge
 

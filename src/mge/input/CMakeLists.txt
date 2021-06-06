@@ -33,5 +33,5 @@ MGE_LIBRARY(
     ${mgeinput_sources}
     ${mgeinput_headers}
 )
-TARGET_LINK_LIBRARIES(mgeinput boost-all)
+TARGET_LINK_LIBRARIES(mgeinput mgecore boost-all)
 ADD_SUBDIRECTORY(test)
