@@ -52,4 +52,6 @@ namespace mge {
         m_change_callback = callback;
     }
 
+    void basic_parameter::reset() {}
+
 } // namespace mge

@@ -63,7 +63,7 @@ namespace mge {
         /**
          * @brief Unset or clears a parameter.
          */
-        virtual void reset() = 0;
+        virtual void reset();
         /**
          * @brief Sets parameter from string
          *

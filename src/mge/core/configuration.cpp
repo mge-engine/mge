@@ -5,6 +5,8 @@
 #include "mge/core/executable_name.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 
 // property tree use deprecated boost bind
 // placeholders
@@ -23,10 +25,13 @@ namespace fs = std::filesystem;
 namespace pt = boost::property_tree;
 
 namespace mge {
+
+    MGE_USE_TRACE(CORE);
+
     class configuration_instance
     {
     public:
-        configuration_instance() : m_loaded(false) {}
+        configuration_instance() : m_loaded(false), m_update_needed(true) {}
 
         ~configuration_instance() = default;
 
@@ -52,6 +57,7 @@ namespace mge {
         section_map m_sections;
         pt::ptree   m_raw_settings;
         bool        m_loaded;
+        bool        m_update_needed;
     };
 
     void configuration_instance::register_parameter(basic_parameter &p)
@@ -60,16 +66,16 @@ namespace mge {
         if (pmap_it != m_sections.end()) {
             auto p_it = pmap_it->second.find(p.name());
             if (p_it != pmap_it->second.end()) {
-                throw std::runtime_error("Duplicate parameter");
+                MGE_THROW(mge::duplicate_element)
+                    << "Parameter " << p.section() << "/" << p.name()
+                    << " already registered";
             } else {
                 pmap_it->second[p.name()] = &p;
             }
         } else {
             m_sections[p.section()][p.name()] = &p;
         }
-        if (!m_raw_settings.empty()) {
-            fetch_parameter(p);
-        }
+        m_update_needed = true;
     }
 
     void configuration_instance::unregister_parameter(basic_parameter &p)
@@ -87,6 +93,10 @@ namespace mge {
     configuration_instance::find_parameter(std::string_view section,
                                            std::string_view name)
     {
+        if (m_update_needed && m_loaded) {
+            set_registered_parameters();
+            m_update_needed = false;
+        }
         auto pmap_it = m_sections.find(section);
         if (pmap_it != m_sections.end()) {
             auto p_it = pmap_it->second.find(name);
@@ -94,7 +104,8 @@ namespace mge {
                 return *p_it->second;
             }
         }
-        throw std::runtime_error("Unknown parameter");
+        MGE_THROW(mge::runtime_exception)
+            << "Unknown parameter " << section << "/" << name;
     }
 
     fs::path configuration_instance::find_config_file()
@@ -166,10 +177,16 @@ namespace mge {
 
         auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
         if (ov.has_value()) {
+            MGE_DEBUG_TRACE(CORE) << "Set parameter " << p.section() << "/"
+                                  << p.name() << " to " << ov.get();
             p.from_string(ov.get());
         } else {
+            MGE_DEBUG_TRACE(CORE)
+                << "Reset parameter " << p.section() << "/" << p.name();
             p.reset();
         }
+        MGE_DEBUG_TRACE(CORE)
+            << "Notify change of parameter " << p.section() << "/" << p.name();
         p.notify_change();
     }
 

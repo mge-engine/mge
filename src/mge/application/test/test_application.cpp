@@ -28,7 +28,13 @@ TEST(application, argv_throws_for_invalid_index)
 }
 
 class foobar_app : public mge::application
-{};
+{
+public:
+    foobar_app()
+    {
+        this->add_update_listener([&](uint64_t, double) { set_quit(); });
+    }
+};
 
 MGE_REGISTER_IMPLEMENTATION(foobar_app, mge::application, foobar);
 

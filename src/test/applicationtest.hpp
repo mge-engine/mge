@@ -3,15 +3,19 @@
 // All rights reserved.
 #pragma once
 #include "mge/application/application.hpp"
+#include "mge/core/trace.hpp"
 #include "test/googletest.hpp"
 
 namespace mge {
+
+    MGE_USE_TRACE(APPLICATIONTEST);
+
     class test_application : public application
     {
     public:
         test_application() : m_tests_did_run(false)
         {
-            add_update_listener([&](double) {
+            add_update_listener([&](uint64_t, double) {
                 if (!m_tests_did_run) {
                     run_all_tests();
                 }
@@ -35,6 +39,7 @@ namespace mge {
 } // namespace mge
 
 #define APPLICATIONTEST_MAIN(NAME)                                             \
+    MGE_DEFINE_TRACE(APPLICATIONTEST);                                         \
     int main(int argc, const char **argv)                                      \
     {                                                                          \
         return mge::application::main(#NAME, argc, argv);                      \

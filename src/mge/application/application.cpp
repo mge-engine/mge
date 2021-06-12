@@ -209,7 +209,7 @@ namespace mge {
 
     void application::update(uint64_t cycle, double delta)
     {
-        m_update_listeners(delta);
+        m_update_listeners(cycle, delta);
     }
 
     void application::present(uint64_t cycle, double peek)

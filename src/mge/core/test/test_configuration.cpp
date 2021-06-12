@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/configuration.hpp"
+#include "mge/core/exception.hpp"
 #include "mge/core/parameter.hpp"
 #include "test/googletest.hpp"
 #include <filesystem>
@@ -20,7 +21,7 @@ TEST(configuration, find_parameter_throws_on_unknown)
 {
     EXPECT_THROW(
         mge::configuration::find_parameter("test"sv, "unknown_parameter"sv),
-        std::runtime_error);
+        mge::exception);
 }
 
 TEST(configuration, store)

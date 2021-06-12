@@ -24,7 +24,7 @@ namespace mge {
                                               public loop_target
     {
     public:
-        using update_listener_collection = callback_map<double>;
+        using update_listener_collection = callback_map<uint64_t, double>;
         using update_listener     = update_listener_collection::function_type;
         using update_listener_key = update_listener_collection::key_type;
 
