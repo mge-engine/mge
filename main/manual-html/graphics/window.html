@@ -170,8 +170,22 @@ created. The window can of course occupy the whole
 screen.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge6windowE">
-<span id="_CPPv3N3mge6windowE"></span><span id="_CPPv2N3mge6windowE"></span><span id="mge::window"></span><span class="target" id="classmge_1_1window"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">window</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge6windowE" title="mge::window"><span class="pre">window</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge6windowE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge6windowE"></span><span id="_CPPv2N3mge6windowE"></span><span id="mge::window"></span><span class="target" id="classmge_1_1window"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">window</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge6windowE" title="mge::window"><span class="pre">window</span></a><span class="pre">&gt;</span><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><span class="pre">input_handler</span><a class="headerlink" href="#_CPPv4N3mge6windowE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>A window. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge6window14close_listenerE">
+<span id="_CPPv3N3mge6window14close_listenerE"></span><span id="_CPPv2N3mge6window14close_listenerE"></span><span class="target" id="classmge_1_1window_1aa1093df618bb4cd7d234d02e00fa258b"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">close_listener</span></code> <span class="pre">=</span> <span class="pre">void_function</span><a class="headerlink" href="#_CPPv4N3mge6window14close_listenerE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Listener type for close action. </p>
+</dd></dl>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge6window16closing_listenerE">
+<span id="_CPPv3N3mge6window16closing_listenerE"></span><span id="_CPPv2N3mge6window16closing_listenerE"></span><span class="target" id="classmge_1_1window_1a2b1ac86f13a9f2ac96bbfe60070326c7"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">closing_listener</span></code> <span class="pre">=</span> <span class="pre">std</span><span class="pre">::</span><span class="pre">function</span><span class="pre">&lt;</span><span class="pre">bool</span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge6window16closing_listenerE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Listener to check on closing action. </p>
+<p>This listener will be called on close action. If the listener returns <code class="docutils literal notranslate"><span class="pre">false</span></code>, the window will not be closed. </p>
+</dd></dl>
+</div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
@@ -211,13 +225,69 @@ screen.</p>
 </dl>
 </p>
 </dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6window14render_contextEv">
+<span id="_CPPv3N3mge6window14render_contextEv"></span><span id="_CPPv2N3mge6window14render_contextEv"></span><span id="mge::window::render_context"></span><span class="target" id="classmge_1_1window_1a32bcc032169d23af20464ec069d0dab7"></span><span class="pre">mge</span><span class="pre">::</span><span class="pre">render_context</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">render_context</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Access render context of window. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>render context </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge6window14render_contextEv">
+<span id="_CPPv3NK3mge6window14render_contextEv"></span><span id="_CPPv2NK3mge6window14render_contextEv"></span><span id="mge::window::render_contextC"></span><span class="target" id="classmge_1_1window_1a2e68ac26515f8caff97e7e6578f04743"></span><em class="property"><span class="pre">const</span></em> <span class="pre">mge</span><span class="pre">::</span><span class="pre">render_context</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">render_context</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Access render context of window. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>render context </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6window18set_close_listenerERK14close_listener">
+<span id="_CPPv3N3mge6window18set_close_listenerERK14close_listener"></span><span id="_CPPv2N3mge6window18set_close_listenerERK14close_listener"></span><span id="mge::window::set_close_listener__close_listenerCR"></span><span class="target" id="classmge_1_1window_1a6e6ee7eb0aea00cf5563b9344dddda6d"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">set_close_listener</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge6window14close_listenerE" title="mge::window::close_listener"><span class="pre">close_listener</span></a> <span class="pre">&amp;</span><em><span class="pre">listener</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window18set_close_listenerERK14close_listener" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Set the close listener. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">listener</span></code>: callback to call when window is closed </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6window20clear_close_listenerEv">
+<span id="_CPPv3N3mge6window20clear_close_listenerEv"></span><span id="_CPPv2N3mge6window20clear_close_listenerEv"></span><span id="mge::window::clear_close_listener"></span><span class="target" id="classmge_1_1window_1ae7f0ef51a84ea12f20935cec01e15dd3"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">clear_close_listener</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window20clear_close_listenerEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Clears the currently set close listener. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6window20set_closing_listenerERK16closing_listener">
+<span id="_CPPv3N3mge6window20set_closing_listenerERK16closing_listener"></span><span id="_CPPv2N3mge6window20set_closing_listenerERK16closing_listener"></span><span id="mge::window::set_closing_listener__closing_listenerCR"></span><span class="target" id="classmge_1_1window_1ae7c015e5f22307f5161da7a760f16ad8"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">set_closing_listener</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge6window16closing_listenerE" title="mge::window::closing_listener"><span class="pre">closing_listener</span></a> <span class="pre">&amp;</span><em><span class="pre">listener</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window20set_closing_listenerERK16closing_listener" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Set the closing listener. </p>
+<p>The closing listener can abort the window close by returning <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">listener</span></code>: callback to call when window is requested to be closed </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6window22clear_closing_listenerEv">
+<span id="_CPPv3N3mge6window22clear_closing_listenerEv"></span><span id="_CPPv2N3mge6window22clear_closing_listenerEv"></span><span id="mge::window::clear_closing_listener"></span><span class="target" id="classmge_1_1window_1a4fb31e96052b9b70c3b84ff64207eb5c"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">clear_closing_listener</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window22clear_closing_listenerEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Clears the currently set closing listener. </p>
+</dd></dl>
 </div>
 </dd></dl>
 <p>A window is created by specifying its size and some window options:</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge14window_optionsE">
 <span id="_CPPv3N3mge14window_optionsE"></span><span id="_CPPv2N3mge14window_optionsE"></span><span id="mge::window_options"></span><span class="target" id="classmge_1_1window__options"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">window_options</span></code><a class="headerlink" href="#_CPPv4N3mge14window_optionsE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>Window options that can be specified when window is created. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Static Functions</p>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge14window_options16standard_optionsEv">

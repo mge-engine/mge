@@ -170,7 +170,8 @@ typical MGE application.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge11applicationE">
 <span id="_CPPv3N3mge11applicationE"></span><span id="_CPPv2N3mge11applicationE"></span><span id="mge::application"></span><span class="target" id="classmge_1_1application"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">application</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="pre">component</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="pre">application</span></a><span class="pre">&gt;</span><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="loop.html#_CPPv4N3mge11loop_targetE" title="mge::loop_target"><span class="pre">loop_target</span></a><a class="headerlink" href="#_CPPv4N3mge11applicationE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><div class="breathe-sectiondef docutils container">
+<dd><p>Application framework. </p>
+<div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
 <dt id="_CPPv4NK3mge11application4argcEv">
@@ -215,6 +216,11 @@ typical MGE application.</p>
 <dt id="_CPPv4N3mge11application5setupEv">
 <span id="_CPPv3N3mge11application5setupEv"></span><span id="_CPPv2N3mge11application5setupEv"></span><span id="mge::application::setup"></span><span class="target" id="classmge_1_1application_1a88e72c5ac67a90765ae0f56f6ae4e5f4"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">setup</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application5setupEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Basic setup of the application. Default implementation does nothing. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application11async_setupEv">
+<span id="_CPPv3N3mge11application11async_setupEv"></span><span id="_CPPv2N3mge11application11async_setupEv"></span><span id="mge::application::async_setup"></span><span class="target" id="classmge_1_1application_1afa1549bc3d1ce682dd00ca9530b192ab"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">async_setup</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application11async_setupEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Setup that is started asynchronously to the event loop. </p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge11application8teardownEv">
@@ -334,6 +340,32 @@ typical MGE application.</p>
 <dt id="_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key">
 <span id="_CPPv3N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="_CPPv2N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="mge::application::remove_redraw_listener__redraw_listener_key"></span><span class="target" id="classmge_1_1application_1aea7a762d9c4f8d27dacd3fb5742ee9a1"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">remove_redraw_listener</span></code><span class="sig-paren">(</span><span class="pre">redraw_listener_key</span> <em><span class="pre">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Remove redraw listener. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: listener key </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application17add_quit_listenerERK13quit_listener">
+<span id="_CPPv3N3mge11application17add_quit_listenerERK13quit_listener"></span><span id="_CPPv2N3mge11application17add_quit_listenerERK13quit_listener"></span><span id="mge::application::add_quit_listener__quit_listenerCR"></span><span class="target" id="classmge_1_1application_1aeb48334edc5c21f0dc289a6d8b947f07"></span><span class="pre">quit_listener_key</span> <code class="sig-name descname"><span class="pre">add_quit_listener</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">quit_listener</span> <span class="pre">&amp;</span><em><span class="pre">l</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application17add_quit_listenerERK13quit_listener" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Add a quit listener. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>key for update listener registration </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">l</span></code>: update listener </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key">
+<span id="_CPPv3N3mge11application20remove_quit_listenerE17quit_listener_key"></span><span id="_CPPv2N3mge11application20remove_quit_listenerE17quit_listener_key"></span><span id="mge::application::remove_quit_listener__quit_listener_key"></span><span class="target" id="classmge_1_1application_1a304a941819eb1094c405602189f0fad7"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">remove_quit_listener</span></code><span class="sig-paren">(</span><span class="pre">quit_listener_key</span> <em><span class="pre">k</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Remove update listener. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">k</span></code>: listener key </p></li>

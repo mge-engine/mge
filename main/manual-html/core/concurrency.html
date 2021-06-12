@@ -189,6 +189,11 @@ methods.</p>
 <span id="_CPPv3N3mge6thread18native_handle_typeE"></span><span id="_CPPv2N3mge6thread18native_handle_typeE"></span><span class="target" id="classmge_1_1thread_1aea49607b009cd9fdc7bd92550ff580ee"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">native_handle_type</span></code> <span class="pre">=</span> <span class="pre">std</span><span class="pre">::</span><span class="pre">thread</span><span class="pre">::</span><span class="pre">native_handle_type</span><a class="headerlink" href="#_CPPv4N3mge6thread18native_handle_typeE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Native handle type. </p>
 </dd></dl>
+<dl class="cpp type">
+<dt id="_CPPv4N3mge6thread19running_thread_typeE">
+<span id="_CPPv3N3mge6thread19running_thread_typeE"></span><span id="_CPPv2N3mge6thread19running_thread_typeE"></span><span class="target" id="classmge_1_1thread_1a6526d37fa8468042910ad5647764dbd5"></span><em class="property"><span class="pre">using</span> </em><code class="sig-name descname"><span class="pre">running_thread_type</span></code> <span class="pre">=</span> <span class="pre">std</span><span class="pre">::</span><span class="pre">thread</span><a class="headerlink" href="#_CPPv4N3mge6thread19running_thread_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Thread type used for running thread. </p>
+</dd></dl>
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
@@ -197,7 +202,115 @@ methods.</p>
 <span id="_CPPv3N3mge6thread6threadEv"></span><span id="_CPPv2N3mge6thread6threadEv"></span><span id="mge::thread::thread"></span><span class="target" id="classmge_1_1thread_1a4246020dc62f10ebae0547879b1f8011"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">thread</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread6threadEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Constructor. </p>
 </dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread6threadERKNSt6stringEP12thread_group">
+<span id="_CPPv3N3mge6thread6threadERKNSt6stringEP12thread_group"></span><span id="_CPPv2N3mge6thread6threadERKNSt6stringEP12thread_group"></span><span id="mge::thread::thread__ssCR.thread_groupP"></span><span class="target" id="classmge_1_1thread_1a05463cd2a625ff521d3b4173cb946a70"></span><code class="sig-name descname"><span class="pre">thread</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><em><span class="pre">name</span></em>, <a class="reference internal" href="#_CPPv4N3mge12thread_groupE" title="mge::thread_group"><span class="pre">thread_group</span></a> <span class="pre">*</span><em><span class="pre">group</span></em> <span class="pre">=</span> <span class="pre">nullptr</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread6threadERKNSt6stringEP12thread_group" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Constructor. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: thread name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">group</span></code>: thread group </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge6thread6get_idEv">
+<span id="_CPPv3NK3mge6thread6get_idEv"></span><span id="_CPPv2NK3mge6thread6get_idEv"></span><span id="mge::thread::get_idC"></span><span class="target" id="classmge_1_1thread_1a3460503b1a02017e4bfa7678bbf926db"></span><a class="reference internal" href="#_CPPv4N3mge6threadE" title="mge::thread"><span class="pre">thread</span></a><span class="pre">::</span><a class="reference internal" href="#_CPPv4N3mge6thread2idE" title="mge::thread::id"><span class="pre">id</span></a> <code class="sig-name descname"><span class="pre">get_id</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge6thread6get_idEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get <code class="docutils literal notranslate"><span class="pre">std::thread</span></code> id. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>id of running thread </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread5startEv">
+<span id="_CPPv3N3mge6thread5startEv"></span><span id="_CPPv2N3mge6thread5startEv"></span><span id="mge::thread::start"></span><span class="target" id="classmge_1_1thread_1ad6bd24591f8654e18edae8ccd07ebf39"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread5startEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Starts the thread. This will start the thread and invoke the <code class="docutils literal notranslate"><span class="pre">run</span></code> method. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread5startERRNSt8functionIFvvEEE">
+<span id="_CPPv3N3mge6thread5startERRNSt8functionIFvvEEE"></span><span id="_CPPv2N3mge6thread5startERRNSt8functionIFvvEEE"></span><span class="target" id="classmge_1_1thread_1a127a08e491016db34bb07923977a7762"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">function</span><span class="pre">&lt;</span><span class="pre">void</span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="pre">&gt;</span> <span class="pre">&amp;</span><span class="pre">&amp;</span><em><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread5startERRNSt8functionIFvvEEE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Start the thread and run the supplied function. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code>: function to run in the thread </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread3runEv">
+<span id="_CPPv3N3mge6thread3runEv"></span><span id="_CPPv2N3mge6thread3runEv"></span><span id="mge::thread::run"></span><span class="target" id="classmge_1_1thread_1ab995a0db078d13cc5e59b9eb549fb413"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">run</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread3runEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Run thread logic. The default method does nothing. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread4joinEv">
+<span id="_CPPv3N3mge6thread4joinEv"></span><span id="_CPPv2N3mge6thread4joinEv"></span><span id="mge::thread::join"></span><span class="target" id="classmge_1_1thread_1a5f903a72c2c94d712adc929e8f32c042"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">join</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread4joinEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Joins this thread. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread6detachEv">
+<span id="_CPPv3N3mge6thread6detachEv"></span><span id="_CPPv2N3mge6thread6detachEv"></span><span id="mge::thread::detach"></span><span class="target" id="classmge_1_1thread_1a54f392393418cd8b88f9f55f26e9597d"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">detach</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread6detachEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Detaches this thread. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge6thread8joinableEv">
+<span id="_CPPv3NK3mge6thread8joinableEv"></span><span id="_CPPv2NK3mge6thread8joinableEv"></span><span id="mge::thread::joinableC"></span><span class="target" id="classmge_1_1thread_1a3ca7f7ece2dceaff2545a25ee8009fd0"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">joinable</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge6thread8joinableEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if thread can be joined. To be joinable, the thread must run and be not equal to this thread (a thread cannot join itself). <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if thread can be joined </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge6thread4nameEv">
+<span id="_CPPv3NK3mge6thread4nameEv"></span><span id="_CPPv2NK3mge6thread4nameEv"></span><span id="mge::thread::nameC"></span><span class="target" id="classmge_1_1thread_1a78b8291ab2f4db275bd46c06900a27de"></span><em class="property"><span class="pre">inline</span></em> <em class="property"><span class="pre">const</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">name</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge6thread4nameEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Access thread’s name. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>thread name </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
 </div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread11this_threadEv">
+<span id="_CPPv3N3mge6thread11this_threadEv"></span><span id="_CPPv2N3mge6thread11this_threadEv"></span><span id="mge::thread::this_thread"></span><span class="target" id="classmge_1_1thread_1a302b714fe1e8f96e790ad54f5bb8bbef"></span><em class="property"><span class="pre">static</span></em> <a class="reference internal" href="#_CPPv4N3mge6threadE" title="mge::thread"><span class="pre">thread</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">this_thread</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread11this_threadEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get the current thread. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>current thread, or null pointer if the current thread is not managed </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge6thread20hardware_concurrencyEv">
+<span id="_CPPv3N3mge6thread20hardware_concurrencyEv"></span><span id="_CPPv2N3mge6thread20hardware_concurrencyEv"></span><span id="mge::thread::hardware_concurrency"></span><span class="target" id="classmge_1_1thread_1ae5f3bc9505bd674aebac744b328887a0"></span><em class="property"><span class="pre">static</span></em> <span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">hardware_concurrency</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread20hardware_concurrencyEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get hardware concurrency of current environment. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>environment hardware concurrency </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
+</div>
+<div class="section" id="thread-group">
+<h3>Thread Group<a class="headerlink" href="#thread-group" title="Permalink to this headline">¶</a></h3>
+<p>Threads can be organized in thread groups. A thread is assigned to a thread
+group om construction, and the group cannot be changed.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge12thread_groupE">
+<span id="_CPPv3N3mge12thread_groupE"></span><span id="_CPPv2N3mge12thread_groupE"></span><span id="mge::thread_group"></span><span class="target" id="classmge_1_1thread__group"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">thread_group</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="pre">noncopyable</span></a><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge12thread_groupE" title="mge::thread_group"><span class="pre">thread_group</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge12thread_groupE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A thread group. </p>
+<p>A thread group is a collection of threads. Threads are added to the group by specifying the thread group at thread construction time, a thread cannot change its group after being assigned to one. </p>
 </dd></dl>
 </div>
 </div>
@@ -260,6 +373,7 @@ methods.</p>
 <li><a class="reference internal" href="#">Concurrency</a><ul>
 <li><a class="reference internal" href="#threading-utilities">Threading Utilities</a><ul>
 <li><a class="reference internal" href="#thread">Thread</a></li>
+<li><a class="reference internal" href="#thread-group">Thread Group</a></li>
 </ul>
 </li>
 </ul>
