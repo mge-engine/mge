@@ -40,9 +40,30 @@ namespace mge {
             error_code_type m_value;
         };
 
+        /**
+         * @brief Construct empty error.
+         */
         system_error();
+
+        /**
+         * @brief Construct system error from system dependent error code type.
+         *
+         * @param code system error code
+         */
         system_error(error_code_type code);
+
+        /**
+         * @brief Copy constructor.
+         *
+         * @param e copied error
+         */
         system_error(const system_error &e);
+
+        /**
+         * @brief Move constructor.
+         *
+         * @param e moved error
+         */
         system_error(system_error &&e);
 
         ~system_error();

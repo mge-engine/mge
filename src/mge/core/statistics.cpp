@@ -53,7 +53,7 @@ namespace mge {
 
     statistics::description::description(
         std::string_view name, std::string_view comment,
-        std::initializer_list<mge::statistics::description::field_description>
+        std::initializer_list<::mge::statistics::description::field_description>
             fields)
         : m_name(name), m_comment(comment),
           m_fields(fields.begin(), fields.end())

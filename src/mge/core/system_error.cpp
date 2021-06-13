@@ -27,9 +27,9 @@ namespace mge {
 #endif
     }
 
-    system_error::system_error(system_error::error_code_type e)
+    system_error::system_error(system_error::error_code_type code)
     {
-        set_error_code(e);
+        set_error_code(code);
     }
 
     system_error::system_error(const system_error &e) : exception(e) {}
