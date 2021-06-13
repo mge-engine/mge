@@ -19,3 +19,4 @@ which are not directly related to graphics or game programming.
     core/system.rst
     core/utilities.rst
     core/concurrency.rst
+    core/version.rst

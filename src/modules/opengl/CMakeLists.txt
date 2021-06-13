@@ -2,7 +2,6 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-
 SET(mge_opengl_module_SOURCES
     render_system.cpp
     window.cpp

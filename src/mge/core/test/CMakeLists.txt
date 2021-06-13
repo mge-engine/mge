@@ -23,7 +23,8 @@ SET(MGECORE_TESTS
     crash
     copy_struct
     thread_group
-    thread)
+    thread
+    semantic_version)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(
