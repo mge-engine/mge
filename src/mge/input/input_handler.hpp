@@ -77,19 +77,67 @@ namespace mge {
          */
         void set_character_handler(const character_handler &handler);
 
+        /**
+         * @brief Clears the mouse action handler.
+         */
         void clear_mouse_action_handler();
+        /**
+         * @brief Clears the mouse move handler.
+         */
         void clear_mouse_move_handler();
+        /**
+         * @brief Clears the key action handler.
+         */
         void clear_key_action_handler();
+        /**
+         * @brief Clears the character handler.
+         */
         void clear_character_handler();
 
+        /**
+         * @brief Access input state.
+         *
+         * @return current input state
+         */
         const input_state &state() const;
-        const modifier &   current_modifier() const;
+
+        /**
+         * @brief Access the currently pressed modifier.
+         *
+         * @return current modifier
+         */
+        const modifier &current_modifier() const;
 
     protected:
+        /**
+         * @brief Method to be called when a mouse action is happening.
+         *
+         * @param button button of the action
+         * @param action action
+         * @param x mouse x position
+         * @param y mouse y position
+         */
         void on_mouse_action(uint32_t button, mouse_action action, uint32_t x,
                              uint32_t y);
+        /**
+         * @brief Method to be called when a key action happens.
+         *
+         * @param k       key of the action
+         * @param action  key action
+         */
         void on_key_action(key k, key_action action);
+        /**
+         * @brief Method to be called on mouse move.
+         *
+         * @param x new mouse x position
+         * @param y new mouse y position
+         */
         void on_mouse_move(uint32_t x, uint32_t y);
+        /**
+         * @brief Method to be called when a character is input.
+         *
+         * @param ch input character
+         */
         void on_character(uint32_t ch);
 
     private:
