@@ -2,10 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/module.hpp"
+#include "boost/boost_algorithm_string.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
-#include <boost/boost_algorithm_string.hpp>
 #include <filesystem>
 #include <iostream>
 #include <map>

@@ -2,9 +2,9 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "boost/boost_lexical_cast.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/make_string_view.hpp"
-#include <boost/lexical_cast.hpp>
 
 #include <any>
 #include <functional>
