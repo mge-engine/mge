@@ -126,18 +126,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
@@ -251,7 +255,7 @@ steps in a loop:</p>
 <span id="_CPPv3N3mge4loopE"></span><span id="_CPPv2N3mge4loopE"></span><span id="mge::loop"></span><span class="target" id="classmge_1_1loop"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">loop</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="pre">component</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge4loopE" title="mge::loop"><span class="pre">loop</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge4loopE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Interaction loop abstraction. </p>
 <p>While the loop target does not signal quitting, input is collected from target, state is updated and presented. </p>
-<p>Subclassed by mge::simple_loop</p>
+<p>Subclassed by mge::default_loop, mge::simple_loop</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">

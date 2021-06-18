@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Keyboard Handling" href="keyboard.html" /><link rel="prev" title="Input Library" href="../mgeinput.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Input Handler" href="handler.html" /><link rel="prev" title="Input Library" href="../mgeinput.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
         <title>Input State - MGE 0.1 documentation</title>
@@ -126,18 +126,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -347,20 +351,105 @@ pressed keys, position of mouse cursor and alike</p>
 </dd></dl>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge11mouse_stateE">
-<span id="_CPPv3N3mge11mouse_stateE"></span><span id="_CPPv2N3mge11mouse_stateE"></span><span id="mge::mouse_state"></span><span class="target" id="classmge_1_1mouse__state"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">mouse_state</span></code><a class="headerlink" href="#_CPPv4N3mge11mouse_stateE" title="Permalink to this definition">¶</a><br/></dt>
-<dd></dd></dl>
+<span id="_CPPv3N3mge11mouse_stateE"></span><span id="_CPPv2N3mge11mouse_stateE"></span><span id="mge::mouse_state"></span><span class="target" id="classmge_1_1mouse__state"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">mouse_state</span></code><a class="headerlink" href="#_CPPv4N3mge11mouse_stateE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Current state of mouse input. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11mouse_state11mouse_stateEv">
+<span id="_CPPv3N3mge11mouse_state11mouse_stateEv"></span><span id="_CPPv2N3mge11mouse_state11mouse_stateEv"></span><span id="mge::mouse_state::mouse_state"></span><span class="target" id="classmge_1_1mouse__state_1a0a2153e729d796469b291023ae4bb0d5"></span><code class="sig-name descname"><span class="pre">mouse_state</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11mouse_state11mouse_stateEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11mouse_stateD0Ev">
+<span id="_CPPv3N3mge11mouse_stateD0Ev"></span><span id="_CPPv2N3mge11mouse_stateD0Ev"></span><span id="mge::mouse_state::~mouse_state"></span><span class="target" id="classmge_1_1mouse__state_1aec53099ace51d4cd7a9cbe26cfb28b8f"></span><code class="sig-name descname"><span class="pre">~mouse_state</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11mouse_stateD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11mouse_state5pressE8uint32_t">
+<span id="_CPPv3N3mge11mouse_state5pressE8uint32_t"></span><span id="_CPPv2N3mge11mouse_state5pressE8uint32_t"></span><span id="mge::mouse_state::press__uint32_t"></span><span class="target" id="classmge_1_1mouse__state_1a85a0ae127f6d53f88d6c5b363f892628"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">press</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">button</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11mouse_state5pressE8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Signal press of button. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">button</span></code>: pressed button </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11mouse_state7releaseE8uint32_t">
+<span id="_CPPv3N3mge11mouse_state7releaseE8uint32_t"></span><span id="_CPPv2N3mge11mouse_state7releaseE8uint32_t"></span><span id="mge::mouse_state::release__uint32_t"></span><span class="target" id="classmge_1_1mouse__state_1afc079c4a58b8b94de78d609c1ca639e2"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">release</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">button</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11mouse_state7releaseE8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Signal release of button. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">button</span></code>: released button </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge11mouse_state4moveE8uint32_t8uint32_t">
+<span id="_CPPv3N3mge11mouse_state4moveE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge11mouse_state4moveE8uint32_t8uint32_t"></span><span id="mge::mouse_state::move__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1mouse__state_1a23c82b5802464fe166c3f6234451a485"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">move</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">x</span></em>, <span class="pre">uint32_t</span> <em><span class="pre">y</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11mouse_state4moveE8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Signal mouse move. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: new x position </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: new y position </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge11mouse_state1xEv">
+<span id="_CPPv3NK3mge11mouse_state1xEv"></span><span id="_CPPv2NK3mge11mouse_state1xEv"></span><span id="mge::mouse_state::xC"></span><span class="target" id="classmge_1_1mouse__state_1aa3cb741c83378475e140593ea42acfa4"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">x</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge11mouse_state1xEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Mouse x position. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>current x position of the mouse </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge11mouse_state1yEv">
+<span id="_CPPv3NK3mge11mouse_state1yEv"></span><span id="_CPPv2NK3mge11mouse_state1yEv"></span><span id="mge::mouse_state::yC"></span><span class="target" id="classmge_1_1mouse__state_1ab3787436db33bb3cb91f7e4bbfc37270"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">y</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge11mouse_state1yEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Mouse y position. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>current y position of the mouse </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge11mouse_state7pressedE8uint32_t">
+<span id="_CPPv3NK3mge11mouse_state7pressedE8uint32_t"></span><span id="_CPPv2NK3mge11mouse_state7pressedE8uint32_t"></span><span id="mge::mouse_state::pressed__uint32_tC"></span><span class="target" id="classmge_1_1mouse__state_1a0742799cfbc3a10b1795712f32386dda"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">bool</span> <code class="sig-name descname"><span class="pre">pressed</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">button</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge11mouse_state7pressedE8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Returns whether a button is pressed. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if currently pressed </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">button</span></code>: button to check </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+</dd></dl>
 </div>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="keyboard.html">
+          <a class="next-page" href="handler.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Keyboard Handling</div>
+                <div class="title">Input Handler</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

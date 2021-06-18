@@ -126,18 +126,22 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -176,6 +180,50 @@ error and also resolves its message.</p>
 <span id="_CPPv3N3mge12system_errorE"></span><span id="_CPPv2N3mge12system_errorE"></span><span id="mge::system_error"></span><span class="target" id="classmge_1_1system__error"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">system_error</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="exception.html#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="pre">exception</span></a><a class="headerlink" href="#_CPPv4N3mge12system_errorE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>A system error. </p>
 <p>Constructing a system error retrieves the last system error. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12system_error12system_errorEv">
+<span id="_CPPv3N3mge12system_error12system_errorEv"></span><span id="_CPPv2N3mge12system_error12system_errorEv"></span><span id="mge::system_error::system_error"></span><span class="target" id="classmge_1_1system__error_1aabd4bf2c579f7882f3ad6924eebdc6de"></span><code class="sig-name descname"><span class="pre">system_error</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12system_error12system_errorEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct empty error. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12system_error12system_errorE15error_code_type">
+<span id="_CPPv3N3mge12system_error12system_errorE15error_code_type"></span><span id="_CPPv2N3mge12system_error12system_errorE15error_code_type"></span><span id="mge::system_error::system_error__error_code_type"></span><span class="target" id="classmge_1_1system__error_1a223ec4f017b5edc2764bc1cd341791f2"></span><code class="sig-name descname"><span class="pre">system_error</span></code><span class="sig-paren">(</span><span class="pre">error_code_type</span> <em><span class="pre">code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12system_error12system_errorE15error_code_type" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct system error from system dependent error code type. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">code</span></code>: system error code </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12system_error12system_errorERK12system_error">
+<span id="_CPPv3N3mge12system_error12system_errorERK12system_error"></span><span id="_CPPv2N3mge12system_error12system_errorERK12system_error"></span><span id="mge::system_error::system_error__system_errorCR"></span><span class="target" id="classmge_1_1system__error_1a53648e5bed825f05addce72929a1531a"></span><code class="sig-name descname"><span class="pre">system_error</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge12system_error12system_errorERK12system_error" title="mge::system_error::system_error"><span class="pre">system_error</span></a> <span class="pre">&amp;</span><em><span class="pre">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12system_error12system_errorERK12system_error" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Copy constructor. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span></code>: copied error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12system_error12system_errorERR12system_error">
+<span id="_CPPv3N3mge12system_error12system_errorERR12system_error"></span><span id="_CPPv2N3mge12system_error12system_errorERR12system_error"></span><span id="mge::system_error::system_error__system_errorRR"></span><span class="target" id="classmge_1_1system__error_1a774afd613ea6914b171e8bba722b150b"></span><code class="sig-name descname"><span class="pre">system_error</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12system_error12system_errorERR12system_error" title="mge::system_error::system_error"><span class="pre">system_error</span></a> <span class="pre">&amp;</span><span class="pre">&amp;</span><em><span class="pre">e</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12system_error12system_errorERR12system_error" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Move constructor. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span></code>: moved error </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
 <dl class="cpp struct">
 <dt id="_CPPv4N3mge12system_error10error_codeE">
 <span id="_CPPv3N3mge12system_error10error_codeE"></span><span id="_CPPv2N3mge12system_error10error_codeE"></span><span id="mge::system_error::error_code"></span><span class="target" id="structmge_1_1system__error_1_1error__code"></span><em class="property"><span class="pre">struct</span> </em><code class="sig-name descname"><span class="pre">error_code</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="exception.html#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="pre">exception</span></a><span class="pre">::</span><a class="reference internal" href="exception.html#_CPPv4I00EN3mge9exception3tagE" title="mge::exception::tag"><span class="pre">tag</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge12system_error10error_codeE" title="mge::system_error::error_code"><span class="pre">error_code</span></a><span class="pre">,</span> <span class="pre">error_code_type</span><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge12system_error10error_codeE" title="Permalink to this definition">¶</a><br/></dt>

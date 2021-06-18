@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Data Structures" href="datastructures.html" /><link rel="prev" title="Monitor Support" href="monitor.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Render Context" href="render_context.html" /><link rel="prev" title="Monitor Support" href="monitor.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
         <title>Window - MGE 0.1 documentation</title>
@@ -126,18 +126,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -170,7 +174,7 @@ created. The window can of course occupy the whole
 screen.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge6windowE">
-<span id="_CPPv3N3mge6windowE"></span><span id="_CPPv2N3mge6windowE"></span><span id="mge::window"></span><span class="target" id="classmge_1_1window"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">window</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge6windowE" title="mge::window"><span class="pre">window</span></a><span class="pre">&gt;</span><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><span class="pre">input_handler</span><a class="headerlink" href="#_CPPv4N3mge6windowE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge6windowE"></span><span id="_CPPv2N3mge6windowE"></span><span id="mge::window"></span><span class="target" id="classmge_1_1window"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">window</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge6windowE" title="mge::window"><span class="pre">window</span></a><span class="pre">&gt;</span><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="../input/handler.html#_CPPv4N3mge13input_handlerE" title="mge::input_handler"><span class="pre">input_handler</span></a><a class="headerlink" href="#_CPPv4N3mge6windowE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>A window. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Types</p>
@@ -227,7 +231,7 @@ screen.</p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4N3mge6window14render_contextEv">
-<span id="_CPPv3N3mge6window14render_contextEv"></span><span id="_CPPv2N3mge6window14render_contextEv"></span><span id="mge::window::render_context"></span><span class="target" id="classmge_1_1window_1a32bcc032169d23af20464ec069d0dab7"></span><span class="pre">mge</span><span class="pre">::</span><span class="pre">render_context</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">render_context</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge6window14render_contextEv"></span><span id="_CPPv2N3mge6window14render_contextEv"></span><span id="mge::window::render_context"></span><span class="target" id="classmge_1_1window_1a32bcc032169d23af20464ec069d0dab7"></span><span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="render_context.html#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="pre">render_context</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">render_context</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Access render context of window. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p>render context </p>
@@ -237,7 +241,7 @@ screen.</p>
 </dd></dl>
 <dl class="cpp function">
 <dt id="_CPPv4NK3mge6window14render_contextEv">
-<span id="_CPPv3NK3mge6window14render_contextEv"></span><span id="_CPPv2NK3mge6window14render_contextEv"></span><span id="mge::window::render_contextC"></span><span class="target" id="classmge_1_1window_1a2e68ac26515f8caff97e7e6578f04743"></span><em class="property"><span class="pre">const</span></em> <span class="pre">mge</span><span class="pre">::</span><span class="pre">render_context</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">render_context</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge6window14render_contextEv"></span><span id="_CPPv2NK3mge6window14render_contextEv"></span><span id="mge::window::render_contextC"></span><span class="target" id="classmge_1_1window_1a2e68ac26515f8caff97e7e6578f04743"></span><em class="property"><span class="pre">const</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="render_context.html#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="pre">render_context</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">render_context</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Access render context of window. </p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p>render context </p>
@@ -316,12 +320,12 @@ screen.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="datastructures.html">
+          <a class="next-page" href="render_context.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Data Structures</div>
+                <div class="title">Render Context</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

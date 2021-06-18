@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Input Library" href="../mgeinput.html" /><link rel="prev" title="Render Context" href="render_context.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Data Structures" href="datastructures.html" /><link rel="prev" title="Window" href="window.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Data Structures - MGE 0.1 documentation</title>
+        <title>Render Context - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -133,8 +133,8 @@
 <li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Data Structures</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -167,47 +167,15 @@
         <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="data-structures">
-<h1>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h1>
-<p>The graphics library contains some commonly used data structures and types.</p>
+        <div class="section" id="render-context">
+<h1>Render Context<a class="headerlink" href="#render-context" title="Permalink to this headline">¶</a></h1>
+<p>Render APIs use a context object that combines objects of the render
+pipeline. A render context is btained from a <a class="reference internal" href="window.html#_CPPv4N3mge6windowE" title="mge::window"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::window</span></code></a>, and
+has a 1:1 relationship with the window.</p>
 <dl class="cpp class">
-<dt id="_CPPv4N3mge6extentE">
-<span id="_CPPv3N3mge6extentE"></span><span id="_CPPv2N3mge6extentE"></span><span id="mge::extent"></span><span class="target" id="classmge_1_1extent"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">extent</span></code><a class="headerlink" href="#_CPPv4N3mge6extentE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Extent defined by width and height. </p>
-</dd></dl>
-<dl class="cpp class">
-<dt id="_CPPv4N3mge5pointE">
-<span id="_CPPv3N3mge5pointE"></span><span id="_CPPv2N3mge5pointE"></span><span id="mge::point"></span><span class="target" id="classmge_1_1point"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">point</span></code><a class="headerlink" href="#_CPPv4N3mge5pointE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>A point. </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Functions</p>
-<dl class="cpp function">
-<dt id="_CPPv4N3mge5point5pointE8uint32_t8uint32_t">
-<span id="_CPPv3N3mge5point5pointE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge5point5pointE8uint32_t8uint32_t"></span><span id="mge::point::point__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1point_1ae61c1e223c7b94d4512f8b3632e64559"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">point</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">x_</span></em>, <span class="pre">uint32_t</span> <em><span class="pre">y_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5point5pointE8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Create point. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">x_</span></code>: x coordinate </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">y_</span></code>: y coordinate </p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Members</p>
-<dl class="cpp var">
-<dt id="_CPPv4N3mge5point1xE">
-<span id="_CPPv3N3mge5point1xE"></span><span id="_CPPv2N3mge5point1xE"></span><span id="mge::point::x__uint32_t"></span><span class="target" id="classmge_1_1point_1a6e7731de91a916cb3ce98b3b83b70bad"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">x</span></code><a class="headerlink" href="#_CPPv4N3mge5point1xE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>x coordinate </p>
-</dd></dl>
-<dl class="cpp var">
-<dt id="_CPPv4N3mge5point1yE">
-<span id="_CPPv3N3mge5point1yE"></span><span id="_CPPv2N3mge5point1yE"></span><span id="mge::point::y__uint32_t"></span><span class="target" id="classmge_1_1point_1a992166968c9c1d73bb26703c5b996ed0"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">y</span></code><a class="headerlink" href="#_CPPv4N3mge5point1yE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>y coordinate </p>
-</dd></dl>
-</div>
+<dt id="_CPPv4N3mge14render_contextE">
+<span id="_CPPv3N3mge14render_contextE"></span><span id="_CPPv2N3mge14render_contextE"></span><span id="mge::render_context"></span><span class="target" id="classmge_1_1render__context"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">render_context</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="pre">render_context</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge14render_contextE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A render context is a context in which objects that are elements of the render pipeline are created - such as shader programs, textures and buffers. </p>
 </dd></dl>
 </div>
 
@@ -215,23 +183,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../mgeinput.html">
+          <a class="next-page" href="datastructures.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Input Library</div>
+                <div class="title">Data Structures</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="render_context.html">
+          <a class="prev-page" href="window.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Render Context</div>
+                <div class="title">Window</div>
                 
               </div>
             </a>
@@ -245,7 +213,7 @@
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/graphics/datastructures.rst.txt"
+            <a class="muted-link" href="../_sources/graphics/render_context.rst.txt"
                rel="nofollow">
               Show Source
             </a>

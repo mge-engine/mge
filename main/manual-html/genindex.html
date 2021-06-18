@@ -125,18 +125,22 @@
 <li class="toctree-l2"><a class="reference internal" href="core/system.html">System Abstractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/version.html">Versions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/datastructures.html">Data Structures</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -333,6 +337,38 @@
 </li>
         <li><a href="core/exception.html#_CPPv4N3mge13illegal_stateE">mge::illegal_state (C++ class)</a>
 </li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handlerE">mge::input_handler (C++ class)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler17character_handlerE">mge::input_handler::character_handler (C++ type)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler23clear_character_handlerEv">mge::input_handler::clear_character_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler24clear_key_action_handlerEv">mge::input_handler::clear_key_action_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler26clear_mouse_action_handlerEv">mge::input_handler::clear_mouse_action_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler24clear_mouse_move_handlerEv">mge::input_handler::clear_mouse_move_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4NK3mge13input_handler16current_modifierEv">mge::input_handler::current_modifier (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler18key_action_handlerE">mge::input_handler::key_action_handler (C++ type)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler20mouse_action_handlerE">mge::input_handler::mouse_action_handler (C++ type)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler18mouse_move_handlerE">mge::input_handler::mouse_move_handler (C++ type)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler21set_character_handlerERK17character_handler">mge::input_handler::set_character_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler22set_key_action_handlerERK18key_action_handler">mge::input_handler::set_key_action_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler24set_mouse_action_handlerERK20mouse_action_handler">mge::input_handler::set_mouse_action_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handler22set_mouse_move_handlerERK18mouse_move_handler">mge::input_handler::set_mouse_move_handler (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4NK3mge13input_handler5stateEv">mge::input_handler::state (C++ function)</a>
+</li>
+        <li><a href="input/handler.html#_CPPv4N3mge13input_handlerD0Ev">mge::input_handler::~input_handler (C++ function)</a>
+</li>
         <li><a href="input/state.html#_CPPv4N3mge11input_stateE">mge::input_state (C++ class)</a>
 </li>
         <li><a href="input/state.html#_CPPv4N3mge11input_state11input_stateEv">mge::input_state::input_state (C++ function)</a>
@@ -415,7 +451,33 @@
 </li>
         <li><a href="graphics/monitor.html#_CPPv4N3mge7monitor21video_mode_collectionE">mge::monitor::video_mode_collection (C++ type)</a>
 </li>
+        <li><a href="input/mouse.html#_CPPv4N3mge12mouse_actionE">mge::mouse_action (C++ enum)</a>
+</li>
+        <li><a href="input/mouse.html#_CPPv4N3mge12mouse_action12DOUBLE_CLICKE">mge::mouse_action::DOUBLE_CLICK (C++ enumerator)</a>
+</li>
+        <li><a href="input/mouse.html#_CPPv4N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE">mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK (C++ enumerator)</a>
+</li>
+        <li><a href="input/mouse.html#_CPPv4N3mge12mouse_action5PRESSE">mge::mouse_action::PRESS (C++ enumerator)</a>
+</li>
+        <li><a href="input/mouse.html#_CPPv4N3mge12mouse_action7RELEASEE">mge::mouse_action::RELEASE (C++ enumerator)</a>
+</li>
         <li><a href="input/state.html#_CPPv4N3mge11mouse_stateE">mge::mouse_state (C++ class)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4N3mge11mouse_state11mouse_stateEv">mge::mouse_state::mouse_state (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4N3mge11mouse_state4moveE8uint32_t8uint32_t">mge::mouse_state::move (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4N3mge11mouse_state5pressE8uint32_t">mge::mouse_state::press (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4NK3mge11mouse_state7pressedE8uint32_t">mge::mouse_state::pressed (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4N3mge11mouse_state7releaseE8uint32_t">mge::mouse_state::release (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4NK3mge11mouse_state1xEv">mge::mouse_state::x (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4NK3mge11mouse_state1yEv">mge::mouse_state::y (C++ function)</a>
+</li>
+        <li><a href="input/state.html#_CPPv4N3mge11mouse_stateD0Ev">mge::mouse_state::~mouse_state (C++ function)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4I0EN3mge14namespace_nameENSt6stringEv">mge::namespace_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge14namespace_nameERKNSt9type_infoE">[1]</a>
 </li>
@@ -443,6 +505,8 @@
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge5point1yE">mge::point::y (C++ member)</a>
 </li>
+        <li><a href="graphics/render_context.html#_CPPv4N3mge14render_contextE">mge::render_context (C++ class)</a>
+</li>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_systemE">mge::render_system (C++ class)</a>
 </li>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_system6createEv">mge::render_system::create (C++ function)</a>
@@ -451,6 +515,26 @@
 </li>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_system8monitorsEv">mge::render_system::monitors (C++ function)</a>
 </li>
+        <li><a href="core/version.html#_CPPv4N3mge16semantic_versionE">mge::semantic_version (C++ class)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4NK3mge16semantic_version5emptyEv">mge::semantic_version::empty (C++ function)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4NK3mge16semantic_version5majorEv">mge::semantic_version::major (C++ function)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4NK3mge16semantic_version5minorEv">mge::semantic_version::minor (C++ function)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4NK3mge16semantic_versionltERK16semantic_version">mge::semantic_version::operator&lt; (C++ function)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4N3mge16semantic_versionaSERK16semantic_version">mge::semantic_version::operator= (C++ function)</a>, <a href="core/version.html#_CPPv4N3mge16semantic_versionaSERR16semantic_version">[1]</a>
+</li>
+        <li><a href="core/version.html#_CPPv4NK3mge16semantic_versioneqERK16semantic_version">mge::semantic_version::operator== (C++ function)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4NK3mge16semantic_version5patchEv">mge::semantic_version::patch (C++ function)</a>
+</li>
+        <li><a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t">mge::semantic_version::semantic_version (C++ function)</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version">[1]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version">[2]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionEv">[3]</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="core/system.html#_CPPv4N3mge14shared_libraryE">mge::shared_library (C++ class)</a>
 </li>
         <li><a href="core/system.html#_CPPv4NK3mge14shared_library4nameEv">mge::shared_library::name (C++ function)</a>
@@ -489,8 +573,6 @@
 </li>
         <li><a href="core/utilities.html#_CPPv4NK3mge10stacktrace5beginEv">mge::stacktrace::begin (C++ function)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="core/utilities.html#_CPPv4N3mge10stacktrace14const_iteratorE">mge::stacktrace::const_iterator (C++ type)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge10stacktrace22const_reverse_iteratorE">mge::stacktrace::const_reverse_iterator (C++ type)</a>
@@ -598,6 +680,8 @@
         <li><a href="core/system.html#_CPPv4N3mge12system_error10error_codeE">mge::system_error::error_code (C++ struct)</a>
 </li>
         <li><a href="core/system.html#_CPPv4N3mge12system_error10error_code10error_codeE15error_code_type">mge::system_error::error_code::error_code (C++ function)</a>
+</li>
+        <li><a href="core/system.html#_CPPv4N3mge12system_error12system_errorE15error_code_type">mge::system_error::system_error (C++ function)</a>, <a href="core/system.html#_CPPv4N3mge12system_error12system_errorERK12system_error">[1]</a>, <a href="core/system.html#_CPPv4N3mge12system_error12system_errorERR12system_error">[2]</a>, <a href="core/system.html#_CPPv4N3mge12system_error12system_errorEv">[3]</a>
 </li>
         <li><a href="core/concurrency.html#_CPPv4N3mge6threadE">mge::thread (C++ class)</a>
 </li>
