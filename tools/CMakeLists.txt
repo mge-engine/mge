@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
 IF(WIN32)
     SET(helper_scripts
         enable_trace.cmd

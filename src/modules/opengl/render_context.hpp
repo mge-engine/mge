@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/config.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "opengl.hpp"

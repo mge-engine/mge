@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
 FUNCTION(COPY_FILE SOURCE TARGET)
     SET(__target_name "copy-${SOURCE}-to-${TARGET}")
     STRING(REPLACE "/" "_" __target_name "${__target_name}")
