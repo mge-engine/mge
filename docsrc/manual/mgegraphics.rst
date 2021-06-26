@@ -15,4 +15,5 @@ abstraction.
     graphics/window.rst
     graphics/render_context.rst
     graphics/datastructures.rst
+    graphics/shaders.rst
 
