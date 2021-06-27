@@ -11,6 +11,8 @@ SET(mgegraphics_sources
     monitor.cpp
     video_mode.cpp
     render_context.cpp
+    shader_type.cpp
+    shader_language.cpp
 )
 
 SET(mgegraphics_headers
@@ -23,6 +25,8 @@ SET(mgegraphics_headers
     monitor.hpp
     video_mode.hpp
     render_context.hpp
+    shader_type.hpp
+    shader_language.hpp
 )
 
 MGE_LIBRARY(
