@@ -51,21 +51,6 @@ namespace mge {
 
         template <typename T>
         static inline std::shared_ptr<T>
-        create(const std::string &implementation_name)
-        {
-            return std::dynamic_pointer_cast<T, component_base>(
-                create(type_name<T>(), implementation_name));
-        }
-
-        template <typename T>
-        static inline std::shared_ptr<T> create(const char *implementation_name)
-        {
-            return std::dynamic_pointer_cast<T, component_base>(
-                create(type_name<T>(), implementation_name));
-        }
-
-        template <typename T>
-        static inline std::shared_ptr<T>
         create(std::string_view implementation_name)
         {
             return std::dynamic_pointer_cast<T, component_base>(
@@ -204,31 +189,8 @@ namespace mge {
          * @param implementation name of the implementation
          * @return @c std::shared_ptr<Class> referring to the implementation
          */
-        static inline std::shared_ptr<Class> create(const char *implementation)
-        {
-            return component_base::create<Class>(implementation);
-        }
-
-        /**
-         * @brief Create an instance of a registered implementation.
-         *
-         * @param implementation name of the implementation
-         * @return @c std::shared_ptr<Class> referring to the implementation
-         */
         static inline std::shared_ptr<Class>
         create(std::string_view implementation)
-        {
-            return component_base::create<Class>(implementation);
-        }
-
-        /**
-         * @brief Create an instance of a registered implementation.
-         *
-         * @param implementation name of the implementation
-         * @return @c std::shared_ptr<Class> referring to the implementation
-         */
-        static inline std::shared_ptr<Class>
-        create(const std::string &implementation)
         {
             return component_base::create<Class>(implementation);
         }

@@ -42,7 +42,7 @@ namespace mge {
          *
          * @return name of module
          */
-        const std::string &name() const;
+        std::string_view name() const;
 
         /**
          * @brief Loaded module library.

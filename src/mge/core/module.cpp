@@ -32,7 +32,7 @@ namespace mge {
 
     module::~module() {}
 
-    const std::string &module::name() const { return m_name; }
+    std::string_view module::name() const { return m_name; }
 
     const shared_library_ref &module::library() const { return m_library; }
 

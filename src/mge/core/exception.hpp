@@ -140,7 +140,7 @@ namespace mge {
         {
             message() {}
 
-            const std::string &value() const noexcept { return m_value; }
+            std::string_view value() const noexcept { return m_value; }
 
             std::string m_value;
         };
@@ -155,9 +155,9 @@ namespace mge {
              *
              * @param name type name
              */
-            type_name(const std::string &name) : m_value(name) {}
+            type_name(std::string_view name) : m_value(name) {}
 
-            const std::string &value() const noexcept { return m_value; }
+            std::string_view value() const noexcept { return m_value; }
 
             std::string m_value;
         };

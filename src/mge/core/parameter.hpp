@@ -69,7 +69,7 @@ namespace mge {
          *
          * @param value parameter string value
          */
-        virtual void from_string(const std::string &value) = 0;
+        virtual void from_string(std::string_view value) = 0;
         /**
          * @brief Retrieves parameter as string.
          *
@@ -169,7 +169,7 @@ namespace mge {
             }
         }
 
-        void from_string(const std::string &value) override
+        void from_string(std::string_view value) override
         {
             T val   = boost::lexical_cast<T>(value);
             m_value = val;
