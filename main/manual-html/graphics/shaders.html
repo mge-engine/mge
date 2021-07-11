@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Shader Programs" href="shaders.html" /><link rel="prev" title="Render Context" href="render_context.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Input Library" href="../mgeinput.html" /><link rel="prev" title="Data Structures" href="datastructures.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Data Structures - MGE 0.1 documentation</title>
+        <title>Shader Programs - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -89,7 +89,7 @@
       <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -134,8 +134,8 @@
 <li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Shader Programs</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -165,74 +165,42 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="data-structures">
-<h1>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h1>
-<p>The graphics library contains some commonly used data structures and types.</p>
-<dl class="cpp class">
-<dt id="_CPPv4N3mge6extentE">
-<span id="_CPPv3N3mge6extentE"></span><span id="_CPPv2N3mge6extentE"></span><span id="mge::extent"></span><span class="target" id="classmge_1_1extent"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">extent</span></code><a class="headerlink" href="#_CPPv4N3mge6extentE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Extent defined by width and height. </p>
-</dd></dl>
-<dl class="cpp class">
-<dt id="_CPPv4N3mge5pointE">
-<span id="_CPPv3N3mge5pointE"></span><span id="_CPPv2N3mge5pointE"></span><span id="mge::point"></span><span class="target" id="classmge_1_1point"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">point</span></code><a class="headerlink" href="#_CPPv4N3mge5pointE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>A point. </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Functions</p>
-<dl class="cpp function">
-<dt id="_CPPv4N3mge5point5pointE8uint32_t8uint32_t">
-<span id="_CPPv3N3mge5point5pointE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge5point5pointE8uint32_t8uint32_t"></span><span id="mge::point::point__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1point_1ae61c1e223c7b94d4512f8b3632e64559"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">point</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">x_</span></em>, <span class="pre">uint32_t</span> <em><span class="pre">y_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5point5pointE8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Create point. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">x_</span></code>: x coordinate </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">y_</span></code>: y coordinate </p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
+        <div class="section" id="shader-programs">
+<h1>Shader Programs<a class="headerlink" href="#shader-programs" title="Permalink to this headline">¶</a></h1>
+<p>A shader program is an user-defined program which is executed as part of a
+render pipeline on a graphics card.</p>
+<div class="section" id="types-and-definitions">
+<h2>Types and Definitions<a class="headerlink" href="#types-and-definitions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="shader-types">
+<h3>Shader Types<a class="headerlink" href="#shader-types" title="Permalink to this headline">¶</a></h3>
 </div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Members</p>
-<dl class="cpp var">
-<dt id="_CPPv4N3mge5point1xE">
-<span id="_CPPv3N3mge5point1xE"></span><span id="_CPPv2N3mge5point1xE"></span><span id="mge::point::x__uint32_t"></span><span class="target" id="classmge_1_1point_1a6e7731de91a916cb3ce98b3b83b70bad"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">x</span></code><a class="headerlink" href="#_CPPv4N3mge5point1xE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>x coordinate </p>
-</dd></dl>
-<dl class="cpp var">
-<dt id="_CPPv4N3mge5point1yE">
-<span id="_CPPv3N3mge5point1yE"></span><span id="_CPPv2N3mge5point1yE"></span><span id="mge::point::y__uint32_t"></span><span class="target" id="classmge_1_1point_1a992166968c9c1d73bb26703c5b996ed0"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">y</span></code><a class="headerlink" href="#_CPPv4N3mge5point1yE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>y coordinate </p>
-</dd></dl>
 </div>
-</dd></dl>
 </div>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="shaders.html">
+          <a class="next-page" href="../mgeinput.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Shader Programs</div>
+                <div class="title">Input Library</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="render_context.html">
+          <a class="prev-page" href="datastructures.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Render Context</div>
+                <div class="title">Data Structures</div>
                 
               </div>
             </a>
@@ -246,7 +214,7 @@
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/graphics/datastructures.rst.txt"
+            <a class="muted-link" href="../_sources/graphics/shaders.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -254,8 +222,30 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Shader Programs</a><ul>
+<li><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
+<li><a class="reference internal" href="#shader-types">Shader Types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
