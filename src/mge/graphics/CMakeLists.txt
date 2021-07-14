@@ -13,6 +13,8 @@ SET(mgegraphics_sources
     render_context.cpp
     shader_type.cpp
     shader_language.cpp
+    context_object.cpp
+    command_list.cpp
 )
 
 SET(mgegraphics_headers
