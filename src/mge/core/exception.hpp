@@ -157,7 +157,7 @@ namespace mge {
              */
             type_name(std::string_view name) : m_value(name) {}
 
-            std::string_view value() const noexcept { return m_value; }
+            const std::string &value() const noexcept { return m_value; }
 
             std::string m_value;
         };
