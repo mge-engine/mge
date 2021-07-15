@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Application Library" href="../mgeapplication.html" /><link rel="prev" title="Keyboard Handling" href="keyboard.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Input Library" href="../mgeinput.html" /><link rel="prev" title="Shader Programs" href="shaders.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Mouse Handling - MGE 0.1 documentation</title>
+        <title>Command Lists - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -129,21 +129,21 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/shaders.html">Shader Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="state.html">Input State</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler.html">Input Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyboard.html">Keyboard Handling</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Mouse Handling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -169,33 +169,35 @@
         <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="mouse-handling">
-<h1>Mouse Handling<a class="headerlink" href="#mouse-handling" title="Permalink to this headline">¶</a></h1>
-<p>Constants for mouse actions are defined in the <a href="#id1"><span class="problematic" id="id2">`</span></a>mouse_action`enumeration.</p>
-<dl class="cpp enum-class">
-<dt id="_CPPv4N3mge12mouse_actionE">
-<span id="_CPPv3N3mge12mouse_actionE"></span><span id="_CPPv2N3mge12mouse_actionE"></span><em class="property"><span class="pre">enum</span> <span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">mouse_action</span></code><a class="headerlink" href="#_CPPv4N3mge12mouse_actionE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Codes for mouse actions.</p>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge12mouse_action5PRESSE">
-<span id="_CPPv3N3mge12mouse_action5PRESSE"></span><span id="_CPPv2N3mge12mouse_action5PRESSE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">PRESS</span></code><a class="headerlink" href="#_CPPv4N3mge12mouse_action5PRESSE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Button press.</p>
+        <div class="section" id="command-lists">
+<h1>Command Lists<a class="headerlink" href="#command-lists" title="Permalink to this headline">¶</a></h1>
+<p>Command lists capture state changes on a graphics pipeline, that is,
+setting buffers and shaders, and submitting draw calls that make use
+of them.</p>
+<p>Command lists can be <em>native</em>, i.e. implemented by the underlying render
+API.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge12command_listE">
+<span id="_CPPv3N3mge12command_listE"></span><span id="_CPPv2N3mge12command_listE"></span><span id="mge::command_list"></span><span class="target" id="classmge_1_1command__list"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">command_list</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="pre">context_object</span></a><a class="headerlink" href="#_CPPv4N3mge12command_listE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A sequence of state changes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12command_listD0Ev">
+<span id="_CPPv3N3mge12command_listD0Ev"></span><span id="_CPPv2N3mge12command_listD0Ev"></span><span id="mge::command_list::~command_list"></span><span class="target" id="classmge_1_1command__list_1a7c32d9b7c306ad55618c21d79674a7af"></span><em class="property"><span class="pre">virtual</span></em> <code class="sig-name descname"><span class="pre">~command_list</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_listD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Destructor. </p>
 </dd></dl>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge12mouse_action7RELEASEE">
-<span id="_CPPv3N3mge12mouse_action7RELEASEE"></span><span id="_CPPv2N3mge12mouse_action7RELEASEE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">RELEASE</span></code><a class="headerlink" href="#_CPPv4N3mge12mouse_action7RELEASEE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Button release.</p>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge12command_list6nativeEv">
+<span id="_CPPv3NK3mge12command_list6nativeEv"></span><span id="_CPPv2NK3mge12command_list6nativeEv"></span><span id="mge::command_list::nativeC"></span><span class="target" id="classmge_1_1command__list_1a37c7f1d24e5b72f0d34a9d28b4c07b45"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">native</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge12command_list6nativeEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Returns whether this command list is native or in-memory. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if native </p>
+</dd>
+</dl>
+</p>
 </dd></dl>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge12mouse_action12DOUBLE_CLICKE">
-<span id="_CPPv3N3mge12mouse_action12DOUBLE_CLICKE"></span><span id="_CPPv2N3mge12mouse_action12DOUBLE_CLICKE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">DOUBLE_CLICK</span></code><a class="headerlink" href="#_CPPv4N3mge12mouse_action12DOUBLE_CLICKE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Double click, as reported by operating system.</p>
-</dd></dl>
-<dl class="cpp enumerator">
-<dt id="_CPPv4N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE">
-<span id="_CPPv3N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE"></span><span id="_CPPv2N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">MOUSE_ACTION_DOUBLE_CLICK</span></code><a class="headerlink" href="#_CPPv4N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Alias for <cite>DOUBLE_CLICK</cite>, which may be defined as preprocessor symbol.</p>
-</dd></dl>
+</div>
 </dd></dl>
 </div>
 
@@ -203,23 +205,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../mgeapplication.html">
+          <a class="next-page" href="../mgeinput.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Application Library</div>
+                <div class="title">Input Library</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="keyboard.html">
+          <a class="prev-page" href="shaders.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Keyboard Handling</div>
+                <div class="title">Shader Programs</div>
                 
               </div>
             </a>
@@ -233,7 +235,7 @@
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/input/mouse.rst.txt"
+            <a class="muted-link" href="../_sources/graphics/command_list.rst.txt"
                rel="nofollow">
               Show Source
             </a>
