@@ -15,6 +15,8 @@ SET(mgegraphics_sources
     shader_language.cpp
     context_object.cpp
     command_list.cpp
+    color_names.cpp
+    rgb_color.cpp
 )
 
 SET(mgegraphics_headers
@@ -31,6 +33,7 @@ SET(mgegraphics_headers
     shader_language.hpp
     context_object.hpp
     command_list.hpp
+    rgb_color.hpp
 )
 
 MGE_LIBRARY(

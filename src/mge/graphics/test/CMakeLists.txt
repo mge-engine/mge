@@ -7,6 +7,7 @@ SET(MGEGRAPHICS_TESTS
     point
     window
     video_mode
+    rgb_color
 )
 
 FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})
