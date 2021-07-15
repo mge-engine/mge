@@ -9,3 +9,9 @@ has a 1:1 relationship with the window.
 .. doxygenclass:: mge::render_context
     :members:
 
+Context objects are created based upon a render context. Their life time
+is bound to the render context, and they are valid for one render context
+only.
+
+.. doxygenclass:: mge::context_object
+    :members:

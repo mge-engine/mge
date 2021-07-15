@@ -29,6 +29,8 @@ SET(mgegraphics_headers
     render_context.hpp
     shader_type.hpp
     shader_language.hpp
+    context_object.hpp
+    command_list.hpp
 )
 
 MGE_LIBRARY(
