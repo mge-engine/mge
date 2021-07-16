@@ -12,21 +12,13 @@ namespace mge {
     /**
      * An RGBA color.
      */
-    class MGE_GRAPHICS_EXPORT rgba_color
+    class MGEGRAPHICS_EXPORT rgba_color
     {
     public:
         /**
          * Default constructor.
          */
         inline rgba_color() : r(0.0f), g(0.0f), b(0.0f), a(0.0f) {}
-
-        /**
-         * Construct rgba color from pixel data and given format
-         * of pixel data.
-         * @param pixel pixel data
-         * @param format format of pixel
-         */
-        rgba_color(void *pixel, const image_format &format);
 
         /**
          * Constructor

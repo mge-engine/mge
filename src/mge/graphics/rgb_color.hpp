@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
+// Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
 #include "mge/graphics/dllexport.hpp"
@@ -126,6 +126,10 @@ namespace mge {
         float b; //!< blue
     };
 
+    /**
+     * @brief RGB color literal.
+     *
+     */
     MGEGRAPHICS_EXPORT rgb_color operator"" _rgb(const char *, size_t);
 
     /**
