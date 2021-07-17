@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2018 by Alexander Schroeder
+// Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/core/stdexceptions.hpp"
