@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+/** @file */
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>

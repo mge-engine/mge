@@ -18,6 +18,10 @@ SET(mgegraphics_sources
     color_names.cpp
     rgb_color.cpp
     rgba_color.cpp
+    buffer_type.cpp
+    hardware_buffer.cpp
+    data_type.cpp
+    index_buffer.cpp
 )
 
 SET(mgegraphics_headers
@@ -36,6 +40,10 @@ SET(mgegraphics_headers
     command_list.hpp
     rgb_color.hpp
     rgba_color.hpp
+    buffer_type.hpp
+    hardware_buffer.hpp
+    data_type.hpp
+    index_buffer.hpp
 )
 
 MGE_LIBRARY(

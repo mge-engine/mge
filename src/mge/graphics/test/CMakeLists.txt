@@ -9,6 +9,8 @@ SET(MGEGRAPHICS_TESTS
     video_mode
     rgb_color
     rgba_color
+    data_type
+    hardware_buffer
 )
 
 FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})
