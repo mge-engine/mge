@@ -5,6 +5,7 @@
 #include "boost/boost_operators.hpp"
 #include "mge/core/dllexport.hpp"
 #include <iosfwd>
+#include <string_view>
 #include <tuple>
 
 namespace mge {
@@ -29,6 +30,7 @@ namespace mge {
          * @brief Create version with all elements initialized to 0.
          */
         semantic_version();
+
         /**
          * @brief Create version as specified.
          *
@@ -38,6 +40,13 @@ namespace mge {
          */
         explicit semantic_version(uint32_t major, uint32_t minor = 0u,
                                   uint32_t patch = 0u);
+
+        /**
+         * @brief Construct a new semantic version.
+         *
+         * @param version_str string in format major.minor.patch
+         */
+        explicit semantic_version(std::string_view version_str);
 
         /**
          * @brief Copy constructor.

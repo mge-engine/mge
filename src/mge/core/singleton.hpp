@@ -79,8 +79,11 @@ namespace mge {
             if (p) {
                 return p;
             }
-            p       = new T();
+
+            p = new T();
+
             T *null = nullptr;
+
             if (m_instance.compare_exchange_strong(null, p)) {
                 return p;
             } else {

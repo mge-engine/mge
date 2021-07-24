@@ -21,6 +21,11 @@ namespace mge {
     {
     public:
         /**
+         * @brief Construct an empty uninitialized language object.
+         */
+        shader_language();
+
+        /**
          * @brief Create a shader language object.
          *
          * @param name      shader language name

@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mgecore_sources
+    platform.cpp
     executable_name.cpp
     type_name.cpp
     configuration.cpp

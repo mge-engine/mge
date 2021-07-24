@@ -23,7 +23,7 @@ namespace mge {
             select_pixel_format();
             create_glrc();
             init_gl3w();
-            void collect_opengl_info();
+            collect_opengl_info();
         }
 
         void render_context::select_pixel_format()
@@ -80,13 +80,20 @@ namespace mge {
             }
         }
 
-        void render_context::collect_opengl_info() {}
+        void render_context::collect_opengl_info()
+        {
+
+            MGE_INFO_TRACE(OPENGL) << "Collecting OpenGL information";
+            s_glinfo.ptr();
+        }
 
 #else
 #    error Missing port
 #endif
 
         render_context::~render_context() {}
+
+        singleton<opengl_info> render_context::s_glinfo;
 
     } // namespace opengl
 } // namespace mge

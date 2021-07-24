@@ -57,10 +57,14 @@ namespace mge {
 
     void configuration_instance::register_parameter(basic_parameter &p)
     {
+        MGE_DEBUG_TRACE(CORE)
+            << "Register parameter " << p.section() << "/" << p.name();
         auto pmap_it = m_sections.find(p.section());
         if (pmap_it != m_sections.end()) {
             auto p_it = pmap_it->second.find(p.name());
             if (p_it != pmap_it->second.end()) {
+                MGE_ERROR_TRACE(CORE) << "Parameter " << p.section() << "/"
+                                      << p.name() << " is already registered";
                 MGE_THROW(mge::duplicate_element)
                     << "Parameter " << p.section() << "/" << p.name()
                     << " already registered";

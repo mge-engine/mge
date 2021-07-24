@@ -2,8 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/config.hpp"
+#include "mge/core/singleton.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "opengl.hpp"
+#include "opengl_info.hpp"
 #include "window.hpp"
 
 namespace mge {
@@ -27,6 +29,7 @@ namespace mge {
 #else
 #    error Missing port
 #endif
+            static singleton<opengl_info> s_glinfo;
         };
     } // namespace opengl
 } // namespace mge
