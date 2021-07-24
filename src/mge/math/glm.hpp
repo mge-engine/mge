@@ -8,6 +8,7 @@
 #define GLM_FORCE_SILENT_WARNINGS
 #define GLM_ENABLE_EXPERIMENTAL
 #pragma warning(disable : 4464)
+#pragma warning(disable : 5214)
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
