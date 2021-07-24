@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "opengl_info.hpp"
 #include "boost/boost_algorithm_string.hpp"
 #include "mge/core/semantic_version.hpp"

@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
 SET(mgemath_sources
     vec2.cpp)
 

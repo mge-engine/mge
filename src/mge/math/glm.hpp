@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 
 // find_package(glm CONFIG REQUIRED)
 // target_link_libraries(main PRIVATE glm::glm)
