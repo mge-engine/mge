@@ -17,7 +17,7 @@ Buffers are defined by buffer type.
 
 .. doxygenenum:: mge::data_type
 
-.. doygenfunction:: mge::data_type_size
+.. doxygenfunction:: mge::data_type_size
 
 Hardware Buffer
 ===============
