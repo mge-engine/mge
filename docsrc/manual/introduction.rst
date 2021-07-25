@@ -58,6 +58,9 @@ The second half, features reference chapters for each main library of MGE:
 - :ref:`mge-core` describes the core library, which contains
   basic facilities and utilities.
 
+- :ref:`mge-math` describes the mathematics library, which contains
+  common mathematics utilities for graphics programming.
+
 - :ref:`mge-graphics` describes the graphics library, which handles
   all technical means to put things on the screen.
 
