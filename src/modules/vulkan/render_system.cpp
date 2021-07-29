@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "mge/graphics/render_system.hpp"
+#include "render_system.hpp"
 #include "mge/core/trace.hpp"
 // #include "window.hpp"
 #include <memory>
@@ -16,31 +16,27 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    class render_system : public mge::render_system
+    render_system::render_system()
     {
-    public:
-        render_system()
-        {
-            MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
-        }
-        ~render_system() = default;
+        MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
+    }
 
-        mge::window_ref create_window(const mge::extent &        extent,
-                                      const mge::window_options &options)
-        {
-            // auto ref = std::make_shared<mge::vulkan::window>(extent,
-            // options);
-            mge::window_ref ref;
-            return ref;
-        }
+    mge::window_ref
+    render_system::create_window(const mge::extent &        extent,
+                                 const mge::window_options &options)
+    {
+        // auto ref = std::make_shared<mge::vulkan::window>(extent,
+        // options);
+        mge::window_ref ref;
+        return ref;
+    }
 
-        monitor_collection monitors()
-        {
+    mge::render_system::monitor_collection render_system::monitors()
+    {
 #ifdef MGE_OS_WINDOWS
-            return mge::win32::monitor::all_monitors();
+        return mge::win32::monitor::all_monitors();
 #endif
-        }
-    };
+    }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
 } // namespace mge::vulkan
