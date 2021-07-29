@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "render_system.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
 // #include "window.hpp"
 #include <memory>
@@ -16,9 +17,40 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    render_system::render_system()
+    render_system::render_system() : m_instance(VK_NULL_HANDLE)
     {
-        MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
+        try {
+            MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
+            m_library = std::make_shared<vulkan_library>();
+            create_instance();
+        } catch (...) {
+            teardown();
+            throw;
+        }
+    }
+
+    void render_system::create_instance()
+    {
+
+        auto exe_name = mge::executable_name();
+
+        VkApplicationInfo app_info = {};
+        app_info.pApplicationName  = exe_name.c_str();
+        app_info.pEngineName       = "mge";
+        app_info.apiVersion        = VK_API_VERSION_1_2;
+
+        VkInstanceCreateInfo create_info = {};
+        create_info.sType            = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+        create_info.pApplicationInfo = &app_info;
+    }
+
+    void render_system::destroy_instance() {}
+
+    void render_system::teardown()
+    {
+        if (m_instance) {
+            destroy_instance();
+        }
     }
 
     mge::window_ref

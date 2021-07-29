@@ -11,7 +11,7 @@ namespace mge::vulkan {
     {
     public:
         vulkan_library();
-        ~vulkan_library();
+        ~vulkan_library() = default;
 
         PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr;
 
