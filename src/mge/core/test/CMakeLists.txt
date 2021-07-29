@@ -24,7 +24,8 @@ SET(MGECORE_TESTS
     copy_struct
     thread_group
     thread
-    semantic_version)
+    semantic_version
+    small_vector)
 
 FOREACH(TEST_NAME ${MGECORE_TESTS})
     MGE_TEST(

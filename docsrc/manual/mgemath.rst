@@ -1,4 +1,4 @@
-.. _mge-math::
+.. _mge-math:
 
 *******************
 Mathematics Library
@@ -12,4 +12,4 @@ library. For ease of use, the GLM library symbols are mapped into the `mge` name
     :maxdepth: 1
 
     math/vector.rst
-
+    math/functions.rst
