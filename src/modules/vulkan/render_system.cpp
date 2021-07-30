@@ -2,8 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "render_system.hpp"
+#include "mge/core/array_size.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
+
 // #include "window.hpp"
 #include <memory>
 
@@ -29,6 +31,9 @@ namespace mge::vulkan {
         }
     }
 
+    static const char *s_default_extensions[] = {VK_KHR_SURFACE_EXTENSION_NAME};
+    static const char *s_default_layers[]     = {"VK_LAYER_KHRONOS_validation"};
+
     void render_system::create_instance()
     {
 
@@ -42,6 +47,12 @@ namespace mge::vulkan {
         VkInstanceCreateInfo create_info = {};
         create_info.sType            = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         create_info.pApplicationInfo = &app_info;
+        create_info.enabledExtensionCount =
+            static_cast<uint32_t>(array_size(s_default_extensions));
+        create_info.ppEnabledExtensionNames = s_default_extensions;
+        create_info.enabledLayerCount =
+            static_cast<uint32_t>(array_size(s_default_layers));
+        create_info.ppEnabledLayerNames = s_default_layers;
     }
 
     void render_system::destroy_instance() {}
