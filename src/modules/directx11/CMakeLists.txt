@@ -4,6 +4,7 @@
 SET(mge_dx11_module_SOURCES
     common.cpp
     error.cpp
+    window.cpp
     render_system.cpp
 )
 
