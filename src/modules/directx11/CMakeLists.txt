@@ -3,6 +3,7 @@
 # All rights reserved.
 SET(mge_dx11_module_SOURCES
     common.cpp
+    error.cpp
     render_system.cpp
 )
 
