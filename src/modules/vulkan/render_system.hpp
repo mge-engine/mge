@@ -16,7 +16,21 @@ namespace mge::vulkan {
 
         mge::render_system::monitor_collection monitors() override;
 
+#define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
+#define INSTANCE_FUNCTION(X)       PFN_##X X;
+#define DEVICE_FUNCTION(X)         PFN_##X X;
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+
     private:
+        void resolve_basic_instance_functions();
         void create_instance();
         void destroy_instance();
         void teardown();

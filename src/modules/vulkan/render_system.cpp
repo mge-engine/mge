@@ -7,6 +7,7 @@
 #include "mge/core/trace.hpp"
 
 // #include "window.hpp"
+#include "error.hpp"
 #include <memory>
 
 #ifdef MGE_OS_WINDOWS
@@ -33,6 +34,41 @@ namespace mge::vulkan {
 
     static const char *s_default_extensions[] = {VK_KHR_SURFACE_EXTENSION_NAME};
     static const char *s_default_layers[]     = {"VK_LAYER_KHRONOS_validation"};
+
+    void render_system::resolve_basic_instance_functions()
+    {
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(push)
+#    pragma warning(disable : 4191)
+#endif
+#define RESOLVE(X)                                                             \
+    do {                                                                       \
+        auto f = m_library->vkGetInstanceProcAddr(VK_NULL_HANDLE, #X);         \
+        if (!f) {                                                              \
+            MGE_THROW(vulkan::error)                                           \
+                << "Cannot resolve instance function: " << #X;                 \
+        }                                                                      \
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void *)f;      \
+        this->X = reinterpret_cast<decltype(this->X)>(f);                      \
+    } while (false);
+
+#define BASIC_INSTANCE_FUNCTION(X) RESOLVE(X)
+#define INSTANCE_FUNCTION(X)
+#define DEVICE_FUNCTION(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+#undef RESOLVE
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(pop)
+#endif
+    }
 
     void render_system::create_instance()
     {
