@@ -21,7 +21,7 @@ namespace mge {
          * @param native whether this command list is native oder
          *   in-memory
          */
-        command_list(render_context &context, bool native);
+        command_list(render_context& context, bool native);
 
     public:
         /**

@@ -24,6 +24,6 @@ namespace mge {
          *
          * @param r trace record
          */
-        virtual void publish(const trace_record &r) = 0;
+        virtual void publish(const trace_record& r) = 0;
     };
 } // namespace mge

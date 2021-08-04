@@ -19,14 +19,13 @@ namespace mge {
          * @param stream    target stream
          * @param formatter formatter used to format record
          */
-        stream_trace_sink(std::ostream &             stream,
-                          const trace_formatter_ref &formatter);
+        stream_trace_sink(std::ostream& stream, const trace_formatter_ref& formatter);
         ~stream_trace_sink() = default;
 
-        void publish(const trace_record &r) override;
+        void publish(const trace_record& r) override;
 
     private:
-        std::ostream *      m_stream;
+        std::ostream*       m_stream;
         trace_formatter_ref m_formatter;
     };
 } // namespace mge

@@ -4,7 +4,7 @@
 #include "mge/core/trace_level.hpp"
 #include <iostream>
 namespace mge {
-    std::ostream &operator<<(std::ostream &os, const trace_level &l)
+    std::ostream& operator<<(std::ostream& os, const trace_level& l)
     {
         switch (l) {
         case trace_level::NONE:

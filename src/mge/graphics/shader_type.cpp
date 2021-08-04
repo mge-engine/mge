@@ -4,7 +4,7 @@
 #include "mge/graphics/shader_type.hpp"
 #include <iostream>
 namespace mge {
-    std::ostream &operator<<(std::ostream &os, const shader_type &t)
+    std::ostream& operator<<(std::ostream& os, const shader_type& t)
     {
         switch (t) {
         case shader_type::VERTEX:

@@ -13,8 +13,7 @@ namespace mge {
         public:
             using monitor_collection = mge::render_system::monitor_collection;
 
-            monitor(const DISPLAY_DEVICEW &adapter_device,
-                    const DISPLAY_DEVICEW &display_device, bool primary);
+            monitor(const DISPLAY_DEVICEW& adapter_device, const DISPLAY_DEVICEW& display_device, bool primary);
 
             virtual ~monitor() = default;
 

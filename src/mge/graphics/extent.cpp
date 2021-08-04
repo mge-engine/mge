@@ -5,9 +5,8 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream &operator<<(std::ostream &os, const extent &e)
+    std::ostream& operator<<(std::ostream& os, const extent& e)
     {
-        return os << "extent{width=" << e.width << ", height=" << e.height
-                  << "}";
+        return os << "extent{width=" << e.width << ", height=" << e.height << "}";
     }
 } // namespace mge

@@ -23,8 +23,7 @@ namespace mge {
         /**
          * @brief Pseudo refresh rate that allows any refresh rate.
          */
-        static constexpr uint32_t ANY_REFRESH_RATE =
-            std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t ANY_REFRESH_RATE = std::numeric_limits<uint32_t>::max();
 
         /**
          * @brief Create video mode.
@@ -34,12 +33,15 @@ namespace mge {
          * @param refresh_rate_ refresh rate in Hz
          */
         video_mode(uint32_t width, uint32_t height, uint32_t refresh_rate_)
-            : extent(width, height), refresh_rate(refresh_rate_)
+            : extent(width, height)
+            , refresh_rate(refresh_rate_)
         {}
 
-        video_mode() : refresh_rate(ANY_REFRESH_RATE) {}
-        video_mode(const video_mode &) = default;
-        video_mode &operator=(const video_mode &) = default;
+        video_mode()
+            : refresh_rate(ANY_REFRESH_RATE)
+        {}
+        video_mode(const video_mode&) = default;
+        video_mode& operator=(const video_mode&) = default;
 
         mge::extent extent;       //!< width and height
         uint32_t    refresh_rate; //!< refresh rate in Hz
@@ -53,18 +55,11 @@ namespace mge {
             }
         }
 
-        bool operator==(const video_mode &m) const
-        {
-            return this->extent == m.extent && is_refresh_rate(m.refresh_rate);
-        }
+        bool operator==(const video_mode& m) const { return this->extent == m.extent && is_refresh_rate(m.refresh_rate); }
 
-        bool operator!=(const video_mode &m) const
-        {
-            return this->extent != m.extent || !is_refresh_rate(m.refresh_rate);
-        }
+        bool operator!=(const video_mode& m) const { return this->extent != m.extent || !is_refresh_rate(m.refresh_rate); }
     };
 
-    MGEGRAPHICS_EXPORT std::ostream &operator<<(std::ostream &    os,
-                                                const video_mode &m);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const video_mode& m);
 
 } // namespace mge

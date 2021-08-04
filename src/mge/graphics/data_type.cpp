@@ -5,7 +5,7 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream &operator<<(std::ostream &os, const data_type &t)
+    std::ostream& operator<<(std::ostream& os, const data_type& t)
     {
         switch (t) {
         case data_type::UNKNOWN:

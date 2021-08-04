@@ -16,8 +16,5 @@ namespace mge {
      * @param target target value
      * @param source source value
      */
-    template <typename T> inline void copy_struct(T &target, const T &source)
-    {
-        memcpy(&target, &source, sizeof(T));
-    }
+    template <typename T> inline void copy_struct(T& target, const T& source) { memcpy(&target, &source, sizeof(T)); }
 } // namespace mge

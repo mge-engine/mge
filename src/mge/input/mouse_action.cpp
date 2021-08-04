@@ -5,7 +5,7 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream &operator<<(std::ostream &os, const mouse_action &a)
+    std::ostream& operator<<(std::ostream& os, const mouse_action& a)
     {
         switch (a) {
         case mouse_action::PRESS:

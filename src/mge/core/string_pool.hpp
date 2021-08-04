@@ -16,8 +16,7 @@ namespace mge {
     class MGECORE_EXPORT string_pool
     {
     private:
-        typedef std::map<std::string_view, std::shared_ptr<std::string>>
-            string_map;
+        typedef std::map<std::string_view, std::shared_ptr<std::string>> string_map;
 
     public:
         /// Size of pool.
@@ -41,14 +40,14 @@ namespace mge {
          * @param str unpooled string
          * @return pooled string
          */
-        std::string_view get(const std::string &str);
+        std::string_view get(const std::string& str);
         /**
          * @brief Get pooled string.
          *
          * @param str unpooled string
          * @return pooled string
          */
-        std::string_view get(const char *str);
+        std::string_view get(const char* str);
 
         /**
          * @brief Get pool size.

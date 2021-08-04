@@ -7,9 +7,9 @@
 
 namespace mge {
 
-    static inline void remove_string(std::string &str, const char *to_replace)
+    static inline void remove_string(std::string& str, const char* to_replace)
     {
-        auto l   = strlen(to_replace);
+        auto l = strlen(to_replace);
         auto pos = str.find(to_replace);
         while (pos != std::string::npos) {
             str.replace(pos, l, "");
@@ -17,7 +17,7 @@ namespace mge {
         }
     }
 
-    MGECORE_EXPORT std::string type_name(const std::type_info &ti)
+    MGECORE_EXPORT std::string type_name(const std::type_info& ti)
     {
         std::string raw_name(ti.name());
 #ifdef MGE_COMPILER_MSVC
@@ -32,11 +32,11 @@ namespace mge {
 #endif
     }
 
-    MGECORE_EXPORT std::string base_type_name(const std::type_info &ti)
+    MGECORE_EXPORT std::string base_type_name(const std::type_info& ti)
     {
         std::string full_type_name = type_name(ti);
-        auto        namestart      = full_type_name.begin();
-        auto        it             = namestart;
+        auto        namestart = full_type_name.begin();
+        auto        it = namestart;
         while (it != full_type_name.end()) {
             if (*it == ':') {
                 ++it;
@@ -56,11 +56,11 @@ namespace mge {
         return std::string(namestart, full_type_name.end());
     }
 
-    MGECORE_EXPORT std::string namespace_name(const std::type_info &ti)
+    MGECORE_EXPORT std::string namespace_name(const std::type_info& ti)
     {
         std::string full_type_name = type_name(ti);
-        auto        namestart      = full_type_name.begin();
-        auto        it             = namestart;
+        auto        namestart = full_type_name.begin();
+        auto        it = namestart;
         while (it != full_type_name.end()) {
             if (*it == ':') {
                 ++it;

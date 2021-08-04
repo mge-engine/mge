@@ -32,13 +32,12 @@ namespace mge {
              * @param file      source code file
              * @param line      source code line
              */
-            frame(const void *address, std::string_view module,
-                  std::string_view name, std::string_view file, uint32_t line);
+            frame(const void* address, std::string_view module, std::string_view name, std::string_view file, uint32_t line);
             /**
              * @brief Copy constructor.
              * @param f copied frame
              */
-            frame(const frame &f) = default;
+            frame(const frame& f) = default;
 
             ~frame() = default;
 
@@ -47,14 +46,14 @@ namespace mge {
              *
              * @return f assigned frame
              */
-            frame &operator=(const frame &f) = default;
+            frame& operator=(const frame& f) = default;
 
             /**
              * @brief Get frame address.
              *
              * @return frame address
              */
-            const void *address() const noexcept { return m_address; }
+            const void* address() const noexcept { return m_address; }
             /**
              * @brief Frame name (method or function name)
              *
@@ -67,10 +66,7 @@ namespace mge {
              *
              * @return source file name
              */
-            std::string_view source_file() const noexcept
-            {
-                return m_source_file;
-            }
+            std::string_view source_file() const noexcept { return m_source_file; }
 
             /**
              * @brief Source line number.
@@ -87,7 +83,7 @@ namespace mge {
             std::string_view module() const noexcept { return m_module; }
 
         private:
-            const void *     m_address;
+            const void*      m_address;
             std::string_view m_name;
             std::string_view m_source_file;
             std::string_view m_module;
@@ -114,7 +110,7 @@ namespace mge {
          *
          * @param s copied stack trace
          */
-        stacktrace(const stacktrace &s);
+        stacktrace(const stacktrace& s);
         /**
          * @brief Destructor.
          *
@@ -127,7 +123,7 @@ namespace mge {
          * @param s assigned stack trace
          * @return @c *this
          */
-        stacktrace &operator=(const stacktrace &s);
+        stacktrace& operator=(const stacktrace& s);
 
         /**
          * @brief Number of frames.
@@ -167,14 +163,14 @@ namespace mge {
          * @param s compared stack trace
          * @return true if adresses match
          */
-        bool operator==(const stacktrace &s) const;
+        bool operator==(const stacktrace& s) const;
         /**
          * @brief Comparison.
          *
          * @param s compared stack trace
          * @return true if adresses do not match
          */
-        bool operator!=(const stacktrace &s) const;
+        bool operator!=(const stacktrace& s) const;
 
     private:
         frame_vector m_frames;
@@ -188,7 +184,6 @@ namespace mge {
      * @param s stack backtrace
      * @return @c os
      */
-    MGECORE_EXPORT std::ostream &operator<<(std::ostream &    os,
-                                            const stacktrace &s);
+    MGECORE_EXPORT std::ostream& operator<<(std::ostream& os, const stacktrace& s);
 
 } // namespace mge

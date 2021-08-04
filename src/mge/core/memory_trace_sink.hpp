@@ -18,12 +18,12 @@ namespace mge {
         struct record : trace_record
         {
             record() = default;
-            record(const trace_record &r);
-            record(const record &) = default;
-            record(record &&)      = default;
+            record(const trace_record& r);
+            record(const record&) = default;
+            record(record&&) = default;
 
-            record &    operator=(record &&) = default;
-            record &    operator=(const record &) = default;
+            record&     operator=(record&&) = default;
+            record&     operator=(const record&) = default;
             std::string materialized_message;
         };
 
@@ -42,7 +42,7 @@ namespace mge {
         memory_trace_sink();
         ~memory_trace_sink();
 
-        void publish(const trace_record &r) override;
+        void publish(const trace_record& r) override;
 
         /**
          * @brief Capacity of this sink.
@@ -73,7 +73,7 @@ namespace mge {
          *
          * @param sink target sink
          */
-        void forward(trace_sink &sink);
+        void forward(trace_sink& sink);
 
     private:
         record_buffer m_records;

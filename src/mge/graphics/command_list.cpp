@@ -5,8 +5,9 @@
 
 namespace mge {
 
-    command_list::command_list(render_context &context, bool native)
-        : context_object(context), m_native(native)
+    command_list::command_list(render_context& context, bool native)
+        : context_object(context)
+        , m_native(native)
     {}
 
     command_list::~command_list() {}

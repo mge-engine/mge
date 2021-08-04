@@ -38,8 +38,7 @@ namespace mge {
          * @param options window options
          * @return created window
          */
-        virtual window_ref create_window(const extent &        extent,
-                                         const window_options &options) = 0;
+        virtual window_ref create_window(const extent& extent, const window_options& options) = 0;
 
         /**
          * @brief Create default render system.

@@ -19,8 +19,7 @@ namespace mge {
      * This class enhances @c std::thread by some convenience methods.
      * A thread cannot be copied, or created on the stack.
      */
-    class MGECORE_EXPORT thread : noncopyable,
-                                  public std::enable_shared_from_this<thread>
+    class MGECORE_EXPORT thread : noncopyable, public std::enable_shared_from_this<thread>
     {
     public:
         /**
@@ -53,7 +52,7 @@ namespace mge {
          * @param name thread name
          * @param group thread group
          */
-        thread(const std::string &name, thread_group *group = nullptr);
+        thread(const std::string& name, thread_group* group = nullptr);
 
         virtual ~thread();
 
@@ -63,7 +62,7 @@ namespace mge {
          * @return current thread, or null pointer if the current thread is not
          * managed
          */
-        static thread *this_thread();
+        static thread* this_thread();
 
         /**
          * @brief Get @c std::thread id
@@ -93,11 +92,10 @@ namespace mge {
          *
          * @param f function to run in the thread
          */
-        inline void start(std::function<void()> &&f)
+        inline void start(std::function<void()>&& f)
         {
             if (!f) {
-                MGE_THROW(mge::illegal_argument)
-                    << "Invalid function parameter for thread start";
+                MGE_THROW(mge::illegal_argument) << "Invalid function parameter for thread start";
             }
             m_running_thread = std::thread([fc = std::move(f), this] {
                 try {
@@ -138,17 +136,17 @@ namespace mge {
          *
          * @return thread name
          */
-        const std::string &name() const noexcept { return m_name; }
+        const std::string& name() const noexcept { return m_name; }
 
     private:
         void on_start();
         void on_finish();
-        void on_exception(const std::exception_ptr &eptr);
+        void on_exception(const std::exception_ptr& eptr);
 
         void assert_this_thread_is_this_thread();
 
         std::string         m_name;
-        thread_group *      m_group;
+        thread_group*       m_group;
         running_thread_type m_running_thread;
     };
 
@@ -158,9 +156,7 @@ namespace mge {
 
         inline mge::thread::id get_id() { return ::std::this_thread::get_id(); }
 
-        template <class Rep, class Period>
-        inline void
-        sleep_for(const std::chrono::duration<Rep, Period> &sleep_duration)
+        template <class Rep, class Period> inline void sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
         {
             ::std::this_thread::sleep_for(sleep_duration);
         }

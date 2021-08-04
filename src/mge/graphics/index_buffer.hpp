@@ -20,7 +20,7 @@ namespace mge {
          * @param context render context used
          * @param dt      data type
          */
-        index_buffer(render_context &context, data_type dt);
+        index_buffer(render_context& context, data_type dt);
 
     public:
         virtual ~index_buffer();

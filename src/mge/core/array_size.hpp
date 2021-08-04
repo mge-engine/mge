@@ -13,9 +13,6 @@ namespace mge {
      * @tparam size     size of array
      * @return size of array as @c constexpr
      */
-    template <typename T, size_t size> constexpr size_t array_size(T (&)[size])
-    {
-        return size;
-    }
+    template <typename T, size_t size> constexpr size_t array_size(T (&)[size]) { return size; }
 
 } // namespace mge

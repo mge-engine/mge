@@ -14,7 +14,7 @@ namespace mge {
     class MGEGRAPHICS_EXPORT swap_chain : public context_object
     {
     protected:
-        explicit swap_chain(render_context &context);
+        explicit swap_chain(render_context& context);
 
     public:
         virtual ~swap_chain();

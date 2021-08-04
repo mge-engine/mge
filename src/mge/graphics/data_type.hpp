@@ -43,8 +43,7 @@ namespace mge {
      * @param t data type printed
      * @return @c os
      */
-    MGEGRAPHICS_EXPORT std::ostream &operator<<(std::ostream &   os,
-                                                const data_type &t);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const data_type& t);
 
     /**
      * @brief Get the size of one data

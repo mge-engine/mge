@@ -15,7 +15,7 @@ namespace mge {
      * @tparam T    type of cleared value
      * @param value cleared value
      */
-    template <typename T> inline void zero_memory(T &value)
+    template <typename T> inline void zero_memory(T& value)
     {
         auto ptr = std::addressof(value);
         memset(ptr, 0, sizeof(T));

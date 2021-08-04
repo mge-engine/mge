@@ -12,7 +12,7 @@ namespace mge {
      */
     enum class MGEINPUT_EXPORT mouse_action
     {
-        PRESS   = 0,
+        PRESS = 0,
         RELEASE = 1,
 #ifndef DOUBLE_CLICK
         DOUBLE_CLICK = 2,
@@ -20,6 +20,5 @@ namespace mge {
         MOUSE_ACTION_DOUBLE_CLICK = 2
     };
 
-    MGEINPUT_EXPORT std::ostream &operator<<(std::ostream &      os,
-                                             const mouse_action &a);
+    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const mouse_action& a);
 } // namespace mge

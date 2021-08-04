@@ -6,8 +6,5 @@
 namespace mge {
     render_context::render_context() {}
 
-    const swap_chain_ref &render_context::swap_chain() const
-    {
-        return m_swap_chain;
-    }
+    const swap_chain_ref& render_context::swap_chain() const { return m_swap_chain; }
 } // namespace mge

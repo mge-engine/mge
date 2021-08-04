@@ -13,7 +13,7 @@ namespace mge {
     public:
         simple_trace_formatter();
         ~simple_trace_formatter() = default;
-        void format(std::ostream &stream, const trace_record &r) override;
+        void format(std::ostream& stream, const trace_record& r) override;
 
     private:
         std::optional<clock::time_point> m_first;

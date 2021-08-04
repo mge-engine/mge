@@ -26,7 +26,7 @@ namespace mge {
          * @param topic trace topic
          * @param level level of trace event
          */
-        trace(trace_topic &topic, const trace_level level);
+        trace(trace_topic& topic, const trace_level level);
 
         /**
          * Destructs trace object and before flushes the record,
@@ -41,7 +41,7 @@ namespace mge {
          * @param value value to write
          * @return @c *this
          */
-        template <typename T> trace &operator<<(const T &value)
+        template <typename T> trace& operator<<(const T& value)
         {
             if (m_enabled) {
                 (*m_stream) << value;
@@ -52,7 +52,7 @@ namespace mge {
     private:
         void flush();
 
-        trace_topic &m_topic;
+        trace_topic& m_topic;
         bool         m_enabled;
 
         struct entry
@@ -73,8 +73,7 @@ namespace mge {
  * @param TOPIC trace topic
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
-#define MGE_TRACE(TOPIC, LEVEL)                                                \
-    trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
+#define MGE_TRACE(TOPIC, LEVEL) trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
 
 /**
  * @def MGE_DEBUG_TRACE

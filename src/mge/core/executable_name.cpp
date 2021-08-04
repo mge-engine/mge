@@ -13,21 +13,21 @@ namespace mge {
         char buffer[2048];
         GetModuleFileName(0, buffer, sizeof(buffer));
 
-        char *dot = strrchr(buffer, '.');
+        char* dot = strrchr(buffer, '.');
 #if 0
         if (dot == nullptr) {
             throw MGE_EXCEPTION(illegal_state)
                 << "Cannot compute executable name (suffix not found).";
         }
 #endif
-        const char *basenamestart = strrchr(buffer, '\\');
+        const char* basenamestart = strrchr(buffer, '\\');
 #if 0
             if(basenamestart == nullptr) {
                 throw MGE_EXCEPTION(illegal_state)
                    << "Cannot compute executable name (directory not found).";
             }
 #endif
-        return std::string((const char *)basenamestart + 1, (const char *)dot);
+        return std::string((const char*)basenamestart + 1, (const char*)dot);
     }
 
 } // namespace mge

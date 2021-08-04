@@ -36,14 +36,18 @@ namespace mge {
          *
          * @param s copied set
          */
-        inline enum_set(const enum_set<E, M> &s) : m_bits(s.m_bits) {}
+        inline enum_set(const enum_set<E, M>& s)
+            : m_bits(s.m_bits)
+        {}
 
         /**
          * @brief Move constructor.
          *
          * @param s moved set
          */
-        inline enum_set(enum_set<E, M> &&s) : m_bits(std::move(s.m_bits)) {}
+        inline enum_set(enum_set<E, M>&& s)
+            : m_bits(std::move(s.m_bits))
+        {}
 
         /**
          * @brief Assignment.
@@ -51,7 +55,7 @@ namespace mge {
          * @param s assigned set
          * @return @c *this
          */
-        inline enum_set<E, M> &operator=(const enum_set<E, M> &s)
+        inline enum_set<E, M>& operator=(const enum_set<E, M>& s)
         {
             m_bits = s.m_bits;
             return *this;
@@ -69,20 +73,14 @@ namespace mge {
          *
          * @param value enum value
          */
-        inline void reset(E value)
-        {
-            m_bits.reset(static_cast<base_type>(value));
-        }
+        inline void reset(E value) { m_bits.reset(static_cast<base_type>(value)); }
 
         /**
          * @brief Flips value of an enum value.
          *
          * @param value enum value
          */
-        inline void flip(E value)
-        {
-            m_bits.flip(static_cast<base_type>(value));
-        }
+        inline void flip(E value) { m_bits.flip(static_cast<base_type>(value)); }
 
         /**
          * @brief Test one enum value.
@@ -90,10 +88,7 @@ namespace mge {
          * @param value enum value
          * @return @c true if set
          */
-        bool test(E value) const
-        {
-            return m_bits.test(static_cast<base_type>(value));
-        }
+        bool test(E value) const { return m_bits.test(static_cast<base_type>(value)); }
 
         /**
          * @brief Get whether no value is set.
@@ -106,7 +101,7 @@ namespace mge {
          * @brief Resets values set in argument
          * @param modifiers value to be reset
          */
-        void reset(const enum_set<E, M> &other)
+        void reset(const enum_set<E, M>& other)
         {
             for (uint32_t pos = 0; pos < other.m_bits.size(); ++pos) {
                 if (other.m_bits.test(pos)) {
@@ -120,10 +115,7 @@ namespace mge {
          * @param other other set
          * @return @c true if other is contained in this set
          */
-        bool includes(const enum_set<E, M> &other) const
-        {
-            return (m_bits & other.m_bits) == other.m_bits;
-        }
+        bool includes(const enum_set<E, M>& other) const { return (m_bits & other.m_bits) == other.m_bits; }
 
         /**
          * @brief Clears the whole set.
@@ -135,21 +127,21 @@ namespace mge {
          *
          * @return underlying bitseta
          */
-        operator const std::bitset<bitset_size()> &() const { return m_bits; }
+        operator const std::bitset<bitset_size()>&() const { return m_bits; }
 
         /**
          * @brief Conversion to base bitset.
          *
          * @return underlying bitset
          */
-        operator std::bitset<bitset_size()> &() { return m_bits; }
+        operator std::bitset<bitset_size()>&() { return m_bits; }
 
         /**
          * @brief Combine this enum set with another.
          * @param other other set
          * @return this set combined (or combination)
          */
-        enum_set<E, M> &operator|=(const enum_set<E, M> &other)
+        enum_set<E, M>& operator|=(const enum_set<E, M>& other)
         {
             m_bits |= other.m_bits;
             return *this;

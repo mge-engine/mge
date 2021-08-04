@@ -32,24 +32,26 @@ namespace mge {
         /**
          * @brief Pointer to value.
          */
-        using pointer = T *;
+        using pointer = T*;
         /**
          * @brief Pointer to constant value.
          */
-        using const_pointer = const T *;
+        using const_pointer = const T*;
         /**
          * @brief Reference to value.
          */
-        using reference = T &;
+        using reference = T&;
         /**
          * @brief Constant reference to value.
          */
-        using const_reference = const T &;
+        using const_reference = const T&;
 
         /**
          * Constructor. The contained object is not created.
          */
-        singleton() : m_instance(nullptr) {}
+        singleton()
+            : m_instance(nullptr)
+        {}
 
         /**
          * Destructor. Exchanges the contained instance pointer
@@ -57,8 +59,8 @@ namespace mge {
          */
         ~singleton()
         {
-            T *p    = m_instance.load();
-            T *null = nullptr;
+            T* p = m_instance.load();
+            T* null = nullptr;
             if (m_instance.compare_exchange_strong(p, null)) {
                 delete p;
             } else {
@@ -75,14 +77,14 @@ namespace mge {
          */
         inline pointer ptr()
         {
-            T *p = m_instance.load();
+            T* p = m_instance.load();
             if (p) {
                 return p;
             }
 
             p = new T();
 
-            T *null = nullptr;
+            T* null = nullptr;
 
             if (m_instance.compare_exchange_strong(null, p)) {
                 return p;
@@ -117,7 +119,7 @@ namespace mge {
         inline const_reference operator*() const { return *ptr(); }
 
     private:
-        std::atomic<T *> m_instance;
+        std::atomic<T*> m_instance;
     };
 
 } // namespace mge

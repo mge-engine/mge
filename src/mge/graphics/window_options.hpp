@@ -34,18 +34,21 @@ namespace mge {
                 set_option(o);
             }
         }
-        window_options(const window_options &o) : m_options(o.m_options) {}
-
-        window_options(window_options &&o) : m_options(std::move(o.m_options))
+        window_options(const window_options& o)
+            : m_options(o.m_options)
         {}
 
-        inline window_options &operator=(const window_options &o)
+        window_options(window_options&& o)
+            : m_options(std::move(o.m_options))
+        {}
+
+        inline window_options& operator=(const window_options& o)
         {
             m_options = o.m_options;
             return *this;
         }
 
-        inline window_options &operator=(window_options &&o)
+        inline window_options& operator=(window_options&& o)
         {
             m_options = std::move(o.m_options);
             return *this;
@@ -53,7 +56,7 @@ namespace mge {
 
         ~window_options() = default;
 
-        window_options &set_option(option o, bool value = true);
+        window_options& set_option(option o, bool value = true);
         bool            option_set(option o) const;
 
         /**

@@ -27,37 +27,37 @@ namespace mge {
          * @brief Signal press of modifier key.
          * @param m modifier
          */
-        void press(const modifier &m);
+        void press(const modifier& m);
         /**
          * @brief Signal press of key.
          * @param k key
          */
-        void press(const key &k);
+        void press(const key& k);
         /**
          * @brief Release modifier key.
          * @param m modifier key
          */
-        void release(const modifier &m);
+        void release(const modifier& m);
 
         /**
          * @brief Release key
          * @param k key
          */
-        void release(const key &k);
+        void release(const key& k);
 
         /**
          * @brief Retrieve whether key is pressed.
          * @param k key
          * @return @c true if pressed
          */
-        bool pressed(const key &k) const;
+        bool pressed(const key& k) const;
 
         /**
          * @brief Retrieve whether key is pressed.
          * @param m modifier key
          * @return @c true if pressed
          */
-        bool pressed(const modifier &m) const;
+        bool pressed(const modifier& m) const;
 
         /**
          * @brief Retrieve whether modifier/key combination is pressed.
@@ -65,14 +65,14 @@ namespace mge {
          * @param k key
          * @return @c true if pressed
          */
-        bool pressed(const modifier &m, const key &k) const;
+        bool pressed(const modifier& m, const key& k) const;
 
         /**
          * @brief Get current modifier state.
          *
          * @return modifier state
          */
-        const mge::modifier &current_modifier() const;
+        const mge::modifier& current_modifier() const;
 
     private:
         mge::modifier     m_modifier;

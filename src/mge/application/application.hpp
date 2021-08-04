@@ -20,24 +20,23 @@ namespace mge {
      * @brief Application framework.
      *
      */
-    class MGEAPPLICATION_EXPORT application : public component<application>,
-                                              public loop_target
+    class MGEAPPLICATION_EXPORT application : public component<application>, public loop_target
     {
     public:
         using update_listener_collection = callback_map<uint64_t, double>;
-        using update_listener     = update_listener_collection::function_type;
+        using update_listener = update_listener_collection::function_type;
         using update_listener_key = update_listener_collection::key_type;
 
         using redraw_listener_collection = callback_map<uint64_t, double>;
-        using redraw_listener     = redraw_listener_collection::function_type;
+        using redraw_listener = redraw_listener_collection::function_type;
         using redraw_listener_key = redraw_listener_collection::key_type;
 
         using input_listener_collection = callback_map<void>;
-        using input_listener     = input_listener_collection::function_type;
+        using input_listener = input_listener_collection::function_type;
         using input_listener_key = input_listener_collection::key_type;
 
         using quit_listener_collection = callback_map<void>;
-        using quit_listener     = quit_listener_collection::function_type;
+        using quit_listener = quit_listener_collection::function_type;
         using quit_listener_key = quit_listener_collection::key_type;
 
         application();
@@ -70,7 +69,7 @@ namespace mge {
          */
         void set_quit();
 
-        void initialize(int argc, const char **argv);
+        void initialize(int argc, const char** argv);
 
         /**
          * @brief Basic setup of the application.
@@ -112,8 +111,7 @@ namespace mge {
          * @param argv argument values
          * @return return code passed to operating system
          */
-        static int main(std::string_view application, int argc,
-                        const char **argv);
+        static int main(std::string_view application, int argc, const char** argv);
 
         /**
          * @brief Run default application implementation.
@@ -122,10 +120,7 @@ namespace mge {
          * @param argv argument values
          * @return return code passed to operating system
          */
-        static inline int main(int argc, const char **argv)
-        {
-            return main(""sv, argc, argv);
-        }
+        static inline int main(int argc, const char** argv) { return main(""sv, argc, argv); }
 
         /**
          * @brief Add an input listener.
@@ -133,7 +128,7 @@ namespace mge {
          * @param l update listener
          * @return key for update listener registration
          */
-        input_listener_key add_input_listener(const input_listener &l);
+        input_listener_key add_input_listener(const input_listener& l);
 
         /**
          * @brief Remove update listener.
@@ -148,7 +143,7 @@ namespace mge {
          * @param l update listener
          * @return key for update listener registration
          */
-        update_listener_key add_update_listener(const update_listener &l);
+        update_listener_key add_update_listener(const update_listener& l);
 
         /**
          * @brief Remove update listener.
@@ -163,7 +158,7 @@ namespace mge {
          * @param l listener
          * @return key for redraw listener registration
          */
-        redraw_listener_key add_redraw_listener(const redraw_listener &l);
+        redraw_listener_key add_redraw_listener(const redraw_listener& l);
 
         /**
          * @brief Remove redraw listener.
@@ -177,7 +172,7 @@ namespace mge {
          * @param l update listener
          * @return key for update listener registration
          */
-        quit_listener_key add_quit_listener(const quit_listener &l);
+        quit_listener_key add_quit_listener(const quit_listener& l);
 
         /**
          * @brief Remove update listener.
@@ -191,10 +186,10 @@ namespace mge {
          *
          * @return current application instance
          */
-        static application *instance();
+        static application* instance();
 
     protected:
-        const std::vector<std::string> &arguments() const;
+        const std::vector<std::string>& arguments() const;
 
     private:
         std::vector<std::string> m_arguments;
@@ -202,7 +197,7 @@ namespace mge {
         volatile bool            m_quit;
         mge::thread::id          m_main_thread_id;
 
-        static application *s_instance;
+        static application* s_instance;
 
         input_listener_collection  m_input_listeners;
         update_listener_collection m_update_listeners;
@@ -211,8 +206,5 @@ namespace mge {
     };
 } // namespace mge
 
-#define MGE_MAINFUNCTION                                                       \
-    int main(int argc, const char **argv)                                      \
-    {                                                                          \
-        return mge::application::main(argc, argv);                             \
-    }
+#define MGE_MAINFUNCTION                                                                                                       \
+    int main(int argc, const char** argv) { return mge::application::main(argc, argv); }

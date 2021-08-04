@@ -14,12 +14,11 @@ namespace mge {
         b = (float)(rgbvalue & 0xFF) / 255.0f;
     }
 
-    rgb_color::rgb_color(const char *name)
+    rgb_color::rgb_color(const char* name)
     {
-        const color_name *c = find_color(name);
+        const color_name* c = find_color(name);
         if (c == nullptr) {
-            MGE_THROW(mge::illegal_argument)
-                << "Unknown color name \"" << name << "\"";
+            MGE_THROW(mge::illegal_argument) << "Unknown color name \"" << name << "\"";
         } else {
             r = c->r;
             g = c->g;
@@ -27,24 +26,14 @@ namespace mge {
         }
     }
 
-    bool rgb_color::operator==(const rgb_color &c) const
+    bool rgb_color::operator==(const rgb_color& c) const { return r == c.r && g == c.g && b == c.b; }
+
+    bool rgb_color::operator!=(const rgb_color& c) const { return r != c.r || g != c.g || b != c.b; }
+
+    std::ostream& operator<<(std::ostream& o, const rgb_color& c)
     {
-        return r == c.r && g == c.g && b == c.b;
+        return o << "rgb_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b << "]";
     }
 
-    bool rgb_color::operator!=(const rgb_color &c) const
-    {
-        return r != c.r || g != c.g || b != c.b;
-    }
-
-    std::ostream &operator<<(std::ostream &o, const rgb_color &c)
-    {
-        return o << "rgb_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b
-                 << "]";
-    }
-
-    rgb_color operator"" _rgb(const char *name, size_t)
-    {
-        return rgb_color(name);
-    }
+    rgb_color operator"" _rgb(const char* name, size_t) { return rgb_color(name); }
 } // namespace mge

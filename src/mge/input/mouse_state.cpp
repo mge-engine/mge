@@ -4,7 +4,10 @@
 #include "mge/input/mouse_state.hpp"
 
 namespace mge {
-    mouse_state::mouse_state() : m_x(0), m_y(0) {}
+    mouse_state::mouse_state()
+        : m_x(0)
+        , m_y(0)
+    {}
 
     mouse_state::~mouse_state() {}
 

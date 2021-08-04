@@ -4,7 +4,8 @@
 #include "mge/input/keyboard_state.hpp"
 
 namespace mge {
-    keyboard_state::keyboard_state() : m_invalid_pressed(false)
+    keyboard_state::keyboard_state()
+        : m_invalid_pressed(false)
     {
         const uint32_t key_max = static_cast<uint32_t>(key::KEY_MAX);
         m_pressed.resize(key_max);
@@ -12,11 +13,11 @@ namespace mge {
 
     keyboard_state::~keyboard_state() {}
 
-    void keyboard_state::press(const modifier &m) { m_modifier |= m; }
+    void keyboard_state::press(const modifier& m) { m_modifier |= m; }
 
-    void keyboard_state::release(const modifier &m) { m_modifier.reset(m); }
+    void keyboard_state::release(const modifier& m) { m_modifier.reset(m); }
 
-    void keyboard_state::press(const key &k)
+    void keyboard_state::press(const key& k)
     {
         switch (k) {
         case key::LEFT_SHIFT:
@@ -35,7 +36,7 @@ namespace mge {
             break;
         }
         if (k != key::INVALID) {
-            uint32_t pos   = static_cast<uint32_t>(k);
+            uint32_t pos = static_cast<uint32_t>(k);
             m_pressed[pos] = true;
 
         } else {
@@ -43,7 +44,7 @@ namespace mge {
         }
     }
 
-    void keyboard_state::release(const key &k)
+    void keyboard_state::release(const key& k)
     {
         switch (k) {
         case key::LEFT_SHIFT:
@@ -63,14 +64,14 @@ namespace mge {
         }
 
         if (k != key::INVALID) {
-            uint32_t pos   = static_cast<uint32_t>(k);
+            uint32_t pos = static_cast<uint32_t>(k);
             m_pressed[pos] = false;
         } else {
             m_invalid_pressed = false;
         }
     }
 
-    bool keyboard_state::pressed(const key &k) const
+    bool keyboard_state::pressed(const key& k) const
     {
         if (k != key::INVALID) {
             uint32_t pos = static_cast<uint32_t>(k);
@@ -80,17 +81,11 @@ namespace mge {
         }
     }
 
-    bool keyboard_state::pressed(const modifier &m) const
-    {
-        return m_modifier.includes(m);
-    }
+    bool keyboard_state::pressed(const modifier& m) const { return m_modifier.includes(m); }
 
-    const mge::modifier &keyboard_state::current_modifier() const
-    {
-        return m_modifier;
-    }
+    const mge::modifier& keyboard_state::current_modifier() const { return m_modifier; }
 
-    bool keyboard_state::pressed(const modifier &m, const key &k) const
+    bool keyboard_state::pressed(const modifier& m, const key& k) const
     {
         if (m_modifier.includes(m)) {
             if (k != key::INVALID) {

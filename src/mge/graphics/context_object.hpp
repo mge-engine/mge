@@ -15,14 +15,14 @@ namespace mge {
     class MGEGRAPHICS_EXPORT context_object : public noncopyable
     {
     protected:
-        explicit context_object(render_context &context);
+        explicit context_object(render_context& context);
 
     public:
         virtual ~context_object();
-        const render_context &context() const;
-        render_context &      context();
-        void assert_same_context(const render_context &c) const;
-        void assert_same_context(const context_object &cobj) const;
+        const render_context& context() const;
+        render_context&       context();
+        void                  assert_same_context(const render_context& c) const;
+        void                  assert_same_context(const context_object& cobj) const;
 
     protected:
         render_context_ref m_context;

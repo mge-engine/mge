@@ -32,7 +32,7 @@ namespace mge {
          * @param context       render context
          * @param type          buffer type
          */
-        hardware_buffer(render_context &context, buffer_type type);
+        hardware_buffer(render_context& context, buffer_type type);
 
         /**
          * Construct hardware buffer filled with existing data.
@@ -41,8 +41,7 @@ namespace mge {
          * @param data          buffer content
          * @param data_size     buffer content size in bytes
          */
-        hardware_buffer(render_context &context, buffer_type type, void *data,
-                        size_t data_size);
+        hardware_buffer(render_context& context, buffer_type type, void* data, size_t data_size);
 
     public:
         /**
@@ -60,7 +59,7 @@ namespace mge {
          * Maps the buffer.
          * @return mapped buffer
          */
-        void *map();
+        void* map();
 
         /**
          * Unmaps the buffer.
@@ -81,11 +80,11 @@ namespace mge {
         buffer_type type() const noexcept;
 
     protected:
-        virtual void *on_map()   = 0;
+        virtual void* on_map() = 0;
         virtual void  on_unmap() = 0;
 
         buffer_type m_type;
         uint32_t    m_map_count;
-        void *      m_mapped_memory;
+        void*       m_mapped_memory;
     };
 } // namespace mge

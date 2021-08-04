@@ -14,13 +14,13 @@ namespace mge {
 #    pragma warning(disable : 4996)
 #endif
 
-    inline std::string to_utf8(const wchar_t *str)
+    inline std::string to_utf8(const wchar_t* str)
     {
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
         return conv.to_bytes(str);
     }
 
-    inline std::string to_utf8(const std::wstring &str)
+    inline std::string to_utf8(const std::wstring& str)
     {
         std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
         return conv.to_bytes(str);

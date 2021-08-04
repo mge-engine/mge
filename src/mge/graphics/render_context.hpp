@@ -16,8 +16,7 @@ namespace mge {
      * A render context has a swap chain to facilitate presentation
      * of the rendered frames.
      */
-    class MGEGRAPHICS_EXPORT render_context
-        : public std::enable_shared_from_this<render_context>
+    class MGEGRAPHICS_EXPORT render_context : public std::enable_shared_from_this<render_context>
     {
     public:
         virtual ~render_context() = default;
@@ -27,7 +26,7 @@ namespace mge {
          *
          * @return swap chain
          */
-        const swap_chain_ref &swap_chain() const;
+        const swap_chain_ref& swap_chain() const;
 
     protected:
         render_context();

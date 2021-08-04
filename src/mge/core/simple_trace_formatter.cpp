@@ -12,22 +12,17 @@ using namespace std::chrono_literals;
 namespace mge {
     simple_trace_formatter::simple_trace_formatter() {}
 
-    void simple_trace_formatter::format(std::ostream &      stream,
-                                        const trace_record &r)
+    void simple_trace_formatter::format(std::ostream& stream, const trace_record& r)
     {
         if (!m_first.has_value()) {
             m_first = r.time;
         }
 
-        auto duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-            r.time - *m_first);
-        double duration_seconds =
-            static_cast<double>(duration_ns.count()) / 1000000000.0;
+        auto   duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(r.time - *m_first);
+        double duration_seconds = static_cast<double>(duration_ns.count()) / 1000000000.0;
 
-        stream << "[" << std::fixed << std::setw(11) << std::setprecision(6)
-               << std::setfill(' ') << duration_seconds << "] " << std::setw(10)
-               << std::dec << r.sequence << " " << std::setw(8) << std::hex
-               << r.thread << " ";
+        stream << "[" << std::fixed << std::setw(11) << std::setprecision(6) << std::setfill(' ') << duration_seconds << "] "
+               << std::setw(10) << std::dec << r.sequence << " " << std::setw(8) << std::hex << r.thread << " ";
         switch (r.level) {
         case trace_level::DEBUG:
             stream << "D ";
@@ -53,14 +48,13 @@ namespace mge {
             stream << std::endl;
         } else {
             auto msg_begin = r.message.cbegin();
-            auto msg_end   = r.message.cend();
+            auto msg_end = r.message.cend();
             while (msg_begin != msg_end) {
                 auto c = *(msg_end - 1);
                 if (c == ' ' || c == '\n' || c == '\r') {
                     --msg_end;
                 } else {
-                    stream << " " << std::string_view(msg_begin, msg_end)
-                           << std::endl;
+                    stream << " " << std::string_view(msg_begin, msg_end) << std::endl;
                     break;
                 }
             }

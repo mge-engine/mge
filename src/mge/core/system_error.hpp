@@ -33,7 +33,9 @@ namespace mge {
              * @brief Capture error code.
              * @param value_ error code
              */
-            error_code(error_code_type value_) noexcept : m_value(value_) {}
+            error_code(error_code_type value_) noexcept
+                : m_value(value_)
+            {}
 
             error_code_type value() const noexcept { return m_value; }
 
@@ -57,26 +59,26 @@ namespace mge {
          *
          * @param e copied error
          */
-        system_error(const system_error &e);
+        system_error(const system_error& e);
 
         /**
          * @brief Move constructor.
          *
          * @param e moved error
          */
-        system_error(system_error &&e);
+        system_error(system_error&& e);
 
         ~system_error();
 
-        system_error &operator=(const system_error &e);
+        system_error& operator=(const system_error& e);
 
-        template <typename Info> system_error &set_info(const Info &info)
+        template <typename Info> system_error& set_info(const Info& info)
         {
             mge::exception::set_info(info);
             return *this;
         }
 
-        template <typename T> system_error &operator<<(const T &value)
+        template <typename T> system_error& operator<<(const T& value)
         {
             mge::exception::operator<<(value);
             return *this;

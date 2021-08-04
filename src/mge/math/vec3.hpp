@@ -13,11 +13,8 @@ namespace mge {
 
     using fvec3 = vec3;
 
-    MGEMATH_EXPORT std::ostream &operator<<(std::ostream &os, const fvec3 &v);
+    MGEMATH_EXPORT std::ostream& operator<<(std::ostream& os, const fvec3& v);
 
-    inline auto squared_length(const fvec3 &v)
-    {
-        return v.x * v.x + v.y * v.y + v.z * v.z;
-    }
+    inline auto squared_length(const fvec3& v) { return v.x * v.x + v.y * v.y + v.z * v.z; }
 
 } // namespace mge

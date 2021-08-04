@@ -9,15 +9,16 @@ namespace mge {
 
     static std::atomic<uint32_t> s_trace_sequence;
 
-    trace::trace(trace_topic &topic, const trace_level level)
-        : m_topic(topic), m_enabled(topic.enabled(level))
+    trace::trace(trace_topic& topic, const trace_level level)
+        : m_topic(topic)
+        , m_enabled(topic.enabled(level))
     {
         if (m_enabled) {
-            m_entry           = entry();
-            m_entry->time     = clock::now();
-            m_entry->level    = level;
+            m_entry = entry();
+            m_entry->time = clock::now();
+            m_entry->level = level;
             m_entry->sequence = ++s_trace_sequence;
-            m_entry->thread   = mge::this_thread::system_id();
+            m_entry->thread = mge::this_thread::system_id();
 
             m_stream = std::stringstream();
         }
@@ -36,12 +37,12 @@ namespace mge {
 
         std::string msg = m_stream->str();
 
-        r.level    = m_entry->level;
+        r.level = m_entry->level;
         r.sequence = m_entry->sequence;
-        r.time     = m_entry->time;
-        r.thread   = m_entry->thread;
-        r.topic    = &m_topic;
-        r.message  = std::string_view(msg.begin(), msg.end());
+        r.time = m_entry->time;
+        r.thread = m_entry->thread;
+        r.topic = &m_topic;
+        r.message = std::string_view(msg.begin(), msg.end());
         m_topic.publish(r);
     }
 

@@ -4,7 +4,7 @@
 #include "mge/core/exception.hpp"
 
 namespace mge {
-    static thread_local exception *t_current_exception = nullptr;
+    static thread_local exception* t_current_exception = nullptr;
 
     exception::~exception()
     {
@@ -15,44 +15,43 @@ namespace mge {
 
     exception::exception() { t_current_exception = this; }
 
-    exception::exception(const exception &e)
-        : std::exception(e), m_infos(e.m_infos)
+    exception::exception(const exception& e)
+        : std::exception(e)
+        , m_infos(e.m_infos)
     {
         t_current_exception = this;
         copy_message_or_materialize(e);
     }
 
-    exception::exception(exception &&e)
-        : std::exception(std::move(e)), m_infos(std::move(e.m_infos)),
-          m_raw_message_stream(std::move(e.m_raw_message_stream)),
-          m_raw_message(std::move(e.m_raw_message))
+    exception::exception(exception&& e)
+        : std::exception(std::move(e))
+        , m_infos(std::move(e.m_infos))
+        , m_raw_message_stream(std::move(e.m_raw_message_stream))
+        , m_raw_message(std::move(e.m_raw_message))
     {
         t_current_exception = this;
     }
 
-    mge::exception *exception::current_exception()
-    {
-        return t_current_exception;
-    }
+    mge::exception* exception::current_exception() { return t_current_exception; }
 
-    exception &exception::operator=(const exception &e)
+    exception& exception::operator=(const exception& e)
     {
         std::exception::operator=(e);
-        m_infos                 = e.m_infos;
+        m_infos = e.m_infos;
         copy_message_or_materialize(e);
         return *this;
     }
 
-    exception &exception::operator=(exception &&e)
+    exception& exception::operator=(exception&& e)
     {
         std::exception::operator=(std::move(e));
-        m_infos                 = std::move(e.m_infos);
-        m_raw_message_stream    = std::move(e.m_raw_message_stream);
-        m_raw_message           = std::move(e.m_raw_message);
+        m_infos = std::move(e.m_infos);
+        m_raw_message_stream = std::move(e.m_raw_message_stream);
+        m_raw_message = std::move(e.m_raw_message);
         return *this;
     }
 
-    void exception::copy_message_or_materialize(const exception &e)
+    void exception::copy_message_or_materialize(const exception& e)
     {
         if (e.m_raw_message_stream) {
             m_raw_message = e.m_raw_message_stream->str();
@@ -69,7 +68,7 @@ namespace mge {
         }
     }
 
-    const char *exception::what() const
+    const char* exception::what() const
     {
         materialize_message();
 
@@ -79,13 +78,9 @@ namespace mge {
         return std::exception::what();
     }
 
-    std::ostream &operator<<(std::ostream &os, const mge::exception &ex)
-    {
-        return os << ex.what();
-    }
+    std::ostream& operator<<(std::ostream& os, const mge::exception& ex) { return os << ex.what(); }
 
-    std::ostream &operator<<(std::ostream &                           os,
-                             const mge::exception::exception_details &d)
+    std::ostream& operator<<(std::ostream& os, const mge::exception::exception_details& d)
     {
         if (d.ex()) {
             os << "Exception details:\n";
@@ -99,21 +94,17 @@ namespace mge {
             auto file = d.ex()->get<mge::exception::source_file>();
             auto line = d.ex()->get<mge::exception::source_line>();
             if (file && line) {
-                os << "Exception location: " << file.value() << ":"
-                   << line.value() << "\n";
+                os << "Exception location: " << file.value() << ":" << line.value() << "\n";
             }
 
             auto function = d.ex()->get<mge::exception::function>();
             if (function) {
-                os << "Exception raising function: " << function.value()
-                   << "\n";
+                os << "Exception raising function: " << function.value() << "\n";
             }
 
-            auto called_function =
-                d.ex()->get<mge::exception::called_function>();
+            auto called_function = d.ex()->get<mge::exception::called_function>();
             if (called_function) {
-                os << "Calling library/system function: "
-                   << called_function.value() << "\n";
+                os << "Calling library/system function: " << called_function.value() << "\n";
             }
 
             auto stack = d.ex()->get<mge::exception::stack>();

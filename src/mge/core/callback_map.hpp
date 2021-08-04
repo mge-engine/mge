@@ -25,12 +25,15 @@ namespace mge {
     public:
         using self_type = callback_map<Args...>;
 
-        using function_type      = std::function<void(Args...)>;
-        using key_type           = uint32_t;
-        using container_type     = std::map<key_type, function_type>;
+        using function_type = std::function<void(Args...)>;
+        using key_type = uint32_t;
+        using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
 
-        callback_map() : m_sequence(0), m_calling(false) {}
+        callback_map()
+            : m_sequence(0)
+            , m_calling(false)
+        {}
 
         /**
          * @brief Inserts a callback.
@@ -38,14 +41,13 @@ namespace mge {
          * @param f callback
          * @return key that can be used to erase the callback
          */
-        key_type insert(const function_type &f)
+        key_type insert(const function_type& f)
         {
             if (m_calling) {
-                MGE_THROW(illegal_state)
-                    << "Cannot insert new callback during callback processing";
+                MGE_THROW(illegal_state) << "Cannot insert new callback during callback processing";
             }
             key_type new_key = ++m_sequence;
-            m_data[new_key]  = f;
+            m_data[new_key] = f;
             return new_key;
         }
 
@@ -72,19 +74,19 @@ namespace mge {
         {
             m_calling = true;
             try {
-                for (const auto &[key, value] : m_data) {
+                for (const auto& [key, value] : m_data) {
                     value(args...);
                 }
                 m_calling = false;
-                for (const auto &k : m_delayed_erase) {
-                    const_cast<self_type *>(this)->erase(k);
+                for (const auto& k : m_delayed_erase) {
+                    const_cast<self_type*>(this)->erase(k);
                 }
                 m_delayed_erase.clear();
             } catch (...) {
                 m_calling = false;
                 try {
-                    for (const auto &k : m_delayed_erase) {
-                        const_cast<self_type *>(this)->erase(k);
+                    for (const auto& k : m_delayed_erase) {
+                        const_cast<self_type*>(this)->erase(k);
                     }
                     m_delayed_erase.clear();
                 } catch (...) {
@@ -106,12 +108,15 @@ namespace mge {
     public:
         using self_type = callback_map<void>;
 
-        using function_type      = std::function<void(void)>;
-        using key_type           = uint32_t;
-        using container_type     = std::map<key_type, function_type>;
+        using function_type = std::function<void(void)>;
+        using key_type = uint32_t;
+        using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
 
-        callback_map() : m_sequence(0), m_calling(false) {}
+        callback_map()
+            : m_sequence(0)
+            , m_calling(false)
+        {}
 
         /**
          * @brief Inserts a callback.
@@ -119,14 +124,13 @@ namespace mge {
          * @param f callback
          * @return key that can be used to erase the callback
          */
-        key_type insert(const function_type &f)
+        key_type insert(const function_type& f)
         {
             if (m_calling) {
-                MGE_THROW(illegal_state)
-                    << "Cannot insert new callback during callback processing";
+                MGE_THROW(illegal_state) << "Cannot insert new callback during callback processing";
             }
             key_type new_key = ++m_sequence;
-            m_data[new_key]  = f;
+            m_data[new_key] = f;
             return new_key;
         }
 
@@ -153,19 +157,19 @@ namespace mge {
         {
             m_calling = true;
             try {
-                for (const auto &[key, value] : m_data) {
+                for (const auto& [key, value] : m_data) {
                     value();
                 }
                 m_calling = false;
-                for (const auto &k : m_delayed_erase) {
-                    const_cast<self_type *>(this)->erase(k);
+                for (const auto& k : m_delayed_erase) {
+                    const_cast<self_type*>(this)->erase(k);
                 }
                 m_delayed_erase.clear();
             } catch (...) {
                 m_calling = false;
                 try {
-                    for (const auto &k : m_delayed_erase) {
-                        const_cast<self_type *>(this)->erase(k);
+                    for (const auto& k : m_delayed_erase) {
+                        const_cast<self_type*>(this)->erase(k);
                     }
                     m_delayed_erase.clear();
                 } catch (...) {

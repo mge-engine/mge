@@ -15,7 +15,7 @@ namespace mge {
      */
     struct MGECORE_EXPORT trace_record
     {
-        const trace_topic *topic;    //!< trace topic
+        const trace_topic* topic;    //!< trace topic
         std::string_view   message;  //!< trace message
         clock::time_point  time;     //!< time of the trace event
         uint32_t           thread;   //!< thread id

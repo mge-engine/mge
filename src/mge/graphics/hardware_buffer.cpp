@@ -5,14 +5,16 @@
 
 namespace mge {
 
-    hardware_buffer::hardware_buffer(render_context &context, buffer_type type)
-        : context_object(context), m_type(type), m_map_count(0),
-          m_mapped_memory(nullptr)
+    hardware_buffer::hardware_buffer(render_context& context, buffer_type type)
+        : context_object(context)
+        , m_type(type)
+        , m_map_count(0)
+        , m_mapped_memory(nullptr)
     {}
 
     hardware_buffer::~hardware_buffer() {}
 
-    void *hardware_buffer::map()
+    void* hardware_buffer::map()
     {
         if (m_map_count == 0) {
             m_mapped_memory = on_map();

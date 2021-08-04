@@ -7,7 +7,7 @@ namespace mge {
 
     struct color_name
     {
-        const char *n;
+        const char* n;
         float       r;
         float       g;
         float       b;
@@ -16,6 +16,6 @@ namespace mge {
     /**
      * Find color by name in stored names.
      */
-    const color_name *find_color(const char *name);
+    const color_name* find_color(const char* name);
 
 } // namespace mge

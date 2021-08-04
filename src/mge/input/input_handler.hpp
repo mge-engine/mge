@@ -27,8 +27,7 @@ namespace mge {
          * Handler function for mouse actions.
          */
         using mouse_action_handler =
-            std::function<void(uint32_t button, mouse_action action,
-                               const modifier &m, uint32_t x, uint32_t y)>;
+            std::function<void(uint32_t button, mouse_action action, const modifier& m, uint32_t x, uint32_t y)>;
         /**
          * Handler function for mouse movement.
          */
@@ -37,8 +36,7 @@ namespace mge {
         /**
          * Handler function for keyboard actions.
          */
-        using key_action_handler =
-            std::function<void(key k, key_action action, const modifier &m)>;
+        using key_action_handler = std::function<void(key k, key_action action, const modifier& m)>;
 
         /**
          * Handler function for character input.
@@ -61,24 +59,24 @@ namespace mge {
          * Sets the handler used to dispatch mouse actions.
          * @param handler mouse action handler
          */
-        void set_mouse_action_handler(const mouse_action_handler &handler);
+        void set_mouse_action_handler(const mouse_action_handler& handler);
         /**
          * Sets the handler used to dispatch mouse movement.
          * @param handler mouse movement handler
          */
-        void set_mouse_move_handler(const mouse_move_handler &handler);
+        void set_mouse_move_handler(const mouse_move_handler& handler);
 
         /**
          * Sets the handler used to dispatch key actions.
          * @param handler key action handler
          */
-        void set_key_action_handler(const key_action_handler &handler);
+        void set_key_action_handler(const key_action_handler& handler);
 
         /**
          * Sets the handler used to dispatch character input.
          * @param handler character input handler
          */
-        void set_character_handler(const character_handler &handler);
+        void set_character_handler(const character_handler& handler);
 
         /**
          * @brief Clears the mouse action handler.
@@ -102,14 +100,14 @@ namespace mge {
          *
          * @return current input state
          */
-        const input_state &state() const;
+        const input_state& state() const;
 
         /**
          * @brief Access the currently pressed modifier.
          *
          * @return current modifier
          */
-        const modifier &current_modifier() const;
+        const modifier& current_modifier() const;
 
     protected:
         /**
@@ -120,8 +118,7 @@ namespace mge {
          * @param x mouse x position
          * @param y mouse y position
          */
-        void on_mouse_action(uint32_t button, mouse_action action, uint32_t x,
-                             uint32_t y);
+        void on_mouse_action(uint32_t button, mouse_action action, uint32_t x, uint32_t y);
         /**
          * @brief Method to be called when a key action happens.
          *

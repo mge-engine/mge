@@ -13,11 +13,10 @@ namespace mge {
      */
     enum class MGEINPUT_EXPORT key_action
     {
-        PRESS   = 0,
+        PRESS = 0,
         RELEASE = 1,
-        REPEAT  = 2
+        REPEAT = 2
     };
 
-    MGEINPUT_EXPORT std::ostream &operator<<(std::ostream &    os,
-                                             const key_action &a);
+    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const key_action& a);
 } // namespace mge

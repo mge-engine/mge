@@ -25,7 +25,7 @@ namespace mge {
          *
          * @param path path of module shared library
          */
-        module(const std::filesystem::path &path);
+        module(const std::filesystem::path& path);
 
         /**
          * @brief Destructor.
@@ -49,7 +49,7 @@ namespace mge {
          *
          * @return reference to library
          */
-        const shared_library_ref &library() const;
+        const shared_library_ref& library() const;
 
     private:
         shared_library_ref m_library;

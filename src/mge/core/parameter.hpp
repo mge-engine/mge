@@ -30,8 +30,7 @@ namespace mge {
          * @param name          parameter name
          * @param description   parameter description
          */
-        basic_parameter(std::string_view section, std::string_view name,
-                        std::string_view description);
+        basic_parameter(std::string_view section, std::string_view name, std::string_view description);
         virtual ~basic_parameter();
 
         /**
@@ -95,7 +94,7 @@ namespace mge {
          *
          * @param handler new change handler
          */
-        void set_change_handler(const change_callback &handler);
+        void set_change_handler(const change_callback& handler);
 
     private:
         std::string_view m_section;
@@ -125,10 +124,8 @@ namespace mge {
          * @param description parameter description
          */
         template <size_t SECTION_N, size_t NAME_N, size_t DESCRIPTION_N>
-        parameter(const char (&section)[SECTION_N], const char (&name)[NAME_N],
-                  const char (&description)[DESCRIPTION_N])
-            : basic_parameter(make_string_view(section), make_string_view(name),
-                              make_string_view(description))
+        parameter(const char (&section)[SECTION_N], const char (&name)[NAME_N], const char (&description)[DESCRIPTION_N])
+            : basic_parameter(make_string_view(section), make_string_view(name), make_string_view(description))
         {}
 
         /**
@@ -138,8 +135,7 @@ namespace mge {
          * @param name parameter name
          * @param description parameter description
          */
-        parameter(std::string_view section, std::string_view name,
-                  std::string_view description)
+        parameter(std::string_view section, std::string_view name, std::string_view description)
             : basic_parameter(section, name, description)
         {}
 
@@ -160,7 +156,7 @@ namespace mge {
          * @param default_value default value
          * @return config value or default value if not set
          */
-        typename T get(const T &default_value) const
+        typename T get(const T& default_value) const
         {
             if (has_value()) {
                 return get();
@@ -171,7 +167,7 @@ namespace mge {
 
         void from_string(std::string_view value) override
         {
-            T val   = boost::lexical_cast<T>(value);
+            T val = boost::lexical_cast<T>(value);
             m_value = val;
         }
 
@@ -196,7 +192,7 @@ namespace mge {
  * @param NAME parameter name
  * @param DESCRIPTION parameter description
  */
-#define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                 \
+#define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                                                                 \
     ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
 
 /**

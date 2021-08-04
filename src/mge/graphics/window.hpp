@@ -16,9 +16,7 @@ namespace mge {
     /**
      * @brief A window.
      */
-    class MGEGRAPHICS_EXPORT window
-        : public std::enable_shared_from_this<window>,
-          public input_handler
+    class MGEGRAPHICS_EXPORT window : public std::enable_shared_from_this<window>, public input_handler
     {
     protected:
         /**
@@ -26,7 +24,7 @@ namespace mge {
          * @param extent window size
          * @param options   window options
          */
-        window(const extent &extent, const window_options &options);
+        window(const extent& extent, const window_options& options);
 
     public:
         /** @brief Listener type for close action.
@@ -76,21 +74,21 @@ namespace mge {
          *
          * @return render context
          */
-        mge::render_context &render_context();
+        mge::render_context& render_context();
 
         /**
          * @brief Access render context of window.
          *
          * @return render context
          */
-        const mge::render_context &render_context() const;
+        const mge::render_context& render_context() const;
 
         /**
          * @brief Set the close listener.
          *
          * @param listener callback to call when window is closed
          */
-        void set_close_listener(const close_listener &listener);
+        void set_close_listener(const close_listener& listener);
 
         /**
          * @brief Clears the currently set close listener.
@@ -106,7 +104,7 @@ namespace mge {
          * @param listener callback to call when window is requested to be
          * closed
          */
-        void set_closing_listener(const closing_listener &listener);
+        void set_closing_listener(const closing_listener& listener);
 
         /**
          * @brief Clears the currently set closing listener.

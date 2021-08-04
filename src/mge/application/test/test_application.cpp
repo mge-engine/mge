@@ -10,7 +10,7 @@ using namespace std::string_view_literals;
 
 TEST(application, argc_argv)
 {
-    const char *app_argv[] = {"test_application", "foo", "bar"};
+    const char* app_argv[] = {"test_application", "foo", "bar"};
 
     mge::application app;
     app.initialize(3, app_argv);
@@ -20,7 +20,7 @@ TEST(application, argc_argv)
 
 TEST(application, argv_throws_for_invalid_index)
 {
-    const char *app_argv[] = {"test_application", "foo", "bar"};
+    const char* app_argv[] = {"test_application", "foo", "bar"};
 
     mge::application app;
     app.initialize(3, app_argv);
@@ -40,7 +40,7 @@ MGE_REGISTER_IMPLEMENTATION(foobar_app, mge::application, foobar);
 
 TEST(application, main)
 {
-    const char *app_argv[] = {"foobar", "foo", "bar"};
+    const char* app_argv[] = {"foobar", "foo", "bar"};
 
     mge::application::main("foobar"sv, 3, app_argv);
 }

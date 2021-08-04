@@ -22,7 +22,7 @@ namespace mge {
          * @param stream target stream
          * @param r      trace record
          */
-        virtual void format(std::ostream &stream, const trace_record &r) = 0;
+        virtual void format(std::ostream& stream, const trace_record& r) = 0;
     };
 
 } // namespace mge

@@ -28,25 +28,25 @@ namespace mge {
          * @brief keyboard state
          * @return current keyboard state
          */
-        keyboard_state &keyboard();
+        keyboard_state& keyboard();
 
         /**
          * @brief keyboard state
          * @return current keyboard state
          */
-        const keyboard_state &keyboard() const;
+        const keyboard_state& keyboard() const;
 
         /**
          * @brief mouse state
          * @return current mouse state
          */
-        mouse_state &mouse();
+        mouse_state& mouse();
 
         /**
          * @brief mouse state
          * @return current mouse state
          */
-        const mouse_state &mouse() const;
+        const mouse_state& mouse() const;
 
     private:
         keyboard_state m_keyboard;

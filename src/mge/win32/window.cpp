@@ -6,7 +6,7 @@
 #include "mge/core/zero_memory.hpp"
 #include <windowsx.h>
 
-#define MGE_CLASS_NAME  ((LPCWSTR)L"mge")
+#define MGE_CLASS_NAME ((LPCWSTR)L"mge")
 #define WM_WANT_DESTROY (WM_USER + 1)
 
 namespace mge {
@@ -18,24 +18,24 @@ namespace mge {
 
     namespace win32 {
 
-        window::window(const mge::extent &extent, const window_options &options)
-            : mge::window(extent, options), m_hwnd(0), m_quit_listener(0),
-              m_process_input_listener(0)
+        window::window(const mge::extent& extent, const window_options& options)
+            : mge::window(extent, options)
+            , m_hwnd(0)
+            , m_quit_listener(0)
+            , m_process_input_listener(0)
         {
             create_window_class();
             create_window();
-            m_quit_listener =
-                mge::application::instance()->add_quit_listener([=, this] {
-                    if (m_hwnd) {
-                        PostMessage(m_hwnd, WM_WANT_DESTROY, 0, 0);
-                    }
-                });
+            m_quit_listener = mge::application::instance()->add_quit_listener([=, this] {
+                if (m_hwnd) {
+                    PostMessage(m_hwnd, WM_WANT_DESTROY, 0, 0);
+                }
+            });
         }
 
         window::~window()
         {
-            mge::application::instance()->remove_input_listener(
-                m_process_input_listener);
+            mge::application::instance()->remove_input_listener(m_process_input_listener);
             mge::application::instance()->remove_quit_listener(m_quit_listener);
         }
 
@@ -52,13 +52,13 @@ namespace mge {
             WNDCLASSEXW window_class;
             HINSTANCE   module_handle;
 
-            module_handle              = GetModuleHandle(NULL);
-            window_class.cbSize        = sizeof(WNDCLASSEX);
-            window_class.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-            window_class.lpfnWndProc   = (WNDPROC)wndproc;
-            window_class.cbWndExtra    = sizeof(void *);
-            window_class.hInstance     = module_handle;
-            window_class.hCursor       = LoadCursor(NULL, IDC_ARROW);
+            module_handle = GetModuleHandle(NULL);
+            window_class.cbSize = sizeof(WNDCLASSEX);
+            window_class.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+            window_class.lpfnWndProc = (WNDPROC)wndproc;
+            window_class.cbWndExtra = sizeof(void*);
+            window_class.hInstance = module_handle;
+            window_class.hCursor = LoadCursor(NULL, IDC_ARROW);
             window_class.lpszClassName = MGE_CLASS_NAME;
             window_class.hIcon = LoadIcon(module_handle, IDI_APPLICATION);
             window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
@@ -73,27 +73,31 @@ namespace mge {
         {
             MGE_DEBUG_TRACE(WIN32) << "Create window";
 
-            RECT window_rect = {0, 0, (LONG)extent().width,
-                                (LONG)extent().height};
+            RECT window_rect = {0, 0, (LONG)extent().width, (LONG)extent().height};
 
             DWORD style, exstyle;
 
-            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU |
-                    WS_MINIMIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
             exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
             AdjustWindowRectEx(&window_rect, style, 0, exstyle);
 
-            m_hwnd = CreateWindowExW(exstyle, MGE_CLASS_NAME, L"", style, 0, 0,
+            m_hwnd = CreateWindowExW(exstyle,
+                                     MGE_CLASS_NAME,
+                                     L"",
+                                     style,
+                                     0,
+                                     0,
                                      window_rect.right - window_rect.left,
-                                     window_rect.bottom - window_rect.top, NULL,
-                                     NULL, GetModuleHandle(NULL), this);
+                                     window_rect.bottom - window_rect.top,
+                                     NULL,
+                                     NULL,
+                                     GetModuleHandle(NULL),
+                                     this);
 
             MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
 
-            m_process_input_listener =
-                application::instance()->add_input_listener(
-                    [&]() { this->process_input(); });
+            m_process_input_listener = application::instance()->add_input_listener([&]() { this->process_input(); });
         }
 
         void window::process_input()
@@ -129,12 +133,10 @@ namespace mge {
             if (wparam == VK_PROCESSKEY) {
                 return mge::key::INVALID;
             }
-            if (wparam >= (WPARAM)mge::key::ZERO &&
-                wparam <= (WPARAM)mge::key::NINE) {
+            if (wparam >= (WPARAM)mge::key::ZERO && wparam <= (WPARAM)mge::key::NINE) {
                 return (mge::key)wparam;
             }
-            if (wparam >= (WPARAM)mge::key::A &&
-                wparam <= (WPARAM)mge::key::Z) {
+            if (wparam >= (WPARAM)mge::key::A && wparam <= (WPARAM)mge::key::Z) {
                 return (mge::key)wparam;
             }
             switch (wparam) {
@@ -239,14 +241,13 @@ namespace mge {
             return mge::key::INVALID;
         }
 
-        LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam,
-                                         LPARAM lparam)
+        LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
         {
-            window *w = (window *)GetWindowLongPtr(hwnd, 0);
+            window* w = (window*)GetWindowLongPtr(hwnd, 0);
             if (w == nullptr) {
                 switch (umsg) {
                 case WM_NCCREATE: {
-                    CREATESTRUCT *cs = (CREATESTRUCT *)lparam;
+                    CREATESTRUCT* cs = (CREATESTRUCT*)lparam;
                     SetWindowLongPtr(hwnd, 0, (LONG_PTR)cs->lpCreateParams);
                     break;
                 }
@@ -260,8 +261,7 @@ namespace mge {
                     w->on_close();
                     break;
                 case WM_WANT_DESTROY:
-                    MGE_DEBUG_TRACE(WIN32)
-                        << "Destroy of window " << hwnd << "requested";
+                    MGE_DEBUG_TRACE(WIN32) << "Destroy of window " << hwnd << "requested";
                     w->m_hwnd = 0;
                     DestroyWindow(hwnd);
                     break;
@@ -282,68 +282,55 @@ namespace mge {
                     break;
                 }
                 case WM_LBUTTONDOWN:
-                    w->on_mouse_action(1, mge::mouse_action::PRESS,
-                                       GET_X_LPARAM(lparam),
-                                       GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(1, mge::mouse_action::PRESS, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
                     break;
                 case WM_LBUTTONUP:
-                    w->on_mouse_action(1, mge::mouse_action::RELEASE,
-                                       GET_X_LPARAM(lparam),
-                                       GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(1, mge::mouse_action::RELEASE, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
                     break;
                 case WM_LBUTTONDBLCLK:
-                    w->on_mouse_action(
-                        1, mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
-                        GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(1,
+                                       mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONDOWN:
-                    w->on_mouse_action(2, mge::mouse_action::PRESS,
-                                       GET_X_LPARAM(lparam),
-                                       GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(2, mge::mouse_action::PRESS, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONUP:
-                    w->on_mouse_action(2, mge::mouse_action::RELEASE,
+                    w->on_mouse_action(2, mge::mouse_action::RELEASE, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    break;
+                case WM_RBUTTONDBLCLK:
+                    w->on_mouse_action(2,
+                                       mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
                                        GET_X_LPARAM(lparam),
                                        GET_Y_LPARAM(lparam));
                     break;
-                case WM_RBUTTONDBLCLK:
-                    w->on_mouse_action(
-                        2, mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
-                        GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
-                    break;
                 case WM_MOUSEMOVE:
-                    w->on_mouse_move(GET_X_LPARAM(lparam),
-                                     GET_Y_LPARAM(lparam));
+                    w->on_mouse_move(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
                     break;
                 case WM_CHAR:
                     if (wparam == 0x0D || wparam == 0x09 || wparam == 0x08) {
                         switch (wparam) {
                         case 0x0D:
-                            w->on_key_action(mge::key::ENTER,
-                                             mge::key_action::PRESS);
+                            w->on_key_action(mge::key::ENTER, mge::key_action::PRESS);
                             break;
                         case 0x08:
-                            w->on_key_action(mge::key::BACKSPACE,
-                                             mge::key_action::PRESS);
+                            w->on_key_action(mge::key::BACKSPACE, mge::key_action::PRESS);
                             break;
                         case 0x09:
-                            w->on_key_action(mge::key::TAB,
-                                             mge::key_action::PRESS);
+                            w->on_key_action(mge::key::TAB, mge::key_action::PRESS);
                             break;
                         }
                         w->on_character((uint32_t)wparam);
                         switch (wparam) {
                         case 0x0D:
-                            w->on_key_action(mge::key::ENTER,
-                                             mge::key_action::RELEASE);
+                            w->on_key_action(mge::key::ENTER, mge::key_action::RELEASE);
                             break;
                         case 0x08:
-                            w->on_key_action(mge::key::BACKSPACE,
-                                             mge::key_action::RELEASE);
+                            w->on_key_action(mge::key::BACKSPACE, mge::key_action::RELEASE);
                             break;
                         case 0x09:
-                            w->on_key_action(mge::key::TAB,
-                                             mge::key_action::RELEASE);
+                            w->on_key_action(mge::key::TAB, mge::key_action::RELEASE);
                             break;
                         }
                     } else {

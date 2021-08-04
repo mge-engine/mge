@@ -37,14 +37,14 @@ namespace mge {
          *
          * @param name library file name
          */
-        shared_library(const std::filesystem::path &name);
+        shared_library(const std::filesystem::path& name);
 
         /**
          * @brief File name.
          *
          * @return file name of loaded library
          */
-        const std::filesystem::path &name() const { return m_name; }
+        const std::filesystem::path& name() const { return m_name; }
 
         /**
          * @brief Resolve a symbol in a shared library.
@@ -52,7 +52,7 @@ namespace mge {
          * @param name symbol name
          * @return resolved symbol or null pointer if nothing found
          */
-        void *symbol(const char *name) const;
+        void* symbol(const char* name) const;
 
         /**
          * @brief Resolve a symbol in a shared library.
@@ -60,7 +60,7 @@ namespace mge {
          * @param name symbol name
          * @return resolved symbol or null pointer if nothing found
          */
-        void *symbol(const std::string &name) const;
+        void* symbol(const std::string& name) const;
 
     private:
         void load();

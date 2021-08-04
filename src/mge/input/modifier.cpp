@@ -5,7 +5,7 @@
 #include <iostream>
 
 namespace mge {
-    std::ostream &operator<<(std::ostream &os, const modifier_value &v)
+    std::ostream& operator<<(std::ostream& os, const modifier_value& v)
     {
         switch (v) {
         case modifier_value::ALT:

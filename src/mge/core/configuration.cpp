@@ -26,15 +26,17 @@ namespace mge {
     class configuration_instance
     {
     public:
-        configuration_instance() : m_loaded(false), m_update_needed(true) {}
+        configuration_instance()
+            : m_loaded(false)
+            , m_update_needed(true)
+        {}
 
         ~configuration_instance() = default;
 
-        void register_parameter(basic_parameter &p);
-        void unregister_parameter(basic_parameter &p);
+        void register_parameter(basic_parameter& p);
+        void unregister_parameter(basic_parameter& p);
 
-        basic_parameter &find_parameter(std::string_view section,
-                                        std::string_view name);
+        basic_parameter& find_parameter(std::string_view section, std::string_view name);
 
         void load(bool allow_missing);
         void store();
@@ -43,11 +45,11 @@ namespace mge {
     private:
         fs::path find_config_file();
         void     set_registered_parameters();
-        void     fetch_parameter(basic_parameter &p);
-        void     write_parameter(basic_parameter &p);
+        void     fetch_parameter(basic_parameter& p);
+        void     write_parameter(basic_parameter& p);
 
-        using parameter_map = std::map<std::string_view, basic_parameter *>;
-        using section_map   = std::map<std::string_view, parameter_map>;
+        using parameter_map = std::map<std::string_view, basic_parameter*>;
+        using section_map = std::map<std::string_view, parameter_map>;
 
         section_map m_sections;
         pt::ptree   m_raw_settings;
@@ -55,19 +57,15 @@ namespace mge {
         bool        m_update_needed;
     };
 
-    void configuration_instance::register_parameter(basic_parameter &p)
+    void configuration_instance::register_parameter(basic_parameter& p)
     {
-        MGE_DEBUG_TRACE(CORE)
-            << "Register parameter " << p.section() << "/" << p.name();
+        MGE_DEBUG_TRACE(CORE) << "Register parameter " << p.section() << "/" << p.name();
         auto pmap_it = m_sections.find(p.section());
         if (pmap_it != m_sections.end()) {
             auto p_it = pmap_it->second.find(p.name());
             if (p_it != pmap_it->second.end()) {
-                MGE_ERROR_TRACE(CORE) << "Parameter " << p.section() << "/"
-                                      << p.name() << " is already registered";
-                MGE_THROW(mge::duplicate_element)
-                    << "Parameter " << p.section() << "/" << p.name()
-                    << " already registered";
+                MGE_ERROR_TRACE(CORE) << "Parameter " << p.section() << "/" << p.name() << " is already registered";
+                MGE_THROW(mge::duplicate_element) << "Parameter " << p.section() << "/" << p.name() << " already registered";
             } else {
                 pmap_it->second[p.name()] = &p;
             }
@@ -77,7 +75,7 @@ namespace mge {
         m_update_needed = true;
     }
 
-    void configuration_instance::unregister_parameter(basic_parameter &p)
+    void configuration_instance::unregister_parameter(basic_parameter& p)
     {
         auto pmap_it = m_sections.find(p.section());
         if (pmap_it != m_sections.end()) {
@@ -88,9 +86,7 @@ namespace mge {
         }
     }
 
-    basic_parameter &
-    configuration_instance::find_parameter(std::string_view section,
-                                           std::string_view name)
+    basic_parameter& configuration_instance::find_parameter(std::string_view section, std::string_view name)
     {
         if (m_update_needed && m_loaded) {
             set_registered_parameters();
@@ -103,19 +99,18 @@ namespace mge {
                 return *p_it->second;
             }
         }
-        MGE_THROW(mge::runtime_exception)
-            << "Unknown parameter " << section << "/" << name;
+        MGE_THROW(mge::runtime_exception) << "Unknown parameter " << section << "/" << name;
     }
 
     fs::path configuration_instance::find_config_file()
     {
-        const char *suffixes[] = {"json", "ini", "xml", "info", 0};
-        auto        base_name  = executable_name();
+        const char* suffixes[] = {"json", "ini", "xml", "info", 0};
+        auto        base_name = executable_name();
 
         if (fs::is_directory("config")) {
             fs::path dir("config");
 
-            for (const char **suffix = suffixes; *suffix; ++suffix) {
+            for (const char** suffix = suffixes; *suffix; ++suffix) {
                 std::string fname(base_name);
                 fname += ".";
                 fname += *suffix;
@@ -125,7 +120,7 @@ namespace mge {
                 }
             }
         }
-        for (const char **suffix = suffixes; *suffix; ++suffix) {
+        for (const char** suffix = suffixes; *suffix; ++suffix) {
             std::string fname(base_name);
             fname += ".";
             fname += *suffix;
@@ -161,14 +156,14 @@ namespace mge {
 
     void configuration_instance::set_registered_parameters()
     {
-        for (auto &s : m_sections) {
-            for (auto &p : s.second) {
+        for (auto& s : m_sections) {
+            for (auto& p : s.second) {
                 fetch_parameter(*p.second);
             }
         }
     }
 
-    void configuration_instance::fetch_parameter(basic_parameter &p)
+    void configuration_instance::fetch_parameter(basic_parameter& p)
     {
         pt::ptree::path_type parameter_path;
         parameter_path /= std::string(p.section().begin(), p.section().end());
@@ -176,23 +171,20 @@ namespace mge {
 
         auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
         if (ov.has_value()) {
-            MGE_DEBUG_TRACE(CORE) << "Set parameter " << p.section() << "/"
-                                  << p.name() << " to " << ov.get();
+            MGE_DEBUG_TRACE(CORE) << "Set parameter " << p.section() << "/" << p.name() << " to " << ov.get();
             p.from_string(ov.get());
         } else {
-            MGE_DEBUG_TRACE(CORE)
-                << "Reset parameter " << p.section() << "/" << p.name();
+            MGE_DEBUG_TRACE(CORE) << "Reset parameter " << p.section() << "/" << p.name();
             p.reset();
         }
-        MGE_DEBUG_TRACE(CORE)
-            << "Notify change of parameter " << p.section() << "/" << p.name();
+        MGE_DEBUG_TRACE(CORE) << "Notify change of parameter " << p.section() << "/" << p.name();
         p.notify_change();
     }
 
     void configuration_instance::store()
     {
-        for (auto &s : m_sections) {
-            for (auto &p : s.second) {
+        for (auto& s : m_sections) {
+            for (auto& p : s.second) {
                 write_parameter(*p.second);
             }
         }
@@ -216,7 +208,7 @@ namespace mge {
         }
     }
 
-    void configuration_instance::write_parameter(basic_parameter &p)
+    void configuration_instance::write_parameter(basic_parameter& p)
     {
         pt::ptree::path_type parameter_path;
         parameter_path /= std::string(p.section().begin(), p.section().end());
@@ -226,12 +218,10 @@ namespace mge {
         if (p.has_value()) {
             m_raw_settings.put(parameter_path, p.to_string());
         } else {
-            auto section_it = m_raw_settings.find(
-                std::string(p.section().begin(), p.section().end()));
+            auto section_it = m_raw_settings.find(std::string(p.section().begin(), p.section().end()));
             if (section_it != m_raw_settings.not_found()) {
-                auto &value_tree = section_it->second;
-                auto  value_it   = value_tree.find(
-                    std::string(p.name().begin(), p.name().end()));
+                auto& value_tree = section_it->second;
+                auto  value_it = value_tree.find(std::string(p.name().begin(), p.name().end()));
                 if (value_it != value_tree.not_found()) {
                     value_tree.erase(value_tree.to_iterator(value_it));
                 }
@@ -241,26 +231,16 @@ namespace mge {
 
     static singleton<configuration_instance> s_configuration_instance;
 
-    void configuration::register_parameter(basic_parameter &p)
-    {
-        s_configuration_instance->register_parameter(p);
-    }
+    void configuration::register_parameter(basic_parameter& p) { s_configuration_instance->register_parameter(p); }
 
-    void configuration::unregister_parameter(basic_parameter &p)
-    {
-        s_configuration_instance->unregister_parameter(p);
-    }
+    void configuration::unregister_parameter(basic_parameter& p) { s_configuration_instance->unregister_parameter(p); }
 
-    basic_parameter &configuration::find_parameter(std::string_view section,
-                                                   std::string_view name)
+    basic_parameter& configuration::find_parameter(std::string_view section, std::string_view name)
     {
         return s_configuration_instance->find_parameter(section, name);
     }
 
-    void configuration::load(bool allow_missing)
-    {
-        s_configuration_instance->load(allow_missing);
-    }
+    void configuration::load(bool allow_missing) { s_configuration_instance->load(allow_missing); }
 
     void configuration::store() { s_configuration_instance->store(); }
 

@@ -13,8 +13,7 @@ namespace qi = boost::spirit::qi;
 namespace mge {
     semantic_version::semantic_version() {}
 
-    semantic_version::semantic_version(uint32_t major, uint32_t minor,
-                                       uint32_t patch)
+    semantic_version::semantic_version(uint32_t major, uint32_t minor, uint32_t patch)
         : m_data(major, minor, patch)
     {}
 
@@ -25,31 +24,29 @@ namespace mge {
         auto set_minor = [&](unsigned int val) { std::get<1>(m_data) = val; };
         auto set_patch = [&](unsigned int val) { std::get<2>(m_data) = val; };
 
-        if (!qi::parse(version_str.begin(), version_str.end(),
-                       qi::uint_[set_major] >>
-                           (-('.' >> qi::uint_[set_minor] >>
-                              (-('.' >> qi::uint_[set_patch])))) >>
+        if (!qi::parse(version_str.begin(),
+                       version_str.end(),
+                       qi::uint_[set_major] >> (-('.' >> qi::uint_[set_minor] >> (-('.' >> qi::uint_[set_patch])))) >>
                            qi::eoi)) {
-            MGE_THROW(illegal_argument)
-                << "Invalid version string " << version_str;
+            MGE_THROW(illegal_argument) << "Invalid version string " << version_str;
         }
     }
 
-    semantic_version::semantic_version(const semantic_version &v)
+    semantic_version::semantic_version(const semantic_version& v)
         : m_data(v.m_data)
     {}
 
-    semantic_version::semantic_version(semantic_version &&v)
+    semantic_version::semantic_version(semantic_version&& v)
         : m_data(std::move(v.m_data))
     {}
 
-    semantic_version &semantic_version::operator=(const semantic_version &v)
+    semantic_version& semantic_version::operator=(const semantic_version& v)
     {
         m_data = v.m_data;
         return *this;
     }
 
-    semantic_version &semantic_version::operator=(semantic_version &&v)
+    semantic_version& semantic_version::operator=(semantic_version&& v)
     {
         m_data = std::move(v.m_data);
         return *this;
@@ -61,32 +58,17 @@ namespace mge {
         return empty_data == m_data;
     }
 
-    bool semantic_version::operator<(const semantic_version &v) const noexcept
-    {
-        return m_data < v.m_data;
-    }
+    bool semantic_version::operator<(const semantic_version& v) const noexcept { return m_data < v.m_data; }
 
-    bool semantic_version::operator==(const semantic_version &v) const noexcept
-    {
-        return m_data == v.m_data;
-    }
+    bool semantic_version::operator==(const semantic_version& v) const noexcept { return m_data == v.m_data; }
 
-    uint32_t semantic_version::major() const noexcept
-    {
-        return std::get<0>(m_data);
-    }
+    uint32_t semantic_version::major() const noexcept { return std::get<0>(m_data); }
 
-    uint32_t semantic_version::minor() const noexcept
-    {
-        return std::get<1>(m_data);
-    }
+    uint32_t semantic_version::minor() const noexcept { return std::get<1>(m_data); }
 
-    uint32_t semantic_version::patch() const noexcept
-    {
-        return std::get<2>(m_data);
-    }
+    uint32_t semantic_version::patch() const noexcept { return std::get<2>(m_data); }
 
-    std::ostream &operator<<(std::ostream &os, const semantic_version &v)
+    std::ostream& operator<<(std::ostream& os, const semantic_version& v)
     {
         if (v.patch() == 0) {
             if (v.minor() == 0) {

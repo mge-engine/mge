@@ -13,20 +13,20 @@ namespace mge {
         if (it != m_values.end()) {
             return it->first;
         } else {
-            auto value = std::make_shared<std::string>(str.begin(), str.end());
+            auto             value = std::make_shared<std::string>(str.begin(), str.end());
             std::string_view key(value->begin(), value->end());
             m_values.emplace(key, std::move(value));
             return key;
         }
     }
 
-    std::string_view string_pool::get(const std::string &str)
+    std::string_view string_pool::get(const std::string& str)
     {
         std::string_view str_sv(str.begin(), str.end());
         return get(str_sv);
     }
 
-    std::string_view string_pool::get(const char *str)
+    std::string_view string_pool::get(const char* str)
     {
         if (!str) {
             throw std::runtime_error("Unexpected null pointer");

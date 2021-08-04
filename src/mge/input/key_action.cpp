@@ -6,7 +6,7 @@
 
 namespace mge {
 
-    std::ostream &operator<<(std::ostream &os, const key_action &a)
+    std::ostream& operator<<(std::ostream& os, const key_action& a)
     {
         switch (a) {
         case key_action::PRESS:

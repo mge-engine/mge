@@ -14,7 +14,7 @@ namespace mge {
         class window : public mge::window
         {
         public:
-            window(const mge::extent &extent, const window_options &options);
+            window(const mge::extent& extent, const window_options& options);
             ~window();
 
             HWND hwnd() const noexcept { return m_hwnd; }
@@ -24,8 +24,7 @@ namespace mge {
             void on_hide() override;
 
         private:
-            static LRESULT CALLBACK wndproc(HWND hwnd, UINT umsg, WPARAM wparam,
-                                            LPARAM lparam);
+            static LRESULT CALLBACK wndproc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
 
             void        create_window();
             static void create_window_class();

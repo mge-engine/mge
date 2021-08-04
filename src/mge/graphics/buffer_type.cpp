@@ -6,7 +6,7 @@
 
 namespace mge {
 
-    std::ostream &operator<<(std::ostream &os, const buffer_type &t)
+    std::ostream& operator<<(std::ostream& os, const buffer_type& t)
     {
         switch (t) {
         case buffer_type::VERTEX:

@@ -125,5 +125,5 @@ namespace mge {
         KEY_MAX //!< maximum possible key
     };
 
-    MGEINPUT_EXPORT std::ostream &operator<<(std::ostream &os, const key &k);
+    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const key& k);
 } // namespace mge

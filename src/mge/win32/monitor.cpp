@@ -18,8 +18,7 @@ namespace mge {
 
     namespace win32 {
 
-        monitor::monitor(const DISPLAY_DEVICEW &adapter_device,
-                         const DISPLAY_DEVICEW &display_device, bool primary)
+        monitor::monitor(const DISPLAY_DEVICEW& adapter_device, const DISPLAY_DEVICEW& display_device, bool primary)
             : m_primary(primary)
         {
             copy_struct(m_adapter_device, adapter_device);
@@ -29,10 +28,7 @@ namespace mge {
             m_name = mge::to_utf8(m_display_device.DeviceName);
         }
 
-        std::string_view monitor::name() const
-        {
-            return std::string_view(m_name.begin(), m_name.end());
-        }
+        std::string_view monitor::name() const { return std::string_view(m_name.begin(), m_name.end()); }
 
         bool monitor::primary() const { return m_primary; }
 
@@ -40,10 +36,7 @@ namespace mge {
 
         video_mode monitor::current_mode() const { return m_current_mode; }
 
-        monitor::video_mode_collection monitor::supported_modes() const
-        {
-            return m_video_modes;
-        }
+        monitor::video_mode_collection monitor::supported_modes() const { return m_video_modes; }
 
         void monitor::compute_physical_size()
         {
@@ -51,11 +44,10 @@ namespace mge {
             dc = CreateDCW(L"DISPLAY", m_adapter_device.DeviceName, NULL, NULL);
             if (!dc) {
                 MGE_THROW(mge::system_error)
-                    << "CreateDC call for device '"
-                    << mge::to_utf8(m_adapter_device.DeviceName) << "' failed";
+                    << "CreateDC call for device '" << mge::to_utf8(m_adapter_device.DeviceName) << "' failed";
             }
 
-            m_physical_size.width  = (uint32_t)GetDeviceCaps(dc, HORZSIZE);
+            m_physical_size.width = (uint32_t)GetDeviceCaps(dc, HORZSIZE);
             m_physical_size.height = (uint32_t)GetDeviceCaps(dc, VERTSIZE);
             DeleteDC(dc);
         }
@@ -66,22 +58,18 @@ namespace mge {
                 DEVMODEW dm;
                 mge::zero_memory(dm);
                 dm.dmSize = sizeof(DEVMODEW);
-                if (!EnumDisplaySettingsW(m_adapter_device.DeviceName, i,
-                                          &dm)) {
+                if (!EnumDisplaySettingsW(m_adapter_device.DeviceName, i, &dm)) {
                     break;
                 }
 
-                m_video_modes.emplace_back(dm.dmPelsWidth, dm.dmPelsHeight,
-                                           dm.dmDisplayFrequency);
+                m_video_modes.emplace_back(dm.dmPelsWidth, dm.dmPelsHeight, dm.dmDisplayFrequency);
             }
 
             DEVMODEW dm;
             mge::zero_memory(dm);
             dm.dmSize = sizeof(DEVMODEW);
-            if (EnumDisplaySettingsW(m_adapter_device.DeviceName,
-                                     ENUM_CURRENT_SETTINGS, &dm)) {
-                m_current_mode = video_mode(dm.dmPelsWidth, dm.dmPelsHeight,
-                                            dm.dmDisplayFrequency);
+            if (EnumDisplaySettingsW(m_adapter_device.DeviceName, ENUM_CURRENT_SETTINGS, &dm)) {
+                m_current_mode = video_mode(dm.dmPelsWidth, dm.dmPelsHeight, dm.dmDisplayFrequency);
             } else {
                 // handle error;
             }
@@ -95,25 +83,19 @@ namespace mge {
             for (DWORD adapter_index = 0;; ++adapter_index) {
                 mge::zero_memory(adapter_device);
                 adapter_device.cb = sizeof(adapter_device);
-                if (!EnumDisplayDevicesW(nullptr, adapter_index,
-                                         &adapter_device, 0)) {
+                if (!EnumDisplayDevicesW(nullptr, adapter_index, &adapter_device, 0)) {
                     break;
                 }
-                MGE_DEBUG_TRACE(WIN32)
-                    << "Found adapter: "
-                    << mge::to_utf8(adapter_device.DeviceName) << " - "
-                    << mge::to_utf8(adapter_device.DeviceString);
+                MGE_DEBUG_TRACE(WIN32) << "Found adapter: " << mge::to_utf8(adapter_device.DeviceName) << " - "
+                                       << mge::to_utf8(adapter_device.DeviceString);
                 DISPLAY_DEVICEW display_device;
                 for (DWORD display_index = 0;; ++display_index) {
                     mge::zero_memory(display_device);
                     display_device.cb = sizeof(display_device);
-                    if (!EnumDisplayDevicesW(adapter_device.DeviceName,
-                                             display_index, &display_device,
-                                             0)) {
+                    if (!EnumDisplayDevicesW(adapter_device.DeviceName, display_index, &display_device, 0)) {
                         break;
                     }
-                    result.push_back(std::make_shared<monitor>(
-                        adapter_device, display_device, result.empty()));
+                    result.push_back(std::make_shared<monitor>(adapter_device, display_device, result.empty()));
                 }
             }
 

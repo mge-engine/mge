@@ -8,16 +8,16 @@ namespace mge {
     class simple_loop : public loop
     {
     public:
-        using clock       = std::chrono::high_resolution_clock;
+        using clock = std::chrono::high_resolution_clock;
         using double_secs = std::chrono::duration<double>;
 
-        simple_loop()  = default;
+        simple_loop() = default;
         ~simple_loop() = default;
 
-        void run(loop_target &t) override
+        void run(loop_target& t) override
         {
             auto     before = clock::now();
-            uint64_t cycle  = 0;
+            uint64_t cycle = 0;
 
             while (!t.is_quit()) {
                 ++cycle;
@@ -26,7 +26,7 @@ namespace mge {
                 t.input(cycle);
 
                 double_secs delta = current - before;
-                before            = current;
+                before = current;
 
                 t.update(cycle, delta.count());
 

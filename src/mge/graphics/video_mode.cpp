@@ -7,7 +7,7 @@
 
 namespace mge {
 
-    std::ostream &operator<<(std::ostream &os, const video_mode &m)
+    std::ostream& operator<<(std::ostream& os, const video_mode& m)
     {
         os << m.extent.width << "x" << m.extent.height;
         if (m.refresh_rate == video_mode::ANY_REFRESH_RATE) {
