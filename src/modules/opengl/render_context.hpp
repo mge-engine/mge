@@ -14,9 +14,12 @@ namespace mge {
         class render_context : public mge::render_context
         {
         public:
-            render_context(mge::opengl::window *context_window);
+            render_context(mge::opengl::window* context_window);
             virtual ~render_context();
 #ifdef MGE_OS_WINDOWS
+
+            HDC dc() const { return m_hdc; }
+
         private:
             void select_pixel_format();
             void create_glrc();

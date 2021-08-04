@@ -17,7 +17,7 @@ with open(sourceFile, "r") as f:
         l = f.readline()
 
 print("-- Read {0} lines".format(len(lines)))
-# these functions or defines are not looked up by 
+# these functions or defines are not looked up by
 # vkGetInstanceProcAddr
 excludedFunctions = [
     "vkAllocationFunction",
