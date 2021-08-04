@@ -7,6 +7,7 @@ SET(mge_opengl_module_SOURCES
     window.cpp
     render_context.cpp
     opengl_info.cpp
+    swap_chain.cpp
     common.cpp)
 ADD_LIBRARY(mge_module_opengl MODULE
             ${mge_opengl_module_SOURCES})

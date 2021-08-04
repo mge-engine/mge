@@ -8,4 +8,5 @@ namespace mge {
     MGE_DECLARE_REF(window);
     MGE_DECLARE_REF(monitor);
     MGE_DECLARE_REF(render_context);
+    MGE_DECLARE_REF(swap_chain);
 } // namespace mge

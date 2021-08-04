@@ -22,6 +22,7 @@ SET(mgegraphics_sources
     hardware_buffer.cpp
     data_type.cpp
     index_buffer.cpp
+    swap_chain.cpp
 )
 
 SET(mgegraphics_headers
@@ -44,6 +45,7 @@ SET(mgegraphics_headers
     hardware_buffer.hpp
     data_type.hpp
     index_buffer.hpp
+    swap_chain.hpp
 )
 
 MGE_LIBRARY(
