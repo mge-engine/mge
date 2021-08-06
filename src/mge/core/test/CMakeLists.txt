@@ -2,36 +2,37 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-SET(MGECORE_TESTS
-    executable_name
-    type_name
-    trace
-    trace_level
-    trace_topic
-    memory_trace_sink
-    stream_trace_sink
-    simple_trace_formatter
-    parameter
-    configuration
-    statistics
-    stacktrace
-    string_pool
-    exception
-    component
-    enum_set
-    callback_map
-    crash
-    copy_struct
-    thread_group
-    thread
-    semantic_version
-    small_vector)
+SET(MGECORE_TEST_SOURCES
+    test_executable_name.cpp
+    test_type_name.cpp
+    test_trace.cpp
+    test_trace_level.cpp
+    test_trace_topic.cpp
+    test_memory_trace_sink.cpp
+    test_stream_trace_sink.cpp
+    test_parameter.cpp
+    test_simple_trace_formatter.cpp
+    test_configuration.cpp
+    test_statistics.cpp
+    test_stacktrace.cpp
+    test_string_pool.cpp
+    test_exception.cpp
+    test_component.cpp
+    test_enum_set.cpp
+    test_callback_map.cpp
+    test_crash.cpp
+    test_copy_struct.cpp
+    test_semantic_version.cpp
+    test_small_vector.cpp
+    test_thread.cpp
+    test_thread_group.cpp
+)
 
-FOREACH(TEST_NAME ${MGECORE_TESTS})
-    MGE_TEST(
-        TARGET      test_${TEST_NAME}
-        SOURCES     test_${TEST_NAME}.cpp
-        LIBRARIES   mgecore
-    )
-ENDFOREACH()
+
+MGE_TEST(
+    TARGET      test_core
+    SOURCES     ${MGECORE_TEST_SOURCES}
+    LIBRARIES   mgecore
+)
+
 

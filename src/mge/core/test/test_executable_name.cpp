@@ -7,5 +7,5 @@
 TEST(executable_name, correct_name)
 {
     std::string name(mge::executable_name());
-    EXPECT_EQ(std::string("test_executable_name"), name);
+    EXPECT_EQ(std::string("test_core"), name);
 }
