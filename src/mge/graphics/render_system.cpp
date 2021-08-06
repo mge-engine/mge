@@ -6,11 +6,14 @@
 #include "mge/core/stdexceptions.hpp"
 namespace mge {
     MGE_REGISTER_COMPONENT(render_system);
-    MGE_DEFINE_PARAMETER(std::string, graphics, render_system, "Used render system implementation");
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        std::string, graphics, render_system, "Render system implementation", "opengl");
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        bool, graphics, vsync, "Honor vertical sync in screen update", false);
 
     render_system_ref render_system::create()
     {
-        std::string implementation_name = MGE_PARAMETER(graphics, render_system).get("opengl");
+        std::string implementation_name = MGE_PARAMETER(graphics, render_system).get();
         return component<render_system>::create(implementation_name);
     }
 

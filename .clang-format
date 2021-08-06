@@ -30,8 +30,7 @@ BraceWrapping:
 #    : xxx(0)
 #    , yyy(1)
 BreakConstructorInitializers: BeforeComma
-# make really some room for the clumsy code base
-ColumnLimit: 128
+ColumnLimit: 100
 # case labels on same level as switch
 IndentCaseLabels: false
 # no packing of function arguments on the same line

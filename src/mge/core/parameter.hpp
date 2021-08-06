@@ -30,7 +30,9 @@ namespace mge {
          * @param name          parameter name
          * @param description   parameter description
          */
-        basic_parameter(std::string_view section, std::string_view name, std::string_view description);
+        basic_parameter(std::string_view section,
+                        std::string_view name,
+                        std::string_view description);
         virtual ~basic_parameter();
 
         /**
@@ -124,8 +126,32 @@ namespace mge {
          * @param description parameter description
          */
         template <size_t SECTION_N, size_t NAME_N, size_t DESCRIPTION_N>
-        parameter(const char (&section)[SECTION_N], const char (&name)[NAME_N], const char (&description)[DESCRIPTION_N])
-            : basic_parameter(make_string_view(section), make_string_view(name), make_string_view(description))
+        parameter(const char (&section)[SECTION_N],
+                  const char (&name)[NAME_N],
+                  const char (&description)[DESCRIPTION_N])
+            : basic_parameter(
+                  make_string_view(section), make_string_view(name), make_string_view(description))
+        {}
+
+        /**
+         * @brief Construct a new parameter.
+         *
+         * @tparam SECTION_N length of section literal
+         * @tparam NAME_N length of name literal
+         * @tparam DESCRIPTION_N  length of description literal
+         * @param section parameter section
+         * @param name parameter name
+         * @param description parameter description
+         * @param default_value
+         */
+        template <size_t SECTION_N, size_t NAME_N, size_t DESCRIPTION_N>
+        parameter(const char (&section)[SECTION_N],
+                  const char (&name)[NAME_N],
+                  const char (&description)[DESCRIPTION_N],
+                  const T& default_value)
+            : basic_parameter(
+                  make_string_view(section), make_string_view(name), make_string_view(description))
+            , m_default_value(default_value)
         {}
 
         /**
@@ -141,14 +167,24 @@ namespace mge {
 
         virtual ~parameter() = default;
 
-        bool has_value() const override { return m_value.has_value(); }
+        bool has_value() const override
+        {
+            return m_value.has_value() || m_default_value.has_value();
+        }
 
         /**
          * @brief Retrieve typed value.
          *
          * @return stored value
          */
-        typename T get() const { return std::any_cast<T>(m_value); }
+        typename T get() const
+        {
+            if (m_value.has_value()) {
+                return std::any_cast<T>(m_value);
+            } else {
+                return std::any_cast<T>(m_default_value);
+            }
+        }
 
         /**
          * @brief Retrieve typed value, checking default.
@@ -181,7 +217,8 @@ namespace mge {
         void reset() override { m_value.reset(); }
 
     private:
-        std::any m_value;
+        std::any       m_value;
+        const std::any m_default_value;
     };
 
 /**
@@ -192,8 +229,20 @@ namespace mge {
  * @param NAME parameter name
  * @param DESCRIPTION parameter description
  */
-#define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                                                                 \
+#define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                                     \
     ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
+
+/**
+ * @def MGE_DEFINE_PARAMETER_WITH_DEFAULT
+ * @brief Define a parameter.
+ * @param TYPE parameter type
+ * @param SECTION parameter section
+ * @param NAME parameter name
+ * @param DESCRIPTION parameter description
+ * @param DEFAULT
+ */
+#define MGE_DEFINE_PARAMETER_WITH_DEFAULT(TYPE, SECTION, NAME, DESCRIPTION, DEFAULT)               \
+    ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION, DEFAULT);
 
 /**
  * @def MGE_PARAMETER
