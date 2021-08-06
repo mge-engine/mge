@@ -2,21 +2,20 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-SET(MGEGRAPHICS_TESTS
-    extent
-    point
-    window
-    video_mode
-    rgb_color
-    rgba_color
-    data_type
-    hardware_buffer
+SET(MGEGRAPHICS_TEST_SOURCES
+    test_extent.cpp
+    test_point.cpp
+    test_window.cpp
+    test_video_mode.cpp
+    test_rgb_color.cpp
+    test_rgba_color.cpp
+    test_data_type.cpp
+    test_hardware_buffer.cpp
 )
 
-FOREACH(TEST_NAME ${MGEGRAPHICS_TESTS})
-    MGE_TEST(
-        TARGET      test_${TEST_NAME}
-        SOURCES     test_${TEST_NAME}.cpp
-        LIBRARIES   mgegraphics mgecore
-    )
-ENDFOREACH()
+MGE_TEST(
+    TARGET      test_graphics
+    SOURCES     ${MGEGRAPHICS_TEST_SOURCES}
+    LIBRARIES   mgegraphics mgecore
+)
+

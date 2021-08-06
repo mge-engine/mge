@@ -28,7 +28,6 @@ SET(MGECORE_TEST_SOURCES
     test_thread_group.cpp
 )
 
-
 MGE_TEST(
     TARGET      test_core
     SOURCES     ${MGECORE_TEST_SOURCES}
