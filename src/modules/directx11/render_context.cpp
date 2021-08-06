@@ -5,6 +5,7 @@
 #include "error.hpp"
 #include "mge/core/trace.hpp"
 #include "render_system.hpp"
+#include "swap_chain.hpp"
 #include "window.hpp"
 
 namespace mge {
@@ -12,9 +13,10 @@ namespace mge {
 }
 
 namespace mge::dx11 {
-    render_context::render_context(mge::dx11::render_system &render_system_,
-                                   mge::dx11::window &       window_)
-        : m_render_system(render_system_), m_window(window_)
+    render_context::render_context(mge::dx11::render_system& render_system_,
+                                   mge::dx11::window&        window_)
+        : m_render_system(render_system_)
+        , m_window(window_)
     {
         init_context();
     }
@@ -24,20 +26,53 @@ namespace mge::dx11 {
     void render_context::init_context()
     {
         DXGI_SWAP_CHAIN_DESC swap_chain_desc = {};
-        UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
-        D3D_DRIVER_TYPE driver_type =
-            (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
-                                               : D3D_DRIVER_TYPE_HARDWARE);
+        UINT                 flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
+        D3D_DRIVER_TYPE      driver_type =
+            (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP : D3D_DRIVER_TYPE_HARDWARE);
 
-        ID3D11Device *       tmp_device         = nullptr;
-        ID3D11DeviceContext *tmp_device_context = nullptr;
+        ID3D11Device*        tmp_device = nullptr;
+        ID3D11DeviceContext* tmp_device_context = nullptr;
+        IDXGISwapChain*      tmp_swap_chain = nullptr;
 
-        HRESULT rc = D3D11CreateDevice(
-            nullptr, driver_type, nullptr, flags, nullptr, 0, D3D11_SDK_VERSION,
-            &tmp_device, nullptr, &tmp_device_context);
-        CHECK_HRESULT(rc, , D3D11CreateDevice);
+        HRESULT rc = D3D11CreateDeviceAndSwapChain(nullptr,
+                                                   driver_type,
+                                                   nullptr,
+                                                   flags,
+                                                   nullptr,
+                                                   0,
+                                                   D3D11_SDK_VERSION,
+                                                   &swap_chain_desc,
+                                                   &tmp_swap_chain,
+                                                   &tmp_device,
+                                                   nullptr,
+                                                   &tmp_device_context);
+        CHECK_HRESULT(rc, , D3D11CreateDeviceAndSwapChain);
 
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
+        auto swap_chain = std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
+        m_swap_chain = swap_chain;
+
+        MGE_DEBUG_TRACE(DX11) << "Creating render target view";
+
+        ID3D11RenderTargetView* tmp_render_target_view;
+
+        auto back_buffer = swap_chain->back_buffer();
+        rc = m_device->CreateRenderTargetView(back_buffer.get(), nullptr, &tmp_render_target_view);
+        CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
+        back_buffer.reset();
+        MGE_DEBUG_TRACE(DX11) << "Set render target";
+        m_device_context->OMSetRenderTargets(1, &tmp_render_target_view, nullptr);
+        m_render_target_view.reset(tmp_render_target_view);
+        D3D11_VIEWPORT viewport = {};
+        viewport.TopLeftX = 0;
+        viewport.TopLeftY = 0;
+        viewport.Width = static_cast<float>(window().extent().width);
+        viewport.Height = static_cast<float>(window().extent().height);
+        viewport.MinDepth = 0.0;
+        viewport.MaxDepth = 0.0;
+        MGE_DEBUG_TRACE(DX11) << "Set view port";
+        m_device_context->RSSetViewports(1, &viewport);
     }
+
 } // namespace mge::dx11

@@ -2,18 +2,17 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-SET(MGEINPUT_TESTS
-    key
-    modifier
-    mouse_state
-    keyboard_state
+SET(MGEINPUT_TEST_SOURCES
+    test_key.cpp
+    test_modifier.cpp
+    test_mouse_state.cpp
+    test_keyboard_state.cpp
 )
 
-FOREACH(TEST_NAME ${MGEINPUT_TESTS})
-    MGE_TEST(
-        TARGET      test_${TEST_NAME}
-        SOURCES     test_${TEST_NAME}.cpp
-        LIBRARIES   mgecore mgeinput
-    )
-ENDFOREACH()
+MGE_TEST(
+    TARGET      test_input
+    SOURCES     ${MGEINPUT_TEST_SOURCES}
+    LIBRARIES   mgecore mgeinput
+)
+
 

@@ -7,6 +7,7 @@ SET(mge_dx11_module_SOURCES
     window.cpp
     render_context.cpp
     render_system.cpp
+    swap_chain.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE

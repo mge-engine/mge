@@ -1,15 +1,13 @@
 # mge - Modern Game Engine
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
-SET(MGEMATH_TESTS
-    vec2
-    vec3
+SET(MGEMATH_TEST_SOURCES
+    test_vec2.cpp
+    test_vec3.cpp
 )
 
-FOREACH(TEST_NAME ${MGEMATH_TESTS})
-    MGE_TEST(
-        TARGET      test_${TEST_NAME}
-        SOURCES     test_${TEST_NAME}.cpp
-        LIBRARIES   mgemath mgecore
-    )
-ENDFOREACH()
+MGE_TEST(
+    TARGET      test_math
+    SOURCES     ${MGEMATH_TEST_SOURCES}
+    LIBRARIES   mgemath mgecore
+)

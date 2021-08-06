@@ -2,17 +2,15 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 
-SET(MGEAPPLICATION_TESTS
-    application
-    simple_loop)
+SET(MGEAPPLICATION_TEST_SOURCES
+    test_application.cpp
+    test_simple_loop.cpp)
 
-FOREACH(TEST_NAME ${MGEAPPLICATION_TESTS})
-    MGE_TEST(
-        TARGET      test_${TEST_NAME}
-        SOURCES     test_${TEST_NAME}.cpp
-        LIBRARIES   mgeapplication mgecore
-    )
-ENDFOREACH()
+MGE_TEST(
+    TARGET      test_application
+    SOURCES     ${MGEAPPLICATION_TEST_SOURCES}
+    LIBRARIES   mgeapplication mgecore
+)
 
 MGE_TEST(TARGET test_applicationtest
          SOURCES test_applicationtest.cpp
