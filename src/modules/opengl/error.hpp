@@ -38,7 +38,7 @@ namespace mge::opengl {
 } // namespace mge::opengl
 
 #define TRACE_OPENGL_ERROR(function)                                                               \
-    opengl::error::log_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE, #function)
+    opengl::error::trace_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE, #function)
 
 #define CHECK_OPENGL_ERROR(function)                                                               \
     opengl::error::check_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE, #function)

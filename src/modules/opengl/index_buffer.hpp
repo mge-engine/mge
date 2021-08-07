@@ -15,6 +15,10 @@ namespace mge::opengl {
                      void*           initial_data);
         virtual ~index_buffer();
 
+    protected:
+        void* on_map() override;
+        void  on_unmap() override;
+
     private:
         GLuint m_buffer;
     };

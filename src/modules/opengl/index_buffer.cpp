@@ -14,10 +14,30 @@ namespace mge::opengl {
     {
         glCreateBuffers(1, &m_buffer);
         CHECK_OPENGL_ERROR(glCreateBuffers);
-        // TODO(opengl) Support different index buffer usage.
+        // TODO(opengl) Support different index buffer usage
         glNamedBufferData(m_buffer, static_cast<GLsizeiptr>(size()), data, GL_STATIC_DRAW);
         CHECK_OPENGL_ERROR(glNamedBufferData);
     }
 
-    index_buffer::~index_buffer() {}
+    index_buffer::~index_buffer()
+    {
+        if (m_buffer) {
+            glDeleteBuffers(1, &m_buffer);
+            TRACE_OPENGL_ERROR(glDeleteBuffers);
+        }
+    }
+
+    void* index_buffer::on_map()
+    {
+        void* result = glMapNamedBuffer(m_buffer, GL_READ_WRITE);
+        CHECK_OPENGL_ERROR(glMapNamedBuffer);
+        return result;
+    }
+
+    void index_buffer::on_unmap()
+    {
+        glUnmapNamedBuffer(m_buffer);
+        CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
+    }
+
 } // namespace mge::opengl
