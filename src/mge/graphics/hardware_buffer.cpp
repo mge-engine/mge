@@ -5,21 +5,15 @@
 
 namespace mge {
 
-    hardware_buffer::hardware_buffer(render_context& context, buffer_type type)
-        : context_object(context)
-        , m_type(type)
-        , m_map_count(0)
-        , m_mapped_memory(nullptr)
-    {}
-
     hardware_buffer::hardware_buffer(render_context& context,
                                      buffer_type     type,
-                                     void*           data,
-                                     size_t          data_size)
+                                     size_t          data_size,
+                                     void*           data)
         : context_object(context)
         , m_type(type)
         , m_map_count(0)
         , m_mapped_memory(nullptr)
+        , m_size(data_size)
     {}
 
     hardware_buffer::~hardware_buffer() {}
@@ -45,5 +39,7 @@ namespace mge {
     bool hardware_buffer::mapped() const noexcept { return m_map_count != 0; }
 
     buffer_type hardware_buffer::type() const noexcept { return m_type; }
+
+    size_t hardware_buffer::size() const noexcept { return m_size; }
 
 } // namespace mge

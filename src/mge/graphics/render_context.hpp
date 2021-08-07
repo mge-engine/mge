@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include <memory>
@@ -20,6 +21,9 @@ namespace mge {
     {
     public:
         virtual ~render_context() = default;
+
+        virtual index_buffer_ref
+        create_index_buffer(data_type dt, size_t element_count, void* initial_data = nullptr) = 0;
 
         /**
          * @brief Get swap chain of context.

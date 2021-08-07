@@ -10,4 +10,6 @@ class MOCK_render_context : public mge::render_context
 public:
     MOCK_render_context() {}
     ~MOCK_render_context() {}
+
+    MOCK_METHOD(mge::index_buffer_ref, create_index_buffer, (mge::data_type, size_t, void*), ());
 };

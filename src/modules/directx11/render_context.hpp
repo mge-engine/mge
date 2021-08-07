@@ -17,6 +17,9 @@ namespace mge::dx11 {
         render_context(render_system& system, window& window_);
         virtual ~render_context();
 
+        mge::index_buffer_ref
+        create_index_buffer(mge::data_type dt, size_t element_count, void* initial_data) override;
+
         const ::mge::dx11::window& window() const { return m_window; }
 
         const ::mge::dx11::render_system& render_system() const { return m_render_system; }

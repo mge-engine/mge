@@ -75,4 +75,11 @@ namespace mge::dx11 {
         m_device_context->RSSetViewports(1, &viewport);
     }
 
+    mge::index_buffer_ref
+    render_context::create_index_buffer(mge::data_type dt, size_t element_count, void* initial_data)
+    {
+        mge::index_buffer_ref result;
+        return result;
+    }
+
 } // namespace mge::dx11

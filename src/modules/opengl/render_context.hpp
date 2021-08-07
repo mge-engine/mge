@@ -16,6 +16,10 @@ namespace mge {
         public:
             render_context(mge::opengl::window* context_window);
             virtual ~render_context();
+
+            mge::index_buffer_ref create_index_buffer(mge::data_type dt,
+                                                      size_t         element_count,
+                                                      void*          initial_data) override;
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const { return m_hdc; }
