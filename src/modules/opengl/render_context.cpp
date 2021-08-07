@@ -27,7 +27,7 @@ namespace mge::opengl {
         create_glrc();
         init_gl3w();
         collect_opengl_info();
-        // TODO(opengl) Support debugging using GL_KHR_debug extension.
+        // TODO(opengl) Support debugging using GL_KHR_debug extension
     }
 
     void render_context::select_pixel_format()
