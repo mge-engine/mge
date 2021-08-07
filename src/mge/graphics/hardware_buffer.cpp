@@ -12,6 +12,16 @@ namespace mge {
         , m_mapped_memory(nullptr)
     {}
 
+    hardware_buffer::hardware_buffer(render_context& context,
+                                     buffer_type     type,
+                                     void*           data,
+                                     size_t          data_size)
+        : context_object(context)
+        , m_type(type)
+        , m_map_count(0)
+        , m_mapped_memory(nullptr)
+    {}
+
     hardware_buffer::~hardware_buffer() {}
 
     void* hardware_buffer::map()

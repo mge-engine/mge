@@ -9,6 +9,11 @@ namespace mge {
         , m_data_type(dt)
     {}
 
+    index_buffer::index_buffer(render_context& context, data_type dt, void* data, size_t data_size)
+        : hardware_buffer(context, buffer_type::INDEX, data, data_size)
+        , m_data_type(dt)
+    {}
+
     index_buffer::~index_buffer() {}
 
     data_type index_buffer::element_type() const noexcept { return m_data_type; }

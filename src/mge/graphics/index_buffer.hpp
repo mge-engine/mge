@@ -22,6 +22,16 @@ namespace mge {
          */
         index_buffer(render_context& context, data_type dt);
 
+        /**
+         * @brief Construct a new index buffer object.
+         *
+         * @param context   render context used
+         * @param dt        data type
+         * @param data      initial data
+         * @param data_size size in bytes of initial data
+         */
+        index_buffer(render_context& context, data_type dt, void* data, size_t data_size);
+
     public:
         virtual ~index_buffer();
 
