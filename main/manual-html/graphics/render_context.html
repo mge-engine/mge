@@ -129,24 +129,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../application/loop.html">Interaction Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
 </ul>
@@ -176,8 +182,22 @@ pipeline. A render context is btained from a <a class="reference internal" href=
 has a 1:1 relationship with the window.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge14render_contextE">
-<span id="_CPPv3N3mge14render_contextE"></span><span id="_CPPv2N3mge14render_contextE"></span><span id="mge::render_context"></span><span class="target" id="classmge_1_1render__context"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">render_context</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="pre">render_context</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge14render_contextE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>A render context is a context in which objects that are elements of the render pipeline are created - such as shader programs, textures and buffers. </p>
+<span id="_CPPv3N3mge14render_contextE"></span><span id="_CPPv2N3mge14render_contextE"></span><span id="mge::render_context"></span><span class="target" id="classmge_1_1render__context"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">render_context</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">std</span><span class="pre">::</span><span class="pre">enable_shared_from_this</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="pre">render_context</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge14render_contextE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A render context is a context in which objects that are elements of the render pipeline are created - such as shader programs, textures and buffers.</p>
+<p>A render context has a swap chain to facilitate presentation of the rendered frames. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge14render_context10swap_chainEv">
+<span id="_CPPv3NK3mge14render_context10swap_chainEv"></span><span id="_CPPv2NK3mge14render_context10swap_chainEv"></span><span id="mge::render_context::swap_chainC"></span><span class="target" id="classmge_1_1render__context_1aa7202720e48f122666e183cbbf31d1d5"></span><em class="property"><span class="pre">const</span></em> <span class="pre">swap_chain_ref</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">swap_chain</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge14render_context10swap_chainEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get swap chain of context. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>swap chain </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
 </dd></dl>
 <p>Context objects are created based upon a render context. Their life time
 is bound to the render context, and they are valid for one render context
@@ -186,7 +206,23 @@ only.</p>
 <dt id="_CPPv4N3mge14context_objectE">
 <span id="_CPPv3N3mge14context_objectE"></span><span id="_CPPv2N3mge14context_objectE"></span><span id="mge::context_object"></span><span class="target" id="classmge_1_1context__object"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">context_object</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="pre">noncopyable</span></a><a class="headerlink" href="#_CPPv4N3mge14context_objectE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>An object that is valid in the context of a <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1render__context"><span class="std std-ref"><span class="pre">render_context</span></span></a></code> like a shader program, a texture, or a command list. </p>
-<p>Subclassed by <a class="reference internal" href="command_list.html#classmge_1_1command__list"><span class="std std-ref">mge::command_list</span></a></p>
+<p>Subclassed by <a class="reference internal" href="command_list.html#classmge_1_1command__list"><span class="std std-ref">mge::command_list</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a></p>
+</dd></dl>
+<p>Each render context has a swap chain, a series of buffers to stabilize frame
+rates and enable presenting frames.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge10swap_chainE">
+<span id="_CPPv3N3mge10swap_chainE"></span><span id="_CPPv2N3mge10swap_chainE"></span><span id="mge::swap_chain"></span><span class="target" id="classmge_1_1swap__chain"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">swap_chain</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="pre">context_object</span></a><a class="headerlink" href="#_CPPv4N3mge10swap_chainE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A swap chain is a series of virtual frame buffers. </p>
+<p>Commonly, a swap chain is used for frame rate stabilization by using double, or even triple buffering. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10swap_chain7presentEv">
+<span id="_CPPv3N3mge10swap_chain7presentEv"></span><span id="_CPPv2N3mge10swap_chain7presentEv"></span><span id="mge::swap_chain::present"></span><span class="target" id="classmge_1_1swap__chain_1aa8d78088a328ec7fb377dd4cbf6e7017"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">present</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge10swap_chain7presentEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Presents the next frame buffer. </p>
+</dd></dl>
+</div>
 </dd></dl>
 </div>
 

@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Buffers" href="buffers.html" /><link rel="prev" title="Data Structures" href="datastructures.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Miscellaneous Functions" href="functions.html" /><link rel="prev" title="Mathematics Library" href="../mgemath.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Shader Programs - MGE 0.1 documentation</title>
+        <title>Vector Types - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -89,7 +89,7 @@
       <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -129,20 +129,20 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html">Miscellaneous Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Shader Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/buffers.html">Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -172,42 +172,50 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="shader-programs">
-<h1>Shader Programs<a class="headerlink" href="#shader-programs" title="Permalink to this headline">¶</a></h1>
-<p>A shader program is an user-defined program which is executed as part of a
-render pipeline on a graphics card.</p>
-<div class="section" id="types-and-definitions">
-<h2>Types and Definitions<a class="headerlink" href="#types-and-definitions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="shader-types">
-<h3>Shader Types<a class="headerlink" href="#shader-types" title="Permalink to this headline">¶</a></h3>
-</div>
-</div>
+        <div class="section" id="vector-types">
+<h1>Vector Types<a class="headerlink" href="#vector-types" title="Permalink to this headline">¶</a></h1>
+<p>Vector types with 2, 3, and 4 components are defined.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge5fvec2E">
+<span id="_CPPv3N3mge5fvec2E"></span><span id="_CPPv2N3mge5fvec2E"></span><span id="mge::fvec2"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">fvec2</span></code><a class="headerlink" href="#_CPPv4N3mge5fvec2E" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A 2 component vector of float values.</p>
+</dd></dl>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge5fvec3E">
+<span id="_CPPv3N3mge5fvec3E"></span><span id="_CPPv2N3mge5fvec3E"></span><span id="mge::fvec3"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">fvec3</span></code><a class="headerlink" href="#_CPPv4N3mge5fvec3E" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A 3 component vector of float values.</p>
+</dd></dl>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge5fvec4E">
+<span id="_CPPv3N3mge5fvec4E"></span><span id="_CPPv2N3mge5fvec4E"></span><span id="mge::fvec4"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">fvec4</span></code><a class="headerlink" href="#_CPPv4N3mge5fvec4E" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A 4 component vector of float values.</p>
+</dd></dl>
 </div>
 
       </article>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="buffers.html">
+          <a class="next-page" href="functions.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Buffers</div>
+                <div class="title">Miscellaneous Functions</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="datastructures.html">
+          <a class="prev-page" href="../mgemath.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Data Structures</div>
+                <div class="title">Mathematics Library</div>
                 
               </div>
             </a>
@@ -221,7 +229,7 @@ render pipeline on a graphics card.</p>
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/graphics/shaders.rst.txt"
+            <a class="muted-link" href="../_sources/math/vector.rst.txt"
                rel="nofollow">
               Show Source
             </a>
@@ -229,30 +237,8 @@ render pipeline on a graphics card.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            Contents
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Shader Programs</a><ul>
-<li><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
-<li><a class="reference internal" href="#shader-types">Shader Types</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

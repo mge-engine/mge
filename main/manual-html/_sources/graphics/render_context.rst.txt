@@ -15,3 +15,9 @@ only.
 
 .. doxygenclass:: mge::context_object
     :members:
+
+Each render context has a swap chain, a series of buffers to stabilize frame
+rates and enable presenting frames.
+
+.. doxygenclass:: mge::swap_chain
+    :members:

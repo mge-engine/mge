@@ -20,7 +20,7 @@ before building:
 
 Microsoft Visual C++ 2019
     MGE currently is built using this compile tool chain.
-    The _Community_ edition that can be obtained at
+    The *Community Edition* that can be obtained at
     `https://visualstudio.microsoft.com <https://visualstudio.microsoft.com/>`_
     is sufficient.
 
@@ -38,7 +38,7 @@ Microsoft Visual C++ 2019
     Several helper scripts use Python, like the extraction tools to generate
     the Vulkan API helper functions.
 
-`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>` _
+`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>`_
     Vulkan is a low-overhead, cross-platform graphics and computing API. It is
     used as a possible graphics backend of MGE.
 

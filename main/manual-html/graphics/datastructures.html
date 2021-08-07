@@ -89,7 +89,7 @@
       <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
     </div>
     <div class="header-right">
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -129,24 +129,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../application/loop.html">Interaction Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
 </ul>
@@ -166,12 +172,17 @@
   <main class="main">
     <div class="content">
       <article role="main">
-        <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+        <label class="toc-overlay-icon toc-content-icon" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
         <div class="section" id="data-structures">
 <h1>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h1>
 <p>The graphics library contains some commonly used data structures and types.</p>
+<div class="section" id="geometry">
+<h2>Geometry<a class="headerlink" href="#geometry" title="Permalink to this headline">¶</a></h2>
+<p>Note that the main types for handling geometry, such as vectors and matrices,
+are defined in the math library. Within the graphics library only geometry
+structures to define window sizes and locations are provided.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge6extentE">
 <span id="_CPPv3N3mge6extentE"></span><span id="_CPPv2N3mge6extentE"></span><span id="mge::extent"></span><span class="target" id="classmge_1_1extent"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">extent</span></code><a class="headerlink" href="#_CPPv4N3mge6extentE" title="Permalink to this definition">¶</a><br/></dt>
@@ -211,6 +222,363 @@
 </dd></dl>
 </div>
 </dd></dl>
+</div>
+<div class="section" id="color">
+<h2>Color<a class="headerlink" href="#color" title="Permalink to this headline">¶</a></h2>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge9rgb_colorE">
+<span id="_CPPv3N3mge9rgb_colorE"></span><span id="_CPPv2N3mge9rgb_colorE"></span><span id="mge::rgb_color"></span><span class="target" id="classmge_1_1rgb__color"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">rgb_color</span></code><a class="headerlink" href="#_CPPv4N3mge9rgb_colorE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>An RGB color. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorEv">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEv"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEv"></span><span id="mge::rgb_color::rgb_color"></span><span class="target" id="classmge_1_1rgb__color_1aed4ce619b763f607c19b27647c3e8855"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Constructor. Intializes to zero. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorEj">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEj"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEj"></span><span id="mge::rgb_color::rgb_color__unsigned-i"></span><span class="target" id="classmge_1_1rgb__color_1a941a3a6dadd441bb46cc2843dce1e9fa"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><span class="pre">unsigned</span> <span class="pre">int</span> <em><span class="pre">rgbvalue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEj" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Constructor. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rgbvalue</span></code>: rgb value (like 0xFFAAEE) </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="mge::rgb_color::rgb_color__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a005d5fb99128414a380b4b9f109503af"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="mge::rgb_color::rgb_color"><span class="pre">rgb_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">default</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Copy constructor. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: copied color value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorEPKc">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEPKc"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKc"></span><span id="mge::rgb_color::rgb_color__cCP"></span><span class="target" id="classmge_1_1rgb__color_1add6cb66902273f8f78ef469fe16fe027"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKc" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create RGB color from color name. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: color name </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorEKf">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEKf"></span><span id="mge::rgb_color::rgb_color__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a19a6a44b8cb9c3dcde1a66e5052e0016"></span><em class="property"><span class="pre">inline</span></em> <em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <em><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct (greyscale) color from single value. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: color value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorEfff">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEfff"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEfff"></span><span id="mge::rgb_color::rgb_color__float.float.float"></span><span class="target" id="classmge_1_1rgb__color_1a4ef750828bd0fabffbe5577244267c17"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><span class="pre">float</span> <em><span class="pre">r_</span></em>, <span class="pre">float</span> <em><span class="pre">g_</span></em>, <span class="pre">float</span> <em><span class="pre">b_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEfff" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Creates a color <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">r_</span></code>: red </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g_</span></code>: green </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b_</span></code>: blue </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9rgb_colorEPKf">
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEPKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKf"></span><span id="mge::rgb_color::rgb_color__floatCP"></span><span class="target" id="classmge_1_1rgb__color_1a0f0589e07ea83007c337c379500c9ac8"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgb_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <span class="pre">*</span><em><span class="pre">values</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Initialize from array. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">values</span></code>: color value array </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_coloraSERK9rgb_color">
+<span id="_CPPv3N3mge9rgb_coloraSERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_coloraSERK9rgb_color"></span><span id="mge::rgb_color::assign-operator__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a3b03a293818fcd8c04bb85007efb3828"></span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="pre">rgb_color</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">operator=</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="pre">rgb_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">default</span><a class="headerlink" href="#_CPPv4N3mge9rgb_coloraSERK9rgb_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Assignment operator. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: color to assign. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color7set_redEKf">
+<span id="_CPPv3N3mge9rgb_color7set_redEKf"></span><span id="_CPPv2N3mge9rgb_color7set_redEKf"></span><span id="mge::rgb_color::set_red__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a5293a75faedf2711ce1c3f3291cee733"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">set_red</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <em><span class="pre">r_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color7set_redEKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Set red component, <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">r_</span></code>: red value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color9set_greenEKf">
+<span id="_CPPv3N3mge9rgb_color9set_greenEKf"></span><span id="_CPPv2N3mge9rgb_color9set_greenEKf"></span><span id="mge::rgb_color::set_green__floatC"></span><span class="target" id="classmge_1_1rgb__color_1ab7402bce8cc86c713e02418fd0956758"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">set_green</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <em><span class="pre">g_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9set_greenEKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Set green component. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">g_</span></code>: green component </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge9rgb_color8set_blueEKf">
+<span id="_CPPv3N3mge9rgb_color8set_blueEKf"></span><span id="_CPPv2N3mge9rgb_color8set_blueEKf"></span><span id="mge::rgb_color::set_blue__floatC"></span><span class="target" id="classmge_1_1rgb__color_1aa07d336c926330996e3e30351a0b1257"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">set_blue</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <em><span class="pre">b_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color8set_blueEKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Set blue component. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">b_</span></code>: blue component </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge9rgb_color7get_redEv">
+<span id="_CPPv3NK3mge9rgb_color7get_redEv"></span><span id="_CPPv2NK3mge9rgb_color7get_redEv"></span><span id="mge::rgb_color::get_redC"></span><span class="target" id="classmge_1_1rgb__color_1a5d9d5d8e0653d8963b04be6f2f07dbfa"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">float</span> <code class="sig-name descname"><span class="pre">get_red</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge9rgb_color7get_redEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get red component. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>red component </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge9rgb_color9get_greenEv">
+<span id="_CPPv3NK3mge9rgb_color9get_greenEv"></span><span id="_CPPv2NK3mge9rgb_color9get_greenEv"></span><span id="mge::rgb_color::get_greenC"></span><span class="target" id="classmge_1_1rgb__color_1aff13b6391520fb9b800d9b672dc7659d"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">float</span> <code class="sig-name descname"><span class="pre">get_green</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge9rgb_color9get_greenEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get green component. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>green component </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge9rgb_color8get_blueEv">
+<span id="_CPPv3NK3mge9rgb_color8get_blueEv"></span><span id="_CPPv2NK3mge9rgb_color8get_blueEv"></span><span id="mge::rgb_color::get_blueC"></span><span class="target" id="classmge_1_1rgb__color_1a468c131e45fecebbaf17049530ec49b9"></span><em class="property"><span class="pre">inline</span></em> <span class="pre">float</span> <code class="sig-name descname"><span class="pre">get_blue</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge9rgb_color8get_blueEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Get blue component. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>blue component </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge9rgb_coloreqERK9rgb_color">
+<span id="_CPPv3NK3mge9rgb_coloreqERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_coloreqERK9rgb_color"></span><span id="mge::rgb_color::eq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a4530c6e35fad00078efc3272bd613d20"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">operator==</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="pre">rgb_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge9rgb_coloreqERK9rgb_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Comparison operator. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color equals <code class="docutils literal notranslate"><span class="pre">c</span></code> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: compared color </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge9rgb_colorneERK9rgb_color">
+<span id="_CPPv3NK3mge9rgb_colorneERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_colorneERK9rgb_color"></span><span id="mge::rgb_color::neq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a59c17099f88e3152c07f8d9b8e9f2f44"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">operator!=</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="pre">rgb_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge9rgb_colorneERK9rgb_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Comparison operator. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color is different from <code class="docutils literal notranslate"><span class="pre">c</span></code> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: compared color </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge9rgb_color1rE">
+<span id="_CPPv3N3mge9rgb_color1rE"></span><span id="_CPPv2N3mge9rgb_color1rE"></span><span id="mge::rgb_color::r__float"></span><span class="target" id="classmge_1_1rgb__color_1a54d2e2405812330339d7ebc50f1f6543"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">r</span></code><a class="headerlink" href="#_CPPv4N3mge9rgb_color1rE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>red </p>
+</dd></dl>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge9rgb_color1gE">
+<span id="_CPPv3N3mge9rgb_color1gE"></span><span id="_CPPv2N3mge9rgb_color1gE"></span><span id="mge::rgb_color::g__float"></span><span class="target" id="classmge_1_1rgb__color_1a051cdc7acef257b6b42002878116fcdf"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">g</span></code><a class="headerlink" href="#_CPPv4N3mge9rgb_color1gE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>green </p>
+</dd></dl>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge9rgb_color1bE">
+<span id="_CPPv3N3mge9rgb_color1bE"></span><span id="_CPPv2N3mge9rgb_color1bE"></span><span id="mge::rgb_color::b__float"></span><span class="target" id="classmge_1_1rgb__color_1a7306e403c906cba267ef7707d56374d4"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">b</span></code><a class="headerlink" href="#_CPPv4N3mge9rgb_color1bE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>blue </p>
+</dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt id="_CPPv4N3mge10rgba_colorE">
+<span id="_CPPv3N3mge10rgba_colorE"></span><span id="_CPPv2N3mge10rgba_colorE"></span><span id="mge::rgba_color"></span><span class="target" id="classmge_1_1rgba__color"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">rgba_color</span></code><a class="headerlink" href="#_CPPv4N3mge10rgba_colorE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>An RGBA color. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorEv">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEv"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEv"></span><span id="mge::rgba_color::rgba_color"></span><span class="target" id="classmge_1_1rgba__color_1a8b04ebd941f786297fac2e7eb10a0de7"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Default constructor. </p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorEj">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEj"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEj"></span><span id="mge::rgba_color::rgba_color__unsigned-i"></span><span class="target" id="classmge_1_1rgba__color_1a10eea4bb9835bb948c8d9935acffcacc"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><span class="pre">unsigned</span> <span class="pre">int</span> <em><span class="pre">rgbavalue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEj" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Constructor <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rgbavalue</span></code>: RGBA value (like 0xFFAAEE77 (alpha is 0x77 here)) </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="mge::rgba_color::rgba_color__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a4d1b2db7eeb9d9751b1982018cb2de65"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="mge::rgba_color::rgba_color"><span class="pre">rgba_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">default</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Copy constructor. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: copied color value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorEPKcf">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEPKcf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKcf"></span><span id="mge::rgba_color::rgba_color__cCP.float"></span><span class="target" id="classmge_1_1rgba__color_1a9cda65aaf36e526387c469974df9359e"></span><code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">name</span></em>, <span class="pre">float</span> <em><span class="pre">alpha</span></em> <span class="pre">=</span> <span class="pre">1.0f</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKcf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create RGBA color from color name. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: color name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code>: alpha value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorEKfKf">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEKfKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEKfKf"></span><span id="mge::rgba_color::rgba_color__floatC.floatC"></span><span class="target" id="classmge_1_1rgba__color_1a6964447ee7c897fe8cf6890ae101bae4"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <em><span class="pre">value</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <em><span class="pre">alpha</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEKfKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct (greyscale) color from single value. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: color value </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alpha</span></code>: alpha value </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorEffff">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEffff"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEffff"></span><span id="mge::rgba_color::rgba_color__float.float.float.float"></span><span class="target" id="classmge_1_1rgba__color_1a85ebeadba8da788a3a265871311e0097"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><span class="pre">float</span> <em><span class="pre">r_</span></em>, <span class="pre">float</span> <em><span class="pre">g_</span></em>, <span class="pre">float</span> <em><span class="pre">b_</span></em>, <span class="pre">float</span> <em><span class="pre">a_</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEffff" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Creates a color <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">r_</span></code>: red </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">g_</span></code>: green </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b_</span></code>: blue </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">a_</span></code>: alpha </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_color10rgba_colorEPKf">
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEPKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKf"></span><span id="mge::rgba_color::rgba_color__floatCP"></span><span class="target" id="classmge_1_1rgba__color_1a3866ab2d409b991f32f00143f27dcd5c"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">rgba_color</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <span class="pre">*</span><em><span class="pre">values</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKf" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Initialize from array. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">values</span></code>: color value array </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge10rgba_coloraSERK10rgba_color">
+<span id="_CPPv3N3mge10rgba_coloraSERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_coloraSERK10rgba_color"></span><span id="mge::rgba_color::assign-operator__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a195dda15128d22fc7a504c5d48f03d3a"></span><em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="pre">rgba_color</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">operator=</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="pre">rgba_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">default</span><a class="headerlink" href="#_CPPv4N3mge10rgba_coloraSERK10rgba_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Assignment operator. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: color to assign. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10rgba_coloreqERK10rgba_color">
+<span id="_CPPv3NK3mge10rgba_coloreqERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_coloreqERK10rgba_color"></span><span id="mge::rgba_color::eq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1a74969261d8f41458433992927965a042"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">operator==</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="pre">rgba_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge10rgba_coloreqERK10rgba_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Compare with other color. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if colors equal </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: color for comparison </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10rgba_colorneERK10rgba_color">
+<span id="_CPPv3NK3mge10rgba_colorneERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_colorneERK10rgba_color"></span><span id="mge::rgba_color::neq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1acfcb5a435a9a2e5966042e3cf70cd6e1"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">operator!=</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="pre">rgba_color</span></a> <span class="pre">&amp;</span><em><span class="pre">c</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge10rgba_colorneERK10rgba_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Compare with other color. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if colors not equal </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code>: color for comparison </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4NK3mge10rgba_color4dataEv">
+<span id="_CPPv3NK3mge10rgba_color4dataEv"></span><span id="_CPPv2NK3mge10rgba_color4dataEv"></span><span id="mge::rgba_color::dataC"></span><span class="target" id="classmge_1_1rgba__color_1a6c0ffe8c987ada1e5a712f879b5f73d3"></span><em class="property"><span class="pre">inline</span></em> <em class="property"><span class="pre">const</span></em> <span class="pre">float</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge10rgba_color4dataEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Access color as array of floats. <dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>color values </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge10rgba_color1rE">
+<span id="_CPPv3N3mge10rgba_color1rE"></span><span id="_CPPv2N3mge10rgba_color1rE"></span><span id="mge::rgba_color::r__float"></span><span class="target" id="classmge_1_1rgba__color_1a0c4cff78948b9cc7a5a25522aff2ca26"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">r</span></code><a class="headerlink" href="#_CPPv4N3mge10rgba_color1rE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>red </p>
+</dd></dl>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge10rgba_color1gE">
+<span id="_CPPv3N3mge10rgba_color1gE"></span><span id="_CPPv2N3mge10rgba_color1gE"></span><span id="mge::rgba_color::g__float"></span><span class="target" id="classmge_1_1rgba__color_1a7553e2a2c79a82e0d3960b38d74cf586"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">g</span></code><a class="headerlink" href="#_CPPv4N3mge10rgba_color1gE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>green </p>
+</dd></dl>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge10rgba_color1bE">
+<span id="_CPPv3N3mge10rgba_color1bE"></span><span id="_CPPv2N3mge10rgba_color1bE"></span><span id="mge::rgba_color::b__float"></span><span class="target" id="classmge_1_1rgba__color_1a02fed29f0fadeebc20e96a4309179df2"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">b</span></code><a class="headerlink" href="#_CPPv4N3mge10rgba_color1bE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>blue </p>
+</dd></dl>
+<dl class="cpp var">
+<dt id="_CPPv4N3mge10rgba_color1aE">
+<span id="_CPPv3N3mge10rgba_color1aE"></span><span id="_CPPv2N3mge10rgba_color1aE"></span><span id="mge::rgba_color::a__float"></span><span class="target" id="classmge_1_1rgba__color_1a21fd4cf126ded6c9a47772573455e4ab"></span><span class="pre">float</span> <code class="sig-name descname"><span class="pre">a</span></code><a class="headerlink" href="#_CPPv4N3mge10rgba_color1aE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>alpha </p>
+</dd></dl>
+</div>
+</dd></dl>
+</div>
 </div>
 
       </article>
@@ -255,8 +623,28 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Data Structures</a><ul>
+<li><a class="reference internal" href="#geometry">Geometry</a></li>
+<li><a class="reference internal" href="#color">Color</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>

@@ -129,24 +129,30 @@
 <li class="toctree-l2"><a class="reference internal" href="core/version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="math/vector.html">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="math/functions.html">Miscellaneous Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/datastructures.html">Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphics/buffers.html">Buffers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input/keyboard.html">Keyboard Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="application/loop.html">Interaction Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="application/application.html">Application</a></li>
 </ul>
@@ -187,7 +193,7 @@ yet. Please build the MGE engine and libraries from source.</p>
 before building:</p>
 <dl class="simple">
 <dt>Microsoft Visual C++ 2019</dt><dd><p>MGE currently is built using this compile tool chain.
-The _Community_ edition that can be obtained at
+The <em>Community Edition</em> that can be obtained at
 <a class="reference external" href="https://visualstudio.microsoft.com/">https://visualstudio.microsoft.com</a>
 is sufficient.</p>
 </dd>
@@ -202,7 +208,7 @@ build system for your platform.</p>
 <dt><a class="reference external" href="https://www.python.org/">Python 3</a></dt><dd><p>Several helper scripts use Python, like the extraction tools to generate
 the Vulkan API helper functions.</p>
 </dd>
-<dt><cite>Vulkan SDK &lt;https://vulkan.lunarg.com/sdk/home&gt;</cite> _</dt><dd><p>Vulkan is a low-overhead, cross-platform graphics and computing API. It is
+<dt><a class="reference external" href="https://vulkan.lunarg.com/sdk/home">Vulkan SDK</a></dt><dd><p>Vulkan is a low-overhead, cross-platform graphics and computing API. It is
 used as a possible graphics backend of MGE.</p>
 </dd>
 </dl>

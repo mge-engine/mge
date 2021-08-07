@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Graphics Library" href="../mgegraphics.html" /><link rel="prev" title="Concurrency" href="concurrency.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Mathematics Library" href="../mgemath.html" /><link rel="prev" title="Concurrency" href="concurrency.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
         <title>Versions - MGE 0.1 documentation</title>
@@ -129,24 +129,30 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/buffers.html">Buffers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../application/loop.html">Interaction Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
 </ul>
@@ -200,6 +206,18 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">major</span></code>: major version </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">minor</span></code>: minor version </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">patch</span></code>: patch level </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE">
+<span id="_CPPv3N3mge16semantic_version16semantic_versionENSt11string_viewE"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionENSt11string_viewE"></span><span id="mge::semantic_version::semantic_version__std::string_view"></span><span class="target" id="classmge_1_1semantic__version_1a477224b84aeadfa1dde8937d85611d76"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">semantic_version</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">version_str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct a new semantic version. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">version_str</span></code>: string in format major.minor.patch </p></li>
 </ul>
 </dd>
 </dl>
@@ -332,12 +350,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../mgegraphics.html">
+          <a class="next-page" href="../mgemath.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Graphics Library</div>
+                <div class="title">Mathematics Library</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>

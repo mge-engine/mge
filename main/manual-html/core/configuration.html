@@ -129,24 +129,30 @@
 <li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphics/buffers.html">Buffers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../application/loop.html">Interaction Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
 </ul>
@@ -336,6 +342,27 @@ methods are used to convert the parameter value back and forth, this uses a
 <li><p><code class="docutils literal notranslate"><span class="pre">section</span></code>: parameter section </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: parameter name </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: parameter description </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4I_6size_t_6size_t_6size_tEN3mge9parameter9parameterERA9SECTION_N_KcRA6NAME_N_KcRA13DESCRIPTION_N_KcRK1T">
+<span id="_CPPv3I_6size_t_6size_t_6size_tEN3mge9parameter9parameterERA9SECTION_N_KcRA6NAME_N_KcRA13DESCRIPTION_N_KcRK1T"></span><span id="_CPPv2I_6size_t_6size_t_6size_tEN3mge9parameter9parameterERASECTION_N_KcRANAME_N_KcRADESCRIPTION_N_KcRK1T"></span><span class="pre">template&lt;</span><span class="pre">size_t</span> <code class="sig-name descname"><span class="pre">SECTION_N</span></code><span class="pre">,</span> <span class="pre">size_t</span> <code class="sig-name descname"><span class="pre">NAME_N</span></code><span class="pre">,</span> <span class="pre">size_t</span> <code class="sig-name descname"><span class="pre">DESCRIPTION_N</span></code><span class="pre">&gt;</span><br/><span class="target" id="classmge_1_1parameter_1a6f0409ade7e13b744f13320c27175ee1"></span><em class="property"><span class="pre">inline</span></em> <code class="sig-name descname"><span class="pre">parameter</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">(</span><span class="pre">&amp;</span><em><span class="pre">section</span></em><span class="pre">)</span><span class="pre">[</span><span class="pre">SECTION_N</span><span class="pre">]</span>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">(</span><span class="pre">&amp;</span><em><span class="pre">name</span></em><span class="pre">)</span><span class="pre">[</span><span class="pre">NAME_N</span><span class="pre">]</span>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">(</span><span class="pre">&amp;</span><em><span class="pre">description</span></em><span class="pre">)</span><span class="pre">[</span><span class="pre">DESCRIPTION_N</span><span class="pre">]</span>, <em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="pre">T</span></a> <span class="pre">&amp;</span><em><span class="pre">default_value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_t_6size_t_6size_tEN3mge9parameter9parameterERA9SECTION_N_KcRA6NAME_N_KcRA13DESCRIPTION_N_KcRK1T" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Construct a new parameter. </p>
+<p><dl class="simple">
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SECTION_N</span></code>: length of section literal </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NAME_N</span></code>: length of name literal </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DESCRIPTION_N</span></code>: length of description literal </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">section</span></code>: parameter section </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: parameter name </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: parameter description </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default_value</span></code>: </p></li>
 </ul>
 </dd>
 </dl>
