@@ -14,7 +14,7 @@ namespace mge::opengl {
     {
         glCreateBuffers(1, &m_buffer);
         CHECK_OPENGL_ERROR(glCreateBuffers);
-        // TODO(opengl) Support different index buffer usage
+        // TODO #112 Support different index buffer usage
         glNamedBufferData(m_buffer, static_cast<GLsizeiptr>(size()), data, GL_STATIC_DRAW);
         CHECK_OPENGL_ERROR(glNamedBufferData);
     }
