@@ -6,6 +6,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
+#include <string_view>
 
 namespace mge {
 
@@ -31,9 +32,6 @@ namespace mge {
         DOUBLE,      //!< double
         LONG_DOUBLE, //!< long double
 
-        FLOAT_VEC2, //!< 2-dimensional float vector
-        FLOAT_VEC3, //!< 3 dimensional float vector
-        FLOAT_VEC4  //!< 4 dimensional float vector
     };
 
     /**
@@ -77,15 +75,17 @@ namespace mge {
             return 8;
         case data_type::LONG_DOUBLE:
             return sizeof(long double);
-        case data_type::FLOAT_VEC2:
-            return 8;
-        case data_type::FLOAT_VEC3:
-            return 12;
-        case data_type::FLOAT_VEC4:
-            return 16;
         default:
             MGE_THROW(illegal_argument) << "Unexpected data type " << t;
         }
     }
+
+    /**
+     * @brief Parse data type from string view.
+     *
+     * @param sv string view
+     * @return parsed data type
+     */
+    MGEGRAPHICS_EXPORT data_type parse_data_type(std::string_view sv);
 
 } // namespace mge
