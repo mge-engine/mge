@@ -5,6 +5,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include <array>
 #include <iterator>
+#include <limits>
 #include <variant>
 #include <vector>
 
@@ -125,12 +126,13 @@ namespace mge {
 
         const_iterator cbegin() const
         {
-            return std::visit(overloaded{
-                                  [](const std::monostate&) -> const_iterator { return nullptr; },
-                                  [](const small_data& d) -> const_iterator { return d.data.data(); },
-                                  [](const std::vector<T, Alloc>& v) -> const_iterator { return v.data(); },
-                              },
-                              m_data);
+            return std::visit(
+                overloaded{
+                    [](const std::monostate&) -> const_iterator { return nullptr; },
+                    [](const small_data& d) -> const_iterator { return d.data.data(); },
+                    [](const std::vector<T, Alloc>& v) -> const_iterator { return v.data(); },
+                },
+                m_data);
         }
 
         iterator begin()
@@ -147,22 +149,26 @@ namespace mge {
 
         const_iterator cend() const
         {
-            return std::visit(overloaded{
-                                  [](const std::monostate&) -> const_iterator { return nullptr; },
-                                  [](const small_data& d) -> const_iterator { return d.data.data() + d.length; },
-                                  [](const std::vector<T, Alloc>& v) -> const_iterator { return v.data() + v.size(); },
-                              },
-                              m_data);
+            return std::visit(
+                overloaded{
+                    [](const std::monostate&) -> const_iterator { return nullptr; },
+                    [](const small_data& d) -> const_iterator { return d.data.data() + d.length; },
+                    [](const std::vector<T, Alloc>& v) -> const_iterator {
+                        return v.data() + v.size();
+                    },
+                },
+                m_data);
         }
 
         iterator end()
         {
-            return std::visit(overloaded{
-                                  [](std::monostate&) -> iterator { return nullptr; },
-                                  [](small_data& d) -> iterator { return d.data.data() + d.length; },
-                                  [](std::vector<T, Alloc>& v) -> iterator { return v.data() + v.size(); },
-                              },
-                              m_data);
+            return std::visit(
+                overloaded{
+                    [](std::monostate&) -> iterator { return nullptr; },
+                    [](small_data& d) -> iterator { return d.data.data() + d.length; },
+                    [](std::vector<T, Alloc>& v) -> iterator { return v.data() + v.size(); },
+                },
+                m_data);
         }
 
         const_reverse_iterator rbegin() const { return crbegin(); }
@@ -183,7 +189,11 @@ namespace mge {
                               m_data);
         }
 
-        size_type max_size() const { return m_allocator.max_size(); }
+        size_type max_size() const
+        {
+            auto bytes = std::numeric_limits<size_t>::max();
+            return bytes / sizeof(T);
+        }
 
         void resize(size_t n)
         {
@@ -256,37 +266,39 @@ namespace mge {
 
         size_type capacity() const
         {
-            return std::visit(overloaded{
-                                  [](const std::monostate&) -> size_type { return 0; },
-                                  [](const small_data& d) -> size_type { return S; },
-                                  [](const std::vector<T, Alloc>& v) -> size_type { return v.capacity(); },
-                              },
-                              m_data);
+            return std::visit(
+                overloaded{
+                    [](const std::monostate&) -> size_type { return 0; },
+                    [](const small_data& d) -> size_type { return S; },
+                    [](const std::vector<T, Alloc>& v) -> size_type { return v.capacity(); },
+                },
+                m_data);
         }
 
         // emplace
-        // emplace_back
 
         template <class... Args> reference emplace_back(Args&&... args)
         {
-            return std::visit(
-                overloaded{
-                    [&](std::monostate&) -> reference {
-                        m_data = small_data();
-                        auto& sd = std::get<1>(m_data);
-                        return sd.emplace_back(std::forward<Args>(args)...);
-                    },
-                    [&](small_data& d) -> reference {
-                        if (d.length < S) {
-                            return d.emplace_back(std::forward<Args>(args)...);
-                        } else {
-                            convert_to_vector();
-                            return std::get<2>(m_data).emplace_back(std::forward<Args>(args)...);
-                        }
-                    },
-                    [&](std::vector<T, Alloc>& v) -> reference { return v.emplace_back(std::forward<Args>(args)...); },
-                },
-                m_data);
+            return std::visit(overloaded{
+                                  [&](std::monostate&) -> reference {
+                                      m_data = small_data();
+                                      auto& sd = std::get<1>(m_data);
+                                      return sd.emplace_back(std::forward<Args>(args)...);
+                                  },
+                                  [&](small_data& d) -> reference {
+                                      if (d.length < S) {
+                                          return d.emplace_back(std::forward<Args>(args)...);
+                                      } else {
+                                          convert_to_vector();
+                                          return std::get<2>(m_data).emplace_back(
+                                              std::forward<Args>(args)...);
+                                      }
+                                  },
+                                  [&](std::vector<T, Alloc>& v) -> reference {
+                                      return v.emplace_back(std::forward<Args>(args)...);
+                                  },
+                              },
+                              m_data);
         }
 
         bool empty() const { return m_data.index() == 0; }
@@ -303,12 +315,13 @@ namespace mge {
 
         const_pointer data() const noexcept
         {
-            return std::visit(overloaded{
-                                  [](const std::monostate&) -> const_pointer { return nullptr; },
-                                  [](const small_data& d) -> const_pointer { return d.data.data(); },
-                                  [](const std::vector<T, Alloc>& v) -> const_pointer { return v.data(); },
-                              },
-                              m_data);
+            return std::visit(
+                overloaded{
+                    [](const std::monostate&) -> const_pointer { return nullptr; },
+                    [](const small_data& d) -> const_pointer { return d.data.data(); },
+                    [](const std::vector<T, Alloc>& v) -> const_pointer { return v.data(); },
+                },
+                m_data);
         }
 
         // erase
@@ -320,8 +333,6 @@ namespace mge {
         allocator_type get_allocator() const { return m_allocator; }
 
         // insert
-        // max_size
-        // operator =
         // pop_back
 
         void push_back(const value_type& val)
