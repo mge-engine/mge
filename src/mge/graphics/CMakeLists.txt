@@ -23,6 +23,7 @@ SET(mgegraphics_sources
     data_type.cpp
     index_buffer.cpp
     swap_chain.cpp
+    vertex_format.cpp
 )
 
 SET(mgegraphics_headers
@@ -46,6 +47,7 @@ SET(mgegraphics_headers
     data_type.hpp
     index_buffer.hpp
     swap_chain.hpp
+    vertex_format.hpp
 )
 
 MGE_LIBRARY(

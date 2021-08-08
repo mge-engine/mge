@@ -11,6 +11,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_rgba_color.cpp
     test_data_type.cpp
     test_hardware_buffer.cpp
+    test_vertex_format.cpp
 )
 
 MGE_TEST(
