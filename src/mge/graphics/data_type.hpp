@@ -88,4 +88,11 @@ namespace mge {
      */
     MGEGRAPHICS_EXPORT data_type parse_data_type(std::string_view sv);
 
+    namespace literals {
+        inline data_type operator""_type(const char* s, size_t l)
+        {
+            return parse_data_type(std::string_view(s, s + l));
+        }
+    } // namespace literals
+
 } // namespace mge

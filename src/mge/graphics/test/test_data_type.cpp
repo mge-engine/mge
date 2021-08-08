@@ -35,3 +35,10 @@ TEST(data_type, parse)
     EXPECT_EQ(mge::data_type::DOUBLE, mge::parse_data_type("double"));
     EXPECT_EQ(mge::data_type::LONG_DOUBLE, mge::parse_data_type("long double"));
 }
+
+TEST(data_type, literal)
+{
+    using namespace mge::literals;
+
+    EXPECT_EQ(mge::data_type::FLOAT, "float"_type);
+}
