@@ -30,6 +30,27 @@ Base of all buffer types is the hardware buffer.
 Vertex Buffer
 =============
 
+Vertex buffers are used to provide vertices, i.e. data that is processed processed
+per vertex. This may be a simple 2D or 3D position, or a combination of position,
+texture coordinate, and normal vector data.
+
+A vertex format defines an element of data in a vertex buffer.
+
+.. doxygenclass:: mge::vertex_format
+    :members:
+
+To define the data layout in a vertex buffer, a vertex layout is defined, which
+is a list of vertex formats:
+
+.. doxygenclass:: mge::vertex_layout
+    :members:
+
+Vertex layouts are used to defined the structure of a vertex buffer.
+
+.. doxygenclass:: mge::vertex_buffer
+    :members:
+
+
 Index Buffer
 ============
 
