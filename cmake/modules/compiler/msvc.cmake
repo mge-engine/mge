@@ -29,6 +29,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd4251") # std::string has no DLL interface
     ADD_DEFINITIONS("-wd4100") # unreferenced formal parameter
     ADD_DEFINITIONS("-wd4619") # unknown warning number (caused by boost)
+    ADD_DEFINITIONS("-wd4868") # compiler does not guarantee evaluation order (caused by ranges)
     ADD_DEFINITIONS("-wd5031") # warning state moved by push into other file (caused by boost)
     ADD_DEFINITIONS("-wd5032") # bad pragma warning push (boost)
     ADD_DEFINITIONS("-wd4555") # expression has no side effect (caused by boost)

@@ -3,6 +3,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_format.hpp"
 #include <iosfwd>
+#include <string_view>
 
 namespace mge {
 
@@ -64,6 +65,8 @@ namespace mge {
         size_t binary_size() const;
     };
 
-    MGEGRAPHICS_EXPORT std::ostream operator<<(std::ostream& os, const vertex_layout& l);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const vertex_layout& l);
+
+    MGEGRAPHICS_EXPORT mge::vertex_layout parse_vertex_layout(std::string_view sv);
 
 } // namespace mge

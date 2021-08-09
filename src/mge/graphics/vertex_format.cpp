@@ -16,6 +16,8 @@ namespace mge {
         }
     }
 
+    size_t vertex_format::binary_size() const { return data_type_size(m_type) * m_size; }
+
     std::ostream& operator<<(std::ostream& os, const vertex_format& fmt)
     {
         if (fmt.size() == 1) {
