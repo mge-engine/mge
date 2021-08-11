@@ -26,6 +26,7 @@ SET(mgegraphics_sources
     vertex_format.cpp
     vertex_layout.cpp
     vertex_buffer.cpp
+    shader.cpp
 )
 
 SET(mgegraphics_headers
@@ -52,6 +53,7 @@ SET(mgegraphics_headers
     vertex_format.hpp
     vertex_layout.hpp
     vertex_buffer.hpp
+    shader.hpp
 )
 
 MGE_LIBRARY(
