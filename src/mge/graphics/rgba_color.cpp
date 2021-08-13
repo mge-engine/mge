@@ -36,13 +36,20 @@ namespace mge {
         b = c->b;
     }
 
-    bool rgba_color::operator==(const rgba_color& c) const { return r == c.r && g == c.g && b == c.b && a == c.a; }
+    bool rgba_color::operator==(const rgba_color& c) const
+    {
+        return r == c.r && g == c.g && b == c.b && a == c.a;
+    }
 
-    bool rgba_color::operator!=(const rgba_color& c) const { return r != c.r || g != c.g || b != c.b || a != c.a; }
+    bool rgba_color::operator!=(const rgba_color& c) const
+    {
+        return r != c.r || g != c.g || b != c.b || a != c.a;
+    }
 
     std::ostream& operator<<(std::ostream& o, const rgba_color& c)
     {
-        return o << "rgba_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b << ", a=" << c.a << "]";
+        return o << "rgba_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b << ", a=" << c.a
+                 << "]";
     }
 
 } // namespace mge

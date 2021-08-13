@@ -11,7 +11,7 @@
 
 TEST(benchmark, memory_cycle)
 {
-    char *buffer = new char[10 * 1024];
+    char* buffer = new char[10 * 1024];
     mge::benchmark()
         .show_results()
         .run("memset1",
@@ -31,7 +31,7 @@ TEST(benchmark, empty_cycle)
     try {
         mge::benchmark().run("empty", [&]() {});
         FAIL() << "Empty benchmark shall raise exception";
-    } catch (const std::exception &ex) {
+    } catch (const std::exception& ex) {
         EXPECT_STREQ("Benchmark 'empty' did run too little time", ex.what());
     }
 }
@@ -41,7 +41,7 @@ TEST(benchmark, throw_catch_cycle)
     mge::benchmark().run("throw_catch", [&]() {
         try {
             throw std::logic_error("test");
-        } catch (const std::exception &e) {
+        } catch (const std::exception& e) {
             mge::do_not_optimize_away(e.what());
         }
     });

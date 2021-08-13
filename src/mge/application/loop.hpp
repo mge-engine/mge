@@ -19,14 +19,14 @@ namespace mge {
     class MGEAPPLICATION_EXPORT loop : public component<loop>
     {
     public:
-        loop()          = default;
+        loop() = default;
         virtual ~loop() = default;
 
         /**
          * @brief Run the loop
          * @param t loop target
          */
-        virtual void run(loop_target &t) = 0;
+        virtual void run(loop_target& t) = 0;
     };
 
 } // namespace mge

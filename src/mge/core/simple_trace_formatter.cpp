@@ -18,11 +18,12 @@ namespace mge {
             m_first = r.time;
         }
 
-        auto   duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(r.time - *m_first);
+        auto duration_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(r.time - *m_first);
         double duration_seconds = static_cast<double>(duration_ns.count()) / 1000000000.0;
 
-        stream << "[" << std::fixed << std::setw(11) << std::setprecision(6) << std::setfill(' ') << duration_seconds << "] "
-               << std::setw(10) << std::dec << r.sequence << " " << std::setw(8) << std::hex << r.thread << " ";
+        stream << "[" << std::fixed << std::setw(11) << std::setprecision(6) << std::setfill(' ')
+               << duration_seconds << "] " << std::setw(10) << std::dec << r.sequence << " "
+               << std::setw(8) << std::hex << r.thread << " ";
         switch (r.level) {
         case trace_level::DEBUG:
             stream << "D ";

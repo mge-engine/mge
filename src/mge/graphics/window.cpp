@@ -39,7 +39,10 @@ namespace mge {
 
     const mge::render_context& window::render_context() const { return *m_render_context; }
 
-    void window::set_close_listener(const window::close_listener& listener) { m_close_listener = listener; }
+    void window::set_close_listener(const window::close_listener& listener)
+    {
+        m_close_listener = listener;
+    }
 
     void window::clear_close_listener() { m_close_listener = void_function(); }
 

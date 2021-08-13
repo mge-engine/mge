@@ -17,17 +17,13 @@ namespace mge {
         class render_system : public mge::render_system
         {
         public:
-            render_system()
-            {
-                MGE_INFO_TRACE(OPENGL) << "Creating opengl render system";
-            }
+            render_system() { MGE_INFO_TRACE(OPENGL) << "Creating opengl render system"; }
             ~render_system() = default;
 
-            mge::window_ref create_window(const mge::extent &        extent,
-                                          const mge::window_options &options)
+            mge::window_ref create_window(const mge::extent&         extent,
+                                          const mge::window_options& options)
             {
-                auto ref =
-                    std::make_shared<mge::opengl::window>(extent, options);
+                auto ref = std::make_shared<mge::opengl::window>(extent, options);
                 return ref;
             }
 

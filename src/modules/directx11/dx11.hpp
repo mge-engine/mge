@@ -15,6 +15,6 @@
 
 #include "mge/win32/com_unique_ptr.hpp"
 
-#define RELEASE_NOTNULL(x)                                                     \
-    if (x)                                                                     \
+#define RELEASE_NOTNULL(x)                                                                         \
+    if (x)                                                                                         \
         x->Release();

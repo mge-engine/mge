@@ -35,6 +35,6 @@ TEST(semantic_version, from_string)
     try {
         mge::semantic_version v("34abc"sv);
         FAIL() << "Expected error";
-    } catch (const mge::illegal_argument &) {
+    } catch (const mge::illegal_argument&) {
     }
 }

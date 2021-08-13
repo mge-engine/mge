@@ -26,7 +26,8 @@ namespace mge {
 
         if (!qi::parse(version_str.begin(),
                        version_str.end(),
-                       qi::uint_[set_major] >> (-('.' >> qi::uint_[set_minor] >> (-('.' >> qi::uint_[set_patch])))) >>
+                       qi::uint_[set_major] >>
+                           (-('.' >> qi::uint_[set_minor] >> (-('.' >> qi::uint_[set_patch])))) >>
                            qi::eoi)) {
             MGE_THROW(illegal_argument) << "Invalid version string " << version_str;
         }
@@ -58,9 +59,15 @@ namespace mge {
         return empty_data == m_data;
     }
 
-    bool semantic_version::operator<(const semantic_version& v) const noexcept { return m_data < v.m_data; }
+    bool semantic_version::operator<(const semantic_version& v) const noexcept
+    {
+        return m_data < v.m_data;
+    }
 
-    bool semantic_version::operator==(const semantic_version& v) const noexcept { return m_data == v.m_data; }
+    bool semantic_version::operator==(const semantic_version& v) const noexcept
+    {
+        return m_data == v.m_data;
+    }
 
     uint32_t semantic_version::major() const noexcept { return std::get<0>(m_data); }
 

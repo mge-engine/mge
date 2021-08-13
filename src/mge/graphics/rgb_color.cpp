@@ -26,9 +26,15 @@ namespace mge {
         }
     }
 
-    bool rgb_color::operator==(const rgb_color& c) const { return r == c.r && g == c.g && b == c.b; }
+    bool rgb_color::operator==(const rgb_color& c) const
+    {
+        return r == c.r && g == c.g && b == c.b;
+    }
 
-    bool rgb_color::operator!=(const rgb_color& c) const { return r != c.r || g != c.g || b != c.b; }
+    bool rgb_color::operator!=(const rgb_color& c) const
+    {
+        return r != c.r || g != c.g || b != c.b;
+    }
 
     std::ostream& operator<<(std::ostream& o, const rgb_color& c)
     {

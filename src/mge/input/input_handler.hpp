@@ -26,8 +26,8 @@ namespace mge {
         /**
          * Handler function for mouse actions.
          */
-        using mouse_action_handler =
-            std::function<void(uint32_t button, mouse_action action, const modifier& m, uint32_t x, uint32_t y)>;
+        using mouse_action_handler = std::function<void(
+            uint32_t button, mouse_action action, const modifier& m, uint32_t x, uint32_t y)>;
         /**
          * Handler function for mouse movement.
          */

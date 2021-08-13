@@ -206,5 +206,5 @@ namespace mge {
     };
 } // namespace mge
 
-#define MGE_MAINFUNCTION                                                                                                       \
+#define MGE_MAINFUNCTION                                                                           \
     int main(int argc, const char** argv) { return mge::application::main(argc, argv); }

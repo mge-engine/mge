@@ -33,7 +33,7 @@ TEST(window, on_close_calls_listeners)
 {
     MOCK_window w;
     bool        closing_listener_called = false;
-    bool        close_listener_called   = false;
+    bool        close_listener_called = false;
     w.set_closing_listener([&] {
         closing_listener_called = true;
         return true;
@@ -48,7 +48,7 @@ TEST(window, on_close_aborted_if_closing_listener_returns_false)
 {
     MOCK_window w;
     bool        closing_listener_called = false;
-    bool        close_listener_called   = false;
+    bool        close_listener_called = false;
     w.set_closing_listener([&] {
         closing_listener_called = true;
         return false;

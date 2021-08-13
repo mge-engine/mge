@@ -28,7 +28,8 @@ namespace mge {
             }
         }
 
-        shared_library::handle_type try_put(const std::filesystem::path& name, shared_library::handle_type handle)
+        shared_library::handle_type try_put(const std::filesystem::path& name,
+                                            shared_library::handle_type  handle)
         {
             std::scoped_lock lock(m_lock);
 

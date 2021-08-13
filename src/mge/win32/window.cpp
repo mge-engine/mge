@@ -77,7 +77,8 @@ namespace mge {
 
             DWORD style, exstyle;
 
-            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX |
+                    WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
             exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
             AdjustWindowRectEx(&window_rect, style, 0, exstyle);
@@ -97,7 +98,8 @@ namespace mge {
 
             MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
 
-            m_process_input_listener = application::instance()->add_input_listener([&]() { this->process_input(); });
+            m_process_input_listener =
+                application::instance()->add_input_listener([&]() { this->process_input(); });
         }
 
         void window::process_input()
@@ -282,10 +284,16 @@ namespace mge {
                     break;
                 }
                 case WM_LBUTTONDOWN:
-                    w->on_mouse_action(1, mge::mouse_action::PRESS, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(1,
+                                       mge::mouse_action::PRESS,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
                     break;
                 case WM_LBUTTONUP:
-                    w->on_mouse_action(1, mge::mouse_action::RELEASE, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(1,
+                                       mge::mouse_action::RELEASE,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
                     break;
                 case WM_LBUTTONDBLCLK:
                     w->on_mouse_action(1,
@@ -294,10 +302,16 @@ namespace mge {
                                        GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONDOWN:
-                    w->on_mouse_action(2, mge::mouse_action::PRESS, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(2,
+                                       mge::mouse_action::PRESS,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONUP:
-                    w->on_mouse_action(2, mge::mouse_action::RELEASE, GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(2,
+                                       mge::mouse_action::RELEASE,
+                                       GET_X_LPARAM(lparam),
+                                       GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONDBLCLK:
                     w->on_mouse_action(2,

@@ -55,9 +55,15 @@ namespace mge {
             }
         }
 
-        bool operator==(const video_mode& m) const { return this->extent == m.extent && is_refresh_rate(m.refresh_rate); }
+        bool operator==(const video_mode& m) const
+        {
+            return this->extent == m.extent && is_refresh_rate(m.refresh_rate);
+        }
 
-        bool operator!=(const video_mode& m) const { return this->extent != m.extent || !is_refresh_rate(m.refresh_rate); }
+        bool operator!=(const video_mode& m) const
+        {
+            return this->extent != m.extent || !is_refresh_rate(m.refresh_rate);
+        }
     };
 
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const video_mode& m);

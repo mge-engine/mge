@@ -16,14 +16,13 @@ namespace mge::dx11 {
     class window : public mge::platform::window
     {
     public:
-        window(render_system &system, const mge::extent &extent,
-               const window_options &options);
+        window(render_system& system, const mge::extent& extent, const window_options& options);
         ~window() = default;
 
     private:
         void create_render_context();
 
-        render_system &m_render_system;
+        render_system& m_render_system;
     };
 
 } // namespace mge::dx11

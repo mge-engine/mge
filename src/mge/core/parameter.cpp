@@ -5,7 +5,9 @@
 #include "mge/core/configuration.hpp"
 
 namespace mge {
-    basic_parameter::basic_parameter(std::string_view section, std::string_view name, std::string_view description)
+    basic_parameter::basic_parameter(std::string_view section,
+                                     std::string_view name,
+                                     std::string_view description)
         : m_section(section)
         , m_name(name)
         , m_description(description)

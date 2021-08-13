@@ -156,7 +156,8 @@ namespace mge {
 
         inline mge::thread::id get_id() { return ::std::this_thread::get_id(); }
 
-        template <class Rep, class Period> inline void sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
+        template <class Rep, class Period>
+        inline void sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
         {
             ::std::this_thread::sleep_for(sleep_duration);
         }

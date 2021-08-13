@@ -10,15 +10,14 @@ class a_component : public mge::component<a_component>
 {
 public:
     virtual ~a_component() = default;
-    virtual int foo()      = 0;
+    virtual int foo() = 0;
 };
 
 MGE_REGISTER_COMPONENT(a_component);
 
 TEST(component, registered)
 {
-    EXPECT_TRUE(
-        mge::component<a_component>::component_registered("a_component"));
+    EXPECT_TRUE(mge::component<a_component>::component_registered("a_component"));
 }
 
 class a_implementation : public a_component
@@ -33,16 +32,12 @@ MGE_REGISTER_IMPLEMENTATION(a_implementation, a_component, adummy, bdummy);
 
 TEST(implementation, registered)
 {
-    EXPECT_TRUE(component<a_component>::implementation_registered(
-        "a_component", "a_implementation"));
-    EXPECT_TRUE(component<a_component>::implementation_registered("a_component",
-                                                                  "adummy"));
-    EXPECT_TRUE(component<a_component>::implementation_registered("a_component",
-                                                                  "bdummy"));
-    EXPECT_FALSE(component<a_component>::implementation_registered(
-        "a_component", "   bdummy   "));
-    EXPECT_FALSE(component<a_component>::implementation_registered(
-        "a_component", "ADUMMY"));
+    EXPECT_TRUE(
+        component<a_component>::implementation_registered("a_component", "a_implementation"));
+    EXPECT_TRUE(component<a_component>::implementation_registered("a_component", "adummy"));
+    EXPECT_TRUE(component<a_component>::implementation_registered("a_component", "bdummy"));
+    EXPECT_FALSE(component<a_component>::implementation_registered("a_component", "   bdummy   "));
+    EXPECT_FALSE(component<a_component>::implementation_registered("a_component", "ADUMMY"));
 }
 
 TEST(component, implementations)

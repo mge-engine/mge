@@ -17,12 +17,12 @@ TEST(simple_trace_formatter, create)
     mge::trace_record r;
     std::string       m("My hoovercraft is full of eels");
 
-    r.level    = mge::trace_level::WARNING;
+    r.level = mge::trace_level::WARNING;
     r.sequence = 3;
-    r.thread   = 0x1234;
-    r.time     = mge::clock::time_point(0h);
-    r.topic    = &(MGE_NS_TRACE_TOPIC(mge, CORE));
-    r.message  = std::string_view(m.begin(), m.end());
+    r.thread = 0x1234;
+    r.time = mge::clock::time_point(0h);
+    r.topic = &(MGE_NS_TRACE_TOPIC(mge, CORE));
+    r.message = std::string_view(m.begin(), m.end());
 
     std::stringstream s;
     f.format(s, r);

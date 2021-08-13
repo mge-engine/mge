@@ -18,7 +18,10 @@ namespace mge {
     MGE_DEFINE_TRACE(MGE);
     MGE_DEFINE_TRACE(CORE);
 
-    MGE_DEFINE_PARAMETER(bool, trace, print_to_stdout, "Whether all trace shall be printed to stdout");
+    MGE_DEFINE_PARAMETER(bool,
+                         trace,
+                         print_to_stdout,
+                         "Whether all trace shall be printed to stdout");
 
     static volatile bool global_topic_configured;
 
@@ -87,7 +90,10 @@ namespace mge {
         if (m_level_config.has_value()) {
             std::string              level_list_str = m_level_config.get();
             std::vector<std::string> level_list;
-            boost::split(level_list, level_list_str, boost::is_any_of(","), boost::token_compress_on);
+            boost::split(level_list,
+                         level_list_str,
+                         boost::is_any_of(","),
+                         boost::token_compress_on);
             std::for_each(level_list.begin(), level_list.end(), [&](std::string& s) {
                 boost::to_upper(s);
                 boost::trim(s);
@@ -173,7 +179,10 @@ namespace mge {
         }
     }
 
-    void trace_topic::add_sink(const std::shared_ptr<trace_sink>& sink) { m_sinks.emplace_back(sink); }
+    void trace_topic::add_sink(const std::shared_ptr<trace_sink>& sink)
+    {
+        m_sinks.emplace_back(sink);
+    }
 
     void trace_topic::remove_sink(const std::shared_ptr<trace_sink>& sink)
     {

@@ -115,7 +115,10 @@ namespace mge {
          * @param other other set
          * @return @c true if other is contained in this set
          */
-        bool includes(const enum_set<E, M>& other) const { return (m_bits & other.m_bits) == other.m_bits; }
+        bool includes(const enum_set<E, M>& other) const
+        {
+            return (m_bits & other.m_bits) == other.m_bits;
+        }
 
         /**
          * @brief Clears the whole set.

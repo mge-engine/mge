@@ -7,15 +7,16 @@
 #include <memory>
 
 namespace mge::dx11 {
-    window::window(render_system &system, const mge::extent &extent,
-                   const mge::window_options &options)
-        : platform::window(extent, options), m_render_system(system)
+    window::window(render_system&             system,
+                   const mge::extent&         extent,
+                   const mge::window_options& options)
+        : platform::window(extent, options)
+        , m_render_system(system)
     {}
 
     void window::create_render_context()
     {
-        m_render_context = std::make_shared<::mge::dx11::render_context>(
-            m_render_system, *this);
+        m_render_context = std::make_shared<::mge::dx11::render_context>(m_render_system, *this);
     }
 
 } // namespace mge::dx11

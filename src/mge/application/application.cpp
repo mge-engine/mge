@@ -21,7 +21,10 @@ namespace mge {
     MGE_REGISTER_COMPONENT(application);
 
     MGE_DEFINE_PARAMETER(std::string, application, name, "Application name to instantiate");
-    MGE_DEFINE_PARAMETER(std::string, application, loop, "Application loop implementation to instantiate");
+    MGE_DEFINE_PARAMETER(std::string,
+                         application,
+                         loop,
+                         "Application loop implementation to instantiate");
 
     application* application::s_instance;
 
@@ -131,46 +134,65 @@ namespace mge {
             app->teardown();
             return app->return_code();
         } catch (const mge::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '" << used_application_name << "':";
+            MGE_ERROR_TRACE(APPLICATION)
+                << "Exception in application '" << used_application_name << "':";
             MGE_ERROR_TRACE(APPLICATION) << ex.details();
             return 1;
         } catch (const std::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '" << used_application_name << "':";
+            MGE_ERROR_TRACE(APPLICATION)
+                << "Exception in application '" << used_application_name << "':";
             MGE_ERROR_TRACE(APPLICATION) << ex.what();
             return 1;
         } catch (...) {
-            MGE_ERROR_TRACE(APPLICATION) << "Unknown exception in application '" << used_application_name << "'";
+            MGE_ERROR_TRACE(APPLICATION)
+                << "Unknown exception in application '" << used_application_name << "'";
             return 1;
         }
     }
 
-    application::input_listener_key application::add_input_listener(const application::input_listener& l)
+    application::input_listener_key
+    application::add_input_listener(const application::input_listener& l)
     {
         return m_input_listeners.insert(l);
     }
 
-    void application::remove_input_listener(application::input_listener_key k) { m_input_listeners.erase(k); }
+    void application::remove_input_listener(application::input_listener_key k)
+    {
+        m_input_listeners.erase(k);
+    }
 
-    application::update_listener_key application::add_update_listener(const application::update_listener& l)
+    application::update_listener_key
+    application::add_update_listener(const application::update_listener& l)
     {
         return m_update_listeners.insert(l);
     }
 
-    void application::remove_update_listener(application::update_listener_key k) { m_update_listeners.erase(k); }
+    void application::remove_update_listener(application::update_listener_key k)
+    {
+        m_update_listeners.erase(k);
+    }
 
-    application::redraw_listener_key application::add_redraw_listener(const application::redraw_listener& l)
+    application::redraw_listener_key
+    application::add_redraw_listener(const application::redraw_listener& l)
     {
         return m_redraw_listeners.insert(l);
     }
 
-    void application::remove_redraw_listener(application::redraw_listener_key k) { m_redraw_listeners.erase(k); }
+    void application::remove_redraw_listener(application::redraw_listener_key k)
+    {
+        m_redraw_listeners.erase(k);
+    }
 
-    application::quit_listener_key application::add_quit_listener(const application::quit_listener& l)
+    application::quit_listener_key
+    application::add_quit_listener(const application::quit_listener& l)
     {
         return m_quit_listeners.insert(l);
     }
 
-    void application::remove_quit_listener(application::quit_listener_key k) { m_quit_listeners.erase(k); }
+    void application::remove_quit_listener(application::quit_listener_key k)
+    {
+        m_quit_listeners.erase(k);
+    }
 
     bool application::is_quit() const { return m_quit; }
 

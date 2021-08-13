@@ -13,15 +13,14 @@ namespace mge::vulkan {
         render_system();
         ~render_system() = default;
 
-        mge::window_ref
-        create_window(const mge::extent &        extent,
-                      const mge::window_options &options) override;
+        mge::window_ref create_window(const mge::extent&         extent,
+                                      const mge::window_options& options) override;
 
         mge::render_system::monitor_collection monitors() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
-#define INSTANCE_FUNCTION(X)       PFN_##X X;
-#define DEVICE_FUNCTION(X)         PFN_##X X;
+#define INSTANCE_FUNCTION(X) PFN_##X X;
+#define DEVICE_FUNCTION(X) PFN_##X X;
 
 #include "vulkan_core.inc"
 #ifdef MGE_OS_WINDOWS

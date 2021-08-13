@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/vertex_layout.hpp"
 #include <iostream>
 #include <numeric>

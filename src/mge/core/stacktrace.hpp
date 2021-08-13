@@ -32,7 +32,11 @@ namespace mge {
              * @param file      source code file
              * @param line      source code line
              */
-            frame(const void* address, std::string_view module, std::string_view name, std::string_view file, uint32_t line);
+            frame(const void*      address,
+                  std::string_view module,
+                  std::string_view name,
+                  std::string_view file,
+                  uint32_t         line);
             /**
              * @brief Copy constructor.
              * @param f copied frame

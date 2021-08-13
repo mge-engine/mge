@@ -20,7 +20,7 @@ TEST(monitor, all_monitors_0_primary)
 
 TEST(monitor, supported_modes)
 {
-    auto mon   = mge::win32::monitor::all_monitors().at(0);
+    auto mon = mge::win32::monitor::all_monitors().at(0);
     auto modes = mon->supported_modes();
     EXPECT_GE(modes.size(), 1u);
 }
@@ -34,8 +34,8 @@ TEST(monitor, physical_size)
 
 TEST(monitor, current_mode_in_supported)
 {
-    auto mon   = mge::win32::monitor::all_monitors().at(0);
-    auto mode  = mon->current_mode();
+    auto mon = mge::win32::monitor::all_monitors().at(0);
+    auto mode = mon->current_mode();
     auto modes = mon->supported_modes();
     EXPECT_TRUE(mge::contains(modes, mode));
 }

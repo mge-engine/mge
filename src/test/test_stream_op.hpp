@@ -26,7 +26,7 @@ namespace mge {
         EXPECT_EQ(cmp.str(), ss.str());
     }
 
-    template <typename E> void test_stream_output(E e, const char *expected)
+    template <typename E> void test_stream_output(E e, const char* expected)
     {
         std::stringstream ss;
         ss << e;

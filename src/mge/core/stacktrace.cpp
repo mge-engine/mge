@@ -69,7 +69,8 @@ namespace mge {
         symbols_initialized = true;
     }
 
-    template <typename T> void fill_stacktrace(HANDLE thread, CONTEXT* context, T& frames, string_pool& strings)
+    template <typename T>
+    void fill_stacktrace(HANDLE thread, CONTEXT* context, T& frames, string_pool& strings)
     {
         if (!symbols_initialized) {
             initialize_symbols();
@@ -111,7 +112,9 @@ namespace mge {
 
             // get symbol information
 #    define MAX_SYMBOL_NAME_LEN 2000
-            DWORD64 symbolinfo_buffer[(sizeof(IMAGEHLP_SYMBOL64) + MAX_SYMBOL_NAME_LEN) / sizeof(DWORD64) + 1];
+            DWORD64 symbolinfo_buffer[(sizeof(IMAGEHLP_SYMBOL64) + MAX_SYMBOL_NAME_LEN) /
+                                          sizeof(DWORD64) +
+                                      1];
             static IMAGEHLP_SYMBOL64* p_symbolinfo;
             static DWORD64            symboldisplacement;
             const char*               methodname;
@@ -121,7 +124,10 @@ namespace mge {
             p_symbolinfo->MaxNameLength = MAX_SYMBOL_NAME_LEN;
             symboldisplacement = 0;
 
-            if (SymGetSymFromAddr64(current_process, frame.AddrPC.Offset, &symboldisplacement, p_symbolinfo)) {
+            if (SymGetSymFromAddr64(current_process,
+                                    frame.AddrPC.Offset,
+                                    &symboldisplacement,
+                                    p_symbolinfo)) {
                 methodname = (const char*)&(p_symbolinfo->Name[0]);
             } else {
                 methodname = "";
@@ -130,7 +136,10 @@ namespace mge {
             static IMAGEHLP_LINE64 lineinfo;
             static DWORD           linedisplacement;
             lineinfo.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
-            if (SymGetLineFromAddr64(current_process, frame.AddrPC.Offset, &linedisplacement, &lineinfo)) {
+            if (SymGetLineFromAddr64(current_process,
+                                     frame.AddrPC.Offset,
+                                     &linedisplacement,
+                                     &lineinfo)) {
                 frames.emplace_back((void*)frame.AddrPC.Offset,
                                     strings.get(moduleinfo.ImageName),
                                     strings.get(methodname),
@@ -158,8 +167,11 @@ namespace mge {
     }
 
 #endif
-    stacktrace::frame::frame(
-        const void* address, std::string_view module, std::string_view name, std::string_view file, uint32_t line)
+    stacktrace::frame::frame(const void*      address,
+                             std::string_view module,
+                             std::string_view name,
+                             std::string_view file,
+                             uint32_t         line)
         : m_address(address)
         , m_name(name)
         , m_source_file(file)

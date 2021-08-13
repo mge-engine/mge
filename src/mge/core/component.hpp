@@ -49,22 +49,28 @@ namespace mge {
     public:
         virtual ~component_base() = default;
 
-        template <typename T> static inline std::shared_ptr<T> create(std::string_view implementation_name)
+        template <typename T>
+        static inline std::shared_ptr<T> create(std::string_view implementation_name)
         {
-            return std::dynamic_pointer_cast<T, component_base>(create(type_name<T>(), implementation_name));
+            return std::dynamic_pointer_cast<T, component_base>(
+                create(type_name<T>(), implementation_name));
         }
 
-        static std::shared_ptr<component_base> create(std::string_view component_name, std::string_view implementation_name);
+        static std::shared_ptr<component_base> create(std::string_view component_name,
+                                                      std::string_view implementation_name);
 
-        template <typename T> static inline void implementations(const std::function<void(std::string_view)>& callback)
+        template <typename T>
+        static inline void implementations(const std::function<void(std::string_view)>& callback)
         {
             implementations(type_name<T>(), callback);
         }
 
-        static void implementations(std::string_view component_name, const std::function<void(std::string_view)>& callback);
+        static void implementations(std::string_view                             component_name,
+                                    const std::function<void(std::string_view)>& callback);
 
         static bool component_registered(std::string_view name);
-        static bool implementation_registered(std::string_view component_name, std::string_view implementation_name);
+        static bool implementation_registered(std::string_view component_name,
+                                              std::string_view implementation_name);
 
         inline std::string_view implementation_name() const noexcept
         {
@@ -125,10 +131,13 @@ namespace mge {
         }
 
         virtual ~implementation_registry_entry() noexcept = default;
-        std::string_view                component_name() const noexcept override { return m_component_name; }
-        std::string_view                name() const noexcept override { return m_name; }
-        std::string_view                alias_names() const noexcept override { return m_alias_names; }
-        std::shared_ptr<component_base> create() const override { return std::make_shared<ImplementationType>(); }
+        std::string_view component_name() const noexcept override { return m_component_name; }
+        std::string_view name() const noexcept override { return m_name; }
+        std::string_view alias_names() const noexcept override { return m_alias_names; }
+        std::shared_ptr<component_base> create() const override
+        {
+            return std::make_shared<ImplementationType>();
+        }
 
     private:
         std::string m_component_name;
@@ -187,7 +196,8 @@ namespace mge {
  *
  * @param clazz class name
  */
-#define MGE_REGISTER_COMPONENT(clazz) ::mge::component_registry_entry<clazz> __mge_component_registry_entry##clazz
+#define MGE_REGISTER_COMPONENT(clazz)                                                              \
+    ::mge::component_registry_entry<clazz> __mge_component_registry_entry##clazz
 
 /**
  * @brief Register an implementation. The macro must be used within the
@@ -197,7 +207,8 @@ namespace mge {
  * @param component component class (interface class)
  * @param ... alias names for registration
  */
-#define MGE_REGISTER_IMPLEMENTATION(clazz, component, ...)                                                                     \
-    ::mge::implementation_registry_entry<component, clazz> __mge_implementation_registry_entry_##clazz =                       \
-        ::mge::implementation_registry_entry<component, clazz>(MGE_STRINGIFY(__VA_ARGS__))
+#define MGE_REGISTER_IMPLEMENTATION(clazz, component, ...)                                         \
+    ::mge::implementation_registry_entry<component, clazz>                                         \
+        __mge_implementation_registry_entry_##clazz =                                              \
+            ::mge::implementation_registry_entry<component, clazz>(MGE_STRINGIFY(__VA_ARGS__))
 } // namespace mge

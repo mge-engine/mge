@@ -12,7 +12,7 @@ namespace mge {
 namespace mge::vulkan {
     MGE_DEFINE_EXCEPTION_CLASS(error);
 
-    static const char *vkresult_message(VkResult rc)
+    static const char* vkresult_message(VkResult rc)
     {
         switch (rc) {
         case VK_SUCCESS:
@@ -72,29 +72,26 @@ namespace mge::vulkan {
         }
     }
 
-    error &error::set_info_from_vkresult(VkResult rc, const char *file,
-                                         int line, const char *function)
+    error&
+    error::set_info_from_vkresult(VkResult rc, const char* file, int line, const char* function)
     {
         set_info(mge::exception::source_file(file))
                 .set_info(mge::exception::source_line(line))
                 .set_info(mge::exception::called_function(function))
                 .set_info(mge::exception::stack(mge::stacktrace()))
-                .set_info(
-                    mge::exception::type_name(mge::type_name<vulkan::error>()))
-            << "Call to " << function << " failed: (" << (int)rc << ") "
-            << vkresult_message(rc);
+                .set_info(mge::exception::type_name(mge::type_name<vulkan::error>()))
+            << "Call to " << function << " failed: (" << (int)rc << ") " << vkresult_message(rc);
         return *this;
     }
 
-    void error::check_vkresult(VkResult rc, const char *file, int line,
-                               const char *function)
+    void error::check_vkresult(VkResult rc, const char* file, int line, const char* function)
     {
         if (rc == VK_SUCCESS) {
             return;
         } else {
             MGE_ERROR_TRACE(VULKAN) << file << ":" << line << ": "
-                                    << "Call to " << function << " failed: ("
-                                    << (int)rc << ") " << vkresult_message(rc);
+                                    << "Call to " << function << " failed: (" << (int)rc << ") "
+                                    << vkresult_message(rc);
             vulkan::error err;
             throw err.set_info_from_vkresult(rc, file, line, function);
         }

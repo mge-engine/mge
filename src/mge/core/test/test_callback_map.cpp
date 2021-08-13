@@ -9,7 +9,7 @@ TEST(callback_map, functionality)
     mge::callback_map<void> callbacks;
 
     bool callback_called = false;
-    auto f               = [&]() { callback_called = true; };
+    auto f = [&]() { callback_called = true; };
 
     auto k1 = callbacks.insert(f);
     auto k2 = callbacks.insert(f); // can't distinguish

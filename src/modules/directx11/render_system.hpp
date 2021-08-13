@@ -15,9 +15,8 @@ namespace mge::dx11 {
 
         monitor_collection monitors() override;
 
-        mge::window_ref render_system::create_window(
-            const mge::extent &        extent,
-            const mge::window_options &options) override;
+        mge::window_ref render_system::create_window(const mge::extent&         extent,
+                                                     const mge::window_options& options) override;
 
         bool debug() const;
         bool software_device() const;

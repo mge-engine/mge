@@ -148,9 +148,9 @@ namespace mge {
  * @brief Define a trace topic.
  * @param TOPIC name of trace topic
  */
-#define MGE_DEFINE_TRACE(TOPIC)                                                                                                \
-    static mge::trace_topic s__trace_topic##TOPIC(#TOPIC);                                                                     \
-    MGE_DLLEXPORT mge::trace_topic& __trace_topic_##TOPIC() { return s__trace_topic##TOPIC; }                                  \
+#define MGE_DEFINE_TRACE(TOPIC)                                                                    \
+    static mge::trace_topic s__trace_topic##TOPIC(#TOPIC);                                         \
+    MGE_DLLEXPORT mge::trace_topic& __trace_topic_##TOPIC() { return s__trace_topic##TOPIC; }      \
     extern int                      s_trace_dummy
 
 /**

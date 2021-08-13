@@ -23,10 +23,7 @@ TEST(statistics, create_from_string)
     s.release();
 }
 
-TEST(statistics, root_exists)
-{
-    EXPECT_EQ(""sv, mge::statistics::root().name());
-}
+TEST(statistics, root_exists) { EXPECT_EQ(""sv, mge::statistics::root().name()); }
 
 TEST(statistics, death_on_destroy_owned)
 {
@@ -36,12 +33,17 @@ TEST(statistics, death_on_destroy_owned)
 class my_stats : public mge::statistics
 {
 public:
-    my_stats() : mge::statistics("my_stats"sv) { count = 17; }
+    my_stats()
+        : mge::statistics("my_stats"sv)
+    {
+        count = 17;
+    }
 
-    const description &describe() const override
+    const description& describe() const override
     {
         static mge::statistics::description desc(
-            "my_stats"sv, "my test statistics"sv,
+            "my_stats"sv,
+            "my test statistics"sv,
             {mge::statistics::description::field("count"sv, &my_stats::count)});
         return desc;
     }

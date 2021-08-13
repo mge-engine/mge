@@ -13,7 +13,8 @@ namespace mge {
     class test_application : public application
     {
     public:
-        test_application() : m_tests_did_run(false)
+        test_application()
+            : m_tests_did_run(false)
         {
             add_update_listener([&](uint64_t, double) {
                 if (!m_tests_did_run) {
@@ -25,12 +26,12 @@ namespace mge {
 
         void run_all_tests()
         {
-            std::vector<const char *> argv;
-            for (const auto &s : arguments()) {
+            std::vector<const char*> argv;
+            for (const auto& s : arguments()) {
                 argv.push_back(s.c_str());
             }
             int tmp_argc = argc();
-            ::testing::InitGoogleTest(&tmp_argc, const_cast<char **>(&argv[0]));
+            ::testing::InitGoogleTest(&tmp_argc, const_cast<char**>(&argv[0]));
             set_return_code(RUN_ALL_TESTS());
         }
 
@@ -38,9 +39,6 @@ namespace mge {
     };
 } // namespace mge
 
-#define APPLICATIONTEST_MAIN(NAME)                                             \
-    MGE_DEFINE_TRACE(APPLICATIONTEST);                                         \
-    int main(int argc, const char **argv)                                      \
-    {                                                                          \
-        return mge::application::main(#NAME, argc, argv);                      \
-    }
+#define APPLICATIONTEST_MAIN(NAME)                                                                 \
+    MGE_DEFINE_TRACE(APPLICATIONTEST);                                                             \
+    int main(int argc, const char** argv) { return mge::application::main(#NAME, argc, argv); }

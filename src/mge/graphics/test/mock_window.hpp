@@ -8,8 +8,7 @@ class MOCK_window : public mge::window
 {
 public:
     MOCK_window()
-        : mge::window(mge::extent(800, 600),
-                      mge::window_options::standard_options())
+        : mge::window(mge::extent(800, 600), mge::window_options::standard_options())
     {}
 
     virtual ~MOCK_window() = default;

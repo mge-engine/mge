@@ -58,7 +58,8 @@ namespace mge {
                 fs::path current_path(p);
                 load_paths.push_back(fs::canonical(current_path));
             } catch (const std::exception& e) {
-                MGE_TRACE(CORE, WARNING) << "Exception inspecting module path " << p << ": " << e.what();
+                MGE_TRACE(CORE, WARNING)
+                    << "Exception inspecting module path " << p << ": " << e.what();
             }
         }
 
@@ -92,7 +93,8 @@ namespace mge {
                     }
                 }
             } catch (std::exception& e) {
-                MGE_TRACE(CORE, WARNING) << "Exception enumerating modules in path " << module_path << ": " << e.what();
+                MGE_TRACE(CORE, WARNING)
+                    << "Exception enumerating modules in path " << module_path << ": " << e.what();
             }
         }
         return result;

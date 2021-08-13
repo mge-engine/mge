@@ -5,28 +5,28 @@
 #include "mge/core/exception.hpp"
 namespace mge {
 
-#define MGE_DECLARE_EXCEPTION_CLASS(CLASS_NAME)                                                                                \
-    class MGECORE_EXPORT CLASS_NAME : public ::mge::exception                                                                  \
-    {                                                                                                                          \
-    public:                                                                                                                    \
-        CLASS_NAME();                                                                                                          \
-        CLASS_NAME(const CLASS_NAME& e);                                                                                       \
-        CLASS_NAME(CLASS_NAME&& e);                                                                                            \
-        ~CLASS_NAME();                                                                                                         \
-                                                                                                                               \
-        CLASS_NAME& operator=(const CLASS_NAME& e);                                                                            \
-                                                                                                                               \
-        template <typename Info> CLASS_NAME& set_info(const Info& info)                                                        \
-        {                                                                                                                      \
-            mge::exception::set_info(info);                                                                                    \
-            return *this;                                                                                                      \
-        }                                                                                                                      \
-                                                                                                                               \
-        template <typename T> CLASS_NAME& operator<<(const T& value)                                                           \
-        {                                                                                                                      \
-            mge::exception::operator<<(value);                                                                                 \
-            return *this;                                                                                                      \
-        }                                                                                                                      \
+#define MGE_DECLARE_EXCEPTION_CLASS(CLASS_NAME)                                                    \
+    class MGECORE_EXPORT CLASS_NAME : public ::mge::exception                                      \
+    {                                                                                              \
+    public:                                                                                        \
+        CLASS_NAME();                                                                              \
+        CLASS_NAME(const CLASS_NAME& e);                                                           \
+        CLASS_NAME(CLASS_NAME&& e);                                                                \
+        ~CLASS_NAME();                                                                             \
+                                                                                                   \
+        CLASS_NAME& operator=(const CLASS_NAME& e);                                                \
+                                                                                                   \
+        template <typename Info> CLASS_NAME& set_info(const Info& info)                            \
+        {                                                                                          \
+            mge::exception::set_info(info);                                                        \
+            return *this;                                                                          \
+        }                                                                                          \
+                                                                                                   \
+        template <typename T> CLASS_NAME& operator<<(const T& value)                               \
+        {                                                                                          \
+            mge::exception::operator<<(value);                                                     \
+            return *this;                                                                          \
+        }                                                                                          \
     }
 
     /** @brief Thrown if the program detects an illegal state */
@@ -53,7 +53,8 @@ namespace mge {
  * @brief Helper macro to throw if argument is null.
  * @param N argument name
  */
-#define MGE_THROW_ARGUMENT_NOT_NULL(N) MGE_THROW(mge::illegal_argument) << "Argument '" << #N << "' must not be null"
+#define MGE_THROW_ARGUMENT_NOT_NULL(N)                                                             \
+    MGE_THROW(mge::illegal_argument) << "Argument '" << #N << "' must not be null"
 
 /**
  * @brief Throw not implemented error.
@@ -63,23 +64,23 @@ namespace mge {
 /**
  * @brief Helper macro to define an exception class.
  */
-#define MGE_DEFINE_EXCEPTION_CLASS(clazz)                                                                                      \
-    clazz::clazz() {}                                                                                                          \
-                                                                                                                               \
-    clazz::clazz(const clazz& c)                                                                                               \
-        : mge::exception(c)                                                                                                    \
-    {}                                                                                                                         \
-                                                                                                                               \
-    clazz::clazz(clazz&& c)                                                                                                    \
-        : mge::exception(std::move(c))                                                                                         \
-    {}                                                                                                                         \
-                                                                                                                               \
-    clazz& clazz::operator=(const clazz& c)                                                                                    \
-    {                                                                                                                          \
-        mge::exception::operator=(c);                                                                                          \
-        return *this;                                                                                                          \
-    }                                                                                                                          \
-                                                                                                                               \
+#define MGE_DEFINE_EXCEPTION_CLASS(clazz)                                                          \
+    clazz::clazz() {}                                                                              \
+                                                                                                   \
+    clazz::clazz(const clazz& c)                                                                   \
+        : mge::exception(c)                                                                        \
+    {}                                                                                             \
+                                                                                                   \
+    clazz::clazz(clazz&& c)                                                                        \
+        : mge::exception(std::move(c))                                                             \
+    {}                                                                                             \
+                                                                                                   \
+    clazz& clazz::operator=(const clazz& c)                                                        \
+    {                                                                                              \
+        mge::exception::operator=(c);                                                              \
+        return *this;                                                                              \
+    }                                                                                              \
+                                                                                                   \
     clazz::~clazz() {}
 
 } // namespace mge

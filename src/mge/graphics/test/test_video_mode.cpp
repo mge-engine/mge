@@ -16,7 +16,7 @@ TEST(video_mode, output)
 {
     mge::video_mode m;
 
-    m.extent       = mge::extent(800, 600);
+    m.extent = mge::extent(800, 600);
     m.refresh_rate = 60;
 
     mge::test_stream_output(m, "800x600@60");
@@ -26,7 +26,7 @@ TEST(video_mode, any_equals)
 {
     mge::video_mode m;
 
-    m.extent       = mge::extent(800, 600);
+    m.extent = mge::extent(800, 600);
     m.refresh_rate = 60;
 
     mge::test_stream_output(m, "800x600@60");

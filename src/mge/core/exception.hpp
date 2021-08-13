@@ -273,7 +273,7 @@ namespace mge {
          */
         template <typename Info> inline auto get() const
         {
-            auto                            it = m_infos.find(std::type_index(typeid(typename Info::tag_type)));
+            auto it = m_infos.find(std::type_index(typeid(typename Info::tag_type)));
             std::optional<Info::value_type> result;
             if (it != m_infos.end()) {
                 result = std::any_cast<Info::value_type>(it->second);
@@ -298,7 +298,8 @@ namespace mge {
          * @return @c *this
          */
         template <class T>
-        typename std::enable_if<std::is_base_of<tag_base, T>::value, exception&>::type operator<<(const T& value)
+        typename std::enable_if<std::is_base_of<tag_base, T>::value, exception&>::type
+        operator<<(const T& value)
         {
             set_info(value);
             return *this;
@@ -312,7 +313,8 @@ namespace mge {
          * @return @c *this
          */
         template <class T>
-        typename std::enable_if<!std::is_base_of<tag_base, T>::value, exception&>::type operator<<(const T& value)
+        typename std::enable_if<!std::is_base_of<tag_base, T>::value, exception&>::type
+        operator<<(const T& value)
         {
             if (!m_raw_message_stream) {
                 m_raw_message_stream = std::make_unique<std::stringstream>();
@@ -371,11 +373,11 @@ namespace mge {
  * Throw exception instance.
  * @param ex exception type
  */
-#define MGE_THROW(ex)                                                                                                          \
-    throw(ex().set_info(mge::exception::source_file(__FILE__))                                                                 \
-              .set_info(mge::exception::source_line(__LINE__))                                                                 \
-              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))                                                      \
-              .set_info(mge::exception::stack(mge::stacktrace()))                                                              \
+#define MGE_THROW(ex)                                                                              \
+    throw(ex().set_info(mge::exception::source_file(__FILE__))                                     \
+              .set_info(mge::exception::source_line(__LINE__))                                     \
+              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))                          \
+              .set_info(mge::exception::stack(mge::stacktrace()))                                  \
               .set_info(mge::exception::type_name(mge::type_name<ex>())))
 
 /**
@@ -383,13 +385,13 @@ namespace mge {
  * @param ex exception type
  * @param causing_exception exception causing this exception
  */
-#define MGE_THROW_WITH_CAUSE(ex, causing_exception)                                                                            \
-    throw ex()                                                                                                                 \
-        .set_info(mge::exception::source_file(__FILE__))                                                                       \
-        .set_info(mge::exception::source_line(__LINE__))                                                                       \
-        .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))                                                            \
-        .set_info(mge::exception::stack(mge::stacktrace()))                                                                    \
-        .set_info(mge::exception::type_name(mge::type_name<ex>()))                                                             \
+#define MGE_THROW_WITH_CAUSE(ex, causing_exception)                                                \
+    throw ex()                                                                                     \
+        .set_info(mge::exception::source_file(__FILE__))                                           \
+        .set_info(mge::exception::source_line(__LINE__))                                           \
+        .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))                                \
+        .set_info(mge::exception::stack(mge::stacktrace()))                                        \
+        .set_info(mge::exception::type_name(mge::type_name<ex>()))                                 \
         .set_info(mge::exception::cause(causing_exception))
 
 /**
@@ -420,7 +422,8 @@ namespace mge {
      * @param details wrapped exception
      * @return @c os
      */
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream& os, const exception::exception_details& details);
+    MGECORE_EXPORT std::ostream& operator<<(std::ostream&                       os,
+                                            const exception::exception_details& details);
     /**
      * @brief Re-throws the current exception.
      *

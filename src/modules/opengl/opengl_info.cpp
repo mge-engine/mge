@@ -32,13 +32,15 @@ namespace mge {
             }
             std::string plain_glsl_version(glsl_version_str.begin(), vit);
 
-            shader_language = mge::shader_language("glsl", mge::semantic_version(plain_glsl_version));
+            shader_language =
+                mge::shader_language("glsl", mge::semantic_version(plain_glsl_version));
 
             MGE_TRACE(OPENGL, INFO) << "GLSL version " << glsl_version_str;
 
             std::string extension_string = ((const char*)glGetString(GL_EXTENSIONS));
 
-            auto it = boost::make_split_iterator(extension_string, boost::token_finder(boost::is_space()));
+            auto it = boost::make_split_iterator(extension_string,
+                                                 boost::token_finder(boost::is_space()));
 
             MGE_TRACE(OPENGL, INFO) << "OpenGL extensions:";
             while (!it.eof()) {
