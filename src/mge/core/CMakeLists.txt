@@ -31,6 +31,7 @@ SET(mgecore_sources
     semantic_version.cpp
     output_stream.cpp
     input_stream.cpp
+    properties.cpp
 )
 
 SET(mgecore_headers
@@ -74,6 +75,7 @@ SET(mgecore_headers
     semantic_version.hpp
     output_stream.hpp
     input_stream.hpp
+    properties.hpp
 )
 
 MGE_LIBRARY(
