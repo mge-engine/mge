@@ -29,6 +29,7 @@ SET(mgecore_sources
     thread.cpp
     thread_group.cpp
     semantic_version.cpp
+    output_stream.cpp
 )
 
 SET(mgecore_headers
@@ -70,6 +71,7 @@ SET(mgecore_headers
     thread.hpp
     thread_group.hpp
     semantic_version.hpp
+    output_stream.hpp
 )
 
 MGE_LIBRARY(

@@ -26,6 +26,7 @@ namespace mge {
         using self_type = callback_map<Args...>;
 
         using function_type = std::function<void(Args...)>;
+        using value_type = function_type;
         using key_type = uint32_t;
         using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
@@ -109,6 +110,7 @@ namespace mge {
         using self_type = callback_map<void>;
 
         using function_type = std::function<void(void)>;
+        using value_type = function_type;
         using key_type = uint32_t;
         using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
