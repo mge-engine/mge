@@ -22,6 +22,11 @@ namespace mge {
     class MGECORE_EXPORT properties
     {
     public:
+        using map_type = std::unordered_map<std::string, std::string>;
+        using const_iterator = map_type::const_iterator;
+        using iterator = map_type::iterator;
+        using value_type = map_type::value_type;
+
         properties();
         properties(const properties& p);
         properties(properties&& p);
@@ -105,8 +110,15 @@ namespace mge {
 
         void load(std::istream& s);
 
+        iterator       begin() { return m_data.begin(); }
+        iterator       end() { return m_data.end(); }
+        const_iterator cbegin() const { return m_data.cbegin(); }
+        const_iterator cend() const { return m_data.cend(); }
+        const_iterator begin() const { return cbegin(); }
+        const_iterator end() const { return cend(); }
+
     private:
-        std::unordered_map<std::string, std::string> m_data;
+        map_type m_data;
     };
 
 } // namespace mge

@@ -32,6 +32,7 @@ SET(mgecore_sources
     output_stream.cpp
     input_stream.cpp
     properties.cpp
+    property_object.cpp
 )
 
 SET(mgecore_headers
@@ -76,6 +77,7 @@ SET(mgecore_headers
     output_stream.hpp
     input_stream.hpp
     properties.hpp
+    property_object.hpp
 )
 
 MGE_LIBRARY(
