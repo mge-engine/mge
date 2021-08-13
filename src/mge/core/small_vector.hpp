@@ -9,6 +9,10 @@
 #include <variant>
 #include <vector>
 
+#ifdef max
+#    undef max
+#endif
+
 namespace mge {
 
     namespace {

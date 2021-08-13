@@ -17,9 +17,15 @@ namespace mge {
             render_context(mge::opengl::window* context_window);
             virtual ~render_context();
 
-            mge::index_buffer_ref create_index_buffer(mge::data_type dt,
-                                                      size_t         element_count,
-                                                      void*          initial_data) override;
+            mge::index_buffer_ref
+            create_index_buffer(mge::data_type dt, size_t data_size, void* data) override;
+
+            mge::vertex_buffer_ref create_vertex_buffer(const mge::vertex_layout& layout,
+                                                        size_t                    data_size,
+                                                        void*                     data) override;
+
+            mge::shader_ref create_shader(shader_type t) override;
+
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const { return m_hdc; }

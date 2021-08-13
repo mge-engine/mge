@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/buffer.hpp"
+#include "mge/core/property_object.hpp"
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include <string_view>
@@ -12,7 +13,7 @@ namespace mge {
     /**
      * @brief A shader is a piece of code executed in the graphics pipeline.
      */
-    class MGEGRAPHICS_EXPORT shader : public context_object
+    class MGEGRAPHICS_EXPORT shader : public context_object, public property_object
     {
     protected:
         /**

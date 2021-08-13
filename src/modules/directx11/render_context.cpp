@@ -76,9 +76,23 @@ namespace mge::dx11 {
     }
 
     mge::index_buffer_ref
-    render_context::create_index_buffer(mge::data_type dt, size_t element_count, void* initial_data)
+    render_context::create_index_buffer(mge::data_type dt, size_t data_size, void* data)
     {
         mge::index_buffer_ref result;
+        return result;
+    }
+
+    mge::vertex_buffer_ref render_context::create_vertex_buffer(const mge::vertex_layout& layout,
+                                                                size_t                    data_size,
+                                                                void*                     data)
+    {
+        mge::vertex_buffer_ref result;
+        return result;
+    }
+
+    mge::shader_ref render_context::create_shader(mge::shader_type t)
+    {
+        mge::shader_ref result;
         return result;
     }
 

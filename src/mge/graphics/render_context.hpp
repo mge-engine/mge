@@ -5,6 +5,8 @@
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/shader_type.hpp"
+#include "mge/graphics/vertex_layout.hpp"
 #include <memory>
 
 namespace mge {
@@ -22,8 +24,36 @@ namespace mge {
     public:
         virtual ~render_context() = default;
 
+        /**
+         * @brief Create a index buffer.
+         *
+         * @param dt            index buffer data type
+         * @param data_size     size in bytes
+         * @param data          initial data
+         * @return created index buffer
+         */
         virtual index_buffer_ref
-        create_index_buffer(data_type dt, size_t element_count, void* initial_data = nullptr) = 0;
+        create_index_buffer(data_type dt, size_t data_size, void* data = nullptr) = 0;
+
+        /**
+         * @brief Create a vertex buffer object.
+         *
+         * @param layout    vertex buffer layout
+         * @param data_size size in bytes
+         * @param data      initial data
+         * @return created vertex buffer
+         */
+        virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
+                                                       size_t               data_size,
+                                                       void*                data = nullptr) = 0;
+
+        /**
+         * @brief Create a shader object.
+         *
+         * @param t             shader type
+         * @return created shader
+         */
+        virtual shader_ref create_shader(shader_type t) = 0;
 
         /**
          * @brief Get swap chain of context.
