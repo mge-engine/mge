@@ -26,6 +26,7 @@ SET(MGECORE_TEST_SOURCES
     test_small_vector.cpp
     test_thread.cpp
     test_thread_group.cpp
+    test_output_stream.cpp
 )
 
 MGE_TEST(
