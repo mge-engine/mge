@@ -23,7 +23,7 @@ namespace mge {
         ~property_object() = default;
 
         /**
-         * @brief Get a proprty by key.
+         * @brief Get a property by key.
          *
          * @param key key the property
          * @return property value

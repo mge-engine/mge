@@ -11,7 +11,8 @@ namespace mge {
 
     /**
      * @brief String pool.
-     * Manages stable string views with deduplication.
+     *
+     * Manages stable string views.
      */
     class MGECORE_EXPORT string_pool
     {
@@ -30,21 +31,21 @@ namespace mge {
         /**
          * @brief Get pooled string.
          *
-         * @param str unpooled string
+         * @param str string not in pool
          * @return pooled string
          */
         std::string_view get(std::string_view str);
         /**
          * @brief Get pooled string.
          *
-         * @param str unpooled string
+         * @param str string not in pool
          * @return pooled string
          */
         std::string_view get(const std::string& str);
         /**
          * @brief Get pooled string.
          *
-         * @param str unpooled string
+         * @param str string not in pool
          * @return pooled string
          */
         std::string_view get(const char* str);

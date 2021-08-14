@@ -53,7 +53,7 @@ namespace mge {
          */
         vertex_layout& operator=(const vertex_layout& l) = default;
         /**
-         * Move assigment.
+         * Move assignment.
          *
          * @param l moved layout
          * @return @c *this
