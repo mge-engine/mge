@@ -43,4 +43,15 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
     };
+
+    inline render_context& dx11_context(mge::render_context& context)
+    {
+        return dynamic_cast<render_context&>(context);
+    }
+
+    inline const render_context& dx11_context(const mge::render_context& context)
+    {
+        return dynamic_cast<const render_context&>(context);
+    }
+
 } // namespace mge::dx11

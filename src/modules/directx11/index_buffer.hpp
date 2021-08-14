@@ -4,7 +4,7 @@
 #include "dx11.hpp"
 #include "dx11_fwd.hpp"
 #include "mge/graphics/index_buffer.hpp"
-#include "win32/com_unique_ptr.hpp"
+#include "mge/win32/com_unique_ptr.hpp"
 
 namespace mge::dx11 {
 
@@ -23,6 +23,7 @@ namespace mge::dx11 {
 
         mge::com_unique_ptr<ID3D11Buffer> m_buffer;
         DXGI_FORMAT                       m_format;
+        void*                             m_mapped_memory;
     };
 
 } // namespace mge::dx11

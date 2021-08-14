@@ -33,6 +33,7 @@ SET(mgecore_sources
     input_stream.cpp
     properties.cpp
     property_object.cpp
+    memory.cpp
 )
 
 SET(mgecore_headers
@@ -78,6 +79,7 @@ SET(mgecore_headers
     input_stream.hpp
     properties.hpp
     property_object.hpp
+    checked_cast.hpp
 )
 
 MGE_LIBRARY(

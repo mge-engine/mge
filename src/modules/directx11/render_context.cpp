@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "error.hpp"
+#include "index_buffer.hpp"
 #include "mge/core/trace.hpp"
 #include "render_system.hpp"
 #include "swap_chain.hpp"
@@ -78,7 +79,7 @@ namespace mge::dx11 {
     mge::index_buffer_ref
     render_context::create_index_buffer(mge::data_type dt, size_t data_size, void* data)
     {
-        mge::index_buffer_ref result;
+        mge::index_buffer_ref result = std::make_shared<index_buffer>(*this, dt, data_size, data);
         return result;
     }
 

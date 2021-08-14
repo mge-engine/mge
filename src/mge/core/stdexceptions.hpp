@@ -48,6 +48,8 @@ namespace mge {
     MGE_DECLARE_EXCEPTION_CLASS(not_yet_implemented);
     /** @brief Thrown if a null pointer is detected but not allowed. */
     MGE_DECLARE_EXCEPTION_CLASS(null_pointer);
+    /** @brief Thrown if an out of memory situation is detected. */
+    MGE_DECLARE_EXCEPTION_CLASS(out_of_memory);
 
 /**
  * @brief Helper macro to throw if argument is null.

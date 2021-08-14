@@ -118,3 +118,12 @@ it may be necessary to fill them with zeros. Again, handling
 :any:`mge::zero_memory`.
 
 .. doxygenfunction:: mge::zero_memory
+
+Checked Type Cast
+-----------------
+
+Type casting may produce unexpected results on overflows, i.e. an overflow
+is usually not detected but produces a weird value. A checked cast provides
+check logic that prevents overflows and unexpected truncation of values.
+
+.. doxygenfunction:: mge::checked_cast
