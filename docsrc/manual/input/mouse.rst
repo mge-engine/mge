@@ -2,7 +2,7 @@
 Mouse Handling
 **************
 
-Constants for mouse actions are defined in the :any:`mouse_action` enumeration.
+Constants for mouse actions are defined in the :any:`mge::mouse_action` enumeration.
 
 ..  cpp:enum-class:: mge::mouse_action
 
