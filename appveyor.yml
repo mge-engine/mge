@@ -30,7 +30,7 @@ before_build:
   - cmd: SET ORIG_PATH=%PATH%
   - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
   - cmd: python tools/ci/vulkan.py
-  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.2.170.0
+  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.2.182.0
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
@@ -40,10 +40,11 @@ build_script:
   - cmd: mkdir build
   - cmd: cd build
   - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: set CC=cl.exe
-  - cmd: set CXX=cl.exe
+  - cmd: SET CC=cl.exe
+  - cmd: SET CXX=cl.exe
+  - cmd: SET
   - cmd: cmake -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
-  - cmd: cmake --build . --target all
+  - cmd: cmake --build . --parallel 2 --target all
   - cmd: cmake --build . --target documentation
 
 test_script:

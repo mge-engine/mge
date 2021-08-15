@@ -8,8 +8,13 @@ import shutil
 
 upload_branches = ["main"]
 branch = ""
+pull_request_number = ""
 try:
     branch = os.environ["APPVEYOR_REPO_BRANCH"]
+except:
+    pass
+try:
+    pull_request_number = os.environ["APPVEYOR_PULL_REQUEST_NUMBER"]
 except:
     pass
 message = "Update gh-pages from generated documentation"
@@ -18,6 +23,9 @@ message = "Update gh-pages from generated documentation"
 def upload_enabled():
     try:
         env = os.environ.copy()
+        if pull_request_number != "":
+            print("Commit is a pull request, not uploading", flush=True)
+            return False
         if branch in upload_branches:
             print("Branch is %s, upload enabled" %
                   (env["APPVEYOR_REPO_BRANCH"]), flush=True)
