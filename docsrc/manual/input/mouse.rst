@@ -2,7 +2,7 @@
 Mouse Handling
 **************
 
-Constants for mouse actions are defined in the `mouse_action`enumeration.
+Constants for mouse actions are defined in the :any:`mouse_action` enumeration.
 
 ..  cpp:enum-class:: mge::mouse_action
 
@@ -22,5 +22,5 @@ Constants for mouse actions are defined in the `mouse_action`enumeration.
 
     ..  cpp:enumerator:: MOUSE_ACTION_DOUBLE_CLICK
 
-        Alias for `DOUBLE_CLICK`, which may be defined as preprocessor symbol.
+        Alias for :any:`DOUBLE_CLICK`, which may be defined as preprocessor symbol.
 

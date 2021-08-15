@@ -12,4 +12,9 @@ Shader Types
 ------------
 
 .. doxygenenum:: mge::shader_type
+
+Shader
+------
+
+.. doxygenclass:: mge::shader
     :members:
