@@ -2,7 +2,7 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Concurrency" href="concurrency.html" /><link rel="prev" title="System Abstractions" href="system.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Concurrency" href="concurrency.html" /><link rel="prev" title="Streams" href="streams.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
         <title>Utilities - MGE 0.1 documentation</title>
@@ -124,6 +124,7 @@
 <li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
@@ -532,7 +533,8 @@ It is useful if there is more than one occurence of a string in a context.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N3mge11string_poolE">
 <span id="_CPPv3N3mge11string_poolE"></span><span id="_CPPv2N3mge11string_poolE"></span><span id="mge::string_pool"></span><span class="target" id="classmge_1_1string__pool"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">string_pool</span></code><a class="headerlink" href="#_CPPv4N3mge11string_poolE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>String pool. Manages stable string views with deduplication. </p>
+<dd><p>String pool. </p>
+<p>Manages stable string views. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Types</p>
 <dl class="cpp type">
@@ -556,7 +558,7 @@ It is useful if there is more than one occurence of a string in a context.</p>
 <dt><strong>Return</strong></dt><dd><p>pooled string </p>
 </dd>
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: unpooled string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: string not in pool </p></li>
 </ul>
 </dd>
 </dl>
@@ -570,7 +572,7 @@ It is useful if there is more than one occurence of a string in a context.</p>
 <dt><strong>Return</strong></dt><dd><p>pooled string </p>
 </dd>
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: unpooled string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: string not in pool </p></li>
 </ul>
 </dd>
 </dl>
@@ -584,7 +586,7 @@ It is useful if there is more than one occurence of a string in a context.</p>
 <dt><strong>Return</strong></dt><dd><p>pooled string </p>
 </dd>
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: unpooled string </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: string not in pool </p></li>
 </ul>
 </dd>
 </dl>
@@ -631,7 +633,7 @@ assignment operatpr deleted.</p>
 <dt id="_CPPv4N3mge11noncopyableE">
 <span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">noncopyable</span></code><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Object that can’t be copied. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; std::streamsize &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; streamsize_type &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, mge::property_object, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, mge::std_istream, mge::std_ostream, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
 </dd></dl>
 </div>
 </div>
@@ -863,6 +865,31 @@ it may be necessary to fill them with zeros. Again, handling
 </p>
 </dd></dl>
 </div>
+<div class="section" id="checked-type-cast">
+<h3>Checked Type Cast<a class="headerlink" href="#checked-type-cast" title="Permalink to this headline">¶</a></h3>
+<p>Type casting may produce unexpected results on overflows, i.e. an overflow
+is usually not detected but produces a weird value. A checked cast provides
+check logic that prevents overflows and unexpected truncation of values.</p>
+<dl class="cpp function">
+<dt id="_CPPv4I00EN3mge12checked_castE1T1S">
+<span id="_CPPv3I00EN3mge12checked_castE1S"></span><span id="_CPPv2I00EN3mge12checked_castE1S"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">T</span></code><span class="pre">,</span> <span class="pre">typename</span> <code class="sig-name descname"><span class="pre">S</span></code><span class="pre">&gt;</span><br/><span class="target" id="namespacemge_1a30edc8899526be92243c6ebbf2078a80"></span><em class="property"><span class="pre">inline</span></em> <a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::T"><span class="pre">T</span></a> <code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">checked_cast</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::S"><span class="pre">S</span></a> <em><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Casts a value to a target type, and ensures it does not overflow. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>casted value </p>
+</dd>
+<dt><strong>Template Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">S</span></code>: source type </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: target type </p></li>
+</ul>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">value</span></code>: value to cast </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+</div>
 </div>
 </div>
 
@@ -879,14 +906,14 @@ it may be necessary to fill them with zeros. Again, handling
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="system.html">
+          <a class="prev-page" href="streams.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">System Abstractions</div>
+                <div class="title">Streams</div>
                 
               </div>
             </a>
@@ -942,6 +969,7 @@ it may be necessary to fill them with zeros. Again, handling
 <li><a class="reference internal" href="#callback-map">Callback Map</a></li>
 <li><a class="reference internal" href="#copy-of-structures">Copy of Structures</a></li>
 <li><a class="reference internal" href="#clear-memory-of-structures">Clear Memory of Structures</a></li>
+<li><a class="reference internal" href="#checked-type-cast">Checked Type Cast</a></li>
 </ul>
 </li>
 </ul>

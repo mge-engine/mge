@@ -124,6 +124,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/exception.html">Exception Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/component.html">Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/system.html">System Abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/streams.html">Streams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/concurrency.html">Concurrency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
@@ -188,6 +189,52 @@ has a 1:1 relationship with the window.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
+<dt id="_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_tPv">
+<span id="_CPPv3N3mge14render_context19create_index_bufferE9data_type6size_tPv"></span><span id="_CPPv2N3mge14render_context19create_index_bufferE9data_type6size_tPv"></span><span id="mge::render_context::create_index_buffer__data_type.s.voidP"></span><span class="target" id="classmge_1_1render__context_1a7b93b8b1d2a1f7e76c596432163e4553"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">index_buffer_ref</span> <code class="sig-name descname"><span class="pre">create_index_buffer</span></code><span class="sig-paren">(</span><a class="reference internal" href="buffers.html#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="pre">data_type</span></a> <em><span class="pre">dt</span></em>, <span class="pre">size_t</span> <em><span class="pre">data_size</span></em>, <span class="pre">void</span> <span class="pre">*</span><em><span class="pre">data</span></em> <span class="pre">=</span> <span class="pre">nullptr</span><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_tPv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create a index buffer. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>created index buffer </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dt</span></code>: index buffer data type </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_size</span></code>: size in bytes </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: initial data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv">
+<span id="_CPPv3N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv"></span><span id="_CPPv2N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv"></span><span id="mge::render_context::create_vertex_buffer__vertex_layoutCR.s.voidP"></span><span class="target" id="classmge_1_1render__context_1a0ff1062c6a5d8aa9b94863036e9ccd5f"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">vertex_buffer_ref</span> <code class="sig-name descname"><span class="pre">create_vertex_buffer</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="buffers.html#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="pre">vertex_layout</span></a> <span class="pre">&amp;</span><em><span class="pre">layout</span></em>, <span class="pre">size_t</span> <em><span class="pre">data_size</span></em>, <span class="pre">void</span> <span class="pre">*</span><em><span class="pre">data</span></em> <span class="pre">=</span> <span class="pre">nullptr</span><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create a vertex buffer object. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>created vertex buffer </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">layout</span></code>: vertex buffer layout </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_size</span></code>: size in bytes </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: initial data </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge14render_context13create_shaderE11shader_type">
+<span id="_CPPv3N3mge14render_context13create_shaderE11shader_type"></span><span id="_CPPv2N3mge14render_context13create_shaderE11shader_type"></span><span id="mge::render_context::create_shader__shader_type"></span><span class="target" id="classmge_1_1render__context_1aa85fa047d57144840702fb7c75d6d7de"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">shader_ref</span> <code class="sig-name descname"><span class="pre">create_shader</span></code><span class="sig-paren">(</span><a class="reference internal" href="shaders.html#_CPPv4N3mge11shader_typeE" title="mge::shader_type"><span class="pre">shader_type</span></a> <em><span class="pre">t</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge14render_context13create_shaderE11shader_type" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create a shader object. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>created shader </p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>: shader type </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
 <dt id="_CPPv4NK3mge14render_context10swap_chainEv">
 <span id="_CPPv3NK3mge14render_context10swap_chainEv"></span><span id="_CPPv2NK3mge14render_context10swap_chainEv"></span><span id="mge::render_context::swap_chainC"></span><span class="target" id="classmge_1_1render__context_1aa7202720e48f122666e183cbbf31d1d5"></span><em class="property"><span class="pre">const</span></em> <span class="pre">swap_chain_ref</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">swap_chain</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge14render_context10swap_chainEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Get swap chain of context. </p>
@@ -206,7 +253,7 @@ only.</p>
 <dt id="_CPPv4N3mge14context_objectE">
 <span id="_CPPv3N3mge14context_objectE"></span><span id="_CPPv2N3mge14context_objectE"></span><span id="mge::context_object"></span><span class="target" id="classmge_1_1context__object"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">context_object</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="pre">noncopyable</span></a><a class="headerlink" href="#_CPPv4N3mge14context_objectE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>An object that is valid in the context of a <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1render__context"><span class="std std-ref"><span class="pre">render_context</span></span></a></code> like a shader program, a texture, or a command list. </p>
-<p>Subclassed by <a class="reference internal" href="command_list.html#classmge_1_1command__list"><span class="std std-ref">mge::command_list</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a></p>
+<p>Subclassed by <a class="reference internal" href="command_list.html#classmge_1_1command__list"><span class="std std-ref">mge::command_list</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, mge::pipeline, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a></p>
 </dd></dl>
 <p>Each render context has a swap chain, a series of buffers to stabilize frame
 rates and enable presenting frames.</p>

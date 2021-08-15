@@ -123,6 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="core/exception.html">Exception Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/component.html">Components</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/system.html">System Abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core/streams.html">Streams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/concurrency.html">Concurrency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="core/version.html">Versions</a></li>
@@ -269,6 +270,8 @@
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge12callback_map6insertERK13function_type">mge::callback_map::insert (C++ function)</a>
 </li>
+        <li><a href="core/utilities.html#_CPPv4I00EN3mge12checked_castE1T1S">mge::checked_cast (C++ function)</a>
+</li>
         <li><a href="graphics/command_list.html#_CPPv4N3mge12command_listE">mge::command_list (C++ class)</a>
 </li>
         <li><a href="graphics/command_list.html#_CPPv4NK3mge12command_list6nativeEv">mge::command_list::native (C++ function)</a>
@@ -304,12 +307,6 @@
         <li><a href="graphics/buffers.html#_CPPv4N3mge9data_type6DOUBLEE">mge::data_type::DOUBLE (C++ enumerator)</a>
 </li>
         <li><a href="graphics/buffers.html#_CPPv4N3mge9data_type5FLOATE">mge::data_type::FLOAT (C++ enumerator)</a>
-</li>
-        <li><a href="graphics/buffers.html#_CPPv4N3mge9data_type10FLOAT_VEC2E">mge::data_type::FLOAT_VEC2 (C++ enumerator)</a>
-</li>
-        <li><a href="graphics/buffers.html#_CPPv4N3mge9data_type10FLOAT_VEC3E">mge::data_type::FLOAT_VEC3 (C++ enumerator)</a>
-</li>
-        <li><a href="graphics/buffers.html#_CPPv4N3mge9data_type10FLOAT_VEC4E">mge::data_type::FLOAT_VEC4 (C++ enumerator)</a>
 </li>
         <li><a href="graphics/buffers.html#_CPPv4N3mge9data_type4HALFE">mge::data_type::HALF (C++ enumerator)</a>
 </li>
@@ -471,6 +468,38 @@
 </li>
         <li><a href="input/state.html#_CPPv4N3mge11input_stateD0Ev">mge::input_state::~input_state (C++ function)</a>
 </li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_streamE">mge::input_stream (C++ class)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream17add_read_listenerERK13read_listener">mge::input_stream::add_read_listener (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream14direction_typeE">mge::input_stream::direction_type (C++ enum)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream14direction_type7POS_BEGE">mge::input_stream::direction_type::POS_BEG (C++ enumerator)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream14direction_type7POS_CURE">mge::input_stream::direction_type::POS_CUR (C++ enumerator)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream14direction_type7POS_ENDE">mge::input_stream::direction_type::POS_END (C++ enumerator)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream3eofEv">mge::input_stream::eof (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream12input_streamEv">mge::input_stream::input_stream (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream7istreamEv">mge::input_stream::istream (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream11offset_typeE">mge::input_stream::offset_type (C++ type)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream8positionEv">mge::input_stream::position (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream4readEPv15streamsize_type">mge::input_stream::read (C++ function)</a>, <a href="core/streams.html#_CPPv4N3mge12input_stream4readEv">[1]</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream20remove_read_listenerEj">mge::input_stream::remove_read_listener (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream4seekE11offset_type14direction_type">mge::input_stream::seek (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_stream15streamsize_typeE">mge::input_stream::streamsize_type (C++ type)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge12input_streamD0Ev">mge::input_stream::~input_stream (C++ function)</a>
+</li>
         <li><a href="input/keyboard.html#_CPPv4N3mge3keyE">mge::key (C++ enum)</a>
 </li>
         <li><a href="input/state.html#_CPPv4N3mge14keyboard_stateE">mge::keyboard_state (C++ class)</a>
@@ -575,6 +604,26 @@
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge11noncopyableE">mge::noncopyable (C++ class)</a>
 </li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_streamE">mge::output_stream (C++ class)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream18add_write_listenerERK14write_listener">mge::output_stream::add_write_listener (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream5flushEv">mge::output_stream::flush (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream11offset_typeE">mge::output_stream::offset_type (C++ type)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream7ostreamEv">mge::output_stream::ostream (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream13output_streamEv">mge::output_stream::output_stream (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream21remove_write_listenerE8uint32_t">mge::output_stream::remove_write_listener (C++ function)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream15streamsize_typeE">mge::output_stream::streamsize_type (C++ type)</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_stream5writeE7uint8_t">mge::output_stream::write (C++ function)</a>, <a href="core/streams.html#_CPPv4N3mge13output_stream5writeEPKv15streamsize_type">[1]</a>
+</li>
+        <li><a href="core/streams.html#_CPPv4N3mge13output_streamD0Ev">mge::output_stream::~output_stream (C++ function)</a>
+</li>
         <li><a href="core/configuration.html#_CPPv4I0EN3mge9parameterE">mge::parameter (C++ class)</a>
 </li>
         <li><a href="core/configuration.html#_CPPv4N3mge9parameter11from_stringENSt11string_viewE">mge::parameter::from_string (C++ function)</a>
@@ -599,11 +648,17 @@
 </li>
         <li><a href="graphics/render_context.html#_CPPv4N3mge14render_contextE">mge::render_context (C++ class)</a>
 </li>
+        <li><a href="graphics/render_context.html#_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_tPv">mge::render_context::create_index_buffer (C++ function)</a>
+</li>
+        <li><a href="graphics/render_context.html#_CPPv4N3mge14render_context13create_shaderE11shader_type">mge::render_context::create_shader (C++ function)</a>
+</li>
+        <li><a href="graphics/render_context.html#_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv">mge::render_context::create_vertex_buffer (C++ function)</a>
+</li>
         <li><a href="graphics/render_context.html#_CPPv4NK3mge14render_context10swap_chainEv">mge::render_context::swap_chain (C++ function)</a>
 </li>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_systemE">mge::render_system (C++ class)</a>
 </li>
-        <li><a href="graphics/system.html#_CPPv4N3mge13render_system6createEv">mge::render_system::create (C++ function)</a>
+        <li><a href="graphics/system.html#_CPPv4N3mge13render_system6createENSt11string_viewE">mge::render_system::create (C++ function)</a>, <a href="graphics/system.html#_CPPv4N3mge13render_system6createEv">[1]</a>
 </li>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options">mge::render_system::create_window (C++ function)</a>, <a href="graphics/system.html#_CPPv4N3mge13render_system13create_windowEv">[1]</a>
 </li>
@@ -611,12 +666,12 @@
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge9rgb_colorE">mge::rgb_color (C++ class)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge9rgb_color1bE">mge::rgb_color::b (C++ member)</a>
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge9rgb_color1gE">mge::rgb_color::g (C++ member)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="graphics/datastructures.html#_CPPv4NK3mge9rgb_color8get_blueEv">mge::rgb_color::get_blue (C++ function)</a>
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4NK3mge9rgb_color9get_greenEv">mge::rgb_color::get_green (C++ function)</a>
@@ -676,6 +731,34 @@
         <li><a href="core/version.html#_CPPv4NK3mge16semantic_version5patchEv">mge::semantic_version::patch (C++ function)</a>
 </li>
         <li><a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t">mge::semantic_version::semantic_version (C++ function)</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE">[1]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version">[2]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version">[3]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionEv">[4]</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge6shaderE">mge::shader (C++ class)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge6shader7compileENSt11string_viewE">mge::shader::compile (C++ function)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4NK3mge6shader11initializedEv">mge::shader::initialized (C++ function)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge6shader8set_codeERKN3mge6bufferE">mge::shader::set_code (C++ function)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4NK3mge6shader4typeEv">mge::shader::type (C++ function)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge6shaderD0Ev">mge::shader::~shader (C++ function)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_typeE">mge::shader_type (C++ enum)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type7COMPUTEE">mge::shader_type::COMPUTE (C++ enumerator)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type8FRAGMENTE">mge::shader_type::FRAGMENT (C++ enumerator)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type8GEOMETRYE">mge::shader_type::GEOMETRY (C++ enumerator)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type15MAX_SHADER_TYPEE">mge::shader_type::MAX_SHADER_TYPE (C++ enumerator)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type19TESSELATION_CONTROLE">mge::shader_type::TESSELATION_CONTROL (C++ enumerator)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type22TESSELATION_EVALUATIONE">mge::shader_type::TESSELATION_EVALUATION (C++ enumerator)</a>
+</li>
+        <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_type6VERTEXE">mge::shader_type::VERTEX (C++ enumerator)</a>
 </li>
         <li><a href="core/system.html#_CPPv4N3mge14shared_libraryE">mge::shared_library (C++ class)</a>
 </li>
@@ -932,6 +1015,38 @@
         <li><a href="core/tracing.html#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc">mge::trace_topic::trace_topic (C++ function)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4I0EN3mge9type_nameENSt6stringEv">mge::type_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge9type_nameERKNSt9type_infoE">[1]</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_bufferE">mge::vertex_buffer (C++ class)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_buffer13element_countEv">mge::vertex_buffer::element_count (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_buffer6layoutEv">mge::vertex_buffer::layout (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_formatE">mge::vertex_format (C++ class)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_format11binary_sizeEv">mge::vertex_format::binary_size (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_formatltERK13vertex_format">mge::vertex_format::operator&lt; (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_formataSERK13vertex_format">mge::vertex_format::operator= (C++ function)</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_formataSERR13vertex_format">[1]</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_formateqERK13vertex_format">mge::vertex_format::operator== (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_format4sizeEv">mge::vertex_format::size (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_format4typeEv">mge::vertex_format::type (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_format13vertex_formatE9data_type6size_t">mge::vertex_format::vertex_format (C++ function)</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format">[1]</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format">[2]</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_format13vertex_formatEv">[3]</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_layoutE">mge::vertex_layout (C++ class)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4NK3mge13vertex_layout11binary_sizeEv">mge::vertex_layout::binary_size (C++ function)</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_layoutaSERK13vertex_layout">mge::vertex_layout::operator= (C++ function)</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_layoutaSERR13vertex_layout">[1]</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout">mge::vertex_layout::vertex_layout (C++ function)</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE">[1]</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout">[2]</a>, <a href="graphics/buffers.html#_CPPv4N3mge13vertex_layout13vertex_layoutEv">[3]</a>
+</li>
+        <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_layoutD0Ev">mge::vertex_layout::~vertex_layout (C++ function)</a>
 </li>
         <li><a href="graphics/monitor.html#_CPPv4N3mge10video_modeE">mge::video_mode (C++ class)</a>
 </li>
