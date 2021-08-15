@@ -10,7 +10,7 @@ branches:
 
 environment:
   access_token:
-    secure: 0dmwrQvts99H4voAv/D6e9ZVvV6LZA7/lc/AoaGWZRXoxLsMnzwuSkgoZ/DzyXxk
+    secure: aSGYz+MLriX3pL8K52BVk5/o/byhBFVjYQyPvPcdzFiewlrZf3zDa9/CrdRjKw+b
 
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
