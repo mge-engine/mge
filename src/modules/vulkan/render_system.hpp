@@ -13,8 +13,9 @@ namespace mge::vulkan {
         render_system();
         ~render_system() = default;
 
-        mge::window_ref create_window(const mge::extent&         extent,
-                                      const mge::window_options& options) override;
+        mge::window_ref
+        create_window(const mge::extent&         extent,
+                      const mge::window_options& options) override;
 
         mge::render_system::monitor_collection monitors() override;
 

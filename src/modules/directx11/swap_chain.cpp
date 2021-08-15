@@ -35,7 +35,9 @@ namespace mge::dx11 {
         auto rc = context.device()->CreateTexture2D(&depth_buffer_desc,
                                                     nullptr,
                                                     &tmp_depth_stencil_buffer);
-        CHECK_HRESULT(rc, ID3D11Device, CreateTexture2D(D3D11_BIND_DEPTH_STENCIL));
+        CHECK_HRESULT(rc,
+                      ID3D11Device,
+                      CreateTexture2D(D3D11_BIND_DEPTH_STENCIL));
         m_depth_stencil_buffer.reset(tmp_depth_stencil_buffer);
 
         MGE_DEBUG_TRACE(DX11) << "Creating depth/stencil state";
@@ -49,19 +51,25 @@ namespace mge::dx11 {
         depth_stencil_state_desc.StencilWriteMask = 0xFF;
 
         // Stencil operations if pixel is front-facing.
-        depth_stencil_state_desc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-        depth_stencil_state_desc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-        depth_stencil_state_desc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-        depth_stencil_state_desc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+        depth_stencil_state_desc.FrontFace.StencilFailOp =
+            D3D11_STENCIL_OP_KEEP;
+        depth_stencil_state_desc.FrontFace.StencilDepthFailOp =
+            D3D11_STENCIL_OP_INCR;
+        depth_stencil_state_desc.FrontFace.StencilPassOp =
+            D3D11_STENCIL_OP_KEEP;
+        depth_stencil_state_desc.FrontFace.StencilFunc =
+            D3D11_COMPARISON_ALWAYS;
 
         // Stencil operations if pixel is back-facing.
         depth_stencil_state_desc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-        depth_stencil_state_desc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+        depth_stencil_state_desc.BackFace.StencilDepthFailOp =
+            D3D11_STENCIL_OP_DECR;
         depth_stencil_state_desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
         depth_stencil_state_desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
         ID3D11DepthStencilState* tmp_depth_stencil_state = nullptr;
-        rc = context.device()->CreateDepthStencilState(&depth_stencil_state_desc,
-                                                       &tmp_depth_stencil_state);
+        rc =
+            context.device()->CreateDepthStencilState(&depth_stencil_state_desc,
+                                                      &tmp_depth_stencil_state);
         CHECK_HRESULT(rc, ID3D11Device, CreateDeptHStencilState);
         m_depth_stencil_state.reset(tmp_depth_stencil_state);
     }
@@ -73,7 +81,8 @@ namespace mge::dx11 {
                                 __uuidof(ID3D11Texture2D),
                                 reinterpret_cast<LPVOID*>(&tmp_back_buffer));
         if (!tmp_back_buffer) {
-            MGE_THROW(dx11::error) << "Failed to get back buffer from swap chain";
+            MGE_THROW(dx11::error)
+                << "Failed to get back buffer from swap chain";
         }
         com_unique_ptr<ID3D11Texture2D> back_buffer;
         back_buffer.reset(tmp_back_buffer);

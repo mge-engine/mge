@@ -71,5 +71,6 @@ namespace mge {
         semantic_version m_version;
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const shader_language& l);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&          os,
+                                                const shader_language& l);
 } // namespace mge

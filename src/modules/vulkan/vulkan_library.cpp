@@ -17,14 +17,17 @@ namespace mge::vulkan {
 #else
 #    error Unsupported Platform
 #endif
-        MGE_DEBUG_TRACE(VULKAN) << "Loading vulkan library " << vulkan_library_name;
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Loading vulkan library " << vulkan_library_name;
         m_library = std::make_shared<mge::shared_library>(vulkan_library_name);
 
-        vkGetInstanceProcAddr = reinterpret_cast<decltype(vkGetInstanceProcAddr)>(
-            m_library->symbol("vkGetInstanceProcAddr"));
+        vkGetInstanceProcAddr =
+            reinterpret_cast<decltype(vkGetInstanceProcAddr)>(
+                m_library->symbol("vkGetInstanceProcAddr"));
         if (!vkGetInstanceProcAddr) {
             MGE_THROW(mge::illegal_state)
-                << "Entry point \"vkGetInstanceProcAddr\" not found in " << vulkan_library_name;
+                << "Entry point \"vkGetInstanceProcAddr\" not found in "
+                << vulkan_library_name;
         }
     }
 } // namespace mge::vulkan

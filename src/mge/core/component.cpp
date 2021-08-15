@@ -20,11 +20,13 @@ namespace mge {
     class component_registry
     {
     public:
-        using component_map = std::map<std::string_view, component_registry_entry_base*>;
-        using implementation_map =
-            std::map<std::string_view,
-                     std::map<std::string_view, implementation_registry_entry_base*>>;
-        using alias_map = std::map<std::string_view, std::map<std::string, std::string_view>>;
+        using component_map =
+            std::map<std::string_view, component_registry_entry_base*>;
+        using implementation_map = std::map<
+            std::string_view,
+            std::map<std::string_view, implementation_registry_entry_base*>>;
+        using alias_map =
+            std::map<std::string_view, std::map<std::string, std::string_view>>;
 
         component_registry() = default;
 
@@ -33,10 +35,12 @@ namespace mge {
         void register_component(component_registry_entry_base* c)
         {
             auto component_name = c->name();
-            MGE_TRACE(CORE, DEBUG) << "Registering component " << component_name;
+            MGE_TRACE(CORE, DEBUG)
+                << "Registering component " << component_name;
             if (contains(m_components, component_name)) {
                 MGE_THROW(mge::duplicate_element)
-                    << "Try to register duplicate component '" << component_name << "'";
+                    << "Try to register duplicate component '" << component_name
+                    << "'";
             }
             m_components.insert(std::make_pair(component_name, c));
             update_pending_implementations(component_name);
@@ -45,8 +49,8 @@ namespace mge {
         void register_implementation(implementation_registry_entry_base* i)
         {
             auto component_name = i->component_name();
-            MGE_TRACE(CORE, DEBUG)
-                << "Registering implementation " << i->name() << " of component " << component_name;
+            MGE_TRACE(CORE, DEBUG) << "Registering implementation " << i->name()
+                                   << " of component " << component_name;
             if (!component_registered(component_name)) {
                 m_pending_implementations.emplace_back(i);
             }
@@ -59,10 +63,12 @@ namespace mge {
             return contains(m_components, name);
         }
 
-        bool implementation_registered(std::string_view component_name,
-                                       std::string_view implementation_name) const
+        bool
+        implementation_registered(std::string_view component_name,
+                                  std::string_view implementation_name) const
         {
-            if (m_implementations.find(component_name) == m_implementations.end()) {
+            if (m_implementations.find(component_name) ==
+                m_implementations.end()) {
                 return false;
             }
             const auto& implementations_of_component =
@@ -73,7 +79,8 @@ namespace mge {
             }
             {
                 std::string alias_implementation_name(implementation_name);
-                const auto& aliases_of_component = m_aliases.find(component_name)->second;
+                const auto& aliases_of_component =
+                    m_aliases.find(component_name)->second;
 
                 if (aliases_of_component.find(alias_implementation_name) !=
                     aliases_of_component.end()) {
@@ -83,8 +90,9 @@ namespace mge {
             return false;
         }
 
-        void implementations(std::string_view                             component_name,
-                             const std::function<void(std::string_view)>& callback)
+        void
+        implementations(std::string_view component_name,
+                        const std::function<void(std::string_view)>& callback)
         {
             auto impl_it = m_implementations.find(component_name);
             if (impl_it != m_implementations.end()) {
@@ -94,11 +102,13 @@ namespace mge {
             }
         }
 
-        std::shared_ptr<component_base> create(std::string_view component_name,
-                                               std::string_view implementation_name)
+        std::shared_ptr<component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name)
         {
-            MGE_TRACE(CORE, DEBUG) << "Create instance of " << component_name
-                                   << " using implementation " << implementation_name;
+            MGE_TRACE(CORE, DEBUG)
+                << "Create instance of " << component_name
+                << " using implementation " << implementation_name;
 
             auto impl_it = m_implementations.find(component_name);
             if (impl_it != m_implementations.end()) {
@@ -113,7 +123,8 @@ namespace mge {
             auto alias_it = m_aliases.find(component_name);
             if (alias_it != m_aliases.end()) {
                 std::string alias_implementation_name(implementation_name);
-                auto        implname_it = alias_it->second.find(alias_implementation_name);
+                auto        implname_it =
+                    alias_it->second.find(alias_implementation_name);
                 if (implname_it != alias_it->second.end()) {
                     return create(component_name, implname_it->second);
                 }
@@ -137,7 +148,7 @@ namespace mge {
             }
         }
 
-        void do_register_implementation(std::string_view                    component_name,
+        void do_register_implementation(std::string_view component_name,
                                         implementation_registry_entry_base* i)
         {
             auto implementation_name = i->name();
@@ -156,15 +167,17 @@ namespace mge {
             }
         }
 
-        component_map                                    m_components;
-        implementation_map                               m_implementations;
-        alias_map                                        m_aliases;
-        std::vector<implementation_registry_entry_base*> m_pending_implementations;
+        component_map      m_components;
+        implementation_map m_implementations;
+        alias_map          m_aliases;
+        std::vector<implementation_registry_entry_base*>
+            m_pending_implementations;
     };
 
     singleton<component_registry> s_component_registry;
 
-    void component_registry_entry_base::register_component(component_registry_entry_base* c)
+    void component_registry_entry_base::register_component(
+        component_registry_entry_base* c)
     {
         s_component_registry->register_component(c);
     }
@@ -180,21 +193,26 @@ namespace mge {
         return s_component_registry->component_registered(name);
     }
 
-    bool component_base::implementation_registered(std::string_view component_name,
-                                                   std::string_view implementation_name)
+    bool component_base::implementation_registered(
+        std::string_view component_name, std::string_view implementation_name)
     {
-        return s_component_registry->implementation_registered(component_name, implementation_name);
+        return s_component_registry->implementation_registered(
+            component_name,
+            implementation_name);
     }
 
-    void component_base::implementations(std::string_view component_name,
-                                         const std::function<void(std::string_view)>& callback)
+    void component_base::implementations(
+        std::string_view                             component_name,
+        const std::function<void(std::string_view)>& callback)
     {
         return s_component_registry->implementations(component_name, callback);
     }
 
-    std::shared_ptr<component_base> component_base::create(std::string_view component_name,
-                                                           std::string_view implementation_name)
+    std::shared_ptr<component_base>
+    component_base::create(std::string_view component_name,
+                           std::string_view implementation_name)
     {
-        return s_component_registry->create(component_name, implementation_name);
+        return s_component_registry->create(component_name,
+                                            implementation_name);
     }
 } // namespace mge

@@ -43,5 +43,6 @@ namespace mge {
      * @param p  point
      * @return @c os
      */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const point& p);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os,
+                                                const point&  p);
 } // namespace mge

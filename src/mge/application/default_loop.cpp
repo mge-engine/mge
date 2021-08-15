@@ -14,7 +14,10 @@ namespace mge {
         default_loop() { m_epoch = clock::now().time_since_epoch().count(); }
         ~default_loop() = default;
 
-        uint64_t now() const { return clock::now().time_since_epoch().count() - m_epoch; }
+        uint64_t now() const
+        {
+            return clock::now().time_since_epoch().count() - m_epoch;
+        }
 
         void run(loop_target& t)
         {

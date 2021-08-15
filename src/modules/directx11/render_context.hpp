@@ -17,18 +17,23 @@ namespace mge::dx11 {
         render_context(render_system& system, window& window_);
         virtual ~render_context();
 
-        mge::index_buffer_ref
-        create_index_buffer(mge::data_type dt, size_t data_size, void* data) override;
+        mge::index_buffer_ref create_index_buffer(mge::data_type dt,
+                                                  size_t         data_size,
+                                                  void*          data) override;
 
-        mge::vertex_buffer_ref create_vertex_buffer(const mge::vertex_layout& layout,
-                                                    size_t                    data_size,
-                                                    void*                     data) override;
+        mge::vertex_buffer_ref
+        create_vertex_buffer(const mge::vertex_layout& layout,
+                             size_t                    data_size,
+                             void*                     data) override;
 
         mge::shader_ref create_shader(mge::shader_type t) override;
 
         const ::mge::dx11::window& window() const { return m_window; }
 
-        const ::mge::dx11::render_system& render_system() const { return m_render_system; }
+        const ::mge::dx11::render_system& render_system() const
+        {
+            return m_render_system;
+        }
 
         ID3D11Device* device() const { return m_device.get(); }
 
@@ -49,7 +54,8 @@ namespace mge::dx11 {
         return dynamic_cast<render_context&>(context);
     }
 
-    inline const render_context& dx11_context(const mge::render_context& context)
+    inline const render_context&
+    dx11_context(const mge::render_context& context)
     {
         return dynamic_cast<const render_context&>(context);
     }

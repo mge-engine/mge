@@ -14,7 +14,8 @@ namespace mge {
 
 TEST(stream_trace_sink, format)
 {
-    mge::trace_formatter_ref f = std::make_shared<mge::simple_trace_formatter>();
+    mge::trace_formatter_ref f =
+        std::make_shared<mge::simple_trace_formatter>();
 
     mge::trace_record r;
     std::string       m("My hoovercraft is full of eels");

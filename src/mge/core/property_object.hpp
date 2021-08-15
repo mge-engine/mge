@@ -37,7 +37,8 @@ namespace mge {
          * @param default_value value to return if property isn't set
          * @return property value
          */
-        std::string get_property(const std::string& key, const std::string& default_value) const;
+        std::string get_property(const std::string& key,
+                                 const std::string& default_value) const;
 
         /**
          * @brief Check that property exists.

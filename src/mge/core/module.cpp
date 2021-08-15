@@ -24,7 +24,8 @@ namespace mge {
         auto stem_str = stem.string();
         m_name = std::string(stem_str.begin() + 11, stem_str.end());
 
-        MGE_TRACE(CORE, DEBUG) << "Loading module '" << m_name << "' from shared library " << path;
+        MGE_TRACE(CORE, DEBUG)
+            << "Loading module '" << m_name << "' from shared library " << path;
 
         m_library = std::make_shared<shared_library>(path);
     }
@@ -46,9 +47,13 @@ namespace mge {
 
     singleton<module_dictionary> s_all_modules;
 
-    MGE_DEFINE_PARAMETER(std::string, core, module_path, "Paths from which to load modules");
+    MGE_DEFINE_PARAMETER(std::string,
+                         core,
+                         module_path,
+                         "Paths from which to load modules");
 
-    static std::vector<fs::path> compute_load_paths(const std::vector<std::string>& paths)
+    static std::vector<fs::path>
+    compute_load_paths(const std::vector<std::string>& paths)
     {
         std::vector<fs::path> load_paths;
 
@@ -58,8 +63,8 @@ namespace mge {
                 fs::path current_path(p);
                 load_paths.push_back(fs::canonical(current_path));
             } catch (const std::exception& e) {
-                MGE_TRACE(CORE, WARNING)
-                    << "Exception inspecting module path " << p << ": " << e.what();
+                MGE_TRACE(CORE, WARNING) << "Exception inspecting module path "
+                                         << p << ": " << e.what();
             }
         }
 
@@ -78,7 +83,8 @@ namespace mge {
         return false;
     }
 
-    static std::vector<fs::path> enumerate_modules(std::vector<fs::path>& module_paths)
+    static std::vector<fs::path>
+    enumerate_modules(std::vector<fs::path>& module_paths)
     {
         std::vector<fs::path> result;
         for (const auto& module_path : module_paths) {
@@ -94,7 +100,8 @@ namespace mge {
                 }
             } catch (std::exception& e) {
                 MGE_TRACE(CORE, WARNING)
-                    << "Exception enumerating modules in path " << module_path << ": " << e.what();
+                    << "Exception enumerating modules in path " << module_path
+                    << ": " << e.what();
             }
         }
         return result;
@@ -108,7 +115,10 @@ namespace mge {
 
         if (MGE_PARAMETER(core, module_path).has_value()) {
             std::string paths_str = MGE_PARAMETER(core, module_path).get();
-            boost::split(paths, paths_str, boost::is_any_of(";"), boost::token_compress_on);
+            boost::split(paths,
+                         paths_str,
+                         boost::is_any_of(";"),
+                         boost::token_compress_on);
         }
 
         std::vector<fs::path> load_paths = compute_load_paths(paths);
@@ -118,7 +128,8 @@ namespace mge {
         for (const auto& m : modules) {
             auto current_ref = std::make_shared<module>(m);
 
-            s_all_modules->modules.insert(std::make_pair(current_ref->name(), current_ref));
+            s_all_modules->modules.insert(
+                std::make_pair(current_ref->name(), current_ref));
         }
     }
 

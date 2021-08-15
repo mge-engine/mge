@@ -9,8 +9,8 @@ namespace mge {
     std::ostream& operator<<(std::ostream& os, const key& k)
     {
         switch (k) {
-#define CASE(K)                                                                                    \
-    case key::K:                                                                                   \
+#define CASE(K)                                                                \
+    case key::K:                                                               \
         return os << #K
             CASE(INVALID);
             CASE(SPACE);

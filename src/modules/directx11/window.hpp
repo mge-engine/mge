@@ -16,7 +16,9 @@ namespace mge::dx11 {
     class window : public mge::platform::window
     {
     public:
-        window(render_system& system, const mge::extent& extent, const window_options& options);
+        window(render_system&        system,
+               const mge::extent&    extent,
+               const window_options& options);
         ~window() = default;
 
     private:

@@ -35,8 +35,9 @@ namespace mge::dx11 {
         initial_data.pSysMem = data;
 
         ID3D11Buffer* buffer = nullptr;
-        auto          hr =
-            dx11_context(context()).device()->CreateBuffer(&buffer_desc, &initial_data, &buffer);
+        auto hr = dx11_context(context()).device()->CreateBuffer(&buffer_desc,
+                                                                 &initial_data,
+                                                                 &buffer);
         CHECK_HRESULT(hr, ID3D11Device, CreateBuffer);
         mge::com_unique_ptr<ID3D11Buffer> buffer_ptr(buffer);
         m_buffer.swap(buffer_ptr);

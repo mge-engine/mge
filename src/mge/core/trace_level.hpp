@@ -32,5 +32,6 @@ namespace mge {
         ALL = 31         //!< special level for enabling/disabling
     };
 
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream& os, const trace_level& l);
+    MGECORE_EXPORT std::ostream& operator<<(std::ostream&      os,
+                                            const trace_level& l);
 } // namespace mge

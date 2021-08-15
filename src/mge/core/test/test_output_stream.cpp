@@ -15,7 +15,8 @@ public:
     MOCK_output_stream() = default;
     ~MOCK_output_stream() = default;
 
-    MOCK_METHOD2(on_write, void(const void*, mge::output_stream::streamsize_type));
+    MOCK_METHOD2(on_write,
+                 void(const void*, mge::output_stream::streamsize_type));
     MOCK_METHOD0(on_flush, void());
 };
 
@@ -45,7 +46,8 @@ TEST(output_stream, write_listener)
 {
     MOCK_output_stream s;
     std::streamsize    written = 0;
-    auto listener_key = s.add_write_listener([&](std::streamsize s) { written += s; });
+    auto               listener_key =
+        s.add_write_listener([&](std::streamsize s) { written += s; });
 
     EXPECT_CALL(s, on_write(_, 1)).Times(1);
     s.write('A');

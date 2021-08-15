@@ -29,7 +29,8 @@ namespace mge {
     {
         const color_name* c = find_color(name);
         if (c == 0) {
-            MGE_THROW(mge::illegal_argument) << "Unknown color name \"" << name << "\"";
+            MGE_THROW(mge::illegal_argument)
+                << "Unknown color name \"" << name << "\"";
         }
         r = c->r;
         g = c->g;
@@ -48,8 +49,8 @@ namespace mge {
 
     std::ostream& operator<<(std::ostream& o, const rgba_color& c)
     {
-        return o << "rgba_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b << ", a=" << c.a
-                 << "]";
+        return o << "rgba_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b
+                 << ", a=" << c.a << "]";
     }
 
 } // namespace mge

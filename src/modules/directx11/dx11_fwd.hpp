@@ -9,4 +9,4 @@ namespace mge::dx11 {
     class index_buffer;
     class vertex_buffer;
     class shader;
-}
+} // namespace mge::dx11

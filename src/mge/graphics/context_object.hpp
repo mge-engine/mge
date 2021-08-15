@@ -21,8 +21,8 @@ namespace mge {
         virtual ~context_object();
         const render_context& context() const;
         render_context&       context();
-        void                  assert_same_context(const render_context& c) const;
-        void                  assert_same_context(const context_object& cobj) const;
+        void assert_same_context(const render_context& c) const;
+        void assert_same_context(const context_object& cobj) const;
 
     protected:
         render_context_ref m_context;

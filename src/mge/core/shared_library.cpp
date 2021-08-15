@@ -49,8 +49,9 @@ namespace mge {
         }
 
     private:
-        std::map<std::filesystem::path, shared_library::handle_type> m_libraries;
-        std::mutex                                                   m_lock;
+        std::map<std::filesystem::path, shared_library::handle_type>
+                   m_libraries;
+        std::mutex m_lock;
     };
 
     singleton<loaded_libraries_dict> s_loaded_libraries;
@@ -68,7 +69,8 @@ namespace mge {
         if (handle == nil_handle) {
             handle = LoadLibraryW(m_name.c_str());
             if (!handle) {
-                MGE_THROW(system_error) << "Cannot load library '" << m_name << "'";
+                MGE_THROW(system_error)
+                    << "Cannot load library '" << m_name << "'";
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
         }

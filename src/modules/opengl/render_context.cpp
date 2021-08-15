@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "index_buffer.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
@@ -37,7 +38,8 @@ namespace mge::opengl {
 
         pixel_format_desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
         pixel_format_desc.nVersion = 1;
-        pixel_format_desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+        pixel_format_desc.dwFlags =
+            PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
         pixel_format_desc.iPixelType = PFD_TYPE_RGBA;
         pixel_format_desc.cColorBits = 32;
         pixel_format_desc.cAlphaBits = 8;
@@ -74,7 +76,8 @@ namespace mge::opengl {
             auto rc = gl3wInit();
             if (rc) {
                 MGE_THROW(runtime_exception)
-                    << MGE_CALLED_FUNCTION(gl3wInit) << "Initializing gl32 library failed: " << rc;
+                    << MGE_CALLED_FUNCTION(gl3wInit)
+                    << "Initializing gl32 library failed: " << rc;
             }
             s_gl3w_initialized = true;
         }
@@ -95,16 +98,17 @@ namespace mge::opengl {
 
     singleton<opengl_info> render_context::s_glinfo;
 
-    mge::index_buffer_ref
-    render_context::create_index_buffer(mge::data_type dt, size_t element_count, void* initial_data)
+    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
+                                                              size_t data_size,
+                                                              void*  data)
     {
-        mge::index_buffer_ref result;
+        mge::index_buffer_ref result =
+            std::make_shared<index_buffer>(*this, dt, data_size, data);
         return result;
     }
 
-    mge::vertex_buffer_ref render_context::create_vertex_buffer(const mge::vertex_layout& layout,
-                                                                size_t                    data_size,
-                                                                void*                     data)
+    mge::vertex_buffer_ref render_context::create_vertex_buffer(
+        const mge::vertex_layout& layout, size_t data_size, void* data)
     {
         mge::vertex_buffer_ref result;
         return result;

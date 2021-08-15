@@ -26,7 +26,10 @@ namespace mge {
 
     window_options window_options::standard_options()
     {
-        return window_options().set_option(RESIZABLE).set_option(DECORATED).set_option(TITLE);
+        return window_options()
+            .set_option(RESIZABLE)
+            .set_option(DECORATED)
+            .set_option(TITLE);
     }
 
     window_options window_options::fullscreen_options()

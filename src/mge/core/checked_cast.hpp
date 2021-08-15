@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/type_name.hpp"
@@ -16,8 +19,8 @@ namespace mge {
         T tmp = static_cast<T>(value);
         S stmp = static_cast<S>(tmp);
         if (value != stmp) {
-            MGE_THROW(mge::bad_cast)
-                << value << " cannot be casted into " << mge::type_name<T>() << " type";
+            MGE_THROW(mge::bad_cast) << value << " cannot be casted into "
+                                     << mge::type_name<T>() << " type";
         }
         return tmp;
     }

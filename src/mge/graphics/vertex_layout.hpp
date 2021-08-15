@@ -14,7 +14,8 @@ namespace mge {
      * A vertex layout defines the layout of some vertex buffer, and such
      * is a list of vertex formats.
      */
-    class MGEGRAPHICS_EXPORT vertex_layout : public mge::small_vector<vertex_format, 5>
+    class MGEGRAPHICS_EXPORT vertex_layout
+        : public mge::small_vector<vertex_format, 5>
     {
     public:
         /**
@@ -68,8 +69,10 @@ namespace mge {
         size_t binary_size() const;
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const vertex_layout& l);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&        os,
+                                                const vertex_layout& l);
 
-    MGEGRAPHICS_EXPORT mge::vertex_layout parse_vertex_layout(std::string_view sv);
+    MGEGRAPHICS_EXPORT mge::vertex_layout
+                       parse_vertex_layout(std::string_view sv);
 
 } // namespace mge

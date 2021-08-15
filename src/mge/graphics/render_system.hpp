@@ -38,7 +38,8 @@ namespace mge {
          * @param options window options
          * @return created window
          */
-        virtual window_ref create_window(const extent& extent, const window_options& options) = 0;
+        virtual window_ref create_window(const extent&         extent,
+                                         const window_options& options) = 0;
 
         /**
          * @brief Create default render system.
@@ -46,6 +47,14 @@ namespace mge {
          * @return default render system
          */
         static render_system_ref create();
+
+        /**
+         * @brief Create a specific render system.
+         *
+         * @param implementation
+         * @return created render system
+         */
+        static render_system_ref create(std::string_view implementation);
 
         using monitor_collection = std::vector<monitor_ref>;
 

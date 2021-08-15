@@ -21,13 +21,15 @@ TEST(exception, set_info)
         .set_info(mge::exception::type_name(mge::type_name<decltype(ex)>()));
     std::stringstream msg;
     msg << ex.details();
-    EXPECT_THAT(msg.str(),
-                MatchesRegex("Exception details:\nException type: "
-                             "mge::exception\nException location: "
-                             ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception.cpp:"
-                             "19\nException raising function: void __cdecl "
-                             "exception_set_info_Test::TestBody\\(void\\)\nException "
-                             "message: Unknown exception\n"));
+    EXPECT_THAT(
+        msg.str(),
+        MatchesRegex(
+            "Exception details:\nException type: "
+            "mge::exception\nException location: "
+            ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception.cpp:"
+            "19\nException raising function: void __cdecl "
+            "exception_set_info_Test::TestBody\\(void\\)\nException "
+            "message: Unknown exception\n"));
 }
 
 TEST(exception, set_info_using_operator)

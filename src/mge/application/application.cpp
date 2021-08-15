@@ -20,7 +20,10 @@ namespace mge {
 
     MGE_REGISTER_COMPONENT(application);
 
-    MGE_DEFINE_PARAMETER(std::string, application, name, "Application name to instantiate");
+    MGE_DEFINE_PARAMETER(std::string,
+                         application,
+                         name,
+                         "Application name to instantiate");
     MGE_DEFINE_PARAMETER(std::string,
                          application,
                          loop,
@@ -34,7 +37,8 @@ namespace mge {
     {
 
         if (s_instance) {
-            MGE_THROW(illegal_state) << "Can only have one application instance";
+            MGE_THROW(illegal_state)
+                << "Can only have one application instance";
         }
 
         m_main_thread_id = mge::this_thread::get_id();
@@ -52,7 +56,8 @@ namespace mge {
 
 #ifdef MGE_OS_WINDOWS
         // prevent error popups and report all errors to process
-        SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
+        SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX |
+                     SEM_NOOPENFILEERRORBOX);
 #endif
         if (!configuration::loaded()) {
             configuration::load();
@@ -64,13 +69,17 @@ namespace mge {
     application* application::instance()
     {
         if (!s_instance) {
-            MGE_THROW(mge::illegal_state) << "Application instance requested, but none available";
+            MGE_THROW(mge::illegal_state)
+                << "Application instance requested, but none available";
         }
 
         return s_instance;
     }
 
-    int application::argc() const { return static_cast<int>(m_arguments.size()); }
+    int application::argc() const
+    {
+        return static_cast<int>(m_arguments.size());
+    }
 
     std::string_view application::argv(int index) const
     {
@@ -92,13 +101,16 @@ namespace mge {
         if (MGE_PARAMETER(application, loop).has_value()) {
             loop_implementation = MGE_PARAMETER(application, loop).get();
         }
-        MGE_DEBUG_TRACE(APPLICATION) << "Using loop implementation: " << loop_implementation;
+        MGE_DEBUG_TRACE(APPLICATION)
+            << "Using loop implementation: " << loop_implementation;
         auto loop_instance = mge::loop::create(loop_implementation);
         loop_instance->run(*this);
         MGE_DEBUG_TRACE(APPLICATION) << "Main loop finished";
     }
 
-    int application::main(std::string_view application_name, int argc, const char** argv)
+    int application::main(std::string_view application_name,
+                          int              argc,
+                          const char**     argv)
     {
         std::string_view used_application_name(application_name);
         std::string      application_name_parameter_value;
@@ -111,7 +123,8 @@ namespace mge {
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {
-                    application_name_parameter_value = MGE_PARAMETER(application, name).get();
+                    application_name_parameter_value =
+                        MGE_PARAMETER(application, name).get();
                     used_application_name = application_name_parameter_value;
                 }
                 if (used_application_name.empty()) {
@@ -119,7 +132,8 @@ namespace mge {
                 }
             }
 
-            MGE_DEBUG_TRACE(APPLICATION) << "Create application '" << used_application_name << "'";
+            MGE_DEBUG_TRACE(APPLICATION)
+                << "Create application '" << used_application_name << "'";
             auto app = application::create(used_application_name);
             if (!app) {
                 return 1;
@@ -134,18 +148,18 @@ namespace mge {
             app->teardown();
             return app->return_code();
         } catch (const mge::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION)
-                << "Exception in application '" << used_application_name << "':";
+            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
+                                         << used_application_name << "':";
             MGE_ERROR_TRACE(APPLICATION) << ex.details();
             return 1;
         } catch (const std::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION)
-                << "Exception in application '" << used_application_name << "':";
+            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
+                                         << used_application_name << "':";
             MGE_ERROR_TRACE(APPLICATION) << ex.what();
             return 1;
         } catch (...) {
-            MGE_ERROR_TRACE(APPLICATION)
-                << "Unknown exception in application '" << used_application_name << "'";
+            MGE_ERROR_TRACE(APPLICATION) << "Unknown exception in application '"
+                                         << used_application_name << "'";
             return 1;
         }
     }
@@ -200,14 +214,26 @@ namespace mge {
 
     void application::input(uint64_t cycle) { m_input_listeners(); }
 
-    void application::update(uint64_t cycle, double delta) { m_update_listeners(cycle, delta); }
+    void application::update(uint64_t cycle, double delta)
+    {
+        m_update_listeners(cycle, delta);
+    }
 
-    void application::present(uint64_t cycle, double peek) { m_redraw_listeners(cycle, peek); }
+    void application::present(uint64_t cycle, double peek)
+    {
+        m_redraw_listeners(cycle, peek);
+    }
 
-    void application::set_return_code(int return_code) { m_return_code = return_code; }
+    void application::set_return_code(int return_code)
+    {
+        m_return_code = return_code;
+    }
 
     int application::return_code() const noexcept { return m_return_code; }
 
-    const std::vector<std::string>& application::arguments() const { return m_arguments; }
+    const std::vector<std::string>& application::arguments() const
+    {
+        return m_arguments;
+    }
 
 } // namespace mge

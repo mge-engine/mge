@@ -18,5 +18,6 @@ namespace mge {
         REPEAT = 2
     };
 
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const key_action& a);
+    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream&     os,
+                                             const key_action& a);
 } // namespace mge

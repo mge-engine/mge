@@ -27,9 +27,10 @@ namespace mge::dx11 {
     void render_context::init_context()
     {
         DXGI_SWAP_CHAIN_DESC swap_chain_desc = {};
-        UINT                 flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
-        D3D_DRIVER_TYPE      driver_type =
-            (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP : D3D_DRIVER_TYPE_HARDWARE);
+        UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
+        D3D_DRIVER_TYPE driver_type =
+            (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
+                                               : D3D_DRIVER_TYPE_HARDWARE);
 
         ID3D11Device*        tmp_device = nullptr;
         ID3D11DeviceContext* tmp_device_context = nullptr;
@@ -51,7 +52,8 @@ namespace mge::dx11 {
 
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
-        auto swap_chain = std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
+        auto swap_chain =
+            std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
         m_swap_chain = swap_chain;
 
         MGE_DEBUG_TRACE(DX11) << "Creating render target view";
@@ -59,11 +61,15 @@ namespace mge::dx11 {
         ID3D11RenderTargetView* tmp_render_target_view;
 
         auto back_buffer = swap_chain->back_buffer();
-        rc = m_device->CreateRenderTargetView(back_buffer.get(), nullptr, &tmp_render_target_view);
+        rc = m_device->CreateRenderTargetView(back_buffer.get(),
+                                              nullptr,
+                                              &tmp_render_target_view);
         CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
         back_buffer.reset();
         MGE_DEBUG_TRACE(DX11) << "Set render target";
-        m_device_context->OMSetRenderTargets(1, &tmp_render_target_view, nullptr);
+        m_device_context->OMSetRenderTargets(1,
+                                             &tmp_render_target_view,
+                                             nullptr);
         m_render_target_view.reset(tmp_render_target_view);
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0;
@@ -76,16 +82,17 @@ namespace mge::dx11 {
         m_device_context->RSSetViewports(1, &viewport);
     }
 
-    mge::index_buffer_ref
-    render_context::create_index_buffer(mge::data_type dt, size_t data_size, void* data)
+    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
+                                                              size_t data_size,
+                                                              void*  data)
     {
-        mge::index_buffer_ref result = std::make_shared<index_buffer>(*this, dt, data_size, data);
+        mge::index_buffer_ref result =
+            std::make_shared<index_buffer>(*this, dt, data_size, data);
         return result;
     }
 
-    mge::vertex_buffer_ref render_context::create_vertex_buffer(const mge::vertex_layout& layout,
-                                                                size_t                    data_size,
-                                                                void*                     data)
+    mge::vertex_buffer_ref render_context::create_vertex_buffer(
+        const mge::vertex_layout& layout, size_t data_size, void* data)
     {
         mge::vertex_buffer_ref result;
         return result;

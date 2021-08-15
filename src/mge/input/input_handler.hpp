@@ -26,8 +26,11 @@ namespace mge {
         /**
          * Handler function for mouse actions.
          */
-        using mouse_action_handler = std::function<void(
-            uint32_t button, mouse_action action, const modifier& m, uint32_t x, uint32_t y)>;
+        using mouse_action_handler = std::function<void(uint32_t        button,
+                                                        mouse_action    action,
+                                                        const modifier& m,
+                                                        uint32_t        x,
+                                                        uint32_t        y)>;
         /**
          * Handler function for mouse movement.
          */
@@ -36,7 +39,8 @@ namespace mge {
         /**
          * Handler function for keyboard actions.
          */
-        using key_action_handler = std::function<void(key k, key_action action, const modifier& m)>;
+        using key_action_handler =
+            std::function<void(key k, key_action action, const modifier& m)>;
 
         /**
          * Handler function for character input.
@@ -118,7 +122,10 @@ namespace mge {
          * @param x mouse x position
          * @param y mouse y position
          */
-        void on_mouse_action(uint32_t button, mouse_action action, uint32_t x, uint32_t y);
+        void on_mouse_action(uint32_t     button,
+                             mouse_action action,
+                             uint32_t     x,
+                             uint32_t     y);
         /**
          * @brief Method to be called when a key action happens.
          *

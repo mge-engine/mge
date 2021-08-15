@@ -32,9 +32,9 @@ namespace mge {
     public:
         implementation_registry_entry_base() = default;
         virtual ~implementation_registry_entry_base() = default;
-        virtual std::string_view                name() const noexcept = 0;
-        virtual std::string_view                component_name() const noexcept = 0;
-        virtual std::string_view                alias_names() const noexcept = 0;
+        virtual std::string_view name() const noexcept = 0;
+        virtual std::string_view component_name() const noexcept = 0;
+        virtual std::string_view alias_names() const noexcept = 0;
         virtual std::shared_ptr<component_base> create() const = 0;
 
     protected:
@@ -50,27 +50,32 @@ namespace mge {
         virtual ~component_base() = default;
 
         template <typename T>
-        static inline std::shared_ptr<T> create(std::string_view implementation_name)
+        static inline std::shared_ptr<T>
+        create(std::string_view implementation_name)
         {
             return std::dynamic_pointer_cast<T, component_base>(
                 create(type_name<T>(), implementation_name));
         }
 
-        static std::shared_ptr<component_base> create(std::string_view component_name,
-                                                      std::string_view implementation_name);
+        static std::shared_ptr<component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name);
 
         template <typename T>
-        static inline void implementations(const std::function<void(std::string_view)>& callback)
+        static inline void
+        implementations(const std::function<void(std::string_view)>& callback)
         {
             implementations(type_name<T>(), callback);
         }
 
-        static void implementations(std::string_view                             component_name,
-                                    const std::function<void(std::string_view)>& callback);
+        static void
+        implementations(std::string_view component_name,
+                        const std::function<void(std::string_view)>& callback);
 
         static bool component_registered(std::string_view name);
-        static bool implementation_registered(std::string_view component_name,
-                                              std::string_view implementation_name);
+        static bool
+        implementation_registered(std::string_view component_name,
+                                  std::string_view implementation_name);
 
         inline std::string_view implementation_name() const noexcept
         {
@@ -86,14 +91,16 @@ namespace mge {
 
         implementation_registry_entry_base* m_impl_regentry;
     };
-    template <typename Class> class component_registry_entry : public component_registry_entry_base
+    template <typename Class>
+    class component_registry_entry : public component_registry_entry_base
     {
     public:
         inline component_registry_entry()
             : m_name(type_name<Class>())
         {
-            static_assert(std::is_base_of<component_base, Class>::value,
-                          "Component class is not derived from base component class");
+            static_assert(
+                std::is_base_of<component_base, Class>::value,
+                "Component class is not derived from base component class");
             register_component(this);
         }
         virtual ~component_registry_entry() = default;
@@ -104,15 +111,17 @@ namespace mge {
     };
 
     template <typename ComponentType, typename ImplementationType>
-    class implementation_registry_entry : public implementation_registry_entry_base
+    class implementation_registry_entry
+        : public implementation_registry_entry_base
     {
     public:
         inline implementation_registry_entry()
             : m_component_name(type_name<ComponentType>())
             , m_name(type_name<ImplementationType>())
         {
-            static_assert(std::is_base_of<ComponentType, ImplementationType>::value,
-                          "Implementation is not derived from component type");
+            static_assert(
+                std::is_base_of<ComponentType, ImplementationType>::value,
+                "Implementation is not derived from component type");
             static_assert(std::is_base_of<component_base, ComponentType>::value,
                           "Implementation is not derived from mge::component");
             register_implementation(this);
@@ -123,17 +132,24 @@ namespace mge {
             , m_name(type_name<ImplementationType>())
             , m_alias_names(alias_names)
         {
-            static_assert(std::is_base_of<ComponentType, ImplementationType>::value,
-                          "Implementation is not derived from component type");
+            static_assert(
+                std::is_base_of<ComponentType, ImplementationType>::value,
+                "Implementation is not derived from component type");
             static_assert(std::is_base_of<component_base, ComponentType>::value,
                           "Implementation is not derived from mge::component");
             register_implementation(this);
         }
 
         virtual ~implementation_registry_entry() noexcept = default;
-        std::string_view component_name() const noexcept override { return m_component_name; }
+        std::string_view component_name() const noexcept override
+        {
+            return m_component_name;
+        }
         std::string_view name() const noexcept override { return m_name; }
-        std::string_view alias_names() const noexcept override { return m_alias_names; }
+        std::string_view alias_names() const noexcept override
+        {
+            return m_alias_names;
+        }
         std::shared_ptr<component_base> create() const override
         {
             return std::make_shared<ImplementationType>();
@@ -174,7 +190,8 @@ namespace mge {
          * @param implementation name of the implementation
          * @return @c std::shared_ptr<Class> referring to the implementation
          */
-        static inline std::shared_ptr<Class> create(std::string_view implementation)
+        static inline std::shared_ptr<Class>
+        create(std::string_view implementation)
         {
             return component_base::create<Class>(implementation);
         }
@@ -184,7 +201,8 @@ namespace mge {
          *
          * @param callback callback function called for each implementation name
          */
-        static inline void implementations(const std::function<void(std::string_view)>& callback)
+        static inline void
+        implementations(const std::function<void(std::string_view)>& callback)
         {
             component_base::implementations<Class>(callback);
         }
@@ -196,7 +214,7 @@ namespace mge {
  *
  * @param clazz class name
  */
-#define MGE_REGISTER_COMPONENT(clazz)                                                              \
+#define MGE_REGISTER_COMPONENT(clazz)                                          \
     ::mge::component_registry_entry<clazz> __mge_component_registry_entry##clazz
 
 /**
@@ -207,8 +225,9 @@ namespace mge {
  * @param component component class (interface class)
  * @param ... alias names for registration
  */
-#define MGE_REGISTER_IMPLEMENTATION(clazz, component, ...)                                         \
-    ::mge::implementation_registry_entry<component, clazz>                                         \
-        __mge_implementation_registry_entry_##clazz =                                              \
-            ::mge::implementation_registry_entry<component, clazz>(MGE_STRINGIFY(__VA_ARGS__))
+#define MGE_REGISTER_IMPLEMENTATION(clazz, component, ...)                     \
+    ::mge::implementation_registry_entry<component, clazz>                     \
+        __mge_implementation_registry_entry_##clazz =                          \
+            ::mge::implementation_registry_entry<component, clazz>(            \
+                MGE_STRINGIFY(__VA_ARGS__))
 } // namespace mge

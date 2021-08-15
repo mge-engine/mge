@@ -19,7 +19,8 @@ namespace mge {
          * @param stream    target stream
          * @param formatter formatter used to format record
          */
-        stream_trace_sink(std::ostream& stream, const trace_formatter_ref& formatter);
+        stream_trace_sink(std::ostream&              stream,
+                          const trace_formatter_ref& formatter);
         ~stream_trace_sink() = default;
 
         void publish(const trace_record& r) override;

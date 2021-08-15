@@ -41,7 +41,10 @@ namespace mge {
 
         video_mode monitor::current_mode() const { return m_current_mode; }
 
-        monitor::video_mode_collection monitor::supported_modes() const { return m_video_modes; }
+        monitor::video_mode_collection monitor::supported_modes() const
+        {
+            return m_video_modes;
+        }
 
         void monitor::compute_physical_size()
         {
@@ -49,8 +52,8 @@ namespace mge {
             dc = CreateDCW(L"DISPLAY", m_adapter_device.DeviceName, NULL, NULL);
             if (!dc) {
                 MGE_THROW(mge::system_error)
-                    << "CreateDC call for device '" << mge::to_utf8(m_adapter_device.DeviceName)
-                    << "' failed";
+                    << "CreateDC call for device '"
+                    << mge::to_utf8(m_adapter_device.DeviceName) << "' failed";
             }
 
             m_physical_size.width = (uint32_t)GetDeviceCaps(dc, HORZSIZE);
@@ -64,18 +67,26 @@ namespace mge {
                 DEVMODEW dm;
                 mge::zero_memory(dm);
                 dm.dmSize = sizeof(DEVMODEW);
-                if (!EnumDisplaySettingsW(m_adapter_device.DeviceName, i, &dm)) {
+                if (!EnumDisplaySettingsW(m_adapter_device.DeviceName,
+                                          i,
+                                          &dm)) {
                     break;
                 }
 
-                m_video_modes.emplace_back(dm.dmPelsWidth, dm.dmPelsHeight, dm.dmDisplayFrequency);
+                m_video_modes.emplace_back(dm.dmPelsWidth,
+                                           dm.dmPelsHeight,
+                                           dm.dmDisplayFrequency);
             }
 
             DEVMODEW dm;
             mge::zero_memory(dm);
             dm.dmSize = sizeof(DEVMODEW);
-            if (EnumDisplaySettingsW(m_adapter_device.DeviceName, ENUM_CURRENT_SETTINGS, &dm)) {
-                m_current_mode = video_mode(dm.dmPelsWidth, dm.dmPelsHeight, dm.dmDisplayFrequency);
+            if (EnumDisplaySettingsW(m_adapter_device.DeviceName,
+                                     ENUM_CURRENT_SETTINGS,
+                                     &dm)) {
+                m_current_mode = video_mode(dm.dmPelsWidth,
+                                            dm.dmPelsHeight,
+                                            dm.dmDisplayFrequency);
             } else {
                 // handle error;
             }
@@ -89,11 +100,15 @@ namespace mge {
             for (DWORD adapter_index = 0;; ++adapter_index) {
                 mge::zero_memory(adapter_device);
                 adapter_device.cb = sizeof(adapter_device);
-                if (!EnumDisplayDevicesW(nullptr, adapter_index, &adapter_device, 0)) {
+                if (!EnumDisplayDevicesW(nullptr,
+                                         adapter_index,
+                                         &adapter_device,
+                                         0)) {
                     break;
                 }
                 MGE_DEBUG_TRACE(WIN32)
-                    << "Found adapter: " << mge::to_utf8(adapter_device.DeviceName) << " - "
+                    << "Found adapter: "
+                    << mge::to_utf8(adapter_device.DeviceName) << " - "
                     << mge::to_utf8(adapter_device.DeviceString);
                 DISPLAY_DEVICEW display_device;
                 for (DWORD display_index = 0;; ++display_index) {
@@ -105,8 +120,9 @@ namespace mge {
                                              0)) {
                         break;
                     }
-                    result.push_back(
-                        std::make_shared<monitor>(adapter_device, display_device, result.empty()));
+                    result.push_back(std::make_shared<monitor>(adapter_device,
+                                                               display_device,
+                                                               result.empty()));
                 }
             }
 

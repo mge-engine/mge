@@ -11,7 +11,8 @@ namespace mge {
         set_info(error_code(ec));
 #ifdef MGE_OS_WINDOWS
         char* msgbuf;
-        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+        FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                          FORMAT_MESSAGE_FROM_SYSTEM,
                       nullptr,
                       ec,
                       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
@@ -30,7 +31,10 @@ namespace mge {
 #endif
     }
 
-    system_error::system_error(system_error::error_code_type code) { set_error_code(code); }
+    system_error::system_error(system_error::error_code_type code)
+    {
+        set_error_code(code);
+    }
 
     system_error::system_error(const system_error& e)
         : exception(e)

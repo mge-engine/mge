@@ -25,7 +25,10 @@ TEST(simple_loop, one_successful_loop)
 {
     auto             l = mge::loop::create("simple");
     MOCK_loop_target t;
-    EXPECT_CALL(t, is_quit()).Times(2).WillOnce(Return(false)).WillOnce(Return(true));
+    EXPECT_CALL(t, is_quit())
+        .Times(2)
+        .WillOnce(Return(false))
+        .WillOnce(Return(true));
     {
         InSequence s;
 

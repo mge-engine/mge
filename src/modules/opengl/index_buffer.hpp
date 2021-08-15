@@ -3,8 +3,11 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/index_buffer.hpp"
-#include "render_context.hpp"
+#include "opengl.hpp"
+
 namespace mge::opengl {
+
+    class render_context;
 
     class index_buffer : public mge::index_buffer
     {

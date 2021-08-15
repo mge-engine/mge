@@ -20,9 +20,10 @@ namespace mge {
     class benchmark
     {
     protected:
-        using clock = std::conditional<std::chrono::high_resolution_clock::is_steady,
-                                       std::chrono::high_resolution_clock,
-                                       std::chrono::steady_clock>::type;
+        using clock =
+            std::conditional<std::chrono::high_resolution_clock::is_steady,
+                             std::chrono::high_resolution_clock,
+                             std::chrono::steady_clock>::type;
 
         class stage
         {
@@ -48,7 +49,8 @@ namespace mge {
 
         ~benchmark();
 
-        template <typename O> MGE_NO_INLINE benchmark& run(const char* name, O&& op)
+        template <typename O>
+        MGE_NO_INLINE benchmark& run(const char* name, O&& op)
         {
             reset(name);
             while (auto loops = next_iterations()) {
@@ -89,7 +91,9 @@ namespace mge {
         void     compute_clock_resolution();
         void     start_measuring();
         void     stop_measuring();
-        uint64_t update(uint64_t iterations, clock::time_point start, clock::time_point end);
+        uint64_t update(uint64_t          iterations,
+                        clock::time_point start,
+                        clock::time_point end);
         void     print_results();
 
         using stage_vector = std::vector<std::unique_ptr<stage>>;

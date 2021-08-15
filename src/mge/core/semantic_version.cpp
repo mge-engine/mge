@@ -13,7 +13,9 @@ namespace qi = boost::spirit::qi;
 namespace mge {
     semantic_version::semantic_version() {}
 
-    semantic_version::semantic_version(uint32_t major, uint32_t minor, uint32_t patch)
+    semantic_version::semantic_version(uint32_t major,
+                                       uint32_t minor,
+                                       uint32_t patch)
         : m_data(major, minor, patch)
     {}
 
@@ -27,9 +29,11 @@ namespace mge {
         if (!qi::parse(version_str.begin(),
                        version_str.end(),
                        qi::uint_[set_major] >>
-                           (-('.' >> qi::uint_[set_minor] >> (-('.' >> qi::uint_[set_patch])))) >>
+                           (-('.' >> qi::uint_[set_minor] >>
+                              (-('.' >> qi::uint_[set_patch])))) >>
                            qi::eoi)) {
-            MGE_THROW(illegal_argument) << "Invalid version string " << version_str;
+            MGE_THROW(illegal_argument)
+                << "Invalid version string " << version_str;
         }
     }
 
@@ -69,11 +73,20 @@ namespace mge {
         return m_data == v.m_data;
     }
 
-    uint32_t semantic_version::major() const noexcept { return std::get<0>(m_data); }
+    uint32_t semantic_version::major() const noexcept
+    {
+        return std::get<0>(m_data);
+    }
 
-    uint32_t semantic_version::minor() const noexcept { return std::get<1>(m_data); }
+    uint32_t semantic_version::minor() const noexcept
+    {
+        return std::get<1>(m_data);
+    }
 
-    uint32_t semantic_version::patch() const noexcept { return std::get<2>(m_data); }
+    uint32_t semantic_version::patch() const noexcept
+    {
+        return std::get<2>(m_data);
+    }
 
     std::ostream& operator<<(std::ostream& os, const semantic_version& v)
     {

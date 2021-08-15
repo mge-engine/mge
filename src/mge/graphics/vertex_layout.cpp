@@ -20,10 +20,13 @@ namespace mge {
 
     size_t vertex_layout::binary_size() const
     {
-        auto r = *this | std::views::transform([](const auto& vf) { return vf.binary_size(); }) |
-                 std::views::common;
+        auto         r = *this | std::views::transform([](const auto& vf) {
+            return vf.binary_size();
+        }) | std::views::common;
         const size_t zero = 0;
-        return std::accumulate(std::ranges::begin(r), std::ranges::end(r), zero);
+        return std::accumulate(std::ranges::begin(r),
+                               std::ranges::end(r),
+                               zero);
     }
 
     std::ostream& operator<<(std::ostream& os, const vertex_layout& l)

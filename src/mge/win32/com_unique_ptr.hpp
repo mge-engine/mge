@@ -13,11 +13,13 @@ namespace mge {
         inline void operator()(T* ptr) const { ptr->Release(); }
     };
 
-    template <typename T> inline std::unique_ptr<T, mge::com_deleter<T>> make_com_unique_ptr(T* ptr)
+    template <typename T>
+    inline std::unique_ptr<T, mge::com_deleter<T>> make_com_unique_ptr(T* ptr)
     {
         return std::unique_ptr<T, mge::com_deleter<T>>(ptr);
     }
 
-    template <typename T> using com_unique_ptr = std::unique_ptr<T, mge::com_deleter<T>>;
+    template <typename T>
+    using com_unique_ptr = std::unique_ptr<T, mge::com_deleter<T>>;
 
 } // namespace mge

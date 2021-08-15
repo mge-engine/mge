@@ -11,4 +11,7 @@ TEST(checked_cast, success)
     EXPECT_EQ(123u, x);
 }
 
-TEST(checked_cast, failure) { EXPECT_THROW(mge::checked_cast<uint8_t>(1024), mge::bad_cast); }
+TEST(checked_cast, failure)
+{
+    EXPECT_THROW(mge::checked_cast<uint8_t>(1024), mge::bad_cast);
+}

@@ -45,7 +45,8 @@ namespace mge {
         key_type insert(const function_type& f)
         {
             if (m_calling) {
-                MGE_THROW(illegal_state) << "Cannot insert new callback during callback processing";
+                MGE_THROW(illegal_state)
+                    << "Cannot insert new callback during callback processing";
             }
             key_type new_key = ++m_sequence;
             m_data[new_key] = f;
@@ -129,7 +130,8 @@ namespace mge {
         key_type insert(const function_type& f)
         {
             if (m_calling) {
-                MGE_THROW(illegal_state) << "Cannot insert new callback during callback processing";
+                MGE_THROW(illegal_state)
+                    << "Cannot insert new callback during callback processing";
             }
             key_type new_key = ++m_sequence;
             m_data[new_key] = f;

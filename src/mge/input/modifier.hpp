@@ -31,6 +31,7 @@ namespace mge {
      * @param v     modifier value
      * @return @c os
      */
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const modifier_value& v);
+    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream&         os,
+                                             const modifier_value& v);
 
 } // namespace mge

@@ -16,6 +16,9 @@ namespace mge {
 
     const vertex_layout& vertex_buffer::layout() const { return m_layout; }
 
-    size_t vertex_buffer::element_count() const { return size() / m_layout.binary_size(); }
+    size_t vertex_buffer::element_count() const
+    {
+        return size() / m_layout.binary_size();
+    }
 
 } // namespace mge

@@ -23,11 +23,12 @@ namespace mge {
                 MGE_DEBUG_TRACE(BLACKSCREEN) << "Close listener invoked";
                 set_quit();
             });
-            m_window->set_key_action_handler([&](mge::key k, mge::key_action a, mge::modifier m) {
-                if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
-                    set_quit();
-                }
-            });
+            m_window->set_key_action_handler(
+                [&](mge::key k, mge::key_action a, mge::modifier m) {
+                    if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
+                        set_quit();
+                    }
+                });
 
             /*
             m_clear_commands = m_window->render_context().create_command_list();

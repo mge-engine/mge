@@ -22,5 +22,6 @@ namespace mge {
         MAX_SHADER_TYPE = GEOMETRY
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const shader_type& t);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&      os,
+                                                const shader_type& t);
 } // namespace mge

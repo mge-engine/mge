@@ -13,7 +13,8 @@ namespace mge {
     /**
      * @brief A shader is a piece of code executed in the graphics pipeline.
      */
-    class MGEGRAPHICS_EXPORT shader : public context_object, public property_object
+    class MGEGRAPHICS_EXPORT shader : public context_object,
+                                      public property_object
     {
     protected:
         /**
@@ -49,7 +50,8 @@ namespace mge {
         /**
          * @brief Returns whether shader contains executable code.
          *
-         * @return @c true if shader is executable, either by upload or by compilation
+         * @return @c true if shader is executable, either by upload or by
+         * compilation
          */
         bool initialized() const;
 

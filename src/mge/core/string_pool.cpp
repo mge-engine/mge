@@ -13,7 +13,7 @@ namespace mge {
         if (it != m_values.end()) {
             return it->first;
         } else {
-            auto             value = std::make_shared<std::string>(str.begin(), str.end());
+            auto value = std::make_shared<std::string>(str.begin(), str.end());
             std::string_view key(value->begin(), value->end());
             m_values.emplace(key, std::move(value));
             return key;

@@ -21,6 +21,7 @@ namespace mge {
         CONSTANT //!< buffer containing shader input values
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const buffer_type& t);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&      os,
+                                                const buffer_type& t);
 
 } // namespace mge

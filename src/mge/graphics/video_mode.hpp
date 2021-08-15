@@ -23,7 +23,8 @@ namespace mge {
         /**
          * @brief Pseudo refresh rate that allows any refresh rate.
          */
-        static constexpr uint32_t ANY_REFRESH_RATE = std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t ANY_REFRESH_RATE =
+            std::numeric_limits<uint32_t>::max();
 
         /**
          * @brief Create video mode.
@@ -66,6 +67,7 @@ namespace mge {
         }
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const video_mode& m);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&     os,
+                                                const video_mode& m);
 
 } // namespace mge

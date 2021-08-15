@@ -23,7 +23,10 @@ TEST(statistics, create_from_string)
     s.release();
 }
 
-TEST(statistics, root_exists) { EXPECT_EQ(""sv, mge::statistics::root().name()); }
+TEST(statistics, root_exists)
+{
+    EXPECT_EQ(""sv, mge::statistics::root().name());
+}
 
 TEST(statistics, death_on_destroy_owned)
 {

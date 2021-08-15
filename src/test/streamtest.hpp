@@ -5,9 +5,9 @@
 
 #include <sstream>
 
-#define EXPECT_STREAMOUTPUT(STRING, VALUE)                                                         \
-    [&]() {                                                                                        \
-        std::stringstream ss;                                                                      \
-        ss << VALUE;                                                                               \
-        EXPECT_STREQ(STRING, ss.str().c_str());                                                    \
+#define EXPECT_STREAMOUTPUT(STRING, VALUE)                                     \
+    [&]() {                                                                    \
+        std::stringstream ss;                                                  \
+        ss << VALUE;                                                           \
+        EXPECT_STREQ(STRING, ss.str().c_str());                                \
     }()

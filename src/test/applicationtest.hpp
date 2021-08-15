@@ -39,6 +39,9 @@ namespace mge {
     };
 } // namespace mge
 
-#define APPLICATIONTEST_MAIN(NAME)                                                                 \
-    MGE_DEFINE_TRACE(APPLICATIONTEST);                                                             \
-    int main(int argc, const char** argv) { return mge::application::main(#NAME, argc, argv); }
+#define APPLICATIONTEST_MAIN(NAME)                                             \
+    MGE_DEFINE_TRACE(APPLICATIONTEST);                                         \
+    int main(int argc, const char** argv)                                      \
+    {                                                                          \
+        return mge::application::main(#NAME, argc, argv);                      \
+    }

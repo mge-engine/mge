@@ -21,8 +21,9 @@ namespace mge {
      *       but in a backward-compatible manner
      *     * a change in patch level implies only backward compatible bug fixes
      */
-    class MGECORE_EXPORT semantic_version : public boost::less_than_comparable<semantic_version>,
-                                            public boost::equality_comparable<semantic_version>
+    class MGECORE_EXPORT semantic_version
+        : public boost::less_than_comparable<semantic_version>,
+          public boost::equality_comparable<semantic_version>
     {
     public:
         /**
@@ -37,7 +38,9 @@ namespace mge {
          * @param minor minor version
          * @param patch patch level
          */
-        explicit semantic_version(uint32_t major, uint32_t minor = 0u, uint32_t patch = 0u);
+        explicit semantic_version(uint32_t major,
+                                  uint32_t minor = 0u,
+                                  uint32_t patch = 0u);
 
         /**
          * @brief Construct a new semantic version.
@@ -120,6 +123,7 @@ namespace mge {
         std::tuple<uint32_t, uint32_t, uint32_t> m_data;
     };
 
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream& os, const semantic_version& v);
+    MGECORE_EXPORT std::ostream& operator<<(std::ostream&           os,
+                                            const semantic_version& v);
 
 } // namespace mge

@@ -27,18 +27,28 @@ namespace mge::opengl {
             return *this;
         }
 
-        static void
-        check_error(const char* file, int line, const char* signature, const char* glFunction);
+        static void check_error(const char* file,
+                                int         line,
+                                const char* signature,
+                                const char* glFunction);
 
-        static void
-        trace_error(const char* file, int line, const char* signature, const char* glFunction);
+        static void trace_error(const char* file,
+                                int         line,
+                                const char* signature,
+                                const char* glFunction);
 
         static void clear();
     };
 } // namespace mge::opengl
 
-#define TRACE_OPENGL_ERROR(function)                                                               \
-    opengl::error::trace_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE, #function)
+#define TRACE_OPENGL_ERROR(function)                                           \
+    opengl::error::trace_error(__FILE__,                                       \
+                               __LINE__,                                       \
+                               MGE_FUNCTION_SIGNATURE,                         \
+                               #function)
 
-#define CHECK_OPENGL_ERROR(function)                                                               \
-    opengl::error::check_error(__FILE__, __LINE__, MGE_FUNCTION_SIGNATURE, #function)
+#define CHECK_OPENGL_ERROR(function)                                           \
+    opengl::error::check_error(__FILE__,                                       \
+                               __LINE__,                                       \
+                               MGE_FUNCTION_SIGNATURE,                         \
+                               #function)

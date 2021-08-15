@@ -81,9 +81,15 @@ namespace mge {
         }
     }
 
-    bool keyboard_state::pressed(const modifier& m) const { return m_modifier.includes(m); }
+    bool keyboard_state::pressed(const modifier& m) const
+    {
+        return m_modifier.includes(m);
+    }
 
-    const mge::modifier& keyboard_state::current_modifier() const { return m_modifier; }
+    const mge::modifier& keyboard_state::current_modifier() const
+    {
+        return m_modifier;
+    }
 
     bool keyboard_state::pressed(const modifier& m, const key& k) const
     {

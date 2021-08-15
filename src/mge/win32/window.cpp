@@ -26,16 +26,18 @@ namespace mge {
         {
             create_window_class();
             create_window();
-            m_quit_listener = mge::application::instance()->add_quit_listener([=, this] {
-                if (m_hwnd) {
-                    PostMessage(m_hwnd, WM_WANT_DESTROY, 0, 0);
-                }
-            });
+            m_quit_listener =
+                mge::application::instance()->add_quit_listener([=, this] {
+                    if (m_hwnd) {
+                        PostMessage(m_hwnd, WM_WANT_DESTROY, 0, 0);
+                    }
+                });
         }
 
         window::~window()
         {
-            mge::application::instance()->remove_input_listener(m_process_input_listener);
+            mge::application::instance()->remove_input_listener(
+                m_process_input_listener);
             mge::application::instance()->remove_quit_listener(m_quit_listener);
         }
 
@@ -73,12 +75,15 @@ namespace mge {
         {
             MGE_DEBUG_TRACE(WIN32) << "Create window";
 
-            RECT window_rect = {0, 0, (LONG)extent().width, (LONG)extent().height};
+            RECT window_rect = {0,
+                                0,
+                                (LONG)extent().width,
+                                (LONG)extent().height};
 
             DWORD style, exstyle;
 
-            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX |
-                    WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+            style = WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_SYSMENU |
+                    WS_MINIMIZEBOX | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
             exstyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
             AdjustWindowRectEx(&window_rect, style, 0, exstyle);
@@ -99,7 +104,8 @@ namespace mge {
             MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
 
             m_process_input_listener =
-                application::instance()->add_input_listener([&]() { this->process_input(); });
+                application::instance()->add_input_listener(
+                    [&]() { this->process_input(); });
         }
 
         void window::process_input()
@@ -135,10 +141,12 @@ namespace mge {
             if (wparam == VK_PROCESSKEY) {
                 return mge::key::INVALID;
             }
-            if (wparam >= (WPARAM)mge::key::ZERO && wparam <= (WPARAM)mge::key::NINE) {
+            if (wparam >= (WPARAM)mge::key::ZERO &&
+                wparam <= (WPARAM)mge::key::NINE) {
                 return (mge::key)wparam;
             }
-            if (wparam >= (WPARAM)mge::key::A && wparam <= (WPARAM)mge::key::Z) {
+            if (wparam >= (WPARAM)mge::key::A &&
+                wparam <= (WPARAM)mge::key::Z) {
                 return (mge::key)wparam;
             }
             switch (wparam) {
@@ -243,7 +251,10 @@ namespace mge {
             return mge::key::INVALID;
         }
 
-        LRESULT CALLBACK window::wndproc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)
+        LRESULT CALLBACK window::wndproc(HWND   hwnd,
+                                         UINT   umsg,
+                                         WPARAM wparam,
+                                         LPARAM lparam)
         {
             window* w = (window*)GetWindowLongPtr(hwnd, 0);
             if (w == nullptr) {
@@ -263,7 +274,8 @@ namespace mge {
                     w->on_close();
                     break;
                 case WM_WANT_DESTROY:
-                    MGE_DEBUG_TRACE(WIN32) << "Destroy of window " << hwnd << "requested";
+                    MGE_DEBUG_TRACE(WIN32)
+                        << "Destroy of window " << hwnd << "requested";
                     w->m_hwnd = 0;
                     DestroyWindow(hwnd);
                     break;
@@ -296,10 +308,11 @@ namespace mge {
                                        GET_Y_LPARAM(lparam));
                     break;
                 case WM_LBUTTONDBLCLK:
-                    w->on_mouse_action(1,
-                                       mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
-                                       GET_X_LPARAM(lparam),
-                                       GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(
+                        1,
+                        mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+                        GET_X_LPARAM(lparam),
+                        GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONDOWN:
                     w->on_mouse_action(2,
@@ -314,37 +327,45 @@ namespace mge {
                                        GET_Y_LPARAM(lparam));
                     break;
                 case WM_RBUTTONDBLCLK:
-                    w->on_mouse_action(2,
-                                       mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
-                                       GET_X_LPARAM(lparam),
-                                       GET_Y_LPARAM(lparam));
+                    w->on_mouse_action(
+                        2,
+                        mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK,
+                        GET_X_LPARAM(lparam),
+                        GET_Y_LPARAM(lparam));
                     break;
                 case WM_MOUSEMOVE:
-                    w->on_mouse_move(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+                    w->on_mouse_move(GET_X_LPARAM(lparam),
+                                     GET_Y_LPARAM(lparam));
                     break;
                 case WM_CHAR:
                     if (wparam == 0x0D || wparam == 0x09 || wparam == 0x08) {
                         switch (wparam) {
                         case 0x0D:
-                            w->on_key_action(mge::key::ENTER, mge::key_action::PRESS);
+                            w->on_key_action(mge::key::ENTER,
+                                             mge::key_action::PRESS);
                             break;
                         case 0x08:
-                            w->on_key_action(mge::key::BACKSPACE, mge::key_action::PRESS);
+                            w->on_key_action(mge::key::BACKSPACE,
+                                             mge::key_action::PRESS);
                             break;
                         case 0x09:
-                            w->on_key_action(mge::key::TAB, mge::key_action::PRESS);
+                            w->on_key_action(mge::key::TAB,
+                                             mge::key_action::PRESS);
                             break;
                         }
                         w->on_character((uint32_t)wparam);
                         switch (wparam) {
                         case 0x0D:
-                            w->on_key_action(mge::key::ENTER, mge::key_action::RELEASE);
+                            w->on_key_action(mge::key::ENTER,
+                                             mge::key_action::RELEASE);
                             break;
                         case 0x08:
-                            w->on_key_action(mge::key::BACKSPACE, mge::key_action::RELEASE);
+                            w->on_key_action(mge::key::BACKSPACE,
+                                             mge::key_action::RELEASE);
                             break;
                         case 0x09:
-                            w->on_key_action(mge::key::TAB, mge::key_action::RELEASE);
+                            w->on_key_action(mge::key::TAB,
+                                             mge::key_action::RELEASE);
                             break;
                         }
                     } else {

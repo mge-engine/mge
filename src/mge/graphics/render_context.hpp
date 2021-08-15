@@ -19,7 +19,8 @@ namespace mge {
      * A render context has a swap chain to facilitate presentation
      * of the rendered frames.
      */
-    class MGEGRAPHICS_EXPORT render_context : public std::enable_shared_from_this<render_context>
+    class MGEGRAPHICS_EXPORT render_context
+        : public std::enable_shared_from_this<render_context>
     {
     public:
         virtual ~render_context() = default;
@@ -32,8 +33,9 @@ namespace mge {
          * @param data          initial data
          * @return created index buffer
          */
-        virtual index_buffer_ref
-        create_index_buffer(data_type dt, size_t data_size, void* data = nullptr) = 0;
+        virtual index_buffer_ref create_index_buffer(data_type dt,
+                                                     size_t    data_size,
+                                                     void* data = nullptr) = 0;
 
         /**
          * @brief Create a vertex buffer object.
@@ -43,9 +45,10 @@ namespace mge {
          * @param data      initial data
          * @return created vertex buffer
          */
-        virtual vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
-                                                       size_t               data_size,
-                                                       void*                data = nullptr) = 0;
+        virtual vertex_buffer_ref
+        create_vertex_buffer(const vertex_layout& layout,
+                             size_t               data_size,
+                             void*                data = nullptr) = 0;
 
         /**
          * @brief Create a shader object.

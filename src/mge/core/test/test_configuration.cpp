@@ -19,8 +19,9 @@ TEST(configuration, find_parameter)
 
 TEST(configuration, find_parameter_throws_on_unknown)
 {
-    EXPECT_THROW(mge::configuration::find_parameter("test"sv, "unknown_parameter"sv),
-                 mge::exception);
+    EXPECT_THROW(
+        mge::configuration::find_parameter("test"sv, "unknown_parameter"sv),
+        mge::exception);
 }
 
 TEST(configuration, store)
@@ -34,7 +35,8 @@ TEST(configuration, store)
         std::filesystem::remove(cfgfile2);
     }
 
-    MGE_PARAMETER(test, test_parameter2).from_string("my hoovercraft is full of eels");
+    MGE_PARAMETER(test, test_parameter2)
+        .from_string("my hoovercraft is full of eels");
     mge::configuration::store();
     EXPECT_TRUE(std::filesystem::exists(cfgfile));
 }

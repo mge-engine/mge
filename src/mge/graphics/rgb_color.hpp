@@ -150,5 +150,6 @@ namespace mge {
      * @param c color to dump
      * @return @c o
      */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& o, const rgb_color& c);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&    o,
+                                                const rgb_color& c);
 } // namespace mge

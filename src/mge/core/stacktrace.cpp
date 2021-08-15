@@ -70,7 +70,10 @@ namespace mge {
     }
 
     template <typename T>
-    void fill_stacktrace(HANDLE thread, CONTEXT* context, T& frames, string_pool& strings)
+    void fill_stacktrace(HANDLE       thread,
+                         CONTEXT*     context,
+                         T&           frames,
+                         string_pool& strings)
     {
         if (!symbols_initialized) {
             initialize_symbols();
@@ -106,13 +109,16 @@ namespace mge {
             IMAGEHLP_MODULE64 moduleinfo;
             memset(&moduleinfo, 0, sizeof(moduleinfo));
             moduleinfo.SizeOfStruct = sizeof(IMAGEHLP_MODULE64);
-            if (!SymGetModuleInfo64(current_process, frame.AddrPC.Offset, &moduleinfo)) {
+            if (!SymGetModuleInfo64(current_process,
+                                    frame.AddrPC.Offset,
+                                    &moduleinfo)) {
                 moduleinfo.ImageName[0] = '\0';
             }
 
             // get symbol information
 #    define MAX_SYMBOL_NAME_LEN 2000
-            DWORD64 symbolinfo_buffer[(sizeof(IMAGEHLP_SYMBOL64) + MAX_SYMBOL_NAME_LEN) /
+            DWORD64 symbolinfo_buffer[(sizeof(IMAGEHLP_SYMBOL64) +
+                                       MAX_SYMBOL_NAME_LEN) /
                                           sizeof(DWORD64) +
                                       1];
             static IMAGEHLP_SYMBOL64* p_symbolinfo;

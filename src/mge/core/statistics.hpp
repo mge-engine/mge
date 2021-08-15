@@ -73,15 +73,17 @@ namespace mge {
                  * @param field_name name
                  * @param getter functor to retrieve value
                  */
-                field_description(std::string_view                               field_name,
-                                  std::function<statistics::value_type(void*)>&& getter);
+                field_description(
+                    std::string_view                               field_name,
+                    std::function<statistics::value_type(void*)>&& getter);
                 /**
                  * Construct field description.
                  * @param field_name name
                  * @param getter functor to retrieve value
                  */
-                field_description(std::string_view                                    field_name,
-                                  const std::function<statistics::value_type(void*)>& getter);
+                field_description(
+                    std::string_view field_name,
+                    const std::function<statistics::value_type(void*)>& getter);
                 /**
                  * Copy constructor.
                  * @param desc copied instance
@@ -125,9 +127,11 @@ namespace mge {
                  * @param statistics_object statistics object used in getter
                  * @return  statistics field value
                  */
-                template <typename S> inline statistics::value_type get(S& statistics_object) const
+                template <typename S>
+                inline statistics::value_type get(S& statistics_object) const
                 {
-                    void* raw_statistics = reinterpret_cast<void*>(&statistics_object);
+                    void* raw_statistics =
+                        reinterpret_cast<void*>(&statistics_object);
                     return m_getter(raw_statistics);
                 }
 
@@ -186,7 +190,8 @@ namespace mge {
              * @return field description
              */
             template <typename C>
-            static field_description field(std::string_view name, statistics::counter_type C::*p)
+            static field_description field(std::string_view         name,
+                                           statistics::counter_type C::*p)
             {
                 return field_description(name, [p](void* raw_class_p) {
                     C* class_p = reinterpret_cast<C*>(raw_class_p);
@@ -203,7 +208,10 @@ namespace mge {
              * @param index field index
              * @return field descriptor
              */
-            const field_description& at(size_type index) const { return m_fields.at(index); }
+            const field_description& at(size_type index) const
+            {
+                return m_fields.at(index);
+            }
 
             /**
              * @brief Number of fields.
@@ -331,11 +339,12 @@ namespace mge {
          */
         std::string_view name() const
         {
-            return std::visit(overloaded{[](const std::string_view& n) { return n; },
-                                         [](const std::string& n) {
-                                             return std::string_view(n.begin(), n.end());
-                                         }},
-                              m_name);
+            return std::visit(
+                overloaded{[](const std::string_view& n) { return n; },
+                           [](const std::string& n) {
+                               return std::string_view(n.begin(), n.end());
+                           }},
+                m_name);
         }
 
         /**

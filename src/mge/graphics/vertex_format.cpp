@@ -19,7 +19,10 @@ namespace mge {
         }
     }
 
-    size_t vertex_format::binary_size() const { return data_type_size(m_type) * m_size; }
+    size_t vertex_format::binary_size() const
+    {
+        return data_type_size(m_type) * m_size;
+    }
 
     std::ostream& operator<<(std::ostream& os, const vertex_format& fmt)
     {
@@ -39,15 +42,18 @@ namespace mge {
                 auto dt = parse_data_type(sv);
                 return vertex_format(dt);
             } catch (const mge::exception& ex) {
-                MGE_THROW_WITH_CAUSE(illegal_argument, ex) << "Invalid vertex format: " << sv;
+                MGE_THROW_WITH_CAUSE(illegal_argument, ex)
+                    << "Invalid vertex format: " << sv;
             }
         } else {
-            std::string_view dtsv = std::string_view(sv.begin(), sv.begin() + bpos);
-            data_type        dt = data_type::UNKNOWN;
+            std::string_view dtsv =
+                std::string_view(sv.begin(), sv.begin() + bpos);
+            data_type dt = data_type::UNKNOWN;
             try {
                 dt = parse_data_type(dtsv);
             } catch (const mge::exception& ex) {
-                MGE_THROW_WITH_CAUSE(illegal_argument, ex) << "Invalid vertex format: " << sv;
+                MGE_THROW_WITH_CAUSE(illegal_argument, ex)
+                    << "Invalid vertex format: " << sv;
             }
 
             auto it = sv.begin() + bpos + 1;
@@ -60,11 +66,13 @@ namespace mge {
                     size += (*it) - '0';
                     ++it;
                 } else {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if (it == e) {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if ('0' <= *it && *it <= '9') {
@@ -75,18 +83,22 @@ namespace mge {
                     ++it;
                     if (it == e) {
                         if (size == 0) {
-                            MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                            MGE_THROW(illegal_argument)
+                                << "Invalid vertex format: " << sv;
                         }
                         return vertex_format(dt, size);
                     } else {
-                        MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                        MGE_THROW(illegal_argument)
+                            << "Invalid vertex format: " << sv;
                     }
                 } else {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if (it == e) {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if ('0' <= *it && *it <= '9') {
@@ -97,22 +109,27 @@ namespace mge {
                     ++it;
                     if (it == e) {
                         if (size == 0) {
-                            MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                            MGE_THROW(illegal_argument)
+                                << "Invalid vertex format: " << sv;
                         }
                         return vertex_format(dt, size);
                     } else {
-                        MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                        MGE_THROW(illegal_argument)
+                            << "Invalid vertex format: " << sv;
                     }
                 } else {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if (it == e) {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if (size > 255 || size == 0) {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
 
                 if (*it == ']') {
@@ -120,10 +137,12 @@ namespace mge {
                     if (it == e) {
                         return vertex_format(dt, size);
                     } else {
-                        MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                        MGE_THROW(illegal_argument)
+                            << "Invalid vertex format: " << sv;
                     }
                 } else {
-                    MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
+                    MGE_THROW(illegal_argument)
+                        << "Invalid vertex format: " << sv;
                 }
             } else {
                 MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;

@@ -5,7 +5,8 @@
 #include <string_view>
 
 namespace mge {
-    template <size_t N> inline std::string_view make_string_view(const char (&s)[N])
+    template <size_t N>
+    inline std::string_view make_string_view(const char (&s)[N])
     {
         if constexpr (N == 0 || N == 1) {
             return std::string_view();

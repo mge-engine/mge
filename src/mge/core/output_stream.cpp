@@ -15,7 +15,8 @@ namespace mge {
             , m_buffer(size)
         {
             if (size == 0) {
-                MGE_THROW(mge::illegal_argument) << "Argument 'size' must be > 0";
+                MGE_THROW(mge::illegal_argument)
+                    << "Argument 'size' must be > 0";
             }
             auto* s = reinterpret_cast<char*>(m_buffer.data());
             setp(s, s + size - 1);
@@ -82,13 +83,15 @@ namespace mge {
 
     void output_stream::write(uint8_t byte) { write(&byte, 1); }
 
-    void output_stream::write(const void* buffer, output_stream::streamsize_type size)
+    void output_stream::write(const void*                    buffer,
+                              output_stream::streamsize_type size)
     {
         if (size == 0) {
             return;
         }
         if (buffer == nullptr) {
-            MGE_THROW(mge::illegal_argument) << "Argument 'buffer' must not be null";
+            MGE_THROW(mge::illegal_argument)
+                << "Argument 'buffer' must not be null";
         }
         on_write(buffer, size);
         notify_write(size);
@@ -104,12 +107,16 @@ namespace mge {
         return *m_stdstream;
     }
 
-    unsigned int output_stream::add_write_listener(const output_stream::write_listener& l)
+    unsigned int
+    output_stream::add_write_listener(const output_stream::write_listener& l)
     {
         return m_write_listeners.insert(l);
     }
 
-    void output_stream::remove_write_listener(unsigned int key) { m_write_listeners.erase(key); }
+    void output_stream::remove_write_listener(unsigned int key)
+    {
+        m_write_listeners.erase(key);
+    }
 
     void output_stream::notify_write(streamsize_type written_bytes)
     {

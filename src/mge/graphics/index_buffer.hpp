@@ -22,7 +22,10 @@ namespace mge {
          * @param data_size size in bytes of initial data
          * @param data      initial data
          */
-        index_buffer(render_context& context, data_type dt, size_t data_size, void* data = nullptr);
+        index_buffer(render_context& context,
+                     data_type       dt,
+                     size_t          data_size,
+                     void*           data = nullptr);
 
     public:
         virtual ~index_buffer();

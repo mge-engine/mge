@@ -73,14 +73,20 @@ namespace mge {
          *
          * @param value enum value
          */
-        inline void reset(E value) { m_bits.reset(static_cast<base_type>(value)); }
+        inline void reset(E value)
+        {
+            m_bits.reset(static_cast<base_type>(value));
+        }
 
         /**
          * @brief Flips value of an enum value.
          *
          * @param value enum value
          */
-        inline void flip(E value) { m_bits.flip(static_cast<base_type>(value)); }
+        inline void flip(E value)
+        {
+            m_bits.flip(static_cast<base_type>(value));
+        }
 
         /**
          * @brief Test one enum value.
@@ -88,7 +94,10 @@ namespace mge {
          * @param value enum value
          * @return @c true if set
          */
-        bool test(E value) const { return m_bits.test(static_cast<base_type>(value)); }
+        bool test(E value) const
+        {
+            return m_bits.test(static_cast<base_type>(value));
+        }
 
         /**
          * @brief Get whether no value is set.

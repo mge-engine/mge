@@ -9,7 +9,10 @@ namespace mge {
 
     memory_trace_sink::~memory_trace_sink() {}
 
-    void memory_trace_sink::publish(const trace_record& r) { m_records.push_back(record(r)); }
+    void memory_trace_sink::publish(const trace_record& r)
+    {
+        m_records.push_back(record(r));
+    }
 
     memory_trace_sink::capacity_type memory_trace_sink::capacity() const
     {
@@ -21,7 +24,10 @@ namespace mge {
         m_records.set_capacity(c);
     }
 
-    memory_trace_sink::size_type memory_trace_sink::size() const { return m_records.size(); }
+    memory_trace_sink::size_type memory_trace_sink::size() const
+    {
+        return m_records.size();
+    }
 
     void memory_trace_sink::clear() { m_records.clear(); }
 

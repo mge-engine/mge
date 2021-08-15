@@ -15,7 +15,10 @@ namespace mge {
         : m_data(std::move(p.m_data))
     {}
 
-    properties::properties(const input_stream_ref& input) { load(input->istream()); }
+    properties::properties(const input_stream_ref& input)
+    {
+        load(input->istream());
+    }
 
     properties& properties::operator=(const properties& p)
     {
@@ -52,10 +55,12 @@ namespace mge {
             }
             auto eqpos = line.find_first_of('=', 0);
             if (eqpos == std::string::npos) {
-                MGE_THROW(runtime_exception) << "Invalid property file line '" << line << "' found";
+                MGE_THROW(runtime_exception)
+                    << "Invalid property file line '" << line << "' found";
             }
             std::string_view key(&line[0], eqpos);
-            std::string_view value(&line[0] + eqpos + 1, line.size() - eqpos - 1);
+            std::string_view value(&line[0] + eqpos + 1,
+                                   line.size() - eqpos - 1);
             auto             value_end = value.end();
 // strip spurious \r
 #ifdef MGE_OS_WINDOWS
@@ -65,7 +70,8 @@ namespace mge {
                 }
             }
 #endif
-            tmp_data[std::string(key.begin(), key.end())] = std::string(value.begin(), value_end);
+            tmp_data[std::string(key.begin(), key.end())] =
+                std::string(value.begin(), value_end);
         }
         std::swap(m_data, tmp_data);
         return;

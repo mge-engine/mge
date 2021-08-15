@@ -13,8 +13,9 @@ class windowtest_application : public mge::test_application
 public:
     void setup()
     {
-        m_window = std::make_shared<mge::win32::window>(mge::extent(640, 480),
-                                                        mge::window_options::standard_options());
+        m_window = std::make_shared<mge::win32::window>(
+            mge::extent(640, 480),
+            mge::window_options::standard_options());
         m_window->show();
     }
 
@@ -23,4 +24,6 @@ public:
 
 TEST(win32_window, basic) { EXPECT_TRUE(true); }
 
-MGE_REGISTER_IMPLEMENTATION(windowtest_application, mge::application, windowtest);
+MGE_REGISTER_IMPLEMENTATION(windowtest_application,
+                            mge::application,
+                            windowtest);

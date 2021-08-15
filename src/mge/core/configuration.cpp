@@ -36,7 +36,8 @@ namespace mge {
         void register_parameter(basic_parameter& p);
         void unregister_parameter(basic_parameter& p);
 
-        basic_parameter& find_parameter(std::string_view section, std::string_view name);
+        basic_parameter& find_parameter(std::string_view section,
+                                        std::string_view name);
 
         void load(bool allow_missing);
         void store();
@@ -59,15 +60,17 @@ namespace mge {
 
     void configuration_instance::register_parameter(basic_parameter& p)
     {
-        MGE_DEBUG_TRACE(CORE) << "Register parameter " << p.section() << "/" << p.name();
+        MGE_DEBUG_TRACE(CORE)
+            << "Register parameter " << p.section() << "/" << p.name();
         auto pmap_it = m_sections.find(p.section());
         if (pmap_it != m_sections.end()) {
             auto p_it = pmap_it->second.find(p.name());
             if (p_it != pmap_it->second.end()) {
-                MGE_ERROR_TRACE(CORE)
-                    << "Parameter " << p.section() << "/" << p.name() << " is already registered";
+                MGE_ERROR_TRACE(CORE) << "Parameter " << p.section() << "/"
+                                      << p.name() << " is already registered";
                 MGE_THROW(mge::duplicate_element)
-                    << "Parameter " << p.section() << "/" << p.name() << " already registered";
+                    << "Parameter " << p.section() << "/" << p.name()
+                    << " already registered";
             } else {
                 pmap_it->second[p.name()] = &p;
             }
@@ -88,8 +91,9 @@ namespace mge {
         }
     }
 
-    basic_parameter& configuration_instance::find_parameter(std::string_view section,
-                                                            std::string_view name)
+    basic_parameter&
+    configuration_instance::find_parameter(std::string_view section,
+                                           std::string_view name)
     {
         if (m_update_needed && m_loaded) {
             set_registered_parameters();
@@ -102,7 +106,8 @@ namespace mge {
                 return *p_it->second;
             }
         }
-        MGE_THROW(mge::runtime_exception) << "Unknown parameter " << section << "/" << name;
+        MGE_THROW(mge::runtime_exception)
+            << "Unknown parameter " << section << "/" << name;
     }
 
     fs::path configuration_instance::find_config_file()
@@ -174,14 +179,16 @@ namespace mge {
 
         auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
         if (ov.has_value()) {
-            MGE_DEBUG_TRACE(CORE) << "Set parameter " << p.section() << "/" << p.name() << " to "
-                                  << ov.get();
+            MGE_DEBUG_TRACE(CORE) << "Set parameter " << p.section() << "/"
+                                  << p.name() << " to " << ov.get();
             p.from_string(ov.get());
         } else {
-            MGE_DEBUG_TRACE(CORE) << "Reset parameter " << p.section() << "/" << p.name();
+            MGE_DEBUG_TRACE(CORE)
+                << "Reset parameter " << p.section() << "/" << p.name();
             p.reset();
         }
-        MGE_DEBUG_TRACE(CORE) << "Notify change of parameter " << p.section() << "/" << p.name();
+        MGE_DEBUG_TRACE(CORE)
+            << "Notify change of parameter " << p.section() << "/" << p.name();
         p.notify_change();
     }
 
@@ -222,11 +229,12 @@ namespace mge {
         if (p.has_value()) {
             m_raw_settings.put(parameter_path, p.to_string());
         } else {
-            auto section_it =
-                m_raw_settings.find(std::string(p.section().begin(), p.section().end()));
+            auto section_it = m_raw_settings.find(
+                std::string(p.section().begin(), p.section().end()));
             if (section_it != m_raw_settings.not_found()) {
                 auto& value_tree = section_it->second;
-                auto  value_it = value_tree.find(std::string(p.name().begin(), p.name().end()));
+                auto  value_it = value_tree.find(
+                    std::string(p.name().begin(), p.name().end()));
                 if (value_it != value_tree.not_found()) {
                     value_tree.erase(value_tree.to_iterator(value_it));
                 }
@@ -246,12 +254,16 @@ namespace mge {
         s_configuration_instance->unregister_parameter(p);
     }
 
-    basic_parameter& configuration::find_parameter(std::string_view section, std::string_view name)
+    basic_parameter& configuration::find_parameter(std::string_view section,
+                                                   std::string_view name)
     {
         return s_configuration_instance->find_parameter(section, name);
     }
 
-    void configuration::load(bool allow_missing) { s_configuration_instance->load(allow_missing); }
+    void configuration::load(bool allow_missing)
+    {
+        s_configuration_instance->load(allow_missing);
+    }
 
     void configuration::store() { s_configuration_instance->store(); }
 

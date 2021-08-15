@@ -12,8 +12,8 @@
  * @param TYPE type used in the reference type, the type is assumed
  * to be a class (no struct, enum class or union).
  */
-#define MGE_DECLARE_REF(TYPE)                                                                      \
-    class TYPE;                                                                                    \
+#define MGE_DECLARE_REF(TYPE)                                                  \
+    class TYPE;                                                                \
     using TYPE##_ref = std::shared_ptr<TYPE>
 
 namespace mge {
@@ -31,8 +31,8 @@ namespace mge {
     /**
      * @brief Frees allocated memory.
      *
-     * Passing a :any:`nullptr` to the function is safe, no operation is performed
-     * in this case.
+     * Passing a :any:`nullptr` to the function is safe, no operation is
+     * performed in this case.
      *
      * @param ptr pointer to memory to free.
      */

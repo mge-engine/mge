@@ -19,7 +19,8 @@ namespace mge {
      * This class enhances @c std::thread by some convenience methods.
      * A thread cannot be copied, or created on the stack.
      */
-    class MGECORE_EXPORT thread : noncopyable, public std::enable_shared_from_this<thread>
+    class MGECORE_EXPORT thread : noncopyable,
+                                  public std::enable_shared_from_this<thread>
     {
     public:
         /**
@@ -95,7 +96,8 @@ namespace mge {
         inline void start(std::function<void()>&& f)
         {
             if (!f) {
-                MGE_THROW(mge::illegal_argument) << "Invalid function parameter for thread start";
+                MGE_THROW(mge::illegal_argument)
+                    << "Invalid function parameter for thread start";
             }
             m_running_thread = std::thread([fc = std::move(f), this] {
                 try {
@@ -157,7 +159,8 @@ namespace mge {
         inline mge::thread::id get_id() { return ::std::this_thread::get_id(); }
 
         template <class Rep, class Period>
-        inline void sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
+        inline void
+        sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
         {
             ::std::this_thread::sleep_for(sleep_duration);
         }

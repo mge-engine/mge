@@ -41,12 +41,15 @@ namespace mge::opengl {
         auto err = glGetError();
         if (err != GL_NO_ERROR) {
             MGE_WARNING_TRACE(OPENGL)
-                << "Ignoring OpenGL error: (" << (unsigned int)err << ") " << gl_error_text(err);
+                << "Ignoring OpenGL error: (" << (unsigned int)err << ") "
+                << gl_error_text(err);
         }
     }
 
-    void
-    error::check_error(const char* file, int line, const char* signature, const char* glFunction)
+    void error::check_error(const char* file,
+                            int         line,
+                            const char* signature,
+                            const char* glFunction)
     {
         auto err = glGetError();
         if (err != GL_NO_ERROR) {
@@ -55,15 +58,18 @@ namespace mge::opengl {
                     .set_info(mge::exception::source_line(line))
                     .set_info(mge::exception::function(signature))
                     .set_info(mge::exception::stack(mge::stacktrace()))
-                    .set_info(mge::exception::type_name(mge::type_name<error>()))
+                    .set_info(
+                        mge::exception::type_name(mge::type_name<error>()))
                     .set_info(::mge::exception::called_function(glFunction))
-                << "OpenGL error: [" << glFunction << "] (" << (unsigned int)err << ") "
-                << gl_error_text(err);
+                << "OpenGL error: [" << glFunction << "] (" << (unsigned int)err
+                << ") " << gl_error_text(err);
         }
     }
 
-    void
-    error::trace_error(const char* file, int line, const char* signature, const char* glFunction)
+    void error::trace_error(const char* file,
+                            int         line,
+                            const char* signature,
+                            const char* glFunction)
     {
         try {
             check_error(file, line, signature, glFunction);

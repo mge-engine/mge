@@ -12,13 +12,15 @@ namespace mge {
     statistics::description::field_description::~field_description() {}
 
     statistics::description::field_description::field_description(
-        std::string_view field_name, std::function<statistics::value_type(void*)>&& getter)
+        std::string_view                               field_name,
+        std::function<statistics::value_type(void*)>&& getter)
         : m_name(field_name)
         , m_getter(std::move(getter))
     {}
 
     statistics::description::field_description::field_description(
-        std::string_view field_name, const std::function<statistics::value_type(void*)>& getter)
+        std::string_view                                    field_name,
+        const std::function<statistics::value_type(void*)>& getter)
         : m_name(field_name)
         , m_getter(getter)
     {}
@@ -54,15 +56,17 @@ namespace mge {
     }
 
     statistics::description::description(
-        std::string_view                                                         name,
-        std::string_view                                                         comment,
-        std::initializer_list<::mge::statistics::description::field_description> fields)
+        std::string_view name,
+        std::string_view comment,
+        std::initializer_list<::mge::statistics::description::field_description>
+            fields)
         : m_name(name)
         , m_comment(comment)
         , m_fields(fields.begin(), fields.end())
     {}
 
-    statistics::description::description(std::string_view name, std::string_view comment)
+    statistics::description::description(std::string_view name,
+                                         std::string_view comment)
         : m_name(name)
         , m_comment(comment)
     {}
@@ -76,7 +80,9 @@ namespace mge {
         virtual ~root_statistics() = default;
         virtual const statistics::description& describe() const override
         {
-            static statistics::description desc(""sv, "Root of statistics object tree"sv);
+            static statistics::description desc(
+                ""sv,
+                "Root of statistics object tree"sv);
             return desc;
         }
     };

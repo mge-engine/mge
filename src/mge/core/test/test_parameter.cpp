@@ -10,7 +10,8 @@ TEST(parameter, simple_access)
 {
     EXPECT_EQ("test"sv, MGE_PARAMETER(test, test_parameter1).section());
     EXPECT_EQ("test_parameter1"sv, MGE_PARAMETER(test, test_parameter1).name());
-    EXPECT_EQ("a test parameter"sv, MGE_PARAMETER(test, test_parameter1).description());
+    EXPECT_EQ("a test parameter"sv,
+              MGE_PARAMETER(test, test_parameter1).description());
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
 }
 
@@ -28,6 +29,7 @@ TEST(parameter, from_string_to_string)
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
     MGE_PARAMETER(test, test_parameter1).from_string("1");
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
-    EXPECT_EQ(std::string("1"), MGE_PARAMETER(test, test_parameter1).to_string());
+    EXPECT_EQ(std::string("1"),
+              MGE_PARAMETER(test, test_parameter1).to_string());
     MGE_PARAMETER(test, test_parameter1).reset();
 }

@@ -22,25 +22,31 @@ namespace mge {
             glGetIntegerv(GL_MAJOR_VERSION, &major_version);
             glGetIntegerv(GL_MINOR_VERSION, &minor_version);
 
-            MGE_TRACE(OPENGL, INFO) << "OpenGL version " << major_version << "." << minor_version;
+            MGE_TRACE(OPENGL, INFO)
+                << "OpenGL version " << major_version << "." << minor_version;
 
-            glsl_version_str = (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
+            glsl_version_str =
+                (const char*)glGetString(GL_SHADING_LANGUAGE_VERSION);
 
             auto vit = glsl_version_str.begin();
-            while (vit != glsl_version_str.end() && (*vit == '.' || std::isdigit(*vit))) {
+            while (vit != glsl_version_str.end() &&
+                   (*vit == '.' || std::isdigit(*vit))) {
                 ++vit;
             }
             std::string plain_glsl_version(glsl_version_str.begin(), vit);
 
             shader_language =
-                mge::shader_language("glsl", mge::semantic_version(plain_glsl_version));
+                mge::shader_language("glsl",
+                                     mge::semantic_version(plain_glsl_version));
 
             MGE_TRACE(OPENGL, INFO) << "GLSL version " << glsl_version_str;
 
-            std::string extension_string = ((const char*)glGetString(GL_EXTENSIONS));
+            std::string extension_string =
+                ((const char*)glGetString(GL_EXTENSIONS));
 
-            auto it = boost::make_split_iterator(extension_string,
-                                                 boost::token_finder(boost::is_space()));
+            auto it = boost::make_split_iterator(
+                extension_string,
+                boost::token_finder(boost::is_space()));
 
             MGE_TRACE(OPENGL, INFO) << "OpenGL extensions:";
             while (!it.eof()) {

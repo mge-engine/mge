@@ -32,7 +32,10 @@ namespace mge {
         t_current_exception = this;
     }
 
-    mge::exception* exception::current_exception() { return t_current_exception; }
+    mge::exception* exception::current_exception()
+    {
+        return t_current_exception;
+    }
 
     exception& exception::operator=(const exception& e)
     {
@@ -78,9 +81,13 @@ namespace mge {
         return std::exception::what();
     }
 
-    std::ostream& operator<<(std::ostream& os, const mge::exception& ex) { return os << ex.what(); }
+    std::ostream& operator<<(std::ostream& os, const mge::exception& ex)
+    {
+        return os << ex.what();
+    }
 
-    std::ostream& operator<<(std::ostream& os, const mge::exception::exception_details& d)
+    std::ostream& operator<<(std::ostream&                            os,
+                             const mge::exception::exception_details& d)
     {
         if (d.ex()) {
             os << "Exception details:\n";
@@ -94,17 +101,21 @@ namespace mge {
             auto file = d.ex()->get<mge::exception::source_file>();
             auto line = d.ex()->get<mge::exception::source_line>();
             if (file && line) {
-                os << "Exception location: " << file.value() << ":" << line.value() << "\n";
+                os << "Exception location: " << file.value() << ":"
+                   << line.value() << "\n";
             }
 
             auto function = d.ex()->get<mge::exception::function>();
             if (function) {
-                os << "Exception raising function: " << function.value() << "\n";
+                os << "Exception raising function: " << function.value()
+                   << "\n";
             }
 
-            auto called_function = d.ex()->get<mge::exception::called_function>();
+            auto called_function =
+                d.ex()->get<mge::exception::called_function>();
             if (called_function) {
-                os << "Calling library/system function: " << called_function.value() << "\n";
+                os << "Calling library/system function: "
+                   << called_function.value() << "\n";
             }
 
             auto stack = d.ex()->get<mge::exception::stack>();

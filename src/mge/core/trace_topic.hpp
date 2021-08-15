@@ -31,12 +31,15 @@ namespace mge {
          */
         template <std::size_t N>
         constexpr trace_topic(const char (&name)[N])
-            : m_topic(static_cast<const char*>(name), static_cast<const char*>(name) + N - 1)
+            : m_topic(static_cast<const char*>(name),
+                      static_cast<const char*>(name) + N - 1)
             , m_enabled_levels(0)
-            , m_level_config("trace"sv, m_topic == "MGE"sv ? "global"sv : m_topic, ""sv)
+            , m_level_config(
+                  "trace"sv, m_topic == "MGE"sv ? "global"sv : m_topic, ""sv)
         {
             initialize();
-            m_level_config.set_change_handler([&] { this->update_configuration(); });
+            m_level_config.set_change_handler(
+                [&] { this->update_configuration(); });
             configure();
         }
 
@@ -141,17 +144,21 @@ namespace mge {
  * @brief Use an already defined trace from another library locally.
  * @param TOPIC name of trace topic
  */
-#define MGE_USE_IMPORTED_TRACE(TOPIC) MGE_DLLIMPORT ::mge::trace_topic& __trace_topic_##TOPIC()
+#define MGE_USE_IMPORTED_TRACE(TOPIC)                                          \
+    MGE_DLLIMPORT ::mge::trace_topic& __trace_topic_##TOPIC()
 
 /**
  * @def MGE_DEFINE_TRACE
  * @brief Define a trace topic.
  * @param TOPIC name of trace topic
  */
-#define MGE_DEFINE_TRACE(TOPIC)                                                                    \
-    static mge::trace_topic s__trace_topic##TOPIC(#TOPIC);                                         \
-    MGE_DLLEXPORT mge::trace_topic& __trace_topic_##TOPIC() { return s__trace_topic##TOPIC; }      \
-    extern int                      s_trace_dummy
+#define MGE_DEFINE_TRACE(TOPIC)                                                \
+    static mge::trace_topic s__trace_topic##TOPIC(#TOPIC);                     \
+    MGE_DLLEXPORT mge::trace_topic& __trace_topic_##TOPIC()                    \
+    {                                                                          \
+        return s__trace_topic##TOPIC;                                          \
+    }                                                                          \
+    extern int s_trace_dummy
 
 /**
  * @def MGE_TRACE_TOPIC

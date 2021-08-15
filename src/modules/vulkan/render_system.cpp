@@ -42,14 +42,15 @@ namespace mge::vulkan {
 #    pragma warning(push)
 #    pragma warning(disable : 4191)
 #endif
-#define RESOLVE(X)                                                                                 \
-    do {                                                                                           \
-        auto f = m_library->vkGetInstanceProcAddr(VK_NULL_HANDLE, #X);                             \
-        if (!f) {                                                                                  \
-            MGE_THROW(vulkan::error) << "Cannot resolve instance function: " << #X;                \
-        }                                                                                          \
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;                           \
-        this->X = reinterpret_cast<decltype(this->X)>(f);                                          \
+#define RESOLVE(X)                                                             \
+    do {                                                                       \
+        auto f = m_library->vkGetInstanceProcAddr(VK_NULL_HANDLE, #X);         \
+        if (!f) {                                                              \
+            MGE_THROW(vulkan::error)                                           \
+                << "Cannot resolve instance function: " << #X;                 \
+        }                                                                      \
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
+        this->X = reinterpret_cast<decltype(this->X)>(f);                      \
     } while (false);
 
 #define BASIC_INSTANCE_FUNCTION(X) RESOLVE(X)
@@ -83,9 +84,11 @@ namespace mge::vulkan {
         VkInstanceCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         create_info.pApplicationInfo = &app_info;
-        create_info.enabledExtensionCount = static_cast<uint32_t>(array_size(s_default_extensions));
+        create_info.enabledExtensionCount =
+            static_cast<uint32_t>(array_size(s_default_extensions));
         create_info.ppEnabledExtensionNames = s_default_extensions;
-        create_info.enabledLayerCount = static_cast<uint32_t>(array_size(s_default_layers));
+        create_info.enabledLayerCount =
+            static_cast<uint32_t>(array_size(s_default_layers));
         create_info.ppEnabledLayerNames = s_default_layers;
     }
 
@@ -98,8 +101,9 @@ namespace mge::vulkan {
         }
     }
 
-    mge::window_ref render_system::create_window(const mge::extent&         extent,
-                                                 const mge::window_options& options)
+    mge::window_ref
+    render_system::create_window(const mge::extent&         extent,
+                                 const mge::window_options& options)
     {
         // auto ref = std::make_shared<mge::vulkan::window>(extent,
         // options);

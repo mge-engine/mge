@@ -24,7 +24,10 @@ namespace mge {
             void on_hide() override;
 
         private:
-            static LRESULT CALLBACK wndproc(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam);
+            static LRESULT CALLBACK wndproc(HWND   hwnd,
+                                            UINT   umsg,
+                                            WPARAM wparam,
+                                            LPARAM lparam);
 
             void        create_window();
             static void create_window_class();

@@ -20,5 +20,6 @@ namespace mge {
         MOUSE_ACTION_DOUBLE_CLICK = 2
     };
 
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const mouse_action& a);
+    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream&       os,
+                                             const mouse_action& a);
 } // namespace mge

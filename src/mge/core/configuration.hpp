@@ -26,7 +26,8 @@ namespace mge {
          * @return parameter as registered, a  @c std::runtime_error is
          * thrown if parameter is not found
          */
-        static basic_parameter& find_parameter(std::string_view section, std::string_view name);
+        static basic_parameter& find_parameter(std::string_view section,
+                                               std::string_view name);
         /**
          * @brief Load configuration.
          * @param allow_missing succeeds even if no configuration is found

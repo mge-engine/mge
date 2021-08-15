@@ -20,7 +20,8 @@ namespace mge {
         }
 
         if (s->type() == shader_type::COMPUTE) {
-            MGE_THROW(mge::illegal_argument) << "Shader type must not be shader_type::COMPUTE";
+            MGE_THROW(mge::illegal_argument)
+                << "Shader type must not be shader_type::COMPUTE";
         }
 
         if (!s->initialized()) {

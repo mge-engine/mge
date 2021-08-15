@@ -98,7 +98,10 @@ namespace mge {
          *
          * @return attributes
          */
-        const attribute_list& attributes() const noexcept { return m_attributes; }
+        const attribute_list& attributes() const noexcept
+        {
+            return m_attributes;
+        }
 
         /**
          * Get meta data of uniforms.
@@ -111,7 +114,10 @@ namespace mge {
          * Get uniform buffer meta data.
          * @return uniform buffers
          */
-        const uniform_buffer_list uniform_buffers() const noexcept { return m_uniform_buffers; }
+        const uniform_buffer_list uniform_buffers() const noexcept
+        {
+            return m_uniform_buffers;
+        }
 
     protected:
         bool                m_needs_link;

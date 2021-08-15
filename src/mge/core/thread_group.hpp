@@ -16,8 +16,9 @@ namespace mge {
      * group by specifying the thread group at thread construction time,
      * a thread cannot change its group after being assigned to one.
      */
-    class MGECORE_EXPORT thread_group : public noncopyable,
-                                        public std::enable_shared_from_this<thread_group>
+    class MGECORE_EXPORT thread_group
+        : public noncopyable,
+          public std::enable_shared_from_this<thread_group>
     {
     public:
         using size_type = size_t;

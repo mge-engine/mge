@@ -37,10 +37,14 @@ namespace mge {
 
         bool exists(std::string_view key) const
         {
-            return m_data.find(std::string(key.begin(), key.end())) != m_data.end();
+            return m_data.find(std::string(key.begin(), key.end())) !=
+                   m_data.end();
         }
 
-        bool exists(const std::string& key) const { return m_data.find(key) != m_data.end(); }
+        bool exists(const std::string& key) const
+        {
+            return m_data.find(key) != m_data.end();
+        }
 
         template <typename T> T get(std::string_view key) const
         {
@@ -55,7 +59,8 @@ namespace mge {
             MGE_THROW(no_such_element) << "No property '" << key << "' found";
         }
 
-        template <typename T, typename D> T get(std::string_view key, const D& default_value) const
+        template <typename T, typename D>
+        T get(std::string_view key, const D& default_value) const
         {
             if (key == nullptr) {
                 return default_value;
@@ -89,14 +94,16 @@ namespace mge {
             }
         }
 
-        template <typename T> inline void put(std::string_view key, const T& value)
+        template <typename T>
+        inline void put(std::string_view key, const T& value)
         {
             std::stringstream ss;
             ss << value;
             m_data[key] = ss.str();
         }
 
-        template <typename T> inline void put(const std::string& key, const T& value)
+        template <typename T>
+        inline void put(const std::string& key, const T& value)
         {
             std::stringstream ss;
             ss << value;

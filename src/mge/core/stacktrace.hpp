@@ -70,7 +70,10 @@ namespace mge {
              *
              * @return source file name
              */
-            std::string_view source_file() const noexcept { return m_source_file; }
+            std::string_view source_file() const noexcept
+            {
+                return m_source_file;
+            }
 
             /**
              * @brief Source line number.
@@ -188,6 +191,7 @@ namespace mge {
      * @param s stack backtrace
      * @return @c os
      */
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream& os, const stacktrace& s);
+    MGECORE_EXPORT std::ostream& operator<<(std::ostream&     os,
+                                            const stacktrace& s);
 
 } // namespace mge

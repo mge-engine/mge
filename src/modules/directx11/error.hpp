@@ -28,13 +28,19 @@ namespace mge::dx11 {
             return *this;
         }
 
-        error& set_info_from_hresult(
-            HRESULT rc, const char* file, int line, const char* clazz, const char* method);
+        error& set_info_from_hresult(HRESULT     rc,
+                                     const char* file,
+                                     int         line,
+                                     const char* clazz,
+                                     const char* method);
 
-        static void check_hresult(
-            HRESULT rc, const char* file, int line, const char* clazz, const char* method);
+        static void check_hresult(HRESULT     rc,
+                                  const char* file,
+                                  int         line,
+                                  const char* clazz,
+                                  const char* method);
     };
 } // namespace mge::dx11
 
-#define CHECK_HRESULT(rc, clazz, method)                                                           \
+#define CHECK_HRESULT(rc, clazz, method)                                       \
     ::mge::dx11::error::check_hresult(rc, __FILE__, __LINE__, #clazz, #method)

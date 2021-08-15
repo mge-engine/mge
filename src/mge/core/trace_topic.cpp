@@ -94,14 +94,16 @@ namespace mge {
                          level_list_str,
                          boost::is_any_of(","),
                          boost::token_compress_on);
-            std::for_each(level_list.begin(), level_list.end(), [&](std::string& s) {
-                boost::to_upper(s);
-                boost::trim(s);
-                trace_level l = level_from_string(s);
-                if (l != trace_level::NONE) {
-                    this->enable(l);
-                }
-            });
+            std::for_each(level_list.begin(),
+                          level_list.end(),
+                          [&](std::string& s) {
+                              boost::to_upper(s);
+                              boost::trim(s);
+                              trace_level l = level_from_string(s);
+                              if (l != trace_level::NONE) {
+                                  this->enable(l);
+                              }
+                          });
         }
         if (m_topic == "MGE"sv) {
             if (global_trace_enabled()) {
@@ -116,11 +118,13 @@ namespace mge {
                     }
 
                     auto fmt = std::make_shared<simple_trace_formatter>();
-                    auto sink = std::make_shared<stream_trace_sink>(std::cout, fmt);
+                    auto sink =
+                        std::make_shared<stream_trace_sink>(std::cout, fmt);
                     m_sinks.push_back(sink);
 
                     if (old) {
-                        memory_trace_sink* s = dynamic_cast<memory_trace_sink*>(old.get());
+                        memory_trace_sink* s =
+                            dynamic_cast<memory_trace_sink*>(old.get());
                         s->forward(*sink);
                     }
                 }
@@ -156,7 +160,10 @@ namespace mge {
         m_enabled_levels &= l_int_inverted;
     }
 
-    void trace_topic::set_level(trace_level l) { m_enabled_levels = static_cast<uint8_t>(l); }
+    void trace_topic::set_level(trace_level l)
+    {
+        m_enabled_levels = static_cast<uint8_t>(l);
+    }
 
     void trace_topic::set_level(uint8_t l)
     {
@@ -166,7 +173,10 @@ namespace mge {
 
     std::string_view trace_topic::name() const noexcept { return m_topic; }
 
-    bool trace_topic::global() const noexcept { return this == &__trace_topic_MGE(); }
+    bool trace_topic::global() const noexcept
+    {
+        return this == &__trace_topic_MGE();
+    }
 
     void trace_topic::publish(const trace_record& r)
     {
@@ -186,7 +196,8 @@ namespace mge {
 
     void trace_topic::remove_sink(const std::shared_ptr<trace_sink>& sink)
     {
-        for (sink_vector::iterator i = m_sinks.begin(); i != m_sinks.end(); ++i) {
+        for (sink_vector::iterator i = m_sinks.begin(); i != m_sinks.end();
+             ++i) {
             if (&(*sink) == &(*(*i))) {
                 m_sinks.erase(i);
                 break;

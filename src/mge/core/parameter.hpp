@@ -129,8 +129,9 @@ namespace mge {
         parameter(const char (&section)[SECTION_N],
                   const char (&name)[NAME_N],
                   const char (&description)[DESCRIPTION_N])
-            : basic_parameter(
-                  make_string_view(section), make_string_view(name), make_string_view(description))
+            : basic_parameter(make_string_view(section),
+                              make_string_view(name),
+                              make_string_view(description))
         {}
 
         /**
@@ -149,8 +150,9 @@ namespace mge {
                   const char (&name)[NAME_N],
                   const char (&description)[DESCRIPTION_N],
                   const T& default_value)
-            : basic_parameter(
-                  make_string_view(section), make_string_view(name), make_string_view(description))
+            : basic_parameter(make_string_view(section),
+                              make_string_view(name),
+                              make_string_view(description))
             , m_default_value(default_value)
         {}
 
@@ -161,7 +163,9 @@ namespace mge {
          * @param name parameter name
          * @param description parameter description
          */
-        parameter(std::string_view section, std::string_view name, std::string_view description)
+        parameter(std::string_view section,
+                  std::string_view name,
+                  std::string_view description)
             : basic_parameter(section, name, description)
         {}
 
@@ -229,7 +233,7 @@ namespace mge {
  * @param NAME parameter name
  * @param DESCRIPTION parameter description
  */
-#define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                                     \
+#define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                 \
     ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
 
 /**
@@ -241,8 +245,15 @@ namespace mge {
  * @param DESCRIPTION parameter description
  * @param DEFAULT
  */
-#define MGE_DEFINE_PARAMETER_WITH_DEFAULT(TYPE, SECTION, NAME, DESCRIPTION, DEFAULT)               \
-    ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION, DEFAULT);
+#define MGE_DEFINE_PARAMETER_WITH_DEFAULT(TYPE,                                \
+                                          SECTION,                             \
+                                          NAME,                                \
+                                          DESCRIPTION,                         \
+                                          DEFAULT)                             \
+    ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION,                      \
+                                                #NAME,                         \
+                                                DESCRIPTION,                   \
+                                                DEFAULT);
 
 /**
  * @def MGE_PARAMETER

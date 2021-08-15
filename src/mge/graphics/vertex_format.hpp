@@ -89,7 +89,9 @@ namespace mge {
          */
         inline bool operator<(const vertex_format& f) const noexcept
         {
-            return m_type < f.m_type ? true : m_type == f.m_type ? m_size < f.m_size : false;
+            return m_type < f.m_type    ? true
+                   : m_type == f.m_type ? m_size < f.m_size
+                                        : false;
         }
 
         /**
@@ -118,7 +120,8 @@ namespace mge {
      * @param fmt vertex format to print
      * @return @c os
      */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os, const vertex_format& fmt);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&        os,
+                                                const vertex_format& fmt);
 
     /**
      * @brief Parse a vertex format.

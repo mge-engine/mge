@@ -13,7 +13,8 @@ namespace mge {
         class window : public platform::window
         {
         public:
-            window(const ::mge::extent& extent, const ::mge::window_options& options);
+            window(const ::mge::extent&         extent,
+                   const ::mge::window_options& options);
             ~window();
         };
     } // namespace vulkan

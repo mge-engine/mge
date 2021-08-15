@@ -111,7 +111,8 @@ namespace mge {
         void remove_read_listener(unsigned int key);
 
     protected:
-        virtual streamsize_type on_read(void* destination, streamsize_type size) = 0;
+        virtual streamsize_type on_read(void*           destination,
+                                        streamsize_type size) = 0;
 
     private:
         void notify_read(streamsize_type read_bytes);

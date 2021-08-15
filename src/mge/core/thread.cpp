@@ -34,7 +34,10 @@ namespace mge {
 
     thread::id thread::get_id() const { return m_running_thread.get_id(); }
 
-    uint32_t thread::hardware_concurrency() { return running_thread_type::hardware_concurrency(); }
+    uint32_t thread::hardware_concurrency()
+    {
+        return running_thread_type::hardware_concurrency();
+    }
 
     void thread::on_start() { t_this_thread = this; }
 
@@ -63,7 +66,10 @@ namespace mge {
 
     void thread::join() { m_running_thread.join(); }
 
-    bool thread::joinable() const noexcept { return m_running_thread.joinable(); }
+    bool thread::joinable() const noexcept
+    {
+        return m_running_thread.joinable();
+    }
 
     namespace this_thread {
         mge::thread::system_id system_id() { return GetCurrentThreadId(); }

@@ -80,8 +80,9 @@ namespace mge {
             return *this;
         }
 
-        virtual std::streambuf::pos_type
-        seekoff(std::streamoff offset, std::ios_base::seekdir way, std::ios_base::openmode)
+        virtual std::streambuf::pos_type seekoff(std::streamoff         offset,
+                                                 std::ios_base::seekdir way,
+                                                 std::ios_base::openmode)
         {
             input_stream::offset_type pos = -1;
 
@@ -110,9 +111,9 @@ namespace mge {
                 return *(gptr());
             } else {
                 // MGE_DEBUG_LOG(MGE) << "underflow stream";
-                input_stream::streamsize_type bytes_read =
-                    m_stream->read(m_buffer,
-                                   static_cast<input_stream::streamsize_type>(m_buffer_size));
+                input_stream::streamsize_type bytes_read = m_stream->read(
+                    m_buffer,
+                    static_cast<input_stream::streamsize_type>(m_buffer_size));
                 // MGE_DEBUG_LOG(MGE) << "underflow: bytes read: " <<
                 // bytes_read;
                 if (bytes_read == -1) {
@@ -168,8 +169,8 @@ namespace mge {
         }
     }
 
-    input_stream::streamsize_type input_stream::read(void*                         destination,
-                                                     input_stream::streamsize_type size)
+    input_stream::streamsize_type
+    input_stream::read(void* destination, input_stream::streamsize_type size)
     {
         auto result = on_read(destination, size);
         if (result) {
@@ -187,17 +188,22 @@ namespace mge {
 
     input_stream::offset_type input_stream::position() { return -1; }
 
-    input_stream::offset_type input_stream::seek(input_stream::offset_type, direction_type)
+    input_stream::offset_type input_stream::seek(input_stream::offset_type,
+                                                 direction_type)
     {
         return -1;
     }
 
-    unsigned int input_stream::add_read_listener(const input_stream::read_listener& l)
+    unsigned int
+    input_stream::add_read_listener(const input_stream::read_listener& l)
     {
         return m_read_listeners.insert(l);
     }
 
-    void input_stream::remove_read_listener(unsigned int key) { m_read_listeners.erase(key); }
+    void input_stream::remove_read_listener(unsigned int key)
+    {
+        m_read_listeners.erase(key);
+    }
 
     void input_stream::notify_read(input_stream::streamsize_type read_bytes)
     {

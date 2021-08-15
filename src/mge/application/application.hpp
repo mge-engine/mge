@@ -20,7 +20,8 @@ namespace mge {
      * @brief Application framework.
      *
      */
-    class MGEAPPLICATION_EXPORT application : public component<application>, public loop_target
+    class MGEAPPLICATION_EXPORT application : public component<application>,
+                                              public loop_target
     {
     public:
         using update_listener_collection = callback_map<uint64_t, double>;
@@ -111,7 +112,8 @@ namespace mge {
          * @param argv argument values
          * @return return code passed to operating system
          */
-        static int main(std::string_view application, int argc, const char** argv);
+        static int
+        main(std::string_view application, int argc, const char** argv);
 
         /**
          * @brief Run default application implementation.
@@ -120,7 +122,10 @@ namespace mge {
          * @param argv argument values
          * @return return code passed to operating system
          */
-        static inline int main(int argc, const char** argv) { return main(""sv, argc, argv); }
+        static inline int main(int argc, const char** argv)
+        {
+            return main(""sv, argc, argv);
+        }
 
         /**
          * @brief Add an input listener.
@@ -206,5 +211,8 @@ namespace mge {
     };
 } // namespace mge
 
-#define MGE_MAINFUNCTION                                                                           \
-    int main(int argc, const char** argv) { return mge::application::main(argc, argv); }
+#define MGE_MAINFUNCTION                                                       \
+    int main(int argc, const char** argv)                                      \
+    {                                                                          \
+        return mge::application::main(argc, argv);                             \
+    }

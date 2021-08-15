@@ -14,7 +14,8 @@ TEST(stacktrace, basic)
             break;
         }
     }
-    EXPECT_TRUE(line_in_stack_found) << "Did not find 'mge::stacktrace::stacktrace' in " << stack;
+    EXPECT_TRUE(line_in_stack_found)
+        << "Did not find 'mge::stacktrace::stacktrace' in " << stack;
     EXPECT_GE(stack.size(), 2u);
 }
 
