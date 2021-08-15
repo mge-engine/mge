@@ -28,7 +28,6 @@ namespace mge::opengl {
         create_glrc();
         init_gl3w();
         collect_opengl_info();
-        // TODO #111 Support debugging using GL_KHR_debug extension
     }
 
     void render_context::select_pixel_format()
@@ -85,7 +84,6 @@ namespace mge::opengl {
 
     void render_context::collect_opengl_info()
     {
-
         MGE_INFO_TRACE(OPENGL) << "Collecting OpenGL information";
         s_glinfo.ptr();
     }

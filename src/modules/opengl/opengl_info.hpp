@@ -20,6 +20,9 @@ namespace mge::opengl {
         mge::shader_language  shader_language;
         std::string           glsl_version_str;
         std::set<std::string> extensions;
+
+    private:
+        void install_debug_callback();
     };
 
 } // namespace mge::opengl
