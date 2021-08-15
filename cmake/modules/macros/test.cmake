@@ -36,9 +36,21 @@ FUNCTION(MGE_TEST)
     ELSE()
         SET(_BINARY_DIR "${CMAKE_BINARY_DIR}")
     ENDIF()
-    ADD_TEST(NAME ${MGE_TEST_TARGET}
-             COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
-             WORKING_DIRECTORY "${_BINARY_DIR}")
+    # building the test works in all environments, but execution may not
+    # happen in headless environments for e.g. graphics tests
+    IF(MGE_TEST_NEEDSDISPLAY)
+        IF(HEADLESS_ENVIRONMENT)
+            MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to headless environment")
+        ELSE()
+            ADD_TEST(NAME ${MGE_TEST_TARGET}
+                    COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
+                    WORKING_DIRECTORY "${_BINARY_DIR}")
+        ENDIF()
+    ELSE()
+        ADD_TEST(NAME ${MGE_TEST_TARGET}
+                COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
+                WORKING_DIRECTORY "${_BINARY_DIR}")
+    ENDIF()
     IF(MGE_TEST_SHOWTRACE)
         SET_PROPERTY(TEST ${MGE_TEST_TARGET}
                     PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
