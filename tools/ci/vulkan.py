@@ -6,7 +6,7 @@ import sys
 import subprocess
 import shutil
 
-vulkan_version = "1.2.170.0"
+vulkan_version = "1.2.182.0"
 vulkan_installer_cache_dir = 'vulkan-installer'
 vulkan_installer = '%s\VulkanSDK-%s-Installer.exe' % (
     vulkan_installer_cache_dir, vulkan_version)
