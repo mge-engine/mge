@@ -43,11 +43,11 @@ build_script:
   - cmd: set CC=cl.exe
   - cmd: set CXX=cl.exe
   - cmd: cmake -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
-  - cmd: cmake --build . --parallel 4 --target all
+  - cmd: cmake --build . --target all
   - cmd: cmake --build . --target documentation
 
 test_script:
-  - cmd: ctest
+  - cmd: cmake --build . --target test
 
 on_success:
   - git config --global credential.helper store
