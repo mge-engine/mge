@@ -13,9 +13,7 @@ int main(int argc, char** argv)
         std::cerr << "Exception caught: " << ex.what() << std::endl;
         return 1;
     } catch (...) {
-        std::cerr << "Unknown exception caught"
-                  // boost::current_exception_diagnostic_information()
-                  << std::endl;
+        std::cerr << "Unknown exception caught" << std::endl;
         return 1;
     }
 }
