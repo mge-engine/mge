@@ -19,6 +19,7 @@ namespace mge::dx11 {
         : m_render_system(render_system_)
         , m_window(window_)
     {
+        MGE_DEBUG_TRACE(DX11) << "Create render context";
         init_context();
     }
 
@@ -86,6 +87,7 @@ namespace mge::dx11 {
                                                               size_t data_size,
                                                               void*  data)
     {
+        MGE_DEBUG_TRACE(DX11) << "Create index buffer";
         mge::index_buffer_ref result =
             std::make_shared<index_buffer>(*this, dt, data_size, data);
         return result;

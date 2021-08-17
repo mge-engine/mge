@@ -2,10 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "render_system.hpp"
-#include "mge/core/parameter.hpp"
-
 #include "dx11.hpp"
+#include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
+#include "window.hpp"
 
 #ifdef MGE_OS_WINDOWS
 #    include "mge/win32/monitor.hpp"
@@ -13,11 +13,13 @@
 
 namespace mge {
     MGE_USE_TRACE(DX11);
-    MGE_DEFINE_PARAMETER(bool, directx11, debug, "Enable DirectX11 debug mode");
-    MGE_DEFINE_PARAMETER(bool,
-                         directx11,
-                         software_device,
-                         "Use the DirextX11 software device");
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        bool, directx11, debug, "Enable DirectX11 debug mode", false);
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(bool,
+                                      directx11,
+                                      software_device,
+                                      "Use the DirextX11 software device",
+                                      false);
 } // namespace mge
 
 namespace mge::dx11 {
@@ -35,7 +37,7 @@ namespace mge::dx11 {
     render_system::create_window(const mge::extent&         extent,
                                  const mge::window_options& options)
     {
-        mge::window_ref ref;
+        mge::window_ref ref = std::make_shared<window>(*this, extent, options);
         return ref;
     }
 
