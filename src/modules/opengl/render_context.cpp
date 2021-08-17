@@ -6,6 +6,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
+#include "vertex_buffer.hpp"
 
 namespace mge {
 
@@ -108,7 +109,8 @@ namespace mge::opengl {
     mge::vertex_buffer_ref render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        mge::vertex_buffer_ref result;
+        mge::vertex_buffer_ref result =
+            std::make_shared<vertex_buffer>(*this, layout, data_size, data);
         return result;
     }
 

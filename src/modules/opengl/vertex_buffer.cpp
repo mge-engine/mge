@@ -1,16 +1,14 @@
-// mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
-// All rights reserved.
-#include "index_buffer.hpp"
+#include "vertex_buffer.hpp"
 #include "error.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "render_context.hpp"
+
 namespace mge::opengl {
-    index_buffer::index_buffer(render_context& context,
-                               mge::data_type  dt,
-                               size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, dt, data_size, data)
+    vertex_buffer::vertex_buffer(render_context&           context,
+                                 const mge::vertex_layout& layout,
+                                 size_t                    data_size,
+                                 void*                     data)
+        : mge::vertex_buffer(context, layout, data_size, data)
         , m_buffer(0)
     {
         glCreateBuffers(1, &m_buffer);
@@ -23,7 +21,7 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glNamedBufferData);
     }
 
-    index_buffer::~index_buffer()
+    vertex_buffer::~vertex_buffer()
     {
         if (m_buffer) {
             glDeleteBuffers(1, &m_buffer);
@@ -31,14 +29,14 @@ namespace mge::opengl {
         }
     }
 
-    void* index_buffer::on_map()
+    void* vertex_buffer::on_map()
     {
         void* result = glMapNamedBuffer(m_buffer, GL_READ_WRITE);
         CHECK_OPENGL_ERROR(glMapNamedBuffer);
         return result;
     }
 
-    void index_buffer::on_unmap()
+    void vertex_buffer::on_unmap()
     {
         glUnmapNamedBuffer(m_buffer);
         CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
