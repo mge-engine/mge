@@ -1,0 +1,15 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
+
+SET(DX11_TEST_SOURCES
+    dx11_test.cpp
+    test_render_system.cpp
+    test_index_buffer.cpp)
+
+MGE_TEST(
+    TARGET      test_dx11
+    SOURCES     ${DX11_TEST_SOURCES}
+    NOMAIN NEEDSDISPLAY
+    LIBRARIES   mgecore mgegraphics mgeapplication mgeinput
+)
