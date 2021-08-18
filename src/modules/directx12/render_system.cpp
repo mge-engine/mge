@@ -19,7 +19,7 @@ namespace mge::dx12 {
     public:
         render_system()
         {
-            MGE_DEBUG_TRACE(DX11) << "Creating DirectX 11 render system";
+            MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
         }
 
         virtual ~render_system() = default;
