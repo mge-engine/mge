@@ -16,6 +16,7 @@ namespace mge::dx11 {
     public:
         render_context(render_system& system, window& window_);
         virtual ~render_context();
+        void initialize();
 
         mge::index_buffer_ref create_index_buffer(mge::data_type dt,
                                                   size_t         data_size,
@@ -38,7 +39,6 @@ namespace mge::dx11 {
         ID3D11Device* device() const { return m_device.get(); }
 
     private:
-        void init_context();
         void create_swap_chain();
 
         mge::dx11::render_system& m_render_system;

@@ -6,7 +6,12 @@
 #include "dx11.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/memory.hpp"
+#include "mge/core/trace.hpp"
 #include "render_context.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(DX11);
+}
 
 namespace mge::dx11 {
 
@@ -23,6 +28,7 @@ namespace mge::dx11 {
 
     void index_buffer::create_buffer(void* data)
     {
+        // MGE_DEBUG_TRACE(DX11) << "Create DirectX11 buffer";
         D3D11_BUFFER_DESC buffer_desc = {};
         // TODO: #113 DirectX11 buffer usage support
         buffer_desc.Usage = D3D11_USAGE_DEFAULT;
@@ -35,10 +41,12 @@ namespace mge::dx11 {
         initial_data.pSysMem = data;
 
         ID3D11Buffer* buffer = nullptr;
-        auto hr = dx11_context(context()).device()->CreateBuffer(&buffer_desc,
-                                                                 &initial_data,
-                                                                 &buffer);
+        auto          hr = dx11_context(context()).device()->CreateBuffer(
+            &buffer_desc,
+            data ? &initial_data : nullptr,
+            &buffer);
         CHECK_HRESULT(hr, ID3D11Device, CreateBuffer);
+        // MGE_DEBUG_TRACE(DX11) << "DirectX11 buffer created";
         mge::com_unique_ptr<ID3D11Buffer> buffer_ptr(buffer);
         m_buffer.swap(buffer_ptr);
     }
@@ -48,13 +56,17 @@ namespace mge::dx11 {
         // only dynamic resources actually support mapping,
         // so far now we do not map here
         // TODO: #115 Support DirectX11 mapping of resources
+        // MGE_DEBUG_TRACE(DX11) << "Mapping DirectX11 buffer of size " <<
+        // size();
         m_mapped_memory = mge::malloc(size());
         return m_mapped_memory;
     }
 
     void index_buffer::on_unmap()
     {
+        // MGE_DEBUG_TRACE(DX11) << "Unmapping memory";
         create_buffer(m_mapped_memory);
+        // MGE_DEBUG_TRACE(DX11) << "Free unmapped memory";
         mge::free(m_mapped_memory);
         m_mapped_memory = nullptr;
     }

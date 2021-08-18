@@ -20,7 +20,7 @@ namespace mge {
         if (ptr == nullptr) {
             return;
         }
-        mge::free(ptr);
+        ::free(ptr);
     }
 
 } // namespace mge

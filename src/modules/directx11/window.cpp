@@ -24,9 +24,11 @@ namespace mge::dx11 {
 
     void window::create_render_context()
     {
-        m_render_context =
+        auto context =
             std::make_shared<::mge::dx11::render_context>(m_render_system,
                                                           *this);
+        context->initialize();
+        m_render_context = context;
     }
 
 } // namespace mge::dx11

@@ -20,18 +20,30 @@ namespace mge::dx11 {
         , m_window(window_)
     {
         MGE_DEBUG_TRACE(DX11) << "Create render context";
-        init_context();
     }
 
     render_context::~render_context() {}
 
-    void render_context::init_context()
+    void render_context::initialize()
     {
+        MGE_DEBUG_TRACE(DX11) << "Initialize render context";
         DXGI_SWAP_CHAIN_DESC swap_chain_desc = {};
         UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
         D3D_DRIVER_TYPE driver_type =
             (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
                                                : D3D_DRIVER_TYPE_HARDWARE);
+
+        swap_chain_desc.BufferCount = 1;
+        swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        swap_chain_desc.BufferDesc.Width = m_window.extent().width;
+        swap_chain_desc.BufferDesc.Height = m_window.extent().height;
+        swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        swap_chain_desc.SampleDesc.Count =
+            4; // TODO: #121 multisampling configurable
+        swap_chain_desc.Windowed = TRUE; // TODO: #122 fullscreen
+
+        swap_chain_desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+        swap_chain_desc.OutputWindow = m_window.hwnd();
 
         ID3D11Device*        tmp_device = nullptr;
         ID3D11DeviceContext* tmp_device_context = nullptr;
@@ -87,7 +99,7 @@ namespace mge::dx11 {
                                                               size_t data_size,
                                                               void*  data)
     {
-        MGE_DEBUG_TRACE(DX11) << "Create index buffer";
+        // MGE_DEBUG_TRACE(DX11) << "Create index buffer";
         mge::index_buffer_ref result =
             std::make_shared<index_buffer>(*this, dt, data_size, data);
         return result;
