@@ -6,6 +6,7 @@
 # All rights reserved.
 SET(mge_dx12_module_SOURCES
     common.cpp
+    window.cpp
     render_system.cpp
 )
 

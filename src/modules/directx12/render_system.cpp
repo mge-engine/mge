@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "mge/graphics/render_system.hpp"
+#include "render_system.hpp"
 #include "dx12.hpp"
 #include "mge/core/trace.hpp"
 
@@ -14,28 +14,23 @@ namespace mge {
 }
 
 namespace mge::dx12 {
-    class render_system : public mge::render_system
+    render_system::render_system()
     {
-    public:
-        render_system()
-        {
-            MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
-        }
+        MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
+    }
 
-        virtual ~render_system() = default;
+    mge::render_system::monitor_collection render_system::monitors()
+    {
+        return mge::win32::monitor::all_monitors();
+    }
 
-        monitor_collection monitors()
-        {
-            return mge::win32::monitor::all_monitors();
-        }
-
-        mge::window_ref create_window(const mge::extent&         extent,
-                                      const mge::window_options& options)
-        {
-            mge::window_ref ref;
-            return ref;
-        }
-    };
+    mge::window_ref
+    render_system::create_window(const mge::extent&         extent,
+                                 const mge::window_options& options)
+    {
+        mge::window_ref ref;
+        return ref;
+    }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,
                                 mge::render_system,
