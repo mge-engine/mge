@@ -4,6 +4,7 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/trace_topic.hpp"
 #include "test/googletest.hpp"
+#include <cstdlib>
 
 namespace mge {
     MGE_USE_IMPORTED_TRACE(MGE);
@@ -17,15 +18,25 @@ public:
     virtual ~trace_topic_test() = default;
 
     static void SetUpTestCase() { mge::configuration::load(true); }
+    static bool env_modified()
+    {
+        return ::getenv("MGE_TRACE_ENABLED") || ::getenv("MGE_TRACE_TO_STDOUT");
+    }
 };
 
 TEST_F(trace_topic_test, mge_topic)
 {
+    if (env_modified()) {
+        return;
+    }
     EXPECT_FALSE(mge::__trace_topic_MGE().enabled(mge::trace_level::ALL));
 }
 
 TEST_F(trace_topic_test, core_topic)
 {
+    if (env_modified()) {
+        return;
+    }
     EXPECT_FALSE(mge::__trace_topic_CORE().enabled(mge::trace_level::ALL));
 }
 
@@ -45,7 +56,9 @@ TEST_F(trace_topic_test, global)
 
 TEST_F(trace_topic_test, enable_disable)
 {
-
+    if (env_modified()) {
+        return;
+    }
     EXPECT_FALSE(
         MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
     MGE_NS_TRACE_TOPIC(mge, CORE).enable(mge::trace_level::DEBUG);
@@ -57,6 +70,9 @@ TEST_F(trace_topic_test, enable_disable)
 
 TEST_F(trace_topic_test, set_level)
 {
+    if (env_modified()) {
+        return;
+    }
     EXPECT_FALSE(
         MGE_NS_TRACE_TOPIC(mge, CORE).enabled(mge::trace_level::DEBUG));
     MGE_NS_TRACE_TOPIC(mge, CORE).set_level(mge::trace_level::DEBUG);
