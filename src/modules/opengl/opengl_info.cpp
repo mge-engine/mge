@@ -12,7 +12,8 @@
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
-    MGE_DEFINE_PARAMETER(bool, opengl, debug, "Enable OpenGL debug");
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        bool, opengl, debug, "Enable OpenGL debug", false);
 } // namespace mge
 
 namespace mge::opengl {
