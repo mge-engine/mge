@@ -11,5 +11,7 @@ namespace mge::dx12 {
         monitor_collection monitors();
         mge::window_ref    create_window(const mge::extent&         extent,
                                          const mge::window_options& options);
+
+        bool debug() const;
     };
 } // namespace mge::dx12

@@ -15,6 +15,8 @@ namespace mge::dx12 {
         render_context(render_system& render_system, window& window_);
         virtual ~render_context();
 
+        void initialize();
+
         mge::index_buffer_ref create_index_buffer(mge::data_type dt,
                                                   size_t         data_size,
                                                   void*          data) override;

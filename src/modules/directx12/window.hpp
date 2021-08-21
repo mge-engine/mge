@@ -9,7 +9,7 @@
 #    error missing port
 #endif
 
-namespace mge::dx11 {
+namespace mge::dx12 {
 
     class render_system;
 
@@ -27,4 +27,4 @@ namespace mge::dx11 {
         render_system& m_render_system;
     };
 
-} // namespace mge::dx11
+} // namespace mge::dx12
