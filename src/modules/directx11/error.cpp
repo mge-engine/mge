@@ -119,7 +119,7 @@ namespace mge::dx11 {
                     .set_info(mge::exception::type_name(
                         mge::type_name<dx11::error>()))
                 << "Call to " << called_function << " failed: " << std::hex
-                << rc << "(" << dxgi_message(rc) << ")";
+                << rc << " (" << dxgi_message(rc) << ")";
         }
     }
 
