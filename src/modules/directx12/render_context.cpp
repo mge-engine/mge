@@ -1,4 +1,5 @@
 #include "render_context.hpp"
+#include "error.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/win32/com_ptr.hpp"
@@ -15,15 +16,31 @@ namespace mge::dx12 {
         : m_render_system(render_system_)
         , m_window(window_)
     {
-        HRESULT rc = 0;
-        UINT    factory_flags = 0;
+        auto adapter = get_adapter();
+    }
+
+    mge::com_ptr<IDXGIAdapter4> render_context::get_adapter()
+    {
+        UINT factory_flags = 0;
         if (m_render_system.debug()) {
             factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
         }
         MGE_DEBUG_TRACE(DX12) << "Create DXGI Factory";
         mge::com_ptr<IDXGIFactory4> factory;
-        rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
-        // CHECK_HRESULT(rc, , CreateDXGIFactory2);
+        auto rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
+        ::mge::dx12::error::check_hresult(rc,
+                                          __FILE__,
+                                          __LINE__,
+                                          "",
+                                          "CreateDXGIFactory2");
+        if (m_render_system.warp()) {
+            mge::com_ptr<IDXGIAdapter1> adapter1;
+            mge::com_ptr<IDXGIAdapter4> adapter4;
+            return adapter4;
+        } else {
+            mge::com_ptr<IDXGIAdapter4> adapter4;
+            return adapter4;
+        }
     }
 
     void render_context::initialize() {}

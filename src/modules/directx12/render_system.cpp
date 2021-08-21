@@ -17,6 +17,8 @@ namespace mge {
 
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
         bool, directx12, debug, "Enable DirectX 12 debug mode", false);
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        bool, directx12, warp, "Enable DirectX 12 warp device", false);
 
 } // namespace mge
 
@@ -43,6 +45,11 @@ namespace mge::dx12 {
     bool render_system::debug() const
     {
         return MGE_PARAMETER(directx12, debug).get();
+    }
+
+    bool render_system::warp() const
+    {
+        return MGE_PARAMETER(directx12, warp).get();
     }
 
     void render_system::enable_debug_layer()

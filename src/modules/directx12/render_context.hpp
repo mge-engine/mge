@@ -1,8 +1,10 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "dx12.hpp"
 #include "mge/config.hpp"
 #include "mge/graphics/render_context.hpp"
+#include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
 
 namespace mge::dx12 {
@@ -29,6 +31,8 @@ namespace mge::dx12 {
         mge::shader_ref create_shader(shader_type t) override;
 
     private:
+        mge::com_ptr<IDXGIAdapter4> get_adapter();
+
         render_system& m_render_system;
         window&        m_window;
     };

@@ -13,6 +13,7 @@ namespace mge::dx12 {
                                          const mge::window_options& options);
 
         bool debug() const;
+        bool warp() const;
 
     private:
         void enable_debug_layer();
