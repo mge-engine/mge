@@ -3,7 +3,9 @@
 // All rights reserved.
 #include "render_system.hpp"
 #include "dx12.hpp"
+#include "error.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
 
 #ifdef MGE_OS_WINDOWS
@@ -22,6 +24,7 @@ namespace mge::dx12 {
     render_system::render_system()
     {
         MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
+        enable_debug_layer();
     }
 
     mge::render_system::monitor_collection render_system::monitors()
@@ -40,6 +43,18 @@ namespace mge::dx12 {
     bool render_system::debug() const
     {
         return MGE_PARAMETER(directx12, debug).get();
+    }
+
+    void render_system::enable_debug_layer()
+    {
+        if (debug()) {
+            MGE_DEBUG_TRACE(DX12) << "Enable debug layer";
+            mge::com_ptr<ID3D12Debug> debug_interface;
+            auto rc = D3D12GetDebugInterface(IID_PPV_ARGS(&debug_interface));
+            CHECK_HRESULT(rc, , D3D12GetDebugInterface);
+            debug_interface->EnableDebugLayer();
+            // TODO: check about GPU based validation
+        }
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system,

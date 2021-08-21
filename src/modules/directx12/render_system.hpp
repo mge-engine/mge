@@ -13,5 +13,8 @@ namespace mge::dx12 {
                                          const mge::window_options& options);
 
         bool debug() const;
+
+    private:
+        void enable_debug_layer();
     };
 } // namespace mge::dx12
