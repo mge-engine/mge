@@ -14,11 +14,11 @@
 namespace mge {
     MGE_USE_TRACE(DX11);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
-        bool, directx11, debug, "Enable DirectX11 debug mode", false);
+        bool, directx11, debug, "Enable DirectX 11 debug mode", false);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(bool,
                                       directx11,
                                       software_device,
-                                      "Use the DirextX11 software device",
+                                      "Use the DirextX 11 software device",
                                       false);
 } // namespace mge
 

@@ -11,7 +11,11 @@
 
 namespace mge {
     MGE_USE_TRACE(DX12);
-}
+
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        bool, directx12, debug, "Enable DirectX12 debug mode", false);
+
+} // namespace mge
 
 namespace mge::dx12 {
     render_system::render_system()
