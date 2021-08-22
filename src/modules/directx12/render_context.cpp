@@ -1,5 +1,7 @@
 #include "render_context.hpp"
 #include "error.hpp"
+#include "mge/core/array_size.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/win32/com_ptr.hpp"
@@ -46,6 +48,27 @@ namespace mge::dx12 {
                                               TRUE);
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING,
                                               TRUE);
+
+                D3D12_MESSAGE_SEVERITY denied_severities[] = {
+                    D3D12_MESSAGE_SEVERITY_INFO};
+
+                D3D12_MESSAGE_ID denied_message_ids[] = {
+                    // clear render target with different color
+                    D3D12_MESSAGE_ID_CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVALUE,
+                    // both issued in debugger
+                    D3D12_MESSAGE_ID_MAP_INVALID_NULLRANGE,
+                    D3D12_MESSAGE_ID_UNMAP_INVALID_NULLRANGE,
+                };
+
+                D3D12_INFO_QUEUE_FILTER deny_filter = {};
+                deny_filter.DenyList.NumSeverities =
+                    checked_cast<UINT>(array_size(denied_severities));
+                deny_filter.DenyList.pSeverityList = denied_severities;
+                deny_filter.DenyList.NumIDs =
+                    checked_cast<UINT>(array_size(denied_message_ids));
+                deny_filter.DenyList.pIDList = denied_message_ids;
+                auto rc = infoqueue->PushStorageFilter(&deny_filter);
+                CHECK_HRESULT(rc, ID3D12InfoQueue, PushStorageFilter);
             }
         }
     }
