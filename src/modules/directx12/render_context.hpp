@@ -37,6 +37,9 @@ namespace mge::dx12 {
         create_device(const mge::com_ptr<IDXGIAdapter4>& adapter);
 
         void enable_debug_messages(const mge::com_ptr<ID3D12Device2>& device);
+        mge::com_ptr<ID3D12CommandQueue>
+        create_command_queue(const mge::com_ptr<ID3D12Device2>& device,
+                             D3D12_COMMAND_LIST_TYPE            type);
 
         render_system& m_render_system;
         window&        m_window;

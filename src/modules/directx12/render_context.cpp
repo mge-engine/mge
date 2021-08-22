@@ -24,6 +24,23 @@ namespace mge::dx12 {
         auto adapter = get_adapter();
         auto device = create_device(adapter);
         enable_debug_messages(device);
+        auto command_queue =
+            create_command_queue(device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+    }
+
+    mge::com_ptr<ID3D12CommandQueue> render_context::create_command_queue(
+        const mge::com_ptr<ID3D12Device2>& device, D3D12_COMMAND_LIST_TYPE type)
+    {
+        mge::com_ptr<ID3D12CommandQueue> result;
+        D3D12_COMMAND_QUEUE_DESC         desc = {};
+        desc.Type = type;
+        desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+        desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+        desc.NodeMask = 0;
+
+        auto rc = device->CreateCommandQueue(&desc, IID_PPV_ARGS(&result));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
+        return result;
     }
 
     mge::com_ptr<ID3D12Device2>
