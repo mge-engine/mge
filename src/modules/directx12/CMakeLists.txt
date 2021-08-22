@@ -1,9 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
-# mge - Modern Game Engine
-# Copyright (c) 2021 by Alexander Schroeder
-# All rights reserved.
 SET(mge_dx12_module_SOURCES
     common.cpp
     window.cpp

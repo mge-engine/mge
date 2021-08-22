@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "render_context.hpp"
 #include "error.hpp"
 #include "mge/core/array_size.hpp"
