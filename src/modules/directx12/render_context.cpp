@@ -17,6 +17,37 @@ namespace mge::dx12 {
         , m_window(window_)
     {
         auto adapter = get_adapter();
+        auto device = create_device(adapter);
+        enable_debug_messages(device);
+    }
+
+    mge::com_ptr<ID3D12Device2>
+    render_context::create_device(const mge::com_ptr<IDXGIAdapter4>& adapter)
+    {
+        mge::com_ptr<ID3D12Device2> device;
+
+        auto rc = D3D12CreateDevice(adapter.Get(),
+                                    D3D_FEATURE_LEVEL_11_0,
+                                    IID_PPV_ARGS(&device));
+        CHECK_HRESULT(rc, , D3D12CreateDevice);
+
+        return device;
+    }
+
+    void render_context::enable_debug_messages(
+        const mge::com_ptr<ID3D12Device2>& device)
+    {
+        if (m_render_system.debug()) {
+            mge::com_ptr<ID3D12InfoQueue> infoqueue;
+            if (SUCCEEDED(device.As(&infoqueue))) {
+                infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION,
+                                              TRUE);
+                infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR,
+                                              TRUE);
+                infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING,
+                                              TRUE);
+            }
+        }
     }
 
     mge::com_ptr<IDXGIAdapter4> render_context::get_adapter()

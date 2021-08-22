@@ -33,6 +33,11 @@ namespace mge::dx12 {
     private:
         mge::com_ptr<IDXGIAdapter4> get_adapter();
 
+        mge::com_ptr<ID3D12Device2>
+        create_device(const mge::com_ptr<IDXGIAdapter4>& adapter);
+
+        void enable_debug_messages(const mge::com_ptr<ID3D12Device2>& device);
+
         render_system& m_render_system;
         window&        m_window;
     };
