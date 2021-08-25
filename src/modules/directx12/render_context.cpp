@@ -9,6 +9,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "render_system.hpp"
+#include "swap_chain.hpp"
 #include "window.hpp"
 
 namespace mge {
@@ -21,11 +22,14 @@ namespace mge::dx12 {
         : m_render_system(render_system_)
         , m_window(window_)
     {
-        auto adapter = get_adapter();
-        auto device = create_device(adapter);
-        enable_debug_messages(device);
-        auto command_queue =
-            create_command_queue(device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+        m_factory = get_factory();
+        m_adapter = get_adapter();
+        m_device = create_device(m_adapter);
+        enable_debug_messages(m_device);
+        m_command_queue =
+            create_command_queue(m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+        m_swap_chain =
+            std::make_shared<mge::dx12::swap_chain>(render_system_, *this);
     }
 
     mge::com_ptr<ID3D12CommandQueue> render_context::create_command_queue(
@@ -93,26 +97,26 @@ namespace mge::dx12 {
         }
     }
 
-    mge::com_ptr<IDXGIAdapter4> render_context::get_adapter()
+    mge::com_ptr<IDXGIFactory4> render_context::get_factory()
     {
-        HRESULT rc = S_OK;
-        UINT    factory_flags = 0;
+        UINT factory_flags = 0;
         if (m_render_system.debug()) {
             factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
         }
         MGE_DEBUG_TRACE(DX12) << "Create DXGI Factory";
         mge::com_ptr<IDXGIFactory4> factory;
-        rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
+        auto rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
         CHECK_HRESULT(rc, , CreateDXGIFactory2);
-        ::mge::dx12::error::check_hresult(rc,
-                                          __FILE__,
-                                          __LINE__,
-                                          "",
-                                          "CreateDXGIFactory2");
+        return factory;
+    }
+
+    mge::com_ptr<IDXGIAdapter4> render_context::get_adapter()
+    {
+        HRESULT rc = S_OK;
         if (m_render_system.warp()) {
             mge::com_ptr<IDXGIAdapter1> adapter1;
             mge::com_ptr<IDXGIAdapter4> adapter4;
-            rc = factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter1));
+            rc = m_factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter1));
             CHECK_HRESULT(rc, IDXGIFactory4, EnumWarpAdapter);
             rc = adapter1.As(&adapter4);
             CHECK_HRESULT(rc, com_ptr, As<IDXGIAdapter4>);
@@ -123,7 +127,7 @@ namespace mge::dx12 {
             mge::com_ptr<IDXGIAdapter1> adapter1;
             mge::com_ptr<IDXGIAdapter4> adapter4;
             for (uint32_t i = 0;
-                 factory->EnumAdapters1(i, &adapter1) != DXGI_ERROR_NOT_FOUND;
+                 m_factory->EnumAdapters1(i, &adapter1) != DXGI_ERROR_NOT_FOUND;
                  ++i) {
                 DXGI_ADAPTER_DESC1 desc_adapter1;
 
@@ -152,6 +156,20 @@ namespace mge::dx12 {
 
             return adapter4;
         }
+    }
+
+    void render_context::create_descriptor_heap()
+    {
+        D3D12_DESCRIPTOR_HEAP_DESC rtv_heap_desc = {};
+
+        rtv_heap_desc.NumDescriptors = buffer_count;
+        rtv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+        rtv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        auto rc = m_device->CreateDescriptorHeap(&rtv_heap_desc,
+                                                 IID_PPV_ARGS(&m_rtv_heap));
+        CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
+        m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
+            D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
     }
 
     void render_context::initialize() {}

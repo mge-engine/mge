@@ -14,6 +14,8 @@ namespace mge::dx12 {
     class render_context : public mge::render_context
     {
     public:
+        static constexpr uint32_t buffer_count = 2;
+
         render_context(render_system& render_system, window& window_);
         virtual ~render_context();
 
@@ -30,9 +32,18 @@ namespace mge::dx12 {
 
         mge::shader_ref create_shader(shader_type t) override;
 
-    private:
-        mge::com_ptr<IDXGIAdapter4> get_adapter();
+        const mge::dx12::window&           window() const { return m_window; }
+        const mge::com_ptr<IDXGIFactory4>& factory() const { return m_factory; }
+        const mge::com_ptr<ID3D12CommandQueue>& command_queue() const
+        {
+            return m_command_queue;
+        }
 
+    private:
+        void create_descriptor_heap();
+
+        mge::com_ptr<IDXGIFactory4> get_factory();
+        mge::com_ptr<IDXGIAdapter4> get_adapter();
         mge::com_ptr<ID3D12Device2>
         create_device(const mge::com_ptr<IDXGIAdapter4>& adapter);
 
@@ -41,7 +52,14 @@ namespace mge::dx12 {
         create_command_queue(const mge::com_ptr<ID3D12Device2>& device,
                              D3D12_COMMAND_LIST_TYPE            type);
 
-        render_system& m_render_system;
-        window&        m_window;
+        render_system&     m_render_system;
+        mge::dx12::window& m_window;
+
+        mge::com_ptr<IDXGIFactory4>        m_factory;
+        mge::com_ptr<IDXGIAdapter4>        m_adapter;
+        mge::com_ptr<ID3D12Device2>        m_device;
+        mge::com_ptr<ID3D12CommandQueue>   m_command_queue;
+        mge::com_ptr<ID3D12DescriptorHeap> m_rtv_heap;
+        uint32_t                           m_rtv_descriptor_size;
     };
 } // namespace mge::dx12

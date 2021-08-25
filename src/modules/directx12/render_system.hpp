@@ -17,8 +17,12 @@ namespace mge::dx12 {
 
         bool debug() const;
         bool warp() const;
+        bool tearing_support() const;
 
     private:
+        bool m_tearing_support;
+
         void enable_debug_layer();
+        void check_tearing_support();
     };
 } // namespace mge::dx12

@@ -24,9 +24,11 @@ namespace mge {
 
 namespace mge::dx12 {
     render_system::render_system()
+        : m_tearing_support(false)
     {
         MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
         enable_debug_layer();
+        check_tearing_support();
     }
 
     mge::render_system::monitor_collection render_system::monitors()
@@ -52,6 +54,8 @@ namespace mge::dx12 {
         return MGE_PARAMETER(directx12, warp).get();
     }
 
+    bool render_system::tearing_support() const { return m_tearing_support; }
+
     void render_system::enable_debug_layer()
     {
         if (debug()) {
@@ -61,6 +65,26 @@ namespace mge::dx12 {
             CHECK_HRESULT(rc, , D3D12GetDebugInterface);
             debug_interface->EnableDebugLayer();
             // TODO: check about GPU based validation
+        }
+    }
+
+    void render_system::check_tearing_support()
+    {
+        mge::com_ptr<IDXGIFactory4> factory4;
+        if (SUCCEEDED(CreateDXGIFactory1(IID_PPV_ARGS(&factory4)))) {
+            mge::com_ptr<IDXGIFactory5> factory5;
+            if (SUCCEEDED(factory4.As(&factory5))) {
+                BOOL allow_tearing = FALSE;
+                if (FAILED(factory5->CheckFeatureSupport(
+                        DXGI_FEATURE_PRESENT_ALLOW_TEARING,
+                        &allow_tearing,
+                        sizeof(allow_tearing)))) {
+                    allow_tearing = FALSE;
+                }
+                if (allow_tearing) {
+                    m_tearing_support = true;
+                }
+            }
         }
     }
 

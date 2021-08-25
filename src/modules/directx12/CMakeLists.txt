@@ -6,7 +6,8 @@ SET(mge_dx12_module_SOURCES
     window.cpp
     error.cpp
     render_system.cpp
-    render_context.cpp;
+    render_context.cpp
+    swap_chain.cpp
 )
 
 ADD_LIBRARY(mge_module_dx12 MODULE
