@@ -40,17 +40,12 @@ namespace mge::dx12 {
         }
 
     private:
+        void create_factory();
+        void create_adapter();
+        void create_device();
+        void enable_debug_messages();
+        void create_command_queue();
         void create_descriptor_heap();
-
-        mge::com_ptr<IDXGIFactory4> get_factory();
-        mge::com_ptr<IDXGIAdapter4> get_adapter();
-        mge::com_ptr<ID3D12Device2>
-        create_device(const mge::com_ptr<IDXGIAdapter4>& adapter);
-
-        void enable_debug_messages(const mge::com_ptr<ID3D12Device2>& device);
-        mge::com_ptr<ID3D12CommandQueue>
-        create_command_queue(const mge::com_ptr<ID3D12Device2>& device,
-                             D3D12_COMMAND_LIST_TYPE            type);
 
         render_system&     m_render_system;
         mge::dx12::window& m_window;

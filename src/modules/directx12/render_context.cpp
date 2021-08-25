@@ -22,50 +22,40 @@ namespace mge::dx12 {
         : m_render_system(render_system_)
         , m_window(window_)
     {
-        m_factory = get_factory();
-        m_adapter = get_adapter();
-        m_device = create_device(m_adapter);
-        enable_debug_messages(m_device);
-        m_command_queue =
-            create_command_queue(m_device, D3D12_COMMAND_LIST_TYPE_DIRECT);
+        create_factory();
+        create_adapter();
+        create_device();
+        enable_debug_messages();
+        create_command_queue();
         m_swap_chain =
             std::make_shared<mge::dx12::swap_chain>(render_system_, *this);
     }
 
-    mge::com_ptr<ID3D12CommandQueue> render_context::create_command_queue(
-        const mge::com_ptr<ID3D12Device2>& device, D3D12_COMMAND_LIST_TYPE type)
+    void render_context::create_command_queue()
     {
-        mge::com_ptr<ID3D12CommandQueue> result;
-        D3D12_COMMAND_QUEUE_DESC         desc = {};
-        desc.Type = type;
+        D3D12_COMMAND_QUEUE_DESC desc = {};
+        desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
         desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
         desc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
         desc.NodeMask = 0;
-
-        auto rc = device->CreateCommandQueue(&desc, IID_PPV_ARGS(&result));
+        auto rc =
+            m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
-        return result;
     }
 
-    mge::com_ptr<ID3D12Device2>
-    render_context::create_device(const mge::com_ptr<IDXGIAdapter4>& adapter)
+    void render_context::create_device()
     {
-        mge::com_ptr<ID3D12Device2> device;
-
-        auto rc = D3D12CreateDevice(adapter.Get(),
+        auto rc = D3D12CreateDevice(m_adapter.Get(),
                                     D3D_FEATURE_LEVEL_11_0,
-                                    IID_PPV_ARGS(&device));
+                                    IID_PPV_ARGS(&m_device));
         CHECK_HRESULT(rc, , D3D12CreateDevice);
-
-        return device;
     }
 
-    void render_context::enable_debug_messages(
-        const mge::com_ptr<ID3D12Device2>& device)
+    void render_context::enable_debug_messages()
     {
         if (m_render_system.debug()) {
             mge::com_ptr<ID3D12InfoQueue> infoqueue;
-            if (SUCCEEDED(device.As(&infoqueue))) {
+            if (SUCCEEDED(m_device.As(&infoqueue))) {
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION,
                                               TRUE);
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR,
@@ -97,35 +87,30 @@ namespace mge::dx12 {
         }
     }
 
-    mge::com_ptr<IDXGIFactory4> render_context::get_factory()
+    void render_context::create_factory()
     {
         UINT factory_flags = 0;
         if (m_render_system.debug()) {
             factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
         }
         MGE_DEBUG_TRACE(DX12) << "Create DXGI Factory";
-        mge::com_ptr<IDXGIFactory4> factory;
-        auto rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&factory));
+        auto rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&m_factory));
         CHECK_HRESULT(rc, , CreateDXGIFactory2);
-        return factory;
     }
 
-    mge::com_ptr<IDXGIAdapter4> render_context::get_adapter()
+    void render_context::create_adapter()
     {
         HRESULT rc = S_OK;
         if (m_render_system.warp()) {
             mge::com_ptr<IDXGIAdapter1> adapter1;
-            mge::com_ptr<IDXGIAdapter4> adapter4;
             rc = m_factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter1));
             CHECK_HRESULT(rc, IDXGIFactory4, EnumWarpAdapter);
-            rc = adapter1.As(&adapter4);
+            rc = adapter1.As(&m_adapter);
             CHECK_HRESULT(rc, com_ptr, As<IDXGIAdapter4>);
-            return adapter4;
         } else {
             size_t max_dedicated_video_mem = 0;
 
             mge::com_ptr<IDXGIAdapter1> adapter1;
-            mge::com_ptr<IDXGIAdapter4> adapter4;
             for (uint32_t i = 0;
                  m_factory->EnumAdapters1(i, &adapter1) != DXGI_ERROR_NOT_FOUND;
                  ++i) {
@@ -143,18 +128,16 @@ namespace mge::dx12 {
                             max_dedicated_video_mem) {
                             max_dedicated_video_mem =
                                 desc_adapter1.DedicatedVideoMemory;
-                            rc = adapter1.As(&adapter4);
+                            rc = adapter1.As(&m_adapter);
                             CHECK_HRESULT(rc, com_ptr, As<IDXGIAdapter4>);
                         }
                     }
                 }
             }
 
-            if (!adapter4.Get()) {
+            if (!m_adapter.Get()) {
                 MGE_THROW(dx12::error) << "No suitable hardware adapter found";
             }
-
-            return adapter4;
         }
     }
 
