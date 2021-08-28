@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "swap_chain.hpp"
 #include "error.hpp"
 #include "render_context.hpp"

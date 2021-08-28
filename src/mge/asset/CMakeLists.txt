@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
 SET(mgeasset_sources
     asset_type.cpp
 )

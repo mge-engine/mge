@@ -1,7 +1,13 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #pragma once
+#include "boost/boost_operators.hpp"
 #include "mge/asset/dllexport.hpp"
+#include <iosfwd>
 #include <string>
 #include <string_view>
+
 namespace mge {
 
     /**
@@ -11,7 +17,7 @@ namespace mge {
      * asset. Asset types are modeled after mime types, i.e. they
      * have a type and a subtype.
      */
-    class MGEASSET_EXPORT asset_type
+    class MGEASSET_EXPORT asset_type : public boost::totally_ordered<asset_type>
     {
     public:
         asset_type();
@@ -30,5 +36,8 @@ namespace mge {
         std::string m_type;
         std::string m_subtype;
     };
+
+    MGEASSET_EXPORT std::ostream& operator<<(std::ostream&     os,
+                                             const asset_type& t);
 
 } // namespace mge

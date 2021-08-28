@@ -24,6 +24,7 @@ Welcome to MGE, a modern graphics/game engine.
     mgegraphics
     mgeinput
     mgeapplication
+    mgeasset
 
 .. toctree::
     :caption: Appendix

@@ -1,4 +1,8 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/asset/asset_type.hpp"
+#include <iostream>
 
 namespace mge {
     asset_type::asset_type() {}
@@ -32,6 +36,11 @@ namespace mge {
         } else {
             return false;
         }
+    }
+
+    std::ostream& operator<<(std::ostream& os, const asset_type& t)
+    {
+        return os << t.type() << "/" << t.subtype();
     }
 
 } // namespace mge
