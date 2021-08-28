@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/asset/asset_type.hpp"
 #include "mge/asset/dllexport.hpp"
 #include "mge/core/memory.hpp"
