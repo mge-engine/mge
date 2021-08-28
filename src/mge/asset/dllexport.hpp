@@ -1,0 +1,17 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
+#pragma once
+
+#include "mge/dllexport.hpp"
+
+/**
+ * @def MGEASSET_EXPORT
+ * @brief Macro to declare class or function to be exported by/imported from
+ * graphics library.
+ */
+#ifdef BUILD_MGEASSET
+#    define MGEASSET_EXPORT MGE_DLLEXPORT
+#else
+#    define MGEASSET_EXPORT MGE_DLLIMPORT
+#endif
