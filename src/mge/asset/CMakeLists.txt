@@ -3,11 +3,13 @@
 # All rights reserved.
 SET(mgeasset_sources
     asset_type.cpp
+    asset_handle.cpp
 )
 
 SET(mgeasset_headers
     dllexport.hpp
     asset_type.hpp
+    asset_handle.hpp
 )
 
 MGE_LIBRARY(
