@@ -10,6 +10,7 @@
 namespace mge::dx12 {
     class window;
     class render_system;
+    class swap_chain;
 
     class render_context : public mge::render_context
     {
@@ -48,7 +49,8 @@ namespace mge::dx12 {
         void enable_debug_messages();
         void create_command_queue();
         void create_descriptor_heap();
-        void update_render_target_views();
+        void update_render_target_views(
+            const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
 
         render_system&     m_render_system;
         mge::dx12::window& m_window;

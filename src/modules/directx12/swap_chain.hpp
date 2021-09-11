@@ -18,6 +18,8 @@ namespace mge::dx12 {
         ~swap_chain();
         void present() override;
 
+        IDXGISwapChain4* dxgi_swap_chain() const { return m_swap_chain.Get(); }
+
     private:
         mge::com_ptr<IDXGISwapChain4> m_swap_chain;
     };

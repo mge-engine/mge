@@ -27,9 +27,11 @@ namespace mge::dx12 {
         create_device();
         enable_debug_messages();
         create_command_queue();
-        m_swap_chain =
+        auto swap_chain =
             std::make_shared<mge::dx12::swap_chain>(render_system_, *this);
-        create_descriptor_heap()
+        m_swap_chain = swap_chain;
+        create_descriptor_heap();
+        update_render_target_views(swap_chain);
     }
 
     void render_context::create_command_queue()
@@ -156,24 +158,23 @@ namespace mge::dx12 {
             D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
     }
 
-    void render_context::update_render_target_views()
+    void render_context::update_render_target_views(
+        const std::shared_ptr<mge::dx12::swap_chain>& swap_chain)
     {
-        D3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(
-            m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
 
         for (int i = 0; i < buffer_count; ++i) {
             mge::com_ptr<ID3D12Resource> backbuffer;
-#if 0
-            ThrowIfFailed(swa->GetBuffer(i, IID_PPV_ARGS(&backBuffer)));
-
-            device->CreateRenderTargetView(backBuffer.Get(),
-                                           nullptr,
-                                           rtvHandle);
-
-            g_BackBuffers[i] = backBuffer;
-
-            rtvHandle.Offset(rtvDescriptorSize);
-#endif
+            auto rc = swap_chain->dxgi_swap_chain()->GetBuffer(
+                i,
+                IID_PPV_ARGS(&backbuffer));
+            CHECK_HRESULT(rc, IDXGISwapChain4, GetBuffer);
+            m_device->CreateRenderTargetView(backbuffer.Get(),
+                                             nullptr,
+                                             rtv_handle);
+            m_backbuffers.emplace_back(backbuffer);
+            rtv_handle.ptr += m_rtv_descriptor_size;
         }
     }
 
