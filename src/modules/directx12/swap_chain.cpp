@@ -34,8 +34,11 @@ namespace mge::dx12 {
             nullptr,
             &swapchain1);
         CHECK_HRESULT(rc, IDXGIFactory4, CreateSwapChainForHwnd);
+        // TODO: #123 Support Alt+Enter handling for window size change back and
+        // forth
         rc = context.factory()->MakeWindowAssociation(context.window().hwnd(),
                                                       DXGI_MWA_NO_ALT_ENTER);
+
         CHECK_HRESULT(rc, IDXGIFactory4, MakeWindowAssociation);
         rc = swapchain1.As(&m_swap_chain);
         CHECK_HRESULT(rc, IDXGISwapChain1, As);

@@ -32,8 +32,10 @@ namespace mge::dx12 {
 
         mge::shader_ref create_shader(shader_type t) override;
 
-        const mge::dx12::window&           window() const { return m_window; }
+        const mge::dx12::window& window() const { return m_window; }
+
         const mge::com_ptr<IDXGIFactory4>& factory() const { return m_factory; }
+
         const mge::com_ptr<ID3D12CommandQueue>& command_queue() const
         {
             return m_command_queue;
@@ -46,15 +48,17 @@ namespace mge::dx12 {
         void enable_debug_messages();
         void create_command_queue();
         void create_descriptor_heap();
+        void update_render_target_views();
 
         render_system&     m_render_system;
         mge::dx12::window& m_window;
 
-        mge::com_ptr<IDXGIFactory4>        m_factory;
-        mge::com_ptr<IDXGIAdapter4>        m_adapter;
-        mge::com_ptr<ID3D12Device2>        m_device;
-        mge::com_ptr<ID3D12CommandQueue>   m_command_queue;
-        mge::com_ptr<ID3D12DescriptorHeap> m_rtv_heap;
-        uint32_t                           m_rtv_descriptor_size;
+        mge::com_ptr<IDXGIFactory4>               m_factory;
+        mge::com_ptr<IDXGIAdapter4>               m_adapter;
+        mge::com_ptr<ID3D12Device2>               m_device;
+        mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
+        mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
+        uint32_t                                  m_rtv_descriptor_size;
+        std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
     };
 } // namespace mge::dx12

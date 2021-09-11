@@ -29,6 +29,7 @@ namespace mge::dx12 {
         create_command_queue();
         m_swap_chain =
             std::make_shared<mge::dx12::swap_chain>(render_system_, *this);
+        create_descriptor_heap()
     }
 
     void render_context::create_command_queue()
@@ -153,6 +154,27 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
         m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
             D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+    }
+
+    void render_context::update_render_target_views()
+    {
+        D3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart());
+
+        for (int i = 0; i < buffer_count; ++i) {
+            mge::com_ptr<ID3D12Resource> backbuffer;
+#if 0
+            ThrowIfFailed(swa->GetBuffer(i, IID_PPV_ARGS(&backBuffer)));
+
+            device->CreateRenderTargetView(backBuffer.Get(),
+                                           nullptr,
+                                           rtvHandle);
+
+            g_BackBuffers[i] = backBuffer;
+
+            rtvHandle.Offset(rtvDescriptorSize);
+#endif
+        }
     }
 
     void render_context::initialize() {}
