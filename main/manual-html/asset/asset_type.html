@@ -2,10 +2,10 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Miscellaneous Functions" href="functions.html" /><link rel="prev" title="Mathematics Library" href="../mgemath.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="MIT License" href="../license.html" /><link rel="prev" title="Asset Library" href="../mgeasset.html" />
 
     <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
-        <title>Vector Types - MGE 0.1 documentation</title>
+        <title>Asset Type - MGE 0.1 documentation</title>
       <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
     <link rel="stylesheet" href="../_static/pygments.css">
     <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
@@ -130,9 +130,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../core/version.html">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Vector Types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="functions.html">Miscellaneous Functions</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -158,8 +158,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeasset.html">Asset Library</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../asset/asset_type.html">Asset Type</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeasset.html">Asset Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Asset Type</a></li>
 </ul>
 </li>
 </ul>
@@ -180,23 +180,16 @@
         <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
           <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
         </label>
-        <div class="section" id="vector-types">
-<h1>Vector Types<a class="headerlink" href="#vector-types" title="Permalink to this headline">¶</a></h1>
-<p>Vector types with 2, 3, and 4 components are defined.</p>
+        <div class="section" id="asset-type">
+<h1>Asset Type<a class="headerlink" href="#asset-type" title="Permalink to this headline">¶</a></h1>
+<p>Assets are without additional meta information just plain files. One
+of this meta information is the asset type, which defines a category
+of the asset, such as an image or mesh.</p>
 <dl class="cpp class">
-<dt id="_CPPv4N3mge5fvec2E">
-<span id="_CPPv3N3mge5fvec2E"></span><span id="_CPPv2N3mge5fvec2E"></span><span id="mge::fvec2"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">fvec2</span></code><a class="headerlink" href="#_CPPv4N3mge5fvec2E" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>A 2 component vector of float values.</p>
-</dd></dl>
-<dl class="cpp class">
-<dt id="_CPPv4N3mge5fvec3E">
-<span id="_CPPv3N3mge5fvec3E"></span><span id="_CPPv2N3mge5fvec3E"></span><span id="mge::fvec3"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">fvec3</span></code><a class="headerlink" href="#_CPPv4N3mge5fvec3E" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>A 3 component vector of float values.</p>
-</dd></dl>
-<dl class="cpp class">
-<dt id="_CPPv4N3mge5fvec4E">
-<span id="_CPPv3N3mge5fvec4E"></span><span id="_CPPv2N3mge5fvec4E"></span><span id="mge::fvec4"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">fvec4</span></code><a class="headerlink" href="#_CPPv4N3mge5fvec4E" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>A 4 component vector of float values.</p>
+<dt id="_CPPv4N3mge10asset_typeE">
+<span id="_CPPv3N3mge10asset_typeE"></span><span id="_CPPv2N3mge10asset_typeE"></span><span id="mge::asset_type"></span><span class="target" id="classmge_1_1asset__type"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">asset_type</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">boost</span><span class="pre">::</span><span class="pre">totally_ordered</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="pre">asset_type</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge10asset_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Asset type. </p>
+<p>An asset type helps in identifying the loader for a specific asset. Asset types are modeled after mime types, i.e. they have a type and a subtype. </p>
 </dd></dl>
 </div>
 
@@ -204,23 +197,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="functions.html">
+          <a class="next-page" href="../license.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Miscellaneous Functions</div>
+                <div class="title">MIT License</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="../mgemath.html">
+          <a class="prev-page" href="../mgeasset.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Mathematics Library</div>
+                <div class="title">Asset Library</div>
                 
               </div>
             </a>
@@ -234,7 +227,7 @@
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
             |
-            <a class="muted-link" href="../_sources/math/vector.rst.txt"
+            <a class="muted-link" href="../_sources/asset/asset_type.rst.txt"
                rel="nofollow">
               Show Source
             </a>
