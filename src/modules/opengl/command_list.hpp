@@ -18,6 +18,7 @@ namespace mge::opengl {
         ~command_list() = default;
 
         void clear(const rgba_color& c) override;
+        void execute() override;
 
     private:
         struct clear_command

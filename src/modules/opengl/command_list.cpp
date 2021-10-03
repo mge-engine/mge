@@ -11,4 +11,6 @@ namespace mge::opengl {
         m_commands.emplace_back(clear_command{c});
     }
 
+    void command_list::execute() {}
+
 } // namespace mge::opengl
