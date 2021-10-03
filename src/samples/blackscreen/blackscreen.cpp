@@ -7,6 +7,7 @@
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/window.hpp"
 
 MGE_DEFINE_TRACE(BLACKSCREEN);
@@ -36,17 +37,11 @@ namespace mge {
             m_clear_commands = m_window->render_context().create_command_list();
             m_clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
 
-            add_redraw_listener([&](uint64_t seq, double time) {
-                MGE_DEBUG_TRACE(BLACKSCREEN) << "REDRAW SEQ: " << seq;
+            add_redraw_listener([&](uint64_t cycle, double delta) {
+                m_clear_commands->execute();
+                m_window->render_context().swap_chain()->present();
             });
 
-            /*
-
-            m_window->set_redraw_listener([&](window::redraw_context &context) {
-                context.render_context.execute(m_clear_commands);
-                context.render_context.flush();
-            });
-            */
             m_window->show();
         }
 

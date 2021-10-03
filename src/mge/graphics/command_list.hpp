@@ -51,6 +51,11 @@ namespace mge {
          */
         virtual void clear(const rgba_color& color) = 0;
 
+        /**
+         * @brief Executes this command list.
+         */
+        virtual void execute() = 0;
+
     private:
         bool m_native;
     };
