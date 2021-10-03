@@ -29,6 +29,8 @@ namespace mge::dx11 {
 
         mge::shader_ref create_shader(mge::shader_type t) override;
 
+        mge::command_list_ref create_command_list() override;
+
         const ::mge::dx11::window& window() const { return m_window; }
 
         const ::mge::dx11::render_system& render_system() const

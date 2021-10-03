@@ -59,6 +59,13 @@ namespace mge {
         virtual shader_ref create_shader(shader_type t) = 0;
 
         /**
+         * @brief Create a command list object.
+         *
+         * @return command list
+         */
+        virtual command_list_ref create_command_list() = 0;
+
+        /**
          * @brief Get swap chain of context.
          *
          * @return swap chain

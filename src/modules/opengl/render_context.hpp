@@ -28,6 +28,7 @@ namespace mge {
 
             mge::shader_ref create_shader(shader_type t) override;
 
+            mge::command_list_ref create_command_list() override;
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const { return m_hdc; }

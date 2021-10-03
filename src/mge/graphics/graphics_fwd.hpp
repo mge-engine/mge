@@ -3,7 +3,9 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/memory.hpp"
+
 namespace mge {
+
     MGE_DECLARE_REF(render_system);
     MGE_DECLARE_REF(window);
     MGE_DECLARE_REF(monitor);
@@ -13,4 +15,6 @@ namespace mge {
     MGE_DECLARE_REF(index_buffer);
     MGE_DECLARE_REF(vertex_buffer);
     MGE_DECLARE_REF(shader);
+    MGE_DECLARE_REF(command_list);
+
 } // namespace mge

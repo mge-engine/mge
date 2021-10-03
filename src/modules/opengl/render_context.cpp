@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "command_list.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
@@ -117,6 +118,12 @@ namespace mge::opengl {
     mge::shader_ref render_context::create_shader(mge::shader_type t)
     {
         mge::shader_ref result;
+        return result;
+    }
+
+    mge::command_list_ref render_context::create_command_list()
+    {
+        mge::command_list_ref result = std::make_shared<command_list>(*this);
         return result;
     }
 

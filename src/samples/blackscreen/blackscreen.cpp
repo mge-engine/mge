@@ -3,7 +3,10 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/command_list.hpp"
+#include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
+#include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/window.hpp"
 
 MGE_DEFINE_TRACE(BLACKSCREEN);
@@ -30,10 +33,15 @@ namespace mge {
                     }
                 });
 
-            /*
             m_clear_commands = m_window->render_context().create_command_list();
-            m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
-            m_clear_commands->finish();
+            m_clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+
+            add_redraw_listener([&](uint64_t seq, double time) {
+                MGE_DEBUG_TRACE(BLACKSCREEN) << "REDRAW TIME: " << time;
+            });
+
+            /*
+
             m_window->set_redraw_listener([&](window::redraw_context &context) {
                 context.render_context.execute(m_clear_commands);
                 context.render_context.flush();
@@ -45,6 +53,7 @@ namespace mge {
     private:
         render_system_ref m_render_system;
         window_ref        m_window;
+        command_list_ref  m_clear_commands;
     };
 
     MGE_REGISTER_IMPLEMENTATION(blackscreen, mge::application, blackscreen);

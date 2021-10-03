@@ -5,11 +5,15 @@
 #include "mge/graphics/dllexport.hpp"
 
 #include "mge/graphics/context_object.hpp"
+#include "mge/graphics/rgba_color.hpp"
 
 namespace mge {
 
     /**
      * @brief A sequence of state changes.
+     *
+     * A list of state-changing commands which can be applied to
+     * a render context.
      */
     class MGEGRAPHICS_EXPORT command_list : public context_object
     {
@@ -30,11 +34,22 @@ namespace mge {
         virtual ~command_list();
 
         /**
-         * @brief Returns whether this command list is native or in-memory.
+         * @brief Returns whether this command list is native.
+         *
+         * Some render APIs support command list objects on their API level.
+         * If the command list is mapped to such an object, a command list
+         * is native.
          *
          * @return @c true if native
          */
         bool native() const;
+
+        /**
+         * @brief Clears the color buffer with the requested color.
+         *
+         * @param color clear color
+         */
+        virtual void clear(const rgba_color& color) = 0;
 
     private:
         bool m_native;
