@@ -191,6 +191,7 @@ API.</p>
 <dt id="_CPPv4N3mge12command_listE">
 <span id="_CPPv3N3mge12command_listE"></span><span id="_CPPv2N3mge12command_listE"></span><span id="mge::command_list"></span><span class="target" id="classmge_1_1command__list"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">command_list</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="pre">context_object</span></a><a class="headerlink" href="#_CPPv4N3mge12command_listE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>A sequence of state changes. </p>
+<p>A list of state-changing commands which can be applied to a render context. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
@@ -201,9 +202,22 @@ API.</p>
 <dl class="cpp function">
 <dt id="_CPPv4NK3mge12command_list6nativeEv">
 <span id="_CPPv3NK3mge12command_list6nativeEv"></span><span id="_CPPv2NK3mge12command_list6nativeEv"></span><span id="mge::command_list::nativeC"></span><span class="target" id="classmge_1_1command__list_1a37c7f1d24e5b72f0d34a9d28b4c07b45"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">native</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK3mge12command_list6nativeEv" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Returns whether this command list is native or in-memory. </p>
+<dd><p>Returns whether this command list is native. </p>
+<p>Some render APIs support command list objects on their API level. If the command list is mapped to such an object, a command list is native.</p>
 <p><dl class="simple">
 <dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if native </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+<dl class="cpp function">
+<dt id="_CPPv4N3mge12command_list5clearERK10rgba_color">
+<span id="_CPPv3N3mge12command_list5clearERK10rgba_color"></span><span id="_CPPv2N3mge12command_list5clearERK10rgba_color"></span><span id="mge::command_list::clear__rgba_colorCR"></span><span class="target" id="classmge_1_1command__list_1af14590f796284f0d93c93711eaf05b0e"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">clear</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="datastructures.html#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="pre">rgba_color</span></a> <span class="pre">&amp;</span><em><span class="pre">color</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge12command_list5clearERK10rgba_color" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Clears the color buffer with the requested color. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">color</span></code>: clear color </p></li>
+</ul>
 </dd>
 </dl>
 </p>
