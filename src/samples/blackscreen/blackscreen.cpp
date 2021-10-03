@@ -37,7 +37,7 @@ namespace mge {
             m_clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
 
             add_redraw_listener([&](uint64_t seq, double time) {
-                MGE_DEBUG_TRACE(BLACKSCREEN) << "REDRAW TIME: " << time;
+                MGE_DEBUG_TRACE(BLACKSCREEN) << "REDRAW SEQ: " << seq;
             });
 
             /*

@@ -19,6 +19,11 @@ namespace mge {
     /**
      * @brief Application framework.
      *
+     * An application allows to attach input, update, and redraw listeners which
+     * are called during the update loop.
+     *
+     * Also a quit listener can be attached which is called when the application
+     * is terminating.
      */
     class MGEAPPLICATION_EXPORT application : public component<application>,
                                               public loop_target

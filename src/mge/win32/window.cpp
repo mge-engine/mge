@@ -111,9 +111,11 @@ namespace mge {
         void window::process_input()
         {
             MSG msg;
-            if (m_hwnd && GetMessage(&msg, m_hwnd, 0, 0)) {
-                TranslateMessage(&msg);
-                DispatchMessage(&msg);
+            if (m_hwnd) {
+                if (PeekMessage(&msg, m_hwnd, 0, 0, PM_REMOVE | PM_NOYIELD)) {
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
+                }
             }
         }
 
