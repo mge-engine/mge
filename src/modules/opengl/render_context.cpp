@@ -30,7 +30,6 @@ namespace mge::opengl {
         select_pixel_format();
         create_glrc();
         init_gl3w();
-        create_swap_chain();
         collect_opengl_info();
     }
 

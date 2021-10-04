@@ -33,10 +33,10 @@ namespace mge {
 
             HDC dc() const { return m_hdc; }
 
+            void create_swap_chain(); // needed for two-step initialization
         private:
             void select_pixel_format();
             void create_glrc();
-            void create_swap_chain();
             void init_gl3w();
             void collect_opengl_info();
 
