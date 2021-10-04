@@ -8,8 +8,15 @@
 namespace mge {
 
     context_object::context_object(render_context& context)
-        : m_context(context.shared_from_this())
-    {}
+    {
+        // trick: ensure there is at least one holder of
+        // context, to initialize weak reference properly
+        // in case the object is created in a render context's
+        // constructor (or constructor of derived class)
+        auto holder =
+            std::shared_ptr<render_context>(&context, [](render_context*) {});
+        m_context = context.shared_from_this();
+    }
 
     context_object::~context_object() {}
 

@@ -36,6 +36,7 @@ namespace mge {
         private:
             void select_pixel_format();
             void create_glrc();
+            void create_swap_chain();
             void init_gl3w();
             void collect_opengl_info();
 

@@ -7,6 +7,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
+#include "swap_chain.hpp"
 #include "vertex_buffer.hpp"
 
 namespace mge {
@@ -29,6 +30,7 @@ namespace mge::opengl {
         select_pixel_format();
         create_glrc();
         init_gl3w();
+        create_swap_chain();
         collect_opengl_info();
     }
 
@@ -82,6 +84,11 @@ namespace mge::opengl {
             }
             s_gl3w_initialized = true;
         }
+    }
+
+    void render_context::create_swap_chain()
+    {
+        m_swap_chain = std::make_shared<mge::opengl::swap_chain>(*this);
     }
 
     void render_context::collect_opengl_info()
