@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/overloaded.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include <array>
 #include <iterator>
@@ -14,14 +15,6 @@
 #endif
 
 namespace mge {
-
-    namespace {
-        template <class... Ts> struct overloaded : Ts...
-        {
-            using Ts::operator()...;
-        };
-        template <class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
-    } // namespace
 
     /**
      * A small vector to avoid allocation up an certain size of elements.
