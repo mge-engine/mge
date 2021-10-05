@@ -40,6 +40,16 @@ namespace mge::dx11 {
 
         ID3D11Device* device() const { return m_device.get(); }
 
+        ID3D11DeviceContext* device_context() const
+        {
+            return m_device_context.get();
+        }
+
+        ID3D11RenderTargetView* render_target_view() const
+        {
+            return m_render_target_view.get();
+        }
+
     private:
         void create_swap_chain();
 

@@ -5,7 +5,8 @@
 SET(DX11_TEST_SOURCES
     dx11_test.cpp
     test_render_system.cpp
-    test_index_buffer.cpp)
+    test_index_buffer.cpp
+    test_command_list.cpp)
 
 MGE_TEST(
     TARGET      test_dx11

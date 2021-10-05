@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/trace.hpp"
@@ -120,7 +121,7 @@ namespace mge::dx11 {
 
     mge::command_list_ref render_context::create_command_list()
     {
-        mge::command_list_ref result;
+        auto result = std::make_shared<mge::dx11::command_list>(*this);
         return result;
     }
 
