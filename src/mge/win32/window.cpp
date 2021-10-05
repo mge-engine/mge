@@ -2,11 +2,11 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/win32/window.hpp"
+#include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
 #include <windowsx.h>
 
-#define MGE_CLASS_NAME ((LPCWSTR)L"mge")
 #define WM_WANT_DESTROY (WM_USER + 1)
 
 namespace mge {
@@ -17,6 +17,8 @@ namespace mge {
 #define WIN32 _OLD_WIN32
 
     namespace win32 {
+
+        static LPCWSTR mge_class_name = L"mge";
 
         window::window(const mge::extent& extent, const window_options& options)
             : mge::window(extent, options)
@@ -41,7 +43,8 @@ namespace mge {
             mge::application::instance()->remove_quit_listener(m_quit_listener);
         }
 
-        volatile bool s_window_class_created;
+        static bool s_window_class_created;
+        static ATOM s_window_class;
 
         void window::create_window_class()
         {
@@ -51,22 +54,28 @@ namespace mge {
 
             MGE_DEBUG_TRACE(WIN32) << "Create window class";
 
-            WNDCLASSEXW window_class;
+            WNDCLASSEXW window_class = {};
             HINSTANCE   module_handle;
 
             module_handle = GetModuleHandle(NULL);
+
             window_class.cbSize = sizeof(WNDCLASSEX);
             window_class.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
             window_class.lpfnWndProc = (WNDPROC)wndproc;
             window_class.cbWndExtra = sizeof(void*);
             window_class.hInstance = module_handle;
             window_class.hCursor = LoadCursor(NULL, IDC_ARROW);
-            window_class.lpszClassName = MGE_CLASS_NAME;
+            window_class.lpszClassName = mge_class_name;
             window_class.hIcon = LoadIcon(module_handle, IDI_APPLICATION);
             window_class.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
             window_class.hIconSm = LoadIcon(module_handle, IDI_APPLICATION);
-            if (!RegisterClassExW(&window_class)) {
-                MGE_ERROR_TRACE(WIN32) << "Registering window class failed";
+
+            s_window_class = RegisterClassExW(&window_class);
+
+            if (!s_window_class) {
+                mge::system_error err;
+                MGE_ERROR_TRACE(WIN32)
+                    << "Registering window class failed: " << err;
             }
             s_window_class_created = true;
         }
@@ -89,7 +98,7 @@ namespace mge {
             AdjustWindowRectEx(&window_rect, style, 0, exstyle);
 
             m_hwnd = CreateWindowExW(exstyle,
-                                     MGE_CLASS_NAME,
+                                     (LPCWSTR)s_window_class,
                                      L"",
                                      style,
                                      0,
