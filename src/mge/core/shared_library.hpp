@@ -31,6 +31,16 @@ namespace mge {
 #else
 #    error Missing port
 #endif
+        struct use_search_path
+        {};
+
+        /**
+         * @brief Load shared library, using system search path.
+         *
+         * @param name library file name
+         */
+        shared_library(const std::filesystem::path& name,
+                       shared_library::use_search_path);
 
         /**
          * @brief Load shared library.

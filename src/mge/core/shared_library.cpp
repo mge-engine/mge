@@ -63,6 +63,14 @@ namespace mge {
         load();
     }
 
+    shared_library::shared_library(const std::filesystem::path& name,
+                                   shared_library::use_search_path)
+        : m_name(name)
+        , m_handle(nil_handle)
+    {
+        load();
+    }
+
     void shared_library::load()
     {
         HMODULE handle = s_loaded_libraries->get(m_name);
