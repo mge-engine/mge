@@ -118,8 +118,12 @@ namespace mge {
             if (!configuration::loaded()) {
                 configuration::load();
             }
-
+            std::vector<const char*> new_argv;
+            for (int i = 0; i < argc; ++i) {
+                new_argv.push_back(argv[i]);
+            }
             module::load_all();
+            configuration::evaluate_command_line(new_argv);
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {
