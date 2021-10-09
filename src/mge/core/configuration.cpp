@@ -39,9 +39,15 @@ namespace mge {
         basic_parameter& find_parameter(std::string_view section,
                                         std::string_view name);
 
+        std::optional<std::reference_wrapper<basic_parameter>>
+             find_optional_parameter(std::string_view section,
+                                     std::string_view name);
         void load(bool allow_missing);
         void store();
         bool loaded() const { return m_loaded; }
+        void set_raw(std::string_view section,
+                     std::string_view name,
+                     std::string_view value);
 
     private:
         fs::path find_config_file();
@@ -89,6 +95,25 @@ namespace mge {
                 pmap_it->second.erase(p_it);
             }
         }
+    }
+
+    std::optional<std::reference_wrapper<basic_parameter>>
+    configuration_instance::find_optional_parameter(std::string_view section,
+                                                    std::string_view name)
+    {
+        std::optional<std::reference_wrapper<basic_parameter>> result;
+        if (m_update_needed && m_loaded) {
+            set_registered_parameters();
+            m_update_needed = false;
+        }
+        auto pmap_it = m_sections.find(section);
+        if (pmap_it != m_sections.end()) {
+            auto p_it = pmap_it->second.find(name);
+            if (p_it != pmap_it->second.end()) {
+                return *p_it->second;
+            }
+        }
+        return result;
     }
 
     basic_parameter&
@@ -168,6 +193,25 @@ namespace mge {
             for (auto& p : s.second) {
                 fetch_parameter(*p.second);
             }
+        }
+    }
+
+    void configuration_instance::set_raw(std::string_view section,
+                                         std::string_view name,
+                                         std::string_view value)
+    {
+        MGE_DEBUG_TRACE(CORE) << "Set parameter value " << section << "/"
+                              << name << " to '" << value << "'";
+
+        pt::ptree::path_type parameter_path;
+        parameter_path /= std::string(section.begin(), section.end());
+        parameter_path /= std::string(name.begin(), name.end());
+
+        m_raw_settings.put(parameter_path, value);
+        auto param = find_optional_parameter(section, name);
+        if (param.has_value()) {
+            param->get().from_string(value);
+            param->get().notify_change();
         }
     }
 
@@ -263,6 +307,56 @@ namespace mge {
     void configuration::load(bool allow_missing)
     {
         s_configuration_instance->load(allow_missing);
+    }
+
+    void configuration::evaluate_command_line(
+        const std::vector<const char*>& cmdline)
+    {
+        using namespace std::literals;
+
+        if (cmdline.size() < 1u) {
+            return;
+        }
+
+        auto it = cmdline.begin();
+        ++it;
+        while (it != cmdline.end()) {
+            if (*it == "--config"sv) {
+                ++it;
+                if (it != cmdline.end()) {
+                    std::string_view cfgval = *it;
+
+                    auto pos = cfgval.find_first_of("=");
+
+                    if (pos != std::string_view::npos) {
+                        std::string_view key(cfgval.begin(),
+                                             cfgval.begin() + pos);
+                        std::string_view val;
+                        if (pos + 1 < cfgval.size()) {
+                            val = std::string_view(cfgval.begin() + pos + 1,
+                                                   cfgval.end());
+                        }
+
+                        auto sectionpos = key.find_first_of(".");
+                        if (sectionpos != std::string_view::npos &&
+                            sectionpos + 1 < key.size()) {
+                            std::string_view section(key.begin(),
+                                                     key.begin() + sectionpos);
+                            std::string_view name(key.begin() + sectionpos + 1,
+                                                  key.end());
+                            s_configuration_instance->set_raw(section,
+                                                              name,
+                                                              val);
+                        }
+                    }
+                    ++it;
+                } else {
+                    ++it;
+                }
+            } else {
+                ++it;
+            }
+        }
     }
 
     void configuration::store() { s_configuration_instance->store(); }

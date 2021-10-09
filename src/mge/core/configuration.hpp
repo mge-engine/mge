@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/dllexport.hpp"
 #include <string_view>
+#include <vector>
 
 namespace mge {
 
@@ -33,6 +34,15 @@ namespace mge {
          * @param allow_missing succeeds even if no configuration is found
          */
         static void load(bool allow_missing = true);
+
+        /**
+         * @brief Evaluates the command line for configuration changes.
+         *
+         * @param cmdline command line
+         */
+        static void
+        evaluate_command_line(const std::vector<const char*>& cmdline);
+
         /**
          * @brief Store configuration.
          */
