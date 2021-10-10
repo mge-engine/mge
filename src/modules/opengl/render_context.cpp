@@ -7,6 +7,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
+#include "shader.hpp"
 #include "swap_chain.hpp"
 #include "vertex_buffer.hpp"
 
@@ -123,7 +124,7 @@ namespace mge::opengl {
 
     mge::shader_ref render_context::create_shader(mge::shader_type t)
     {
-        mge::shader_ref result;
+        mge::shader_ref result = std::make_shared<shader>(*this, t);
         return result;
     }
 

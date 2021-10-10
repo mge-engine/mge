@@ -11,8 +11,10 @@ SET(mge_opengl_module_SOURCES
     index_buffer.cpp
     vertex_buffer.cpp
     command_list.cpp
+    shader.cpp
     error.cpp
     common.cpp)
+
 ADD_LIBRARY(mge_module_opengl MODULE
             ${mge_opengl_module_SOURCES})
 TARGET_INCLUDE_DIRECTORIES(mge_module_opengl PRIVATE ${OPENGL_INCLUDE_DIRS})
