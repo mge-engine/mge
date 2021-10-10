@@ -91,5 +91,9 @@ namespace mge::dx11 {
 
     swap_chain::~swap_chain() {}
 
-    void swap_chain::present() {}
+    void swap_chain::present()
+    {
+        auto hr = m_swap_chain->Present(0, 0);
+        CHECK_HRESULT(hr, IDXGISwapChain, Present);
+    }
 } // namespace mge::dx11
