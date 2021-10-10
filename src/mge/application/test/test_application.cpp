@@ -32,7 +32,8 @@ class foobar_app : public mge::application
 public:
     foobar_app()
     {
-        this->add_update_listener([&](uint64_t, double) { set_quit(); });
+        this->add_update_listener(
+            [&](uint64_t, double, double) { set_quit(); });
     }
 };
 

@@ -23,20 +23,24 @@ namespace mge {
 
         /**
          * @brief Retrieve and process input in an loop step.
-         * @param cycle call counter
+         * @param cycle frame counter
          */
         virtual void input(uint64_t cycle) = 0;
 
         /**
          * @brief Update state in a step.
-         * @param cycle call counter
+         *
+         * Note @c cycle may be the same for multiple calls.
+         *
+         * @param cycle frame counter
+         * @param elapsed total elapsed time
          * @param delta delta in seconds
          */
-        virtual void update(uint64_t cycle, double delta) = 0;
+        virtual void update(uint64_t cycle, double elapsed, double delta) = 0;
 
         /**
          * @brief Presents the state.
-         * @param cycle call counter
+         * @param cycle frame counter
          * @param peek percentage of peek into next
          *   step if a fixed step mechanism is used,
          *   in range [0,1).

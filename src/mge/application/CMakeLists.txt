@@ -13,7 +13,7 @@ SET(mgeapplication_sources
     application.cpp
     loop.cpp
     simple_loop.cpp
-    default_loop.cpp
+    fixed_step_loop.cpp
 )
 
 MGE_LIBRARY(

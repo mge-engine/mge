@@ -218,9 +218,9 @@ namespace mge {
 
     void application::input(uint64_t cycle) { m_input_listeners(); }
 
-    void application::update(uint64_t cycle, double delta)
+    void application::update(uint64_t cycle, double elapsed, double delta)
     {
-        m_update_listeners(cycle, delta);
+        m_update_listeners(cycle, elapsed, delta);
     }
 
     void application::present(uint64_t cycle, double peek)

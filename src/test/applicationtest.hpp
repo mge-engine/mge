@@ -16,7 +16,7 @@ namespace mge {
         test_application()
             : m_tests_did_run(false)
         {
-            add_update_listener([&](uint64_t, double) {
+            add_update_listener([&](uint64_t, double, double) {
                 if (!m_tests_did_run) {
                     run_all_tests();
                 }

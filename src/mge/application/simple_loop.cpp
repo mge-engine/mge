@@ -18,6 +18,7 @@ namespace mge {
         {
             auto     before = clock::now();
             uint64_t cycle = 0;
+            double   elapsed = 0.0;
 
             while (!t.is_quit()) {
                 ++cycle;
@@ -28,7 +29,8 @@ namespace mge {
                 double_secs delta = current - before;
                 before = current;
 
-                t.update(cycle, delta.count());
+                t.update(cycle, elapsed, delta.count());
+                elapsed += delta.count();
 
                 t.present(cycle, 0.0);
             }

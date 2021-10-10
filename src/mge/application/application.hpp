@@ -29,7 +29,8 @@ namespace mge {
                                               public loop_target
     {
     public:
-        using update_listener_collection = callback_map<uint64_t, double>;
+        using update_listener_collection =
+            callback_map<uint64_t, double, double>;
         using update_listener = update_listener_collection::function_type;
         using update_listener_key = update_listener_collection::key_type;
 
@@ -102,7 +103,7 @@ namespace mge {
 
         void input(uint64_t cycle) override;
 
-        void update(uint64_t cycle, double delta) override;
+        void update(uint64_t cycle, double elapsed, double delta) override;
 
         void present(uint64_t cycle, double peek) override;
 
