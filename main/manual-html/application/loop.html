@@ -228,19 +228,21 @@ steps in a loop:</p>
 <dd><p>Retrieve and process input in an loop step. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: frame counter </p></li>
 </ul>
 </dd>
 </dl>
 </p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge11loop_target6updateE8uint64_td">
-<span id="_CPPv3N3mge11loop_target6updateE8uint64_td"></span><span id="_CPPv2N3mge11loop_target6updateE8uint64_td"></span><span id="mge::loop_target::update__uint64_t.double"></span><span class="target" id="classmge_1_1loop__target_1ab7999cec2ba8233b7ffe1bfbedc1e709"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em>, <span class="pre">double</span> <em><span class="pre">delta</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target6updateE8uint64_td" title="Permalink to this definition">¶</a><br/></dt>
+<dt id="_CPPv4N3mge11loop_target6updateE8uint64_tdd">
+<span id="_CPPv3N3mge11loop_target6updateE8uint64_tdd"></span><span id="_CPPv2N3mge11loop_target6updateE8uint64_tdd"></span><span id="mge::loop_target::update__uint64_t.double.double"></span><span class="target" id="classmge_1_1loop__target_1a5ec1a6c323dd1b302981693cd28a21ee"></span><em class="property"><span class="pre">virtual</span></em> <span class="pre">void</span> <code class="sig-name descname"><span class="pre">update</span></code><span class="sig-paren">(</span><span class="pre">uint64_t</span> <em><span class="pre">cycle</span></em>, <span class="pre">double</span> <em><span class="pre">elapsed</span></em>, <span class="pre">double</span> <em><span class="pre">delta</span></em><span class="sig-paren">)</span> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N3mge11loop_target6updateE8uint64_tdd" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Update state in a step. </p>
+<p>Note <code class="docutils literal notranslate"><span class="pre">cycle</span></code> may be the same for multiple calls.</p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: frame counter </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">elapsed</span></code>: total elapsed time </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">delta</span></code>: delta in seconds </p></li>
 </ul>
 </dd>
@@ -253,7 +255,7 @@ steps in a loop:</p>
 <dd><p>Presents the state. </p>
 <p><dl class="simple">
 <dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: call counter </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cycle</span></code>: frame counter </p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">peek</span></code>: percentage of peek into next step if a fixed step mechanism is used, in range [0,1). </p></li>
 </ul>
 </dd>
@@ -268,7 +270,7 @@ steps in a loop:</p>
 <span id="_CPPv3N3mge4loopE"></span><span id="_CPPv2N3mge4loopE"></span><span id="mge::loop"></span><span class="target" id="classmge_1_1loop"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">loop</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">mge</span><span class="pre">::</span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="pre">component</span></a><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge4loopE" title="mge::loop"><span class="pre">loop</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge4loopE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Interaction loop abstraction. </p>
 <p>While the loop target does not signal quitting, input is collected from target, state is updated and presented. </p>
-<p>Subclassed by mge::default_loop, mge::simple_loop</p>
+<p>Subclassed by mge::fixed_step_loop, mge::simple_loop</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="cpp function">
