@@ -56,3 +56,20 @@ TEST_F(shader_test, compile_failed)
         // expected
     }
 }
+
+TEST_F(shader_test, set_code_failed)
+{
+    using namespace std::literals;
+
+    auto& context = m_window->render_context();
+    auto  shader = context.create_shader(mge::shader_type::VERTEX);
+
+    auto        bogus = "bogus"sv;
+    mge::buffer code(bogus.begin(), bogus.end());
+    try {
+        shader->set_code(code);
+        FAIL() << "Expected set_code to fail";
+    } catch (const mge::exception&) {
+        // expected
+    }
+}

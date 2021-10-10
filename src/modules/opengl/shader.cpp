@@ -67,7 +67,26 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glCreateShader);
     }
 
-    void shader::on_set_code(const mge::buffer& code) {}
+    void shader::on_set_code(const mge::buffer& code)
+    {
+        if (glShaderBinary) {
+            glShaderBinary(1,
+                           &m_shader,
+                           GL_SHADER_BINARY_FORMAT_SPIR_V,
+                           code.data(),
+                           static_cast<GLsizei>(code.size()));
+            CHECK_OPENGL_ERROR(glShaderBinary);
+            std::string entry_point = get_property("entry_point", "main");
+            glSpecializeShader(m_shader,
+                               entry_point.c_str(),
+                               0,
+                               nullptr,
+                               nullptr);
+            CHECK_OPENGL_ERROR(glSpecializeShader);
+        } else {
+            MGE_THROW(opengl::error) << "Compiled SPIR-V shaders not supported";
+        }
+    }
 
     GLenum shader::gl_shader_type() const
     {
