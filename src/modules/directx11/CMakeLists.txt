@@ -10,6 +10,7 @@ SET(mge_dx11_module_SOURCES
     swap_chain.cpp
     index_buffer.cpp
     command_list.cpp
+    shader.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE

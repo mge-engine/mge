@@ -31,7 +31,7 @@ namespace mge::dx12 {
                              size_t                    data_size,
                              void*                     data) override;
 
-        mge::shader_ref create_shader(shader_type t) override;
+        mge::shader_ref       create_shader(shader_type t) override;
         mge::command_list_ref create_command_list() override;
 
         const mge::dx12::window& window() const { return m_window; }
@@ -61,7 +61,8 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12Device2>               m_device;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
-        uint32_t                                  m_rtv_descriptor_size;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
+        uint32_t                                  m_rtv_descriptor_size;
     };
+
 } // namespace mge::dx12
