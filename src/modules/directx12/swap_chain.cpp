@@ -46,6 +46,6 @@ namespace mge::dx12 {
 
     swap_chain::~swap_chain() {}
 
-    void swap_chain::present() {}
+    void swap_chain::present() { m_swap_chain->Present(0, 0); }
 
 } // namespace mge::dx12
