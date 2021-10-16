@@ -20,13 +20,45 @@ namespace mge {
     class MGEASSET_EXPORT asset_type : public boost::totally_ordered<asset_type>
     {
     public:
+        /**
+         * @brief Construct empty/unknown asset type.
+         */
         asset_type();
+
+        /**
+         * @brief Construct asset type.
+         *
+         * @param type      asset type
+         * @param subtype   asset subtype
+         */
         asset_type(std::string_view type, std::string_view subtype);
-        asset_type(const asset_type&) = default;
-        asset_type(asset_type&&) = default;
+
+        /**
+         * @brief Copy constructor.
+         * @param t copied type
+         */
+        asset_type(const asset_type& t) = default;
+
+        /**
+         * @brief Move constructor.
+         * @param t moved type
+         */
+        asset_type(asset_type&& t) = default;
+
         ~asset_type() = default;
 
+        /**
+         * @brief Access asset type.
+         *
+         * @return type
+         */
         std::string_view type() const;
+
+        /**
+         * @brief Access asset subtype.
+         *
+         * @return subtype
+         */
         std::string_view subtype() const;
 
         bool operator==(const asset_type& t) const;
@@ -39,5 +71,9 @@ namespace mge {
 
     MGEASSET_EXPORT std::ostream& operator<<(std::ostream&     os,
                                              const asset_type& t);
+
+    namespace literals {
+        MGEASSET_EXPORT asset_type operator""_at(const char* s, size_t l);
+    }
 
 } // namespace mge
