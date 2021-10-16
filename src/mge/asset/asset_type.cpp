@@ -43,20 +43,25 @@ namespace mge {
         return os << t.type() << "/" << t.subtype();
     }
 
+    asset_type asset_type::parse(std::string_view sv)
+    {
+        auto p = sv.find_first_of('/');
+
+        if (p == std::string_view::npos) {
+            return asset_type(sv, "");
+        } else {
+            std::string_view sv_type(sv.data(), sv.data() + p);
+            std::string_view sv_subtype(sv.data() + p + 1,
+                                        sv.data() + sv.size());
+            return asset_type(sv_type, sv_subtype);
+        }
+    }
+
     namespace literals {
         asset_type operator""_at(const char* s, size_t l)
         {
             std::string_view sv(s, s + l);
-
-            auto p = sv.find_first_of('/');
-
-            if (p == std::string_view::npos) {
-                return asset_type(sv, "");
-            } else {
-                std::string_view sv_type(sv.data(), sv.data() + p);
-                std::string_view sv_subtype(sv.data() + p + 1, s + l);
-                return asset_type(sv_type, sv_subtype);
-            }
+            return asset_type::parse(sv);
         }
     } // namespace literals
 

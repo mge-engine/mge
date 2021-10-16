@@ -64,6 +64,8 @@ namespace mge {
         bool operator==(const asset_type& t) const;
         bool operator<(const asset_type& t) const;
 
+        static asset_type parse(std::string_view s);
+
     private:
         std::string m_type;
         std::string m_subtype;
