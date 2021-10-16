@@ -22,4 +22,4 @@ MGE_LIBRARY(
 
 TARGET_LINK_LIBRARIES(mgeasset mgecore boost-all)
 
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
