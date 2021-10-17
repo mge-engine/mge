@@ -29,3 +29,5 @@ IF(MSVC)
         MESSAGE("-- DirectX D3D11 not found")
     ENDIF()
 ENDIF()
+
+ADD_SUBDIRECTORY(lua)
