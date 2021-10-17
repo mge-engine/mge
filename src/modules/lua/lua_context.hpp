@@ -8,6 +8,7 @@ namespace mge::lua {
     public:
         lua_context();
         ~lua_context();
+        void eval(std::string_view code);
 
     private:
         lua_State* m_lua_state;

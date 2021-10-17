@@ -5,6 +5,9 @@
 #include "mge/core/noncopyable.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+
+#include <string_view>
+
 namespace mge {
     /**
      * A script context provides the frame around the execution of once
@@ -15,5 +18,18 @@ namespace mge {
      * code.
      */
     class MGESCRIPT_EXPORT script_context : public noncopyable
-    {};
+    {
+    public:
+        /**
+         * @brief Destructor.
+         */
+        virtual ~script_context() = default;
+
+        /**
+         * @brief Eval code.
+         *
+         * @param code code to evaluate
+         */
+        virtual void eval(std::string_view code) = 0;
+    };
 } // namespace mge

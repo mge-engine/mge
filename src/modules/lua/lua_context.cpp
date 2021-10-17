@@ -15,4 +15,6 @@ namespace mge::lua {
         }
     }
 
+    void lua_context::eval(std::string_view code) {}
+
 } // namespace mge::lua

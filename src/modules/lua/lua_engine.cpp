@@ -1,3 +1,4 @@
+#include "lua_context.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/script_engine.hpp"
 
@@ -14,7 +15,7 @@ namespace mge::lua {
 
         script_context_ref create_context()
         {
-            script_context_ref result;
+            script_context_ref result = std::make_shared<lua_context>();
             return result;
         }
     };
