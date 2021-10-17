@@ -20,6 +20,7 @@ INCLUDE(thirdparty/directx)
 INCLUDE(thirdparty/doxygen)
 INCLUDE(thirdparty/sphinx)
 INCLUDE(thirdparty/glm)
+INCLUDE(thirdparty/lua)
 
 INCLUDE(macros/documentation)
 INCLUDE(macros/library)
@@ -27,4 +28,5 @@ INCLUDE(macros/test)
 INCLUDE(macros/fixcopyright)
 INCLUDE(macros/format)
 INCLUDE(macros/copy_file)
+INCLUDE(macros/dump)
 
