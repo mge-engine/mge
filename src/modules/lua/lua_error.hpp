@@ -7,6 +7,7 @@ namespace mge::lua {
 
     class error : public exception
     {
+    public:
         error();
         error(const error& e);
         error(error&& e);

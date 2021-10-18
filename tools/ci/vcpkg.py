@@ -17,7 +17,7 @@ vcpkg_githash = "973a7d517c09c8cfb7e6a548fcc260ca34ba7b60"
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
-    "boost-spirit", "vulkan", "glm", "lua", "luajit"
+    "boost-spirit", "vulkan", "glm", "lua"
 ]
 
 

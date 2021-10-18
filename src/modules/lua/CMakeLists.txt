@@ -12,3 +12,5 @@ TARGET_LINK_LIBRARIES(mge_module_lua
     mgecore
     mgescript
     lua)
+
+ADD_SUBDIRECTORY(test)

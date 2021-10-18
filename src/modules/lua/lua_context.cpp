@@ -1,4 +1,5 @@
 #include "lua_context.hpp"
+#include "lua_error.hpp"
 
 namespace mge::lua {
     lua_context::lua_context()
@@ -15,6 +16,12 @@ namespace mge::lua {
         }
     }
 
-    void lua_context::eval(std::string_view code) {}
+    void lua_context::eval(std::string_view code)
+    {
+        int rc = luaL_loadbuffer(m_lua_state, code.data(), code.size(), "");
+        CHECK_STATUS(rc, m_lua_state);
+        rc = lua_pcall(m_lua_state, 0, 0, 0);
+        CHECK_STATUS(rc, m_lua_state);
+    }
 
 } // namespace mge::lua
