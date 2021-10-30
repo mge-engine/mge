@@ -16,6 +16,16 @@
     class TYPE;                                                                \
     using TYPE##_ref = std::shared_ptr<TYPE>
 
+/**
+ * @def MGE_DECLARE_WEAK_REF
+ * @brief Declares weak reference type (weak pointer).
+ * @param TYPE type used in the reference type, the type is assumed
+ * to be a class (no struct, enum class or union).
+ */
+#define MGE_DECLARE_WEAK_REF(TYPE)                                             \
+    class TYPE;                                                                \
+    using TYPE##_weak_ref = std::weak_ptr<TYPE>
+
 namespace mge {
     /**
      * @brief Allocate memory.

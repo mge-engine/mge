@@ -5,6 +5,11 @@
 SET(mgescript_sources
     script_engine.cpp
     script_context.cpp
+
+    script_module.cpp
+    script_type.cpp
+
+    bind_pod.cpp
 )
 
 SET(mgescript_headers
@@ -12,6 +17,9 @@ SET(mgescript_headers
     script_fwd.hpp
     script_context.hpp
     script_engine.hpp
+
+    script_module.hpp
+    script_type.hpp
 )
 
 
