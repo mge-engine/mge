@@ -12,6 +12,7 @@ namespace mge {
         MGE_DECLARE_REF(module);
         MGE_DECLARE_WEAK_REF(module);
         MGE_DECLARE_REF(type);
+        class visitor;
     } // namespace script
 
 } // namespace mge

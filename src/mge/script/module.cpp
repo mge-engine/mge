@@ -1,8 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "mge/script/script_module.hpp"
+#include "mge/script/module.hpp"
 #include "mge/core/unprotect_constructor.hpp"
+#include "mge/script/visitor.hpp"
 
 namespace mge::script {
     module::module(std::string_view name)
@@ -32,10 +33,18 @@ namespace mge::script {
 
     module_ref module::root()
     {
-
         static module_ref s_root =
             std::make_shared<unprotect_constructor<module>>("");
         return s_root;
+    }
+
+    void module::apply(visitor& v)
+    {
+        v.module_begin(*this);
+        for (const auto& [key, val] : m_children) {
+            val->apply(v);
+        }
+        v.module_end(*this);
     }
 
 } // namespace mge::script

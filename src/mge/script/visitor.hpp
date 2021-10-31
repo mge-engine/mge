@@ -14,7 +14,7 @@ namespace mge::script {
 
     public:
         virtual ~visitor() = default;
-        virtual void module_begin(const module_ref& module);
-        virtual void module_end(const module_ref& module);
+        virtual void module_begin(const module& module);
+        virtual void module_end(const module& module);
     };
 } // namespace mge::script

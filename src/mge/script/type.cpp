@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "mge/script/script_type.hpp"
+#include "mge/script/type.hpp"
 
 namespace mge::script {
     type::type(const std::string_view name)

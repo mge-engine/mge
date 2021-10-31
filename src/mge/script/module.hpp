@@ -23,6 +23,8 @@ namespace mge::script {
         std::string      full_name() const;
         bool             is_root() const;
 
+        void apply(visitor& v);
+
         module_ref parent() const;
 
         static module_ref root();
