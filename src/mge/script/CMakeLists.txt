@@ -8,6 +8,7 @@ SET(mgescript_sources
 
     script_module.cpp
     script_type.cpp
+    visitor.cpp
 
     bind_pod.cpp
 )

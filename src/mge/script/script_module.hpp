@@ -1,4 +1,5 @@
 #pragma once
+#include "mge/core/stdexceptions.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include <map>
@@ -30,9 +31,23 @@ namespace mge::script {
          * @tparam T        type added
          * @return type_ref type reference
          */
-        template <typename T> type_ref type();
+        template <typename T> type_ref type()
+        {
+            type_ref result;
+            return result;
+        }
 
     private:
+        type_ref type_void()
+        {
+            if (!is_root()) {
+                MGE_THROW(illegal_state)
+                    << "Void type in non root module requested";
+            }
+            type_ref result;
+            return result;
+        }
+
         std::map<std::string, type_ref>   m_types;
         std::map<std::string, module_ref> m_children;
         mge::script::module_weak_ref      m_parent;
