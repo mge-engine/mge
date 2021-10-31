@@ -6,7 +6,11 @@
 
 namespace mge::script {
 
-    void visitor::module_begin(const module& module) {}
+    void visitor::module_begin(const module& m) {}
 
-    void visitor::module_end(const module& module) {}
+    void visitor::module_end(const module& m) {}
+
+    void visitor::type_begin(const type& t) {}
+
+    void visitor::type_end(const type& t) {}
 }

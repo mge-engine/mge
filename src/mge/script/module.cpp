@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/script/module.hpp"
 #include "mge/core/unprotect_constructor.hpp"
+#include "mge/script/type.hpp"
 #include "mge/script/visitor.hpp"
 
 namespace mge::script {
@@ -41,6 +42,9 @@ namespace mge::script {
     void module::apply(visitor& v)
     {
         v.module_begin(*this);
+        for (const auto& [key, val] : m_types) {
+            val->apply(v);
+        }
         for (const auto& [key, val] : m_children) {
             val->apply(v);
         }
