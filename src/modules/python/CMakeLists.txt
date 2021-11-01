@@ -11,6 +11,6 @@ ADD_LIBRARY(mge_module_python MODULE
 TARGET_LINK_LIBRARIES(mge_module_python
     mgecore
     mgescript
-    ppp)
+    python3)
 
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
