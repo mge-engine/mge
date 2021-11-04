@@ -15,9 +15,10 @@ ENDIF()
 
 IF(Python3_Development_FOUND)
     MESSAGE("Python development tools have been found")
-    ADD_LIBRARY(python3 UNKNOWN IMPORTED)
-    SET_PROPERTY(TARGET python3
-      PROPERTY IMPORTED_LOCATION "${Python3_LIBRARIES}")
-    SET_PROPERTY(TARGET python3
-        APPEND PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${Python3_INCLUDE_DIRS}")
+    ADD_LIBRARY(python3 ALIAS Python3::Python)
+
+    GET_FILENAME_COMPONENT(_python3path ${Python3_EXECUTABLE} DIRECTORY)
+    ADD_CUSTOM_TARGET(copy-python3 ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${_python3path} ${CMAKE_BINARY_DIR}/python3
+    )
 ENDIF()

@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/core/trace.hpp"
 #include "mge/script/script_engine.hpp"
+#include "python.hpp"
 #include "python_context.hpp"
 
 namespace mge {
@@ -16,8 +17,11 @@ namespace mge::python {
         python_engine()
         {
             MGE_INFO_TRACE(PYTHON) << "Create Python script engine";
+            if (!Py_IsInitialized()) {
+                Py_Initialize();
+            }
         }
-        virtual ~python_engine() = default;
+        virtual ~python_engine() { Py_Finalize(); }
 
         script_context_ref create_context()
         {
