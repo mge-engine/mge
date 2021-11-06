@@ -49,6 +49,14 @@ namespace mge {
             return *this;
         }
 
+        /**
+         * @brief Traces wide character string
+         *
+         * @param value string to trace
+         * @return @c *this
+         */
+        trace& operator<<(const std::wstring& value);
+
     private:
         void flush();
 

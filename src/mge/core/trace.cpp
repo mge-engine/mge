@@ -2,8 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/trace.hpp"
+#include "boost/boost_locale.hpp"
 #include "mge/core/thread.hpp"
 #include <atomic>
+#include <codecvt>
 
 namespace mge {
 
@@ -44,6 +46,14 @@ namespace mge {
         r.topic = &m_topic;
         r.message = std::string_view(msg.begin(), msg.end());
         m_topic.publish(r);
+    }
+
+    trace& trace::operator<<(const std::wstring& value)
+    {
+        if (m_enabled) {
+            (*m_stream) << boost::locale::conv::utf_to_utf<char>(value);
+        }
+        return *this;
     }
 
 } // namespace mge

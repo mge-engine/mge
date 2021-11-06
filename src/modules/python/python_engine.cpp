@@ -8,6 +8,7 @@
 #include "python.hpp"
 #include "python_context.hpp"
 
+#include <atomic>
 #include <filesystem>
 
 #ifdef MGE_OS_WINDOWS
@@ -35,15 +36,21 @@ namespace mge::python {
 #ifdef MGE_OS_WINDOWS
             auto home = compute_python_home();
             MGE_DEBUG_TRACE(PYTHON) << "Setting PYTHONHOME to " << home;
-            SetEnvironmentVariable("PYTHONHOME", home.c_str());
+            Py_SetPythonHome(home.c_str());
 #endif
             MGE_INFO_TRACE(PYTHON) << "Create Python script engine";
             if (!Py_IsInitialized()) {
                 Py_Initialize();
             }
+            ++s_engines;
         }
 
-        virtual ~python_engine() { Py_Finalize(); }
+        virtual ~python_engine()
+        {
+            if (--s_engines == 0) {
+                Py_Finalize();
+            }
+        }
 
         script_context_ref create_context()
         {
@@ -52,7 +59,7 @@ namespace mge::python {
         }
 
     private:
-        std::string compute_python_home()
+        std::wstring compute_python_home()
         {
             HMODULE module = 0;
             if (!GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
@@ -82,9 +89,13 @@ namespace mge::python {
                     << "Installation error, python home at " << pythonhome
                     << " is not a directory";
             }
-            return pythonhome.string();
+            return pythonhome.wstring();
         }
+
+        static std::atomic<uint32_t> s_engines;
     };
+
+    std::atomic<uint32_t> python_engine::s_engines;
 
     MGE_REGISTER_IMPLEMENTATION(python_engine, mge::script_engine, python);
 } // namespace mge::python
