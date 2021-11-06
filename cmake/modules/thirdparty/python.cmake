@@ -10,15 +10,13 @@ FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
 IF(NOT Python3_FOUND)
     MESSAGE(FATAL_ERROR "A python interpreter is needed to build mge")
 ELSE()
-    MESSAGE("Python interpreter version ${Python3_VERSION} found")
+    MESSAGE("-- Python interpreter version ${Python3_VERSION} found")
 ENDIF()
 
 IF(Python3_Development_FOUND)
-    MESSAGE("Python development tools have been found")
+    MESSAGE("-- Python development tools have been found")
     ADD_LIBRARY(python3 ALIAS Python3::Python)
-
     GET_FILENAME_COMPONENT(_python3path ${Python3_EXECUTABLE} DIRECTORY)
-    ADD_CUSTOM_TARGET(copy-python3 ALL
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${_python3path} ${CMAKE_BINARY_DIR}/python3
-    )
+    MESSAGE("-- Copying python installation to target")
+    FILE(COPY ${_python3path} DESTINATION ${CMAKE_BINARY_DIR})
 ENDIF()
