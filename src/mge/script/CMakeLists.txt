@@ -32,4 +32,4 @@ MGE_LIBRARY(
     ${mgescript_headers}
 )
 TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
