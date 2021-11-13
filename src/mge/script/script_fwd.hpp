@@ -9,10 +9,22 @@ namespace mge {
     MGE_DECLARE_REF(script_context);
 
     namespace script {
-        MGE_DECLARE_REF(module);
-        MGE_DECLARE_WEAK_REF(module);
-        MGE_DECLARE_REF(type);
         class visitor;
+        class module;
+        template <typename T> class type;
+        /*
+        class constructor;
+        class destructor;
+        class method;
+        class function;
+        */
+
+        MGE_DECLARE_REF(module_details);
+        MGE_DECLARE_WEAK_REF(module_details);
+
+        MGE_DECLARE_REF(type_details);
+        MGE_DECLARE_WEAK_REF(type_details);
+
     } // namespace script
 
 } // namespace mge

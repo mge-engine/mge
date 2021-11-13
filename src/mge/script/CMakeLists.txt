@@ -10,7 +10,9 @@ SET(mgescript_sources
     type.cpp
     visitor.cpp
 
-    bind_pod.cpp
+    module_details.cpp
+    type_details.cpp
+
 )
 
 SET(mgescript_headers
@@ -21,6 +23,10 @@ SET(mgescript_headers
 
     module.hpp
     type.hpp
+    visitor.hpp
+
+    module_details.hpp
+    type_details.hpp
 )
 
 
