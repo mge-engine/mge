@@ -25,10 +25,12 @@ namespace mge::script {
 
         module_details_ref parent() const;
 
+        static module_details_ref root();
+
     private:
         module_details_weak_ref                        m_parent;
         std::map<std::string_view, module_details_ref> m_children;
-        std::string                                    m_name;
+        const std::string                              m_name;
     };
 
 } // namespace mge::script
