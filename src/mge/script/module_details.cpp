@@ -38,4 +38,18 @@ namespace mge::script {
         return s_root_module;
     }
 
+    module_details_ref
+    module_details::get_or_add_child(const std::string_view name)
+    {
+        auto it = m_children.find(name);
+        if (it != m_children.end()) {
+            return it->second;
+        } else {
+            auto new_details =
+                std::make_shared<module_details>(shared_from_this(), name);
+            m_children[new_details->name()] = new_details;
+            return new_details;
+        }
+    }
+
 } // namespace mge::script
