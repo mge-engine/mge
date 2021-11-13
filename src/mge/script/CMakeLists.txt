@@ -9,6 +9,7 @@ SET(mgescript_sources
     module.cpp
     type.cpp
     visitor.cpp
+    bind.cpp
 
     module_details.cpp
     type_details.cpp

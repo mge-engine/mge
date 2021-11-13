@@ -100,6 +100,8 @@ namespace mge::script {
 
         void add_child(module&& m);
 
+        template <typename T> void add_child(type<T, void>&& t) {}
+
         inline module& operator()() { return *this; }
 
         module_details_ref m_details;

@@ -14,9 +14,14 @@ namespace mge::script {
         : public std::enable_shared_from_this<type_details>
     {
     public:
-        type_details(const module_details_ref& type_module,
-                     const std::string_view    name);
-        ~type_details();
+        type_details(const std::string_view name);
+        ~type_details() = default;
+
+        std::string_view name() const;
+
+    private:
+        std::string             m_name;
+        module_details_weak_ref m_module;
     };
 
 } // namespace mge::script

@@ -4,9 +4,9 @@
 #include "mge/script/type_details.hpp"
 
 namespace mge::script {
-    type_details::type_details(const module_details_ref& type_module,
-                               const std::string_view    name)
+    type_details::type_details(const std::string_view name)
+        : m_name(name)
     {}
 
-    type_details::~type_details() {}
+    std::string_view type_details::name() const { return m_name; }
 } // namespace mge::script

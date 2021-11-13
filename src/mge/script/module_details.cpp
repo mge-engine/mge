@@ -2,7 +2,12 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/module_details.hpp"
+#include "mge/core/trace.hpp"
 #include <mutex>
+
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
 
 namespace mge::script {
 
@@ -45,6 +50,7 @@ namespace mge::script {
         if (it != m_children.end()) {
             return it->second;
         } else {
+            MGE_DEBUG_TRACE(SCRIPT) << "Add module: " << name;
             auto new_details =
                 std::make_shared<module_details>(shared_from_this(), name);
             m_children[new_details->name()] = new_details;

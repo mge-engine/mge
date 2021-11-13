@@ -16,7 +16,7 @@ namespace mge {
     class MGESCRIPT_EXPORT script_engine : public component<script_engine>
     {
     protected:
-        script_engine() = default;
+        script_engine();
 
     public:
         /**

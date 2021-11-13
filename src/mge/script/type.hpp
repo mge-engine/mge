@@ -17,8 +17,13 @@
 namespace mge::script {
 
     namespace details {
-        class type_base
+        class MGESCRIPT_EXPORT type_base
         {
+        public:
+            type_base() = default;
+            virtual ~type_base() = default;
+            std::string_view name() const;
+
         protected:
             void get_or_create_details(const std::string_view name);
 
@@ -32,6 +37,16 @@ namespace mge::script {
     {
     public:
         inline type() { get_or_create_details(mge::type_name<T>()); }
+
+        using details::type_base::name;
+    };
+
+    template <> class type<void, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("void"); }
+
+        using details::type_base::name;
     };
 
 } // namespace mge::script

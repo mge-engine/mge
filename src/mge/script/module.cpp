@@ -8,7 +8,6 @@
 #include "mge/script/visitor.hpp"
 
 #include <vector>
-
 namespace mge::script {
 
     module::module()
