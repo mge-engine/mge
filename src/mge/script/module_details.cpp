@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/script/module_details.hpp"
 namespace mge::script {
     module_details::module_details(const module_details_ref& parent,
