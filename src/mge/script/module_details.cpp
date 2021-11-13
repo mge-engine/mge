@@ -52,4 +52,10 @@ namespace mge::script {
         }
     }
 
+    void module_details::add_child(const module_details_ref& child)
+    {
+        m_children[child->name()] = child;
+        child->m_parent = shared_from_this();
+    }
+
 } // namespace mge::script

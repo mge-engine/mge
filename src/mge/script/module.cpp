@@ -31,4 +31,22 @@ namespace mge::script {
         m_details = details;
     }
 
+    module::module(const module_details_ref& details)
+        : m_details(details)
+    {}
+
+    void module::add_child(module&& m) { m_details->add_child(m.m_details); }
+
+    bool module::is_root() const { return m_details->is_root(); }
+
+    mge::script::module module::parent() const
+    {
+        if (is_root()) {
+            MGE_THROW(mge::illegal_state) << "Root module has no parent";
+        }
+        return module(m_details->parent());
+    }
+
+    std::string_view module::name() const { return m_details->name(); }
+
 } // namespace mge::script

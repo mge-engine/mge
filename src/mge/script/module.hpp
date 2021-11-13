@@ -36,13 +36,6 @@ namespace mge::script {
         module(const std::string_view identifier);
 
         /**
-         * Create module with existing details.
-         *
-         * @param details module details
-         */
-        module(const module_details_ref& details);
-
-        /**
          * @brief Copy constructor.
          */
         module(const module&) = default;
@@ -69,7 +62,46 @@ namespace mge::script {
          */
         module& operator=(module&&) = default;
 
+        template <typename T, typename... Args>
+        module& operator()(T&& arg0, Args&&... args)
+        {
+            add_child(std::forward<T>(arg0));
+            return operator()(std::forward<Args>(args)...);
+        }
+
+        /**
+         * @brief Return whether this module is root module.
+         *
+         * @return true if it is the root module
+         */
+        bool is_root() const;
+
+        /**
+         * @brief Get parent module.
+         *
+         * @return module parent module
+         */
+        mge::script::module parent() const;
+
+        /**
+         * @brief Module name.
+         *
+         * @return name
+         */
+        std::string_view name() const;
+
     private:
+        /**
+         * Create module with existing details.
+         *
+         * @param details module details
+         */
+        module(const module_details_ref& details);
+
+        void add_child(module&& m);
+
+        inline module& operator()() { return *this; }
+
         module_details_ref m_details;
     };
 

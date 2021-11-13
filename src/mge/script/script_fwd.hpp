@@ -11,7 +11,7 @@ namespace mge {
     namespace script {
         class visitor;
         class module;
-        template <typename T> class type;
+        template <typename T, typename> class type;
         /*
         class constructor;
         class destructor;

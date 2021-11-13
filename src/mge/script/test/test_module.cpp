@@ -4,33 +4,30 @@
 #include "mge/script/module.hpp"
 #include "test/googletest.hpp"
 
+#include <string>
+using namespace std::literals;
+
 namespace mge {
 
-    enum test_enum
+    TEST(module, root)
     {
-        ENUM_VALUE1,
-        ENUM_VALUE2
-    };
+        mge::script::module m;
+        EXPECT_TRUE(m.is_root());
+    }
 
-    struct test_struct
+    TEST(module, by_identifier)
     {
-        int   field1;
-        bool  field2;
-        float field3;
-    };
+        mge::script::module m("mge::script");
+        mge::script::module p = m.parent();
+        EXPECT_EQ("mge"sv, p.name());
+        EXPECT_EQ("script"sv, m.name());
+    }
 
-    TEST(module, simple)
+    TEST(module, by_scope)
     {
-        /*
-        mge::script::module("mge")(
-            type<test_enum>()
-                .enum_value("ENUM_VALUE1", ENUM_VALUE1)
-                .enum_value("ENUM_VALUE2", ENUM_VALUE2),
-            type<test_struct>().field("field1", &test_struct::field1),
-            module("foobar")(
+        using namespace mge::script;
 
-                ));
-        */
+        auto m = module("test1")(module("test2"));
     }
 
 } // namespace mge

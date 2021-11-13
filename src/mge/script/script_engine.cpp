@@ -2,7 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/script_engine.hpp"
+#include "mge/core/trace.hpp"
 
 namespace mge {
     MGE_REGISTER_COMPONENT(script_engine);
+
+    MGE_DEFINE_TRACE(SCRIPT);
 }

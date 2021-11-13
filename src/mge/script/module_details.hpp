@@ -29,6 +29,8 @@ namespace mge::script {
 
         module_details_ref get_or_add_child(const std::string_view name);
 
+        void add_child(const module_details_ref& child);
+
     private:
         module_details_weak_ref                        m_parent;
         std::map<std::string_view, module_details_ref> m_children;
