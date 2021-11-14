@@ -15,10 +15,12 @@ namespace mge::script {
     {
     public:
         type_details(const std::string& name);
-        ~type_details() = default;
+        virtual ~type_details() = default;
 
         const std::string&  name() const;
         mge::script::module module() const;
+
+        virtual void apply(visitor& v);
 
     private:
         friend class module_details;

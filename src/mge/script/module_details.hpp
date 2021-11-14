@@ -32,6 +32,8 @@ namespace mge::script {
         void add_child(const module_details_ref& child);
         void add_type(const type_details_ref& child);
 
+        void apply(visitor& v);
+
     private:
         module_details_weak_ref                   m_parent;
         std::map<std::string, type_details_ref>   m_types;

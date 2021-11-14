@@ -7,6 +7,9 @@
 
 namespace mge::script {
 
+    /**
+     * Vistor of reflection infrastructure.
+     */
     class MGESCRIPT_EXPORT visitor
     {
     protected:
@@ -14,5 +17,11 @@ namespace mge::script {
 
     public:
         virtual ~visitor() = default;
+
+        virtual void begin(const module_details& m);
+        virtual void end(const module_details& m);
+
+        virtual void begin(const type_details& t);
+        virtual void end(const type_details& t);
     };
 } // namespace mge::script

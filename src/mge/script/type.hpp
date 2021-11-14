@@ -39,16 +39,83 @@ namespace mge::script {
     class type : public details::type_base
     {
     public:
-        inline type() { get_or_create_details(mge::type_name<T>()); }
-
-        using details::type_base::details;
-        using details::type_base::name;
+        inline type()
+        {
+            static_assert(false, "Default expansion of type detected");
+        }
     };
 
     template <> class type<void, void> : public details::type_base
     {
     public:
         inline type() { get_or_create_details("void"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<char, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("char"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<unsigned char, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("unsigned char"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<signed char, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("signed char"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<short, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("short"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<unsigned short, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("unsigned short"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    // std types
+    template <> class type<std::string, void> : public details::type_base
+    {
+    public:
+        inline type() { get_or_create_details("string"); }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    // class type
+    template <typename T>
+    class type<T, typename std::enable_if<std::is_class<T>::value>::type>
+        : public details::type_base
+    {
+    public:
+        inline explicit type() { get_or_create_details(mge::type_name<T>()); }
 
         using details::type_base::details;
         using details::type_base::name;

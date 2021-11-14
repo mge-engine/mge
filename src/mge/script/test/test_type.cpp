@@ -26,4 +26,16 @@ namespace mge {
         EXPECT_TRUE(m.is_root());
     }
 
+    struct foo
+    {
+        int x;
+        int y;
+    };
+
+    TEST_F(test_type, struct_type)
+    {
+        using namespace mge::script;
+        module("mge")(type<foo>());
+    }
+
 } // namespace mge

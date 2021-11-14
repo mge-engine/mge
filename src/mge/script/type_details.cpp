@@ -20,4 +20,10 @@ namespace mge::script {
         auto m = m_module.lock();
         return mge::script::module(m);
     }
+
+    void type_details::apply(visitor& v)
+    {
+        v.begin(*this);
+        v.end(*this);
+    }
 } // namespace mge::script

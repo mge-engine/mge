@@ -4,4 +4,12 @@
 #include "mge/script/visitor.hpp"
 #include "mge/script/module.hpp"
 
-namespace mge::script {}
+namespace mge::script {
+
+    void visitor::begin(const module_details&) {}
+    void visitor::end(const module_details&) {}
+
+    void visitor::begin(const type_details&) {}
+    void visitor::end(const type_details&) {}
+
+} // namespace mge::script
