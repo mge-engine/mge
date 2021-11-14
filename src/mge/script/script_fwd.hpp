@@ -25,6 +25,8 @@ namespace mge {
         MGE_DECLARE_REF(type_details);
         MGE_DECLARE_WEAK_REF(type_details);
 
+        MGE_DECLARE_REF(function_details);
+        MGE_DECLARE_WEAK_REF(function_details);
     } // namespace script
 
 } // namespace mge
