@@ -16,10 +16,10 @@ namespace mge::script {
     {
     public:
         module_details(const module_details_ref& parent,
-                       const std::string_view    name);
+                       const std::string&        name);
         ~module_details();
 
-        std::string_view name() const;
+        const std::string& name() const;
 
         bool is_root() const;
 
@@ -27,14 +27,16 @@ namespace mge::script {
 
         static module_details_ref root();
 
-        module_details_ref get_or_add_child(const std::string_view name);
+        module_details_ref get_or_add_child(const std::string& name);
 
         void add_child(const module_details_ref& child);
+        void add_type(const type_details_ref& child);
 
     private:
-        module_details_weak_ref                        m_parent;
-        std::map<std::string_view, module_details_ref> m_children;
-        const std::string                              m_name;
+        module_details_weak_ref                   m_parent;
+        std::map<std::string, type_details_ref>   m_types;
+        std::map<std::string, module_details_ref> m_children;
+        const std::string                         m_name;
     };
 
 } // namespace mge::script

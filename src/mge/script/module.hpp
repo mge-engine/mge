@@ -10,7 +10,6 @@
 #include "mge/script/type.hpp"
 #include <map>
 #include <string>
-#include <string_view>
 
 namespace mge::script {
 
@@ -33,7 +32,7 @@ namespace mge::script {
          * @param identifier module identifier, in format
          * <tt>module::submodule::...</tt>
          */
-        module(const std::string_view identifier);
+        module(const std::string& identifier);
 
         /**
          * @brief Copy constructor.
@@ -88,9 +87,11 @@ namespace mge::script {
          *
          * @return name
          */
-        std::string_view name() const;
+        const std::string& name() const;
 
     private:
+        friend class type_details;
+
         /**
          * Create module with existing details.
          *
@@ -100,7 +101,12 @@ namespace mge::script {
 
         void add_child(module&& m);
 
-        template <typename T> void add_child(type<T, void>&& t) {}
+        template <typename T> void add_child(type<T, void>&& t)
+        {
+            add_type(t.details());
+        }
+
+        void add_type(const type_details_ref& details);
 
         inline module& operator()() { return *this; }
 

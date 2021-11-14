@@ -22,10 +22,13 @@ namespace mge::script {
         public:
             type_base() = default;
             virtual ~type_base() = default;
-            std::string_view name() const;
+
+            const std::string&     name() const;
+            mge::script::module    module() const;
+            const type_details_ref details() const;
 
         protected:
-            void get_or_create_details(const std::string_view name);
+            void get_or_create_details(const std::string& name);
 
             type_details_ref m_details;
         };
@@ -38,6 +41,7 @@ namespace mge::script {
     public:
         inline type() { get_or_create_details(mge::type_name<T>()); }
 
+        using details::type_base::details;
         using details::type_base::name;
     };
 
@@ -46,6 +50,7 @@ namespace mge::script {
     public:
         inline type() { get_or_create_details("void"); }
 
+        using details::type_base::details;
         using details::type_base::name;
     };
 

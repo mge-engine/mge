@@ -3,6 +3,8 @@
 // All rights reserved.
 #include "mge/script/module_details.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/script/type_details.hpp"
+
 #include <mutex>
 
 namespace mge {
@@ -12,14 +14,14 @@ namespace mge {
 namespace mge::script {
 
     module_details::module_details(const module_details_ref& parent,
-                                   const std::string_view    name)
+                                   const std::string&        name)
         : m_parent(parent)
         , m_name(name)
     {}
 
     module_details::~module_details() {}
 
-    std::string_view module_details::name() const { return m_name; }
+    const std::string& module_details::name() const { return m_name; }
 
     bool module_details::is_root() const
     {
@@ -43,17 +45,15 @@ namespace mge::script {
         return s_root_module;
     }
 
-    module_details_ref
-    module_details::get_or_add_child(const std::string_view name)
+    module_details_ref module_details::get_or_add_child(const std::string& name)
     {
         auto it = m_children.find(name);
         if (it != m_children.end()) {
             return it->second;
         } else {
-            MGE_DEBUG_TRACE(SCRIPT) << "Add module: " << name;
             auto new_details =
                 std::make_shared<module_details>(shared_from_this(), name);
-            m_children[new_details->name()] = new_details;
+            m_children[name] = new_details;
             return new_details;
         }
     }
@@ -62,6 +62,12 @@ namespace mge::script {
     {
         m_children[child->name()] = child;
         child->m_parent = shared_from_this();
+    }
+
+    void module_details::add_type(const type_details_ref& child)
+    {
+        m_types[child->name()] = child;
+        child->m_module = shared_from_this();
     }
 
 } // namespace mge::script

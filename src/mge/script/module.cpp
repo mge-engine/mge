@@ -14,7 +14,7 @@ namespace mge::script {
         : m_details(module_details::root())
     {}
 
-    module::module(const std::string_view identifier)
+    module::module(const std::string& identifier)
     {
         auto it =
             boost::make_split_iterator(identifier,
@@ -22,7 +22,7 @@ namespace mge::script {
         auto details = module_details::root();
         while (!it.eof()) {
             if (!it->empty()) {
-                std::string_view current_name(it->begin(), it->end());
+                std::string current_name(it->begin(), it->end());
                 details = details->get_or_add_child(current_name);
             }
             ++it;
@@ -46,6 +46,8 @@ namespace mge::script {
         return module(m_details->parent());
     }
 
-    std::string_view module::name() const { return m_details->name(); }
+    void module::add_type(const type_details_ref& t) { m_details->add_type(t); }
+
+    const std::string& module::name() const { return m_details->name(); }
 
 } // namespace mge::script

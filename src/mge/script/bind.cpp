@@ -9,7 +9,13 @@ namespace mge {
 }
 namespace mge::script {
 
-    void bind_globals() { module()(type<void>()); }
+    void bind_globals()
+    {
+
+        auto global = module();
+
+        global(type<void>());
+    }
 
     void bind_std() {}
 
