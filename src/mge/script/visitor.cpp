@@ -12,4 +12,6 @@ namespace mge::script {
     void visitor::begin(const type_details&) {}
     void visitor::end(const type_details&) {}
 
+    void visitor::begin(const function_details&) {}
+    void visitor::end(const function_details&) {}
 } // namespace mge::script

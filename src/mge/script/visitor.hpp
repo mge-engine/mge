@@ -23,5 +23,8 @@ namespace mge::script {
 
         virtual void begin(const type_details& t);
         virtual void end(const type_details& t);
+
+        virtual void begin(const function_details& t);
+        virtual void end(const function_details& t);
     };
 } // namespace mge::script

@@ -1,6 +1,7 @@
 #include "mge/script/function_details.hpp"
 #include "mge/script/module_details.hpp"
 #include "mge/script/type_details.hpp"
+#include "mge/script/visitor.hpp"
 
 namespace mge::script {
     function_details::function_details(const std::string& name)
