@@ -30,6 +30,6 @@ namespace mge {
          *
          * @param code code to evaluate
          */
-        virtual void eval(std::string_view code) = 0;
+        virtual void eval(const std::string& code) = 0;
     };
 } // namespace mge

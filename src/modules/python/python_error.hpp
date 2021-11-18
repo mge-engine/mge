@@ -18,6 +18,25 @@ namespace mge::python {
 
         error& operator=(const error& e);
 
+        /**
+         * @brief Python class (repr)
+         */
+        struct exception_class : public tag<exception_class, std::string>
+        {
+            /**
+             * @brief Capture python class name that raised the error.
+             *
+             * @param clazz Python exception class.
+             */
+            exception_class(const std::string& clazz)
+                : m_value(clazz)
+            {}
+
+            std::string_view value() const noexcept { return m_value; }
+
+            std::string m_value;
+        };
+
         template <typename Info> error& set_info(const Info& info)
         {
             mge::exception::set_info(info);

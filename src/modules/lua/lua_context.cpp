@@ -19,7 +19,7 @@ namespace mge::lua {
         }
     }
 
-    void lua_context::eval(std::string_view code)
+    void lua_context::eval(const std::string& code)
     {
         int rc = luaL_loadbuffer(m_lua_state, code.data(), code.size(), "");
         CHECK_STATUS(rc, m_lua_state);
