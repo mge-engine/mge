@@ -15,4 +15,15 @@ namespace mge::python {
         context->eval("print('Hello from Python')\n");
     }
 
+    TEST_F(test_context, simple_exception)
+    {
+        auto context = engine->create_context();
+        try {
+            context->eval(
+                "raise Exception(\"My hoovercraft is full of eels\")");
+        } catch (const mge::exception& e) {
+            std::cout << e.details();
+        }
+    }
+
 } // namespace mge::python

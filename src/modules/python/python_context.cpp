@@ -49,14 +49,23 @@ namespace mge::python {
                 PyUnicode_AsEncodedString(ex_type_repr, "utf-8", "ignore");
             std::string ex_type_cstr = PyBytes_AS_STRING(ex_type_str);
 
+            PyObject* ex_value_repr = PyObject_Repr(ex_value);
+            PyObject* ex_value_str =
+                PyUnicode_AsEncodedString(ex_value_repr, "utf-8", "ignore");
+            std::string ex_value_cstr = PyBytes_AS_STRING(ex_value_str);
+
             Py_XDECREF(ex_type_str);
             Py_XDECREF(ex_type_repr);
             Py_XDECREF(ex_type);
+            Py_XDECREF(ex_value_repr);
+            Py_XDECREF(ex_value_str);
             Py_XDECREF(ex_value);
+
             Py_XDECREF(ex_traceback);
 
             MGE_THROW(mge::python::error)
-                << mge::python::error::exception_class(ex_type_cstr);
+                << mge::python::error::exception_class(ex_type_cstr)
+                << mge::python::error::exception_value(ex_value_cstr);
         }
     }
 

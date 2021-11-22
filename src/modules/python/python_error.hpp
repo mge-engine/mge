@@ -32,7 +32,26 @@ namespace mge::python {
                 : m_value(clazz)
             {}
 
-            std::string_view value() const noexcept { return m_value; }
+            std::string value() const noexcept { return m_value; }
+
+            std::string m_value;
+        };
+
+        /**
+         * @brief Python exception value (repr)
+         */
+        struct exception_value : public tag<exception_value, std::string>
+        {
+            /**
+             * @brief Capture python exception value that raised the error.
+             *
+             * @param value Python exception value
+             */
+            exception_value(const std::string& value)
+                : m_value(value)
+            {}
+
+            std::string value() const noexcept { return m_value; }
 
             std::string m_value;
         };
