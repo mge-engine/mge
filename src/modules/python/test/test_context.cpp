@@ -21,8 +21,11 @@ namespace mge::python {
         try {
             context->eval(
                 "raise Exception(\"My hoovercraft is full of eels\")");
+            FAIL() << "Exception expected";
         } catch (const mge::exception& e) {
-            std::cout << e.details();
+            EXPECT_STREQ("Python error (of <class 'Exception'>): My "
+                         "hoovercraft is full of eels",
+                         e.what());
         }
     }
 

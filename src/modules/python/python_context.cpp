@@ -44,12 +44,12 @@ namespace mge::python {
             PyErr_Fetch(&ex_type, &ex_value, &ex_traceback);
             PyErr_NormalizeException(&ex_type, &ex_value, &ex_traceback);
 
-            PyObject* ex_type_repr = PyObject_Repr(ex_type);
+            PyObject* ex_type_repr = PyObject_Str(ex_type);
             PyObject* ex_type_str =
                 PyUnicode_AsEncodedString(ex_type_repr, "utf-8", "ignore");
             std::string ex_type_cstr = PyBytes_AS_STRING(ex_type_str);
 
-            PyObject* ex_value_repr = PyObject_Repr(ex_value);
+            PyObject* ex_value_repr = PyObject_Str(ex_value);
             PyObject* ex_value_str =
                 PyUnicode_AsEncodedString(ex_value_repr, "utf-8", "ignore");
             std::string ex_value_cstr = PyBytes_AS_STRING(ex_value_str);
@@ -63,9 +63,8 @@ namespace mge::python {
 
             Py_XDECREF(ex_traceback);
 
-            MGE_THROW(mge::python::error)
-                << mge::python::error::exception_class(ex_type_cstr)
-                << mge::python::error::exception_value(ex_value_cstr);
+            MGE_THROW(mge::python::error) << "Python error (of " << ex_type_cstr
+                                          << "): " << ex_value_cstr;
         }
     }
 
