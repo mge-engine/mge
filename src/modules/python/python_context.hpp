@@ -4,6 +4,9 @@
 #pragma once
 #include "mge/script/script_context.hpp"
 #include "python.hpp"
+#include "python_module.hpp"
+
+#include <map>
 
 namespace mge::python {
     class python_context : public script_context
@@ -20,5 +23,7 @@ namespace mge::python {
         PyObject* m_main_module;
         PyObject* m_main_dict;
         PyObject* m_main_dict_copy;
+
+        std::map<std::string, std::shared_ptr<python_module>> m_modules;
     };
 } // namespace mge::python
