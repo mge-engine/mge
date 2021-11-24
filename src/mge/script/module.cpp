@@ -50,4 +50,13 @@ namespace mge::script {
 
     const std::string& module::name() const { return m_details->name(); }
 
+    std::string module::full_name() const
+    {
+        if (is_root()) {
+            return "";
+        } else {
+            return parent().full_name() + "::" + name();
+        }
+    }
+
 } // namespace mge::script

@@ -89,6 +89,13 @@ namespace mge::script {
          */
         const std::string& name() const;
 
+        /**
+         * @brief Full module name.
+         *
+         * @return full name, components separated by '::'
+         */
+        std::string full_name() const;
+
     private:
         friend class type_details;
 
