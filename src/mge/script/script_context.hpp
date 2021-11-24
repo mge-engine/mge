@@ -31,5 +31,12 @@ namespace mge {
          * @param code code to evaluate
          */
         virtual void eval(const std::string& code) = 0;
+
+        /**
+         * @brief Binds a module, i.e. makes it visible inside the interpreter.
+         *
+         * @param m module
+         */
+        virtual void bind(const mge::script::module& m) = 0;
     };
 } // namespace mge

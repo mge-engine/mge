@@ -11,7 +11,8 @@ namespace mge::python {
     public:
         python_context();
         ~python_context();
-        void eval(const std::string& code);
+        void eval(const std::string& code) override;
+        void bind(const mge::script::module& m) override;
 
     private:
         void check_python_error();

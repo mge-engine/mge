@@ -27,4 +27,6 @@ namespace mge::lua {
         CHECK_STATUS(rc, m_lua_state);
     }
 
+    void lua_context::bind(const mge::script::module& m) {}
+
 } // namespace mge::lua

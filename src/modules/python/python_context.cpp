@@ -33,6 +33,11 @@ namespace mge::python {
         check_python_error();
     }
 
+    void python_context::bind(const mge::script::module& m)
+    {
+        //
+    }
+
     void python_context::check_python_error()
     {
         PyObject* exc = PyErr_Occurred();

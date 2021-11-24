@@ -19,4 +19,17 @@ namespace mge::lua {
                       "end");
     }
 
+    TEST_F(test_context, error)
+    {
+        auto context = engine->create_context();
+        try {
+            context->eval("print(return)");
+            FAIL() << "Exception expected";
+        } catch (const mge::exception& ex) {
+            EXPECT_STREQ(
+                "Lua error: [string \"\"]:1: unexpected symbol near 'return'",
+                ex.what());
+        }
+    }
+
 } // namespace mge::lua
