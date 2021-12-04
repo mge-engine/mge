@@ -3,7 +3,10 @@
 // All rights reserved.
 #include "python_bind_helper.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/script/module.hpp"
+#include "mge/script/module_details.hpp"
 #include "python_context.hpp"
+#include "python_module.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -18,15 +21,21 @@ namespace mge::python {
 
     void python_bind_helper::begin(const mge::script::module_details& m)
     {
-        auto m = std::make_shared<python_module>(mge::script::module(m));
-        m_context.add_module(m);
+        /*
+        auto m_ref = m.shared_from_this();
+        auto mod = mge::script::module(m_ref);
+
+        auto pm = std::make_shared<python_module>(
+            mge::script::module(m.shared_from_this()));
+        m_context.add_module(pm);
+        */
     }
     void python_bind_helper::end(const mge::script::module_details& m) {}
 
     void python_bind_helper::begin(const mge::script::type_details& t) {}
     void python_bind_helper::end(const mge::script::type_details& t) {}
 
-    void python_bind_helper::begin(const mge::script::function_details& t) {}
-    void python_bind_helper::end(const mge::script::function_details& t) {}
+    void python_bind_helper::visit(const mge::script::function_details& v) {}
+    void python_bind_helper::visit(const mge::script::variable_details& v) {}
 
 } // namespace mge::python

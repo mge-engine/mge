@@ -27,6 +27,7 @@ namespace mge::script {
          * Root module.
          */
         module();
+
         /**
          * Create module by (possibly scoped) identifier.
          *
@@ -44,6 +45,13 @@ namespace mge::script {
          * Move constructor.
          */
         module(module&&) = default;
+
+        /**
+         * Create module with existing details.
+         *
+         * @param details module details
+         */
+        module(const module_details_ref& details);
 
         /**
          * Destructor.
@@ -106,13 +114,6 @@ namespace mge::script {
 
     private:
         friend class type_details;
-
-        /**
-         * Create module with existing details.
-         *
-         * @param details module details
-         */
-        module(const module_details_ref& details);
 
         void add_child(module&& m);
 

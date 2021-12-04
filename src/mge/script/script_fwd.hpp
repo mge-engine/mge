@@ -12,6 +12,8 @@ namespace mge {
         class visitor;
         class module;
         template <typename T, typename> class type;
+        template <typename T> class variable;
+
         /*
         class constructor;
         class destructor;
@@ -24,6 +26,9 @@ namespace mge {
 
         MGE_DECLARE_REF(type_details);
         MGE_DECLARE_WEAK_REF(type_details);
+
+        MGE_DECLARE_REF(variable_details);
+        MGE_DECLARE_WEAK_REF(variable_details);
 
         MGE_DECLARE_REF(function_details);
         MGE_DECLARE_WEAK_REF(function_details);

@@ -13,10 +13,6 @@ namespace mge::script {
 
     const std::string& function_details::name() const { return m_name; }
 
-    void function_details::apply(visitor& v)
-    {
-        v.begin(*this);
-        v.end(*this);
-    }
+    void function_details::apply(visitor& v) { v.visit(*this); }
 
 } // namespace mge::script

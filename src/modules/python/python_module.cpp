@@ -25,4 +25,9 @@ namespace mge ::python {
     }
 
     python_module::~python_module() { Py_XDECREF(m_py_module); }
+
+    std::string python_module::full_name() const
+    {
+        return m_module.full_name();
+    }
 } // namespace mge::python
