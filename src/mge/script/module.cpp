@@ -59,4 +59,6 @@ namespace mge::script {
         }
     }
 
+    void module::apply(visitor& v) const { m_details->apply(v); }
+
 } // namespace mge::script

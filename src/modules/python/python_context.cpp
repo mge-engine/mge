@@ -2,9 +2,17 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_context.hpp"
+#include "mge/core/trace.hpp"
+#include "python_bind_helper.hpp"
 #include "python_error.hpp"
+#include "python_module.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
+
     python_context::python_context()
         : m_main_module(nullptr)
         , m_main_dict(nullptr)
@@ -35,7 +43,8 @@ namespace mge::python {
 
     void python_context::bind(const mge::script::module& m)
     {
-        //
+        python_bind_helper helper(*this);
+        helper.visit(m);
     }
 
     void python_context::check_python_error()

@@ -8,6 +8,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type.hpp"
+#include "mge/script/visitor.hpp"
 #include <map>
 #include <string>
 
@@ -95,6 +96,13 @@ namespace mge::script {
          * @return full name, components separated by '::'
          */
         std::string full_name() const;
+
+        /**
+         * @brief Apply visitor.
+         *
+         * @param v visitor
+         */
+        void apply(visitor& v) const;
 
     private:
         friend class type_details;

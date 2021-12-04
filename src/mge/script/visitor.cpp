@@ -6,6 +6,8 @@
 
 namespace mge::script {
 
+    void visitor::visit(const module& m) { m.apply(*this); }
+
     void visitor::begin(const module_details&) {}
     void visitor::end(const module_details&) {}
 
