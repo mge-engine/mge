@@ -12,7 +12,7 @@
 namespace mge::script {
 
     class MGESCRIPT_EXPORT module_details
-        : public std::enable_shared_from_this<module_details>
+        : public std::enable_shared_from_this<::mge::script::module_details>
     {
     public:
         module_details(const module_details_ref& parent,

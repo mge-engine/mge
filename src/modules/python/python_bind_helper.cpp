@@ -21,14 +21,11 @@ namespace mge::python {
 
     void python_bind_helper::begin(const mge::script::module_details& m)
     {
-        /*
-        auto m_ref = m.shared_from_this();
+        mge::script::module_details_ref m_ref =
+            const_cast<mge::script::module_details&>(m).shared_from_this();
         auto mod = mge::script::module(m_ref);
-
-        auto pm = std::make_shared<python_module>(
-            mge::script::module(m.shared_from_this()));
+        auto pm = std::make_shared<python_module>(mod);
         m_context.add_module(pm);
-        */
     }
     void python_bind_helper::end(const mge::script::module_details& m) {}
 
