@@ -47,6 +47,11 @@ namespace mge::python {
         helper.visit(m);
     }
 
+    void python_context::add_module(const python_module_ref& pm)
+    {
+        m_modules[pm.full_name()] = pm;
+    }
+
     void python_context::check_python_error()
     {
         PyObject* exc = PyErr_Occurred();

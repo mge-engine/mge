@@ -23,7 +23,7 @@ namespace mge::python {
         void end(const mge::script::function_details& t) override;
 
     private:
-        python_context* m_context;
+        python_context& m_context;
     };
 
 } // namespace mge::python

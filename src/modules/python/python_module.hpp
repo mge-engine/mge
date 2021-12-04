@@ -2,10 +2,13 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/memory.hpp"
 #include "mge/script/module.hpp"
 #include "python.hpp"
 
 namespace mge::python {
+
+    MGE_DECLARE_REF(python_module);
 
     class python_module
     {

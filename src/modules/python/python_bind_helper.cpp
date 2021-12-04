@@ -11,12 +11,16 @@ namespace mge {
 
 namespace mge::python {
     python_bind_helper::python_bind_helper(python_context& context)
-        : m_context(&context)
+        : m_context(context)
     {}
 
     python_bind_helper::~python_bind_helper() {}
 
-    void python_bind_helper::begin(const mge::script::module_details& m) {}
+    void python_bind_helper::begin(const mge::script::module_details& m)
+    {
+        auto m = std::make_shared<python_module>(mge::script::module(m));
+        m_context.add_module(m);
+    }
     void python_bind_helper::end(const mge::script::module_details& m) {}
 
     void python_bind_helper::begin(const mge::script::type_details& t) {}

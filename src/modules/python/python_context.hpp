@@ -17,6 +17,8 @@ namespace mge::python {
         void eval(const std::string& code) override;
         void bind(const mge::script::module& m) override;
 
+        void add_module(const python_module_ref& pm);
+
     private:
         void check_python_error();
 
@@ -24,6 +26,6 @@ namespace mge::python {
         PyObject* m_main_dict;
         PyObject* m_main_dict_copy;
 
-        std::map<std::string, std::shared_ptr<python_module>> m_modules;
+        std::map<std::string, python_module_ref> m_modules;
     };
 } // namespace mge::python
