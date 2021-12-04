@@ -16,6 +16,7 @@ namespace mge::python {
         python_module(const mge::script::module& m);
         ~python_module();
         std::string full_name() const;
+        void        add_module(const python_module_ref& m);
 
     private:
         PyModuleDef         m_py_module_def;

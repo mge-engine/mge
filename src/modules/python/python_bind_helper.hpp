@@ -3,6 +3,9 @@
 // All rights reserved.
 #pragma once
 #include "mge/script/visitor.hpp"
+#include "python_module.hpp"
+
+#include <stack>
 
 namespace mge::python {
 
@@ -26,7 +29,8 @@ namespace mge::python {
         void visit(const mge::script::variable_details& v) override;
 
     private:
-        python_context& m_context;
+        python_context&               m_context;
+        std::stack<python_module_ref> m_module_stack;
     };
 
 } // namespace mge::python

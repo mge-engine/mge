@@ -6,7 +6,6 @@
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
 #include "python_context.hpp"
-#include "python_module.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -26,8 +25,18 @@ namespace mge::python {
         auto mod = mge::script::module(m_ref);
         auto pm = std::make_shared<python_module>(mod);
         m_context.add_module(pm);
+
+        if (!m_module_stack.empty()) {
+            m_module_stack.top()->add_module(pm);
+        }
+
+        m_module_stack.push(pm);
     }
-    void python_bind_helper::end(const mge::script::module_details& m) {}
+
+    void python_bind_helper::end(const mge::script::module_details& m)
+    {
+        m_module_stack.pop();
+    }
 
     void python_bind_helper::begin(const mge::script::type_details& t) {}
     void python_bind_helper::end(const mge::script::type_details& t) {}

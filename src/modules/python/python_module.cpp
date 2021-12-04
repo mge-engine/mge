@@ -30,4 +30,9 @@ namespace mge ::python {
     {
         return m_module.full_name();
     }
+
+    void python_module::add_module(const python_module_ref& m)
+    {
+        PyModule_AddObjectRef(m_py_module, m->m_name.c_str(), m->m_py_module);
+    }
 } // namespace mge::python
