@@ -3,16 +3,38 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type.hpp"
 
-namespace mge::script {
+#include <optional>
 
-    template <typename T> class variable
+namespace mge::script {
+    namespace details {
+        class MGESCRIPT_EXPORT variable_base
+        {
+        public:
+            variable_base() = default;
+            virtual ~variable_base() = default;
+
+            const std::string&          name() const;
+            void*                       address() const;
+            const variable_details_ref& details() const;
+
+        protected:
+            variable_details_ref get_details_ref(void* address);
+
+            variable_details_ref m_details;
+        };
+    } // namespace details
+
+    template <typename T> class variable : public details::variable_base
     {
     public:
-        variable(T& value)
-            : m_value(value)
-        {}
-
-    private:
-        T& m_value;
+        variable(const std::string& name, T& value)
+        {
+            auto details = get_details_ref(std::addressof(value));
+            if (details) {
+                m_details = details;
+            } else {
+                // create details
+            }
+        }
     };
 } // namespace mge::script

@@ -4,6 +4,7 @@
 #include "mge/script/module_details.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/type_details.hpp"
+#include "mge/script/variable_details.hpp"
 #include "mge/script/visitor.hpp"
 
 #include <mutex>
@@ -71,15 +72,28 @@ namespace mge::script {
         child->m_module = shared_from_this();
     }
 
+    void module_details::add_variable(const variable_details_ref& child)
+    {
+        m_variables[child->name()] = child;
+        child->m_module = shared_from_this();
+    }
+
     void module_details::apply(visitor& v)
     {
         v.begin(*this);
+
         for (const auto& [key, value] : m_types) {
             value->apply(v);
         }
+
+        for (const auto& [key, value] : m_variables) {
+            value->apply(v);
+        }
+
         for (const auto& [key, value] : m_children) {
             value->apply(v);
         }
+
         v.end(*this);
     }
 

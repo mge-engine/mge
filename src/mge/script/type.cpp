@@ -22,7 +22,7 @@ namespace mge::script {
         class global_type_details
         {
         public:
-            global_type_details() {}
+            global_type_details() = default;
 
             type_details_ref get_or_add_details(const std::string& name)
             {
@@ -51,7 +51,7 @@ namespace mge::script {
 
         const std::string& type_base::name() const { return m_details->name(); }
 
-        const type_details_ref type_base::details() const { return m_details; }
+        const type_details_ref& type_base::details() const { return m_details; }
 
         mge::script::module type_base::module() const
         {

@@ -23,9 +23,9 @@ namespace mge::script {
             type_base() = default;
             virtual ~type_base() = default;
 
-            const std::string&     name() const;
-            mge::script::module    module() const;
-            const type_details_ref details() const;
+            const std::string&      name() const;
+            mge::script::module     module() const;
+            const type_details_ref& details() const;
 
         protected:
             void get_or_create_details(const std::string& name);

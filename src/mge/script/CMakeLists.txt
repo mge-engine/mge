@@ -9,13 +9,14 @@ SET(mgescript_sources
     module.cpp
     type.cpp
     function.cpp
+    variable.cpp
     visitor.cpp
     bind.cpp
 
     module_details.cpp
     type_details.cpp
     function_details.cpp
-
+    variable_details.cpp
 )
 
 SET(mgescript_headers

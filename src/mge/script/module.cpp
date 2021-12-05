@@ -48,6 +48,11 @@ namespace mge::script {
 
     void module::add_type(const type_details_ref& t) { m_details->add_type(t); }
 
+    void module::add_variable(const variable_details_ref& v)
+    {
+        m_details->add_variable(v);
+    }
+
     const std::string& module::name() const { return m_details->name(); }
 
     std::string module::full_name() const

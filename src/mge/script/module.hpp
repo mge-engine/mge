@@ -122,7 +122,13 @@ namespace mge::script {
             add_type(t.details());
         }
 
+        template <typename T> void add_child(variable<T>&& v)
+        {
+            add_variable(v.details());
+        }
+
         void add_type(const type_details_ref& details);
+        void add_variable(const variable_details_ref& details);
 
         inline module& operator()() { return *this; }
 
