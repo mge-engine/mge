@@ -28,7 +28,8 @@ namespace mge::script {
             const type_details_ref& details() const;
 
         protected:
-            void get_or_create_details(const std::string& name);
+            type_details_ref get_details(const std::string& name);
+            type_details_ref create_details(const std::string& name);
 
             type_details_ref m_details;
         };
@@ -48,7 +49,13 @@ namespace mge::script {
     template <> class type<void, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("void"); }
+        inline type()
+        {
+            m_details = get_details("void");
+            if (!m_details) {
+                m_details = create_details("void");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -57,7 +64,13 @@ namespace mge::script {
     template <> class type<char, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("char"); }
+        inline type()
+        {
+            m_details = get_details("char");
+            if (!m_details) {
+                m_details = create_details("char");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -66,7 +79,13 @@ namespace mge::script {
     template <> class type<unsigned char, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("unsigned char"); }
+        inline type()
+        {
+            m_details = get_details("unsigned char");
+            if (!m_details) {
+                m_details = create_details("unsigned char");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -75,7 +94,13 @@ namespace mge::script {
     template <> class type<signed char, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("signed char"); }
+        inline type()
+        {
+            m_details = get_details("signed char");
+            if (!m_details) {
+                m_details = create_details("signed char");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -84,7 +109,13 @@ namespace mge::script {
     template <> class type<short, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("short"); }
+        inline type()
+        {
+            m_details = get_details("short");
+            if (!m_details) {
+                m_details = create_details("short");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -93,7 +124,43 @@ namespace mge::script {
     template <> class type<unsigned short, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("unsigned short"); }
+        inline type()
+        {
+            m_details = get_details("unsigned short");
+            if (!m_details) {
+                m_details = create_details("unsigned short");
+            }
+        }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<int, void> : public details::type_base
+    {
+    public:
+        inline type()
+        {
+            m_details = get_details("int");
+            if (!m_details) {
+                m_details = create_details("int");
+            }
+        }
+
+        using details::type_base::details;
+        using details::type_base::name;
+    };
+
+    template <> class type<unsigned int, void> : public details::type_base
+    {
+    public:
+        inline type()
+        {
+            m_details = get_details("unsigned int");
+            if (!m_details) {
+                m_details = create_details("unsigned int");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -103,7 +170,13 @@ namespace mge::script {
     template <> class type<std::string, void> : public details::type_base
     {
     public:
-        inline type() { get_or_create_details("string"); }
+        inline type()
+        {
+            m_details = get_details("string");
+            if (!m_details) {
+                m_details = create_details("string");
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;
@@ -115,7 +188,14 @@ namespace mge::script {
         : public details::type_base
     {
     public:
-        inline explicit type() { get_or_create_details(mge::type_name<T>()); }
+        inline explicit type()
+        {
+            auto n = mge::type_name<T>();
+            m_details = get_details(n);
+            if (!m_details) {
+                m_details = create_details(n);
+            }
+        }
 
         using details::type_base::details;
         using details::type_base::name;

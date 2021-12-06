@@ -22,6 +22,10 @@ namespace mge::script {
 
         protected:
             variable_details_ref get_details_ref(void* address);
+            variable_details_ref
+            create_details_ref(const std::string&      name,
+                               void*                   address,
+                               const type_details_ref& type);
 
             variable_details_ref m_details;
         };
@@ -36,7 +40,9 @@ namespace mge::script {
             if (details) {
                 m_details = details;
             } else {
-                // create details
+                m_details = create_details_ref(name,
+                                               std::addressof(value),
+                                               type<T>().details());
             }
         }
     };

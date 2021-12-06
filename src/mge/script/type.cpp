@@ -24,18 +24,23 @@ namespace mge::script {
         public:
             global_type_details() = default;
 
-            type_details_ref get_or_add_details(const std::string& name)
+            type_details_ref get_details(const std::string& name)
             {
                 auto it = m_types.find(name);
                 if (it != m_types.end()) {
                     return it->second;
                 } else {
-                    MGE_DEBUG_TRACE(SCRIPT) << "Register type: " << name;
-                    auto t = std::make_shared<type_details>(name);
-
-                    m_types.insert({t->name(), t});
-                    return t;
+                    return type_details_ref();
                 }
+            }
+
+            type_details_ref create_details(const std::string& name)
+            {
+                MGE_DEBUG_TRACE(SCRIPT) << "Register type: " << name;
+                auto t = std::make_shared<type_details>(name);
+
+                m_types.insert({t->name(), t});
+                return t;
             }
 
         private:
@@ -44,9 +49,14 @@ namespace mge::script {
 
         static singleton<global_type_details> s_global_type_details;
 
-        void type_base::get_or_create_details(const std::string& name)
+        type_details_ref type_base::get_details(const std::string& name)
         {
-            m_details = s_global_type_details->get_or_add_details(name);
+            return s_global_type_details->get_details(name);
+        }
+
+        type_details_ref type_base::create_details(const std::string& name)
+        {
+            return s_global_type_details->create_details(name);
         }
 
         const std::string& type_base::name() const { return m_details->name(); }

@@ -13,11 +13,15 @@ namespace mge::script {
         : public std::enable_shared_from_this<variable_details>
     {
     public:
-        variable_details(const std::string& name, void* address);
+        variable_details(const std::string&      name,
+                         void*                   address,
+                         const type_details_ref& type);
+
         virtual ~variable_details() = default;
 
-        const std::string& name() const;
-        void*              address() const;
+        const std::string&      name() const;
+        void*                   address() const;
+        const type_details_ref& type() const;
 
         virtual void apply(visitor& v);
 
@@ -26,6 +30,7 @@ namespace mge::script {
 
         std::string             m_name;
         void*                   m_address;
+        type_details_ref        m_type;
         module_details_weak_ref m_module;
     };
 } // namespace mge::script
