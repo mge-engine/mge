@@ -11,6 +11,7 @@ namespace mge {
     namespace script {
         class visitor;
         class module;
+        struct type_classification;
         template <typename T, typename> class type;
         template <typename T> class variable;
 

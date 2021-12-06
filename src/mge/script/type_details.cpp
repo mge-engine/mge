@@ -9,15 +9,15 @@ namespace mge::script {
         : m_name(name)
     {}
 
-    type_details::type_details(const std::string&                  name,
-                               const type_details::classification& c)
+    type_details::type_details(const std::string&         name,
+                               const type_classification& c)
         : m_name(name)
         , m_type_class(c)
     {}
 
     const std::string& type_details::name() const { return m_name; }
 
-    const type_details::classification& type_details::type_class() const
+    const type_classification& type_details::type_class() const
     {
         return m_type_class;
     }

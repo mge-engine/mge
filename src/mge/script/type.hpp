@@ -6,6 +6,7 @@
 #include "mge/core/type_name.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type_classification.hpp"
 #include "mge/script/type_details.hpp"
 #include "mge/script/visitor.hpp"
 
@@ -29,7 +30,9 @@ namespace mge::script {
 
         protected:
             type_details_ref get_details(const std::string& name);
-            type_details_ref create_details(const std::string& name);
+            type_details_ref
+            create_details(const std::string&         name,
+                           const type_classification& type_class);
 
             type_details_ref m_details;
         };
@@ -53,7 +56,8 @@ namespace mge::script {
         {
             m_details = get_details("void");
             if (!m_details) {
-                m_details = create_details("void");
+                type_classification cls{.is_void = 1};
+                m_details = create_details("void", cls);
             }
         }
 
@@ -68,7 +72,8 @@ namespace mge::script {
         {
             m_details = get_details("char");
             if (!m_details) {
-                m_details = create_details("char");
+                type_classification cls{.is_char = 1};
+                m_details = create_details("char", cls);
             }
         }
 
@@ -83,7 +88,8 @@ namespace mge::script {
         {
             m_details = get_details("unsigned char");
             if (!m_details) {
-                m_details = create_details("unsigned char");
+                type_classification cls{.is_unsigned = 1, .is_char = 1};
+                m_details = create_details("unsigned char", cls);
             }
         }
 
@@ -98,7 +104,8 @@ namespace mge::script {
         {
             m_details = get_details("signed char");
             if (!m_details) {
-                m_details = create_details("signed char");
+                type_classification cls{.is_char = 1};
+                m_details = create_details("signed char", cls);
             }
         }
 
@@ -113,7 +120,8 @@ namespace mge::script {
         {
             m_details = get_details("short");
             if (!m_details) {
-                m_details = create_details("short");
+                type_classification cls{.is_short = 1};
+                m_details = create_details("short", cls);
             }
         }
 
@@ -128,7 +136,8 @@ namespace mge::script {
         {
             m_details = get_details("unsigned short");
             if (!m_details) {
-                m_details = create_details("unsigned short");
+                type_classification cls{.is_unsigned = 1, .is_short = 1};
+                m_details = create_details("unsigned short", cls);
             }
         }
 
@@ -143,7 +152,8 @@ namespace mge::script {
         {
             m_details = get_details("int");
             if (!m_details) {
-                m_details = create_details("int");
+                type_classification cls{.is_int = 1};
+                m_details = create_details("int", cls);
             }
         }
 
@@ -158,7 +168,8 @@ namespace mge::script {
         {
             m_details = get_details("unsigned int");
             if (!m_details) {
-                m_details = create_details("unsigned int");
+                type_classification cls{.is_unsigned = 1, .is_int = 1};
+                m_details = create_details("unsigned int", cls);
             }
         }
 
@@ -174,7 +185,8 @@ namespace mge::script {
         {
             m_details = get_details("string");
             if (!m_details) {
-                m_details = create_details("string");
+                type_classification cls{};
+                m_details = create_details("string", cls);
             }
         }
 
@@ -193,7 +205,8 @@ namespace mge::script {
             auto n = mge::type_name<T>();
             m_details = get_details(n);
             if (!m_details) {
-                m_details = create_details(n);
+                type_classification cls{};
+                m_details = create_details(n, cls);
             }
         }
 

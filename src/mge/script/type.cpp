@@ -34,10 +34,12 @@ namespace mge::script {
                 }
             }
 
-            type_details_ref create_details(const std::string& name)
+            type_details_ref
+            create_details(const std::string&         name,
+                           const type_classification& type_class)
             {
                 MGE_DEBUG_TRACE(SCRIPT) << "Register type: " << name;
-                auto t = std::make_shared<type_details>(name);
+                auto t = std::make_shared<type_details>(name, type_class);
 
                 m_types.insert({t->name(), t});
                 return t;
@@ -54,9 +56,11 @@ namespace mge::script {
             return s_global_type_details->get_details(name);
         }
 
-        type_details_ref type_base::create_details(const std::string& name)
+        type_details_ref
+        type_base::create_details(const std::string&         name,
+                                  const type_classification& type_class)
         {
-            return s_global_type_details->create_details(name);
+            return s_global_type_details->create_details(name, type_class);
         }
 
         const std::string& type_base::name() const { return m_details->name(); }
