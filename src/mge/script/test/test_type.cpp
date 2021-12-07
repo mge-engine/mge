@@ -38,4 +38,16 @@ namespace mge {
         module("mge")(type<foo>());
     }
 
+    enum enum1
+    {
+        E1,
+        E2
+    };
+
+    TEST_F(test_type, enum_type)
+    {
+        using namespace mge::script;
+        module("mge")(type<enum1>());
+    }
+
 } // namespace mge

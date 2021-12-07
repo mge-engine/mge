@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <typeindex>
 
 namespace mge::script {
 
@@ -18,10 +19,13 @@ namespace mge::script {
         : public std::enable_shared_from_this<type_details>
     {
     public:
-        type_details(const std::string& name);
-        type_details(const std::string& name, const type_classification& c);
+        type_details(std::type_index index, const std::string& name);
+        type_details(std::type_index            index,
+                     const std::string&         name,
+                     const type_classification& c);
         virtual ~type_details() = default;
 
+        std::type_index            type_index() const;
         const std::string&         name() const;
         mge::script::module        module() const;
         const type_classification& type_class() const;
@@ -31,6 +35,7 @@ namespace mge::script {
     private:
         friend class module_details;
 
+        std::type_index         m_index;
         std::string             m_name;
         type_classification     m_type_class;
         module_details_weak_ref m_module;

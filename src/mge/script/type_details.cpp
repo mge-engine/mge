@@ -5,15 +5,21 @@
 #include "mge/script/module.hpp"
 
 namespace mge::script {
-    type_details::type_details(const std::string& name)
-        : m_name(name)
+
+    type_details::type_details(std::type_index index, const std::string& name)
+        : m_index(index)
+        , m_name(name)
     {}
 
-    type_details::type_details(const std::string&         name,
+    type_details::type_details(std::type_index            index,
+                               const std::string&         name,
                                const type_classification& c)
-        : m_name(name)
+        : m_index(index)
+        , m_name(name)
         , m_type_class(c)
     {}
+
+    std::type_index type_details::type_index() const { return m_index; }
 
     const std::string& type_details::name() const { return m_name; }
 
