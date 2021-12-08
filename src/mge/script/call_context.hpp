@@ -4,14 +4,14 @@
 
 namespace mge::script {
     /**
-     * @brief A parameter context is used when invoking functions or methods.
+     * @brief A call context is used when invoking functions or methods.
      *
      */
-    class MGESCRIPT_EXPORT parameter_context
+    class MGESCRIPT_EXPORT call_context
     {
     public:
-        parameter_context() = default;
-        virtual ~parameter_context() = default;
+        call_context() = default;
+        virtual ~call_context() = default;
 
         template <typename T>
         typename std::enable_if<std::is_same<T, bool>::value, T>::type
@@ -26,6 +26,13 @@ namespace mge::script {
         {
             return int_parameter(position);
         }
+
+        /**
+         * @brief Invoked when an integer result is stored.
+         * 
+         * @param result call result to be stored.
+         */
+        virtual void store_result(int result) = 0;
 
     protected:
         virtual bool bool_parameter(size_t position) = 0;
