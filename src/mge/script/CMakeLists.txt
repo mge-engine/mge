@@ -12,6 +12,7 @@ SET(mgescript_sources
     variable.cpp
     visitor.cpp
     bind.cpp
+    parameter_context.cpp
 
     module_details.cpp
     type_details.cpp

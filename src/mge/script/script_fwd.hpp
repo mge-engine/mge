@@ -12,6 +12,7 @@ namespace mge {
         class visitor;
         class module;
         struct type_classification;
+        class parameter_context;
         template <typename T, typename> class type;
         template <typename T> class variable;
 
