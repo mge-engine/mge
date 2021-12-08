@@ -17,4 +17,7 @@ namespace mge::script {
     void visitor::visit(const function_details&) {}
     void visitor::visit(const variable_details&) {}
 
+    void visitor::enum_value(const std::string& name, const any_integer& value)
+    {}
+
 } // namespace mge::script

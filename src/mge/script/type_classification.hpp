@@ -12,6 +12,7 @@ namespace mge::script {
     {
         unsigned int is_void : 1;
         unsigned int is_unsigned : 1;
+        unsigned int is_enum : 1;
         unsigned int is_char : 1;
         unsigned int is_short : 1;
         unsigned int is_int : 1;

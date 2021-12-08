@@ -225,7 +225,7 @@ namespace mge::script {
             auto n = mge::base_type_name<T>();
             m_details = get_details(ti);
             if (!m_details) {
-                type_classification cls{};
+                type_classification cls{.is_enum = 1};
                 m_details = create_details(ti, n, cls);
             }
         }

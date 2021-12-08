@@ -43,4 +43,24 @@ namespace mge::script {
         v.begin(*this);
         v.end(*this);
     }
+
+    enum_type_details::enum_type_details(std::type_index    index,
+                                         const std::string& name)
+        : type_details(index, name)
+    {}
+
+    enum_type_details::enum_type_details(std::type_index            index,
+                                         const std::string&         name,
+                                         const type_classification& c)
+        : type_details(index, name, c)
+    {}
+
+    void enum_type_details::apply(visitor& v)
+    {
+        v.begin(*this);
+        for (const auto& value : m_enum_values) {
+            v.enum_value(std::get<0>(value), std::get<1>(value));
+        }
+        v.end(*this);
+    }
 } // namespace mge::script

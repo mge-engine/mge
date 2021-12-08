@@ -40,11 +40,20 @@ namespace mge::script {
                            const type_classification& type_class)
             {
                 MGE_DEBUG_TRACE(SCRIPT) << "Register type: " << name;
-                auto t =
-                    std::make_shared<type_details>(index, name, type_class);
 
-                m_types.insert({t->type_index(), t});
-                return t;
+                if (type_class.is_enum) {
+                    auto t = std::make_shared<enum_type_details>(index,
+                                                                 name,
+                                                                 type_class);
+                    m_types.insert({t->type_index(), t});
+                    return t;
+                } else {
+                    auto t =
+                        std::make_shared<type_details>(index, name, type_class);
+
+                    m_types.insert({t->type_index(), t});
+                    return t;
+                }
             }
 
         private:
