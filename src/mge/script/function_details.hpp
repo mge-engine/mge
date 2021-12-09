@@ -17,12 +17,14 @@ namespace mge::script {
 
         function_details(const std::string&         name,
                          const invocation_function& invoke);
+
+        function_details(const std::string& name, invocation_function&& invoke);
         virtual ~function_details() = default;
 
-        const std::string&  name() const;
-        mge::script::module module() const;
+        const std::string&         name() const;
+        mge::script::module        module() const;
         const invocation_function& invoke() const;
-        
+
         virtual void apply(visitor& v);
 
     private:

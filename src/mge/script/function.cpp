@@ -26,6 +26,17 @@ namespace mge::script {
                 }
             }
 
+            function_details_ref
+            create_details(const std::string&                   name,
+                           void*                                fptr,
+                           std::function<void(call_context&)>&& invoker)
+            {
+                auto details =
+                    std::make_shared<function_details>(name, invoker);
+                m_functions.insert({fptr, details});
+                return details;
+            }
+
         private:
             std::map<void*, function_details_ref> m_functions;
         };
@@ -37,9 +48,25 @@ namespace mge::script {
             return s_global_function_details->get_details(address);
         }
 
+        function_details_ref function_base::create_details(
+            const std::string&                   name,
+            void*                                fptr,
+            std::function<void(call_context&)>&& invoker)
+        {
+            return s_global_function_details->create_details(
+                name,
+                fptr,
+                std::move(invoker));
+        }
+
         const std::string& function_base::name() const
         {
             return m_details->name();
+        }
+
+        const std::function<void(call_context&)>& function_base::invoke() const
+        {
+            return m_details->invoke();
         }
 
         const std::string

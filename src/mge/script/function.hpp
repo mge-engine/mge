@@ -2,10 +2,14 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/nth_type.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <functional>
+#include <iostream>
 #include <string>
 
 namespace mge::script {
@@ -16,15 +20,33 @@ namespace mge::script {
         public:
             function_base() = default;
             virtual ~function_base() = default;
-            const std::string& name() const;
+            const std::string&                        name() const;
+            const std::function<void(call_context&)>& invoke() const;
 
         protected:
             function_details_ref get_details(void* address);
+            function_details_ref
+            create_details(const std::string&                   name,
+                           void*                                fptr,
+                           std::function<void(call_context&)>&& invoker);
             static const std::string
             details_name(const function_details_ref& f);
 
             function_details_ref m_details;
         };
+
+        template <typename... Args> struct invoke_helper
+        {
+            template <typename R, std::size_t... I>
+            static inline void invoke_function(R (*fptr)(Args...),
+                                               call_context& context,
+                                               std::index_sequence<I...>)
+            {
+                context.store_result(
+                    (*fptr)(context.parameter<nth_type<I, Args...>>(I)...));
+            }
+        };
+
     } // namespace details
 
     /**
@@ -54,7 +76,17 @@ namespace mge::script {
                         << details_name(m_details);
                 }
             } else {
+                auto invoker = [fptr](call_context& context) {
+                    details::invoke_helper<Args...>::invoke_function(
+                        fptr,
+                        context,
+                        std::make_index_sequence<sizeof...(Args)>{});
+                };
+                m_details = create_details(name, fptr, invoker);
             }
         }
+
+        using function_base::invoke;
+        using function_base::name;
     };
 } // namespace mge::script

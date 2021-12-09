@@ -15,6 +15,12 @@ namespace mge::script {
         , m_invoke(invoke)
     {}
 
+    function_details::function_details(
+        const std::string& name, function_details::invocation_function&& invoke)
+        : m_name(name)
+        , m_invoke(std::move(invoke))
+    {}
+
     const std::string& function_details::name() const { return m_name; }
 
     mge::script::module function_details::module() const
