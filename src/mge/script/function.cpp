@@ -4,6 +4,7 @@
 #include "mge/script/function.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/script/function_details.hpp"
+#include "mge/script/type.hpp"
 
 #include <map>
 #include <tuple>
@@ -73,6 +74,19 @@ namespace mge::script {
         function_base::details_name(const function_details_ref& f)
         {
             return f->name();
+        }
+
+        void function_base::set_result_type(function_details_ref& f,
+                                            std::type_index       result_type)
+        {
+            f->m_result_type = type<void>::get_details_required(result_type);
+        }
+
+        void function_base::add_arg_type(function_details_ref& f,
+                                         std::type_index       arg_type)
+        {
+            f->m_parameter_types.push_back(
+                type<void>::get_details_required(arg_type));
         }
 
     } // namespace details

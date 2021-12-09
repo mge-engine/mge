@@ -29,8 +29,14 @@ namespace mge::script {
             create_details(const std::string&                   name,
                            void*                                fptr,
                            std::function<void(call_context&)>&& invoker);
+
             static const std::string
             details_name(const function_details_ref& f);
+
+            static void set_result_type(function_details_ref& f,
+                                        std::type_index       type);
+            static void add_arg_type(function_details_ref& f,
+                                     std::type_index       type);
 
             function_details_ref m_details;
         };
@@ -82,7 +88,14 @@ namespace mge::script {
                         context,
                         std::make_index_sequence<sizeof...(Args)>{});
                 };
+                std::array<std::type_index, sizeof...(Args)> arg_types = {
+                    std::type_index(typeid(Args))...};
+                auto result_type = std::type_index(typeid(R));
                 m_details = create_details(name, fptr, invoker);
+                set_result_type(m_details, result_type);
+                for (const auto& arg_type : arg_types) {
+                    add_arg_type(m_details, arg_type);
+                }
             }
         }
 

@@ -30,8 +30,10 @@ namespace mge::script {
             mge::script::module     module() const;
             const type_details_ref& details() const;
 
+            static type_details_ref get_details(std::type_index index);
+            static type_details_ref get_details_required(std::type_index index);
+
         protected:
-            type_details_ref get_details(std::type_index index);
             type_details_ref
             create_details(std::type_index            index,
                            const std::string&         name,
@@ -66,6 +68,7 @@ namespace mge::script {
         }
 
         using details::type_base::details;
+        using details::type_base::get_details;
         using details::type_base::name;
         using details::type_base::type_index;
     };

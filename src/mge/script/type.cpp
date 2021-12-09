@@ -67,6 +67,16 @@ namespace mge::script {
             return s_global_type_details->get_details(index);
         }
 
+        type_details_ref type_base::get_details_required(std::type_index index)
+        {
+            type_details_ref result = s_global_type_details->get_details(index);
+            if (!result) {
+                MGE_THROW(mge::illegal_state)
+                    << "Unregistered type found: " << index.name();
+            }
+            return result;
+        }
+
         type_details_ref
         type_base::create_details(std::type_index            index,
                                   const std::string&         name,

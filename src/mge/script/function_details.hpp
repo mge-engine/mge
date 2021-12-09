@@ -10,6 +10,10 @@
 
 namespace mge::script {
 
+    namespace details {
+        class function_base;
+    }
+
     class MGESCRIPT_EXPORT function_details
     {
     public:
@@ -28,6 +32,8 @@ namespace mge::script {
         virtual void apply(visitor& v);
 
     private:
+        friend class details::function_base;
+
         std::string                            m_name;
         std::function<void(call_context&)>     m_invoke;
         type_details_ref                       m_result_type;
