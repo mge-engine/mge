@@ -10,6 +10,12 @@ namespace mge::script {
      */
     struct type_classification
     {
+        bool is_pod() const
+        {
+            return is_char || is_short || is_int || is_long || is_float ||
+                   is_double || is_bool;
+        }
+
         unsigned int is_void : 1;
         unsigned int is_unsigned : 1;
         unsigned int is_enum : 1;

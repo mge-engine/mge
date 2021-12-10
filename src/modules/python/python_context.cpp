@@ -44,7 +44,7 @@ namespace mge::python {
     void python_context::bind(const mge::script::module& m)
     {
         python_bind_helper helper(*this);
-        helper.visit(m);
+        helper.bind(m);
     }
 
     void python_context::add_module(const python_module_ref& pm)
