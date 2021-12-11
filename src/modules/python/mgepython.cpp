@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
 #include "mge/script/bind.hpp"
