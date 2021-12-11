@@ -13,5 +13,4 @@ namespace mge::script {
     MGESCRIPT_EXPORT void bind_std();
     MGESCRIPT_EXPORT void bind_mge();
 
-    MGESCRIPT_EXPORT const std::vector<mge::script::module>& global_modules();
 }

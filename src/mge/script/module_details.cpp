@@ -53,6 +53,7 @@ namespace mge::script {
         if (it != m_children.end()) {
             return it->second;
         } else {
+            MGE_DEBUG_TRACE(SCRIPT) << "Add new module " << name;
             auto new_details =
                 std::make_shared<module_details>(shared_from_this(), name);
             m_children[name] = new_details;

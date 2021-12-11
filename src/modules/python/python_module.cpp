@@ -9,19 +9,12 @@ namespace mge ::python {
         , m_module(m)
         , m_name(m_module.name())
     {
-        new (&m_py_module_def) PyModuleDef{
-            PyModuleDef_HEAD_INIT,
-            m_name.c_str(), /* m_name */
-            nullptr,        /* m_doc */
-            -1,             /* m_size */
-            nullptr,        /* m_methods */
-            nullptr,        /* m_slots */
-            nullptr,        /* m_traverse */
-            nullptr,        /* m_clear */
-            nullptr,        /* m_free */
-        };
-
-        m_py_module = PyModule_Create(&m_py_module_def);
+        if (!m_name.empty()) {
+            m_py_module = PyImport_AddModule(m_name.c_str());
+        } else {
+            m_name = "__main__";
+            m_py_module = PyImport_AddModule(m_name.c_str());
+        }
     }
 
     python_module::~python_module() { Py_XDECREF(m_py_module); }
