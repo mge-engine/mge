@@ -16,7 +16,7 @@ namespace mge::python {
         ~python_context();
         void eval(const std::string& code) override;
         void bind(const mge::script::module& m) override;
-
+        int  main(int argc, const char** argv) override;
         void add_module(const python_module_ref& pm);
 
     private:

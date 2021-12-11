@@ -33,6 +33,13 @@ namespace mge {
         virtual void eval(const std::string& code) = 0;
 
         /**
+         * @brief Invoke interpreter as if called from command line.
+         * @param argc argument count
+         * @param argv argument values
+         */
+        virtual int main(int argc, const char** argv) = 0;
+
+        /**
          * @brief Binds a module, i.e. makes it visible inside the interpreter.
          *
          * @param m module

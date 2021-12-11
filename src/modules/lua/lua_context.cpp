@@ -19,6 +19,8 @@ namespace mge::lua {
         }
     }
 
+    int lua_context::main(int argv, const char** argc) { return 0; }
+
     void lua_context::eval(const std::string& code)
     {
         int rc = luaL_loadbuffer(m_lua_state, code.data(), code.size(), "");

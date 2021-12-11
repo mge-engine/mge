@@ -41,6 +41,11 @@ namespace mge::python {
         check_python_error();
     }
 
+    int python_context::main(int argc, const char** argv)
+    {
+        return Py_BytesMain(argc, const_cast<char**>(argv));
+    }
+
     void python_context::bind(const mge::script::module& m)
     {
         python_bind_helper helper(*this);
