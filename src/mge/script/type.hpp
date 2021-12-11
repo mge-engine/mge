@@ -149,7 +149,7 @@ namespace mge::script {
     public:
         inline type()
         {
-            auto ti = std::type_index(typeid(signed short));
+            auto ti = std::type_index(typeid(unsigned short));
             m_details = get_details(ti);
             if (!m_details) {
                 type_classification cls{.is_unsigned = 1, .is_short = 1};
@@ -190,6 +190,78 @@ namespace mge::script {
             if (!m_details) {
                 type_classification cls{.is_unsigned = 1, .is_int = 1};
                 m_details = create_details(ti, "unsigned int", cls);
+            }
+        }
+
+        using details::type_base::details;
+        using details::type_base::name;
+        using details::type_base::type_index;
+    };
+
+    template <> class type<int64_t, void> : public details::type_base
+    {
+    public:
+        inline type()
+        {
+            auto ti = std::type_index(typeid(int64_t));
+            m_details = get_details(ti);
+            if (!m_details) {
+                type_classification cls{.is_long = 1};
+                m_details = create_details(ti, "long", cls);
+            }
+        }
+
+        using details::type_base::details;
+        using details::type_base::name;
+        using details::type_base::type_index;
+    };
+
+    template <> class type<uint64_t, void> : public details::type_base
+    {
+    public:
+        inline type()
+        {
+            auto ti = std::type_index(typeid(uint64_t));
+            m_details = get_details(ti);
+            if (!m_details) {
+                type_classification cls{.is_unsigned = 1, .is_long = 1};
+                m_details = create_details(ti, "unsigned long", cls);
+            }
+        }
+
+        using details::type_base::details;
+        using details::type_base::name;
+        using details::type_base::type_index;
+    };
+
+    template <> class type<float, void> : public details::type_base
+    {
+    public:
+        inline type()
+        {
+            auto ti = std::type_index(typeid(float));
+            m_details = get_details(ti);
+            if (!m_details) {
+                type_classification cls{.is_float = 1};
+                m_details = create_details(ti, "float", cls);
+            }
+        }
+
+        using details::type_base::details;
+        using details::type_base::name;
+        using details::type_base::type_index;
+    };
+
+    template <> class type<double, void> : public details::type_base
+    {
+    public:
+        inline type()
+        {
+            auto ti = std::type_index(typeid(double));
+            m_details = get_details(ti);
+            if (!m_details) {
+                type_classification cls{.is_double = 1};
+                m_details = create_details(ti, "double", cls);
             }
         }
 

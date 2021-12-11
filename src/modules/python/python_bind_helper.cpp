@@ -24,6 +24,7 @@ namespace mge::python {
     {
         mge::script::module_details_ref m_ref =
             const_cast<mge::script::module_details&>(m).shared_from_this();
+        MGE_DEBUG_TRACE(PYTHON) << "Binding module '" << m_ref->name() << "'";
         auto mod = mge::script::module(m_ref);
         auto pm = std::make_shared<python_module>(mod);
         m_context.add_module(pm);

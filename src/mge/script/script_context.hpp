@@ -45,5 +45,18 @@ namespace mge {
          * @param m module
          */
         virtual void bind(const mge::script::module& m) = 0;
+
+        /**
+         * @brief Binds a list of modules in a container.
+         *
+         * @tparam ModuleContainer  container type of @c mge::script::module
+         * @param c container to bind
+         */
+        template <typename ModuleContainer> void bind(const ModuleContainer& c)
+        {
+            for (const auto& el : c) {
+                bind(el);
+            }
+        }
     };
 } // namespace mge

@@ -12,17 +12,30 @@ namespace mge {
 }
 namespace mge::script {
 
+    static std::vector<mge::script::module> s_global_modules;
+
     void bind_globals()
     {
-        module()(type<void>(),
-                 type<char>(),
-                 type<unsigned char>(),
-                 type<signed char>(),
-                 type<short>(),
-                 type<unsigned short>());
+        s_global_modules.push_back(module()(type<void>(),
+                                            type<char>(),
+                                            type<unsigned char>(),
+                                            type<signed char>(),
+                                            type<short>(),
+                                            type<unsigned short>(),
+                                            type<int>(),
+                                            type<unsigned int>(),
+                                            type<int64_t>(),
+                                            type<uint64_t>(),
+                                            type<float>(),
+                                            type<double>()));
     }
 
-    void bind_std() { module("std")(type<std::string>()); }
+    void bind_std()
+    {
+        s_global_modules.push_back(module("std")(type<std::string>()));
+    }
+
+    void bind_mge() { s_global_modules.push_back(module("mge")); }
 
     std::once_flag s_bind_all_complete;
 
@@ -32,10 +45,17 @@ namespace mge::script {
             try {
                 mge::script::bind_globals();
                 mge::script::bind_std();
+                mge::script::bind_mge();
             } catch (const mge::exception& e) {
                 MGE_ERROR_TRACE(SCRIPT) << "Binding global types failed: " << e;
                 throw;
             }
         });
+    }
+
+    const std::vector<mge::script::module>& global_modules()
+    {
+        bind_all();
+        return s_global_modules;
     }
 } // namespace mge::script
