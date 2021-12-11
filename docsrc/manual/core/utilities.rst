@@ -127,3 +127,12 @@ is usually not detected but produces a weird value. A checked cast provides
 check logic that prevents overflows and unexpected truncation of values.
 
 .. doxygenfunction:: mge::checked_cast
+
+Debugger Breakpoint
+-------------------
+
+Sometimes it may be useful to programmatically raise a debug breakpoint,
+i.e. stop execution when inside a debuggger. This is abstracted by
+:any:`mge::call_debugger`
+
+.. doxygenfunction:: mge::call_debugger
