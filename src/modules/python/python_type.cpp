@@ -19,13 +19,30 @@ namespace mge::python {
         m_spec.slots = s_empty_slots;
     }
 
+    python_type::~python_type()
+    {
+        for (const auto& [name, value] : m_attributes) {
+            Py_XDECREF(value);
+        }
+    }
+
     PyObject* python_type::materialize_type()
     {
         PyObject* type = PyType_FromSpec(&m_spec);
         if (!type) {
             error::check_error();
         }
+        for (const auto& [name, value] : m_attributes) {
+            if (PyObject_SetAttrString(type, name.c_str(), value)) {
+                error::check_error();
+            }
+        }
         return type;
+    }
+
+    void python_type::set_attribute(const std::string& name, PyObject* value)
+    {
+        m_attributes.emplace_back(std::make_tuple(name, value));
     }
 
 } // namespace mge::python

@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_bind_helper.hpp"
+#include "mge/core/overloaded.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
@@ -12,6 +13,27 @@ namespace mge {
 }
 
 namespace mge::python {
+
+    static inline PyObject* from_integer(const mge::script::any_integer& i)
+    {
+        return std::visit(
+            overloaded{
+                [](const auto& i) { return (PyObject*)(nullptr); },
+                [](const char& c) {
+                    int i = c;
+                    return Py_BuildValue("i", i);
+                },
+                [](const unsigned char& uc) { return Py_BuildValue("b", uc); },
+                [](const short& s) { return Py_BuildValue("h", s); },
+                [](const unsigned short& s) { return Py_BuildValue("H", s); },
+                [](const int& i) { return Py_BuildValue("i", i); },
+                [](const unsigned int& i) { return Py_BuildValue("I", i); },
+                [](const int64_t& i) { return Py_BuildValue("L", i); },
+                [](const uint64_t& i) { return Py_BuildValue("K", i); },
+            },
+            i);
+    }
+
     python_bind_helper::python_bind_helper(python_context& context)
         : m_context(context)
     {}
@@ -55,7 +77,18 @@ namespace mge::python {
     void python_bind_helper::enum_value(const std::string&              name,
                                         const mge::script::any_integer& value)
     {
-        return;
+        PyObject* value_object = from_integer(value);
+        if (!value_object) {
+            MGE_THROW(mge::illegal_argument)
+                << "Cannot handle type of enum value for '" << name << "'";
+        }
+        try {
+            m_current_type->set_attribute(name.c_str(), value_object);
+            return;
+        } catch (...) {
+            Py_XDECREF(value_object);
+            throw;
+        }
     }
 
     void python_bind_helper::end(const mge::script::type_details& t)

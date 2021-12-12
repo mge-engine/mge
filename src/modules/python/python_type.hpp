@@ -5,6 +5,8 @@
 #include "mge/core/memory.hpp"
 #include "python.hpp"
 #include <string>
+#include <vector>
+
 namespace mge::python {
 
     MGE_DECLARE_REF(python_type);
@@ -13,13 +15,17 @@ namespace mge::python {
     {
     public:
         python_type(const std::string& name, size_t size);
-        ~python_type() = default;
+        ~python_type();
 
         PyObject* materialize_type();
 
+        void set_attribute(const std::string& name, PyObject* value);
+
     private:
-        std::string m_name;
-        PyType_Spec m_spec;
+        typedef std::tuple<std::string, PyObject*> attr_value;
+        std::string                                m_name;
+        PyType_Spec                                m_spec;
+        std::vector<attr_value>                    m_attributes;
     };
 
 } // namespace mge::python
