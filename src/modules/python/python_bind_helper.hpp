@@ -37,6 +37,7 @@ namespace mge::python {
     private:
         void begin_enum(const mge::script::type_details& t);
         void end_enum(const mge::script::type_details& t);
+        void create_function_type();
 
         python_context&                                          m_context;
         std::stack<python_module_ref>                            m_module_stack;

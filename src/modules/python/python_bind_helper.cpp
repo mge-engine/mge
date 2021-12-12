@@ -59,6 +59,9 @@ namespace mge::python {
             m_module_stack.top()->add_module(pm);
         }
         m_module_stack.push(pm);
+        if (m.name() == "mge") {
+            create_function_type();
+        }
     }
 
     void python_bind_helper::end(const mge::script::module_details& m)
@@ -122,5 +125,13 @@ namespace mge::python {
             throw;
         }
     }
+
+    struct function_object
+    {
+        PyObject_HEAD;
+        mge::script::function_details_ref m_function;
+    };
+
+    void python_bind_helper::create_function_type() {}
 
 } // namespace mge::python
