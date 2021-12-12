@@ -30,7 +30,17 @@ namespace mge::script {
 
     void bind_std() { module("std")(type<std::string>()); }
 
-    void bind_mge() { module("mge")(type<mge::trace_level>()); }
+    void bind_mge()
+    {
+        module("mge")(type<mge::trace_level>()
+                          .enum_value("NONE", mge::trace_level::NONE)
+                          .enum_value("DEBUG", mge::trace_level::DEBUG)
+                          .enum_value("INFO", mge::trace_level::INFO)
+                          .enum_value("WARNING", mge::trace_level::WARNING)
+                          .enum_value("ERROR", mge::trace_level::LEVEL_ERROR)
+                          .enum_value("FATAL", mge::trace_level::FATAL)
+                          .enum_value("ALL", mge::trace_level::ALL));
+    }
 
     std::once_flag s_bind_all_complete;
 

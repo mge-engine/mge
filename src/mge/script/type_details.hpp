@@ -47,6 +47,8 @@ namespace mge::script {
     class MGESCRIPT_EXPORT enum_type_details : public type_details
     {
     public:
+        using enum_value = std::tuple<std::string, any_integer>;
+
         enum_type_details(std::type_index index, const std::string& name);
         enum_type_details(std::type_index            index,
                           const std::string&         name,
@@ -55,9 +57,15 @@ namespace mge::script {
 
         void apply(visitor& v) override;
 
-    private:
-        using enum_value = std::tuple<std::string, any_integer>;
+        template <typename I> void add_value(const std::string& name, I value)
+        {
+            std::underlying_type_t<I> i_value;
+            i_value = (std::underlying_type_t<I>)(value);
+            any_integer enum_val = i_value;
+            m_enum_values.push_back(std::make_tuple(name, enum_val));
+        }
 
+    private:
         type_details_ref        m_underlying_type;
         std::vector<enum_value> m_enum_values;
     };

@@ -302,8 +302,20 @@ namespace mge::script {
             if (!m_details) {
                 type_classification cls{.is_enum = 1};
                 m_details = create_details(ti, n, cls);
+                m_enum_details =
+                    std::dynamic_pointer_cast<enum_type_details>(m_details);
             }
         }
+
+        template <typename I> auto& enum_value(const std::string& name, I value)
+        {
+            m_enum_details->add_value(name, value);
+            return *this;
+        }
+
+        enum_type_details_ref m_enum_details;
+        using details::type_base::details;
+        using details::type_base::name;
     };
 
     // class type

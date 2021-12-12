@@ -122,6 +122,11 @@ namespace mge::script {
             add_type(t.details());
         }
 
+        template <typename T> void add_child(const type<T, void>& t)
+        {
+            add_type(t.details());
+        }
+
         template <typename T> void add_child(variable<T>&& v)
         {
             add_variable(v.details());

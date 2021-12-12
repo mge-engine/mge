@@ -28,6 +28,8 @@ namespace mge {
 
         MGE_DECLARE_REF(type_details);
         MGE_DECLARE_WEAK_REF(type_details);
+        MGE_DECLARE_REF(enum_type_details);
+        MGE_DECLARE_WEAK_REF(enum_type_details);
 
         MGE_DECLARE_REF(variable_details);
         MGE_DECLARE_WEAK_REF(variable_details);
