@@ -23,6 +23,10 @@ namespace mge::python {
                     int i = c;
                     return Py_BuildValue("i", i);
                 },
+                [](const signed char& c) {
+                    int i = c;
+                    return Py_BuildValue("i", i);
+                },
                 [](const unsigned char& uc) { return Py_BuildValue("b", uc); },
                 [](const short& s) { return Py_BuildValue("h", s); },
                 [](const unsigned short& s) { return Py_BuildValue("H", s); },
