@@ -2,8 +2,13 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/bind.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
+
 #include "mge/script/module.hpp"
+
+#include "mge/script/function.hpp"
+
 #include "mge/script/type.hpp"
 #include <mutex>
 
@@ -39,7 +44,8 @@ namespace mge::script {
                           .enum_value("WARNING", mge::trace_level::WARNING)
                           .enum_value("ERROR", mge::trace_level::LEVEL_ERROR)
                           .enum_value("FATAL", mge::trace_level::FATAL)
-                          .enum_value("ALL", mge::trace_level::ALL));
+                          .enum_value("ALL", mge::trace_level::ALL),
+                      function("executable_name", mge::executable_name));
     }
 
     std::once_flag s_bind_all_complete;

@@ -76,6 +76,11 @@ namespace mge::script {
             return f->name();
         }
 
+        const function_details_ref& function_base::details() const
+        {
+            return m_details;
+        }
+
         void function_base::set_result_type(function_details_ref& f,
                                             std::type_index       result_type)
         {

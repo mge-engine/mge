@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/script/module_details.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/script/function_details.hpp"
 #include "mge/script/type_details.hpp"
 #include "mge/script/variable_details.hpp"
 #include "mge/script/visitor.hpp"
@@ -79,6 +80,12 @@ namespace mge::script {
         child->m_module = shared_from_this();
     }
 
+    void module_details::add_function(const function_details_ref& child)
+    {
+        m_functions[child->name()] = child;
+        child->m_module = shared_from_this();
+    }
+
     void module_details::apply(visitor& v)
     {
         v.begin(*this);
@@ -88,6 +95,10 @@ namespace mge::script {
         }
 
         for (const auto& [key, value] : m_variables) {
+            value->apply(v);
+        }
+
+        for (const auto& [key, value] : m_functions) {
             value->apply(v);
         }
 

@@ -6,6 +6,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/type_name.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/function.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type.hpp"
 #include "mge/script/visitor.hpp"
@@ -132,8 +133,21 @@ namespace mge::script {
             add_variable(v.details());
         }
 
+        template <typename R, typename... Args>
+        void add_child(mge::script::function<R, Args...>&& f)
+        {
+            add_function(f.details());
+        }
+
+        template <typename R, typename... Args>
+        void add_child(const mge::script::function<R, Args...>& f)
+        {
+            add_function(f.details());
+        }
+
         void add_type(const type_details_ref& details);
         void add_variable(const variable_details_ref& details);
+        void add_function(const function_details_ref& details);
 
         inline module& operator()() { return *this; }
 

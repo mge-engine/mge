@@ -110,7 +110,7 @@ namespace mge::script {
 
         template <typename T> void store_result(T result)
         {
-            static_assert(false);
+            static_assert(false, "Default result store method called");
         }
 
         template <> void store_result<bool>(bool result)
@@ -173,8 +173,7 @@ namespace mge::script {
             store_double_result(result);
         }
 
-        template <>
-        void store_result<const std::string&>(const std::string& result)
+        void store_result(const std::string& result)
         {
             store_string_result(result);
         }

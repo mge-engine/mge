@@ -33,6 +33,7 @@ namespace mge::script {
 
     private:
         friend class details::function_base;
+        friend class module_details;
 
         std::string                            m_name;
         std::function<void(call_context&)>     m_invoke;

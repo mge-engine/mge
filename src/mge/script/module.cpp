@@ -53,6 +53,11 @@ namespace mge::script {
         m_details->add_variable(v);
     }
 
+    void module::add_function(const function_details_ref& f)
+    {
+        m_details->add_function(f);
+    }
+
     const std::string& module::name() const { return m_details->name(); }
 
     std::string module::full_name() const

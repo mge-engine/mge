@@ -18,11 +18,22 @@ namespace mge {
         void SetUp() override { mge::script::bind_all(); }
     };
 
-    int func(int x, int y) { return x - y; }
+    int intfunc(int x, int y) { return x - y; }
+    int intfunc_noargs(void) { return 42; }
 
-    TEST_F(test_function, simple_int)
+    TEST_F(test_function, intfunc_noargs)
     {
-        mge::script::function f("func", &func);
+        mge::script::function f("intfunc_noargs", &intfunc_noargs);
+
+        auto              invoke = f.invoke();
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, store_int_result(42)).Times(1);
+        invoke(ctx);
+    }
+
+    TEST_F(test_function, intfunc)
+    {
+        mge::script::function f("intfunc", &intfunc);
 
         auto              invoke = f.invoke();
         MOCK_call_context ctx;

@@ -32,6 +32,7 @@ namespace mge::script {
         void add_child(const module_details_ref& child);
         void add_type(const type_details_ref& child);
         void add_variable(const variable_details_ref& child);
+        void add_function(const function_details_ref& child);
 
         void apply(visitor& v);
 
@@ -39,6 +40,7 @@ namespace mge::script {
         module_details_weak_ref                     m_parent;
         std::map<std::string, type_details_ref>     m_types;
         std::map<std::string, variable_details_ref> m_variables;
+        std::map<std::string, function_details_ref> m_functions;
         std::map<std::string, module_details_ref>   m_children;
         const std::string                           m_name;
     };
