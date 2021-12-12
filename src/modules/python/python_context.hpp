@@ -20,8 +20,6 @@ namespace mge::python {
         void add_module(const python_module_ref& pm);
 
     private:
-        void check_python_error();
-
         PyObject* m_main_module;
         PyObject* m_main_dict;
         PyObject* m_main_dict_copy;

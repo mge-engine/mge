@@ -2,18 +2,24 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/memory.hpp"
 #include "python.hpp"
 #include <string>
 namespace mge::python {
 
-    class python_type_object
+    MGE_DECLARE_REF(python_type);
+
+    class python_type
     {
     public:
-        python_type_object(const std::string& name, size_t size);
-        ~python_type_object() = default;
+        python_type(const std::string& name, size_t size);
+        ~python_type() = default;
+
+        PyObject* materialize_type();
 
     private:
         std::string m_name;
+        PyType_Spec m_spec;
     };
 
 } // namespace mge::python

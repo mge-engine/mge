@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_module.hpp"
+#include "python_error.hpp"
 
 namespace mge ::python {
     python_module::python_module(const mge::script::module& m)
@@ -26,6 +27,13 @@ namespace mge ::python {
 
     void python_module::add_module(const python_module_ref& m)
     {
-        PyModule_AddObjectRef(m_py_module, m->m_name.c_str(), m->m_py_module);
+        add_object(m->m_name.c_str(), m->m_py_module);
+    }
+
+    void python_module::add_object(const char* name, PyObject* object)
+    {
+        if (PyModule_AddObjectRef(m_py_module, name, object)) {
+            error::check_error();
+        }
     }
 } // namespace mge::python

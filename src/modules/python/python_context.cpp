@@ -38,7 +38,7 @@ namespace mge::python {
                                         m_main_dict_copy);
         Py_CLEAR(result);
 
-        check_python_error();
+        error::check_error();
     }
 
     int python_context::main(int argc, const char** argv)
@@ -55,41 +55,6 @@ namespace mge::python {
     void python_context::add_module(const python_module_ref& pm)
     {
         m_modules[pm->full_name()] = pm;
-    }
-
-    void python_context::check_python_error()
-    {
-        PyObject* exc = PyErr_Occurred();
-        if (exc) {
-            PyObject* ex_type;
-            PyObject* ex_value;
-            PyObject* ex_traceback;
-
-            PyErr_Fetch(&ex_type, &ex_value, &ex_traceback);
-            PyErr_NormalizeException(&ex_type, &ex_value, &ex_traceback);
-
-            PyObject* ex_type_repr = PyObject_Str(ex_type);
-            PyObject* ex_type_str =
-                PyUnicode_AsEncodedString(ex_type_repr, "utf-8", "ignore");
-            std::string ex_type_cstr = PyBytes_AS_STRING(ex_type_str);
-
-            PyObject* ex_value_repr = PyObject_Str(ex_value);
-            PyObject* ex_value_str =
-                PyUnicode_AsEncodedString(ex_value_repr, "utf-8", "ignore");
-            std::string ex_value_cstr = PyBytes_AS_STRING(ex_value_str);
-
-            Py_XDECREF(ex_type_str);
-            Py_XDECREF(ex_type_repr);
-            Py_XDECREF(ex_type);
-            Py_XDECREF(ex_value_repr);
-            Py_XDECREF(ex_value_str);
-            Py_XDECREF(ex_value);
-
-            Py_XDECREF(ex_traceback);
-
-            MGE_THROW(mge::python::error) << "Python error (of " << ex_type_cstr
-                                          << "): " << ex_value_cstr;
-        }
     }
 
 } // namespace mge::python

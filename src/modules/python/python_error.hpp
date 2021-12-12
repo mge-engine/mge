@@ -67,6 +67,8 @@ namespace mge::python {
             mge::exception::operator<<(value);
             return *this;
         }
+
+        static void check_error();
     };
 
 } // namespace mge::python

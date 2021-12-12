@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/script/visitor.hpp"
 #include "python_module.hpp"
+#include "python_type.hpp"
 #include <stack>
 #include <typeindex>
 
@@ -30,12 +31,16 @@ namespace mge::python {
 
         void bind(const mge::script::module& m);
 
-        void enum_value(const std::string& name,
+        void enum_value(const std::string&              name,
                         const mge::script::any_integer& value) override;
 
     private:
+        void begin_enum(const mge::script::type_details& t);
+        void end_enum(const mge::script::type_details& t);
+
         python_context&                                          m_context;
         std::stack<python_module_ref>                            m_module_stack;
+        python_type_ref                                          m_current_type;
         std::map<std::type_index, mge::script::type_details_ref> m_pod_types;
     };
 

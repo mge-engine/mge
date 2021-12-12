@@ -14,14 +14,21 @@
 int main(int argc, const char** argv)
 {
 
-    if (!mge::configuration::loaded()) {
-        mge::configuration::load();
-    }
-    mge::module::load_all();
-    mge::script_engine_ref  engine = mge::script_engine::create("python");
-    mge::script_context_ref context = engine->create_context();
+    try {
+        if (!mge::configuration::loaded()) {
+            mge::configuration::load();
+        }
+        mge::module::load_all();
+        mge::script_engine_ref  engine = mge::script_engine::create("python");
+        mge::script_context_ref context = engine->create_context();
 
-    mge::script::module global_module;
-    context->bind(global_module);
-    return context->main(argc, argv);
+        mge::script::module global_module;
+        context->bind(global_module);
+        return context->main(argc, argv);
+    } catch (const mge::exception& mge_ex) {
+        std::cerr << mge_ex.details();
+    } catch (const std::exception& std_ex) {
+        std::cerr << "Exception occurred: " << std_ex.what();
+    }
+    return 1;
 }

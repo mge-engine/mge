@@ -30,7 +30,7 @@ namespace mge::script {
 
     void bind_std() { module("std")(type<std::string>()); }
 
-    void bind_mge() { module("mge"); }
+    void bind_mge() { module("mge")(type<mge::trace_level>()); }
 
     std::once_flag s_bind_all_complete;
 

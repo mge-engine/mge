@@ -47,7 +47,7 @@ namespace mge::python {
                 const_cast<mge::script::type_details&>(t).shared_from_this();
             m_pod_types[t.type_index()] = t_ref;
         } else if (t.type_class().is_enum) {
-
+            begin_enum(t);
             return;
         }
     }
@@ -58,9 +58,32 @@ namespace mge::python {
         return;
     }
 
-    void python_bind_helper::end(const mge::script::type_details& t) {}
+    void python_bind_helper::end(const mge::script::type_details& t)
+    {
+        if (t.type_class().is_enum) {
+            end_enum(t);
+        }
+    }
 
     void python_bind_helper::visit(const mge::script::function_details& v) {}
     void python_bind_helper::visit(const mge::script::variable_details& v) {}
+
+    void python_bind_helper::begin_enum(const mge::script::type_details& t)
+    {
+        m_current_type = std::make_shared<python_type>(t.name(), 0);
+    }
+
+    void python_bind_helper::end_enum(const mge::script::type_details& t)
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Add enum type '" << t.name() << "'";
+        PyObject* type = m_current_type->materialize_type();
+        try {
+            auto module = m_module_stack.top();
+            module->add_object(t.name().c_str(), type);
+        } catch (...) {
+            Py_XDECREF(type);
+            throw;
+        }
+    }
 
 } // namespace mge::python
