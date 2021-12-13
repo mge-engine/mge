@@ -2,50 +2,48 @@
 <html class="no-js">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Mathematics Library" href="../mgemath.html" /><link rel="prev" title="Concurrency" href="concurrency.html" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Mathematics Library" href="../mgemath.html" /><link rel="prev" title="Concurrency" href="concurrency.html" />
 
-    <meta name="generator" content="sphinx-3.5.3, furo 2021.03.20.beta30"/>
+    <meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
         <title>Versions - MGE 0.1 documentation</title>
-      <link rel="stylesheet" href="../_static/styles/furo.css?digest=978e1795dfe158b585dda6a8417f6411828bf3ed">
-    <link rel="stylesheet" href="../_static/pygments.css">
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css">
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
+    
     
 
 
 <style>
-  :root {
+  body {
     --color-code-background: #f8f8f8;
   --color-code-foreground: black;
   
   }
+  body[data-theme="dark"] {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
   @media (prefers-color-scheme: dark) {
-    :root {
+    body:not([data-theme="light"]) {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
   }
-
-  /* For allowing end-user-specific overrides */
-  .override-light {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
-  
-  }
-  .override-dark {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-</style><link rel="stylesheet" href="../_static/styles/furo-extensions.css?digest=d391b54134226e4196576da3bdb6dddb7e05ba2b"></head>
-  <body dir="">
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
     
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke-width="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
       <line x1="4" y1="6" x2="20" y2="6" />
       <line x1="10" y1="12" x2="20" y2="12" />
       <line x1="6" y1="18" x2="20" y2="18" />
@@ -53,9 +51,8 @@
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-menu">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
       <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -63,18 +60,57 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-      class="feather feather-chevron-right">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
     </svg>
   </symbol>
 </svg>
 
 <input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
 <input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation"></label>
-<label class="overlay toc-overlay" for="__toc"></label>
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
 
 
 
@@ -82,6 +118,7 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
         <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
       </label>
     </div>
@@ -89,7 +126,16 @@
       <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
     </div>
     <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
     </div>
@@ -102,21 +148,22 @@
   
   <span class="sidebar-brand-text">MGE 0.1 documentation</span>
   
-</a><form class="sidebar-search-container" method="get" action="../search.html">
-  <input class="sidebar-search" placeholder=Search name="q">
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
-</form><div class="sidebar-scroll"><div class="sidebar-tree">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
 </ul>
-<p class="caption"><span class="caption-text">User Manual</span></p>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label for="toctree-checkbox-1"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
@@ -130,12 +177,12 @@
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Versions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label for="toctree-checkbox-2"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label for="toctree-checkbox-3"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
@@ -146,24 +193,24 @@
 <li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label for="toctree-checkbox-4"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label for="toctree-checkbox-5"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../application/loop.html">Interaction Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeasset.html">Asset Library</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label for="toctree-checkbox-6"><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeasset.html">Asset Library</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../asset/asset_type.html">Asset Type</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Appendix</span></p>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
 </ul>
@@ -174,20 +221,32 @@
       
     </div>
   </aside>
-  <main class="main">
+  <div class="main">
     <div class="content">
-      <article role="main">
-        <label class="toc-overlay-icon toc-content-icon" for="__toc">
-          <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-        </label>
-        <div class="section" id="versions">
+      <div class="article-container">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="versions">
 <h1>Versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h1>
 <p>A few utilities are defined to handle versions, and comparisons on versions.</p>
-<div class="section" id="semantic-version">
+<section id="semantic-version">
 <h2>Semantic Version<a class="headerlink" href="#semantic-version" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp class">
-<dt id="_CPPv4N3mge16semantic_versionE">
-<span id="_CPPv3N3mge16semantic_versionE"></span><span id="_CPPv2N3mge16semantic_versionE"></span><span id="mge::semantic_version"></span><span class="target" id="classmge_1_1semantic__version"></span><em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">mge</span><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">semantic_version</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <span class="pre">boost</span><span class="pre">::</span><span class="pre">less_than_comparable</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a><span class="pre">&gt;</span><span class="pre">,</span> <em class="property"><span class="pre">public</span></em> <span class="pre">boost</span><span class="pre">::</span><span class="pre">equality_comparable</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a><span class="pre">&gt;</span><a class="headerlink" href="#_CPPv4N3mge16semantic_versionE" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_versionE">
+<span id="_CPPv3N3mge16semantic_versionE"></span><span id="_CPPv2N3mge16semantic_versionE"></span><span id="mge::semantic_version"></span><span class="target" id="classmge_1_1semantic__version"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">semantic_version</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">less_than_comparable</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">boost</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">equality_comparable</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge16semantic_versionE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>A semantic version, comprised of three levels of versioning. </p>
 <p>Semantic versioning (<a class="reference external" href="https://semver.org">https://semver.org</a>) applies certain rules to version number changes:<ul class="simple">
 <li><p>a change in the major version number implies possibility of incompatible API changes</p></li>
@@ -196,162 +255,155 @@
 </ul>
 </p>
 <div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_version16semantic_versionEv">
-<span id="_CPPv3N3mge16semantic_version16semantic_versionEv"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionEv"></span><span id="mge::semantic_version::semantic_version"></span><span class="target" id="classmge_1_1semantic__version_1a4de9fe8799204dbff004e728342323d5"></span><code class="sig-name descname"><span class="pre">semantic_version</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_version16semantic_versionEv">
+<span id="_CPPv3N3mge16semantic_version16semantic_versionEv"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionEv"></span><span id="mge::semantic_version::semantic_version"></span><span class="target" id="classmge_1_1semantic__version_1a4de9fe8799204dbff004e728342323d5"></span><span class="sig-name descname"><span class="n"><span class="pre">semantic_version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Create version with all elements initialized to 0. </p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t">
-<span id="_CPPv3N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t"></span><span id="mge::semantic_version::semantic_version__uint32_t.uint32_t.uint32_t"></span><span class="target" id="classmge_1_1semantic__version_1af61a9a08102b4a7a10696a99a0a1fee8"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">semantic_version</span></code><span class="sig-paren">(</span><span class="pre">uint32_t</span> <em><span class="pre">major</span></em>, <span class="pre">uint32_t</span> <em><span class="pre">minor</span></em> <span class="pre">=</span> <span class="pre">0u</span>, <span class="pre">uint32_t</span> <em><span class="pre">patch</span></em> <span class="pre">=</span> <span class="pre">0u</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t">
+<span id="_CPPv3N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t"></span><span id="mge::semantic_version::semantic_version__uint32_t.uint32_t.uint32_t"></span><span class="target" id="classmge_1_1semantic__version_1af61a9a08102b4a7a10696a99a0a1fee8"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">semantic_version</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">major</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">minor</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0u</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">patch</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0u</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Create version as specified. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">major</span></code>: major version </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">minor</span></code>: minor version </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">patch</span></code>: patch level </p></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>major</strong> – major version </p></li>
+<li><p><strong>minor</strong> – minor version </p></li>
+<li><p><strong>patch</strong> – patch level </p></li>
 </ul>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE">
-<span id="_CPPv3N3mge16semantic_version16semantic_versionENSt11string_viewE"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionENSt11string_viewE"></span><span id="mge::semantic_version::semantic_version__std::string_view"></span><span class="target" id="classmge_1_1semantic__version_1a477224b84aeadfa1dde8937d85611d76"></span><em class="property"><span class="pre">explicit</span></em> <code class="sig-name descname"><span class="pre">semantic_version</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">version_str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE">
+<span id="_CPPv3N3mge16semantic_version16semantic_versionENSt11string_viewE"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionENSt11string_viewE"></span><span id="mge::semantic_version::semantic_version__std::string_view"></span><span class="target" id="classmge_1_1semantic__version_1a477224b84aeadfa1dde8937d85611d76"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">semantic_version</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">version_str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Construct a new semantic version. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">version_str</span></code>: string in format major.minor.patch </p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>version_str</strong> – string in format major.minor.patch </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version">
-<span id="_CPPv3N3mge16semantic_version16semantic_versionERK16semantic_version"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionERK16semantic_version"></span><span id="mge::semantic_version::semantic_version__semantic_versionCR"></span><span class="target" id="classmge_1_1semantic__version_1ae61d198bdb723074a205d3f838b98df6"></span><code class="sig-name descname"><span class="pre">semantic_version</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version" title="mge::semantic_version::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version">
+<span id="_CPPv3N3mge16semantic_version16semantic_versionERK16semantic_version"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionERK16semantic_version"></span><span id="mge::semantic_version::semantic_version__semantic_versionCR"></span><span class="target" id="classmge_1_1semantic__version_1ae61d198bdb723074a205d3f838b98df6"></span><span class="sig-name descname"><span class="n"><span class="pre">semantic_version</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version" title="mge::semantic_version::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Copy constructor. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: copied version </p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – copied version </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version">
-<span id="_CPPv3N3mge16semantic_version16semantic_versionERR16semantic_version"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionERR16semantic_version"></span><span id="mge::semantic_version::semantic_version__semantic_versionRR"></span><span class="target" id="classmge_1_1semantic__version_1ae17a48578b149af88a456481a56c55d7"></span><code class="sig-name descname"><span class="pre">semantic_version</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version" title="mge::semantic_version::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version">
+<span id="_CPPv3N3mge16semantic_version16semantic_versionERR16semantic_version"></span><span id="_CPPv2N3mge16semantic_version16semantic_versionERR16semantic_version"></span><span id="mge::semantic_version::semantic_version__semantic_versionRR"></span><span class="target" id="classmge_1_1semantic__version_1ae17a48578b149af88a456481a56c55d7"></span><span class="sig-name descname"><span class="n"><span class="pre">semantic_version</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version" title="mge::semantic_version::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Move constructor. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: moved version </p></li>
-</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – moved version </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_versionaSERK16semantic_version">
-<span id="_CPPv3N3mge16semantic_versionaSERK16semantic_version"></span><span id="_CPPv2N3mge16semantic_versionaSERK16semantic_version"></span><span id="mge::semantic_version::assign-operator__semantic_versionCR"></span><span class="target" id="classmge_1_1semantic__version_1ae75e3a764d0398add59c2695f624cf9d"></span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">operator=</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_versionaSERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_versionaSERK16semantic_version">
+<span id="_CPPv3N3mge16semantic_versionaSERK16semantic_version"></span><span id="_CPPv2N3mge16semantic_versionaSERK16semantic_version"></span><span id="mge::semantic_version::assign-operator__semantic_versionCR"></span><span class="target" id="classmge_1_1semantic__version_1ae75e3a764d0398add59c2695f624cf9d"></span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_versionaSERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Assignment. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – assigned version </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: assigned version </p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4N3mge16semantic_versionaSERR16semantic_version">
-<span id="_CPPv3N3mge16semantic_versionaSERR16semantic_version"></span><span id="_CPPv2N3mge16semantic_versionaSERR16semantic_version"></span><span id="mge::semantic_version::assign-operator__semantic_versionRR"></span><span class="target" id="classmge_1_1semantic__version_1acaff9f0d04b51cf2b8904091477014e6"></span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">operator=</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_versionaSERR16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16semantic_versionaSERR16semantic_version">
+<span id="_CPPv3N3mge16semantic_versionaSERR16semantic_version"></span><span id="_CPPv2N3mge16semantic_versionaSERR16semantic_version"></span><span id="mge::semantic_version::assign-operator__semantic_versionRR"></span><span class="target" id="classmge_1_1semantic__version_1acaff9f0d04b51cf2b8904091477014e6"></span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge16semantic_versionaSERR16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Move assigment. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – assigned version </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: assigned version </p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-<dl class="cpp function">
-<dt id="_CPPv4NK3mge16semantic_versionltERK16semantic_version">
-<span id="_CPPv3NK3mge16semantic_versionltERK16semantic_version"></span><span id="_CPPv2NK3mge16semantic_versionltERK16semantic_version"></span><span id="mge::semantic_version::lt-operator__semantic_versionCRC"></span><span class="target" id="classmge_1_1semantic__version_1a814af8e5cd8fb300114dce827285198b"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">operator&lt;</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge16semantic_versionltERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Compares two versions. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this version is less than <code class="docutils literal notranslate"><span class="pre">v</span></code> </p>
-</dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: version to compare </p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4NK3mge16semantic_versioneqERK16semantic_version">
-<span id="_CPPv3NK3mge16semantic_versioneqERK16semantic_version"></span><span id="_CPPv2NK3mge16semantic_versioneqERK16semantic_version"></span><span id="mge::semantic_version::eq-operator__semantic_versionCRC"></span><span class="target" id="classmge_1_1semantic__version_1a4c29fcee3ee7d75e9a8df0331b1a3946"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">operator==</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="pre">semantic_version</span></a> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge16semantic_versioneqERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Compares two versions. <dl class="simple">
-<dt><strong>Return</strong></dt><dd><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this version and <code class="docutils literal notranslate"><span class="pre">v</span></code> are equal </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge16semantic_versionltERK16semantic_version">
+<span id="_CPPv3NK3mge16semantic_versionltERK16semantic_version"></span><span id="_CPPv2NK3mge16semantic_versionltERK16semantic_version"></span><span id="mge::semantic_version::lt-operator__semantic_versionCRC"></span><span class="target" id="classmge_1_1semantic__version_1a814af8e5cd8fb300114dce827285198b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge16semantic_versionltERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Compares two versions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – version to compare </p>
 </dd>
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">v</span></code>: version to compare </p></li>
-</ul>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this version is less than <code class="docutils literal notranslate"><span class="pre">v</span></code> </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4NK3mge16semantic_version5emptyEv">
-<span id="_CPPv3NK3mge16semantic_version5emptyEv"></span><span id="_CPPv2NK3mge16semantic_version5emptyEv"></span><span id="mge::semantic_version::emptyC"></span><span class="target" id="classmge_1_1semantic__version_1ac1ac2988acf2bddb9af171c15e799a76"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">empty</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5emptyEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge16semantic_versioneqERK16semantic_version">
+<span id="_CPPv3NK3mge16semantic_versioneqERK16semantic_version"></span><span id="_CPPv2NK3mge16semantic_versioneqERK16semantic_version"></span><span id="mge::semantic_version::eq-operator__semantic_versionCRC"></span><span class="target" id="classmge_1_1semantic__version_1a4c29fcee3ee7d75e9a8df0331b1a3946"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge16semantic_versioneqERK16semantic_version" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Compares two versions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>v</strong> – version to compare </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this version and <code class="docutils literal notranslate"><span class="pre">v</span></code> are equal </p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge16semantic_version5emptyEv">
+<span id="_CPPv3NK3mge16semantic_version5emptyEv"></span><span id="_CPPv2NK3mge16semantic_version5emptyEv"></span><span id="mge::semantic_version::emptyC"></span><span class="target" id="classmge_1_1semantic__version_1ac1ac2988acf2bddb9af171c15e799a76"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">empty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5emptyEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Get whether this version is empty (all components set to 0) </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>true if version is empty </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>true if version is empty </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4NK3mge16semantic_version5majorEv">
-<span id="_CPPv3NK3mge16semantic_version5majorEv"></span><span id="_CPPv2NK3mge16semantic_version5majorEv"></span><span id="mge::semantic_version::majorC"></span><span class="target" id="classmge_1_1semantic__version_1af418d4ad01ebe46e8ed4895e0f161a98"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">major</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5majorEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge16semantic_version5majorEv">
+<span id="_CPPv3NK3mge16semantic_version5majorEv"></span><span id="_CPPv2NK3mge16semantic_version5majorEv"></span><span id="mge::semantic_version::majorC"></span><span class="target" id="classmge_1_1semantic__version_1af418d4ad01ebe46e8ed4895e0f161a98"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">major</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5majorEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Get major component. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>major component </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>major component </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4NK3mge16semantic_version5minorEv">
-<span id="_CPPv3NK3mge16semantic_version5minorEv"></span><span id="_CPPv2NK3mge16semantic_version5minorEv"></span><span id="mge::semantic_version::minorC"></span><span class="target" id="classmge_1_1semantic__version_1aa116394fec906e0bcd5ee24b7423710c"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">minor</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5minorEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge16semantic_version5minorEv">
+<span id="_CPPv3NK3mge16semantic_version5minorEv"></span><span id="_CPPv2NK3mge16semantic_version5minorEv"></span><span id="mge::semantic_version::minorC"></span><span class="target" id="classmge_1_1semantic__version_1aa116394fec906e0bcd5ee24b7423710c"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">minor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5minorEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Get minor component. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>minor component </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>minor component </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 <dl class="cpp function">
-<dt id="_CPPv4NK3mge16semantic_version5patchEv">
-<span id="_CPPv3NK3mge16semantic_version5patchEv"></span><span id="_CPPv2NK3mge16semantic_version5patchEv"></span><span id="mge::semantic_version::patchC"></span><span class="target" id="classmge_1_1semantic__version_1ae713468b499fe509f77efabbc61da0c7"></span><span class="pre">uint32_t</span> <code class="sig-name descname"><span class="pre">patch</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em> <em class="property"><span class="pre">noexcept</span></em><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5patchEv" title="Permalink to this definition">¶</a><br/></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge16semantic_version5patchEv">
+<span id="_CPPv3NK3mge16semantic_version5patchEv"></span><span id="_CPPv2NK3mge16semantic_version5patchEv"></span><span id="mge::semantic_version::patchC"></span><span class="target" id="classmge_1_1semantic__version_1ae713468b499fe509f77efabbc61da0c7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">patch</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge16semantic_version5patchEv" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Get patch component. </p>
-<p><dl class="simple">
-<dt><strong>Return</strong></dt><dd><p>patch component </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>patch component </p>
 </dd>
 </dl>
-</p>
 </dd></dl>
 </div>
 </dd></dl>
-</div>
-</div>
+</section>
+</section>
 
-      </article>
+        </article>
+      </div>
       <footer>
         
         <div class="related-pages">
@@ -378,13 +430,11 @@
         </div>
 
         <div class="related-information">
-              Copyright &#169; 2021, Alexander Schroeder
-            |
+              Copyright &#169; 2021, Alexander Schroeder |
             Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            |
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
             <a class="muted-link" href="../_sources/core/version.rst.txt"
                rel="nofollow">
               Show Source
@@ -417,11 +467,11 @@
       
       
     </aside>
-  </main>
-</div>
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/scripts/main.js?digest=e931d09b2a40c1bb82b542effe772014573baf67"></script></body>
+    <script src="../_static/scripts/main.js"></script>
+    </body>
 </html>
