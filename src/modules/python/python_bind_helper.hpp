@@ -37,10 +37,11 @@ namespace mge::python {
     private:
         void begin_enum(const mge::script::type_details& t);
         void end_enum(const mge::script::type_details& t);
-        void create_function_type();
+        void define_function_type();
 
         python_context&                                          m_context;
         std::stack<python_module_ref>                            m_module_stack;
+        std::stack<bool>                                         m_module_seen;
         python_type_ref                                          m_current_type;
         std::map<std::type_index, mge::script::type_details_ref> m_pod_types;
     };

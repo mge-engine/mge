@@ -2,12 +2,13 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_bind_helper.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "mge/core/overloaded.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/script/function_details.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
 #include "python_context.hpp"
-
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -48,19 +49,26 @@ namespace mge::python {
 
     void python_bind_helper::begin(const mge::script::module_details& m)
     {
-        mge::script::module_details_ref m_ref =
-            const_cast<mge::script::module_details&>(m).shared_from_this();
-        MGE_DEBUG_TRACE(PYTHON) << "Binding module '" << m_ref->name() << "'";
-        auto mod = mge::script::module(m_ref);
-        auto pm = std::make_shared<python_module>(mod);
-        m_context.add_module(pm);
+        auto pm = m_context.get_module(m.full_name());
+        if (!pm) {
+            mge::script::module_details_ref m_ref =
+                const_cast<mge::script::module_details&>(m).shared_from_this();
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Binding module '" << m_ref->name() << "'";
+            auto mod = mge::script::module(m_ref);
+            pm = std::make_shared<python_module>(mod);
+            m_context.add_module(pm);
 
-        if (!m_module_stack.empty()) {
-            m_module_stack.top()->add_module(pm);
-        }
-        m_module_stack.push(pm);
-        if (m.name() == "mge") {
-            create_function_type();
+            if (!m_module_stack.empty()) {
+                m_module_stack.top()->add_module(pm);
+            }
+            m_context.mark_visited(&m);
+            m_module_stack.push(pm);
+            if (m.name() == "mge") {
+                define_function_type();
+            }
+        } else {
+            m_module_stack.push(pm);
         }
     }
 
@@ -71,6 +79,10 @@ namespace mge::python {
 
     void python_bind_helper::begin(const mge::script::type_details& t)
     {
+        if (m_context.visited(&t)) {
+            return;
+        }
+
         if (t.type_class().is_pod() || t.type_class().is_void) {
             mge::script::type_details_ref t_ref =
                 const_cast<mge::script::type_details&>(t).shared_from_this();
@@ -100,13 +112,30 @@ namespace mge::python {
 
     void python_bind_helper::end(const mge::script::type_details& t)
     {
+        if (m_context.visited(&t)) {
+            return;
+        }
+
         if (t.type_class().is_enum) {
             end_enum(t);
         }
+
+        m_context.mark_visited(&t);
     }
 
-    void python_bind_helper::visit(const mge::script::function_details& v) {}
-    void python_bind_helper::visit(const mge::script::variable_details& v) {}
+    void python_bind_helper::visit(const mge::script::function_details& f)
+    {
+        if (m_context.visited(&f)) {
+            return;
+        }
+    }
+
+    void python_bind_helper::visit(const mge::script::variable_details& v)
+    {
+        if (m_context.visited(&v)) {
+            return;
+        }
+    }
 
     void python_bind_helper::begin_enum(const mge::script::type_details& t)
     {
@@ -120,18 +149,55 @@ namespace mge::python {
         try {
             auto module = m_module_stack.top();
             module->add_object(t.name().c_str(), type);
+            m_current_type.reset();
         } catch (...) {
             Py_XDECREF(type);
             throw;
         }
     }
 
-    struct function_object
+    struct script_function
     {
-        PyObject_HEAD;
-        mge::script::function_details_ref m_function;
+        // clang-format off
+        PyObject_HEAD
+        mge::script::function_details* function;
+        // clang-format on
+
+        static int init(PyObject* self_object, PyObject* args, PyObject* kwds)
+        {
+            script_function* self =
+                reinterpret_cast<script_function*>(self_object);
+            self->function = nullptr;
+            return 0;
+        }
+
+        static PyObject*
+        call(PyObject* callable, PyObject* args, PyObject* kwargs)
+        {
+            MGE_DEBUG_TRACE(PYTHON) << "Function called";
+            return Py_None;
+        }
     };
 
-    void python_bind_helper::create_function_type() {}
+    static PyType_Slot s_script_function_slots[] = {
+        {Py_tp_init, script_function::init},
+        {Py_tp_call, script_function::call},
+        {}};
+
+    void python_bind_helper::define_function_type()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Create _script_function helper class";
+        PyType_Spec spec = {};
+        spec.name = "mge._script_function";
+        spec.basicsize = checked_cast<int>(sizeof(script_function));
+        spec.flags = Py_TPFLAGS_DEFAULT;
+        spec.slots = s_script_function_slots;
+
+        PyObject* function_type = PyType_FromSpec(&spec);
+
+        auto module = m_module_stack.top();
+        module->add_object("_script_function", function_type);
+        Py_XDECREF(function_type);
+    }
 
 } // namespace mge::python

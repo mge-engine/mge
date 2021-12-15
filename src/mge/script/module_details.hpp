@@ -20,7 +20,7 @@ namespace mge::script {
         ~module_details();
 
         const std::string& name() const;
-
+        std::string full_name() const;
         bool is_root() const;
 
         module_details_ref parent() const;

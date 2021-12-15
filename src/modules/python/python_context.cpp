@@ -57,4 +57,25 @@ namespace mge::python {
         m_modules[pm->full_name()] = pm;
     }
 
+    python_module_ref
+    python_context::get_module(const std::string& full_name) const
+    {
+        auto it = m_modules.find(full_name);
+        if (it != m_modules.end()) {
+            return it->second;
+        } else {
+            return python_module_ref();
+        }
+    }
+
+    void python_context::mark_visited(const void* ptr)
+    {
+        m_visited_objects.insert(ptr);
+    }
+
+    bool python_context::visited(const void* ptr) const
+    {
+        return m_visited_objects.find(ptr) != m_visited_objects.end();
+    }
+
 } // namespace mge::python

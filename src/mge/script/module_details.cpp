@@ -36,6 +36,15 @@ namespace mge::script {
         return m_parent.lock();
     }
 
+    std::string module_details::full_name() const
+    {
+        if (is_root()) {
+            return "";
+        } else {
+            return parent()->full_name() + "::" + name();
+        }
+    }
+
     static std::once_flag     s_root_module_initialized;
     static module_details_ref s_root_module;
 
