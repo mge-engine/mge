@@ -9,6 +9,8 @@
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
 #include "python_context.hpp"
+#include "python_error.hpp"
+
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -41,7 +43,34 @@ namespace mge::python {
 
     python_bind_helper::python_bind_helper(python_context& context)
         : m_context(context)
-    {}
+    {
+        bind_basic_modules();
+    }
+
+    void python_bind_helper::bind_basic_modules()
+    {
+        auto root_mod = mge::script::module();
+        auto python_root_mod = m_context.get_module(root_mod.full_name());
+        if (!python_root_mod) {
+            MGE_DEBUG_TRACE(PYTHON) << "Creating __main__ module";
+            python_root_mod = std::make_shared<python_module>(root_mod);
+            m_context.add_module(python_root_mod);
+            auto details = root_mod.details();
+            m_context.mark_visited(details.get());
+        }
+
+        auto mge_mod = mge::script::module("mge");
+        auto python_mge_mod = m_context.get_module(mge_mod.full_name());
+        if (!python_mge_mod) {
+            MGE_DEBUG_TRACE(PYTHON) << "Creating mge module";
+            python_mge_mod = std::make_shared<python_module>(mge_mod);
+            m_context.add_module(python_mge_mod);
+            python_root_mod->add_module(python_mge_mod);
+            auto details = mge_mod.details();
+            m_context.mark_visited(details.get());
+            define_function_type(python_mge_mod);
+        }
+    }
 
     python_bind_helper::~python_bind_helper() {}
 
@@ -49,12 +78,11 @@ namespace mge::python {
 
     void python_bind_helper::begin(const mge::script::module_details& m)
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Binding module '" << m.name() << "'";
         auto pm = m_context.get_module(m.full_name());
         if (!pm) {
             mge::script::module_details_ref m_ref =
                 const_cast<mge::script::module_details&>(m).shared_from_this();
-            MGE_DEBUG_TRACE(PYTHON)
-                << "Binding module '" << m_ref->name() << "'";
             auto mod = mge::script::module(m_ref);
             pm = std::make_shared<python_module>(mod);
             m_context.add_module(pm);
@@ -64,9 +92,6 @@ namespace mge::python {
             }
             m_context.mark_visited(&m);
             m_module_stack.push(pm);
-            if (m.name() == "mge") {
-                define_function_type();
-            }
         } else {
             m_module_stack.push(pm);
         }
@@ -123,13 +148,6 @@ namespace mge::python {
         m_context.mark_visited(&t);
     }
 
-    void python_bind_helper::visit(const mge::script::function_details& f)
-    {
-        if (m_context.visited(&f)) {
-            return;
-        }
-    }
-
     void python_bind_helper::visit(const mge::script::variable_details& v)
     {
         if (m_context.visited(&v)) {
@@ -184,7 +202,7 @@ namespace mge::python {
         {Py_tp_call, script_function::call},
         {}};
 
-    void python_bind_helper::define_function_type()
+    void python_bind_helper::define_function_type(python_module_ref& mge_module)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Create _script_function helper class";
         PyType_Spec spec = {};
@@ -192,12 +210,26 @@ namespace mge::python {
         spec.basicsize = checked_cast<int>(sizeof(script_function));
         spec.flags = Py_TPFLAGS_DEFAULT;
         spec.slots = s_script_function_slots;
-
         PyObject* function_type = PyType_FromSpec(&spec);
+        mge_module->add_object("_script_function", function_type);
+        m_context.set_function_type(function_type); // will use the reference
+    }
 
-        auto module = m_module_stack.top();
-        module->add_object("_script_function", function_type);
-        Py_XDECREF(function_type);
+    void python_bind_helper::visit(const mge::script::function_details& f)
+    {
+        if (m_context.visited(&f)) {
+            return;
+        }
+        MGE_DEBUG_TRACE(PYTHON) << "Add function '" << f.name() << "'";
+        PyObject* new_function_obj =
+            PyObject_CallNoArgs(m_context.function_type());
+        error::check_error();
+
+        script_function* new_function =
+            reinterpret_cast<script_function*>(new_function_obj);
+        new_function->function = const_cast<mge::script::function_details*>(&f);
+        m_module_stack.top()->add_object(f.name().c_str(), new_function_obj);
+        Py_XDECREF(new_function_obj);
     }
 
 } // namespace mge::python

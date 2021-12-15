@@ -3,11 +3,16 @@
 // All rights reserved.
 #include "mge/script/function.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/script/function_details.hpp"
 #include "mge/script/type.hpp"
 
 #include <map>
 #include <tuple>
+
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
 
 namespace mge::script {
     namespace details {
@@ -32,6 +37,7 @@ namespace mge::script {
                            void*                                fptr,
                            std::function<void(call_context&)>&& invoker)
             {
+                MGE_DEBUG_TRACE(SCRIPT) << "Register function: " << name;
                 auto details =
                     std::make_shared<function_details>(name, invoker);
                 m_functions.insert({fptr, details});

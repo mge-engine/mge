@@ -25,10 +25,14 @@ namespace mge::python {
         void mark_visited(const void* ptr);
         bool visited(const void* ptr) const;
 
+        PyObject* function_type() const { return m_function_type; }
+        void set_function_type(PyObject* object) { m_function_type = object; }
+
     private:
         PyObject* m_main_module;
         PyObject* m_main_dict;
         PyObject* m_main_dict_copy;
+        PyObject* m_function_type;
 
         std::map<std::string, python_module_ref> m_modules;
         std::set<const void*>                    m_visited_objects;

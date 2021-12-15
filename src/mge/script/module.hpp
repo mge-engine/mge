@@ -107,6 +107,13 @@ namespace mge::script {
         std::string full_name() const;
 
         /**
+         * @brief Module details.
+         *
+         * @return details
+         */
+        const module_details_ref& details() const;
+
+        /**
          * @brief Apply visitor.
          *
          * @param v visitor
