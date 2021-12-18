@@ -353,6 +353,12 @@ namespace mge::script {
             }
         }
 
+        template <typename T, typename F>
+        auto& field(const char* name, F T::*member_ptr)
+        {
+            return *this;
+        }
+
         using details::type_base::details;
         using details::type_base::name;
 

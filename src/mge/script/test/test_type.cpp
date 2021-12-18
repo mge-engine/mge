@@ -35,7 +35,7 @@ namespace mge {
     TEST_F(test_type, struct_type)
     {
         using namespace mge::script;
-        module("mge")(type<foo>());
+        module("mge")(type<foo>().field("x", &foo::x));
     }
 
     enum enum1
