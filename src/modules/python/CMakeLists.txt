@@ -5,6 +5,7 @@ SET(mge_python_module_SOURCES
     python_engine.cpp
     python_context.cpp
     python_bind_helper.cpp
+    python_call_context.cpp
     python_type.cpp
     python_error.cpp
     python_module.cpp)
