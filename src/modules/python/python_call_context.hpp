@@ -9,6 +9,8 @@ namespace mge::python {
         python_call_context(PyObject* args);
         ~python_call_context();
 
+        PyObject* result() const { return m_result; }
+
     protected:
         bool           bool_parameter(size_t position) override;
         char           char_parameter(size_t position) override;

@@ -8,6 +8,7 @@
 #include "mge/script/function_details.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
+#include "python_call_context.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
 
@@ -192,8 +193,21 @@ namespace mge::python {
         static PyObject*
         call(PyObject* callable, PyObject* args, PyObject* kwargs)
         {
-            MGE_DEBUG_TRACE(PYTHON) << "Function called";
-            return Py_None;
+            script_function* f = reinterpret_cast<script_function*>(callable);
+
+            PyObject* result = nullptr;
+
+            if (f->function) {
+                python_call_context ctx(args);
+                f->function->invoke()(ctx);
+                result = ctx.result();
+                Py_INCREF(result);
+            } else {
+                result = Py_None;
+                Py_INCREF(result);
+            }
+
+            return result;
         }
     };
 
