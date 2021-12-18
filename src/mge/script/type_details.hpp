@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/script/any_integer.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_classification.hpp"
@@ -76,6 +77,26 @@ namespace mge::script {
     class MGESCRIPT_EXPORT class_type_details : public type_details
     {
     public:
+        struct field_details
+        {
+            field_details(const std::string& name_,
+                          std::type_index    type_,
+                          context_function&& setter_,
+                          context_function&& getter_)
+                : name(name_)
+                , type(type_)
+                , getter(std::move(getter_))
+                , setter(std::move(setter_))
+            {}
+
+            field_details(const field_details&) = default;
+
+            std::string      name;
+            std::type_index  type;
+            context_function getter;
+            context_function setter;
+        };
+
         class_type_details(std::type_index index, const std::string& name);
         class_type_details(std::type_index            index,
                            const std::string&         name,
@@ -83,6 +104,13 @@ namespace mge::script {
         virtual ~class_type_details() = default;
 
         void apply(visitor& v) override;
+
+        void add_field(const std::string& name,
+                       std::type_index    type,
+                       context_function&& getter,
+                       context_function&& setter);
+
+        std::vector<field_details> m_fields;
     };
 
 } // namespace mge::script

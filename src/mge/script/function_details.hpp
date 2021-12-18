@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/small_vector.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
@@ -17,7 +18,7 @@ namespace mge::script {
     class MGESCRIPT_EXPORT function_details
     {
     public:
-        using invocation_function = std::function<void(call_context&)>;
+        using invocation_function = context_function;
 
         function_details(const std::string&         name,
                          const invocation_function& invoke);

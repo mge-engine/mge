@@ -80,6 +80,14 @@ namespace mge::script {
         : type_details(index, name, c)
     {}
 
+    void class_type_details::add_field(const std::string& name,
+                                       std::type_index    type,
+                                       context_function&& getter,
+                                       context_function&& setter)
+    {
+        m_fields.emplace_back(name, type, std::move(getter), std::move(setter));
+    }
+
     void class_type_details::apply(visitor& v)
     {
         v.begin(*this);

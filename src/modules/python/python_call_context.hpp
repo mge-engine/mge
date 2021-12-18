@@ -11,6 +11,8 @@ namespace mge::python {
 
         PyObject* result() const { return m_result; }
 
+        void* this_ptr() override;
+
     protected:
         bool           bool_parameter(size_t position) override;
         char           char_parameter(size_t position) override;

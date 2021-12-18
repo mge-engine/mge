@@ -21,6 +21,8 @@ namespace mge::python {
         Py_CLEAR(m_result);
     }
 
+    void* python_call_context::this_ptr() { return nullptr; }
+
     bool python_call_context::bool_parameter(size_t position)
     {
         PyObject* val = parameter(position);

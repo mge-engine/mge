@@ -3,10 +3,16 @@
 // All rights reserved.
 #pragma once
 #include "mge/script/dllexport.hpp"
+#include <functional>
 #include <string>
 #include <type_traits>
 
 namespace mge::script {
+
+    class call_context;
+
+    using context_function = std::function<void(call_context&)>;
+
     /**
      * @brief A call context is used when invoking functions or methods.
      *
@@ -17,92 +23,124 @@ namespace mge::script {
         call_context() = default;
         virtual ~call_context() = default;
 
+        /**
+         * @brief Get 'this' pointer.
+         * @return 'this' pointer of call, or nullptr for free function
+         */
+        virtual void* this_ptr() = 0;
+
         template <typename T>
-        typename std::enable_if<std::is_same<T, bool>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, bool>::value,
+            T>::type
         parameter(size_t position)
         {
             return bool_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, char>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, char>::value,
+            T>::type
         parameter(size_t position)
         {
             return char_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, signed char>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, signed char>::value,
+            T>::type
         parameter(size_t position)
         {
             return char_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, unsigned char>::value, T>::type
+        typename std::enable_if<std::is_same<typename std::remove_cv<T>::type,
+                                             unsigned char>::value,
+                                T>::type
         parameter(size_t position)
         {
             return unsigned_char_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, short>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, short>::value,
+            T>::type
         parameter(size_t position)
         {
             return short_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, unsigned short>::value, T>::type
+        typename std::enable_if<std::is_same<typename std::remove_cv<T>::type,
+                                             unsigned short>::value,
+                                T>::type
         parameter(size_t position)
         {
             return unsigned_short_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, int>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, int>::value,
+            T>::type
         parameter(size_t position)
         {
             return int_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, unsigned int>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, unsigned int>::value,
+            T>::type
         parameter(size_t position)
         {
             return unsigned_int_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, int64_t>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, int64_t>::value,
+            T>::type
         parameter(size_t position)
         {
             return long_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, uint64_t>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, uint64_t>::value,
+            T>::type
         parameter(size_t position)
         {
             return unsigned_long_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, float>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, float>::value,
+            T>::type
         parameter(size_t position)
         {
             return float_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, double>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, double>::value,
+            T>::type
         parameter(size_t position)
         {
             return double_parameter(position);
         }
 
         template <typename T>
-        typename std::enable_if<std::is_same<T, std::string>::value, T>::type
+        typename std::enable_if<
+            std::is_same<typename std::remove_cv<T>::type, std::string>::value,
+            T>::type
         parameter(size_t position)
         {
             return string_parameter(position);

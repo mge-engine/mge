@@ -9,6 +9,8 @@ class MOCK_call_context : public mge::script::call_context
 public:
     MOCK_call_context() = default;
 
+    MOCK_METHOD(void*, this_ptr, (),(override));
+
     MOCK_METHOD(void, store_bool_result, (bool), (override));
     MOCK_METHOD(void, store_char_result, (char), (override));
     MOCK_METHOD(void, store_signed_char_result, (signed char), (override));

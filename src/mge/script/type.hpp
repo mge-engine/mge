@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/sfinae.hpp"
 #include "mge/core/type_name.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_classification.hpp"
@@ -356,6 +357,20 @@ namespace mge::script {
         template <typename T, typename F>
         auto& field(const char* name, F T::*member_ptr)
         {
+            auto field_ti = std::type_index(typeid(F));
+            m_class_details->add_field(
+                name,
+                field_ti,
+                std::move([member_ptr](call_context& ctx) {
+                    void*    self = ctx.this_ptr();
+                    const T* self_object = static_cast<const T*>(self);
+                    ctx.store_result(self_object->*member_ptr);
+                }),
+                std::move([member_ptr](call_context& ctx) {
+                    void* self = ctx.this_ptr();
+                    T*    self_object = static_cast<T*>(self);
+                    self_object->*member_ptr = ctx.parameter<F>(0);
+                }));
             return *this;
         }
 
