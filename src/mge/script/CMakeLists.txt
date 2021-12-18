@@ -42,5 +42,5 @@ MGE_LIBRARY(
     ${mgescript_sources}
     ${mgescript_headers}
 )
-TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
+TARGET_LINK_LIBRARIES(mgescript mgecore mgemath mgegraphics boost-all)
 ADD_SUBDIRECTORY(test)

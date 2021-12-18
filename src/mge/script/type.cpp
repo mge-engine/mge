@@ -47,6 +47,12 @@ namespace mge::script {
                                                                  type_class);
                     m_types.insert({t->type_index(), t});
                     return t;
+                } else if (type_class.is_class) {
+                    auto t = std::make_shared<class_type_details>(index,
+                                                                  name,
+                                                                  type_class);
+                    m_types.insert({t->type_index(), t});
+                    return t;
                 } else {
                     auto t =
                         std::make_shared<type_details>(index, name, type_class);

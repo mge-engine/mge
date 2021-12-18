@@ -313,9 +313,11 @@ namespace mge::script {
             return *this;
         }
 
-        enum_type_details_ref m_enum_details;
         using details::type_base::details;
         using details::type_base::name;
+
+    private:
+        enum_type_details_ref m_enum_details;
     };
 
     // class type
@@ -330,13 +332,32 @@ namespace mge::script {
             auto n = mge::type_name<T>();
             m_details = get_details(ti);
             if (!m_details) {
-                type_classification cls{};
+                type_classification cls{.is_class = 1};
                 m_details = create_details(ti, n, cls);
+                m_class_details =
+                    std::dynamic_pointer_cast<class_type_details>(m_details);
+            }
+        }
+
+        inline explicit type(const std::string& alias_name)
+        {
+            auto ti = std::type_index(typeid(T));
+            auto n = mge::type_name<T>();
+            m_details = get_details(ti);
+            if (!m_details) {
+                type_classification cls{.is_class = 1};
+                m_details = create_details(ti, n, cls);
+                m_details->set_alias_name(alias_name);
+                m_class_details =
+                    std::dynamic_pointer_cast<class_type_details>(m_details);
             }
         }
 
         using details::type_base::details;
         using details::type_base::name;
+
+    private:
+        class_type_details_ref m_class_details;
     };
 
 } // namespace mge::script

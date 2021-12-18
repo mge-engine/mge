@@ -20,7 +20,6 @@ namespace mge {
         class constructor;
         class destructor;
         class method;
-        class function;
         */
 
         MGE_DECLARE_REF(module_details);
@@ -30,6 +29,8 @@ namespace mge {
         MGE_DECLARE_WEAK_REF(type_details);
         MGE_DECLARE_REF(enum_type_details);
         MGE_DECLARE_WEAK_REF(enum_type_details);
+        MGE_DECLARE_REF(class_type_details);
+        MGE_DECLARE_WEAK_REF(class_type_details);
 
         MGE_DECLARE_REF(variable_details);
         MGE_DECLARE_WEAK_REF(variable_details);

@@ -44,6 +44,11 @@ namespace mge::script {
         v.end(*this);
     }
 
+    void type_details::set_alias_name(const std::string& alias)
+    {
+        m_alias_name = alias;
+    }
+
     enum_type_details::enum_type_details(std::type_index    index,
                                          const std::string& name)
         : type_details(index, name)
@@ -63,4 +68,22 @@ namespace mge::script {
         }
         v.end(*this);
     }
+
+    class_type_details::class_type_details(std::type_index    index,
+                                           const std::string& name)
+        : type_details(index, name)
+    {}
+
+    class_type_details::class_type_details(std::type_index            index,
+                                           const std::string&         name,
+                                           const type_classification& c)
+        : type_details(index, name, c)
+    {}
+
+    void class_type_details::apply(visitor& v)
+    {
+        v.begin(*this);
+        v.end(*this);
+    }
+
 } // namespace mge::script

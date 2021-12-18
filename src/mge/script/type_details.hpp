@@ -33,6 +33,8 @@ namespace mge::script {
         mge::script::module        module() const;
         const type_classification& type_class() const;
 
+        void set_alias_name(const std::string& alias);
+
         virtual void apply(visitor& v);
 
     protected:
@@ -40,6 +42,7 @@ namespace mge::script {
 
         std::type_index         m_index;
         std::string             m_name;
+        std::string             m_alias_name;
         type_classification     m_type_class;
         module_details_weak_ref m_module;
     };
@@ -68,6 +71,18 @@ namespace mge::script {
     private:
         type_details_ref        m_underlying_type;
         std::vector<enum_value> m_enum_values;
+    };
+
+    class MGESCRIPT_EXPORT class_type_details : public type_details
+    {
+    public:
+        class_type_details(std::type_index index, const std::string& name);
+        class_type_details(std::type_index            index,
+                           const std::string&         name,
+                           const type_classification& c);
+        virtual ~class_type_details() = default;
+
+        void apply(visitor& v) override;
     };
 
 } // namespace mge::script

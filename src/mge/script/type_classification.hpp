@@ -26,6 +26,7 @@ namespace mge::script {
         unsigned int is_bool : 1;
         unsigned int is_float : 1;
         unsigned int is_double : 1;
+        unsigned int is_class : 1;
     };
 
 } // namespace mge::script
