@@ -20,4 +20,6 @@ namespace mge::script {
     void visitor::enum_value(const std::string& name, const any_integer& value)
     {}
 
+    void visitor::field(const field_details& f) {}
+
 } // namespace mge::script

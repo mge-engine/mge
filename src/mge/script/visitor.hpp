@@ -34,5 +34,7 @@ namespace mge::script {
 
         virtual void enum_value(const std::string& name,
                                 const any_integer& value);
+
+        virtual void field(const field_details& field);
     };
 } // namespace mge::script

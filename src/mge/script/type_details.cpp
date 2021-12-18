@@ -91,6 +91,9 @@ namespace mge::script {
     void class_type_details::apply(visitor& v)
     {
         v.begin(*this);
+        for (const auto& f : m_fields) {
+            v.field(f);
+        }
         v.end(*this);
     }
 
