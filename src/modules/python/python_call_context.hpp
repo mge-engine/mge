@@ -10,6 +10,7 @@ namespace mge::python {
     {
     public:
         python_call_context(PyObject* args);
+        python_call_context(void* this_ptr_, PyObject* args = nullptr);
         ~python_call_context();
 
         PyObject* result() const { return m_result; }
@@ -48,6 +49,7 @@ namespace mge::python {
         PyObject* parameter(size_t position);
         void      store(PyObject* object);
 
+        void*     m_this_ptr;
         PyObject* m_args;
         PyObject* m_result;
     };

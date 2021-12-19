@@ -27,6 +27,8 @@ namespace mge::python {
         std::string full_name() const { return m_type->full_name(); }
 
     protected:
+        virtual void prepare_materialize();
+
         PyType_Spec m_spec;
 
     private:
@@ -41,6 +43,14 @@ namespace mge::python {
     public:
         python_complex_type(const mge::script::type_details& type);
         virtual ~python_complex_type();
+
+    protected:
+        void prepare_materialize() override;
+
+    private:
+        std::vector<PyType_Slot>                m_slots;
+        std::vector<PyGetSetDef>                m_getsetdefs;
+        std::vector<mge::script::field_details> m_fields;
     };
 
 } // namespace mge::python

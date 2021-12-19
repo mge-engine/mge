@@ -8,7 +8,20 @@
 namespace mge::python {
 
     python_call_context::python_call_context(PyObject* args)
-        : m_args(args)
+        : m_this_ptr(nullptr)
+        , m_args(args)
+        , m_result(nullptr)
+    {
+        if (args) {
+            Py_INCREF(m_args);
+        }
+        m_result = Py_None;
+        Py_INCREF(m_result);
+    }
+
+    python_call_context::python_call_context(void* this_ptr_, PyObject* args)
+        : m_this_ptr(this_ptr_)
+        , m_args(args)
         , m_result(nullptr)
     {
         if (args) {
@@ -24,7 +37,7 @@ namespace mge::python {
         Py_CLEAR(m_result);
     }
 
-    void* python_call_context::this_ptr() { return nullptr; }
+    void* python_call_context::this_ptr() { return m_this_ptr; }
 
     bool python_call_context::bool_parameter(size_t position)
     {
@@ -155,6 +168,11 @@ namespace mge::python {
 
     PyObject* python_call_context::parameter(size_t position)
     {
+        if (!PyTuple_Check(m_args)) {
+            if (position == 0) {
+                return m_args;
+            }
+        }
         auto result =
             PyTuple_GetItem(m_args, checked_cast<Py_ssize_t>(position));
         if (!result) {
