@@ -35,14 +35,17 @@ namespace mge::python {
                         const mge::script::any_integer& value) override;
 
     private:
+        void begin_class(const mge::script::type_details& t);
+        void end_class(const mge::script::type_details& t);
         void begin_enum(const mge::script::type_details& t);
         void end_enum(const mge::script::type_details& t);
         void define_function_type(python_module_ref& mge_module);
         void bind_basic_modules();
 
-        python_context&                                          m_context;
-        std::stack<python_module_ref>                            m_module_stack;
-        python_type_ref                                          m_current_type;
+        python_context&               m_context;
+        std::stack<python_module_ref> m_module_stack;
+        python_type_ref               m_current_type;
+        python_complex_type_ref       m_current_complex_type;
         std::map<std::type_index, mge::script::type_details_ref> m_pod_types;
     };
 

@@ -116,6 +116,9 @@ namespace mge::python {
         } else if (t.type_class().is_enum) {
             begin_enum(t);
             return;
+        } else if (t.type_class().is_class) {
+            begin_class(t);
+            return;
         }
     }
 
@@ -144,6 +147,8 @@ namespace mge::python {
 
         if (t.type_class().is_enum) {
             end_enum(t);
+        } else if (t.type_class().is_class) {
+            end_class(t);
         }
 
         m_context.mark_visited(&t);
@@ -158,7 +163,7 @@ namespace mge::python {
 
     void python_bind_helper::begin_enum(const mge::script::type_details& t)
     {
-        m_current_type = std::make_shared<python_type>(t.name(), 0);
+        m_current_type = std::make_shared<python_type>(t.name());
     }
 
     void python_bind_helper::end_enum(const mge::script::type_details& t)
@@ -174,6 +179,10 @@ namespace mge::python {
             throw;
         }
     }
+
+    void python_bind_helper::begin_class(const mge::script::type_details& t) {}
+
+    void python_bind_helper::end_class(const mge::script::type_details& t) {}
 
     struct script_function
     {

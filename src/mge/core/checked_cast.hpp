@@ -14,7 +14,7 @@ namespace mge {
      * @param value value to cast
      * @return casted value
      */
-    template <typename T, typename S> inline T checked_cast(S value)
+    template <typename T, typename S> inline constexpr T checked_cast(S value)
     {
         T tmp = static_cast<T>(value);
         S stmp = static_cast<S>(tmp);

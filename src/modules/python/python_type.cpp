@@ -7,14 +7,19 @@
 
 namespace mge::python {
 
+    struct empty_py_object
+    {
+        PyObject_HEAD
+    };
+
     static PyType_Slot s_empty_slots[] = {{}};
 
-    python_type::python_type(const std::string& name, size_t size)
+    python_type::python_type(const std::string& name)
         : m_name(name)
     {
         m_spec = PyType_Spec{};
         m_spec.name = m_name.c_str();
-        m_spec.basicsize = checked_cast<int>(size);
+        m_spec.basicsize = checked_cast<int>(sizeof(empty_py_object));
         m_spec.flags = Py_TPFLAGS_DEFAULT;
         m_spec.slots = s_empty_slots;
     }
@@ -44,5 +49,11 @@ namespace mge::python {
     {
         m_attributes.emplace_back(std::make_tuple(name, value));
     }
+
+    python_complex_type::python_complex_type(const std::string& name)
+        : python_type(name)
+    {}
+
+    python_complex_type::~python_complex_type() {}
 
 } // namespace mge::python
