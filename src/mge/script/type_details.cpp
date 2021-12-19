@@ -9,13 +9,16 @@ namespace mge::script {
     type_details::type_details(std::type_index index, const std::string& name)
         : m_index(index)
         , m_name(name)
+        , m_size(0)
     {}
 
     type_details::type_details(std::type_index            index,
                                const std::string&         name,
-                               const type_classification& c)
+                               const type_classification& c,
+                               size_t                     sz)
         : m_index(index)
         , m_name(name)
+        , m_size(sz)
         , m_type_class(c)
     {}
 
@@ -43,6 +46,8 @@ namespace mge::script {
         return module().full_name() + name();
     }
 
+    size_t type_details::type_size() const { return m_size; }
+
     void type_details::apply(visitor& v)
     {
         v.begin(*this);
@@ -61,8 +66,9 @@ namespace mge::script {
 
     enum_type_details::enum_type_details(std::type_index            index,
                                          const std::string&         name,
-                                         const type_classification& c)
-        : type_details(index, name, c)
+                                         const type_classification& c,
+                                         size_t                     size)
+        : type_details(index, name, c, size)
     {}
 
     void enum_type_details::apply(visitor& v)
@@ -81,8 +87,9 @@ namespace mge::script {
 
     class_type_details::class_type_details(std::type_index            index,
                                            const std::string&         name,
-                                           const type_classification& c)
-        : type_details(index, name, c)
+                                           const type_classification& c,
+                                           size_t                     size)
+        : type_details(index, name, c, size)
     {}
 
     void class_type_details::add_field(const std::string& name,

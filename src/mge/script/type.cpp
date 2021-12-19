@@ -37,25 +37,30 @@ namespace mge::script {
             type_details_ref
             create_details(std::type_index            index,
                            const std::string&         name,
-                           const type_classification& type_class)
+                           const type_classification& type_class,
+                           size_t                     size)
             {
                 MGE_DEBUG_TRACE(SCRIPT) << "Register type: " << name;
 
                 if (type_class.is_enum) {
                     auto t = std::make_shared<enum_type_details>(index,
                                                                  name,
-                                                                 type_class);
+                                                                 type_class,
+                                                                 size);
                     m_types.insert({t->type_index(), t});
                     return t;
                 } else if (type_class.is_class) {
                     auto t = std::make_shared<class_type_details>(index,
                                                                   name,
-                                                                  type_class);
+                                                                  type_class,
+                                                                  size);
                     m_types.insert({t->type_index(), t});
                     return t;
                 } else {
-                    auto t =
-                        std::make_shared<type_details>(index, name, type_class);
+                    auto t = std::make_shared<type_details>(index,
+                                                            name,
+                                                            type_class,
+                                                            size);
 
                     m_types.insert({t->type_index(), t});
                     return t;
@@ -86,11 +91,13 @@ namespace mge::script {
         type_details_ref
         type_base::create_details(std::type_index            index,
                                   const std::string&         name,
-                                  const type_classification& type_class)
+                                  const type_classification& type_class,
+                                  size_t                     size)
         {
             return s_global_type_details->create_details(index,
                                                          name,
-                                                         type_class);
+                                                         type_class,
+                                                         size);
         }
 
         std::type_index type_base::type_index() const

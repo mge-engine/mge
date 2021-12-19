@@ -27,7 +27,8 @@ namespace mge::script {
         type_details(std::type_index index, const std::string& name);
         type_details(std::type_index            index,
                      const std::string&         name,
-                     const type_classification& c);
+                     const type_classification& c,
+                     size_t                     sz);
         virtual ~type_details() = default;
 
         std::type_index            type_index() const;
@@ -35,6 +36,7 @@ namespace mge::script {
         mge::script::module        module() const;
         std::string                full_name() const;
         const type_classification& type_class() const;
+        size_t                     type_size() const;
 
         void set_alias_name(const std::string& alias);
 
@@ -46,6 +48,7 @@ namespace mge::script {
         std::type_index         m_index;
         std::string             m_name;
         std::string             m_alias_name;
+        size_t                  m_size;
         type_classification     m_type_class;
         module_details_weak_ref m_module;
     };
@@ -58,7 +61,9 @@ namespace mge::script {
         enum_type_details(std::type_index index, const std::string& name);
         enum_type_details(std::type_index            index,
                           const std::string&         name,
-                          const type_classification& c);
+                          const type_classification& c,
+                          size_t                     size);
+
         virtual ~enum_type_details() = default;
 
         void apply(visitor& v) override;
@@ -82,7 +87,8 @@ namespace mge::script {
         class_type_details(std::type_index index, const std::string& name);
         class_type_details(std::type_index            index,
                            const std::string&         name,
-                           const type_classification& c);
+                           const type_classification& c,
+                           size_t                     size);
         virtual ~class_type_details() = default;
 
         void apply(visitor& v) override;

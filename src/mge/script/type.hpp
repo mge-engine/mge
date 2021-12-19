@@ -38,7 +38,8 @@ namespace mge::script {
             type_details_ref
             create_details(std::type_index            index,
                            const std::string&         name,
-                           const type_classification& type_class);
+                           const type_classification& type_class,
+                           size_t                     size = 0);
 
             type_details_ref m_details;
         };
@@ -302,7 +303,7 @@ namespace mge::script {
             m_details = get_details(ti);
             if (!m_details) {
                 type_classification cls{.is_enum = 1};
-                m_details = create_details(ti, n, cls);
+                m_details = create_details(ti, n, cls, sizeof(T));
                 m_enum_details =
                     std::dynamic_pointer_cast<enum_type_details>(m_details);
             }
@@ -334,7 +335,7 @@ namespace mge::script {
             m_details = get_details(ti);
             if (!m_details) {
                 type_classification cls{.is_class = 1};
-                m_details = create_details(ti, n, cls);
+                m_details = create_details(ti, n, cls, sizeof(T));
                 m_class_details =
                     std::dynamic_pointer_cast<class_type_details>(m_details);
             }

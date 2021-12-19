@@ -13,7 +13,6 @@
 
 int main(int argc, const char** argv)
 {
-
     try {
         if (!mge::configuration::loaded()) {
             mge::configuration::load();

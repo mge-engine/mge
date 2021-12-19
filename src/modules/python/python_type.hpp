@@ -36,13 +36,11 @@ namespace mge::python {
         std::vector<attr_value>                    m_attributes;
     };
 
-#if 0
     class python_complex_type : public python_type
     {
     public:
-        python_complex_type(const std::string& name);
+        python_complex_type(const mge::script::type_details& type);
         virtual ~python_complex_type();
     };
-#endif
 
 } // namespace mge::python
