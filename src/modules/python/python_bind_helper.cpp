@@ -163,7 +163,7 @@ namespace mge::python {
 
     void python_bind_helper::begin_enum(const mge::script::type_details& t)
     {
-        m_current_type = std::make_shared<python_type>(t.name());
+        m_current_type = std::make_shared<python_type>(t);
     }
 
     void python_bind_helper::end_enum(const mge::script::type_details& t)
@@ -173,6 +173,7 @@ namespace mge::python {
         try {
             auto module = m_module_stack.top();
             module->add_object(t.name().c_str(), type);
+            m_context.add_type(m_current_type);
             m_current_type.reset();
         } catch (...) {
             Py_XDECREF(type);

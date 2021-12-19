@@ -33,6 +33,7 @@ namespace mge::script {
         std::type_index            type_index() const;
         const std::string&         name() const;
         mge::script::module        module() const;
+        std::string                full_name() const;
         const type_classification& type_class() const;
 
         void set_alias_name(const std::string& alias);

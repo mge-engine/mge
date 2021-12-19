@@ -38,6 +38,11 @@ namespace mge::script {
         return mge::script::module(m);
     }
 
+    std::string type_details::full_name() const
+    {
+        return module().full_name() + name();
+    }
+
     void type_details::apply(visitor& v)
     {
         v.begin(*this);

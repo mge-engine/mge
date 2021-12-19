@@ -70,6 +70,11 @@ namespace mge::python {
         }
     }
 
+    void python_context::add_type(const python_type_ref& type)
+    {
+        m_types[type->full_name()] = type;
+    }
+
     void python_context::mark_visited(const void* ptr)
     {
         m_visited_objects.insert(ptr);
