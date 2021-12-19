@@ -98,7 +98,10 @@ namespace mge::script {
                        context_function&& getter,
                        context_function&& setter);
 
+        void use_destructor(const context_function& dtor);
+
         std::vector<field_details> m_fields;
+        context_function           m_destructor;
     };
 
 } // namespace mge::script

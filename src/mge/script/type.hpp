@@ -339,6 +339,15 @@ namespace mge::script {
                 m_class_details =
                     std::dynamic_pointer_cast<class_type_details>(m_details);
             }
+            if constexpr (std::is_destructible_v<T> &&
+                          !std::is_trivially_destructible_v<T>) {
+                m_class_details->use_destructor([](call_context& ctx) {
+                    T* thisptr_typed = reinterpret_cast<T*>(ctx.this_ptr());
+                    if (thisptr_typed) {
+                        thisptr_typed->~T();
+                    }
+                });
+            }
         }
 
         inline explicit type(const std::string& alias_name)
@@ -352,6 +361,15 @@ namespace mge::script {
                 m_details->set_alias_name(alias_name);
                 m_class_details =
                     std::dynamic_pointer_cast<class_type_details>(m_details);
+            }
+            if constexpr (std::is_destructible_v<T> &&
+                          !std::is_trivially_destructible_v<T>) {
+                m_class_details->use_destructor([](call_context& ctx) {
+                    T* thisptr_typed = reinterpret_cast<T*>(ctx.this_ptr());
+                    if (thisptr_typed) {
+                        thisptr_typed->~T();
+                    }
+                });
             }
         }
 

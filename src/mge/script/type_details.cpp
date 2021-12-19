@@ -100,6 +100,11 @@ namespace mge::script {
         m_fields.emplace_back(name, type, std::move(getter), std::move(setter));
     }
 
+    void class_type_details::use_destructor(const context_function& dtor)
+    {
+        m_destructor = dtor;
+    }
+
     void class_type_details::apply(visitor& v)
     {
         v.begin(*this);
