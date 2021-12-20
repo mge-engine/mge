@@ -8,6 +8,8 @@
 #include "mge/script/field_details.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_classification.hpp"
+
+#include <map>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -31,12 +33,14 @@ namespace mge::script {
                      size_t                     sz);
         virtual ~type_details() = default;
 
-        std::type_index            type_index() const;
-        const std::string&         name() const;
-        mge::script::module        module() const;
-        std::string                full_name() const;
-        const type_classification& type_class() const;
-        size_t                     type_size() const;
+        std::type_index                 type_index() const;
+        const std::string&              name() const;
+        const std::string&              alias() const;
+        mge::script::module             module() const;
+        std::string                     full_name() const;
+        const type_classification&      type_class() const;
+        size_t                          type_size() const;
+        virtual const context_function& destructor() const;
 
         void set_alias_name(const std::string& alias);
 
@@ -91,7 +95,8 @@ namespace mge::script {
                            size_t                     size);
         virtual ~class_type_details() = default;
 
-        void apply(visitor& v) override;
+        const context_function& destructor() const override;
+        void                    apply(visitor& v) override;
 
         void add_field(const std::string& name,
                        std::type_index    type,
@@ -99,9 +104,11 @@ namespace mge::script {
                        context_function&& setter);
 
         void use_destructor(const context_function& dtor);
+        void add_constructor(const context_function& ctor);
 
-        std::vector<field_details> m_fields;
-        context_function           m_destructor;
+        std::vector<field_details>            m_fields;
+        context_function                      m_destructor;
+        std::map<signature, context_function> m_constructors;
     };
 
 } // namespace mge::script

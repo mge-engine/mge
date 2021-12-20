@@ -25,15 +25,16 @@ namespace mge::python {
         void set_attribute(const std::string& name, PyObject* value);
 
         std::string full_name() const { return m_type->full_name(); }
+        const mge::script::type_details& details() { return *m_type; }
 
     protected:
         virtual void prepare_materialize();
 
-        PyType_Spec m_spec;
+        PyType_Spec                   m_spec;
+        mge::script::type_details_ref m_type;
+        PyObject*                     m_python_type;
 
     private:
-        mge::script::type_details_ref              m_type;
-        PyObject*                                  m_python_type;
         typedef std::tuple<std::string, PyObject*> attr_value;
         std::vector<attr_value>                    m_attributes;
     };

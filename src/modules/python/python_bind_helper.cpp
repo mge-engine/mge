@@ -181,9 +181,29 @@ namespace mge::python {
         }
     }
 
-    void python_bind_helper::begin_class(const mge::script::type_details& t) {}
+    void python_bind_helper::begin_class(const mge::script::type_details& t)
+    {
 
-    void python_bind_helper::end_class(const mge::script::type_details& t) {}
+        m_current_complex_type = std::make_shared<python_complex_type>(t);
+    }
+
+    void python_bind_helper::end_class(const mge::script::type_details& t)
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Add object type '" << t.name() << "'";
+        PyObject* type = m_current_complex_type->materialize_type();
+        try {
+            auto module = m_module_stack.top();
+            module->add_object(t.name().c_str(), type);
+            if (!t.alias().empty()) {
+                module->add_object(t.alias().c_str(), type);
+            }
+            m_context.add_type(m_current_complex_type);
+            m_current_complex_type.reset();
+        } catch (...) {
+            Py_XDECREF(type);
+            throw;
+        }
+    }
 
     struct script_function
     {

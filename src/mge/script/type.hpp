@@ -371,6 +371,13 @@ namespace mge::script {
                     }
                 });
             }
+            if constexpr (std::is_constructible_v<T> &&
+                          std::is_default_constructible_v<T>) {
+                m_class_details->add_constructor([](call_context& ctx) {
+                    void* this_ptr = ctx.this_ptr();
+                    new (this_ptr) T();
+                });
+            }
         }
 
         template <typename T, typename F>

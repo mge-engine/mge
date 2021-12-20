@@ -47,6 +47,16 @@ namespace mge::python {
                 error::check_error();
             }
         }
+        PyObject* cpp_type_ref = PyLong_FromVoidPtr(this);
+        try {
+            if (PyObject_SetAttrString(type, "_cpp_type_ref", cpp_type_ref)) {
+                error::check_error();
+            }
+            Py_CLEAR(cpp_type_ref);
+        } catch (...) {
+            Py_CLEAR(cpp_type_ref);
+            throw;
+        }
         m_python_type = type;
         return m_python_type;
     }
@@ -62,19 +72,43 @@ namespace mge::python {
         const mge::script::type_details& type)
         : python_type(type)
     {
-        m_spec.basicsize =
-            checked_cast<int>(sizeof(PyObject) + type.type_size());
+        m_spec.basicsize = checked_cast<int>(sizeof(PyObject) + sizeof(void*) +
+                                             type.type_size());
     }
 
     python_complex_type::~python_complex_type() {}
 
-    PyObject* get_field_complex_object(PyObject* self, void* closure)
+    static void* data_complex_object(PyObject* self)
     {
-        // advance directly behind object header
-        void*                             self_c_object = (self + 1);
+        unsigned char* ptr = reinterpret_cast<unsigned char*>((self + 1));
+        ptr += sizeof(void*);
+        return ptr;
+    }
+
+    static python_type* cpp_type_complex_object(PyObject* self)
+    {
+        void** ptr = reinterpret_cast<void**>((self + 1));
+        if (*ptr) {
+            return reinterpret_cast<python_type*>(*ptr);
+        } else {
+            auto pytype = reinterpret_cast<PyObject*>(self->ob_type);
+            auto cpp_type_obj = PyObject_GetAttrString(pytype, "_cpp_type_ref");
+            if (!cpp_type_obj) {
+                error::check_error();
+            }
+            void* cpp_type_ptr = PyLong_AsVoidPtr(cpp_type_obj);
+            Py_CLEAR(cpp_type_obj);
+            *ptr = cpp_type_ptr;
+            return reinterpret_cast<python_type*>(*ptr);
+        }
+    }
+
+    static PyObject* get_field_complex_object(PyObject* self, void* closure)
+    {
+        void*                             data = data_complex_object(self);
         const mge::script::field_details* field =
             reinterpret_cast<const mge::script::field_details*>(closure);
-        python_call_context ctx(self_c_object);
+        python_call_context ctx(data);
         field->getter(ctx);
 
         PyObject* result = ctx.result();
@@ -84,12 +118,20 @@ namespace mge::python {
 
     int set_field_complex_object(PyObject* self, PyObject* value, void* closure)
     {
-        void*                             self_c_object = (self + 1);
+        void*                             data = data_complex_object(self);
         const mge::script::field_details* field =
             reinterpret_cast<const mge::script::field_details*>(closure);
-        python_call_context ctx(self_c_object, value);
+        python_call_context ctx(data, value);
         field->setter(ctx);
         return 0;
+    }
+
+    static void finalize_complex_object(PyObject* self)
+    {
+        auto                cpp_type = cpp_type_complex_object(self);
+        void*               data = data_complex_object(self);
+        python_call_context ctx(data);
+        cpp_type->details().destructor()(ctx);
     }
 
     void python_complex_type::prepare_materialize()
@@ -101,7 +143,22 @@ namespace mge::python {
                 def.get = &get_field_complex_object;
                 def.set = &set_field_complex_object;
                 def.closure = reinterpret_cast<void*>(&f);
+                m_getsetdefs.emplace_back(def);
             }
+            PyGetSetDef sentinel = {};
+            m_getsetdefs.emplace_back(sentinel);
+            PyType_Slot fields_slot{Py_tp_getset, m_getsetdefs.data()};
+            m_slots.emplace_back(fields_slot);
+        }
+
+        if (m_type->destructor()) {
+            PyType_Slot finalize_slot{Py_tp_finalize, &finalize_complex_object};
+            m_slots.emplace_back(finalize_slot);
+        }
+
+        PyType_Slot slot_sentinel = {};
+        if (m_slots.size() > 1) {
+            m_spec.slots = m_slots.data();
         }
     }
 

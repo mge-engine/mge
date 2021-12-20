@@ -2,9 +2,16 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/type_details.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
+
 namespace mge::script {
+
+    static context_function s_empty_context_function;
 
     type_details::type_details(std::type_index index, const std::string& name)
         : m_index(index)
@@ -48,6 +55,13 @@ namespace mge::script {
 
     size_t type_details::type_size() const { return m_size; }
 
+    const std::string& type_details::alias() const { return m_alias_name; }
+
+    const context_function& type_details::destructor() const
+    {
+        return s_empty_context_function;
+    }
+
     void type_details::apply(visitor& v)
     {
         v.begin(*this);
@@ -56,6 +70,8 @@ namespace mge::script {
 
     void type_details::set_alias_name(const std::string& alias)
     {
+        MGE_DEBUG_TRACE(SCRIPT)
+            << "Set alias for '" << name() << "' to: " << alias;
         m_alias_name = alias;
     }
 
@@ -105,6 +121,12 @@ namespace mge::script {
         m_destructor = dtor;
     }
 
+    void class_type_details::add_constructor(const context_function& ctor)
+    {
+        signature empty_signature;
+        m_constructors[empty_signature] = ctor;
+    }
+
     void class_type_details::apply(visitor& v)
     {
         v.begin(*this);
@@ -112,6 +134,11 @@ namespace mge::script {
             v.field(f);
         }
         v.end(*this);
+    }
+
+    const context_function& class_type_details::destructor() const
+    {
+        return m_destructor;
     }
 
 } // namespace mge::script

@@ -3,6 +3,9 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/memory.hpp"
+#include <typeindex>
+#include <vector>
+
 namespace mge {
 
     MGE_DECLARE_REF(script_engine);
@@ -17,11 +20,7 @@ namespace mge {
         template <typename T, typename> class type;
         template <typename T> class variable;
 
-        /*
-        class constructor;
-        class destructor;
-        class method;
-        */
+        using signature = std::vector<std::type_index>;
 
         MGE_DECLARE_REF(module_details);
         MGE_DECLARE_WEAK_REF(module_details);

@@ -6,6 +6,8 @@
 #include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
 
+#include "mge/math/vec2.hpp"
+
 #include "mge/graphics/buffer_type.hpp"
 #include "mge/graphics/data_type.hpp"
 
@@ -53,6 +55,12 @@ namespace mge::script {
                       function("executable_name", mge::executable_name));
     }
 
+    void bind_mge_math()
+    {
+        module("mge")(
+            type<fvec2>("fvec2").field("x", &fvec2::x).field("y", &fvec2::y));
+    }
+
     void bind_mge_graphics()
     {
         module("mge")(
@@ -87,6 +95,7 @@ namespace mge::script {
                 mge::script::bind_globals();
                 mge::script::bind_std();
                 mge::script::bind_mge();
+                mge::script::bind_mge_math();
                 mge::script::bind_mge_graphics();
             } catch (const mge::exception& e) {
                 MGE_ERROR_TRACE(SCRIPT) << "Binding global types failed: " << e;
