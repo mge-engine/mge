@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/stdexceptions.hpp"
 #include "mge/script/dllexport.hpp"
 #include <functional>
 #include <string>
@@ -146,6 +147,28 @@ namespace mge::script {
             return string_parameter(position);
         }
 
+        template <typename T>
+        typename std::enable_if<
+            std::is_class_v<std::remove_cv_t<std::remove_reference_t<T>>> &&
+                std::is_const_v<std::remove_reference_t<T>> &&
+                std::is_reference_v<T>,
+            T>::type
+        parameter(size_t position)
+        {
+            // type index of plain parameter
+            using base_type = std::remove_cv_t<std::remove_reference_t<T>>;
+            std::type_index idx(typeid(base_type));
+            void*           address = object_parameter(position, idx);
+            if (address == nullptr) {
+                MGE_THROW(mge::bad_cast) << "Cannot cast parameter " << position
+                                         << " to " << mge::type_name<T>();
+            } else {
+                base_type* typed_address =
+                    reinterpret_cast<base_type*>(address);
+                return *typed_address;
+            }
+        }
+
         template <typename T> void store_result(T result)
         {
             static_assert(false, "Default result store method called");
@@ -229,6 +252,7 @@ namespace mge::script {
         virtual float          float_parameter(size_t position) = 0;
         virtual double         double_parameter(size_t position) = 0;
         virtual std::string    string_parameter(size_t position) = 0;
+        virtual void* object_parameter(size_t position, std::type_index ti) = 0;
 
         virtual void store_bool_result(bool result) = 0;
         virtual void store_char_result(char result) = 0;

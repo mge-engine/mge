@@ -7,6 +7,7 @@
 #include "mge/core/trace.hpp"
 
 #include "mge/math/vec2.hpp"
+#include "mge/math/vec3.hpp"
 
 #include "mge/graphics/buffer_type.hpp"
 #include "mge/graphics/data_type.hpp"
@@ -59,8 +60,15 @@ namespace mge::script {
     {
         module("mge")(type<fvec2>("fvec2")
                           .constructor<float, float>()
+                          .constructor<const fvec2&>()
                           .field("x", &fvec2::x)
                           .field("y", &fvec2::y));
+        module("mge")(type<fvec3>("fvec3")
+                          .constructor<float, float, float>()
+                          .constructor<const fvec3&>()
+                          .field("x", &fvec3::x)
+                          .field("y", &fvec3::y)
+                          .field("z", &fvec3::z));
     }
 
     void bind_mge_graphics()

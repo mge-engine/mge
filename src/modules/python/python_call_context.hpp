@@ -30,6 +30,7 @@ namespace mge::python {
         float          float_parameter(size_t position) override;
         double         double_parameter(size_t position) override;
         std::string    string_parameter(size_t position) override;
+        void* object_parameter(size_t position, std::type_index type) override;
 
         void store_bool_result(bool result) override;
         void store_char_result(char result) override;

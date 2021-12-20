@@ -166,6 +166,12 @@ namespace mge::python {
         return std::string(utf8, utf8 + sz);
     }
 
+    void* python_call_context::object_parameter(size_t          position,
+                                                std::type_index type)
+    {
+        return nullptr;
+    }
+
     PyObject* python_call_context::parameter(size_t position)
     {
         if (!PyTuple_Check(m_args)) {
