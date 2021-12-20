@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/nth_type.hpp"
 #include "mge/core/sfinae.hpp"
 #include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
@@ -322,6 +323,19 @@ namespace mge::script {
         enum_type_details_ref m_enum_details;
     };
 
+    namespace details {
+        template <typename T, typename... Args> struct constructor_invoke_helper
+        {
+            template <std::size_t... I>
+            static inline void invoke_constructor(call_context& context,
+                                                  std::index_sequence<I...>)
+            {
+                void* ptr = context.this_ptr();
+                new (ptr) T(context.parameter<nth_type<I, Args...>>(I)...);
+            }
+        };
+    } // namespace details
+
     // class type
     template <typename T>
     class type<T, typename std::enable_if<std::is_class<T>::value>::type>
@@ -346,6 +360,13 @@ namespace mge::script {
                     if (thisptr_typed) {
                         thisptr_typed->~T();
                     }
+                });
+            }
+            if constexpr (std::is_constructible_v<T> &&
+                          std::is_default_constructible_v<T>) {
+                m_class_details->add_constructor([](call_context& ctx) {
+                    void* this_ptr = ctx.this_ptr();
+                    new (this_ptr) T();
                 });
             }
         }
@@ -397,6 +418,26 @@ namespace mge::script {
                     T*    self_object = static_cast<T*>(self);
                     self_object->*member_ptr = ctx.parameter<F>(0);
                 }));
+            return *this;
+        }
+
+        template <typename... Args> auto& constructor()
+        {
+            static_assert(std::is_constructible_v<T, Args...>);
+            signature s({std::type_index(typeid(Args))...});
+            if constexpr (sizeof...(Args) >= 1) {
+                m_class_details->add_constructor(s, [](call_context& context) {
+                    details::constructor_invoke_helper<T, Args...>::
+                        invoke_constructor(
+                            context,
+                            std::make_index_sequence<sizeof...(Args)>{});
+                });
+            } else {
+                m_class_details->add_constructor([](call_context& ctx) {
+                    void* this_ptr = ctx.this_ptr();
+                    new (this_ptr) T();
+                });
+            }
             return *this;
         }
 

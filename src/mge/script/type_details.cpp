@@ -127,6 +127,12 @@ namespace mge::script {
         m_constructors[empty_signature] = ctor;
     }
 
+    void class_type_details::add_constructor(const signature&        sig,
+                                             const context_function& ctor)
+    {
+        m_constructors[sig] = ctor;
+    }
+
     void class_type_details::apply(visitor& v)
     {
         v.begin(*this);

@@ -57,8 +57,10 @@ namespace mge::script {
 
     void bind_mge_math()
     {
-        module("mge")(
-            type<fvec2>("fvec2").field("x", &fvec2::x).field("y", &fvec2::y));
+        module("mge")(type<fvec2>("fvec2")
+                          .constructor<float, float>()
+                          .field("x", &fvec2::x)
+                          .field("y", &fvec2::y));
     }
 
     void bind_mge_graphics()

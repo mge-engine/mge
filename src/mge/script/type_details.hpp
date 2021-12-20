@@ -105,7 +105,8 @@ namespace mge::script {
 
         void use_destructor(const context_function& dtor);
         void add_constructor(const context_function& ctor);
-
+        void add_constructor(const signature&        sig,
+                             const context_function& ctor);
         std::vector<field_details>            m_fields;
         context_function                      m_destructor;
         std::map<signature, context_function> m_constructors;
