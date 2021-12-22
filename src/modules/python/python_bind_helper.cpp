@@ -183,7 +183,6 @@ namespace mge::python {
 
     void python_bind_helper::begin_class(const mge::script::type_details& t)
     {
-
         m_current_complex_type =
             std::make_shared<python_complex_type>(m_context, t);
     }
