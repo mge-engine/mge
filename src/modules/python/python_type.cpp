@@ -4,16 +4,19 @@
 #include "python_type.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "python_call_context.hpp"
+#include "python_context.hpp"
 #include "python_error.hpp"
 
 namespace mge::python {
 
     static PyType_Slot s_empty_slots[] = {{}};
 
-    python_type::python_type(const mge::script::type_details& type)
+    python_type::python_type(python_context&                  context,
+                             const mge::script::type_details& type)
         : m_type(std::const_pointer_cast<mge::script::type_details>(
               type.shared_from_this()))
         , m_python_type(nullptr)
+        , m_python_context(&context)
     {
         m_spec = PyType_Spec{};
         m_spec.name = m_type->name().c_str();
@@ -68,12 +71,20 @@ namespace mge::python {
 
     void python_type::prepare_materialize() {}
 
-    python_complex_type::python_complex_type(
-        const mge::script::type_details& type)
-        : python_type(type)
+    struct complex_python_object
     {
-        m_spec.basicsize = checked_cast<int>(sizeof(PyObject) + sizeof(void*) +
-                                             type.type_size());
+        // clang-format off
+        PyObject_HEAD
+         python_type* python_type_cached; // or _cpp_type_ref property of ob_type;
+        // clang-format on
+    };
+
+    python_complex_type::python_complex_type(
+        python_context& context, const mge::script::type_details& type)
+        : python_type(context, type)
+    {
+        m_spec.basicsize =
+            checked_cast<int>(sizeof(complex_python_object) + type.type_size());
     }
 
     python_complex_type::~python_complex_type() {}
@@ -108,7 +119,9 @@ namespace mge::python {
         void*                             data = data_complex_object(self);
         const mge::script::field_details* field =
             reinterpret_cast<const mge::script::field_details*>(closure);
-        python_call_context ctx(data);
+        auto type = cpp_type_complex_object(self);
+
+        python_call_context ctx(type->context(), data);
         field->getter(ctx);
 
         PyObject* result = ctx.result();
@@ -121,7 +134,9 @@ namespace mge::python {
         void*                             data = data_complex_object(self);
         const mge::script::field_details* field =
             reinterpret_cast<const mge::script::field_details*>(closure);
-        python_call_context ctx(data, value);
+        auto type = cpp_type_complex_object(self);
+
+        python_call_context ctx(type->context(), data, value);
         field->setter(ctx);
         return 0;
     }
@@ -130,7 +145,8 @@ namespace mge::python {
     {
         auto                cpp_type = cpp_type_complex_object(self);
         void*               data = data_complex_object(self);
-        python_call_context ctx(data);
+        auto                type = cpp_type_complex_object(self);
+        python_call_context ctx(type->context(), data);
         cpp_type->details().destructor()(ctx);
     }
 

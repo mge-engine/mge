@@ -11,13 +11,15 @@
 
 namespace mge::python {
 
+    class python_context;
     MGE_DECLARE_REF(python_type);
     MGE_DECLARE_REF(python_complex_type);
 
     class python_type
     {
     public:
-        python_type(const mge::script::type_details& type);
+        python_type(python_context&                  context,
+                    const mge::script::type_details& type);
         virtual ~python_type();
 
         PyObject* materialize_type();
@@ -27,12 +29,15 @@ namespace mge::python {
         std::string full_name() const { return m_type->full_name(); }
         const mge::script::type_details& details() { return *m_type; }
 
+        python_context& context() const { return *m_python_context; }
+
     protected:
         virtual void prepare_materialize();
 
         PyType_Spec                   m_spec;
         mge::script::type_details_ref m_type;
         PyObject*                     m_python_type;
+        python_context*               m_python_context;
 
     private:
         typedef std::tuple<std::string, PyObject*> attr_value;
@@ -42,7 +47,8 @@ namespace mge::python {
     class python_complex_type : public python_type
     {
     public:
-        python_complex_type(const mge::script::type_details& type);
+        python_complex_type(python_context&                  context,
+                            const mge::script::type_details& type);
         virtual ~python_complex_type();
 
     protected:

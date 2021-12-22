@@ -163,7 +163,7 @@ namespace mge::python {
 
     void python_bind_helper::begin_enum(const mge::script::type_details& t)
     {
-        m_current_type = std::make_shared<python_type>(t);
+        m_current_type = std::make_shared<python_type>(m_context, t);
     }
 
     void python_bind_helper::end_enum(const mge::script::type_details& t)
@@ -184,7 +184,8 @@ namespace mge::python {
     void python_bind_helper::begin_class(const mge::script::type_details& t)
     {
 
-        m_current_complex_type = std::make_shared<python_complex_type>(t);
+        m_current_complex_type =
+            std::make_shared<python_complex_type>(m_context, t);
     }
 
     void python_bind_helper::end_class(const mge::script::type_details& t)
@@ -210,6 +211,7 @@ namespace mge::python {
         // clang-format off
         PyObject_HEAD
         mge::script::function_details* function;
+        python_context *context;
         // clang-format on
 
         static int init(PyObject* self_object, PyObject* args, PyObject* kwds)
@@ -228,7 +230,7 @@ namespace mge::python {
             PyObject* result = nullptr;
 
             if (f->function) {
-                python_call_context ctx(args);
+                python_call_context ctx(*f->context, args);
                 f->function->invoke()(ctx);
                 result = ctx.result();
                 Py_INCREF(result);
@@ -272,6 +274,7 @@ namespace mge::python {
         script_function* new_function =
             reinterpret_cast<script_function*>(new_function_obj);
         new_function->function = const_cast<mge::script::function_details*>(&f);
+        new_function->context = &m_context;
         m_module_stack.top()->add_object(f.name().c_str(), new_function_obj);
         Py_XDECREF(new_function_obj);
     }

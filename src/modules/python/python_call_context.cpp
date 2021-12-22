@@ -3,12 +3,15 @@
 // All rights reserved.
 #include "python_call_context.hpp"
 #include "mge/core/checked_cast.hpp"
+#include "python_context.hpp"
 #include "python_error.hpp"
 
 namespace mge::python {
 
-    python_call_context::python_call_context(PyObject* args)
-        : m_this_ptr(nullptr)
+    python_call_context::python_call_context(python_context& context,
+                                             PyObject*       args)
+        : m_context(context)
+        , m_this_ptr(nullptr)
         , m_args(args)
         , m_result(nullptr)
     {
@@ -19,8 +22,11 @@ namespace mge::python {
         Py_INCREF(m_result);
     }
 
-    python_call_context::python_call_context(void* this_ptr_, PyObject* args)
-        : m_this_ptr(this_ptr_)
+    python_call_context::python_call_context(python_context& context,
+                                             void*           this_ptr_,
+                                             PyObject*       args)
+        : m_context(context)
+        , m_this_ptr(this_ptr_)
         , m_args(args)
         , m_result(nullptr)
     {
