@@ -150,12 +150,17 @@ namespace mge::python {
         cpp_type->details().destructor()(ctx);
     }
 
+    void python_complex_type::add_field(const mge::script::field_details& f)
+    {
+        m_fields.emplace_back(f);
+    }
+
     void python_complex_type::prepare_materialize()
     {
         if (!m_fields.empty()) {
             for (auto& f : m_fields) {
                 PyGetSetDef def = {};
-                def.name = f.name.c_str();
+                def.name = f.get().name.c_str();
                 def.get = &get_field_complex_object;
                 def.set = &set_field_complex_object;
                 def.closure = reinterpret_cast<void*>(&f);

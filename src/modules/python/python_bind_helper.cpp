@@ -205,6 +205,11 @@ namespace mge::python {
         }
     }
 
+    void python_bind_helper::field(const mge::script::field_details& field)
+    {
+        m_current_complex_type->add_field(field);
+    }
+
     struct script_function
     {
         // clang-format off

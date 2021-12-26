@@ -6,6 +6,7 @@
 #include "mge/script/field_details.hpp"
 #include "mge/script/type_details.hpp"
 #include "python.hpp"
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -51,13 +52,16 @@ namespace mge::python {
                             const mge::script::type_details& type);
         virtual ~python_complex_type();
 
+        void add_field(const mge::script::field_details& f);
+
     protected:
         void prepare_materialize() override;
 
     private:
-        std::vector<PyType_Slot>                m_slots;
-        std::vector<PyGetSetDef>                m_getsetdefs;
-        std::vector<mge::script::field_details> m_fields;
+        std::vector<PyType_Slot> m_slots;
+        std::vector<PyGetSetDef> m_getsetdefs;
+        std::vector<std::reference_wrapper<const mge::script::field_details>>
+            m_fields;
     };
 
 } // namespace mge::python
