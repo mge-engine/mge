@@ -139,6 +139,9 @@ namespace mge::script {
         for (const auto& f : m_fields) {
             v.field(f);
         }
+        for (const auto& [s, cf] : m_constructors) {
+            v.constructor(s, cf);
+        }
         v.end(*this);
     }
 

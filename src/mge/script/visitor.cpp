@@ -21,5 +21,7 @@ namespace mge::script {
     {}
 
     void visitor::field(const field_details& f) {}
-
+    void visitor::constructor(const signature&        signature,
+                              const context_function& cf)
+    {}
 } // namespace mge::script

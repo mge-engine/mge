@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/script/any_integer.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
@@ -36,5 +37,7 @@ namespace mge::script {
                                 const any_integer& value);
 
         virtual void field(const field_details& field);
+        virtual void constructor(const signature&        signature,
+                                 const context_function& cf);
     };
 } // namespace mge::script
