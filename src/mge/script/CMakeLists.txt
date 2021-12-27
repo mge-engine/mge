@@ -6,32 +6,33 @@ SET(mgescript_sources
     script_engine.cpp
     script_context.cpp
 
-    module.cpp
-    type.cpp
-    function.cpp
-    variable.cpp
-    visitor.cpp
-    bind.cpp
-    call_context.cpp
+    # module.cpp
+    # type.cpp
+    # function.cpp
+    # variable.cpp
+    # visitor.cpp
+    # bind.cpp
+    # call_context.cpp
 
-    module_details.cpp
-    type_details.cpp
-    function_details.cpp
-    variable_details.cpp
+    # module_details.cpp
+    # type_details.cpp
+    # function_details.cpp
+    # variable_details.cpp
 )
 
 SET(mgescript_headers
     dllexport.hpp
-    script_fwd.hpp
-    script_context.hpp
-    script_engine.hpp
 
-    module.hpp
-    type.hpp
-    visitor.hpp
+#    script_fwd.hpp
+#    script_context.hpp
+#    script_engine.hpp
 
-    module_details.hpp
-    type_details.hpp
+    # module.hpp
+    # type.hpp
+    # visitor.hpp
+
+    # module_details.hpp
+    # type_details.hpp
 )
 
 
@@ -42,5 +43,5 @@ MGE_LIBRARY(
     ${mgescript_sources}
     ${mgescript_headers}
 )
-TARGET_LINK_LIBRARIES(mgescript mgecore mgemath mgegraphics boost-all)
+TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
 ADD_SUBDIRECTORY(test)
