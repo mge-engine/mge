@@ -53,6 +53,11 @@ namespace mge::python {
         virtual ~python_complex_type();
 
         void add_field(const mge::script::field_details& f);
+        void add_constructor(const mge::script::signature&        s,
+                             const mge::script::context_function& cf);
+
+        const mge::script::context_function& first_constructor() const;
+        const auto& constructors() const { return m_constructors; }
 
     protected:
         void prepare_materialize() override;
@@ -62,6 +67,9 @@ namespace mge::python {
         std::vector<PyGetSetDef> m_getsetdefs;
         std::vector<std::reference_wrapper<const mge::script::field_details>>
             m_fields;
+        using constructor_def =
+            std::tuple<mge::script::signature, mge::script::context_function>;
+        std::vector<constructor_def> m_constructors;
     };
 
 } // namespace mge::python

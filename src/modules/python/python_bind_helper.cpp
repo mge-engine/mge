@@ -210,6 +210,13 @@ namespace mge::python {
         m_current_complex_type->add_field(field);
     }
 
+    void
+    python_bind_helper::constructor(const mge::script::signature&        s,
+                                    const mge::script::context_function& cf)
+    {
+        m_current_complex_type->add_constructor(s, cf);
+    }
+
     struct script_function
     {
         // clang-format off

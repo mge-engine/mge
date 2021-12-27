@@ -34,6 +34,8 @@ namespace mge::python {
         void enum_value(const std::string&              name,
                         const mge::script::any_integer& value) override;
         void field(const mge::script::field_details& field) override;
+        void constructor(const mge::script::signature&        s,
+                                 const mge::script::context_function& cf) override;
 
     private:
         void begin_class(const mge::script::type_details& t);

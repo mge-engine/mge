@@ -96,11 +96,11 @@ namespace mge::python {
         return ptr;
     }
 
-    static python_type* cpp_type_complex_object(PyObject* self)
+    static python_complex_type* cpp_type_complex_object(PyObject* self)
     {
         void** ptr = reinterpret_cast<void**>((self + 1));
         if (*ptr) {
-            return reinterpret_cast<python_type*>(*ptr);
+            return reinterpret_cast<python_complex_type*>(*ptr);
         } else {
             auto pytype = reinterpret_cast<PyObject*>(self->ob_type);
             auto cpp_type_obj = PyObject_GetAttrString(pytype, "_cpp_type_ref");
@@ -110,7 +110,7 @@ namespace mge::python {
             void* cpp_type_ptr = PyLong_AsVoidPtr(cpp_type_obj);
             Py_CLEAR(cpp_type_obj);
             *ptr = cpp_type_ptr;
-            return reinterpret_cast<python_type*>(*ptr);
+            return reinterpret_cast<python_complex_type*>(*ptr);
         }
     }
 
@@ -150,9 +150,57 @@ namespace mge::python {
         cpp_type->details().destructor()(ctx);
     }
 
+    int init_complex_type_single_ctor(PyObject* self,
+                                      PyObject* args,
+                                      PyObject* kwds)
+    {
+        void* data = data_complex_object(self);
+        auto  type = cpp_type_complex_object(self);
+
+        python_call_context ctx(type->context(), data, args);
+        type->first_constructor()(ctx);
+
+        return 0;
+    }
+
+    int
+    init_complex_type_multi_ctor(PyObject* self, PyObject* args, PyObject* kwds)
+    {
+        void* data = data_complex_object(self);
+        auto  type = cpp_type_complex_object(self);
+
+        size_t args_count = mge::checked_cast<size_t>(PyTuple_Size(args));
+        if (PyErr_Occurred()) {
+            return -1;
+        }
+
+        for (const auto& [s, cf] : type->constructors()) {
+            if (s.size() == args_count) {
+                python_call_context ctx(type->context(), data, args);
+                cf(ctx);
+                return 0;
+            }
+        }
+
+        return -1;
+    }
+
     void python_complex_type::add_field(const mge::script::field_details& f)
     {
         m_fields.emplace_back(f);
+    }
+
+    void python_complex_type::add_constructor(
+        const mge::script::signature&        s,
+        const mge::script::context_function& cf)
+    {
+        m_constructors.emplace_back(s, cf);
+    }
+
+    const mge::script::context_function&
+    python_complex_type::first_constructor() const
+    {
+        return std::get<1>(m_constructors.at(0));
     }
 
     void python_complex_type::prepare_materialize()
@@ -170,6 +218,20 @@ namespace mge::python {
             m_getsetdefs.emplace_back(sentinel);
             PyType_Slot fields_slot{Py_tp_getset, m_getsetdefs.data()};
             m_slots.emplace_back(fields_slot);
+        }
+
+        if (m_constructors.empty()) {
+            m_spec.flags |= Py_TPFLAGS_DISALLOW_INSTANTIATION;
+        } else {
+            if (m_constructors.size() == 1) {
+                // PyType_Slot ctor_slot{Py_tp_init,
+                //                      &init_complex_type_single_ctor};
+                // m_slots.emplace_back(ctor_slot);
+            } else {
+                // PyType_Slot ctor_slot{Py_tp_init,
+                //                      &init_complex_type_multi_ctor};
+                // m_slots.emplace_back(ctor_slot);
+            }
         }
 
         if (m_type->destructor()) {
