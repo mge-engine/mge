@@ -1,5 +1,9 @@
 #pragma once
 namespace mge::script {
+
+    /**
+     * @brief Visit a module.
+     */
     class MGESCRIPT_EXPORT visitor
     {
     protected:
@@ -8,4 +12,5 @@ namespace mge::script {
     public:
         virtual ~visitor() = default;
     };
+
 } // namespace mge::script

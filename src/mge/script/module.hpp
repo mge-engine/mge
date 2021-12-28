@@ -1,5 +1,8 @@
 #pragma once
 #include "mge/script/dllexport.hpp"
+#include "mge/script/script_fwd.hpp"
+
+#include <string>
 
 namespace mge::script {
 
@@ -88,6 +91,6 @@ namespace mge::script {
         }
 
         module_details* m_details;
-    }
+    };
 
 } // namespace mge::script
