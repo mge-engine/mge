@@ -41,6 +41,8 @@ namespace mge::script {
         static module_details* get(const std::string& path);
 
     private:
+        module_details* get_or_add_module(const std::string& name);
+
         using module_map = std::unordered_map<std::string, module_details*>;
 
         std::string     m_name;
