@@ -6,11 +6,11 @@ SET(mgescript_sources
     script_engine.cpp
     script_context.cpp
 
-    # module.cpp
+    module.cpp
     # type.cpp
     # function.cpp
     # variable.cpp
-    # visitor.cpp
+    visitor.cpp
     # bind.cpp
     # call_context.cpp
 
@@ -27,9 +27,9 @@ SET(mgescript_headers
     script_context.hpp
     script_engine.hpp
 
-    # module.hpp
+    module.hpp
     # type.hpp
-    # visitor.hpp
+    visitor.hpp
 
     module_details.hpp
     # type_details.hpp

@@ -22,9 +22,9 @@ namespace mge::script {
         /**
          * @brief Construct a new module object
          *
-         * @param identifier module identifie
+         * @param identifier module path
          */
-        module(const std::string& identifier);
+        module(const std::string& path);
         /**
          * @brief Destroy the module object
          */

@@ -53,4 +53,15 @@ namespace mge::script {
         }
     }
 
+    std::string module_details::full_name() const
+    {
+        if (is_root()) {
+            return "";
+        } else {
+            return m_parent->full_name() + "::" + name();
+        }
+    }
+
+    void module_details::apply(visitor& v) {}
+
 } // namespace mge::script

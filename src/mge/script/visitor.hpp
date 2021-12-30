@@ -1,4 +1,7 @@
 #pragma once
+#include "mge/script/dllexport.hpp"
+#include "mge/script/script_fwd.hpp"
+
 namespace mge::script {
 
     /**
@@ -11,6 +14,9 @@ namespace mge::script {
 
     public:
         virtual ~visitor() = default;
+
+        virtual void begin(const module_details& m);
+        virtual void end(const module_details& m);
     };
 
 } // namespace mge::script

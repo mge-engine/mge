@@ -40,6 +40,13 @@ namespace mge::script {
          */
         static module_details* get(const std::string& path);
 
+        bool               is_root() const { return m_parent == nullptr; }
+        module_details*    parent() const { return m_parent; }
+        const std::string& name() const { return m_name; }
+        std::string        full_name() const;
+
+        void apply(visitor& v);
+
     private:
         module_details* get_or_add_module(const std::string& name);
 
