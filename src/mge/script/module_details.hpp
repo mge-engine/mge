@@ -47,6 +47,8 @@ namespace mge::script {
 
         void apply(visitor& v);
 
+        void add_module(module_details* m);
+
     private:
         module_details* get_or_add_module(const std::string& name);
 

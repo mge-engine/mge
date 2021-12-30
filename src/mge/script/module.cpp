@@ -36,4 +36,6 @@ namespace mge::script {
 
     void module::apply(visitor& v) { m_details->apply(v); }
 
+    void module::add_module(module& m) { m_details->add_module(m.m_details); }
+
 } // namespace mge::script

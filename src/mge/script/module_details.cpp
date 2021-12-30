@@ -1,5 +1,6 @@
 #include "mge/script/module_details.hpp"
 #include "boost/boost_algorithm_string.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 namespace mge::script {
 
@@ -63,5 +64,23 @@ namespace mge::script {
     }
 
     void module_details::apply(visitor& v) {}
+
+    void module_details::add_module(module_details* m)
+    {
+        if (m == this) {
+            MGE_THROW(mge::illegal_state) << "Cannot add module to itself";
+        }
+
+        if (m->parent() == this) {
+            return;
+        } else if (m->parent() != &s_root_module) {
+            MGE_THROW(mge::illegal_state)
+                << "Cannot add module to parent which already has a parent";
+        } else {
+            m->m_parent->m_modules.erase(m->m_name);
+            m->m_parent = this;
+            m_modules[m->m_name] = m;
+        }
+    }
 
 } // namespace mge::script

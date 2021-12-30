@@ -90,6 +90,10 @@ namespace mge::script {
             static_assert(false, "Try to add unsupported type to module");
         }
 
+        template <> void add_member(module&& m) { add_module(m); }
+
+        void add_module(module& m);
+
         module_details* m_details;
     };
 
