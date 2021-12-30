@@ -7,7 +7,7 @@
 #include <string>
 using namespace std::literals;
 
-namespace mge {
+namespace mge::script {
 
     TEST(module, root)
     {
@@ -23,11 +23,10 @@ namespace mge {
         EXPECT_EQ("script"sv, m.name());
     }
 
-    TEST(module, by_scope)
+    TEST(module, full_name)
     {
-        using namespace mge::script;
-
-        auto m = module("test1")(module("test2"));
+        mge::script::module m("mge::script");
+        EXPECT_EQ("::mge::script"sv, m.full_name());
     }
 
-} // namespace mge
+} // namespace mge::script
