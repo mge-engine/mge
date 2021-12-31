@@ -10,4 +10,11 @@ namespace mge::script {
         return mge::script::module(m_details->module());
     }
 
+    const std::type_index& type_base::type_index() const
+    {
+        return m_details->type_index();
+    }
+
+    type_details* type_base::details() const { return m_details; }
+
 } // namespace mge::script

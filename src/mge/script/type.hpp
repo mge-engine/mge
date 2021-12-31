@@ -9,8 +9,10 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_base
     {
     public:
-        const std::string&  name() const;
-        mge::script::module module() const;
+        const std::string&     name() const;
+        mge::script::module    module() const;
+        const std::type_index& type_index() const;
+        type_details*          details() const;
 
     private:
         type_details* m_details;

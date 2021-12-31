@@ -91,8 +91,10 @@ namespace mge::script {
         }
 
         template <> void add_member(module&& m) { add_module(m); }
+        template <> void add_member(type_base&& t) { add_type(t); }
 
         void add_module(module& m);
+        void add_type(type_base& t);
 
         module_details* m_details;
     };

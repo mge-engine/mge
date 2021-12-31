@@ -38,4 +38,6 @@ namespace mge::script {
 
     void module::add_module(module& m) { m_details->add_module(m.m_details); }
 
+    void module::add_type(type_base& t) { m_details->add_type(t); }
+
 } // namespace mge::script

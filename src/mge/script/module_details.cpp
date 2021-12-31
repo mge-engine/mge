@@ -1,6 +1,8 @@
 #include "mge/script/module_details.hpp"
 #include "boost/boost_algorithm_string.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/script/type.hpp"
+#include "mge/script/type_details.hpp"
 
 namespace mge::script {
 
@@ -80,6 +82,17 @@ namespace mge::script {
             m->m_parent->m_modules.erase(m->m_name);
             m->m_parent = this;
             m_modules[m->m_name] = m;
+        }
+    }
+
+    void module_details::add_type(type_base& t)
+    {
+        auto details = t.details();
+        auto ti = t.type_index();
+
+        if (m_types.find(ti) != m_types.end()) {
+            m_types.insert(std::make_pair(ti, details));
+            details->set_module(this);
         }
     }
 
