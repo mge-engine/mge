@@ -7,7 +7,7 @@ SET(mgescript_sources
     script_context.cpp
 
     module.cpp
-    # type.cpp
+    type.cpp
     # function.cpp
     # variable.cpp
     visitor.cpp
@@ -15,7 +15,7 @@ SET(mgescript_sources
     call_context.cpp
 
     module_details.cpp
-    # type_details.cpp
+    type_details.cpp
     # function_details.cpp
     # variable_details.cpp
 )

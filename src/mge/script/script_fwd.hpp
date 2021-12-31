@@ -13,6 +13,7 @@ namespace mge {
 
     namespace script {
         class visitor;
+        struct traits;
 
         class module;
         class module_details;

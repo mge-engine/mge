@@ -5,7 +5,7 @@
 SET(MGESCRIPT_TEST_SOURCES
     test_module.cpp
     test_traits.cpp
-#    test_type.cpp
+    test_type.cpp
 #    test_variable.cpp
 #    test_function.cpp
 )

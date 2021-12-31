@@ -1,7 +1,6 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "mge/script/bind.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/type.hpp"
 #include "test/googletest.hpp"
@@ -15,7 +14,7 @@ namespace mge {
     class test_type : public ::testing::Test
     {
     public:
-        void SetUp() override { mge::script::bind_all(); }
+        void SetUp() override {}
     };
 
     TEST_F(test_type, void_type)
@@ -25,7 +24,7 @@ namespace mge {
         auto m = t.module();
         EXPECT_TRUE(m.is_root());
     }
-
+#if 0
     struct foo
     {
         int x;
@@ -49,5 +48,6 @@ namespace mge {
         using namespace mge::script;
         module("mge")(type<enum1>());
     }
+#endif
 
 } // namespace mge
