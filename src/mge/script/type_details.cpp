@@ -4,6 +4,9 @@
 #include "mge/script/type_details.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/type_name.hpp"
+#include "mge/script/module_details.hpp"
+
 namespace mge::script {
 
     class type_dictionary
@@ -23,12 +26,41 @@ namespace mge::script {
         }
 
     private:
-        template <typename T> void add_details() { return; }
+        template <typename T> void add_pod_type_details()
+        {
+            auto newp =
+                std::make_unique<type_details>(mge::type_name<T>(),
+                                               std::type_index(typeid(T)),
+                                               traits_of<T>());
+            m_types.insert(std::make_pair(newp->type_index(), newp.get()));
+            try {
+                module_details::get("")->add_type(newp.get());
+            } catch (...) {
+                m_types.erase(newp->type_index());
+                throw;
+            }
+            newp.reset();
+        }
 
         std::map<std::type_index, type_details*> m_types;
     };
 
-    type_dictionary::type_dictionary() { add_details<void>(); }
+    type_dictionary::type_dictionary()
+    {
+        add_pod_type_details<void>();
+        add_pod_type_details<signed char>();
+        add_pod_type_details<unsigned char>();
+        add_pod_type_details<char>();
+        add_pod_type_details<short>();
+        add_pod_type_details<unsigned short>();
+        add_pod_type_details<int>();
+        add_pod_type_details<unsigned int>();
+        add_pod_type_details<int64_t>();
+        add_pod_type_details<uint64_t>();
+        add_pod_type_details<float>();
+        add_pod_type_details<double>();
+        add_pod_type_details<long double>();
+    }
 
     static mge::singleton<type_dictionary> s_type_dictionary;
 
