@@ -17,4 +17,9 @@ namespace mge::script {
 
     type_details* type_base::details() const { return m_details; }
 
+    void type_base::init_details(const std::type_index& ti)
+    {
+        m_details = type_details::get(ti);
+    }
+
 } // namespace mge::script

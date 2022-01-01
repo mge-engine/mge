@@ -14,6 +14,9 @@ namespace mge::script {
         const std::type_index& type_index() const;
         type_details*          details() const;
 
+    protected:
+        void init_details(const std::type_index& index);
+
     private:
         type_details* m_details;
     };
@@ -30,9 +33,12 @@ namespace mge::script {
     template <> class type<void, void> : public type_base
     {
     public:
-        inline type() {}
+        inline type() { init_details(std::type_index(typeid(void))); }
 
+        using type_base::details;
+        using type_base::module;
         using type_base::name;
+        using type_base::type_index;
     };
 
 } // namespace mge::script

@@ -16,6 +16,14 @@ namespace mge::script {
 
         void set_module(module_details* m);
 
+        /**
+         * @brief Lookup details by type index.
+         *
+         * @param ti type index
+         * @return found type details, if not found exception is raised
+         */
+        static type_details* get(const std::type_index& ti);
+
     private:
         std::string     m_name;
         module_details* m_module;
