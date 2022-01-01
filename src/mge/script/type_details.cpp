@@ -39,7 +39,7 @@ namespace mge::script {
                 m_types.erase(newp->type_index());
                 throw;
             }
-            newp.reset();
+            newp.release();
         }
 
         std::map<std::type_index, type_details*> m_types;

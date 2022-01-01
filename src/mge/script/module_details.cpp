@@ -4,8 +4,13 @@
 #include "mge/script/module_details.hpp"
 #include "boost/boost_algorithm_string.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/script/type.hpp"
 #include "mge/script/type_details.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
 
 namespace mge::script {
 
@@ -14,11 +19,15 @@ namespace mge::script {
     module_details::module_details(const std::string& name)
         : m_name(name)
         , m_parent(nullptr)
-    {}
+    {
+        MGE_DEBUG_TRACE(SCRIPT) << "Create module '" << name << "'";
+    }
 
     module_details::module_details()
         : m_parent(nullptr)
-    {}
+    {
+        MGE_DEBUG_TRACE(SCRIPT) << "Create root module";
+    }
 
     module_details::~module_details()
     {
@@ -54,7 +63,7 @@ namespace mge::script {
             new_module->m_parent = this;
             module_details* result = new_module.get();
             m_modules[name] = new_module.get();
-            new_module.reset();
+            new_module.release();
             return result;
         }
     }
