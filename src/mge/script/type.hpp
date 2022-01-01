@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/traits.hpp"
 
 #include <string>
 
@@ -33,10 +34,12 @@ namespace mge::script {
         }
     };
 
-    template <> class type<void, void> : public type_base
+    template <typename T>
+    class type<T, typename std::enable_if<is_simple_type<T>>::type>
+        : public type_base
     {
     public:
-        inline type() { init_details(std::type_index(typeid(void))); }
+        inline type() { init_details(std::type_index(typeid(T))); }
 
         using type_base::details;
         using type_base::module;

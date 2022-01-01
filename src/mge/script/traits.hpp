@@ -18,4 +18,8 @@ namespace mge::script {
         return result;
     }
 
+    template <typename T>
+    constexpr bool is_simple_type =
+        std::is_same_v<T, void> || std::is_same_v<T, char>;
+
 } // namespace mge::script
