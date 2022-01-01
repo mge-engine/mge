@@ -53,7 +53,7 @@ namespace mge::script {
 
         void add_module(module_details* m);
         void add_type(type_base& t);
-
+        void add_type(type_details* t);
     private:
         module_details* get_or_add_module(const std::string& name);
 

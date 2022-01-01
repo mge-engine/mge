@@ -88,15 +88,15 @@ namespace mge::script {
         }
     }
 
-    void module_details::add_type(type_base& t)
+    void module_details::add_type(type_details* d)
     {
-        auto details = t.details();
-        auto ti = t.type_index();
-
+        auto ti = d->type_index();
         if (m_types.find(ti) != m_types.end()) {
-            m_types.insert(std::make_pair(ti, details));
-            details->set_module(this);
+            m_types.insert(std::make_pair(ti, d));
+            d->set_module(this);
         }
     }
+
+    void module_details::add_type(type_base& t) { add_type(t.details()); }
 
 } // namespace mge::script

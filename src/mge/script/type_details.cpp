@@ -32,6 +32,14 @@ namespace mge::script {
 
     static mge::singleton<type_dictionary> s_type_dictionary;
 
+    type_details::type_details(const std::string&     name,
+                               const std::type_index& ti,
+                               const traits&          t)
+        : m_name(name)
+        , m_type_index(ti)
+        , m_traits(t)
+    {}
+
     const std::string& type_details::name() const { return m_name; }
 
     module_details* type_details::module() const { return m_module; }
