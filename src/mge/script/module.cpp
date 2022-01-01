@@ -9,16 +9,24 @@ namespace mge::script {
 
     module::module()
         : m_details(module_details::get(""))
-    {}
+    {
+        if (m_details == nullptr) {
+            MGE_THROW(illegal_state) << "Root module is null";
+        }
+    }
 
     module::module(const std::string& path)
         : m_details(module_details::get(path))
-    {}
+    {
+        if (m_details == nullptr) {
+            MGE_THROW(illegal_state) << "Cannot access module '" << path << "'";
+        }
+    }
 
     module::module(module_details* details)
         : m_details(details)
     {
-        MGE_ASSERT_ARG_NOT_NULL(details);
+        MGE_ASSERT_ARGUMENT_NOT_NULL(details);
     }
 
     module::~module() {}
