@@ -26,12 +26,14 @@ namespace mge::script {
         }
 
     private:
-        template <typename T> void add_pod_type_details()
+        template <typename T>
+        void add_pod_type_details(const char* used_name = nullptr)
         {
             auto newp =
                 std::make_unique<type_details>(mge::type_name<T>(),
                                                std::type_index(typeid(T)),
-                                               traits_of<T>());
+                                               traits_of<T>(),
+                                               used_name);
             m_types.insert(std::make_pair(newp->type_index(), newp.get()));
             try {
                 auto m = module_details::get("");
@@ -56,8 +58,8 @@ namespace mge::script {
         add_pod_type_details<unsigned short>();
         add_pod_type_details<int>();
         add_pod_type_details<unsigned int>();
-        add_pod_type_details<int64_t>();
-        add_pod_type_details<uint64_t>();
+        add_pod_type_details<int64_t>("long");
+        add_pod_type_details<uint64_t>("unsigned long");
         add_pod_type_details<float>();
         add_pod_type_details<double>();
         add_pod_type_details<long double>();
@@ -65,16 +67,21 @@ namespace mge::script {
 
     static mge::singleton<type_dictionary> s_type_dictionary;
 
-    type_details::type_details(const std::string&     name,
+    type_details::type_details(const std::string&     automatic_name,
                                const std::type_index& ti,
-                               const traits&          t)
-        : m_name(name)
+                               const traits&          t,
+                               const char*            name)
+        : m_automatic_name(automatic_name)
+        , m_name(name == nullptr ? "" : name)
         , m_module(nullptr)
         , m_type_index(ti)
         , m_traits(t)
     {}
 
-    const std::string& type_details::name() const { return m_name; }
+    const std::string& type_details::name() const
+    {
+        return m_name.empty() ? m_automatic_name : m_name;
+    }
 
     module_details* type_details::module() const { return m_module; }
 

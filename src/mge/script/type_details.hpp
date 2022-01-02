@@ -16,9 +16,11 @@ namespace mge::script {
     public:
         type_details(const std::string&     name,
                      const std::type_index& ti,
-                     const traits&          t);
+                     const traits&          t,
+                     const char*            used_name);
 
         const std::string&     name() const;
+        const std::string&     automatic_name() const;
         module_details*        module() const;
         const std::type_index& type_index() const;
 
@@ -33,6 +35,7 @@ namespace mge::script {
         static type_details* get(const std::type_index& ti);
 
     private:
+        std::string     m_automatic_name;
         std::string     m_name;
         module_details* m_module;
         std::type_index m_type_index;
