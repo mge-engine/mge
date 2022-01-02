@@ -116,4 +116,11 @@ namespace mge::script {
         return result;
     }
 
+    enum_type_details::enum_type_details(const std::string&     name,
+                                         const std::type_index& ti,
+                                         const traits&          t,
+                                         const char*            used_name)
+        : type_details(name, ti, t, used_name)
+    {}
+
 } // namespace mge::script

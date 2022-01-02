@@ -7,7 +7,9 @@
 #include "mge/script/traits.hpp"
 
 #include <string>
+#include <tuple>
 #include <typeindex>
+#include <vector>
 
 namespace mge::script {
 
@@ -18,6 +20,8 @@ namespace mge::script {
                      const std::type_index& ti,
                      const traits&          t,
                      const char*            used_name);
+
+        virtual ~type_details() = default;
 
         const std::string&     name() const;
         const std::string&     automatic_name() const;
@@ -43,5 +47,20 @@ namespace mge::script {
         module_details* m_module;
         std::type_index m_type_index;
         traits          m_traits;
+    };
+
+    class MGESCRIPT_EXPORT enum_type_details : public type_details
+    {
+    public:
+        enum_type_details(const std::string&     name,
+                          const std::type_index& ti,
+                          const traits&          t,
+                          const char*            used_name=nullptr);
+
+        virtual ~enum_type_details() = default;
+
+    private:
+        using value = std::tuple<std::string, int64_t>;
+        std::vector<value> m_values;
     };
 } // namespace mge::script
