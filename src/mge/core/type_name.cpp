@@ -17,6 +17,25 @@ namespace mge {
         }
     }
 
+    static inline void remove_space_around_special_chars(std::string& str)
+    {
+        size_t startpos = 0;
+        auto   pos = str.find(" ", startpos);
+        while (pos != std::string::npos) {
+            if (pos + 1 < str.size()) {
+                auto nextc = str[pos + 1];
+                if (nextc != ' ' && nextc != '*' && nextc != '&' &&
+                    nextc != ',' && nextc != ')' && nextc != '(') {
+                    startpos = pos + 1;
+                    pos = str.find(" ", startpos);
+                    continue;
+                }
+            }
+            str.replace(pos, 1, "");
+            pos = str.find(" ", startpos);
+        }
+    }
+
     MGECORE_EXPORT std::string type_name(const std::type_info& ti)
     {
         std::string raw_name(ti.name());
@@ -25,7 +44,7 @@ namespace mge {
         remove_string(raw_name, "struct ");
         remove_string(raw_name, "enum ");
         remove_string(raw_name, "__ptr64");
-        remove_string(raw_name, " ");
+        remove_space_around_special_chars(raw_name);
         return raw_name;
 #else
 #    error Missing port

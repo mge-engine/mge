@@ -39,3 +39,9 @@ TEST(type_name, complex_name)
     auto tn = mge::type_name<decltype(*this)>();
     EXPECT_STREQ("type_name_complex_name_Test", tn.c_str());
 }
+
+TEST(type_name, signed_char)
+{
+    auto tn = mge::type_name<signed char>();
+    EXPECT_STREQ("signed char", tn.c_str());
+}

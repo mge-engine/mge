@@ -34,7 +34,8 @@ namespace mge::script {
                                                traits_of<T>());
             m_types.insert(std::make_pair(newp->type_index(), newp.get()));
             try {
-                module_details::get("")->add_type(newp.get());
+                auto m = module_details::get("");
+                m->add_type(newp.get());
             } catch (...) {
                 m_types.erase(newp->type_index());
                 throw;
@@ -68,6 +69,7 @@ namespace mge::script {
                                const std::type_index& ti,
                                const traits&          t)
         : m_name(name)
+        , m_module(nullptr)
         , m_type_index(ti)
         , m_traits(t)
     {}
