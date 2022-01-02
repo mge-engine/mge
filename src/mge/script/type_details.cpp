@@ -25,6 +25,15 @@ namespace mge::script {
             return it->second;
         }
 
+        type_details* get_nothrow(const std::type_index& ti)
+        {
+            auto it = m_types.find(ti);
+            if (it == m_types.end()) {
+                return nullptr;
+            }
+            return it->second;
+        }
+
     private:
         template <typename T>
         void add_pod_type_details(const char* used_name = nullptr)
@@ -58,8 +67,10 @@ namespace mge::script {
         add_pod_type_details<unsigned short>();
         add_pod_type_details<int>();
         add_pod_type_details<unsigned int>();
-        add_pod_type_details<int64_t>("long");
-        add_pod_type_details<uint64_t>("unsigned long");
+        add_pod_type_details<long>();
+        add_pod_type_details<unsigned long>();
+        add_pod_type_details<int64_t>("int64_t");
+        add_pod_type_details<uint64_t>("uint64_t");
         add_pod_type_details<float>();
         add_pod_type_details<double>();
         add_pod_type_details<long double>();
@@ -96,4 +107,13 @@ namespace mge::script {
     {
         return s_type_dictionary->get(ti);
     }
+
+    type_details* type_details::get_or_create(const std::type_index& ti,
+                                              const std::string&     name,
+                                              const traits&          tr)
+    {
+        type_details* result = s_type_dictionary->get_nothrow(ti);
+        return result;
+    }
+
 } // namespace mge::script

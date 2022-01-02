@@ -25,4 +25,11 @@ namespace mge::script {
         m_details = type_details::get(ti);
     }
 
+    void type_base::init_enum_details(const std::type_index& index,
+                                      const std::string&     name,
+                                      const traits&          tr)
+    {
+        m_details = type_details::get_or_create(index, name, tr);
+    }
+
 } // namespace mge::script

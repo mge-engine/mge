@@ -19,6 +19,7 @@ namespace mge {
         class module_details;
 
         class type_details;
+        class enum_type_details;
         class type_base;
     } // namespace script
 

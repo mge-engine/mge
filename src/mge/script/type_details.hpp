@@ -33,6 +33,9 @@ namespace mge::script {
          * @return found type details, if not found exception is raised
          */
         static type_details* get(const std::type_index& ti);
+        static type_details* get_or_create(const std::type_index& ti,
+                                           const std::string&     name,
+                                           const traits&          tr);
 
     private:
         std::string     m_automatic_name;

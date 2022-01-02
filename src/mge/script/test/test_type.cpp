@@ -24,6 +24,20 @@ namespace mge {
         auto m = t.module();
         EXPECT_TRUE(m.is_root());
     }
+
+    TEST_F(test_type, simple_types)
+    {
+        auto t1 = mge::script::type<void>();
+        auto t2 = mge::script::type<char>();
+        auto t3 = mge::script::type<unsigned char>();
+        auto t4 = mge::script::type<signed char>();
+        auto t5 = mge::script::type<short>();
+        auto t6 = mge::script::type<unsigned short>();
+        auto t7 = mge::script::type<int>();
+        auto t8 = mge::script::type<unsigned int>();
+    }
+} // namespace mge
+
 #if 0
     struct foo
     {
@@ -49,5 +63,3 @@ namespace mge {
         module("mge")(type<enum1>());
     }
 #endif
-
-} // namespace mge
