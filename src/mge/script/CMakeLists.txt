@@ -16,7 +16,7 @@ SET(mgescript_sources
 
     module_details.cpp
     type_details.cpp
-    # function_details.cpp
+    function_details.cpp
     # variable_details.cpp
 )
 
