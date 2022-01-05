@@ -8,6 +8,15 @@
 
 namespace mge::script {
 
+    template <typename T>
+    constexpr bool is_simple_type =
+        std::is_same_v<T, void> || std::is_same_v<T, char> ||
+        std::is_same_v<T, signed char> || std::is_same_v<T, unsigned char> ||
+        std::is_same_v<T, short> || std::is_same_v<T, unsigned short> ||
+        std::is_same_v<T, int> || std::is_same_v<T, unsigned int> ||
+        std::is_same_v<T, long> || std::is_same_v<T, unsigned long> ||
+        std::is_same_v<T, int64_t> || std::is_same_v<T, uint64_t>;
+
     struct traits
     {
         unsigned int is_void : 1;
@@ -64,14 +73,5 @@ namespace mge::script {
             return result;
         }
     }
-
-    template <typename T>
-    constexpr bool is_simple_type =
-        std::is_same_v<T, void> || std::is_same_v<T, char> ||
-        std::is_same_v<T, signed char> || std::is_same_v<T, unsigned char> ||
-        std::is_same_v<T, short> || std::is_same_v<T, unsigned short> ||
-        std::is_same_v<T, int> || std::is_same_v<T, unsigned int> ||
-        std::is_same_v<T, long> || std::is_same_v<T, unsigned long> ||
-        std::is_same_v<T, int64_t> || std::is_same_v<T, uint64_t>;
 
 } // namespace mge::script

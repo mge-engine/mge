@@ -23,11 +23,13 @@ namespace mge::script {
         }
     }
 
-    module::module(module_details* details)
+    module::module(const module_details_ref& details)
         : m_details(details)
-    {
-        MGE_ASSERT_ARGUMENT_NOT_NULL(details);
-    }
+    {}
+
+    module::module(module_details_ref&& details)
+        : m_details(std::move(details))
+    {}
 
     module::~module() {}
 

@@ -23,12 +23,12 @@ namespace mge::script {
 
         virtual ~type_details() = default;
 
-        const std::string&     name() const;
-        const std::string&     automatic_name() const;
-        module_details*        module() const;
-        const std::type_index& type_index() const;
+        const std::string&             name() const;
+        const std::string&             automatic_name() const;
+        const module_details_weak_ref& module() const;
+        const std::type_index&         type_index() const;
 
-        void set_module(module_details* m);
+        void set_module(const module_details_ref& m);
 
         /**
          * @brief Lookup details by type index.
@@ -36,17 +36,24 @@ namespace mge::script {
          * @param ti type index
          * @return found type details, if not found exception is raised
          */
-        static type_details* get(const std::type_index& ti);
-        static type_details* get_or_create(const std::type_index& ti,
-                                           const std::string&     name,
-                                           const traits&          tr);
+        static type_details_ref get(const std::type_index& ti);
+        static type_details_ref get_or_create(const std::type_index& ti,
+                                              const std::string&     name,
+                                              const traits&          tr);
+
+        /**
+         * @brief Applies a visitor.
+         *
+         * @param v visitor
+         */
+        virtual void apply(visitor& v);
 
     private:
-        std::string     m_automatic_name;
-        std::string     m_name;
-        module_details* m_module;
-        std::type_index m_type_index;
-        traits          m_traits;
+        std::string             m_automatic_name;
+        std::string             m_name;
+        module_details_weak_ref m_module;
+        std::type_index         m_type_index;
+        traits                  m_traits;
     };
 
     class MGESCRIPT_EXPORT enum_type_details : public type_details
@@ -55,9 +62,12 @@ namespace mge::script {
         enum_type_details(const std::string&     name,
                           const std::type_index& ti,
                           const traits&          t,
-                          const char*            used_name=nullptr);
+                          const char*            used_name = nullptr);
 
         virtual ~enum_type_details() = default;
+        void apply(visitor& v) override;
+
+        void enum_value(const std::string& name, int64_t value);
 
     private:
         using value = std::tuple<std::string, int64_t>;

@@ -13,19 +13,21 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_base
     {
     public:
-        const std::string&     name() const;
-        mge::script::module    module() const;
-        const std::type_index& type_index() const;
-        type_details*          details() const;
+        const std::string&      name() const;
+        mge::script::module     module() const;
+        const std::type_index&  type_index() const;
+        const type_details_ref& details() const;
+        type_details_ref&       details();
 
     protected:
         void init_details(const std::type_index& index);
         void init_enum_details(const std::type_index& index,
                                const std::string&     name,
                                const traits&          tr);
+        void enum_value(const std::string& name, int64_t value);
 
     private:
-        type_details* m_details;
+        type_details_ref m_details;
     };
 
     template <typename T, typename = void> class type : public type_base
@@ -63,6 +65,13 @@ namespace mge::script {
             init_enum_details(ti, n, tr);
         }
 
+        auto& enum_value(const std::string& name, T value)
+        {
+            type_base::enum_value(name, static_cast<int64_t>(value));
+            return *this;
+        }
+
+    private:
         using type_base::details;
         using type_base::module;
         using type_base::name;

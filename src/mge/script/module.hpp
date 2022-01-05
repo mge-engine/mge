@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type.hpp"
 
 #include <string>
 
@@ -40,11 +41,18 @@ namespace mge::script {
          * @brief Move constructor.
          */
         module(module&&) = default;
+
         /**
          * @brief Constructor.
          * @param details module details
          */
-        module(module_details* details);
+        module(const module_details_ref& details);
+
+        /**
+         * @brief Constructor.
+         * @param details module details
+         */
+        module(module_details_ref&& details);
 
         /**
          * @brief Assignment.
@@ -74,9 +82,10 @@ namespace mge::script {
         module& operator()(T&& arg0, Args&&... args)
         {
             add_member(std::forward<T>(arg0));
-            operator()(std::forward<Args>(args)...);
-            return *this;
+            return operator()(std::forward<Args>(args)...);
         }
+
+        module& operator()() { return *this; }
 
         bool                is_root() const;
         mge::script::module parent() const;
@@ -88,18 +97,13 @@ namespace mge::script {
         module_details& details();
 
     private:
-        template <typename T> void add_member(T&& m)
-        {
-            static_assert(false, "Try to add unsupported type to module");
-        }
-
-        template <> void add_member(module&& m) { add_module(m); }
-        template <> void add_member(type_base&& t) { add_type(t); }
+        void add_member(module& m) { add_module(m); }
+        void add_member(type_base& m) { add_type(m); }
 
         void add_module(module& m);
         void add_type(type_base& t);
 
-        module_details* m_details;
+        module_details_ref m_details;
     };
 
 } // namespace mge::script

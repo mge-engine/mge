@@ -36,6 +36,19 @@ namespace mge {
         auto t7 = mge::script::type<int>();
         auto t8 = mge::script::type<unsigned int>();
     }
+
+    enum enum1
+    {
+        E1,
+        E2
+    };
+
+    TEST_F(test_type, enum_type)
+    {
+        using namespace mge::script;
+        module("mge")(type<enum1>().enum_value("E1", E1).enum_value("E2", E2));
+    }
+
 } // namespace mge
 
 #if 0
@@ -51,15 +64,4 @@ namespace mge {
         module("mge")(type<foo>().field("x", &foo::x));
     }
 
-    enum enum1
-    {
-        E1,
-        E2
-    };
-
-    TEST_F(test_type, enum_type)
-    {
-        using namespace mge::script;
-        module("mge")(type<enum1>());
-    }
 #endif

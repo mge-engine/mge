@@ -5,6 +5,8 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <string>
+
 namespace mge::script {
 
     /**
@@ -18,8 +20,11 @@ namespace mge::script {
     public:
         virtual ~visitor() = default;
 
-        virtual void begin(const module_details& m);
-        virtual void end(const module_details& m);
+        virtual void start(const module_details& m);
+        virtual void finish(const module_details& m);
+        virtual void start(const type_details& t);
+        virtual void finish(const type_details& t);
+        virtual void enum_value(const std::string& name, int64_t value);
     };
 
 } // namespace mge::script

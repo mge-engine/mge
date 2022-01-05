@@ -10,7 +10,7 @@ namespace mge::script {
 
     mge::script::module type_base::module() const
     {
-        return mge::script::module(m_details->module());
+        return mge::script::module(m_details->module().lock());
     }
 
     const std::type_index& type_base::type_index() const
@@ -18,7 +18,9 @@ namespace mge::script {
         return m_details->type_index();
     }
 
-    type_details* type_base::details() const { return m_details; }
+    const type_details_ref& type_base::details() const { return m_details; }
+
+    type_details_ref& type_base::details() { return m_details; }
 
     void type_base::init_details(const std::type_index& ti)
     {
@@ -30,6 +32,13 @@ namespace mge::script {
                                       const traits&          tr)
     {
         m_details = type_details::get_or_create(index, name, tr);
+    }
+
+    void type_base::enum_value(const std::string& name, int64_t value)
+    {
+        std::static_pointer_cast<enum_type_details>(m_details)->enum_value(
+            name,
+            value);
     }
 
 } // namespace mge::script

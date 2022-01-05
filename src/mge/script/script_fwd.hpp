@@ -16,10 +16,11 @@ namespace mge {
         struct traits;
 
         class module;
-        class module_details;
-
-        class type_details;
-        class enum_type_details;
+        MGE_DECLARE_REF(module_details);
+        MGE_DECLARE_WEAK_REF(module_details);
+        MGE_DECLARE_REF(type_details);
+        MGE_DECLARE_REF(enum_type_details);
+        MGE_DECLARE_REF(function_details);
         class type_base;
     } // namespace script
 

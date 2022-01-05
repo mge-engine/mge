@@ -17,6 +17,7 @@ namespace mge::script {
      * @brief Detail information of module.
      */
     class MGESCRIPT_EXPORT module_details
+        : public std::enable_shared_from_this<module_details>
     {
     public:
         /**
@@ -42,30 +43,29 @@ namespace mge::script {
          * @param name module name
          * @return module details instance
          */
-        static module_details* get(const std::string& path);
+        static module_details_ref get(const std::string& path);
 
-        bool               is_root() const { return m_parent == nullptr; }
-        module_details*    parent() const { return m_parent; }
+        bool               is_root() const { return m_parent.expired(); }
+        module_details_ref parent() const { return m_parent.lock(); }
         const std::string& name() const { return m_name; }
         std::string        full_name() const;
 
         void apply(visitor& v);
 
-        void add_module(module_details* m);
+        void add_module(module_details_ref& m);
         void add_type(type_base& t);
-        void add_type(type_details* t);
+        void add_type(type_details_ref& t);
+
     private:
-        module_details* get_or_add_module(const std::string& name);
+        module_details_ref get_or_add_module(const std::string& name);
 
-        using module_map = std::unordered_map<std::string, module_details*>;
-        using type_map = std::unordered_map<std::type_index, type_details*>;
+        using module_map = std::unordered_map<std::string, module_details_ref>;
+        using type_map = std::unordered_map<std::type_index, type_details_ref>;
 
-        std::string     m_name;
-        module_details* m_parent;
-        module_map      m_modules;
-        type_map        m_types;
-
-        static module_details s_root_module;
+        std::string             m_name;
+        module_details_weak_ref m_parent;
+        module_map              m_modules;
+        type_map                m_types;
     };
 
 } // namespace mge::script
