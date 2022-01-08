@@ -8,7 +8,7 @@ SET(mgescript_sources
 
     module.cpp
     type.cpp
-    # function.cpp
+    function.cpp
     # variable.cpp
     visitor.cpp
     # bind.cpp
