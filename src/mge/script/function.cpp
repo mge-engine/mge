@@ -9,7 +9,7 @@ namespace mge::script {
     function_base::create_details(const std::string&                  name,
                                   void*                               fptr,
                                   const mge::script::invoke_function& function,
-                                  const std::type_index          return_type,
+                                  const std::type_index&         return_type,
                                   std::vector<std::type_index>&& argument_types)
     {
         return function_details::create_details(name,

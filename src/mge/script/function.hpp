@@ -27,7 +27,7 @@ namespace mge::script {
         create_details(const std::string&                    name,
                        void*                                 fptr,
                        const mge::script::invoke_function&   function,
-                       const std::type_index                 return_type,
+                       const std::type_index&                return_type,
                        const std::array<std::type_index, N>& argument_types)
         {
             std::vector<std::type_index> argument_types_v(argument_types);
@@ -43,7 +43,7 @@ namespace mge::script {
         create_details(const std::string&                  name,
                        void*                               fptr,
                        const mge::script::invoke_function& function,
-                       const std::type_index               return_type,
+                       const std::type_index&              return_type,
                        std::vector<std::type_index>&&      argument_types);
 
         function_details_ref m_details;

@@ -2,10 +2,59 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/function_details.hpp"
+#include "mge/core/singleton.hpp"
+#include "mge/core/stdexceptions.hpp"
+
+#include <map>
 
 namespace mge::script {
-    function_details::function_details(const std::string& name)
+
+    class function_dictionary
+    {
+    public:
+        function_dictionary() = default;
+        ~function_dictionary() = default;
+
+        function_details_ref
+        create_details(const std::string&                  name,
+                       void*                               fptr,
+                       const mge::script::invoke_function& function,
+                       const std::type_index               return_type,
+                       std::vector<std::type_index>&&      argument_types)
+        {
+            auto it = m_functions.find(fptr);
+            if (it != m_functions.end()) {
+                MGE_THROW(illegal_state) << "Function '" << name
+                                         << "' already registered under name '"
+                                         << it->second->name() << "'";
+            }
+
+            auto result =
+                std::make_shared<function_details>(name,
+                                                   fptr,
+                                                   function,
+                                                   return_type,
+                                                   std::move(argument_types));
+            m_functions[fptr] = result;
+            return result;
+        }
+
+        std::map<void*, function_details_ref> m_functions;
+    };
+
+    static mge::singleton<function_dictionary> s_function_dictionary;
+
+    function_details::function_details(
+        const std::string&                  name,
+        void*                               fptr,
+        const mge::script::invoke_function& function,
+        const std::type_index&              return_type,
+        std::vector<std::type_index>&&      argument_types)
         : m_name(name)
+        , m_fptr(fptr)
+        , m_invoke_function(function)
+        , m_return_type(return_type)
+        , m_argument_types(std::move(argument_types))
     {}
 
     function_details::~function_details() {}
@@ -16,11 +65,14 @@ namespace mge::script {
         const std::string&                  name,
         void*                               fptr,
         const mge::script::invoke_function& function,
-        const std::type_index               return_type,
+        const std::type_index&              return_type,
         std::vector<std::type_index>&&      argument_types)
     {
-        function_details_ref result;
-        return result;
+        return s_function_dictionary->create_details(name,
+                                                     fptr,
+                                                     function,
+                                                     return_type,
+                                                     std::move(argument_types));
     }
 
 } // namespace mge::script
