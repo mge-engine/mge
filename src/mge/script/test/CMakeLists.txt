@@ -7,7 +7,7 @@ SET(MGESCRIPT_TEST_SOURCES
     test_traits.cpp
     test_type.cpp
 #    test_variable.cpp
-#    test_function.cpp
+   test_function.cpp
 )
 
 MGE_TEST(

@@ -38,7 +38,9 @@ namespace mge::script {
                        const std::type_index&                return_type,
                        const std::array<std::type_index, N>& argument_types)
         {
-            std::vector<std::type_index> argument_types_v(argument_types);
+            std::vector<std::type_index> argument_types_v(
+                argument_types.begin(),
+                argument_types.end());
 
             return create_details(name,
                                   fptr,
@@ -46,6 +48,12 @@ namespace mge::script {
                                   return_type,
                                   std::move(argument_types_v));
         }
+
+        function_details_ref
+        create_details(const std::string&                  name,
+                       void*                               fptr,
+                       const mge::script::invoke_function& function,
+                       const std::type_index&              return_type);
 
         function_details_ref
         create_details(const std::string&                  name,
@@ -63,13 +71,19 @@ namespace mge::script {
     private:
         template <typename... InvokeArgs> struct invoke_helper
         {
-            template <typename R, std::size_t... I>
-            static inline void call_cfunction(R (*fptr)(Args...),
-                                              call_context& context,
-                                              std::index_sequence<I...>)
+            template <typename InvokeResult, std::size_t... I>
+            static inline void
+            call_cfunction(InvokeResult (*fptr)(InvokeArgs...),
+                           call_context& context,
+                           std::index_sequence<I...>)
             {
-                context.store_result(
-                    (*fptr)(context.parameter<nth_type<I, Args...>>(I)...));
+                if constexpr (std::is_void_v<InvokeResult>) {
+                    (*fptr)(
+                        context.parameter<nth_type<I, InvokeArgs...>>(I)...);
+                } else {
+                    context.store_result((*fptr)(
+                        context.parameter<nth_type<I, InvokeArgs...>>(I)...));
+                }
             }
         };
 
@@ -91,6 +105,16 @@ namespace mge::script {
                                            invoke_function,
                                            result_type,
                                            arg_types);
+            } else {
+                auto invoke_function = [fptr](call_context& context) {
+                    invoke_helper<Args...>::call_cfunction(
+                        fptr,
+                        context,
+                        std::make_index_sequence<sizeof...(Args)>{});
+                };
+                auto result_type = std::type_index(typeid(R));
+                m_details =
+                    create_details(name, fptr, invoke_function, result_type);
             }
         }
 

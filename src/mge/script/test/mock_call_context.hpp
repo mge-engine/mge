@@ -22,10 +22,10 @@ public:
                 (override));
     MOCK_METHOD(void, store_int_result, (int), (override));
     MOCK_METHOD(void, store_unsigned_int_result, (unsigned int), (override));
-    MOCK_METHOD(void, store_long_result, (int64_t), (override));
-    MOCK_METHOD(void, store_unsigned_long_result, (uint64_t), (override));
-    MOCK_METHOD(void, store_int64_result, (int), (override));
-    MOCK_METHOD(void, store_uint64_result, (int), (override));
+    MOCK_METHOD(void, store_long_result, (long), (override));
+    MOCK_METHOD(void, store_unsigned_long_result, (unsigned long), (override));
+    MOCK_METHOD(void, store_int64_result, (int64_t), (override));
+    MOCK_METHOD(void, store_uint64_result, (uint64_t), (override));
     MOCK_METHOD(void, store_float_result, (float), (override));
     MOCK_METHOD(void, store_double_result, (double), (override));
     MOCK_METHOD(void, store_string_result, (const std::string&), (override));
