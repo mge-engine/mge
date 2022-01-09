@@ -6,6 +6,8 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/script/function.hpp"
+#include "mge/script/function_details.hpp"
 #include "mge/script/type.hpp"
 #include "mge/script/type_details.hpp"
 #include "mge/script/visitor.hpp"
@@ -121,6 +123,20 @@ namespace mge::script {
             m_types.insert(std::make_pair(ti, d));
             d->set_module(shared_from_this());
         }
+    }
+
+    void module_details::add_function(function_details_ref& f)
+    {
+        const auto& n = f->name();
+        if (m_functions.find(n) == m_functions.end()) {
+            m_functions.insert(std::make_pair(n, f));
+            f->set_module(shared_from_this());
+        }
+    }
+
+    void module_details::add_function(function_base& f)
+    {
+        add_function(f.details());
     }
 
     void module_details::add_type(type_base& t) { add_type(t.details()); }

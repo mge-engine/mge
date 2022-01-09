@@ -22,6 +22,7 @@ namespace mge {
         MGE_DECLARE_REF(enum_type_details);
         MGE_DECLARE_REF(function_details);
         class type_base;
+        class function_base;
     } // namespace script
 
 } // namespace mge

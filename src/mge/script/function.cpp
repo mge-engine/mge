@@ -5,6 +5,28 @@ namespace mge::script {
 
     const std::string& function_base::name() const { return m_details->name(); }
 
+    const mge::script::invoke_function& function_base::invoke_function() const
+    {
+        return m_details->invoke_function();
+    }
+
+    const std::type_index& function_base::return_type() const
+    {
+        return m_details->return_type();
+    }
+
+    const std::vector<std::type_index>& function_base::argument_types() const
+    {
+        return m_details->argument_types();
+    }
+
+    const function_details_ref& function_base::details() const
+    {
+        return m_details;
+    }
+
+    function_details_ref& function_base::details() { return m_details; }
+
     function_details_ref
     function_base::create_details(const std::string&                  name,
                                   void*                               fptr,

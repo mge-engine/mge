@@ -55,17 +55,22 @@ namespace mge::script {
         void add_module(module_details_ref& m);
         void add_type(type_base& t);
         void add_type(type_details_ref& t);
+        void add_function(function_base& f);
+        void add_function(function_details_ref& f);
 
     private:
         module_details_ref get_or_add_module(const std::string& name);
 
         using module_map = std::unordered_map<std::string, module_details_ref>;
         using type_map = std::unordered_map<std::type_index, type_details_ref>;
+        using function_map =
+            std::unordered_map<std::string, function_details_ref>;
 
         std::string             m_name;
         module_details_weak_ref m_parent;
         module_map              m_modules;
         type_map                m_types;
+        function_map            m_functions;
     };
 
 } // namespace mge::script

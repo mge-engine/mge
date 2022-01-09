@@ -61,6 +61,27 @@ namespace mge::script {
 
     const std::string& function_details::name() const { return m_name; }
 
+    const mge::script::invoke_function&
+    function_details::invoke_function() const
+    {
+        return m_invoke_function;
+    }
+
+    const std::type_index& function_details::return_type() const
+    {
+        return m_return_type;
+    }
+
+    const std::vector<std::type_index>& function_details::argument_types() const
+    {
+        return m_argument_types;
+    }
+
+    void function_details::set_module(const module_details_ref& m)
+    {
+        m_module = m;
+    }
+
     function_details_ref function_details::create_details(
         const std::string&                  name,
         void*                               fptr,

@@ -99,9 +99,11 @@ namespace mge::script {
     private:
         void add_member(module& m) { add_module(m); }
         void add_member(type_base& m) { add_type(m); }
+        void add_member(function_base& f) { add_function(f); }
 
         void add_module(module& m);
         void add_type(type_base& t);
+        void add_function(function_base& f);
 
         module_details_ref m_details;
     };

@@ -22,7 +22,11 @@ namespace mge::script {
                          std::vector<std::type_index>&&      argument_types);
         virtual ~function_details();
 
-        const std::string& name() const;
+        const std::string&                  name() const;
+        const mge::script::invoke_function& invoke_function() const;
+        const std::type_index&              return_type() const;
+        const std::vector<std::type_index>& argument_types() const;
+        void set_module(const module_details_ref& m);
 
         static function_details_ref
         create_details(const std::string&                  name,
@@ -37,6 +41,7 @@ namespace mge::script {
         mge::script::invoke_function m_invoke_function;
         std::type_index              m_return_type;
         std::vector<std::type_index> m_argument_types;
+        module_details_weak_ref      m_module;
     };
 
 } // namespace mge::script
