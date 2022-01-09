@@ -47,4 +47,14 @@ namespace mge {
         EXPECT_EQ(333, voidfunc_value);
     }
 
+    TEST(test_function, voidfunc_intarg)
+    {
+        auto f = mge::script::function("voidfunc_intarg", &voidfunc_intarg);
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, int32_parameter(0)).WillOnce(Return(10));
+        f.invoke_function()(ctx);
+        EXPECT_EQ(10, voidfunc_value);
+    }
+
 } // namespace mge
