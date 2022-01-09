@@ -57,4 +57,18 @@ namespace mge {
         EXPECT_EQ(10, voidfunc_value);
     }
 
+    TEST(test_function, intfunc_stdfu)
+    {
+        std::function<int(int, int)> stdfu = [](int x, int y) -> int {
+            return x - y;
+        };
+        auto f = mge::script::function("intfunc_stdfu", stdfu);
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, int32_parameter(0)).WillOnce(Return(10));
+        EXPECT_CALL(ctx, int32_parameter(1)).WillOnce(Return(3));
+        EXPECT_CALL(ctx, store_int_result(7)).Times(1);
+        f.invoke_function()(ctx);
+    }
+
 } // namespace mge

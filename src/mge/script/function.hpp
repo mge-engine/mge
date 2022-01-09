@@ -129,4 +129,68 @@ namespace mge::script {
         return c_function<R, Args...>(name, fptr);
     }
 
+    template <typename R, typename... Args>
+    class std_function : public function_base
+    {
+    private:
+        template <typename... InvokeArgs> struct invoke_helper
+        {
+            template <typename InvokeResult, std::size_t... I>
+            static inline void call_stdfunction(
+                const std::function<InvokeResult(InvokeArgs...)>& f,
+                call_context&                                     context,
+                std::index_sequence<I...>)
+            {
+                if constexpr (std::is_void_v<InvokeResult>) {
+                    f(context.parameter<nth_type<I, InvokeArgs...>>(I)...);
+                } else {
+                    context.store_result(
+                        f(context.parameter<nth_type<I, InvokeArgs...>>(I)...));
+                }
+            }
+        };
+
+    public:
+        std_function(const std::string&               name,
+                     const std::function<R(Args...)>& f)
+        {
+            if constexpr (sizeof...(Args) >= 1) {
+                auto invoke_function = [f](call_context& context) {
+                    invoke_helper<Args...>::call_stdfunction(
+                        f,
+                        context,
+                        std::make_index_sequence<sizeof...(Args)>{});
+                };
+                std::array<std::type_index, sizeof...(Args)> arg_types = {
+                    std::type_index(typeid(Args))...};
+                auto result_type = std::type_index(typeid(R));
+                m_details = create_details(name,
+                                           nullptr,
+                                           invoke_function,
+                                           result_type,
+                                           arg_types);
+            } else {
+                auto invoke_function = [f](call_context& context) {
+                    invoke_helper<Args...>::call_stdfunction(
+                        f,
+                        context,
+                        std::make_index_sequence<sizeof...(Args)>{});
+                };
+                auto result_type = std::type_index(typeid(R));
+                m_details =
+                    create_details(name, nullptr, invoke_function, result_type);
+            }
+        }
+
+        std_function(const std_function& f) = default;
+        std_function(std_function&& f) = default;
+    };
+
+    template <typename R, typename... Args>
+    inline std_function<R, Args...> function(const std::string& name,
+                                             const std::function<R(Args...)>& f)
+    {
+        return std_function<R, Args...>(name, f);
+    }
+
 } // namespace mge::script
