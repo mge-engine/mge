@@ -193,4 +193,5 @@ namespace mge::script {
         return std_function<R, Args...>(name, f);
     }
 
+
 } // namespace mge::script

@@ -28,6 +28,7 @@ SET(MGECORE_TEST_SOURCES
     test_thread_group.cpp
     test_output_stream.cpp
     test_checked_cast.cpp
+    test_callable.cpp
 )
 
 MGE_TEST(
