@@ -71,4 +71,11 @@ namespace mge {
         f.invoke_function()(ctx);
     }
 
+    TEST(test_function, lambda)
+    {
+        auto f =
+            mge::script::function("intfunc_lambda",
+                                  [](int x, int y) -> int { return x - y; });
+    }
+
 } // namespace mge

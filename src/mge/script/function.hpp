@@ -2,6 +2,8 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/callable.hpp"
+#include "mge/core/function_traits.hpp"
 #include "mge/core/nth_type.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
@@ -193,5 +195,91 @@ namespace mge::script {
         return std_function<R, Args...>(name, f);
     }
 
+    template <typename C> class callable_function : public function_base
+    {
+        template <typename T> struct callable_utils
+        {};
+
+        template <typename R, typename... Args>
+        struct callable_utils<R (C::*)(Args...) const>
+        {
+            template <typename... InvokeArgs> struct invoke_helper
+            {
+                template <std::size_t... I>
+                static inline void call_callable(const C&      f,
+                                                 call_context& context,
+                                                 std::index_sequence<I...>)
+                {
+                    if constexpr (std::is_void_v<R>) {
+                        f(context.parameter<nth_type<I, InvokeArgs...>>(I)...);
+                    } else {
+                        context.store_result(
+                            f(context.parameter<nth_type<I, InvokeArgs...>>(
+                                I)...));
+                    }
+                }
+            };
+
+            using return_type = R;
+
+            static constexpr auto arity = sizeof...(Args);
+
+            static std::array<std::type_index, sizeof...(Args)> arg_types()
+            {
+                std::array<std::type_index, sizeof...(Args)> types = {
+                    std::type_index(typeid(Args))...};
+                return types;
+            }
+
+            static void invoke(const C& callable, call_context& context)
+            {
+                invoke_helper<Args...>::call_callable(
+                    callable,
+                    context,
+                    std::make_index_sequence<sizeof...(Args)>{});
+            }
+        };
+
+        using concrete_utils = callable_utils<decltype(&C::operator())>;
+
+    public:
+        callable_function(const std::string& name, C&& callable)
+        {
+            if constexpr (concrete_utils::arity >= 1) {
+                auto invoke_function =
+                    [c = std::move(callable)](call_context& context) {
+                        concrete_utils::invoke(c, context);
+                    };
+                auto arg_types = concrete_utils::arg_types();
+                auto result_type =
+                    std::type_index(typeid(concrete_utils::return_type));
+                m_details = create_details(name,
+                                           nullptr,
+                                           invoke_function,
+                                           result_type,
+                                           arg_types);
+            } else {
+                auto result_type =
+                    std::type_index(typeid(concrete_utils::return_type));
+                auto invoke_function =
+                    [c = std::move(callable)](call_context& context) {
+                        concrete_utils::invoke(c, context);
+                    };
+                m_details =
+                    create_details(name, nullptr, invoke_function, result_type);
+            }
+        }
+
+        callable_function(const callable_function& f) = default;
+        callable_function(callable_function&& f) = default;
+    };
+
+    template <typename C>
+    inline std::enable_if<mge::is_callable<C>::value,
+                          callable_function<C>>::type
+    function(const std::string& name, C&& callable)
+    {
+        return callable_function<C>(name, std::move(callable));
+    }
 
 } // namespace mge::script

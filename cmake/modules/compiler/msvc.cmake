@@ -43,6 +43,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd4582") # constructor will not be implicitly called
     ADD_DEFINITIONS("-wd5219") # possible data loss in conversion
     ADD_DEFINITIONS("-wd5243") # 'type-name': using incomplete class 'class-name' can cause potential one definition rule violation due to ABI limitation
+    ADD_DEFINITIONS("-wd4686") # possible change in behavior, change in UDT return calling convention
     ADD_DEFINITIONS("-showIncludes")
     IF("${MSVC_VERSION}" STREQUAL "1900")
         ADD_DEFINITIONS("-wd4702") # unreachable code
