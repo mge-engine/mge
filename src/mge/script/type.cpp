@@ -48,4 +48,10 @@ namespace mge::script {
             value);
     }
 
+    void type_base::set_base(const type_details_ref& base_details)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)->set_base(
+            base_details);
+    }
+
 } // namespace mge::script

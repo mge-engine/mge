@@ -27,6 +27,8 @@ namespace mge::script {
         void init_class_details(const std::type_index& index,
                                 const std::string&     name,
                                 const traits&          tr);
+        void get_class_details(const std::type_index& index);
+        void set_base(const type_details_ref& base_details);
         void enum_value(const std::string& name, int64_t value);
 
     private:
@@ -93,11 +95,24 @@ namespace mge::script {
         : public type_base
     {
     public:
+        inline explicit type()
+        {
+            auto ti = std::type_index(typeid(T));
+            get_details(ti);
+        }
+
         inline explicit type(const std::string& n)
         {
             auto ti = std::type_index(typeid(T));
             auto tr = traits_of<T>();
             init_class_details(ti, n, tr);
+        }
+
+        template <typename TB, typename TBV>
+        auto& base(const type<TB, TBV>& base_type)
+        {
+            set_base(base_type.details());
+            return *this;
         }
     };
 

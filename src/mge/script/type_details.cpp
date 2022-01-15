@@ -156,4 +156,27 @@ namespace mge::script {
         m_values.emplace_back(std::make_tuple(name, value));
     }
 
+    class_type_details::class_type_details(const std::string&     name,
+                                           const std::type_index& ti,
+                                           const traits&          t,
+                                           const char*            used_name)
+        : type_details(name, ti, t, used_name)
+    {}
+
+    void class_type_details::apply(visitor& v)
+    {
+        v.start(*this);
+        v.finish(*this);
+    }
+
+    void class_type_details::set_base(const type_details_ref& base_details)
+    {
+        for (const auto& b : m_bases) {
+            if (b.get() == base_details.get()) {
+                return;
+            }
+        }
+        m_bases.push_back(base_details);
+    }
+
 } // namespace mge::script

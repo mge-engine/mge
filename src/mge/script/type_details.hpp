@@ -73,4 +73,22 @@ namespace mge::script {
         using value = std::tuple<std::string, int64_t>;
         std::vector<value> m_values;
     };
+
+    class MGESCRIPT_EXPORT class_type_details : public type_details
+    {
+    public:
+        class_type_details(const std::string&     name,
+                           const std::type_index& ti,
+                           const traits&          t,
+                           const char*            used_name = nullptr);
+
+        virtual ~class_type_details() = default;
+        void apply(visitor& v) override;
+
+        void set_base(const type_details_ref& base_details);
+
+    private:
+        std::vector<type_details_ref> m_bases;
+    };
+
 } // namespace mge::script
