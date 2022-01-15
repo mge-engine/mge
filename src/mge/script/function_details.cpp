@@ -6,12 +6,15 @@
 #include "mge/core/stdexceptions.hpp"
 
 #include <map>
+#include <variant>
 
 namespace mge::script {
 
     class function_dictionary
     {
     public:
+        using function_key_type = std::variant<std::string, void*>;
+
         function_dictionary() = default;
         ~function_dictionary() = default;
 
@@ -22,7 +25,12 @@ namespace mge::script {
                        const std::type_index               return_type,
                        std::vector<std::type_index>&&      argument_types)
         {
-            auto it = m_functions.find(fptr);
+            function_key_type k(fptr);
+            if (fptr == nullptr) {
+                k = name;
+            }
+
+            auto it = m_functions.find(k);
             if (it != m_functions.end()) {
                 MGE_THROW(illegal_state) << "Function '" << name
                                          << "' already registered under name '"
@@ -35,11 +43,11 @@ namespace mge::script {
                                                    function,
                                                    return_type,
                                                    std::move(argument_types));
-            m_functions[fptr] = result;
+            m_functions[k] = result;
             return result;
         }
 
-        std::map<void*, function_details_ref> m_functions;
+        std::map<function_key_type, function_details_ref> m_functions;
     };
 
     static mge::singleton<function_dictionary> s_function_dictionary;
