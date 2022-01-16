@@ -79,10 +79,10 @@ namespace mge::script {
          * @return @c *this
          */
         template <typename T, typename... Args>
-        module& operator()(T&& arg0, Args&&... args)
+        module& operator()(const T& arg0, const Args&... args)
         {
-            add_member(std::forward<T>(arg0));
-            return operator()(std::forward<Args>(args)...);
+            add_member(arg0);
+            return operator()(args...);
         }
 
         module& operator()() { return *this; }
@@ -97,9 +97,16 @@ namespace mge::script {
         module_details& details();
 
     private:
-        void add_member(module& m) { add_module(m); }
-        void add_member(type_base& m) { add_type(m); }
-        void add_member(function_base& f) { add_function(f); }
+        void add_member(const module& m) { add_module(const_cast<module&>(m)); }
+        void add_member(const function_base& f)
+        {
+            add_function(const_cast<function_base&>(f));
+        }
+
+        template <typename T, typename V> void add_member(const type<T, V>& t)
+        {
+            add_type(const_cast<type_base&>(static_cast<const type_base&>(t)));
+        }
 
         void add_module(module& m);
         void add_type(type_base& t);

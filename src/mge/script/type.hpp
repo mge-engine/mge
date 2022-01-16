@@ -108,8 +108,9 @@ namespace mge::script {
             init_class_details(ti, n, tr);
         }
 
-        template <typename TB, typename TBV>
-        auto& base(const type<TB, TBV>& base_type)
+        template <typename TB,
+                  typename std::enable_if<std::is_base_of_v<TB, T>>::type>
+        auto& base(const type<TB, void>& base_type)
         {
             set_base(base_type.details());
             return *this;

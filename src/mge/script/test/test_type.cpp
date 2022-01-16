@@ -49,9 +49,6 @@ namespace mge {
         module("mge")(type<enum1>().enum_value("E1", E1).enum_value("E2", E2));
     }
 
-} // namespace mge
-
-#if 0
     struct foo
     {
         int x;
@@ -61,7 +58,7 @@ namespace mge {
     TEST_F(test_type, struct_type)
     {
         using namespace mge::script;
-        module("mge")(type<foo>().field("x", &foo::x));
+        module("mge")(type<foo>("foo"));
     }
 
-#endif
+} // namespace mge
