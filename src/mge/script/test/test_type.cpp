@@ -61,4 +61,23 @@ namespace mge {
         module("mge")(type<foo>("foo"));
     }
 
+    struct bar : public foo
+    {};
+
+    TEST_F(test_type, inheritance)
+    {
+        using namespace mge::script;
+        module("mge")(type<foo>("foo"), type<bar>("bar").base(type<foo>()));
+    }
+#if 0 // will not compile
+    struct nobar
+    {};
+
+    TEST_F(test_type, inheritance_fail)
+    {
+        using namespace mge::script;
+        module("mge")(type<foo>("foo"), type<nobar>("nobar").base(type<foo>()));
+    }
+#endif
+
 } // namespace mge

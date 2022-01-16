@@ -95,10 +95,13 @@ namespace mge::script {
         : public type_base
     {
     public:
+        using self_type =
+            type<T, typename std::enable_if<std::is_class_v<T>>::type>;
+
         inline explicit type()
         {
             auto ti = std::type_index(typeid(T));
-            get_details(ti);
+            init_details(ti);
         }
 
         inline explicit type(const std::string& n)
@@ -108,9 +111,9 @@ namespace mge::script {
             init_class_details(ti, n, tr);
         }
 
-        template <typename TB,
-                  typename std::enable_if<std::is_base_of_v<TB, T>>::type>
-        auto& base(const type<TB, void>& base_type)
+        template <typename TB, typename TV>
+        std::enable_if<std::is_base_of_v<TB, T>, self_type>::type&
+        base(const type<TB, TV>& base_type)
         {
             set_base(base_type.details());
             return *this;
