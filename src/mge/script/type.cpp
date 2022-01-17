@@ -54,4 +54,10 @@ namespace mge::script {
             base_details);
     }
 
+    void type_base::set_destructor(const invoke_function& dtor)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)->set_destructor(
+            dtor);
+    }
+
 } // namespace mge::script

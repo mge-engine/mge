@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/traits.hpp"
@@ -86,9 +87,11 @@ namespace mge::script {
         void apply(visitor& v) override;
 
         void set_base(const type_details_ref& base_details);
+        void set_destructor(const invoke_function& dtor);
 
     private:
         std::vector<type_details_ref> m_bases;
+        invoke_function               m_destructor;
     };
 
 } // namespace mge::script

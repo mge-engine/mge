@@ -179,4 +179,9 @@ namespace mge::script {
         m_bases.push_back(base_details);
     }
 
+    void class_type_details::set_destructor(const invoke_function& dtor)
+    {
+        m_destructor = dtor;
+    }
+
 } // namespace mge::script

@@ -3,9 +3,11 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/type_name.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/traits.hpp"
+
 #include <string>
 
 namespace mge::script {
@@ -29,6 +31,8 @@ namespace mge::script {
                                 const traits&          tr);
         void get_class_details(const std::type_index& index);
         void set_base(const type_details_ref& base_details);
+        void set_destructor(const invoke_function& dtor);
+        void add_constructor(const invoke_function& ctor);
         void enum_value(const std::string& name, int64_t value);
 
     private:
@@ -109,6 +113,17 @@ namespace mge::script {
             auto ti = std::type_index(typeid(T));
             auto tr = traits_of<T>();
             init_class_details(ti, n, tr);
+            if (!std::is_trivially_destructible_v<T>) {
+                set_destructor([](call_context& ctx) {
+                    T* self = static_cast<T*>(ctx.this_ptr());
+                    self->~T();
+                });
+            }
+        }
+
+        template <typename... ConstructorArgs> self_type& constructor()
+        {
+            return *this;
         }
 
         template <typename TB, typename TV>

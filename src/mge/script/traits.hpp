@@ -31,6 +31,8 @@ namespace mge::script {
         unsigned int is_bool : 1;
         unsigned int is_enum : 1;
         unsigned int is_class : 1;
+        unsigned int is_trivially_destructible : 1; // no excplicit destructor
+                                                    // call needed
     };
 
     template <typename T> inline constexpr traits traits_of()
@@ -47,7 +49,8 @@ namespace mge::script {
                           .is_long_double = 0,
                           .is_bool = 0,
                           .is_enum = 0,
-                          .is_class = 0};
+                          .is_class = 0,
+                          .is_trivially_destructible = 0};
             return result;
         } else {
             traits result{
@@ -72,7 +75,9 @@ namespace mge::script {
                 .is_long_double = std::is_same_v<T, long double> ? 1 : 0,
                 .is_bool = std::is_same_v<T, bool> ? 1 : 0,
                 .is_enum = std::is_enum_v<T> ? 1 : 0,
-                .is_class = std::is_class_v<T> ? 1 : 0};
+                .is_class = std::is_class_v<T> ? 1 : 0,
+                .is_trivially_destructible =
+                    std::is_trivially_destructible_v<T> ? 1 : 0};
             return result;
         }
     }
