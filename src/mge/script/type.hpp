@@ -38,6 +38,13 @@ namespace mge::script {
         void set_destructor(const invoke_function& dtor);
         void add_constructor(const signature&       signature,
                              const invoke_function& ctor);
+        void add_field(const std::string&     name,
+                       const type_base&       type,
+                       const invoke_function& getter);
+        void add_field(const std::string&     name,
+                       const type_base&       type,
+                       const invoke_function& getter,
+                       const invoke_function& setter);
         void enum_value(const std::string& name, int64_t value);
 
     private:
@@ -164,6 +171,30 @@ namespace mge::script {
         base(const type<TB, TV>& base_type)
         {
             set_base(base_type.details());
+            return *this;
+        }
+
+        template <typename F>
+        self_type& field(const std::string& name, F T::*fieldptr)
+        {
+            type<F> field_type;
+            if constexpr (std::is_const_v<F>) {
+                auto getter = [fieldptr](call_context& ctx) {
+                    const T* objptr = static_cast<const T*>(ctx.this_ptr());
+                    ctx.store_result(objptr->*fieldptr);
+                };
+                add_field(name, field_type, getter);
+            } else {
+                auto getter = [fieldptr](call_context& ctx) {
+                    T* objptr = static_cast<T*>(ctx.this_ptr());
+                    ctx.store_result(objptr->*fieldptr);
+                };
+                auto setter = [fieldptr](call_context& ctx) {
+                    T* objptr = static_cast<T*>(ctx.this_ptr());
+                    objptr->*fieldptr = ctx.parameter<T>(0);
+                };
+                add_field(name, field_type, getter, setter);
+            }
             return *this;
         }
     };

@@ -190,4 +190,19 @@ namespace mge::script {
         m_constructors.emplace_back(s, ctor);
     }
 
+    void class_type_details::add_field(const std::string&      name,
+                                       const type_details_ref& t,
+                                       const invoke_function&  getter)
+    {
+        m_fields.emplace_back(name, t, getter);
+    }
+
+    void class_type_details::add_field(const std::string&      name,
+                                       const type_details_ref& t,
+                                       const invoke_function&  getter,
+                                       const invoke_function&  setter)
+    {
+        m_fields.emplace_back(name, t, getter, setter);
+    }
+
 } // namespace mge::script

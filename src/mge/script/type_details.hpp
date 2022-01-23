@@ -83,6 +83,11 @@ namespace mge::script {
         {
             inline constructor() = default;
             inline constructor(const constructor&) = default;
+            inline constructor(constructor&&) = default;
+
+            constructor& operator=(const constructor&) = default;
+            constructor& operator=(constructor&&) = default;
+
             inline constructor(const signature& s, const invoke_function& ctor)
                 : signature(s)
                 , function(ctor)
@@ -90,6 +95,39 @@ namespace mge::script {
 
             mge::script::signature signature;
             invoke_function        function;
+        };
+
+        struct field
+        {
+            inline field() = default;
+            inline field(const field&) = default;
+            inline field(field&&) = default;
+
+            field& operator=(const field&) = default;
+            field& operator=(field&&) = default;
+
+            inline field(const std::string&      n,
+                         const type_details_ref& t,
+                         const invoke_function&  g)
+                : name(n)
+                , type(t)
+                , getter(g)
+            {}
+
+            inline field(const std::string&      n,
+                         const type_details_ref& t,
+                         const invoke_function&  g,
+                         const invoke_function&  s)
+                : name(n)
+                , type(t)
+                , getter(g)
+                , setter(s)
+            {}
+
+            std::string      name;
+            type_details_ref type;
+            invoke_function  getter;
+            invoke_function  setter;
         };
 
         class_type_details(const std::string&     name,
@@ -103,11 +141,19 @@ namespace mge::script {
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);
         void add_constructor(const signature& s, const invoke_function& ctor);
+        void add_field(const std::string&      name,
+                       const type_details_ref& t,
+                       const invoke_function&  getter);
+        void add_field(const std::string&      name,
+                       const type_details_ref& t,
+                       const invoke_function&  getter,
+                       const invoke_function&  setter);
 
     private:
         std::vector<type_details_ref> m_bases;
         invoke_function               m_destructor;
         std::vector<constructor>      m_constructors;
+        std::vector<field>            m_fields;
     };
 
 } // namespace mge::script

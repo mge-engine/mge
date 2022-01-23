@@ -75,4 +75,23 @@ namespace mge::script {
             ->add_constructor(sgn, ctor);
     }
 
+    void type_base::add_field(const std::string&     name,
+                              const type_base&       type,
+                              const invoke_function& getter)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)->add_field(
+            name,
+            type.m_details,
+            getter);
+    }
+
+    void type_base::add_field(const std::string&     name,
+                              const type_base&       type,
+                              const invoke_function& getter,
+                              const invoke_function& setter)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)
+            ->add_field(name, type.m_details, getter, setter);
+    }
+
 } // namespace mge::script
