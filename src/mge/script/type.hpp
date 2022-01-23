@@ -15,6 +15,9 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_base
     {
     public:
+        type_base();
+        type_base& operator=(const type_base& t);
+
         const std::string&      name() const;
         mge::script::module     module() const;
         const std::type_index&  type_index() const;
@@ -98,6 +101,18 @@ namespace mge::script {
     class type<T, typename std::enable_if<std::is_class_v<T>>::type>
         : public type_base
     {
+    private:
+        template <typename... ConstructorArgs> struct constructor_helper
+        {
+            template <std::size_t... I>
+            static inline void construct(call_context& context,
+                                         std::index_sequence<I...>)
+            {
+                new (context.this_ptr())
+                    T(context.parameter<nth_type<I, ConstructorArgs...>>(I)...);
+            }
+        };
+
     public:
         using self_type =
             type<T, typename std::enable_if<std::is_class_v<T>>::type>;
@@ -123,6 +138,18 @@ namespace mge::script {
 
         template <typename... ConstructorArgs> self_type& constructor()
         {
+            std::array<std::type_index, sizeof...(ConstructorArgs)> arg_types =
+                {std::type_index(typeid(ConstructorArgs))...};
+            auto construct = [](call_context& ctx) {
+                constructor_helper<ConstructorArgs...>::construct(
+                    ctx,
+                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
+            };
+            /*
+            add_constructor(construct,
+                            std::vector<std::type_index>(arg_types.begin(),
+                                                         arg_types.end()));
+            */
             return *this;
         }
 

@@ -6,6 +6,14 @@
 #include "mge/script/type_details.hpp"
 
 namespace mge::script {
+    type_base::type_base() {}
+
+    type_base& type_base::operator=(const type_base& t)
+    {
+        m_details = t.m_details;
+        return *this;
+    }
+
     const std::string& type_base::name() const { return m_details->name(); }
 
     mge::script::module type_base::module() const

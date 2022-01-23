@@ -5,6 +5,7 @@
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
 
 #include <string>
@@ -78,6 +79,12 @@ namespace mge::script {
     class MGESCRIPT_EXPORT class_type_details : public type_details
     {
     public:
+        struct constructor
+        {
+            mge::script::signature signature;
+            invoke_function        function;
+        };
+
         class_type_details(const std::string&     name,
                            const std::type_index& ti,
                            const traits&          t,
@@ -92,6 +99,7 @@ namespace mge::script {
     private:
         std::vector<type_details_ref> m_bases;
         invoke_function               m_destructor;
+        std::vector<constructor>      m_constructors;
     };
 
 } // namespace mge::script
