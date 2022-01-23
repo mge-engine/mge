@@ -3,6 +3,9 @@
 #include "mge/core/small_vector.hpp"
 #include "mge/script/dllexport.hpp"
 
+#include <array>
+#include <typeindex>
+
 namespace mge::script {
 
     class MGESCRIPT_EXPORT signature

@@ -81,6 +81,13 @@ namespace mge::script {
     public:
         struct constructor
         {
+            inline constructor() = default;
+            inline constructor(const constructor&) = default;
+            inline constructor(const signature& s, const invoke_function& ctor)
+                : signature(s)
+                , function(ctor)
+            {}
+
             mge::script::signature signature;
             invoke_function        function;
         };
@@ -95,6 +102,7 @@ namespace mge::script {
 
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);
+        void add_constructor(const signature& s, const invoke_function& ctor);
 
     private:
         std::vector<type_details_ref> m_bases;

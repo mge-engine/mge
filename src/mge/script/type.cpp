@@ -68,4 +68,11 @@ namespace mge::script {
             dtor);
     }
 
+    void type_base::add_constructor(const signature&       sgn,
+                                    const invoke_function& ctor)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)
+            ->add_constructor(sgn, ctor);
+    }
+
 } // namespace mge::script

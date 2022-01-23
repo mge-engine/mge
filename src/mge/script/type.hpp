@@ -6,6 +6,7 @@
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
 
 #include <string>
@@ -35,7 +36,8 @@ namespace mge::script {
         void get_class_details(const std::type_index& index);
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);
-        void add_constructor(const invoke_function& ctor);
+        void add_constructor(const signature&       signature,
+                             const invoke_function& ctor);
         void enum_value(const std::string& name, int64_t value);
 
     private:
@@ -145,11 +147,8 @@ namespace mge::script {
                     ctx,
                     std::make_index_sequence<sizeof...(ConstructorArgs)>{});
             };
-            /*
-            add_constructor(construct,
-                            std::vector<std::type_index>(arg_types.begin(),
-                                                         arg_types.end()));
-            */
+            signature s(arg_types);
+            add_constructor(s, construct);
             return *this;
         }
 

@@ -184,4 +184,10 @@ namespace mge::script {
         m_destructor = dtor;
     }
 
+    void class_type_details::add_constructor(const signature&       s,
+                                             const invoke_function& ctor)
+    {
+        m_constructors.emplace_back(s, ctor);
+    }
+
 } // namespace mge::script
