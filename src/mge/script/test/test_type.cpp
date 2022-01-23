@@ -80,4 +80,18 @@ namespace mge {
     }
 #endif
 
+    struct constructed
+    {
+        constructed() {}
+        constructed(int, int) {}
+    };
+
+    TEST_F(test_type, constructor)
+    {
+        using namespace mge::script;
+        module("mge")(type<constructed>("constructed")
+                          .constructor<void>()
+                          .constructor<int, int>());
+    }
+
 } // namespace mge

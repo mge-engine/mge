@@ -2,13 +2,13 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/nth_type.hpp"
 #include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
-
 #include <string>
 
 namespace mge::script {
@@ -110,8 +110,15 @@ namespace mge::script {
             static inline void construct(call_context& context,
                                          std::index_sequence<I...>)
             {
-                new (context.this_ptr())
-                    T(context.parameter<nth_type<I, ConstructorArgs...>>(I)...);
+                if constexpr ((sizeof...(I) == 1) &&
+                              std::is_same_v<nth_type<0, ConstructorArgs...>,
+                                             void>) {
+                    new (context.this_ptr()) T();
+                } else {
+                    new (context.this_ptr())
+                        T(context.parameter<nth_type<I, ConstructorArgs...>>(
+                            I)...);
+                }
             }
         };
 
