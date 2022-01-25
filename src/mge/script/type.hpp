@@ -191,7 +191,7 @@ namespace mge::script {
                 };
                 auto setter = [fieldptr](call_context& ctx) {
                     T* objptr = static_cast<T*>(ctx.this_ptr());
-                    objptr->*fieldptr = ctx.parameter<T>(0);
+                    objptr->*fieldptr = ctx.parameter<F>(0);
                 };
                 add_field(name, field_type, getter, setter);
             }

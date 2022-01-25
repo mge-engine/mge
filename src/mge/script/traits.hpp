@@ -15,7 +15,9 @@ namespace mge::script {
         std::is_same_v<T, short> || std::is_same_v<T, unsigned short> ||
         std::is_same_v<T, int> || std::is_same_v<T, unsigned int> ||
         std::is_same_v<T, long> || std::is_same_v<T, unsigned long> ||
-        std::is_same_v<T, int64_t> || std::is_same_v<T, uint64_t>;
+        std::is_same_v<T, int64_t> || std::is_same_v<T, uint64_t> ||
+        std::is_same_v<T, float> || std::is_same_v<T, double> ||
+        std::is_same_v<T, long double> || std::is_same_v<T, bool>;
 
     struct traits
     {
@@ -33,6 +35,7 @@ namespace mge::script {
         unsigned int is_class : 1;
         unsigned int is_trivially_destructible : 1; // no excplicit destructor
                                                     // call needed
+        unsigned int is_abstract : 1;
     };
 
     template <typename T> inline constexpr traits traits_of()
@@ -50,7 +53,8 @@ namespace mge::script {
                           .is_bool = 0,
                           .is_enum = 0,
                           .is_class = 0,
-                          .is_trivially_destructible = 0};
+                          .is_trivially_destructible = 0,
+                          .is_abstract = 0};
             return result;
         } else {
             traits result{
@@ -77,7 +81,8 @@ namespace mge::script {
                 .is_enum = std::is_enum_v<T> ? 1 : 0,
                 .is_class = std::is_class_v<T> ? 1 : 0,
                 .is_trivially_destructible =
-                    std::is_trivially_destructible_v<T> ? 1 : 0};
+                    std::is_trivially_destructible_v<T> ? 1 : 0,
+                .is_abstract = std::is_abstract_v<T> ? 1 : 0};
             return result;
         }
     }

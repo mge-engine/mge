@@ -94,4 +94,18 @@ namespace mge {
                           .constructor<int, int>());
     }
 
+    struct fields
+    {
+        int   x;
+        float y;
+    };
+
+    TEST_F(test_type, fields)
+    {
+        using namespace mge::script;
+        module("mge")(type<fields>("fields")
+                          .field("x", &fields::x)
+                          .field("y", &fields::y));
+    }
+
 } // namespace mge
