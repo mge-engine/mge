@@ -108,4 +108,20 @@ namespace mge {
                           .field("y", &fields::y));
     }
 
+    struct memberfunctions
+    {
+        int  foo(int, int) { return 0; }
+        void void_foo(int) {}
+        int  const_foo(int) const { return 0; }
+    };
+
+    TEST_F(test_type, memberfunction)
+    {
+        using namespace mge::script;
+        module("mge")(type<memberfunctions>("memberfunctions")
+                          .method("foo", &memberfunctions::foo)
+                          .method("void_foo", &memberfunctions::void_foo)
+                          .method("const_foo", &memberfunctions::const_foo));
+    }
+
 } // namespace mge

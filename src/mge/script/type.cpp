@@ -75,6 +75,15 @@ namespace mge::script {
             ->add_constructor(sgn, ctor);
     }
 
+    void type_base::add_method(const std::string&     name,
+                               const std::type_index& return_type,
+                               const signature&       sgn,
+                               const invoke_function& invoke)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)
+            ->add_method(name, return_type, sgn, invoke);
+    }
+
     void type_base::add_field(const std::string&     name,
                               const type_base&       type,
                               const invoke_function& getter)

@@ -205,4 +205,12 @@ namespace mge::script {
         m_fields.emplace_back(name, t, getter, setter);
     }
 
+    void class_type_details::add_method(const std::string&     name,
+                                        const std::type_index& return_type,
+                                        const signature&       sgn,
+                                        const invoke_function& invoke)
+    {
+        m_methods.emplace_back(name, return_type, sgn, invoke);
+    }
+
 } // namespace mge::script

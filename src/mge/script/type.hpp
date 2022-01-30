@@ -38,6 +38,12 @@ namespace mge::script {
         void set_destructor(const invoke_function& dtor);
         void add_constructor(const signature&       signature,
                              const invoke_function& ctor);
+
+        void add_method(const std::string&     name,
+                        const std::type_index& return_type,
+                        const signature&       signature,
+                        const invoke_function& invoke);
+
         void add_field(const std::string&     name,
                        const type_base&       type,
                        const invoke_function& getter);
@@ -195,6 +201,116 @@ namespace mge::script {
                 };
                 add_field(name, field_type, getter, setter);
             }
+            return *this;
+        }
+
+    private:
+        template <typename... MethodArgs> struct method_helper
+        {
+            template <typename R, std::size_t... I>
+            static inline void call(call_context& ctx,
+                                    R (T::*mptr)(MethodArgs...),
+                                    std::index_sequence<I...>)
+            {
+                T* objptr = static_cast<T*>(ctx.this_ptr());
+                if constexpr (std::is_void_v<R>) {
+                    (objptr->*mptr)(
+                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...);
+                } else {
+                    ctx.store_result((objptr->*mptr)(
+                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...));
+                }
+            }
+
+            template <typename R, std::size_t... I>
+            static inline void call(call_context& ctx,
+                                    R (T::*mptr)(MethodArgs...) const,
+                                    std::index_sequence<I...>)
+            {
+                const T* objptr = static_cast<const T*>(ctx.this_ptr());
+                if constexpr (std::is_void_v<R>) {
+                    (objptr->*mptr)(
+                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...);
+                } else {
+                    ctx.store_result((objptr->*mptr)(
+                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...));
+                }
+            }
+        };
+
+    public:
+        template <typename R, typename... MethodArgs>
+        self_type& method(const std::string& name, R (T::*mptr)(MethodArgs...))
+        {
+            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
+                std::type_index(typeid(MethodArgs))...};
+            auto call = [mptr](call_context& ctx) {
+                method_helper<MethodArgs...>::call(
+                    ctx,
+                    mptr,
+                    std::make_index_sequence<sizeof...(MethodArgs)>{});
+            };
+            signature s(arg_types);
+            auto      result_type = std::type_index(typeid(R));
+
+            add_method(name, result_type, s, call);
+            return *this;
+        }
+
+        template <typename R, typename... MethodArgs>
+        self_type& method(const std::string& name,
+                          R (T::*mptr)(MethodArgs...) noexcept)
+        {
+            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
+                std::type_index(typeid(MethodArgs))...};
+            auto call = [mptr](call_context& ctx) {
+                method_helper<MethodArgs...>::call(
+                    ctx,
+                    mptr,
+                    std::make_index_sequence<sizeof...(MethodArgs)>{});
+            };
+            signature s(arg_types);
+            auto      result_type = std::type_index(typeid(R));
+
+            add_method(name, result_type, s, call);
+            return *this;
+        }
+
+        template <typename R, typename... MethodArgs>
+        self_type& method(const std::string& name,
+                          R (T::*mptr)(MethodArgs...) const)
+        {
+            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
+                std::type_index(typeid(MethodArgs))...};
+            auto call = [mptr](call_context& ctx) {
+                method_helper<MethodArgs...>::call(
+                    ctx,
+                    mptr,
+                    std::make_index_sequence<sizeof...(MethodArgs)>{});
+            };
+            signature s(arg_types);
+            auto      result_type = std::type_index(typeid(R));
+
+            add_method(name, result_type, s, call);
+            return *this;
+        }
+
+        template <typename R, typename... MethodArgs>
+        self_type& method(const std::string& name,
+                          R (T::*mptr)(MethodArgs...) const noexcept)
+        {
+            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
+                std::type_index(typeid(MethodArgs))...};
+            auto call = [mptr](call_context& ctx) {
+                method_helper<MethodArgs...>::call(
+                    ctx,
+                    mptr,
+                    std::make_index_sequence<sizeof...(MethodArgs)>{});
+            };
+            signature s(arg_types);
+            auto      result_type = std::type_index(typeid(R));
+
+            add_method(name, result_type, s, call);
             return *this;
         }
     };
