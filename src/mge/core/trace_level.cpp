@@ -3,7 +3,13 @@
 // All rights reserved.
 #include "mge/core/trace_level.hpp"
 #include <iostream>
+
+#ifdef ERROR
+#    undef ERROR
+#endif
+
 namespace mge {
+
     std::ostream& operator<<(std::ostream& os, const trace_level& l)
     {
         switch (l) {
