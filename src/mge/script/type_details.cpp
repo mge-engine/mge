@@ -44,7 +44,11 @@ namespace mge::script {
                 m_types[ti] = et;
                 return et;
             }
-
+            if (tr.is_class) {
+                auto et = std::make_shared<class_type_details>(name, ti, tr);
+                m_types[ti] = et;
+                return et;
+            }
             return type_details_ref();
         }
 

@@ -6,6 +6,7 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type.hpp"
 
+#include <iostream>
 #include <string>
 
 namespace mge::script {

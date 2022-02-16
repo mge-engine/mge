@@ -105,7 +105,6 @@ namespace mge::script {
             return *this;
         }
 
-    private:
         using type_base::details;
         using type_base::module;
         using type_base::name;
@@ -239,6 +238,11 @@ namespace mge::script {
         };
 
     public:
+        using type_base::details;
+        using type_base::module;
+        using type_base::name;
+        using type_base::type_index;
+
         template <typename R, typename... MethodArgs>
         self_type& method(const std::string& name, R (T::*mptr)(MethodArgs...))
         {
