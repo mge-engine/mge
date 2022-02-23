@@ -6,7 +6,7 @@ import sys
 import subprocess
 import shutil
 
-vulkan_version = "1.2.182.0"
+vulkan_version = "1.3.204.0"
 vulkan_installer_cache_dir = 'vulkan-installer'
 vulkan_installer = '%s\VulkanSDK-%s-Installer.exe' % (
     vulkan_installer_cache_dir, vulkan_version)
@@ -31,7 +31,8 @@ def download_vulkan():
 
 def install_vulkan():
     print("Run vulkan installer", flush=True)
-    subprocess.run([vulkan_installer, "/S"])
+    subprocess.run([vulkan_installer, "in", "-d",
+                    "-d", "--al", "--da", "-c"])
 
 
 try:
