@@ -32,7 +32,7 @@ def download_vulkan():
 def install_vulkan():
     print("Run vulkan installer", flush=True)
     subprocess.run([vulkan_installer, "in", "-d",
-                    "-d", "--am", "--al", "--da"])
+                    "-d", "--al", "--da"])
 
 
 try:
