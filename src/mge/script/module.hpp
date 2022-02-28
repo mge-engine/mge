@@ -27,7 +27,7 @@ namespace mge::script {
         /**
          * @brief Construct a new module object
          *
-         * @param identifier module path
+         * @param path module path
          */
         module(const std::string& path);
         /**

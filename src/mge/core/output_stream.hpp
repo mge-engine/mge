@@ -48,7 +48,7 @@ namespace mge {
 
         /**
          * Write one byte to the stream.
-         * @throw @c io_error if an I/O error occurs.
+         * @throws mge::io_error if an I/O error occurs.
          */
         void write(uint8_t byte);
 

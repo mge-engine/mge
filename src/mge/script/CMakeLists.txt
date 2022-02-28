@@ -29,11 +29,16 @@ SET(mgescript_headers
     script_engine.hpp
 
     module.hpp
-    # type.hpp
+    type.hpp
+    function.hpp
     visitor.hpp
+    signature.hpp
+    traits.hpp
 
     module_details.hpp
-    # type_details.hpp
+    type_details.hpp
+    function_details.hpp
+
 )
 
 

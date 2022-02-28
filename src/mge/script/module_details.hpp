@@ -40,22 +40,79 @@ namespace mge::script {
         /**
          * @brief Get instance by name.
          *
-         * @param name module name
+         * @param path module name
          * @return module details instance
          */
         static module_details_ref get(const std::string& path);
 
-        bool               is_root() const { return m_parent.expired(); }
-        module_details_ref parent() const { return m_parent.lock(); }
-        const std::string& name() const { return m_name; }
-        std::string        full_name() const;
+        /**
+         * @brief Return whether the module is the root module.
+         *
+         * @return @c true if the module is the root module
+         */
+        bool is_root() const { return m_parent.expired(); }
 
+        /**
+         * @brief Retrieve parent module.
+         *
+         * @return parent module, nor null reference if this is the root module
+         */
+        module_details_ref parent() const { return m_parent.lock(); }
+
+        /**
+         * @brief Module name.
+         *
+         * @return name of the module
+         */
+        const std::string& name() const { return m_name; }
+
+        /**
+         * @brief Full module name.
+         *
+         * @return Full module name, components separated by "::"
+         */
+        std::string full_name() const;
+
+        /**
+         * @brief Applies a module visitor.
+         *
+         * @param v visitor
+         */
         void apply(visitor& v);
 
+        /**
+         * @brief Add a sub-module.
+         *
+         * @param m sub module
+         */
         void add_module(module_details_ref& m);
+
+        /**
+         * @brief Add type to module.
+         *
+         * @param t type
+         */
         void add_type(type_base& t);
+
+        /**
+         * @brief Add a type to the module.
+         *
+         * @param t type
+         */
         void add_type(type_details_ref& t);
+
+        /**
+         * @brief Add a function to the module.
+         *
+         * @param f function
+         */
         void add_function(function_base& f);
+
+        /**
+         * @brief Add a function to the module.
+         *
+         * @param f function
+         */
         void add_function(function_details_ref& f);
 
     private:

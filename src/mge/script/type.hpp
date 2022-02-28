@@ -13,11 +13,28 @@
 
 namespace mge::script {
 
+    /**
+     * @brief Base type for type representations.
+     */
     class MGESCRIPT_EXPORT type_base
     {
     public:
+        /**
+         * @brief Default constructor.
+         */
         type_base();
+
+        /**
+         * @brief Assigment
+         * @param t assigned type
+         * @return @c *this
+         */
         type_base& operator=(const type_base& t);
+
+        /**
+         * @brief Destructor.
+         */
+        ~type_base() = default;
 
         const std::string&      name() const;
         mge::script::module     module() const;
@@ -57,6 +74,12 @@ namespace mge::script {
         type_details_ref m_details;
     };
 
+    /**
+     * @brief Type class.
+     *
+     * @tparam T type represented by class
+     * @tparam typename type used for SFINAE, must resolve to @c void
+     */
     template <typename T, typename = void> class type : public type_base
     {
     public:
@@ -66,6 +89,11 @@ namespace mge::script {
         }
     };
 
+    /**
+     * @brief Simple type specialization.
+     *
+     * @tparam T type represented, must be simple type
+     */
     template <typename T>
     class type<T, typename std::enable_if<is_simple_type<T>>::type>
         : public type_base

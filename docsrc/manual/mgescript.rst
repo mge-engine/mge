@@ -11,3 +11,4 @@ languages into MGE, or embed MGE into other programming environments.
     :maxdepth: 1
 
     script/engine.rst
+    script/reflection.rst
