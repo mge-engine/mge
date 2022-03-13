@@ -6,6 +6,7 @@
 #include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/proxy.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"

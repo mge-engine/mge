@@ -8,6 +8,7 @@ SET(MGESCRIPT_TEST_SOURCES
     test_type.cpp
 #    test_variable.cpp
    test_function.cpp
+   test_proxy.cpp
 )
 
 MGE_TEST(
