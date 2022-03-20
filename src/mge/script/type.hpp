@@ -84,10 +84,7 @@ namespace mge::script {
     template <typename T, typename = void> class type : public type_base
     {
     public:
-        inline type()
-        {
-            static_assert(false, "Default expansion of type detected");
-        }
+        inline type();
     };
 
     /**
