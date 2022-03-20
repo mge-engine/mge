@@ -3,18 +3,10 @@
 
 namespace mge::script {
 
-    class proxytest_interface
+    class ptest1
     {
-    public:
-        virtual ~proxytest_interface() = default;
-
-        virtual int foo(int x) = 0;
-    };
-
-    class proxytest : public proxy<proxytest_interface>
-    {
-    public:
-        int foo(int x) override { return 0; }
+        virtual ~ptest1() = default;
+        virtual int foo() = 0;
     };
 
 } // namespace mge::script

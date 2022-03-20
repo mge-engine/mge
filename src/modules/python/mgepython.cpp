@@ -4,7 +4,7 @@
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
 #include "mge/core/trace.hpp"
-#include "mge/script/bind.hpp"
+#include "mge/script/module.hpp"
 #include "mge/script/script_context.hpp"
 #include "mge/script/script_engine.hpp"
 #include "mge/script/script_fwd.hpp"
