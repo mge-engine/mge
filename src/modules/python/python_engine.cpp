@@ -7,6 +7,15 @@
 #include "mge/script/script_engine.hpp"
 #include "python.hpp"
 
+#include <filesystem>
+#include <mutex>
+
+#ifdef MGE_OS_WINDOWS
+#    include <windows.h>
+
+#    include <psapi.h>
+#endif
+
 namespace mge {
     MGE_DEFINE_TRACE(PYTHON);
 }
@@ -25,12 +34,22 @@ namespace mge::python {
 #    error Missing port
 #endif
             MGE_INFO_TRACE(PYTHON) << "Create Python script engine";
-            if (!Py_IsInitialized()) {
-                Py_Initialize();
+            {
+                std::lock_guard<std::mutex> guard(s_init_lock);
+                if (!Py_IsInitialized()) {
+                    Py_Initialize();
+                }
+                ++s_initialized_engines;
             }
         }
 
-        virtual ~python_engine() {}
+        virtual ~python_engine()
+        {
+            std::lock_guard<std::mutex> guard(s_init_lock);
+            if (--s_initialized_engines == 0) {
+                Py_Finalize();
+            }
+        }
 
         script_context_ref create_context()
         {
@@ -43,8 +62,9 @@ namespace mge::python {
         std::wstring compute_python_home()
         {
             HMODULE module = 0;
+            char    dummy = '\0';
             if (!GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-                                   &s_dummy,
+                                   &dummy,
                                    &module)) {
                 MGE_THROW(mge::system_error)
                     << MGE_CALLED_FUNCTION(GetModuleHandleEx);
@@ -73,7 +93,12 @@ namespace mge::python {
             return pythonhome.wstring();
         }
 #endif
+        static std::mutex s_init_lock;
+        static uint64_t   s_initialized_engines;
     };
+
+    std::mutex python_engine::s_init_lock;
+    uint64_t   python_engine::s_initialized_engines = 0;
 
     MGE_REGISTER_IMPLEMENTATION(python_engine, mge::script_engine, python);
 } // namespace mge::python
