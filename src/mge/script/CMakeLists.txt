@@ -13,6 +13,7 @@ SET(mgescript_sources
     visitor.cpp
     # bind.cpp
     call_context.cpp
+    invoke_context.cpp
     signature.cpp
 
     module_details.cpp
