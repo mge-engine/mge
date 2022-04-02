@@ -9,6 +9,8 @@ namespace mge::python {
         python_module(const mge::script::module& m);
         ~python_module();
 
+        PyObject* py_module() const { return m_py_module; }
+
     private:
         PyObject*           m_py_module;
         mge::script::module m_module;
