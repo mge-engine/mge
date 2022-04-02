@@ -47,6 +47,23 @@ namespace mge::script {
 
     std::string module::full_name() const { return m_details->full_name(); }
 
+    bool module::operator==(const module& m) const
+    {
+        if (is_root()) {
+            return m.is_root();
+        }
+        if (m.is_root()) {
+            return false;
+        }
+        if (name() == m.name()) {
+            return parent() == m.parent();
+        } else {
+            return false;
+        }
+    }
+
+    bool module::operator!=(const module& m) const { return !(*this == m); }
+
     void module::apply(visitor& v) { m_details->apply(v); }
 
     void module::add_module(module& m) { m_details->add_module(m.m_details); }

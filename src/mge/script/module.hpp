@@ -6,6 +6,7 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type.hpp"
 
+#include <functional>
 #include <iostream>
 #include <string>
 
@@ -97,6 +98,9 @@ namespace mge::script {
 
         module_details& details();
 
+        bool operator==(const module& m) const;
+        bool operator!=(const module& m) const;
+
     private:
         void add_member(const module& m) { add_module(const_cast<module&>(m)); }
         void add_member(const function_base& f)
@@ -117,3 +121,14 @@ namespace mge::script {
     };
 
 } // namespace mge::script
+
+namespace std {
+    template <> struct hash<mge::script::module>
+    {
+        size_t operator()(const mge::script::module& m) const
+        {
+            const std::hash<std::string> string_hash;
+            return string_hash(m.name());
+        }
+    };
+} // namespace std
