@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "python_context.hpp"
 #include "mge/core/trace.hpp"
-
+#include "python_error.hpp"
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -16,8 +16,11 @@ namespace mge::python {
         , m_main_dict_copy(nullptr)
     {
         m_main_module = PyImport_AddModule("__main__");
+        error::check_error();
         m_main_dict = PyModule_GetDict(m_main_module);
+        error::check_error();
         m_main_dict_copy = PyDict_Copy(m_main_dict);
+        error::check_error();
     }
 
     python_context::~python_context()
@@ -34,6 +37,7 @@ namespace mge::python {
                                         m_main_dict_copy,
                                         m_main_dict_copy);
         Py_CLEAR(result);
+        error::check_error();
     }
 
     void python_context::bind(const mge::script::module& m)
