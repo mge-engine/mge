@@ -83,7 +83,7 @@ namespace mge::script {
         }
     }
 
-    void module_details::apply(visitor& v)
+    void module_details::apply(visitor& v) const
     {
         v.start(*this);
         for (const auto& [ti, t] : m_types) {

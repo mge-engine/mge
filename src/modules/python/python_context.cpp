@@ -3,7 +3,9 @@
 // All rights reserved.
 #include "python_context.hpp"
 #include "mge/core/trace.hpp"
+#include "python_binder.hpp"
 #include "python_error.hpp"
+
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -42,8 +44,8 @@ namespace mge::python {
 
     void python_context::bind(const mge::script::module& m)
     {
-        // python_binder b(*this)
-        // b.bind(m)
+        python_binder b(*this);
+        b.bind(m);
     }
 
     int python_context::main(int argc, const char** argv)

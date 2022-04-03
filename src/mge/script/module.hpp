@@ -94,7 +94,7 @@ namespace mge::script {
         const std::string&  name() const;
         std::string         full_name() const;
 
-        void apply(visitor& v);
+        void apply(visitor& v) const;
 
         module_details& details();
 

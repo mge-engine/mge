@@ -78,7 +78,7 @@ namespace mge::script {
          *
          * @param v visitor
          */
-        void apply(visitor& v);
+        void apply(visitor& v) const;
 
         /**
          * @brief Add a sub-module.

@@ -64,7 +64,7 @@ namespace mge::script {
 
     bool module::operator!=(const module& m) const { return !(*this == m); }
 
-    void module::apply(visitor& v) { m_details->apply(v); }
+    void module::apply(visitor& v) const { m_details->apply(v); }
 
     void module::add_module(module& m) { m_details->add_module(m.m_details); }
 
