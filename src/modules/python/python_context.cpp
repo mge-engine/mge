@@ -6,6 +6,8 @@
 #include "python_binder.hpp"
 #include "python_error.hpp"
 
+#include "mge/core/contains.hpp"
+
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -51,6 +53,15 @@ namespace mge::python {
     int python_context::main(int argc, const char** argv)
     {
         return Py_BytesMain(argc, const_cast<char**>(argv));
+    }
+
+    void python_context::init_module(const mge::script::module& m)
+    {
+        if (mge::contains(m_python_modules, m)) {
+            return;
+        }
+        auto mod = std::make_shared<python_module>(m);
+        m_python_modules[m] = mod;
     }
 
 } // namespace mge::python

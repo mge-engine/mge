@@ -3,6 +3,9 @@
 // All rights reserved.
 #include "mge/script/script_context.hpp"
 #include "python.hpp"
+#include "python_module.hpp"
+
+#include <unordered_map>
 
 namespace mge::python {
     class python_context : public script_context
@@ -15,9 +18,14 @@ namespace mge::python {
         void bind(const mge::script::module& m) override;
         int  main(int argc, const char** argv) override;
 
+        void init_module(const mge::script::module& m);
+
     private:
         PyObject* m_main_module;
         PyObject* m_main_dict;
         PyObject* m_main_dict_copy;
+
+        std::unordered_map<mge::script::module, python_module_ref>
+            m_python_modules;
     };
 } // namespace mge::python
