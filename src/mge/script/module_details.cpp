@@ -83,16 +83,17 @@ namespace mge::script {
         }
     }
 
-    void module_details::apply(visitor& v) const
+    void module_details::apply(visitor& v)
     {
-        v.start(*this);
+        auto self = shared_from_this();
+        v.start(self);
         for (const auto& [ti, t] : m_types) {
             t->apply(v);
         }
         for (const auto& [n, mod] : m_modules) {
             mod->apply(v);
         }
-        v.finish(*this);
+        v.finish(self);
     }
 
     void module_details::add_module(module_details_ref& m)

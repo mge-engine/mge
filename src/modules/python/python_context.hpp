@@ -18,7 +18,7 @@ namespace mge::python {
         void bind(const mge::script::module& m) override;
         int  main(int argc, const char** argv) override;
 
-        void init_module(const mge::script::module& m);
+        python_module_ref get_or_add_module(const mge::script::module& m);
 
     private:
         PyObject* m_main_module;

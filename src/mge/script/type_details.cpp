@@ -135,8 +135,9 @@ namespace mge::script {
 
     void type_details::apply(visitor& v)
     {
-        v.start(*this);
-        v.finish(*this);
+        auto self = shared_from_this();
+        v.start(self);
+        v.finish(self);
     }
 
     enum_type_details::enum_type_details(const std::string&     name,
@@ -148,11 +149,12 @@ namespace mge::script {
 
     void enum_type_details::apply(visitor& v)
     {
-        v.start(*this);
+        auto self = shared_from_this();
+        v.start(self);
         for (const auto& value : m_values) {
             v.enum_value(std::get<0>(value), std::get<1>(value));
         }
-        v.finish(*this);
+        v.finish(self);
     }
 
     void enum_type_details::enum_value(const std::string& name, int64_t value)
@@ -169,8 +171,9 @@ namespace mge::script {
 
     void class_type_details::apply(visitor& v)
     {
-        v.start(*this);
-        v.finish(*this);
+        auto self = shared_from_this();
+        v.start(self);
+        v.finish(self);
     }
 
     void class_type_details::set_base(const type_details_ref& base_details)

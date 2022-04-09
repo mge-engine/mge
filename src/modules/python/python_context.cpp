@@ -55,13 +55,16 @@ namespace mge::python {
         return Py_BytesMain(argc, const_cast<char**>(argv));
     }
 
-    void python_context::init_module(const mge::script::module& m)
+    python_module_ref
+    python_context::get_or_add_module(const mge::script::module& m)
     {
-        if (mge::contains(m_python_modules, m)) {
-            return;
+        auto it = m_python_modules.find(m);
+        if (it != m_python_modules.end()) {
+            return it->second;
+        } else {
+            auto mod = std::make_shared<python_module>(m);
+            return m_python_modules[m] = mod;
         }
-        auto mod = std::make_shared<python_module>(m);
-        m_python_modules[m] = mod;
     }
 
 } // namespace mge::python

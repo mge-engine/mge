@@ -16,6 +16,7 @@
 namespace mge::script {
 
     class MGESCRIPT_EXPORT type_details
+        : public std::enable_shared_from_this<type_details>
     {
     public:
         type_details(const std::string&     name,
