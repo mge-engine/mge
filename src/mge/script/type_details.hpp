@@ -49,7 +49,7 @@ namespace mge::script {
          *
          * @param v visitor
          */
-        virtual void apply(visitor& v);
+        virtual void apply(const type_details_ref& self, visitor& v);
 
     private:
         std::string             m_automatic_name;
@@ -68,7 +68,8 @@ namespace mge::script {
                           const char*            used_name = nullptr);
 
         virtual ~enum_type_details() = default;
-        void apply(visitor& v) override;
+
+        void apply(const type_details_ref& self, visitor& v) override;
 
         void enum_value(const std::string& name, int64_t value);
 
@@ -162,7 +163,7 @@ namespace mge::script {
                            const char*            used_name = nullptr);
 
         virtual ~class_type_details() = default;
-        void apply(visitor& v) override;
+        void apply(const type_details_ref& self, visitor& v) override;
 
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);

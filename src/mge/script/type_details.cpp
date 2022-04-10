@@ -133,9 +133,12 @@ namespace mge::script {
         return result;
     }
 
-    void type_details::apply(visitor& v)
+    void type_details::apply(const type_details_ref& self, visitor& v)
     {
-        auto self = shared_from_this();
+        if (self.get() != this) {
+            MGE_THROW(mge::illegal_argument)
+                << "Passed type details reference must be same as this";
+        }
         v.start(self);
         v.finish(self);
     }
@@ -147,9 +150,12 @@ namespace mge::script {
         : type_details(name, ti, t, used_name)
     {}
 
-    void enum_type_details::apply(visitor& v)
+    void enum_type_details::apply(const type_details_ref& self, visitor& v)
     {
-        auto self = shared_from_this();
+        if (self.get() != this) {
+            MGE_THROW(mge::illegal_argument)
+                << "Passed type details reference must be same as this";
+        }
         v.start(self);
         for (const auto& value : m_values) {
             v.enum_value(std::get<0>(value), std::get<1>(value));
@@ -169,9 +175,12 @@ namespace mge::script {
         : type_details(name, ti, t, used_name)
     {}
 
-    void class_type_details::apply(visitor& v)
+    void class_type_details::apply(const type_details_ref& self, visitor& v)
     {
-        auto self = shared_from_this();
+        if (self.get() != this) {
+            MGE_THROW(mge::illegal_argument)
+                << "Passed type details reference must be same as this";
+        }
         v.start(self);
         v.finish(self);
     }

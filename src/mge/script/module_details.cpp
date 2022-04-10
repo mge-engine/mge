@@ -88,7 +88,7 @@ namespace mge::script {
         auto self = shared_from_this();
         v.start(self);
         for (const auto& [ti, t] : m_types) {
-            t->apply(v);
+            t->apply(t, v);
         }
         for (const auto& [n, mod] : m_modules) {
             mod->apply(v);
