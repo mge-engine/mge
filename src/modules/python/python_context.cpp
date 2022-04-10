@@ -16,21 +16,24 @@ namespace mge::python {
 
     python_context::python_context()
         : m_main_module(nullptr)
-        , m_main_dict(nullptr)
         , m_main_dict_copy(nullptr)
     {
         m_main_module = PyImport_AddModule("__main__");
         error::check_error();
-        m_main_dict = PyModule_GetDict(m_main_module);
-        error::check_error();
-        m_main_dict_copy = PyDict_Copy(m_main_dict);
-        error::check_error();
+        PyObject* main_dict = PyModule_GetDict(m_main_module);
+        try {
+            error::check_error();
+            m_main_dict_copy = PyDict_Copy(main_dict);
+            error::check_error();
+        } catch (...) {
+            Py_CLEAR(main_dict);
+            throw;
+        }
     }
 
     python_context::~python_context()
     {
         Py_CLEAR(m_main_dict_copy);
-        Py_CLEAR(m_main_dict);
         Py_CLEAR(m_main_module);
     }
 
@@ -64,11 +67,11 @@ namespace mge::python {
             return it->second;
         } else {
             if (m.is_root()) {
-                auto mod = std::make_shared<python_module>(m);
+                auto mod = std::make_shared<python_module>(*this, m);
                 return m_python_modules[m] = mod;
             } else {
                 auto parent = get_or_add_module(m.parent());
-                auto mod = std::make_shared<python_module>(parent, m);
+                auto mod = std::make_shared<python_module>(*this, parent, m);
                 return m_python_modules[m] = mod;
             }
         }

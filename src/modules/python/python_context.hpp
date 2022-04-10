@@ -20,9 +20,10 @@ namespace mge::python {
 
         python_module_ref get_or_add_module(const mge::script::module& m);
 
+        PyObject* main_dict() const { return m_main_dict_copy; }
+
     private:
         PyObject* m_main_module;
-        PyObject* m_main_dict;
         PyObject* m_main_dict_copy;
 
         std::unordered_map<mge::script::module, python_module_ref>
