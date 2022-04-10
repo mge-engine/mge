@@ -46,6 +46,7 @@ namespace mge::python {
 
     void python_context::bind(const mge::script::module& m)
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Binding module " << m.full_name();
         python_binder b(*this);
         b.bind(m);
     }
@@ -62,8 +63,14 @@ namespace mge::python {
         if (it != m_python_modules.end()) {
             return it->second;
         } else {
-            auto mod = std::make_shared<python_module>(m);
-            return m_python_modules[m] = mod;
+            if (m.is_root()) {
+                auto mod = std::make_shared<python_module>(m);
+                return m_python_modules[m] = mod;
+            } else {
+                auto parent = get_or_add_module(m.parent());
+                auto mod = std::make_shared<python_module>(parent, m);
+                return m_python_modules[m] = mod;
+            }
         }
     }
 

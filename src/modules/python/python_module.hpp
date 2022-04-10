@@ -14,6 +14,7 @@ namespace mge::python {
     {
     public:
         python_module(const mge::script::module& m);
+        python_module(const python_module_ref& parent, const mge::script::module& m);
         ~python_module();
 
         PyObject* py_module() const noexcept { return m_py_module; }

@@ -10,6 +10,7 @@ namespace mge {
 }
 
 namespace mge::python {
+
     python_module::python_module(const mge::script::module& m)
         : m_py_module(nullptr)
         , m_module(m)
@@ -21,6 +22,16 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
             m_py_module = PyImport_AddModule(m.name().c_str());
         }
+        error::check_error();
+    }
+
+    python_module::python_module(const python_module_ref&   parent,
+                                 const mge::script::module& m)
+        : m_py_module(nullptr)
+        , m_module(m)
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
+        m_py_module = PyImport_AddModule(m.name().c_str());
         error::check_error();
     }
 
