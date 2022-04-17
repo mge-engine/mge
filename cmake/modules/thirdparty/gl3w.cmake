@@ -14,7 +14,7 @@ IF(OpenGL_FOUND)
             EXTERNALPROJECT_ADD(gl3w-external
                                 PREFIX gl3w
                                 GIT_REPOSITORY \"https://github.com/mge-engine/gl3w.git\"
-                                GIT_TAG \"3755745085ac2e865fd22270cfe9169c26640f70\"
+                                GIT_TAG \"5f8d7fd191ba22ff2b60c1106d7135bb9a335533\"
                                 INSTALL_COMMAND \"\"
                                 BUILD_IN_SOURCE TRUE
             )
