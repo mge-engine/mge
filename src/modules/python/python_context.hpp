@@ -4,6 +4,7 @@
 #include "mge/script/script_context.hpp"
 #include "python.hpp"
 #include "python_module.hpp"
+#include "python_type.hpp"
 
 #include <unordered_map>
 
@@ -29,5 +30,8 @@ namespace mge::python {
 
         std::unordered_map<mge::script::module, python_module_ref>
             m_python_modules;
+
+        std::unordered_map<mge::script::type_details_ref, python_type_ref>
+            m_python_types;
     };
 } // namespace mge::python
