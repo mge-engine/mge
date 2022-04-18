@@ -39,7 +39,7 @@ namespace mge::python {
         , m_py_module(nullptr)
         , m_module(m)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
+        MGE_DEBUG_TRACE(PYTHON) << "Creating '" << m.name() << "' module";
         m_py_module = PyImport_AddModule(m.name().c_str());
         m_py_module_dict = PyModule_GetDict(m_py_module);
         PyDict_SetItemString(parent->py_module_dict(),

@@ -4,9 +4,14 @@
 #include "mge/script/function_details.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 
 #include <map>
 #include <variant>
+
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
 
 namespace mge::script {
 
@@ -63,7 +68,9 @@ namespace mge::script {
         , m_invoke_function(function)
         , m_return_type(return_type)
         , m_argument_types(std::move(argument_types))
-    {}
+    {
+        MGE_DEBUG_TRACE(SCRIPT) << "Create function '" << name << "'";
+    }
 
     function_details::~function_details() {}
 

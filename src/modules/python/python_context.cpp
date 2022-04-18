@@ -2,11 +2,11 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_context.hpp"
+#include "mge/core/contains.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "python_binder.hpp"
 #include "python_error.hpp"
-
-#include "mge/core/contains.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -49,7 +49,6 @@ namespace mge::python {
 
     void python_context::bind(const mge::script::module& m)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Binding module " << m.full_name();
         python_binder b(*this);
         b.bind(m);
     }
@@ -75,6 +74,16 @@ namespace mge::python {
                 return m_python_modules[m] = mod;
             }
         }
+    }
+
+    python_module_ref
+    python_context::get_module(const mge::script::module& m) const
+    {
+        auto it = m_python_modules.find(m);
+        if (it == m_python_modules.end()) {
+            MGE_THROW(mge::no_such_element) << "No such element: " << m.name();
+        }
+        return it->second;
     }
 
 } // namespace mge::python

@@ -19,6 +19,7 @@ namespace mge::python {
         int  main(int argc, const char** argv) override;
 
         python_module_ref get_or_add_module(const mge::script::module& m);
+        python_module_ref get_module(const mge::script::module& m) const;
 
         PyObject* main_dict() const { return m_main_dict_copy; }
 
