@@ -90,10 +90,10 @@ namespace mge::script {
 
     static mge::singleton<type_dictionary> s_type_dictionary;
 
-    type_details::type_details(const std::string&     automatic_name,
-                               const std::type_index& ti,
-                               const traits&          t,
-                               const char*            name)
+    type_details::type_details(const std::string&         automatic_name,
+                               const std::type_index&     ti,
+                               const mge::script::traits& t,
+                               const char*                name)
         : m_automatic_name(automatic_name)
         , m_name(name == nullptr ? "" : name)
         , m_type_index(ti)
@@ -115,6 +115,8 @@ namespace mge::script {
         return m_type_index;
     }
 
+    const mge::script::traits& type_details::traits() const { return m_traits; }
+
     void type_details::set_module(const module_details_ref& m) { m_module = m; }
 
     type_details_ref type_details::get(const std::type_index& ti)
@@ -124,7 +126,7 @@ namespace mge::script {
 
     type_details_ref type_details::get_or_create(const std::type_index& ti,
                                                  const std::string&     name,
-                                                 const traits&          tr)
+                                                 const mge::script::traits& tr)
     {
         auto result = s_type_dictionary->get_nothrow(ti);
         if (!result) {
@@ -143,10 +145,10 @@ namespace mge::script {
         v.finish(self);
     }
 
-    enum_type_details::enum_type_details(const std::string&     name,
-                                         const std::type_index& ti,
-                                         const traits&          t,
-                                         const char*            used_name)
+    enum_type_details::enum_type_details(const std::string&         name,
+                                         const std::type_index&     ti,
+                                         const mge::script::traits& t,
+                                         const char*                used_name)
         : type_details(name, ti, t, used_name)
     {}
 
@@ -168,10 +170,10 @@ namespace mge::script {
         m_values.emplace_back(std::make_tuple(name, value));
     }
 
-    class_type_details::class_type_details(const std::string&     name,
-                                           const std::type_index& ti,
-                                           const traits&          t,
-                                           const char*            used_name)
+    class_type_details::class_type_details(const std::string&         name,
+                                           const std::type_index&     ti,
+                                           const mge::script::traits& t,
+                                           const char*                used_name)
         : type_details(name, ti, t, used_name)
     {}
 

@@ -4,7 +4,9 @@
 #pragma once
 #include "mge/core/memory.hpp"
 #include "mge/script/module.hpp"
+
 #include "python.hpp"
+#include "python_type.hpp"
 
 namespace mge::python {
 
@@ -24,6 +26,8 @@ namespace mge::python {
         PyObject* py_module() const noexcept { return m_py_module; }
         PyObject* py_module_dict() const noexcept { return m_py_module_dict; }
         const mge::script::module& module() const noexcept { return m_module; }
+
+        void add_type(const python_type_ref& type);
 
     private:
         python_context&     m_context;

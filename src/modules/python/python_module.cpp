@@ -54,4 +54,6 @@ namespace mge::python {
         Py_CLEAR(m_py_module);
     }
 
+    void python_module::add_type(const python_type_ref& type) {}
+
 } // namespace mge::python

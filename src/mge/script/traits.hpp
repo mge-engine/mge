@@ -36,6 +36,12 @@ namespace mge::script {
         unsigned int is_trivially_destructible : 1; // no excplicit destructor
                                                     // call needed
         unsigned int is_abstract : 1;
+
+        bool is_pod() const noexcept
+        {
+            return is_void || is_int8 || is_int16 || is_int32 || is_int64 ||
+                   is_float || is_double || is_long_double || is_bool;
+        }
     };
 
     template <typename T> inline constexpr traits traits_of()

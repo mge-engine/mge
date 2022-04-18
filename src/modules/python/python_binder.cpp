@@ -1,6 +1,7 @@
 #include "python_binder.hpp"
 #include "mge/script/module.hpp"
 #include "python_context.hpp"
+#include "python_type.hpp"
 
 #include <stack>
 
@@ -45,6 +46,17 @@ namespace mge::python {
         virtual void finish(const mge::script::module_details_ref& m) override
         {
             m_py_modules.pop();
+        }
+
+        virtual void start(const mge::script::type_details_ref& m) override {}
+
+        virtual void finish(const mge::script::type_details_ref& m) override
+        {
+            auto type_ref =
+                python_type::make_python_type(m_binder.context(), m);
+            if (type_ref) {
+                m_py_modules.top()->add_type(type_ref);
+            }
         }
 
         python_binder&                m_binder;
