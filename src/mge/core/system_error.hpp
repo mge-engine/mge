@@ -85,8 +85,19 @@ namespace mge {
             return *this;
         }
 
+        static void check_error(const char* file,
+                                int         line,
+                                const char* signature,
+                                const char* function);
+
     private:
         void set_error_code(error_code_type ec);
     };
+
+#define MGE_CHECK_SYSTEM_ERROR(function)                                       \
+    ::mge::system_error::check_error(__FILE__,                                 \
+                                     __LINE__,                                 \
+                                     MGE_FUNCTION_SIGNATURE,                   \
+                                     #function)
 
 } // namespace mge

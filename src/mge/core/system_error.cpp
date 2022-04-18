@@ -51,4 +51,23 @@ namespace mge {
         exception::operator=(e);
         return *this;
     }
+
+    void system_error::check_error(const char* file,
+                                   int         line,
+                                   const char* signature,
+                                   const char* function)
+    {
+        auto code = GetLastError();
+        if (code == NO_ERROR) {
+            return;
+        }
+
+        throw system_error(code)
+            .set_info(mge::exception::source_file(file))
+            .set_info(mge::exception::source_line(line))
+            .set_info(mge::exception::function(signature))
+            .set_info(mge::exception::stack(mge::stacktrace()))
+            .set_info(mge::exception::called_function(function));
+    }
+
 } // namespace mge

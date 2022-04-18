@@ -2,11 +2,12 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/config.hpp"
+#include "mge/core/crash.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/script_engine.hpp"
 #include "python.hpp"
-
+#include "python_context.hpp"
 #include <filesystem>
 #include <mutex>
 
@@ -53,28 +54,32 @@ namespace mge::python {
 
         script_context_ref create_context()
         {
-            script_context_ref result;
+            script_context_ref result = std::make_shared<python_context>();
             return result;
         }
 
     private:
 #ifdef MGE_OS_WINDOWS
+        static void function_with_address_in_this_module() {}
+
         std::wstring compute_python_home()
         {
             HMODULE module = 0;
-            char    dummy = '\0';
             if (!GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-                                   &dummy,
+                                   reinterpret_cast<LPCSTR>(
+                                       &function_with_address_in_this_module),
                                    &module)) {
                 MGE_THROW(mge::system_error)
                     << MGE_CALLED_FUNCTION(GetModuleHandleEx);
             }
 
             char filename[4096];
-            GetModuleFileNameEx(GetCurrentProcess(),
-                                module,
-                                filename,
-                                sizeof(filename));
+            if (!GetModuleFileNameEx(GetCurrentProcess(),
+                                     module,
+                                     filename,
+                                     sizeof(filename))) {
+                MGE_CHECK_SYSTEM_ERROR(GetModuleFileNameEx);
+            }
             MGE_DEBUG_TRACE(PYTHON) << "Python module name is: " << filename;
 
             std::filesystem::path pythonhome(filename);
