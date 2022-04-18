@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "python_binder.hpp"
 #include "mge/script/module.hpp"
 #include "python_context.hpp"
