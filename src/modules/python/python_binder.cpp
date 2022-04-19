@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "python_binder.hpp"
 #include "mge/script/module.hpp"
+#include "mge/script/type_details.hpp"
 #include "python_context.hpp"
 #include "python_type.hpp"
 
@@ -51,19 +52,27 @@ namespace mge::python {
             m_py_modules.pop();
         }
 
-        virtual void start(const mge::script::type_details_ref& m) override {}
+        virtual void start(const mge::script::type_details_ref& t) override
+        {
+            if (!t->traits().is_pod()) {
+                m_current_type =
+                    std::make_shared<python_type>(m_binder.context(), t);
+            } else {
+                m_current_type.reset();
+            }
+        }
 
         virtual void finish(const mge::script::type_details_ref& m) override
         {
-            auto type_ref =
-                python_type::make_python_type(m_binder.context(), m);
-            if (type_ref) {
-                m_py_modules.top()->add_type(type_ref);
+            if (m_current_type) {
+                m_py_modules.top()->add_type(m_current_type);
+                m_current_type.reset();
             }
         }
 
         python_binder&                m_binder;
         std::stack<python_module_ref> m_py_modules;
+        python_type_ref               m_current_type;
     };
 
     python_binder::python_binder(python_context& context)

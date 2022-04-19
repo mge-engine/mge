@@ -47,10 +47,12 @@ namespace mge::script {
         void init_details(const std::type_index& index);
         void init_enum_details(const std::type_index& index,
                                const std::string&     name,
-                               const traits&          tr);
+                               const traits&          tr,
+                               size_t                 size);
         void init_class_details(const std::type_index& index,
                                 const std::string&     name,
-                                const traits&          tr);
+                                const traits&          tr,
+                                size_t                 size);
         void get_class_details(const std::type_index& index);
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);
@@ -122,7 +124,7 @@ namespace mge::script {
             auto ti = std::type_index(typeid(T));
             auto n = mge::base_type_name<T>();
             auto tr = traits_of<T>();
-            init_enum_details(ti, n, tr);
+            init_enum_details(ti, n, tr, sizeof(T));
         }
 
         auto& enum_value(const std::string& name, T value)
@@ -174,7 +176,7 @@ namespace mge::script {
         {
             auto ti = std::type_index(typeid(T));
             auto tr = traits_of<T>();
-            init_class_details(ti, n, tr);
+            init_class_details(ti, n, tr, sizeof(T));
             if (!std::is_trivially_destructible_v<T>) {
                 set_destructor([](call_context& ctx) {
                     T* self = static_cast<T*>(ctx.this_ptr());

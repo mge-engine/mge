@@ -16,20 +16,20 @@ namespace mge::python {
 
     class python_type
     {
-    protected:
-        python_type(python_context&                      context,
-                    const mge::script::type_details_ref& type);
+    private:
+        struct create_data
+        {
+            PyType_Spec              spec;
+            std::vector<PyType_Slot> slots;
+        };
 
     public:
+        python_type(python_context&                      context,
+                    const mge::script::type_details_ref& type);
         virtual ~python_type();
 
-        static python_type_ref
-        make_python_type(python_context&                      context,
-                         const mge::script::type_details_ref& type);
-
-    protected:
-        PyType_Spec                   m_spec;
-        std::vector<PyType_Slot>      m_slots;
+    private:
+        std::unique_ptr<create_data>  m_create_data;
         PyObject*                     m_python_type;
         python_context&               m_context;
         mge::script::type_details_ref m_type;

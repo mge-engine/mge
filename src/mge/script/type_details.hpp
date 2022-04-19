@@ -22,6 +22,7 @@ namespace mge::script {
         type_details(const std::string&     name,
                      const std::type_index& ti,
                      const traits&          t,
+                     size_t                 size,
                      const char*            used_name);
 
         virtual ~type_details() = default;
@@ -31,6 +32,7 @@ namespace mge::script {
         const module_details_weak_ref& module() const;
         const std::type_index&         type_index() const;
         const mge::script::traits&     traits() const;
+        size_t                         size() const;
 
         void set_module(const module_details_ref& m);
 
@@ -43,7 +45,8 @@ namespace mge::script {
         static type_details_ref get(const std::type_index& ti);
         static type_details_ref get_or_create(const std::type_index&     ti,
                                               const std::string&         name,
-                                              const mge::script::traits& tr);
+                                              const mge::script::traits& tr,
+                                              size_t                     size);
 
         /**
          * @brief Applies a visitor.
@@ -58,6 +61,7 @@ namespace mge::script {
         module_details_weak_ref m_module;
         std::type_index         m_type_index;
         mge::script::traits     m_traits;
+        size_t                  m_size;
     };
 
     class MGESCRIPT_EXPORT enum_type_details : public type_details
@@ -66,6 +70,7 @@ namespace mge::script {
         enum_type_details(const std::string&         name,
                           const std::type_index&     ti,
                           const mge::script::traits& t,
+                          size_t                     size,
                           const char*                used_name = nullptr);
 
         virtual ~enum_type_details() = default;
@@ -161,6 +166,7 @@ namespace mge::script {
         class_type_details(const std::string&         name,
                            const std::type_index&     ti,
                            const mge::script::traits& t,
+                           size_t                     size,
                            const char*                used_name = nullptr);
 
         virtual ~class_type_details() = default;

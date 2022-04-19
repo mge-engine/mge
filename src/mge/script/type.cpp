@@ -37,16 +37,18 @@ namespace mge::script {
 
     void type_base::init_enum_details(const std::type_index& index,
                                       const std::string&     name,
-                                      const traits&          tr)
+                                      const traits&          tr,
+                                      size_t                 size)
     {
-        m_details = type_details::get_or_create(index, name, tr);
+        m_details = type_details::get_or_create(index, name, tr, size);
     }
 
     void type_base::init_class_details(const std::type_index& index,
                                        const std::string&     name,
-                                       const traits&          tr)
+                                       const traits&          tr,
+                                       size_t                 size)
     {
-        m_details = type_details::get_or_create(index, name, tr);
+        m_details = type_details::get_or_create(index, name, tr, size);
     }
 
     void type_base::enum_value(const std::string& name, int64_t value)
