@@ -116,7 +116,7 @@ namespace mge::script {
         {
             auto ti = std::type_index(typeid(T));
             auto tr = traits_of<T>();
-            init_enum_details(ti, n, tr);
+            init_enum_details(ti, n, tr, sizeof(T));
         }
 
         inline explicit type()

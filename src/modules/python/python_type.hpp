@@ -6,6 +6,8 @@
 #include "mge/script/script_fwd.hpp"
 #include "python.hpp"
 
+#include <map>
+#include <string>
 #include <vector>
 
 namespace mge::python {
@@ -19,8 +21,9 @@ namespace mge::python {
     private:
         struct create_data
         {
-            PyType_Spec              spec;
-            std::vector<PyType_Slot> slots;
+            PyType_Spec                                  spec;
+            std::vector<PyType_Slot>                     slots;
+            std::vector<std::pair<std::string, int64_t>> enum_values;
         };
 
     public:
@@ -28,7 +31,11 @@ namespace mge::python {
                     const mge::script::type_details_ref& type);
         virtual ~python_type();
 
+        void add_enum_value(const std::string& name, int64_t value);
+
     private:
+        void assert_create_data();
+
         std::unique_ptr<create_data>  m_create_data;
         PyObject*                     m_python_type;
         python_context&               m_context;

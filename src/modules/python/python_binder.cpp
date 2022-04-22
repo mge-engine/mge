@@ -32,14 +32,11 @@ namespace mge::python {
     class type_binder : public mge::script::visitor
     {
     public:
-        using mge::script::visitor::finish;
-        using mge::script::visitor::start;
-
         type_binder(python_binder& binder)
             : m_binder(binder)
         {}
 
-        virtual void start(const mge::script::module_details_ref& m) override
+        void start(const mge::script::module_details_ref& m) override
         {
             mge::script::module mod(m);
 
@@ -47,12 +44,12 @@ namespace mge::python {
             m_py_modules.push(pymod);
         }
 
-        virtual void finish(const mge::script::module_details_ref& m) override
+        void finish(const mge::script::module_details_ref& m) override
         {
             m_py_modules.pop();
         }
 
-        virtual void start(const mge::script::type_details_ref& t) override
+        void start(const mge::script::type_details_ref& t) override
         {
             if (!t->traits().is_pod()) {
                 m_current_type =
@@ -62,12 +59,17 @@ namespace mge::python {
             }
         }
 
-        virtual void finish(const mge::script::type_details_ref& m) override
+        void finish(const mge::script::type_details_ref& m) override
         {
             if (m_current_type) {
                 m_py_modules.top()->add_type(m_current_type);
                 m_current_type.reset();
             }
+        }
+
+        void enum_value(const std::string& name, int64_t value)
+        {
+            m_current_type->add_enum_value(name, value);
         }
 
         python_binder&                m_binder;
