@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/memory.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type_details.hpp"
 #include "python.hpp"
 
 #include <map>
@@ -29,16 +30,22 @@ namespace mge::python {
     public:
         python_type(python_context&                      context,
                     const mge::script::type_details_ref& type);
-        virtual ~python_type();
+
+        ~python_type();
 
         void add_enum_value(const std::string& name, int64_t value);
+        const std::string& local_name() const { return m_type->name(); }
+        PyObject*          py_type() const;
 
     private:
-        void assert_create_data();
+        void assert_create_data() const;
+        void materialize_type() const;
+        void materialize_enum_type() const;
+        void materialize_class_type() const;
 
-        std::unique_ptr<create_data>  m_create_data;
-        PyObject*                     m_python_type;
-        python_context&               m_context;
-        mge::script::type_details_ref m_type;
+        mutable std::unique_ptr<create_data> m_create_data;
+        mutable PyObject*                    m_python_type;
+        python_context&                      m_context;
+        mge::script::type_details_ref        m_type;
     };
 } // namespace mge::python

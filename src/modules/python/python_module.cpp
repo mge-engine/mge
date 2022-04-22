@@ -54,6 +54,16 @@ namespace mge::python {
         Py_CLEAR(m_py_module);
     }
 
-    void python_module::add_type(const python_type_ref& type) {}
+    void python_module::add_type(const python_type_ref& type)
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Adding type '" << type->local_name()
+                                << "' to module '" << m_module.name() << "'";
+
+        PyModule_AddObject(m_py_module,
+                           type->local_name().c_str(),
+                           type->py_type());
+        error::check_error();
+        m_types.push_back(type);
+    }
 
 } // namespace mge::python

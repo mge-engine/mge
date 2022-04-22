@@ -32,11 +32,34 @@ namespace mge::python {
             std::make_pair(name, enum_value));
     }
 
-    void python_type::assert_create_data()
+    void python_type::assert_create_data() const
     {
         if (!m_create_data) {
             MGE_THROW(illegal_state) << "Python type creation not in progress";
         }
     }
+
+    PyObject* python_type::py_type() const
+    {
+        if (!m_python_type) {
+            materialize_type();
+        }
+        return m_python_type;
+    }
+
+    void python_type::materialize_type() const
+    {
+        assert_create_data();
+        if (m_type->traits().is_enum) {
+            materialize_enum_type();
+        } else {
+            materialize_class_type();
+        }
+        m_create_data.release();
+    }
+
+    void python_type::materialize_enum_type() const {}
+
+    void python_type::materialize_class_type() const {}
 
 } // namespace mge::python

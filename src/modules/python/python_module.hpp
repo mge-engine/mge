@@ -8,6 +8,8 @@
 #include "python.hpp"
 #include "python_type.hpp"
 
+#include <vector>
+
 namespace mge::python {
 
     class python_context;
@@ -30,9 +32,10 @@ namespace mge::python {
         void add_type(const python_type_ref& type);
 
     private:
-        python_context&     m_context;
-        PyObject*           m_py_module;
-        PyObject*           m_py_module_dict;
-        mge::script::module m_module;
+        python_context&              m_context;
+        PyObject*                    m_py_module;
+        PyObject*                    m_py_module_dict;
+        std::vector<python_type_ref> m_types;
+        mge::script::module          m_module;
     };
 } // namespace mge::python
