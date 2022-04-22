@@ -4,9 +4,14 @@
 #include "mge/script/type_details.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/core/type_name.hpp"
 #include "mge/script/module_details.hpp"
 #include "mge/script/visitor.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
 
 namespace mge::script {
 
@@ -171,7 +176,9 @@ namespace mge::script {
                                          size_t                     size,
                                          const char*                used_name)
         : type_details(name, ti, t, size, used_name)
-    {}
+    {
+        MGE_DEBUG_TRACE(SCRIPT) << "Create enum '" << name << "'";
+    }
 
     void enum_type_details::apply(const type_details_ref& self, visitor& v)
     {
@@ -197,7 +204,9 @@ namespace mge::script {
                                            size_t                     size,
                                            const char*                used_name)
         : type_details(name, ti, t, size, used_name)
-    {}
+    {
+        MGE_DEBUG_TRACE(SCRIPT) << "Creating class '" << name << "'";
+    }
 
     void class_type_details::apply(const type_details_ref& self, visitor& v)
     {
