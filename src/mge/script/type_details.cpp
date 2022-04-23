@@ -182,6 +182,7 @@ namespace mge::script {
 
     void enum_type_details::apply(const type_details_ref& self, visitor& v)
     {
+
         if (self.get() != this) {
             MGE_THROW(mge::illegal_argument)
                 << "Passed type details reference must be same as this";

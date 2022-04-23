@@ -2,8 +2,17 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_type.hpp"
+#include "python_context.hpp"
+#include "python_error.hpp"
+
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
+#include "mge/script/module_details.hpp"
 #include "mge/script/type_details.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
 
@@ -18,7 +27,8 @@ namespace mge::python {
         m_create_data = std::make_unique<create_data>();
 
         m_create_data->spec = PyType_Spec{};
-        m_create_data->spec.flags = Py_TPFLAGS_DEFAULT;
+        m_create_data->spec.name = m_type->name().c_str();
+        m_create_data->spec.flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE;
         m_create_data->spec.slots = s_empty_slots;
     }
 
@@ -58,7 +68,28 @@ namespace mge::python {
         m_create_data.release();
     }
 
-    void python_type::materialize_enum_type() const {}
+    void python_type::materialize_enum_type() const
+    {
+        auto m = m_context.get_module(m_type->module().lock());
+
+        if (!m) {
+            MGE_THROW(mge::illegal_state)
+                << "Module '" << m_type->module().lock()->name()
+                << "' not found";
+        }
+
+        PyTypeObject* base = &PyLong_Type;
+
+        m_create_data->spec.basicsize = sizeof(PyLongObject);
+        m_create_data->spec.flags |=
+            Py_TPFLAGS_BASETYPE | Py_TPFLAGS_LONG_SUBCLASS;
+
+        m_python_type =
+            PyType_FromModuleAndSpec(m->py_module(),
+                                     &m_create_data->spec,
+                                     reinterpret_cast<PyObject*>(base));
+        error::check_error();
+    }
 
     void python_type::materialize_class_type() const {}
 

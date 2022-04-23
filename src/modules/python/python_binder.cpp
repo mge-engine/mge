@@ -2,12 +2,17 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "python_binder.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/type_details.hpp"
 #include "python_context.hpp"
 #include "python_type.hpp"
 
 #include <stack>
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
 
@@ -87,6 +92,8 @@ namespace mge::python {
     {
         module_binder mb(*this);
         m.apply(mb);
+        type_binder tb(*this);
+        m.apply(tb);
     }
 
 } // namespace mge::python
