@@ -3,3 +3,5 @@
 # All rights reserved.
 
 ADD_SUBDIRECTORY(blackscreen)
+ADD_SUBDIRECTORY(python)
+

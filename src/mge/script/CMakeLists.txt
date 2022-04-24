@@ -22,6 +22,7 @@ SET(mgescript_sources
     # variable_details.cpp
 
     bind_core.cpp
+    bind_application.cpp
     bind_graphics.cpp
 )
 

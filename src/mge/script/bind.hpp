@@ -5,5 +5,6 @@
 #include "mge/script/dllexport.hpp"
 namespace mge::script {
     void MGESCRIPT_EXPORT bind_core();
+    void MGESCRIPT_EXPORT bind_application();
     void MGESCRIPT_EXPORT bind_graphics();
 } // namespace mge::script
