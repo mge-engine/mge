@@ -1,3 +1,6 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
 add_custom_target(python-samples
     ALL
     DEPENDS
