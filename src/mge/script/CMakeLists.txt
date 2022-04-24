@@ -24,6 +24,7 @@ SET(mgescript_sources
     bind_core.cpp
     bind_application.cpp
     bind_graphics.cpp
+    bind_math.cpp
 )
 
 SET(mgescript_headers
