@@ -18,6 +18,7 @@ namespace mge {
         {
             mge::script::bind_core();
             mge::script::bind_application();
+            mge::script::bind_math();
             mge::script::bind_graphics();
         }
     };
