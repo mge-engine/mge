@@ -38,8 +38,8 @@ namespace mge::python {
                                      int64_t            enum_value)
     {
         assert_create_data();
-        m_create_data->enum_values.emplace_back(
-            std::make_pair(name, enum_value));
+        m_create_data->type_attributes[name] =
+            python_object(PyLong_FromLongLong(enum_value));
     }
 
     void python_type::assert_create_data() const
@@ -89,6 +89,14 @@ namespace mge::python {
                                      &m_create_data->spec,
                                      reinterpret_cast<PyObject*>(base));
         error::check_error();
+        for (const auto& [name, object] : m_create_data->type_attributes) {
+            auto rc = PyObject_SetAttrString(m_python_type,
+                                             name.c_str(),
+                                             object.borrow());
+            if (rc == -1) {
+                error::check_error();
+            }
+        }
     }
 
     void python_type::materialize_class_type() const {}

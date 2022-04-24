@@ -5,7 +5,9 @@
 #include "mge/core/memory.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_details.hpp"
+
 #include "python.hpp"
+#include "python_object.hpp"
 
 #include <map>
 #include <string>
@@ -22,9 +24,9 @@ namespace mge::python {
     private:
         struct create_data
         {
-            PyType_Spec                                  spec;
-            std::vector<PyType_Slot>                     slots;
-            std::vector<std::pair<std::string, int64_t>> enum_values;
+            PyType_Spec                          spec;
+            std::vector<PyType_Slot>             slots;
+            std::map<std::string, python_object> type_attributes;
         };
 
     public:

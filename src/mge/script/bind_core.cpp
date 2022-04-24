@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/crash.hpp"
 #include "mge/core/trace_level.hpp"
 
@@ -13,6 +14,7 @@ namespace mge::script {
     void bind_core()
     {
         module("mge")(function("crash", &mge::crash),
+                      function("call_debugger", &mge::call_debugger),
                       type<mge::trace_level>("trace_level")
                           .enum_value("NONE", mge::trace_level::NONE)
                           .enum_value("DEBUG", mge::trace_level::DEBUG)

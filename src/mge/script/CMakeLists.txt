@@ -22,6 +22,7 @@ SET(mgescript_sources
     # variable_details.cpp
 
     bind_core.cpp
+    bind_graphics.cpp
 )
 
 SET(mgescript_headers
@@ -52,5 +53,5 @@ MGE_LIBRARY(
     ${mgescript_sources}
     ${mgescript_headers}
 )
-TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
+TARGET_LINK_LIBRARIES(mgescript mgecore mgegraphics mgeapplication boost-all)
 ADD_SUBDIRECTORY(test)

@@ -14,7 +14,11 @@ namespace mge {
     class binder
     {
     public:
-        binder() { mge::script::bind_core(); }
+        binder()
+        {
+            mge::script::bind_core();
+            mge::script::bind_graphics();
+        }
     };
 
     static singleton<binder> s_binder;
