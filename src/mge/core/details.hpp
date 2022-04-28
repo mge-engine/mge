@@ -2,9 +2,8 @@
 // Copyright (c) 2018 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/type_name.hpp"
-#include "mge/core/type_traits.hpp"
-#include "mge/core/types.hpp"
 #include <iostream>
 #include <memory>
 #include <type_traits>
@@ -20,6 +19,12 @@ namespace mge {
         explicit details_type(const T* value_)
             : value(value_)
         {}
+
+        details_type(const details_type<T>&) = default;
+        details_type(details_type<T>&&) = default;
+
+        details_type<T>& operator=(const details_type<T>&) = default;
+        details_type<T>& operator=(details_type<T>&&) = default;
 
         /**
          * @brief Access to the value to be printed.
@@ -87,7 +92,7 @@ namespace mge {
         template <typename T,
                   std::enable_if_t<std::is_class_v<T> &&
                                        mge::is_shared_ptr<T>::value &&
-                                       !has_gist_method<T>::value,
+                                       !has_details_method<T>::value,
                                    bool> = true>
         void print_value(std::ostream& os, const T& value)
         {
@@ -106,6 +111,11 @@ namespace mge {
     {
         print_value(os, *g.value);
         return os;
+    }
+
+    template <typename T> inline details_type<T> details(const T& value)
+    {
+        return details_type<T>(&value);
     }
 
 /**

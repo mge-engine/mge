@@ -1,8 +1,15 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+
 #include "lua_context.hpp"
 #include "lua_error.hpp"
+
+#include <string>
+#include <string_view>
+#include <vector>
+
+using namespace std::string_view_literals;
 
 namespace mge::lua {
     lua_context::lua_context()
@@ -19,7 +26,7 @@ namespace mge::lua {
         }
     }
 
-    int lua_context::main(int argv, const char** argc) { return 0; }
+    int lua_context::main(int, const char**) { return 0; }
 
     void lua_context::eval(const std::string& code)
     {

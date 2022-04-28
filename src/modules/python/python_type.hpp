@@ -37,6 +37,7 @@ namespace mge::python {
 
         void add_enum_value(const std::string& name, int64_t value);
         const std::string& local_name() const { return m_type->name(); }
+        bool               is_embeddable() const;
         PyObject*          py_type() const;
 
     private:
@@ -44,6 +45,7 @@ namespace mge::python {
         void materialize_type() const;
         void materialize_enum_type() const;
         void materialize_class_type() const;
+        void materialize_embedded_class_type() const;
 
         mutable std::unique_ptr<create_data> m_create_data;
         mutable PyObject*                    m_python_type;

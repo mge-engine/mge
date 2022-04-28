@@ -5,6 +5,7 @@
 #include "python_context.hpp"
 #include "python_error.hpp"
 
+#include "mge/core/details.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module_details.hpp"
@@ -99,6 +100,61 @@ namespace mge::python {
         }
     }
 
-    void python_type::materialize_class_type() const {}
+    bool python_type::is_embeddable() const
+    {
+        const auto t = m_type->traits();
+
+        return !t.is_abstract && t.is_trivially_destructible;
+    }
+
+    void python_type::materialize_class_type() const
+    {
+        if (is_embeddable()) {
+            materialize_embedded_class_type();
+        }
+    }
+
+    struct only_head
+    {
+        PyObject_HEAD;
+    };
+
+    static constexpr size_t aligned_PyObject_HEAD_size()
+    {
+        return ((sizeof(only_head) + 7) / 8) * 8;
+    }
+
+    void python_type::materialize_embedded_class_type() const
+    {
+
+        auto m = m_context.get_module(m_type->module().lock());
+        if (!m) {
+            MGE_THROW(mge::illegal_state)
+                << "Module '" << m_type->module().lock()->name()
+                << "' not found";
+        }
+
+        m_create_data->spec.basicsize =
+            static_cast<int>(aligned_PyObject_HEAD_size() + m_type->size());
+        m_create_data->spec.flags |= Py_TPFLAGS_BASETYPE;
+
+        m_python_type = PyType_FromModuleAndSpec(m->py_module(),
+                                                 &m_create_data->spec,
+                                                 nullptr);
+        error::check_error();
+        PyObject* python_type_ptr =
+            PyLong_FromVoidPtr(const_cast<python_type*>(this));
+        try {
+            if (PyObject_SetAttrString(m_python_type,
+                                       "_python_type_ptr",
+                                       python_type_ptr)) {
+                error::check_error();
+            }
+            Py_CLEAR(python_type_ptr);
+        } catch (...) {
+            Py_CLEAR(python_type_ptr);
+            throw;
+        }
+    }
 
 } // namespace mge::python

@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 
+#include "mge/core/details.hpp"
 #include <numeric>
 #include <type_traits>
 
@@ -41,6 +42,19 @@ namespace mge::script {
         {
             return is_void || is_int8 || is_int16 || is_int32 || is_int64 ||
                    is_float || is_double || is_long_double || is_bool;
+        }
+
+        void details(std::ostream& os) const
+        {
+#define mge_dump_property(p)                                                   \
+    os << #p << "\t" << (p ? "true" : "false") << std::endl
+            mge_dump_property(is_void);
+            mge_dump_property(is_bool);
+            mge_dump_property(is_enum);
+            mge_dump_property(is_class);
+            mge_dump_property(is_abstract);
+            mge_dump_property(is_trivially_destructible);
+#undef mge_dump_property
         }
     };
 
