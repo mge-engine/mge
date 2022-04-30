@@ -4,6 +4,7 @@
 
 #include "lua_context.hpp"
 #include "lua_error.hpp"
+#include "lua_module.hpp"
 
 #include <string>
 #include <string_view>

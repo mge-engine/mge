@@ -13,6 +13,9 @@ namespace mge::lua {
 
         void bind(const mge::script::module& m);
 
+        const lua_context& context() const noexcept { return m_context; }
+        lua_context&       context() noexcept { return m_context; }
+
     private:
         lua_context& m_context;
     };

@@ -15,6 +15,25 @@ namespace mge {
 }
 
 namespace mge::lua {
+
+    class module_binder : public mge::script::visitor
+    {
+    public:
+        using mge::script::visitor::start;
+
+        module_binder(lua_binder& binder)
+            : m_binder(binder)
+        {}
+
+        virtual void start(const mge::script::module_details_ref& m) override
+        {
+            mge::script::module mod(m);
+            m_binder.context().get_or_add_module(mod);
+        }
+
+        lua_binder& m_binder;
+    };
+
     lua_binder::lua_binder(lua_context& context)
         : m_context(context)
     {}
