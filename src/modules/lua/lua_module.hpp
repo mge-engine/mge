@@ -21,6 +21,8 @@ namespace mge::lua {
         ~lua_module();
 
     private:
+        void remove_module_from_parent();
+
         lua_context&        m_context;
         mge::script::module m_module;
     };

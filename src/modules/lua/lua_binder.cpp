@@ -40,9 +40,9 @@ namespace mge::lua {
 
     void lua_binder::bind(const mge::script::module& m)
     {
-#if 0
         module_binder mb(*this);
         m.apply(mb);
+#if 0
         type_binder tb(*this);
         m.apply(tb);
 #endif

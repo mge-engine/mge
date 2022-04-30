@@ -7,4 +7,13 @@ namespace mge::lua {
         , m_module(m)
     {}
 
+    lua_module::~lua_module()
+    {
+        if (!m_module.is_root()) {
+            remove_module_from_parent();
+        }
+    }
+
+    void lua_module::remove_module_from_parent() {}
+
 } // namespace mge::lua

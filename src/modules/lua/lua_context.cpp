@@ -3,6 +3,7 @@
 // All rights reserved.
 
 #include "lua_context.hpp"
+#include "lua_binder.hpp"
 #include "lua_error.hpp"
 #include "lua_module.hpp"
 
@@ -37,6 +38,26 @@ namespace mge::lua {
         CHECK_STATUS(rc, m_lua_state);
     }
 
-    void lua_context::bind(const mge::script::module& m) {}
+    void lua_context::bind(const mge::script::module& m)
+    {
+        lua_binder b(*this);
+        b.bind(m);
+    }
+
+    lua_module_ref lua_context::get_or_add_module(const mge::script::module& m)
+    {
+        auto it = m_lua_modules.find(m);
+        if (it != m_lua_modules.end()) {
+            return it->second;
+        } else {
+            if (m.is_root()) {
+                auto mod = std::make_shared<lua_module>(*this, m);
+                return m_lua_modules[m] = mod;
+            } else {
+                lua_module_ref r;
+                return r;
+            }
+        }
+    }
 
 } // namespace mge::lua
