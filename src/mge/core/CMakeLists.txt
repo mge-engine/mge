@@ -90,6 +90,6 @@ MGE_LIBRARY(
     ${mgecore_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)
+TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp)
 ADD_SUBDIRECTORY(test)
 

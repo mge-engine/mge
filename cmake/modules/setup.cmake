@@ -20,6 +20,7 @@ INCLUDE(thirdparty/directx)
 INCLUDE(thirdparty/doxygen)
 INCLUDE(thirdparty/sphinx)
 INCLUDE(thirdparty/glm)
+INCLUDE(thirdparty/linenoise)
 
 INCLUDE(macros/documentation)
 INCLUDE(macros/library)
