@@ -11,7 +11,7 @@ namespace mge::python {
     {
     public:
         python_binder(python_context& context);
-        virtual ~python_binder();
+        ~python_binder() = default;
 
         void bind(const mge::script::module& m);
 

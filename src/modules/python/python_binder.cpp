@@ -86,8 +86,6 @@ namespace mge::python {
         : m_context(context)
     {}
 
-    python_binder::~python_binder() {}
-
     void python_binder::bind(const mge::script::module& m)
     {
         module_binder mb(*this);

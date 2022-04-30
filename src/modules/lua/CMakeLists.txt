@@ -4,6 +4,7 @@
 SET(mge_lua_module_SOURCES
     lua_engine.cpp
     lua_context.cpp
+    lua_binder.cpp
     lua_error.cpp)
 
 ADD_LIBRARY(mge_module_lua MODULE
