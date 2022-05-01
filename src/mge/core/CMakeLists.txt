@@ -35,6 +35,7 @@ SET(mgecore_sources
     property_object.cpp
     memory.cpp
     call_debugger.cpp
+    line_editor.cpp
 )
 
 SET(mgecore_headers
@@ -82,6 +83,7 @@ SET(mgecore_headers
     property_object.hpp
     checked_cast.hpp
     call_debugger.cpp
+    line_editor.hpp
 )
 
 MGE_LIBRARY(
@@ -92,6 +94,6 @@ MGE_LIBRARY(
     ${mgecore_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all dbghelp)
+TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp)
 ADD_SUBDIRECTORY(test)
 

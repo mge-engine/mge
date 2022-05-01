@@ -11,13 +11,13 @@ import shutil
 # -- version            increment each time config changes
 # -- vcpkg_githash      git hash of vcpkg to check out
 # -- vcpkg_packages     array of package names to install
-version = "19"
-vcpkg_githash = "af2287382b1991dbdcb7e5112d236f3323b9dd7a"
+version = "20"
+vcpkg_githash = "c8a56fdc1594dfe134213c8c3edf1cc620e4fb37"
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
     "boost-spirit", "boost-locale", "boost-preprocessor",
-    "vulkan", "glm", "lua", "python3"
+    "vulkan", "glm", "lua", "python3" "linenoise-ng"
 ]
 
 
@@ -31,7 +31,9 @@ def install_vcpkg():
     print("Bootstrapping vcpkg", flush=True)
     subprocess.run([".\\bootstrap-vcpkg.bat", "-disableMetrics"],
                    cwd="vcpkg", shell=True)
-    install_command = ["vcpkg.exe", "install", "--triplet", "x64-windows"]
+    # use x64-windows-release to force dynamic runtime
+    install_command = ["vcpkg.exe", "install",
+                       "--triplet", "x64-windows"]
     install_command.extend(vcpkg_packages)
     print("Installing following packages:", flush=True)
     for p in vcpkg_packages:
