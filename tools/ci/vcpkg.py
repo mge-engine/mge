@@ -31,7 +31,9 @@ def install_vcpkg():
     print("Bootstrapping vcpkg", flush=True)
     subprocess.run([".\\bootstrap-vcpkg.bat", "-disableMetrics"],
                    cwd="vcpkg", shell=True)
-    install_command = ["vcpkg.exe", "install", "--triplet", "x64-windows"]
+    # use x64-windows-release to force dynamic runtime
+    install_command = ["vcpkg.exe", "install",
+                       "--triplet", "x64-windows-release"]
     install_command.extend(vcpkg_packages)
     print("Installing following packages:", flush=True)
     for p in vcpkg_packages:

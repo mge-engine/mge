@@ -11,6 +11,7 @@ ENDIF()
 # - enable exporting compile_commands.json (for editors etc.)
 ENABLE_TESTING()
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+SET(VCPKG_TARGET_TRIPLET "x64-windows-release")
 
 IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
     SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/../vcpkg/scripts/buildsystems/vcpkg.cmake")

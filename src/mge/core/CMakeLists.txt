@@ -34,6 +34,7 @@ SET(mgecore_sources
     properties.cpp
     property_object.cpp
     memory.cpp
+    line_editor.cpp
 )
 
 SET(mgecore_headers
@@ -80,6 +81,7 @@ SET(mgecore_headers
     properties.hpp
     property_object.hpp
     checked_cast.hpp
+    line_editor.hpp
 )
 
 MGE_LIBRARY(
