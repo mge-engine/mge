@@ -33,7 +33,7 @@ def install_vcpkg():
                    cwd="vcpkg", shell=True)
     # use x64-windows-release to force dynamic runtime
     install_command = ["vcpkg.exe", "install",
-                       "--triplet", "x64-windows-release"]
+                       "--triplet", "x64-windows"]
     install_command.extend(vcpkg_packages)
     print("Installing following packages:", flush=True)
     for p in vcpkg_packages:
