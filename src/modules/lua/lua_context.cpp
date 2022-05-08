@@ -88,8 +88,7 @@ namespace mge::lua {
 
         bool nothing_to_do() const
         {
-            return interactive == false && script.empty() &&
-                   exec_stdin == false;
+            return interactive == false && exec_stdin == false;
         }
     };
 
@@ -115,6 +114,7 @@ namespace mge::lua {
     parse_options(int argc, const char** argv, interpreter_options& options)
     {
         int i = 1;
+        options.script_pos = 1;
         while (i < argc) {
             options.script_pos = i;
             if (argv[i][0] != '-') {
@@ -298,6 +298,24 @@ namespace mge::lua {
         return eval_chunk(L, luaL_loadbuffer(L, code, strlen(code), name));
     }
 
+    static int eval_library(lua_State* L, const char* library)
+    {
+        std::string varname(library);
+        const char* eqpos = strchr(library, '=');
+        if (eqpos == nullptr) {
+            varname = library;
+        } else {
+            varname = std::string(library, eqpos);
+            library = eqpos + 1;
+        }
+        lua_getglobal(L, "require");
+        lua_pushstring(L, library);
+        int status = call(L, 1, 1);
+        if (status == LUA_OK)
+            lua_setglobal(L, varname.c_str());
+        return report(L, status);
+    }
+
     static int init(lua_State* L)
     {
 #define LUA_INIT_VAR "LUA_INIT"
@@ -320,6 +338,76 @@ namespace mge::lua {
 #undef LUA_INITVARVERSION
 #undef LUA_INIT_VAR
     }
+
+    int eval_arguments(lua_State* L, int argc, const char** argv)
+    {
+        int i = 1;
+        while (i < argc) {
+            if (argv[i][0] == '-') {
+                switch (argv[i][1]) {
+                case 'e': {
+                    const char* extra = argv[i] + 2;
+                    if (*extra == '\0') {
+                        extra = argv[++i];
+                    }
+                    int status = eval_string(L, extra, "=(command line)");
+                    if (status != LUA_OK) {
+                        return status;
+                    }
+                }
+                case 'l': {
+                    const char* extra = argv[i] + 2;
+                    if (*extra == '\0') {
+                        extra = argv[++i];
+                    }
+                    int status = eval_library(L, extra);
+                    if (status != LUA_OK) {
+                        return status;
+                    }
+                }
+                case 'W': {
+                    lua_warning(L, "@on", 0);
+                    break;
+                }
+                default:
+                    break;
+                }
+            }
+            ++i;
+        }
+        return LUA_OK;
+    }
+
+    static int pushargs(lua_State* L)
+    {
+        int i, n;
+        if (lua_getglobal(L, "arg") != LUA_TTABLE)
+            luaL_error(L, "'arg' is not a table");
+        n = (int)luaL_len(L, -1);
+        luaL_checkstack(L, n + 3, "too many arguments to script");
+        for (i = 1; i <= n; ++i)
+            lua_rawgeti(L, -i, i);
+        lua_remove(L, -i); /* remove table from the stack */
+        return n;
+    }
+
+    int eval_script(lua_State*                 L,
+                    const char*                script,
+                    const interpreter_options& options)
+    {
+        const char* filename = script;
+        if (strcmp(script, "-") == 0) {
+            filename = nullptr;
+        }
+        int status = luaL_loadfile(L, filename);
+        if (status == LUA_OK) {
+            int n = pushargs(L); /* push arguments to script */
+            status = call(L, n, LUA_MULTRET);
+        }
+        return report(L, status);
+    }
+
+    int repl(lua_State* L) { return LUA_OK; }
 
     int lua_context::main(int argc, const char** argv)
     {
@@ -355,14 +443,30 @@ namespace mge::lua {
                 return 1;
             }
         }
+        if (options.libraries || options.exec || options.warnings) {
+            if (eval_arguments(
+                    m_lua_state,
+                    (options.script_pos == -1 || options.script_pos == 0)
+                        ? argc
+                        : options.script_pos,
+                    argv) != LUA_OK) {
+                return 1;
+            }
+        }
+        if (options.script_pos < argc) {
+            if (eval_script(m_lua_state, argv[options.script_pos], options) !=
+                LUA_OK) {
+                return 1;
+            }
+            if (options.interactive) {
+                if (repl(m_lua_state) != LUA_OK) {
+                    return 1;
+                }
+            }
+        } else {
+            std::cout << "foobar" << std::endl;
+        }
 #if 0
-  if (!runargs(L, argv, script))  /* execute arguments -e and -l */
-    return 0;  /* something failed */
-  if (script < argc &&  /* execute main script (if there is one) */
-      handle_script(L, argv + script) != LUA_OK)
-    return 0;
-  if (args & has_i)  /* -i option? */
-    doREPL(L);  /* do read-eval-print loop */
   else if (script == argc && !(args & (has_e | has_v))) {  /* no arguments? */
     if (lua_stdin_is_tty()) {  /* running in interactive mode? */
       print_version();
