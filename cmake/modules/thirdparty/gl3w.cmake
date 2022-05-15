@@ -30,6 +30,9 @@ IF(OpenGL_FOUND)
     ENDIF()
     ADD_LIBRARY(gl3w STATIC
         ${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/src/gl3w.c)
+    IF(MSVC)
+        TARGET_COMPILE_OPTIONS(gl3w -wd4191) # unsafe pointer conversion)
+    ENDIF()
     TARGET_INCLUDE_DIRECTORIES(gl3w PUBLIC
         "${CMAKE_BINARY_DIR}/external/gl3w/gl3w/src/gl3w-external/include")
     IF(MSVC)
