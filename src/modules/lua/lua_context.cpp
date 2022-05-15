@@ -7,6 +7,7 @@
 #include "lua_error.hpp"
 #include "lua_module.hpp"
 
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/line_editor.hpp"
 
 #include <iostream>
@@ -88,7 +89,8 @@ namespace mge::lua {
 
         bool nothing_to_do() const
         {
-            return interactive == false && exec_stdin == false;
+            return interactive == false && exec_stdin == false && !libraries &&
+                   script_pos == -1;
         }
     };
 
