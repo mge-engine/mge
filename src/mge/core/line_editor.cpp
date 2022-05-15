@@ -28,12 +28,17 @@ namespace mge {
 
     line_editor::~line_editor() { --s_instances; }
 
-    std::string line_editor::line()
+    std::optional<std::string> line_editor::line()
     {
+        std::optional<std::string> result;
+
         char* l = linenoise(m_prompt.c_str());
 
-        std::string result(l);
-        free(l);
+        if (l != nullptr) {
+            std::string result_str(l);
+            free(l);
+            result = result_str;
+        }
 
         return result;
     }
@@ -44,4 +49,10 @@ namespace mge {
     {
         m_prompt = prompt;
     }
+
+    void line_editor::set_prompt(const char* prompt)
+    {
+        m_prompt = prompt ? prompt : "";
+    }
+
 } // namespace mge

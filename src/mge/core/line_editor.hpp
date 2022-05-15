@@ -5,6 +5,7 @@
 #include "mge/core/dllexport.hpp"
 
 #include <atomic>
+#include <optional>
 #include <string>
 
 namespace mge {
@@ -40,7 +41,7 @@ namespace mge {
          *
          * @return line read
          */
-        std::string line();
+        std::optional<std::string> line();
 
         /**
          * @brief Get current prompt.
@@ -55,6 +56,13 @@ namespace mge {
          * @param p new prompt
          */
         void set_prompt(const std::string& p);
+
+        /**
+         * @brief Set prompt.
+         *
+         * @param p new prompt
+         */
+        void set_prompt(const char* p);
 
     private:
         std::string             m_prompt;
