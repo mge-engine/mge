@@ -277,9 +277,9 @@ namespace mge {
         {
             auto it =
                 m_infos.find(std::type_index(typeid(typename Info::tag_type)));
-            std::optional<Info::value_type> result;
+            std::optional<typename Info::value_type> result;
             if (it != m_infos.end()) {
-                result = std::any_cast<Info::value_type>(it->second);
+                result = std::any_cast<typename Info::value_type>(it->second);
             }
             return result;
         }
