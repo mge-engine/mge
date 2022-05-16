@@ -2,6 +2,8 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/is_shared_ptr.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/script/dllexport.hpp"
 
 #include <functional>
@@ -177,6 +179,12 @@ namespace mge::script {
         }
 
         template <typename T> void store_result(T result);
+
+        template <typename T>
+        void store_result(const std::shared_ptr<T>& result)
+        {
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
 
         template <> void store_result<bool>(bool result)
         {
