@@ -11,6 +11,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-WX")
     ADD_DEFINITIONS("-Qpar")
     ADD_DEFINITIONS("-DNOMINMAX") # avoid window.h defined min/max
+    ADD_DEFINITIONS("-wd4702") # unreachable code (happens in template expansion)
     ADD_DEFINITIONS("-wd4710") # cannot inline function marked as inline
     ADD_DEFINITIONS("-wd4514") # unreferenced inline function removed
     ADD_DEFINITIONS("-wd4365") # unsigned/signed conflict

@@ -345,6 +345,31 @@ namespace mge::script {
             add_method(name, result_type, s, call);
             return *this;
         }
+
+        /**
+         * @brief Add elements to the type
+         *
+         * @tparam SubType        type of first element
+         * @tparam SubArgs     other element types
+         * @param arg0      first element
+         * @param args      other elements
+         *
+         * @return @c *this
+         */
+        template <typename SubType, typename... SubArgs>
+        self_type& operator()(const SubType& arg0, const SubArgs&... args)
+        {
+            add_member(arg0);
+            return operator()(args...);
+        }
+
+        self_type& operator()() { return *this; }
+
+        template <typename SubType, typename SubTypeDetail>
+        void add_member(const type<SubType, typename SubTypeDetail>& t)
+        {
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
     };
 
 } // namespace mge::script

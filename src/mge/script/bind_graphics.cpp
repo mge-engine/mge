@@ -23,6 +23,8 @@ namespace mge::script {
                 .enum_value("TESSELATION_EVALUATION",
                             mge::shader_type::TESSELATION_EVALUATION)
                 .enum_value("GEOMETRY", mge::shader_type::GEOMETRY),
+            type<mge::window_options>("window_options")(
+                type<mge::window_options::option>("option")),
             type<mge::render_system>("render_system")
                 .method("create_window",
                         static_cast<mge::window_ref (render_system::*)(void)>(
