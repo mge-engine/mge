@@ -24,7 +24,28 @@ namespace mge::script {
                             mge::shader_type::TESSELATION_EVALUATION)
                 .enum_value("GEOMETRY", mge::shader_type::GEOMETRY),
             type<mge::window_options>("window_options")(
-                type<mge::window_options::option>("option")),
+                type<mge::window_options::option>("option")
+                    .enum_value("NONE", mge::window_options::NONE)
+                    .enum_value("FULLSCREEN", mge::window_options::FULLSCREEN)
+                    .enum_value("FULLSCREEN_WINDOWED",
+                                mge::window_options::FULLSCREEN_WINDOWED)
+                    .enum_value("RESIZABLE", mge::window_options::RESIZABLE)
+                    .enum_value("MAXIMIZED", mge::window_options::MAXIMIZED)
+                    .enum_value("MINIMIZED", mge::window_options::MINIMIZED)
+                    .enum_value("DECORATED", mge::window_options::DECORATED)
+                    .enum_value("TITLE", mge::window_options::TITLE)
+                    .enum_value("MAX", mge::window_options::MAX))
+                .constructor()
+                .copy_constructor(),
+            /*
+                .constructor()
+                .method("set_option", &mge::window_options::set_option)
+                .method("option_set", &mge::window_options::option_set)
+            .method("standard_options",
+                    &mge::window_options::standard_options)
+            .method("fullscreen_options",
+                    &mge::window_options::standard_options)
+                    */
             type<mge::render_system>("render_system")
                 .method("create_window",
                         static_cast<mge::window_ref (render_system::*)(void)>(
