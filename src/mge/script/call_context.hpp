@@ -31,161 +31,6 @@ namespace mge::script {
          */
         virtual void* this_ptr() = 0;
 
-        /**
-         * @brief Retrieve bool parameter.
-         * @param position parameter position (0-based)
-         */
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, bool>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return bool_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, char>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return int8_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, signed char>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return int8_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<std::is_same<typename std::remove_cv<T>::type,
-                                             unsigned char>::value,
-                                T>::type
-        parameter(size_t position)
-        {
-            return uint8_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, short>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return int16_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<std::is_same<typename std::remove_cv<T>::type,
-                                             unsigned short>::value,
-                                T>::type
-        parameter(size_t position)
-        {
-            return uint16_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, int>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return int32_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, unsigned int>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return uint32_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<std::is_same<typename std::remove_cv<T>::type,
-                                             unsigned long>::value,
-                                T>::type
-        parameter(size_t position)
-        {
-            if constexpr (sizeof(T) == 4) {
-                return uint32_parameter(position);
-            } else {
-                return uint64_parameter(position);
-            }
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, long>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            if constexpr (sizeof(T) == 4) {
-                return int32_parameter(position);
-            } else {
-                return int64_parameter(position);
-            }
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, int64_t>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return int64_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, uint64_t>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return uint64_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, float>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return float_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, double>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return double_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, std::string>::value,
-            T>::type
-        parameter(size_t position)
-        {
-            return string_parameter(position);
-        }
-
-        template <typename T>
-        typename std::enable_if<std::is_enum_v<T>, T>::type
-        parameter(size_t position)
-        {
-            typedef std::underlying_type<T>::type UT;
-            return static_cast<T>(parameter<UT>(position));
-        }
-
         template <typename T> void store_result(T result)
         {
             MGE_THROW_NOT_IMPLEMENTED;
@@ -272,16 +117,16 @@ namespace mge::script {
             store_string_result(result);
         }
 
-    protected:
+    public:
         virtual bool           bool_parameter(size_t position) = 0;
-        virtual char           int8_parameter(size_t position) = 0;
-        virtual unsigned char  uint8_parameter(size_t position) = 0;
-        virtual short          int16_parameter(size_t position) = 0;
-        virtual unsigned short uint16_parameter(size_t position) = 0;
-        virtual int            int32_parameter(size_t position) = 0;
-        virtual unsigned int   uint32_parameter(size_t position) = 0;
-        virtual int64_t        int64_parameter(size_t position) = 0;
-        virtual uint64_t       uint64_parameter(size_t position) = 0;
+        virtual char           int8_t_parameter(size_t position) = 0;
+        virtual unsigned char  uint8_t_parameter(size_t position) = 0;
+        virtual short          int16_t_parameter(size_t position) = 0;
+        virtual unsigned short uint16_t_parameter(size_t position) = 0;
+        virtual int            int32_t_parameter(size_t position) = 0;
+        virtual unsigned int   uint32_t_parameter(size_t position) = 0;
+        virtual int64_t        int64_t_parameter(size_t position) = 0;
+        virtual uint64_t       uint64_t_parameter(size_t position) = 0;
         virtual float          float_parameter(size_t position) = 0;
         virtual double         double_parameter(size_t position) = 0;
         virtual std::string    string_parameter(size_t position) = 0;

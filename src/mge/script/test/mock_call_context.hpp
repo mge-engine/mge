@@ -31,14 +31,14 @@ public:
     MOCK_METHOD(void, store_string_result, (const std::string&), (override));
 
     MOCK_METHOD(bool, bool_parameter, (size_t), (override));
-    MOCK_METHOD(char, int8_parameter, (size_t), (override));
-    MOCK_METHOD(unsigned char, uint8_parameter, (size_t), (override));
-    MOCK_METHOD(short, int16_parameter, (size_t), (override));
-    MOCK_METHOD(unsigned short, uint16_parameter, (size_t), (override));
-    MOCK_METHOD(int, int32_parameter, (size_t), (override));
-    MOCK_METHOD(unsigned int, uint32_parameter, (size_t), (override));
-    MOCK_METHOD(int64_t, int64_parameter, (size_t), (override));
-    MOCK_METHOD(uint64_t, uint64_parameter, (size_t), (override));
+    MOCK_METHOD(char, int8_t_parameter, (size_t), (override));
+    MOCK_METHOD(unsigned char, uint8_t_parameter, (size_t), (override));
+    MOCK_METHOD(short, int16_t_parameter, (size_t), (override));
+    MOCK_METHOD(unsigned short, uint16_t_parameter, (size_t), (override));
+    MOCK_METHOD(int, int32_t_parameter, (size_t), (override));
+    MOCK_METHOD(unsigned int, uint32_t_parameter, (size_t), (override));
+    MOCK_METHOD(int64_t, int64_t_parameter, (size_t), (override));
+    MOCK_METHOD(uint64_t, uint64_t_parameter, (size_t), (override));
     MOCK_METHOD(float, float_parameter, (size_t), (override));
     MOCK_METHOD(double, double_parameter, (size_t), (override));
     MOCK_METHOD(std::string, string_parameter, (size_t), (override));

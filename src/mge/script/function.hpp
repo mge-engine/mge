@@ -7,6 +7,7 @@
 #include "mge/core/nth_type.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/parameter_retriever.hpp"
 #include "mge/script/script_fwd.hpp"
 
 #include <array>
@@ -81,10 +82,14 @@ namespace mge::script {
             {
                 if constexpr (std::is_void_v<InvokeResult>) {
                     (*fptr)(
-                        context.parameter<nth_type<I, InvokeArgs...>>(I)...);
+                        parameter_retriever<nth_type<I, InvokeArgs...>>::get(
+                            context,
+                            I)...);
                 } else {
                     context.store_result((*fptr)(
-                        context.parameter<nth_type<I, InvokeArgs...>>(I)...));
+                        parameter_retriever<nth_type<I, InvokeArgs...>>::get(
+                            context,
+                            I)...));
                 }
             }
         };
@@ -144,10 +149,15 @@ namespace mge::script {
                 std::index_sequence<I...>)
             {
                 if constexpr (std::is_void_v<InvokeResult>) {
-                    f(context.parameter<nth_type<I, InvokeArgs...>>(I)...);
+                    f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
+                        context,
+                        I)...);
+
                 } else {
                     context.store_result(
-                        f(context.parameter<nth_type<I, InvokeArgs...>>(I)...));
+                        f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
+                            context,
+                            I)...));
                 }
             }
         };
@@ -211,11 +221,15 @@ namespace mge::script {
                                                  std::index_sequence<I...>)
                 {
                     if constexpr (std::is_void_v<R>) {
-                        f(context.parameter<nth_type<I, InvokeArgs...>>(I)...);
+
+                        f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
+                            context,
+                            I)...);
                     } else {
                         context.store_result(
-                            f(context.parameter<nth_type<I, InvokeArgs...>>(
-                                I)...));
+                            f(parameter_retriever<
+                                nth_type<I, InvokeArgs...>>::get(context,
+                                                                 I)...));
                     }
                 }
             };

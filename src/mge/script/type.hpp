@@ -6,6 +6,7 @@
 #include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/parameter_retriever.hpp"
 #include "mge/script/proxy.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/signature.hpp"
@@ -156,8 +157,9 @@ namespace mge::script {
                     new (context.this_ptr()) T();
                 } else {
                     new (context.this_ptr())
-                        T(context.parameter<nth_type<I, ConstructorArgs...>>(
-                            I)...);
+                        T(parameter_retriever<
+                            nth_type<I, ConstructorArgs...>>::get(context,
+                                                                  I)...);
                 }
             }
         };
@@ -234,7 +236,7 @@ namespace mge::script {
                 };
                 auto setter = [fieldptr](call_context& ctx) {
                     T* objptr = static_cast<T*>(ctx.this_ptr());
-                    objptr->*fieldptr = ctx.parameter<F>(0);
+                    objptr->*fieldptr = parameter_retriever<F>::get(ctx, 0);
                 };
                 add_field(name, field_type, getter, setter);
             }
@@ -252,10 +254,14 @@ namespace mge::script {
                 T* objptr = static_cast<T*>(ctx.this_ptr());
                 if constexpr (std::is_void_v<R>) {
                     (objptr->*mptr)(
-                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...);
+                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
+                            ctx,
+                            I)...);
                 } else {
                     ctx.store_result((objptr->*mptr)(
-                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...));
+                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
+                            ctx,
+                            I)...));
                 }
             }
 
@@ -264,13 +270,17 @@ namespace mge::script {
                                     R (T::*mptr)(MethodArgs...) const,
                                     std::index_sequence<I...>)
             {
-                const T* objptr = static_cast<const T*>(ctx.this_ptr());
+                T* objptr = static_cast<T*>(ctx.this_ptr());
                 if constexpr (std::is_void_v<R>) {
                     (objptr->*mptr)(
-                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...);
+                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
+                            ctx,
+                            I)...);
                 } else {
                     ctx.store_result((objptr->*mptr)(
-                        ctx.parameter<nth_type<I, MethodArgs...>>(I)...));
+                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
+                            ctx,
+                            I)...));
                 }
             }
         };

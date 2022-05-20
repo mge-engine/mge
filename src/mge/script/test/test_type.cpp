@@ -96,8 +96,9 @@ namespace mge {
 
     struct fields
     {
-        int   x;
-        float y;
+        int     x;
+        float   y;
+        int32_t specific;
     };
 
     TEST_F(test_type, fields)
@@ -105,7 +106,8 @@ namespace mge {
         using namespace mge::script;
         module("mge")(type<fields>("fields")
                           .field("x", &fields::x)
-                          .field("y", &fields::y));
+                          .field("y", &fields::y)
+                          .field("specfic", &fields::specific));
     }
 
     struct memberfunctions

@@ -32,8 +32,8 @@ namespace mge {
         auto f = mge::script::function("intfunc", &intfunc);
 
         MOCK_call_context ctx;
-        EXPECT_CALL(ctx, int32_parameter(0)).WillOnce(Return(10));
-        EXPECT_CALL(ctx, int32_parameter(1)).WillOnce(Return(3));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
+        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(3));
         EXPECT_CALL(ctx, store_int_result(7)).Times(1);
         f.invoke_function()(ctx);
     }
@@ -52,7 +52,7 @@ namespace mge {
         auto f = mge::script::function("voidfunc_intarg", &voidfunc_intarg);
 
         MOCK_call_context ctx;
-        EXPECT_CALL(ctx, int32_parameter(0)).WillOnce(Return(10));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
         f.invoke_function()(ctx);
         EXPECT_EQ(10, voidfunc_value);
     }
@@ -65,8 +65,8 @@ namespace mge {
         auto f = mge::script::function("intfunc_stdfu", stdfu);
 
         MOCK_call_context ctx;
-        EXPECT_CALL(ctx, int32_parameter(0)).WillOnce(Return(10));
-        EXPECT_CALL(ctx, int32_parameter(1)).WillOnce(Return(3));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
+        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(3));
         EXPECT_CALL(ctx, store_int_result(7)).Times(1);
         f.invoke_function()(ctx);
     }
