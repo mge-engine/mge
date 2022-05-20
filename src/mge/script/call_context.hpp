@@ -178,7 +178,18 @@ namespace mge::script {
             return string_parameter(position);
         }
 
-        template <typename T> void store_result(T result);
+        template <typename T>
+        typename std::enable_if<std::is_enum_v<T>, T>::type
+        parameter(size_t position)
+        {
+            typedef std::underlying_type<T>::type UT;
+            return static_cast<T>(parameter<UT>(position));
+        }
+
+        template <typename T> void store_result(T result)
+        {
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
 
         template <typename T>
         void store_result(const std::shared_ptr<T>& result)

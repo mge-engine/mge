@@ -35,11 +35,12 @@ namespace mge::script {
                     .enum_value("DECORATED", mge::window_options::DECORATED)
                     .enum_value("TITLE", mge::window_options::TITLE)
                     .enum_value("MAX", mge::window_options::MAX))
-                .constructor()
-                .copy_constructor(),
+                .constructor(),
+            // .method("set_option", &mge::window_options::set_option),
+            // .copy_constructor(),
             /*
                 .constructor()
-                .method("set_option", &mge::window_options::set_option)
+
                 .method("option_set", &mge::window_options::option_set)
             .method("standard_options",
                     &mge::window_options::standard_options)

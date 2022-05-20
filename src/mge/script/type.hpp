@@ -199,6 +199,16 @@ namespace mge::script {
             return *this;
         }
 
+        inline self_type& constructor()
+        {
+            auto construct = [](call_context& ctx) {
+                new (ctx.this_ptr()) T();
+            };
+            signature empty;
+            add_constructor(empty, construct);
+            return *this;
+        }
+
         template <typename TB, typename TV>
         std::enable_if<std::is_base_of_v<TB, T>, self_type>::type&
         base(const type<TB, TV>& base_type)

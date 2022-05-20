@@ -90,7 +90,7 @@ namespace mge {
     {
         using namespace mge::script;
         module("mge")(type<constructed>("constructed")
-                          .constructor<void>()
+                          .constructor()
                           .constructor<int, int>());
     }
 
@@ -110,18 +110,30 @@ namespace mge {
 
     struct memberfunctions
     {
+        enum K
+        {
+            AAA = 1,
+            BBB = 2
+        };
+
         int  foo(int, int) { return 0; }
         void void_foo(int) {}
         int  const_foo(int) const { return 0; }
+
+        memberfunctions& set_field(K, bool) { return *this; }
     };
 
     TEST_F(test_type, memberfunction)
     {
         using namespace mge::script;
-        module("mge")(type<memberfunctions>("memberfunctions")
+        module("mge")(type<memberfunctions>("memberfunctions")(
+                          type<memberfunctions::K>("K").enum_value(
+                              "AAA",
+                              memberfunctions::K::AAA))
                           .method("foo", &memberfunctions::foo)
                           .method("void_foo", &memberfunctions::void_foo)
-                          .method("const_foo", &memberfunctions::const_foo));
+                          .method("const_foo", &memberfunctions::const_foo)
+                          .method("set_field", &memberfunctions::set_field));
     }
 
 } // namespace mge
