@@ -78,7 +78,10 @@ namespace mge::script {
                        const type_base&       type,
                        const invoke_function& getter,
                        const invoke_function& setter);
+
         void enum_value(const std::string& name, int64_t value);
+
+        void add_member(type_base& t);
 
     private:
         type_details_ref m_details;
@@ -440,7 +443,8 @@ namespace mge::script {
         template <typename SubType, typename SubTypeDetail>
         void add_member(const type<SubType, typename SubTypeDetail>& t)
         {
-            MGE_THROW_NOT_IMPLEMENTED;
+            type_base::add_member(
+                const_cast<type_base&>(static_cast<const type_base&>(t)));
         }
     };
 

@@ -114,4 +114,10 @@ namespace mge::script {
             ->add_field(name, type.m_details, getter, setter);
     }
 
+    void type_base::add_member(type_base& t)
+    {
+        std::static_pointer_cast<class_type_details>(m_details)->add_type(
+            t.details());
+    }
+
 } // namespace mge::script

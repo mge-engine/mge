@@ -32,9 +32,11 @@ namespace mge::script {
         const module_details_weak_ref& module() const;
         const std::type_index&         type_index() const;
         const mge::script::traits&     traits() const;
+        const type_details_ref&        enclosing_type() const;
         size_t                         size() const;
 
         void set_module(const module_details_ref& m);
+        void set_enclosing_type(const type_details_ref& t);
 
         /**
          * @brief Lookup details by type index.
@@ -62,6 +64,7 @@ namespace mge::script {
         std::type_index         m_type_index;
         mge::script::traits     m_traits;
         size_t                  m_size;
+        type_details_ref        m_enclosing_type;
     };
 
     class MGESCRIPT_EXPORT enum_type_details : public type_details
@@ -206,12 +209,17 @@ namespace mge::script {
                                const signature&       sgn,
                                const invoke_function& invoke);
 
+        void add_type(const type_details_ref& t);
+
     private:
+        using type_map = std::unordered_map<std::type_index, type_details_ref>;
+
         std::vector<type_details_ref> m_bases;
         invoke_function               m_destructor;
         std::vector<constructor>      m_constructors;
         std::vector<field>            m_fields;
         std::vector<method>           m_methods;
+        type_map                      m_types;
     };
 
 } // namespace mge::script

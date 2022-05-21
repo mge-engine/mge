@@ -141,7 +141,17 @@ namespace mge::script {
 
     size_t type_details::size() const { return m_size; }
 
+    const type_details_ref& type_details::enclosing_type() const
+    {
+        return m_enclosing_type;
+    }
+
     void type_details::set_module(const module_details_ref& m) { m_module = m; }
+
+    void type_details::set_enclosing_type(const type_details_ref& t)
+    {
+        m_enclosing_type = t;
+    }
 
     type_details_ref type_details::get(const std::type_index& ti)
     {
@@ -270,6 +280,12 @@ namespace mge::script {
                                           const invoke_function& invoke)
     {
         m_methods.emplace_back(name, return_type, sgn, invoke, true);
+    }
+
+    void class_type_details::add_type(const type_details_ref& t)
+    {
+        m_types[t->type_index()] = t;
+        t->set_enclosing_type(shared_from_this());
     }
 
 } // namespace mge::script
