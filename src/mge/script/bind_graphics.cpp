@@ -3,6 +3,8 @@
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgb_color.hpp"
+#include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/window.hpp"
 
@@ -71,7 +73,28 @@ namespace mge::script {
             type<rgb_color>("rgb_color")
                 .constructor()
                 .constructor<unsigned int>()
-                .constructor<const char*>(),
-            type<mge::window>("window"));
+                .constructor<const char*>()
+                .constructor<float>()
+                .constructor<float, float, float>()
+                .copy_constructor()
+                .field("r", &mge::rgb_color::r)
+                .field("g", &mge::rgb_color::g)
+                .field("b", &mge::rgb_color::b),
+            type<rgba_color>("rgba_color")
+                .constructor()
+                .constructor<unsigned int>()
+                .constructor<const char*>()
+                .constructor<const char*, float>()
+                .constructor<float, float>()
+                .constructor<float, float, float, float>()
+                .copy_constructor()
+                .field("r", &mge::rgba_color::r)
+                .field("g", &mge::rgba_color::g)
+                .field("b", &mge::rgba_color::b)
+                .field("a", &mge::rgba_color::a),
+            type<shader_language>("shader_language"),
+            type<mge::window>("window")
+            // module end
+        );
     }
 } // namespace mge::script
