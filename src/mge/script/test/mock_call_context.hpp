@@ -36,5 +36,6 @@ public:
     MOCK_METHOD(float, float_parameter, (size_t), (override));
     MOCK_METHOD(double, double_parameter, (size_t), (override));
     MOCK_METHOD(std::string, string_parameter, (size_t), (override));
+    MOCK_METHOD(std::string_view, string_view_parameter, (size_t), (override));
     MOCK_METHOD(void*, object_parameter, (size_t, std::type_index), (override));
 };

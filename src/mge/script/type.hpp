@@ -295,6 +295,26 @@ namespace mge::script {
                                 nth_type<I, MethodArgs...>>::get(ctx, I)...));
                 }
             }
+
+            template <typename InvokeResult, std::size_t... I>
+            static inline void
+            call_cfunction(InvokeResult (*fptr)(MethodArgs...),
+                           call_context& context,
+                           std::index_sequence<I...>)
+            {
+                if constexpr (std::is_void_v<InvokeResult>) {
+                    (*fptr)(
+                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
+                            context,
+                            I)...);
+                } else {
+                    result_storer<InvokeResult>::store(
+                        context,
+                        (*fptr)(parameter_retriever<
+                                nth_type<I, MethodArgs...>>::get(context,
+                                                                 I)...));
+                }
+            }
         };
 
     public:
@@ -384,9 +404,10 @@ namespace mge::script {
             std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
                 std::type_index(typeid(MethodArgs))...};
             auto call = [fptr](call_context& ctx) {
-                if (fptr == nullptr) {
-                    MGE_THROW_NOT_IMPLEMENTED;
-                }
+                method_helper<MethodArgs...>::call_cfunction(
+                    fptr,
+                    ctx,
+                    std::make_index_sequence<sizeof...(MethodArgs)>{});
             };
             signature s(arg_types);
             auto      result_type = std::type_index(typeid(R));

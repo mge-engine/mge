@@ -40,19 +40,32 @@ namespace mge::script {
                 .method("set_option", &mge::window_options::set_option)
                 .method("option_set", &mge::window_options::option_set)
                 .method("standard_options",
-                        &mge::window_options::standard_options),
-
-            /*
+                        &mge::window_options::standard_options)
+                .method("fullscreen_options",
+                        &mge::window_options::fullscreen_options),
+            type<mge::extent>("extent")
                 .constructor()
-
-
-            .method("fullscreen_options",
-                    &mge::window_options::standard_options)
-                    */
-            type<mge::render_system>("render_system")
+                .constructor<uint32_t, uint32_t>()
+                .copy_constructor()
+                .field("width", &mge::extent::width)
+                .field("height", &mge::extent::height),
+            type<mge::render_system>("render_system")(
+                type<render_system::monitor_collection>("monitor_collection"))
                 .method("create_window",
                         static_cast<mge::window_ref (render_system::*)(void)>(
-                            &mge::render_system::create_window)),
+                            &mge::render_system::create_window))
+                .method("create_window",
+                        static_cast<mge::window_ref (render_system::*)(
+                            const mge::extent&,
+                            const mge::window_options&)>(
+                            &mge::render_system::create_window))
+                .method("create",
+                        static_cast<mge::render_system_ref (*)()>(
+                            &mge::render_system::create))
+                .method(
+                    "create",
+                    static_cast<mge::render_system_ref (*)(std::string_view)>(
+                        &mge::render_system::create)),
             type<mge::window>("window"));
     }
 } // namespace mge::script

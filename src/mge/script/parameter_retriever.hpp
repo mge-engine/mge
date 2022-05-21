@@ -2,6 +2,7 @@
 #include "mge/script/call_context.hpp"
 
 #include <cstdint>
+#include <string_view>
 #include <type_traits>
 
 namespace mge::script {
@@ -34,11 +35,25 @@ namespace mge::script {
     struct parameter_retriever<
         T,
         typename std::enable_if<
-            std::is_same<typename std::remove_cv<T>::type, std::string>::type>>
+            std::is_same_v<typename std::remove_cv<T>::type, std::string>,
+            void>::type>
     {
         static std::string get(call_context& context, size_t position)
         {
             return context.string_parameter(position);
+        }
+    };
+
+    template <typename T>
+    struct parameter_retriever<
+        T,
+        typename std::enable_if<
+            std::is_same_v<typename std::remove_cv<T>::type, std::string_view>,
+            void>::type>
+    {
+        static std::string_view get(call_context& context, size_t position)
+        {
+            return context.string_view_parameter(position);
         }
     };
 
