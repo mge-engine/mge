@@ -66,4 +66,12 @@ namespace mge::script {
         }
     };
 
+    template <typename T> struct parameter_retriever<T&&, void>
+    {
+        static const T& get(call_context& context, size_t position)
+        {
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
+    };
+
 } // namespace mge::script

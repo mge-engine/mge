@@ -214,6 +214,8 @@ namespace mge::script {
 
         inline self_type copy_constructor() { return constructor<const T&>(); }
 
+        inline self_type move_constructor() { return constructor<T&&>(); }
+
         template <typename TB, typename TV>
         std::enable_if<std::is_base_of_v<TB, T>, self_type>::type&
         base(const type<TB, TV>& base_type)
