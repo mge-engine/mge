@@ -83,15 +83,16 @@ namespace mge::script {
             {
                 if constexpr (std::is_void_v<InvokeResult>) {
                     (*fptr)(
-                        parameter_retriever<nth_type<I, InvokeArgs...>>::get(
-                            context,
-                            I)...);
+                        parameter_retriever<nth_type<I, InvokeArgs...>>(context,
+                                                                        I)
+                            .get()...);
                 } else {
                     result_storer<InvokeResult>::store(
                         context,
-                        (*fptr)(parameter_retriever<
-                                nth_type<I, InvokeArgs...>>::get(context,
-                                                                 I)...));
+                        (*fptr)(parameter_retriever<nth_type<I, InvokeArgs...>>(
+                                    context,
+                                    I)
+                                    .get()...));
                 }
             }
         };
@@ -158,9 +159,10 @@ namespace mge::script {
                 } else {
                     result_storer<InvokeResult>::store(
                         context,
-                        f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
-                            context,
-                            I)...));
+                        f(parameter_retriever<nth_type<I, InvokeArgs...>>(
+                              context,
+                              I)
+                              .get()...));
                 }
             }
         };
@@ -231,9 +233,10 @@ namespace mge::script {
                     } else {
                         result_storer<R>::store(
                             context,
-                            f(parameter_retriever<
-                                nth_type<I, InvokeArgs...>>::get(context,
-                                                                 I)...));
+                            f(parameter_retriever<nth_type<I, InvokeArgs...>>(
+                                  context,
+                                  I)
+                                  .get()...));
                     }
                 }
             };

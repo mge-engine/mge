@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
+#include "mge/graphics/rgb_color.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/window.hpp"
 
@@ -65,7 +66,12 @@ namespace mge::script {
                 .method(
                     "create",
                     static_cast<mge::render_system_ref (*)(std::string_view)>(
-                        &mge::render_system::create)),
+                        &mge::render_system::create))
+                .method("monitors", &mge::render_system::monitors),
+            type<rgb_color>("rgb_color")
+                .constructor()
+                .constructor<unsigned int>()
+                .constructor<const char*>(),
             type<mge::window>("window"));
     }
 } // namespace mge::script

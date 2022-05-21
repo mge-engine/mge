@@ -163,9 +163,10 @@ namespace mge::script {
                     new (context.this_ptr()) T();
                 } else {
                     new (context.this_ptr())
-                        T(parameter_retriever<
-                            nth_type<I, ConstructorArgs...>>::get(context,
-                                                                  I)...);
+                        T(parameter_retriever<nth_type<I, ConstructorArgs...>>(
+                              context,
+                              I)
+                              .get()...);
                 }
             }
         };
@@ -246,7 +247,7 @@ namespace mge::script {
                 };
                 auto setter = [fieldptr](call_context& ctx) {
                     T* objptr = static_cast<T*>(ctx.this_ptr());
-                    objptr->*fieldptr = parameter_retriever<F>::get(ctx, 0);
+                    objptr->*fieldptr = parameter_retriever<F>(ctx, 0).get();
                 };
                 add_field(name, field_type, getter, setter);
             }
@@ -264,15 +265,15 @@ namespace mge::script {
                 T* objptr = static_cast<T*>(ctx.this_ptr());
                 if constexpr (std::is_void_v<R>) {
                     (objptr->*mptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
-                            ctx,
-                            I)...);
+                        parameter_retriever<nth_type<I, MethodArgs...>>(ctx, I)
+                            .get()...);
                 } else {
                     result_storer<R>::store(
                         ctx,
                         (objptr->*mptr)(
-                            parameter_retriever<
-                                nth_type<I, MethodArgs...>>::get(ctx, I)...));
+                            parameter_retriever<nth_type<I, MethodArgs...>>(ctx,
+                                                                            I)
+                                .get()...));
                 }
             }
 
@@ -291,8 +292,9 @@ namespace mge::script {
                     result_storer<R>::store(
                         ctx,
                         (objptr->*mptr)(
-                            parameter_retriever<
-                                nth_type<I, MethodArgs...>>::get(ctx, I)...));
+                            parameter_retriever<nth_type<I, MethodArgs...>>(ctx,
+                                                                            I)
+                                .get()...));
                 }
             }
 
@@ -310,9 +312,10 @@ namespace mge::script {
                 } else {
                     result_storer<InvokeResult>::store(
                         context,
-                        (*fptr)(parameter_retriever<
-                                nth_type<I, MethodArgs...>>::get(context,
-                                                                 I)...));
+                        (*fptr)(parameter_retriever<nth_type<I, MethodArgs...>>(
+                                    context,
+                                    I)
+                                    .get()...));
                 }
             }
         };

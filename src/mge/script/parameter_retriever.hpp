@@ -13,10 +13,18 @@ namespace mge::script {
 #define MGE_DEFINE_RETRIEVER(RETRIEVED_TYPE)                                   \
     template <> struct parameter_retriever<RETRIEVED_TYPE, void>               \
     {                                                                          \
-        static RETRIEVED_TYPE get(call_context& context, size_t position)      \
+        parameter_retriever(call_context& context_, size_t position_)          \
+            : context(context_)                                                \
+            , position(position)                                               \
+        {}                                                                     \
+                                                                               \
+        RETRIEVED_TYPE get()                                                   \
         {                                                                      \
             return context.RETRIEVED_TYPE##_parameter(position);               \
         }                                                                      \
+                                                                               \
+        call_context& context;                                                 \
+        size_t        position;                                                \
     }
 
     MGE_DEFINE_RETRIEVER(bool);
@@ -38,10 +46,15 @@ namespace mge::script {
             std::is_same_v<typename std::remove_cv<T>::type, std::string>,
             void>::type>
     {
-        static std::string get(call_context& context, size_t position)
-        {
-            return context.string_parameter(position);
-        }
+        parameter_retriever(call_context& context_, size_t position_)
+            : context(context_)
+            , position(position)
+        {}
+
+        static std::string get() { return context.string_parameter(position); }
+
+        call_context& context;
+        size_t        position;
     };
 
     template <typename T>
@@ -51,10 +64,38 @@ namespace mge::script {
             std::is_same_v<typename std::remove_cv<T>::type, std::string_view>,
             void>::type>
     {
-        static std::string_view get(call_context& context, size_t position)
+        parameter_retriever(call_context& context_, size_t position_)
+            : context(context_)
+            , position(position)
+        {}
+
+        std::string_view get()
         {
-            return context.string_view_parameter(position);
+            value = context.string_parameter(position);
+            return std::string_view(value.begin(), value.end());
         }
+
+        call_context& context;
+        size_t        position;
+        std::string   value;
+    };
+
+    template <> struct parameter_retriever<const char*, void>
+    {
+        parameter_retriever(call_context& context_, size_t position_)
+            : context(context_)
+            , position(position)
+        {}
+
+        const char* get()
+        {
+            value = context.string_parameter(position);
+            return value.c_str();
+        }
+
+        call_context& context;
+        size_t        position;
+        std::string   value;
     };
 
     template <typename T>
@@ -63,30 +104,44 @@ namespace mge::script {
         typename std::enable_if<
             std::is_enum<typename std::remove_cv<T>::type>::value,
             void>::type>
+        : parameter_retriever<typename std::underlying_type<T>::type, void>
     {
-        static T get(call_context& context, size_t position)
+        parameter_retriever(call_context& context_, size_t position_)
+            : parameter_retriever<std::underlying_type<T>::type, void>(
+                  context_, position_)
+        {}
+
+        T get()
         {
             return static_cast<T>(
-                parameter_retriever<std::underlying_type<T>::type>::get(
-                    context,
-                    position));
+                parameter_retriever<std::underlying_type<T>::type>::get());
         }
     };
 
     template <typename T> struct parameter_retriever<const T&, void>
     {
-        static const T& get(call_context& context, size_t position)
-        {
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
+        parameter_retriever(call_context& context_, size_t position_)
+            : context(context_)
+            , position(position)
+        {}
+
+        const T& get() { MGE_THROW_NOT_IMPLEMENTED; }
+
+        call_context& context;
+        size_t        position;
     };
 
     template <typename T> struct parameter_retriever<T&&, void>
     {
-        static const T& get(call_context& context, size_t position)
-        {
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
+        parameter_retriever(call_context& context_, size_t position_)
+            : context(context_)
+            , position(position)
+        {}
+
+        const T& get() { MGE_THROW_NOT_IMPLEMENTED; }
+
+        call_context& context;
+        size_t        position;
     };
 
 } // namespace mge::script
