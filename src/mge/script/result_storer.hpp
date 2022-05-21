@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/stdexceptions.hpp"
