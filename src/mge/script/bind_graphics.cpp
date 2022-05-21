@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "mge/graphics/point.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgb_color.hpp"
 #include "mge/graphics/rgba_color.hpp"
@@ -92,7 +93,18 @@ namespace mge::script {
                 .field("g", &mge::rgba_color::g)
                 .field("b", &mge::rgba_color::b)
                 .field("a", &mge::rgba_color::a),
-            type<shader_language>("shader_language"),
+            type<shader_language>("shader_language")
+                .constructor()
+                .constructor<std::string_view, const semantic_version&>()
+                .method("name", &shader_language::name)
+                .method("version", &shader_language::version)
+                .method("compatible", &shader_language::compatible),
+            type<point>("point")
+                .constructor()
+                .constructor<uint32_t, uint32_t>()
+                .copy_constructor()
+                .field("x", &point::x)
+                .field("y", &point::y),
             type<mge::window>("window")
             // module end
         );
