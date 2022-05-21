@@ -31,119 +31,29 @@ namespace mge::script {
          */
         virtual void* this_ptr() = 0;
 
-        template <typename T> void store_result(T result)
-        {
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
-
-        template <typename T>
-        void store_result(const std::shared_ptr<T>& result)
-        {
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
-
-        template <> void store_result<bool>(bool result)
-        {
-            store_bool_result(result);
-        }
-
-        template <> void store_result<char>(char result)
-        {
-            store_char_result(result);
-        }
-
-        template <> void store_result<signed char>(signed char result)
-        {
-            store_signed_char_result(result);
-        }
-
-        template <> void store_result<unsigned char>(unsigned char result)
-        {
-            store_unsigned_char_result(result);
-        }
-
-        template <> void store_result<short>(short result)
-        {
-            store_short_result(result);
-        }
-
-        template <> void store_result<unsigned short>(unsigned short result)
-        {
-            store_unsigned_short_result(result);
-        }
-
-        template <> void store_result<int>(int result)
-        {
-            store_int_result(result);
-        }
-
-        template <> void store_result<unsigned int>(unsigned int result)
-        {
-            store_unsigned_int_result(result);
-        }
-
-        template <> void store_result<long>(long result)
-        {
-            store_long_result(result);
-        }
-
-        template <> void store_result<unsigned long>(unsigned long result)
-        {
-            store_unsigned_long_result(result);
-        }
-
-        template <> void store_result<int64_t>(int64_t result)
-        {
-            store_int64_result(result);
-        }
-
-        template <> void store_result<uint64_t>(uint64_t result)
-        {
-            store_uint64_result(result);
-        }
-
-        template <> void store_result<float>(float result)
-        {
-            store_float_result(result);
-        }
-
-        template <> void store_result<double>(double result)
-        {
-            store_double_result(result);
-        }
-
-        void store_result(const std::string& result)
-        {
-            store_string_result(result);
-        }
-
-    public:
-        virtual bool           bool_parameter(size_t position) = 0;
-        virtual char           int8_t_parameter(size_t position) = 0;
-        virtual unsigned char  uint8_t_parameter(size_t position) = 0;
-        virtual short          int16_t_parameter(size_t position) = 0;
-        virtual unsigned short uint16_t_parameter(size_t position) = 0;
-        virtual int            int32_t_parameter(size_t position) = 0;
-        virtual unsigned int   uint32_t_parameter(size_t position) = 0;
-        virtual int64_t        int64_t_parameter(size_t position) = 0;
-        virtual uint64_t       uint64_t_parameter(size_t position) = 0;
-        virtual float          float_parameter(size_t position) = 0;
-        virtual double         double_parameter(size_t position) = 0;
-        virtual std::string    string_parameter(size_t position) = 0;
+        virtual bool        bool_parameter(size_t position) = 0;
+        virtual int8_t      int8_t_parameter(size_t position) = 0;
+        virtual uint8_t     uint8_t_parameter(size_t position) = 0;
+        virtual int16_t     int16_t_parameter(size_t position) = 0;
+        virtual uint16_t    uint16_t_parameter(size_t position) = 0;
+        virtual int32_t     int32_t_parameter(size_t position) = 0;
+        virtual uint32_t    uint32_t_parameter(size_t position) = 0;
+        virtual int64_t     int64_t_parameter(size_t position) = 0;
+        virtual uint64_t    uint64_t_parameter(size_t position) = 0;
+        virtual float       float_parameter(size_t position) = 0;
+        virtual double      double_parameter(size_t position) = 0;
+        virtual std::string string_parameter(size_t position) = 0;
         virtual void* object_parameter(size_t position, std::type_index ti) = 0;
 
         virtual void store_bool_result(bool result) = 0;
-        virtual void store_char_result(char result) = 0;
-        virtual void store_signed_char_result(signed char result) = 0;
-        virtual void store_unsigned_char_result(unsigned char result) = 0;
-        virtual void store_short_result(short result) = 0;
-        virtual void store_unsigned_short_result(unsigned short result) = 0;
-        virtual void store_int_result(int result) = 0;
-        virtual void store_unsigned_int_result(unsigned int result) = 0;
-        virtual void store_long_result(long result) = 0;
-        virtual void store_unsigned_long_result(unsigned long result) = 0;
-        virtual void store_int64_result(int64_t result) = 0;
-        virtual void store_uint64_result(uint64_t result) = 0;
+        virtual void store_int8_t_result(int8_t result) = 0;
+        virtual void store_uint8_t_result(uint8_t result) = 0;
+        virtual void store_int16_t_result(int16_t result) = 0;
+        virtual void store_uint16_t_result(uint16_t result) = 0;
+        virtual void store_int32_t_result(int32_t result) = 0;
+        virtual void store_uint32_t_result(uint32_t result) = 0;
+        virtual void store_int64_t_result(int64_t result) = 0;
+        virtual void store_uint64_t_result(uint64_t result) = 0;
         virtual void store_float_result(float result) = 0;
         virtual void store_double_result(double result) = 0;
         virtual void store_string_result(const std::string& result) = 0;

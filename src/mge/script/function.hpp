@@ -8,6 +8,7 @@
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/parameter_retriever.hpp"
+#include "mge/script/result_storer.hpp"
 #include "mge/script/script_fwd.hpp"
 
 #include <array>
@@ -86,10 +87,11 @@ namespace mge::script {
                             context,
                             I)...);
                 } else {
-                    context.store_result((*fptr)(
-                        parameter_retriever<nth_type<I, InvokeArgs...>>::get(
-                            context,
-                            I)...));
+                    result_storer<InvokeResult>::store(
+                        context,
+                        (*fptr)(parameter_retriever<
+                                nth_type<I, InvokeArgs...>>::get(context,
+                                                                 I)...));
                 }
             }
         };
@@ -154,7 +156,8 @@ namespace mge::script {
                         I)...);
 
                 } else {
-                    context.store_result(
+                    result_storer<InvokeResult>::store(
+                        context,
                         f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
                             context,
                             I)...));
@@ -226,7 +229,8 @@ namespace mge::script {
                             context,
                             I)...);
                     } else {
-                        context.store_result(
+                        result_storer<R>::store(
+                            context,
                             f(parameter_retriever<
                                 nth_type<I, InvokeArgs...>>::get(context,
                                                                  I)...));

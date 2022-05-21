@@ -23,7 +23,7 @@ namespace mge {
         auto f = mge::script::function("intfunc_noargs", &intfunc_noargs);
 
         MOCK_call_context ctx;
-        EXPECT_CALL(ctx, store_int_result(42)).Times(1);
+        EXPECT_CALL(ctx, store_int32_t_result(42)).Times(1);
         f.invoke_function()(ctx);
     }
 
@@ -34,7 +34,7 @@ namespace mge {
         MOCK_call_context ctx;
         EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
         EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(3));
-        EXPECT_CALL(ctx, store_int_result(7)).Times(1);
+        EXPECT_CALL(ctx, store_int32_t_result(7)).Times(1);
         f.invoke_function()(ctx);
     }
 
@@ -67,7 +67,7 @@ namespace mge {
         MOCK_call_context ctx;
         EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
         EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(3));
-        EXPECT_CALL(ctx, store_int_result(7)).Times(1);
+        EXPECT_CALL(ctx, store_int32_t_result(7)).Times(1);
         f.invoke_function()(ctx);
     }
 

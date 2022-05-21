@@ -15,4 +15,7 @@ namespace mge {
     struct is_shared_ptr<std::shared_ptr<T>> : std::true_type
     {};
 
+    template <typename T>
+    inline constexpr bool is_shared_ptr_v = is_shared_ptr<T>::value;
+
 } // namespace mge

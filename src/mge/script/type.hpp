@@ -8,6 +8,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/parameter_retriever.hpp"
 #include "mge/script/proxy.hpp"
+#include "mge/script/result_storer.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
@@ -226,13 +227,13 @@ namespace mge::script {
             if constexpr (std::is_const_v<F>) {
                 auto getter = [fieldptr](call_context& ctx) {
                     const T* objptr = static_cast<const T*>(ctx.this_ptr());
-                    ctx.store_result(objptr->*fieldptr);
+                    result_storer<F>::store(ctx, objptr->*fieldptr);
                 };
                 add_field(name, field_type, getter);
             } else {
                 auto getter = [fieldptr](call_context& ctx) {
                     T* objptr = static_cast<T*>(ctx.this_ptr());
-                    ctx.store_result(objptr->*fieldptr);
+                    result_storer<F>::store(ctx, objptr->*fieldptr);
                 };
                 auto setter = [fieldptr](call_context& ctx) {
                     T* objptr = static_cast<T*>(ctx.this_ptr());
@@ -258,10 +259,11 @@ namespace mge::script {
                             ctx,
                             I)...);
                 } else {
-                    ctx.store_result((objptr->*mptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
-                            ctx,
-                            I)...));
+                    result_storer<R>::store(
+                        ctx,
+                        (objptr->*mptr)(
+                            parameter_retriever<
+                                nth_type<I, MethodArgs...>>::get(ctx, I)...));
                 }
             }
 
@@ -277,10 +279,11 @@ namespace mge::script {
                             ctx,
                             I)...);
                 } else {
-                    ctx.store_result((objptr->*mptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
-                            ctx,
-                            I)...));
+                    result_storer<R>::store(
+                        ctx,
+                        (objptr->*mptr)(
+                            parameter_retriever<
+                                nth_type<I, MethodArgs...>>::get(ctx, I)...));
                 }
             }
         };
