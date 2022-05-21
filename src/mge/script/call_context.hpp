@@ -31,19 +31,18 @@ namespace mge::script {
          */
         virtual void* this_ptr() = 0;
 
-        virtual bool             bool_parameter(size_t position) = 0;
-        virtual int8_t           int8_t_parameter(size_t position) = 0;
-        virtual uint8_t          uint8_t_parameter(size_t position) = 0;
-        virtual int16_t          int16_t_parameter(size_t position) = 0;
-        virtual uint16_t         uint16_t_parameter(size_t position) = 0;
-        virtual int32_t          int32_t_parameter(size_t position) = 0;
-        virtual uint32_t         uint32_t_parameter(size_t position) = 0;
-        virtual int64_t          int64_t_parameter(size_t position) = 0;
-        virtual uint64_t         uint64_t_parameter(size_t position) = 0;
-        virtual float            float_parameter(size_t position) = 0;
-        virtual double           double_parameter(size_t position) = 0;
-        virtual std::string      string_parameter(size_t position) = 0;
-        virtual std::string_view string_view_parameter(size_t position) = 0;
+        virtual bool        bool_parameter(size_t position) = 0;
+        virtual int8_t      int8_t_parameter(size_t position) = 0;
+        virtual uint8_t     uint8_t_parameter(size_t position) = 0;
+        virtual int16_t     int16_t_parameter(size_t position) = 0;
+        virtual uint16_t    uint16_t_parameter(size_t position) = 0;
+        virtual int32_t     int32_t_parameter(size_t position) = 0;
+        virtual uint32_t    uint32_t_parameter(size_t position) = 0;
+        virtual int64_t     int64_t_parameter(size_t position) = 0;
+        virtual uint64_t    uint64_t_parameter(size_t position) = 0;
+        virtual float       float_parameter(size_t position) = 0;
+        virtual double      double_parameter(size_t position) = 0;
+        virtual std::string string_parameter(size_t position) = 0;
 
         virtual void* object_parameter(size_t position, std::type_index ti) = 0;
 
