@@ -155,12 +155,26 @@ namespace mge::script {
                 , result_type(r)
                 , signature(s)
                 , invoke(m)
+                , is_static(false)
+            {}
+
+            inline method(const std::string&            n,
+                          const std::type_index&        r,
+                          const mge::script::signature& s,
+                          const invoke_function&        m,
+                          bool                          is_static_)
+                : name(n)
+                , result_type(r)
+                , signature(s)
+                , invoke(m)
+                , is_static(is_static_)
             {}
 
             std::string            name;
             std::type_index        result_type;
             mge::script::signature signature;
             invoke_function        invoke;
+            bool                   is_static;
         };
 
         class_type_details(const std::string&         name,
@@ -187,6 +201,10 @@ namespace mge::script {
                         const std::type_index& return_type,
                         const signature&       sgn,
                         const invoke_function& invoke);
+        void add_static_method(const std::string&     name,
+                               const std::type_index& return_type,
+                               const signature&       sgn,
+                               const invoke_function& invoke);
 
     private:
         std::vector<type_details_ref> m_bases;

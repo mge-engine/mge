@@ -66,6 +66,11 @@ namespace mge::script {
                         const signature&       signature,
                         const invoke_function& invoke);
 
+        void add_static_method(const std::string&     name,
+                               const std::type_index& return_type,
+                               const signature&       signature,
+                               const invoke_function& invoke);
+
         void add_field(const std::string&     name,
                        const type_base&       type,
                        const invoke_function& getter);
@@ -370,6 +375,22 @@ namespace mge::script {
             auto      result_type = std::type_index(typeid(R));
 
             add_method(name, result_type, s, call);
+            return *this;
+        }
+
+        template <typename R, typename... MethodArgs>
+        self_type& method(const std::string& name, R (*fptr)(MethodArgs...))
+        {
+            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
+                std::type_index(typeid(MethodArgs))...};
+            auto call = [fptr](call_context& ctx) {
+                if (fptr == nullptr) {
+                    MGE_THROW_NOT_IMPLEMENTED;
+                }
+            };
+            signature s(arg_types);
+            auto      result_type = std::type_index(typeid(R));
+            add_static_method(name, result_type, s, call);
             return *this;
         }
 
