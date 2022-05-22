@@ -36,6 +36,8 @@ namespace mge::script {
 #define MGESCRIPT_PROXY_PARAMETER_WITH_TYPE(z, count, sig)                     \
     BOOST_PP_TUPLE_ELEM(count, sig) __p##count
 
+#define MGESCRIPT_PROXY_PARAMETER_LIST_ELEMENT(z, count, sig) __p##count
+
 #define MGESCRIPT_PROXY(result_type, method_name, sig, constness)              \
     result_type method_name BOOST_PP_IF(                                       \
         BOOST_PP_TUPLE_SIZE(sig),                                              \
@@ -49,7 +51,13 @@ namespace mge::script {
                 ::mge::script::signature::create<BOOST_PP_REMOVE_PARENS(       \
                     sig)>();                                                   \
                                                                                \
-            return m_invoke_context->invoke<result_type>(#method_name, s);     \
+            return m_invoke_context->invoke<result_type>(                      \
+                #method_name,                                                  \
+                s,                                                             \
+                std::forward_as_tuple(                                         \
+                    BOOST_PP_ENUM(BOOST_PP_TUPLE_SIZE(sig),                    \
+                                  MGESCRIPT_PROXY_PARAMETER_LIST_ELEMENT,      \
+                                  sig)));                                      \
         } else {                                                               \
             return m_invoke_context->invoke<result_type>(#method_name);        \
         }                                                                      \

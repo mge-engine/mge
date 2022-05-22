@@ -5,6 +5,8 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/signature.hpp"
 
+#include <tuple>
+
 namespace mge::script {
 
     /**
@@ -20,6 +22,14 @@ namespace mge::script {
 
         template <typename R>
         R invoke(const char* name, const mge::script::signature& s)
+        {
+            return R();
+        }
+
+        template <typename R, typename... Args>
+        R invoke(const char*                   name,
+                 const mge::script::signature& s,
+                 const std::tuple<Args...>&    args)
         {
             return R();
         }
