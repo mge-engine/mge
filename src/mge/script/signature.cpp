@@ -35,4 +35,8 @@ namespace mge::script {
         return *this == other;
     }
 
+    static signature s_empty_signature;
+
+    const signature& signature::empty_signature() { return s_empty_signature; }
+
 } // namespace mge::script

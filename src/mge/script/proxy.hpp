@@ -6,7 +6,9 @@
 
 #include "mge/script/dllexport.hpp"
 #include "mge/script/invoke_context.hpp"
+#include "mge/script/signature.hpp"
 
+#include <tuple>
 #include <type_traits>
 
 namespace mge::script {
@@ -27,25 +29,29 @@ namespace mge::script {
             m_invoke_context = context;
         }
 
-    private:
+    protected:
         invoke_context* m_invoke_context;
     };
 
-#define MGESCRIPT_PROXY_SIGNATURE_ELEMENT_HELPER(z, count, signature)          \
-    BOOST_PP_TUPLE_ELEM(count, signature) __p##count
+#define MGESCRIPT_PROXY_PARAMETER_WITH_TYPE(z, count, sig)                     \
+    BOOST_PP_TUPLE_ELEM(count, sig) __p##count
 
-#define MGESCRIPT_PROXY(result_type, method_name, signature, constness)        \
+#define MGESCRIPT_PROXY(result_type, method_name, sig, constness)              \
     result_type method_name BOOST_PP_IF(                                       \
-        BOOST_PP_TUPLE_SIZE(signature),                                        \
-        (BOOST_PP_ENUM(BOOST_PP_TUPLE_SIZE(signature),                         \
-                       MGESCRIPT_PROXY_SIGNATURE_ELEMENT_HELPER,               \
-                       signature)),                                            \
+        BOOST_PP_TUPLE_SIZE(sig),                                              \
+        (BOOST_PP_ENUM(BOOST_PP_TUPLE_SIZE(sig),                               \
+                       MGESCRIPT_PROXY_PARAMETER_WITH_TYPE,                    \
+                       sig)),                                                  \
         ()) BOOST_PP_REMOVE_PARENS(constness) override                         \
     {                                                                          \
-        if constexpr (BOOST_PP_TUPLE_SIZE(signature)) {                        \
-            return result_type();                                              \
+        if constexpr (BOOST_PP_TUPLE_SIZE(sig)) {                              \
+            static ::mge::script::signature s =                                \
+                ::mge::script::signature::create<BOOST_PP_REMOVE_PARENS(       \
+                    sig)>();                                                   \
+                                                                               \
+            return m_invoke_context->invoke<result_type>(#method_name, s);     \
         } else {                                                               \
-            return result_type();                                              \
+            return m_invoke_context->invoke<result_type>(#method_name);        \
         }                                                                      \
     }
 

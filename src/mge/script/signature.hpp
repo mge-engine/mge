@@ -11,6 +11,9 @@
 
 namespace mge::script {
 
+    /**
+     * Signature of a function.
+     */
     class MGESCRIPT_EXPORT signature
         : public boost::equality_comparable<signature>
     {
@@ -44,6 +47,13 @@ namespace mge::script {
         const std::type_index& operator[](size_t i) const;
 
         bool matches(const signature& other) const;
+
+        /**
+         * @brief Returns the empty signature.
+         *
+         * @return signature with no elements
+         */
+        static const signature& empty_signature();
 
     private:
         small_vector<std::optional<std::type_index>, 3> m_types;

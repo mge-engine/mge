@@ -17,6 +17,7 @@ namespace mge::script {
     {
     public:
         virtual ~ptest1_proxy() = default;
+
         MGESCRIPT_PROXY(int, foo, (int), (const))
     };
 
