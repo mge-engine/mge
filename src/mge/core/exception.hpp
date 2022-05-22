@@ -433,6 +433,7 @@ namespace mge {
      */
     MGECORE_EXPORT std::ostream&
     operator<<(std::ostream& os, const exception::exception_details& details);
+
     /**
      * @brief Re-throws the current exception.
      *

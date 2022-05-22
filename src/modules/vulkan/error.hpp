@@ -12,7 +12,7 @@ namespace mge::vulkan {
         error();
         error(const error& e);
         error(error&& e);
-        ~error();
+        ~error() = default;
 
         error& operator=(const error& e);
 
