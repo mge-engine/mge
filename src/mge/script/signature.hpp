@@ -17,6 +17,13 @@ namespace mge::script {
     public:
         signature();
 
+        template <typename... T> static signature create()
+        {
+            std::array<std::type_index, sizeof...(T)> arg_types = {
+                std::type_index(typeid(T))...};
+            return signature(arg_types);
+        }
+
         template <size_t I>
         signature(const std::array<std::type_index, I>& data)
         {
