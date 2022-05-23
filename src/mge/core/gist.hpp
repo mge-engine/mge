@@ -3,7 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/is_shared_ptr.hpp"
-#include "mge/core/type_traits.hpp"
+#include "mge/core/type_name.hpp"
 
 #include <iostream>
 #include <memory>
