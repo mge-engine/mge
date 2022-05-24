@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "boost/boost_algorithm_string.hpp"
 #include "boost/boost_lexical_cast.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/make_string_view.hpp"
@@ -11,6 +12,7 @@
 #include <mutex>
 #include <sstream>
 #include <string_view>
+#include <vector>
 
 namespace mge {
 
@@ -223,6 +225,101 @@ namespace mge {
     private:
         std::any       m_value;
         const std::any m_default_value;
+    };
+
+    template <typename T>
+    class parameter<std::vector<T>> : public basic_parameter
+    {
+    public:
+        /**
+         * @brief Construct a new parameter.
+         *
+         * @tparam SECTION_N length of section literal
+         * @tparam NAME_N length of name literal
+         * @tparam DESCRIPTION_N  length of description literal
+         * @param section parameter section
+         * @param name parameter name
+         * @param description parameter description
+         */
+        template <size_t SECTION_N, size_t NAME_N, size_t DESCRIPTION_N>
+        parameter(const char (&section)[SECTION_N],
+                  const char (&name)[NAME_N],
+                  const char (&description)[DESCRIPTION_N])
+            : basic_parameter(make_string_view(section),
+                              make_string_view(name),
+                              make_string_view(description))
+        {}
+
+        /**
+         * @brief Construct a new parameter object
+         *
+         * @param section parameter section
+         * @param name parameter name
+         * @param description parameter description
+         */
+        parameter(std::string_view section,
+                  std::string_view name,
+                  std::string_view description)
+            : basic_parameter(section, name, description)
+        {}
+
+        virtual ~parameter() = default;
+
+        bool has_value() const override { return false; }
+
+        /**
+         * @brief Retrieve typed value.
+         *
+         * @return stored value
+         */
+        typename const std::vector<T>& get() const { return m_values; }
+
+        /**
+         * @brief Retrieve typed value, checking default.
+         *
+         * @param default_value default value
+         * @return config value or default value if not set
+         */
+        typename const std::vector<T>&
+        get(const std::vector<T>& default_value) const
+        {
+            if (has_value()) {
+                return get();
+            } else {
+                return default_value;
+            }
+        }
+
+        void from_string(std::string_view value) override
+        {
+            std::vector<std::string> string_values;
+            boost::split(string_values,
+                         value,
+                         boost::is_any_of(","),
+                         boost::token_compress_on);
+            m_values.clear();
+            for (const auto& string_val : string_values) {
+                m_values.emplace_back(boost::lexical_cast<T>(string_val));
+            }
+        }
+
+        std::string to_string() const override
+        {
+            std::stringstream ss;
+            const auto&       values = get();
+            if (!values.empty()) {
+                std::copy(std::begin(values),
+                          std::prev(std::end(values)),
+                          std::ostream_iterator<std::string>(ss, ", "));
+                ss << values.back();
+            }
+            return ss.str();
+        }
+
+        void reset() override { m_values.clear(); }
+
+    private:
+        std::vector<T> m_values;
     };
 
 /**
