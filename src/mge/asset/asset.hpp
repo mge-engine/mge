@@ -14,7 +14,8 @@ namespace mge {
 
     /**
      * An asset. An asset has a path, potentially a type,
-     * and a size and input stream.
+     * and a size and input stream. The implementation is
+     * delegated to an asset access instance.
      */
     class MGEASSET_EXPORT asset
     {
