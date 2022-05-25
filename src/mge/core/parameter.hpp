@@ -265,7 +265,7 @@ namespace mge {
 
         virtual ~parameter() = default;
 
-        bool has_value() const override { return false; }
+        bool has_value() const override { return !m_values.empty(); }
 
         /**
          * @brief Retrieve typed value.
@@ -297,6 +297,9 @@ namespace mge {
                          value,
                          boost::is_any_of(","),
                          boost::token_compress_on);
+            for (auto& string_val : string_values) {
+                boost::trim(string_val);
+            }
             m_values.clear();
             for (const auto& string_val : string_values) {
                 m_values.emplace_back(boost::lexical_cast<T>(string_val));
@@ -310,7 +313,7 @@ namespace mge {
             if (!values.empty()) {
                 std::copy(std::begin(values),
                           std::prev(std::end(values)),
-                          std::ostream_iterator<std::string>(ss, ", "));
+                          std::ostream_iterator<T>(ss, ", "));
                 ss << values.back();
             }
             return ss.str();
