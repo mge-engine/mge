@@ -5,6 +5,7 @@
 SET(mgescript_sources
     script_engine.cpp
     script_context.cpp
+    script_binder.cpp
 
     module.cpp
     type.cpp

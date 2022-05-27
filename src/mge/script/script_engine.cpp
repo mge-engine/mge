@@ -11,20 +11,6 @@ namespace mge {
 
     MGE_REGISTER_COMPONENT(script_engine);
 
-    class binder
-    {
-    public:
-        binder()
-        {
-            mge::script::bind_core();
-            mge::script::bind_application();
-            mge::script::bind_math();
-            mge::script::bind_graphics();
-        }
-    };
-
-    static singleton<binder> s_binder;
-
-    script_engine::script_engine() { s_binder.ptr(); }
+    script_engine::script_engine() {}
 
 } // namespace mge

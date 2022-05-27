@@ -19,6 +19,9 @@ namespace mge {
      */
     class MGESCRIPT_EXPORT script_context : public noncopyable
     {
+    protected:
+        script_context();
+
     public:
         /**
          * @brief Destructor.
