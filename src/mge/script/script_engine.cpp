@@ -4,7 +4,6 @@
 #include "mge/script/script_engine.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
-#include "mge/script/bind.hpp"
 
 namespace mge {
     MGE_DEFINE_TRACE(SCRIPT);

@@ -12,7 +12,6 @@ SET(mgescript_sources
     function.cpp
     # variable.cpp
     visitor.cpp
-    # bind.cpp
     call_context.cpp
     invoke_context.cpp
     signature.cpp
@@ -21,11 +20,6 @@ SET(mgescript_sources
     type_details.cpp
     function_details.cpp
     # variable_details.cpp
-
-    bind_core.cpp
-    bind_application.cpp
-    bind_graphics.cpp
-    bind_math.cpp
 )
 
 SET(mgescript_headers
@@ -34,6 +28,7 @@ SET(mgescript_headers
     script_fwd.hpp
     script_context.hpp
     script_engine.hpp
+    script_binder.hpp
 
     module.hpp
     type.hpp
@@ -45,7 +40,6 @@ SET(mgescript_headers
     module_details.hpp
     type_details.hpp
     function_details.hpp
-
 )
 
 
@@ -56,5 +50,26 @@ MGE_LIBRARY(
     ${mgescript_sources}
     ${mgescript_headers}
 )
-TARGET_LINK_LIBRARIES(mgescript mgecore mgegraphics mgeapplication boost-all)
+TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
+
+SET(mge_module_script_core_SOURCES
+    bind_core.cpp)
+ADD_LIBRARY(mge_module_script_core MODULE ${mge_module_script_core_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_core mgescript mgecore)
+
+SET(mge_module_script_application_SOURCES
+    bind_application.cpp)
+ADD_LIBRARY(mge_module_script_application MODULE ${mge_module_script_application_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_application mgescript mgeapplication)
+
+SET(mge_module_script_graphics_SOURCES
+    bind_graphics.cpp)
+ADD_LIBRARY(mge_module_script_graphics MODULE ${mge_module_script_graphics_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_graphics mgescript mgegraphics)
+
+SET(mge_module_script_math_SOURCES
+    bind_math.cpp)
+ADD_LIBRARY(mge_module_script_math MODULE ${mge_module_script_math_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_math mgescript mgemath)
+
 ADD_SUBDIRECTORY(test)
