@@ -10,6 +10,7 @@ namespace mge {
 
     MGE_DECLARE_REF(script_engine);
     MGE_DECLARE_REF(script_context);
+    MGE_DECLARE_REF(script_binder);
 
     namespace script {
         class visitor;

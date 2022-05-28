@@ -1,6 +1,7 @@
 #pragma once
 #include "mge/core/component.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/script_fwd.hpp"
 
 namespace mge {
 
