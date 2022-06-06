@@ -40,7 +40,6 @@ def install_vcpkg():
         print("    %s" % p, flush=True)
     subprocess.run(install_command, cwd="vcpkg", shell=True)
     print("Removing temporary vcpkg files", flush=True)
-    shutil.rmtree("vcpkg/buildtrees")
     shutil.rmtree("vcpkg/downloads")
     print("Writing version stamp", flush=True)
     version_file = open("vcpkg/build-version", "w")
