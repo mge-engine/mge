@@ -39,7 +39,7 @@ before_build:
 build_script:
   - cmd: mkdir build
   - cmd: cd build
-  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: SET CC=cl.exe
   - cmd: SET CXX=cl.exe
   - cmd: SET
