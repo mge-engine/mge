@@ -17,7 +17,7 @@ vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
     "boost-spirit", "boost-locale", "boost-preprocessor",
-    "vulkan", "glm", "lua", "python3" "linenoise-ng"
+    "vulkan", "glm", "lua", "python3", "linenoise-ng"
 ]
 
 
