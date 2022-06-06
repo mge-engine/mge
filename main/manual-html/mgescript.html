@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Input State" href="input/state.html" /><link rel="prev" title="Command Lists" href="graphics/command_list.html" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Scripting Engine" href="script/engine.html" /><link rel="prev" title="Asset Type" href="asset/asset_type.html" />
 
     <meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
-        <title>Input Library - MGE 0.1 documentation</title>
+        <title>Scripting Library - MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
@@ -193,7 +193,7 @@
 <li class="toctree-l2"><a class="reference internal" href="graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Input Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="input/state.html">Input State</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input/handler.html">Input Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="input/keyboard.html">Keyboard Handling</a></li>
@@ -209,7 +209,7 @@
 <li class="toctree-l2"><a class="reference internal" href="asset/asset_type.html">Asset Type</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="mgescript.html">Scripting Library</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">Scripting Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="script/engine.html">Scripting Engine</a></li>
 <li class="toctree-l2"><a class="reference internal" href="script/reflection.html">Reflection Types</a></li>
 </ul>
@@ -244,15 +244,14 @@
           </label>
         </div>
         <article role="main">
-          <section id="input-library">
-<span id="mge-input"></span><h1>Input Library<a class="headerlink" href="#input-library" title="Permalink to this headline">¶</a></h1>
-<p>The input library handles managing the input state and input devices.</p>
+          <section id="scripting-library">
+<span id="mge-script"></span><h1>Scripting Library<a class="headerlink" href="#scripting-library" title="Permalink to this headline">¶</a></h1>
+<p>The scripting library contains all mechanics to embed other programming
+languages into MGE, or embed MGE into other programming environments.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="input/state.html">Input State</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input/handler.html">Input Handler</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input/keyboard.html">Keyboard Handling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input/mouse.html">Mouse Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="script/engine.html">Scripting Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="script/reflection.html">Reflection Types</a></li>
 </ul>
 </div>
 </section>
@@ -262,23 +261,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="input/state.html">
+          <a class="next-page" href="script/engine.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Input State</div>
+                <div class="title">Scripting Engine</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="graphics/command_list.html">
+          <a class="prev-page" href="asset/asset_type.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Command Lists</div>
+                <div class="title">Asset Type</div>
                 
               </div>
             </a>
@@ -290,7 +289,7 @@
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
-            <a class="muted-link" href="_sources/mgeinput.rst.txt"
+            <a class="muted-link" href="_sources/mgescript.rst.txt"
                rel="nofollow">
               Show Source
             </a>

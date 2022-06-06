@@ -207,6 +207,11 @@
 <li class="toctree-l2"><a class="reference internal" href="asset/asset_type.html">Asset Type</a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="mgescript.html">Scripting Library</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="script/engine.html">Scripting Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="script/reflection.html">Reflection Types</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -332,6 +337,8 @@
 </li>
         <li><a href="graphics/buffers.html#_CPPv4N3mge11buffer_type6VERTEXE">mge::buffer_type::VERTEX (C++ enumerator)</a>
 </li>
+        <li><a href="core/utilities.html#_CPPv4N3mge13call_debuggerEv">mge::call_debugger (C++ function)</a>
+</li>
         <li><a href="core/utilities.html#_CPPv4IDpEN3mge12callback_mapE">mge::callback_map (C++ class)</a>
 </li>
         <li><a href="core/utilities.html#_CPPv4N3mge12callback_map5eraseE8key_type">mge::callback_map::erase (C++ function)</a>
@@ -355,6 +362,8 @@
         <li><a href="core/component.html#_CPPv4N3mge9component6createENSt11string_viewE">mge::component::create (C++ function)</a>
 </li>
         <li><a href="core/component.html#_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE">mge::component::implementations (C++ function)</a>
+</li>
+        <li><a href="core/component.html#_CPPv4NK3mge9component4selfEv">mge::component::self (C++ function)</a>
 </li>
         <li><a href="core/component.html#_CPPv4N3mge9componentD0Ev">mge::component::~component (C++ function)</a>
 </li>
@@ -738,8 +747,6 @@
 </li>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options">mge::render_system::create_window (C++ function)</a>, <a href="graphics/system.html#_CPPv4N3mge13render_system13create_windowEv">[1]</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="graphics/system.html#_CPPv4N3mge13render_system8monitorsEv">mge::render_system::monitors (C++ function)</a>
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge9rgb_colorE">mge::rgb_color (C++ class)</a>
@@ -748,6 +755,8 @@
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge9rgb_color1gE">mge::rgb_color::g (C++ member)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="graphics/datastructures.html#_CPPv4NK3mge9rgb_color8get_blueEv">mge::rgb_color::get_blue (C++ function)</a>
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4NK3mge9rgb_color9get_greenEv">mge::rgb_color::get_green (C++ function)</a>
@@ -789,6 +798,24 @@
         <li><a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color1rE">mge::rgba_color::r (C++ member)</a>
 </li>
         <li><a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEKfKf">mge::rgba_color::rgba_color (C++ function)</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEPKcf">[1]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEPKf">[2]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color">[3]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEffff">[4]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEj">[5]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEv">[6]</a>
+</li>
+        <li><a href="script/reflection.html#_CPPv4N3mge6script6moduleE">mge::script::module (C++ class)</a>
+</li>
+        <li><a href="script/reflection.html#_CPPv4N3mge6script6module6moduleERK18module_details_ref">mge::script::module::module (C++ function)</a>, <a href="script/reflection.html#_CPPv4N3mge6script6module6moduleERK6module">[1]</a>, <a href="script/reflection.html#_CPPv4N3mge6script6module6moduleERKNSt6stringE">[2]</a>, <a href="script/reflection.html#_CPPv4N3mge6script6module6moduleERR18module_details_ref">[3]</a>, <a href="script/reflection.html#_CPPv4N3mge6script6module6moduleERR6module">[4]</a>, <a href="script/reflection.html#_CPPv4N3mge6script6module6moduleEv">[5]</a>
+</li>
+        <li><a href="script/reflection.html#_CPPv4I0DpEN3mge6script6moduleclER6moduleRK1TDpRK4Args">mge::script::module::operator() (C++ function)</a>
+</li>
+        <li><a href="script/reflection.html#_CPPv4N3mge6script6moduleaSERK6module">mge::script::module::operator= (C++ function)</a>, <a href="script/reflection.html#_CPPv4N3mge6script6moduleaSERR6module">[1]</a>
+</li>
+        <li><a href="script/reflection.html#_CPPv4N3mge6script6moduleD0Ev">mge::script::module::~module (C++ function)</a>
+</li>
+        <li><a href="script/reflection.html#_CPPv4I00EN3mge6script4typeE">mge::script::type (C++ class)</a>
+</li>
+        <li><a href="script/engine.html#_CPPv4N3mge13script_engineE">mge::script_engine (C++ class)</a>
+</li>
+        <li><a href="script/engine.html#_CPPv4N3mge13script_engine14create_contextEv">mge::script_engine::create_context (C++ function)</a>
+</li>
+        <li><a href="script/engine.html#_CPPv4N3mge13script_engineD0Ev">mge::script_engine::~script_engine (C++ function)</a>
 </li>
         <li><a href="core/version.html#_CPPv4N3mge16semantic_versionE">mge::semantic_version (C++ class)</a>
 </li>
@@ -1024,7 +1051,7 @@
 </li>
         <li><a href="core/tracing.html#_CPPv4N3mge5traceE">mge::trace (C++ class)</a>
 </li>
-        <li><a href="core/tracing.html#_CPPv4I0EN3mge5tracelsER5traceRK1T">mge::trace::operator&lt;&lt; (C++ function)</a>
+        <li><a href="core/tracing.html#_CPPv4I0EN3mge5tracelsER5traceRK1T">mge::trace::operator&lt;&lt; (C++ function)</a>, <a href="core/tracing.html#_CPPv4N3mge5tracelsERKNSt7wstringE">[1]</a>
 </li>
         <li><a href="core/tracing.html#_CPPv4N3mge5trace5traceER11trace_topicK11trace_level">mge::trace::trace (C++ function)</a>
 </li>

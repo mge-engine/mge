@@ -209,6 +209,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../asset/asset_type.html">Asset Type</a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgescript.html">Scripting Library</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../script/engine.html">Scripting Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../script/reflection.html">Reflection Types</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -680,7 +685,7 @@ assignment operatpr deleted.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11noncopyableE">
 <span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">noncopyable</span></span></span><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Object that can’t be copied. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; std::streamsize &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; streamsize_type &gt;</span></a>, mge::asset_handle, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, mge::property_object, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, mge::std_istream, mge::std_ostream, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; std::streamsize &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; streamsize_type &gt;</span></a>, mge::asset_access, mge::asset_handle, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, mge::property_object, mge::script_context, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, mge::std_istream, mge::std_ostream, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
 </dd></dl>
 </section>
 </section>
@@ -918,7 +923,7 @@ is usually not detected but produces a weird value. A checked cast provides
 check logic that prevents overflows and unexpected truncation of values.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I00EN3mge12checked_castE1T1S">
-<span id="_CPPv3I00EN3mge12checked_castE1S"></span><span id="_CPPv2I00EN3mge12checked_castE1S"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a30edc8899526be92243c6ebbf2078a80"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">checked_cast</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::S"><span class="n"><span class="pre">S</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I00EN3mge12checked_castE1S"></span><span id="_CPPv2I00EN3mge12checked_castE1S"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a005e8f0fdd3a0cf840b6a7fd1e89dce5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">checked_cast</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::S"><span class="n"><span class="pre">S</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>Casts a value to a target type, and ensures it does not overflow. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -935,6 +940,16 @@ check logic that prevents overflows and unexpected truncation of values.</p>
 </dd>
 </dl>
 </dd></dl>
+</section>
+<section id="debugger-breakpoint">
+<h3>Debugger Breakpoint<a class="headerlink" href="#debugger-breakpoint" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes it may be useful to programmatically raise a debug breakpoint,
+i.e. stop execution when inside a debuggger. This is abstracted by
+<a class="reference internal" href="#_CPPv4N3mge13call_debuggerEv" title="mge::call_debugger"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::call_debugger()</span></code></a></p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13call_debuggerEv">
+<span id="_CPPv3N3mge13call_debuggerEv"></span><span id="_CPPv2N3mge13call_debuggerEv"></span><span id="mge::call_debugger"></span><span class="target" id="namespacemge_1a10d3c3aa3e5816aa4584b164ea1a9cac"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">call_debugger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13call_debuggerEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd></dd></dl>
 </section>
 </section>
 </section>
@@ -1015,6 +1030,7 @@ check logic that prevents overflows and unexpected truncation of values.</p>
 <li><a class="reference internal" href="#copy-of-structures">Copy of Structures</a></li>
 <li><a class="reference internal" href="#clear-memory-of-structures">Clear Memory of Structures</a></li>
 <li><a class="reference internal" href="#checked-type-cast">Checked Type Cast</a></li>
+<li><a class="reference internal" href="#debugger-breakpoint">Debugger Breakpoint</a></li>
 </ul>
 </li>
 </ul>

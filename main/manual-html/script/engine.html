@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Application Library" href="../mgeapplication.html" /><link rel="prev" title="Keyboard Handling" href="keyboard.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reflection Types" href="reflection.html" /><link rel="prev" title="Scripting Library" href="../mgescript.html" />
 
     <meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
-        <title>Mouse Handling - MGE 0.1 documentation</title>
+        <title>Scripting Engine - MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
@@ -193,11 +193,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="state.html">Input State</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler.html">Input Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="keyboard.html">Keyboard Handling</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Mouse Handling</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -209,9 +209,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../asset/asset_type.html">Asset Type</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgescript.html">Scripting Library</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../script/engine.html">Scripting Engine</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../script/reflection.html">Reflection Types</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgescript.html">Scripting Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Scripting Engine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reflection.html">Reflection Types</a></li>
 </ul>
 </li>
 </ul>
@@ -244,33 +244,33 @@
           </label>
         </div>
         <article role="main">
-          <section id="mouse-handling">
-<h1>Mouse Handling<a class="headerlink" href="#mouse-handling" title="Permalink to this headline">¶</a></h1>
-<p>Constants for mouse actions are defined in the <a class="reference internal" href="#_CPPv4N3mge12mouse_actionE" title="mge::mouse_action"><code class="xref any cpp cpp-enum docutils literal notranslate"><span class="pre">mge::mouse_action</span></code></a> enumeration.</p>
-<dl class="cpp enum-class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12mouse_actionE">
-<span id="_CPPv3N3mge12mouse_actionE"></span><span id="_CPPv2N3mge12mouse_actionE"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">mouse_action</span></span></span><a class="headerlink" href="#_CPPv4N3mge12mouse_actionE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Codes for mouse actions.</p>
-<dl class="cpp enumerator">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12mouse_action5PRESSE">
-<span id="_CPPv3N3mge12mouse_action5PRESSE"></span><span id="_CPPv2N3mge12mouse_action5PRESSE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRESS</span></span></span><a class="headerlink" href="#_CPPv4N3mge12mouse_action5PRESSE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Button press.</p>
+          <section id="scripting-engine">
+<h1>Scripting Engine<a class="headerlink" href="#scripting-engine" title="Permalink to this headline">¶</a></h1>
+<p>The scripting engine wraps one specific integrated programming language and
+its environment.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13script_engineE">
+<span id="_CPPv3N3mge13script_engineE"></span><span id="_CPPv2N3mge13script_engineE"></span><span id="mge::script_engine"></span><span class="target" id="classmge_1_1script__engine"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">script_engine</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13script_engineE" title="mge::script_engine"><span class="n"><span class="pre">script_engine</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13script_engineE" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>A script engine. </p>
+<p>A script engine wraps up a language or system that is integrated. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13script_engine14create_contextEv">
+<span id="_CPPv3N3mge13script_engine14create_contextEv"></span><span id="_CPPv2N3mge13script_engine14create_contextEv"></span><span id="mge::script_engine::create_context"></span><span class="target" id="classmge_1_1script__engine_1a804e234acff24ca9991087a9389647b2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">script_context_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_context</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13script_engine14create_contextEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create a new context for script execution. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>created context </p>
+</dd>
+</dl>
 </dd></dl>
-<dl class="cpp enumerator">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12mouse_action7RELEASEE">
-<span id="_CPPv3N3mge12mouse_action7RELEASEE"></span><span id="_CPPv2N3mge12mouse_action7RELEASEE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RELEASE</span></span></span><a class="headerlink" href="#_CPPv4N3mge12mouse_action7RELEASEE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Button release.</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13script_engineD0Ev">
+<span id="_CPPv3N3mge13script_engineD0Ev"></span><span id="_CPPv2N3mge13script_engineD0Ev"></span><span id="mge::script_engine::~script_engine"></span><span class="target" id="classmge_1_1script__engine_1a84ea556d3d4b91313c71068721a8756a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~script_engine</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13script_engineD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Destructor. </p>
 </dd></dl>
-<dl class="cpp enumerator">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12mouse_action12DOUBLE_CLICKE">
-<span id="_CPPv3N3mge12mouse_action12DOUBLE_CLICKE"></span><span id="_CPPv2N3mge12mouse_action12DOUBLE_CLICKE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_CLICK</span></span></span><a class="headerlink" href="#_CPPv4N3mge12mouse_action12DOUBLE_CLICKE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Double click, as reported by operating system.</p>
-</dd></dl>
-<dl class="cpp enumerator">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE">
-<span id="_CPPv3N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE"></span><span id="_CPPv2N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MOUSE_ACTION_DOUBLE_CLICK</span></span></span><a class="headerlink" href="#_CPPv4N3mge12mouse_action25MOUSE_ACTION_DOUBLE_CLICKE" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Alias for <a class="reference internal" href="#_CPPv4N3mge12mouse_action12DOUBLE_CLICKE" title="mge::mouse_action::DOUBLE_CLICK"><code class="xref any cpp cpp-enumerator docutils literal notranslate"><span class="pre">DOUBLE_CLICK</span></code></a>, which may be defined as preprocessor symbol.</p>
-</dd></dl>
+</div>
 </dd></dl>
 </section>
 
@@ -279,23 +279,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="../mgeapplication.html">
+          <a class="next-page" href="reflection.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Application Library</div>
+                <div class="title">Reflection Types</div>
               </div>
               <svg><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="keyboard.html">
+          <a class="prev-page" href="../mgescript.html">
               <svg><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Keyboard Handling</div>
+                <div class="title">Scripting Library</div>
                 
               </div>
             </a>
@@ -307,7 +307,7 @@
               and
               <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
               <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
-            <a class="muted-link" href="../_sources/input/mouse.rst.txt"
+            <a class="muted-link" href="../_sources/script/engine.rst.txt"
                rel="nofollow">
               Show Source
             </a>
