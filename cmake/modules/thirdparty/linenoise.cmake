@@ -2,8 +2,11 @@
 # Copyright (c) 2021 by Alexander Schroeder
 # All rights reserved.
 FIND_PATH(linenoise_INCLUDE_DIR NAMES linenoise.h)
-
 FILE(GLOB_RECURSE __linenoise_cpp_location "${VCPKG_INSTALLED_DIR}/../buildtrees/**/linenoise.cpp")
+MESSAGE("XXX ${VCPKG_INSTALLED_DIR}")
+MESSAGE("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+PRINT_VARIABLES()
+MESSAGE("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 GET_FILENAME_COMPONENT(__linenoise_source_dir ${__linenoise_cpp_location} DIRECTORY)
 SET(linenoise_SOURCES
     ${__linenoise_source_dir}/linenoise.cpp
