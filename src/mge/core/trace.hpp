@@ -82,7 +82,7 @@ namespace mge {
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
 #define MGE_TRACE(TOPIC, LEVEL)                                                \
-    trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
+    ::mge::trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
 
 /**
  * @def MGE_DEBUG_TRACE

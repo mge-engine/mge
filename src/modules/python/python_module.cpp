@@ -22,8 +22,7 @@ namespace mge::python {
         if (m_module.is_root()) {
             MGE_DEBUG_TRACE(PYTHON) << "Creating __main__ module";
             m_py_module = PyImport_AddModule("__main__");
-            m_py_module_dict = context.main_dict();
-            Py_INCREF(m_py_module_dict);
+            m_py_module_dict = PyModule_GetDict(m_py_module);
         } else {
             MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
             m_py_module = PyImport_AddModule(m.name().c_str());
@@ -37,6 +36,7 @@ namespace mge::python {
                                  const mge::script::module& m)
         : m_context(context)
         , m_py_module(nullptr)
+        , m_py_module_dict(nullptr)
         , m_module(m)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Creating '" << m.name() << "' module";
@@ -46,6 +46,12 @@ namespace mge::python {
                              m.name().c_str(),
                              m_py_module);
         error::check_error();
+    }
+
+    void python_module::interpreter_lost()
+    {
+        m_py_module_dict = nullptr;
+        m_py_module = nullptr;
     }
 
     python_module::~python_module()

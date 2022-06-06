@@ -193,7 +193,9 @@ namespace mge {
         static inline std::shared_ptr<Class>
         create(std::string_view implementation)
         {
-            return component_base::create<Class>(implementation);
+            auto instance = component_base::create<Class>(implementation);
+            instance->set_self(instance);
+            return instance;
         }
 
         /**
@@ -206,6 +208,20 @@ namespace mge {
         {
             component_base::implementations<Class>(callback);
         }
+
+        /**
+         * @brief Get reference of this instance.
+         * @return weak reference to this instance
+         */
+        const std::weak_ptr<Class>& self() const noexcept { return m_self; }
+
+    private:
+        void set_self(const std::shared_ptr<Class>& instance)
+        {
+            m_self = instance;
+        }
+
+        std::weak_ptr<Class> m_self;
     };
 
 /**

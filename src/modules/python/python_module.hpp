@@ -31,6 +31,8 @@ namespace mge::python {
 
         void add_type(const python_type_ref& type);
 
+        void interpreter_lost();
+
     private:
         python_context&              m_context;
         PyObject*                    m_py_module;

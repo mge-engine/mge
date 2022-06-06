@@ -141,6 +141,11 @@ namespace mge::script {
 
     size_t type_details::size() const { return m_size; }
 
+    size_t type_details::shared_ptr_size() const
+    {
+        return sizeof(std::shared_ptr<int>);
+    }
+
     const type_details_ref& type_details::enclosing_type() const
     {
         return m_enclosing_type;

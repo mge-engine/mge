@@ -10,7 +10,10 @@ FUNCTION(COPY_FILE SOURCE TARGET)
     ADD_CUSTOM_TARGET("${__target_name}"
                       ALL
                       DEPENDS ${TARGET})
+    CMAKE_PATH(GET TARGET PARENT_PATH _target_directory)
     ADD_CUSTOM_COMMAND(OUTPUT ${TARGET}
                        COMMAND ${CMAKE_COMMAND} -E copy ${SOURCE} ${TARGET}
-                       DEPENDS ${SOURCE})
+                       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                       DEPENDS ${SOURCE}
+                               ${__target_directory})
 ENDFUNCTION()
