@@ -194,7 +194,9 @@ namespace mge {
         create(std::string_view implementation)
         {
             auto instance = component_base::create<Class>(implementation);
-            instance->set_self(instance);
+            if (instance) {
+                instance->set_self(instance);
+            }
             return instance;
         }
 
