@@ -52,6 +52,9 @@ namespace mge::python {
     {
         m_py_module_dict = nullptr;
         m_py_module = nullptr;
+        for (const auto& t : m_types) {
+            t->interpreter_lost();
+        }
     }
 
     python_module::~python_module()
