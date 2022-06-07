@@ -27,11 +27,6 @@ namespace mge::dx12 {
         create_device();
         enable_debug_messages();
         create_command_queue();
-        auto swap_chain =
-            std::make_shared<mge::dx12::swap_chain>(render_system_, *this);
-        m_swap_chain = swap_chain;
-        create_descriptor_heap();
-        update_render_target_views(swap_chain);
     }
 
     void render_context::create_command_queue()
@@ -178,7 +173,14 @@ namespace mge::dx12 {
         }
     }
 
-    void render_context::initialize() {}
+    void render_context::initialize()
+    {
+        auto swap_chain =
+            std::make_shared<mge::dx12::swap_chain>(m_render_system, *this);
+        m_swap_chain = swap_chain;
+        create_descriptor_heap();
+        update_render_target_views(swap_chain);
+    }
 
     render_context::~render_context() {}
 

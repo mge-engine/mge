@@ -5,7 +5,8 @@
 SET(DX12_TEST_SOURCES
     dx12_test.cpp
     test_render_system.cpp
-    test_index_buffer.cpp)
+    # test_index_buffer.cpp
+    )
 
 MGE_TEST(
     TARGET      test_dx12
