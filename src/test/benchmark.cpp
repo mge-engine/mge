@@ -22,18 +22,14 @@ namespace mge {
 
             measure_point(const measure_point&) = default;
 
-            measure_point& operator=(const measure_point& m)
-            {
-                iterations = m.iterations;
-                duration = m.duration;
-                return *this;
-            }
+            measure_point& operator=(const measure_point& m) = default;
 
             measure_point(uint64_t                 iterations_,
                           std::chrono::nanoseconds duration_)
                 : iterations(iterations_)
                 , duration(duration_)
             {}
+
             uint64_t                 iterations;
             std::chrono::nanoseconds duration;
         };
@@ -249,7 +245,10 @@ namespace mge {
 
             uint64_t next_iterations()
             {
-                auto result = iterations + distributor(rng);
+                int64_t result = iterations + distributor(rng);
+                if (result <= 0) {
+                    result = 1;
+                }
                 return result;
             }
 
