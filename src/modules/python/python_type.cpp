@@ -111,11 +111,14 @@ namespace mge::python {
 
     void python_type::materialize_class_type() const
     {
-        if (is_embeddable()) {
+        /*
+        if(is_embeddable()) {
             materialize_embedded_class_type();
         } else {
             materialize_complex_class_type();
         }
+        */
+        materialize_complex_class_type();
     }
 
     struct only_head
