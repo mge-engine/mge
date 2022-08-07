@@ -114,6 +114,46 @@ namespace mge::python {
 
         void finish(const mge::script::type_details_ref& m) override
         {
+            m_current_type.reset();
+        }
+
+    private:
+        python_binder&                m_binder;
+        std::stack<python_module_ref> m_py_modules;
+        python_type_ref               m_current_type;
+    };
+
+    class type_finalizer : public mge::script::visitor
+    {
+    public:
+        type_finalizer(python_binder& binder)
+            : m_binder(binder)
+        {}
+
+        void start(const mge::script::module_details_ref& m) override
+        {
+            mge::script::module mod(m);
+
+            auto pymod = m_binder.context().get_module(mod);
+            m_py_modules.push(pymod);
+        }
+
+        void finish(const mge::script::module_details_ref& m) override
+        {
+            m_py_modules.pop();
+        }
+
+        void start(const mge::script::type_details_ref& t) override
+        {
+            if (!t->traits().is_pod()) {
+                m_current_type = m_binder.get_type(t->type_index());
+            } else {
+                m_current_type.reset();
+            }
+        }
+
+        void finish(const mge::script::type_details_ref& m) override
+        {
             if (m_current_type) {
                 m_py_modules.top()->add_type(m_current_type);
                 m_current_type.reset();
@@ -142,6 +182,9 @@ namespace mge::python {
             << "Creating fields of types of module " << m.name();
         type_fields_creator tc(*this);
         m.apply(tc);
+        MGE_DEBUG_TRACE(PYTHON) << "Finalizing types of module " << m.name();
+        type_finalizer tf(*this);
+        m.apply(tf);
     }
 
 } // namespace mge::python
