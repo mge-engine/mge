@@ -36,6 +36,10 @@ namespace mge::python {
         ~python_type();
 
         void add_enum_value(const std::string& name, int64_t value);
+        void add_field(const std::string&                   name,
+                       const mge::script::type_details_ref& type,
+                       const mge::script::invoke_function&  setter,
+                       const mge::script::invoke_function&  getter);
         const std::string& local_name() const { return m_type->name(); }
         bool               is_embeddable() const;
         PyObject*          py_type() const;

@@ -45,6 +45,12 @@ namespace mge::python {
             python_object(PyLong_FromLongLong(enum_value));
     }
 
+    void python_type::add_field(const std::string&                   name,
+                                const mge::script::type_details_ref& type,
+                                const mge::script::invoke_function&  setter,
+                                const mge::script::invoke_function&  getter)
+    {}
+
     void python_type::assert_create_data() const
     {
         if (!m_create_data) {

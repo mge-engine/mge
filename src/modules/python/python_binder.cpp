@@ -112,6 +112,16 @@ namespace mge::python {
             }
         }
 
+        void field(const std::string&                   name,
+                   const mge::script::type_details_ref& type,
+                   const mge::script::invoke_function&  setter,
+                   const mge::script::invoke_function&  getter) override
+        {
+            if (m_current_type) {
+                m_current_type->add_field(name, type, setter, getter);
+            }
+        }
+
         void finish(const mge::script::type_details_ref& m) override
         {
             m_current_type.reset();
