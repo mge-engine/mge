@@ -25,6 +25,10 @@ namespace mge::script {
         virtual void start(const type_details_ref& t);
         virtual void finish(const type_details_ref& t);
         virtual void enum_value(const std::string& name, int64_t value);
+        virtual void field(const std::string&      name,
+                           const type_details_ref& type,
+                           const invoke_function&  setter,
+                           const invoke_function&  getter);
     };
 
 } // namespace mge::script

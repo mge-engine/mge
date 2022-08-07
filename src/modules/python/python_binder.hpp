@@ -4,6 +4,8 @@
 #include "mge/script/module.hpp"
 #include "mge/script/visitor.hpp"
 
+#include "python_type.hpp"
+
 namespace mge::python {
     class python_context;
 
@@ -18,8 +20,23 @@ namespace mge::python {
         python_context&       context() { return m_context; }
         const python_context& context() const { return m_context; }
 
+        void add_type(std::type_index i, const python_type_ref& t)
+        {
+            m_created_types.emplace(i, t);
+        }
+
+        const python_type_ref get_type(std::type_index i) const
+        {
+            auto it = m_created_types.find(i);
+            if (it == m_created_types.end()) {
+                MGE_THROW(mge::no_such_element) << "No type for " << i.name();
+            }
+            return it->second;
+        }
+
     private:
-        python_context& m_context;
+        python_context&                            m_context;
+        std::map<std::type_index, python_type_ref> m_created_types;
     };
 
 } // namespace mge::python

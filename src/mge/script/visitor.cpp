@@ -13,4 +13,11 @@ namespace mge::script {
     void visitor::finish(const type_details_ref&) {}
 
     void visitor::enum_value(const std::string& name, int64_t value) {}
+
+    void visitor::field(const std::string&      name,
+                        const type_details_ref& type,
+                        const invoke_function&  setter,
+                        const invoke_function&  getter)
+    {}
+
 } // namespace mge::script

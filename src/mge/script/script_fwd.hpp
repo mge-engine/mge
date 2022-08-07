@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/memory.hpp"
+#include <functional>
 #include <typeindex>
 #include <vector>
 
@@ -24,6 +25,13 @@ namespace mge {
         MGE_DECLARE_REF(function_details);
         class type_base;
         class function_base;
+        class call_context;
+
+        /**
+         * Invocation function that uses a call context for
+         * parameter retrieval and result storage.
+         */
+        using invoke_function = std::function<void(call_context&)>;
     } // namespace script
 
 } // namespace mge

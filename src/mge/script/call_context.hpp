@@ -60,9 +60,4 @@ namespace mge::script {
         virtual void store_string_result(const std::string& result) = 0;
     };
 
-    /**
-     * Invocation function that uses a call context for
-     * parameter retrieval and result storage.
-     */
-    using invoke_function = std::function<void(call_context&)>;
 } // namespace mge::script
