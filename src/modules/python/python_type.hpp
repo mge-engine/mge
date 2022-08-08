@@ -53,9 +53,21 @@ namespace mge::python {
         void materialize_embedded_class_type() const;
         void materialize_complex_class_type() const;
 
+        static PyObject* getattro_complex_type(PyObject* self, PyObject* attr);
+        static int
+        setattro_complex_type(PyObject* self, PyObject* attr, PyObject* value);
+
+        struct field
+        {
+            mge::script::type_details_ref type;
+            mge::script::invoke_function  setter;
+            mge::script::invoke_function  getter;
+        };
+
         mutable std::unique_ptr<create_data> m_create_data;
         mutable PyObject*                    m_python_type;
         python_context&                      m_context;
         mge::script::type_details_ref        m_type;
+        std::map<std::string, field>         m_fields;
     };
 } // namespace mge::python

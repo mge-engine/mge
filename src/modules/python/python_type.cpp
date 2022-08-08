@@ -49,7 +49,9 @@ namespace mge::python {
                                 const mge::script::type_details_ref& type,
                                 const mge::script::invoke_function&  setter,
                                 const mge::script::invoke_function&  getter)
-    {}
+    {
+        m_fields.emplace(name, field{type, setter, getter});
+    }
 
     void python_type::assert_create_data() const
     {
@@ -64,6 +66,18 @@ namespace mge::python {
             materialize_type();
         }
         return m_python_type;
+    }
+
+    PyObject* python_type::getattro_complex_type(PyObject* self, PyObject* attr)
+    {
+        return PyObject_GenericGetAttr(self, attr);
+    }
+
+    int python_type::setattro_complex_type(PyObject* self,
+                                           PyObject* attr,
+                                           PyObject* value)
+    {
+        return PyObject_GenericSetAttr(self, attr, value);
     }
 
     void python_type::materialize_type() const
@@ -145,7 +159,20 @@ namespace mge::python {
                 << "Module '" << m_type->module().lock()->name()
                 << "' not found";
         }
+        if (!m_fields.empty()) {
+            PyType_Slot get_attro_slot = {Py_tp_getattro,
+                                          &python_type::getattro_complex_type};
+            m_create_data->slots.emplace_back(get_attro_slot);
+            PyType_Slot set_attro_slot = {Py_tp_setattro,
+                                          &python_type::setattro_complex_type};
+            m_create_data->slots.emplace_back(set_attro_slot);
+        }
 
+        if (!m_create_data->slots.empty()) {
+            PyType_Slot sentinel_slot{0, nullptr};
+            m_create_data->slots.emplace_back(sentinel_slot);
+            m_create_data->spec.slots = m_create_data->slots.data();
+        }
         m_create_data->spec.basicsize = static_cast<int>(
             aligned_PyObject_HEAD_size() + m_type->shared_ptr_size());
 
