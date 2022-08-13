@@ -54,9 +54,9 @@ namespace mge::python {
         void materialize_embedded_class_type() const;
         void materialize_complex_class_type() const;
 
-        static PyObject* getattro_complex_type(PyObject* self, PyObject* attr);
+        static PyObject* get_field_value(PyObject* self, void* field);
         static int
-        setattro_complex_type(PyObject* self, PyObject* attr, PyObject* value);
+        set_field_value(PyObject* self, PyObject* value, void* field);
 
         struct field
         {

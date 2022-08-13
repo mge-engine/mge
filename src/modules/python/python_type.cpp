@@ -68,16 +68,15 @@ namespace mge::python {
         return m_python_type;
     }
 
-    PyObject* python_type::getattro_complex_type(PyObject* self, PyObject* attr)
+    PyObject* python_type::get_field_value(PyObject* self, void* field)
     {
-        return PyObject_GenericGetAttr(self, attr);
+        return nullptr;
     }
 
-    int python_type::setattro_complex_type(PyObject* self,
-                                           PyObject* attr,
-                                           PyObject* value)
+    int
+    python_type::set_field_value(PyObject* self, PyObject* value, void* field)
     {
-        return PyObject_GenericSetAttr(self, attr, value);
+        return 0;
     }
 
     void python_type::materialize_type() const
@@ -159,13 +158,23 @@ namespace mge::python {
                 << "Module '" << m_type->module().lock()->name()
                 << "' not found";
         }
-        if (!m_fields.empty()) {
-            PyType_Slot get_attro_slot = {Py_tp_getattro,
-                                          &python_type::getattro_complex_type};
-            m_create_data->slots.emplace_back(get_attro_slot);
-            PyType_Slot set_attro_slot = {Py_tp_setattro,
-                                          &python_type::setattro_complex_type};
-            m_create_data->slots.emplace_back(set_attro_slot);
+        for (const auto& f : m_fields) {
+            PyGetSetDef getset{f.name.c_str(),
+                               &get_field_value, /* getter */
+                               f.setter
+                                   ? &set_field_value
+                                   : nullptr, /* setter, null for readonly */
+                               f.name.c_str(),
+                               const_cast<field*>(&f)};
+
+            m_create_data->getset_defs.emplace_back(getset);
+        }
+        if (!m_create_data->getset_defs.empty()) {
+            PyGetSetDef sentinel{nullptr, nullptr, nullptr, nullptr, nullptr};
+            m_create_data->getset_defs.emplace_back(sentinel);
+            PyType_Slot getset_slot = {Py_tp_getset,
+                                       m_create_data->getset_defs.data()};
+            m_create_data->slots.emplace_back(getset_slot);
         }
 
         if (!m_create_data->slots.empty()) {
