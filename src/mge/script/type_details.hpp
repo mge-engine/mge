@@ -100,13 +100,17 @@ namespace mge::script {
             constructor& operator=(const constructor&) = default;
             constructor& operator=(constructor&&) = default;
 
-            inline constructor(const signature& s, const invoke_function& ctor)
+            inline constructor(const signature&       s,
+                               const invoke_function& new_at_,
+                               const invoke_function& make_shared_)
                 : signature(s)
-                , function(ctor)
+                , new_at(new_at_)
+                , make_shared(make_shared_)
             {}
 
             mge::script::signature signature;
-            invoke_function        function;
+            invoke_function        new_at;
+            invoke_function        make_shared;
         };
 
         struct field
@@ -192,7 +196,9 @@ namespace mge::script {
 
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);
-        void add_constructor(const signature& s, const invoke_function& ctor);
+        void add_constructor(const signature&       s,
+                             const invoke_function& new_at,
+                             const invoke_function& make_shared);
         void add_field(const std::string&      name,
                        const type_details_ref& t,
                        const invoke_function&  getter);

@@ -51,7 +51,6 @@ namespace mge::python {
         void materialize_type() const;
         void materialize_enum_type() const;
         void materialize_class_type() const;
-        void materialize_embedded_class_type() const;
         void materialize_complex_class_type() const;
 
         static PyObject* get_field_value(PyObject* self, void* field);

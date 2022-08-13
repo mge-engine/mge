@@ -250,9 +250,10 @@ namespace mge::script {
     }
 
     void class_type_details::add_constructor(const signature&       s,
-                                             const invoke_function& ctor)
+                                             const invoke_function& ctor,
+                                             const invoke_function& make_shared)
     {
-        m_constructors.emplace_back(s, ctor);
+        m_constructors.emplace_back(s, ctor, make_shared);
     }
 
     void class_type_details::add_field(const std::string&      name,

@@ -31,6 +31,14 @@ namespace mge::script {
          */
         virtual void* this_ptr() = 0;
 
+        /**
+         * @brief Retrieve shared pointer address for current context.
+         *
+         * @return address of shared pointer, which itself points to this
+         * pointer if initialized
+         */
+        virtual void* shared_ptr_address() = 0;
+
         virtual bool        bool_parameter(size_t position) = 0;
         virtual int8_t      int8_t_parameter(size_t position) = 0;
         virtual uint8_t     uint8_t_parameter(size_t position) = 0;

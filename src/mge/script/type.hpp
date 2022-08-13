@@ -59,7 +59,8 @@ namespace mge::script {
         void set_base(const type_details_ref& base_details);
         void set_destructor(const invoke_function& dtor);
         void add_constructor(const signature&       signature,
-                             const invoke_function& ctor);
+                             const invoke_function& ctor,
+                             const invoke_function& make_shared);
 
         void add_method(const std::string&     name,
                         const std::type_index& return_type,
@@ -174,6 +175,29 @@ namespace mge::script {
             }
         };
 
+        template <typename... ConstructorArgs> struct make_shared_helper
+        {
+            template <std::size_t... I>
+            static inline void make_shared(call_context& context,
+                                           std::index_sequence<I...>)
+            {
+                void* shared_ptr_address = context.shared_ptr_address();
+                std::shared_ptr<T>* result =
+                    reinterpret_cast<std::shared_ptr<T>*>(shared_ptr_address);
+                if constexpr ((sizeof...(I) == 1) &&
+                              std::is_same_v<nth_type<0, ConstructorArgs...>,
+                                             void>) {
+                    *result = std::make_shared<T>();
+                } else {
+                    *result = std::make_shared<T>(
+                        parameter_retriever<nth_type<I, ConstructorArgs...>>(
+                            context,
+                            I)
+                            .get()...);
+                }
+            }
+        };
+
     public:
         using self_type =
             type<T, typename std::enable_if<std::is_class_v<T>>::type>;
@@ -206,8 +230,13 @@ namespace mge::script {
                     ctx,
                     std::make_index_sequence<sizeof...(ConstructorArgs)>{});
             };
+            auto make_shared = [](call_context& ctx) {
+                make_shared_helper<ConstructorArgs...>::make_shared(
+                    ctx,
+                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
+            };
             signature s(arg_types);
-            add_constructor(s, construct);
+            add_constructor(s, construct, make_shared);
             return *this;
         }
 
@@ -216,8 +245,14 @@ namespace mge::script {
             auto construct = [](call_context& ctx) {
                 new (ctx.this_ptr()) T();
             };
+            auto make_shared = [](call_context& ctx) {
+                void* shared_ptr_address = ctx.shared_ptr_address();
+                std::shared_ptr<T>* result =
+                    reinterpret_cast<std::shared_ptr<T>*>(shared_ptr_address);
+                *result = std::make_shared<T>();
+            };
             signature empty;
-            add_constructor(empty, construct);
+            add_constructor(empty, construct, make_shared);
             return *this;
         }
 

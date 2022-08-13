@@ -71,10 +71,11 @@ namespace mge::script {
     }
 
     void type_base::add_constructor(const signature&       sgn,
-                                    const invoke_function& ctor)
+                                    const invoke_function& ctor,
+                                    const invoke_function& make_shared)
     {
         std::static_pointer_cast<class_type_details>(m_details)
-            ->add_constructor(sgn, ctor);
+            ->add_constructor(sgn, ctor, make_shared);
     }
 
     void type_base::add_method(const std::string&     name,
