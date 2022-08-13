@@ -231,6 +231,12 @@ namespace mge::script {
                 << "Passed type details reference must be same as this";
         }
         v.start(self);
+        for (const auto& f : m_fields) {
+            v.field(f.name, f.type, f.getter, f.setter);
+        }
+        for (const auto& c : m_constructors) {
+            v.constructor(c.signature, c.new_at, c.make_shared);
+        }
         v.finish(self);
     }
 
@@ -244,9 +250,11 @@ namespace mge::script {
         m_bases.push_back(base_details);
     }
 
-    void class_type_details::set_destructor(const invoke_function& dtor)
+    void
+    class_type_details::set_destructor(const invoke_function& delete_ptr,
+                                       const invoke_function& delete_shared_ptr)
     {
-        m_destructor = dtor;
+        m_destructor = destructor(delete_ptr, delete_shared_ptr);
     }
 
     void class_type_details::add_constructor(const signature&       s,

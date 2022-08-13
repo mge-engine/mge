@@ -26,6 +26,7 @@ namespace mge {
         class type_base;
         class function_base;
         class call_context;
+        class signature;
 
         /**
          * Invocation function that uses a call context for

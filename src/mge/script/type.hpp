@@ -57,7 +57,8 @@ namespace mge::script {
                                 size_t                 size);
         void get_class_details(const std::type_index& index);
         void set_base(const type_details_ref& base_details);
-        void set_destructor(const invoke_function& dtor);
+        void set_destructor(const invoke_function& delete_ptr,
+                            const invoke_function& delete_shared_ptr);
         void add_constructor(const signature&       signature,
                              const invoke_function& ctor,
                              const invoke_function& make_shared);
@@ -213,11 +214,33 @@ namespace mge::script {
             auto ti = std::type_index(typeid(T));
             auto tr = traits_of<T>();
             init_class_details(ti, n, tr, sizeof(T));
-            if (!std::is_trivially_destructible_v<T>) {
-                set_destructor([](call_context& ctx) {
-                    T* self = static_cast<T*>(ctx.this_ptr());
-                    self->~T();
-                });
+            if constexpr (std::is_destructible_v<T>) {
+                if constexpr (std::is_trivially_destructible_v<T>) {
+                    set_destructor(
+                        [](call_context& context) {},
+                        [](call_context& context) {
+                            void* shared_ptr_addr =
+                                context.shared_ptr_address();
+                            std::shared_ptr<T>* shared_ptr =
+                                reinterpret_cast<std::shared_ptr<T>*>(
+                                    shared_ptr_addr);
+                            shared_ptr->reset();
+                        });
+                } else {
+                    set_destructor(
+                        [](call_context& context) {
+                            T* self = reinterpret_cast<T*>(context.this_ptr());
+                            self->~T();
+                        },
+                        [](call_context& context) {
+                            void* shared_ptr_addr =
+                                context.shared_ptr_address();
+                            std::shared_ptr<T>* shared_ptr =
+                                reinterpret_cast<std::shared_ptr<T>*>(
+                                    shared_ptr_addr);
+                            shared_ptr->reset();
+                        });
+                }
             }
         }
 

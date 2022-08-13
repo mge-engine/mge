@@ -113,6 +113,23 @@ namespace mge::script {
             invoke_function        make_shared;
         };
 
+        struct destructor
+        {
+            inline destructor() = default;
+            inline destructor(const destructor&) = default;
+            inline destructor(destructor&&) = default;
+            destructor& operator=(const destructor&) = default;
+            destructor& operator=(destructor&&) = default;
+            inline destructor(const invoke_function& delete_ptr_,
+                              const invoke_function& delete_shared_ptr_)
+                : delete_ptr(delete_ptr_)
+                , delete_shared_ptr(delete_shared_ptr_)
+            {}
+
+            invoke_function delete_ptr;
+            invoke_function delete_shared_ptr;
+        };
+
         struct field
         {
             inline field() = default;
@@ -195,7 +212,8 @@ namespace mge::script {
         void apply(const type_details_ref& self, visitor& v) override;
 
         void set_base(const type_details_ref& base_details);
-        void set_destructor(const invoke_function& dtor);
+        void set_destructor(const invoke_function& delete_ptr,
+                            const invoke_function& delete_shared_ptr);
         void add_constructor(const signature&       s,
                              const invoke_function& new_at,
                              const invoke_function& make_shared);
@@ -222,7 +240,7 @@ namespace mge::script {
         using type_map = std::unordered_map<std::type_index, type_details_ref>;
 
         std::vector<type_details_ref> m_bases;
-        invoke_function               m_destructor;
+        destructor                    m_destructor;
         std::vector<constructor>      m_constructors;
         std::vector<field>            m_fields;
         std::vector<method>           m_methods;

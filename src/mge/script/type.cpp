@@ -64,10 +64,12 @@ namespace mge::script {
             base_details);
     }
 
-    void type_base::set_destructor(const invoke_function& dtor)
+    void type_base::set_destructor(const invoke_function& delete_ptr,
+                                   const invoke_function& delete_shared_ptr)
     {
         std::static_pointer_cast<class_type_details>(m_details)->set_destructor(
-            dtor);
+            delete_ptr,
+            delete_shared_ptr);
     }
 
     void type_base::add_constructor(const signature&       sgn,

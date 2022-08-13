@@ -29,6 +29,9 @@ namespace mge::script {
                            const type_details_ref& type,
                            const invoke_function&  setter,
                            const invoke_function&  getter);
+        virtual void constructor(const signature&       sig,
+                                 const invoke_function& new_at,
+                                 const invoke_function& make_shared);
     };
 
 } // namespace mge::script

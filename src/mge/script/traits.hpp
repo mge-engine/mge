@@ -36,6 +36,7 @@ namespace mge::script {
         unsigned int is_class : 1;
         unsigned int is_trivially_destructible : 1; // no excplicit destructor
                                                     // call needed
+        unsigned int is_destructible : 1;
         unsigned int is_abstract : 1;
 
         bool is_pod() const noexcept
@@ -54,6 +55,7 @@ namespace mge::script {
             mge_dump_property(is_class);
             mge_dump_property(is_abstract);
             mge_dump_property(is_trivially_destructible);
+            mge_dump_property(is_destructible);
 #undef mge_dump_property
         }
     };
@@ -74,6 +76,7 @@ namespace mge::script {
                           .is_enum = 0,
                           .is_class = 0,
                           .is_trivially_destructible = 0,
+                          .is_destructible = 0,
                           .is_abstract = 0};
             return result;
         } else {
@@ -102,6 +105,7 @@ namespace mge::script {
                 .is_class = std::is_class_v<T> ? 1 : 0,
                 .is_trivially_destructible =
                     std::is_trivially_destructible_v<T> ? 1 : 0,
+                .is_destructible = std::is_destructible_v<T> ? 1 : 0,
                 .is_abstract = std::is_abstract_v<T> ? 1 : 0};
             return result;
         }
