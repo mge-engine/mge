@@ -50,7 +50,7 @@ namespace mge::python {
                                 const mge::script::invoke_function&  setter,
                                 const mge::script::invoke_function&  getter)
     {
-        m_fields.emplace(name, field{type, setter, getter});
+        m_fields.emplace_back(field{name, type, setter, getter});
     }
 
     void python_type::assert_create_data() const

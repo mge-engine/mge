@@ -27,6 +27,7 @@ namespace mge::python {
             PyType_Spec                          spec;
             std::vector<PyType_Slot>             slots;
             std::map<std::string, python_object> type_attributes;
+            std::vector<PyGetSetDef>             getset_defs;
         };
 
     public:
@@ -59,6 +60,7 @@ namespace mge::python {
 
         struct field
         {
+            std::string                   name;
             mge::script::type_details_ref type;
             mge::script::invoke_function  setter;
             mge::script::invoke_function  getter;
@@ -68,6 +70,6 @@ namespace mge::python {
         mutable PyObject*                    m_python_type;
         python_context&                      m_context;
         mge::script::type_details_ref        m_type;
-        std::map<std::string, field>         m_fields;
+        std::vector<field>                   m_fields;
     };
 } // namespace mge::python
