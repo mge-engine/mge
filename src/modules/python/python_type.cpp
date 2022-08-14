@@ -9,6 +9,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module_details.hpp"
+#include "mge/script/signature.hpp"
 #include "mge/script/type_details.hpp"
 
 namespace mge {

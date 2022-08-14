@@ -26,3 +26,17 @@ TEST(gist, no_gist_op)
 
     EXPECT_TRUE(ss.str().starts_with("no_gist_op@"));
 }
+
+struct gist_op
+{
+    void gist(std::ostream& os) const { os << "gist op implemented"; }
+};
+
+TEST(gist, gist_op)
+{
+    gist_op           val;
+    std::stringstream ss;
+    ss << gist(val);
+
+    EXPECT_EQ(ss.str(), "gist op implemented");
+}

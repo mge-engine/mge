@@ -33,79 +33,28 @@ namespace mge {
         return gist_type<T>(&t);
     }
 
-    template <typename T> struct has_gist_method
-    {
-        /* SFINAE correct signature */
-        template <typename A>
-        static std::true_type test(void (A::*)(std::ostream&) const)
-        {
-            return std::true_type();
-        }
-
-        /* SFINAE operator-exists */
-        template <typename A>
-        static decltype(test(&A::gist)) test(decltype(&A::gist), int)
-        {
-            using return_type = decltype(test(&A::gist));
-            return return_type();
-        }
-        /* SFINAE don't have it*/
-        template <typename A> static std::false_type test(...)
-        {
-            return std::false_type();
-        }
-
-        /* This will be either `std::true_type` or `std::false_type` */
-        using type = decltype(test<T>(0, 0));
-        static constexpr bool value = type::value; /* Which is it? */
-    };
-
-    namespace {
-        template <typename T,
-                  std::enable_if_t<has_gist_method<T>::value, bool> = true>
-        void print_value(std::ostream& os, const T& value)
-        {
-            value.gist(os);
-        }
-
-        template <typename T,
-                  std::enable_if_t<std::is_integral_v<T>, bool> = true>
-        void print_value(std::ostream& os, const T& value)
-        {
-            os << value;
-        }
-
-        template <typename T,
-                  std::enable_if_t<std::is_class_v<T> &&
-                                       !mge::is_shared_ptr<T>::value &&
-                                       !has_gist_method<T>::value,
-                                   bool> = true>
-        void print_value(std::ostream& os, const T& value)
-        {
-            os << mge::type_name<T>() << "@" << (void*)&value;
-        }
-
-        template <typename T,
-                  std::enable_if_t<std::is_class_v<T> &&
-                                       mge::is_shared_ptr<T>::value &&
-                                       !has_gist_method<T>::value,
-                                   bool> = true>
-        void print_value(std::ostream& os, const T& value)
-        {
-            if (value) {
-                os << mge::type_name<T>() << " => ";
-                print_value(os, *value);
-            } else {
-                os << mge::type_name<T>() << " => nullptr";
-            }
-        }
-
-    } // namespace
-
     template <typename T>
     std::ostream& operator<<(std::ostream& os, const gist_type<T>& g)
     {
-        print_value(os, *g.value);
+        if constexpr (mge::is_shared_ptr_v<T> || std::is_pointer_v<T>) {
+            if (g.value) {
+                os << mge::type_name<T>() << " -> " << gist(*g.value);
+            } else {
+                os << mge::type_name<T>() << " -> nullptr";
+            }
+        } else if constexpr (std::is_trivial_v<T> && !std::is_class_v<T>) {
+            os << *g.value;
+        } else {
+            if constexpr (requires { g.value->gist(os); }) {
+                if (g.value) {
+                    g.value->gist(os);
+                } else {
+                    os << mge::type_name<T>() << " -> nullptr";
+                }
+            } else {
+                os << mge::type_name<T>() << "@" << (void*)g.value;
+            }
+        }
         return os;
     }
 
