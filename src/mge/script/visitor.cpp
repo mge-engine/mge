@@ -25,4 +25,7 @@ namespace mge::script {
                               const invoke_function& make_shared)
     {}
 
+    void visitor::destructor(const invoke_function& delete_ptr,
+                             const invoke_function& delete_shared_ptr)
+    {}
 } // namespace mge::script

@@ -122,6 +122,25 @@ namespace mge::python {
             }
         }
 
+        void
+        constructor(const mge::script::signature&       s,
+                    const mge::script::invoke_function& new_at,
+                    const mge::script::invoke_function& make_shared) override
+        {
+            if (m_current_type) {
+                m_current_type->add_constructor(s, new_at, make_shared);
+            }
+        }
+
+        void destructor(
+            const mge::script::invoke_function& delete_ptr,
+            const mge::script::invoke_function& delete_shared_ptr) override
+        {
+            if (m_current_type) {
+                m_current_type->add_destructor(delete_ptr, delete_shared_ptr);
+            }
+        }
+
         void finish(const mge::script::type_details_ref& m) override
         {
             m_current_type.reset();

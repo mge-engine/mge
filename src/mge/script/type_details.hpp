@@ -126,6 +126,8 @@ namespace mge::script {
                 , delete_shared_ptr(delete_shared_ptr_)
             {}
 
+            bool empty() const { return !delete_ptr && !delete_shared_ptr; }
+
             invoke_function delete_ptr;
             invoke_function delete_shared_ptr;
         };

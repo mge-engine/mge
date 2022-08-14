@@ -37,10 +37,20 @@ namespace mge::python {
         ~python_type();
 
         void add_enum_value(const std::string& name, int64_t value);
+
         void add_field(const std::string&                   name,
                        const mge::script::type_details_ref& type,
                        const mge::script::invoke_function&  setter,
                        const mge::script::invoke_function&  getter);
+
+        void add_constructor(const mge::script::signature&       sig,
+                             const mge::script::invoke_function& new_at,
+                             const mge::script::invoke_function& make_shared);
+
+        void
+        add_destructor(const mge::script::invoke_function& delete_ptr,
+                       const mge::script::invoke_function& delete_shared_ptr);
+
         const std::string& local_name() const { return m_type->name(); }
         bool               is_embeddable() const;
         PyObject*          py_type() const;

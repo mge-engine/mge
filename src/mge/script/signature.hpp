@@ -55,6 +55,12 @@ namespace mge::script {
          */
         static const signature& empty_signature();
 
+        /**
+         * Provides gist of contained information.
+         * @param os output stream
+         */
+        void gist(std::ostream& os) const;
+
     private:
         small_vector<std::optional<std::type_index>, 3> m_types;
     };

@@ -32,6 +32,8 @@ namespace mge::script {
         virtual void constructor(const signature&       sig,
                                  const invoke_function& new_at,
                                  const invoke_function& make_shared);
+        virtual void destructor(const invoke_function& delete_ptr,
+                                const invoke_function& delete_shared);
     };
 
 } // namespace mge::script

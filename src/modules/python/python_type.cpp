@@ -53,6 +53,20 @@ namespace mge::python {
         m_fields.emplace_back(field{name, type, setter, getter});
     }
 
+    void python_type::add_constructor(
+        const mge::script::signature&       sig,
+        const mge::script::invoke_function& new_at,
+        const mge::script::invoke_function& make_shared)
+    {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Add constructor to " << m_type->name() << ": " << gist(sig);
+    }
+
+    void python_type::add_destructor(
+        const mge::script::invoke_function& delete_ptr,
+        const mge::script::invoke_function& delete_shared_ptr)
+    {}
+
     void python_type::assert_create_data() const
     {
         if (!m_create_data) {

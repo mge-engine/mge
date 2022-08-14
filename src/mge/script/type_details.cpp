@@ -237,6 +237,10 @@ namespace mge::script {
         for (const auto& c : m_constructors) {
             v.constructor(c.signature, c.new_at, c.make_shared);
         }
+        if (!m_destructor.empty()) {
+            v.destructor(m_destructor.delete_ptr,
+                         m_destructor.delete_shared_ptr);
+        }
         v.finish(self);
     }
 
