@@ -6,6 +6,7 @@
 #include "python_error.hpp"
 
 #include "mge/core/details.hpp"
+#include "mge/core/gist.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module_details.hpp"
