@@ -33,6 +33,9 @@ namespace mge::python {
         m_create_data->spec.name = m_type->name().c_str();
         m_create_data->spec.flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE;
         m_create_data->spec.slots = s_empty_slots;
+
+        m_destructor.delete_ptr = nullptr;
+        m_destructor.delete_shared_ptr = nullptr;
     }
 
     python_type::~python_type() { Py_CLEAR(m_python_type); }
@@ -62,12 +65,16 @@ namespace mge::python {
     {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add constructor to " << m_type->name() << ": " << gist(sig);
+        m_constructors.emplace_back(&sig, &new_at, &make_shared);
     }
 
     void python_type::add_destructor(
         const mge::script::invoke_function& delete_ptr,
         const mge::script::invoke_function& delete_shared_ptr)
-    {}
+    {
+        m_destructor.delete_ptr = &delete_ptr;
+        m_destructor.delete_shared_ptr = &delete_shared_ptr;
+    }
 
     void python_type::assert_create_data() const
     {

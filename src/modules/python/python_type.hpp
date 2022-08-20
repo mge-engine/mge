@@ -75,10 +75,25 @@ namespace mge::python {
             mge::script::invoke_function  getter;
         };
 
+        struct constructor
+        {
+            const mge::script::signature*       sig;
+            const mge::script::invoke_function* new_at;
+            const mge::script::invoke_function* make_shared;
+        };
+
+        struct destructor
+        {
+            const mge::script::invoke_function* delete_ptr;
+            const mge::script::invoke_function* delete_shared_ptr;
+        };
+
         mutable std::unique_ptr<create_data> m_create_data;
         mutable PyObject*                    m_python_type;
         python_context&                      m_context;
         mge::script::type_details_ref        m_type;
         std::vector<field>                   m_fields;
+        std::vector<constructor>             m_constructors;
+        destructor                           m_destructor;
     };
 } // namespace mge::python
