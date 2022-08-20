@@ -41,7 +41,7 @@ namespace mge {
         /**
          * Construct from path.
          *
-         * @param path asset path
+         * @param p asset path
          */
         asset(const path& p)
             : m_path(p)
@@ -150,7 +150,7 @@ namespace mge {
          * @param name name of asset to look up
          * @param type asset type
          * @return asset that was located
-         * @throws @c asset_not_found if asset could not be looked up
+         * @throw @c asset_not_found if asset could not be looked up
          */
         static asset locate(std::string_view name, const asset_type& type);
 

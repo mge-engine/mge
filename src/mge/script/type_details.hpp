@@ -54,6 +54,7 @@ namespace mge::script {
         /**
          * @brief Applies a visitor.
          *
+         * @oaram self shared ppinter to this object
          * @param v visitor
          */
         virtual void apply(const type_details_ref& self, visitor& v);
