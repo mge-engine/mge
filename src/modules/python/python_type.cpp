@@ -245,8 +245,16 @@ namespace mge::python {
 
     int python_type::init(PyObject* self, PyObject* args, PyObject* kwargs)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Init method called";
-        return 0;
+        PyTypeObject* tp = Py_TYPE(self);
+        python_type*  ptp = python_type_of(tp);
+        if (!ptp) {
+            PyErr_SetString(
+                PyExc_RuntimeError,
+                "Call to __init__ for type not managed by extension");
+            return 1;
+        }
+
+        return ptp->init_object(self, args, kwargs);
     }
 
     void python_type::dealloc(PyObject* self)
@@ -258,6 +266,26 @@ namespace mge::python {
 
         tp->tp_free(self);
         Py_DECREF(tp);
+    }
+
+    void python_type::clear_object_space(PyObject* self)
+    {
+        unsigned char* self_data = reinterpret_cast<unsigned char*>(self);
+        self_data += aligned_PyObject_HEAD_size();
+        memset(self_data, 0, m_type->shared_ptr_size());
+    }
+
+    int
+    python_type::init_object(PyObject* self, PyObject* args, PyObject* kwargs)
+    {
+        clear_object_space(self);
+        if (kwargs) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "Unsupported use of keyword arguments");
+            return 1;
+        }
+
+        return 0;
     }
 
 } // namespace mge::python

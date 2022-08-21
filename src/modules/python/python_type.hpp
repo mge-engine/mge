@@ -71,6 +71,9 @@ namespace mge::python {
         static void dealloc(PyObject* self);
         static python_type* python_type_of(PyTypeObject* tp);
 
+        int  init_object(PyObject* self, PyObject* args, PyObject* kwargs);
+        void clear_object_space(PyObject* self);
+
         struct field
         {
             std::string                   name;
