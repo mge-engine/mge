@@ -193,6 +193,11 @@ namespace mge::python {
             m_create_data->slots.emplace_back(getset_slot);
         }
 
+        if (!m_constructors.empty()) {
+            PyType_Slot init_slot{Py_tp_init, &python_type::init};
+            m_create_data->slots.emplace_back(init_slot);
+        }
+
         if (!m_create_data->slots.empty()) {
             PyType_Slot sentinel_slot{0, nullptr};
             m_create_data->slots.emplace_back(sentinel_slot);
@@ -220,6 +225,12 @@ namespace mge::python {
             Py_CLEAR(python_type_ptr);
             throw;
         }
+    }
+
+    int python_type::init(PyObject* self, PyObject* args, PyObject* kwargs)
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Init method called";
+        return 0;
     }
 
 } // namespace mge::python

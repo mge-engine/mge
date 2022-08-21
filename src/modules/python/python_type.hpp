@@ -66,6 +66,7 @@ namespace mge::python {
         static PyObject* get_field_value(PyObject* self, void* field);
         static int
         set_field_value(PyObject* self, PyObject* value, void* field);
+        static int init(PyObject* self, PyObject* args, PyObject* kwargs);
 
         struct field
         {
