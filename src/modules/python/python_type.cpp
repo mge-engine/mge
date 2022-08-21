@@ -285,6 +285,34 @@ namespace mge::python {
             return 1;
         }
 
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "Argument to init function must be a tuple");
+            return 1;
+        }
+
+        if (PyTuple_Size(args) == 0) {
+            for (const auto& ctor : m_constructors) {
+                if (ctor.sig->empty()) {
+                    return init_default(ctor, self);
+                }
+            }
+            PyErr_SetString(
+                PyExc_RuntimeError,
+                "No matching constructor for empty argument list found");
+            return 1;
+        } else {
+            PyErr_SetString(PyExc_NotImplementedError,
+                            "Constructor with arguments");
+            return 1;
+        }
+
+        return 0;
+    }
+
+    int python_type::init_default(const python_type::constructor& ctor,
+                                  PyObject*                       self)
+    {
         return 0;
     }
 

@@ -48,6 +48,8 @@ namespace mge::script {
 
         bool matches(const signature& other) const;
 
+        bool empty() const;
+
         /**
          * @brief Returns the empty signature.
          *

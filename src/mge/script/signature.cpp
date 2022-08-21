@@ -8,6 +8,8 @@ namespace mge::script {
 
     signature::~signature() {}
 
+    bool signature::empty() const { return m_types.empty(); }
+
     bool signature::operator==(const signature& s) const
     {
         if (s.m_types.size() == m_types.size()) {
