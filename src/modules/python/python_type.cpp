@@ -196,6 +196,8 @@ namespace mge::python {
         if (!m_constructors.empty()) {
             PyType_Slot init_slot{Py_tp_init, &python_type::init};
             m_create_data->slots.emplace_back(init_slot);
+        } else {
+            m_create_data->spec.flags |= Py_TPFLAGS_DISALLOW_INSTANTIATION;
         }
 
         if (!m_create_data->slots.empty()) {
