@@ -6,6 +6,7 @@
 #include "python_error.hpp"
 
 #include "mge/core/details.hpp"
+#include "mge/core/get_or_default.hpp"
 #include "mge/core/gist.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
@@ -20,6 +21,8 @@ namespace mge {
 namespace mge::python {
 
     static PyType_Slot s_empty_slots[] = {{}};
+
+    std::unordered_map<PyTypeObject*, python_type*> python_type::s_all_types;
 
     python_type::python_type(python_context&                      context,
                              const mge::script::type_details_ref& type)
@@ -110,6 +113,10 @@ namespace mge::python {
         } else {
             materialize_class_type();
         }
+        if (m_python_type) {
+            PyTypeObject* tp = reinterpret_cast<PyTypeObject*>(m_python_type);
+            s_all_types[tp] = const_cast<python_type*>(this);
+        }
         m_create_data.release();
     }
 
@@ -193,9 +200,11 @@ namespace mge::python {
             m_create_data->slots.emplace_back(getset_slot);
         }
 
-        if (!m_constructors.empty()) {
+        if (!m_constructors.empty() && m_destructor.delete_shared_ptr) {
             PyType_Slot init_slot{Py_tp_init, &python_type::init};
             m_create_data->slots.emplace_back(init_slot);
+            PyType_Slot dealloc_slot{Py_tp_dealloc, &python_type::dealloc};
+            m_create_data->slots.emplace_back(dealloc_slot);
         } else {
             m_create_data->spec.flags |= Py_TPFLAGS_DISALLOW_INSTANTIATION;
         }
@@ -229,10 +238,26 @@ namespace mge::python {
         }
     }
 
+    python_type* python_type::python_type_of(PyTypeObject* tp)
+    {
+        return mge::get_or_default(s_all_types, tp, nullptr);
+    }
+
     int python_type::init(PyObject* self, PyObject* args, PyObject* kwargs)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Init method called";
         return 0;
+    }
+
+    void python_type::dealloc(PyObject* self)
+    {
+        PyTypeObject* tp = Py_TYPE(self);
+
+        // TODO: dealloc shared ptr
+        MGE_DEBUG_TRACE(PYTHON) << "Dealloc method called";
+
+        tp->tp_free(self);
+        Py_DECREF(tp);
     }
 
 } // namespace mge::python

@@ -11,6 +11,7 @@
 
 #include <map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace mge::python {
@@ -66,7 +67,9 @@ namespace mge::python {
         static PyObject* get_field_value(PyObject* self, void* field);
         static int
         set_field_value(PyObject* self, PyObject* value, void* field);
-        static int init(PyObject* self, PyObject* args, PyObject* kwargs);
+        static int  init(PyObject* self, PyObject* args, PyObject* kwargs);
+        static void dealloc(PyObject* self);
+        static python_type* python_type_of(PyTypeObject* tp);
 
         struct field
         {
@@ -96,5 +99,7 @@ namespace mge::python {
         std::vector<field>                   m_fields;
         std::vector<constructor>             m_constructors;
         destructor                           m_destructor;
+
+        static std::unordered_map<PyTypeObject*, python_type*> s_all_types;
     };
 } // namespace mge::python
