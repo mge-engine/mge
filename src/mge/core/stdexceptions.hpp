@@ -53,6 +53,8 @@ namespace mge {
     MGECORE_DECLARE_EXCEPTION_CLASS(null_pointer);
     /** @brief Thrown if an out of memory situation is detected. */
     MGECORE_DECLARE_EXCEPTION_CLASS(out_of_memory);
+    /** @brief Thrown if a number overflow is detected. */
+    MGECORE_DECLARE_EXCEPTION_CLASS(numeric_overflow);
 
 /**
  * @brief Helper macro to throw if argument is null.

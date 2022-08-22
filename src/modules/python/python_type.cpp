@@ -4,6 +4,7 @@
 #include "python_type.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
+#include "python_object_call_context.hpp"
 
 #include "mge/core/details.hpp"
 #include "mge/core/get_or_default.hpp"
@@ -313,7 +314,30 @@ namespace mge::python {
     int python_type::init_default(const python_type::constructor& ctor,
                                   PyObject*                       self)
     {
+        python_object_call_context ctx(this, self);
+        (*ctor.make_shared)(ctx);
         return 0;
+    }
+
+    void* python_type::this_ptr(PyObject* self)
+    {
+        unsigned char* self_data = reinterpret_cast<unsigned char*>(self);
+        self_data += aligned_PyObject_HEAD_size();
+
+        std::shared_ptr<int>* sptr =
+            reinterpret_cast<std::shared_ptr<int> *>(self_data);
+        if (*sptr) {
+            return sptr->get();
+        } else {
+            return nullptr;
+        }
+    }
+
+    void* python_type::shared_ptr_address(PyObject* self) const
+    {
+        unsigned char* self_data = reinterpret_cast<unsigned char*>(self);
+        self_data += aligned_PyObject_HEAD_size();
+        return self_data;
     }
 
 } // namespace mge::python

@@ -14,5 +14,5 @@ namespace mge {
     MGE_DEFINE_EXCEPTION_CLASS(not_yet_implemented)
     MGE_DEFINE_EXCEPTION_CLASS(null_pointer)
     MGE_DEFINE_EXCEPTION_CLASS(out_of_memory)
-
+    MGE_DEFINE_EXCEPTION_CLASS(numeric_overflow)
 } // namespace mge

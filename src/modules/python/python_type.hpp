@@ -57,6 +57,9 @@ namespace mge::python {
         PyObject*          py_type() const;
         void               interpreter_lost();
 
+        void* this_ptr(PyObject* self);
+        void* shared_ptr_address(PyObject* self) const;
+
     private:
         void assert_create_data() const;
         void materialize_type() const;
