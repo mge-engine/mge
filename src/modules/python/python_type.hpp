@@ -37,6 +37,8 @@ namespace mge::python {
 
         ~python_type();
 
+        const mge::script::type_details& details() const { return *m_type; }
+
         void add_enum_value(const std::string& name, int64_t value);
 
         void add_field(const std::string&                   name,
@@ -60,6 +62,8 @@ namespace mge::python {
         void* this_ptr(PyObject* self);
         void* shared_ptr_address(PyObject* self) const;
 
+        static python_type* python_type_of(PyTypeObject* tp);
+
     private:
         void assert_create_data() const;
         void materialize_type() const;
@@ -72,7 +76,6 @@ namespace mge::python {
         set_field_value(PyObject* self, PyObject* value, void* field);
         static int  init(PyObject* self, PyObject* args, PyObject* kwargs);
         static void dealloc(PyObject* self);
-        static python_type* python_type_of(PyTypeObject* tp);
 
         int  init_object(PyObject* self, PyObject* args, PyObject* kwargs);
         void clear_object_space(PyObject* self);

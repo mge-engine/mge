@@ -186,24 +186,54 @@ namespace mge::python {
         }
     }
 
-#if 0
-        float       float_parameter(size_t position) override;
-        double      double_parameter(size_t position) override;
-        std::string string_parameter(size_t position) override;
+    std::string python_object_call_context::string_parameter(size_t position)
+    {
+        PyObject* obj = PyTuple_GetItem(m_args, position);
+        error::check_error();
+        if (PyUnicode_Check(obj)) {
+            auto chars = PyUnicode_AsUTF8AndSize(obj, nullptr);
+            error::check_error();
+            return std::string(chars);
+        } else {
+            MGE_THROW(mge::bad_cast) << "Cannot convert argument at position "
+                                     << position << " to std::string";
+        }
+    }
 
-        void* object_parameter(size_t position, std::type_index ti) override;
+    void* python_object_call_context::object_parameter(size_t          position,
+                                                       std::type_index ti)
+    {
+        PyObject* obj = PyTuple_GetItem(m_args, position);
+        error::check_error();
+        PyTypeObject* tp = Py_TYPE(obj);
+        python_type*  ptp = python_type::python_type_of(tp);
+        if (!ptp) {
+            MGE_THROW(mge::bad_cast) << "Cannot convert argument at position "
+                                     << position << " to type " << ti.name();
+        }
+        if (ptp->details().type_index() != ti) {
+            MGE_THROW(mge::bad_cast)
+                << "Cannot convert argument at position " << position
+                << " from type " << ptp->details().type_index().name()
+                << " to type " << ti.name();
+        }
 
-        void store_bool_result(bool result) override;
-        void store_int8_t_result(int8_t result) override;
-        void store_uint8_t_result(uint8_t result) override;
-        void store_int16_t_result(int16_t result) override;
-        void store_uint16_t_result(uint16_t result) override;
-        void store_int32_t_result(int32_t result) override;
-        void store_uint32_t_result(uint32_t result) override;
-        void store_int64_t_result(int64_t result) override;
-        void store_uint64_t_result(uint64_t result) override;
-        void store_float_result(float result) override;
-        void store_double_result(double result) override;
-        void store_string_result(const std::string& result) override;
-#endif
+        return ptp->this_ptr(obj);
+    }
+
+    void python_object_call_context::store_bool_result(bool result) {}
+    void python_object_call_context::store_int8_t_result(int8_t result) {}
+    void python_object_call_context::store_uint8_t_result(uint8_t result) {}
+    void python_object_call_context::store_int16_t_result(int16_t result) {}
+    void python_object_call_context::store_uint16_t_result(uint16_t result) {}
+    void python_object_call_context::store_int32_t_result(int32_t result) {}
+    void python_object_call_context::store_uint32_t_result(uint32_t result) {}
+    void python_object_call_context::store_int64_t_result(int64_t result) {}
+    void python_object_call_context::store_uint64_t_result(uint64_t result) {}
+    void python_object_call_context::store_float_result(float result) {}
+    void python_object_call_context::store_double_result(double result) {}
+    void
+    python_object_call_context::store_string_result(const std::string& result)
+    {}
+
 } // namespace mge::python
