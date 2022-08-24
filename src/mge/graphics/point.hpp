@@ -26,7 +26,7 @@ namespace mge {
             : x(x_)
             , y(y_)
         {}
-        ~point() = default;
+        ~point() {}
 
         point(const point&) = default;
         point(point&&) = default;

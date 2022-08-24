@@ -261,9 +261,15 @@ namespace mge::python {
     void python_type::dealloc(PyObject* self)
     {
         PyTypeObject* tp = Py_TYPE(self);
-
-        // TODO: dealloc shared ptr
-        MGE_DEBUG_TRACE(PYTHON) << "Dealloc method called";
+        python_type*  ptp = python_type_of(tp);
+        if (!ptp) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "Cannot dealloc type not managed by extension");
+        }
+        if (ptp->m_destructor.delete_shared_ptr) {
+            python_object_call_context context(ptp, self);
+            (*(ptp->m_destructor.delete_shared_ptr))(context);
+        }
 
         tp->tp_free(self);
         Py_DECREF(tp);
@@ -325,7 +331,7 @@ namespace mge::python {
         self_data += aligned_PyObject_HEAD_size();
 
         std::shared_ptr<int>* sptr =
-            reinterpret_cast<std::shared_ptr<int> *>(self_data);
+            reinterpret_cast<std::shared_ptr<int>*>(self_data);
         if (*sptr) {
             return sptr->get();
         } else {
