@@ -223,20 +223,59 @@ namespace mge::python {
         return ptp->this_ptr(obj);
     }
 
-    void python_object_call_context::store_bool_result(bool result) {}
-    void python_object_call_context::store_int8_t_result(int8_t result) {}
-    void python_object_call_context::store_uint8_t_result(uint8_t result) {}
-    void python_object_call_context::store_int16_t_result(int16_t result) {}
-    void python_object_call_context::store_uint16_t_result(uint16_t result) {}
-    void python_object_call_context::store_int32_t_result(int32_t result) {}
-    void python_object_call_context::store_uint32_t_result(uint32_t result) {}
-    void python_object_call_context::store_int64_t_result(int64_t result) {}
-    void python_object_call_context::store_uint64_t_result(uint64_t result) {}
-    void python_object_call_context::store_float_result(float result) {}
-    void python_object_call_context::store_double_result(double result) {}
+    void python_object_call_context::store_bool_result(bool result)
+    {
+        m_result = Py_BuildValue("O", result ? Py_True : Py_False);
+    }
+
+    void python_object_call_context::store_int8_t_result(int8_t result)
+    {
+        m_result = Py_BuildValue("b", result);
+    }
+
+    void python_object_call_context::store_uint8_t_result(uint8_t result)
+    {
+        m_result = Py_BuildValue("B", result);
+    }
+    void python_object_call_context::store_int16_t_result(int16_t result)
+    {
+        m_result = Py_BuildValue("h", result);
+    }
+    void python_object_call_context::store_uint16_t_result(uint16_t result)
+    {
+        m_result = Py_BuildValue("H", result);
+    }
+    void python_object_call_context::store_int32_t_result(int32_t result)
+    {
+        m_result = Py_BuildValue("i", result);
+    }
+    void python_object_call_context::store_uint32_t_result(uint32_t result)
+    {
+        m_result = Py_BuildValue("I", result);
+    }
+    void python_object_call_context::store_int64_t_result(int64_t result)
+    {
+        m_result = Py_BuildValue("L", result);
+    }
+    void python_object_call_context::store_uint64_t_result(uint64_t result)
+    {
+        m_result = Py_BuildValue("K", result);
+    }
+    void python_object_call_context::store_float_result(float result)
+    {
+        m_result = Py_BuildValue("f", result);
+    }
+    void python_object_call_context::store_double_result(double result)
+    {
+        m_result = Py_BuildValue("d", result);
+    }
+
     void
     python_object_call_context::store_string_result(const std::string& result)
-    {}
+    {
+        m_result =
+            Py_BuildValue("s#", result.c_str(), (Py_ssize_t)(result.size()));
+    }
 
     PyObject* python_object_call_context::arg(size_t position)
     {

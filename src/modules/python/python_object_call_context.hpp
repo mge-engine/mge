@@ -45,12 +45,15 @@ namespace mge::python {
         void store_double_result(double result) override;
         void store_string_result(const std::string& result) override;
 
+        PyObject* result() const { return m_result; }
+
     private:
         PyObject* arg(size_t position);
 
         python_type* m_type;
         PyObject*    m_self;
         PyObject*    m_args;
+        PyObject*    m_result;
         bool         m_args_tuple;
     };
 } // namespace mge::python

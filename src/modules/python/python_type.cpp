@@ -97,7 +97,10 @@ namespace mge::python {
 
     PyObject* python_type::get_field_value(PyObject* self, void* field)
     {
-        return nullptr;
+        python_type::field* f = reinterpret_cast<python_type::field*>(field);
+        python_object_call_context ctx(f->ptype, self);
+        f->getter(ctx);
+        return ctx.result();
     }
 
     int
