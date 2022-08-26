@@ -59,7 +59,7 @@ namespace mge::python {
                                 const mge::script::invoke_function&  setter,
                                 const mge::script::invoke_function&  getter)
     {
-        m_fields.emplace_back(field{name, type, setter, getter});
+        m_fields.emplace_back(field{name, type, setter, getter, this});
     }
 
     void python_type::add_constructor(
@@ -103,6 +103,9 @@ namespace mge::python {
     int
     python_type::set_field_value(PyObject* self, PyObject* value, void* field)
     {
+        python_type::field* f = reinterpret_cast<python_type::field*>(field);
+        python_object_call_context ctx(f->ptype, self, value);
+        f->setter(ctx);
         return 0;
     }
 

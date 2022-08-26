@@ -86,6 +86,7 @@ namespace mge::python {
             mge::script::type_details_ref type;
             mge::script::invoke_function  setter;
             mge::script::invoke_function  getter;
+            python_type*                  ptype;
         };
 
         struct constructor

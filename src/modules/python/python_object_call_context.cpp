@@ -12,6 +12,7 @@ namespace mge::python {
         : m_type(type)
         , m_self(self)
         , m_args(args)
+        , m_args_tuple((args != nullptr) && (PyTuple_Check(args) != 0))
     {}
 
     void* python_object_call_context::this_ptr()
@@ -26,8 +27,8 @@ namespace mge::python {
 
     bool python_object_call_context::bool_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (obj) {
             if (PyBool_Check(obj)) {
                 return obj == Py_True;
@@ -40,8 +41,8 @@ namespace mge::python {
 
     int8_t python_object_call_context::int8_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -55,8 +56,8 @@ namespace mge::python {
 
     uint8_t python_object_call_context::uint8_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -70,8 +71,8 @@ namespace mge::python {
 
     int16_t python_object_call_context::int16_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -85,8 +86,8 @@ namespace mge::python {
 
     uint16_t python_object_call_context::uint16_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -100,8 +101,8 @@ namespace mge::python {
 
     int32_t python_object_call_context::int32_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -115,8 +116,8 @@ namespace mge::python {
 
     uint32_t python_object_call_context::uint32_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -130,8 +131,8 @@ namespace mge::python {
 
     int64_t python_object_call_context::int64_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsLong(obj);
             error::check_error();
@@ -145,8 +146,8 @@ namespace mge::python {
 
     uint64_t python_object_call_context::uint64_t_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyLong_Check(obj)) {
             auto l = PyLong_AsUnsignedLongLong(obj);
             error::check_error();
@@ -160,8 +161,8 @@ namespace mge::python {
 
     float python_object_call_context::float_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyFloat_Check(obj)) {
             auto f = PyFloat_AsDouble(obj);
             error::check_error();
@@ -174,8 +175,8 @@ namespace mge::python {
 
     double python_object_call_context::double_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyFloat_Check(obj)) {
             auto d = PyFloat_AsDouble(obj);
             error::check_error();
@@ -188,8 +189,8 @@ namespace mge::python {
 
     std::string python_object_call_context::string_parameter(size_t position)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+        PyObject* obj = arg(position);
+
         if (PyUnicode_Check(obj)) {
             auto chars = PyUnicode_AsUTF8AndSize(obj, nullptr);
             error::check_error();
@@ -203,8 +204,9 @@ namespace mge::python {
     void* python_object_call_context::object_parameter(size_t          position,
                                                        std::type_index ti)
     {
-        PyObject* obj = PyTuple_GetItem(m_args, position);
-        error::check_error();
+
+        PyObject* obj = arg(position);
+
         PyTypeObject* tp = Py_TYPE(obj);
         python_type*  ptp = python_type::python_type_of(tp);
         if (!ptp) {
@@ -235,5 +237,16 @@ namespace mge::python {
     void
     python_object_call_context::store_string_result(const std::string& result)
     {}
+
+    PyObject* python_object_call_context::arg(size_t position)
+    {
+        if (m_args_tuple || position > 0) {
+            auto res = PyTuple_GetItem(m_args, position);
+            error::check_error();
+            return res;
+        } else {
+            return m_args;
+        }
+    }
 
 } // namespace mge::python
