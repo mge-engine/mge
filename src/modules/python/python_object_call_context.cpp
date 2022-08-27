@@ -1,9 +1,14 @@
 #include "python_object_call_context.hpp"
 #include "mge/core/checked_cast.hpp"
+#include "mge/core/trace.hpp"
 #include "python_error.hpp"
 #include "python_type.hpp"
 
 #include <numeric>
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
     python_object_call_context::python_object_call_context(python_type* type,
@@ -12,6 +17,7 @@ namespace mge::python {
         : m_type(type)
         , m_self(self)
         , m_args(args)
+        , m_result(nullptr)
         , m_args_tuple((args != nullptr) && (PyTuple_Check(args) != 0))
     {}
 

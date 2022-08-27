@@ -84,8 +84,8 @@ namespace mge::python {
         {
             std::string                   name;
             mge::script::type_details_ref type;
-            mge::script::invoke_function  setter;
             mge::script::invoke_function  getter;
+            mge::script::invoke_function  setter;
             python_type*                  ptype;
         };
 
