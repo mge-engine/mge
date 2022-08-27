@@ -112,15 +112,35 @@ namespace mge {
         EXPECT_EQ(0u, ct->constructors()[0].signature.size());
         constructed check;
         constructed::constructed_count = 0;
-        MOCK_call_context ctx;
-        EXPECT_CALL(ctx, this_ptr()).Times(1).WillOnce(Return(&check));
-        EXPECT_TRUE(ct->constructors()[0].new_at);
-        ct->constructors()[0].new_at(ctx);
-        EXPECT_EQ(1, constructed::constructed_count);
+
+        {
+            MOCK_call_context ctx;
+            EXPECT_CALL(ctx, this_ptr()).Times(1).WillOnce(Return(&check));
+            EXPECT_TRUE(ct->constructors()[0].new_at);
+            ct->constructors()[0].new_at(ctx);
+            EXPECT_EQ(1, constructed::constructed_count);
+        }
+
+        std::shared_ptr<constructed>* shared;
+        constructed::constructed_count = 0;
+        {
+            MOCK_call_context ctx;
+            EXPECT_CALL(ctx, shared_ptr_address())
+                .Times(1)
+                .WillOnce(Return(&shared));
+            ct->constructors()[0].new_shared(ctx);
+            EXPECT_EQ(1, constructed::constructed_count);
+        }
     }
 
     struct fields
     {
+        fields()
+            : x(123)
+            , y(1213.33)
+            , specific(4)
+        {}
+
         int     x;
         float   y;
         int32_t specific;
@@ -130,9 +150,22 @@ namespace mge {
     {
         using namespace mge::script;
         module("mge")(type<fields>("fields")
+                          .constructor()
                           .field("x", &fields::x)
                           .field("y", &fields::y)
-                          .field("specfic", &fields::specific));
+                          .field("specific", &fields::specific));
+
+        type_details_ref r = type_details::get(std::type_index(typeid(fields)));
+        EXPECT_TRUE(r);
+        class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
+
+        std::shared_ptr<fields>* shared;
+        MOCK_call_context        ctx;
+        EXPECT_CALL(ctx, shared_ptr_address())
+            .Times(1)
+            .WillOnce(Return(&shared));
+        ct->constructors().at(0).new_shared(ctx);
+        EXPECT_EQ(123, (*shared)->x);
     }
 
     struct memberfunctions

@@ -141,11 +141,6 @@ namespace mge::script {
 
     size_t type_details::size() const { return m_size; }
 
-    size_t type_details::shared_ptr_size() const
-    {
-        return sizeof(std::shared_ptr<int>);
-    }
-
     const type_details_ref& type_details::enclosing_type() const
     {
         return m_enclosing_type;
@@ -235,7 +230,7 @@ namespace mge::script {
             v.field(f.name, f.type, f.getter, f.setter);
         }
         for (const auto& c : m_constructors) {
-            v.constructor(c.signature, c.new_at, c.make_shared);
+            v.constructor(c.signature, c.new_at, c.new_shared);
         }
         if (!m_destructor.empty()) {
             v.destructor(m_destructor.delete_ptr,

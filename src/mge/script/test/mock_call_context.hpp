@@ -11,7 +11,7 @@ public:
 
     MOCK_METHOD(void*, this_ptr, (), (override));
     MOCK_METHOD(void*, shared_ptr_address, (), (override));
-    
+
     MOCK_METHOD(void, store_bool_result, (bool), (override));
     MOCK_METHOD(void, store_int8_t_result, (int8_t), (override));
     MOCK_METHOD(void, store_uint8_t_result, (uint8_t), (override));

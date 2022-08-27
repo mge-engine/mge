@@ -93,7 +93,7 @@ namespace mge::python {
         {
             const mge::script::signature*       sig;
             const mge::script::invoke_function* new_at;
-            const mge::script::invoke_function* make_shared;
+            const mge::script::invoke_function* new_shared;
         };
 
         struct destructor

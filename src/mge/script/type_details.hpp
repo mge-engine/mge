@@ -34,7 +34,6 @@ namespace mge::script {
         const mge::script::traits&     traits() const;
         const type_details_ref&        enclosing_type() const;
         size_t                         size() const;
-        size_t                         shared_ptr_size() const;
 
         void set_module(const module_details_ref& m);
         void set_enclosing_type(const type_details_ref& t);
@@ -103,15 +102,15 @@ namespace mge::script {
 
             inline constructor(const signature&       s,
                                const invoke_function& new_at_,
-                               const invoke_function& make_shared_)
+                               const invoke_function& new_shared_)
                 : signature(s)
                 , new_at(new_at_)
-                , make_shared(make_shared_)
+                , new_shared(new_shared_)
             {}
 
             mge::script::signature signature;
             invoke_function        new_at;
-            invoke_function        make_shared;
+            invoke_function        new_shared;
         };
 
         struct destructor
@@ -219,7 +218,7 @@ namespace mge::script {
                             const invoke_function& delete_shared_ptr);
         void add_constructor(const signature&       s,
                              const invoke_function& new_at,
-                             const invoke_function& make_shared);
+                             const invoke_function& new_shared);
         void add_field(const std::string&      name,
                        const type_details_ref& t,
                        const invoke_function&  getter);

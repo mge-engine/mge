@@ -176,21 +176,23 @@ namespace mge::script {
             }
         };
 
-        template <typename... ConstructorArgs> struct make_shared_helper
+        template <typename... ConstructorArgs> struct new_shared_helper
         {
             template <std::size_t... I>
-            static inline void make_shared(call_context& context,
-                                           std::index_sequence<I...>)
+            static inline void new_shared(call_context& context,
+                                          std::index_sequence<I...>)
             {
-                void* shared_ptr_address = context.shared_ptr_address();
-                std::shared_ptr<T>* result =
-                    reinterpret_cast<std::shared_ptr<T>*>(shared_ptr_address);
+                void* shared_ptr_address_untyped = context.shared_ptr_address();
+                std::shared_ptr<T>** shared_ptr_address =
+                    reinterpret_cast<std::shared_ptr<T>**>(
+                        shared_ptr_address_untyped);
+                (*shared_ptr_address) = new std::shared_ptr<T>();
                 if constexpr ((sizeof...(I) == 1) &&
                               std::is_same_v<nth_type<0, ConstructorArgs...>,
                                              void>) {
-                    *result = std::make_shared<T>();
+                    (**shared_ptr_address) = std::make_shared<T>();
                 } else {
-                    *result = std::make_shared<T>(
+                    (**shared_ptr_address) = std::make_shared<T>(
                         parameter_retriever<nth_type<I, ConstructorArgs...>>(
                             context,
                             I)
@@ -219,12 +221,13 @@ namespace mge::script {
                     set_destructor(
                         [](call_context& context) {},
                         [](call_context& context) {
-                            void* shared_ptr_addr =
+                            void* shared_ptr_addr_untyped =
                                 context.shared_ptr_address();
-                            std::shared_ptr<T>* shared_ptr =
-                                reinterpret_cast<std::shared_ptr<T>*>(
-                                    shared_ptr_addr);
-                            shared_ptr->reset();
+                            std::shared_ptr<T>** shared_ptr_addr =
+                                reinterpret_cast<std::shared_ptr<T>**>(
+                                    shared_ptr_addr_untyped);
+                            delete (*shared_ptr_addr);
+                            (*shared_ptr_addr) = nullptr;
                         });
                 } else {
                     set_destructor(
@@ -233,12 +236,13 @@ namespace mge::script {
                             self->~T();
                         },
                         [](call_context& context) {
-                            void* shared_ptr_addr =
+                            void* shared_ptr_addr_untyped =
                                 context.shared_ptr_address();
-                            std::shared_ptr<T>* shared_ptr =
-                                reinterpret_cast<std::shared_ptr<T>*>(
-                                    shared_ptr_addr);
-                            shared_ptr->reset();
+                            std::shared_ptr<T>** shared_ptr_addr =
+                                reinterpret_cast<std::shared_ptr<T>**>(
+                                    shared_ptr_addr_untyped);
+                            delete (*shared_ptr_addr);
+                            (*shared_ptr_addr) = nullptr;
                         });
                 }
             }
@@ -253,13 +257,13 @@ namespace mge::script {
                     ctx,
                     std::make_index_sequence<sizeof...(ConstructorArgs)>{});
             };
-            auto make_shared = [](call_context& ctx) {
-                make_shared_helper<ConstructorArgs...>::make_shared(
+            auto new_shared = [](call_context& ctx) {
+                new_shared_helper<ConstructorArgs...>::new_shared(
                     ctx,
                     std::make_index_sequence<sizeof...(ConstructorArgs)>{});
             };
             signature s(arg_types);
-            add_constructor(s, construct, make_shared);
+            add_constructor(s, construct, new_shared);
             return *this;
         }
 

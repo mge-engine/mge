@@ -22,7 +22,7 @@ namespace mge::script {
 
     void visitor::constructor(const signature&       sig,
                               const invoke_function& new_at,
-                              const invoke_function& make_shared)
+                              const invoke_function& new_shared)
     {}
 
     void visitor::destructor(const invoke_function& delete_ptr,

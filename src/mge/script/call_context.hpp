@@ -34,7 +34,7 @@ namespace mge::script {
         /**
          * @brief Retrieve shared pointer address for current context.
          *
-         * @return address of shared pointer, which itself points to this
+         * @return address of pointer to shared pointer, which itself points to this
          * pointer if initialized
          */
         virtual void* shared_ptr_address() = 0;

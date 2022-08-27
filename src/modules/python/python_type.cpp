@@ -221,8 +221,8 @@ namespace mge::python {
             m_create_data->slots.emplace_back(sentinel_slot);
             m_create_data->spec.slots = m_create_data->slots.data();
         }
-        m_create_data->spec.basicsize = static_cast<int>(
-            aligned_PyObject_HEAD_size() + m_type->shared_ptr_size());
+        m_create_data->spec.basicsize =
+            static_cast<int>(aligned_PyObject_HEAD_size() + sizeof(void*));
 
         m_create_data->spec.flags |= Py_TPFLAGS_BASETYPE;
 
@@ -285,7 +285,7 @@ namespace mge::python {
     {
         unsigned char* self_data = reinterpret_cast<unsigned char*>(self);
         self_data += aligned_PyObject_HEAD_size();
-        memset(self_data, 0, m_type->shared_ptr_size());
+        memset(self_data, 0, sizeof(void*));
     }
 
     int
@@ -327,7 +327,7 @@ namespace mge::python {
                                   PyObject*                       self)
     {
         python_object_call_context ctx(this, self);
-        (*ctor.make_shared)(ctx);
+        (*ctor.new_shared)(ctx);
         return 0;
     }
 
@@ -335,10 +335,9 @@ namespace mge::python {
     {
         unsigned char* self_data = reinterpret_cast<unsigned char*>(self);
         self_data += aligned_PyObject_HEAD_size();
-
         std::shared_ptr<int>* sptr =
             reinterpret_cast<std::shared_ptr<int>*>(self_data);
-        if (*sptr) {
+        if (sptr) {
             return sptr->get();
         } else {
             return nullptr;
