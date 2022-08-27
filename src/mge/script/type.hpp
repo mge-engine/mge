@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/nth_type.hpp"
 #include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
@@ -12,6 +13,8 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
+
+#include <iostream>
 #include <string>
 
 namespace mge::script {
@@ -179,13 +182,15 @@ namespace mge::script {
         template <typename... ConstructorArgs> struct new_shared_helper
         {
             template <std::size_t... I>
-            static inline void new_shared(call_context& context,
-                                          std::index_sequence<I...>)
+            static void new_shared(call_context& context,
+                                   std::index_sequence<I...>)
             {
+                std::cout << "invoke new_shared" << std::endl;
                 void* shared_ptr_address_untyped = context.shared_ptr_address();
                 std::shared_ptr<T>** shared_ptr_address =
                     reinterpret_cast<std::shared_ptr<T>**>(
                         shared_ptr_address_untyped);
+                mge::call_debugger();
                 (*shared_ptr_address) = new std::shared_ptr<T>();
                 if constexpr ((sizeof...(I) == 1) &&
                               std::is_same_v<nth_type<0, ConstructorArgs...>,
@@ -269,17 +274,17 @@ namespace mge::script {
 
         inline self_type& constructor()
         {
-            auto construct = [](call_context& ctx) {
-                new (ctx.this_ptr()) T();
-            };
-            auto make_shared = [](call_context& ctx) {
-                void* shared_ptr_address = ctx.shared_ptr_address();
-                std::shared_ptr<T>* result =
-                    reinterpret_cast<std::shared_ptr<T>*>(shared_ptr_address);
-                *result = std::make_shared<T>();
+            auto new_at = [](call_context& ctx) { new (ctx.this_ptr()) T(); };
+            auto new_shared = [](call_context& context) {
+                void* shared_ptr_addr_untyped = context.shared_ptr_address();
+                std::shared_ptr<T>** shared_ptr_addr =
+                    reinterpret_cast<std::shared_ptr<T>**>(
+                        shared_ptr_addr_untyped);
+                (*shared_ptr_addr) = new std::shared_ptr<T>();
+                (**shared_ptr_addr) = std::make_shared<T>();
             };
             signature empty;
-            add_constructor(empty, construct, make_shared);
+            add_constructor(empty, new_at, new_shared);
             return *this;
         }
 

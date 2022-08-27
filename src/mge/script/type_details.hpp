@@ -239,6 +239,7 @@ namespace mge::script {
         void add_type(const type_details_ref& t);
 
         const auto& constructors() const { return m_constructors; }
+        const auto& fields() const { return m_fields; }
 
     private:
         using type_map = std::unordered_map<std::type_index, type_details_ref>;

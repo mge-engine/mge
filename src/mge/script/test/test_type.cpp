@@ -160,12 +160,35 @@ namespace mge {
         class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
 
         std::shared_ptr<fields>* shared;
-        MOCK_call_context        ctx;
-        EXPECT_CALL(ctx, shared_ptr_address())
-            .Times(1)
-            .WillOnce(Return(&shared));
-        ct->constructors().at(0).new_shared(ctx);
-        EXPECT_EQ(123, (*shared)->x);
+        {
+            MOCK_call_context ctx;
+            EXPECT_CALL(ctx, shared_ptr_address())
+                .Times(1)
+                .WillOnce(Return(&shared));
+            ct->constructors().at(0).new_shared(ctx);
+            EXPECT_EQ(123, (*shared)->x);
+        }
+        // set x
+        {
+            MOCK_call_context ctx;
+            EXPECT_CALL(ctx, this_ptr())
+                .Times(1)
+                .WillOnce(Return(shared->get()));
+            EXPECT_CALL(ctx, int32_t_parameter(_))
+                .Times(1)
+                .WillOnce(Return(4711));
+            ct->fields().at(0).setter(ctx);
+            EXPECT_EQ(4711, (*shared)->x);
+        }
+        // get x
+        {
+            ::testing::StrictMock<MOCK_call_context> ctx;
+            EXPECT_CALL(ctx, this_ptr())
+                .Times(1)
+                .WillOnce(Return(shared->get()));
+            EXPECT_CALL(ctx, store_int32_t_result(4711)).Times(1);
+            ct->fields().at(0).getter(ctx);
+        }
     }
 
     struct memberfunctions
