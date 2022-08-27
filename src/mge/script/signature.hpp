@@ -50,6 +50,8 @@ namespace mge::script {
 
         bool empty() const;
 
+        auto size() const { return m_types.size(); }
+
         /**
          * @brief Returns the empty signature.
          *

@@ -2,12 +2,18 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/module.hpp"
+#include "mge/script/signature.hpp"
 #include "mge/script/type.hpp"
+#include "mge/script/type_details.hpp"
+
 #include "test/googletest.hpp"
+
+#include "mock_call_context.hpp"
 
 #include <string_view>
 
 using namespace std::literals;
+using namespace testing;
 
 namespace mge {
 
@@ -82,9 +88,13 @@ namespace mge {
 
     struct constructed
     {
-        constructed() {}
-        constructed(int, int) {}
+        constructed() { ++constructed_count; }
+        constructed(int, int) { ++constructed_count; }
+
+        static int constructed_count;
     };
+
+    int constructed::constructed_count = 0;
 
     TEST_F(test_type, constructor)
     {
@@ -92,6 +102,21 @@ namespace mge {
         module("mge")(type<constructed>("constructed")
                           .constructor()
                           .constructor<int, int>());
+
+        type_details_ref r =
+            type_details::get(std::type_index(typeid(constructed)));
+        EXPECT_TRUE(r);
+        class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
+
+        EXPECT_EQ(2u, ct->constructors().size());
+        EXPECT_EQ(0u, ct->constructors()[0].signature.size());
+        constructed check;
+        constructed::constructed_count = 0;
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).Times(1).WillOnce(Return(&check));
+        EXPECT_TRUE(ct->constructors()[0].new_at);
+        ct->constructors()[0].new_at(ctx);
+        EXPECT_EQ(1, constructed::constructed_count);
     }
 
     struct fields

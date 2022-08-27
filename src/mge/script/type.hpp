@@ -159,8 +159,8 @@ namespace mge::script {
         template <typename... ConstructorArgs> struct constructor_helper
         {
             template <std::size_t... I>
-            static inline void construct(call_context& context,
-                                         std::index_sequence<I...>)
+            static void construct(call_context& context,
+                                  std::index_sequence<I...>)
             {
                 if constexpr ((sizeof...(I) == 1) &&
                               std::is_same_v<nth_type<0, ConstructorArgs...>,
