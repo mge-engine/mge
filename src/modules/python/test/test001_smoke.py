@@ -13,6 +13,12 @@ class TestSmoke(unittest.TestCase):
         with self.assertRaises(SystemError):
             v = mge.fvec2(bubba=17)
 
+    def test_default_field_access(self):
+        """Test a default constructor"""
+        v = mge.fvec2()
+        self.assertEqual(0.0, v.x)
+        self.assertEqual(0.0, v.y)
+
 
 if __name__ == "main":
     unittest.main()
