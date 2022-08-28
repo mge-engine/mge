@@ -44,7 +44,9 @@ namespace mge::script {
 
         bool operator==(const signature& s) const;
 
-        const std::type_index& operator[](size_t i) const;
+        const auto& operator[](size_t i) const { return *m_types[i]; }
+
+        const auto& at(size_t i) const { return *m_types.at(i); }
 
         bool matches(const signature& other) const;
 

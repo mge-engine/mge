@@ -251,7 +251,38 @@ namespace mge {
         }
 
         // assign
-        // at
+
+        const_reference at(size_t i) const
+        {
+            return std::visit(
+                overloaded{
+                    [&](const std::monostate&) -> const_reference {
+                        throw std::out_of_range("out of range");
+                    },
+                    [&](const small_data& d) -> const_reference {
+                        return d.data.at(i);
+                    },
+                    [&](const std::vector<T, Alloc>& v) -> const_reference {
+                        return v.at(i);
+                    },
+                },
+                m_data);
+        }
+
+        reference at(size_t i)
+        {
+            return std::visit(
+                overloaded{
+                    [&](std::monostate&) -> reference {
+                        throw std::out_of_range("out of range");
+                    },
+                    [&](small_data& d) -> reference { return d.data.at(i); },
+                    [&](std::vector<T, Alloc>& v) -> reference {
+                        return v.at(i);
+                    },
+                },
+                m_data);
+        }
 
         reference back()
         {

@@ -26,6 +26,7 @@ namespace mge::python {
             MATCH_EXACT
         };
 
+        value_classification();
         value_classification(PyObject* obj);
 
         value_classification(const value_classification&) = default;

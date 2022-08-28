@@ -5,6 +5,7 @@
 #include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_object_call_context.hpp"
+#include "value_classification.hpp"
 
 #include "mge/core/details.hpp"
 #include "mge/core/get_or_default.hpp"
@@ -310,12 +311,45 @@ namespace mge::python {
             if (it->second.size() == 1) {
                 return &((it->second)[0]);
             }
-            // need to look for best fitting
-            /*
-            const auto&     all_ctors = it->second;
-            const auto      all_ctors_size = all_ctors.size();
-            std::bitset<32> killed_ctors;
-            */
+
+            mge::small_vector<value_classification, 3> value_classes;
+            for (size_t i = 0; i < tuple_size; ++i) {
+                value_classes.push_back(
+                    value_classification(PyTuple_GET_ITEM(args, i)));
+            }
+            const auto& all_ctors = it->second;
+            const auto  all_ctors_size = all_ctors.size();
+            size_t      best_constructor = all_ctors_size;
+            size_t      best_constructor_match_count = 0;
+
+            for (size_t ci = 0; ci < all_ctors_size; ++ci) {
+
+                size_t exact_match_count = 0;
+                bool   match_failed = false;
+
+                for (size_t i = 0; i < tuple_size; ++i) {
+                    auto match =
+                        value_classes[i].match(all_ctors[ci].sig->at(i));
+                    if (match == value_classification::NO_MATCH) {
+                        match_failed = true;
+                        break;
+                    } else if (match == value_classification::MATCH_EXACT) {
+                        ++exact_match_count;
+                    }
+                }
+
+                if (!match_failed) {
+                    if (exact_match_count > best_constructor_match_count) {
+                        best_constructor = ci;
+                    } else if (best_constructor == all_ctors_size) {
+                        best_constructor = ci;
+                    }
+                }
+            }
+
+            if (best_constructor != all_ctors_size) {
+                return &(all_ctors[best_constructor]);
+            }
         }
         return nullptr;
     }

@@ -2,6 +2,10 @@
 #include "python_type.hpp"
 
 namespace mge::python {
+    value_classification::value_classification()
+        : m_type_class(TC_NONE)
+    {}
+
     value_classification::value_classification(PyObject* obj)
         : m_type_class(TC_NONE)
     {

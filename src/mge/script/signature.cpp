@@ -27,11 +27,6 @@ namespace mge::script {
         return false;
     }
 
-    const std::type_index& signature::operator[](size_t i) const
-    {
-        return *m_types[i];
-    }
-
     bool signature::matches(const signature& other) const
     {
         return *this == other;
