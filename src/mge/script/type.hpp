@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/call_debugger.hpp"
 #include "mge/core/nth_type.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
@@ -16,6 +17,14 @@
 
 #include <iostream>
 #include <string>
+
+namespace mge {
+#ifdef BUILD_SCRIPT
+    MGE_USE_TRACE(SCRIPT);
+#else
+    MGE_USE_IMPORTED_TRACE(SCRIPT);
+#endif
+} // namespace mge
 
 namespace mge::script {
 
@@ -185,7 +194,6 @@ namespace mge::script {
             static void new_shared(call_context& context,
                                    std::index_sequence<I...>)
             {
-                std::cout << "invoke new_shared" << std::endl;
                 void* shared_ptr_address_untyped = context.shared_ptr_address();
                 std::shared_ptr<T>** shared_ptr_address =
                     reinterpret_cast<std::shared_ptr<T>**>(

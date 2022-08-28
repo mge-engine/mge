@@ -9,10 +9,6 @@
 #include "mge/script/module_details.hpp"
 #include "mge/script/visitor.hpp"
 
-namespace mge {
-    MGE_USE_TRACE(SCRIPT);
-}
-
 namespace mge::script {
 
     class type_dictionary

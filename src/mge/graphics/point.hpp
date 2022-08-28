@@ -2,11 +2,13 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/trace.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
 
 namespace mge {
+
     /**
      * A point.
      */
@@ -17,6 +19,7 @@ namespace mge {
             : x(0)
             , y(0)
         {}
+
         /**
          * @brief Create point.
          * @param x_ x coordinate
@@ -26,7 +29,8 @@ namespace mge {
             : x(x_)
             , y(y_)
         {}
-        ~point() {}
+
+        ~point() = default;
 
         point(const point&) = default;
         point(point&&) = default;

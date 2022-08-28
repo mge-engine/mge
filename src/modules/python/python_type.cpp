@@ -333,13 +333,17 @@ namespace mge::python {
 
     void* python_type::this_ptr(PyObject* self)
     {
+        if (!self) {
+            return nullptr;
+        }
+
         unsigned char* self_data = reinterpret_cast<unsigned char*>(self);
         self_data += aligned_PyObject_HEAD_size();
-        std::shared_ptr<int>* sptr =
-            reinterpret_cast<std::shared_ptr<int>*>(self_data);
-        if (sptr) {
-            return sptr->get();
-        } else {
+        std::shared_ptr<int>** sptr =
+            reinterpret_cast<std::shared_ptr<int>**>(self_data);
+        if (*sptr)
+            return (*sptr)->get();
+        else {
             return nullptr;
         }
     }

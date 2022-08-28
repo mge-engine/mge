@@ -12,10 +12,6 @@
 #include "mge/script/type_details.hpp"
 #include "mge/script/visitor.hpp"
 
-namespace mge {
-    MGE_USE_TRACE(SCRIPT);
-}
-
 namespace mge::script {
 
     struct root_module_holder
