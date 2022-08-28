@@ -104,13 +104,13 @@ namespace mge::python {
 
         const python_type::constructor* select_constructor(PyObject* args);
 
-        mutable std::unique_ptr<create_data> m_create_data;
-        mutable PyObject*                    m_python_type;
-        python_context&                      m_context;
-        mge::script::type_details_ref        m_type;
-        std::vector<field>                   m_fields;
-        std::vector<constructor>             m_constructors;
-        destructor                           m_destructor;
+        mutable std::unique_ptr<create_data>       m_create_data;
+        mutable PyObject*                          m_python_type;
+        python_context&                            m_context;
+        mge::script::type_details_ref              m_type;
+        std::vector<field>                         m_fields;
+        std::map<size_t, std::vector<constructor>> m_constructors;
+        destructor                                 m_destructor;
 
         static std::unordered_map<PyTypeObject*, python_type*> s_all_types;
     };

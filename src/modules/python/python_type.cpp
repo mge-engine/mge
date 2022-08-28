@@ -69,7 +69,7 @@ namespace mge::python {
     {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add constructor to " << m_type->name() << ": " << gist(sig);
-        m_constructors.emplace_back(&sig, &new_at, &make_shared);
+        m_constructors[sig.size()].emplace_back(&sig, &new_at, &make_shared);
     }
 
     void python_type::add_destructor(
@@ -303,12 +303,12 @@ namespace mge::python {
     python_type::select_constructor(PyObject* args)
     {
         size_t tuple_size = PyTuple_Size(args);
-        if (tuple_size == 0) {
-            for (const auto& ctor : m_constructors) {
-                if (ctor.sig->empty()) {
-                    return &ctor;
-                }
+        auto   it = m_constructors.find(tuple_size);
+        if (it != m_constructors.end()) {
+            if (it->second.size() == 1) {
+                return &((it->second)[0]);
             }
+            // need to look for best fitting
         }
         return nullptr;
     }
