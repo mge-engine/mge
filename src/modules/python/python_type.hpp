@@ -82,11 +82,11 @@ namespace mge::python {
 
         struct field
         {
-            std::string                   name;
-            mge::script::type_details_ref type;
-            mge::script::invoke_function  getter;
-            mge::script::invoke_function  setter;
-            python_type*                  ptype;
+            const std::string*                   name;
+            const mge::script::type_details_ref* type;
+            const mge::script::invoke_function*  getter;
+            const mge::script::invoke_function*  setter;
+            python_type*                         ptype;
         };
 
         struct constructor

@@ -59,7 +59,7 @@ namespace mge::python {
                                 const mge::script::invoke_function&  setter,
                                 const mge::script::invoke_function&  getter)
     {
-        m_fields.emplace_back(field{name, type, setter, getter, this});
+        m_fields.emplace_back(field{&name, &type, &setter, &getter, this});
     }
 
     void python_type::add_constructor(
@@ -99,7 +99,7 @@ namespace mge::python {
     {
         python_type::field* f = reinterpret_cast<python_type::field*>(field);
         python_object_call_context ctx(f->ptype, self);
-        f->getter(ctx);
+        (*(f->getter))(ctx);
         return ctx.result();
     }
 
@@ -109,13 +109,13 @@ namespace mge::python {
         python_type::field* f = reinterpret_cast<python_type::field*>(field);
         try {
             python_object_call_context ctx(f->ptype, self, value);
-            f->setter(ctx);
+            (*(f->setter))(ctx);
         } catch (const mge::exception& ex) {
             PyErr_Format(
                 PyExc_ValueError,
                 "Cannot set field '%s' for type <%s> from value %S : %s",
-                f->name.c_str(),
-                f->type->name().c_str(),
+                f->name->c_str(),
+                (*f->type)->name().c_str(),
                 value,
                 ex.what());
             return -1;
@@ -200,12 +200,12 @@ namespace mge::python {
                 << "' not found";
         }
         for (const auto& f : m_fields) {
-            PyGetSetDef getset{f.name.c_str(),
+            PyGetSetDef getset{f.name->c_str(),
                                &get_field_value, /* getter */
-                               f.setter
+                               (*f.setter)
                                    ? &set_field_value
                                    : nullptr, /* setter, null for readonly */
-                               f.name.c_str(),
+                               f.name->c_str(),
                                const_cast<field*>(&f)};
 
             m_create_data->getset_defs.emplace_back(getset);
