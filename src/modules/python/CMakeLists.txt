@@ -8,7 +8,8 @@ SET(mge_python_module_SOURCES
     python_binder.cpp
     python_module.cpp
     python_type.cpp
-    python_object_call_context.cpp)
+    python_object_call_context.cpp
+    value_classification.cpp)
 
 ADD_LIBRARY(mge_module_python MODULE
             ${mge_python_module_SOURCES})

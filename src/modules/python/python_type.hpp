@@ -55,6 +55,7 @@ namespace mge::python {
                        const mge::script::invoke_function& delete_shared_ptr);
 
         const std::string& local_name() const { return m_type->name(); }
+        std::type_index    type_index() const { return m_type->type_index(); }
         bool               is_embeddable() const;
         PyObject*          py_type() const;
         void               interpreter_lost();
