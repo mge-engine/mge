@@ -299,6 +299,20 @@ namespace mge::python {
         memset(self_data, 0, sizeof(void*));
     }
 
+    const python_type::constructor*
+    python_type::select_constructor(PyObject* args)
+    {
+        size_t tuple_size = PyTuple_Size(args);
+        if (tuple_size == 0) {
+            for (const auto& ctor : m_constructors) {
+                if (ctor.sig->empty()) {
+                    return &ctor;
+                }
+            }
+        }
+        return nullptr;
+    }
+
     int
     python_type::init_object(PyObject* self, PyObject* args, PyObject* kwargs)
     {
@@ -315,31 +329,25 @@ namespace mge::python {
             return 1;
         }
 
-        if (PyTuple_Size(args) == 0) {
-            for (const auto& ctor : m_constructors) {
-                if (ctor.sig->empty()) {
-                    return init_default(ctor, self);
-                }
+        const python_type::constructor* ctor = select_constructor(args);
+        if (ctor) {
+            python_object_call_context ctx(this, self, args);
+            try {
+                (*ctor->new_shared)(ctx);
+            } catch (const mge::exception& ex) {
+                PyErr_Format(PyExc_RuntimeError,
+                             "Cannot create object of type <%s>: %s",
+                             m_type->name().c_str(),
+                             ex.what());
+                return -1;
             }
-            PyErr_SetString(
-                PyExc_RuntimeError,
-                "No matching constructor for empty argument list found");
-            return 1;
+            return 0;
         } else {
-            PyErr_SetString(PyExc_NotImplementedError,
-                            "Constructor with arguments");
-            return 1;
+            PyErr_Format(PyExc_RuntimeError,
+                         "No matching constructor found for type <%s>",
+                         m_type->name().c_str());
+            return -1;
         }
-
-        return 0;
-    }
-
-    int python_type::init_default(const python_type::constructor& ctor,
-                                  PyObject*                       self)
-    {
-        python_object_call_context ctx(this, self);
-        (*ctor.new_shared)(ctx);
-        return 0;
     }
 
     void* python_type::this_ptr(PyObject* self)

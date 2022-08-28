@@ -102,7 +102,7 @@ namespace mge::python {
             const mge::script::invoke_function* delete_shared_ptr;
         };
 
-        int init_default(const python_type::constructor& ctor, PyObject* self);
+        const python_type::constructor* select_constructor(PyObject* args);
 
         mutable std::unique_ptr<create_data> m_create_data;
         mutable PyObject*                    m_python_type;
