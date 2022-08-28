@@ -4,7 +4,9 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 namespace mge {
+    MGE_DEFINE_TRACE(GRAPHICS);
     MGE_REGISTER_COMPONENT(render_system);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(std::string,
                                       graphics,
