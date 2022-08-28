@@ -15,6 +15,8 @@
 #include "mge/script/signature.hpp"
 #include "mge/script/type_details.hpp"
 
+#include <bitset>
+
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -309,6 +311,11 @@ namespace mge::python {
                 return &((it->second)[0]);
             }
             // need to look for best fitting
+            /*
+            const auto&     all_ctors = it->second;
+            const auto      all_ctors_size = all_ctors.size();
+            std::bitset<32> killed_ctors;
+            */
         }
         return nullptr;
     }
