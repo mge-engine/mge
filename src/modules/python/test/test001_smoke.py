@@ -19,6 +19,18 @@ class TestSmoke(unittest.TestCase):
         self.assertEqual(0.0, v.x)
         self.assertEqual(0.0, v.y)
 
+    def test_set_field_successful(self):
+        """Test setting a field successfully"""
+        p = mge.point()
+        p.x = 17
+        self.assertEquals(17, p.x)
+
+    def test_set_field_unsuccessful(self):
+        """Test setting a field successfully"""
+        p = mge.point()
+        with self.assertRaises(ValueError):
+            p.x = 'hossa'
+
 
 if __name__ == "main":
     unittest.main()

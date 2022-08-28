@@ -107,8 +107,19 @@ namespace mge::python {
     python_type::set_field_value(PyObject* self, PyObject* value, void* field)
     {
         python_type::field* f = reinterpret_cast<python_type::field*>(field);
-        python_object_call_context ctx(f->ptype, self, value);
-        f->setter(ctx);
+        try {
+            python_object_call_context ctx(f->ptype, self, value);
+            f->setter(ctx);
+        } catch (const mge::exception& ex) {
+            PyErr_Format(
+                PyExc_ValueError,
+                "Cannot set field '%s' for type <%s> from value %S : %s",
+                f->name.c_str(),
+                f->type->name().c_str(),
+                value,
+                ex.what());
+            return -1;
+        }
         return 0;
     }
 

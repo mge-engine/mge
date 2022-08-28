@@ -2,11 +2,20 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/trace.hpp"
 #include "mge/script/call_context.hpp"
 
 #include <cstdint>
 #include <string_view>
 #include <type_traits>
+
+namespace mge {
+#ifdef BUILD_SCRIPT
+    MGE_USE_TRACE(SCRIPT);
+#else
+    MGE_USE_IMPORTED_TRACE(SCRIPT);
+#endif
+} // namespace mge
 
 namespace mge::script {
 
