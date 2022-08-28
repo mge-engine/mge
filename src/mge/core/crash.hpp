@@ -12,4 +12,12 @@ namespace mge {
      */
     MGE_NO_RETURN void MGECORE_EXPORT crash();
 
+    /**
+     * @brief Terminates the application, printing a specific message.
+     *
+     * @param fmt format string
+     * @param ... format arguments
+     */
+    MGE_NO_RETURN void MGECORE_EXPORT crash(const char* fmt, ...);
+
 } // namespace mge

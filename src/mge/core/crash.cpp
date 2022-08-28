@@ -6,12 +6,25 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <stdarg.h>
 
 namespace mge {
-    void crash()
+    void crash() { crash("Crash!!!"); }
+
+    void crash(const char* fmt, ...)
     {
+        va_list args;
+        va_start(args, fmt);
+        va_list args2;
+        va_copy(args2, args);
+        size_t needed = 1 + vsnprintf(nullptr, 0, fmt, args);
+        char*  buf = (char*)alloca(needed);
+        va_end(args);
+        vsnprintf(buf, needed, fmt, args2);
         stacktrace st;
-        std::cerr << "Crash" << std::endl << st << std::endl;
+        std::cerr << buf << std::endl << st << std::endl;
+        va_end(args);
         abort();
     }
+
 } // namespace mge
