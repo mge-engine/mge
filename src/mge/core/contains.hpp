@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/small_vector.hpp"
 #include <algorithm>
 #include <array>
 #include <vector>
@@ -22,8 +23,20 @@ namespace mge {
         return c.find(e) != c.end();
     }
 
-    template <typename Element>
-    inline bool contains(const std::vector<Element>& c, const Element& e)
+    template <typename Element, class Alloc>
+    inline bool contains(const std::vector<Element, Alloc>& c, const Element& e)
+    {
+        auto it = c.begin();
+        while (it != c.end()) {
+            if (*it == e) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    template <typename Element, size_t Size, class Alloc>
+    inline bool contains(const small_vector<Element, Size, Alloc>& c, const Element& e)
     {
         auto it = c.begin();
         while (it != c.end()) {

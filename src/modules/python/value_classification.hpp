@@ -1,7 +1,7 @@
 #pragma once
 #include "python.hpp"
+#include "python_type.hpp"
 
-#include <optional>
 #include <typeindex>
 
 namespace mge::python {
@@ -43,7 +43,7 @@ namespace mge::python {
          */
         match_type match(const std::type_index& arg_type) const;
 
-        type_class                     m_type_class;
-        std::optional<std::type_index> m_type_index;
+        type_class   m_type_class;
+        python_type* m_python_type;
     };
 } // namespace mge::python
