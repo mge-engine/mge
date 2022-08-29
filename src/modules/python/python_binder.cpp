@@ -146,6 +146,24 @@ namespace mge::python {
             m_current_type.reset();
         }
 
+        void method(const std::string&                  name,
+                    bool                                is_static,
+                    const std::type_index&              return_type,
+                    const mge::script::signature&       sig,
+                    const mge::script::invoke_function& invoke) override
+        {
+            if (m_current_type) {
+                if (is_static) {
+                    m_current_type->add_static_method(name,
+                                                      return_type,
+                                                      sig,
+                                                      invoke);
+                } else {
+                    m_current_type->add_method(name, return_type, sig, invoke);
+                }
+            }
+        }
+
     private:
         python_binder&                m_binder;
         std::stack<python_module_ref> m_py_modules;

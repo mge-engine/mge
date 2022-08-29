@@ -50,6 +50,16 @@ namespace mge::python {
                              const mge::script::invoke_function& new_at,
                              const mge::script::invoke_function& make_shared);
 
+        void add_method(const std::string&                  name,
+                        const std::type_index&              return_type,
+                        const mge::script::signature&       sig,
+                        const mge::script::invoke_function& invoke);
+
+        void add_static_method(const std::string&                  name,
+                               const std::type_index&              return_type,
+                               const mge::script::signature&       sig,
+                               const mge::script::invoke_function& invoke);
+
         void
         add_destructor(const mge::script::invoke_function& delete_ptr,
                        const mge::script::invoke_function& delete_shared_ptr);

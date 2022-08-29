@@ -75,6 +75,19 @@ namespace mge::python {
         m_constructors[sig.size()].emplace_back(&sig, &new_at, &make_shared);
     }
 
+    void python_type::add_method(const std::string&            name,
+                                 const std::type_index&        return_type,
+                                 const mge::script::signature& sig,
+                                 const mge::script::invoke_function& invoke)
+    {}
+
+    void
+    python_type::add_static_method(const std::string&            name,
+                                   const std::type_index&        return_type,
+                                   const mge::script::signature& sig,
+                                   const mge::script::invoke_function& invoke)
+    {}
+
     void python_type::add_destructor(
         const mge::script::invoke_function& delete_ptr,
         const mge::script::invoke_function& delete_shared_ptr)
