@@ -34,6 +34,11 @@ namespace mge::script {
                                  const invoke_function& make_shared);
         virtual void destructor(const invoke_function& delete_ptr,
                                 const invoke_function& delete_shared);
+        virtual void method(const std::string&     name,
+                            bool                   is_static,
+                            const std::type_index& return_type,
+                            const signature&       sig,
+                            const invoke_function& invoke);
     };
 
 } // namespace mge::script

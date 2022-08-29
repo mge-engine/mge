@@ -228,6 +228,9 @@ namespace mge::script {
         for (const auto& c : m_constructors) {
             v.constructor(c.signature, c.new_at, c.new_shared);
         }
+        for (const auto& m : m_methods) {
+            v.method(m.name, m.is_static, m.result_type, m.signature, m.invoke);
+        }
         if (!m_destructor.empty()) {
             v.destructor(m_destructor.delete_ptr,
                          m_destructor.delete_shared_ptr);
