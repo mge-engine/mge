@@ -1,6 +1,11 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "mge/graphics/buffer_type.hpp"
+#include "mge/graphics/command_list.hpp"
+#include "mge/graphics/data_type.hpp"
+#include "mge/graphics/hardware_buffer.hpp"
+#include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/point.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgb_color.hpp"
@@ -24,6 +29,44 @@ namespace mge::script {
         void bind()
         {
             module("mge")(
+                type<mge::buffer_type>("buffer_type")
+                    .enum_value("VERTEX", mge::buffer_type::VERTEX)
+                    .enum_value("INDEX", mge::buffer_type::INDEX)
+                    .enum_value("CONSTANT", mge::buffer_type::CONSTANT),
+                type<mge::command_list>("command_list")
+                    .method("native", &mge::command_list::native)
+                    .method("clear", &mge::command_list::clear)
+                    .method("execute", &mge::command_list::execute),
+                type<mge::data_type>("data_type")
+                    .enum_value("UNKNOWN", mge::data_type::UNKNOWN)
+                    .enum_value("INT8", mge::data_type::INT8)
+                    .enum_value("UINT8", mge::data_type::UINT8)
+                    .enum_value("INT16", mge::data_type::INT16)
+                    .enum_value("UINT16", mge::data_type::UINT16)
+                    .enum_value("INT32", mge::data_type::INT32)
+                    .enum_value("UINT32", mge::data_type::UINT32)
+                    .enum_value("INT64", mge::data_type::INT64)
+                    .enum_value("UINT64", mge::data_type::UINT64)
+                    .enum_value("INT128", mge::data_type::INT128)
+                    .enum_value("UINT128", mge::data_type::UINT128)
+                    .enum_value("HALF", mge::data_type::HALF)
+                    .enum_value("FLOAT", mge::data_type::FLOAT)
+                    .enum_value("DOUBLE", mge::data_type::DOUBLE)
+                    .enum_value("LONG_DOUBLE", mge::data_type::LONG_DOUBLE),
+                type<mge::extent>("extent")
+                    .constructor()
+                    .constructor<uint32_t, uint32_t>()
+                    .copy_constructor()
+                    .field("width", &mge::extent::width)
+                    .field("height", &mge::extent::height),
+                type<mge::index_buffer>("index_buffer")
+                    .base(type<mge::hardware_buffer>()),
+                type<mge::hardware_buffer>("hardware_buffer")
+                    .method("size", &mge::hardware_buffer::size)
+                    .method("map", &mge::hardware_buffer::map)
+                    .method("unmap", &mge::hardware_buffer::unmap)
+                    .method("mapped", &mge::hardware_buffer::mapped)
+                    .method("type", &mge::hardware_buffer::type),
                 type<mge::shader_type>("shader_type")
                     .enum_value("VERTEX", mge::shader_type::VERTEX)
                     .enum_value("FRAGMENT", mge::shader_type::FRAGMENT)
@@ -54,12 +97,6 @@ namespace mge::script {
                             &mge::window_options::standard_options)
                     .method("fullscreen_options",
                             &mge::window_options::fullscreen_options),
-                type<mge::extent>("extent")
-                    .constructor()
-                    .constructor<uint32_t, uint32_t>()
-                    .copy_constructor()
-                    .field("width", &mge::extent::width)
-                    .field("height", &mge::extent::height),
                 type<mge::render_system>("render_system")(
                     type<render_system::monitor_collection>(
                         "monitor_collection"))

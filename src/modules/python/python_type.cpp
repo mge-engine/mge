@@ -79,14 +79,22 @@ namespace mge::python {
                                  const std::type_index&        return_type,
                                  const mge::script::signature& sig,
                                  const mge::script::invoke_function& invoke)
-    {}
+    {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Add method '" << name << "' to " << m_type->name() << ": "
+            << gist(sig) << " -> " << return_type.name();
+    }
 
     void
     python_type::add_static_method(const std::string&            name,
                                    const std::type_index&        return_type,
                                    const mge::script::signature& sig,
                                    const mge::script::invoke_function& invoke)
-    {}
+    {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Add static method '" << name << "' to " << m_type->name()
+            << ": " << gist(sig) << " -> " << return_type.name();
+    }
 
     void python_type::add_destructor(
         const mge::script::invoke_function& delete_ptr,

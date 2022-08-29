@@ -43,6 +43,14 @@ namespace mge::script {
         }
     };
 
+    template <> struct result_storer<void*, void>
+    {
+        static void store(call_context& context, void* value)
+        {
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
+    };
+
     template <typename T>
     struct result_storer<
         T,
