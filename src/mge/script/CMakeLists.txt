@@ -67,6 +67,12 @@ SET(mge_module_script_graphics_SOURCES
 ADD_LIBRARY(mge_module_script_graphics MODULE ${mge_module_script_graphics_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_graphics mgescript mgegraphics)
 
+SET(mge_module_script_input_SOURCES
+    bind_input.cpp)
+ADD_LIBRARY(mge_module_script_input MODULE ${mge_module_script_input_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_input mgescript mgeinput)
+
+
 SET(mge_module_script_math_SOURCES
     bind_math.cpp)
 ADD_LIBRARY(mge_module_script_math MODULE ${mge_module_script_math_SOURCES})
