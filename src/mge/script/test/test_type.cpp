@@ -191,55 +191,6 @@ namespace mge {
         }
     }
 
-    struct string_field
-    {
-        std::string foo;
-    };
-
-    TEST_F(test_type, string_field)
-    {
-        using namespace mge::script;
-        module("mge")(type<string_field>("string_field")
-                          .constructor()
-                          .field("foo", &string_field::foo));
-
-        type_details_ref r =
-            type_details::get(std::type_index(typeid(string_field)));
-        EXPECT_TRUE(r);
-        class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
-
-        std::shared_ptr<string_field>* shared;
-        {
-            MOCK_call_context ctx;
-            EXPECT_CALL(ctx, shared_ptr_address())
-                .Times(1)
-                .WillOnce(Return(&shared));
-            ct->constructors().at(0).new_shared(ctx);
-        }
-        // set foo
-        {
-            MOCK_call_context ctx;
-            EXPECT_CALL(ctx, this_ptr())
-                .Times(1)
-                .WillOnce(Return(shared->get()));
-            EXPECT_CALL(ctx, string_parameter(_))
-                .Times(1)
-                .WillOnce(Return(std::string("foobar")));
-            ct->fields().at(0).setter(ctx);
-            EXPECT_EQ(std::string("foobar"), (*shared)->foo);
-        }
-        // get foo
-        {
-            ::testing::StrictMock<MOCK_call_context> ctx;
-            EXPECT_CALL(ctx, this_ptr())
-                .Times(1)
-                .WillOnce(Return(shared->get()));
-            EXPECT_CALL(ctx, store_string_result(std::string("foobar")))
-                .Times(1);
-            ct->fields().at(0).getter(ctx);
-        }
-    }
-
     struct memberfunctions
     {
         enum K

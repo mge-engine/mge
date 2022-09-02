@@ -42,8 +42,7 @@ namespace mge::script {
     module_details_ref module_details::get(const std::string& path)
     {
         if (path.empty()) {
-            auto result = s_root_module_holder->root_module;
-            return result;
+            return s_root_module_holder->root_module;
         }
 
         std::vector<std::string> modules;
