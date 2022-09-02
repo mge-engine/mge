@@ -44,7 +44,9 @@ namespace mge::python {
         std::lock_guard<std::mutex> guard(s_lock);
         std::erase(s_engines, this);
         if (--s_initialized_engines == 0) {
-            Py_FinalizeEx();
+            if (Py_IsInitialized()) {
+                Py_FinalizeEx();
+            }
         }
     }
 

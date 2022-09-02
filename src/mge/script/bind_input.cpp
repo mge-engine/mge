@@ -23,6 +23,7 @@ namespace mge::script {
 
         void bind()
         {
+#if 0
             module("mge")(
                 // module begin
                 type<mge::input_handler>("input_handler")(
@@ -104,6 +105,7 @@ namespace mge::script {
                                 mge::mouse_action::MOUSE_ACTION_DOUBLE_CLICK)
                 // module end
             );
+#endif
         }
     };
 

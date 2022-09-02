@@ -23,7 +23,7 @@ class TestSmoke(unittest.TestCase):
         """Test setting a field successfully"""
         p = mge.point()
         p.x = 17
-        self.assertEquals(17, p.x)
+        self.assertEqual(17, p.x)
 
     def test_set_field_unsuccessful(self):
         """Test setting a field successfully"""
