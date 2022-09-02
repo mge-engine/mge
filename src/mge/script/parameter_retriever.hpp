@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/call_context.hpp"
 
@@ -63,7 +64,7 @@ namespace mge::script {
             , position(position)
         {}
 
-        static std::string get() { return context.string_parameter(position); }
+        std::string get() { return context.string_parameter(position); }
 
         call_context& context;
         size_t        position;
@@ -137,7 +138,11 @@ namespace mge::script {
             , position(position)
         {}
 
-        const T& get() { MGE_THROW_NOT_IMPLEMENTED; }
+        const T& get()
+        {
+            mge::call_debugger();
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
 
         call_context& context;
         size_t        position;
@@ -150,7 +155,28 @@ namespace mge::script {
             , position(position)
         {}
 
-        const T& get() { MGE_THROW_NOT_IMPLEMENTED; }
+        const T& get()
+        {
+            mge::call_debugger();
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
+
+        call_context& context;
+        size_t        position;
+    };
+
+    template <> struct parameter_retriever<void*, void>
+    {
+        parameter_retriever(call_context& context_, size_t position_)
+            : context(context_)
+            , position(position)
+        {}
+
+        void* get()
+        {
+            mge::call_debugger();
+            MGE_THROW_NOT_IMPLEMENTED;
+        }
 
         call_context& context;
         size_t        position;

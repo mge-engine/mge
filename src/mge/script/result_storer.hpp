@@ -2,9 +2,11 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/script/call_context.hpp"
+
 #include <memory>
 #include <type_traits>
 
@@ -34,11 +36,20 @@ namespace mge::script {
     MGE_DEFINE_STORER(float);
     MGE_DEFINE_STORER(double);
 
+    template <> struct result_storer<std::string, void>
+    {
+        static void store(call_context& context, const std::string value)
+        {
+            context.store_string_result(value);
+        }
+    };
+
     template <typename T> struct result_storer<std::shared_ptr<T>, void>
     {
         static void store(call_context&             context,
                           const std::shared_ptr<T>& value)
         {
+            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };
@@ -47,6 +58,7 @@ namespace mge::script {
     {
         static void store(call_context& context, void* value)
         {
+            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };
@@ -70,6 +82,7 @@ namespace mge::script {
     {
         static void store(call_context& context, T& value)
         {
+            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };
@@ -85,6 +98,7 @@ namespace mge::script {
     {
         static void store(call_context& context, const T& value)
         {
+            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };

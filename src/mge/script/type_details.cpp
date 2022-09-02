@@ -81,6 +81,19 @@ namespace mge::script {
             }
         }
 
+        template <typename T>
+        void add_type_details(const char* module, const char* used_name)
+        {
+            auto new_type =
+                std::make_shared<type_details>(mge::type_name<T>(),
+                                               std::type_index(typeid(T)),
+                                               traits_of<T>(),
+                                               sizeof(T),
+                                               used_name);
+            m_types[new_type->type_index()] = new_type;
+            module_details::get(module)->add_type(new_type);
+        }
+
         std::map<std::type_index, type_details_ref> m_types;
     };
 
@@ -102,6 +115,9 @@ namespace mge::script {
         add_pod_type_details<double>();
         add_pod_type_details<long double>();
         add_pod_type_details<bool>();
+
+        add_type_details<std::string>("std", "string");
+        add_type_details<std::wstring>("std", "wstring");
     }
 
     static mge::singleton<type_dictionary> s_type_dictionary;
