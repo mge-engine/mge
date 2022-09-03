@@ -20,8 +20,7 @@ int main(int argc, const char** argv)
         mge::module::load_all();
         mge::script_engine_ref  engine = mge::script_engine::create("lua");
         mge::script_context_ref context = engine->create_context();
-
-        mge::script::module global_module;
+        mge::script::module     global_module;
         context->bind(global_module);
         return context->main(argc, argv);
     } catch (const mge::exception& mge_ex) {

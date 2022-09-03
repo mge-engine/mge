@@ -27,6 +27,10 @@ static inline bool lua_stdin_is_tty() { return _isatty(_fileno(stdin)) != 0; }
 
 using namespace std::string_view_literals;
 
+namespace mge {
+    MGE_USE_TRACE(LUA);
+}
+
 namespace mge::lua {
 
     lua_context::lua_context()
@@ -590,14 +594,8 @@ namespace mge::lua {
         if (it != m_lua_modules.end()) {
             return it->second;
         } else {
-            if (m.is_root()) {
-                auto mod = std::make_shared<lua_module>(*this, m);
-                return m_lua_modules[m] = mod;
-            } else {
-                lua_module_ref r;
-                return r;
-            }
+            auto mod = std::make_shared<lua_module>(*this, m);
+            return m_lua_modules[m] = mod;
         }
     }
-
 } // namespace mge::lua

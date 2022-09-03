@@ -5,6 +5,7 @@
 #include "lua_context.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
+#include "mge/script/module_details.hpp"
 #include "mge/script/type_details.hpp"
 //#include "lua_type.hpp"
 
@@ -40,12 +41,9 @@ namespace mge::lua {
 
     void lua_binder::bind(const mge::script::module& m)
     {
+        MGE_DEBUG_TRACE(LUA) << "Binding module " << m.name();
         module_binder mb(*this);
         m.apply(mb);
-#if 0
-        type_binder tb(*this);
-        m.apply(tb);
-#endif
     }
 
 } // namespace mge::lua

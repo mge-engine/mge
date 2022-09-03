@@ -17,13 +17,11 @@ namespace mge::lua {
     {
     public:
         lua_module(lua_context& context, const mge::script::module& m);
-        /*        lua_module(lua_context&               context,
-                           const lua_module_ref&      parent,
-                           const mge::script::module& m);
-        */
         ~lua_module();
 
     private:
+        void add_global_module();
+        void add_submodule();
         void remove_module_from_parent();
 
         lua_context&        m_context;

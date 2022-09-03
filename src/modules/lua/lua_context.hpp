@@ -4,6 +4,7 @@
 #pragma once
 #include "lua.hpp"
 #include "lua_module.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/script/script_context.hpp"
 
 #include <unordered_map>
