@@ -25,11 +25,19 @@ namespace mge::script {
 
     module::module(const module_details_ref& details)
         : m_details(details)
-    {}
+    {
+        if (m_details == nullptr) {
+            MGE_THROW(illegal_state) << "Invalid module reference";
+        }
+    }
 
     module::module(module_details_ref&& details)
         : m_details(std::move(details))
-    {}
+    {
+        if (m_details == nullptr) {
+            MGE_THROW(illegal_state) << "Invalid module reference";
+        }
+    }
 
     module::~module() {}
 
