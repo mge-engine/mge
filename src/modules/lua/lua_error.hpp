@@ -6,6 +6,8 @@
 #include "mge/core/exception.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include "lua_datatype.hpp"
+
 namespace mge::lua {
 
     class error : public exception
@@ -34,5 +36,12 @@ namespace mge::lua {
     };
 
 #define CHECK_STATUS(status, state) mge::lua::error::check_status(status, state)
+
+#define CHECK_TYPE(expected, received)                                         \
+    if (expected == received) {                                                \
+    } else                                                                     \
+        MGE_THROW(::mge::lua::error)                                           \
+            << "Expected data type " << ::mge::lua::lua_datatype(expected)     \
+            << ", but received " << ::mge::lua::lua_datatype(received)
 
 } // namespace mge::lua

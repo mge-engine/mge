@@ -23,6 +23,7 @@ namespace mge::lua {
         void add_global_module();
         void add_submodule();
         void remove_module_from_parent();
+        void load_parent();
 
         lua_context&        m_context;
         mge::script::module m_module;

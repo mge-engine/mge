@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "lua_module.hpp"
 #include "lua_context.hpp"
+#include "lua_error.hpp"
 
 namespace mge {
     MGE_USE_TRACE(LUA);
@@ -44,7 +45,20 @@ namespace mge::lua {
         lua_pop(L, 1);
     }
 
-    void lua_module::add_submodule() {}
+    void lua_module::add_submodule() { load_parent(); }
+
+    void lua_module::load_parent()
+    {
+        auto L = m_context.lua_state();
+        if (m_module.parent().is_root()) {
+            auto rc = lua_getglobal(L, m_module.name().c_str());
+            CHECK_TYPE(LUA_TTABLE, rc);
+        } else {
+            load_parent();
+            auto rc = lua_getfield(L, -1, m_module.name().c_str());
+            CHECK_TYPE(LUA_TTABLE, rc);
+        }
+    }
 
     lua_module::~lua_module()
     {
