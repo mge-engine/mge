@@ -76,6 +76,11 @@ namespace mge::lua {
             }
         }
 
+        void enum_value(const std::string& name, int64_t value)
+        {
+            m_lua_types.top()->add_enum_value(name, value);
+        }
+
     private:
         lua_binder&                m_binder;
         std::stack<lua_module_ref> m_lua_modules;
