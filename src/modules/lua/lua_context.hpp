@@ -3,7 +3,10 @@
 // All rights reserved.
 #pragma once
 #include "lua.hpp"
+#include "lua_fwd.hpp"
 #include "lua_module.hpp"
+#include "lua_type.hpp"
+
 #include "mge/core/trace.hpp"
 #include "mge/script/script_context.hpp"
 
@@ -26,7 +29,6 @@ namespace mge::lua {
 
     private:
         std::unordered_map<mge::script::module, lua_module_ref> m_lua_modules;
-
-        lua_State* m_lua_state;
+        lua_State*                                              m_lua_state;
     };
 } // namespace mge::lua

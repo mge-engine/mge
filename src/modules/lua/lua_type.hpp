@@ -10,6 +10,7 @@
 #include "lua_context.hpp"
 
 namespace mge::lua {
+
     MGE_DECLARE_REF(type);
 
     class type
@@ -20,10 +21,15 @@ namespace mge::lua {
         ~type();
 
         const mge::script::type_details& details() const { return *m_details; }
+        const std::string& local_name() const { return m_details->name(); }
 
         void add_enum_value(const std::string& name, int64_t enum_value);
+        void add_to_module(lua_context& context);
 
     private:
+        void assert_create_data();
+        void materialize(lua_context& context);
+
         struct create_data
         {
             std::map<std::string, int64_t> enum_values;

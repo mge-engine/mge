@@ -123,4 +123,14 @@ namespace mge::lua {
         lua_pop(L, 1);
     }
 
+    void lua_module::add_type(const lua::type_ref& t)
+    {
+        MGE_DEBUG_TRACE(LUA) << "Adding type '" << t->local_name()
+                             << "' to module '" << m_module.name() << "'";
+        push_module_table();
+        t->add_to_module(m_context);
+        pop_module_table();
+        m_types.emplace_back(t);
+    }
+
 } // namespace mge::lua

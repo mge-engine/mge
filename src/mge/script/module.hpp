@@ -9,6 +9,7 @@
 #include <functional>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 
 namespace mge::script {
 

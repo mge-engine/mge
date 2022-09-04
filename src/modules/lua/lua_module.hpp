@@ -6,12 +6,11 @@
 #include "mge/script/module.hpp"
 
 #include "lua.hpp"
+#include "lua_fwd.hpp"
+
+#include <vector>
 
 namespace mge::lua {
-
-    class lua_context;
-
-    MGE_DECLARE_REF(lua_module);
 
     class lua_module
     {
@@ -23,16 +22,19 @@ namespace mge::lua {
         void push_module_table();
         void pop_module_table();
 
+        void add_type(const lua::type_ref& t);
+
     private:
         void add_global_module();
         void add_submodule();
         void remove_module_from_parent();
         void load_parent();
 
-        lua_context&        m_context;
-        mge::script::module m_module;
-        bool                m_has_lua_table;
-        bool                m_is_global;
+        lua_context&               m_context;
+        mge::script::module        m_module;
+        std::vector<lua::type_ref> m_types;
+        bool                       m_has_lua_table;
+        bool                       m_is_global;
     };
 
 } // namespace mge::lua

@@ -3,7 +3,9 @@
 // All rights reserved.
 #include "lua_binder.hpp"
 #include "lua_context.hpp"
+#include "lua_module.hpp"
 #include "lua_type.hpp"
+
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
