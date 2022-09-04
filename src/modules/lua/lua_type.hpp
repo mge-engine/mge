@@ -17,6 +17,7 @@ namespace mge::lua {
         lua_type(lua_context&                         context,
                  const mge::script::type_details_ref& type);
         ~lua_type();
+
         const mge::script::type_details& details() const { return *m_type; }
 
     private:

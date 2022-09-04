@@ -598,4 +598,16 @@ namespace mge::lua {
             return m_lua_modules[m] = mod;
         }
     }
+
+    lua_module_ref
+    lua_context::get_module(const mge::script::module& m) const
+    {
+        auto it = m_lua_modules.find(m);
+        if (it != m_lua_modules.end()) {
+            return it->second;
+        } else {
+            return lua_module_ref();
+        }
+    }
+
 } // namespace mge::lua

@@ -35,6 +35,55 @@ namespace mge::lua {
         lua_binder& m_binder;
     };
 
+    class type_creator : public mge::script::visitor
+    {
+    public:
+        type_creator(lua_binder& binder)
+            : m_binder(binder)
+        {}
+
+        void start(const mge::script::module_details_ref& m) override
+        {
+            mge::script::module mod(m);
+
+            auto lua_mod = m_binder.context().get_module(mod);
+            m_lua_modules.push(lua_mod);
+            lua_mod->push_module_table();
+        }
+
+        void finish(const mge::script::module_details_ref& m) override
+        {
+            m_lua_modules.top()->pop_module_table();
+            m_lua_modules.pop();
+        }
+
+        void start(const mge::script::type_details_ref& t) override
+        {
+            /*
+            if (!t->traits().is_pod()) {
+                m_current_type =
+                    std::make_shared<python_type>(m_binder.context(), t);
+            } else {
+                m_current_type.reset();
+            }
+            */
+        }
+
+        void finish(const mge::script::type_details_ref& m) override
+        {
+            /*
+            if (m_current_type) {
+                m_binder.add_type(m->type_index(), m_current_type);
+                m_current_type.reset();
+            }
+            */
+        }
+
+    private:
+        lua_binder&                m_binder;
+        std::stack<lua_module_ref> m_lua_modules;
+    };
+
     lua_binder::lua_binder(lua_context& context)
         : m_context(context)
     {}

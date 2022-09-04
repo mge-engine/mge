@@ -14,6 +14,8 @@ namespace mge::lua {
     lua_module::lua_module(lua_context& context, const mge::script::module& m)
         : m_context(context)
         , m_module(m)
+        , m_has_lua_table(false)
+        , m_is_global(false)
     {
         if (m.is_root()) {
             MGE_DEBUG_TRACE(LUA) << "Not adding root module to Lua";
@@ -23,9 +25,12 @@ namespace mge::lua {
                     MGE_DEBUG_TRACE(LUA) << "Not adding 'std' module to Lua";
                 } else {
                     add_global_module();
+                    m_has_lua_table = true;
+                    m_is_global = true;
                 }
             } else {
                 add_submodule();
+                m_has_lua_table = true;
             }
         }
     }
@@ -58,15 +63,8 @@ namespace mge::lua {
 
     void lua_module::load_parent()
     {
-        auto L = m_context.lua_state();
-        if (m_module.parent().is_root()) {
-            auto rc = lua_getglobal(L, m_module.name().c_str());
-            CHECK_TYPE(LUA_TTABLE, rc);
-        } else {
-            load_parent();
-            auto rc = lua_getfield(L, -1, m_module.name().c_str());
-            CHECK_TYPE(LUA_TTABLE, rc);
-        }
+        auto parent = m_context.get_module(m_module.parent());
+        parent->push_module_table();
     }
 
     lua_module::~lua_module()
@@ -90,6 +88,39 @@ namespace mge::lua {
             lua_pushnil(L);
             CHECK_CURRENT_STATUS(L);
         }
+    }
+
+    void lua_module::push_module_table()
+    {
+        if (!m_has_lua_table) {
+            return;
+        }
+
+        auto L = m_context.lua_state();
+
+        if (m_is_global) {
+            auto rc = lua_getglobal(L, m_module.name().c_str());
+            CHECK_TYPE(LUA_TTABLE, rc);
+        } else {
+            auto parent = m_context.get_module(m_module.parent());
+            parent->push_module_table();
+            CHECK_CURRENT_STATUS(L);
+            auto rc = lua_getfield(L, -1, m_module.name().c_str());
+            CHECK_CURRENT_STATUS(L);
+            CHECK_TYPE(LUA_TTABLE, rc);
+            lua_remove(L, -2); // remove parent table from stack
+            CHECK_CURRENT_STATUS(L);
+        }
+    }
+
+    void lua_module::pop_module_table()
+    {
+        if (!m_has_lua_table) {
+            return;
+        }
+
+        auto L = m_context.lua_state();
+        lua_pop(L, 1);
     }
 
 } // namespace mge::lua
