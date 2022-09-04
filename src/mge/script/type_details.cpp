@@ -238,6 +238,12 @@ namespace mge::script {
                 << "Passed type details reference must be same as this";
         }
         v.start(self);
+
+        /* no recursive types yet
+        for (const auto& [ti, details] : m_types) {
+            details->apply(details, v);
+        }
+        */
         for (const auto& f : m_fields) {
             v.field(f.name, f.type, f.getter, f.setter);
         }

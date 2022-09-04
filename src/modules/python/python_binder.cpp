@@ -58,29 +58,30 @@ namespace mge::python {
         void start(const mge::script::type_details_ref& t) override
         {
             if (!t->traits().is_pod()) {
-                m_current_type =
-                    std::make_shared<python_type>(m_binder.context(), t);
+                auto pt = std::make_shared<python_type>(m_binder.context(), t);
+                m_types.push(pt);
             } else {
-                m_current_type.reset();
+                m_types.push(python_type_ref());
             }
         }
 
         void finish(const mge::script::type_details_ref& m) override
         {
-            if (m_current_type) {
-                m_binder.add_type(m->type_index(), m_current_type);
-                m_current_type.reset();
+            auto pt = m_types.top();
+            m_types.pop();
+            if (pt) {
+                m_binder.add_type(m->type_index(), pt);
             }
         }
 
         void enum_value(const std::string& name, int64_t value)
         {
-            m_current_type->add_enum_value(name, value);
+            m_types.top()->add_enum_value(name, value);
         }
 
         python_binder&                m_binder;
         std::stack<python_module_ref> m_py_modules;
-        python_type_ref               m_current_type;
+        std::stack<python_type_ref>   m_types;
     };
 
     class type_fields_creator : public mge::script::visitor
