@@ -37,6 +37,7 @@ namespace mge::script {
 
         void set_module(const module_details_ref& m);
         void set_enclosing_type(const type_details_ref& t);
+        module_details_ref enclosing_module() const;
 
         /**
          * @brief Lookup details by type index.

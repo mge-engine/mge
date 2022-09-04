@@ -165,6 +165,19 @@ namespace mge::script {
         m_enclosing_type = t;
     }
 
+    module_details_ref type_details::enclosing_module() const
+    {
+        auto ret = m_module.lock();
+        if (!ret) {
+            if (!m_enclosing_type) {
+                MGE_THROW(mge::illegal_state)
+                    << "Type '" << name() << "' has no module or parent type";
+            }
+            return m_enclosing_type->enclosing_module();
+        }
+        return ret;
+    }
+
     type_details_ref type_details::get(const std::type_index& ti)
     {
         return s_type_dictionary->get(ti);
@@ -239,11 +252,10 @@ namespace mge::script {
         }
         v.start(self);
 
-        /* no recursive types yet
         for (const auto& [ti, details] : m_types) {
             details->apply(details, v);
         }
-        */
+
         for (const auto& f : m_fields) {
             v.field(f.name, f.type, f.getter, f.setter);
         }

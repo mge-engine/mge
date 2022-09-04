@@ -164,15 +164,8 @@ namespace mge::python {
 
     void python_type::materialize_enum_type() const
     {
-        auto m = m_context.get_module(m_type->module().lock());
-
-        if (!m) {
-            MGE_THROW(mge::illegal_state)
-                << "Module '" << m_type->module().lock()->name()
-                << "' not found";
-        }
-
-        PyTypeObject* base = &PyLong_Type;
+        python_module_ref m = m_context.get_module(m_type->enclosing_module());
+        PyTypeObject*     base = &PyLong_Type;
 
         m_create_data->spec.basicsize = sizeof(PyLongObject);
         m_create_data->spec.flags |=
@@ -217,7 +210,8 @@ namespace mge::python {
 
     void python_type::materialize_complex_class_type() const
     {
-        auto m = m_context.get_module(m_type->module().lock());
+        python_module_ref m = m_context.get_module(m_type->enclosing_module());
+
         if (!m) {
             MGE_THROW(mge::illegal_state)
                 << "Module '" << m_type->module().lock()->name()
