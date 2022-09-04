@@ -18,6 +18,8 @@ def is_doxygen_installed():
         if installed_version.startswith(doxygen_version):
             return True
         else:
+            print("Expected version %s, found version information %s" %
+                  doxygen_version, installed_version)
             return False
     except:
         print("Cannot determine doxygen version %s" %
@@ -33,6 +35,9 @@ def install_doxygen():
 try:
     if not is_doxygen_installed():
         install_doxygen()
+        if not is_doxygen_installed():
+            raise Exception(
+                "No doxygen of expected version found after installation")
 except:
     print("Exception %s" % str(sys.exc_info()), flush=True)
     sys.exit(1)
