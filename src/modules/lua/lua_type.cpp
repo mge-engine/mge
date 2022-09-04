@@ -2,11 +2,11 @@
 
 namespace mge::lua {
 
-    lua_type::lua_type(lua_context&                         context,
-                       const mge::script::type_details_ref& type)
-        : m_type(type)
+    type::type(lua_context&                         context,
+               const mge::script::type_details_ref& details)
+        : m_details(details)
     {}
 
-    lua_type::~lua_type() {}
+    type::~type() {}
 
 } // namespace mge::lua

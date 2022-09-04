@@ -3,11 +3,11 @@
 // All rights reserved.
 #include "lua_binder.hpp"
 #include "lua_context.hpp"
+#include "lua_type.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
 #include "mge/script/type_details.hpp"
-//#include "lua_type.hpp"
 
 #include <stack>
 
@@ -59,29 +59,27 @@ namespace mge::lua {
 
         void start(const mge::script::type_details_ref& t) override
         {
-            /*
             if (!t->traits().is_pod()) {
-                m_current_type =
-                    std::make_shared<python_type>(m_binder.context(), t);
+                auto lt = std::make_shared<lua::type>(m_binder.context(), t);
+                m_lua_types.push(lt);
             } else {
-                m_current_type.reset();
+                m_lua_types.push(lua::type_ref());
             }
-            */
         }
 
         void finish(const mge::script::type_details_ref& m) override
         {
-            /*
-            if (m_current_type) {
-                m_binder.add_type(m->type_index(), m_current_type);
-                m_current_type.reset();
+            auto lt = m_lua_types.top();
+            m_lua_types.pop();
+            if (lt) {
+                m_binder.add_type(m->type_index(), lt);
             }
-            */
         }
 
     private:
         lua_binder&                m_binder;
         std::stack<lua_module_ref> m_lua_modules;
+        std::stack<lua::type_ref>  m_lua_types;
     };
 
     lua_binder::lua_binder(lua_context& context)
