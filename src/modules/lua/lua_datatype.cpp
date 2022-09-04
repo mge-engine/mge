@@ -12,8 +12,25 @@ namespace mge::lua {
         case LUA_TNIL:
             return os << "NIL";
             break;
+        case LUA_TBOOLEAN:
+            return os << "BOOLEAN";
+        case LUA_TLIGHTUSERDATA:
+            return os << "LIGHTUSERDATA";
+        case LUA_TNUMBER:
+            return os << "NUMBER";
+        case LUA_TSTRING:
+            return os << "STRING";
+        case LUA_TTABLE:
+            return os << "TABLE";
+        case LUA_TFUNCTION:
+            return os << "FUNCTION";
+        case LUA_TUSERDATA:
+            return os << "USERDATA";
+        case LUA_TTHREAD:
+            return os << "THREAD";
         default:
             return os << "INVALID(" << t.type() << ")";
         }
     }
+
 } // namespace mge::lua
