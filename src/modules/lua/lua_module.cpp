@@ -45,7 +45,16 @@ namespace mge::lua {
         lua_pop(L, 1);
     }
 
-    void lua_module::add_submodule() { load_parent(); }
+    void lua_module::add_submodule()
+    {
+        auto L = m_context.lua_state();
+        lua_checkstack(L, 3);
+        load_parent();
+        lua_newtable(L);
+        lua_setfield(L, -2, m_module.name().c_str());
+        CHECK_CURRENT_STATUS(L);
+        lua_pop(L, 1);
+    }
 
     void lua_module::load_parent()
     {
@@ -67,6 +76,20 @@ namespace mge::lua {
         }
     }
 
-    void lua_module::remove_module_from_parent() {}
+    void lua_module::remove_module_from_parent()
+    {
+        if (m_module.parent().is_root()) {
+            std::stringstream ss;
+            ss << "package.loaded[\"" << m_module.name() << "\"] = nil; "
+               << m_module.name() << "=nil";
+            m_context.eval(ss.str());
+        } else {
+            auto L = m_context.lua_state();
+            load_parent();
+            lua_pushstring(L, m_module.name().c_str());
+            lua_pushnil(L);
+            CHECK_CURRENT_STATUS(L);
+        }
+    }
 
 } // namespace mge::lua

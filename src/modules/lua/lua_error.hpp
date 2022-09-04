@@ -37,11 +37,15 @@ namespace mge::lua {
 
 #define CHECK_STATUS(status, state) mge::lua::error::check_status(status, state)
 
+#define CHECK_CURRENT_STATUS(state) CHECK_STATUS(lua_status(state), state)
+
 #define CHECK_TYPE(expected, received)                                         \
     if (expected == received) {                                                \
     } else                                                                     \
         MGE_THROW(::mge::lua::error)                                           \
             << "Expected data type " << ::mge::lua::lua_datatype(expected)     \
             << ", but received " << ::mge::lua::lua_datatype(received)
+
+
 
 } // namespace mge::lua

@@ -7,7 +7,8 @@ SET(mge_lua_module_SOURCES
     lua_module.cpp
     lua_binder.cpp
     lua_error.cpp
-    lua_datatype.cpp)
+    lua_datatype.cpp
+    lua_type.cpp)
 
 ADD_LIBRARY(mge_module_lua MODULE
             ${mge_lua_module_SOURCES})
