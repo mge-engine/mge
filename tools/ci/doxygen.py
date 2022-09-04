@@ -6,7 +6,7 @@ import sys
 import subprocess
 import shutil
 
-doxygen_version = "1.9.1"
+doxygen_version = "1.9.5"
 
 
 def is_doxygen_installed():
