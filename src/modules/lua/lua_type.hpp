@@ -25,6 +25,8 @@ namespace mge::lua {
 
         void add_enum_value(const std::string& name, int64_t enum_value);
         void add_to_module(lua_context& context);
+        void push_type_table();
+        void pop_type_table();
 
     private:
         void assert_create_data();
@@ -35,6 +37,7 @@ namespace mge::lua {
             std::map<std::string, int64_t> enum_values;
         };
 
+        lua_context&                         m_context;
         mutable std::unique_ptr<create_data> m_create_data;
         const mge::script::type_details_ref& m_details;
     };

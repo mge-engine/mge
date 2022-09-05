@@ -13,7 +13,8 @@ namespace mge::lua {
 
     type::type(lua_context&                         context,
                const mge::script::type_details_ref& details)
-        : m_create_data(std::make_unique<create_data>())
+        : m_context(context)
+        , m_create_data(std::make_unique<create_data>())
         , m_details(details)
     {}
 
@@ -63,6 +64,20 @@ namespace mge::lua {
                 CHECK_CURRENT_STATUS(L);
             }
         }
+    }
+
+    void type::push_type_table()
+    {
+        auto L = m_context.lua_state();
+        auto rc = lua_getfield(L, -1, m_details->name().c_str());
+        CHECK_TYPE(LUA_TTABLE, rc);
+    }
+
+    void type::pop_type_table()
+    {
+        auto L = m_context.lua_state();
+        lua_pop(L, 1);
+        CHECK_CURRENT_STATUS(L);
     }
 
 } // namespace mge::lua

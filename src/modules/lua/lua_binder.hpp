@@ -27,6 +27,16 @@ namespace mge::lua {
             t->add_to_module(m_context);
         }
 
+        lua::type_ref get_type(std::type_index i) const
+        {
+            auto it = m_created_types.find(i);
+            if (it != m_created_types.end()) {
+                return it->second;
+            } else {
+                return lua::type_ref();
+            }
+        }
+
     private:
         lua_context&                             m_context;
         std::map<std::type_index, lua::type_ref> m_created_types;
