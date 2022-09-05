@@ -61,7 +61,9 @@ namespace mge::lua {
 
         void start(const mge::script::type_details_ref& t) override
         {
-            if (!t->traits().is_pod()) {
+            MGE_DEBUG_TRACE(LUA)
+                << "Start processing for type '" << t->name() << "'";
+            if (!t->traits().is_pod() && m_lua_modules.top()->has_lua_table()) {
                 auto lt = std::make_shared<lua::type>(m_binder.context(), t);
                 m_lua_types.push(lt);
             } else {
@@ -69,18 +71,21 @@ namespace mge::lua {
             }
         }
 
-        void finish(const mge::script::type_details_ref& m) override
+        void finish(const mge::script::type_details_ref& t) override
         {
             auto lt = m_lua_types.top();
             m_lua_types.pop();
             if (lt) {
-                m_binder.add_type(m->type_index(), lt);
+                MGE_DEBUG_TRACE(LUA) << "Add type '" << t->name() << "' ";
+                m_binder.add_type(t->type_index(), lt);
             }
         }
 
         void enum_value(const std::string& name, int64_t value)
         {
-            m_lua_types.top()->add_enum_value(name, value);
+            if (m_lua_types.top()) {
+                m_lua_types.top()->add_enum_value(name, value);
+            }
         }
 
     private:
@@ -98,6 +103,9 @@ namespace mge::lua {
         MGE_DEBUG_TRACE(LUA) << "Binding module " << m.name();
         module_binder mb(*this);
         m.apply(mb);
+        MGE_DEBUG_TRACE(LUA) << "Creating types of " << m.name();
+        type_creator tc(*this);
+        m.apply(tc);
     }
 
 } // namespace mge::lua

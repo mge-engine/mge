@@ -24,6 +24,7 @@ namespace mge::lua {
         void add_type(std::type_index i, const lua::type_ref& t)
         {
             m_created_types.emplace(i, t);
+            t->add_to_module(m_context);
         }
 
     private:
