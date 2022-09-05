@@ -6,6 +6,11 @@ function test_mge_module_exists()
     assert(type(mge) == "table", "mge module not accessible by global var")
 end
 
+function test_mge_data_type_exists()
+    assert(type(mge.data_type) == "table")
+    assert(mge.data_type.HALF == 11)
+end
+
 --[[
 function test_mge_point_type_exists()
     local mge = package.loaded["mge"]
