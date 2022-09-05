@@ -2,6 +2,13 @@
 #include "lua_context.hpp"
 #include "lua_error.hpp"
 
+#include "mge/core/checked_cast.hpp"
+#include "mge/core/trace.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(LUA);
+}
+
 namespace mge::lua {
 
     type::type(lua_context&                         context,
@@ -45,6 +52,17 @@ namespace mge::lua {
     {
         auto L = context.lua_state();
         lua_newtable(L);
+        if (!m_create_data->enum_values.empty()) {
+            for (const auto& [name, value] : m_create_data->enum_values) {
+                MGE_DEBUG_TRACE(LUA) << "Add enum " << name << " = " << value
+                                     << " to type " << m_details->name();
+                lua_Integer lua_value = checked_cast<lua_Integer>(value);
+                lua_pushinteger(L, lua_value);
+                CHECK_CURRENT_STATUS(L);
+                lua_setfield(L, -2, name.c_str());
+                CHECK_CURRENT_STATUS(L);
+            }
+        }
     }
 
 } // namespace mge::lua
