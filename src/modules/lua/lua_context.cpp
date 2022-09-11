@@ -609,4 +609,30 @@ namespace mge::lua {
         }
     }
 
+    void lua_context::details(std::ostream& os) const
+    {
+        auto L = m_lua_state;
+        int  top = lua_gettop(L);
+        os << "LUA stack size: " << top << "\n";
+        for (int i = 0; i < top; ++i) {
+            os << "  [" << i << "] <" << luaL_typename(L, i) << ">";
+            switch (lua_type(m_lua_state, i)) {
+            case LUA_TNUMBER:
+                os << "= " << lua_tonumber(L, i);
+                break;
+            case LUA_TSTRING:
+                os << "= " << lua_tostring(L, i);
+                break;
+            case LUA_TBOOLEAN:
+                os << "= " << (lua_toboolean(L, i) ? "true" : "false");
+                break;
+            default:
+                os << "@" << lua_topointer(L, i);
+                break;
+            }
+            os << "\n";
+        }
+        os << std::flush;
+    }
+
 } // namespace mge::lua

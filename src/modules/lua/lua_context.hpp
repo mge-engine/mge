@@ -27,6 +27,8 @@ namespace mge::lua {
         lua_module_ref get_or_add_module(const mge::script::module& m);
         lua_module_ref get_module(const mge::script::module& m) const;
 
+        void details(std::ostream& os) const;
+
     private:
         std::unordered_map<mge::script::module, lua_module_ref> m_lua_modules;
         lua_State*                                              m_lua_state;
