@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/memory.hpp"
+#include "mge/core/small_vector.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_details.hpp"
 
@@ -24,12 +25,21 @@ namespace mge::lua {
         const std::string& local_name() const { return m_details->name(); }
 
         void add_enum_value(const std::string& name, int64_t enum_value);
+        void add_constructor(const mge::script::signature&       s,
+                             const mge::script::invoke_function& new_at,
+                             const mge::script::invoke_function& new_shared);
+
+        void
+        set_destructor(const mge::script::invoke_function& delete_ptr,
+                       const mge::script::invoke_function& delete_shared_ptr);
+
         void add_to_parent(lua_context& context);
         void push_type_table();
         void pop_type_table();
         void add_type(const lua::type_ref& t);
 
         bool materialized() const { return m_materialized; }
+
     private:
         void assert_create_data();
         void materialize(lua_context& context);
@@ -38,6 +48,17 @@ namespace mge::lua {
         const mge::script::type_details_ref&      m_details;
         std::optional<std::vector<lua::type_ref>> m_types;
         bool                                      m_materialized;
+        bool                                      m_ctor_defined;
+        struct constructor
+        {
+            const mge::script::signature*       s;
+            const mge::script::invoke_function* new_at;
+            const mge::script::invoke_function* new_shared;
+        };
+
+        mge::small_vector<constructor, 2> m_constructors;
+        const mge::script::invoke_function* m_delete_ptr;
+        const mge::script::invoke_function* m_delete_shared_ptr;
     };
 
 } // namespace mge::lua

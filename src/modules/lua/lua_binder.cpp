@@ -196,12 +196,22 @@ namespace mge::lua {
         constructor(const mge::script::signature&       s,
                     const mge::script::invoke_function& new_at,
                     const mge::script::invoke_function& make_shared) override
-        {}
+        {
+            const auto& t = std::get<lua::type_ref>(m_definitions.top());
+            if (t) {
+                t->add_constructor(s, new_at, make_shared);
+            }
+        }
 
         void destructor(
             const mge::script::invoke_function& delete_ptr,
             const mge::script::invoke_function& delete_shared_ptr) override
-        {}
+        {
+            const auto& t = std::get<lua::type_ref>(m_definitions.top());
+            if (t) {
+                t->set_destructor(delete_ptr, delete_shared_ptr);
+            }
+        }
 
         void finish(const mge::script::type_details_ref& t) override
         {

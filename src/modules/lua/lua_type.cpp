@@ -3,6 +3,7 @@
 #include "lua_error.hpp"
 
 #include "mge/core/checked_cast.hpp"
+#include "mge/core/gist.hpp"
 #include "mge/core/trace.hpp"
 
 namespace mge {
@@ -16,6 +17,9 @@ namespace mge::lua {
         : m_context(context)
         , m_details(details)
         , m_materialized(false)
+        , m_ctor_defined(false)
+        , m_delete_ptr(nullptr)
+        , m_delete_shared_ptr(nullptr)
     {}
 
     type::~type() {}
@@ -88,6 +92,23 @@ namespace mge::lua {
         }
         lua_pop(L, 1);
         CHECK_CURRENT_STATUS(L);
+    }
+
+    void type::add_constructor(const mge::script::signature&       s,
+                               const mge::script::invoke_function& new_at,
+                               const mge::script::invoke_function& new_shared)
+    {
+        MGE_DEBUG_TRACE(LUA) << "Add constructor for '" << m_details->name()
+                             << "' " << mge::gist(s);
+        m_constructors.emplace_back(&s, &new_at, &new_shared);
+    }
+
+    void
+    type::set_destructor(const mge::script::invoke_function& delete_ptr,
+                         const mge::script::invoke_function& delete_shared_ptr)
+    {
+        m_delete_ptr = &delete_ptr;
+        m_delete_shared_ptr = &delete_shared_ptr;
     }
 
 } // namespace mge::lua
