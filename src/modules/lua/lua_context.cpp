@@ -614,7 +614,7 @@ namespace mge::lua {
         auto L = m_lua_state;
         int  top = lua_gettop(L);
         os << "LUA stack top: " << top << "\n";
-        for (int i = 0; i < top; ++i) {
+        for (int i = 1; i <= top; ++i) {
             os << "  [" << i << "] <" << luaL_typename(L, i) << ">";
             switch (lua_type(m_lua_state, i)) {
             case LUA_TNUMBER:

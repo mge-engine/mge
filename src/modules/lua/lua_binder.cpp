@@ -65,9 +65,6 @@ namespace mge::lua {
 
         void start(const mge::script::type_details_ref& t) override
         {
-            MGE_DEBUG_TRACE(LUA) << "Start type: " << t->name();
-            MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
-
             if (!t->traits().is_pod() && parent_in_lua()) {
                 MGE_DEBUG_TRACE(LUA) << "Create type '" << t->name() << "'";
                 auto lt = std::make_shared<lua::type>(m_binder.context(), t);
@@ -167,9 +164,9 @@ namespace mge::lua {
 
         void start(const mge::script::type_details_ref& t) override
         {
-            MGE_DEBUG_TRACE(LUA) << "start: " << t->name();
-            MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
             if (!t->traits().is_pod() && parent_in_lua()) {
+                MGE_DEBUG_TRACE(LUA)
+                    << "Setting fields of type '" << t->name() << "'";
                 auto lt = m_binder.get_type(t->type_index());
                 m_definitions.push(lt);
                 if (lt->materialized()) {
@@ -209,9 +206,7 @@ namespace mge::lua {
         void finish(const mge::script::type_details_ref& t) override
         {
             MGE_DEBUG_TRACE(LUA) << "Finish type " << t->name();
-            // MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
             pop_from_lua_stack();
-            MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
             m_definitions.pop();
         }
 
