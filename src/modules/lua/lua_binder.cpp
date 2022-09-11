@@ -6,12 +6,14 @@
 #include "lua_module.hpp"
 #include "lua_type.hpp"
 
+#include "mge/core/overloaded.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
 #include "mge/script/type_details.hpp"
 
 #include <stack>
+#include <variant>
 
 namespace mge {
     MGE_USE_TRACE(LUA);
@@ -46,49 +48,52 @@ namespace mge::lua {
 
         void start(const mge::script::module_details_ref& m) override
         {
+            MGE_DEBUG_TRACE(LUA) << "Creating types of '" << m->name() << "'";
             mge::script::module mod(m);
-
-            auto lua_mod = m_binder.context().get_module(mod);
+            auto                lua_mod = m_binder.context().get_module(mod);
             m_lua_modules.push(lua_mod);
-            lua_mod->push_module_table();
+            m_parent_in_lua.push(lua_mod->push_module_table());
         }
 
         void finish(const mge::script::module_details_ref& m) override
         {
             m_lua_modules.top()->pop_module_table();
             m_lua_modules.pop();
+            m_parent_in_lua.pop();
         }
 
         void start(const mge::script::type_details_ref& t) override
         {
-            if (!t->traits().is_pod() && m_lua_modules.top()->has_lua_table()) {
+            if (!t->traits().is_pod() && m_parent_in_lua.top()) {
+                MGE_DEBUG_TRACE(LUA) << "Create type '" << t->name() << "'";
                 auto lt = std::make_shared<lua::type>(m_binder.context(), t);
                 m_lua_types.push(lt);
+                m_binder.add_type(t->type_index(), lt);
+                if (!t->is_subtype()) {
+                    m_lua_modules.top()->add_type(lt);
+                } else {
+                    m_lua_types.top()->add_type(lt);
+                }
+                m_parent_in_lua.push(true);
             } else {
+                MGE_DEBUG_TRACE(LUA)
+                    << "Not creating type '" << t->name() << "'";
                 m_lua_types.push(lua::type_ref());
+                m_parent_in_lua.push(false);
             }
         }
 
         void finish(const mge::script::type_details_ref& t) override
         {
-            auto lt = m_lua_types.top();
             m_lua_types.pop();
-            if (lt) {
-                m_binder.add_type(t->type_index(), lt);
-            }
-        }
-
-        void enum_value(const std::string& name, int64_t value)
-        {
-            if (m_lua_types.top()) {
-                m_lua_types.top()->add_enum_value(name, value);
-            }
+            m_parent_in_lua.pop();
         }
 
     private:
         lua_binder&                m_binder;
         std::stack<lua_module_ref> m_lua_modules;
         std::stack<lua::type_ref>  m_lua_types;
+        std::stack<bool>           m_parent_in_lua;
     };
 
     class type_fields_creator : public mge::script::visitor
@@ -100,26 +105,40 @@ namespace mge::lua {
 
         void start(const mge::script::module_details_ref& m) override
         {
+            MGE_DEBUG_TRACE(LUA)
+                << "Setting type fields of '" << m->name() << "'";
             mge::script::module mod(m);
-            auto                lua_mod = m_binder.context().get_module(mod);
-            m_lua_modules.push(lua_mod);
+
+            auto lua_mod = m_binder.context().get_module(mod);
+            m_definitions.push(lua_mod);
             lua_mod->push_module_table();
         }
 
         void finish(const mge::script::module_details_ref& m) override
         {
-            m_lua_modules.top()->pop_module_table();
-            m_lua_modules.pop();
+            const auto& current = std::get<lua_module_ref>(m_definitions.top());
+            current->pop_module_table();
+            m_definitions.pop();
         }
 
         void start(const mge::script::type_details_ref& t) override
         {
-            if (!t->traits().is_pod() && m_lua_modules.top()->has_lua_table()) {
+            if (!t->traits().is_pod() && parent_in_lua()) {
                 auto lt = m_binder.get_type(t->type_index());
-                m_lua_types.push(lt);
-                lt->push_type_table();
+                m_definitions.push(lt);
+                if (lt->materialized()) {
+                    lt->push_type_table();
+                }
             } else {
-                m_lua_types.push(lua::type_ref());
+                m_definitions.push(lua::type_ref());
+            }
+        }
+
+        void enum_value(const std::string& name, int64_t value)
+        {
+            const auto& t = std::get<lua::type_ref>(m_definitions.top());
+            if (t) {
+                t->add_enum_value(name, value);
             }
         }
 
@@ -142,11 +161,11 @@ namespace mge::lua {
 
         void finish(const mge::script::type_details_ref& t) override
         {
-            auto lt = m_lua_types.top();
-            m_lua_types.pop();
-            if (lt) {
-                lt->pop_type_table();
+            const auto& current = std::get<lua::type_ref>(m_definitions.top());
+            if (current) {
+                current->pop_type_table();
             }
+            m_definitions.pop();
         }
 
         void method(const std::string&                  name,
@@ -156,10 +175,40 @@ namespace mge::lua {
                     const mge::script::invoke_function& invoke) override
         {}
 
+        void dump_stack_size(const char* context)
+        {
+            int i = lua_absindex(m_binder.context().lua_state(), -1);
+            MGE_DEBUG_TRACE(LUA) << "Stack size at '" << context << "': " << i;
+            return;
+        }
+
     private:
-        lua_binder&                m_binder;
-        std::stack<lua_module_ref> m_lua_modules;
-        std::stack<lua::type_ref>  m_lua_types;
+        bool parent_in_lua() const
+        {
+            return std::visit(
+                overloaded{[](const std::monostate&) -> bool { return false; },
+                           [](const lua_module_ref& r) -> bool {
+                               if (r) {
+                                   return r->has_lua_table();
+                               } else {
+                                   return false;
+                               }
+                           },
+                           [](const lua::type_ref& t) -> bool {
+                               if (t) {
+                                   return t->materialized();
+                               } else {
+                                   return false;
+                               }
+                           }},
+                m_definitions.top());
+        }
+
+        lua_binder& m_binder;
+
+        using element =
+            std::variant<std::monostate, lua_module_ref, lua::type_ref>;
+        std::stack<element> m_definitions;
     };
 
     lua_binder::lua_binder(lua_context& context)
@@ -168,13 +217,11 @@ namespace mge::lua {
 
     void lua_binder::bind(const mge::script::module& m)
     {
-        MGE_DEBUG_TRACE(LUA) << "Binding module " << m.name();
+        MGE_DEBUG_TRACE(LUA) << "Binding module '" << m.name() << "'";
         module_binder mb(*this);
         m.apply(mb);
-        MGE_DEBUG_TRACE(LUA) << "Creating types of " << m.name();
         type_creator tc(*this);
         m.apply(tc);
-        MGE_DEBUG_TRACE(LUA) << "Setting type fields of " << m.name();
         type_fields_creator tfc(*this);
         m.apply(tfc);
     }

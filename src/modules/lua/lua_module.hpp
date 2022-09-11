@@ -19,9 +19,8 @@ namespace mge::lua {
         ~lua_module();
         bool has_lua_table() const { return m_has_lua_table; }
 
-        void push_module_table();
+        bool push_module_table();
         void pop_module_table();
-
         void add_type(const lua::type_ref& t);
 
     private:

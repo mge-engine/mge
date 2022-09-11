@@ -27,6 +27,9 @@ int main(int argc, const char** argv)
         std::cerr << mge_ex.details();
     } catch (const std::exception& std_ex) {
         std::cerr << "Exception occurred: " << std_ex.what();
+    } catch (...) {
+        std::cerr << "Unknown exception" << std::endl;
     }
+
     return 1;
 }

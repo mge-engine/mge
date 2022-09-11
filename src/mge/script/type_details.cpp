@@ -158,6 +158,11 @@ namespace mge::script {
         return m_enclosing_type;
     }
 
+    bool type_details::is_subtype() const
+    {
+        return m_enclosing_type.operator bool();
+    }
+
     void type_details::set_module(const module_details_ref& m) { m_module = m; }
 
     void type_details::set_enclosing_type(const type_details_ref& t)

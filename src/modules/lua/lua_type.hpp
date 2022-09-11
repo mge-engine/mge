@@ -24,21 +24,20 @@ namespace mge::lua {
         const std::string& local_name() const { return m_details->name(); }
 
         void add_enum_value(const std::string& name, int64_t enum_value);
-        void add_to_module(lua_context& context);
+        void add_to_parent(lua_context& context);
         void push_type_table();
         void pop_type_table();
+        void add_type(const lua::type_ref& t);
 
+        bool materialized() const { return m_materialized; }
     private:
         void assert_create_data();
         void materialize(lua_context& context);
 
-        struct create_data
-        {
-            std::map<std::string, int64_t> enum_values;
-        };
-
-        lua_context&                         m_context;
-        mutable std::unique_ptr<create_data> m_create_data;
-        const mge::script::type_details_ref& m_details;
+        lua_context&                              m_context;
+        const mge::script::type_details_ref&      m_details;
+        std::optional<std::vector<lua::type_ref>> m_types;
+        bool                                      m_materialized;
     };
+
 } // namespace mge::lua

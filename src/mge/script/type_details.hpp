@@ -33,10 +33,11 @@ namespace mge::script {
         const std::type_index&         type_index() const;
         const mge::script::traits&     traits() const;
         const type_details_ref&        enclosing_type() const;
+        bool                           is_subtype() const;
         size_t                         size() const;
 
-        void set_module(const module_details_ref& m);
-        void set_enclosing_type(const type_details_ref& t);
+        void               set_module(const module_details_ref& m);
+        void               set_enclosing_type(const type_details_ref& t);
         module_details_ref enclosing_module() const;
 
         /**
