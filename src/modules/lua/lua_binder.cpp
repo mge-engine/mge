@@ -161,17 +161,19 @@ namespace mge::lua {
 
         void finish(const mge::script::module_details_ref& m) override
         {
-            const auto& current = std::get<lua_module_ref>(m_definitions.top());
-            current->pop_module_table();
+            pop_from_lua_stack();
             m_definitions.pop();
         }
 
         void start(const mge::script::type_details_ref& t) override
         {
+            MGE_DEBUG_TRACE(LUA) << "start: " << t->name();
+            MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
             if (!t->traits().is_pod() && parent_in_lua()) {
                 auto lt = m_binder.get_type(t->type_index());
                 m_definitions.push(lt);
                 if (lt->materialized()) {
+
                     lt->push_type_table();
                 }
             } else {
@@ -206,10 +208,10 @@ namespace mge::lua {
 
         void finish(const mge::script::type_details_ref& t) override
         {
-            const auto& current = std::get<lua::type_ref>(m_definitions.top());
-            if (current) {
-                current->pop_type_table();
-            }
+            MGE_DEBUG_TRACE(LUA) << "Finish type " << t->name();
+            // MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
+            pop_from_lua_stack();
+            MGE_DEBUG_TRACE(LUA) << details(m_binder.context());
             m_definitions.pop();
         }
 
@@ -220,14 +222,23 @@ namespace mge::lua {
                     const mge::script::invoke_function& invoke) override
         {}
 
-        void dump_stack_size(const char* context)
+    private:
+        void pop_from_lua_stack()
         {
-            int i = lua_absindex(m_binder.context().lua_state(), -1);
-            MGE_DEBUG_TRACE(LUA) << "Stack size at '" << context << "': " << i;
-            return;
+            std::visit(overloaded{[](const std::monostate&) {},
+                                  [](const lua_module_ref& r) {
+                                      if (r && r->has_lua_table()) {
+                                          r->pop_module_table();
+                                      }
+                                  },
+                                  [](const lua::type_ref& t) {
+                                      if (t && t->materialized()) {
+                                          t->pop_type_table();
+                                      }
+                                  }},
+                       m_definitions.top());
         }
 
-    private:
         bool parent_in_lua() const
         {
             return std::visit(

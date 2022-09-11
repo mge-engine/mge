@@ -20,7 +20,18 @@ namespace mge::lua {
 
     type::~type() {}
 
-    void type::add_enum_value(const std::string& name, int64_t enum_value) {}
+    void type::add_enum_value(const std::string& name, int64_t enum_value)
+    {
+        MGE_DEBUG_TRACE(LUA) << "Add enum " << name << " = " << enum_value
+                             << " to type " << m_details->name();
+        auto L = m_context.lua_state();
+
+        lua_Integer lua_value = checked_cast<lua_Integer>(enum_value);
+        lua_pushinteger(L, lua_value);
+        CHECK_CURRENT_STATUS(L);
+        lua_setfield(L, -2, name.c_str());
+        CHECK_CURRENT_STATUS(L);
+    }
 
     void type::add_to_parent(lua_context& context)
     {
@@ -55,23 +66,11 @@ namespace mge::lua {
         }
     }
 
-#if 0
-        if (!m_create_data->enum_values.empty()) {
-            for (const auto& [name, value] : m_create_data->enum_values) {
-                MGE_DEBUG_TRACE(LUA) << "Add enum " << name << " = " << value
-                                     << " to type " << m_details->name();
-                lua_Integer lua_value = checked_cast<lua_Integer>(value);
-                lua_pushinteger(L, lua_value);
-                CHECK_CURRENT_STATUS(L);
-                lua_setfield(L, -2, name.c_str());
-                CHECK_CURRENT_STATUS(L);
-            }
-        }
-    }
-#endif
-
     void type::push_type_table()
     {
+        MGE_DEBUG_TRACE(LUA)
+            << "PUSH TYPE TABLE " << m_details->name() << " ENTER";
+        MGE_DEBUG_TRACE(LUA) << ::mge::details(m_context);
         if (!m_materialized) {
             MGE_THROW(mge::illegal_state) << "Type '" << m_details->name()
                                           << "' is not registered in LUA";
@@ -82,6 +81,10 @@ namespace mge::lua {
         }
         auto rc = lua_getfield(L, -1, m_details->name().c_str());
         CHECK_TYPE(LUA_TTABLE, rc);
+
+        MGE_DEBUG_TRACE(LUA)
+            << "PUSH TYPE TABLE " << m_details->name() << " LEAVE";
+        MGE_DEBUG_TRACE(LUA) << ::mge::details(m_context);
     }
 
     void type::pop_type_table()
