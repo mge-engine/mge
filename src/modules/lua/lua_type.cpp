@@ -40,6 +40,11 @@ namespace mge::lua {
     void type::add_to_parent(lua_context& context)
     {
         auto L = context.lua_state();
+        // create meta table for type
+        // use stable type details pointer as key
+        lua_pushlightuserdata(L, m_details->get());
+        lua_newtable(L);
+        lua_settable(L, LUA_REGISTRYINDEX);
         // create type table
         lua_newtable(L);
         // -1 - type table
