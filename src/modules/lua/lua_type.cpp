@@ -111,7 +111,31 @@ namespace mge::lua {
         }
     }
 
-    int type::destruct(lua_State* L) { return 0; }
+    int type::destruct(lua_State* L)
+    {
+        int top = lua_gettop(L);
+        if (top != 2) {
+            lua_pushfstring(
+                L,
+                "Unexpected call to '__gc' with %d arguments, 2 expected",
+                top);
+            lua_error(L);
+        }
+        if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
+            lua_pushstring(L,
+                           "Unexpected error: light user data expected as "
+                           "first argument of '__gc'");
+            lua_error(L);
+        }
+        // void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        // type* self = reinterpret_cast<type*>(self_ptr);
+        /*
+        MGE_DEBUG_TRACE(LUA)
+            << "Destruct value of type '" << self->m_details->name()
+            << "' with " << (top - 1) << " arguments";
+        */
+        return 0;
+    }
 
     void
     type::set_destructor(const mge::script::invoke_function& delete_ptr,
@@ -140,13 +164,15 @@ namespace mge::lua {
 
     int type::construct(lua_State* L)
     {
-        int top = lua_gettop(L);
+        // int top = lua_gettop(L);
 
-        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
-        type* self = reinterpret_cast<type*>(self_ptr);
+        // void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        // type* self = reinterpret_cast<type*>(self_ptr);
+        /*
         MGE_DEBUG_TRACE(LUA)
             << "Construct value of type '" << self->m_details->name()
             << "' with " << (top - 1) << " arguments";
+        */
 
         // create a new user data
         // set meta table to all
