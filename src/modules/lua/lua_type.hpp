@@ -41,8 +41,7 @@ namespace mge::lua {
         bool materialized() const { return m_materialized; }
 
     private:
-        void assert_create_data();
-        void materialize(lua_context& context);
+        void define_construction();
 
         lua_context&                              m_context;
         const mge::script::type_details_ref&      m_details;
@@ -56,7 +55,9 @@ namespace mge::lua {
             const mge::script::invoke_function* new_shared;
         };
 
-        mge::small_vector<constructor, 2> m_constructors;
+        static int construct(lua_State *L);
+
+        mge::small_vector<constructor, 2>   m_constructors;
         const mge::script::invoke_function* m_delete_ptr;
         const mge::script::invoke_function* m_delete_shared_ptr;
     };

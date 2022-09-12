@@ -101,6 +101,9 @@ namespace mge::lua {
         MGE_DEBUG_TRACE(LUA) << "Add constructor for '" << m_details->name()
                              << "' " << mge::gist(s);
         m_constructors.emplace_back(&s, &new_at, &new_shared);
+        if (!m_ctor_defined && m_delete_shared_ptr && m_delete_ptr) {
+            define_construction();
+        }
     }
 
     void
@@ -109,6 +112,38 @@ namespace mge::lua {
     {
         m_delete_ptr = &delete_ptr;
         m_delete_shared_ptr = &delete_shared_ptr;
+        if (!m_ctor_defined && m_delete_shared_ptr && m_delete_ptr &&
+            !m_constructors.empty()) {
+            define_construction();
+        }
+    }
+
+    int type::construct(lua_State* L)
+    {
+        int top = lua_gettop(L);
+
+        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type* self = reinterpret_cast<type*>(self_ptr);
+        MGE_DEBUG_TRACE(LUA)
+            << "Construct value of type '" << self->m_details->name()
+            << "' with " << (top - 1) << " arguments";
+
+        // create a new user data
+        // set meta table to all
+        return 0;
+    }
+
+    void type::define_construction()
+    {
+        MGE_DEBUG_TRACE(LUA)
+            << "Define construction for type '" << m_details->name() << "'";
+        // on stack we have the table of this type X
+        // reachable globally at module.X
+        auto L = m_context.lua_state();
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, construct, 1);
+        lua_setfield(L, -2, "new");
+        CHECK_CURRENT_STATUS(L);
     }
 
 } // namespace mge::lua
