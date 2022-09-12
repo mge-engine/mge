@@ -55,7 +55,8 @@ namespace mge::lua {
             const mge::script::invoke_function* new_shared;
         };
 
-        static int construct(lua_State *L);
+        static int construct(lua_State* L);
+        static int destruct(lua_State* L);
 
         mge::small_vector<constructor, 2>   m_constructors;
         const mge::script::invoke_function* m_delete_ptr;

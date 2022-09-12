@@ -111,6 +111,8 @@ namespace mge::lua {
         }
     }
 
+    int type::destruct(lua_State* L) { return 0; }
+
     void
     type::set_destructor(const mge::script::invoke_function& delete_ptr,
                          const mge::script::invoke_function& delete_shared_ptr)
@@ -121,6 +123,19 @@ namespace mge::lua {
             !m_constructors.empty()) {
             define_construction();
         }
+        auto L = m_context.lua_state();
+        lua_pushlightuserdata(L, m_details.get());
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        lua_pushstring(L, "__gc");
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &destruct, 1);
+        // stack now
+        // -1 closure
+        // -2 string "__gc"
+        // -3 meta table
+        lua_settable(L, -3);
+        // meta table remains on stack, remove
+        lua_pop(L, 1);
     }
 
     int type::construct(lua_State* L)
