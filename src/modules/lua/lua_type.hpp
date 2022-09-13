@@ -10,6 +10,8 @@
 #include "lua.hpp"
 #include "lua_context.hpp"
 
+#include <map>
+
 namespace mge::lua {
 
     MGE_DECLARE_REF(type);
@@ -38,7 +40,8 @@ namespace mge::lua {
         void pop_type_table();
         void add_type(const lua::type_ref& t);
 
-        bool materialized() const { return m_materialized; }
+        bool            materialized() const { return m_materialized; }
+        std::type_index type_index() const { return m_details->type_index(); }
 
     private:
         void define_construction();
@@ -55,12 +58,14 @@ namespace mge::lua {
             const mge::script::invoke_function* new_shared;
         };
 
+        const constructor* select_constructor(int nargs, lua_State* L) const;
+
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
 
-        mge::small_vector<constructor, 2>   m_constructors;
-        const mge::script::invoke_function* m_delete_ptr;
-        const mge::script::invoke_function* m_delete_shared_ptr;
+        std::map<size_t, std::vector<constructor>> m_constructors;
+        const mge::script::invoke_function*        m_delete_ptr;
+        const mge::script::invoke_function*        m_delete_shared_ptr;
     };
 
 } // namespace mge::lua

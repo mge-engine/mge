@@ -105,7 +105,8 @@ namespace mge::lua {
     {
         MGE_DEBUG_TRACE(LUA) << "Add constructor for '" << m_details->name()
                              << "' " << mge::gist(s);
-        m_constructors.emplace_back(&s, &new_at, &new_shared);
+
+        m_constructors[s.size()].emplace_back(&s, &new_at, &new_shared);
         if (!m_ctor_defined && m_delete_shared_ptr && m_delete_ptr) {
             define_construction();
         }
@@ -164,19 +165,39 @@ namespace mge::lua {
 
     int type::construct(lua_State* L)
     {
-        // int top = lua_gettop(L);
+        int top = lua_gettop(L);
 
-        // void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
-        // type* self = reinterpret_cast<type*>(self_ptr);
-        /*
+        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type* self = reinterpret_cast<type*>(self_ptr);
         MGE_DEBUG_TRACE(LUA)
             << "Construct value of type '" << self->m_details->name()
             << "' with " << (top - 1) << " arguments";
-        */
+
+        const constructor* ctor = self->select_constructor(top - 1, L);
+        if (ctor) {
+
+        } else {
+            lua_pushfstring(L,
+                            "Cannot construct object of type '%s'",
+                            self->m_details->name().c_str());
+            lua_error(L);
+        }
 
         // create a new user data
         // set meta table to all
         return 0;
+    }
+
+    const type::constructor* type::select_constructor(int        nargs,
+                                                      lua_State* L) const
+    {
+        auto it = m_constructors.find(static_cast<size_t>(nargs));
+        if (it != m_constructors.end()) {
+            if (it->second.size() == 1) {
+                return &((it->second)[0]);
+            }
+        }
+        return nullptr;
     }
 
     void type::define_construction()
