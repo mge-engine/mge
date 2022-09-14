@@ -45,6 +45,7 @@ namespace mge::lua {
 
     private:
         void define_construction();
+        void load_metatable(lua_State* L);
 
         lua_context&                              m_context;
         const mge::script::type_details_ref&      m_details;

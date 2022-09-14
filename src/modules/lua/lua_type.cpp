@@ -116,26 +116,20 @@ namespace mge::lua {
     int type::destruct(lua_State* L)
     {
         int top = lua_gettop(L);
-        if (top != 2) {
-            lua_pushfstring(
-                L,
-                "Unexpected call to '__gc' with %d arguments, 2 expected",
-                top);
-            lua_error(L);
+        if (top != 1) {
+            return 0;
         }
         if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
-            lua_pushstring(L,
-                           "Unexpected error: light user data expected as "
-                           "first argument of '__gc'");
-            lua_error(L);
+            return 0;
         }
-        // void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
-        // type* self = reinterpret_cast<type*>(self_ptr);
-        /*
+        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type* self = reinterpret_cast<type*>(self_ptr);
+
         MGE_DEBUG_TRACE(LUA)
             << "Destruct value of type '" << self->m_details->name()
-            << "' with " << (top - 1) << " arguments";
-        */
+            << "' with " << top << " arguments";
+
+        // void* shared_ptr_address = lua_touserdata(L, 1);
         return 0;
     }
 
@@ -150,8 +144,7 @@ namespace mge::lua {
             define_construction();
         }
         auto L = m_context.lua_state();
-        lua_pushlightuserdata(L, m_details.get());
-        lua_gettable(L, LUA_REGISTRYINDEX);
+        load_metatable(L);
         lua_pushstring(L, "__gc");
         lua_pushlightuserdata(L, this);
         lua_pushcclosure(L, &destruct, 1);
@@ -162,6 +155,18 @@ namespace mge::lua {
         lua_settable(L, -3);
         // meta table remains on stack, remove
         lua_pop(L, 1);
+    }
+
+    void type::load_metatable(lua_State* L)
+    {
+        lua_pushlightuserdata(L, m_details.get());
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        if (!lua_istable(L, -1)) {
+            lua_pushfstring(L,
+                            "Meta table for type %s not found",
+                            m_details->name().c_str());
+            lua_error(L);
+        }
     }
 
     int type::construct(lua_State* L)
@@ -176,17 +181,20 @@ namespace mge::lua {
 
         const constructor* ctor = self->select_constructor(top - 1, L);
         if (ctor) {
-
+            void* shared_ptr_mem = lua_newuserdata(L, sizeof(void*));
+            memset(shared_ptr_mem, 0, sizeof(void*));
+            self->load_metatable(L);
+            // stack now
+            // -1 - meta table
+            // -2 - new user data (still nullptr)
+            lua_setmetatable(L, -2);
         } else {
             lua_pushfstring(L,
                             "Cannot construct object of type '%s'",
                             self->m_details->name().c_str());
             lua_error(L);
         }
-
-        // create a new user data
-        // set meta table to all
-        return 0;
+        return 1;
     }
 
     const type::constructor* type::select_constructor(int        nargs,
