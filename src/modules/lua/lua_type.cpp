@@ -1,6 +1,7 @@
 #include "lua_type.hpp"
 #include "lua_context.hpp"
 #include "lua_error.hpp"
+#include "value_classification.hpp"
 
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/gist.hpp"
@@ -195,6 +196,43 @@ namespace mge::lua {
         if (it != m_constructors.end()) {
             if (it->second.size() == 1) {
                 return &((it->second)[0]);
+            }
+
+            mge::small_vector<value_classification, 3> value_classes;
+            for (int i = 1; i <= nargs; ++i) {
+                value_classes.push_back(value_classification(L, i));
+            }
+            const auto& all_ctors = it->second;
+            const auto  all_ctors_size = all_ctors.size();
+            size_t      best_constructor = all_ctors_size;
+            size_t      best_constructor_match_count = 0;
+
+            for (size_t ci = 0; ci < all_ctors_size; ++ci) {
+
+                size_t exact_match_count = 0;
+                bool   match_failed = false;
+
+                for (int i = 0; i < nargs; ++i) {
+                    auto match = value_classes[i].match(all_ctors[ci].s->at(i));
+                    if (match == value_classification::NO_MATCH) {
+                        match_failed = true;
+                        break;
+                    } else if (match == value_classification::MATCH_EXACT) {
+                        ++exact_match_count;
+                    }
+                }
+
+                if (!match_failed) {
+                    if (exact_match_count > best_constructor_match_count) {
+                        best_constructor = ci;
+                    } else if (best_constructor == all_ctors_size) {
+                        best_constructor = ci;
+                    }
+                }
+            }
+
+            if (best_constructor != all_ctors_size) {
+                return &(all_ctors[best_constructor]);
             }
         }
         return nullptr;
