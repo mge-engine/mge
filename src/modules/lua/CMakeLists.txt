@@ -9,7 +9,8 @@ SET(mge_lua_module_SOURCES
     lua_error.cpp
     lua_datatype.cpp
     lua_type.cpp
-    value_classification.cpp)
+    value_classification.cpp
+    lua_object_call_context.cpp)
 
 ADD_LIBRARY(mge_module_lua MODULE
             ${mge_lua_module_SOURCES})
