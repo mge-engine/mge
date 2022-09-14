@@ -86,25 +86,27 @@ namespace mge::lua {
         : m_type_class(TC_NONE)
         , m_lua_type(nullptr)
     {
-        /*
-        if (obj) {
-            if (Py_IsNone(obj))
-                m_type_class = TC_NONE;
-            else if (PyBool_Check(obj))
-                m_type_class = TC_BOOL;
-            else if (PyLong_Check(obj))
-                m_type_class = TC_LONG;
-            else if (PyFloat_Check(obj))
-                m_type_class = TC_FLOAT;
-            else if (PyUnicode_Check(obj))
-                m_type_class = TC_UNICODE;
-            else {
-                m_type_class = TC_OBJECT;
-                PyTypeObject* tp = Py_TYPE(obj);
-                m_python_type = python_type::python_type_of(tp);
-            }
+        auto t = lua_type(L, index);
+        switch (t) {
+        case LUA_TBOOLEAN:
+            m_type_class = TC_BOOL;
+            break;
+        case LUA_TNIL:
+        case LUA_TNONE:
+            m_type_class = TC_NONE;
+            break;
+        case LUA_TNUMBER:
+            m_type_class = TC_NUMBER;
+            break;
+        case LUA_TSTRING:
+            m_type_class = TC_STRING;
+            break;
+        case LUA_TTABLE:
+        case LUA_TUSERDATA:
+        case LUA_TLIGHTUSERDATA:
+            m_type_class = TC_OBJECT;
+            break;
         }
-        */
     }
 
     value_classification::match_type
