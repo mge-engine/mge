@@ -3,6 +3,7 @@
 #include "lua_error.hpp"
 #include "value_classification.hpp"
 
+#include "lua_object_call_context.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/gist.hpp"
 #include "mge/core/trace.hpp"
@@ -129,7 +130,9 @@ namespace mge::lua {
             << "Destruct value of type '" << self->m_details->name()
             << "' with " << top << " arguments";
 
-        // void* shared_ptr_address = lua_touserdata(L, 1);
+        void*                   shared_ptr_address = lua_touserdata(L, 1);
+        lua_object_call_context ctx(self, L, shared_ptr_address);
+        (*self->m_delete_shared_ptr)(ctx);
         return 0;
     }
 
@@ -188,6 +191,8 @@ namespace mge::lua {
             // -1 - meta table
             // -2 - new user data (still nullptr)
             lua_setmetatable(L, -2);
+            lua_object_call_context ctx(self, L, shared_ptr_mem);
+            (*ctor->new_shared)(ctx);
         } else {
             lua_pushfstring(L,
                             "Cannot construct object of type '%s'",

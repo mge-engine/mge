@@ -198,7 +198,6 @@ namespace mge::script {
                 std::shared_ptr<T>** shared_ptr_address =
                     reinterpret_cast<std::shared_ptr<T>**>(
                         shared_ptr_address_untyped);
-                mge::call_debugger();
                 (*shared_ptr_address) = new std::shared_ptr<T>();
                 if constexpr ((sizeof...(I) == 1) &&
                               std::is_same_v<nth_type<0, ConstructorArgs...>,
