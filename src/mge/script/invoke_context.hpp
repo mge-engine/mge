@@ -2,6 +2,8 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/call_debugger.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/signature.hpp"
 
@@ -18,12 +20,10 @@ namespace mge::script {
         invoke_context() = default;
         virtual ~invoke_context() = default;
 
-        template <typename R> R invoke(const char* name) { return R(); }
-
-        template <typename R>
-        R invoke(const char* name, const mge::script::signature& s)
+        template <typename R> R invoke(const char* name)
         {
-            return R();
+            call();
+            return retrieve_result<R>();
         }
 
         template <typename R, typename... Args>
@@ -33,6 +33,14 @@ namespace mge::script {
         {
             return R();
         }
+
+        template <typename T> T retrieve_result()
+        {
+            call_debugger();
+            return T();
+        }
+
+        virtual void call() = 0;
     };
 
 } // namespace mge::script
