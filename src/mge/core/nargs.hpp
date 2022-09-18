@@ -1,5 +1,8 @@
 #pragma once
 
+// see https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/
+// for elaboration on how this works
+
 #define MGE_NARGS_SELECT(_0,                                                   \
                          _1,                                                   \
                          _2,                                                   \
@@ -35,6 +38,42 @@
                          N,                                                    \
                          ...)                                                  \
     N
+
+#define MGE_HAS_COMMA(...)                                                     \
+    MGE_NARGS_SELECT(__VA_ARGS__,                                              \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     1,                                                        \
+                     0)
+
 #define MGE_NARGS(...)                                                         \
     MGE_NARGS_SELECT(__VA_ARGS__,                                              \
                      32,                                                       \
@@ -70,3 +109,18 @@
                      2,                                                        \
                      1,                                                        \
                      0)
+
+#define MGE_TRIGGER_PARENTHESIS(...) ,
+
+#define MGE_IS_EMPTY(...)                                                      \
+    MGE_IS_EMPTY_2(                                                            \
+        MGE_HAS_COMMA(__VA_ARGS__),                                            \
+        MGE_HAS_COMMA(MGE_TRIGGER_PARENTHESIS __VA_ARGS__),                    \
+        MGE_HAS_COMMA(__VA_ARGS__(/*empty*/)),                                 \
+        MGE_HAS_COMMA(MGE_TRIGGER_PARENTHESIS __VA_ARGS__(/*empty*/)))
+
+#define MGE_IS_EMPTY_CASE_0001 ,
+#define MGE_IS_EMPTY_PASTE5(_0, _1, _2, _3, _4) _0##_1##_2##_3##_4
+
+#define MGE_IS_EMPTY_2(_0, _1, _2, _3)                                         \
+    MGE_HAS_COMMA(MGE_IS_EMPTY_PASTE5(MGE_IS_EMPTY_CASE_, _0, _1, _2, _3))
