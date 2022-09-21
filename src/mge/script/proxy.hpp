@@ -39,12 +39,12 @@ namespace mge::script {
 #define MGESCRIPT_PROXY_PARAMETER_LIST_ELEMENT(z, count, sig) __p##count
 
 #define MGESCRIPT_PROXY_METHOD(result_type, method_name, sig, constness)       \
-    result_type methodname BOOST_PP_IF(                                        \
+    result_type method_name BOOST_PP_IF(                                       \
         MGE_IS_EMPTY(BOOST_PP_REMOVE_PARENS(sig)),                             \
         sig,                                                                   \
         (BOOST_PP_ENUM(BOOST_PP_TUPLE_SIZE(sig),                               \
                        MGESCRIPT_PROXY_PARAMETER_WITH_TYPE,                    \
-                       sig))) BOOST_PP_REMOVE_PARENS(constness)                \
+                       sig))) BOOST_PP_REMOVE_PARENS(constness) override       \
         MGESCRIPT_PROXY_METHOD_BLOCK(result_type, method_name, sig)
 
 #define MGESCRIPT_PROXY_METHOD_BLOCK(result_type, method_name, sig)            \
