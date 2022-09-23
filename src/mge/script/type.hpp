@@ -184,6 +184,8 @@ namespace mge::script {
             auto tr = traits_of<self_type>();
             init_class_details(ti, n, tr, sizeof(self_type));
             add_default_constructor();
+            add_copy_constructor();
+            add_move_constructor();
 
             if constexpr (std::is_destructible_v<self_type>) {
                 if constexpr (std::is_trivially_destructible_v<self_type>) {
@@ -219,6 +221,52 @@ namespace mge::script {
         }
 
     private:
+    private:
+        template <typename... ConstructorArgs> struct constructor_helper
+        {
+            template <std::size_t... I>
+            static void construct(call_context& context,
+                                  std::index_sequence<I...>)
+            {
+                if constexpr ((sizeof...(I) == 1) &&
+                              std::is_same_v<nth_type<0, ConstructorArgs...>,
+                                             void>) {
+                    new (context.this_ptr()) self_type();
+                } else {
+                    new (context.this_ptr()) self_type(
+                        parameter_retriever<nth_type<I, ConstructorArgs...>>(
+                            context,
+                            I)
+                            .get()...);
+                }
+            }
+        };
+
+        template <typename... ConstructorArgs> struct new_shared_helper
+        {
+            template <std::size_t... I>
+            static void new_shared(call_context& context,
+                                   std::index_sequence<I...>)
+            {
+                void* shared_ptr_address_untyped = context.shared_ptr_address();
+                std::shared_ptr<self_type>** shared_ptr_address =
+                    reinterpret_cast<std::shared_ptr<self_type>**>(
+                        shared_ptr_address_untyped);
+                (*shared_ptr_address) = new std::shared_ptr<self_type>();
+                if constexpr ((sizeof...(I) == 1) &&
+                              std::is_same_v<nth_type<0, ConstructorArgs...>,
+                                             void>) {
+                    (**shared_ptr_address) = std::make_shared<self_type>();
+                } else {
+                    (**shared_ptr_address) = std::make_shared<self_type>(
+                        parameter_retriever<nth_type<I, ConstructorArgs...>>(
+                            context,
+                            I)
+                            .get()...);
+                }
+            }
+        };
+
         void add_default_constructor()
         {
             auto new_at = [](call_context& ctx) {
@@ -235,6 +283,29 @@ namespace mge::script {
             signature empty;
             add_constructor(empty, new_at, new_shared);
         }
+
+        template <typename... ConstructorArgs> void constructor()
+        {
+            std::array<std::type_index, sizeof...(ConstructorArgs)> arg_types =
+                {std::type_index(typeid(ConstructorArgs))...};
+            auto construct = [](call_context& ctx) {
+                constructor_helper<ConstructorArgs...>::construct(
+                    ctx,
+                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
+            };
+            auto new_shared = [](call_context& ctx) {
+                new_shared_helper<ConstructorArgs...>::new_shared(
+                    ctx,
+                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
+            };
+            signature s(arg_types);
+            add_constructor(s, construct, new_shared);
+            return;
+        }
+
+        inline void add_copy_constructor() { constructor<const self_type&>(); }
+
+        inline void add_move_constructor() { constructor<self_type&&>(); }
     };
 
     template <typename T>
@@ -371,9 +442,9 @@ namespace mge::script {
             return *this;
         }
 
-        inline self_type copy_constructor() { return constructor<const T&>(); }
+        inline self_type& copy_constructor() { return constructor<const T&>(); }
 
-        inline self_type move_constructor() { return constructor<T&&>(); }
+        inline self_type& move_constructor() { return constructor<T&&>(); }
 
         template <typename TB, typename TV>
         std::enable_if<std::is_base_of_v<TB, T>, self_type>::type&
