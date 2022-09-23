@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "python_object_call_context.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"

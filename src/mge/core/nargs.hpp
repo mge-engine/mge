@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 
 // see https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/

@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2021 by Alexander Schroeder
+// All rights reserved.
 #include "value_classification.hpp"
 #include "mge/core/singleton.hpp"
 #include "python_type.hpp"
