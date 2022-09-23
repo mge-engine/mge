@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/call_debugger.hpp"
+#include "mge/core/callable.hpp"
 #include "mge/core/nth_type.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/type_name.hpp"
@@ -15,6 +16,7 @@
 #include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
 
+#include <functional>
 #include <iostream>
 #include <string>
 
@@ -163,8 +165,82 @@ namespace mge::script {
         using type_base::type_index;
     };
 
+    template <typename R, typename... Args>
+    class type<std::function<R(Args...)>, void> : public type_base
+    {
+    private:
+        using self_type = std::function<R(Args...)>;
+
+    public:
+        inline explicit type()
+        {
+            auto ti = std::type_index(typeid(self_type));
+            init_details(ti);
+        }
+
+        inline explicit type(const std::string& n)
+        {
+            auto ti = std::type_index(typeid(self_type));
+            auto tr = traits_of<self_type>();
+            init_class_details(ti, n, tr, sizeof(self_type));
+            add_default_constructor();
+
+            if constexpr (std::is_destructible_v<self_type>) {
+                if constexpr (std::is_trivially_destructible_v<self_type>) {
+                    set_destructor(
+                        [](call_context& context) {},
+                        [](call_context& context) {
+                            void* shared_ptr_addr_untyped =
+                                context.shared_ptr_address();
+                            std::shared_ptr<self_type>** shared_ptr_addr =
+                                reinterpret_cast<std::shared_ptr<self_type>**>(
+                                    shared_ptr_addr_untyped);
+                            delete (*shared_ptr_addr);
+                            (*shared_ptr_addr) = nullptr;
+                        });
+                } else {
+                    set_destructor(
+                        [](call_context& context) {
+                            self_type* self = reinterpret_cast<self_type*>(
+                                context.this_ptr());
+                            self->~self_type();
+                        },
+                        [](call_context& context) {
+                            void* shared_ptr_addr_untyped =
+                                context.shared_ptr_address();
+                            std::shared_ptr<self_type>** shared_ptr_addr =
+                                reinterpret_cast<std::shared_ptr<self_type>**>(
+                                    shared_ptr_addr_untyped);
+                            delete (*shared_ptr_addr);
+                            (*shared_ptr_addr) = nullptr;
+                        });
+                }
+            }
+        }
+
+    private:
+        void add_default_constructor()
+        {
+            auto new_at = [](call_context& ctx) {
+                new (ctx.this_ptr()) self_type();
+            };
+            auto new_shared = [](call_context& context) {
+                void* shared_ptr_addr_untyped = context.shared_ptr_address();
+                std::shared_ptr<self_type>** shared_ptr_addr =
+                    reinterpret_cast<std::shared_ptr<self_type>**>(
+                        shared_ptr_addr_untyped);
+                (*shared_ptr_addr) = new std::shared_ptr<self_type>();
+                (**shared_ptr_addr) = std::make_shared<self_type>();
+            };
+            signature empty;
+            add_constructor(empty, new_at, new_shared);
+        }
+    };
+
     template <typename T>
-    class type<T, typename std::enable_if<std::is_class_v<T>>::type>
+    class type<T,
+               typename std::enable_if<std::is_class_v<T> &&
+                                       !mge::is_callable_v<T>>::type>
         : public type_base
     {
     private:

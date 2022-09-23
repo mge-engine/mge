@@ -15,4 +15,7 @@ namespace mge {
         static constexpr bool value = sizeof(test<T>(0)) == sizeof(char);
     };
 
+    template <typename T>
+    inline constexpr bool is_callable_v = is_callable<T>::value;
+
 } // namespace mge
