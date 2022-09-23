@@ -4,6 +4,7 @@
 import mge
 import sys
 
+
 class blackscreen(mge.application):
 
     def setup(self):
@@ -32,7 +33,6 @@ class blackscreen(mge.application):
         self.window.show()
 
 
-mge.component.register_implementation(blackscreen)
-
 if __name__ == "__main__":
+    mge.component.register_implementation(blackscreen)
     mge.application.main(sys.argv)

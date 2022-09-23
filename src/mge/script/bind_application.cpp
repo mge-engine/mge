@@ -20,10 +20,10 @@ namespace mge::script {
         {
             module("mge")(
                 type<mge::application>("application")(
-                    type<application::input_listener>("input_listener"),
+                    /*type<application::input_listener>("input_listener"),
                     type<application::update_listener>("update_listener"),
                     type<application::redraw_listener>("redraw_listener"),
-                    type<application::quit_listener>("quit_listener"))
+                    type<application::quit_listener>("quit_listener") */)
                     .method("argc", &application::argc)
                     .method("argv", &application::argv)
                     .method("set_quit", &application::set_quit)
@@ -33,6 +33,7 @@ namespace mge::script {
                     .method("run", &application::run)
                     .method("set_return_code", &application::set_return_code)
                     .method("return_code", &application::return_code)
+                    /*
                     .method("add_input_listener",
                             &application::add_input_listener)
                     .method("remove_input_listener",
@@ -48,7 +49,7 @@ namespace mge::script {
                     .method("add_quit_listener",
                             &application::add_quit_listener)
                     .method("remove_quit_listener",
-                            &application::remove_quit_listener),
+                            &application::remove_quit_listener) */,
                 type<loop_target>("loop_target")
                     .method("is_quit", &loop_target::is_quit)
                     .method("input", &loop_target::input)
