@@ -1,6 +1,6 @@
 # Why MGE?
 
-MGE is not created to be competition to well-known big game engines, like _Unreal Engine_ _Godot_, or _Unity_, but to explore a more programmer-centric approach, putting focus on
+MGE is not created to be competition to well-known big game engines, like _Unreal Engine_, _Godot_, or _Unity_, but to explore a more programmer-centric approach, putting focus on
 
 * procedural content generation,,
 * a strong asset management pipeline
