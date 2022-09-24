@@ -268,4 +268,17 @@ namespace mge {
                           .method("set_field", &memberfunctions::set_field));
     }
 
+    struct with_inner_type
+    {
+        struct inner
+        {};
+    };
+
+    TEST_F(test_type, with_inner_type)
+    {
+        using namespace mge::script;
+        module("mge")(type<with_inner_type>("with_inner_type")(
+            type<with_inner_type::inner>("inner")));
+    }
+
 } // namespace mge
