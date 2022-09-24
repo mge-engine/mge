@@ -249,7 +249,7 @@
 <section id="what-is-mge">
 <h2>What is MGE?<a class="headerlink" href="#what-is-mge" title="Permalink to this headline">¶</a></h2>
 <p>MGE stands for <em>Modern Game Engine</em>. It is called <em>modern</em> because
-it is a newcomer and relies on modern concepts, such as the latest
+it is a newcomer and relies on modern concepts, such as a recent
 C++ standard.</p>
 <p>There exist likely already too many game and graphics engines,
 so why create another one? The primary root was personal enjoyment
@@ -269,12 +269,14 @@ facilities for tracing and error reporting, configuration or
 componentization.</p></li>
 <li><p>The graphics library delivers an abstraction of a modern presentation
 pipeline, using concepts like shader programs, parallel queues and
-command buffers.</p></li>
+command buffers. It is a low level abstraction of these concepts.</p></li>
 <li><p>The input library makes it easy to process user input, from various
 devices including gamepads and joysticks.</p></li>
 <li><p>The application library provides a framework for the common game application,
 supporting concepts like single-threaded or multi-threaded simulation and
 render loop.</p></li>
+<li><p>The scripting library encapsulates the integration of scripting languages.
+Integrations for Python and Lua are included.</p></li>
 </ul>
 <p>The general design philosphy in MGE is that everything should stand
 for itself, and <em>manager</em> or other <em>uber-objects</em> are to be avoided.</p>
@@ -298,6 +300,9 @@ all technical means to put things on the screen.</p></li>
 input devices and their state.</p></li>
 <li><p><a class="reference internal" href="mgeapplication.html#mge-application"><span class="std std-ref">Application Library</span></a> describes the application library, which provides
 facilities to structure application utilizing the MGE toolkit.</p></li>
+<li><p><a class="reference internal" href="mgeasset.html#mge-asset"><span class="std std-ref">Asset Library</span></a> describes the asset library, which provides
+facilities to load and manage assets.</p></li>
+<li><p><a class="reference internal" href="mgescript.html#mge-script"><span class="std std-ref">Scripting Library</span></a> describes the scripting language integration facilities.</p></li>
 </ul>
 </section>
 </section>

@@ -6,7 +6,7 @@ What is MGE?
 ############
 
 MGE stands for *Modern Game Engine*. It is called *modern* because
-it is a newcomer and relies on modern concepts, such as the latest
+it is a newcomer and relies on modern concepts, such as a recent
 C++ standard.
 
 There exist likely already too many game and graphics engines,
@@ -30,7 +30,7 @@ the domain of game programming:
 
 - The graphics library delivers an abstraction of a modern presentation
   pipeline, using concepts like shader programs, parallel queues and
-  command buffers.
+  command buffers. It is a low level abstraction of these concepts.
 
 - The input library makes it easy to process user input, from various
   devices including gamepads and joysticks.
@@ -38,6 +38,9 @@ the domain of game programming:
 - The application library provides a framework for the common game application,
   supporting concepts like single-threaded or multi-threaded simulation and
   render loop.
+
+- The scripting library encapsulates the integration of scripting languages.
+  Integrations for Python and Lua are included.
 
 The general design philosphy in MGE is that everything should stand
 for itself, and *manager* or other *uber-objects* are to be avoided.
@@ -69,3 +72,8 @@ The second half, features reference chapters for each main library of MGE:
 
 - :ref:`mge-application` describes the application library, which provides
   facilities to structure application utilizing the MGE toolkit.
+
+- :ref:`mge-asset` describes the asset library, which provides
+  facilities to load and manage assets.
+
+- :ref:`mge-script` describes the scripting language integration facilities.
