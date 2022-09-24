@@ -10,7 +10,7 @@ branches:
 
 environment:
   access_token:
-    secure: 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
+    secure: d8ut1+6Q451ZF/0s99hcWS9SUhGJ7usjjCCpkdvUy4o4C3Q8+LZw+vmsR13esiwe
 
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
@@ -52,7 +52,7 @@ test_script:
 
 on_success:
   - git config --global credential.helper store
-  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://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:x-oauth-basic@github.com`n" -NoNewline
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - git config --global user.email "schroeder.alexander@googlemail.com"
   - git config --global user.name "Alexander Schroeder"
   - cmd: python ../tools/ci/upload-gh-pages.py
