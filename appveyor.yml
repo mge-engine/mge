@@ -10,7 +10,7 @@ branches:
 
 environment:
   access_token:
-    secure: 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
+    secure: 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
 
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
