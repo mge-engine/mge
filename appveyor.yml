@@ -52,7 +52,7 @@ test_script:
 
 on_success:
   - git config --global credential.helper store
-  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token)@github.com/mge-engine/mge.git/m`n" -NoNewline
+  - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token)@github.com/mge-engine/mge.git`n" -NoNewline
   - git config --global user.email "schroeder.alexander@googlemail.com"
   - git config --global user.name "Alexander Schroeder"
   - cmd: python ../tools/ci/upload-gh-pages.py
