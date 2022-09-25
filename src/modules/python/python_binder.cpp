@@ -42,6 +42,9 @@ namespace mge::python {
             : m_binder(binder)
         {}
 
+        using mge::script::visitor::finish;
+        using mge::script::visitor::start;
+
         void start(const mge::script::type_details_ref& t) override
         {
             if (!t->traits().is_pod()) {
