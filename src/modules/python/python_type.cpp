@@ -59,7 +59,7 @@ namespace mge::python {
     void python_type::add_type(const python_type_ref& t)
     {
         assert_create_data();
-        // m_create_data->subtypes.push_back(t);
+        m_create_data->subtypes.push_back(t);
     }
 
     void python_type::add_field(const std::string&                   name,
