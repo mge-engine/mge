@@ -25,10 +25,14 @@ namespace mge::python {
     private:
         struct create_data
         {
+            create_data() = default;
+            ~create_data() = default;
+            
             PyType_Spec                          spec;
             std::vector<PyType_Slot>             slots;
             std::map<std::string, python_object> type_attributes;
             std::vector<PyGetSetDef>             getset_defs;
+            std::vector<python_type_ref>         subtypes;
         };
 
     public:
@@ -66,6 +70,7 @@ namespace mge::python {
 
         const std::string& local_name() const { return m_type->name(); }
         std::type_index    type_index() const { return m_type->type_index(); }
+        bool               is_subtype() const { return m_type->is_subtype(); }
         bool               is_embeddable() const;
         PyObject*          py_type() const;
         void               interpreter_lost();
@@ -74,6 +79,8 @@ namespace mge::python {
         void* shared_ptr_address(PyObject* self) const;
 
         static python_type* python_type_of(PyTypeObject* tp);
+
+        void add_type(const python_type_ref& t);
 
     private:
         void assert_create_data() const;

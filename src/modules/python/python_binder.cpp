@@ -61,6 +61,9 @@ namespace mge::python {
             m_types.pop();
             if (pt) {
                 m_binder.add_type(m->type_index(), pt);
+                if (pt->is_subtype()) {
+                    m_types.top()->add_type(pt);
+                }
             }
         }
 

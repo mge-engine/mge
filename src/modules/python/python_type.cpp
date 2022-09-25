@@ -56,6 +56,12 @@ namespace mge::python {
             python_object(PyLong_FromLongLong(enum_value));
     }
 
+    void python_type::add_type(const python_type_ref& t)
+    {
+        assert_create_data();
+        // m_create_data->subtypes.push_back(t);
+    }
+
     void python_type::add_field(const std::string&                   name,
                                 const mge::script::type_details_ref& type,
                                 const mge::script::invoke_function&  setter,
