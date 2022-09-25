@@ -42,19 +42,6 @@ namespace mge::python {
             : m_binder(binder)
         {}
 
-        void start(const mge::script::module_details_ref& m) override
-        {
-            mge::script::module mod(m);
-
-            auto pymod = m_binder.context().get_module(mod);
-            m_py_modules.push(pymod);
-        }
-
-        void finish(const mge::script::module_details_ref& m) override
-        {
-            m_py_modules.pop();
-        }
-
         void start(const mge::script::type_details_ref& t) override
         {
             if (!t->traits().is_pod()) {
@@ -79,9 +66,8 @@ namespace mge::python {
             m_types.top()->add_enum_value(name, value);
         }
 
-        python_binder&                m_binder;
-        std::stack<python_module_ref> m_py_modules;
-        std::stack<python_type_ref>   m_types;
+        python_binder&              m_binder;
+        std::stack<python_type_ref> m_types;
     };
 
     class type_fields_creator : public mge::script::visitor
