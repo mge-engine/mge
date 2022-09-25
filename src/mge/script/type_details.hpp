@@ -28,7 +28,7 @@ namespace mge::script {
         virtual ~type_details() = default;
 
         const std::string&             name() const;
-        const std::string&             automatic_name() const;
+        const std::string&             unique_name() const;
         const module_details_weak_ref& module() const;
         const std::type_index&         type_index() const;
         const mge::script::traits&     traits() const;
@@ -63,6 +63,7 @@ namespace mge::script {
     private:
         std::string             m_automatic_name;
         std::string             m_name;
+        std::string             m_unique_name;
         module_details_weak_ref m_module;
         std::type_index         m_type_index;
         mge::script::traits     m_traits;
