@@ -96,9 +96,9 @@ namespace mge::python {
         void start(const mge::script::type_details_ref& t) override
         {
             if (!t->traits().is_pod()) {
-                m_current_type = m_binder.get_type(t->type_index());
+                m_types.push(m_binder.get_type(t->type_index()));
             } else {
-                m_current_type.reset();
+                m_types.push(python_type_ref());
             }
         }
 
@@ -107,8 +107,8 @@ namespace mge::python {
                    const mge::script::invoke_function&  setter,
                    const mge::script::invoke_function&  getter) override
         {
-            if (m_current_type) {
-                m_current_type->add_field(name, type, setter, getter);
+            if (current_type()) {
+                current_type()->add_field(name, type, setter, getter);
             }
         }
 
@@ -117,8 +117,8 @@ namespace mge::python {
                     const mge::script::invoke_function& new_at,
                     const mge::script::invoke_function& make_shared) override
         {
-            if (m_current_type) {
-                m_current_type->add_constructor(s, new_at, make_shared);
+            if (current_type()) {
+                current_type()->add_constructor(s, new_at, make_shared);
             }
         }
 
@@ -126,14 +126,14 @@ namespace mge::python {
             const mge::script::invoke_function& delete_ptr,
             const mge::script::invoke_function& delete_shared_ptr) override
         {
-            if (m_current_type) {
-                m_current_type->add_destructor(delete_ptr, delete_shared_ptr);
+            if (current_type()) {
+                current_type()->add_destructor(delete_ptr, delete_shared_ptr);
             }
         }
 
         void finish(const mge::script::type_details_ref& m) override
         {
-            m_current_type.reset();
+            m_types.pop();
         }
 
         void method(const std::string&                  name,
@@ -142,22 +142,31 @@ namespace mge::python {
                     const mge::script::signature&       sig,
                     const mge::script::invoke_function& invoke) override
         {
-            if (m_current_type) {
+            if (current_type()) {
                 if (is_static) {
-                    m_current_type->add_static_method(name,
+                    current_type()->add_static_method(name,
                                                       return_type,
                                                       sig,
                                                       invoke);
                 } else {
-                    m_current_type->add_method(name, return_type, sig, invoke);
+                    current_type()->add_method(name, return_type, sig, invoke);
                 }
             }
         }
 
     private:
+        python_type_ref current_type()
+        {
+            if (m_types.empty()) {
+                return python_type_ref();
+            } else {
+                return m_types.top();
+            }
+        }
+
         python_binder&                m_binder;
         std::stack<python_module_ref> m_py_modules;
-        python_type_ref               m_current_type;
+        std::stack<python_type_ref>   m_types;
     };
 
     class type_finalizer : public mge::script::visitor
@@ -183,24 +192,24 @@ namespace mge::python {
         void start(const mge::script::type_details_ref& t) override
         {
             if (!t->traits().is_pod()) {
-                m_current_type = m_binder.get_type(t->type_index());
+                m_types.push(m_binder.get_type(t->type_index()));
             } else {
-                m_current_type.reset();
+                m_types.push(python_type_ref());
             }
         }
 
         void finish(const mge::script::type_details_ref& m) override
         {
-            if (m_current_type) {
-                m_py_modules.top()->add_type(m_current_type);
-                m_current_type.reset();
+            if (!m_types.empty() && m_types.top()) {
+                m_py_modules.top()->add_type(m_types.top());
+                m_types.pop();
             }
         }
 
     private:
         python_binder&                m_binder;
         std::stack<python_module_ref> m_py_modules;
-        python_type_ref               m_current_type;
+        std::stack<python_type_ref>   m_types;
     };
 
     python_binder::python_binder(python_context& context)

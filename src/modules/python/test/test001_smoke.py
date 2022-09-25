@@ -34,6 +34,11 @@ class TestSmoke(unittest.TestCase):
         with self.assertRaises(ValueError):
             p.x = 'hossa'
 
+    def test_application_type_exists(self):
+        """Test existence of application type"""
+        x = mge.application
+        self.assertEqual("<class 'application'>", repr(x))
+
 
 if __name__ == "main":
     unittest.main()
