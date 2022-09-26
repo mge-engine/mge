@@ -8,6 +8,7 @@
 #include "mge/script/signature.hpp"
 #include "mge/script/traits.hpp"
 
+#include <functional>
 #include <string>
 #include <tuple>
 #include <typeindex>
@@ -46,11 +47,11 @@ namespace mge::script {
          * @param ti type index
          * @return found type details, if not found exception is raised
          */
-        static type_details_ref get(const std::type_index& ti);
-        static type_details_ref get_or_create(const std::type_index&     ti,
-                                              const std::string&         name,
-                                              const mge::script::traits& tr,
-                                              size_t                     size);
+        static type_details_ref get_first_match(const std::type_index& ti);
+        static type_details_ref create(const std::type_index&     ti,
+                                       const std::string&         name,
+                                       const mge::script::traits& tr,
+                                       size_t                     size);
 
         /**
          * @brief Applies a visitor.
@@ -245,7 +246,8 @@ namespace mge::script {
         const auto& fields() const { return m_fields; }
 
     private:
-        using type_map = std::unordered_map<std::type_index, type_details_ref>;
+        using type_map =
+            std::unordered_map<std::type_index, std::vector<type_details_ref>>;
 
         std::vector<type_details_ref> m_bases;
         destructor                    m_destructor;

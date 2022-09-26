@@ -104,7 +104,7 @@ namespace mge {
                           .constructor<int, int>());
 
         type_details_ref r =
-            type_details::get(std::type_index(typeid(constructed)));
+            type_details::get_first_match(std::type_index(typeid(constructed)));
         EXPECT_TRUE(r);
         class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
 
@@ -155,7 +155,8 @@ namespace mge {
                           .field("y", &fields::y)
                           .field("specific", &fields::specific));
 
-        type_details_ref r = type_details::get(std::type_index(typeid(fields)));
+        type_details_ref r =
+            type_details::get_first_match(std::type_index(typeid(fields)));
         EXPECT_TRUE(r);
         class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
 
@@ -203,8 +204,8 @@ namespace mge {
                           .constructor()
                           .field("foo", &string_field::foo));
 
-        type_details_ref r =
-            type_details::get(std::type_index(typeid(string_field)));
+        type_details_ref r = type_details::get_first_match(
+            std::type_index(typeid(string_field)));
         EXPECT_TRUE(r);
         class_type_details* ct = dynamic_cast<class_type_details*>(r.get());
 

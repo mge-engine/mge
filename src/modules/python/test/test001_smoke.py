@@ -45,6 +45,12 @@ class TestSmoke(unittest.TestCase):
         self.assertEqual(
             "<class 'class std::function<void __cdecl(void)>'>", repr(x))
 
+    def test_application_similar_subtype_exists(self):
+        """Test existence of application type"""
+        x = mge.application.input_listener
+        y = mge.application.quit_listener
+        assert x is not None and y is not None
+
 
 if __name__ == "main":
     unittest.main()
