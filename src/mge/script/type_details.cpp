@@ -17,7 +17,7 @@ namespace mge::script {
         type_dictionary();
         ~type_dictionary() = default;
 
-        type_details_ref get(const std::type_index& ti)
+        type_details_ref get_first_match(const std::type_index& ti)
         {
             auto it = m_types.find(ti);
             if (it == m_types.end()) {
@@ -26,15 +26,16 @@ namespace mge::script {
             }
             return it->second;
         }
-
-        type_details_ref get_nothrow(const std::type_index& ti)
-        {
-            auto it = m_types.find(ti);
-            if (it == m_types.end()) {
-                return nullptr;
-            }
-            return it->second;
-        }
+        /*
+                type_details_ref get_nothrow(const std::type_index& ti)
+                        {
+                    auto it = m_types.find(ti);
+                    if (it == m_types.end()) {
+                        return nullptr;
+                    }
+                    return it->second;
+                }
+                */
 
         type_details_ref add(const std::type_index& ti,
                              const std::string&     name,
@@ -42,16 +43,16 @@ namespace mge::script {
                              size_t                 size)
         {
             if (tr.is_enum) {
-                auto et =
+                type_details_ref new_type =
                     std::make_shared<enum_type_details>(name, ti, tr, size);
-                m_types[ti] = et;
-                return et;
+                m_types.emplace(new_type->type_index(), new_type);
+                return new_type;
             }
             if (tr.is_class) {
-                auto et =
+                auto new_type =
                     std::make_shared<class_type_details>(name, ti, tr, size);
-                m_types[ti] = et;
-                return et;
+                m_types.emplace(new_type->type_index(), new_type);
+                return new_type;
             }
             return type_details_ref();
         }
@@ -67,7 +68,7 @@ namespace mge::script {
                                                    traits_of<T>(),
                                                    0,
                                                    used_name);
-                m_types[new_type->type_index()] = new_type;
+                m_types.emplace(new_type->type_index(), new_type);
                 module_details::get("")->add_type(new_type);
             } else {
                 auto new_type =
@@ -76,7 +77,7 @@ namespace mge::script {
                                                    traits_of<T>(),
                                                    sizeof(T),
                                                    used_name);
-                m_types[new_type->type_index()] = new_type;
+                m_types.emplace(new_type->type_index(), new_type);
                 module_details::get("")->add_type(new_type);
             }
         }
@@ -90,11 +91,11 @@ namespace mge::script {
                                                traits_of<T>(),
                                                sizeof(T),
                                                used_name);
-            m_types[new_type->type_index()] = new_type;
+            m_types.emplace(new_type->type_index(), new_type);
             module_details::get(module)->add_type(new_type);
         }
 
-        std::map<std::type_index, type_details_ref> m_types;
+        std::multimap<std::type_index, type_details_ref> m_types;
     };
 
     type_dictionary::type_dictionary()
@@ -189,20 +190,17 @@ namespace mge::script {
         return ret;
     }
 
-    type_details_ref type_details::get(const std::type_index& ti)
+    type_details_ref type_details::get_first_match(const std::type_index& ti)
     {
-        return s_type_dictionary->get(ti);
+        return s_type_dictionary->get_first_match(ti);
     }
 
-    type_details_ref type_details::get_or_create(const std::type_index& ti,
-                                                 const std::string&     name,
-                                                 const mge::script::traits& tr,
-                                                 size_t size)
+    type_details_ref type_details::create(const std::type_index&     ti,
+                                          const std::string&         name,
+                                          const mge::script::traits& tr,
+                                          size_t                     size)
     {
-        auto result = s_type_dictionary->get_nothrow(ti);
-        if (!result) {
-            result = s_type_dictionary->add(ti, name, tr, size);
-        }
+        auto result = s_type_dictionary->add(ti, name, tr, size);
         return result;
     }
 
@@ -263,8 +261,10 @@ namespace mge::script {
         }
         v.start(self);
 
-        for (const auto& [ti, details] : m_types) {
-            details->apply(details, v);
+        for (const auto& [ti, details_vec] : m_types) {
+            for (const auto& details : details_vec) {
+                details->apply(details, v);
+            }
         }
 
         for (const auto& f : m_fields) {
@@ -341,7 +341,7 @@ namespace mge::script {
 
     void class_type_details::add_type(const type_details_ref& t)
     {
-        m_types[t->type_index()] = t;
+        m_types[t->type_index()].push_back(t);
         t->set_enclosing_type(shared_from_this());
     }
 

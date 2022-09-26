@@ -32,7 +32,7 @@ namespace mge::script {
 
     void type_base::init_details(const std::type_index& ti)
     {
-        m_details = type_details::get(ti);
+        m_details = type_details::get_first_match(ti);
     }
 
     void type_base::init_enum_details(const std::type_index& index,
@@ -40,7 +40,7 @@ namespace mge::script {
                                       const traits&          tr,
                                       size_t                 size)
     {
-        m_details = type_details::get_or_create(index, name, tr, size);
+        m_details = type_details::create(index, name, tr, size);
     }
 
     void type_base::init_class_details(const std::type_index& index,
@@ -48,7 +48,7 @@ namespace mge::script {
                                        const traits&          tr,
                                        size_t                 size)
     {
-        m_details = type_details::get_or_create(index, name, tr, size);
+        m_details = type_details::create(index, name, tr, size);
     }
 
     void type_base::enum_value(const std::string& name, int64_t value)
