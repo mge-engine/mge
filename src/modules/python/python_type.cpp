@@ -35,8 +35,13 @@ namespace mge::python {
         , m_context(context)
         , m_type(type)
     {
+
         m_create_data->spec = PyType_Spec{};
-        m_create_data->spec.name = m_type->name().c_str();
+        if (type->is_subtype()) {
+            m_create_data->spec.name = m_type->unique_name().c_str();
+        } else {
+            m_create_data->spec.name = m_type->name().c_str();
+        }
         m_create_data->spec.flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE;
         m_create_data->spec.slots = s_empty_slots;
 
@@ -276,6 +281,14 @@ namespace mge::python {
         } catch (...) {
             Py_CLEAR(python_type_ptr);
             throw;
+        }
+
+        for (const auto& subtype : m_create_data->subtypes) {
+            if (PyObject_SetAttrString(m_python_type,
+                                       subtype->local_name().c_str(),
+                                       subtype->py_type())) {
+                error::check_error();
+            }
         }
     }
 
