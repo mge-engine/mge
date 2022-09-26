@@ -119,4 +119,15 @@ namespace mge {
  */
 #define MGE_FATAL_TRACE(TOPIC) MGE_TRACE(TOPIC, FATAL)
 
+/**
+ * @def MGE_XDEBUG
+ * @brief Invoke debug trace.
+ *
+ * Used for temporary tracing when hunting bugs or alike. Submitted changes
+ * should never have a MGE_XDEBUG trace statement.
+ *
+ * @param TOPIC trace topic
+ */
+#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE(TOPIC) << "XXX: "
+
 } // namespace mge

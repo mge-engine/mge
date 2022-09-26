@@ -23,15 +23,18 @@ namespace mge::python {
         python_module_ref get_or_add_module(const mge::script::module& m);
         python_module_ref get_module(const mge::script::module& m) const;
 
-        void rebuild();
+        void interpreter_lost();
+        void rebuild() const;
 
     private:
-        python_engine_ref                  m_engine;
-        std::vector<std::function<void()>> m_rebind_functions;
+        python_engine_ref                          m_engine;
+        mutable std::vector<std::function<void()>> m_rebind_functions;
 
         std::unordered_map<mge::script::module, python_module_ref>
             m_python_modules;
         std::unordered_map<mge::script::type_details_ref, python_type_ref>
             m_python_types;
+
+        mutable bool m_needs_rebuild;
     };
 } // namespace mge::python

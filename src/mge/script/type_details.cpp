@@ -129,6 +129,7 @@ namespace mge::script {
                                const char*                name)
         : m_automatic_name(automatic_name)
         , m_name(name == nullptr ? "" : name)
+        , m_unique_name(ti.name())
         , m_type_index(ti)
         , m_traits(t)
         , m_size(size)
@@ -137,6 +138,11 @@ namespace mge::script {
     const std::string& type_details::name() const
     {
         return m_name.empty() ? m_automatic_name : m_name;
+    }
+
+    const std::string& type_details::unique_name() const
+    {
+        return m_unique_name;
     }
 
     const module_details_weak_ref& type_details::module() const

@@ -69,15 +69,15 @@ namespace mge::python {
         Py_SetPythonHome(s_python_home.c_str());
         Py_InitializeEx(0);
         for (const auto& engine : s_engines) {
-            engine->rebuild_contexts();
+            engine->signal_interpreter_lost();
         }
     }
 
-    void python_engine::rebuild_contexts()
+    void python_engine::signal_interpreter_lost()
     {
         for (const auto& context : m_contexts) {
             if (!context.expired()) {
-                context.lock()->rebuild();
+                context.lock()->interpreter_lost();
             }
         }
     }

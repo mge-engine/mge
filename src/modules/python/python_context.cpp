@@ -19,12 +19,16 @@ namespace mge::python {
 
     python_context::python_context(const python_engine_ref& engine)
         : m_engine(engine)
+        , m_needs_rebuild(false)
     {}
 
     python_context::~python_context() {}
 
     void python_context::eval(const std::string& code)
     {
+        if (m_needs_rebuild) {
+            rebuild();
+        }
         PyGILState_STATE gil_state;
         gil_state = PyGILState_Ensure();
         PyObject* main_module = nullptr;
@@ -51,6 +55,10 @@ namespace mge::python {
 
     void python_context::bind(const mge::script::module& m)
     {
+        if (m_needs_rebuild) {
+            rebuild();
+        }
+
         PyGILState_STATE gil_state;
         gil_state = PyGILState_Ensure();
         try {
@@ -77,6 +85,10 @@ namespace mge::python {
 
     int python_context::main(int argc, const char** argv)
     {
+        if (m_needs_rebuild) {
+            rebuild();
+        }
+
         int rc = Py_BytesMain(argc, const_cast<char**>(argv));
         {
             std::lock_guard<std::mutex> guard(python_engine::engine_lock());
@@ -90,6 +102,10 @@ namespace mge::python {
     python_module_ref
     python_context::get_or_add_module(const mge::script::module& m)
     {
+        if (m_needs_rebuild) {
+            rebuild();
+        }
+
         auto it = m_python_modules.find(m);
         if (it != m_python_modules.end()) {
             return it->second;
@@ -108,6 +124,10 @@ namespace mge::python {
     python_module_ref
     python_context::get_module(const mge::script::module& m) const
     {
+        if (m_needs_rebuild) {
+            rebuild();
+        }
+
         auto it = m_python_modules.find(m);
         if (it == m_python_modules.end()) {
             MGE_THROW(mge::no_such_element) << "No such element: " << m.name();
@@ -115,8 +135,9 @@ namespace mge::python {
         return it->second;
     }
 
-    void python_context::rebuild()
+    void python_context::interpreter_lost()
     {
+        m_needs_rebuild = true;
         for (const auto& [t, type] : m_python_types) {
             type->interpreter_lost();
         }
@@ -125,9 +146,14 @@ namespace mge::python {
         }
         m_python_types.clear();
         m_python_modules.clear();
+    }
+
+    void python_context::rebuild() const
+    {
         for (auto& f : m_rebind_functions) {
             f();
         }
+        m_needs_rebuild = false;
     }
 
 } // namespace mge::python

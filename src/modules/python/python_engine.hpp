@@ -27,7 +27,7 @@ namespace mge::python {
     private:
         static void  function_with_address_in_this_module();
         std::wstring compute_python_home();
-        void         rebuild_contexts();
+        void         signal_interpreter_lost();
 
         static std::mutex                    s_lock;
         static uint64_t                      s_initialized_engines;

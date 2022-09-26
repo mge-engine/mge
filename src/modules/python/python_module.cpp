@@ -67,12 +67,15 @@ namespace mge::python {
     {
         MGE_DEBUG_TRACE(PYTHON) << "Adding type '" << type->local_name()
                                 << "' to module '" << m_module.name() << "'";
+
         PyObject* py_type = type->py_type();
         if (py_type) {
-            PyModule_AddObjectRef(m_py_module,
-                                  type->local_name().c_str(),
-                                  py_type);
-            error::check_error();
+            if (!type->is_subtype()) {
+                PyModule_AddObjectRef(m_py_module,
+                                      type->local_name().c_str(),
+                                      py_type);
+                error::check_error();
+            }
             m_types.push_back(type);
         }
     }
