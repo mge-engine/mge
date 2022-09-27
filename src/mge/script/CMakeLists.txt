@@ -42,7 +42,6 @@ SET(mgescript_headers
     function_details.hpp
 )
 
-
 MGE_LIBRARY(
     TARGET  mgescript
     TYPE    SHARED
@@ -79,7 +78,7 @@ TARGET_LINK_LIBRARIES(mge_module_script_math mgescript mgemath)
 
 SET(mge_module_script_script_SOURCES
     bind_script.cpp)
-ADD_LIBRARY(mge_module_script_script MODULE ${mge_module_script_math_SOURCES})
+ADD_LIBRARY(mge_module_script_script MODULE ${mge_module_script_script_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_script mgescript)
 
 
