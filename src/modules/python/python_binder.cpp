@@ -234,6 +234,20 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON) << "Finalizing types of module " << m.name();
         type_finalizer tf(*this);
         m.apply(tf);
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Run python initialization code for " << m.name();
+        init();
     }
 
+    void python_binder::add_init_code(const std::string& code)
+    {
+        m_init_code.emplace_back(code);
+    }
+
+    void python_binder::init()
+    {
+        for (const auto& code : m_init_code) {
+            PyRun_SimpleString(code.c_str());
+        }
+    }
 } // namespace mge::python

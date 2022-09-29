@@ -34,9 +34,13 @@ namespace mge::python {
             return it->second;
         }
 
+        void add_init_code(const std::string& s);
+        void init();
+
     private:
         python_context&                            m_context;
         std::map<std::type_index, python_type_ref> m_created_types;
+        std::vector<std::string>                   m_init_code;
     };
 
 } // namespace mge::python

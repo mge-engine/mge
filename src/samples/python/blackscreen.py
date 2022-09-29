@@ -34,5 +34,5 @@ class blackscreen(mge.application):
 
 
 if __name__ == "__main__":
-    mge.component.register_implementation(blackscreen)
+    mge.script.component.register_implementation(blackscreen)
     mge.application.main(sys.argv)

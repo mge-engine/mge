@@ -93,6 +93,9 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add method '" << name << "' to " << m_type->name() << ": "
             << gist(sig) << " -> " << return_type.name();
+        m_methods.emplace(std::piecewise_construct,
+                          std::forward_as_tuple(name),
+                          std::forward_as_tuple(&sig, &return_type, &invoke));
     }
 
     void
@@ -104,6 +107,10 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add static method '" << name << "' to " << m_type->name()
             << ": " << gist(sig) << " -> " << return_type.name();
+        m_static_methods.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(name),
+            std::forward_as_tuple(&sig, &return_type, &invoke));
     }
 
     void python_type::add_destructor(
@@ -253,6 +260,9 @@ namespace mge::python {
             m_create_data->slots.emplace_back(dealloc_slot);
         } else {
             m_create_data->spec.flags |= Py_TPFLAGS_DISALLOW_INSTANTIATION;
+        }
+
+        if (!m_methods.empty()) {
         }
 
         if (!m_create_data->slots.empty()) {

@@ -27,11 +27,12 @@ namespace mge::python {
         {
             create_data() = default;
             ~create_data() = default;
-            
+
             PyType_Spec                          spec;
             std::vector<PyType_Slot>             slots;
             std::map<std::string, python_object> type_attributes;
             std::vector<PyGetSetDef>             getset_defs;
+            std::vector<PyMethodDef>             method_defs;
             std::vector<python_type_ref>         subtypes;
         };
 
@@ -120,6 +121,13 @@ namespace mge::python {
             const mge::script::invoke_function* delete_shared_ptr;
         };
 
+        struct method
+        {
+            const mge::script::signature*       sig;
+            const std::type_index*              return_type;
+            const mge::script::invoke_function* function;
+        };
+
         const python_type::constructor* select_constructor(PyObject* args);
 
         mutable std::unique_ptr<create_data>       m_create_data;
@@ -129,6 +137,8 @@ namespace mge::python {
         std::vector<field>                         m_fields;
         std::map<size_t, std::vector<constructor>> m_constructors;
         destructor                                 m_destructor;
+        std::multimap<std::string, method>         m_methods;
+        std::multimap<std::string, method>         m_static_methods;
 
         static std::unordered_map<PyTypeObject*, python_type*> s_all_types;
     };
