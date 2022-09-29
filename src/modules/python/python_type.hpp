@@ -93,8 +93,9 @@ namespace mge::python {
         static PyObject* get_field_value(PyObject* self, void* field);
         static int
         set_field_value(PyObject* self, PyObject* value, void* field);
-        static int  init(PyObject* self, PyObject* args, PyObject* kwargs);
-        static void dealloc(PyObject* self);
+        static int       init(PyObject* self, PyObject* args, PyObject* kwargs);
+        static void      dealloc(PyObject* self);
+        static PyObject* call_dispatch(PyObject* self, PyObject* args);
 
         int  init_object(PyObject* self, PyObject* args, PyObject* kwargs);
         void clear_object_space(PyObject* self);

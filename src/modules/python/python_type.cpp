@@ -225,6 +225,11 @@ namespace mge::python {
         return ((sizeof(only_head) + 7) / 8) * 8;
     }
 
+    PyObject* python_type::call_dispatch(PyObject* self, PyObject* args)
+    {
+        return Py_None;
+    }
+
     void python_type::materialize_complex_class_type() const
     {
         python_module_ref m = m_context.get_module(m_type->enclosing_module());
@@ -263,6 +268,18 @@ namespace mge::python {
         }
 
         if (!m_methods.empty()) {
+            m_create_data->method_defs.emplace_back("__dispatch__",
+                                                    &call_dispatch,
+                                                    METH_VARARGS,
+                                                    "");
+            m_create_data->method_defs.emplace_back(nullptr,
+                                                    nullptr,
+                                                    0,
+                                                    nullptr);
+
+            PyType_Slot method_slot{Py_tp_methods,
+                                    m_create_data->method_defs.data()};
+            m_create_data->slots.emplace_back(method_slot);
         }
 
         if (!m_create_data->slots.empty()) {
