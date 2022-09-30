@@ -7,6 +7,8 @@
 #include "mge/script/module.hpp"
 #include "mge/script/type_details.hpp"
 
+#include "boost/boost_algorithm_string.hpp"
+
 #include "python_context.hpp"
 
 #include <stack>
@@ -246,8 +248,28 @@ namespace mge::python {
 
     void python_binder::init()
     {
-        for (const auto& code : m_init_code) {
-            PyRun_SimpleString(code.c_str());
+        std::stringstream code;
+        code << "def _():" << std::endl;
+        for (const auto& codepiece : m_init_code) {
+            for (auto it = boost::make_split_iterator(
+                     codepiece,
+                     boost::first_finder("\n", boost::is_equal()));
+                 it != decltype(it)();
+                 ++it) {
+                code << "\t" << std::string_view(*it) << std::endl;
+            }
+        }
+        code << "_()" << std::endl << "del _" << std::endl;
+        PyRun_SimpleString(code.str().c_str());
+        try {
+            error::check_error();
+            m_init_code.clear();
+        } catch (...) {
+            MGE_ERROR_TRACE(PYTHON)
+                << "Error executing init code: " << std::endl
+                << code.str();
+            m_init_code.clear();
+            throw;
         }
     }
 } // namespace mge::python
