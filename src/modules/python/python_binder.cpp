@@ -6,6 +6,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/type_details.hpp"
+#include "python_error.hpp"
 
 #include "boost/boost_algorithm_string.hpp"
 
@@ -219,7 +220,9 @@ namespace mge::python {
 
     python_binder::python_binder(python_context& context)
         : m_context(context)
-    {}
+    {
+        prologue();
+    }
 
     void python_binder::bind(const mge::script::module& m)
     {
@@ -246,10 +249,20 @@ namespace mge::python {
         m_init_code.emplace_back(code);
     }
 
+    void python_binder::prologue()
+    {
+        const char* code = R"code(
+import ctypes
+        )code";
+        PyRun_SimpleString(code);
+        error::check_error();
+    }
+
     void python_binder::init()
     {
         std::stringstream code;
         code << "def _():" << std::endl;
+        code << "\tpass" << std::endl;
         for (const auto& codepiece : m_init_code) {
             for (auto it = boost::make_split_iterator(
                      codepiece,
@@ -259,15 +272,14 @@ namespace mge::python {
                 code << "\t" << std::string_view(*it) << std::endl;
             }
         }
-        code << "_()" << std::endl << "del _" << std::endl;
+        code << std::endl << "_()" << std::endl << "del _" << std::endl;
         PyRun_SimpleString(code.str().c_str());
         try {
             error::check_error();
             m_init_code.clear();
         } catch (...) {
-            MGE_ERROR_TRACE(PYTHON)
-                << "Error executing init code: " << std::endl
-                << code.str();
+            MGE_ERROR_TRACE(PYTHON) << "Error executing init code: ";
+            MGE_ERROR_TRACE(PYTHON) << code.str();
             m_init_code.clear();
             throw;
         }

@@ -280,6 +280,18 @@ namespace mge::python {
             PyType_Slot method_slot{Py_tp_methods,
                                     m_create_data->method_defs.data()};
             m_create_data->slots.emplace_back(method_slot);
+
+            const std::string* last_name = nullptr;
+            for (const auto& [name, method] : m_methods) {
+                if (!last_name || *last_name != name) {
+                    last_name = &name;
+                    std::stringstream code;
+                    code << "def _fn (self, *args):" << std::endl;
+                    code << "    return self.__dispatch__('" << name
+                         << "', args)" << std::endl;
+                    code << std::endl;
+                }
+            }
         }
 
         if (!m_create_data->slots.empty()) {
