@@ -1,5 +1,10 @@
 #include "python_method.hpp"
+#include "mge/core/trace.hpp"
 #include "python_error.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
 
@@ -42,6 +47,7 @@ namespace mge::python {
 
     void python_method::init(PyObject* module)
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Init internal method type";
         s_type.tp_new = PyType_GenericNew;
         if (PyType_Ready(&s_type)) {
             error::check_error();
@@ -56,8 +62,7 @@ namespace mge::python {
     {
         if (!m_object) {
             m_object.reset(
-                PyObject_CallFunction(reinterpret_cast<PyObject*>(&s_type),
-                                      nullptr));
+                PyObject_CallNoArgs(reinterpret_cast<PyObject*>(&s_type)));
             if (!m_object) {
                 error::check_error();
             }

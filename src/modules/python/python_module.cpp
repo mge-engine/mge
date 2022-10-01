@@ -28,9 +28,6 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
             m_py_module = PyImport_AddModule(m.name().c_str());
             m_py_module_dict = PyModule_GetDict(m_py_module);
-            if (m.name() == "mge") {
-                handle_mge_module();
-            }
         }
         error::check_error();
     }
@@ -50,6 +47,10 @@ namespace mge::python {
                              m.name().c_str(),
                              m_py_module);
         error::check_error();
+
+        if (m.name() == "mge") {
+            handle_mge_module();
+        }
     }
 
     void python_module::interpreter_lost()

@@ -303,7 +303,6 @@ namespace mge::python {
                 error::check_error();
             }
         }
-
         for (const auto& method : m_methods) {
             if (PyObject_SetAttrString(m_python_type,
                                        method->name().c_str(),

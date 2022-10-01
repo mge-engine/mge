@@ -8,7 +8,7 @@
 
 namespace mge::python {
 
-    class python_method
+    class python_method : public std::enable_shared_from_this<python_method>
     {
     public:
         python_method(const python_type_ref&              type,
