@@ -33,6 +33,9 @@ namespace mge::python {
         const mge::script::invoke_function& m_invoke;
         mutable python_object               m_object;
 
+        static PyObject* call(PyObject* self, PyObject* args, PyObject* kwargs);
+        static void      dealloc(PyObject* self);
+
         // clang-format off
         struct python_method_pyobject
         {
@@ -40,6 +43,10 @@ namespace mge::python {
             python_method_ref method;
         };
         // clang-format on
+        static inline python_method_pyobject* to_method_object(PyObject* o)
+        {
+            return reinterpret_cast<python_method_pyobject*>(o);
+        }
 
         static PyTypeObject s_type;
     };

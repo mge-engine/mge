@@ -45,10 +45,26 @@ namespace mge::python {
         "Internal type for function closure capture", /* tp_doc */
     };
 
+    PyObject*
+    python_method::call(PyObject* self, PyObject* args, PyObject* kwargs)
+    {
+        return Py_None;
+    }
+
+    void python_method::dealloc(PyObject* self)
+    {
+        PyTypeObject* tp = Py_TYPE(self);
+        auto          m = to_method_object(self);
+        m->method.reset();
+        tp->tp_free(self);
+        Py_DECREF(tp);
+    }
+
     void python_method::init(PyObject* module)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Init internal method type";
         s_type.tp_new = PyType_GenericNew;
+        s_type.tp_call = &call;
         if (PyType_Ready(&s_type)) {
             error::check_error();
         }
@@ -66,6 +82,8 @@ namespace mge::python {
             if (!m_object) {
                 error::check_error();
             }
+            auto mo = to_method_object(m_object.borrow());
+            mo->method = const_cast<python_method*>(this)->shared_from_this();
         }
         return m_object.borrow();
     }
