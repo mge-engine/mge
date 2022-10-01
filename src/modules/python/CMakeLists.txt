@@ -9,7 +9,8 @@ SET(mge_python_module_SOURCES
     python_module.cpp
     python_type.cpp
     python_object_call_context.cpp
-    value_classification.cpp)
+    value_classification.cpp
+    python_method.cpp)
 
 ADD_LIBRARY(mge_module_python MODULE
             ${mge_python_module_SOURCES})

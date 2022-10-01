@@ -5,6 +5,7 @@
 #include "mge/core/trace.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
+#include "python_method.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -27,6 +28,9 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
             m_py_module = PyImport_AddModule(m.name().c_str());
             m_py_module_dict = PyModule_GetDict(m_py_module);
+            if (m.name() == "mge") {
+                handle_mge_module();
+            }
         }
         error::check_error();
     }
@@ -78,6 +82,11 @@ namespace mge::python {
             }
             m_types.push_back(type);
         }
+    }
+
+    void python_module::handle_mge_module()
+    {
+        python_method::init(m_py_module);
     }
 
 } // namespace mge::python

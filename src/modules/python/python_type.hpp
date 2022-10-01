@@ -7,6 +7,7 @@
 #include "mge/script/type_details.hpp"
 
 #include "python.hpp"
+#include "python_method.hpp"
 #include "python_object.hpp"
 
 #include <map>
@@ -20,7 +21,7 @@ namespace mge::python {
 
     class python_context;
 
-    class python_type
+    class python_type : public std::enable_shared_from_this<python_type>
     {
     private:
         struct create_data
@@ -32,7 +33,6 @@ namespace mge::python {
             std::vector<PyType_Slot>             slots;
             std::map<std::string, python_object> type_attributes;
             std::vector<PyGetSetDef>             getset_defs;
-            std::vector<PyMethodDef>             method_defs;
             std::vector<python_type_ref>         subtypes;
         };
 
@@ -93,9 +93,8 @@ namespace mge::python {
         static PyObject* get_field_value(PyObject* self, void* field);
         static int
         set_field_value(PyObject* self, PyObject* value, void* field);
-        static int       init(PyObject* self, PyObject* args, PyObject* kwargs);
-        static void      dealloc(PyObject* self);
-        static PyObject* call_dispatch(PyObject* self, PyObject* args);
+        static int  init(PyObject* self, PyObject* args, PyObject* kwargs);
+        static void dealloc(PyObject* self);
 
         int  init_object(PyObject* self, PyObject* args, PyObject* kwargs);
         void clear_object_space(PyObject* self);
@@ -122,13 +121,6 @@ namespace mge::python {
             const mge::script::invoke_function* delete_shared_ptr;
         };
 
-        struct method
-        {
-            const mge::script::signature*       sig;
-            const std::type_index*              return_type;
-            const mge::script::invoke_function* function;
-        };
-
         const python_type::constructor* select_constructor(PyObject* args);
 
         mutable std::unique_ptr<create_data>       m_create_data;
@@ -138,8 +130,7 @@ namespace mge::python {
         std::vector<field>                         m_fields;
         std::map<size_t, std::vector<constructor>> m_constructors;
         destructor                                 m_destructor;
-        std::multimap<std::string, method>         m_methods;
-        std::multimap<std::string, method>         m_static_methods;
+        std::vector<python_method_ref>             m_methods;
 
         static std::unordered_map<PyTypeObject*, python_type*> s_all_types;
     };

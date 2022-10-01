@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#pragma once
 #include "python.hpp"
 
 namespace mge::python {
@@ -36,10 +37,7 @@ namespace mge::python {
             return m_ptr;
         }
 
-        PyObject* borrow() const noexcept
-        {
-            return m_ptr;
-        }
+        PyObject* borrow() const noexcept { return m_ptr; }
 
         python_object& operator=(const python_object& other) noexcept
         {
@@ -52,6 +50,16 @@ namespace mge::python {
             return *this;
         }
 
+        void reset(PyObject* new_object)
+        {
+            if (m_ptr != new_object) {
+                PyObject* old = m_ptr;
+                m_ptr = new_object;
+                Py_XINCREF(m_ptr);
+                Py_CLEAR(old);
+            }
+        }
+
         python_object& operator=(python_object&& other) noexcept
         {
             if (this != &other) {
@@ -62,6 +70,10 @@ namespace mge::python {
             }
             return *this;
         }
+
+        operator bool() const noexcept { return m_ptr != nullptr; }
+
+        void interpreter_lost() { m_ptr = nullptr; }
 
     private:
         mutable PyObject* m_ptr;

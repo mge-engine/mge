@@ -51,7 +51,13 @@ namespace mge::python {
 
     python_type::~python_type() { Py_CLEAR(m_python_type); }
 
-    void python_type::interpreter_lost() { m_python_type = nullptr; }
+    void python_type::interpreter_lost()
+    {
+        m_python_type = nullptr;
+        for (auto& m : m_methods) {
+            m->interpreter_lost();
+        }
+    }
 
     void python_type::add_enum_value(const std::string& name,
                                      int64_t            enum_value)
@@ -93,9 +99,13 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add method '" << name << "' to " << m_type->name() << ": "
             << gist(sig) << " -> " << return_type.name();
-        m_methods.emplace(std::piecewise_construct,
-                          std::forward_as_tuple(name),
-                          std::forward_as_tuple(&sig, &return_type, &invoke));
+
+        m_methods.emplace_back(
+            std::make_shared<python_method>(shared_from_this(),
+                                            name,
+                                            return_type,
+                                            sig,
+                                            invoke));
     }
 
     void
@@ -107,10 +117,6 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add static method '" << name << "' to " << m_type->name()
             << ": " << gist(sig) << " -> " << return_type.name();
-        m_static_methods.emplace(
-            std::piecewise_construct,
-            std::forward_as_tuple(name),
-            std::forward_as_tuple(&sig, &return_type, &invoke));
     }
 
     void python_type::add_destructor(
@@ -225,11 +231,6 @@ namespace mge::python {
         return ((sizeof(only_head) + 7) / 8) * 8;
     }
 
-    PyObject* python_type::call_dispatch(PyObject* self, PyObject* args)
-    {
-        return Py_None;
-    }
-
     void python_type::materialize_complex_class_type() const
     {
         python_module_ref m = m_context.get_module(m_type->enclosing_module());
@@ -267,33 +268,6 @@ namespace mge::python {
             m_create_data->spec.flags |= Py_TPFLAGS_DISALLOW_INSTANTIATION;
         }
 
-        if (!m_methods.empty()) {
-            m_create_data->method_defs.emplace_back("__dispatch__",
-                                                    &call_dispatch,
-                                                    METH_VARARGS,
-                                                    "");
-            m_create_data->method_defs.emplace_back(nullptr,
-                                                    nullptr,
-                                                    0,
-                                                    nullptr);
-
-            PyType_Slot method_slot{Py_tp_methods,
-                                    m_create_data->method_defs.data()};
-            m_create_data->slots.emplace_back(method_slot);
-
-            const std::string* last_name = nullptr;
-            for (const auto& [name, method] : m_methods) {
-                if (!last_name || *last_name != name) {
-                    last_name = &name;
-                    std::stringstream code;
-                    code << "def _fn (self, *args):" << std::endl;
-                    code << "    return self.__dispatch__('" << name
-                         << "', args)" << std::endl;
-                    code << std::endl;
-                }
-            }
-        }
-
         if (!m_create_data->slots.empty()) {
             PyType_Slot sentinel_slot{0, nullptr};
             m_create_data->slots.emplace_back(sentinel_slot);
@@ -326,6 +300,14 @@ namespace mge::python {
             if (PyObject_SetAttrString(m_python_type,
                                        subtype->local_name().c_str(),
                                        subtype->py_type())) {
+                error::check_error();
+            }
+        }
+
+        for (const auto& method : m_methods) {
+            if (PyObject_SetAttrString(m_python_type,
+                                       method->name().c_str(),
+                                       method->py_object())) {
                 error::check_error();
             }
         }

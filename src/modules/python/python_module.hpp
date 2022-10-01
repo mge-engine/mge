@@ -34,6 +34,8 @@ namespace mge::python {
         void interpreter_lost();
 
     private:
+        void handle_mge_module();
+
         python_context&              m_context;
         PyObject*                    m_py_module;
         PyObject*                    m_py_module_dict;
