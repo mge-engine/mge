@@ -14,7 +14,8 @@ namespace mge::python {
     public:
         python_object_call_context(python_type* type,
                                    PyObject*    self,
-                                   PyObject*    args = nullptr);
+                                   PyObject*    args = nullptr,
+                                   size_t       offset = 0);
         ~python_object_call_context() = default;
 
         void* this_ptr() override;
@@ -56,6 +57,7 @@ namespace mge::python {
         python_type* m_type;
         PyObject*    m_self;
         PyObject*    m_args;
+        size_t       m_offset;
         PyObject*    m_result;
         bool         m_args_tuple;
     };

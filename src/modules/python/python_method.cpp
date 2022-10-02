@@ -1,6 +1,7 @@
 #include "python_method.hpp"
 #include "mge/core/trace.hpp"
 #include "python_error.hpp"
+#include "python_object_call_context.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -48,7 +49,13 @@ namespace mge::python {
     PyObject*
     python_method::call(PyObject* self, PyObject* args, PyObject* kwargs)
     {
-        return Py_None;
+        auto py_method_self = to_method_object(self)->method;
+        python_object_call_context ctx(py_method_self->m_type.get(),
+                                       PyTuple_GetItem(args, 1),
+                                       args,
+                                       1);
+        py_method_self->m_invoke(ctx);
+        return ctx.result();
     }
 
     void python_method::dealloc(PyObject* self)

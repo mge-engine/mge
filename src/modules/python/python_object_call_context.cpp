@@ -16,10 +16,12 @@ namespace mge {
 namespace mge::python {
     python_object_call_context::python_object_call_context(python_type* type,
                                                            PyObject*    self,
-                                                           PyObject*    args)
+                                                           PyObject*    args,
+                                                           size_t       offset)
         : m_type(type)
         , m_self(self)
         , m_args(args)
+        , m_offset(offset)
         , m_result(nullptr)
         , m_args_tuple((args != nullptr) && (PyTuple_Check(args) != 0))
     {}
@@ -289,7 +291,7 @@ namespace mge::python {
     PyObject* python_object_call_context::arg(size_t position)
     {
         if (m_args_tuple || position > 0) {
-            auto res = PyTuple_GetItem(m_args, position);
+            auto res = PyTuple_GetItem(m_args, position + m_offset);
             error::check_error();
             return res;
         } else {
