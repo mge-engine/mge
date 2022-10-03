@@ -51,9 +51,8 @@ namespace mge::python {
     {
         auto py_method_self = to_method_object(self)->method;
         python_object_call_context ctx(py_method_self->m_type.get(),
-                                       PyTuple_GetItem(args, 1),
-                                       args,
-                                       1);
+                                       nullptr,
+                                       args);
         py_method_self->m_invoke(ctx);
         return ctx.result();
     }

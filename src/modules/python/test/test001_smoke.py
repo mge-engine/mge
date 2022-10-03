@@ -51,10 +51,10 @@ class TestSmoke(unittest.TestCase):
         y = mge.application.quit_listener
         assert x is not None and y is not None
 
-    def aaa_test_method_call(self):
+    def test_method_call(self):
         """Test simple method call"""
-        vf = mge.vertex_format()
-        assert vf.binary_size() == 0
+        vf = mge.vertex_format(mge.data_type.FLOAT, 3)
+        assert vf.binary_size() == 12
 
 
 if __name__ == "main":

@@ -24,7 +24,15 @@ namespace mge::python {
         , m_offset(offset)
         , m_result(nullptr)
         , m_args_tuple((args != nullptr) && (PyTuple_Check(args) != 0))
+        , m_result_returned(false)
     {}
+
+    python_object_call_context::~python_object_call_context()
+    {
+        if (!m_result_returned && m_result) {
+            Py_CLEAR(m_result);
+        }
+    }
 
     void* python_object_call_context::this_ptr()
     {
@@ -296,6 +304,16 @@ namespace mge::python {
             return res;
         } else {
             return m_args;
+        }
+    }
+
+    PyObject* python_object_call_context::result() const
+    {
+        if (m_result) {
+            m_result_returned = true;
+            return m_result;
+        } else {
+            Py_RETURN_NONE;
         }
     }
 

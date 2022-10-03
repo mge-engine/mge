@@ -16,7 +16,7 @@ namespace mge::python {
                                    PyObject*    self,
                                    PyObject*    args = nullptr,
                                    size_t       offset = 0);
-        ~python_object_call_context() = default;
+        ~python_object_call_context();
 
         void* this_ptr() override;
         void* shared_ptr_address() override;
@@ -49,7 +49,7 @@ namespace mge::python {
         void store_double_result(double result) override;
         void store_string_result(const std::string& result) override;
 
-        PyObject* result() const { return m_result; }
+        PyObject* result() const;
 
     private:
         PyObject* arg(size_t position);
@@ -60,5 +60,6 @@ namespace mge::python {
         size_t       m_offset;
         PyObject*    m_result;
         bool         m_args_tuple;
+        mutable bool m_result_returned;
     };
 } // namespace mge::python
