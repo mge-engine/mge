@@ -165,6 +165,10 @@ namespace mge::python {
             std::vector<variant> variants;
         };
 
+        const python_type::overloaded_method::variant*
+        select_method(const std::vector<overloaded_method::variant>& methods,
+                      PyObject*                                      args);
+
         using method =
             std::variant<std::monostate, single_method, overloaded_method>;
 

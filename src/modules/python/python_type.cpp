@@ -537,6 +537,43 @@ namespace mge::python {
         return self_data;
     }
 
+    const python_type::overloaded_method::variant* python_type::select_method(
+        const std::vector<overloaded_method::variant>& methods, PyObject* args)
+    {
+        const overloaded_method::variant* result = nullptr;
+        const size_t                      tuple_size = PyTuple_Size(args);
+        size_t                            best_match_count = 0;
+        mge::small_vector<value_classification, 3> value_classes;
+        for (size_t i = 0; i < tuple_size; ++i) {
+            value_classes.push_back(
+                value_classification(PyTuple_GET_ITEM(args, i)));
+        }
+        for (const auto& v : methods) {
+            if (v.signature->size() == tuple_size) {
+                size_t exact_match_count = 0;
+                bool   match_failed = false;
+                for (size_t i = 0; i < tuple_size; ++i) {
+                    auto match = value_classes[i].match(v.signature->at(i));
+                    if (match == value_classification::NO_MATCH) {
+                        match_failed = true;
+                        break;
+                    } else if (match == value_classification::MATCH_EXACT) {
+                        ++exact_match_count;
+                    }
+                }
+                if (!match_failed) {
+                    if (exact_match_count > best_match_count) {
+                        result = &v;
+                    } else if (result == nullptr) {
+                        result = &v;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
     PyObject*
     python_type::call_method(size_t slot, PyObject* self, PyObject* args)
     {
@@ -577,10 +614,29 @@ namespace mge::python {
                                   }
                               },
                               [&](overloaded_method& m) {
-                                  PyErr_Format(
-                                      PyExc_RuntimeError,
-                                      "Not implemented: overloaded methods");
-                                  error_occurred = true;
+                                  const overloaded_method::variant* mv =
+                                      select_method(m.variants, args);
+                                  if (mv) {
+                                      try {
+                                          (*mv->invoke)(ctx);
+                                      } catch (const mge::exception& ex) {
+                                          PyErr_Format(
+                                              PyExc_RuntimeError,
+                                              "Error in call to %s.%s: %s",
+                                              m_type->name().c_str(),
+                                              m.name->c_str(),
+                                              ex.what());
+                                          error_occurred = true;
+                                      }
+                                  } else {
+                                      PyErr_Format(
+                                          PyExc_RuntimeError,
+                                          "Error in call to %s.%s: Cannot find "
+                                          "suitable method",
+                                          m_type->name().c_str(),
+                                          m.name->c_str());
+                                      error_occurred = true;
+                                  }
                               }},
                    m_methods[slot]);
         if (error_occurred) {
