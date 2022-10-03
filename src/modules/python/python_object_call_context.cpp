@@ -36,12 +36,20 @@ namespace mge::python {
 
     void* python_object_call_context::this_ptr()
     {
-        return m_type->this_ptr(m_self);
+        if (m_self && m_type) {
+            return m_type->this_ptr(m_self);
+        } else {
+            return nullptr;
+        }
     }
 
     void* python_object_call_context::shared_ptr_address()
     {
-        return m_type->shared_ptr_address(m_self);
+        if (m_self && m_type) {
+            return m_type->shared_ptr_address(m_self);
+        } else {
+            return nullptr;
+        }
     }
 
     bool python_object_call_context::bool_parameter(size_t position)

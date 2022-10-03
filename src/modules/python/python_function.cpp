@@ -1,4 +1,4 @@
-#include "python_method.hpp"
+#include "python_function.hpp"
 #include "mge/core/trace.hpp"
 #include "python_error.hpp"
 #include "python_object_call_context.hpp"
@@ -9,23 +9,21 @@ namespace mge {
 
 namespace mge::python {
 
-    python_method::python_method(const python_type_ref&        type,
-                                 const std::string&            name,
-                                 const std::type_index&        return_type,
-                                 const mge::script::signature& sig,
-                                 const mge::script::invoke_function& invoke)
-        : m_type(type)
-        , m_name(name)
+    python_function::python_function(const std::string&            name,
+                                     const std::type_index&        return_type,
+                                     const mge::script::signature& sig,
+                                     const mge::script::invoke_function& invoke)
+        : m_name(name)
         , m_return_type(return_type)
         , m_signature(sig)
         , m_invoke(invoke)
     {}
 
-    python_method::~python_method() {}
+    python_function::~python_function() {}
 
-    PyTypeObject python_method::s_type = {
-        PyVarObject_HEAD_INIT(NULL, 0) "mge.__python_method__",
-        sizeof(python_method::python_method_pyobject),
+    PyTypeObject python_function::s_type = {
+        PyVarObject_HEAD_INIT(NULL, 0) "mge.__python_function__",
+        sizeof(python_function::python_function_pyobject),
         0,                                            /* tp_itemsize */
         0,                                            /* tp_dealloc */
         0,                                            /* tp_print */
@@ -47,26 +45,24 @@ namespace mge::python {
     };
 
     PyObject*
-    python_method::call(PyObject* self, PyObject* args, PyObject* kwargs)
+    python_function::call(PyObject* self, PyObject* args, PyObject* kwargs)
     {
-        auto py_method_self = to_method_object(self)->method;
-        python_object_call_context ctx(py_method_self->m_type.get(),
-                                       nullptr,
-                                       args);
-        py_method_self->m_invoke(ctx);
+        auto py_function_self = to_function_object(self)->method;
+        python_object_call_context ctx(nullptr, nullptr, args);
+        py_function_self->m_invoke(ctx);
         return ctx.result();
     }
 
-    void python_method::dealloc(PyObject* self)
+    void python_function::dealloc(PyObject* self)
     {
         PyTypeObject* tp = Py_TYPE(self);
-        auto          m = to_method_object(self);
+        auto          m = to_function_object(self);
         m->method.reset();
         tp->tp_free(self);
         Py_DECREF(tp);
     }
 
-    void python_method::init(PyObject* module)
+    void python_function::init(PyObject* module)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Init internal method type";
         s_type.tp_new = PyType_GenericNew;
@@ -76,11 +72,11 @@ namespace mge::python {
         }
         Py_INCREF(&s_type);
         PyModule_AddObject(module,
-                           "__python_method__",
+                           "__python_function__",
                            reinterpret_cast<PyObject*>(&s_type));
     }
 
-    PyObject* python_method::py_object() const
+    PyObject* python_function::py_object() const
     {
         if (!m_object) {
             m_object.reset(
@@ -88,12 +84,12 @@ namespace mge::python {
             if (!m_object) {
                 error::check_error();
             }
-            auto mo = to_method_object(m_object.borrow());
-            mo->method = const_cast<python_method*>(this)->shared_from_this();
+            auto mo = to_function_object(m_object.borrow());
+            mo->method = const_cast<python_function*>(this)->shared_from_this();
         }
         return m_object.borrow();
     }
 
-    void python_method::interpreter_lost() { m_object.interpreter_lost(); }
+    void python_function::interpreter_lost() { m_object.interpreter_lost(); }
 
 } // namespace mge::python

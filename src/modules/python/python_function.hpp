@@ -8,15 +8,14 @@
 
 namespace mge::python {
 
-    class python_method : public std::enable_shared_from_this<python_method>
+    class python_function : public std::enable_shared_from_this<python_function>
     {
     public:
-        python_method(const python_type_ref&              type,
-                      const std::string&                  name,
-                      const std::type_index&              return_type,
-                      const mge::script::signature&       sig,
-                      const mge::script::invoke_function& invoke);
-        ~python_method();
+        python_function(const std::string&                  name,
+                        const std::type_index&              return_type,
+                        const mge::script::signature&       sig,
+                        const mge::script::invoke_function& invoke);
+        ~python_function();
 
         const std::string& name() const { return m_name; }
         PyObject*          py_object() const;
@@ -26,7 +25,6 @@ namespace mge::python {
         void interpreter_lost();
 
     private:
-        python_type_ref                     m_type;
         const std::string&                  m_name;
         const std::type_index&              m_return_type;
         const mge::script::signature&       m_signature;
@@ -37,15 +35,16 @@ namespace mge::python {
         static void      dealloc(PyObject* self);
 
         // clang-format off
-        struct python_method_pyobject
+        struct python_function_pyobject
         {
             PyObject_HEAD
-            python_method_ref method;
+            python_function_ref method;
         };
         // clang-format on
-        static inline python_method_pyobject* to_method_object(PyObject* o)
+
+        static inline python_function_pyobject* to_function_object(PyObject* o)
         {
-            return reinterpret_cast<python_method_pyobject*>(o);
+            return reinterpret_cast<python_function_pyobject*>(o);
         }
 
         static PyTypeObject s_type;

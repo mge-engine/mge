@@ -7,7 +7,7 @@
 #include "mge/script/type_details.hpp"
 
 #include "python.hpp"
-#include "python_method.hpp"
+#include "python_function.hpp"
 #include "python_object.hpp"
 
 #include <map>

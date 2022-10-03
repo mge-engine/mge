@@ -5,7 +5,7 @@
 #include "mge/core/trace.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
-#include "python_method.hpp"
+#include "python_function.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -87,7 +87,7 @@ namespace mge::python {
 
     void python_module::handle_mge_module()
     {
-        python_method::init(m_py_module);
+        python_function::init(m_py_module);
     }
 
 } // namespace mge::python
