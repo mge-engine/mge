@@ -130,7 +130,7 @@ namespace mge::python {
 
         struct constructor
         {
-            const mge::script::signature*       sig;
+            const mge::script::signature*       signature;
             const mge::script::invoke_function* new_at;
             const mge::script::invoke_function* new_shared;
         };

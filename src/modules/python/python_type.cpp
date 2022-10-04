@@ -5,6 +5,7 @@
 #include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_object_call_context.hpp"
+#include "signature_match.hpp"
 #include "value_classification.hpp"
 
 #include "mge/core/details.hpp"
@@ -427,50 +428,24 @@ namespace mge::python {
     const python_type::constructor*
     python_type::select_constructor(PyObject* args)
     {
+
         size_t tuple_size = PyTuple_Size(args);
         auto   it = m_constructors.find(tuple_size);
         if (it != m_constructors.end()) {
             if (it->second.size() == 1) {
                 return &((it->second)[0]);
             }
-
             mge::small_vector<value_classification, 3> value_classes;
             for (size_t i = 0; i < tuple_size; ++i) {
                 value_classes.push_back(
                     value_classification(PyTuple_GET_ITEM(args, i)));
             }
             const auto& all_ctors = it->second;
-            const auto  all_ctors_size = all_ctors.size();
-            size_t      best_constructor = all_ctors_size;
-            size_t      best_constructor_match_count = 0;
 
-            for (size_t ci = 0; ci < all_ctors_size; ++ci) {
-
-                size_t exact_match_count = 0;
-                bool   match_failed = false;
-
-                for (size_t i = 0; i < tuple_size; ++i) {
-                    auto match =
-                        value_classes[i].match(all_ctors[ci].sig->at(i));
-                    if (match == value_classification::NO_MATCH) {
-                        match_failed = true;
-                        break;
-                    } else if (match == value_classification::MATCH_EXACT) {
-                        ++exact_match_count;
-                    }
-                }
-
-                if (!match_failed) {
-                    if (exact_match_count > best_constructor_match_count) {
-                        best_constructor = ci;
-                    } else if (best_constructor == all_ctors_size) {
-                        best_constructor = ci;
-                    }
-                }
-            }
-
-            if (best_constructor != all_ctors_size) {
-                return &(all_ctors[best_constructor]);
+            auto found_ctor =
+                best_match(all_ctors.begin(), all_ctors.end(), value_classes);
+            if (found_ctor != all_ctors.end()) {
+                return &(*found_ctor);
             }
         }
         return nullptr;
@@ -540,38 +515,15 @@ namespace mge::python {
     const python_type::overloaded_method::variant* python_type::select_method(
         const std::vector<overloaded_method::variant>& methods, PyObject* args)
     {
-        const overloaded_method::variant* result = nullptr;
-        const size_t                      tuple_size = PyTuple_Size(args);
-        size_t                            best_match_count = 0;
+        const size_t tuple_size = PyTuple_Size(args);
         mge::small_vector<value_classification, 3> value_classes;
         for (size_t i = 0; i < tuple_size; ++i) {
             value_classes.push_back(
                 value_classification(PyTuple_GET_ITEM(args, i)));
         }
-        for (const auto& v : methods) {
-            if (v.signature->size() == tuple_size) {
-                size_t exact_match_count = 0;
-                bool   match_failed = false;
-                for (size_t i = 0; i < tuple_size; ++i) {
-                    auto match = value_classes[i].match(v.signature->at(i));
-                    if (match == value_classification::NO_MATCH) {
-                        match_failed = true;
-                        break;
-                    } else if (match == value_classification::MATCH_EXACT) {
-                        ++exact_match_count;
-                    }
-                }
-                if (!match_failed) {
-                    if (exact_match_count > best_match_count) {
-                        result = &v;
-                    } else if (result == nullptr) {
-                        result = &v;
-                    }
-                }
-            }
-        }
-
-        return result;
+        auto selected =
+            best_match(methods.begin(), methods.end(), value_classes);
+        return selected != methods.end() ? &(*selected) : nullptr;
     }
 
     PyObject*
