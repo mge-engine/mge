@@ -5,6 +5,8 @@
 #include "mge/core/trace.hpp"
 #include "python_error.hpp"
 #include "python_object_call_context.hpp"
+#include "signature_match.hpp"
+#include "value_classification.hpp"
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -17,10 +19,9 @@ namespace mge::python {
                                      const mge::script::signature& sig,
                                      const mge::script::invoke_function& invoke)
         : m_name(name)
-        , m_return_type(return_type)
-        , m_signature(sig)
-        , m_invoke(invoke)
-    {}
+    {
+        m_details.push_back(details{&return_type, &sig, &invoke});
+    }
 
     python_function::~python_function() {}
 
@@ -50,10 +51,33 @@ namespace mge::python {
     PyObject*
     python_function::call(PyObject* self, PyObject* args, PyObject* kwargs)
     {
+        if (kwargs) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "Unsupported use of keyword arguments");
+            return nullptr;
+        }
+
         auto py_function_self = to_function_object(self)->method;
         python_object_call_context ctx(nullptr, nullptr, args);
-        py_function_self->m_invoke(ctx);
-        return ctx.result();
+        size_t                     tuple_size = PyTuple_Size(args);
+        mge::small_vector<value_classification, 3> value_classes;
+        for (size_t i = 0; i < tuple_size; ++i) {
+            value_classes.push_back(
+                value_classification(PyTuple_GET_ITEM(args, i)));
+        }
+        auto match = best_match(py_function_self->m_details.begin(),
+                                py_function_self->m_details.end(),
+                                value_classes);
+
+        if (match != py_function_self->m_details.end()) {
+            (*match->invoke)(ctx);
+            return ctx.result();
+        } else {
+            PyErr_Format(PyExc_RuntimeError,
+                         "Cannot find a match for function '%s'",
+                         py_function_self->m_name.c_str());
+            return nullptr;
+        }
     }
 
     void python_function::dealloc(PyObject* self)
@@ -67,7 +91,7 @@ namespace mge::python {
 
     void python_function::init(PyObject* module)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Init internal method type";
+        MGE_DEBUG_TRACE(PYTHON) << "Initialize internal method type";
         s_type.tp_new = PyType_GenericNew;
         s_type.tp_call = &call;
         if (PyType_Ready(&s_type)) {

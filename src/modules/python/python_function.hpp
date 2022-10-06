@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/small_vector.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/signature.hpp"
 
@@ -26,13 +27,22 @@ namespace mge::python {
         static void init(PyObject* module);
 
         void interpreter_lost();
+        void add_signature(const std::type_index&              return_type,
+                           const mge::script::signature&       sig,
+                           const mge::script::invoke_function& invoke);
 
     private:
-        const std::string&                  m_name;
-        const std::type_index&              m_return_type;
-        const mge::script::signature&       m_signature;
-        const mge::script::invoke_function& m_invoke;
-        mutable python_object               m_object;
+        const std::string& m_name;
+
+        struct details
+        {
+            const std::type_index*              return_type;
+            const mge::script::signature*       signature;
+            const mge::script::invoke_function* invoke;
+        };
+
+        mge::small_vector<details, 1> m_details;
+        mutable python_object         m_object;
 
         static PyObject* call(PyObject* self, PyObject* args, PyObject* kwargs);
         static void      dealloc(PyObject* self);
