@@ -180,8 +180,9 @@ namespace mge::python {
         std::map<size_t, std::vector<constructor>> m_constructors;
         destructor                                 m_destructor;
 
-        std::vector<method>                     m_methods;
-        std::unordered_map<std::string, size_t> m_method_index;
+        std::vector<method>                        m_methods;
+        std::unordered_map<std::string, size_t>    m_method_index;
+        std::map<std::string, python_function_ref> m_static_methods;
 
         static std::unordered_map<PyTypeObject*, python_type*> s_all_types;
     };

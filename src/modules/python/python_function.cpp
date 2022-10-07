@@ -23,6 +23,14 @@ namespace mge::python {
         m_details.push_back(details{&return_type, &sig, &invoke});
     }
 
+    void
+    python_function::add_signature(const std::type_index&        return_type,
+                                   const mge::script::signature& sig,
+                                   const mge::script::invoke_function& invoke)
+    {
+        m_details.push_back(details{&return_type, &sig, &invoke});
+    }
+
     python_function::~python_function() {}
 
     PyTypeObject python_function::s_type = {

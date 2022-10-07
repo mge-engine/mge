@@ -156,6 +156,16 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Add static method '" << name << "' to " << m_type->name()
             << ": " << gist(sig) << " -> " << return_type.name();
+        auto it = m_static_methods.find(name);
+        if (it == m_static_methods.end()) {
+            m_static_methods[name] =
+                std::make_shared<python_function>(name,
+                                                  return_type,
+                                                  sig,
+                                                  invoke);
+        } else {
+            it->second->add_signature(return_type, sig, invoke);
+        }
     }
 
     void python_type::add_destructor(
