@@ -34,6 +34,16 @@ namespace mge {
          * parameter retrieval and result storage.
          */
         using invoke_function = std::function<void(call_context&)>;
+
+        /**
+         * @brief Function used for transfer of shared pointers.
+         *
+         * The first argument of the function is the target shared
+         * pointer address, the second argument is the source shared
+         * pointer address.
+         */
+        using transfer_shared = std::function<void(void*, void*)>;
+
     } // namespace script
 
 } // namespace mge

@@ -53,7 +53,13 @@ namespace mge::python {
 
     python_type::~python_type() { Py_CLEAR(m_python_type); }
 
-    void python_type::interpreter_lost() { m_python_type = nullptr; }
+    void python_type::interpreter_lost()
+    {
+        m_python_type = nullptr;
+        for (const auto& [_, func] : m_static_methods) {
+            func->interpreter_lost();
+        }
+    }
 
     void python_type::add_enum_value(const std::string& name,
                                      int64_t            enum_value)
@@ -357,6 +363,14 @@ namespace mge::python {
             if (PyObject_SetAttrString(m_python_type,
                                        subtype->local_name().c_str(),
                                        subtype->py_type())) {
+                error::check_error();
+            }
+        }
+
+        for (const auto& [name, func] : m_static_methods) {
+            if (PyObject_SetAttrString(m_python_type,
+                                       name.c_str(),
+                                       func->py_object())) {
                 error::check_error();
             }
         }

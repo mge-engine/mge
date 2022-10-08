@@ -178,4 +178,10 @@ namespace mge::lua {
         lua_pushlstring(m_lua_state, result.c_str(), result.size());
     }
 
+    void lua_object_call_context::store_shared_ptr_result(
+        const std::type_index& type, const void* address)
+    {
+        MGE_THROW_NOT_IMPLEMENTED;
+    }
+
 } // namespace mge::lua

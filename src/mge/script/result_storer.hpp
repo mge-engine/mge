@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <type_traits>
+#include <typeindex>
 
 namespace mge::script {
 
@@ -49,8 +50,7 @@ namespace mge::script {
         static void store(call_context&             context,
                           const std::shared_ptr<T>& value)
         {
-            mge::call_debugger();
-            MGE_THROW_NOT_IMPLEMENTED;
+            context.store_shared_ptr_result(std::type_index(typeid(T)), &value);
         }
     };
 

@@ -244,6 +244,7 @@ namespace mge::script {
 
         const auto& constructors() const { return m_constructors; }
         const auto& fields() const { return m_fields; }
+        const auto& transfer_shared() const { return m_transfer_shared; }
 
     private:
         using type_map =
@@ -252,6 +253,7 @@ namespace mge::script {
         std::vector<type_details_ref> m_bases;
         destructor                    m_destructor;
         std::vector<constructor>      m_constructors;
+        mge::script::transfer_shared  m_transfer_shared;
         std::vector<field>            m_fields;
         std::vector<method>           m_methods;
         type_map                      m_types;

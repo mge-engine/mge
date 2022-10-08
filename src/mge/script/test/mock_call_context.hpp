@@ -38,4 +38,8 @@ public:
     MOCK_METHOD(double, double_parameter, (size_t), (override));
     MOCK_METHOD(std::string, string_parameter, (size_t), (override));
     MOCK_METHOD(void*, object_parameter, (size_t, std::type_index), (override));
+    MOCK_METHOD(void,
+                store_shared_ptr_result,
+                (const std::type_index&, const void*),
+                (override));
 };

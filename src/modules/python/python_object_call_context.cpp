@@ -325,4 +325,10 @@ namespace mge::python {
         }
     }
 
+    void python_object_call_context::store_shared_ptr_result(
+        const std::type_index& type, const void* address)
+    {
+        MGE_THROW_NOT_IMPLEMENTED;
+    }
+
 } // namespace mge::python

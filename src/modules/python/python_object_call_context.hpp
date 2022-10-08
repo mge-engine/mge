@@ -48,6 +48,8 @@ namespace mge::python {
         void store_float_result(float result) override;
         void store_double_result(double result) override;
         void store_string_result(const std::string& result) override;
+        void store_shared_ptr_result(const std::type_index& type,
+                                     const void*            address) override;
 
         PyObject* result() const;
 
