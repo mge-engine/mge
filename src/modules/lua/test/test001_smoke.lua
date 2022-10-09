@@ -21,8 +21,11 @@ function test_mge_point_construct()
     local mge = package.loaded["mge"]
     p = mge.point:new(123, 456)
     assert(type(p) == "userdata", "point not created as wanted")
+    assert(p.x == 123, "x coordinate not set")
+    assert(p.y == 456, "y coordinate not set")
     p = nil
     collectgarbage()
+
 end
 
 function test_application_similar_subtype_exists()
