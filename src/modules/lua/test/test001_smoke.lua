@@ -25,4 +25,18 @@ function test_mge_point_construct()
     collectgarbage()
 end
 
+function test_application_similar_subtype_exists()
+    local mge = package.loaded["mge"]
+    local il_type = mge.application.input_listener
+    local ql_type = mge.application.quit_listener
+    assert(type(il_type) == "table", "input_listener type is not accessible")
+    assert(type(ql_type) == "table", "quit_listener type is not accessible")
+end
+
+function test_method_call()
+    local vf = mge.vertex_format:new(mge.data_type.FLOAT, 3)
+    assert(type(vf) == "userdata", "cannot create object")
+    assert(vf.binary_size() == 12, "cannot call simple method")
+end
+
 unittest.main()

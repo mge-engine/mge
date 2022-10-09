@@ -40,6 +40,16 @@ namespace mge::lua {
         void pop_type_table();
         void add_type(const lua::type_ref& t);
 
+        void add_method(const std::string&                  name,
+                        const std::type_index&              return_type,
+                        const mge::script::signature&       sig,
+                        const mge::script::invoke_function& invoke);
+
+        void add_static_method(const std::string&                  name,
+                               const std::type_index&              return_type,
+                               const mge::script::signature&       sig,
+                               const mge::script::invoke_function& invoke);
+
         bool            materialized() const { return m_materialized; }
         std::type_index type_index() const { return m_details->type_index(); }
 

@@ -267,4 +267,16 @@ namespace mge::lua {
         CHECK_CURRENT_STATUS(L);
     }
 
+    void type::add_method(const std::string&                  name,
+                          const std::type_index&              return_type,
+                          const mge::script::signature&       sig,
+                          const mge::script::invoke_function& invoke)
+    {}
+
+    void type::add_static_method(const std::string&            name,
+                                 const std::type_index&        return_type,
+                                 const mge::script::signature& sig,
+                                 const mge::script::invoke_function& invoke)
+    {}
+
 } // namespace mge::lua

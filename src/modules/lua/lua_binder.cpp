@@ -225,7 +225,16 @@ namespace mge::lua {
                     const std::type_index&              return_type,
                     const mge::script::signature&       sig,
                     const mge::script::invoke_function& invoke) override
-        {}
+        {
+            const auto& t = std::get<lua::type_ref>(m_definitions.top());
+            if (t) {
+                if (is_static) {
+                    t->add_static_method(name, return_type, sig, invoke);
+                } else {
+                    t->add_method(name, return_type, sig, invoke);
+                }
+            }
+        }
 
     private:
         void pop_from_lua_stack()
