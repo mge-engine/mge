@@ -221,6 +221,16 @@ namespace mge::lua {
     int type::construct(lua_State* L)
     {
         int top = lua_gettop(L);
+        int real_args = 0;
+        int offset = 0;
+
+        if (top > 0) {
+            if (lua_istable(L, 1)) {
+
+            } else {
+                real_args = top;
+            }
+        }
 
         void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
         type* self = reinterpret_cast<type*>(self_ptr);
@@ -228,7 +238,11 @@ namespace mge::lua {
             << "Construct value of type '" << self->m_details->name()
             << "' with " << (top - 1) << " arguments";
 
-        const constructor* ctor = self->select_constructor(top - 1, L);
+        std::stringstream ss;
+        self->m_context.details(ss);
+        MGE_DEBUG_TRACE(LUA) << "Context details: \n" << ss.str() << "\n";
+
+        const constructor* ctor = self->select_constructor(real_args, L);
         if (ctor) {
             void* shared_ptr_mem = lua_newuserdata(L, sizeof(void*));
             memset(shared_ptr_mem, 0, sizeof(void*));
@@ -237,7 +251,7 @@ namespace mge::lua {
             // -1 - meta table
             // -2 - new user data (still nullptr)
             lua_setmetatable(L, -2);
-            lua_object_call_context ctx(self, L, shared_ptr_mem);
+            lua_object_call_context ctx(self, L, shared_ptr_mem, offset);
             (*ctor->new_shared)(ctx);
         } else {
             lua_pushfstring(L,

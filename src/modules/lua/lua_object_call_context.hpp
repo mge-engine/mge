@@ -10,10 +10,14 @@ namespace mge::lua {
     class lua_object_call_context : public mge::script::call_context
     {
     public:
-        lua_object_call_context(lua::type* t, lua_State* L, void* userdata)
+        lua_object_call_context(lua::type* t,
+                                lua_State* L,
+                                void*      userdata,
+                                int        offset = 0)
             : m_type(t)
             , m_lua_state(L)
             , m_userdata(userdata)
+            , m_offset(offset)
         {}
         ~lua_object_call_context() = default;
 
@@ -54,5 +58,6 @@ namespace mge::lua {
         lua::type* m_type;
         lua_State* m_lua_state;
         void*      m_userdata;
+        int        m_offset;
     };
 } // namespace mge::lua

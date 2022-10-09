@@ -3,17 +3,37 @@
 // All rights reserved.
 #include "lua_object_call_context.hpp"
 #include "lua_type.hpp"
-
 #include "mge/core/checked_cast.hpp"
+#include "mge/core/trace.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(LUA);
+}
 
 namespace mge::lua {
 
     void* lua_object_call_context::this_ptr()
     {
-        std::shared_ptr<int>* sptr =
-            reinterpret_cast<std::shared_ptr<int>*>(m_userdata);
-        if (sptr) {
-            return sptr->get();
+        // m_userdata --+
+        //              v
+        //              +-------------------+
+        //              | ptr to shared_ptr |
+        //              +----------------+--+
+        //                        |
+        //                        v
+        //                  +------------+
+        //                  | shared_ptr |
+        //                  +------------+
+        //                        |
+        //                        v
+        //               +-----------------+
+        //               | object instance |
+        //               +-----------------+
+        //
+        std::shared_ptr<int>** sptr =
+            reinterpret_cast<std::shared_ptr<int>**>(m_userdata);
+        if (sptr && *sptr) {
+            return (*sptr)->get();
         } else {
             return nullptr;
         }
@@ -24,74 +44,85 @@ namespace mge::lua {
     bool lua_object_call_context::bool_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return lua_toboolean(m_lua_state, index + 1) != 0;
+        return lua_toboolean(m_lua_state, index + 1 + m_offset) != 0;
     }
 
     int8_t lua_object_call_context::int8_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<int8_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<int8_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     int16_t lua_object_call_context::int16_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<int16_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<int16_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     int32_t lua_object_call_context::int32_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<int32_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<int32_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     int64_t lua_object_call_context::int64_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<int64_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<int64_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     uint8_t lua_object_call_context::uint8_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<uint8_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<uint8_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     uint16_t lua_object_call_context::uint16_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<uint16_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<uint16_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     uint32_t lua_object_call_context::uint32_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<uint32_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<uint32_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     uint64_t lua_object_call_context::uint64_t_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<uint64_t>(lua_tointeger(m_lua_state, index + 1));
+        return checked_cast<uint64_t>(
+            lua_tointeger(m_lua_state, index + 1 + m_offset));
     }
 
     float lua_object_call_context::float_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<float>(lua_tonumber(m_lua_state, index + 1));
+        return checked_cast<float>(
+            lua_tonumber(m_lua_state, index + 1 + m_offset));
     }
 
     double lua_object_call_context::double_parameter(size_t position)
     {
         int index = static_cast<int>(position);
-        return checked_cast<double>(lua_tonumber(m_lua_state, index + 1));
+        return checked_cast<double>(
+            lua_tonumber(m_lua_state, index + 1 + m_offset));
     }
 
     std::string lua_object_call_context::string_parameter(size_t position)
     {
         int         index = static_cast<int>(position);
         size_t      len = 0;
-        const char* str = lua_tolstring(m_lua_state, index + 1, &len);
+        const char* str =
+            lua_tolstring(m_lua_state, index + 1 + m_offset, &len);
         return std::string(str, str + len);
     }
 
@@ -99,7 +130,7 @@ namespace mge::lua {
                                                     std::type_index /*ti*/)
     {
         int   index = static_cast<int>(position);
-        void* userdata = lua_touserdata(m_lua_state, index + 1);
+        void* userdata = lua_touserdata(m_lua_state, index + 1 + m_offset);
         if (userdata) {
             std::shared_ptr<int>* sptr =
                 reinterpret_cast<std::shared_ptr<int>*>(userdata);

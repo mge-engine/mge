@@ -9,6 +9,12 @@
 
 namespace mge {
 
+#ifdef BUILD_GRAPHICS
+    MGE_USE_TRACE(GRAPHICS);
+#else
+    MGE_USE_IMPORTED_TRACE(GRAPHICS);
+#endif
+
     /**
      * A point.
      */
