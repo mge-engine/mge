@@ -117,6 +117,33 @@ namespace mge::lua {
         }
     }
 
+    int type::index(lua_State* L)
+    {
+        int top = lua_gettop(L);
+        if (top != 2) {
+            return 0;
+        }
+        if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
+            return 0;
+        }
+        void*       self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type*       self = reinterpret_cast<type*>(self_ptr);
+        const char* name = lua_tostring(L, 2);
+        auto        it = self->m_fields.find(name);
+        if (it == self->m_fields.end()) {
+            lua_pushfstring(L,
+                            "Type %s has no field %s",
+                            self->m_details->name().c_str(),
+                            name);
+            lua_error(L);
+        }
+        void* shared_ptr_address = lua_touserdata(L, 1);
+
+        lua_object_call_context ctx(self, L, shared_ptr_address);
+        (*it->second.getter)(ctx);
+        return 1;
+    }
+
     int type::destruct(lua_State* L)
     {
         int top = lua_gettop(L);
@@ -154,6 +181,22 @@ namespace mge::lua {
         lua_pushstring(L, "__gc");
         lua_pushlightuserdata(L, this);
         lua_pushcclosure(L, &destruct, 1);
+        // stack now
+        // -1 closure
+        // -2 string "__gc"
+        // -3 meta table
+        lua_settable(L, -3);
+        // meta table remains on stack, remove
+        lua_pop(L, 1);
+    }
+
+    void type::add_index_method()
+    {
+        auto L = m_context.lua_state();
+        load_metatable(L);
+        lua_pushstring(L, "__index");
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &index, 1);
         // stack now
         // -1 closure
         // -2 string "__gc"
@@ -265,6 +308,18 @@ namespace mge::lua {
         lua_pushcclosure(L, construct, 1);
         lua_setfield(L, -2, "new");
         CHECK_CURRENT_STATUS(L);
+    }
+
+    void type::add_field(const std::string&                   name,
+                         const mge::script::type_details_ref& type,
+                         const mge::script::invoke_function&  setter,
+                         const mge::script::invoke_function&  getter)
+    {
+        if (m_fields.empty()) {
+            add_index_method();
+        }
+        field f{&name, &type, &setter, &getter};
+        m_fields[name.c_str()] = f;
     }
 
     void type::add_method(const std::string&                  name,

@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/cstring.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/small_vector.hpp"
 #include "mge/script/script_fwd.hpp"
@@ -40,6 +41,11 @@ namespace mge::lua {
         void pop_type_table();
         void add_type(const lua::type_ref& t);
 
+        void add_field(const std::string&                   name,
+                       const mge::script::type_details_ref& type,
+                       const mge::script::invoke_function&  setter,
+                       const mge::script::invoke_function&  getter);
+
         void add_method(const std::string&                  name,
                         const std::type_index&              return_type,
                         const mge::script::signature&       sig,
@@ -56,12 +62,14 @@ namespace mge::lua {
     private:
         void define_construction();
         void load_metatable(lua_State* L);
+        void add_index_method();
 
         lua_context&                              m_context;
         const mge::script::type_details_ref&      m_details;
         std::optional<std::vector<lua::type_ref>> m_types;
         bool                                      m_materialized;
         bool                                      m_ctor_defined;
+
         struct constructor
         {
             const mge::script::signature*       s;
@@ -69,11 +77,21 @@ namespace mge::lua {
             const mge::script::invoke_function* new_shared;
         };
 
+        struct field
+        {
+            const std::string*                   name;
+            const mge::script::type_details_ref* type;
+            const mge::script::invoke_function*  getter;
+            const mge::script::invoke_function*  setter;
+        };
+
         const constructor* select_constructor(int nargs, lua_State* L) const;
 
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
+        static int index(lua_State* L);
 
+        std::map<const char*, field, cstring_less> m_fields;
         std::map<size_t, std::vector<constructor>> m_constructors;
         const mge::script::invoke_function*        m_delete_ptr;
         const mge::script::invoke_function*        m_delete_shared_ptr;

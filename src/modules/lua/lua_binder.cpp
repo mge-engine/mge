@@ -190,7 +190,12 @@ namespace mge::lua {
                    const mge::script::type_details_ref& type,
                    const mge::script::invoke_function&  setter,
                    const mge::script::invoke_function&  getter) override
-        {}
+        {
+            const auto& t = std::get<lua::type_ref>(m_definitions.top());
+            if (t) {
+                t->add_field(name, type, setter, getter);
+            }
+        }
 
         void
         constructor(const mge::script::signature&       s,
