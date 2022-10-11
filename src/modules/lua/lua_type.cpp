@@ -52,9 +52,17 @@ namespace mge::lua {
         lua_settable(L, LUA_REGISTRYINDEX);
         // create type table
         lua_newtable(L);
-        // -1 - type table
         // -2 - module table or enclosing type
+        // -1 - type table
         CHECK_CURRENT_STATUS(L);
+        // also store details ref in type table itself
+        lua_pushlightuserdata(L, this);
+        // -3 - module table
+        // -2 - type table
+        // -1 - user data
+        lua_setfield(L, -2, "__type_instance");
+        // -2 - module table
+        // -1 - type table
         lua_pushnil(L);
         // -3 parent table
         // -2 type table
@@ -221,26 +229,34 @@ namespace mge::lua {
     int type::construct(lua_State* L)
     {
         int top = lua_gettop(L);
+
+        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type* self = reinterpret_cast<type*>(self_ptr);
+
         int real_args = 0;
         int offset = 0;
 
         if (top > 0) {
             if (lua_istable(L, 1)) {
-
+                lua_getfield(L, 1, "__type_instance");
+                if (lua_touserdata(L, -1) == self) {
+                    real_args = top - 1;
+                    offset = 1;
+                } else {
+                    real_args = top;
+                }
+                lua_pop(L, 1);
             } else {
                 real_args = top;
             }
         }
 
-        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
-        type* self = reinterpret_cast<type*>(self_ptr);
-        MGE_DEBUG_TRACE(LUA)
-            << "Construct value of type '" << self->m_details->name()
-            << "' with " << (top - 1) << " arguments";
-
-        std::stringstream ss;
-        self->m_context.details(ss);
-        MGE_DEBUG_TRACE(LUA) << "Context details: \n" << ss.str() << "\n";
+        // MGE_DEBUG_TRACE(LUA)
+        //     << "Construct value of type '" << self->m_details->name()
+        //     << "' with " << real_args << " arguments";
+        // std::stringstream ss;
+        // self->m_context.details(ss);
+        // MGE_DEBUG_TRACE(LUA) << "Context details: \n" << ss.str() << "\n";
 
         const constructor* ctor = self->select_constructor(real_args, L);
         if (ctor) {
