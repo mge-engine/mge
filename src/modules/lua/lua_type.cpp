@@ -47,9 +47,16 @@ namespace mge::lua {
         auto L = context.lua_state();
         // create meta table for type
         // use stable type details pointer as key
-        lua_pushlightuserdata(L, m_details.get());
+        lua_pushlightuserdata(L, this);
         lua_newtable(L);
         lua_settable(L, LUA_REGISTRYINDEX);
+
+        // load metatable again for creating method dict
+        load_metatable(L);
+        lua_newtable(L);
+        lua_setfield(L, -2, "__methods");
+        lua_pop(L, 1);
+
         // create type table
         lua_newtable(L);
         // -2 - module table or enclosing type
@@ -75,6 +82,10 @@ namespace mge::lua {
         CHECK_CURRENT_STATUS(L);
         // leave parent table on stack
         // leave type table on stack
+
+        // add index method
+        add_index_method();
+
         m_materialized = true;
         return;
     }
@@ -152,6 +163,35 @@ namespace mge::lua {
         return 1;
     }
 
+    int type::call(lua_State* L)
+    {
+        if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
+            return 0;
+        }
+
+        /*
+        void* type_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type* type_self = reinterpret_cast<type*>(type_ptr);
+
+        if (lua_type(L, lua_upvalueindex(2)) != LUA_TLIGHTUSERDATA) {
+            return 0;
+        }
+        void*   method_ptr = lua_touserdata(L, lua_upvalueindex(2));
+        method* called_method = reinterpret_cast<method*>(method_ptr);
+        */
+
+        int top = lua_gettop(L);
+
+        if (top == 0) {
+            lua_pushfstring(
+                L,
+                "Cannot call non-static method without object instance");
+            lua_error(L);
+        }
+
+        return 0;
+    }
+
     int type::destruct(lua_State* L)
     {
         int top = lua_gettop(L);
@@ -207,7 +247,7 @@ namespace mge::lua {
         lua_pushcclosure(L, &index, 1);
         // stack now
         // -1 closure
-        // -2 string "__gc"
+        // -2 string "__index"
         // -3 meta table
         lua_settable(L, -3);
         // meta table remains on stack, remove
@@ -216,7 +256,7 @@ namespace mge::lua {
 
     void type::load_metatable(lua_State* L)
     {
-        lua_pushlightuserdata(L, m_details.get());
+        lua_pushlightuserdata(L, this);
         lua_gettable(L, LUA_REGISTRYINDEX);
         if (!lua_istable(L, -1)) {
             lua_pushfstring(L,
@@ -345,9 +385,6 @@ namespace mge::lua {
                          const mge::script::invoke_function&  setter,
                          const mge::script::invoke_function&  getter)
     {
-        if (m_fields.empty()) {
-            add_index_method();
-        }
         field f{&name, &type, &setter, &getter};
         m_fields[name.c_str()] = f;
     }
@@ -356,12 +393,48 @@ namespace mge::lua {
                           const std::type_index&              return_type,
                           const mge::script::signature&       sig,
                           const mge::script::invoke_function& invoke)
-    {}
+    {
+        auto it = m_methods.find(name.c_str());
+        if (it == m_methods.end()) {
+            m_all_methods.emplace_back(std::make_unique<method>(&name));
+            method::details d{&return_type, &sig, &invoke};
+            m_all_methods.back()->overloads.push_back(d);
+            method* current_method = m_all_methods.back().get();
+            m_methods[name.c_str()] = current_method;
+
+            auto L = m_context.lua_state();
+            load_metatable(L);
+            lua_pushstring(L, name.c_str());
+            lua_pushlightuserdata(L, this);
+            lua_pushlightuserdata(L, current_method);
+            lua_pushcclosure(L, &call, 2);
+            // stack now
+            // -1 closure
+            // -2 method name
+            // -3 meta table
+            lua_settable(L, -3);
+            // meta table remains on stack, remove
+            lua_pop(L, 1);
+        } else {
+            method::details d{&return_type, &sig, &invoke};
+            it->second->overloads.push_back(d);
+        }
+    }
 
     void type::add_static_method(const std::string&            name,
                                  const std::type_index&        return_type,
                                  const mge::script::signature& sig,
                                  const mge::script::invoke_function& invoke)
-    {}
+    {
+        /*
+        auto it = m_static_methods.find(name.c_str());
+        if (it == m_static_methods.end()) {
+
+        } else {
+            method::details d{&return_type, &sig, &invoke};
+            it->second.overloads.push_back(d);
+        }
+        */
+    }
 
 } // namespace mge::lua

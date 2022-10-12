@@ -87,11 +87,32 @@ namespace mge::lua {
 
         const constructor* select_constructor(int nargs, lua_State* L) const;
 
+        struct method
+        {
+            method(const std::string* name_)
+                : name(name_)
+            {}
+
+            const std::string* name;
+            struct details
+            {
+                const std::type_index*              return_type;
+                const mge::script::signature*       signature;
+                const mge::script::invoke_function* invoke;
+            };
+            mge::small_vector<details, 1> overloads;
+        };
+
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
+        static int call(lua_State *L);
         static int index(lua_State* L);
 
         std::map<const char*, field, cstring_less> m_fields;
+
+        std::map<const char*, method*, cstring_less> m_methods;
+        std::vector<std::unique_ptr<method>>         m_all_methods;
+
         std::map<size_t, std::vector<constructor>> m_constructors;
         const mge::script::invoke_function*        m_delete_ptr;
         const mge::script::invoke_function*        m_delete_shared_ptr;
