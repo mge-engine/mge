@@ -25,12 +25,16 @@ namespace mge::lua {
         , m_ctor_defined(false)
         , m_delete_ptr(nullptr)
         , m_delete_shared_ptr(nullptr)
-    {}
+    {
+        create_type_metatable();
+        create_instance_metatable();
+    }
 
     type::~type() {}
 
     void type::add_enum_value(const std::string& name, int64_t enum_value)
     {
+#if 0
         MGE_DEBUG_TRACE(LUA) << "Add enum " << name << " = " << enum_value
                              << " to type " << m_details->name();
 
@@ -40,10 +44,12 @@ namespace mge::lua {
         CHECK_CURRENT_STATUS(L);
         lua_setfield(L, -2, name.c_str());
         CHECK_CURRENT_STATUS(L);
+#endif
     }
 
     void type::add_to_parent(lua_context& context)
     {
+#if 0
         auto L = context.lua_state();
         // create meta table for type
         // use stable type details pointer as key
@@ -87,6 +93,7 @@ namespace mge::lua {
         add_index_method();
 
         m_materialized = true;
+#endif
         return;
     }
 
@@ -101,6 +108,7 @@ namespace mge::lua {
 
     void type::push_type_table()
     {
+#if 0
         if (!m_materialized) {
             MGE_THROW(mge::illegal_state) << "Type '" << m_details->name()
                                           << "' is not registered in LUA";
@@ -111,22 +119,26 @@ namespace mge::lua {
         }
         auto rc = lua_getfield(L, -1, m_details->name().c_str());
         CHECK_TYPE(LUA_TTABLE, rc);
+#endif
     }
 
     void type::pop_type_table()
     {
+#if 0
         auto L = m_context.lua_state();
         if (!lua_istable(L, -1)) {
             MGE_THROW(mge::illegal_state) << "Type table not on top of stack";
         }
         lua_pop(L, 1);
         CHECK_CURRENT_STATUS(L);
+#endif
     }
 
     void type::add_constructor(const mge::script::signature&       s,
                                const mge::script::invoke_function& new_at,
                                const mge::script::invoke_function& new_shared)
     {
+#if 0
         MGE_DEBUG_TRACE(LUA) << "Add constructor for '" << m_details->name()
                              << "' " << mge::gist(s);
 
@@ -134,10 +146,12 @@ namespace mge::lua {
         if (!m_ctor_defined && m_delete_shared_ptr && m_delete_ptr) {
             define_construction();
         }
+#endif
     }
 
     int type::index(lua_State* L)
     {
+#if 0
         int top = lua_gettop(L);
         if (top != 2) {
             return 0;
@@ -161,10 +175,14 @@ namespace mge::lua {
         lua_object_call_context ctx(self, L, shared_ptr_address);
         (*it->second.getter)(ctx);
         return 1;
+#endif
+        return 0;
     }
 
     int type::call(lua_State* L)
     {
+        return 0;
+#if 0
         if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
             return 0;
         }
@@ -190,10 +208,12 @@ namespace mge::lua {
         }
 
         return 0;
+#endif
     }
 
     int type::destruct(lua_State* L)
     {
+#if 0
         int top = lua_gettop(L);
         if (top != 1) {
             return 0;
@@ -211,6 +231,8 @@ namespace mge::lua {
         void*                   shared_ptr_address = lua_touserdata(L, 1);
         lua_object_call_context ctx(self, L, shared_ptr_address);
         (*self->m_delete_shared_ptr)(ctx);
+
+#endif
         return 0;
     }
 
@@ -218,6 +240,7 @@ namespace mge::lua {
     type::set_destructor(const mge::script::invoke_function& delete_ptr,
                          const mge::script::invoke_function& delete_shared_ptr)
     {
+#if 0
         m_delete_ptr = &delete_ptr;
         m_delete_shared_ptr = &delete_shared_ptr;
         if (!m_ctor_defined && m_delete_shared_ptr && m_delete_ptr &&
@@ -236,10 +259,12 @@ namespace mge::lua {
         lua_settable(L, -3);
         // meta table remains on stack, remove
         lua_pop(L, 1);
+#endif
     }
 
     void type::add_index_method()
     {
+#if 0
         auto L = m_context.lua_state();
         load_metatable(L);
         lua_pushstring(L, "__index");
@@ -252,11 +277,24 @@ namespace mge::lua {
         lua_settable(L, -3);
         // meta table remains on stack, remove
         lua_pop(L, 1);
+#endif
     }
 
-    void type::load_metatable(lua_State* L)
+    void type::create_type_metatable()
     {
-        lua_pushlightuserdata(L, this);
+        auto L = m_context.lua_state();
+
+        lua_pushlightuserdata(L, const_cast<char*>(m_details->name().c_str()));
+        lua_newtable(L);
+        lua_settable(L, LUA_REGISTRYINDEX);
+        CHECK_CURRENT_STATUS(L);
+    }
+
+    void type::load_type_metatable()
+    {
+        auto L = m_context.lua_state();
+
+        lua_pushlightuserdata(L, const_cast<char*>(m_details->name().c_str()));
         lua_gettable(L, LUA_REGISTRYINDEX);
         if (!lua_istable(L, -1)) {
             lua_pushfstring(L,
@@ -266,8 +304,33 @@ namespace mge::lua {
         }
     }
 
+    void type::create_instance_metatable()
+    {
+        auto L = m_context.lua_state();
+
+        lua_pushlightuserdata(L, this);
+        lua_newtable(L);
+        lua_settable(L, LUA_REGISTRYINDEX);
+        CHECK_CURRENT_STATUS(L);
+    }
+
+    void type::load_instance_metatable()
+    {
+        auto L = m_context.lua_state();
+
+        lua_pushlightuserdata(L, this);
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        if (!lua_istable(L, -1)) {
+            lua_pushfstring(L,
+                            "Meta table for instance of type %s not found",
+                            m_details->name().c_str());
+            lua_error(L);
+        }
+    }
+
     int type::construct(lua_State* L)
     {
+#if 0
         int top = lua_gettop(L);
 
         void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
@@ -316,6 +379,8 @@ namespace mge::lua {
             lua_error(L);
         }
         return 1;
+#endif
+        return 0;
     }
 
     const type::constructor* type::select_constructor(int        nargs,
@@ -369,6 +434,7 @@ namespace mge::lua {
 
     void type::define_construction()
     {
+#if 0
         MGE_DEBUG_TRACE(LUA)
             << "Define construction for type '" << m_details->name() << "'";
         // on stack we have the table of this type X
@@ -378,6 +444,7 @@ namespace mge::lua {
         lua_pushcclosure(L, construct, 1);
         lua_setfield(L, -2, "new");
         CHECK_CURRENT_STATUS(L);
+#endif
     }
 
     void type::add_field(const std::string&                   name,
@@ -394,6 +461,7 @@ namespace mge::lua {
                           const mge::script::signature&       sig,
                           const mge::script::invoke_function& invoke)
     {
+#if 0
         auto it = m_methods.find(name.c_str());
         if (it == m_methods.end()) {
             m_all_methods.emplace_back(std::make_unique<method>(&name));
@@ -404,7 +472,9 @@ namespace mge::lua {
 
             auto L = m_context.lua_state();
             load_metatable(L);
-            lua_pushstring(L, name.c_str());
+            lua_getfield(L, -1, "__methods")
+
+                lua_pushstring(L, name.c_str());
             lua_pushlightuserdata(L, this);
             lua_pushlightuserdata(L, current_method);
             lua_pushcclosure(L, &call, 2);
@@ -419,6 +489,7 @@ namespace mge::lua {
             method::details d{&return_type, &sig, &invoke};
             it->second->overloads.push_back(d);
         }
+#endif
     }
 
     void type::add_static_method(const std::string&            name,

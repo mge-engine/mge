@@ -60,8 +60,13 @@ namespace mge::lua {
         std::type_index type_index() const { return m_details->type_index(); }
 
     private:
+        void create_type_metatable();
+        void load_type_metatable();
+        void create_instance_metatable();
+        void load_instance_metatable();
+
         void define_construction();
-        void load_metatable(lua_State* L);
+
         void add_index_method();
 
         lua_context&                              m_context;
@@ -105,7 +110,7 @@ namespace mge::lua {
 
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
-        static int call(lua_State *L);
+        static int call(lua_State* L);
         static int index(lua_State* L);
 
         std::map<const char*, field, cstring_less> m_fields;
