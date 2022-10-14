@@ -2,10 +2,10 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "value_classification.hpp"
-#include "lua_type.hpp"
 #include "mge/core/singleton.hpp"
 
 #include <map>
+#include <string>
 
 namespace mge::lua {
 
@@ -82,12 +82,12 @@ namespace mge::lua {
 
     value_classification::value_classification()
         : m_type_class(TC_NONE)
-        , m_lua_type(nullptr)
+    // , m_lua_type(nullptr)
     {}
 
     value_classification::value_classification(lua_State* L, int index)
         : m_type_class(TC_NONE)
-        , m_lua_type(nullptr)
+    // , m_lua_type(nullptr)
     {
         auto t = lua_type(L, index);
         switch (t) {
@@ -140,12 +140,12 @@ namespace mge::lua {
         case TC_NONE:
             return NO_MATCH;
         case TC_OBJECT:
-            if (m_lua_type) {
-                return m_lua_type->type_index() == arg_type ? MATCH_EXACT
-                                                            : NO_MATCH;
-            } else {
-                return NO_MATCH;
-            }
+            // if ( m_lua_type) {
+            // return m_lua_type->type_index() == arg_type ? MATCH_EXACT
+            //                                             : NO_MATCH;
+            //} else {
+            return NO_MATCH;
+            // }
         }
         return NO_MATCH;
     }

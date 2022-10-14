@@ -3,7 +3,6 @@
 // All rights reserved.
 #pragma once
 #include "lua.hpp"
-#include "lua_type.hpp"
 
 #include <typeindex>
 
@@ -46,6 +45,6 @@ namespace mge::lua {
         match_type match(const std::type_index& arg_type) const;
 
         type_class m_type_class;
-        lua::type* m_lua_type;
+        // lua::type* m_lua_type;
     };
 } // namespace mge::lua

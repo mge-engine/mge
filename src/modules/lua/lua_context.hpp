@@ -4,6 +4,7 @@
 #pragma once
 #include "lua.hpp"
 #include "lua_fwd.hpp"
+
 #include "mge/core/trace.hpp"
 #include "mge/script/script_context.hpp"
 
@@ -20,11 +21,8 @@ namespace mge::lua {
         int  main(int argc, const char** argv) override;
         void bind(const mge::script::module& m) override;
 
-        lua_State*     lua_state() const { return m_lua_state; }
-        lua_module_ref get_or_add_module(const mge::script::module& m);
-        lua_module_ref get_module(const mge::script::module& m) const;
-
-        void details(std::ostream& os) const;
+        lua_State* lua_state() const { return m_lua_state; }
+        void       details(std::ostream& os) const;
 
     private:
         lua_State* m_lua_state;

@@ -2,7 +2,6 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "lua_type.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/visitor.hpp"
 

@@ -5,7 +5,6 @@
 #include "lua_context.hpp"
 #include "lua_binder.hpp"
 #include "lua_error.hpp"
-#include "lua_module.hpp"
 
 #include "mge/core/call_debugger.hpp"
 #include "mge/core/line_editor.hpp"
@@ -586,27 +585,6 @@ namespace mge::lua {
     {
         lua_binder b(*this);
         b.bind(m);
-    }
-
-    lua_module_ref lua_context::get_or_add_module(const mge::script::module& m)
-    {
-        auto it = m_lua_modules.find(m);
-        if (it != m_lua_modules.end()) {
-            return it->second;
-        } else {
-            auto mod = std::make_shared<lua_module>(*this, m);
-            return m_lua_modules[m] = mod;
-        }
-    }
-
-    lua_module_ref lua_context::get_module(const mge::script::module& m) const
-    {
-        auto it = m_lua_modules.find(m);
-        if (it != m_lua_modules.end()) {
-            return it->second;
-        } else {
-            return lua_module_ref();
-        }
     }
 
     void lua_context::details(std::ostream& os) const
