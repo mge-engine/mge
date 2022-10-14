@@ -3,8 +3,6 @@
 // All rights reserved.
 #include "lua_binder.hpp"
 #include "lua_context.hpp"
-#include "lua_module.hpp"
-#include "lua_type.hpp"
 
 #include "mge/core/details.hpp"
 #include "mge/core/overloaded.hpp"
@@ -21,7 +19,7 @@ namespace mge {
 }
 
 namespace mge::lua {
-
+#if 0
     class module_binder : public mge::script::visitor
     {
     public:
@@ -51,15 +49,12 @@ namespace mge::lua {
         {
             MGE_DEBUG_TRACE(LUA) << "Creating types of '" << m->name() << "'";
             mge::script::module mod(m);
-
             auto lua_mod = m_binder.context().get_module(mod);
             m_definitions.push(lua_mod);
-            lua_mod->push_module_table();
         }
 
         void finish(const mge::script::module_details_ref& m) override
         {
-            pop_from_lua_stack();
             m_definitions.pop();
         }
 
@@ -285,6 +280,7 @@ namespace mge::lua {
             std::variant<std::monostate, lua_module_ref, lua::type_ref>;
         std::stack<element> m_definitions;
     };
+#endif
 
     lua_binder::lua_binder(lua_context& context)
         : m_context(context)
@@ -293,12 +289,14 @@ namespace mge::lua {
     void lua_binder::bind(const mge::script::module& m)
     {
         MGE_DEBUG_TRACE(LUA) << "Binding module '" << m.name() << "'";
+#if 0
         module_binder mb(*this);
         m.apply(mb);
         type_creator tc(*this);
         m.apply(tc);
         type_fields_creator tfc(*this);
         m.apply(tfc);
+#endif
     }
 
 } // namespace mge::lua
