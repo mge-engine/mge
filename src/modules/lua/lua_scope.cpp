@@ -1,6 +1,13 @@
 #include "lua_scope.hpp"
 #include "lua_error.hpp"
 
+#include "mge/core/checked_cast.hpp"
+#include "mge/core/trace.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(LUA);
+}
+
 namespace mge::lua {
     int scope::new_module(lua_State* L)
     {
@@ -51,6 +58,24 @@ namespace mge::lua {
         // do not remove any of the created instances
         // creating them again will invoke the gc, and
         // do the needful
+    }
+
+    void scope::add(const std::string& name, int64_t value)
+    {
+        MGE_DEBUG_TRACE(LUA)
+            << "Add value '" << name << "' to scope '" << m_name << "'";
+
+        load();
+
+        auto L = m_context.lua_state();
+
+        lua_Integer lua_value = checked_cast<lua_Integer>(value);
+
+        lua_pushinteger(L, lua_value);
+        CHECK_CURRENT_STATUS(L);
+        lua_setfield(L, -2, name.c_str());
+        CHECK_CURRENT_STATUS(L);
+        lua_pop(L, 1);
     }
 
 } // namespace mge::lua

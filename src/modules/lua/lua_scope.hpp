@@ -10,19 +10,21 @@ namespace mge::lua {
     {
     public:
         scope(lua_context& context, const char* name);
-        scope(lua_context&         context,
+        scope(lua_context&          context,
               const lua::scope_ref& parent,
-              const char*          name);
+              const char*           name);
 
         virtual ~scope();
 
         void load();
+        void add(const std::string& name, int64_t value);
 
     private:
         static int new_module(lua_State* L);
 
-        lua_context&  m_context;
-        const char*   m_name;
+    protected:
+        lua_context&   m_context;
+        const char*    m_name;
         lua::scope_ref m_parent;
     };
 
