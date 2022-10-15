@@ -4,6 +4,7 @@
 #include "lua_binder.hpp"
 #include "lua_context.hpp"
 #include "lua_module.hpp"
+#include "lua_type.hpp"
 
 #include "mge/core/details.hpp"
 #include "mge/core/overloaded.hpp"
@@ -47,7 +48,21 @@ namespace mge::lua {
             }
         };
 
-        virtual void start(const mge::script::type_details_ref& t) override {}
+        virtual void start(const mge::script::type_details_ref& t) override
+        {
+            if (!t->traits().is_pod() && !m_definitions.empty()) {
+                auto current = std::make_shared<lua::type>(m_binder.context(),
+                                                           m_definitions.top(),
+                                                           t);
+                m_binder.context().add_type(current);
+                m_definitions.push(current);
+            }
+        }
+
+        virtual void finish(const mge::script::type_details_ref&) override
+        {
+            m_definitions.pop();
+        }
 
         virtual void finish(const mge::script::module_details_ref&) override
         {

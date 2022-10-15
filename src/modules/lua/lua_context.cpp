@@ -51,6 +51,11 @@ namespace mge::lua {
         m_all_modules.push_back(m);
     }
 
+    void lua_context::add_type(const lua::type_ref& m)
+    {
+        m_all_types.push_back(m);
+    }
+
 /* bits of various argument indicators in 'args' */
 #define has_error 1 /* bad option */
 #define has_i 2     /* -i */

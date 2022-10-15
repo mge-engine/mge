@@ -10,7 +10,7 @@ namespace mge::lua {
         module(lua_context&                           context,
                const scope_ref&                       parent,
                const mge::script::module_details_ref& m);
-        virtual ~module();
+        virtual ~module() = default;
 
     private:
         mge::script::module_details_ref m_module;

@@ -14,7 +14,4 @@ namespace mge::lua {
         : scope(context, parent, m->name().c_str())
         , m_module(m)
     {}
-
-    module::~module() {}
-
 } // namespace mge::lua

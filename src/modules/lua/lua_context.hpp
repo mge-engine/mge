@@ -25,9 +25,11 @@ namespace mge::lua {
         void       details(std::ostream& os) const;
 
         void add_module(const lua::module_ref& m);
+        void add_type(const lua::type_ref& t);
 
     private:
         std::vector<lua::module_ref> m_all_modules;
+        std::vector<lua::type_ref>   m_all_types;
         lua_State*                   m_lua_state;
     };
 } // namespace mge::lua
