@@ -1,7 +1,12 @@
 #include "lua_type.hpp"
+
 #include "mge/core/details.hpp"
+#include "mge/core/small_vector.hpp"
 #include "mge/core/trace.hpp"
+
 #include "mge/script/type_details.hpp"
+
+#include "value_classification.hpp"
 
 namespace mge {
     MGE_USE_TRACE(LUA);
@@ -65,5 +70,63 @@ namespace mge::lua {
     }
 
     int type::destruct(lua_State* L) { return 0; }
+
+    void type::add_constructor(const mge::script::signature&       signature,
+                               const mge::script::invoke_function& new_at,
+                               const mge::script::invoke_function& new_shared)
+    {
+        constructor ctor{&signature, &new_at, &new_shared};
+        m_constructors[signature.size()].push_back(ctor);
+    }
+
+    const type::constructor* type::select_constructor(int        nargs,
+                                                      lua_State* L) const
+    {
+        auto it = m_constructors.find(static_cast<size_t>(nargs));
+        if (it != m_constructors.end()) {
+            if (it->second.size() == 1) {
+                return &((it->second)[0]);
+            }
+
+            mge::small_vector<value_classification, 3> value_classes;
+            for (int i = 1; i <= nargs; ++i) {
+                value_classes.push_back(value_classification(L, i));
+            }
+            const auto& all_ctors = it->second;
+            const auto  all_ctors_size = all_ctors.size();
+            size_t      best_constructor = all_ctors_size;
+            size_t      best_constructor_match_count = 0;
+
+            for (size_t ci = 0; ci < all_ctors_size; ++ci) {
+
+                size_t exact_match_count = 0;
+                bool   match_failed = false;
+
+                for (int i = 0; i < nargs; ++i) {
+                    auto match =
+                        value_classes[i].match(all_ctors[ci].signature->at(i));
+                    if (match == value_classification::NO_MATCH) {
+                        match_failed = true;
+                        break;
+                    } else if (match == value_classification::MATCH_EXACT) {
+                        ++exact_match_count;
+                    }
+                }
+
+                if (!match_failed) {
+                    if (exact_match_count > best_constructor_match_count) {
+                        best_constructor = ci;
+                    } else if (best_constructor == all_ctors_size) {
+                        best_constructor = ci;
+                    }
+                }
+            }
+
+            if (best_constructor != all_ctors_size) {
+                return &(all_ctors[best_constructor]);
+            }
+        }
+        return nullptr;
+    }
 
 } // namespace mge::lua
