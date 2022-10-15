@@ -24,7 +24,10 @@ namespace mge::lua {
         lua_State* lua_state() const { return m_lua_state; }
         void       details(std::ostream& os) const;
 
+        void add_module(const lua::module_ref& m);
+
     private:
-        lua_State* m_lua_state;
+        std::vector<lua::module_ref> m_all_modules;
+        lua_State*                   m_lua_state;
     };
 } // namespace mge::lua

@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "lua_binder.hpp"
 #include "lua_context.hpp"
+#include "lua_module.hpp"
 
 #include "mge/core/details.hpp"
 #include "mge/core/overloaded.hpp"
@@ -12,13 +13,52 @@
 #include "mge/script/type_details.hpp"
 
 #include <stack>
-#include <variant>
 
 namespace mge {
     MGE_USE_TRACE(LUA);
 }
 
 namespace mge::lua {
+
+    class scope_creator : public mge::script::visitor
+    {
+    public:
+        scope_creator(lua_binder& binder)
+            : m_binder(binder)
+        {}
+
+        using mge::script::visitor::finish;
+        using mge::script::visitor::start;
+
+        virtual void start(const mge::script::module_details_ref& m) override
+        {
+            if (!m->is_root()) {
+                lua::module_ref current;
+                if (m->parent()->is_root()) {
+                    current =
+                        std::make_shared<lua::module>(m_binder.context(), m);
+                } else {
+                    current = std::make_shared<lua::module>(m_binder.context(),
+                                                            m_definitions.top(),
+                                                            m);
+                }
+                m_binder.context().add_module(current);
+                m_definitions.push(current);
+            }
+        };
+
+        virtual void start(const mge::script::type_details_ref& t) override {}
+
+        virtual void finish(const mge::script::module_details_ref&) override
+        {
+            m_definitions.pop();
+        }
+
+    private:
+        lua_binder&                m_binder;
+        std::stack<lua::scope_ref> m_definitions;
+    };
+
 #if 0
     class module_binder : public mge::script::visitor
     {
@@ -31,7 +71,7 @@ namespace mge::lua {
 
         virtual void start(const mge::script::module_details_ref& m) override
         {
-            mge::script::module mod(m);
+            mge::script::module mod(m)
             m_binder.context().get_or_add_module(mod);
         }
 
@@ -289,9 +329,9 @@ namespace mge::lua {
     void lua_binder::bind(const mge::script::module& m)
     {
         MGE_DEBUG_TRACE(LUA) << "Binding module '" << m.name() << "'";
-#if 0
-        module_binder mb(*this);
+        scope_creator mb(*this);
         m.apply(mb);
+#if 0
         type_creator tc(*this);
         m.apply(tc);
         type_fields_creator tfc(*this);

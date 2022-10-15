@@ -8,6 +8,7 @@ SET(mge_lua_module_SOURCES
     lua_error.cpp
     lua_datatype.cpp
     lua_scope.cpp
+    lua_module.cpp
     value_classification.cpp
     lua_object_call_context.cpp)
 
