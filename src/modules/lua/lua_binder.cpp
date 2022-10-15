@@ -62,8 +62,10 @@ namespace mge::lua {
                 m_binder.context().add_type(current);
                 m_definitions.push(current);
                 m_definition_pushed.push(true);
+                m_type_definitions.push(current);
             } else {
                 m_definition_pushed.push(false);
+                m_type_definitions.push(lua::type_ref());
             }
         }
 
@@ -73,6 +75,7 @@ namespace mge::lua {
                 m_definitions.pop();
             }
             m_definition_pushed.pop();
+            m_type_definitions.pop();
         }
 
         virtual void finish(const mge::script::module_details_ref&) override
@@ -90,9 +93,31 @@ namespace mge::lua {
             }
         }
 
+        void
+        constructor(const mge::script::signature&       s,
+                    const mge::script::invoke_function& new_at,
+                    const mge::script::invoke_function& make_shared) override
+        {
+            const auto& t = m_type_definitions.top();
+            if (t) {
+                t->add_constructor(s, new_at, make_shared);
+            }
+        }
+
+        void destructor(
+            const mge::script::invoke_function& delete_ptr,
+            const mge::script::invoke_function& delete_shared_ptr) override
+        {
+            const auto& t = m_type_definitions.top();
+            if (t) {
+                t->set_destructor(delete_ptr, delete_shared_ptr);
+            }
+        }
+
     private:
         lua_binder&                m_binder;
         std::stack<lua::scope_ref> m_definitions;
+        std::stack<lua::type_ref>  m_type_definitions;
         std::stack<bool>           m_definition_pushed;
     };
 

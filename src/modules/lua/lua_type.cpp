@@ -6,6 +6,7 @@
 
 #include "mge/script/type_details.hpp"
 
+#include "lua_object_call_context.hpp"
 #include "value_classification.hpp"
 
 namespace mge {
@@ -18,6 +19,8 @@ namespace mge::lua {
                const mge::script::type_details_ref& t)
         : scope(context, parent, t->name().c_str())
         , m_details(t)
+        , m_delete_ptr(nullptr)
+        , m_delete_shared_ptr(nullptr)
     {
         create_instance_metatable();
         create_type_metatable();
@@ -29,7 +32,18 @@ namespace mge::lua {
         auto L = m_context.lua_state();
         lua_pushlightuserdata(L, this);
         lua_newtable(L);
+        lua_pushstring(L, "__gc");
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &destruct, 1);
+        lua_settable(L, -3);
         lua_settable(L, LUA_REGISTRYINDEX);
+    }
+
+    void type::load_instance_metatable()
+    {
+        auto L = m_context.lua_state();
+        lua_pushlightuserdata(L, this);
+        lua_gettable(L, LUA_REGISTRYINDEX);
     }
 
     void type::create_type_metatable()
@@ -59,17 +73,49 @@ namespace mge::lua {
 
     int type::construct(lua_State* L)
     {
-        // int top = lua_gettop(L);
+        int argc = lua_gettop(L);
 
         void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
         type* self = reinterpret_cast<type*>(self_ptr);
 
-        MGE_DEBUG_TRACE(LUA) << "Construct " << self->m_details->name();
+        const constructor* ctor = self->select_constructor(argc, L);
+        if (ctor) {
+            void* shared_ptr_mem = lua_newuserdata(L, sizeof(void*));
+            memset(shared_ptr_mem, 0, sizeof(void*));
+            self->load_instance_metatable();
+            // stack now
+            // -1 - meta table
+            // -2 - new user data (still nullptr)
+            lua_setmetatable(L, -2);
+            lua_object_call_context ctx(self, L, shared_ptr_mem);
+            (*ctor->new_shared)(ctx);
+        } else {
+            lua_pushfstring(L,
+                            "Cannot construct object of type '%s'",
+                            self->m_details->name().c_str());
+            lua_error(L);
+        }
+        return 1;
+    }
+
+    int type::destruct(lua_State* L)
+    {
+        int top = lua_gettop(L);
+        if (top != 1) {
+            return 0;
+        }
+        if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
+            return 0;
+        }
+        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type* self = reinterpret_cast<type*>(self_ptr);
+
+        void*                   shared_ptr_address = lua_touserdata(L, 1);
+        lua_object_call_context ctx(self, L, shared_ptr_address);
+        (*self->m_delete_shared_ptr)(ctx);
 
         return 0;
     }
-
-    int type::destruct(lua_State* L) { return 0; }
 
     void type::add_constructor(const mge::script::signature&       signature,
                                const mge::script::invoke_function& new_at,
@@ -77,6 +123,14 @@ namespace mge::lua {
     {
         constructor ctor{&signature, &new_at, &new_shared};
         m_constructors[signature.size()].push_back(ctor);
+    }
+
+    void
+    type::set_destructor(const mge::script::invoke_function& delete_ptr,
+                         const mge::script::invoke_function& delete_shared_ptr)
+    {
+        m_delete_ptr = &delete_ptr;
+        m_delete_shared_ptr = &delete_shared_ptr;
     }
 
     const type::constructor* type::select_constructor(int        nargs,
