@@ -40,6 +40,7 @@ namespace mge::lua {
 
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
+        static int index(lua_State* L);
 
         const mge::script::type_details_ref& details() const noexcept
         {
@@ -77,13 +78,14 @@ namespace mge::lua {
         void create_type_metatable();
         void define_construction();
 
-        mge::script::type_details_ref               m_details;
-        std::map<size_t, std::vector<constructor>>  m_constructors;
-        std::map<const char*, field, cstring_less>  m_fields;
+        mge::script::type_details_ref                            m_details;
+        std::map<size_t, std::vector<constructor>>               m_constructors;
+        std::map<const char*, field, cstring_less>               m_fields;
         std::map<const char*, std::vector<method>, cstring_less> m_methods;
-        std::map<const char*, std::vector<method>, cstring_less> m_static_methods;
-        const mge::script::invoke_function*         m_delete_ptr;
-        const mge::script::invoke_function*         m_delete_shared_ptr;
+        std::map<const char*, std::vector<method>, cstring_less>
+                                            m_static_methods;
+        const mge::script::invoke_function* m_delete_ptr;
+        const mge::script::invoke_function* m_delete_shared_ptr;
     };
 
 } // namespace mge::lua

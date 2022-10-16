@@ -32,10 +32,17 @@ namespace mge::lua {
         auto L = m_context.lua_state();
         lua_pushlightuserdata(L, this);
         lua_newtable(L);
+
         lua_pushstring(L, "__gc");
         lua_pushlightuserdata(L, this);
         lua_pushcclosure(L, &destruct, 1);
         lua_settable(L, -3);
+
+        lua_pushstring(L, "__index");
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &index, 1);
+        lua_settable(L, -3);
+
         lua_settable(L, LUA_REGISTRYINDEX);
     }
 
@@ -115,6 +122,35 @@ namespace mge::lua {
         (*self->m_delete_shared_ptr)(ctx);
 
         return 0;
+    }
+
+    int type::index(lua_State* L)
+    {
+        int top = lua_gettop(L);
+        if (top != 2) {
+            return 0;
+        }
+        if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
+            return 0;
+        }
+
+        void*       self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type*       self = reinterpret_cast<type*>(self_ptr);
+        const char* name = lua_tostring(L, 2);
+
+        auto it = self->m_fields.find(name);
+        if (it == self->m_fields.end()) {
+            lua_pushfstring(L,
+                            "Type %s has no field %s",
+                            self->m_details->name().c_str(),
+                            name);
+            lua_error(L);
+        }
+        void* shared_ptr_address = lua_touserdata(L, 1);
+
+        lua_object_call_context ctx(self, L, shared_ptr_address);
+        (*it->second.getter)(ctx);
+        return 1;
     }
 
     void type::add_constructor(const mge::script::signature&       signature,
