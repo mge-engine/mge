@@ -80,7 +80,7 @@ namespace mge::lua {
 
     int type::construct(lua_State* L)
     {
-        int argc = lua_gettop(L);
+        int argc = lua_gettop(L) - 1;
 
         void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
         type* self = reinterpret_cast<type*>(self_ptr);
@@ -94,7 +94,7 @@ namespace mge::lua {
             // -1 - meta table
             // -2 - new user data (still nullptr)
             lua_setmetatable(L, -2);
-            lua_object_call_context ctx(self, L, shared_ptr_mem);
+            lua_object_call_context ctx(self, L, shared_ptr_mem, 1);
             (*ctor->new_shared)(ctx);
         } else {
             lua_pushfstring(L,
@@ -199,6 +199,7 @@ namespace mge::lua {
     const type::constructor* type::select_constructor(int        nargs,
                                                       lua_State* L) const
     {
+        MGE_DEBUG_TRACE(LUA) << "construct with " << nargs << " args";
         auto it = m_constructors.find(static_cast<size_t>(nargs));
         if (it != m_constructors.end()) {
             if (it->second.size() == 1) {
