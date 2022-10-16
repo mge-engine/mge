@@ -138,13 +138,19 @@ namespace mge::lua {
                           const std::type_index&              return_type,
                           const mge::script::signature&       sig,
                           const mge::script::invoke_function& invoke)
-    {}
+    {
+        method m{&return_type, &sig, &invoke};
+        m_methods[name.c_str()].push_back(m);
+    }
 
     void type::add_static_method(const std::string&            name,
                                  const std::type_index&        return_type,
                                  const mge::script::signature& sig,
                                  const mge::script::invoke_function& invoke)
-    {}
+    {
+        method m{&return_type, &sig, &invoke};
+        m_static_methods[name.c_str()].push_back(m);
+    }
 
     void
     type::set_destructor(const mge::script::invoke_function& delete_ptr,

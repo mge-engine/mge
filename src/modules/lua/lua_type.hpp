@@ -25,6 +25,13 @@ namespace mge::lua {
             const mge::script::invoke_function*  setter;
         };
 
+        struct method
+        {
+            const std::type_index*              return_type;
+            const mge::script::signature*       signature;
+            const mge::script::invoke_function* invoke;
+        };
+
     public:
         type(lua_context&                         context,
              const scope_ref&                     parent,
@@ -70,11 +77,13 @@ namespace mge::lua {
         void create_type_metatable();
         void define_construction();
 
-        mge::script::type_details_ref              m_details;
-        std::map<size_t, std::vector<constructor>> m_constructors;
-        std::map<const char*, field, cstring_less> m_fields;
-        const mge::script::invoke_function*        m_delete_ptr;
-        const mge::script::invoke_function*        m_delete_shared_ptr;
+        mge::script::type_details_ref               m_details;
+        std::map<size_t, std::vector<constructor>>  m_constructors;
+        std::map<const char*, field, cstring_less>  m_fields;
+        std::map<const char*, std::vector<method>, cstring_less> m_methods;
+        std::map<const char*, std::vector<method>, cstring_less> m_static_methods;
+        const mge::script::invoke_function*         m_delete_ptr;
+        const mge::script::invoke_function*         m_delete_shared_ptr;
     };
 
 } // namespace mge::lua
