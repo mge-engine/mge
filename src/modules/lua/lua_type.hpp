@@ -1,6 +1,10 @@
 #pragma once
 #include "lua_scope.hpp"
 
+#include "mge/core/cstring.hpp"
+
+#include <map>
+
 namespace mge::lua {
 
     class type : public scope
@@ -11,6 +15,14 @@ namespace mge::lua {
             const mge::script::signature*       signature;
             const mge::script::invoke_function* new_at;
             const mge::script::invoke_function* new_shared;
+        };
+
+        struct field
+        {
+            const std::string*                   name;
+            const mge::script::type_details_ref* type;
+            const mge::script::invoke_function*  getter;
+            const mge::script::invoke_function*  setter;
         };
 
     public:
@@ -30,6 +42,22 @@ namespace mge::lua {
         void add_constructor(const mge::script::signature&       signature,
                              const mge::script::invoke_function& new_at,
                              const mge::script::invoke_function& new_shared);
+
+        void add_field(const std::string&                   name,
+                       const mge::script::type_details_ref& type,
+                       const mge::script::invoke_function&  setter,
+                       const mge::script::invoke_function&  getter);
+
+        void add_method(const std::string&                  name,
+                        const std::type_index&              return_type,
+                        const mge::script::signature&       sig,
+                        const mge::script::invoke_function& invoke);
+
+        void add_static_method(const std::string&                  name,
+                               const std::type_index&              return_type,
+                               const mge::script::signature&       sig,
+                               const mge::script::invoke_function& invoke);
+
         void
         set_destructor(const mge::script::invoke_function& delete_ptr,
                        const mge::script::invoke_function& delete_shared_ptr);
@@ -44,6 +72,7 @@ namespace mge::lua {
 
         mge::script::type_details_ref              m_details;
         std::map<size_t, std::vector<constructor>> m_constructors;
+        std::map<const char*, field, cstring_less> m_fields;
         const mge::script::invoke_function*        m_delete_ptr;
         const mge::script::invoke_function*        m_delete_shared_ptr;
     };

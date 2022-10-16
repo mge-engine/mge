@@ -125,6 +125,27 @@ namespace mge::lua {
         m_constructors[signature.size()].push_back(ctor);
     }
 
+    void type::add_field(const std::string&                   name,
+                         const mge::script::type_details_ref& type,
+                         const mge::script::invoke_function&  setter,
+                         const mge::script::invoke_function&  getter)
+    {
+        field f{&name, &type, &setter, &getter};
+        m_fields[name.c_str()] = f;
+    }
+
+    void type::add_method(const std::string&                  name,
+                          const std::type_index&              return_type,
+                          const mge::script::signature&       sig,
+                          const mge::script::invoke_function& invoke)
+    {}
+
+    void type::add_static_method(const std::string&            name,
+                                 const std::type_index&        return_type,
+                                 const mge::script::signature& sig,
+                                 const mge::script::invoke_function& invoke)
+    {}
+
     void
     type::set_destructor(const mge::script::invoke_function& delete_ptr,
                          const mge::script::invoke_function& delete_shared_ptr)
