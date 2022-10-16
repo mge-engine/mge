@@ -153,6 +153,8 @@ namespace mge::lua {
         return 1;
     }
 
+    int type::call_method(lua_State* L) { return 0; }
+
     void type::add_constructor(const mge::script::signature&       signature,
                                const mge::script::invoke_function& new_at,
                                const mge::script::invoke_function& new_shared)
