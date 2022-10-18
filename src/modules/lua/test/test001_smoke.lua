@@ -37,7 +37,7 @@ function test_application_similar_subtype_exists()
 end
 
 function test_method_call()
-    local vf = mge.vertex_format:new(mge.data_type.FLOAT, 3)
+    local vf = mge.vertex_format(mge.data_type.FLOAT, 3)
     assert(type(vf) == "userdata", "cannot create object")
     assert(vf.binary_size() == 12, "cannot call simple method")
 end

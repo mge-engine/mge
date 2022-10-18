@@ -41,7 +41,8 @@ namespace mge::lua {
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
         static int index(lua_State* L);
-        static int call_method(lua_State *L);
+        int        method_index(const char* name) const;
+        static int call_method(lua_State* L);
 
         const mge::script::type_details_ref& details() const noexcept
         {

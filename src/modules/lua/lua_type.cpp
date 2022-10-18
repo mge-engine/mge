@@ -111,17 +111,34 @@ namespace mge::lua {
         if (top != 1) {
             return 0;
         }
-        if (lua_type(L, lua_upvalueindex(1)) != LUA_TLIGHTUSERDATA) {
+        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        if (!self_ptr) {
             return 0;
         }
-        void* self_ptr = lua_touserdata(L, lua_upvalueindex(1));
         type* self = reinterpret_cast<type*>(self_ptr);
 
-        void*                   shared_ptr_address = lua_touserdata(L, 1);
+        void* shared_ptr_address = lua_touserdata(L, 1);
+        if (!shared_ptr_address) {
+            return 0;
+        }
         lua_object_call_context ctx(self, L, shared_ptr_address);
         (*self->m_delete_shared_ptr)(ctx);
 
         return 0;
+    }
+
+    int type::method_index(const char* name) const
+    {
+        auto it = m_methods.find(name);
+        if (it == m_methods.end()) {
+            return 0;
+        }
+        auto L = m_context.lua_state();
+        lua_pushlightuserdata(L, const_cast<type*>(this));
+        lua_pushlightuserdata(L, const_cast<char*>(it->first));
+        lua_pushlightuserdata(L, const_cast<std::vector<method>*>(&it->second));
+        lua_pushcclosure(L, &call_method, 3);
+        return 1;
     }
 
     int type::index(lua_State* L)
@@ -140,6 +157,10 @@ namespace mge::lua {
 
         auto it = self->m_fields.find(name);
         if (it == self->m_fields.end()) {
+            int rc = self->method_index(name);
+            if (rc != 0) {
+                return rc;
+            }
             lua_pushfstring(L,
                             "Type %s has no field %s",
                             self->m_details->name().c_str(),
@@ -153,7 +174,45 @@ namespace mge::lua {
         return 1;
     }
 
-    int type::call_method(lua_State* L) { return 0; }
+    int type::call_method(lua_State* L)
+    {
+        for (int i = 1; i <= 3; ++i) {
+            if (lua_type(L, lua_upvalueindex(i)) != LUA_TLIGHTUSERDATA) {
+                return 0;
+            }
+        }
+
+        type* self =
+            reinterpret_cast<type*>(lua_touserdata(L, lua_upvalueindex(1)));
+        const char* name = reinterpret_cast<const char*>(
+            lua_touserdata(L, lua_upvalueindex(2)));
+        std::vector<method>* methods = reinterpret_cast<std::vector<method>*>(
+            lua_touserdata(L, lua_upvalueindex(3)));
+        if (!self || !name || !methods) {
+            return 0;
+        }
+        int top = lua_gettop(L);
+        if (top < 1) {
+            lua_pushfstring(L,
+                            "Cannot call method %s.%s with no object",
+                            self->m_details->name().c_str(),
+                            name);
+            lua_error(L);
+        }
+
+        void* shared_ptr_address = lua_touserdata(L, 1);
+        if (!shared_ptr_address) {
+            lua_pushfstring(
+                L,
+                "Cannot call method %s.%s with nil object reference",
+                self->m_details->name().c_str(),
+                name);
+            lua_error(L);
+        }
+        lua_object_call_context ctx(self, L, shared_ptr_address, 1);
+
+        return 0;
+    }
 
     void type::add_constructor(const mge::script::signature&       signature,
                                const mge::script::invoke_function& new_at,
@@ -201,7 +260,7 @@ namespace mge::lua {
     const type::constructor* type::select_constructor(int        nargs,
                                                       lua_State* L) const
     {
-        MGE_DEBUG_TRACE(LUA) << "construct with " << nargs << " args";
+        // MGE_DEBUG_TRACE(LUA) << "construct with " << nargs << " args";
         auto it = m_constructors.find(static_cast<size_t>(nargs));
         if (it != m_constructors.end()) {
             if (it->second.size() == 1) {
