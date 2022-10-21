@@ -39,7 +39,7 @@ end
 function test_method_call()
     local vf = mge.vertex_format(mge.data_type.FLOAT, 3)
     assert(type(vf) == "userdata", "cannot create object")
-    assert(vf.binary_size() == 12, "cannot call simple method")
+    assert(vf:binary_size() == 12, "cannot call simple method")
 end
 
 unittest.main()
