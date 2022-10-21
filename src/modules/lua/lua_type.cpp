@@ -186,9 +186,10 @@ namespace mge::lua {
             reinterpret_cast<type*>(lua_touserdata(L, lua_upvalueindex(1)));
         const char* name = reinterpret_cast<const char*>(
             lua_touserdata(L, lua_upvalueindex(2)));
+
         std::vector<method>* methods = reinterpret_cast<std::vector<method>*>(
             lua_touserdata(L, lua_upvalueindex(3)));
-        if (!self || !name || !methods) {
+        if (!self || !name || !methods || methods->empty()) {
             return 0;
         }
         int top = lua_gettop(L);
@@ -209,9 +210,46 @@ namespace mge::lua {
                 name);
             lua_error(L);
         }
-        lua_object_call_context ctx(self, L, shared_ptr_address, 1);
 
-        return 0;
+        const mge::script::invoke_function* invoke = nullptr;
+        size_t                              best_match_count = 0;
+
+        if (methods->size() > 1) {
+            mge::small_vector<value_classification, 3> value_classes;
+            for (int i = 2; i <= top; ++i) {
+                value_classes.push_back(value_classification(L, i));
+            }
+            for (size_t i = 0; i < methods->size(); ++i) {
+                size_t exact_match_count = 0;
+                bool   match_failed = false;
+                for (size_t j = 0; j < value_classes.size(); ++j) {
+                    auto match =
+                        value_classes[j].match(methods->at(i).signature->at(j));
+                    if (match == value_classification::NO_MATCH) {
+                        match_failed = true;
+                        break;
+                    } else if (match == value_classification::MATCH_EXACT) {
+                        ++exact_match_count;
+                    }
+                }
+
+                if (!match_failed) {
+                    if (exact_match_count > best_match_count) {
+                        invoke = (*methods)[i].invoke;
+                        best_match_count = exact_match_count;
+                    } else if (invoke == nullptr) {
+                        invoke = (*methods)[i].invoke;
+                    }
+                }
+            }
+        } else {
+            invoke = (*methods)[0].invoke;
+        }
+
+        lua_object_call_context ctx(self, L, shared_ptr_address, 1);
+        (*invoke)(ctx);
+
+        return 1;
     }
 
     void type::add_constructor(const mge::script::signature&       signature,
