@@ -141,6 +141,20 @@ namespace mge::lua {
         return 1;
     }
 
+    int type::static_method_index(const char* name) const
+    {
+        auto it = m_static_methods.find(name);
+        if (it == m_static_methods.end()) {
+            return 0;
+        }
+        auto L = m_context.lua_state();
+        lua_pushlightuserdata(L, const_cast<type*>(this));
+        lua_pushlightuserdata(L, const_cast<char*>(it->first));
+        lua_pushlightuserdata(L, const_cast<std::vector<method>*>(&it->second));
+        lua_pushcclosure(L, &call_static_method, 3);
+        return 1;
+    }
+
     int type::index(lua_State* L)
     {
         int top = lua_gettop(L);
@@ -161,6 +175,12 @@ namespace mge::lua {
             if (rc != 0) {
                 return rc;
             }
+
+            rc = self->static_method_index(name);
+            if (rc != 0) {
+                return rc;
+            }
+
             lua_pushfstring(L,
                             "Type %s has no field %s",
                             self->m_details->name().c_str(),
@@ -247,6 +267,67 @@ namespace mge::lua {
         }
 
         lua_object_call_context ctx(self, L, shared_ptr_address, 1);
+        (*invoke)(ctx);
+
+        return 1;
+    }
+
+    int type::call_static_method(lua_State* L)
+    {
+        for (int i = 1; i <= 3; ++i) {
+            if (lua_type(L, lua_upvalueindex(i)) != LUA_TLIGHTUSERDATA) {
+                return 0;
+            }
+        }
+
+        type* self =
+            reinterpret_cast<type*>(lua_touserdata(L, lua_upvalueindex(1)));
+        const char* name = reinterpret_cast<const char*>(
+            lua_touserdata(L, lua_upvalueindex(1)));
+
+        std::vector<method>* methods = reinterpret_cast<std::vector<method>*>(
+            lua_touserdata(L, lua_upvalueindex(2)));
+        if (!name || !methods || methods->empty()) {
+            return 0;
+        }
+        int top = lua_gettop(L);
+
+        const mge::script::invoke_function* invoke = nullptr;
+        size_t                              best_match_count = 0;
+
+        if (methods->size() > 1) {
+            mge::small_vector<value_classification, 3> value_classes;
+            for (int i = 1; i <= top; ++i) {
+                value_classes.push_back(value_classification(L, i));
+            }
+            for (size_t i = 0; i < methods->size(); ++i) {
+                size_t exact_match_count = 0;
+                bool   match_failed = false;
+                for (size_t j = 0; j < value_classes.size(); ++j) {
+                    auto match =
+                        value_classes[j].match(methods->at(i).signature->at(j));
+                    if (match == value_classification::NO_MATCH) {
+                        match_failed = true;
+                        break;
+                    } else if (match == value_classification::MATCH_EXACT) {
+                        ++exact_match_count;
+                    }
+                }
+
+                if (!match_failed) {
+                    if (exact_match_count > best_match_count) {
+                        invoke = (*methods)[i].invoke;
+                        best_match_count = exact_match_count;
+                    } else if (invoke == nullptr) {
+                        invoke = (*methods)[i].invoke;
+                    }
+                }
+            }
+        } else {
+            invoke = (*methods)[0].invoke;
+        }
+
+        lua_object_call_context ctx(self, L, nullptr);
         (*invoke)(ctx);
 
         return 1;
