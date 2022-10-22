@@ -61,5 +61,13 @@ namespace mge {
                 bind(el);
             }
         }
+
+        /**
+         * @brief Get type of expression.
+         *
+         * @param expression  expression in scripting language
+         * @return script type
+         */
+        virtual script_type_ref type_of(const std::string& expression) = 0;
     };
 } // namespace mge

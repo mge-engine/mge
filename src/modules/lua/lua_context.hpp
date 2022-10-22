@@ -17,9 +17,10 @@ namespace mge::lua {
     public:
         lua_context();
         ~lua_context();
-        void eval(const std::string& code) override;
-        int  main(int argc, const char** argv) override;
-        void bind(const mge::script::module& m) override;
+        void            eval(const std::string& code) override;
+        int             main(int argc, const char** argv) override;
+        void            bind(const mge::script::module& m) override;
+        script_type_ref type_of(const std::string& expression) override;
 
         lua_State* lua_state() const { return m_lua_state; }
         void       details(std::ostream& os) const;

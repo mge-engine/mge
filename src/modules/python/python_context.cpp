@@ -83,6 +83,12 @@ namespace mge::python {
         });
     }
 
+    script_type_ref python_context::type_of(const std::string& expression)
+    {
+        script_type_ref result;
+        return result;
+    }
+
     int python_context::main(int argc, const char** argv)
     {
         if (m_needs_rebuild) {

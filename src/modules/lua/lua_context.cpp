@@ -597,6 +597,12 @@ namespace mge::lua {
         b.bind(m);
     }
 
+    script_type_ref lua_context::type_of(const std::string& expression)
+    {
+        script_type_ref result;
+        return result;
+    }
+
     void lua_context::details(std::ostream& os) const
     {
         auto L = m_lua_state;

@@ -16,9 +16,10 @@ namespace mge::python {
         python_context(const python_engine_ref& engine);
         virtual ~python_context();
 
-        void eval(const std::string& code) override;
-        void bind(const mge::script::module& m) override;
-        int  main(int argc, const char** argv) override;
+        void            eval(const std::string& code) override;
+        void            bind(const mge::script::module& m) override;
+        int             main(int argc, const char** argv) override;
+        script_type_ref type_of(const std::string& expression) override;
 
         python_module_ref get_or_add_module(const mge::script::module& m);
         python_module_ref get_module(const mge::script::module& m) const;
