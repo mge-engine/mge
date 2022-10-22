@@ -30,7 +30,9 @@ namespace mge::script {
                 type<signature>("signature"),
                 type<mge::script::component>("component")(
                     type<mge::script::component::registry_entry>(
-                        "registry_entry"))));
+                        "registry_entry"))
+                    .method("register_implementation",
+                            &mge::script::component::register_implementation)));
         }
     };
     MGE_REGISTER_IMPLEMENTATION(script_script_binder,

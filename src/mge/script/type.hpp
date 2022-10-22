@@ -530,9 +530,9 @@ namespace mge::script {
             {
                 if constexpr (std::is_void_v<InvokeResult>) {
                     (*fptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
-                            context,
-                            I)...);
+                        parameter_retriever<nth_type<I, MethodArgs...>>(context,
+                                                                        I)
+                            .get()...);
                 } else {
                     result_storer<InvokeResult>::store(
                         context,
