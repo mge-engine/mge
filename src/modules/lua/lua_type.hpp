@@ -41,6 +41,7 @@ namespace mge::lua {
         static int construct(lua_State* L);
         static int destruct(lua_State* L);
         static int index(lua_State* L);
+        static int static_index(lua_State* L);
         int        method_index(const char* name) const;
         int        static_method_index(const char* name) const;
         static int call_method(lua_State* L);
@@ -81,6 +82,7 @@ namespace mge::lua {
         void load_instance_metatable();
         void create_type_metatable();
         void define_construction();
+        void define_index();
 
         mge::script::type_details_ref                            m_details;
         std::map<size_t, std::vector<constructor>>               m_constructors;

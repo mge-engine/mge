@@ -25,6 +25,7 @@ namespace mge::lua {
         create_instance_metatable();
         create_type_metatable();
         define_construction();
+        define_index();
     }
 
     void type::create_instance_metatable()
@@ -75,6 +76,17 @@ namespace mge::lua {
         lua_pushlightuserdata(L, this);
         lua_pushcclosure(L, &construct, 1);
         lua_setfield(L, -2, "__call");
+        lua_pop(L, 1);
+    }
+
+    void type::define_index()
+    {
+        auto L = m_context.lua_state();
+        lua_pushlightuserdata(L, const_cast<char*>(this->m_name));
+        lua_gettable(L, LUA_REGISTRYINDEX);
+        lua_pushlightuserdata(L, this);
+        lua_pushcclosure(L, &static_index, 1);
+        lua_setfield(L, -2, "__index");
         lua_pop(L, 1);
     }
 
@@ -153,6 +165,33 @@ namespace mge::lua {
         lua_pushlightuserdata(L, const_cast<std::vector<method>*>(&it->second));
         lua_pushcclosure(L, &call_static_method, 3);
         return 1;
+    }
+
+    int type::static_index(lua_State* L)
+    {
+        int top = lua_gettop(L);
+        if (top != 2) {
+            return 0;
+        }
+
+        void*       self_ptr = lua_touserdata(L, lua_upvalueindex(1));
+        type*       self = reinterpret_cast<type*>(self_ptr);
+        const char* name = lua_tostring(L, 2);
+        if (!self || !name) {
+            return 0;
+        }
+
+        int rc = self->static_method_index(name);
+        if (rc != 0) {
+            return rc;
+        }
+
+        lua_pushfstring(L,
+                        "Type %s has no field %s",
+                        self->m_details->name().c_str(),
+                        name);
+        lua_error(L);
+        return 0;
     }
 
     int type::index(lua_State* L)
