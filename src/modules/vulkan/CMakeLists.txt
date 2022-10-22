@@ -18,6 +18,7 @@ SET(mge_vulkan_module_SOURCES
     common.cpp
     render_system.cpp
     vulkan_library.cpp
+    window.cpp
     error.cpp)
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
