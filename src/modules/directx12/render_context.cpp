@@ -31,6 +31,7 @@ namespace mge::dx12 {
 
     void render_context::create_command_queue()
     {
+        MGE_DEBUG_TRACE(DX12) << "Create command queue";
         D3D12_COMMAND_QUEUE_DESC desc = {};
         desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
         desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
@@ -43,6 +44,7 @@ namespace mge::dx12 {
 
     void render_context::create_device()
     {
+        MGE_DEBUG_TRACE(DX12) << "Create D3D12Device";
         auto rc = D3D12CreateDevice(m_adapter.Get(),
                                     D3D_FEATURE_LEVEL_11_0,
                                     IID_PPV_ARGS(&m_device));
@@ -52,6 +54,7 @@ namespace mge::dx12 {
     void render_context::enable_debug_messages()
     {
         if (m_render_system.debug()) {
+            MGE_DEBUG_TRACE(DX12) << "Enabling debug messages";
             mge::com_ptr<ID3D12InfoQueue> infoqueue;
             if (SUCCEEDED(m_device.As(&infoqueue))) {
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION,
@@ -98,6 +101,7 @@ namespace mge::dx12 {
 
     void render_context::create_adapter()
     {
+        MGE_DEBUG_TRACE(DX12) << "Create DXGI Adapter";
         HRESULT rc = S_OK;
         if (m_render_system.warp()) {
             mge::com_ptr<IDXGIAdapter1> adapter1;
