@@ -9,14 +9,19 @@
 
 namespace mge::vulkan {
 
+    class render_system;
+
     class window : public platform::window
     {
     public:
-        window(const ::mge::extent&         extent,
+        window(render_system&               render_system_,
+               const ::mge::extent&         extent,
                const ::mge::window_options& options);
         ~window();
 
     private:
         void create_render_context();
+
+        render_system& m_render_system;
     };
 } // namespace mge::vulkan

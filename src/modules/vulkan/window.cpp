@@ -1,11 +1,13 @@
 #include "window.hpp"
+#include "render_system.hpp"
 
 namespace mge::vulkan {
-    window::window(const mge::extent&         extent,
+    window::window(render_system&             render_system_,
+                   const mge::extent&         extent,
                    const mge::window_options& options)
         : platform::window(extent, options)
+        , m_render_system(render_system_)
     {
-
         create_render_context();
     }
 

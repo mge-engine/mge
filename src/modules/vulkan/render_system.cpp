@@ -5,6 +5,7 @@
 #include "mge/core/array_size.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
+#include "window.hpp"
 
 // #include "window.hpp"
 #include "error.hpp"
@@ -105,10 +106,7 @@ namespace mge::vulkan {
     render_system::create_window(const mge::extent&         extent,
                                  const mge::window_options& options)
     {
-        // auto ref = std::make_shared<mge::vulkan::window>(extent,
-        // options);
-        mge::window_ref ref;
-        return ref;
+        return std::make_shared<mge::vulkan::window>(*this, extent, options);
     }
 
     mge::render_system::monitor_collection render_system::monitors()
