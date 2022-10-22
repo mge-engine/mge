@@ -37,7 +37,7 @@ IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan mge_win32 mgeapplication)
 ENDIF()
 TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vulkan)
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
 
 
 

@@ -1,0 +1,14 @@
+# mge - Modern Game Engine
+# Copyright (c) 2021 by Alexander Schroeder
+# All rights reserved.
+
+SET(VULKAN_TEST_SOURCES
+    vulkan_test.cpp
+    test_render_system.cpp)
+
+MGE_TEST(
+    TARGET      test_vulkan
+    SOURCES     ${VULKAN_TEST_SOURCES}
+    NOMAIN NEEDSDISPLAY
+    LIBRARIES   mgecore mgegraphics mgeapplication mgeinput
+)
