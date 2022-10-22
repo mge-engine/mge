@@ -20,6 +20,7 @@ SET(mgescript_sources
     type_details.cpp
     function_details.cpp
     # variable_details.cpp
+    component.cpp
 )
 
 SET(mgescript_headers

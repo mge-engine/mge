@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#include "mge/script/component.hpp"
 #include "mge/script/function.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_details.hpp"
@@ -26,7 +27,10 @@ namespace mge::script {
                     .method("name", &module_details::name)
                     .method("full_name", &module_details::full_name),
                 type<type_details>("type_details"),
-                type<signature>("signature")));
+                type<signature>("signature"),
+                type<mge::script::component>("component")(
+                    type<mge::script::component::registry_entry>(
+                        "registry_entry"))));
         }
     };
     MGE_REGISTER_IMPLEMENTATION(script_script_binder,

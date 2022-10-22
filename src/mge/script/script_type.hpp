@@ -6,6 +6,10 @@
 #include "mge/script/script_fwd.hpp"
 
 namespace mge::script {
+
+    /**
+     * @brief A type as exposed by the integrated scripting language.
+     */
     class MGESCRIPT_EXPORT script_type
     {
     protected:
