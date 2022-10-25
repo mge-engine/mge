@@ -24,3 +24,13 @@ group om construction, and the group cannot be changed.
 
 .. doxygenclass:: mge::thread_group
     :members:
+
+Synchronization
+---------------
+
+The mutex class enhances the `std::mutex` by a name member that is used for
+additional diagnostic purposes.
+
+.. doxygenclass:: mge::mutex
+    :members:
+
