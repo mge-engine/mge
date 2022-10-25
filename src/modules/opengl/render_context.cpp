@@ -21,7 +21,7 @@ namespace mge::opengl {
     render_context::render_context(mge::opengl::window* context_window)
         : m_hwnd(context_window->hwnd())
         , m_hdc(0)
-        , m_hglrc(0)
+        , m_primary_hglrc(0)
     {
         m_hdc = GetDC(m_hwnd);
         if (!m_hdc) {
@@ -29,7 +29,7 @@ namespace mge::opengl {
         }
 
         select_pixel_format();
-        create_glrc();
+        m_primary_hglrc = create_glrc();
         init_gl3w();
         collect_opengl_info();
     }
@@ -59,15 +59,16 @@ namespace mge::opengl {
         }
     }
 
-    void render_context::create_glrc()
+    HGLRC render_context::create_glrc()
     {
-        m_hglrc = wglCreateContext(m_hdc);
-        if (!m_hglrc) {
+        HGLRC hglrc = wglCreateContext(m_hdc);
+        if (!hglrc) {
             MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglCreateContext);
         }
-        if (!wglMakeCurrent(m_hdc, m_hglrc)) {
+        if (!wglMakeCurrent(m_hdc, hglrc)) {
             MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglMakeCurrent);
         }
+        return hglrc;
     }
 
     static bool s_gl3w_initialized = false;
