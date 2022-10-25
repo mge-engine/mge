@@ -36,6 +36,7 @@ SET(mgecore_sources
     memory.cpp
     call_debugger.cpp
     line_editor.cpp
+    mutex.cpp
 )
 
 SET(mgecore_headers
