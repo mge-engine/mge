@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/config.hpp"
+#include "mge/core/mutex.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/thread.hpp"
 #include "mge/graphics/render_context.hpp"
@@ -36,14 +37,15 @@ namespace mge {
 
             void create_swap_chain(); // needed for two-step initialization
         private:
-            void  select_pixel_format();
-            HGLRC create_glrc();
-            void  init_gl3w();
-            void  collect_opengl_info();
+            void select_pixel_format();
+            void create_primary_glrc();
+            void init_gl3w();
+            void collect_opengl_info();
 
             HWND                        m_hwnd;
             HDC                         m_hdc;
             HGLRC                       m_primary_hglrc;
+            mge::mutex                  m_lock;
             std::map<thread::id, HGLRC> m_thread_glrcs;
 #else
 #    error Missing port
