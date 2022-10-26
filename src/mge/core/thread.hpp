@@ -152,18 +152,51 @@ namespace mge {
         running_thread_type m_running_thread;
     };
 
+    /**
+     * @brief Similar methods as in @c std::this_thread namespace.
+     */
     namespace this_thread {
 
         MGECORE_EXPORT mge::thread::system_id system_id();
 
         inline mge::thread::id get_id() { return ::std::this_thread::get_id(); }
 
+        /**
+         * @brief Sleep for a given time period.
+         *
+         * @tparam Rep      number of ticks
+         * @tparam Period   tick period type
+         * @param sleep_duration time duration to sleep
+         */
         template <class Rep, class Period>
         inline void
         sleep_for(const std::chrono::duration<Rep, Period>& sleep_duration)
         {
             ::std::this_thread::sleep_for(sleep_duration);
         }
+
+        /**
+         * @brief Blocks execution until the given point in time has passed.
+         *
+         * @tparam Clock        a clock type
+         * @tparam Duration     duration type to measure time since epoch
+         * @param sleep_time time to block until
+         */
+        template <class Clock, class Duration>
+        inline void
+        sleep_until(const std::chrono::time_point<Clock, Duration>& sleep_time)
+        {
+            ::std::this_thread::sleep_until(sleep_time);
+        }
+
+        /**
+         * @brief Tries to yield the current thread.
+         *
+         * The exact behavior may depend on the thread implementation, current
+         * thread may be suspended.
+         */
+        inline void yield() noexcept { std::this_thread::yield(); }
+
     } // namespace this_thread
 
 } // namespace mge
