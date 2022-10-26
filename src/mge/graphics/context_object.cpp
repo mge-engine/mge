@@ -39,4 +39,13 @@ namespace mge {
         }
     }
 
+    void context_object::assert_same_context(
+        const std::shared_ptr<context_object>& cobj) const
+    {
+        if (!cobj) {
+            MGE_THROW(null_pointer) << "Cannot check null reference";
+        }
+        assert_same_context(*cobj);
+    }
+
 } // namespace mge
