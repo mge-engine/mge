@@ -13,7 +13,8 @@ SET(mge_opengl_module_SOURCES
     command_list.cpp
     shader.cpp
     error.cpp
-    common.cpp)
+    common.cpp
+    pipeline.cpp)
 
 ADD_LIBRARY(mge_module_opengl MODULE
             ${mge_opengl_module_SOURCES})
