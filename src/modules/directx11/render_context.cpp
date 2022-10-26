@@ -119,6 +119,12 @@ namespace mge::dx11 {
         return result;
     }
 
+    mge::pipeline_ref render_context::create_pipeline()
+    {
+        mge::pipeline_ref result;
+        return result;
+    }
+
     mge::command_list_ref render_context::create_command_list()
     {
         auto result = std::make_shared<mge::dx11::command_list>(*this);

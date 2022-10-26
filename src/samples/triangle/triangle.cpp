@@ -33,11 +33,11 @@ namespace mge {
 
             m_clear_commands = m_window->render_context().create_command_list();
             m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
-
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 this->draw(cycle, delta);
             });
             m_window->show();
+            initialize();
         }
 
         void draw(uint64_t cycle, double delta)
@@ -50,16 +50,14 @@ namespace mge {
             m_window->render_context().swap_chain()->present();
         }
 
-        /*
         void initialize()
         {
-            MGE_DEBUG_LOG(triangle) << "Initializing objects";
+            MGE_DEBUG_TRACE(TRIANGLE) << "Initializing objects";
             auto pixel_shader =
-                m_window->render_context().create_shader_program(
-                    shader_type::FRAGMENT);
+                m_window->render_context().create_shader(shader_type::FRAGMENT);
             auto vertex_shader =
-                m_window->render_context().create_shader_program(
-                    shader_type::VERTEX);
+                m_window->render_context().create_shader(shader_type::VERTEX);
+#if 0
             m_pipeline = m_window->render_context().create_pipeline();
             MGE_DEBUG_LOG(triangle) << "render system is "
                                     << m_render_system->implementation_name();
@@ -123,9 +121,10 @@ namespace mge {
                 mge::draw_command(m_pipeline, m_vertices, m_indices));
             m_draw_commands->finish();
             MGE_DEBUG_LOG(triangle) << "Initializing objects done";
+
             m_initialized = true;
+#endif
         }
-        */
 
     private:
         render_system_ref m_render_system;

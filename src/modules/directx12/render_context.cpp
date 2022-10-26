@@ -209,6 +209,12 @@ namespace mge::dx12 {
         return ref;
     }
 
+    mge::pipeline_ref render_context::create_pipeline()
+    {
+        mge::pipeline_ref result;
+        return result;
+    }
+
     mge::command_list_ref render_context::create_command_list()
     {
         mge::command_list_ref result;

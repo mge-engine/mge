@@ -15,6 +15,7 @@ namespace mge {
     MGE_DECLARE_REF(index_buffer);
     MGE_DECLARE_REF(vertex_buffer);
     MGE_DECLARE_REF(shader);
+    MGE_DECLARE_REF(pipeline);
     MGE_DECLARE_REF(command_list);
 
 } // namespace mge

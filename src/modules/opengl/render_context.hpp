@@ -28,8 +28,8 @@ namespace mge {
                                  size_t                    data_size,
                                  void*                     data) override;
 
-            mge::shader_ref create_shader(shader_type t) override;
-
+            mge::shader_ref       create_shader(shader_type t) override;
+            mge::pipeline_ref     create_pipeline() override;
             mge::command_list_ref create_command_list() override;
 #ifdef MGE_OS_WINDOWS
 

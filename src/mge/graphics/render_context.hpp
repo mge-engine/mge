@@ -59,6 +59,13 @@ namespace mge {
         virtual shader_ref create_shader(shader_type t) = 0;
 
         /**
+         * @brief Create a pipeline object.
+         *
+         * @return created pipeline
+         */
+        virtual pipeline_ref create_pipeline() = 0;
+
+        /**
          * @brief Create a command list object.
          *
          * @return command list
