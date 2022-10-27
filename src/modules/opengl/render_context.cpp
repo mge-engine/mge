@@ -7,6 +7,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
+#include "pipeline.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
 #include "vertex_buffer.hpp"
@@ -135,7 +136,7 @@ namespace mge::opengl {
 
     mge::pipeline_ref render_context::create_pipeline()
     {
-        mge::pipeline_ref result;
+        mge::pipeline_ref result = std::make_shared<pipeline>(*this);
         return result;
     }
 
