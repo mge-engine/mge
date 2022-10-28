@@ -34,4 +34,27 @@ namespace mge {
         return create_window(mge::extent(800, 600),
                              window_options::standard_options());
     }
+
+    const mge::render_system::capabilities&
+    render_system::system_capabilities() const
+    {
+        return *m_capabilities;
+    }
+
+    render_system::capabilities::capabilities() {}
+
+    render_system::capabilities::~capabilities() {}
+
+    const render_system::capabilities::shader_language_list&
+    render_system::capabilities::shader_languages() const
+    {
+        return m_shader_languages;
+    }
+
+    const render_system::capabilities::shader_format_list&
+    render_system::capabilities::shader_formats() const
+    {
+        return m_shader_formats;
+    }
+
 } // namespace mge

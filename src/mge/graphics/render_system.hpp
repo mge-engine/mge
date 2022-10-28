@@ -3,9 +3,12 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/component.hpp"
+#include "mge/core/noncopyable.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/shader_format.hpp"
+#include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/window_options.hpp"
 
 namespace mge {
@@ -23,6 +26,41 @@ namespace mge {
     class MGEGRAPHICS_EXPORT render_system : public component<render_system>
     {
     public:
+        /**
+         * @brief Capabilities of the render system to check for optional
+         * features.
+         */
+        class capabilities : public noncopyable
+        {
+        protected:
+            capabilities();
+
+        public:
+            ~capabilities();
+            /// @brief  list of supported shader languages
+            using shader_language_list = std::vector<shader_language>;
+            /// @brief  list of supported shader formats
+            using shader_format_list = std::vector<shader_format>;
+
+            /**
+             * @brief Get supported shader languages.
+             *
+             * @return list of supported shader languages
+             */
+            const shader_language_list& shader_languages() const;
+
+            /**
+             * @brief Get supported shader formats.
+             *
+             * @return list of supported shader formats
+             */
+            const shader_format_list& shader_formats() const;
+
+        protected:
+            shader_language_list m_shader_languages;
+            shader_format_list   m_shader_formats;
+        };
+
         virtual ~render_system() = default;
 
         /**
@@ -64,5 +102,15 @@ namespace mge {
          * @return attached monitors
          */
         virtual monitor_collection monitors() = 0;
+
+        /**
+         * @brief Access render system capabilities.
+         *
+         * @return render system capabilities
+         */
+        const mge::render_system::capabilities& system_capabilities() const;
+
+    protected:
+        std::unique_ptr<mge::render_system::capabilities> m_capabilities;
     };
 } // namespace mge

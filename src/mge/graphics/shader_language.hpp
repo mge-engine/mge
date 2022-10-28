@@ -14,7 +14,8 @@ namespace mge {
     /**
      * @brief A shader language.
      *
-     * A shader language consists of a name and a version.
+     * A shader language consists of a name and a version. Well known shader
+     * languages are HLSL and glsl.
      *
      */
     class MGEGRAPHICS_EXPORT shader_language

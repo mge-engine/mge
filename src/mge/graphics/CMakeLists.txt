@@ -29,6 +29,7 @@ SET(mgegraphics_sources
     shader.cpp
     pipeline.cpp
     texture.cpp
+    shader_format.cpp
 )
 
 SET(mgegraphics_headers
@@ -57,6 +58,7 @@ SET(mgegraphics_headers
     vertex_buffer.hpp
     shader.hpp
     pipeline.hpp
+    shader_format.hpp
 )
 
 MGE_LIBRARY(
