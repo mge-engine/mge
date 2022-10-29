@@ -45,6 +45,28 @@ namespace mge::opengl {
 
         MGE_TRACE(OPENGL, INFO) << "GLSL version " << glsl_version_str;
 
+        int num_shader_formats = 0;
+        glGetIntegerv(GL_NUM_SHADER_BINARY_FORMATS, &num_shader_formats);
+        MGE_TRACE(OPENGL, INFO) << "System supports " << num_shader_formats
+                                << " binary shader formats";
+        if (num_shader_formats) {
+            std::vector<int> formats;
+            formats.resize(num_shader_formats);
+            glGetIntegerv(GL_SHADER_BINARY_FORMATS, formats.data());
+            for (const auto& format : formats) {
+                switch (format) {
+                case GL_SHADER_BINARY_FORMAT_SPIR_V:
+                    shader_formats.emplace_back(shader_format("SPIRV"));
+                    MGE_TRACE(OPENGL, INFO) << "Binary shader format SPIRV";
+                    break;
+                default:
+                    MGE_TRACE(OPENGL, WARNING)
+                        << "Binary shader format 0x" << std::hex << format
+                        << std::dec << " is not supported";
+                }
+            }
+        }
+
         std::string extension_string =
             ((const char*)glGetString(GL_EXTENSIONS));
 

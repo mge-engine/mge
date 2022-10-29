@@ -2,10 +2,12 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/shader_format.hpp"
 #include "mge/graphics/shader_language.hpp"
 #include "opengl.hpp"
 #include <set>
 #include <string>
+#include <vector>
 
 namespace mge::opengl {
 
@@ -15,11 +17,12 @@ namespace mge::opengl {
         opengl_info();
         ~opengl_info();
 
-        int                   major_version;
-        int                   minor_version;
-        mge::shader_language  shader_language;
-        std::string           glsl_version_str;
-        std::set<std::string> extensions;
+        int                             major_version;
+        int                             minor_version;
+        mge::shader_language            shader_language;
+        std::string                     glsl_version_str;
+        std::set<std::string>           extensions;
+        std::vector<mge::shader_format> shader_formats;
 
     private:
         void install_debug_callback();
