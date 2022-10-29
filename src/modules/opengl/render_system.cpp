@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
 #include "mge/core/trace.hpp"
+#include "render_context.hpp"
 #include "window.hpp"
 #include <memory>
 
@@ -17,9 +18,12 @@ namespace mge {
         class render_system : public mge::render_system
         {
         public:
+            using mge::render_system::create_window;
+
             render_system()
             {
                 MGE_INFO_TRACE(OPENGL) << "Creating opengl render system";
+                init_capabilities();
             }
             ~render_system() = default;
 
@@ -37,7 +41,28 @@ namespace mge {
                 return mge::win32::monitor::all_monitors();
 #endif
             }
+
+            class capabilities : public mge::render_system::capabilities
+            {
+            public:
+                capabilities(render_system* system);
+                ~capabilities() = default;
+            };
+
+            void init_capabilities()
+            {
+                m_capabilities = std::make_unique<capabilities>(this);
+            }
         };
+
+        render_system::capabilities::capabilities(render_system* system)
+        {
+            auto            window = system->create_window();
+            render_context* context =
+                dynamic_cast<render_context*>(&window->render_context());
+
+            m_shader_languages.emplace_back(context->gl_info().shader_language);
+        }
 
         MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, opengl);
     } // namespace opengl

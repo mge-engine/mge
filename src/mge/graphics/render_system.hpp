@@ -30,13 +30,13 @@ namespace mge {
          * @brief Capabilities of the render system to check for optional
          * features.
          */
-        class capabilities : public noncopyable
+        class MGEGRAPHICS_EXPORT capabilities : public noncopyable
         {
         protected:
             capabilities();
 
         public:
-            ~capabilities();
+            virtual ~capabilities();
             /// @brief  list of supported shader languages
             using shader_language_list = std::vector<shader_language>;
             /// @brief  list of supported shader formats
