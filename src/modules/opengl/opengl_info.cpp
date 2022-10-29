@@ -83,7 +83,7 @@ namespace mge::opengl {
             ++it;
         }
 
-        if (MGE_PARAMETER(opengl, debug).get() &&
+        if (/* MGE_PARAMETER(opengl, debug).get() && */
             extensions.find("GL_ARB_debug_output") != extensions.end()) {
             install_debug_callback();
         }
