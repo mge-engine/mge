@@ -17,6 +17,7 @@
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/swap_chain.hpp"
+#include "mge/graphics/topology.hpp"
 #include "mge/graphics/vertex_buffer.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 #include "mge/graphics/window.hpp"
@@ -200,6 +201,11 @@ namespace mge::script {
                     .copy_constructor()
                     .field("x", &point::x)
                     .field("y", &point::y),
+                type<mge::topology>("topology")
+                    .enum_value("TRIANGLES", mge::topology::TRIANGLES)
+                    .enum_value("TRIANGLE_STRIP", mge::topology::TRIANGLE_STRIP)
+                    .enum_value("LINES", mge::topology::LINES)
+                    .enum_value("LINE_STRIP", mge::topology::LINE_STRIP),
                 type<mge::data_type>("data_type")
                     .enum_value("UNKNOWN", mge::data_type::UNKNOWN)
                     .enum_value("INT8", mge::data_type::INT8)
