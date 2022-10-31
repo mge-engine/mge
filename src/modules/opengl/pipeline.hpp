@@ -19,9 +19,27 @@ namespace mge::opengl {
         void on_link() override;
         void on_set_shader(const shader_ref& shader) override;
 
+        GLuint program_name() const noexcept { return m_program; }
+
     private:
         void dump_info_log();
 
         GLuint m_program;
     };
+
+    inline GLuint gl_program(const mge::pipeline& p)
+    {
+        const opengl::pipeline& ogl_p = static_cast<const opengl::pipeline&>(p);
+        return ogl_p.program_name();
+    }
+
+    inline GLuint gl_program(const mge::pipeline_ref& p)
+    {
+        if (p) {
+            return gl_program(*p);
+        } else {
+            return 0;
+        }
+    }
+
 } // namespace mge::opengl

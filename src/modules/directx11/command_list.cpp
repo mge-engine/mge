@@ -26,6 +26,8 @@ namespace mge::dx11 {
             clearcolor);
     }
 
+    void command_list::draw(const mge::draw_command& command) {}
+
     void command_list::execute()
     {
         if (!m_command_list) {

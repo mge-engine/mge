@@ -5,6 +5,7 @@
 #include "mge/graphics/dllexport.hpp"
 
 #include "mge/graphics/context_object.hpp"
+#include "mge/graphics/draw_command.hpp"
 #include "mge/graphics/rgba_color.hpp"
 
 namespace mge {
@@ -50,6 +51,13 @@ namespace mge {
          * @param color clear color
          */
         virtual void clear(const rgba_color& color) = 0;
+
+        /**
+         * @brief Draws a draw command.
+         *
+         * @param command draw command
+         */
+        virtual void draw(const draw_command& command) = 0;
 
         /**
          * @brief Executes this command list.

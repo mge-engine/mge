@@ -15,6 +15,7 @@ namespace mge::dx12 {
         ~command_list();
 
         void clear(const rgba_color& c) override;
+        void draw(const mge::draw_command& command) override;
         void execute() override;
 
     private:

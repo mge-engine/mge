@@ -17,6 +17,8 @@ namespace mge::opengl {
                       void*                     data);
         virtual ~vertex_buffer();
 
+        GLuint buffer_name() const noexcept { return m_buffer; }
+
     protected:
         void* on_map() override;
         void  on_unmap() override;
@@ -24,5 +26,21 @@ namespace mge::opengl {
     private:
         GLuint m_buffer;
     };
+
+    inline GLuint gl_vertex_buffer(const mge::vertex_buffer& buf)
+    {
+        const opengl::vertex_buffer& ogl_buf =
+            static_cast<const opengl::vertex_buffer&>(buf);
+        return ogl_buf.buffer_name();
+    }
+
+    inline GLuint gl_vertex_buffer(const mge::vertex_buffer_ref& buf)
+    {
+        if (buf) {
+            return gl_vertex_buffer(*buf);
+        } else {
+            return 0;
+        }
+    }
 
 } // namespace mge::opengl
