@@ -60,6 +60,11 @@ namespace mge {
         virtual void draw(const draw_command& command) = 0;
 
         /**
+         * @brief Finishes filling the command list.
+         */
+        virtual void finish();
+
+        /**
          * @brief Executes this command list.
          */
         virtual void execute() = 0;

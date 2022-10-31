@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "mge/application/application.hpp"
+#include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/graphics/pipeline.hpp"
@@ -10,6 +11,7 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
+#include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
 
 MGE_DEFINE_TRACE(TRIANGLE);
@@ -106,31 +108,28 @@ namespace mge {
                 -0.5f,
                 0.0f,
             };
-            int triangle_indices[] = {0, 1, 2};
-#if 0
+            int                triangle_indices[] = {0, 1, 2};
             mge::vertex_layout layout;
-            layout.push_back(mge::vertex_format(mge::data_type::FLOAT_VEC3, 1));
+            layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
             m_vertices = m_window->render_context().create_vertex_buffer(
                 layout,
-                mge::usage::DEFAULT,
                 mge::array_size(triangle_coords),
                 triangle_coords);
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
-                mge::usage::DEFAULT,
                 mge::array_size(triangle_indices),
                 triangle_indices);
 
-
             m_draw_commands = m_window->render_context().create_command_list();
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-            m_draw_commands->draw(
-                mge::draw_command(m_pipeline, m_vertices, m_indices));
+            m_draw_commands->draw(mge::draw_command(m_pipeline,
+                                                    m_vertices,
+                                                    m_indices,
+                                                    mge::topology::TRIANGLES));
             m_draw_commands->finish();
-            MGE_DEBUG_LOG(triangle) << "Initializing objects done";
+            MGE_DEBUG_TRACE(TRIANGLE) << "Initializing objects done";
 
             m_initialized = true;
-#endif
         }
 
     private:

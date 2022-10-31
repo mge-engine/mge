@@ -14,4 +14,6 @@ namespace mge {
 
     bool command_list::native() const { return m_native; }
 
+    void command_list::finish() {}
+
 } // namespace mge
