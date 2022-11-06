@@ -113,11 +113,11 @@ namespace mge {
             layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
             m_vertices = m_window->render_context().create_vertex_buffer(
                 layout,
-                mge::array_size(triangle_coords),
+                sizeof(triangle_coords),
                 triangle_coords);
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
-                mge::array_size(triangle_indices),
+                sizeof(triangle_indices),
                 triangle_indices);
 
             m_draw_commands = m_window->render_context().create_command_list();
