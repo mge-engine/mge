@@ -7,6 +7,10 @@
 #include <iostream>
 #include <mutex>
 
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(disable : 4996)
+#endif
+
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
 
