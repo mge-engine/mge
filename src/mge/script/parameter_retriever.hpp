@@ -97,7 +97,7 @@ namespace mge::script {
     {
         parameter_retriever(call_context& context_, size_t position_)
             : context(context_)
-            , position(position)
+            , position(position_)
         {}
 
         const char* get()
@@ -169,7 +169,7 @@ namespace mge::script {
     {
         parameter_retriever(call_context& context_, size_t position_)
             : context(context_)
-            , position(position)
+            , position(position_)
         {}
 
         void* get()
