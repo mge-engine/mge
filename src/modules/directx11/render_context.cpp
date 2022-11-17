@@ -7,6 +7,7 @@
 #include "index_buffer.hpp"
 #include "mge/core/trace.hpp"
 #include "render_system.hpp"
+#include "shader.hpp"
 #include "swap_chain.hpp"
 #include "window.hpp"
 
@@ -115,8 +116,7 @@ namespace mge::dx11 {
 
     mge::shader_ref render_context::create_shader(mge::shader_type t)
     {
-        mge::shader_ref result;
-        return result;
+        return std::make_shared<shader>(*this, t);
     }
 
     mge::pipeline_ref render_context::create_pipeline()
