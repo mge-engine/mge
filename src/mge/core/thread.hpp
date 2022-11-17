@@ -10,6 +10,7 @@
 #include <chrono>
 #include <functional>
 #include <thread>
+
 namespace mge {
 
     class thread_group;
