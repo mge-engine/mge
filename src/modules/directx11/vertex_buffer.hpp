@@ -2,6 +2,7 @@
 #include "dx11_fwd.hpp"
 #include "mge/graphics/vertex_buffer.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
+#include "render_context.hpp"
 
 namespace mge::dx11 {
     class vertex_buffer : public mge::vertex_buffer

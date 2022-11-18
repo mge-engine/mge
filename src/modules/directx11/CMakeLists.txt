@@ -9,6 +9,7 @@ SET(mge_dx11_module_SOURCES
     render_system.cpp
     swap_chain.cpp
     index_buffer.cpp
+    vertex_buffer.cpp
     command_list.cpp
     shader.cpp
 )
