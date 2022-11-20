@@ -28,7 +28,6 @@ namespace mge::dx11 {
 
     void index_buffer::create_buffer(void* data)
     {
-        // MGE_DEBUG_TRACE(DX11) << "Create DirectX11 buffer";
         D3D11_BUFFER_DESC buffer_desc = {};
         // TODO: #113 DirectX11 buffer usage support
         buffer_desc.Usage = D3D11_USAGE_DEFAULT;
@@ -46,7 +45,6 @@ namespace mge::dx11 {
             data ? &initial_data : nullptr,
             &buffer);
         CHECK_HRESULT(hr, ID3D11Device, CreateBuffer);
-        // MGE_DEBUG_TRACE(DX11) << "DirectX11 buffer created";
         mge::com_unique_ptr<ID3D11Buffer> buffer_ptr(buffer);
         m_buffer.swap(buffer_ptr);
     }

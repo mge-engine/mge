@@ -19,6 +19,10 @@ namespace mge::dx11 {
         void  on_unmap() override;
 
     private:
+        void create_buffer(void* data);
+
         mge::com_unique_ptr<ID3D11Buffer> m_buffer;
+        void*                             m_mapped_memory;
     };
+
 } // namespace mge::dx11
