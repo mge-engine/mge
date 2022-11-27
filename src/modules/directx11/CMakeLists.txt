@@ -12,6 +12,7 @@ SET(mge_dx11_module_SOURCES
     vertex_buffer.cpp
     command_list.cpp
     shader.cpp
+    pipeline.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE
