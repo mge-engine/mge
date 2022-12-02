@@ -11,6 +11,7 @@ IF(NOT Python3_FOUND)
     MESSAGE(FATAL_ERROR "A python interpreter is needed to build mge")
 ELSE()
     MESSAGE("-- Python interpreter version ${Python3_VERSION} found")
+    MESSAGE("-- Python interpreter used: ${Python3_EXECUTABLE}")
 ENDIF()
 
 IF(Python3_Development_FOUND)
