@@ -12,4 +12,8 @@ namespace mge::dx11 {
 
     pipeline::~pipeline() {}
 
+    void pipeline::on_link() {}
+
+    void pipeline::on_set_shader(const shader_ref& shader) {}
+
 } // namespace mge::dx11
