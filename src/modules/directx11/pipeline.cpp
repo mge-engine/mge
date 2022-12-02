@@ -2,6 +2,7 @@
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "pipeline.hpp"
+#include "mge/core/to_underlying.hpp"
 #include "render_context.hpp"
 
 namespace mge::dx11 {
@@ -14,6 +15,10 @@ namespace mge::dx11 {
 
     void pipeline::on_link() {}
 
-    void pipeline::on_set_shader(const shader_ref& shader) {}
+    void pipeline::on_set_shader(const shader_ref& shader)
+    {
+        auto index = mge::to_underlying(shader->type());
+        m_shaders[index] = shader;
+    }
 
 } // namespace mge::dx11
