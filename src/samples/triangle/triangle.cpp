@@ -90,6 +90,14 @@ namespace mge {
                 MGE_DEBUG_TRACE(TRIANGLE) << "Compile vertex shader";
                 vertex_shader->compile(vertex_shader_glsl);
                 MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
+            } else if (m_render_system->implementation_name() ==
+                       "mge::dx11::render_system") {
+            } else {
+                MGE_ERROR_TRACE(TRIANGLE)
+                    << "Cannot create shaders for "
+                    << m_render_system->implementation_name()
+                    << " render system";
+                MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
             m_pipeline->set_shader(pixel_shader);
             m_pipeline->set_shader(vertex_shader);
