@@ -13,7 +13,13 @@ namespace mge::dx11 {
 
     pipeline::~pipeline() {}
 
-    void pipeline::on_link() {}
+    void pipeline::on_link()
+    {
+        if (!pipeline_shader(mge::shader_type::VERTEX) ||
+            !pipeline_shader(mge::shader_type::FRAGMENT)) {
+            MGE_THROW(mge::illegal_state) << "Cannot link empty pipeline";
+        }
+    }
 
     void pipeline::on_set_shader(const shader_ref& shader)
     {
