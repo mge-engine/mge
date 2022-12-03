@@ -68,6 +68,27 @@ namespace mge::dx11 {
 
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
+
+        if (m_render_system.debug()) {
+            ID3D11Debug* d3d_debug = nullptr;
+            m_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&d3d_debug);
+            if (d3d_debug) {
+                ID3D11InfoQueue* d3d_infoqueue = nullptr;
+                if (SUCCEEDED(
+                        d3d_debug->QueryInterface(__uuidof(ID3D11InfoQueue),
+                                                  (void**)&d3d_infoqueue))) {
+                    d3d_infoqueue->SetBreakOnSeverity(
+                        D3D11_MESSAGE_SEVERITY_CORRUPTION,
+                        true);
+                    d3d_infoqueue->SetBreakOnSeverity(
+                        D3D11_MESSAGE_SEVERITY_ERROR,
+                        true);
+                    d3d_infoqueue->Release();
+                }
+                d3d_debug->Release();
+            }
+        }
+
         auto swap_chain =
             std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
         m_swap_chain = swap_chain;
