@@ -7,6 +7,7 @@ SET(DX11_TEST_SOURCES
     test_render_system.cpp
     test_index_buffer.cpp
     test_vertex_buffer.cpp
+    test_shader.cpp
     test_command_list.cpp)
 
 MGE_TEST(

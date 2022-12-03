@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
+#pragma once
 #include "dx11.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/win32/com_unique_ptr.hpp"

@@ -4,6 +4,7 @@
 #include "pipeline.hpp"
 #include "mge/core/to_underlying.hpp"
 #include "render_context.hpp"
+#include "shader.hpp"
 
 namespace mge::dx11 {
 
