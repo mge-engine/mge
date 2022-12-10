@@ -4,7 +4,7 @@
 #include "dx11.hpp"
 #include "dx11_fwd.hpp"
 #include "mge/core/to_underlying.hpp"
-#include "mge/graphics/pipeline.hpp"
+#include "mge/graphics/program.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "shader.hpp"
 

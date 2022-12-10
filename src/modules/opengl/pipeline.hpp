@@ -3,7 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/graphics_fwd.hpp"
-#include "mge/graphics/pipeline.hpp"
+#include "mge/graphics/program.hpp"
 #include "opengl.hpp"
 
 namespace mge::opengl {

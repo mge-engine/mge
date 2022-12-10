@@ -27,7 +27,7 @@ SET(mgegraphics_sources
     vertex_layout.cpp
     vertex_buffer.cpp
     shader.cpp
-    pipeline.cpp
+    program.cpp
     texture.cpp
     shader_format.cpp
     draw_command.cpp
@@ -58,7 +58,7 @@ SET(mgegraphics_headers
     vertex_layout.hpp
     vertex_buffer.hpp
     shader.hpp
-    pipeline.hpp
+    program.hpp
     shader_format.hpp
     draw_command.hpp
 )
