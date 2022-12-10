@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "pipeline.hpp"
 #include "error.hpp"
+#include "program.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
 
@@ -11,15 +11,15 @@ namespace mge {
 }
 
 namespace mge::opengl {
-    pipeline::pipeline(render_context& context)
-        : mge::pipeline(context)
+    program::program(render_context& context)
+        : mge::program(context)
         , m_program(0)
     {
         m_program = glCreateProgram();
         CHECK_OPENGL_ERROR(glCreateProgram);
     }
 
-    pipeline::~pipeline()
+    program::~program()
     {
         if (m_program) {
             glDeleteProgram(m_program);
@@ -35,7 +35,7 @@ namespace mge::opengl {
         uniform_buffer_list m_uniform_buffers;
 #endif
 
-    void pipeline::on_link()
+    void program::on_link()
     {
         glLinkProgram(m_program);
         CHECK_OPENGL_ERROR(glLinkProgram);
@@ -47,7 +47,7 @@ namespace mge::opengl {
         }
     }
 
-    void pipeline::dump_info_log()
+    void program::dump_info_log()
     {
         GLint loglength = 0;
         glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &loglength);
@@ -65,12 +65,12 @@ namespace mge::opengl {
         }
     }
 
-    void pipeline::on_set_shader(const shader_ref& shader)
+    void program::on_set_shader(const shader_ref& shader)
     {
         assert_same_context(shader);
         if (!shader->initialized()) {
             MGE_THROW(mge::illegal_state)
-                << "Cannot apply uninitialized shader to pipeline";
+                << "Cannot apply uninitialized shader to program";
         }
         const mge::opengl::shader* opengl_shader =
             static_cast<const mge::opengl::shader*>(shader.get());

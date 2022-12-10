@@ -15,9 +15,9 @@
 namespace mge {
 
     /**
-     * A pipeline represents the stages in the drawing process.
+     * A program represents the stages in the drawing process.
      *
-     * When applied to a render command list, a pipeline executes several
+     * When applied to a render command list, a program executes several
      * stages:
      * - input assembly, where bound buffers are processed and vertices are
      *   generated depending on the drawing instructions
@@ -31,14 +31,14 @@ namespace mge {
      *   frame buffer, with possible depth buffering, blending, masking,
      * stenciling or other similar operations
      *
-     * Pipelines are either implemented with corresponding objects in the render
+     * programs are either implemented with corresponding objects in the render
      * system, or handled in software by executing a number of calls that
      * implement the mentioned stages.
      */
-    class MGEGRAPHICS_EXPORT pipeline : public context_object
+    class MGEGRAPHICS_EXPORT program : public context_object
     {
     protected:
-        pipeline(render_context& context);
+        program(render_context& context);
 
     public:
         /// Attribute description
@@ -70,26 +70,26 @@ namespace mge {
 
         using uniform_buffer_list = small_vector<uniform_buffer, 3>;
 
-        virtual ~pipeline();
+        virtual ~program();
 
         /**
          * Set a shader object. The shader object must be a shader designated
-         * for the graphics pipeline (not a compute shader).
+         * for the graphics program (not a compute shader).
          *
          * @param shader shader object that is set
          */
         void set_shader(const shader_ref& shader);
 
         /**
-         * Links the pipeline. A pipeline must be linked after setting all
+         * Links the program. A program must be linked after setting all
          * shader programs.
          */
         void link();
 
         /**
-         * Return whether this pipeline needs the link step.
+         * Return whether this program needs the link step.
          *
-         * @return @c true if pipeline needs to be linked
+         * @return @c true if program needs to be linked
          */
         bool needs_link() const noexcept { return m_needs_link; }
 

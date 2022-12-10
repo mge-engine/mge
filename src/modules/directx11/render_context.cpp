@@ -140,9 +140,9 @@ namespace mge::dx11 {
         return std::make_shared<shader>(*this, t);
     }
 
-    mge::pipeline_ref render_context::create_pipeline()
+    mge::program_ref render_context::create_program()
     {
-        mge::pipeline_ref result;
+        mge::program_ref result;
         return result;
     }
 

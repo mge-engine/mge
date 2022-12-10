@@ -136,29 +136,29 @@ namespace mge::script {
                     .method("physical_size", &mge::monitor::physical_size)
                     .method("current_mode", &mge::monitor::current_mode)
                     .method("supported_modes", &mge::monitor::current_mode),
-                type<pipeline>("pipeline")(
-                    type<pipeline::attribute_list>("attribute_list"),
-                    type<pipeline::uniform_buffer_list>("uniform_buffer_list"),
-                    type<pipeline::uniform_buffer>("uniform_buffer")
-                        .field("name", &mge::pipeline::uniform_buffer::name)
+                type<program>("program")(
+                    type<program::attribute_list>("attribute_list"),
+                    type<program::uniform_buffer_list>("uniform_buffer_list"),
+                    type<program::uniform_buffer>("uniform_buffer")
+                        .field("name", &mge::program::uniform_buffer::name)
                     /* .field("uniforms",
-                       &mge::pipeline::uniform_buffer::uniforms) */
+                       &mge::program::uniform_buffer::uniforms) */
                     ,
-                    type<pipeline::uniform_list>("uniform_list"),
-                    type<pipeline::attribute>("attribute")
-                        .field("name", &mge::pipeline::attribute::name)
-                        .field("type", &mge::pipeline::attribute::type)
-                        .field("size", &mge::pipeline::attribute::size),
-                    type<pipeline::uniform>("uniform")
-                        .field("name", &mge::pipeline::uniform::name)
-                        .field("type", &mge::pipeline::uniform::type)
-                        .field("size", &mge::pipeline::uniform::size))
-                    .method("set_shader", &mge::pipeline::set_shader)
-                    .method("link", &mge::pipeline::link)
-                    .method("needs_link", &mge::pipeline::needs_link)
-                    .method("attributes", &mge::pipeline::attributes)
-                    .method("uniforms", &mge::pipeline::uniforms)
-                    .method("uniform_buffers", &mge::pipeline::uniform_buffers),
+                    type<program::uniform_list>("uniform_list"),
+                    type<program::attribute>("attribute")
+                        .field("name", &mge::program::attribute::name)
+                        .field("type", &mge::program::attribute::type)
+                        .field("size", &mge::program::attribute::size),
+                    type<program::uniform>("uniform")
+                        .field("name", &mge::program::uniform::name)
+                        .field("type", &mge::program::uniform::type)
+                        .field("size", &mge::program::uniform::size))
+                    .method("set_shader", &mge::program::set_shader)
+                    .method("link", &mge::program::link)
+                    .method("needs_link", &mge::program::needs_link)
+                    .method("attributes", &mge::program::attributes)
+                    .method("uniforms", &mge::program::uniforms)
+                    .method("uniform_buffers", &mge::program::uniform_buffers),
                 type<mge::window>("window"),
                 type<mge::shader>("shader")
                     .method("compile", &shader::compile)

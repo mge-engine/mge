@@ -209,9 +209,9 @@ namespace mge::dx12 {
         return ref;
     }
 
-    mge::pipeline_ref render_context::create_pipeline()
+    mge::program_ref render_context::create_program()
     {
-        mge::pipeline_ref result;
+        mge::program_ref result;
         return result;
     }
 

@@ -6,14 +6,14 @@
 
 namespace mge {
 
-    pipeline::pipeline(render_context& context)
+    program::program(render_context& context)
         : context_object(context)
         , m_needs_link(true)
     {}
 
-    pipeline::~pipeline() {}
+    program::~program() {}
 
-    void pipeline::set_shader(const shader_ref& s)
+    void program::set_shader(const shader_ref& s)
     {
         if (!s) {
             MGE_THROW_ARGUMENT_NOT_NULL(shader);
@@ -26,14 +26,14 @@ namespace mge {
 
         if (!s->initialized()) {
             MGE_THROW(mge::illegal_argument)
-                << "Shader must be initialized before attaching to pipeline";
+                << "Shader must be initialized before attaching to program";
         }
 
         on_set_shader(s);
         m_needs_link = true;
     }
 
-    void pipeline::link()
+    void program::link()
     {
         if (m_needs_link) {
             on_link();

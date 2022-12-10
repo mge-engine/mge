@@ -20,6 +20,6 @@ public:
                 (const mge::vertex_layout&, size_t, void*),
                 ());
     MOCK_METHOD(mge::shader_ref, create_shader, (mge::shader_type), ());
-    MOCK_METHOD(mge::pipeline_ref, create_pipeline, (), ());
+    MOCK_METHOD(mge::program_ref, create_program, (), ());
     MOCK_METHOD(mge::command_list_ref, create_command_list, (), ());
 };

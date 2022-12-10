@@ -61,7 +61,7 @@ namespace mge {
                 m_window->render_context().create_shader(shader_type::FRAGMENT);
             auto vertex_shader =
                 m_window->render_context().create_shader(shader_type::VERTEX);
-            m_pipeline = m_window->render_context().create_pipeline();
+            m_program = m_window->render_context().create_program();
             MGE_DEBUG_TRACE(TRIANGLE) << "render system is "
                                       << m_render_system->implementation_name();
 
@@ -99,11 +99,11 @@ namespace mge {
                     << " render system";
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
-            m_pipeline->set_shader(pixel_shader);
-            m_pipeline->set_shader(vertex_shader);
-            MGE_DEBUG_TRACE(TRIANGLE) << "Linking pipeline";
-            m_pipeline->link();
-            MGE_DEBUG_TRACE(TRIANGLE) << "Pipeline linked";
+            m_program->set_shader(pixel_shader);
+            m_program->set_shader(vertex_shader);
+            MGE_DEBUG_TRACE(TRIANGLE) << "Linking program";
+            m_program->link();
+            MGE_DEBUG_TRACE(TRIANGLE) << "program linked";
 
             float triangle_coords[] = {
                 0.0f,
@@ -130,7 +130,7 @@ namespace mge {
 
             m_draw_commands = m_window->render_context().create_command_list();
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-            m_draw_commands->draw(mge::draw_command(m_pipeline,
+            m_draw_commands->draw(mge::draw_command(m_program,
                                                     m_vertices,
                                                     m_indices,
                                                     mge::topology::TRIANGLES));
@@ -146,7 +146,7 @@ namespace mge {
         std::atomic<bool> m_initialized;
         command_list_ref  m_clear_commands;
         command_list_ref  m_draw_commands;
-        pipeline_ref      m_pipeline;
+        program_ref       m_program;
         vertex_buffer_ref m_vertices;
         index_buffer_ref  m_indices;
     };

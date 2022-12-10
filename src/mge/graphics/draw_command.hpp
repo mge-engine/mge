@@ -8,7 +8,7 @@
 namespace mge {
 
     /**
-     * @brief A draw command executes a pipeline with a given set of buffers.
+     * @brief A draw command executes a program with a given set of buffers.
      */
     class MGEGRAPHICS_EXPORT draw_command
     {
@@ -21,12 +21,12 @@ namespace mge {
         /**
          * @brief Construct a new draw command.
          *
-         * @param pipeline pipeline to be executed
+         * @param program program to be executed
          * @param vertices vertices
          * @param indices  indices
          * @param t        vertices topology
          */
-        draw_command(const pipeline_ref&      pipeline,
+        draw_command(const program_ref&       program,
                      const vertex_buffer_ref& vertices,
                      const index_buffer_ref&  indices,
                      topology                 t);
@@ -34,10 +34,10 @@ namespace mge {
         ~draw_command();
 
         /**
-         * @brief Access stored pipeline.
-         * @return pipeline
+         * @brief Access stored program.
+         * @return program
          */
-        const pipeline_ref& pipeline() const { return m_pipeline; }
+        const program_ref& program() const { return m_program; }
         /**
          * @brief Access stored vertex buffer.
          * @return vertex buffer
@@ -58,7 +58,7 @@ namespace mge {
         mge::topology topology() const { return m_topology; }
 
     private:
-        const pipeline_ref      m_pipeline;
+        const program_ref       m_program;
         const vertex_buffer_ref m_vertices;
         const index_buffer_ref  m_indices;
         const mge::topology     m_topology;

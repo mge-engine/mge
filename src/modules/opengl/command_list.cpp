@@ -8,7 +8,7 @@
 #include "mge/core/overloaded.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "opengl.hpp"
-#include "pipeline.hpp"
+#include "program.hpp"
 #include "vertex_buffer.hpp"
 
 namespace mge::opengl {
@@ -23,7 +23,7 @@ namespace mge::opengl {
     void command_list::draw(const mge::draw_command& command)
     {
         command_list::draw_command c;
-        c.program_name = gl_program(command.pipeline());
+        c.program_name = gl_program(command.program());
         c.topology = gl_topology(command.topology());
 
         c.vao = 0;

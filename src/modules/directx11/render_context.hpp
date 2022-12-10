@@ -28,7 +28,7 @@ namespace mge::dx11 {
                              void*                     data) override;
 
         mge::shader_ref       create_shader(mge::shader_type t) override;
-        mge::pipeline_ref     create_pipeline() override;
+        mge::program_ref      create_program() override;
         mge::command_list_ref create_command_list() override;
 
         const ::mge::dx11::window& window() const { return m_window; }
