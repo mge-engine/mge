@@ -135,7 +135,6 @@ namespace mge {
 
     bool trace_topic::enabled(trace_level l) const noexcept
     {
-
         uint8_t l_int = static_cast<uint8_t>(l);
         if ((l_int & m_enabled_levels)) {
             return true;

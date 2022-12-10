@@ -82,7 +82,16 @@ namespace mge {
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
 #define MGE_TRACE(TOPIC, LEVEL)                                                \
-    ::mge::trace(MGE_TRACE_TOPIC(TOPIC), mge::trace_level::LEVEL)
+    ::mge::trace(MGE_TRACE_TOPIC(TOPIC), ::mge::trace_level::LEVEL)
+
+/**
+ * @def MGE_TRACE_ENABLED
+ * @brief Check whether trace is enabled.
+ * @param TOPIC trace topic
+ * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
+ */
+#define MGE_TRACE_ENABLED(TOPIC, LEVEL)                                        \
+    MGE_TRACE_TOPIC(TOPIC).enabled(::mge::trace_level::LEVEL)
 
 /**
  * @def MGE_DEBUG_TRACE
@@ -92,11 +101,25 @@ namespace mge {
 #define MGE_DEBUG_TRACE(TOPIC) MGE_TRACE(TOPIC, DEBUG)
 
 /**
+ * @def MGE_DEBUG_TRACE_ENABLED
+ * @brief Check whether DEBUG trace is enabled.
+ * @param TOPIC trace topic
+ */
+#define MGE_DEBUG_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, DEBUG)
+
+/**
  * @def MGE_INFO_TRACE
  * @brief Invoke info trace.
  * @param TOPIC trace topic
  */
 #define MGE_INFO_TRACE(TOPIC) MGE_TRACE(TOPIC, INFO)
+
+/**
+ * @def MGE_INFO_TRACE_ENABLED
+ * @brief Check whether INFO trace is enabled.
+ * @param TOPIC trace topic
+ */
+#define MGE_INFO_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, INFO)
 
 /**
  * @def MGE_WARNING_TRACE
@@ -106,6 +129,13 @@ namespace mge {
 #define MGE_WARNING_TRACE(TOPIC) MGE_TRACE(TOPIC, WARNING)
 
 /**
+ * @def MGE_WARNING_TRACE_ENABLED
+ * @brief Check whether WARNING trace is enabled.
+ * @param TOPIC trace topic
+ */
+#define MGE_WARNING_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, WARNING)
+
+/**
  * @def MGE_ERROR_TRACE
  * @brief Invoke error trace.
  * @param TOPIC trace topic
@@ -113,11 +143,25 @@ namespace mge {
 #define MGE_ERROR_TRACE(TOPIC) MGE_TRACE(TOPIC, LEVEL_ERROR)
 
 /**
+ * @def MGE_ERROR_TRACE_ENABLED
+ * @brief Check whether ERROR trace is enabled.
+ * @param TOPIC trace topic
+ */
+#define MGE_ERROR_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, ERROR)
+
+/**
  * @def MGE_FATAL_TRACE
  * @brief Invoke fatal trace.
  * @param TOPIC trace topic
  */
 #define MGE_FATAL_TRACE(TOPIC) MGE_TRACE(TOPIC, FATAL)
+
+/**
+ * @def MGE_FATAL_TRACE_ENABLED
+ * @brief Check whether FATAL trace is enabled.
+ * @param TOPIC trace topic
+ */
+#define MGE_FATAL_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, FATAL)
 
 /**
  * @def MGE_XDEBUG
@@ -128,6 +172,6 @@ namespace mge {
  *
  * @param TOPIC trace topic
  */
-#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE(TOPIC) << "XXX: "
+#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE(TOPIC) << "XDEBUG: "
 
 } // namespace mge
