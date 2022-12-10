@@ -98,32 +98,29 @@ namespace mge {
          *
          * @return attributes
          */
-        const attribute_list& attributes() const noexcept
-        {
-            return m_attributes;
-        }
+        const attribute_list& attributes() const;
 
         /**
          * Get meta data of uniforms.
          *
          * @return uniforms
          */
-        const uniform_list& uniforms() const noexcept { return m_uniforms; }
+        const uniform_list& uniforms() const;
 
         /**
          * Get uniform buffer meta data.
          * @return uniform buffers
          */
-        const uniform_buffer_list uniform_buffers() const noexcept
-        {
-            return m_uniform_buffers;
-        }
+        const uniform_buffer_list& uniform_buffers() const;
 
     protected:
         bool                m_needs_link;
         attribute_list      m_attributes;
         uniform_list        m_uniforms;
         uniform_buffer_list m_uniform_buffers;
+
+    private:
+        void assert_linked() const;
 
         virtual void on_link() = 0;
         virtual void on_set_shader(const shader_ref& shader) = 0;

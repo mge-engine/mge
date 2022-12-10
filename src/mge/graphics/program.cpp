@@ -41,4 +41,29 @@ namespace mge {
         }
     }
 
+    const program::attribute_list& program::attributes() const
+    {
+        assert_linked();
+        return m_attributes;
+    }
+
+    const program::uniform_list& program::uniforms() const
+    {
+        assert_linked();
+        return m_uniforms;
+    }
+
+    const program::uniform_buffer_list& program::uniform_buffers() const
+    {
+        assert_linked();
+        return m_uniform_buffers;
+    }
+
+    void program::assert_linked() const
+    {
+        if (m_needs_link) {
+            MGE_THROW(illegal_state) << "Program not linked";
+        }
+    }
+
 } // namespace mge
