@@ -1,8 +1,8 @@
 // mge - Modern Game Engine
 // Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
-#include "error.hpp"
 #include "program.hpp"
+#include "error.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
 
@@ -49,19 +49,22 @@ namespace mge::opengl {
 
     void program::dump_info_log()
     {
-        GLint loglength = 0;
-        glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &loglength);
-        if (loglength == 0) {
-            MGE_DEBUG_TRACE(OPENGL) << "No program info log";
-        } else {
-            GLsizei     length = loglength;
-            std::string infolog;
-            infolog.resize(static_cast<std::string::size_type>(loglength) - 1);
-            glGetProgramInfoLog(m_program,
-                                length,
-                                &length,
-                                reinterpret_cast<GLchar*>(infolog.data()));
-            MGE_DEBUG_TRACE(OPENGL) << infolog;
+        if (MGE_DEBUG_TRACE_ENABLED(OPENGL)) {
+            GLint loglength = 0;
+            glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &loglength);
+            if (loglength == 0) {
+                MGE_DEBUG_TRACE(OPENGL) << "No program info log";
+            } else {
+                GLsizei     length = loglength;
+                std::string infolog;
+                infolog.resize(static_cast<std::string::size_type>(loglength) -
+                               1);
+                glGetProgramInfoLog(m_program,
+                                    length,
+                                    &length,
+                                    reinterpret_cast<GLchar*>(infolog.data()));
+                MGE_DEBUG_TRACE(OPENGL) << infolog;
+            }
         }
     }
 
