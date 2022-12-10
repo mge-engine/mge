@@ -304,12 +304,12 @@ has a 1:1 relationship with the window.</p>
 </dl>
 </dd></dl>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context15create_pipelineEv">
-<span id="_CPPv3N3mge14render_context15create_pipelineEv"></span><span id="_CPPv2N3mge14render_context15create_pipelineEv"></span><span id="mge::render_context::create_pipeline"></span><span class="target" id="classmge_1_1render__context_1af66455de8e3dbb64d41a55228063649b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">pipeline_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_pipeline</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context15create_pipelineEv" title="Permalink to this definition">¶</a><br/></dt>
-<dd><p>Create a pipeline object. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context14create_programEv">
+<span id="_CPPv3N3mge14render_context14create_programEv"></span><span id="_CPPv2N3mge14render_context14create_programEv"></span><span id="mge::render_context::create_program"></span><span class="target" id="classmge_1_1render__context_1a83754b96289e86373f8f8eaf12679bb0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">program_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_program</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context14create_programEv" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Create a program object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>created pipeline </p>
+<dd class="field-odd"><p>created program </p>
 </dd>
 </dl>
 </dd></dl>
@@ -342,7 +342,7 @@ only.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14context_objectE">
 <span id="_CPPv3N3mge14context_objectE"></span><span id="_CPPv2N3mge14context_objectE"></span><span id="mge::context_object"></span><span class="target" id="classmge_1_1context__object"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">context_object</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4N3mge14context_objectE" title="Permalink to this definition">¶</a><br/></dt>
 <dd><p>An object that is valid in the context of a <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1render__context"><span class="std std-ref"><span class="pre">render_context</span></span></a></code> like a shader program, a texture, or a command list. </p>
-<p>Subclassed by <a class="reference internal" href="command_list.html#classmge_1_1command__list"><span class="std std-ref">mge::command_list</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, mge::pipeline, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a></p>
+<p>Subclassed by <a class="reference internal" href="command_list.html#classmge_1_1command__list"><span class="std std-ref">mge::command_list</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, mge::program, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a></p>
 </dd></dl>
 <p>Each render context has a swap chain, a series of buffers to stabilize frame
 rates and enable presenting frames.</p>
