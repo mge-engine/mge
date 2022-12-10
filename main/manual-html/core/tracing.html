@@ -685,6 +685,87 @@ in case the topic is defined in another dynamic library.</p>
 </pre></div>
 </div>
 <p>Note that a line break isn’t needed at the end.</p>
+<p>Sometimes creating traces may involve heavier processing one wants to avoid if
+a particular trace is disabled. A number of check macros is available for this
+purpose:</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_DEBUG_TRACE_ENABLED">
+<span class="target" id="trace_8hpp_1a209ab2d4916a85a68f1355f954d2069b"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE_ENABLED" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Check whether DEBUG trace is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TOPIC</strong> – trace topic </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_INFO_TRACE_ENABLED">
+<span class="target" id="trace_8hpp_1a8a559799d33009ce3b9fb558a08a1941"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE_ENABLED" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Check whether INFO trace is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TOPIC</strong> – trace topic </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_WARNING_TRACE_ENABLED">
+<span class="target" id="trace_8hpp_1ae59b48f7e291393cf4eecb4b663b184b"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE_ENABLED" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Check whether WARNING trace is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TOPIC</strong> – trace topic </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_ERROR_TRACE_ENABLED">
+<span class="target" id="trace_8hpp_1af9e324d8fb353565086b52c05f65fe87"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE_ENABLED" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Check whether ERROR trace is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TOPIC</strong> – trace topic </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_FATAL_TRACE_ENABLED">
+<span class="target" id="trace_8hpp_1a1f75a66448becf3592724e8c84aa03ea"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE_ENABLED" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Check whether FATAL trace is enabled. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TOPIC</strong> – trace topic </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<p>During development one may want to add temporary debug trace, which is purely
+for isolating the problem, and which should be easy to identify. A
+<a class="reference internal" href="#c.MGE_XDEBUG" title="MGE_XDEBUG"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_XDEBUG</span></code></a> statement may fulfil this purpose. Trace messages
+issued by this statement are prefixed with ‘XDEBUG:’ and thus are easy to
+grep for. Note released code of MGE does not contain any ‘XDEBUG’ trace.</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_XDEBUG">
+<span class="target" id="trace_8hpp_1a564831de8199dee796260f1ddc789315"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_XDEBUG</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_XDEBUG" title="Permalink to this definition">¶</a><br/></dt>
+<dd><p>Invoke debug trace. </p>
+<p>Used for temporary tracing when hunting bugs or alike. Submitted changes should never have a MGE_XDEBUG trace statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TOPIC</strong> – trace topic </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 </section>
 <section id="trace-processing">
 <h2>Trace Processing<a class="headerlink" href="#trace-processing" title="Permalink to this headline">¶</a></h2>

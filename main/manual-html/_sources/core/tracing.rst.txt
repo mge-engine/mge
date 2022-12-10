@@ -108,6 +108,28 @@ As an example, writing trace into a trace topic `TEST` looks like this:
 
 Note that a line break isn't needed at the end.
 
+Sometimes creating traces may involve heavier processing one wants to avoid if
+a particular trace is disabled. A number of check macros is available for this
+purpose:
+
+.. doxygendefine:: MGE_DEBUG_TRACE_ENABLED
+
+.. doxygendefine:: MGE_INFO_TRACE_ENABLED
+
+.. doxygendefine:: MGE_WARNING_TRACE_ENABLED
+
+.. doxygendefine:: MGE_ERROR_TRACE_ENABLED
+
+.. doxygendefine:: MGE_FATAL_TRACE_ENABLED
+
+During development one may want to add temporary debug trace, which is purely
+for isolating the problem, and which should be easy to identify. A
+:any:`MGE_XDEBUG` statement may fulfil this purpose. Trace messages
+issued by this statement are prefixed with 'XDEBUG:' and thus are easy to
+grep for. Note released code of MGE does not contain any 'XDEBUG' trace.
+
+.. doxygendefine:: MGE_XDEBUG
+
 Trace Processing
 ================
 
