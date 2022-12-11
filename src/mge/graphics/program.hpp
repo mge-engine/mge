@@ -55,9 +55,10 @@ namespace mge {
         /// Uniform description
         struct uniform
         {
-            std::string name; //!< uniform name
-            data_type   type; //!< uniform type
-            uint32_t    size; //!< uniform size (array size)
+            std::string name;     //!< uniform name
+            data_type   type;     //!< uniform type
+            uint32_t    size;     //!< uniform size (array size)
+            uint32_t    location; //!< uniform location
         };
 
         using uniform_list = small_vector<uniform, 5>;

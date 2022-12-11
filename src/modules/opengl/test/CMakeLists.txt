@@ -6,7 +6,8 @@ SET(OPENGL_TEST_SOURCES
     opengl_test.cpp
     test_render_system.cpp
     test_index_buffer.cpp
-    test_shader.cpp)
+    test_shader.cpp
+    test_program.cpp)
 
 MGE_TEST(
     TARGET      test_opengl

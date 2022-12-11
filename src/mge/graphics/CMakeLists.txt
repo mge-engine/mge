@@ -31,6 +31,7 @@ SET(mgegraphics_sources
     texture.cpp
     shader_format.cpp
     draw_command.cpp
+    uniform_data_type.cpp
 )
 
 SET(mgegraphics_headers
@@ -61,6 +62,7 @@ SET(mgegraphics_headers
     program.hpp
     shader_format.hpp
     draw_command.hpp
+    uniform_data_type.hpp
 )
 
 MGE_LIBRARY(

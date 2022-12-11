@@ -45,6 +45,7 @@ namespace mge::opengl {
         if (!link_status) {
             MGE_THROW(error) << "glLinkProgram failed";
         }
+        collect_uniforms();
     }
 
     void program::dump_info_log()
@@ -81,4 +82,32 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glAttachShader);
     }
 
+    void program::collect_uniforms()
+    {
+        GLint active_uniform_max_length = 0;
+        glGetProgramiv(m_program,
+                       GL_ACTIVE_UNIFORM_MAX_LENGTH,
+                       &active_uniform_max_length);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORM_MAX_LENGTH));
+        char* namebuffer =
+            static_cast<char*>(alloca(active_uniform_max_length + 1));
+        GLint num_uniforms = 0;
+        glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &num_uniforms);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORMS));
+        MGE_DEBUG_TRACE(OPENGL)
+            << "Found " << num_uniforms << " uniforms in program " << m_program;
+        for (GLint i = 0; i < num_uniforms; ++i) {
+            GLint   size;
+            GLenum  type;
+            GLsizei length = 0;
+            glGetActiveUniform(m_program,
+                               i,
+                               active_uniform_max_length + 1,
+                               &length,
+                               &size,
+                               &type,
+                               namebuffer);
+            CHECK_OPENGL_ERROR(glGetActiveUniform);
+        }
+    }
 } // namespace mge::opengl

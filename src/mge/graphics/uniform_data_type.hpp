@@ -1,6 +1,3 @@
-// mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
-// All rights reserved.
 #pragma once
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/dllexport.hpp"
@@ -13,7 +10,7 @@ namespace mge {
     /**
      * @brief Data type.
      */
-    enum class MGEGRAPHICS_EXPORT data_type : uint8_t
+    enum class MGEGRAPHICS_EXPORT uniform_data_type : uint8_t
     {
         UNKNOWN = 0, //!< unknown type
         INT8,        //!< int8_t
@@ -40,8 +37,8 @@ namespace mge {
      * @param t data type printed
      * @return @c os
      */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&    os,
-                                                const data_type& t);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&            os,
+                                                const uniform_data_type& t);
 
     /**
      * @brief Get the size of one data
@@ -49,31 +46,31 @@ namespace mge {
      * @param t
      * @return size_t
      */
-    inline size_t data_type_size(data_type t)
+    inline size_t uniform_data_type_size(uniform_data_type t)
     {
         switch (t) {
-        case data_type::UINT8:
-        case data_type::INT8:
+        case uniform_data_type::UINT8:
+        case uniform_data_type::INT8:
             return 1;
-        case data_type::INT16:
-        case data_type::UINT16:
+        case uniform_data_type::INT16:
+        case uniform_data_type::UINT16:
             return 2;
-        case data_type::INT32:
-        case data_type::UINT32:
+        case uniform_data_type::INT32:
+        case uniform_data_type::UINT32:
             return 4;
-        case data_type::INT64:
-        case data_type::UINT64:
+        case uniform_data_type::INT64:
+        case uniform_data_type::UINT64:
             return 8;
-        case data_type::INT128:
-        case data_type::UINT128:
+        case uniform_data_type::INT128:
+        case uniform_data_type::UINT128:
             return 16;
-        case data_type::HALF:
+        case uniform_data_type::HALF:
             return 2;
-        case data_type::FLOAT:
+        case uniform_data_type::FLOAT:
             return 4;
-        case data_type::DOUBLE:
+        case uniform_data_type::DOUBLE:
             return 8;
-        case data_type::LONG_DOUBLE:
+        case uniform_data_type::LONG_DOUBLE:
             return sizeof(long double);
         default:
             MGE_THROW(illegal_argument) << "Unexpected data type " << t;
@@ -86,12 +83,13 @@ namespace mge {
      * @param sv string view
      * @return parsed data type
      */
-    MGEGRAPHICS_EXPORT data_type parse_data_type(std::string_view sv);
+    MGEGRAPHICS_EXPORT uniform_data_type
+    parse_uniform_data_type(std::string_view sv);
 
     namespace literals {
-        inline data_type operator""_type(const char* s, size_t l)
+        inline uniform_data_type operator""_type(const char* s, size_t l)
         {
-            return parse_data_type(std::string_view(s, s + l));
+            return parse_uniform_data_type(std::string_view(s, s + l));
         }
     } // namespace literals
 

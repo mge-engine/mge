@@ -23,6 +23,7 @@ namespace mge::opengl {
 
     private:
         void dump_info_log();
+        void collect_uniforms();
 
         GLuint m_program;
     };
