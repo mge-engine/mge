@@ -40,6 +40,14 @@ namespace mge {
             return os << "double";
         case uniform_data_type::LONG_DOUBLE:
             return os << "long double";
+        case uniform_data_type::FLOAT_VEC2:
+            return os << "fvec2";
+        case uniform_data_type::FLOAT_VEC3:
+            return os << "fvec3";
+        case uniform_data_type::FLOAT_VEC4:
+            return os << "fvec4";
+        case uniform_data_type::FLOAT_MAT4:
+            return os << "fmat4";
         default:
             return os << "invalid(" << static_cast<uint32_t>(t) << ")";
         }
@@ -181,6 +189,10 @@ namespace mge {
                     return uniform_data_type::HALF;
                 break;
             case 'f':
+                ++it;
+                if (it == e) {
+                    break;
+                }
                 if (sv == "float"sv)
                     return uniform_data_type::FLOAT;
                 break;

@@ -28,6 +28,12 @@ namespace mge {
         FLOAT,       //!< float
         DOUBLE,      //!< double
         LONG_DOUBLE, //!< long double
+
+        FLOAT_VEC2, //!< float vector 2 elements
+        FLOAT_VEC3, //!< float vector 3 elements
+        FLOAT_VEC4, //!< float vector 4 elements
+
+        FLOAT_MAT4, //!< float 4x4 matrix
     };
 
     /**
