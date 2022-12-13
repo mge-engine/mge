@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2018 by Alexander Schroeder
+// Copyright (c) 2021 by Alexander Schroeder
 // All rights reserved.
 #include "dx11_test.hpp"
 #include "mge/graphics/render_context.hpp"
