@@ -3,11 +3,17 @@
 // All rights reserved.
 #include "program.hpp"
 #include "error.hpp"
+#include "mge/graphics/uniform_data_type.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
+}
+
+static mge::uniform_data_type uniform_type_from_gl(GLenum t)
+{
+    return mge::uniform_data_type::UNKNOWN;
 }
 
 namespace mge::opengl {
@@ -97,8 +103,8 @@ namespace mge::opengl {
         MGE_DEBUG_TRACE(OPENGL)
             << "Found " << num_uniforms << " uniforms in program " << m_program;
         for (GLint i = 0; i < num_uniforms; ++i) {
-            GLint   size;
-            GLenum  type;
+            GLint   size = 0;
+            GLenum  type = 0;
             GLsizei length = 0;
             glGetActiveUniform(m_program,
                                i,
@@ -108,6 +114,14 @@ namespace mge::opengl {
                                &type,
                                namebuffer);
             CHECK_OPENGL_ERROR(glGetActiveUniform);
+            MGE_DEBUG_TRACE(OPENGL) << "Uniform: " << namebuffer
+                                    << ", type: " << type << ", size: " << size;
+            uniform_data_type u_type = uniform_type_from_gl(type);
+            if (u_type == uniform_data_type::UNKNOWN) {
+                MGE_WARNING_TRACE(OPENGL) << "Unsupported uniform type " << type
+                                          << " for uniform " << namebuffer;
+            } else {
+            }
         }
     }
 } // namespace mge::opengl

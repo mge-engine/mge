@@ -96,7 +96,8 @@ namespace mge {
     parse_uniform_data_type(std::string_view sv);
 
     namespace literals {
-        inline uniform_data_type operator""_type(const char* s, size_t l)
+        inline uniform_data_type operator""_uniform_type(const char* s,
+                                                         size_t      l)
         {
             return parse_uniform_data_type(std::string_view(s, s + l));
         }
