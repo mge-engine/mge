@@ -11,7 +11,7 @@ namespace mge::vulkan {
     {
     public:
         render_system();
-        ~render_system() = default;
+        ~render_system();
 
         mge::window_ref
         create_window(const mge::extent&         extent,
@@ -34,9 +34,11 @@ namespace mge::vulkan {
 
     private:
         void resolve_basic_instance_functions();
+        void resolve_instance_functions();
         void create_instance();
         void destroy_instance();
         void teardown();
+        void clear_functions();
 
         std::shared_ptr<vulkan_library> m_library;
         VkInstance                      m_instance;

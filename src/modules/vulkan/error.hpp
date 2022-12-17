@@ -49,5 +49,5 @@ namespace mge::vulkan {
 #define CHECK_VK_CALL2(call, file, line)                                       \
     do {                                                                       \
         auto rc = call;                                                        \
-        ::vulkan::error::check_vkresult(rc, file, line, #call);                \
+        ::mge::vulkan::error::check_vkresult(rc, file, line, #call);           \
     } while (false)
