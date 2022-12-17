@@ -56,158 +56,31 @@ namespace mge {
     uniform_data_type parse_uniform_data_type(std::string_view sv)
     {
         using namespace std::literals;
-
-        auto it = sv.begin();
-        auto e = sv.end();
-        if (it != e) {
-            switch (*it) {
-            case 'i':
-                ++it;
-                if (it != e && *it == 'n') {
-                    ++it;
-                    if (it != e && *it == 't') {
-                        ++it;
-                    } else {
-                        break;
-                    }
-                } else {
-                    break;
-                }
-                if (it != e) {
-                    switch (*it) {
-                    case '1':
-                        ++it;
-                        if (it != e) {
-                            if (*it == '6') {
-                                ++it;
-                                if (it == e) {
-                                    return uniform_data_type::INT16;
-                                }
-                            } else if (*it == '2') {
-                                ++it;
-                                if (it != e && *it == '8') {
-                                    ++it;
-                                    if (it == e) {
-                                        return uniform_data_type::INT128;
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case '3':
-                        ++it;
-                        if (it != e && *it == '2') {
-                            ++it;
-                            if (it == e) {
-                                return uniform_data_type::INT32;
-                            }
-                        }
-                    case '6':
-                        ++it;
-                        if (it != e && *it == '4') {
-                            ++it;
-                            if (it == e) {
-                                return uniform_data_type::INT64;
-                            }
-                        }
-                    case '8':
-                        ++it;
-                        if (it == e) {
-                            return uniform_data_type::INT8;
-                        }
-                    default:
-                        break;
-                    }
-                }
-                break;
-            case 'u':
-                ++it;
-                if (it != e && *it == 'i') {
-                    ++it;
-                    if (it != e && *it == 'n') {
-                        ++it;
-                        if (it != e && *it == 't') {
-                            ++it;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
-                } else {
-                    break;
-                }
-                if (it != e) {
-                    switch (*it) {
-                    case '1':
-                        ++it;
-                        if (it != e) {
-                            if (*it == '6') {
-                                ++it;
-                                if (it == e) {
-                                    return uniform_data_type::UINT16;
-                                }
-                            } else if (*it == '2') {
-                                ++it;
-                                if (it != e && *it == '8') {
-                                    ++it;
-                                    if (it == e) {
-                                        return uniform_data_type::UINT128;
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case '3':
-                        ++it;
-                        if (it != e && *it == '2') {
-                            ++it;
-                            if (it == e) {
-                                return uniform_data_type::UINT32;
-                            }
-                        }
-                    case '6':
-                        ++it;
-                        if (it != e && *it == '4') {
-                            ++it;
-                            if (it == e) {
-                                return uniform_data_type::UINT64;
-                            }
-                        }
-                    case '8':
-                        ++it;
-                        if (it == e) {
-                            return uniform_data_type::UINT8;
-                        }
-                    default:
-                        break;
-                    }
-                }
-                break;
-            case 'h':
-                if (sv == "half"sv)
-                    return uniform_data_type::HALF;
-                break;
-            case 'f':
-                ++it;
-                if (it == e) {
-                    break;
-                }
-                if (sv == "float"sv)
-                    return uniform_data_type::FLOAT;
-                break;
-            case 'd':
-                if (sv == "double"sv)
-                    return uniform_data_type::DOUBLE;
-                break;
-            case 'l':
-                if (sv == "long double"sv)
-                    return uniform_data_type::LONG_DOUBLE;
-                break;
-            default:
-                break;
-            }
+        const std::map<std::string_view, uniform_data_type> types = {
+            {"int8"sv, uniform_data_type::INT8},
+            {"int16"sv, uniform_data_type::INT16},
+            {"int32"sv, uniform_data_type::INT32},
+            {"int64"sv, uniform_data_type::INT64},
+            {"int128"sv, uniform_data_type::INT128},
+            {"uint8"sv, uniform_data_type::UINT8},
+            {"uint16"sv, uniform_data_type::UINT16},
+            {"uint32"sv, uniform_data_type::UINT32},
+            {"uint64"sv, uniform_data_type::UINT64},
+            {"uint128"sv, uniform_data_type::UINT128},
+            {"half"sv, uniform_data_type::HALF},
+            {"float"sv, uniform_data_type::FLOAT},
+            {"double"sv, uniform_data_type::DOUBLE},
+            {"long double"sv, uniform_data_type::LONG_DOUBLE},
+            {"fvec2"sv, uniform_data_type::FLOAT_VEC2},
+            {"fvec3"sv, uniform_data_type::FLOAT_VEC3},
+            {"fvec4"sv, uniform_data_type::FLOAT_VEC4},
+            {"fmat4"sv, uniform_data_type::FLOAT_MAT4},
+        };
+        auto it = types.find(sv);
+        if (it != types.end()) {
+            return it->second;
         }
+
         MGE_THROW(illegal_argument) << "Invalid data type definition: " << sv;
     }
 
