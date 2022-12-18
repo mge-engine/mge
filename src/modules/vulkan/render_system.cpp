@@ -189,6 +189,8 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         return mge::win32::monitor::all_monitors();
+#else
+#    error Missing Port
 #endif
     }
 
