@@ -33,6 +33,8 @@ namespace mge::vulkan {
 #undef DEVICE_FUNCTION
 
     private:
+        void fetch_layers();
+        void fetch_instance_extensions(const char* layer);
         void resolve_basic_instance_functions();
         void resolve_instance_functions();
         void create_instance();
