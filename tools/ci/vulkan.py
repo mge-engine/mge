@@ -31,6 +31,7 @@ def download_vulkan():
 
 def install_vulkan():
     print("Run vulkan installer", flush=True)
+    print("Installer: {}".format(vulkan_installer), flush=True)
     subprocess.run([vulkan_installer, "in", "-d",
                     "-d", "--al", "--da", "-c"])
 
