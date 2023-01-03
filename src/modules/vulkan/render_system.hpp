@@ -5,6 +5,8 @@
 #include "mge/graphics/render_system.hpp"
 #include "vulkan_library.hpp"
 
+#include <set>
+
 namespace mge::vulkan {
 
     class render_system : public mge::render_system
@@ -18,6 +20,8 @@ namespace mge::vulkan {
                       const mge::window_options& options) override;
 
         mge::render_system::monitor_collection monitors() override;
+
+        bool debug() const;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
 #define INSTANCE_FUNCTION(X) PFN_##X X;
@@ -44,6 +48,7 @@ namespace mge::vulkan {
 
         std::shared_ptr<vulkan_library> m_library;
         VkInstance                      m_instance;
+        std::set<std::string>           m_available_extensions;
     };
 
 } // namespace mge::vulkan

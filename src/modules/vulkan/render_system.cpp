@@ -17,7 +17,10 @@
 
 namespace mge {
     MGE_USE_TRACE(VULKAN);
-}
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(
+        bool, vulkan, debug, "Enable Vulkan debug mode", false);
+
+} // namespace mge
 
 namespace mge::vulkan {
 
@@ -45,8 +48,12 @@ namespace mge::vulkan {
             MGE_ERROR_TRACE(VULKAN) << "Error in Vulkan teardown: " << e.what();
         }
     }
-
-    static const char* s_default_extensions[] = {VK_KHR_SURFACE_EXTENSION_NAME};
+#ifdef MGE_OS_WINDOWS
+    static const char* s_default_extensions[] = {"VK_KHR_surface",
+                                                 "VK_KHR_win32_surface"};
+#else
+#    error Missing port
+#endif
 
     void render_system::fetch_layers()
     {
@@ -87,6 +94,9 @@ namespace mge::vulkan {
                                 << (layer ? layer : "default") << ")";
         for (const auto& p : extension_properties) {
             MGE_DEBUG_TRACE(VULKAN) << "Extension found: " << p.extensionName;
+            if (layer == nullptr) {
+                m_available_extensions.insert(p.extensionName);
+            }
         }
     }
 
@@ -195,14 +205,22 @@ namespace mge::vulkan {
         // app_info.engineVersion = ...
         app_info.apiVersion = VK_API_VERSION_1_3;
 
+        std::vector<const char*> extensions;
+        for (const auto& e : s_default_extensions) {
+            extensions.push_back(e);
+        }
+
         VkInstanceCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
         create_info.pApplicationInfo = &app_info;
         create_info.enabledExtensionCount =
-            static_cast<uint32_t>(array_size(s_default_extensions));
-        create_info.ppEnabledExtensionNames = s_default_extensions;
+            static_cast<uint32_t>(extensions.size());
+        create_info.ppEnabledExtensionNames = extensions.data();
         create_info.enabledLayerCount = 0;
         create_info.ppEnabledLayerNames = nullptr;
+        if (debug()) {
+            MGE_DEBUG_TRACE(VULKAN) << "Enable extra debug messages";
+        }
 
         CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_instance));
         resolve_instance_functions();
@@ -236,6 +254,11 @@ namespace mge::vulkan {
 #else
 #    error Missing Port
 #endif
+    }
+
+    bool render_system::debug() const
+    {
+        return MGE_PARAMETER(vulkan, debug).get();
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
