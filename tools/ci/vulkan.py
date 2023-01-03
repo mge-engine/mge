@@ -12,6 +12,12 @@ vulkan_installer = '%s\VulkanSDK-%s-Installer.exe' % (
     vulkan_installer_cache_dir, vulkan_version)
 
 
+def run_process(cmd):
+    cmd_string = " ".join(cmd)
+    print("Running command: {}".format(cmd_string), flush=True)
+    return subprocess.run(cmd)
+
+
 def vulkan_installer_exists():
     return os.path.exists(vulkan_installer)
 
@@ -25,14 +31,14 @@ def download_vulkan():
         shutil.rmtree(vulkan_installer_cache_dir)
     os.mkdir('vulkan-installer')
     print("Downloading vulkan installer", flush=True)
-    subprocess.run(["curl", "--show-error", "--output",
-                    '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?u=" % (vulkan_version, vulkan_version)], )
+    run_process(["curl", "--show-error", "--output",
+                 '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?Human=true&u=" % (vulkan_version, vulkan_version)], )
 
 
 def install_vulkan():
     print("Run vulkan installer", flush=True)
     print("Installer: {}".format(vulkan_installer), flush=True)
-    subprocess.run([vulkan_installer, "in", "-d",
+    run_process([vulkan_installer, "in", "-d",
                     "-d", "--al", "--da", "-c"])
 
 
