@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
-# Copyright (c) 2021 by Alexander Schroeder
+# Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 IF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     FILE(REMOVE_RECURSE "${CMAKE_SOURCE_DIR}/CMakeFiles")

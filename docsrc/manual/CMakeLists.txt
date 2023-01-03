@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
-# Copyright (c) 2021 by Alexander Schroeder
+# Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 IF(DOXYGEN_FOUND)
     GET_PROPERTY(DOXYGEN_INPUT_FILE_LIST GLOBAL PROPERTY ALL_PROJECT_SOURCES)

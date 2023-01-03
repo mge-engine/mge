@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
+// Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/module_details.hpp"
 #include "boost/boost_algorithm_string.hpp"

@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
+// Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/win32/monitor.hpp"
 #include "mge/core/copy_struct.hpp"

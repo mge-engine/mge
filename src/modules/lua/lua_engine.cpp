@@ -1,5 +1,5 @@
 // mge - Modern Game Engine
-// Copyright (c) 2021 by Alexander Schroeder
+// Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "lua_context.hpp"
 #include "mge/core/trace.hpp"

@@ -1,5 +1,5 @@
 # mge - Modern Game Engine
-# Copyright (c) 2021 by Alexander Schroeder
+# Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 FIND_PATH(linenoise_INCLUDE_DIR NAMES linenoise.h)
 FILE(GLOB_RECURSE __linenoise_cpp_location "${VCPKG_INSTALLED_DIR}/../buildtrees/**/linenoise.cpp")
