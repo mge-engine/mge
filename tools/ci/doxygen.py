@@ -6,7 +6,7 @@ import sys
 import subprocess
 import shutil
 
-doxygen_version = "1.9.5"
+doxygen_version = "1.9.6"
 
 
 def is_doxygen_installed():
@@ -21,7 +21,7 @@ def is_doxygen_installed():
             return True
         else:
             print("Expected version %s, found version information %s" %
-                  doxygen_version, installed_version)
+                  (doxygen_version, installed_version))
             return False
     except:
         print("Cannot determine doxygen version %s" %
