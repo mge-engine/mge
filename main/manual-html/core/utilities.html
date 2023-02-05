@@ -1,258 +1,49 @@
-<!doctype html>
-<html class="no-js">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Concurrency" href="concurrency.html" /><link rel="prev" title="Streams" href="streams.html" />
 
-    <meta name="generator" content="sphinx-4.2.0, furo 2021.10.09"/>
-        <title>Utilities - MGE 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=0254c309f5cadf746f1a613e7677379ac9c8cdcd" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
-    
-    
+<!DOCTYPE html>
 
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<style>
-  body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
-  
-  }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
-      --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-    }
-  }
-</style></head>
-  <body>
-    <script>
-      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
-    </script>
-    
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol id="svg-toc" viewBox="0 0 24 24">
-    <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z" />
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
-    </svg>
-  </symbol>
-  <symbol id="svg-menu" viewBox="0 0 24 24">
-    <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </symbol>
-  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
-    <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
-      <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-  </symbol>
-  <symbol id="svg-sun" viewBox="0 0 24 24">
-    <title>Light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-  </symbol>
-  <symbol id="svg-moon" viewBox="0 0 24 24">
-    <title>Dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
-    </svg>
-  </symbol>
-  <symbol id="svg-sun-half" viewBox="0 0 24 24">
-    <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
-      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M13 12h5" />
-      <path d="M13 15h4" />
-      <path d="M13 18h1" />
-      <path d="M13 9h4" />
-      <path d="M13 6h1" />
-    </svg>
-  </symbol>
-</svg>
-
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
-
-
-
-<div class="page">
-  <header class="mobile-header">
-    <div class="header-left">
-      <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
-      </label>
-    </div>
-    <div class="header-center">
-      <a href="../index.html"><div class="brand">MGE 0.1 documentation</div></a>
-    </div>
-    <div class="header-right">
-      <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
-          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
-          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
-        </button>
-      </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-      </label>
-    </div>
-  </header>
-  <aside class="sidebar-drawer">
-    <div class="sidebar-container">
-      
-      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+    <title>Utilities &#8212; MGE 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Concurrency" href="concurrency.html" />
+    <link rel="prev" title="Streams" href="streams.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
   
-  <span class="sidebar-brand-text">MGE 0.1 documentation</span>
-  
-</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
-  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
-  <input type="hidden" name="check_keywords" value="yes">
-  <input type="hidden" name="area" value="default">
-</form>
-<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../mgecore.html">Core Library</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgemath.html">Mathematics Library</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../math/vector.html">Vector Types</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../math/functions.html">Miscellaneous Functions</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/datastructures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/shaders.html">Shader Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/buffers.html">Buffers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../graphics/command_list.html">Command Lists</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeinput.html">Input Library</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../input/state.html">Input State</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../input/handler.html">Input Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../input/keyboard.html">Keyboard Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../input/mouse.html">Mouse Handling</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeapplication.html">Application Library</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../application/loop.html">Interaction Loop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../application/application.html">Application</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgeasset.html">Asset Library</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../asset/asset_type.html">Asset Type</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../mgescript.html">Scripting Library</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../script/engine.html">Scripting Engine</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../script/reflection.html">Reflection Types</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
-</ul>
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-</div>
-</div>
-      </div>
-      
-    </div>
-  </aside>
-  <div class="main">
-    <div class="content">
-      <div class="article-container">
-        <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
-              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
-              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
-              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
-            </button>
-          </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
-          </label>
-        </div>
-        <article role="main">
-          <section id="utilities">
-<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">¶</a></h1>
 <section id="general-utilities">
-<h2>General Utilities<a class="headerlink" href="#general-utilities" title="Permalink to this headline">¶</a></h2>
+<h2>General Utilities<a class="headerlink" href="#general-utilities" title="Permalink to this heading">¶</a></h2>
 <section id="executable-name">
-<h3>Executable Name<a class="headerlink" href="#executable-name" title="Permalink to this headline">¶</a></h3>
+<h3>Executable Name<a class="headerlink" href="#executable-name" title="Permalink to this heading">¶</a></h3>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15executable_nameEv">
-<span id="_CPPv3N3mge15executable_nameEv"></span><span id="_CPPv2N3mge15executable_nameEv"></span><span id="mge::executable_name"></span><span class="target" id="namespacemge_1acf11b4dc34d5d5fb0559a9ea8416f15b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">executable_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15executable_nameEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge15executable_nameEv"></span><span id="_CPPv2N3mge15executable_nameEv"></span><span id="mge::executable_name"></span><span class="target" id="namespacemge_1acf11b4dc34d5d5fb0559a9ea8416f15b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">executable_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15executable_nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get name of the current executable. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -260,12 +51,13 @@
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="type-name">
-<h3>Type Name<a class="headerlink" href="#type-name" title="Permalink to this headline">¶</a></h3>
+<h3>Type Name<a class="headerlink" href="#type-name" title="Permalink to this heading">¶</a></h3>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9type_nameERKNSt9type_infoE">
-<span id="_CPPv3N3mge9type_nameERKNSt9type_infoE"></span><span id="_CPPv2N3mge9type_nameERKNSt9type_infoE"></span><span id="mge::type_name__std::type_infoCR"></span><span class="target" id="namespacemge_1a55bf753721becc33ab4e014995512f89"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">type_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ti</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9type_nameERKNSt9type_infoE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9type_nameERKNSt9type_infoE"></span><span id="_CPPv2N3mge9type_nameERKNSt9type_infoE"></span><span id="mge::type_name__std::type_infoCR"></span><span class="target" id="namespacemge_1a55bf753721becc33ab4e014995512f89"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">type_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ti</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9type_nameERKNSt9type_infoE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the type name of the supplied type information. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -276,9 +68,10 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge9type_nameENSt6stringEv">
-<span id="_CPPv3I0EN3mge9type_nameEv"></span><span id="_CPPv2I0EN3mge9type_nameEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1aa4f7da184ecd66acd4e4b2ea3fedb93a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">type_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge9type_nameENSt6stringEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge9type_nameEv"></span><span id="_CPPv2I0EN3mge9type_nameEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1aa4f7da184ecd66acd4e4b2ea3fedb93a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">type_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge9type_nameENSt6stringEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get type name of type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -289,9 +82,10 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14base_type_nameERKNSt9type_infoE">
-<span id="_CPPv3N3mge14base_type_nameERKNSt9type_infoE"></span><span id="_CPPv2N3mge14base_type_nameERKNSt9type_infoE"></span><span id="mge::base_type_name__std::type_infoCR"></span><span class="target" id="namespacemge_1a759cc792bce9f83f74a9807b7bb44252"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">base_type_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ti</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14base_type_nameERKNSt9type_infoE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge14base_type_nameERKNSt9type_infoE"></span><span id="_CPPv2N3mge14base_type_nameERKNSt9type_infoE"></span><span id="mge::base_type_name__std::type_infoCR"></span><span class="target" id="namespacemge_1a759cc792bce9f83f74a9807b7bb44252"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">base_type_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ti</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14base_type_nameERKNSt9type_infoE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Base type name, i.e. type name without name space. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -302,9 +96,10 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge14base_type_nameENSt6stringEv">
-<span id="_CPPv3I0EN3mge14base_type_nameEv"></span><span id="_CPPv2I0EN3mge14base_type_nameEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1ab9799a508f02f2ea78541124fa90797e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">base_type_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge14base_type_nameENSt6stringEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge14base_type_nameEv"></span><span id="_CPPv2I0EN3mge14base_type_nameEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1ab9799a508f02f2ea78541124fa90797e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">base_type_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge14base_type_nameENSt6stringEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get base name of type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -315,9 +110,10 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14namespace_nameERKNSt9type_infoE">
-<span id="_CPPv3N3mge14namespace_nameERKNSt9type_infoE"></span><span id="_CPPv2N3mge14namespace_nameERKNSt9type_infoE"></span><span id="mge::namespace_name__std::type_infoCR"></span><span class="target" id="namespacemge_1a1bd3e4fafbf1db381a295cd646497b05"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">namespace_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ti</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14namespace_nameERKNSt9type_infoE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge14namespace_nameERKNSt9type_infoE"></span><span id="_CPPv2N3mge14namespace_nameERKNSt9type_infoE"></span><span id="mge::namespace_name__std::type_infoCR"></span><span class="target" id="namespacemge_1a1bd3e4fafbf1db381a295cd646497b05"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">namespace_name</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type_info</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ti</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14namespace_nameERKNSt9type_infoE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Namespace name. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -328,9 +124,10 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge14namespace_nameENSt6stringEv">
-<span id="_CPPv3I0EN3mge14namespace_nameEv"></span><span id="_CPPv2I0EN3mge14namespace_nameEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a02a4230c758af8d060f769c541751d94"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">namespace_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge14namespace_nameENSt6stringEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge14namespace_nameEv"></span><span id="_CPPv2I0EN3mge14namespace_nameEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1a02a4230c758af8d060f769c541751d94"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">namespace_name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge14namespace_nameENSt6stringEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get namespace name of type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -341,44 +138,49 @@
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="stack-backtrace">
-<h3>Stack Backtrace<a class="headerlink" href="#stack-backtrace" title="Permalink to this headline">¶</a></h3>
+<h3>Stack Backtrace<a class="headerlink" href="#stack-backtrace" title="Permalink to this heading">¶</a></h3>
 <p>A stack backtrace can be useful in diagnostics to determine the position of an
 error. To retrieve a stack backtrace programatically, <a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::stacktrace</span></code></a>
 can be used.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktraceE">
-<span id="_CPPv3N3mge10stacktraceE"></span><span id="_CPPv2N3mge10stacktraceE"></span><span id="mge::stacktrace"></span><span class="target" id="classmge_1_1stacktrace"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><a class="headerlink" href="#_CPPv4N3mge10stacktraceE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktraceE"></span><span id="_CPPv2N3mge10stacktraceE"></span><span id="mge::stacktrace"></span><span class="target" id="classmge_1_1stacktrace"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><a class="headerlink" href="#_CPPv4N3mge10stacktraceE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A stack backtrace. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace9size_typeE">
-<span id="_CPPv3N3mge10stacktrace9size_typeE"></span><span id="_CPPv2N3mge10stacktrace9size_typeE"></span><span class="target" id="classmge_1_1stacktrace_1adadbcb24f3fc68ddf7056921f48d7eaf"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">frame_vector</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_type</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace9size_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace9size_typeE"></span><span id="_CPPv2N3mge10stacktrace9size_typeE"></span><span class="target" id="classmge_1_1stacktrace_1adadbcb24f3fc68ddf7056921f48d7eaf"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">frame_vector</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_type</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace9size_typeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>stack trace size </p>
 </dd></dl>
+
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace14const_iteratorE">
-<span id="_CPPv3N3mge10stacktrace14const_iteratorE"></span><span id="_CPPv2N3mge10stacktrace14const_iteratorE"></span><span class="target" id="classmge_1_1stacktrace_1af5aff913c80a1a7f5d18d69108d645b0"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">frame_vector</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">const_iterator</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace14const_iteratorE"></span><span id="_CPPv2N3mge10stacktrace14const_iteratorE"></span><span class="target" id="classmge_1_1stacktrace_1af5aff913c80a1a7f5d18d69108d645b0"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">frame_vector</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">const_iterator</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>iterator on frames </p>
 </dd></dl>
+
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace22const_reverse_iteratorE">
-<span id="_CPPv3N3mge10stacktrace22const_reverse_iteratorE"></span><span id="_CPPv2N3mge10stacktrace22const_reverse_iteratorE"></span><span class="target" id="classmge_1_1stacktrace_1ad028a12b81c7891b62411c1bebac2a99"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_reverse_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">frame_vector</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">const_reverse_iterator</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace22const_reverse_iteratorE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace22const_reverse_iteratorE"></span><span id="_CPPv2N3mge10stacktrace22const_reverse_iteratorE"></span><span class="target" id="classmge_1_1stacktrace_1ad028a12b81c7891b62411c1bebac2a99"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_reverse_iterator</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">frame_vector</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">const_reverse_iterator</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace22const_reverse_iteratorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>iterator on frames </p>
 </dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace10stacktraceEv">
-<span id="_CPPv3N3mge10stacktrace10stacktraceEv"></span><span id="_CPPv2N3mge10stacktrace10stacktraceEv"></span><span id="mge::stacktrace::stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1ace1081ab87cc926fb6b82abb9aee1abe"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace10stacktraceEv"></span><span id="_CPPv2N3mge10stacktrace10stacktraceEv"></span><span id="mge::stacktrace::stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1ace1081ab87cc926fb6b82abb9aee1abe"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct stacktrace of current thread. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace">
-<span id="_CPPv3N3mge10stacktrace10stacktraceERK10stacktrace"></span><span id="_CPPv2N3mge10stacktrace10stacktraceERK10stacktrace"></span><span id="mge::stacktrace::stacktrace__stacktraceCR"></span><span class="target" id="classmge_1_1stacktrace_1af24f6e34b657d7b1a0f76773225f31a2"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace" title="mge::stacktrace::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace10stacktraceERK10stacktrace"></span><span id="_CPPv2N3mge10stacktrace10stacktraceERK10stacktrace"></span><span id="mge::stacktrace::stacktrace__stacktraceCR"></span><span class="target" id="classmge_1_1stacktrace_1af24f6e34b657d7b1a0f76773225f31a2"></span><span class="sig-name descname"><span class="n"><span class="pre">stacktrace</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace" title="mge::stacktrace::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace10stacktraceERK10stacktrace" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -386,14 +188,16 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktraceD0Ev">
-<span id="_CPPv3N3mge10stacktraceD0Ev"></span><span id="_CPPv2N3mge10stacktraceD0Ev"></span><span id="mge::stacktrace::~stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1a10a176ae5c5318b6bb6a30074869d3c6"></span><span class="sig-name descname"><span class="n"><span class="pre">~stacktrace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktraceD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktraceD0Ev"></span><span id="_CPPv2N3mge10stacktraceD0Ev"></span><span id="mge::stacktrace::~stacktrace"></span><span class="target" id="classmge_1_1stacktrace_1a10a176ae5c5318b6bb6a30074869d3c6"></span><span class="sig-name descname"><span class="n"><span class="pre">~stacktrace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktraceD0Ev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Destructor. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktraceaSERK10stacktrace">
-<span id="_CPPv3N3mge10stacktraceaSERK10stacktrace"></span><span id="_CPPv2N3mge10stacktraceaSERK10stacktrace"></span><span id="mge::stacktrace::assign-operator__stacktraceCR"></span><span class="target" id="classmge_1_1stacktrace_1abb31d69cb4510ac8d95d839414f7be7a"></span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktraceaSERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktraceaSERK10stacktrace"></span><span id="_CPPv2N3mge10stacktraceaSERK10stacktrace"></span><span id="mge::stacktrace::assign-operator__stacktraceCR"></span><span class="target" id="classmge_1_1stacktrace_1abb31d69cb4510ac8d95d839414f7be7a"></span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktraceaSERK10stacktrace" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -404,9 +208,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace4sizeEv">
-<span id="_CPPv3NK3mge10stacktrace4sizeEv"></span><span id="_CPPv2NK3mge10stacktrace4sizeEv"></span><span id="mge::stacktrace::sizeC"></span><span class="target" id="classmge_1_1stacktrace_1ae616a3e0f55233f36296c8b0ab2fa356"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace9size_typeE" title="mge::stacktrace::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace4sizeEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace4sizeEv"></span><span id="_CPPv2NK3mge10stacktrace4sizeEv"></span><span id="mge::stacktrace::sizeC"></span><span class="target" id="classmge_1_1stacktrace_1ae616a3e0f55233f36296c8b0ab2fa356"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace9size_typeE" title="mge::stacktrace::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Number of frames. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -414,9 +219,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace5beginEv">
-<span id="_CPPv3NK3mge10stacktrace5beginEv"></span><span id="_CPPv2NK3mge10stacktrace5beginEv"></span><span id="mge::stacktrace::beginC"></span><span class="target" id="classmge_1_1stacktrace_1a9d981585ba2190e95af15db0d6dbdaf2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5beginEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace5beginEv"></span><span id="_CPPv2NK3mge10stacktrace5beginEv"></span><span id="mge::stacktrace::beginC"></span><span class="target" id="classmge_1_1stacktrace_1a9d981585ba2190e95af15db0d6dbdaf2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5beginEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Begin of frames. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -424,9 +230,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace6rbeginEv">
-<span id="_CPPv3NK3mge10stacktrace6rbeginEv"></span><span id="_CPPv2NK3mge10stacktrace6rbeginEv"></span><span id="mge::stacktrace::rbeginC"></span><span class="target" id="classmge_1_1stacktrace_1a0aeb733ec62be628986a01d3aae0d715"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace22const_reverse_iteratorE" title="mge::stacktrace::const_reverse_iterator"><span class="n"><span class="pre">const_reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace6rbeginEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace6rbeginEv"></span><span id="_CPPv2NK3mge10stacktrace6rbeginEv"></span><span id="mge::stacktrace::rbeginC"></span><span class="target" id="classmge_1_1stacktrace_1a0aeb733ec62be628986a01d3aae0d715"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace22const_reverse_iteratorE" title="mge::stacktrace::const_reverse_iterator"><span class="n"><span class="pre">const_reverse_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rbegin</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace6rbeginEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reverse begin of frames. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -434,9 +241,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace3endEv">
-<span id="_CPPv3NK3mge10stacktrace3endEv"></span><span id="_CPPv2NK3mge10stacktrace3endEv"></span><span id="mge::stacktrace::endC"></span><span class="target" id="classmge_1_1stacktrace_1a3007023251a8c5e42d81bfa3c3a0d662"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace3endEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace3endEv"></span><span id="_CPPv2NK3mge10stacktrace3endEv"></span><span id="mge::stacktrace::endC"></span><span class="target" id="classmge_1_1stacktrace_1a3007023251a8c5e42d81bfa3c3a0d662"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace3endEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>End of frames. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -444,9 +252,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace4rendEv">
-<span id="_CPPv3NK3mge10stacktrace4rendEv"></span><span id="_CPPv2NK3mge10stacktrace4rendEv"></span><span id="mge::stacktrace::rendC"></span><span class="target" id="classmge_1_1stacktrace_1a341ce858c2141aaf5071613ba7c54c9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace4rendEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace4rendEv"></span><span id="_CPPv2NK3mge10stacktrace4rendEv"></span><span id="mge::stacktrace::rendC"></span><span class="target" id="classmge_1_1stacktrace_1a341ce858c2141aaf5071613ba7c54c9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace14const_iteratorE" title="mge::stacktrace::const_iterator"><span class="n"><span class="pre">const_iterator</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rend</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace4rendEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reverse end of frames. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -454,9 +263,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktraceeqERK10stacktrace">
-<span id="_CPPv3NK3mge10stacktraceeqERK10stacktrace"></span><span id="_CPPv2NK3mge10stacktraceeqERK10stacktrace"></span><span id="mge::stacktrace::eq-operator__stacktraceCRC"></span><span class="target" id="classmge_1_1stacktrace_1ae79a950ffe0ea2f2a8e63b9c85d0e7b3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktraceeqERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktraceeqERK10stacktrace"></span><span id="_CPPv2NK3mge10stacktraceeqERK10stacktrace"></span><span id="mge::stacktrace::eq-operator__stacktraceCRC"></span><span class="target" id="classmge_1_1stacktrace_1ae79a950ffe0ea2f2a8e63b9c85d0e7b3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktraceeqERK10stacktrace" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Comparison. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -467,9 +277,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktraceneERK10stacktrace">
-<span id="_CPPv3NK3mge10stacktraceneERK10stacktrace"></span><span id="_CPPv2NK3mge10stacktraceneERK10stacktrace"></span><span id="mge::stacktrace::neq-operator__stacktraceCRC"></span><span class="target" id="classmge_1_1stacktrace_1a8175d6bf2ed9b3355791fafdf2bfd4ac"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktraceneERK10stacktrace" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktraceneERK10stacktrace"></span><span id="_CPPv2NK3mge10stacktraceneERK10stacktrace"></span><span id="mge::stacktrace::neq-operator__stacktraceCRC"></span><span class="target" id="classmge_1_1stacktrace_1a8175d6bf2ed9b3355791fafdf2bfd4ac"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktraceneERK10stacktrace" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Comparison. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -480,16 +291,17 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </div>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace5frameE">
-<span id="_CPPv3N3mge10stacktrace5frameE"></span><span id="_CPPv2N3mge10stacktrace5frameE"></span><span id="mge::stacktrace::frame"></span><span class="target" id="classmge_1_1stacktrace_1_1frame"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frameE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace5frameE"></span><span id="_CPPv2N3mge10stacktrace5frameE"></span><span id="mge::stacktrace::frame"></span><span class="target" id="classmge_1_1stacktrace_1_1frame"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frameE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A frame on the stack backtrace. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t">
-<span id="_CPPv3N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t"></span><span id="_CPPv2N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t"></span><span id="mge::stacktrace::frame::frame__voidCP.std::string_view.std::string_view.std::string_view.uint32_t"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a8314750954f77a930d737afad627c7ad"></span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">address</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">module</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">file</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">line</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t"></span><span id="_CPPv2N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t"></span><span id="mge::stacktrace::frame::frame__voidCP.std::string_view.std::string_view.std::string_view.uint32_t"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a8314750954f77a930d737afad627c7ad"></span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">address</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">module</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">file</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">line</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frame5frameEPKvNSt11string_viewENSt11string_viewENSt11string_viewE8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new frame object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -503,9 +315,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace5frame5frameERK5frame">
-<span id="_CPPv3N3mge10stacktrace5frame5frameERK5frame"></span><span id="_CPPv2N3mge10stacktrace5frame5frameERK5frame"></span><span id="mge::stacktrace::frame::frame__frameCR"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1acc19e5f5b35aeaca7790d2e85ccd57d7"></span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frame5frameERK5frame" title="mge::stacktrace::frame::frame"><span class="n"><span class="pre">frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frame5frameERK5frame" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace5frame5frameERK5frame"></span><span id="_CPPv2N3mge10stacktrace5frame5frameERK5frame"></span><span id="mge::stacktrace::frame::frame__frameCR"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1acc19e5f5b35aeaca7790d2e85ccd57d7"></span><span class="sig-name descname"><span class="n"><span class="pre">frame</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frame5frameERK5frame" title="mge::stacktrace::frame::frame"><span class="n"><span class="pre">frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frame5frameERK5frame" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -513,9 +326,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10stacktrace5frameaSERK5frame">
-<span id="_CPPv3N3mge10stacktrace5frameaSERK5frame"></span><span id="_CPPv2N3mge10stacktrace5frameaSERK5frame"></span><span id="mge::stacktrace::frame::assign-operator__frameCR"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1aa2c3446ca6b160ae42b485cad2b99778"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frameE" title="mge::stacktrace::frame"><span class="n"><span class="pre">frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frameE" title="mge::stacktrace::frame"><span class="n"><span class="pre">frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frameaSERK5frame" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge10stacktrace5frameaSERK5frame"></span><span id="_CPPv2N3mge10stacktrace5frameaSERK5frame"></span><span id="mge::stacktrace::frame::assign-operator__frameCR"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1aa2c3446ca6b160ae42b485cad2b99778"></span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frameE" title="mge::stacktrace::frame"><span class="n"><span class="pre">frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10stacktrace5frameE" title="mge::stacktrace::frame"><span class="n"><span class="pre">frame</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10stacktrace5frameaSERK5frame" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -523,9 +337,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace5frame7addressEv">
-<span id="_CPPv3NK3mge10stacktrace5frame7addressEv"></span><span id="_CPPv2NK3mge10stacktrace5frame7addressEv"></span><span id="mge::stacktrace::frame::addressC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a0fa4450743d925194677c8c9ff415de2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">address</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame7addressEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace5frame7addressEv"></span><span id="_CPPv2NK3mge10stacktrace5frame7addressEv"></span><span id="mge::stacktrace::frame::addressC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a0fa4450743d925194677c8c9ff415de2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">address</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame7addressEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get frame address. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -533,9 +348,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace5frame4nameEv">
-<span id="_CPPv3NK3mge10stacktrace5frame4nameEv"></span><span id="_CPPv2NK3mge10stacktrace5frame4nameEv"></span><span id="mge::stacktrace::frame::nameC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1aab1517beb7c64d239b6b712e9b941f5e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame4nameEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace5frame4nameEv"></span><span id="_CPPv2NK3mge10stacktrace5frame4nameEv"></span><span id="mge::stacktrace::frame::nameC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1aab1517beb7c64d239b6b712e9b941f5e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame4nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Frame name (method or function name) </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -543,9 +359,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace5frame11source_fileEv">
-<span id="_CPPv3NK3mge10stacktrace5frame11source_fileEv"></span><span id="_CPPv2NK3mge10stacktrace5frame11source_fileEv"></span><span id="mge::stacktrace::frame::source_fileC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a0b65bc1ec1f489afe9943499230319bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_file</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame11source_fileEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace5frame11source_fileEv"></span><span id="_CPPv2NK3mge10stacktrace5frame11source_fileEv"></span><span id="mge::stacktrace::frame::source_fileC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a0b65bc1ec1f489afe9943499230319bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_file</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame11source_fileEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Source file name. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -553,9 +370,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace5frame11source_lineEv">
-<span id="_CPPv3NK3mge10stacktrace5frame11source_lineEv"></span><span id="_CPPv2NK3mge10stacktrace5frame11source_lineEv"></span><span id="mge::stacktrace::frame::source_lineC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a219b95fcb0372e015ec636a716d3de61"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_line</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame11source_lineEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace5frame11source_lineEv"></span><span id="_CPPv2NK3mge10stacktrace5frame11source_lineEv"></span><span id="mge::stacktrace::frame::source_lineC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a219b95fcb0372e015ec636a716d3de61"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_line</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame11source_lineEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Source line number. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -563,9 +381,10 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10stacktrace5frame6moduleEv">
-<span id="_CPPv3NK3mge10stacktrace5frame6moduleEv"></span><span id="_CPPv2NK3mge10stacktrace5frame6moduleEv"></span><span id="mge::stacktrace::frame::moduleC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a25988a9eee07e962f43049fa739f0536"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">module</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame6moduleEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge10stacktrace5frame6moduleEv"></span><span id="_CPPv2NK3mge10stacktrace5frame6moduleEv"></span><span id="mge::stacktrace::frame::moduleC"></span><span class="target" id="classmge_1_1stacktrace_1_1frame_1a25988a9eee07e962f43049fa739f0536"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">module</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10stacktrace5frame6moduleEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Module name (executable or library) </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -573,41 +392,46 @@ can be used.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </div>
 </dd></dl>
+
 </dd></dl>
+
 <p>A stacktrace can be printed using the standard <cite>&lt;&lt;</cite> stream operator.</p>
 </section>
 </section>
 <section id="data-structures">
-<h2>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this headline">¶</a></h2>
+<h2>Data structures<a class="headerlink" href="#data-structures" title="Permalink to this heading">¶</a></h2>
 <section id="string-pool">
-<h3>String Pool<a class="headerlink" href="#string-pool" title="Permalink to this headline">¶</a></h3>
+<h3>String Pool<a class="headerlink" href="#string-pool" title="Permalink to this heading">¶</a></h3>
 <p>A string pool allows a set of constant and non-changing strings to be managed.
 It is useful if there is more than one occurence of a string in a context.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11string_poolE">
-<span id="_CPPv3N3mge11string_poolE"></span><span id="_CPPv2N3mge11string_poolE"></span><span id="mge::string_pool"></span><span class="target" id="classmge_1_1string__pool"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">string_pool</span></span></span><a class="headerlink" href="#_CPPv4N3mge11string_poolE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11string_poolE"></span><span id="_CPPv2N3mge11string_poolE"></span><span id="mge::string_pool"></span><span class="target" id="classmge_1_1string__pool"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">string_pool</span></span></span><a class="headerlink" href="#_CPPv4N3mge11string_poolE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>String pool. </p>
 <p>Manages stable string views. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool9size_typeE">
-<span id="_CPPv3N3mge11string_pool9size_typeE"></span><span id="_CPPv2N3mge11string_pool9size_typeE"></span><span class="target" id="classmge_1_1string__pool_1af27047ae090a33cba08e7001b847a827"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">string_map</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_type</span></span><a class="headerlink" href="#_CPPv4N3mge11string_pool9size_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11string_pool9size_typeE"></span><span id="_CPPv2N3mge11string_pool9size_typeE"></span><span class="target" id="classmge_1_1string__pool_1af27047ae090a33cba08e7001b847a827"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">string_map</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_type</span></span><a class="headerlink" href="#_CPPv4N3mge11string_pool9size_typeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Size of pool. </p>
 </dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool11string_poolEv">
-<span id="_CPPv3N3mge11string_pool11string_poolEv"></span><span id="_CPPv2N3mge11string_pool11string_poolEv"></span><span id="mge::string_pool::string_pool"></span><span class="target" id="classmge_1_1string__pool_1a480bf4f0976bf4326848ca004fe3acdf"></span><span class="sig-name descname"><span class="n"><span class="pre">string_pool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool11string_poolEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11string_pool11string_poolEv"></span><span id="_CPPv2N3mge11string_pool11string_poolEv"></span><span id="mge::string_pool::string_pool"></span><span class="target" id="classmge_1_1string__pool_1a480bf4f0976bf4326848ca004fe3acdf"></span><span class="sig-name descname"><span class="n"><span class="pre">string_pool</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool11string_poolEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create empty pool. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool3getENSt11string_viewE">
-<span id="_CPPv3N3mge11string_pool3getENSt11string_viewE"></span><span id="_CPPv2N3mge11string_pool3getENSt11string_viewE"></span><span id="mge::string_pool::get__std::string_view"></span><span class="target" id="classmge_1_1string__pool_1aabe09d40aa200082fcf156727b23f3c5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getENSt11string_viewE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11string_pool3getENSt11string_viewE"></span><span id="_CPPv2N3mge11string_pool3getENSt11string_viewE"></span><span id="mge::string_pool::get__std::string_view"></span><span class="target" id="classmge_1_1string__pool_1aabe09d40aa200082fcf156727b23f3c5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get pooled string. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -618,9 +442,10 @@ It is useful if there is more than one occurence of a string in a context.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool3getERKNSt6stringE">
-<span id="_CPPv3N3mge11string_pool3getERKNSt6stringE"></span><span id="_CPPv2N3mge11string_pool3getERKNSt6stringE"></span><span id="mge::string_pool::get__ssCR"></span><span class="target" id="classmge_1_1string__pool_1a342002328fb9212b40c947504a087fae"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getERKNSt6stringE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11string_pool3getERKNSt6stringE"></span><span id="_CPPv2N3mge11string_pool3getERKNSt6stringE"></span><span id="mge::string_pool::get__ssCR"></span><span class="target" id="classmge_1_1string__pool_1a342002328fb9212b40c947504a087fae"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get pooled string. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -631,9 +456,10 @@ It is useful if there is more than one occurence of a string in a context.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11string_pool3getEPKc">
-<span id="_CPPv3N3mge11string_pool3getEPKc"></span><span id="_CPPv2N3mge11string_pool3getEPKc"></span><span id="mge::string_pool::get__cCP"></span><span class="target" id="classmge_1_1string__pool_1aa38d2e9a5d32863ad620ef78a887fb22"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getEPKc" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11string_pool3getEPKc"></span><span id="_CPPv2N3mge11string_pool3getEPKc"></span><span id="mge::string_pool::get__cCP"></span><span class="target" id="classmge_1_1string__pool_1aa38d2e9a5d32863ad620ef78a887fb22"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">str</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11string_pool3getEPKc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get pooled string. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -644,9 +470,10 @@ It is useful if there is more than one occurence of a string in a context.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11string_pool4sizeEv">
-<span id="_CPPv3NK3mge11string_pool4sizeEv"></span><span id="_CPPv2NK3mge11string_pool4sizeEv"></span><span id="mge::string_pool::sizeC"></span><span class="target" id="classmge_1_1string__pool_1ae2fea7fe9ce06153f3b5aa6134a39a57"></span><a class="reference internal" href="#_CPPv4N3mge11string_pool9size_typeE" title="mge::string_pool::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11string_pool4sizeEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge11string_pool4sizeEv"></span><span id="_CPPv2NK3mge11string_pool4sizeEv"></span><span id="mge::string_pool::sizeC"></span><span class="target" id="classmge_1_1string__pool_1ae2fea7fe9ce06153f3b5aa6134a39a57"></span><a class="reference internal" href="#_CPPv4N3mge11string_pool9size_typeE" title="mge::string_pool::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11string_pool4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get pool size. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -654,19 +481,21 @@ It is useful if there is more than one occurence of a string in a context.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </div>
 </dd></dl>
+
 </section>
 </section>
 <section id="programming-helpers">
-<h2>Programming Helpers<a class="headerlink" href="#programming-helpers" title="Permalink to this headline">¶</a></h2>
+<h2>Programming Helpers<a class="headerlink" href="#programming-helpers" title="Permalink to this heading">¶</a></h2>
 <section id="reference-declaration">
-<h3>Reference Declaration<a class="headerlink" href="#reference-declaration" title="Permalink to this headline">¶</a></h3>
+<h3>Reference Declaration<a class="headerlink" href="#reference-declaration" title="Permalink to this heading">¶</a></h3>
 <p>As a convention, in MGE, <cite>type_ref</cite> is an alias for <cite>std::shared_ptr&lt;type&gt;</cite>.
 This declaration can be eased using the macro <a class="reference internal" href="#c.MGE_DECLARE_REF" title="MGE_DECLARE_REF"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_DECLARE_REF</span></code></a></p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DECLARE_REF">
-<span class="target" id="memory_8hpp_1a41ed9c222699e357747772610e1f4037"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DECLARE_REF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TYPE</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DECLARE_REF" title="Permalink to this definition">¶</a><br/></dt>
+<span class="target" id="memory_8hpp_1a41ed9c222699e357747772610e1f4037"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DECLARE_REF</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TYPE</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DECLARE_REF" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Declares reference type (shared pointer). </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -676,80 +505,89 @@ This declaration can be eased using the macro <a class="reference internal" href
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="noncopyable">
-<h3>Noncopyable<a class="headerlink" href="#noncopyable" title="Permalink to this headline">¶</a></h3>
+<h3>Noncopyable<a class="headerlink" href="#noncopyable" title="Permalink to this heading">¶</a></h3>
 <p>A noncopyable object is one that has its copy constructor and
 assignment operatpr deleted.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11noncopyableE">
-<span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">noncopyable</span></span></span><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">noncopyable</span></span></span><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Object that can’t be copied. </p>
 <p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; std::streamsize &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; streamsize_type &gt;</span></a>, mge::asset_access, mge::asset_handle, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, mge::property_object, <a class="reference internal" href="../graphics/system.html#classmge_1_1render__system_1_1capabilities"><span class="std std-ref">mge::render_system::capabilities</span></a>, mge::script_context, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, mge::std_istream, mge::std_ostream, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
 </dd></dl>
+
 </section>
 </section>
 <section id="patterns-and-algorithms">
-<h2>Patterns and Algorithms<a class="headerlink" href="#patterns-and-algorithms" title="Permalink to this headline">¶</a></h2>
+<h2>Patterns and Algorithms<a class="headerlink" href="#patterns-and-algorithms" title="Permalink to this heading">¶</a></h2>
 <section id="singleton">
-<h3>Singleton<a class="headerlink" href="#singleton" title="Permalink to this headline">¶</a></h3>
+<h3>Singleton<a class="headerlink" href="#singleton" title="Permalink to this heading">¶</a></h3>
 <p>To implement the singleton pattern, a helper class <a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::singleton</span></code></a>
 can be used:</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge9singletonE">
-<span id="_CPPv3I0EN3mge9singletonE"></span><span id="_CPPv2I0EN3mge9singletonE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classmge_1_1singleton"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">singleton</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge9singletonE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge9singletonE"></span><span id="_CPPv2I0EN3mge9singletonE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1singleton"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">singleton</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge9singletonE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Singleton instance of a class. </p>
 <p>
-On demand initialization. Usually static variables of <code class="docutils literal notranslate"><span class="pre">singleton&lt;T&gt;</span></code> are created for singleton objects that should be lazily constructed.<dl class="field-list simple">
-<dt class="field-odd">tparam T</dt>
-<dd class="field-odd"><p>type of the singleton</p>
+On demand initialization. Usually static variables of <code class="docutils literal notranslate"><span class="pre">singleton&lt;T&gt;</span></code> are created for singleton objects that should be lazily constructed.</p>
+<p>Note that the constructor of <code class="docutils literal notranslate"><span class="pre">T</span></code> must allow constructing more than one object, as due to parallel access it may be that more than one object is constructed, only when storing the instance pointer the conflict is resolved and the superfluous instance is destroyed. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – type of the singleton</p>
 </dd>
 </dl>
-</p>
-<p>Note that the constructor of <code class="docutils literal notranslate"><span class="pre">T</span></code> must allow constructing more than one object, as due to parallel access it may be that more than one object is constructed, only when storing the instance pointer the conflict is resolved and the superfluous instance is destroyed. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton10value_typeE">
-<span id="_CPPv3N3mge9singleton10value_typeE"></span><span id="_CPPv2N3mge9singleton10value_typeE"></span><span class="target" id="classmge_1_1singleton_1a67ffec478b381a68e30dd736f7b7c439"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><a class="headerlink" href="#_CPPv4N3mge9singleton10value_typeE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton10value_typeE"></span><span id="_CPPv2N3mge9singleton10value_typeE"></span><span class="target" id="classmge_1_1singleton_1a67ffec478b381a68e30dd736f7b7c439"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><a class="headerlink" href="#_CPPv4N3mge9singleton10value_typeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Value type. </p>
 </dd></dl>
+
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton7pointerE">
-<span id="_CPPv3N3mge9singleton7pointerE"></span><span id="_CPPv2N3mge9singleton7pointerE"></span><span class="target" id="classmge_1_1singleton_1a5c73f9c1aaf2909f39684a0be7235442"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton7pointerE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton7pointerE"></span><span id="_CPPv2N3mge9singleton7pointerE"></span><span class="target" id="classmge_1_1singleton_1a5c73f9c1aaf2909f39684a0be7235442"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton7pointerE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Pointer to value. </p>
 </dd></dl>
+
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton13const_pointerE">
-<span id="_CPPv3N3mge9singleton13const_pointerE"></span><span id="_CPPv2N3mge9singleton13const_pointerE"></span><span class="target" id="classmge_1_1singleton_1abecb29700a61f37050c1857c6ab2abfa"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton13const_pointerE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton13const_pointerE"></span><span id="_CPPv2N3mge9singleton13const_pointerE"></span><span class="target" id="classmge_1_1singleton_1abecb29700a61f37050c1857c6ab2abfa"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton13const_pointerE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Pointer to constant value. </p>
 </dd></dl>
+
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton9referenceE">
-<span id="_CPPv3N3mge9singleton9referenceE"></span><span id="_CPPv2N3mge9singleton9referenceE"></span><span class="target" id="classmge_1_1singleton_1a56bc6c34b150890078fe2f4a9a11b011"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton9referenceE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton9referenceE"></span><span id="_CPPv2N3mge9singleton9referenceE"></span><span class="target" id="classmge_1_1singleton_1a56bc6c34b150890078fe2f4a9a11b011"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton9referenceE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reference to value. </p>
 </dd></dl>
+
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton15const_referenceE">
-<span id="_CPPv3N3mge9singleton15const_referenceE"></span><span id="_CPPv2N3mge9singleton15const_referenceE"></span><span class="target" id="classmge_1_1singleton_1aba65a2eda52697fec342d5a0e76a56fe"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton15const_referenceE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton15const_referenceE"></span><span id="_CPPv2N3mge9singleton15const_referenceE"></span><span class="target" id="classmge_1_1singleton_1aba65a2eda52697fec342d5a0e76a56fe"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9singletonE" title="mge::singleton::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&amp;</span></span><a class="headerlink" href="#_CPPv4N3mge9singleton15const_referenceE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constant reference to value. </p>
 </dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton9singletonEv">
-<span id="_CPPv3N3mge9singleton9singletonEv"></span><span id="_CPPv2N3mge9singleton9singletonEv"></span><span id="mge::singleton::singleton"></span><span class="target" id="classmge_1_1singleton_1a1ad8456c0097caf6c70a398bdd9bd1ed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">singleton</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singleton9singletonEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton9singletonEv"></span><span id="_CPPv2N3mge9singleton9singletonEv"></span><span id="mge::singleton::singleton"></span><span class="target" id="classmge_1_1singleton_1a1ad8456c0097caf6c70a398bdd9bd1ed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">singleton</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singleton9singletonEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructor. The contained object is not created. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singletonD0Ev">
-<span id="_CPPv3N3mge9singletonD0Ev"></span><span id="_CPPv2N3mge9singletonD0Ev"></span><span id="mge::singleton::~singleton"></span><span class="target" id="classmge_1_1singleton_1a15ecae3e078ca81feddfdd393973802d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~singleton</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonD0Ev" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singletonD0Ev"></span><span id="_CPPv2N3mge9singletonD0Ev"></span><span id="mge::singleton::~singleton"></span><span class="target" id="classmge_1_1singleton_1a15ecae3e078ca81feddfdd393973802d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~singleton</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonD0Ev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Destructor. Exchanges the contained instance pointer with the null pointer, and deletes the contained object. </p>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singleton3ptrEv">
-<span id="_CPPv3N3mge9singleton3ptrEv"></span><span id="_CPPv2N3mge9singleton3ptrEv"></span><span id="mge::singleton::ptr"></span><span class="target" id="classmge_1_1singleton_1abd31b2ed68c4aa65cdb47937455d05a8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton7pointerE" title="mge::singleton::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ptr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singleton3ptrEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singleton3ptrEv"></span><span id="_CPPv2N3mge9singleton3ptrEv"></span><span id="mge::singleton::ptr"></span><span class="target" id="classmge_1_1singleton_1abd31b2ed68c4aa65cdb47937455d05a8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton7pointerE" title="mge::singleton::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ptr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singleton3ptrEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access the contained object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -757,9 +595,10 @@ On demand initialization. Usually static variables of <code class="docutils lite
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singletonptEv">
-<span id="_CPPv3N3mge9singletonptEv"></span><span id="_CPPv2N3mge9singletonptEv"></span><span id="mge::singleton::pointer-operator"></span><span class="target" id="classmge_1_1singleton_1a9b10db078daf8c3c030fcacf381b725a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton7pointerE" title="mge::singleton::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonptEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singletonptEv"></span><span id="_CPPv2N3mge9singletonptEv"></span><span id="mge::singleton::pointer-operator"></span><span class="target" id="classmge_1_1singleton_1a9b10db078daf8c3c030fcacf381b725a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton7pointerE" title="mge::singleton::pointer"><span class="n"><span class="pre">pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonptEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access the contained object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -767,9 +606,10 @@ On demand initialization. Usually static variables of <code class="docutils lite
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9singletonptEv">
-<span id="_CPPv3NK3mge9singletonptEv"></span><span id="_CPPv2NK3mge9singletonptEv"></span><span id="mge::singleton::pointer-operatorC"></span><span class="target" id="classmge_1_1singleton_1a2e75098588e429c6ad9fa3fd20fdac55"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton13const_pointerE" title="mge::singleton::const_pointer"><span class="n"><span class="pre">const_pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9singletonptEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge9singletonptEv"></span><span id="_CPPv2NK3mge9singletonptEv"></span><span id="mge::singleton::pointer-operatorC"></span><span class="target" id="classmge_1_1singleton_1a2e75098588e429c6ad9fa3fd20fdac55"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton13const_pointerE" title="mge::singleton::const_pointer"><span class="n"><span class="pre">const_pointer</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9singletonptEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access the contained object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -777,9 +617,10 @@ On demand initialization. Usually static variables of <code class="docutils lite
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9singletonmlEv">
-<span id="_CPPv3N3mge9singletonmlEv"></span><span id="_CPPv2N3mge9singletonmlEv"></span><span id="mge::singleton::mul-operator"></span><span class="target" id="classmge_1_1singleton_1a992a82149d461c6f773900692311020c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton9referenceE" title="mge::singleton::reference"><span class="n"><span class="pre">reference</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonmlEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge9singletonmlEv"></span><span id="_CPPv2N3mge9singletonmlEv"></span><span id="mge::singleton::mul-operator"></span><span class="target" id="classmge_1_1singleton_1a992a82149d461c6f773900692311020c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton9referenceE" title="mge::singleton::reference"><span class="n"><span class="pre">reference</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9singletonmlEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access the contained object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -787,9 +628,10 @@ On demand initialization. Usually static variables of <code class="docutils lite
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9singletonmlEv">
-<span id="_CPPv3NK3mge9singletonmlEv"></span><span id="_CPPv2NK3mge9singletonmlEv"></span><span id="mge::singleton::mul-operatorC"></span><span class="target" id="classmge_1_1singleton_1aecd0e69d82fdd299d3d49e1617f44204"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton15const_referenceE" title="mge::singleton::const_reference"><span class="n"><span class="pre">const_reference</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9singletonmlEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3NK3mge9singletonmlEv"></span><span id="_CPPv2NK3mge9singletonmlEv"></span><span id="mge::singleton::mul-operatorC"></span><span class="target" id="classmge_1_1singleton_1aecd0e69d82fdd299d3d49e1617f44204"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9singleton15const_referenceE" title="mge::singleton::const_reference"><span class="n"><span class="pre">const_reference</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9singletonmlEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access the contained object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -797,17 +639,19 @@ On demand initialization. Usually static variables of <code class="docutils lite
 </dd>
 </dl>
 </dd></dl>
+
 </div>
 </dd></dl>
+
 </section>
 <section id="container-element-check">
-<h3>Container Element Check<a class="headerlink" href="#container-element-check" title="Permalink to this headline">¶</a></h3>
+<h3>Container Element Check<a class="headerlink" href="#container-element-check" title="Permalink to this heading">¶</a></h3>
 <p><a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::contains()</span></code></a> can be used to check whether an element is in a
 container. Be aware this may have different complexity, depending on
 the container.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element">
-<span id="_CPPv3I00EN3mge8containsERK9ContainerRK7Element"></span><span id="_CPPv2I00EN3mge8containsERK9ContainerRK7Element"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Container</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Element</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a017df6664bd0986e1a41afdd71b63da5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">contains</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains::Container"><span class="n"><span class="pre">Container</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains::Element"><span class="n"><span class="pre">Element</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I00EN3mge8containsERK9ContainerRK7Element"></span><span id="_CPPv2I00EN3mge8containsERK9ContainerRK7Element"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Container</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Element</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1a017df6664bd0986e1a41afdd71b63da5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">contains</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains::Container"><span class="n"><span class="pre">Container</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="mge::contains::Element"><span class="n"><span class="pre">Element</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Check whether an element is contained in a container. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -827,27 +671,27 @@ the container.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="callback-map">
-<h3>Callback Map<a class="headerlink" href="#callback-map" title="Permalink to this headline">¶</a></h3>
+<h3>Callback Map<a class="headerlink" href="#callback-map" title="Permalink to this heading">¶</a></h3>
 <p>A callback map is used to manage callbacks or _listeners_. It manages
 a map of keys and callbacks, where the callback key can be used to remove
 a callback again, as function objects can’t be compared.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4IDpEN3mge12callback_mapE">
-<span id="_CPPv3IDpEN3mge12callback_mapE"></span><span id="_CPPv2IDpEN3mge12callback_mapE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classmge_1_1callback__map"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">callback_map</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4IDpEN3mge12callback_mapE" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3IDpEN3mge12callback_mapE"></span><span id="_CPPv2IDpEN3mge12callback_mapE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1callback__map"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">callback_map</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4IDpEN3mge12callback_mapE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback map. </p>
-<p><dl class="field-list simple">
-<dt class="field-odd">tparam Args</dt>
-<dd class="field-odd"><p>function arguments </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Args</strong> – function arguments </p>
 </dd>
 </dl>
-</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12callback_map6insertERK13function_type">
-<span id="_CPPv3N3mge12callback_map6insertERK13function_type"></span><span id="_CPPv2N3mge12callback_map6insertERK13function_type"></span><span id="mge::callback_map::insert__function_typeCR"></span><span class="target" id="classmge_1_1callback__map_1a4e82a6efc3eb4d5701df62cdcc8ab905"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">key_type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insert</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">function_type</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12callback_map6insertERK13function_type" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge12callback_map6insertERK13function_type"></span><span id="_CPPv2N3mge12callback_map6insertERK13function_type"></span><span id="mge::callback_map::insert__function_typeCR"></span><span class="target" id="classmge_1_1callback__map_1a4e82a6efc3eb4d5701df62cdcc8ab905"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">key_type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">insert</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">function_type</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12callback_map6insertERK13function_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Inserts a callback. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -858,9 +702,10 @@ a callback again, as function objects can’t be compared.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12callback_map5eraseE8key_type">
-<span id="_CPPv3N3mge12callback_map5eraseE8key_type"></span><span id="_CPPv2N3mge12callback_map5eraseE8key_type"></span><span id="mge::callback_map::erase__key_type"></span><span class="target" id="classmge_1_1callback__map_1acf6237cec88cc691434d0d0c753a0d21"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">erase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">key_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12callback_map5eraseE8key_type" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge12callback_map5eraseE8key_type"></span><span id="_CPPv2N3mge12callback_map5eraseE8key_type"></span><span id="mge::callback_map::erase__key_type"></span><span class="target" id="classmge_1_1callback__map_1acf6237cec88cc691434d0d0c753a0d21"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">erase</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">key_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12callback_map5eraseE8key_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Erase callback using a registered key. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -871,17 +716,19 @@ a callback again, as function objects can’t be compared.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </div>
 </dd></dl>
+
 </section>
 <section id="copy-of-structures">
-<h3>Copy of Structures<a class="headerlink" href="#copy-of-structures" title="Permalink to this headline">¶</a></h3>
+<h3>Copy of Structures<a class="headerlink" href="#copy-of-structures" title="Permalink to this heading">¶</a></h3>
 <p>Plain structures, and POD types do not define an assignment operator.
 Fumbling around with <cite>memcpy</cite> and <cite>sizeof</cite> may be a source of error,
 so this is encapsulated in <a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::copy_struct()</span></code></a>.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge11copy_structEvR1TRK1T">
-<span id="_CPPv3I0EN3mge11copy_structER1TRK1T"></span><span id="_CPPv2I0EN3mge11copy_structER1TRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a243e8674ff0f331d1de8691eab409b03"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_struct</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">source</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge11copy_structER1TRK1T"></span><span id="_CPPv2I0EN3mge11copy_structER1TRK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1a243e8674ff0f331d1de8691eab409b03"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">copy_struct</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">target</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="mge::copy_struct::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">source</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge11copy_structEvR1TRK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Plain memory copy of a structure into another. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -895,16 +742,17 @@ so this is encapsulated in <a class="reference internal" href="#_CPPv4I0EN3mge11
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="clear-memory-of-structures">
-<h3>Clear Memory of Structures<a class="headerlink" href="#clear-memory-of-structures" title="Permalink to this headline">¶</a></h3>
+<h3>Clear Memory of Structures<a class="headerlink" href="#clear-memory-of-structures" title="Permalink to this heading">¶</a></h3>
 <p>Unlike constructed objects, plain structures can be uninitialized and
 it may be necessary to fill them with zeros. Again, handling
 <cite>sizeof</cite> can be a source of error, so this is encapsulated in
 <a class="reference internal" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="mge::zero_memory"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::zero_memory()</span></code></a>.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge11zero_memoryEvR1T">
-<span id="_CPPv3I0EN3mge11zero_memoryER1T"></span><span id="_CPPv2I0EN3mge11zero_memoryER1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a135de7a97cbc84ed7d49952e80fc2c53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">zero_memory</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="mge::zero_memory::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I0EN3mge11zero_memoryER1T"></span><span id="_CPPv2I0EN3mge11zero_memoryER1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1a135de7a97cbc84ed7d49952e80fc2c53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">zero_memory</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="mge::zero_memory::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge11zero_memoryEvR1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Clears the memory of a structure. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -915,15 +763,16 @@ it may be necessary to fill them with zeros. Again, handling
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="checked-type-cast">
-<h3>Checked Type Cast<a class="headerlink" href="#checked-type-cast" title="Permalink to this headline">¶</a></h3>
+<h3>Checked Type Cast<a class="headerlink" href="#checked-type-cast" title="Permalink to this heading">¶</a></h3>
 <p>Type casting may produce unexpected results on overflows, i.e. an overflow
 is usually not detected but produces a weird value. A checked cast provides
 check logic that prevents overflows and unexpected truncation of values.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I00EN3mge12checked_castE1T1S">
-<span id="_CPPv3I00EN3mge12checked_castE1S"></span><span id="_CPPv2I00EN3mge12checked_castE1S"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="namespacemge_1a005e8f0fdd3a0cf840b6a7fd1e89dce5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">checked_cast</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::S"><span class="n"><span class="pre">S</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3I00EN3mge12checked_castE1S"></span><span id="_CPPv2I00EN3mge12checked_castE1S"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="namespacemge_1a005e8f0fdd3a0cf840b6a7fd1e89dce5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">checked_cast</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="mge::checked_cast::S"><span class="n"><span class="pre">S</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge12checked_castE1T1S" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Casts a value to a target type, and ensures it does not overflow. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters</dt>
@@ -940,114 +789,108 @@ check logic that prevents overflows and unexpected truncation of values.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="debugger-breakpoint">
-<h3>Debugger Breakpoint<a class="headerlink" href="#debugger-breakpoint" title="Permalink to this headline">¶</a></h3>
+<h3>Debugger Breakpoint<a class="headerlink" href="#debugger-breakpoint" title="Permalink to this heading">¶</a></h3>
 <p>Sometimes it may be useful to programmatically raise a debug breakpoint,
 i.e. stop execution when inside a debuggger. This is abstracted by
 <a class="reference internal" href="#_CPPv4N3mge13call_debuggerEv" title="mge::call_debugger"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::call_debugger()</span></code></a></p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13call_debuggerEv">
-<span id="_CPPv3N3mge13call_debuggerEv"></span><span id="_CPPv2N3mge13call_debuggerEv"></span><span id="mge::call_debugger"></span><span class="target" id="namespacemge_1a10d3c3aa3e5816aa4584b164ea1a9cac"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">call_debugger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13call_debuggerEv" title="Permalink to this definition">¶</a><br/></dt>
+<span id="_CPPv3N3mge13call_debuggerEv"></span><span id="_CPPv2N3mge13call_debuggerEv"></span><span id="mge::call_debugger"></span><span class="target" id="namespacemge_1a10d3c3aa3e5816aa4584b164ea1a9cac"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">call_debugger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13call_debuggerEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
+
 </section>
 </section>
 </section>
 
-        </article>
-      </div>
-      <footer>
-        
-        <div class="related-pages">
-          <a class="next-page" href="concurrency.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Concurrency</div>
-              </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="streams.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Streams</div>
-                
-              </div>
-            </a>
-        </div>
-
-        <div class="related-information">
-              Copyright &#169; 2021, Alexander Schroeder |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
-            <a class="muted-link" href="../_sources/core/utilities.rst.txt"
-               rel="nofollow">
-              Show Source
-            </a>
-        </div>
-        
-      </footer>
-    </div>
-    <aside class="toc-drawer">
-      
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            Contents
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Utilities</a><ul>
-<li><a class="reference internal" href="#general-utilities">General Utilities</a><ul>
-<li><a class="reference internal" href="#executable-name">Executable Name</a></li>
-<li><a class="reference internal" href="#type-name">Type Name</a></li>
-<li><a class="reference internal" href="#stack-backtrace">Stack Backtrace</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#data-structures">Data structures</a><ul>
-<li><a class="reference internal" href="#string-pool">String Pool</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#programming-helpers">Programming Helpers</a><ul>
-<li><a class="reference internal" href="#reference-declaration">Reference Declaration</a></li>
-<li><a class="reference internal" href="#noncopyable">Noncopyable</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#patterns-and-algorithms">Patterns and Algorithms</a><ul>
-<li><a class="reference internal" href="#singleton">Singleton</a></li>
-<li><a class="reference internal" href="#container-element-check">Container Element Check</a></li>
-<li><a class="reference internal" href="#callback-map">Callback Map</a></li>
-<li><a class="reference internal" href="#copy-of-structures">Copy of Structures</a></li>
-<li><a class="reference internal" href="#clear-memory-of-structures">Clear Memory of Structures</a></li>
-<li><a class="reference internal" href="#checked-type-cast">Checked Type Cast</a></li>
-<li><a class="reference internal" href="#debugger-breakpoint">Debugger Breakpoint</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 
           </div>
+          
         </div>
       </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">MGE</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../mgecore.html">Core Library</a><ul>
+      <li>Previous: <a href="streams.html" title="previous chapter">Streams</a></li>
+      <li>Next: <a href="concurrency.html" title="next chapter">Concurrency</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Alexander Schroeder.
       
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
-    </aside>
-  </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/scripts/main.js"></script>
-    </body>
+      |
+      <a href="../_sources/core/utilities.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
 </html>
