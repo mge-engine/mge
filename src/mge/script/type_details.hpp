@@ -16,10 +16,23 @@
 
 namespace mge::script {
 
+    /**
+     * @brief Details of a type.
+     */
     class MGESCRIPT_EXPORT type_details
         : public std::enable_shared_from_this<type_details>
     {
     public:
+        /**
+         * @brief Construct a new type details object
+         *
+         * @param name          type name
+         * @param ti            C++ type info
+         * @param t             type traits
+         * @param size          type binary size
+         * @param used_name     used name (like 'string' for
+         * 'std::basic_string<...>')
+         */
         type_details(const std::string&     name,
                      const std::type_index& ti,
                      const traits&          t,
@@ -28,17 +41,81 @@ namespace mge::script {
 
         virtual ~type_details() = default;
 
-        const std::string&             name() const;
-        const std::string&             unique_name() const;
-        const module_details_weak_ref& module() const;
-        const std::type_index&         type_index() const;
-        const mge::script::traits&     traits() const;
-        const type_details_ref&        enclosing_type() const;
-        bool                           is_subtype() const;
-        size_t                         size() const;
+        /**
+         * @brief Name of type (used name).
+         * @return type name (used name)
+         */
+        const std::string& name() const;
 
-        void               set_module(const module_details_ref& m);
-        void               set_enclosing_type(const type_details_ref& t);
+        /**
+         * @brief Unique name of type.
+         * @return type name (unique name)
+         */
+        const std::string& unique_name() const;
+
+        /**
+         * @brief Reference to module, if any.
+         *
+         * @return type's module
+         */
+        const module_details_weak_ref& module() const;
+
+        /**
+         * @brief C++ <tt>std::type_index</tt> of type.
+         *
+         * @return type index of type
+         */
+        const std::type_index& type_index() const;
+
+        /**
+         * @brief Type traits.
+         *
+         * @return type traits
+         */
+        const mge::script::traits& traits() const;
+
+        /**
+         * @brief Enclosing type for nested types.
+         *
+         * @return enclosing type
+         */
+        const type_details_ref& enclosing_type() const;
+
+        /**
+         * @brief Whether this type is a sub type of another.
+         *
+         * @return true if this type is enclosed in another type
+         */
+        bool is_subtype() const;
+
+        /**
+         * @brief Binary size.
+         *
+         * @return Binary size of type.
+         */
+        size_t size() const;
+
+        /**
+         * @brief Set the type's module.
+         *
+         * @param m type's module
+         */
+        void set_module(const module_details_ref& m);
+
+        /**
+         * @brief Set the enclosing type.
+         *
+         * @param t enclosing type
+         */
+        void set_enclosing_type(const type_details_ref& t);
+
+        /**
+         * @brief Get enclosing module.
+         * This is either the module of the type, or the enclosing module
+         * of the enclosing type in case of nested types.
+         *
+         * @return enclosing module
+         */
         module_details_ref enclosing_module() const;
 
         /**
@@ -48,6 +125,16 @@ namespace mge::script {
          * @return found type details, if not found exception is raised
          */
         static type_details_ref get_first_match(const std::type_index& ti);
+        /**
+         * @brief Create type details.
+         *
+         * @param ti C++ type index
+         * @param name type name
+         * @param tr traits
+         * @param size type binary size
+         *
+         * @return created type
+         */
         static type_details_ref create(const std::type_index&     ti,
                                        const std::string&         name,
                                        const mge::script::traits& tr,
@@ -72,6 +159,9 @@ namespace mge::script {
         type_details_ref        m_enclosing_type;
     };
 
+    /**
+     * @brief Type details of an enum type.
+     */
     class MGESCRIPT_EXPORT enum_type_details : public type_details
     {
     public:
@@ -92,6 +182,9 @@ namespace mge::script {
         std::vector<value> m_values;
     };
 
+    /**
+     * @brief Type details of a class type.
+     */
     class MGESCRIPT_EXPORT class_type_details : public type_details
     {
     public:
