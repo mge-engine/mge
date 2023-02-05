@@ -2,10 +2,6 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
-# mge - Modern Game Engine
-# Copyright (c) 2021 by Alexander Schroeder
-# All rights reserved.
-
 FUNCTION(MGE_DOCUMENT_TARGET TGT)
     GET_PROPERTY(__all_sources GLOBAL PROPERTY ALL_PROJECT_SOURCES)
     GET_TARGET_PROPERTY(__target_sources ${TGT} SOURCES)

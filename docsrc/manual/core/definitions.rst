@@ -10,9 +10,9 @@ necessary to identify the nature of the environment. So, some
 identification macros are provided, in :file:`mge/config.hpp`.
 
 .. note::
-    While MGE targets currently only Microsoft Visual Studio 2019,
-    some other defines are provided, however no implementation exist for other
-    operating systems, compilers and CPU architectures
+    While MGE targets currently only Microsoft Visual Studio,
+    some other definitions are provided, however no implementation exist for
+    other    operating systems, compilers, and CPU architectures
 
 Compiler
 --------

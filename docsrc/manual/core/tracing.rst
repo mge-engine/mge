@@ -126,7 +126,8 @@ During development one may want to add temporary debug trace, which is purely
 for isolating the problem, and which should be easy to identify. A
 :any:`MGE_XDEBUG` statement may fulfil this purpose. Trace messages
 issued by this statement are prefixed with 'XDEBUG:' and thus are easy to
-grep for. Note released code of MGE does not contain any 'XDEBUG' trace.
+grep for. Note that the released code of MGE does not contain any 'XDEBUG'
+trace.
 
 .. doxygendefine:: MGE_XDEBUG
 

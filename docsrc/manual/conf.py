@@ -15,7 +15,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'MGE'
-copyright = '2021, Alexander Schroeder'
+copyright = '2023, Alexander Schroeder'
 author = 'Alexander Schroeder'
 
 # The full version, including alpha/beta/rc tags
