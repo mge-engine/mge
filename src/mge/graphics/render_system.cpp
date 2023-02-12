@@ -18,8 +18,15 @@ namespace mge {
 
     render_system_ref render_system::create()
     {
-        std::string implementation_name =
-            MGE_PARAMETER(graphics, render_system).get();
+        const char* env_value = std::getenv("MGE_RENDER_SYSTEM");
+        std::string implementation_name;
+        if (env_value == nullptr) {
+            implementation_name = MGE_PARAMETER(graphics, render_system).get();
+        } else {
+            MGE_DEBUG_TRACE(GRAPHICS)
+                << "Use render system from MGE_RENDER_SYSTEM: " << env_value;
+            implementation_name = env_value;
+        }
         return component<render_system>::create(implementation_name);
     }
 
