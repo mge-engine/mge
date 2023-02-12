@@ -59,6 +59,20 @@ be set, and trace sinks attached as destination of trace records</p></li>
 trace message and details on its origin.</p></li>
 </ul>
 <p>To use tracing, <code class="file docutils literal notranslate"><span class="pre">mge/core/trace.hpp</span></code> needs to be included.</p>
+<p>In addition to use configuration to enable and disable trace, the following
+environment variables can be used:</p>
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-MGE_TRACE_TO_STDOUT">
+<span class="sig-name descname"><span class="pre">MGE_TRACE_TO_STDOUT</span></span><a class="headerlink" href="#envvar-MGE_TRACE_TO_STDOUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to “1” to print all trace to standard output.</p>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-MGE_ENABLE_TRACE">
+<span class="sig-name descname"><span class="pre">MGE_ENABLE_TRACE</span></span><a class="headerlink" href="#envvar-MGE_ENABLE_TRACE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to “1” to enable all trace.</p>
+</dd></dl>
+
 <section id="severity">
 <h2>Severity<a class="headerlink" href="#severity" title="Permalink to this heading">¶</a></h2>
 <p>Trace messages can have a different severities, indicated by a trace level.</p>
