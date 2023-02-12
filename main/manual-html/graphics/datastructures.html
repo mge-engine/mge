@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Data Structures &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Shader Programs" href="shaders.html" />
-    <link rel="prev" title="Render Context" href="render_context.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Render Context" href="render_context.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="shaders.html" title="Shader Programs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="render_context.html" title="Render Context"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data Structures</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="data-structures">
@@ -60,7 +68,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge5point5pointE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge5point5pointE8uint32_t8uint32_t"></span><span id="mge::point::point__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1point_1ae61c1e223c7b94d4512f8b3632e64559"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">point</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x_</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5point5pointE8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create point. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x_</strong> – x coordinate </p></li>
 <li><p><strong>y_</strong> – y coordinate </p></li>
@@ -107,7 +115,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9rgb_colorEj"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEj"></span><span id="mge::rgb_color::rgb_color__unsigned-i"></span><span class="target" id="classmge_1_1rgb__color_1a941a3a6dadd441bb46cc2843dce1e9fa"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rgbvalue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEj" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rgbvalue</strong> – rgb value (like 0xFFAAEE) </p>
 </dd>
 </dl>
@@ -118,7 +126,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="mge::rgb_color::rgb_color__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a005d5fb99128414a380b4b9f109503af"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="mge::rgb_color::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – copied color value </p>
 </dd>
 </dl>
@@ -129,7 +137,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9rgb_colorEPKc"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKc"></span><span id="mge::rgb_color::rgb_color__cCP"></span><span class="target" id="classmge_1_1rgb__color_1add6cb66902273f8f78ef469fe16fe027"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create RGB color from color name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – color name </p>
 </dd>
 </dl>
@@ -140,7 +148,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9rgb_colorEKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEKf"></span><span id="mge::rgb_color::rgb_color__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a19a6a44b8cb9c3dcde1a66e5052e0016"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct (greyscale) color from single value. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value</strong> – color value </p>
 </dd>
 </dl>
@@ -151,7 +159,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9rgb_colorEfff"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEfff"></span><span id="mge::rgb_color::rgb_color__float.float.float"></span><span class="target" id="classmge_1_1rgb__color_1a4ef750828bd0fabffbe5577244267c17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEfff" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Creates a color </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>r_</strong> – red </p></li>
 <li><p><strong>g_</strong> – green </p></li>
@@ -166,7 +174,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9rgb_colorEPKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKf"></span><span id="mge::rgb_color::rgb_color__floatCP"></span><span class="target" id="classmge_1_1rgb__color_1a0f0589e07ea83007c337c379500c9ac8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Initialize from array. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>values</strong> – color value array </p>
 </dd>
 </dl>
@@ -177,10 +185,10 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_coloraSERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_coloraSERK9rgb_color"></span><span id="mge::rgb_color::assign-operator__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a157e6e2e98628c123531c37995f4a96e"></span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_coloraSERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment operator. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – color to assign. </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -191,7 +199,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color7set_redEKf"></span><span id="_CPPv2N3mge9rgb_color7set_redEKf"></span><span id="mge::rgb_color::set_red__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a5293a75faedf2711ce1c3f3291cee733"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_red</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color7set_redEKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set red component, </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>r_</strong> – red value </p>
 </dd>
 </dl>
@@ -202,7 +210,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color9set_greenEKf"></span><span id="_CPPv2N3mge9rgb_color9set_greenEKf"></span><span id="mge::rgb_color::set_green__floatC"></span><span class="target" id="classmge_1_1rgb__color_1ab7402bce8cc86c713e02418fd0956758"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_green</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9set_greenEKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set green component. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>g_</strong> – green component </p>
 </dd>
 </dl>
@@ -213,7 +221,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge9rgb_color8set_blueEKf"></span><span id="_CPPv2N3mge9rgb_color8set_blueEKf"></span><span id="mge::rgb_color::set_blue__floatC"></span><span class="target" id="classmge_1_1rgb__color_1aa07d336c926330996e3e30351a0b1257"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_blue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color8set_blueEKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set blue component. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>b_</strong> – blue component </p>
 </dd>
 </dl>
@@ -224,7 +232,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge9rgb_color7get_redEv"></span><span id="_CPPv2NK3mge9rgb_color7get_redEv"></span><span id="mge::rgb_color::get_redC"></span><span class="target" id="classmge_1_1rgb__color_1a5d9d5d8e0653d8963b04be6f2f07dbfa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_red</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color7get_redEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get red component. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>red component </p>
 </dd>
 </dl>
@@ -235,7 +243,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge9rgb_color9get_greenEv"></span><span id="_CPPv2NK3mge9rgb_color9get_greenEv"></span><span id="mge::rgb_color::get_greenC"></span><span class="target" id="classmge_1_1rgb__color_1aff13b6391520fb9b800d9b672dc7659d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_green</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color9get_greenEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get green component. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>green component </p>
 </dd>
 </dl>
@@ -246,7 +254,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge9rgb_color8get_blueEv"></span><span id="_CPPv2NK3mge9rgb_color8get_blueEv"></span><span id="mge::rgb_color::get_blueC"></span><span class="target" id="classmge_1_1rgb__color_1a468c131e45fecebbaf17049530ec49b9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_blue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color8get_blueEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get blue component. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>blue component </p>
 </dd>
 </dl>
@@ -257,10 +265,10 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge9rgb_coloreqERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_coloreqERK9rgb_color"></span><span id="mge::rgb_color::eq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a4530c6e35fad00078efc3272bd613d20"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_coloreqERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – compared color </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color equals <code class="docutils literal notranslate"><span class="pre">c</span></code> </p>
 </dd>
 </dl>
@@ -271,10 +279,10 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge9rgb_colorneERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_colorneERK9rgb_color"></span><span id="mge::rgb_color::neq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a59c17099f88e3152c07f8d9b8e9f2f44"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_colorneERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – compared color </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color is different from <code class="docutils literal notranslate"><span class="pre">c</span></code> </p>
 </dd>
 </dl>
@@ -321,7 +329,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_color10rgba_colorEj"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEj"></span><span id="mge::rgba_color::rgba_color__unsigned-i"></span><span class="target" id="classmge_1_1rgba__color_1a10eea4bb9835bb948c8d9935acffcacc"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rgbavalue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEj" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructor </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rgbavalue</strong> – RGBA value (like 0xFFAAEE77 (alpha is 0x77 here)) </p>
 </dd>
 </dl>
@@ -332,7 +340,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="mge::rgba_color::rgba_color__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a4d1b2db7eeb9d9751b1982018cb2de65"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="mge::rgba_color::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – copied color value </p>
 </dd>
 </dl>
@@ -343,7 +351,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_color10rgba_colorEPKcf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKcf"></span><span id="mge::rgba_color::rgba_color__cCP.float"></span><span class="target" id="classmge_1_1rgba__color_1a9cda65aaf36e526387c469974df9359e"></span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKcf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create RGBA color from color name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – color name </p></li>
 <li><p><strong>alpha</strong> – alpha value </p></li>
@@ -357,7 +365,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_color10rgba_colorEKfKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEKfKf"></span><span id="mge::rgba_color::rgba_color__floatC.floatC"></span><span class="target" id="classmge_1_1rgba__color_1a6964447ee7c897fe8cf6890ae101bae4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEKfKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct (greyscale) color from single value. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>value</strong> – color value </p></li>
 <li><p><strong>alpha</strong> – alpha value </p></li>
@@ -371,7 +379,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_color10rgba_colorEffff"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEffff"></span><span id="mge::rgba_color::rgba_color__float.float.float.float"></span><span class="target" id="classmge_1_1rgba__color_1a85ebeadba8da788a3a265871311e0097"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEffff" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Creates a color </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>r_</strong> – red </p></li>
 <li><p><strong>g_</strong> – green </p></li>
@@ -387,7 +395,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_color10rgba_colorEPKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKf"></span><span id="mge::rgba_color::rgba_color__floatCP"></span><span class="target" id="classmge_1_1rgba__color_1a3866ab2d409b991f32f00143f27dcd5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Initialize from array. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>values</strong> – color value array </p>
 </dd>
 </dl>
@@ -398,10 +406,10 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3N3mge10rgba_coloraSERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_coloraSERK10rgba_color"></span><span id="mge::rgba_color::assign-operator__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a5afd4262d2fea208e6a631f40784dd80"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_coloraSERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment operator. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – color to assign. </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -412,10 +420,10 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge10rgba_coloreqERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_coloreqERK10rgba_color"></span><span id="mge::rgba_color::eq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1a74969261d8f41458433992927965a042"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_coloreqERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Compare with other color. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – color for comparison </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if colors equal </p>
 </dd>
 </dl>
@@ -426,10 +434,10 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge10rgba_colorneERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_colorneERK10rgba_color"></span><span id="mge::rgba_color::neq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1acfcb5a435a9a2e5966042e3cf70cd6e1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_colorneERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Compare with other color. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – color for comparison </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if colors not equal </p>
 </dd>
 </dl>
@@ -440,7 +448,7 @@ structures to define window sizes and locations are provided.</p>
 <span id="_CPPv3NK3mge10rgba_color4dataEv"></span><span id="_CPPv2NK3mge10rgba_color4dataEv"></span><span id="mge::rgba_color::dataC"></span><span class="target" id="classmge_1_1rgba__color_1a4be9ea85665c33fbd6c156eaa5e411e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_color4dataEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access color as array of floats. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>color values </p>
 </dd>
 </dl>
@@ -480,55 +488,40 @@ structures to define window sizes and locations are provided.</p>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Data Structures</a><ul>
+<li><a class="reference internal" href="#geometry">Geometry</a></li>
+<li><a class="reference internal" href="#color">Color</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgegraphics.html">Graphics Library</a><ul>
-      <li>Previous: <a href="render_context.html" title="previous chapter">Render Context</a></li>
-      <li>Next: <a href="shaders.html" title="next chapter">Shader Programs</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="render_context.html"
+                          title="previous chapter">Render Context</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="shaders.html"
+                          title="next chapter">Shader Programs</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/graphics/datastructures.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -539,32 +532,30 @@ structures to define window sizes and locations are provided.</p>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/graphics/datastructures.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="shaders.html" title="Shader Programs"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="render_context.html" title="Render Context"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Data Structures</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

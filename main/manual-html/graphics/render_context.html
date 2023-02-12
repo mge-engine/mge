@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Render Context &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Structures" href="datastructures.html" />
-    <link rel="prev" title="Window" href="window.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Window" href="window.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="datastructures.html" title="Data Structures"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="window.html" title="Window"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Render Context</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="render-context">
@@ -52,14 +60,14 @@ has a 1:1 relationship with the window.</p>
 <span id="_CPPv3N3mge14render_context19create_index_bufferE9data_type6size_tPv"></span><span id="_CPPv2N3mge14render_context19create_index_bufferE9data_type6size_tPv"></span><span id="mge::render_context::create_index_buffer__data_type.s.voidP"></span><span class="target" id="classmge_1_1render__context_1a7b93b8b1d2a1f7e76c596432163e4553"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">index_buffer_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_index_buffer</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="buffers.html#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dt</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_index_bufferE9data_type6size_tPv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a index buffer. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dt</strong> – index buffer data type </p></li>
 <li><p><strong>data_size</strong> – size in bytes </p></li>
 <li><p><strong>data</strong> – initial data </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>created index buffer </p>
 </dd>
 </dl>
@@ -70,14 +78,14 @@ has a 1:1 relationship with the window.</p>
 <span id="_CPPv3N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv"></span><span id="_CPPv2N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv"></span><span id="mge::render_context::create_vertex_buffer__vertex_layoutCR.s.voidP"></span><span class="target" id="classmge_1_1render__context_1a0ff1062c6a5d8aa9b94863036e9ccd5f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">vertex_buffer_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_vertex_buffer</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="buffers.html#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">layout</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span>, <span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tPv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a vertex buffer object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>layout</strong> – vertex buffer layout </p></li>
 <li><p><strong>data_size</strong> – size in bytes </p></li>
 <li><p><strong>data</strong> – initial data </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>created vertex buffer </p>
 </dd>
 </dl>
@@ -88,10 +96,10 @@ has a 1:1 relationship with the window.</p>
 <span id="_CPPv3N3mge14render_context13create_shaderE11shader_type"></span><span id="_CPPv2N3mge14render_context13create_shaderE11shader_type"></span><span id="mge::render_context::create_shader__shader_type"></span><span class="target" id="classmge_1_1render__context_1aa85fa047d57144840702fb7c75d6d7de"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">shader_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_shader</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="shaders.html#_CPPv4N3mge11shader_typeE" title="mge::shader_type"><span class="n"><span class="pre">shader_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context13create_shaderE11shader_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a shader object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> – shader type </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>created shader </p>
 </dd>
 </dl>
@@ -102,7 +110,7 @@ has a 1:1 relationship with the window.</p>
 <span id="_CPPv3N3mge14render_context14create_programEv"></span><span id="_CPPv2N3mge14render_context14create_programEv"></span><span id="mge::render_context::create_program"></span><span class="target" id="classmge_1_1render__context_1a83754b96289e86373f8f8eaf12679bb0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">program_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_program</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context14create_programEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a program object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>created program </p>
 </dd>
 </dl>
@@ -113,7 +121,7 @@ has a 1:1 relationship with the window.</p>
 <span id="_CPPv3N3mge14render_context19create_command_listEv"></span><span id="_CPPv2N3mge14render_context19create_command_listEv"></span><span id="mge::render_context::create_command_list"></span><span class="target" id="classmge_1_1render__context_1a9427554dbea6a0d8cbdc473032b8dd1a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">command_list_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_command_list</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context19create_command_listEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a command list object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>command list </p>
 </dd>
 </dl>
@@ -124,7 +132,7 @@ has a 1:1 relationship with the window.</p>
 <span id="_CPPv3NK3mge14render_context10swap_chainEv"></span><span id="_CPPv2NK3mge14render_context10swap_chainEv"></span><span id="mge::render_context::swap_chainC"></span><span class="target" id="classmge_1_1render__context_1aa7202720e48f122666e183cbbf31d1d5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">swap_chain_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">swap_chain</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge14render_context10swap_chainEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get swap chain of context. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>swap chain </p>
 </dd>
 </dl>
@@ -164,55 +172,29 @@ rates and enable presenting frames.</p>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgegraphics.html">Graphics Library</a><ul>
-      <li>Previous: <a href="window.html" title="previous chapter">Window</a></li>
-      <li>Next: <a href="datastructures.html" title="next chapter">Data Structures</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="window.html"
+                          title="previous chapter">Window</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="datastructures.html"
+                          title="next chapter">Data Structures</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/graphics/render_context.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -223,32 +205,30 @@ rates and enable presenting frames.</p>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/graphics/render_context.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="datastructures.html" title="Data Structures"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="window.html" title="Window"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Render Context</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

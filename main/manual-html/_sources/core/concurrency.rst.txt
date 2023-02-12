@@ -28,7 +28,7 @@ group om construction, and the group cannot be changed.
 Synchronization
 ---------------
 
-The mutex class enhances the `std::mutex` by a name member that is used for
+The mutex class enhances `std::mutex` by a name member that is used for
 additional diagnostic purposes.
 
 .. doxygenclass:: mge::mutex

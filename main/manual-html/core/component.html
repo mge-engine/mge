@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Components &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="System Abstractions" href="system.html" />
-    <link rel="prev" title="Exception Handling" href="exception.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Exception Handling" href="exception.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="system.html" title="System Abstractions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="exception.html" title="Exception Handling"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Components</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="components">
@@ -49,7 +57,7 @@ implementation can be selected when creating an instance.</p>
 <dd><p>Base class for defining a component. </p>
 <p>Classes defining an interface are defined as subclass of this class. This class implements factory and introspection methods to instantiate an implementation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Class</strong> – interface class </p>
 </dd>
 </dl>
@@ -66,7 +74,7 @@ implementation can be selected when creating an instance.</p>
 <span id="_CPPv3NK3mge9component4selfEv"></span><span id="_CPPv2NK3mge9component4selfEv"></span><span id="mge::component::selfC"></span><span class="target" id="classmge_1_1component_1ae551c6b4006a7d75b59433cd3743a6f4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">weak_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class"><span class="n"><span class="pre">Class</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">self</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge9component4selfEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get reference of this instance. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>weak reference to this instance </p>
 </dd>
 </dl>
@@ -80,10 +88,10 @@ implementation can be selected when creating an instance.</p>
 <span id="_CPPv3N3mge9component6createENSt11string_viewE"></span><span id="_CPPv2N3mge9component6createENSt11string_viewE"></span><span id="mge::component::create__std::string_view"></span><span class="target" id="classmge_1_1component_1a5084c19ecae437a055c2670bb3bb5ac4"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3mge9componentE" title="mge::component::Class"><span class="n"><span class="pre">Class</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">implementation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component6createENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create an instance of a registered implementation. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>implementation</strong> – name of the implementation </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;Class&gt;</span></code> referring to the implementation </p>
 </dd>
 </dl>
@@ -94,7 +102,7 @@ implementation can be selected when creating an instance.</p>
 <span id="_CPPv3N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span id="_CPPv2N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE"></span><span class="target" id="classmge_1_1component_1a0354486c6ccccb7e3427392ff8e17e73"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">implementations</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">callback</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Enumerate over all implementations. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>callback</strong> – callback function called for each implementation name </p>
 </dd>
 </dl>
@@ -114,7 +122,7 @@ using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" ti
 <span class="target" id="component_8hpp_1a3e202a943f8f06a84a47dab57ea6851d"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_REGISTER_COMPONENT</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">clazz</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_COMPONENT" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Register a class as component. The macro must be used within the definition namespaces of the argument class. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>clazz</strong> – class name </p></li>
 </ul>
@@ -127,7 +135,7 @@ using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" ti
 <span class="target" id="component_8hpp_1a819def5e7df0b6572cdb47309183798f"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_REGISTER_IMPLEMENTATION</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">clazz</span></span>, <span class="n"><span class="pre">component</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_REGISTER_IMPLEMENTATION" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Register an implementation. The macro must be used within the definition namespace of the argument class. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>clazz</strong> – implementation class name </p></li>
 <li><p><strong>component</strong> – component class (interface class) </p></li>
@@ -141,55 +149,40 @@ using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" ti
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Components</a><ul>
+<li><a class="reference internal" href="#component-base-class">Component Base Class</a></li>
+<li><a class="reference internal" href="#registering-components-and-implementations">Registering Components and Implementations</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgecore.html">Core Library</a><ul>
-      <li>Previous: <a href="exception.html" title="previous chapter">Exception Handling</a></li>
-      <li>Next: <a href="system.html" title="next chapter">System Abstractions</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="exception.html"
+                          title="previous chapter">Exception Handling</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="system.html"
+                          title="next chapter">System Abstractions</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/core/component.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -200,32 +193,30 @@ using the <a class="reference internal" href="#c.MGE_REGISTER_IMPLEMENTATION" ti
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/core/component.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="system.html" title="System Abstractions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="exception.html" title="Exception Handling"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Components</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

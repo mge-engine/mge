@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Render System &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Monitor Support" href="monitor.html" />
-    <link rel="prev" title="Graphics Library" href="../mgegraphics.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Graphics Library" href="../mgegraphics.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="monitor.html" title="Monitor Support"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../mgegraphics.html" title="Graphics Library"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Render System</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="render-system">
@@ -56,7 +64,7 @@
 <span id="_CPPv3N3mge13render_system13create_windowEv"></span><span id="_CPPv2N3mge13render_system13create_windowEv"></span><span id="mge::render_system::create_window"></span><span class="target" id="classmge_1_1render__system_1affd339a873845398b4d64861a2a74e34"></span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create window with default settings. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>created window </p>
 </dd>
 </dl>
@@ -67,13 +75,13 @@
 <span id="_CPPv3N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="_CPPv2N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="mge::render_system::create_window__extentCR.window_optionsCR"></span><span class="target" id="classmge_1_1render__system_1a3bbf4612abb1d1e7dea1c656f043905d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="mge::render_system::create_window::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="window.html#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a window. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>extent</strong> – window size </p></li>
 <li><p><strong>options</strong> – window options </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>created window </p>
 </dd>
 </dl>
@@ -84,7 +92,7 @@
 <span id="_CPPv3N3mge13render_system8monitorsEv"></span><span id="_CPPv2N3mge13render_system8monitorsEv"></span><span id="mge::render_system::monitors"></span><span class="target" id="classmge_1_1render__system_1a46caf82aef3a27accdabfa2e585b757a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">monitor_collection</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system8monitorsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get monitors of the system. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>attached monitors </p>
 </dd>
 </dl>
@@ -95,7 +103,7 @@
 <span id="_CPPv3NK3mge13render_system19system_capabilitiesEv"></span><span id="_CPPv2NK3mge13render_system19system_capabilitiesEv"></span><span id="mge::render_system::system_capabilitiesC"></span><span class="target" id="classmge_1_1render__system_1a72458fef0129960b6b7f3c0f7dcd6c24"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge13render_systemE" title="mge::render_system"><span class="n"><span class="pre">render_system</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilitiesE" title="mge::render_system::capabilities"><span class="n"><span class="pre">capabilities</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">system_capabilities</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system19system_capabilitiesEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access render system capabilities. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>render system capabilities </p>
 </dd>
 </dl>
@@ -109,7 +117,7 @@
 <span id="_CPPv3N3mge13render_system6createEv"></span><span id="_CPPv2N3mge13render_system6createEv"></span><span id="mge::render_system::create"></span><span class="target" id="classmge_1_1render__system_1aea3b63ca6c59db3dba890a2d6b2279cb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">render_system_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create default render system. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>default render system </p>
 </dd>
 </dl>
@@ -120,10 +128,10 @@
 <span id="_CPPv3N3mge13render_system6createENSt11string_viewE"></span><span id="_CPPv2N3mge13render_system6createENSt11string_viewE"></span><span id="mge::render_system::create__std::string_view"></span><span class="target" id="classmge_1_1render__system_1a000d4eda8ec71325638d4ec882596d86"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">render_system_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">implementation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a specific render system. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>implementation</strong> – </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>created render system </p>
 </dd>
 </dl>
@@ -156,7 +164,7 @@
 <span id="_CPPv3NK3mge13render_system12capabilities16shader_languagesEv"></span><span id="_CPPv2NK3mge13render_system12capabilities16shader_languagesEv"></span><span id="mge::render_system::capabilities::shader_languagesC"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1acb1d864d382da598cd537ece5be48f82"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilities20shader_language_listE" title="mge::render_system::capabilities::shader_language_list"><span class="n"><span class="pre">shader_language_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">shader_languages</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system12capabilities16shader_languagesEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get supported shader languages. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of supported shader languages </p>
 </dd>
 </dl>
@@ -167,7 +175,7 @@
 <span id="_CPPv3NK3mge13render_system12capabilities14shader_formatsEv"></span><span id="_CPPv2NK3mge13render_system12capabilities14shader_formatsEv"></span><span id="mge::render_system::capabilities::shader_formatsC"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a195e2488ecc3cc2bb70a731695f62a24"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilities18shader_format_listE" title="mge::render_system::capabilities::shader_format_list"><span class="n"><span class="pre">shader_format_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">shader_formats</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system12capabilities14shader_formatsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get supported shader formats. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list of supported shader formats </p>
 </dd>
 </dl>
@@ -181,55 +189,29 @@
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgegraphics.html">Graphics Library</a><ul>
-      <li>Previous: <a href="../mgegraphics.html" title="previous chapter">Graphics Library</a></li>
-      <li>Next: <a href="monitor.html" title="next chapter">Monitor Support</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../mgegraphics.html"
+                          title="previous chapter">Graphics Library</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="monitor.html"
+                          title="next chapter">Monitor Support</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/graphics/system.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -240,32 +222,30 @@
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/graphics/system.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="monitor.html" title="Monitor Support"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../mgegraphics.html" title="Graphics Library"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Render System</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

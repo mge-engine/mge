@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Buffers &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Command Lists" href="command_list.html" />
-    <link rel="prev" title="Shader Programs" href="shaders.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Shader Programs" href="shaders.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="command_list.html" title="Command Lists"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="shaders.html" title="Shader Programs"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Buffers</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="buffers">
@@ -171,10 +179,10 @@ of a render context.</p>
 <span id="_CPPv3N3mge14data_type_sizeE9data_type"></span><span id="_CPPv2N3mge14data_type_sizeE9data_type"></span><span id="mge::data_type_size__data_type"></span><span class="target" id="namespacemge_1a6f6dae9a23c34565e06ef3a55efcb249"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">data_type_size</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14data_type_sizeE9data_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the size of one data. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> – </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>size_t </p>
 </dd>
 </dl>
@@ -204,7 +212,7 @@ of a render context.</p>
 <span id="_CPPv3NK3mge15hardware_buffer4sizeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4sizeEv"></span><span id="mge::hardware_buffer::sizeC"></span><span class="target" id="classmge_1_1hardware__buffer_1ada36179c28b7c1afff3d29f66003d655"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Size of buffer in bytes. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>buffer size </p>
 </dd>
 </dl>
@@ -215,7 +223,7 @@ of a render context.</p>
 <span id="_CPPv3N3mge15hardware_buffer3mapEv"></span><span id="_CPPv2N3mge15hardware_buffer3mapEv"></span><span id="mge::hardware_buffer::map"></span><span class="target" id="classmge_1_1hardware__buffer_1a1a429949ac06a8b134e0048e95f4cfdc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">map</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer3mapEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Maps the buffer. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>mapped buffer </p>
 </dd>
 </dl>
@@ -232,7 +240,7 @@ of a render context.</p>
 <span id="_CPPv3NK3mge15hardware_buffer6mappedEv"></span><span id="_CPPv2NK3mge15hardware_buffer6mappedEv"></span><span id="mge::hardware_buffer::mappedC"></span><span class="target" id="classmge_1_1hardware__buffer_1a72e0224ffa68ca58fdce741008563ee5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapped</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer6mappedEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return whether buffer is currently mapped. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if mapped </p>
 </dd>
 </dl>
@@ -243,7 +251,7 @@ of a render context.</p>
 <span id="_CPPv3NK3mge15hardware_buffer4typeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4typeEv"></span><span id="mge::hardware_buffer::typeC"></span><span class="target" id="classmge_1_1hardware__buffer_1acd27a65e53d252faddaebf2da4f8cc73"></span><a class="reference internal" href="#_CPPv4N3mge11buffer_typeE" title="mge::buffer_type"><span class="n"><span class="pre">buffer_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4typeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Hardware buffer type. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>buffer type </p>
 </dd>
 </dl>
@@ -276,7 +284,7 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3N3mge13vertex_format13vertex_formatE9data_type6size_t"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatE9data_type6size_t"></span><span id="mge::vertex_format::vertex_format__data_type.s"></span><span class="target" id="classmge_1_1vertex__format_1a17fc50634e3d61a78d00c2d0f7f6667a"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatE9data_type6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new vertex format object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>type</strong> – data type </p></li>
 <li><p><strong>size</strong> – number of elements, default 1 </p></li>
@@ -290,7 +298,7 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3N3mge13vertex_format13vertex_formatERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatERK13vertex_format"></span><span id="mge::vertex_format::vertex_format__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__format_1a08ada61e1c9054a3017190c373bd8c68"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format" title="mge::vertex_format::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – copied format </p>
 </dd>
 </dl>
@@ -301,7 +309,7 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3N3mge13vertex_format13vertex_formatERR13vertex_format"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatERR13vertex_format"></span><span id="mge::vertex_format::vertex_format__vertex_formatRR"></span><span class="target" id="classmge_1_1vertex__format_1a2b33a82237943886585bb1356aaec435"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format" title="mge::vertex_format::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – moved format </p>
 </dd>
 </dl>
@@ -312,10 +320,10 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3N3mge13vertex_formataSERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_formataSERK13vertex_format"></span><span id="mge::vertex_format::assign-operator__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__format_1a9ce3c325ac3c1a3cb0caa67c671f029f"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formataSERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – assigned format </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -326,10 +334,10 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3N3mge13vertex_formataSERR13vertex_format"></span><span id="_CPPv2N3mge13vertex_formataSERR13vertex_format"></span><span id="mge::vertex_format::assign-operator__vertex_formatRR"></span><span class="target" id="classmge_1_1vertex__format_1a707d8b65efd70b8652dfa09559122e4f"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formataSERR13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move assignment,. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – assigned format </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -340,7 +348,7 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3NK3mge13vertex_format4typeEv"></span><span id="_CPPv2NK3mge13vertex_format4typeEv"></span><span id="mge::vertex_format::typeC"></span><span class="target" id="classmge_1_1vertex__format_1afe10de3f012ec1f16df7e6b30ec932bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format4typeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Data type of vertex. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>data type </p>
 </dd>
 </dl>
@@ -351,7 +359,7 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3NK3mge13vertex_format4sizeEv"></span><span id="_CPPv2NK3mge13vertex_format4sizeEv"></span><span id="mge::vertex_format::sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aabc48df57677e8d25d9f5f49ca459c67"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Number of elements in vertex. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of elements </p>
 </dd>
 </dl>
@@ -362,7 +370,7 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3NK3mge13vertex_format11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_format11binary_sizeEv"></span><span id="mge::vertex_format::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aac61c56d3ec5a4f30f39399959925cef"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format11binary_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Binary size of vertex (number of bytes) </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>binary size </p>
 </dd>
 </dl>
@@ -373,10 +381,10 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3NK3mge13vertex_formatltERK13vertex_format"></span><span id="_CPPv2NK3mge13vertex_formatltERK13vertex_format"></span><span id="mge::vertex_format::lt-operator__vertex_formatCRC"></span><span class="target" id="classmge_1_1vertex__format_1a313af9639a0f301d84d17a7e88cb4981"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_formatltERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – compared format </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is less than <code class="docutils literal notranslate"><span class="pre">f</span></code> </p>
 </dd>
 </dl>
@@ -387,10 +395,10 @@ texture coordinate, and normal vector data.</p>
 <span id="_CPPv3NK3mge13vertex_formateqERK13vertex_format"></span><span id="_CPPv2NK3mge13vertex_formateqERK13vertex_format"></span><span id="mge::vertex_format::eq-operator__vertex_formatCRC"></span><span class="target" id="classmge_1_1vertex__format_1af93e69384cde6c3d516d8fa4d292fd53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_formateqERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – compared format </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is equal to <code class="docutils literal notranslate"><span class="pre">f</span></code> </p>
 </dd>
 </dl>
@@ -418,7 +426,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE"></span><span id="mge::vertex_layout::vertex_layout__std::initializer_list:vertex_format:CR"></span><span class="target" id="classmge_1_1vertex__layout_1a3dc843de7c8a4d64353b44a9a9f72958"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – initializers </p>
 </dd>
 </dl>
@@ -429,7 +437,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3N3mge13vertex_layout13vertex_layoutERK13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERK13vertex_layout"></span><span id="mge::vertex_layout::vertex_layout__vertex_layoutCR"></span><span class="target" id="classmge_1_1vertex__layout_1a3d7f418d82a33831c09fe7ddb1ff13fb"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout" title="mge::vertex_layout::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – copied layout </p>
 </dd>
 </dl>
@@ -440,7 +448,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3N3mge13vertex_layout13vertex_layoutERR13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERR13vertex_layout"></span><span id="mge::vertex_layout::vertex_layout__vertex_layoutRR"></span><span class="target" id="classmge_1_1vertex__layout_1af08f12a8880b08b224ffe6dddf5ffa4e"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout" title="mge::vertex_layout::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move constructor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – moved layout </p>
 </dd>
 </dl>
@@ -457,10 +465,10 @@ is a list of vertex formats:</p>
 <span id="_CPPv3N3mge13vertex_layoutaSERK13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layoutaSERK13vertex_layout"></span><span id="mge::vertex_layout::assign-operator__vertex_layoutCR"></span><span class="target" id="classmge_1_1vertex__layout_1adad081d8706da17ef18c8d702f68dd9e"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutaSERK13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – assigned layout </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -471,10 +479,10 @@ is a list of vertex formats:</p>
 <span id="_CPPv3N3mge13vertex_layoutaSERR13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layoutaSERR13vertex_layout"></span><span id="mge::vertex_layout::assign-operator__vertex_layoutRR"></span><span class="target" id="classmge_1_1vertex__layout_1ab83e430342c7a76121bd411a90ef2b59"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutaSERR13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move assignment.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – moved layout </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -485,7 +493,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3NK3mge13vertex_layout11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_layout11binary_sizeEv"></span><span id="mge::vertex_layout::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__layout_1abbdabbf3f529ed95063bb98c95154a94"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout11binary_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the binary size of one element as defined by the layout.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bytes needed for one element </p>
 </dd>
 </dl>
@@ -506,7 +514,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3NK3mge13vertex_buffer6layoutEv"></span><span id="_CPPv2NK3mge13vertex_buffer6layoutEv"></span><span id="mge::vertex_buffer::layoutC"></span><span class="target" id="classmge_1_1vertex__buffer_1a9b02e3b24174754b0c9c3a87a930d63e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_buffer6layoutEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the layout of this buffer. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>layout of this buffer. </p>
 </dd>
 </dl>
@@ -517,7 +525,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3NK3mge13vertex_buffer13element_countEv"></span><span id="_CPPv2NK3mge13vertex_buffer13element_countEv"></span><span id="mge::vertex_buffer::element_countC"></span><span class="target" id="classmge_1_1vertex__buffer_1a468d4306f045d9bf8d8446af0864572c"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_buffer13element_countEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the element count of this buffer. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of elements (vertices) </p>
 </dd>
 </dl>
@@ -541,7 +549,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3NK3mge12index_buffer12element_typeEv"></span><span id="_CPPv2NK3mge12index_buffer12element_typeEv"></span><span id="mge::index_buffer::element_typeC"></span><span class="target" id="classmge_1_1index__buffer_1a27a9ebe5dfad78a5991a570c9ff6c322"></span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge12index_buffer12element_typeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the type of index buffer element. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>type of element </p>
 </dd>
 </dl>
@@ -552,7 +560,7 @@ is a list of vertex formats:</p>
 <span id="_CPPv3NK3mge12index_buffer13element_countEv"></span><span id="_CPPv2NK3mge12index_buffer13element_countEv"></span><span id="mge::index_buffer::element_countC"></span><span class="target" id="classmge_1_1index__buffer_1aefa431461845b8db946b74a7abf97223"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12index_buffer13element_countEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the number of elements in the buffer. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of elements </p>
 </dd>
 </dl>
@@ -568,55 +576,43 @@ is a list of vertex formats:</p>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Buffers</a><ul>
+<li><a class="reference internal" href="#types-and-definitions">Types and Definitions</a></li>
+<li><a class="reference internal" href="#hardware-buffer">Hardware Buffer</a></li>
+<li><a class="reference internal" href="#vertex-buffer">Vertex Buffer</a></li>
+<li><a class="reference internal" href="#index-buffer">Index Buffer</a></li>
+<li><a class="reference internal" href="#constant-buffer">Constant Buffer</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgegraphics.html">Graphics Library</a><ul>
-      <li>Previous: <a href="shaders.html" title="previous chapter">Shader Programs</a></li>
-      <li>Next: <a href="command_list.html" title="next chapter">Command Lists</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="shaders.html"
+                          title="previous chapter">Shader Programs</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="command_list.html"
+                          title="next chapter">Command Lists</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/graphics/buffers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -627,32 +623,30 @@ is a list of vertex formats:</p>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/graphics/buffers.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="command_list.html" title="Command Lists"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="shaders.html" title="Shader Programs"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Buffers</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

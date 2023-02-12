@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Concurrency &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Versions" href="version.html" />
-    <link rel="prev" title="Utilities" href="utilities.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Utilities" href="utilities.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="version.html" title="Versions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="utilities.html" title="Utilities"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Concurrency</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="concurrency">
@@ -83,7 +91,7 @@ methods.</p>
 <span id="_CPPv3N3mge6thread6threadERKNSt6stringEP12thread_group"></span><span id="_CPPv2N3mge6thread6threadERKNSt6stringEP12thread_group"></span><span id="mge::thread::thread__ssCR.thread_groupP"></span><span class="target" id="classmge_1_1thread_1a05463cd2a625ff521d3b4173cb946a70"></span><span class="sig-name descname"><span class="n"><span class="pre">thread</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span>, <a class="reference internal" href="#_CPPv4N3mge12thread_groupE" title="mge::thread_group"><span class="n"><span class="pre">thread_group</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">group</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread6threadERKNSt6stringEP12thread_group" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – thread name </p></li>
 <li><p><strong>group</strong> – thread group </p></li>
@@ -97,7 +105,7 @@ methods.</p>
 <span id="_CPPv3NK3mge6thread6get_idEv"></span><span id="_CPPv2NK3mge6thread6get_idEv"></span><span id="mge::thread::get_idC"></span><span class="target" id="classmge_1_1thread_1a3460503b1a02017e4bfa7678bbf926db"></span><a class="reference internal" href="#_CPPv4N3mge6threadE" title="mge::thread"><span class="n"><span class="pre">thread</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge6thread2idE" title="mge::thread::id"><span class="n"><span class="pre">id</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_id</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6thread6get_idEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get <code class="docutils literal notranslate"><span class="pre">std::thread</span></code> id. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>id of running thread </p>
 </dd>
 </dl>
@@ -114,7 +122,7 @@ methods.</p>
 <span id="_CPPv3N3mge6thread5startERRNSt8functionIFvvEEE"></span><span id="_CPPv2N3mge6thread5startERRNSt8functionIFvvEEE"></span><span class="target" id="classmge_1_1thread_1a127a08e491016db34bb07923977a7762"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">start</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread5startERRNSt8functionIFvvEEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Start the thread and run the supplied function. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – function to run in the thread </p>
 </dd>
 </dl>
@@ -143,7 +151,7 @@ methods.</p>
 <span id="_CPPv3NK3mge6thread8joinableEv"></span><span id="_CPPv2NK3mge6thread8joinableEv"></span><span id="mge::thread::joinableC"></span><span class="target" id="classmge_1_1thread_1a3ca7f7ece2dceaff2545a25ee8009fd0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">joinable</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge6thread8joinableEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns <code class="docutils literal notranslate"><span class="pre">true</span></code> if thread can be joined. To be joinable, the thread must run and be not equal to this thread (a thread cannot join itself). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if thread can be joined </p>
 </dd>
 </dl>
@@ -154,7 +162,7 @@ methods.</p>
 <span id="_CPPv3NK3mge6thread4nameEv"></span><span id="_CPPv2NK3mge6thread4nameEv"></span><span id="mge::thread::nameC"></span><span class="target" id="classmge_1_1thread_1abef129daa27ddbc095061c5a9b834e38"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge6thread4nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access thread’s name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>thread name </p>
 </dd>
 </dl>
@@ -168,7 +176,7 @@ methods.</p>
 <span id="_CPPv3N3mge6thread11this_threadEv"></span><span id="_CPPv2N3mge6thread11this_threadEv"></span><span id="mge::thread::this_thread"></span><span class="target" id="classmge_1_1thread_1a85e914c18ef083d797bde64ff82f27ad"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge6threadE" title="mge::thread"><span class="n"><span class="pre">thread</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">this_thread</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread11this_threadEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get the current thread. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>current thread, or null pointer if the current thread is not managed </p>
 </dd>
 </dl>
@@ -179,7 +187,7 @@ methods.</p>
 <span id="_CPPv3N3mge6thread20hardware_concurrencyEv"></span><span id="_CPPv2N3mge6thread20hardware_concurrencyEv"></span><span id="mge::thread::hardware_concurrency"></span><span class="target" id="classmge_1_1thread_1ae5f3bc9505bd674aebac744b328887a0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hardware_concurrency</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6thread20hardware_concurrencyEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get hardware concurrency of current environment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>environment hardware concurrency </p>
 </dd>
 </dl>
@@ -203,66 +211,100 @@ group om construction, and the group cannot be changed.</p>
 </section>
 <section id="synchronization">
 <h3>Synchronization<a class="headerlink" href="#synchronization" title="Permalink to this heading">¶</a></h3>
-<p>The mutex class enhances the <cite>std::mutex</cite> by a name member that is used for
+<p>The mutex class enhances <cite>std::mutex</cite> by a name member that is used for
 additional diagnostic purposes.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenclass: Cannot find class “mge::mutex” in doxygen xml output for project “mge” from directory: C:/projects/mge/build/docsrc/manual/doxygen/xml</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5mutexE">
+<span id="_CPPv3N3mge5mutexE"></span><span id="_CPPv2N3mge5mutexE"></span><span id="mge::mutex"></span><span class="target" id="classmge_1_1mutex"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mutex</span></span></span><a class="headerlink" href="#_CPPv4N3mge5mutexE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Mutex like <code class="docutils literal notranslate"><span class="pre">std::mutex</span></code> but with a name. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5mutex5mutexEPKc">
+<span id="_CPPv3N3mge5mutex5mutexEPKc"></span><span id="_CPPv2N3mge5mutex5mutexEPKc"></span><span id="mge::mutex::mutex__cCP"></span><span class="target" id="classmge_1_1mutex_1ace24f2f55bef06f2e05e81c6d1ba3230"></span><span class="sig-name descname"><span class="n"><span class="pre">mutex</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5mutex5mutexEPKc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct a new mutex object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – name of mutex, need to sustain beyond this object’s life time </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5mutexD0Ev">
+<span id="_CPPv3N3mge5mutexD0Ev"></span><span id="_CPPv2N3mge5mutexD0Ev"></span><span id="mge::mutex::~mutex"></span><span class="target" id="classmge_1_1mutex_1a353ae1d87d84ae666a6ccf9f54315cbc"></span><span class="sig-name descname"><span class="n"><span class="pre">~mutex</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5mutexD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Destroy the mutex object. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5mutex4lockEv">
+<span id="_CPPv3N3mge5mutex4lockEv"></span><span id="_CPPv2N3mge5mutex4lockEv"></span><span id="mge::mutex::lock"></span><span class="target" id="classmge_1_1mutex_1acc13b4b54be7c9d927ab49f299b92bab"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5mutex4lockEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Locks the mutex. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5mutex6unlockEv">
+<span id="_CPPv3N3mge5mutex6unlockEv"></span><span id="_CPPv2N3mge5mutex6unlockEv"></span><span id="mge::mutex::unlock"></span><span class="target" id="classmge_1_1mutex_1a45046044394cabe19833df632dd8a82e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unlock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5mutex6unlockEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unlocks the mutex. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5mutex8try_lockEv">
+<span id="_CPPv3N3mge5mutex8try_lockEv"></span><span id="_CPPv2N3mge5mutex8try_lockEv"></span><span id="mge::mutex::try_lock"></span><span class="target" id="classmge_1_1mutex_1a2ea41d7202f837a003efe36524844570"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">try_lock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5mutex8try_lockEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Tries to lock the mutex. Returns immediately. On successful lock acquisition returns <code class="docutils literal notranslate"><span class="pre">true</span></code>, otherwise returns <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if lock acquired, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
+</dd></dl>
+
 </section>
 </section>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Concurrency</a><ul>
+<li><a class="reference internal" href="#threading-utilities">Threading Utilities</a><ul>
+<li><a class="reference internal" href="#thread">Thread</a></li>
+<li><a class="reference internal" href="#thread-group">Thread Group</a></li>
+<li><a class="reference internal" href="#synchronization">Synchronization</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgecore.html">Core Library</a><ul>
-      <li>Previous: <a href="utilities.html" title="previous chapter">Utilities</a></li>
-      <li>Next: <a href="version.html" title="next chapter">Versions</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="utilities.html"
+                          title="previous chapter">Utilities</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="version.html"
+                          title="next chapter">Versions</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/core/concurrency.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -273,32 +315,30 @@ additional diagnostic purposes.</p>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/core/concurrency.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="version.html" title="Versions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="utilities.html" title="Utilities"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Concurrency</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

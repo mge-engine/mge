@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Interaction Loop &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Application" href="application.html" />
-    <link rel="prev" title="Application Library" href="../mgeapplication.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Application Library" href="../mgeapplication.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="application.html" title="Application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../mgeapplication.html" title="Application Library"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgeapplication.html" accesskey="U">Application Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Interaction Loop</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="interaction-loop">
@@ -72,7 +80,7 @@ steps in a loop:</p>
 <span id="_CPPv3NK3mge11loop_target7is_quitEv"></span><span id="_CPPv2NK3mge11loop_target7is_quitEv"></span><span id="mge::loop_target::is_quitC"></span><span class="target" id="classmge_1_1loop__target_1aaaa261588e9d8df1703fa1f64e6f2524"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_quit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge11loop_target7is_quitEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Retrieve whether the interactive loop shall quit. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if the interaction loop shall quit </p>
 </dd>
 </dl>
@@ -83,7 +91,7 @@ steps in a loop:</p>
 <span id="_CPPv3N3mge11loop_target5inputE8uint64_t"></span><span id="_CPPv2N3mge11loop_target5inputE8uint64_t"></span><span id="mge::loop_target::input__uint64_t"></span><span class="target" id="classmge_1_1loop__target_1a3bf7dec83c3f3f1975d89d865ec9272a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge11loop_target5inputE8uint64_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Retrieve and process input in an loop step. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>cycle</strong> – frame counter </p>
 </dd>
 </dl>
@@ -95,7 +103,7 @@ steps in a loop:</p>
 <dd><p>Update state in a step. </p>
 <p>Note <code class="docutils literal notranslate"><span class="pre">cycle</span></code> may be the same for multiple calls.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cycle</strong> – frame counter </p></li>
 <li><p><strong>elapsed</strong> – total elapsed time </p></li>
@@ -110,7 +118,7 @@ steps in a loop:</p>
 <span id="_CPPv3N3mge11loop_target7presentE8uint64_td"></span><span id="_CPPv2N3mge11loop_target7presentE8uint64_td"></span><span id="mge::loop_target::present__uint64_t.double"></span><span class="target" id="classmge_1_1loop__target_1a5a6420a2afaa147ef905cf5497fbbe21"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">present</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">peek</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge11loop_target7presentE8uint64_td" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Presents the state. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cycle</strong> – frame counter </p></li>
 <li><p><strong>peek</strong> – percentage of peek into next step if a fixed step mechanism is used, in range [0,1). </p></li>
@@ -136,7 +144,7 @@ steps in a loop:</p>
 <span id="_CPPv3N3mge4loop3runER11loop_target"></span><span id="_CPPv2N3mge4loop3runER11loop_target"></span><span id="mge::loop::run__loop_targetR"></span><span class="target" id="classmge_1_1loop_1a45a3e3b5310bd6b726a8dfb94a41ceb4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">run</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11loop_targetE" title="mge::loop_target"><span class="n"><span class="pre">loop_target</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge4loop3runER11loop_target" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Run the loop. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> – loop target </p>
 </dd>
 </dl>
@@ -163,55 +171,41 @@ previous frame</p></li>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Interaction Loop</a><ul>
+<li><a class="reference internal" href="#game-loop-concept">Game Loop Concept</a></li>
+<li><a class="reference internal" href="#abstractions">Abstractions</a></li>
+<li><a class="reference internal" href="#simple-loop">Simple Loop</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgeapplication.html">Application Library</a><ul>
-      <li>Previous: <a href="../mgeapplication.html" title="previous chapter">Application Library</a></li>
-      <li>Next: <a href="application.html" title="next chapter">Application</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="../mgeapplication.html"
+                          title="previous chapter">Application Library</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="application.html"
+                          title="next chapter">Application</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/application/loop.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -222,32 +216,30 @@ previous frame</p></li>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/application/loop.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="application.html" title="Application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../mgeapplication.html" title="Application Library"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgeapplication.html" >Application Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Interaction Loop</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

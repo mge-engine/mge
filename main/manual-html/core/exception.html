@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Exception Handling &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Components" href="component.html" />
-    <link rel="prev" title="Statistics" href="statistics.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Statistics" href="statistics.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="component.html" title="Components"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="statistics.html" title="Statistics"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Exception Handling</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="exception-handling">
@@ -59,7 +67,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception9exceptionERK9exception"></span><span id="_CPPv2N3mge9exception9exceptionERK9exception"></span><span id="mge::exception::exception__exceptionCR"></span><span class="target" id="classmge_1_1exception_1aad6f26d3bf5470860fc64e223d4c1b40"></span><span class="sig-name descname"><span class="n"><span class="pre">exception</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exception9exceptionERK9exception" title="mge::exception::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception9exceptionERK9exception" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ex</strong> – copied exception </p>
 </dd>
 </dl>
@@ -70,7 +78,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception9exceptionERR9exception"></span><span id="_CPPv2N3mge9exception9exceptionERR9exception"></span><span id="mge::exception::exception__exceptionRR"></span><span class="target" id="classmge_1_1exception_1a0e56e0accc61bbe85ab3a9cfc929c50f"></span><span class="sig-name descname"><span class="n"><span class="pre">exception</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9exception9exceptionERR9exception" title="mge::exception::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception9exceptionERR9exception" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ex</strong> – moved exception </p>
 </dd>
 </dl>
@@ -87,7 +95,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exceptionaSERK9exception"></span><span id="_CPPv2N3mge9exceptionaSERK9exception"></span><span id="mge::exception::assign-operator__exceptionCR"></span><span class="target" id="classmge_1_1exception_1aec376241e5fcd2d22523688779510d2d"></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exceptionaSERK9exception" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assignment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -98,10 +106,10 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exceptionaSERR9exception"></span><span id="_CPPv2N3mge9exceptionaSERR9exception"></span><span id="mge::exception::assign-operator__exceptionRR"></span><span class="target" id="classmge_1_1exception_1a3cfdaba05bb1fc708f0387add0e6ba73"></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exceptionaSERR9exception" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move assignment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>e</strong> – moved exception </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -112,7 +120,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3NK3mge9exception4whatEv"></span><span id="_CPPv2NK3mge9exception4whatEv"></span><span id="mge::exception::whatC"></span><span class="target" id="classmge_1_1exception_1a5f7743028929f6fb058b85f0cb3674cf"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">what</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge9exception4whatEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Overrides <code class="docutils literal notranslate"><span class="pre">std::exception</span></code> <code class="docutils literal notranslate"><span class="pre">what</span></code> function. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>exception message </p>
 </dd>
 </dl>
@@ -123,13 +131,13 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3I0EN3mge9exception8set_infoERK4Info"></span><span id="_CPPv2I0EN3mge9exception8set_infoERK4Info"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Info</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1exception_1aceaaa85bd5000d10119799db487f7b4d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">set_info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9exception8set_infoER9exceptionRK4Info" title="mge::exception::set_info::Info"><span class="n"><span class="pre">Info</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge9exception8set_infoER9exceptionRK4Info" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set information associated with tag type. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Info</strong> – info tag type </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>info</strong> – information stored under the tag </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -140,13 +148,13 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3IEN3mge9exception8set_infoERKN9exception7messageE"></span><span id="_CPPv2IEN3mge9exception8set_infoERKN9exception7messageE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1exception_1a4bfabab5a5558340250cb003724f9a6b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">set_info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exception7messageE" title="mge::exception::message"><span class="n"><span class="pre">message</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN3mge9exception8set_infoER9exceptionRKN9exception7messageE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set information associated with exception message. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>exception::message</strong> – </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>info</strong> – info object containing message </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -157,10 +165,10 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3I0ENK3mge9exception3getEv"></span><span id="_CPPv2I0ENK3mge9exception3getEv"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Info</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1exception_1ae34461e23e8f3f10a9921ce52822928d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK3mge9exception3getEDav" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Retrieve information stored under a tag type. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>Info</strong> – tag type </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the stored value </p>
 </dd>
 </dl>
@@ -171,7 +179,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3NK3mge9exception7detailsEv"></span><span id="_CPPv2NK3mge9exception7detailsEv"></span><span id="mge::exception::detailsC"></span><span class="target" id="classmge_1_1exception_1a2b00c40b8a4ffaa47e7105ee2b0a0b54"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exception17exception_detailsE" title="mge::exception::exception_details"><span class="n"><span class="pre">exception_details</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">details</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge9exception7detailsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get an exception details instance referring to this exception. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>exception details for this exception </p>
 </dd>
 </dl>
@@ -182,13 +190,13 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3I0EN3mge9exceptionlsERK1T"></span><span id="_CPPv2I0EN3mge9exceptionlsERK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1exception_1afb1be7ff15b7694591100dcdc97837c7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_base_of</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">tag_base</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9exceptionlsENSt9enable_ifINSt10is_base_ofI8tag_base1TE5valueER9exceptionE4typeERK1T" title="mge::exception::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9exceptionlsENSt9enable_ifINSt10is_base_ofI8tag_base1TE5valueER9exceptionE4typeERK1T" title="mge::exception::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge9exceptionlsENSt9enable_ifINSt10is_base_ofI8tag_base1TE5valueER9exceptionE4typeERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Set exception information. This is same as calling <code class="docutils literal notranslate"><span class="pre">set_info</span></code>. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – type of appended value, is a <code class="docutils literal notranslate"><span class="pre">tag</span></code> type </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>value</strong> – value to set </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -199,13 +207,13 @@ informations to the exception, such as location information and stack traces.</p
 <span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1exception_1a4fd61f43158059f7a09a12b1ebbfdae8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if</span></span><span class="p"><span class="pre">&lt;</span></span><span class="o"><span class="pre">!</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_base_of</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">tag_base</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9exceptionlsENSt9enable_ifIXntNSt10is_base_ofI8tag_base1TE5valueEER9exceptionE4typeERK1T" title="mge::exception::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9exceptionlsENSt9enable_ifIXntNSt10is_base_ofI8tag_base1TE5valueEER9exceptionE4typeERK1T" title="mge::exception::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge9exceptionlsENSt9enable_ifIXntNSt10is_base_ofI8tag_base1TE5valueEER9exceptionE4typeERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Append value to message. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>T</strong> – type of appended value </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>value</strong> – value to append </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -219,7 +227,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception17current_exceptionEv"></span><span id="_CPPv2N3mge9exception17current_exceptionEv"></span><span id="mge::exception::current_exception"></span><span class="target" id="classmge_1_1exception_1a5ec0006a89cf370c45d28eeb10ac1367"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">current_exception</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception17current_exceptionEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get current exception of this thread. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>pointer to current exception or <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> if there is none </p>
 </dd>
 </dl>
@@ -237,7 +245,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception15called_function15called_functionERKNSt11string_viewE"></span><span id="_CPPv2N3mge9exception15called_function15called_functionERKNSt11string_viewE"></span><span id="mge::exception::called_function::called_function__std::string_viewCR"></span><span class="target" id="structmge_1_1exception_1_1called__function_1a4247f5d0bb84b6db88e00b49a5012c94"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">called_function</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception15called_function15called_functionERKNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture called function that raised the error. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – called function </p>
 </dd>
 </dl>
@@ -257,7 +265,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception5cause5causeERKN3mge9exceptionE"></span><span id="_CPPv2N3mge9exception5cause5causeERKN3mge9exceptionE"></span><span id="mge::exception::cause::cause__mge::exceptionCR"></span><span class="target" id="structmge_1_1exception_1_1cause_1ae6f2d9a25f62fcca4e2e56d6b0c3bc59"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cause</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception5cause5causeERKN3mge9exceptionE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture causing exception. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ex</strong> – causing exception </p>
 </dd>
 </dl>
@@ -268,7 +276,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception5cause5causeERRN3mge9exceptionE"></span><span id="_CPPv2N3mge9exception5cause5causeERRN3mge9exceptionE"></span><span id="mge::exception::cause::cause__mge::exceptionRR"></span><span class="target" id="structmge_1_1exception_1_1cause_1a487f6bd87533a80585c4f56022fa32c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cause</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception5cause5causeERRN3mge9exceptionE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture causing exception. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ex</strong> – causing exception </p>
 </dd>
 </dl>
@@ -294,7 +302,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception8function8functionERKNSt11string_viewE"></span><span id="_CPPv2N3mge9exception8function8functionERKNSt11string_viewE"></span><span id="mge::exception::function::function__std::string_viewCR"></span><span class="target" id="structmge_1_1exception_1_1function_1a37bdd9f598d001bf77982092f351c36a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value_</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge9exception8function8functionERKNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture current function name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value_</strong> – current function name </p>
 </dd>
 </dl>
@@ -320,7 +328,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception11source_file11source_fileERKNSt11string_viewE"></span><span id="_CPPv2N3mge9exception11source_file11source_fileERKNSt11string_viewE"></span><span id="mge::exception::source_file::source_file__std::string_viewCR"></span><span class="target" id="structmge_1_1exception_1_1source__file_1a8af821014b28d1575671537fafc76e9f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_file</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value_</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge9exception11source_file11source_fileERKNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture source file name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value_</strong> – source file name </p>
 </dd>
 </dl>
@@ -340,7 +348,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception11source_line11source_lineE8uint32_t"></span><span id="_CPPv2N3mge9exception11source_line11source_lineE8uint32_t"></span><span id="mge::exception::source_line::source_line__uint32_t"></span><span class="target" id="structmge_1_1exception_1_1source__line_1a97b8a77ecf32d9b10ab46db208f84dbd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">source_line</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value_</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge9exception11source_line11source_lineE8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture source line number. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value_</strong> – source line number </p>
 </dd>
 </dl>
@@ -360,7 +368,7 @@ informations to the exception, such as location information and stack traces.</p
 <span id="_CPPv3N3mge9exception5stack5stackERRN3mge10stacktraceE"></span><span id="_CPPv2N3mge9exception5stack5stackERRN3mge10stacktraceE"></span><span id="mge::exception::stack::stack__mge::stacktraceRR"></span><span class="target" id="structmge_1_1exception_1_1stack_1a37fe5a72eae256c2dcc6471308573980"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stack</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="utilities.html#_CPPv4N3mge10stacktraceE" title="mge::stacktrace"><span class="n"><span class="pre">stacktrace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception5stack5stackERRN3mge10stacktraceE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture stack backtrace. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>s</strong> – stack backtrace </p>
 </dd>
 </dl>
@@ -384,7 +392,7 @@ The tag type is used to attach values to the exception.</p>
 </div>
  </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>Tag</strong> – type used to access the value </p></li>
 <li><p><strong>Value</strong> – stored value type</p></li>
@@ -419,7 +427,7 @@ The tag type is used to attach values to the exception.</p>
 <span id="_CPPv3N3mge9exception9type_name9type_nameENSt11string_viewE"></span><span id="_CPPv2N3mge9exception9type_name9type_nameENSt11string_viewE"></span><span id="mge::exception::type_name::type_name__std::string_view"></span><span class="target" id="structmge_1_1exception_1_1type__name_1ad2ef3db44118d6363465e3ecdbae2c7b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type_name</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9exception9type_name9type_nameENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Capture exception type name (subclass of <a class="reference internal" href="#classmge_1_1exception"><span class="std std-ref">mge::exception</span></a>). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – type name </p>
 </dd>
 </dl>
@@ -439,7 +447,7 @@ The tag type is used to attach values to the exception.</p>
 <span class="target" id="exception_8hpp_1a07ad0b8d1c104bc633e0efe3739a51fe"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_THROW</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ex</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_THROW" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Throw exception instance. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ex</strong> – exception type </p></li>
 </ul>
@@ -454,7 +462,7 @@ a different error, using <cite>MGE_THROW_WITH_CAUSE</cite> is more appropriate:<
 <span class="target" id="exception_8hpp_1a1a517554a050f686305aabfe41aa1769"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_THROW_WITH_CAUSE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ex</span></span>, <span class="n"><span class="pre">causing_exception</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_THROW_WITH_CAUSE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Throw exception and adds a cause. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>ex</strong> – exception type </p></li>
 <li><p><strong>causing_exception</strong> – exception causing this exception </p></li>
@@ -475,7 +483,7 @@ can be used like this:</p>
 <span class="target" id="exception_8hpp_1a17c7165f07f5ef9ec179e7f63dde5aa6"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_CALLED_FUNCTION</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">X</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_CALLED_FUNCTION" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Helper to add called function to exception information. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>X</strong> – name of called function This helper is usually used to attach additional information to the exception, e.g. in case of system or foreign API errors. <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MGE_THROW</span><span class="p">(</span><span class="n">mge</span><span class="p">::</span><span class="n">exception</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">MGE_CALLED_FUNCTION</span><span class="p">(</span><span class="n">fopen</span><span class="p">);</span>
 </pre></div>
@@ -500,55 +508,41 @@ can be used like this:</p>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Exception Handling</a><ul>
+<li><a class="reference internal" href="#base-exception-class">Base Exception class</a></li>
+<li><a class="reference internal" href="#throwing-exceptions">Throwing Exceptions</a></li>
+<li><a class="reference internal" href="#standard-exceptions">Standard Exceptions</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgecore.html">Core Library</a><ul>
-      <li>Previous: <a href="statistics.html" title="previous chapter">Statistics</a></li>
-      <li>Next: <a href="component.html" title="next chapter">Components</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="statistics.html"
+                          title="previous chapter">Statistics</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="component.html"
+                          title="next chapter">Components</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/core/exception.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -559,32 +553,30 @@ can be used like this:</p>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/core/exception.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="component.html" title="Components"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="statistics.html" title="Statistics"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Exception Handling</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>

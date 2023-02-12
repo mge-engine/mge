@@ -4,11 +4,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
     <title>Statistics &#8212; MGE 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
@@ -18,21 +18,29 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Exception Handling" href="exception.html" />
-    <link rel="prev" title="Configuration" href="configuration.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
+    <link rel="prev" title="Configuration" href="configuration.html" /> 
   </head><body>
-  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="exception.html" title="Exception Handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Statistics</a></li> 
+      </ul>
+    </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
-
           <div class="body" role="main">
             
   <section id="statistics">
@@ -82,10 +90,10 @@ and objects.</p>
 <span id="_CPPv3I_6size_tEN3mge10statistics10statisticsER10statisticsRA1N_Kc"></span><span id="_CPPv2I_6size_tEN3mge10statistics10statisticsER10statisticsRAN_Kc"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1statistics_1ac42370ee3b2e704e5c65e24d561126ef"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_6size_tEN3mge10statistics10statisticsER10statisticsRA1N_Kc" title="mge::statistics::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">parent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN3mge10statistics10statisticsER10statisticsRA1N_Kc" title="mge::statistics::statistics::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_tEN3mge10statistics10statisticsER10statisticsRA1N_Kc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>N</strong> – length of name </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>parent</strong> – parent statistics </p></li>
 <li><p><strong>name</strong> – statistics name </p></li>
@@ -99,10 +107,10 @@ and objects.</p>
 <span id="_CPPv3I_6size_tEN3mge10statistics10statisticsERA1N_Kc"></span><span id="_CPPv2I_6size_tEN3mge10statistics10statisticsERAN_Kc"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1statistics_1a91f7a9f263903d422ef2499af0491bdb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I_6size_tEN3mge10statistics10statisticsERA1N_Kc" title="mge::statistics::statistics::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_6size_tEN3mge10statistics10statisticsERA1N_Kc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new top level statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>N</strong> – length of name </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>name</strong> – statistics name </p>
 </dd>
 </dl>
@@ -113,7 +121,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics10statisticsER10statisticsNSt11string_viewE"></span><span id="_CPPv2N3mge10statistics10statisticsER10statisticsNSt11string_viewE"></span><span id="mge::statistics::statistics__statisticsR.std::string_view"></span><span class="target" id="classmge_1_1statistics_1a9735be3879ae520867113b76428e1437"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10statistics10statisticsER10statisticsNSt11string_viewE" title="mge::statistics::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">parent</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics10statisticsER10statisticsNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent statistics </p></li>
 <li><p><strong>name</strong> – statistics name </p></li>
@@ -127,7 +135,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics10statisticsENSt11string_viewE"></span><span id="_CPPv2N3mge10statistics10statisticsENSt11string_viewE"></span><span id="mge::statistics::statistics__std::string_view"></span><span class="target" id="classmge_1_1statistics_1ad8b683a5e68ebaf9edeeff03a08f2d3a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics10statisticsENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – statistics name </p>
 </dd>
 </dl>
@@ -138,7 +146,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics10statisticsERRNSt6stringE"></span><span id="_CPPv2N3mge10statistics10statisticsERRNSt6stringE"></span><span id="mge::statistics::statistics__ssRR"></span><span class="target" id="classmge_1_1statistics_1a776d127864cbab4c0831a600b1ccc740"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics10statisticsERRNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – statistics name </p>
 </dd>
 </dl>
@@ -149,7 +157,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics10statisticsER10statisticsRRNSt6stringE"></span><span id="_CPPv2N3mge10statistics10statisticsER10statisticsRRNSt6stringE"></span><span id="mge::statistics::statistics__statisticsR.ssRR"></span><span class="target" id="classmge_1_1statistics_1ad0cb79c2ce7fd70aeb6e7be8bee46e3b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10statistics10statisticsER10statisticsRRNSt6stringE" title="mge::statistics::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">parent</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics10statisticsER10statisticsRRNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent statistics </p></li>
 <li><p><strong>name</strong> – statistics name </p></li>
@@ -163,7 +171,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics10statisticsERKNSt6stringE"></span><span id="_CPPv2N3mge10statistics10statisticsERKNSt6stringE"></span><span id="mge::statistics::statistics__ssCR"></span><span class="target" id="classmge_1_1statistics_1a3d826309623b7cc615e97b870e94907b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics10statisticsERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – statistics name </p>
 </dd>
 </dl>
@@ -174,7 +182,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics10statisticsER10statisticsRKNSt6stringE"></span><span id="_CPPv2N3mge10statistics10statisticsER10statisticsRKNSt6stringE"></span><span id="mge::statistics::statistics__statisticsR.ssCR"></span><span class="target" id="classmge_1_1statistics_1a29c2dbd86a24c06ae45229510eee546a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">statistics</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10statistics10statisticsER10statisticsRKNSt6stringE" title="mge::statistics::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">parent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics10statisticsER10statisticsRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a new statistics object. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parent</strong> – parent statistics </p></li>
 <li><p><strong>name</strong> – statistics name </p></li>
@@ -188,7 +196,7 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics4nameEv"></span><span id="_CPPv2NK3mge10statistics4nameEv"></span><span id="mge::statistics::nameC"></span><span class="target" id="classmge_1_1statistics_1a440cb9cd93c2d80194ca0f4fab245720"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics4nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Statistics name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>name </p>
 </dd>
 </dl>
@@ -205,7 +213,7 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics8describeEv"></span><span id="_CPPv2NK3mge10statistics8describeEv"></span><span id="mge::statistics::describeC"></span><span class="target" id="classmge_1_1statistics_1a916f93ec77326f360f9ff94205fad5a9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statistics11descriptionE" title="mge::statistics::description"><span class="n"><span class="pre">description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">describe</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics8describeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Describes fields of this statistics record. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>element and field description </p>
 </dd>
 </dl>
@@ -219,7 +227,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics4rootEv"></span><span id="_CPPv2N3mge10statistics4rootEv"></span><span id="mge::statistics::root"></span><span class="target" id="classmge_1_1statistics_1a19a5b95abd8e30807bab0ec1f364952d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statisticsE" title="mge::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">root</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics4rootEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Root statistics node. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>root node of statistics </p>
 </dd>
 </dl>
@@ -246,7 +254,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description11descriptionENSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N3mge10statistics11description11descriptionENSt11string_viewENSt11string_viewE"></span><span id="mge::statistics::description::description__std::string_view.std::string_view"></span><span class="target" id="classmge_1_1statistics_1_1description_1aea170e79076b6540be9a6d2a21a44309"></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description11descriptionENSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct statistics description.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – statistics name </p></li>
 <li><p><strong>comment</strong> – statistics comment </p></li>
@@ -260,7 +268,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description11descriptionENSt11string_viewENSt11string_viewENSt16initializer_listI17field_descriptionEE"></span><span id="_CPPv2N3mge10statistics11description11descriptionENSt11string_viewENSt11string_viewENSt16initializer_listI17field_descriptionEE"></span><span id="mge::statistics::description::description__std::string_view.std::string_view.std::initializer_list:field_description:"></span><span class="target" id="classmge_1_1statistics_1_1description_1aba3a43cc595206428872575e2f6c18f3"></span><span class="sig-name descname"><span class="n"><span class="pre">description</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">comment</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fields</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description11descriptionENSt11string_viewENSt11string_viewENSt16initializer_listI17field_descriptionEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct statistics description.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – statistics name </p></li>
 <li><p><strong>comment</strong> – statistics comment </p></li>
@@ -281,7 +289,7 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics11description4nameEv"></span><span id="_CPPv2NK3mge10statistics11description4nameEv"></span><span id="mge::statistics::description::nameC"></span><span class="target" id="classmge_1_1statistics_1_1description_1a13de3d5e25c68d879a1aab53a12e1cb3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics11description4nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Statistics name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>name </p>
 </dd>
 </dl>
@@ -292,7 +300,7 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics11description7commentEv"></span><span id="_CPPv2NK3mge10statistics11description7commentEv"></span><span id="mge::statistics::description::commentC"></span><span class="target" id="classmge_1_1statistics_1_1description_1a8075b07cec803823ef4439c64a29f216"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">comment</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics11description7commentEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Statistics comment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>comment </p>
 </dd>
 </dl>
@@ -303,10 +311,10 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics11description2atE9size_type"></span><span id="_CPPv2NK3mge10statistics11description2atE9size_type"></span><span id="mge::statistics::description::at__size_typeC"></span><span class="target" id="classmge_1_1statistics_1_1description_1aca14472c713645e2753f46a475b0ef87"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">at</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10statistics11description9size_typeE" title="mge::statistics::description::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics11description2atE9size_type" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Access field description. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>index</strong> – field index </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>field descriptor </p>
 </dd>
 </dl>
@@ -317,7 +325,7 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics11description4sizeEv"></span><span id="_CPPv2NK3mge10statistics11description4sizeEv"></span><span id="mge::statistics::description::sizeC"></span><span class="target" id="classmge_1_1statistics_1_1description_1a77fbec18c5f31af435e0e0c9aca84599"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statistics11description9size_typeE" title="mge::statistics::description::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics11description4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Number of fields. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of fields </p>
 </dd>
 </dl>
@@ -331,16 +339,16 @@ and objects.</p>
 <span id="_CPPv3I0EN3mge10statistics11description5fieldENSt11string_viewEM1CN10statistics12counter_typeE"></span><span id="_CPPv2I0EN3mge10statistics11description5fieldENSt11string_viewEM1CN10statistics12counter_typeE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">C</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1statistics_1_1description_1a5893a7ceca540cd3d1d2dd8f20946367"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">field</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <a class="reference internal" href="#_CPPv4N3mge10statisticsE" title="mge::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10statistics12counter_typeE" title="mge::statistics::counter_type"><span class="n"><span class="pre">counter_type</span></span></a><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge10statistics11description5fieldE17field_descriptionNSt11string_viewEM1CN10statistics12counter_typeE" title="mge::statistics::description::field::C"><span class="n"><span class="pre">C</span></span></a><span class="p"><span class="pre">::</span></span><span class="p"><span class="pre">*</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge10statistics11description5fieldE17field_descriptionNSt11string_viewEM1CN10statistics12counter_typeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create field descriptor for counter. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>C</strong> – statistics object class </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>name</strong> – field name </p></li>
 <li><p><strong>p</strong> – pointer to member of <code class="docutils literal notranslate"><span class="pre">C</span></code> </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>field description </p>
 </dd>
 </dl>
@@ -364,7 +372,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description17field_description17field_descriptionENSt11string_viewERRNSt8functionIFN10statistics10value_typeEPvEEE"></span><span id="_CPPv2N3mge10statistics11description17field_description17field_descriptionENSt11string_viewERRNSt8functionIFN10statistics10value_typeEPvEEE"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a113d02c6cd887ad7b338b03641a6f37e"></span><span class="sig-name descname"><span class="n"><span class="pre">field_description</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">field_name</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10statisticsE" title="mge::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10statistics10value_typeE" title="mge::statistics::value_type"><span class="n"><span class="pre">value_type</span></span></a><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">getter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description17field_description17field_descriptionENSt11string_viewERRNSt8functionIFN10statistics10value_typeEPvEEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct field description. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>field_name</strong> – name </p></li>
 <li><p><strong>getter</strong> – functor to retrieve value </p></li>
@@ -378,7 +386,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description17field_description17field_descriptionENSt11string_viewERKNSt8functionIFN10statistics10value_typeEPvEEE"></span><span id="_CPPv2N3mge10statistics11description17field_description17field_descriptionENSt11string_viewERKNSt8functionIFN10statistics10value_typeEPvEEE"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a22860ffecdc9981cf5b23e6b316dfb8f"></span><span class="sig-name descname"><span class="n"><span class="pre">field_description</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">field_name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10statisticsE" title="mge::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10statistics10value_typeE" title="mge::statistics::value_type"><span class="n"><span class="pre">value_type</span></span></a><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">getter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description17field_description17field_descriptionENSt11string_viewERKNSt8functionIFN10statistics10value_typeEPvEEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct field description. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>field_name</strong> – name </p></li>
 <li><p><strong>getter</strong> – functor to retrieve value </p></li>
@@ -392,7 +400,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description17field_description17field_descriptionERK17field_description"></span><span id="_CPPv2N3mge10statistics11description17field_description17field_descriptionERK17field_description"></span><span id="mge::statistics::description::field_description::field_description__field_descriptionCR"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a793ca388769e7e6b1c40c96eda1792ee"></span><span class="sig-name descname"><span class="n"><span class="pre">field_description</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_description17field_descriptionERK17field_description" title="mge::statistics::description::field_description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">desc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description17field_description17field_descriptionERK17field_description" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desc</strong> – copied instance </p>
 </dd>
 </dl>
@@ -403,7 +411,7 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description17field_description17field_descriptionERR17field_description"></span><span id="_CPPv2N3mge10statistics11description17field_description17field_descriptionERR17field_description"></span><span id="mge::statistics::description::field_description::field_description__field_descriptionRR"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a34b8dce68b5274b1d56809bcbb2c97be"></span><span class="sig-name descname"><span class="n"><span class="pre">field_description</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_description17field_descriptionERR17field_description" title="mge::statistics::description::field_description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">desc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description17field_description17field_descriptionERR17field_description" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move constructor. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desc</strong> – moved instance </p>
 </dd>
 </dl>
@@ -420,10 +428,10 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description17field_descriptionaSERK17field_description"></span><span id="_CPPv2N3mge10statistics11description17field_descriptionaSERK17field_description"></span><span id="mge::statistics::description::field_description::assign-operator__field_descriptionCR"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a2c2ed8ad0a31267a404c552d1ca3e329"></span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">desc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description17field_descriptionaSERK17field_description" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Assigment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desc</strong> – assigned descriptor </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -434,10 +442,10 @@ and objects.</p>
 <span id="_CPPv3N3mge10statistics11description17field_descriptionaSERR17field_description"></span><span id="_CPPv2N3mge10statistics11description17field_descriptionaSERR17field_description"></span><span id="mge::statistics::description::field_description::assign-operator__field_descriptionRR"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a545627eb1b61cc8ee1d04224070f1814"></span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10statistics11description17field_descriptionE" title="mge::statistics::description::field_description"><span class="n"><span class="pre">field_description</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">desc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10statistics11description17field_descriptionaSERR17field_description" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Move assigment. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>desc</strong> – assigned descriptor </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
 </dd>
 </dl>
@@ -448,7 +456,7 @@ and objects.</p>
 <span id="_CPPv3NK3mge10statistics11description17field_description4nameEv"></span><span id="_CPPv2NK3mge10statistics11description17field_description4nameEv"></span><span id="mge::statistics::description::field_description::nameC"></span><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1a15465f32d23d210081c35f583b84c7c0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10statistics11description17field_description4nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Field name. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>name </p>
 </dd>
 </dl>
@@ -459,13 +467,13 @@ and objects.</p>
 <span id="_CPPv3I0ENK3mge10statistics11description17field_description3getER1S"></span><span id="_CPPv2I0ENK3mge10statistics11description17field_description3getER1S"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1statistics_1_1description_1_1field__description_1aa58ca8fbb35fbbadc6a9fba43d42ed5a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10statisticsE" title="mge::statistics"><span class="n"><span class="pre">statistics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10statistics10value_typeE" title="mge::statistics::value_type"><span class="n"><span class="pre">value_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0ENK3mge10statistics11description17field_description3getEN10statistics10value_typeER1S" title="mge::statistics::description::field_description::get::S"><span class="n"><span class="pre">S</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">statistics_object</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK3mge10statistics11description17field_description3getEN10statistics10value_typeER1S" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get value. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Template Parameters</dt>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>S</strong> – statistics object type </p>
 </dd>
-<dt class="field-even">Parameters</dt>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>statistics_object</strong> – statistics object used in getter </p>
 </dd>
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>statistics field value </p>
 </dd>
 </dl>
@@ -482,55 +490,39 @@ and objects.</p>
 </section>
 
 
+            <div class="clearer"></div>
           </div>
-          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">MGE</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+  <div>
+    <h3><a href="../index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Statistics</a><ul>
+<li><a class="reference internal" href="#statistics-entry">Statistics Entry</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</li>
 </ul>
 
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../mgecore.html">Core Library</a><ul>
-      <li>Previous: <a href="configuration.html" title="previous chapter">Configuration</a></li>
-      <li>Next: <a href="exception.html" title="next chapter">Exception Handling</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="configuration.html"
+                          title="previous chapter">Configuration</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="exception.html"
+                          title="next chapter">Exception Handling</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/core/statistics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
@@ -541,32 +533,30 @@ and objects.</p>
     </div>
 </div>
 <script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="footer">
-      &copy;2023, Alexander Schroeder.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
-      
-      |
-      <a href="../_sources/core/statistics.rst.txt"
-          rel="nofollow">Page source</a>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="exception.html" title="Exception Handling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="configuration.html" title="Configuration"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Statistics</a></li> 
+      </ul>
     </div>
-
-    
-
-    
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Alexander Schroeder.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
   </body>
 </html>
