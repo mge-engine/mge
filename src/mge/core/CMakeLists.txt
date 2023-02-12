@@ -85,6 +85,7 @@ SET(mgecore_headers
     checked_cast.hpp
     call_debugger.cpp
     line_editor.hpp
+    mutex.hpp
 )
 
 MGE_LIBRARY(

@@ -109,7 +109,7 @@ package manager:
 
 .. code-block::
 
-    C:\>python -m pip install sphinx breathe sphinx_rtd_theme
+    C:\>python -m pip install sphinx breathe
 
 You may want to use a `virtualenv` to separate these packages from your
 system-provided Python installation.
