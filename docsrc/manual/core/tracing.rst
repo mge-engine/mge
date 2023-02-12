@@ -17,6 +17,18 @@ and trace sinks configured.
 
 To use tracing, :file:`mge/core/trace.hpp` needs to be included.
 
+In addition to use configuration to enable and disable trace, the following
+environment variables can be used:
+
+
+.. envvar:: MGE_TRACE_TO_STDOUT
+
+   Set to "1" to print all trace to standard output.
+
+.. envvar:: MGE_ENABLE_TRACE
+
+   Set to "1" to enable all trace.
+
 
 Severity
 ========
