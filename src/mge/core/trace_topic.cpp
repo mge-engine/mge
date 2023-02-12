@@ -31,7 +31,7 @@ namespace mge {
             return true;
         }
 
-        char* val = ::getenv("MGE_TRACE_TO_STDOUT");
+        char* val = std::getenv("MGE_TRACE_TO_STDOUT");
         if (val) {
             return true;
         } else {
@@ -41,7 +41,7 @@ namespace mge {
 
     static bool global_trace_enabled()
     {
-        char* val = ::getenv("MGE_TRACE_ENABLED");
+        char* val = std::getenv("MGE_TRACE_ENABLED");
         if (val) {
             return true;
         } else {
