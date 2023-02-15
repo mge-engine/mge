@@ -15,6 +15,16 @@ namespace mge::vulkan {
         render_context(render_system& system, window& window_);
         ~render_context();
 
+        index_buffer_ref  create_index_buffer(data_type dt,
+                                              size_t    data_size,
+                                              void*     data) override;
+        vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
+                                               size_t               data_size,
+                                               void* data) override;
+        shader_ref        create_shader(shader_type t) override;
+        program_ref       create_program() override;
+        command_list_ref  create_command_list() override;
+
     private:
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
