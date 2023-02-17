@@ -2,16 +2,50 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "error.hpp"
 #include "render_system.hpp"
 #include "window.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(VULKAN);
+}
 
 namespace mge::vulkan {
     render_context::render_context(render_system& system_, window& window_)
         : m_render_system(system_)
         , m_window(window_)
-    {}
+        , m_surface(VK_NULL_HANDLE)
+    {
+        create_surface();
+    }
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        if (m_surface) {
+            m_render_system.vkDestroySurfaceKHR(m_render_system.instance(),
+                                                m_surface,
+                                                nullptr);
+        }
+    }
+
+    void render_context::create_surface()
+    {
+#ifdef MGE_OS_WINDOWS
+        MGE_DEBUG_TRACE(VULKAN) << "Create Vulkan surface";
+        VkWin32SurfaceCreateInfoKHR create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+        create_info.hinstance = GetModuleHandle(nullptr);
+        create_info.hwnd = m_window.hwnd();
+        create_info.flags = 0;
+
+        CHECK_VK_CALL(
+            m_render_system.vkCreateWin32SurfaceKHR(m_render_system.instance(),
+                                                    &create_info,
+                                                    nullptr,
+                                                    &m_surface));
+
+#endif
+    }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,
                                                          size_t    data_size,

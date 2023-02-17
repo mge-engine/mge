@@ -26,8 +26,12 @@ namespace mge::vulkan {
         command_list_ref  create_command_list() override;
 
     private:
+        void create_surface();
+
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
+
+        VkSurfaceKHR m_surface;
     };
 
 } // namespace mge::vulkan

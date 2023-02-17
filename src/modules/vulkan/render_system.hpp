@@ -36,6 +36,8 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
+        inline VkInstance instance() const { return m_instance; }
+
     private:
         void fetch_layers();
         void fetch_instance_extensions(const char* layer);

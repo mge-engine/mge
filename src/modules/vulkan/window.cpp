@@ -29,4 +29,5 @@ namespace mge::vulkan {
                                                             *this);
         m_render_context = context;
     }
+
 } // namespace mge::vulkan
