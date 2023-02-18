@@ -26,6 +26,7 @@ namespace mge::vulkan {
 
     render_system::render_system()
         : m_instance(VK_NULL_HANDLE)
+        , m_debug_messenger(VK_NULL_HANDLE)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
@@ -218,16 +219,56 @@ namespace mge::vulkan {
         create_info.ppEnabledExtensionNames = extensions.data();
         create_info.enabledLayerCount = 0;
         create_info.ppEnabledLayerNames = nullptr;
-        if (debug()) {
-            MGE_DEBUG_TRACE(VULKAN) << "Enable extra debug messages";
-        }
 
         CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_instance));
         resolve_instance_functions();
+
+        if (debug()) {
+            MGE_DEBUG_TRACE(VULKAN) << "Enable extra debug messages";
+            init_debug_messenger();
+        }
+    }
+
+    VkBool32 render_system::debug_message_callback(
+        VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
+        VkDebugUtilsMessageTypeFlagsEXT             type,
+        const VkDebugUtilsMessengerCallbackDataEXT* data,
+        void*                                       userdata)
+    {
+        MGE_DEBUG_TRACE(VULKAN) << data->pMessage;
+        return VK_TRUE;
+    }
+
+    void render_system::init_debug_messenger()
+    {
+        VkDebugUtilsMessengerCreateInfoEXT create_info = {};
+        create_info.sType =
+            VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+        create_info.messageSeverity =
+            VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+            VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
+            VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+            VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+        create_info.messageType =
+            VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+            VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+            VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+        create_info.pfnUserCallback = &debug_message_callback;
+        CHECK_VK_CALL(vkCreateDebugUtilsMessengerEXT(m_instance,
+                                                     &create_info,
+                                                     nullptr,
+                                                     &m_debug_messenger));
     }
 
     void render_system::destroy_instance()
     {
+        if (m_debug_messenger) {
+            vkDestroyDebugUtilsMessengerEXT(m_instance,
+                                            m_debug_messenger,
+                                            nullptr);
+            m_debug_messenger = VK_NULL_HANDLE;
+        }
+
         vkDestroyInstance(m_instance, nullptr);
         m_instance = nullptr;
         clear_functions();
@@ -258,7 +299,7 @@ namespace mge::vulkan {
 
     bool render_system::debug() const
     {
-        return MGE_PARAMETER(vulkan, debug).get();
+        return true; // return MGE_PARAMETER(vulkan, debug).get();
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);

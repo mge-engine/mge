@@ -47,9 +47,18 @@ namespace mge::vulkan {
         void destroy_instance();
         void teardown();
         void clear_functions();
+        void init_debug_messenger();
+        void destroy_debug_messenger();
+
+        static VkBool32
+        debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
+                               VkDebugUtilsMessageTypeFlagsEXT        type,
+                               const VkDebugUtilsMessengerCallbackDataEXT* data,
+                               void* userdata);
 
         std::shared_ptr<vulkan_library> m_library;
         VkInstance                      m_instance;
+        VkDebugUtilsMessengerEXT        m_debug_messenger;
         std::set<std::string>           m_available_extensions;
     };
 
