@@ -207,8 +207,15 @@ namespace mge::vulkan {
         app_info.apiVersion = VK_API_VERSION_1_3;
 
         std::vector<const char*> extensions;
+        std::vector<const char*> layers;
         for (const auto& e : s_default_extensions) {
             extensions.push_back(e);
+        }
+
+        if (debug()) {
+            extensions.push_back("VK_EXT_debug_utils");
+            extensions.push_back("VK_EXT_debug_report");
+            layers.push_back("VK_LAYER_KHRONOS_validation");
         }
 
         VkInstanceCreateInfo create_info = {};
@@ -217,8 +224,8 @@ namespace mge::vulkan {
         create_info.enabledExtensionCount =
             static_cast<uint32_t>(extensions.size());
         create_info.ppEnabledExtensionNames = extensions.data();
-        create_info.enabledLayerCount = 0;
-        create_info.ppEnabledLayerNames = nullptr;
+        create_info.enabledLayerCount = static_cast<uint32_t>(layers.size());
+        create_info.ppEnabledLayerNames = layers.data();
 
         CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_instance));
         resolve_instance_functions();
@@ -241,6 +248,11 @@ namespace mge::vulkan {
 
     void render_system::init_debug_messenger()
     {
+        if (!vkCreateDebugUtilsMessengerEXT) {
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Vulkan debug utils extension unavailable";
+            return;
+        }
         VkDebugUtilsMessengerCreateInfoEXT create_info = {};
         create_info.sType =
             VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;

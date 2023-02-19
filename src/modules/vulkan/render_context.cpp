@@ -32,6 +32,8 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         MGE_DEBUG_TRACE(VULKAN) << "Create Vulkan surface";
+        MGE_DEBUG_TRACE(VULKAN) << "vkCreateWin32SurfaceKHR:"
+                                << m_render_system.vkCreateWin32SurfaceKHR;
         VkWin32SurfaceCreateInfoKHR create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
         create_info.hinstance = GetModuleHandle(nullptr);
