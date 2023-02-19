@@ -227,6 +227,23 @@ namespace mge::vulkan {
         create_info.enabledLayerCount = static_cast<uint32_t>(layers.size());
         create_info.ppEnabledLayerNames = layers.data();
 
+        VkDebugUtilsMessengerCreateInfoEXT debug_utils_create_info = {};
+        if (debug()) {
+            debug_utils_create_info.sType =
+                VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+            debug_utils_create_info.messageSeverity =
+                VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
+            debug_utils_create_info.messageType =
+                VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+            debug_utils_create_info.pfnUserCallback = &debug_message_callback;
+            create_info.pNext = &debug_utils_create_info;
+        }
+
         CHECK_VK_CALL(vkCreateInstance(&create_info, nullptr, &m_instance));
         resolve_instance_functions();
 
