@@ -243,7 +243,7 @@ namespace mge::vulkan {
         void*                                       userdata)
     {
         MGE_DEBUG_TRACE(VULKAN) << data->pMessage;
-        return VK_TRUE;
+        return VK_FALSE; // do not abort the call
     }
 
     void render_system::init_debug_messenger()
