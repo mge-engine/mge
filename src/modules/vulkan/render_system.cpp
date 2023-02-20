@@ -5,9 +5,11 @@
 #include "mge/core/array_size.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
+
+#include "dump.hpp"
 #include "window.hpp"
 
-// #include "window.hpp"
+#include "enumerate.hpp"
 #include "error.hpp"
 #include <memory>
 
@@ -27,14 +29,16 @@ namespace mge::vulkan {
     render_system::render_system()
         : m_instance(VK_NULL_HANDLE)
         , m_debug_messenger(VK_NULL_HANDLE)
+        , m_physical_device(VK_NULL_HANDLE)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
             m_library = std::make_shared<vulkan_library>();
             resolve_basic_instance_functions();
-            fetch_instance_extensions(nullptr);
+            fetch_instance_extensions(nullptr, m_instance_extension_properties);
             fetch_layers();
             create_instance();
+            pick_physical_device();
         } catch (...) {
             teardown();
             throw;
@@ -58,6 +62,19 @@ namespace mge::vulkan {
 
     void render_system::fetch_layers()
     {
+        enumerate(
+            [this](uint32_t* count, VkLayerProperties* data) {
+                CHECK_VK_CALL(vkEnumerateInstanceLayerProperties(count, data));
+            },
+            m_layer_properties);
+
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Found " << m_layer_properties.size() << " Vulkan layers";
+        for (const auto& p : m_layer_properties) {
+            MGE_DEBUG_TRACE(VULKAN) << details(p);
+        }
+
+        /*
         uint32_t property_count = 0;
         CHECK_VK_CALL(
             vkEnumerateInstanceLayerProperties(&property_count, nullptr));
@@ -66,17 +83,18 @@ namespace mge::vulkan {
         CHECK_VK_CALL(
             vkEnumerateInstanceLayerProperties(&property_count,
                                                layer_properties.data()));
-        MGE_DEBUG_TRACE(VULKAN)
-            << "Found " << property_count << " Vulkan layers";
         for (const auto& p : layer_properties) {
             MGE_DEBUG_TRACE(VULKAN) << "Found layer: " << p.layerName << " ("
                                     << p.description << ")";
             fetch_instance_extensions(p.layerName);
         }
+        */
     }
 
-    void render_system::fetch_instance_extensions(const char* layer)
+    void render_system::fetch_instance_extensions(
+        const char* layer, std::vector<VkExtensionProperties>& properties)
     {
+        /*
         uint32_t property_count = 0;
         CHECK_VK_CALL(vkEnumerateInstanceExtensionProperties(layer,
                                                              &property_count,
@@ -99,6 +117,7 @@ namespace mge::vulkan {
                 m_available_extensions.insert(p.extensionName);
             }
         }
+        */
     }
 
     void render_system::resolve_basic_instance_functions()
@@ -288,6 +307,8 @@ namespace mge::vulkan {
                                                      nullptr,
                                                      &m_debug_messenger));
     }
+
+    void render_system::pick_physical_device() {}
 
     void render_system::destroy_instance()
     {

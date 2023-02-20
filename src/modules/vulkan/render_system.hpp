@@ -40,7 +40,8 @@ namespace mge::vulkan {
 
     private:
         void fetch_layers();
-        void fetch_instance_extensions(const char* layer);
+        void fetch_instance_extensions(
+            const char* layer, std::vector<VkExtensionProperties>& properties);
         void resolve_basic_instance_functions();
         void resolve_instance_functions();
         void create_instance();
@@ -49,6 +50,7 @@ namespace mge::vulkan {
         void clear_functions();
         void init_debug_messenger();
         void destroy_debug_messenger();
+        void pick_physical_device();
 
         static VkBool32
         debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
@@ -56,10 +58,13 @@ namespace mge::vulkan {
                                const VkDebugUtilsMessengerCallbackDataEXT* data,
                                void* userdata);
 
-        std::shared_ptr<vulkan_library> m_library;
-        VkInstance                      m_instance;
-        VkDebugUtilsMessengerEXT        m_debug_messenger;
-        std::set<std::string>           m_available_extensions;
+        std::shared_ptr<vulkan_library>    m_library;
+        VkInstance                         m_instance;
+        std::vector<VkExtensionProperties> m_instance_extension_properties;
+        std::vector<VkLayerProperties>     m_layer_properties;
+        VkDebugUtilsMessengerEXT           m_debug_messenger;
+        VkPhysicalDevice                   m_physical_device;
+        std::set<std::string>              m_available_extensions;
     };
 
 } // namespace mge::vulkan
