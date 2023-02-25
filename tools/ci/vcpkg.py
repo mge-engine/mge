@@ -11,14 +11,15 @@ import shutil
 # -- version            increment each time config changes
 # -- vcpkg_githash      git hash of vcpkg to check out
 # -- vcpkg_packages     array of package names to install
-version = "32"
-vcpkg_githash = "36fb23307e10cc6ffcec566c46c4bb3f567c82c6"
+version = "33"
+vcpkg_githash = "223d33be7d3ec6c3d64381ca37f501b8c87dda6a"
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
     "boost-spirit", "boost-locale",
     "vulkan", "glm", "lua", "python3", "linenoise-ng"
 ]
+
 
 def install_vcpkg():
     print("Cloning vcpkg git mirror", flush=True)
