@@ -308,7 +308,34 @@ namespace mge::vulkan {
                                                      &m_debug_messenger));
     }
 
-    void render_system::pick_physical_device() {}
+    void render_system::pick_physical_device()
+    {
+        enumerate(
+            [this](uint32_t* count, VkPhysicalDevice* data) {
+                CHECK_VK_CALL(
+                    vkEnumeratePhysicalDevices(m_instance, count, data));
+            },
+            m_all_physical_devices);
+
+        if (m_all_physical_devices.size() == 1) {
+            MGE_DEBUG_TRACE(VULKAN) << "Found 1 physical device";
+        } else {
+            MGE_DEBUG_TRACE(VULKAN) << "Found " << m_all_physical_devices.size()
+                                    << " physical devices";
+        }
+        if (m_all_physical_devices.empty()) {
+            MGE_THROW(error) << "No physical devices found";
+        }
+
+        m_all_physical_device_properties.resize(m_all_physical_devices.size());
+        for (size_t i = 0; i < m_all_physical_devices.size(); ++i) {
+            vkGetPhysicalDeviceProperties(m_all_physical_devices[i],
+                                          &m_all_physical_device_properties[i]);
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Physical Device #" << i << ": "
+                << details(m_all_physical_device_properties[i]);
+        }
+    }
 
     void render_system::destroy_instance()
     {

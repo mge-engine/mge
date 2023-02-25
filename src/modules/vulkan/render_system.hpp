@@ -64,10 +64,14 @@ namespace mge::vulkan {
         std::vector<VkExtensionProperties> m_instance_extension_properties;
         std::vector<VkLayerProperties>     m_layer_properties;
         std::map<std::string, std::vector<VkExtensionProperties>>
-                                 m_layer_extensions;
-        VkDebugUtilsMessengerEXT m_debug_messenger;
-        VkPhysicalDevice         m_physical_device;
-        std::set<std::string>    m_available_extensions;
+                                      m_layer_extensions;
+        VkDebugUtilsMessengerEXT      m_debug_messenger;
+        std::vector<VkPhysicalDevice> m_all_physical_devices;
+        std::vector<VkPhysicalDeviceProperties>
+                         m_all_physical_device_properties;
+        VkPhysicalDevice m_physical_device;
+
+        std::set<std::string> m_available_extensions;
     };
 
 } // namespace mge::vulkan
