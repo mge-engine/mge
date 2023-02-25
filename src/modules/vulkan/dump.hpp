@@ -23,6 +23,12 @@ namespace mge {
         return os;
     }
 
+    MGE_GIST_OUTPUT(VkExtensionProperties)
+    {
+        os << "{Extension " << g.value->extensionName << "}";
+        return os;
+    }
+
     MGE_DETAILS_OUTPUT(VkLayerProperties)
     {
         os << "{Layer "
@@ -33,6 +39,15 @@ namespace mge {
         os << ", "
            << "implementationVersion=";
         vulkan::dump_version(os, d.value->implementationVersion);
+        os << "}";
+        return os;
+    }
+
+    MGE_DETAILS_OUTPUT(VkExtensionProperties)
+    {
+        os << "{Extension extensionName=" << d.value->extensionName
+           << ", specVersion=";
+        vulkan::dump_version(os, d.value->specVersion);
         os << "}";
         return os;
     }

@@ -36,6 +36,9 @@ namespace mge::vulkan {
             m_library = std::make_shared<vulkan_library>();
             resolve_basic_instance_functions();
             fetch_instance_extensions(nullptr, m_instance_extension_properties);
+            for (const auto& e : m_instance_extension_properties) {
+                m_available_extensions.insert(e.extensionName);
+            }
             fetch_layers();
             create_instance();
             pick_physical_device();
@@ -70,30 +73,30 @@ namespace mge::vulkan {
 
         MGE_DEBUG_TRACE(VULKAN)
             << "Found " << m_layer_properties.size() << " Vulkan layers";
-        for (const auto& p : m_layer_properties) {
-            MGE_DEBUG_TRACE(VULKAN) << details(p);
+        for (const auto& l : m_layer_properties) {
+            MGE_DEBUG_TRACE(VULKAN) << details(l);
+            std::vector<VkExtensionProperties> extension_properties;
+            fetch_instance_extensions(l.layerName, extension_properties);
+            m_layer_extensions[l.layerName] = std::move(extension_properties);
         }
-
-        /*
-        uint32_t property_count = 0;
-        CHECK_VK_CALL(
-            vkEnumerateInstanceLayerProperties(&property_count, nullptr));
-        std::vector<VkLayerProperties> layer_properties;
-        layer_properties.resize(property_count);
-        CHECK_VK_CALL(
-            vkEnumerateInstanceLayerProperties(&property_count,
-                                               layer_properties.data()));
-        for (const auto& p : layer_properties) {
-            MGE_DEBUG_TRACE(VULKAN) << "Found layer: " << p.layerName << " ("
-                                    << p.description << ")";
-            fetch_instance_extensions(p.layerName);
-        }
-        */
     }
 
     void render_system::fetch_instance_extensions(
         const char* layer, std::vector<VkExtensionProperties>& properties)
     {
+        enumerate(
+            [this, layer](uint32_t* count, VkExtensionProperties* data) {
+                CHECK_VK_CALL(
+                    vkEnumerateInstanceExtensionProperties(layer, count, data));
+            },
+            properties);
+        MGE_DEBUG_TRACE(VULKAN) << "Found " << properties.size()
+                                << " Vulkan instance extensions (layer: "
+                                << (layer ? layer : "default") << ")";
+        for (const auto& p : properties) {
+            MGE_DEBUG_TRACE(VULKAN) << details(p);
+        }
+
         /*
         uint32_t property_count = 0;
         CHECK_VK_CALL(vkEnumerateInstanceExtensionProperties(layer,
@@ -108,9 +111,6 @@ namespace mge::vulkan {
             layer,
             &property_count,
             extension_properties.data()));
-        MGE_DEBUG_TRACE(VULKAN) << "Found " << property_count
-                                << " Vulkan instance extensions (layer: "
-                                << (layer ? layer : "default") << ")";
         for (const auto& p : extension_properties) {
             MGE_DEBUG_TRACE(VULKAN) << "Extension found: " << p.extensionName;
             if (layer == nullptr) {

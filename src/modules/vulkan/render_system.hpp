@@ -5,6 +5,7 @@
 #include "mge/graphics/render_system.hpp"
 #include "vulkan_library.hpp"
 
+#include <map>
 #include <set>
 
 namespace mge::vulkan {
@@ -62,9 +63,11 @@ namespace mge::vulkan {
         VkInstance                         m_instance;
         std::vector<VkExtensionProperties> m_instance_extension_properties;
         std::vector<VkLayerProperties>     m_layer_properties;
-        VkDebugUtilsMessengerEXT           m_debug_messenger;
-        VkPhysicalDevice                   m_physical_device;
-        std::set<std::string>              m_available_extensions;
+        std::map<std::string, std::vector<VkExtensionProperties>>
+                                 m_layer_extensions;
+        VkDebugUtilsMessengerEXT m_debug_messenger;
+        VkPhysicalDevice         m_physical_device;
+        std::set<std::string>    m_available_extensions;
     };
 
 } // namespace mge::vulkan
