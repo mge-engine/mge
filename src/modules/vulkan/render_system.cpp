@@ -33,6 +33,7 @@ namespace mge::vulkan {
         : m_instance(VK_NULL_HANDLE)
         , m_debug_messenger(VK_NULL_HANDLE)
         , m_physical_device(VK_NULL_HANDLE)
+        , m_device(VK_NULL_HANDLE)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
@@ -357,6 +358,34 @@ namespace mge::vulkan {
         }
     }
 
+    void render_system::create_device()
+    {
+        VkDeviceQueueCreateInfo queue_create_info{};
+        queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queue_create_info.queueFamilyIndex = m_graphics_family.value();
+
+        float priority = 1.0f;
+        queue_create_info.pQueuePriorities = &priority;
+
+        VkPhysicalDeviceFeatures device_features{};
+
+        VkDeviceCreateInfo create_info{};
+        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+
+        create_info.pQueueCreateInfos = &queue_create_info;
+        create_info.queueCreateInfoCount = 1;
+
+        create_info.pEnabledFeatures = &device_features;
+
+        create_info.enabledExtensionCount = 0;
+        create_info.enabledLayerCount = 0;
+
+        CHECK_VK_CALL(vkCreateDevice(m_physical_device,
+                                     &create_info,
+                                     nullptr,
+                                     &m_device));
+    }
+
     void render_system::destroy_instance()
     {
         if (m_debug_messenger) {
@@ -373,6 +402,11 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
+        if (m_device && vkDestroyDevice) {
+            vkDestroyDevice(m_device, nullptr);
+            m_device = VK_NULL_HANDLE;
+        }
+
         m_physical_device = VK_NULL_HANDLE;
         m_all_physical_devices.clear();
         m_all_physical_device_properties.clear();

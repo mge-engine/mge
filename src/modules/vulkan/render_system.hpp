@@ -43,6 +43,7 @@ namespace mge::vulkan {
         {
             return m_physical_device;
         }
+        inline VkDevice device() const { return m_device; }
 
     private:
         void fetch_layers();
@@ -58,6 +59,7 @@ namespace mge::vulkan {
         void destroy_debug_messenger();
         void pick_physical_device();
         void select_queue_families();
+        void create_device();
 
         static VkBool32
         debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
@@ -81,6 +83,7 @@ namespace mge::vulkan {
         std::optional<uint32_t>              m_graphics_family;
 
         VkPhysicalDevice m_physical_device;
+        VkDevice         m_device;
 
         std::set<std::string> m_available_extensions;
     };
