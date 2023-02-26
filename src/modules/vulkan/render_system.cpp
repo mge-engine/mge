@@ -335,7 +335,29 @@ namespace mge::vulkan {
         }
     }
 
-    void render_system::select_queue_families() {}
+    void render_system::select_queue_families()
+    {
+        enumerate(
+            [this](uint32_t* count, VkQueueFamilyProperties* data) {
+                vkGetPhysicalDeviceQueueFamilyProperties(physical_device(),
+                                                         count,
+                                                         data);
+            },
+            m_queue_families);
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Found " << m_queue_families.size() << " queue families";
+        for (size_t i = 0; i < m_queue_families.size(); ++i) {
+            if (m_queue_families[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                if (!m_graphics_family.has_value()) {
+                    m_graphics_family = checked_cast<uint32_t>(i);
+                }
+            }
+        }
+
+        if (!m_graphics_family.has_value()) {
+            MGE_THROW(error) << "No graphics queue family found";
+        }
+    }
 
     void render_system::destroy_instance()
     {
