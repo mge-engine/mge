@@ -68,8 +68,10 @@ namespace mge::vulkan {
         VkDebugUtilsMessengerEXT      m_debug_messenger;
         std::vector<VkPhysicalDevice> m_all_physical_devices;
         std::vector<VkPhysicalDeviceProperties>
-                         m_all_physical_device_properties;
-        VkPhysicalDevice m_physical_device;
+                                              m_all_physical_device_properties;
+        std::vector<VkPhysicalDeviceFeatures> m_all_physical_device_features;
+
+        uint32_t m_physical_device;
 
         std::set<std::string> m_available_extensions;
     };

@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_system.hpp"
 #include "mge/core/array_size.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
 
@@ -11,6 +12,8 @@
 
 #include "enumerate.hpp"
 #include "error.hpp"
+
+#include <limits>
 #include <memory>
 
 #ifdef MGE_OS_WINDOWS
@@ -24,12 +27,14 @@ namespace mge {
 
 } // namespace mge
 
+static const uint32_t NO_DEVICE = std::numeric_limits<uint32_t>::max();
+
 namespace mge::vulkan {
 
     render_system::render_system()
         : m_instance(VK_NULL_HANDLE)
         , m_debug_messenger(VK_NULL_HANDLE)
-        , m_physical_device(VK_NULL_HANDLE)
+        , m_physical_device(NO_DEVICE)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
@@ -96,28 +101,6 @@ namespace mge::vulkan {
         for (const auto& p : properties) {
             MGE_DEBUG_TRACE(VULKAN) << details(p);
         }
-
-        /*
-        uint32_t property_count = 0;
-        CHECK_VK_CALL(vkEnumerateInstanceExtensionProperties(layer,
-                                                             &property_count,
-                                                             nullptr));
-        if (property_count == 0) {
-            return;
-        }
-        std::vector<VkExtensionProperties> extension_properties;
-        extension_properties.resize(property_count);
-        CHECK_VK_CALL(vkEnumerateInstanceExtensionProperties(
-            layer,
-            &property_count,
-            extension_properties.data()));
-        for (const auto& p : extension_properties) {
-            MGE_DEBUG_TRACE(VULKAN) << "Extension found: " << p.extensionName;
-            if (layer == nullptr) {
-                m_available_extensions.insert(p.extensionName);
-            }
-        }
-        */
     }
 
     void render_system::resolve_basic_instance_functions()
@@ -328,12 +311,26 @@ namespace mge::vulkan {
         }
 
         m_all_physical_device_properties.resize(m_all_physical_devices.size());
+        m_all_physical_device_features.resize(m_all_physical_devices.size());
         for (size_t i = 0; i < m_all_physical_devices.size(); ++i) {
             vkGetPhysicalDeviceProperties(m_all_physical_devices[i],
                                           &m_all_physical_device_properties[i]);
+            vkGetPhysicalDeviceFeatures(m_all_physical_devices[i],
+                                        &m_all_physical_device_features[i]);
             MGE_DEBUG_TRACE(VULKAN)
                 << "Physical Device #" << i << ": "
                 << details(m_all_physical_device_properties[i]);
+
+            if (m_physical_device == NO_DEVICE) {
+                if (m_all_physical_device_properties[i].deviceType ==
+                    VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+                    m_physical_device = checked_cast<uint32_t>(i);
+                }
+            }
+        }
+
+        if (m_physical_device == NO_DEVICE) {
+            MGE_THROW(error) << "No suitable physical device found";
         }
     }
 
