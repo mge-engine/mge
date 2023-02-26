@@ -48,6 +48,9 @@ namespace mge::vulkan {
             create_instance();
             pick_physical_device();
             select_queue_families();
+            create_device();
+            resolve_device_functions();
+            get_device_queue();
         } catch (...) {
             teardown();
             throw;
@@ -68,7 +71,6 @@ namespace mge::vulkan {
 #else
 #    error Missing port
 #endif
-
     void render_system::fetch_layers()
     {
         enumerate(
@@ -171,6 +173,38 @@ namespace mge::vulkan {
 #endif
     }
 
+    void render_system::resolve_device_functions()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve device functions";
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(push)
+#    pragma warning(disable : 4191)
+#endif
+#define RESOLVE(X)                                                             \
+    do {                                                                       \
+        auto f = vkGetDeviceProcAddr(m_device, #X);                            \
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
+        this->X = reinterpret_cast<decltype(this->X)>(f);                      \
+    } while (false);
+
+#define BASIC_INSTANCE_FUNCTION(X)
+#define INSTANCE_FUNCTION(X)
+#define DEVICE_FUNCTION(X) RESOLVE(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+#undef RESOLVE
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(pop)
+#endif
+    }
+
     void render_system::clear_functions()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Clear functions";
@@ -219,6 +253,11 @@ namespace mge::vulkan {
             extensions.push_back("VK_EXT_debug_utils");
             extensions.push_back("VK_EXT_debug_report");
             layers.push_back("VK_LAYER_KHRONOS_validation");
+        }
+
+        MGE_DEBUG_TRACE(VULKAN) << "Selected instance extensions:";
+        for (const auto& e : extensions) {
+            MGE_DEBUG_TRACE(VULKAN) << "  " << e;
         }
 
         VkInstanceCreateInfo create_info = {};
@@ -361,9 +400,11 @@ namespace mge::vulkan {
 
     void render_system::create_device()
     {
+        MGE_DEBUG_TRACE(VULKAN) << "Create logical device";
         VkDeviceQueueCreateInfo queue_create_info{};
         queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queue_create_info.queueFamilyIndex = m_graphics_family.value();
+        queue_create_info.queueCount = 1;
 
         float priority = 1.0f;
         queue_create_info.pQueuePriorities = &priority;

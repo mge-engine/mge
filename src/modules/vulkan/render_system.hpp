@@ -60,6 +60,7 @@ namespace mge::vulkan {
         void pick_physical_device();
         void select_queue_families();
         void create_device();
+        void resolve_device_functions();
         void get_device_queue();
 
         static VkBool32
