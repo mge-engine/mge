@@ -41,7 +41,7 @@ namespace mge::vulkan {
         inline VkInstance       instance() const { return m_instance; }
         inline VkPhysicalDevice physical_device() const
         {
-            return m_all_physical_devices[m_physical_device];
+            return m_physical_device;
         }
 
     private:
@@ -80,7 +80,7 @@ namespace mge::vulkan {
         std::vector<VkQueueFamilyProperties> m_queue_families;
         std::optional<uint32_t>              m_graphics_family;
 
-        uint32_t m_physical_device;
+        VkPhysicalDevice m_physical_device;
 
         std::set<std::string> m_available_extensions;
     };

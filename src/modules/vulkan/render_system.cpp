@@ -27,14 +27,12 @@ namespace mge {
 
 } // namespace mge
 
-static const uint32_t NO_DEVICE = std::numeric_limits<uint32_t>::max();
-
 namespace mge::vulkan {
 
     render_system::render_system()
         : m_instance(VK_NULL_HANDLE)
         , m_debug_messenger(VK_NULL_HANDLE)
-        , m_physical_device(NO_DEVICE)
+        , m_physical_device(VK_NULL_HANDLE)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
@@ -322,15 +320,15 @@ namespace mge::vulkan {
                 << "Physical Device #" << i << ": "
                 << details(m_all_physical_device_properties[i]);
 
-            if (m_physical_device == NO_DEVICE) {
+            if (m_physical_device == VK_NULL_HANDLE) {
                 if (m_all_physical_device_properties[i].deviceType ==
                     VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
-                    m_physical_device = checked_cast<uint32_t>(i);
+                    m_physical_device = m_all_physical_devices[i];
                 }
             }
         }
 
-        if (m_physical_device == NO_DEVICE) {
+        if (m_physical_device == VK_NULL_HANDLE) {
             MGE_THROW(error) << "No suitable physical device found";
         }
     }
@@ -375,7 +373,7 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
-        m_physical_device = NO_DEVICE;
+        m_physical_device = VK_NULL_HANDLE;
         m_all_physical_devices.clear();
         m_all_physical_device_properties.clear();
         m_all_physical_device_features.clear();
