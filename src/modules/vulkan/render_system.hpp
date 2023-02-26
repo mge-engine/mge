@@ -52,6 +52,7 @@ namespace mge::vulkan {
         void init_debug_messenger();
         void destroy_debug_messenger();
         void pick_physical_device();
+        void select_queue_families();
 
         static VkBool32
         debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,

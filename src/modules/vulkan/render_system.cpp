@@ -47,6 +47,7 @@ namespace mge::vulkan {
             fetch_layers();
             create_instance();
             pick_physical_device();
+            select_queue_families();
         } catch (...) {
             teardown();
             throw;
@@ -334,6 +335,8 @@ namespace mge::vulkan {
         }
     }
 
+    void render_system::select_queue_families() {}
+
     void render_system::destroy_instance()
     {
         if (m_debug_messenger) {
@@ -350,6 +353,11 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
+        m_physical_device = NO_DEVICE;
+        m_all_physical_devices.clear();
+        m_all_physical_device_properties.clear();
+        m_all_physical_device_features.clear();
+
         if (m_instance && vkDestroyInstance) {
             destroy_instance();
         }
