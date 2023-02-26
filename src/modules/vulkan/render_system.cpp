@@ -34,6 +34,7 @@ namespace mge::vulkan {
         , m_debug_messenger(VK_NULL_HANDLE)
         , m_physical_device(VK_NULL_HANDLE)
         , m_device(VK_NULL_HANDLE)
+        , m_graphics_queue(VK_NULL_HANDLE)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
@@ -384,6 +385,14 @@ namespace mge::vulkan {
                                      &create_info,
                                      nullptr,
                                      &m_device));
+    }
+
+    void render_system::get_device_queue()
+    {
+        vkGetDeviceQueue(m_device,
+                         m_graphics_family.value(),
+                         0,
+                         &m_graphics_queue);
     }
 
     void render_system::destroy_instance()

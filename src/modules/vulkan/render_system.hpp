@@ -60,6 +60,7 @@ namespace mge::vulkan {
         void pick_physical_device();
         void select_queue_families();
         void create_device();
+        void get_device_queue();
 
         static VkBool32
         debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
@@ -84,6 +85,7 @@ namespace mge::vulkan {
 
         VkPhysicalDevice m_physical_device;
         VkDevice         m_device;
+        VkQueue          m_graphics_queue;
 
         std::set<std::string> m_available_extensions;
     };
