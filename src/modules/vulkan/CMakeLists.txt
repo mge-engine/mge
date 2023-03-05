@@ -18,6 +18,7 @@ SET(mge_vulkan_module_SOURCES
     common.cpp
     render_system.cpp
     render_context.cpp
+    swap_chain.cpp
     vulkan_library.cpp
     window.cpp
     error.cpp)

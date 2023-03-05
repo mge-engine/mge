@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
+#include "swap_chain.hpp"
 #include "window.hpp"
 
 namespace mge {
@@ -11,12 +12,14 @@ namespace mge {
 }
 
 namespace mge::vulkan {
+
     render_context::render_context(render_system& system_, window& window_)
         : m_render_system(system_)
         , m_window(window_)
         , m_surface(VK_NULL_HANDLE)
     {
         create_surface();
+        create_swap_chain();
     }
 
     render_context::~render_context()
@@ -47,6 +50,11 @@ namespace mge::vulkan {
                                                     &m_surface));
 
 #endif
+    }
+
+    void render_context::create_swap_chain()
+    {
+        m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
     }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,

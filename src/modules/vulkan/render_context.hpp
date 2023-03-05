@@ -27,6 +27,7 @@ namespace mge::vulkan {
 
     private:
         void create_surface();
+        void create_swap_chain();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
