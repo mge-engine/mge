@@ -1,2 +1,6 @@
-version = "33"
-vcpkg_githash = "223d33be7d3ec6c3d64381ca37f501b8c87dda6a"
+
+# mge - Modern Game Engine
+# Copyright (c) 2017-2023 by Alexander Schroeder
+# All rights reserved.
+version = "34"
+vcpkg_githash = "8daf70c56ba9581f5251a5d4675eb771b6b34957"
