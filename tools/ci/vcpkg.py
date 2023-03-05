@@ -6,13 +6,14 @@ import os
 import sys
 import subprocess
 import shutil
+import vcpkg_version
 
 # parameters
 # -- version            increment each time config changes
 # -- vcpkg_githash      git hash of vcpkg to check out
 # -- vcpkg_packages     array of package names to install
-version = "33"
-vcpkg_githash = "223d33be7d3ec6c3d64381ca37f501b8c87dda6a"
+version = vcpkg_version.version
+vcpkg_githash = vcpkg_version.vcpkg_githash
 vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
