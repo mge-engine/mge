@@ -35,6 +35,7 @@ namespace mge::vulkan {
         , m_physical_device(VK_NULL_HANDLE)
         , m_device(VK_NULL_HANDLE)
         , m_graphics_queue(VK_NULL_HANDLE)
+        , m_depth_format(VK_FORMAT_UNDEFINED)
     {
         try {
             MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
@@ -51,6 +52,7 @@ namespace mge::vulkan {
             create_device();
             resolve_device_functions();
             get_device_queue();
+            select_depth_format();
         } catch (...) {
             teardown();
             throw;
@@ -434,6 +436,31 @@ namespace mge::vulkan {
                          m_graphics_family.value(),
                          0,
                          &m_graphics_queue);
+    }
+
+    void render_system::select_depth_format()
+    {
+        const VkFormat formats[] = {VK_FORMAT_D32_SFLOAT_S8_UINT,
+                                    VK_FORMAT_D32_SFLOAT,
+                                    VK_FORMAT_D24_UNORM_S8_UINT,
+                                    VK_FORMAT_D16_UNORM_S8_UINT,
+                                    VK_FORMAT_D16_UNORM};
+
+        for (auto& format : formats) {
+            VkFormatProperties props;
+            vkGetPhysicalDeviceFormatProperties(m_physical_device,
+                                                format,
+                                                &props);
+            if (props.optimalTilingFeatures &
+                VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT) {
+                m_depth_format = format;
+                break;
+            }
+        }
+
+        if (m_depth_format == VK_FORMAT_UNDEFINED) {
+            MGE_THROW(vulkan::error) << "No suitable depth buffer format found";
+        }
     }
 
     void render_system::destroy_instance()
