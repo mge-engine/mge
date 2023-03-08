@@ -25,6 +25,8 @@ namespace mge::vulkan {
         program_ref       create_program() override;
         command_list_ref  create_command_list() override;
 
+        void initialize();
+
     private:
         void create_surface();
         void create_swap_chain();

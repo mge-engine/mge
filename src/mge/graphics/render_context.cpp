@@ -11,4 +11,5 @@ namespace mge {
     {
         return m_swap_chain;
     }
+
 } // namespace mge

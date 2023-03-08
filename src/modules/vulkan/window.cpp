@@ -27,6 +27,7 @@ namespace mge::vulkan {
         auto context =
             std::make_shared<::mge::vulkan::render_context>(m_render_system,
                                                             *this);
+        context->initialize();
         m_render_context = context;
     }
 

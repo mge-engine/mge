@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "command_list.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
 #include "swap_chain.hpp"
@@ -17,6 +18,9 @@ namespace mge::vulkan {
         : m_render_system(system_)
         , m_window(window_)
         , m_surface(VK_NULL_HANDLE)
+    {}
+
+    void render_context::initialize()
     {
         create_surface();
         create_swap_chain();
@@ -35,8 +39,11 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         MGE_DEBUG_TRACE(VULKAN) << "Create Vulkan surface";
-        MGE_DEBUG_TRACE(VULKAN) << "vkCreateWin32SurfaceKHR:"
-                                << m_render_system.vkCreateWin32SurfaceKHR;
+        if (!m_render_system.vkCreateWin32SurfaceKHR) {
+            MGE_THROW(vulkan::error)
+                << "Cannot create surface: vkCreateWin32SurfaceKHR function "
+                   "missing";
+        }
         VkWin32SurfaceCreateInfoKHR create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
         create_info.hinstance = GetModuleHandle(nullptr);
@@ -86,7 +93,8 @@ namespace mge::vulkan {
 
     command_list_ref render_context::create_command_list()
     {
-        command_list_ref result;
+        command_list_ref result =
+            std::make_shared<mge::vulkan::command_list>(*this);
         return result;
     }
 
