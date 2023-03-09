@@ -33,6 +33,7 @@ namespace mge::vulkan {
         void create_surface();
         void create_swap_chain();
         void fetch_surface_capabilities();
+        void choose_surface_format();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;

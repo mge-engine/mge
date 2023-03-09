@@ -26,6 +26,7 @@ namespace mge::vulkan {
     {
         create_surface();
         fetch_surface_capabilities();
+        choose_surface_format();
         create_swap_chain();
     }
 
@@ -120,7 +121,7 @@ namespace mge::vulkan {
             m_surface_formats);
 
         MGE_DEBUG_TRACE(VULKAN)
-            << "Found  " << m_surface_formats.size() << " surface formats";
+            << "Found " << m_surface_formats.size() << " surface formats";
         for (const auto& f : m_surface_formats) {
             MGE_DEBUG_TRACE(VULKAN) << "  " << details(f);
         }
@@ -135,7 +136,13 @@ namespace mge::vulkan {
             },
             m_surface_present_modes);
 
-        // vkGetPhysicalDeviceSurfacePresentModesKHR
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Found " << m_surface_present_modes.size() << " present modes";
+        for (const auto& f : m_surface_present_modes) {
+            MGE_DEBUG_TRACE(VULKAN) << "  " << f;
+        }
     }
+
+    void render_context::choose_surface_format() {}
 
 } // namespace mge::vulkan
