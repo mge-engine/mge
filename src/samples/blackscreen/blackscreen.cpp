@@ -45,6 +45,13 @@ namespace mge {
             m_window->show();
         }
 
+        void teardown() override
+        {
+            m_clear_commands.reset();
+            m_window.reset();
+            m_render_system.reset();
+        }
+
     private:
         render_system_ref m_render_system;
         window_ref        m_window;

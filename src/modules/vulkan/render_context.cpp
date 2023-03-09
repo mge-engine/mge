@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "command_list.hpp"
+#include "dump.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
@@ -30,6 +31,7 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
+        MGE_DEBUG_TRACE(VULKAN) << "Destroy render context";
         if (m_surface) {
             m_render_system.vkDestroySurfaceKHR(m_render_system.instance(),
                                                 m_surface,
@@ -117,6 +119,11 @@ namespace mge::vulkan {
             },
             m_surface_formats);
 
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Found  " << m_surface_formats.size() << " surface formats";
+        for (const auto& f : m_surface_formats) {
+            MGE_DEBUG_TRACE(VULKAN) << "  " << details(f);
+        }
         enumerate(
             [this](uint32_t* count, VkPresentModeKHR* data) {
                 CHECK_VK_CALL(

@@ -5,6 +5,7 @@
 #include "mge/core/details.hpp"
 #include "mge/core/gist.hpp"
 #include "vulkan.hpp"
+#include "vulkan_dump.h"
 #include <iostream>
 
 namespace mge {
@@ -36,6 +37,12 @@ namespace mge {
     {
         os << "{PhysicalDevice " << g.value->deviceName << "}";
         return os;
+    }
+
+    MGE_GIST_OUTPUT(VkSurfaceFormatKHR)
+    {
+        return os << "{VkSurfaceFormatKHR format=" << g.value->format
+                  << ", colorSpace=" << g.value->colorSpace << " }";
     }
 
     MGE_DETAILS_OUTPUT(VkLayerProperties)
@@ -74,6 +81,12 @@ namespace mge {
         // VkPhysicalDeviceSparseProperties    sparseProperties;
         os << "{PhysicalDevice deviceName=" << d.value->deviceName << "}";
         return os;
+    }
+
+    MGE_DETAILS_OUTPUT(VkSurfaceFormatKHR)
+    {
+        return os << "{VkSurfaceFormatKHR format=" << d.value->format
+                  << ", colorSpace=" << d.value->colorSpace << " }";
     }
 
 } // namespace mge

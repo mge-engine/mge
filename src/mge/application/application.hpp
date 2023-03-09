@@ -203,6 +203,8 @@ namespace mge {
         const std::vector<std::string>& arguments() const;
 
     private:
+        void clear_listeners();
+
         std::vector<std::string> m_arguments;
         int                      m_return_code;
         volatile bool            m_quit;

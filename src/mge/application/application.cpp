@@ -148,6 +148,8 @@ namespace mge {
             app->setup();
             MGE_DEBUG_TRACE(APPLICATION) << "Application run";
             app->run();
+            MGE_DEBUG_TRACE(APPLICATION) << "Remove all listeners";
+            app->clear_listeners();
             MGE_DEBUG_TRACE(APPLICATION) << "Application teardown";
             app->teardown();
             return app->return_code();
@@ -238,6 +240,14 @@ namespace mge {
     const std::vector<std::string>& application::arguments() const
     {
         return m_arguments;
+    }
+
+    void application::clear_listeners()
+    {
+        m_input_listeners.clear();
+        m_update_listeners.clear();
+        m_redraw_listeners.clear();
+        m_quit_listeners.clear();
     }
 
 } // namespace mge

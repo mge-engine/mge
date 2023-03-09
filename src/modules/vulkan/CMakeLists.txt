@@ -2,6 +2,11 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
+ADD_CUSTOM_COMMAND(OUTPUT vulkan_dump.h
+    COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py" "${Vulkan_INCLUDE_DIRS}/../share/vulkan/registry/vk.xml" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py"
+)
+
 ADD_CUSTOM_COMMAND(OUTPUT vulkan_core.inc
     COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py" "${Vulkan_INCLUDE_DIRS}/vulkan/vulkan_core.h" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_core.inc"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py"
@@ -26,7 +31,8 @@ SET(mge_vulkan_module_SOURCES
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
         "${CMAKE_CURRENT_BINARY_DIR}/vulkan_core.inc"
-        "${CMAKE_CURRENT_BINARY_DIR}/vulkan_win32.inc")
+        "${CMAKE_CURRENT_BINARY_DIR}/vulkan_win32.inc"
+        "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h")
 ENDIF()
 
 ADD_LIBRARY(mge_module_vulkan MODULE
