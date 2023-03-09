@@ -39,6 +39,7 @@ namespace mge::vulkan {
         mge::vulkan::window&        m_window;
 
         VkSurfaceKHR                    m_surface;
+        VkSurfaceFormatKHR              m_used_surface_format;
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;

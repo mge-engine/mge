@@ -20,7 +20,9 @@ namespace mge::vulkan {
         : m_render_system(system_)
         , m_window(window_)
         , m_surface(VK_NULL_HANDLE)
-    {}
+    {
+        m_used_surface_format.format = VK_FORMAT_UNDEFINED;
+    }
 
     void render_context::initialize()
     {
@@ -143,6 +145,16 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::choose_surface_format() {}
+    void render_context::choose_surface_format()
+    {
+        for (const auto& f : m_surface_formats) {
+            if (f.format == VK_FORMAT_B8G8R8A8_SRGB &&
+                f.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+                m_used_surface_format = f;
+                return;
+            }
+        }
+        m_used_surface_format = m_surface_formats.at(0);
+    }
 
 } // namespace mge::vulkan
