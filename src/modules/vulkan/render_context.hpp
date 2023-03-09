@@ -29,6 +29,29 @@ namespace mge::vulkan {
 
         void initialize();
 
+        inline mge::vulkan::render_system& render_system() noexcept
+        {
+            return m_render_system;
+        }
+
+        inline VkSurfaceKHR surface() noexcept { return m_surface; }
+
+        inline VkSurfaceFormatKHR format() noexcept
+        {
+            return m_used_surface_format;
+        }
+
+        inline VkPresentModeKHR present_mode() noexcept
+        {
+            return m_used_present_mode;
+        }
+
+        VkExtent2D                      extent() const;
+        const VkSurfaceCapabilitiesKHR& capabilities() const
+        {
+            return m_surface_capabilities;
+        }
+
     private:
         void create_surface();
         void create_swap_chain();
@@ -38,8 +61,10 @@ namespace mge::vulkan {
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
 
-        VkSurfaceKHR                    m_surface;
-        VkSurfaceFormatKHR              m_used_surface_format;
+        VkSurfaceKHR       m_surface;
+        VkSurfaceFormatKHR m_used_surface_format;
+        VkPresentModeKHR   m_used_present_mode;
+
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;

@@ -159,7 +159,7 @@ namespace mge::vulkan {
 
 #define BASIC_INSTANCE_FUNCTION(X)
 #define INSTANCE_FUNCTION(X) RESOLVE(X)
-#define DEVICE_FUNCTION(X)
+#define DEVICE_FUNCTION(X) RESOLVE(X)
 
 #include "vulkan_core.inc"
 #ifdef MGE_OS_WINDOWS
@@ -186,7 +186,11 @@ namespace mge::vulkan {
     do {                                                                       \
         auto f = vkGetDeviceProcAddr(m_device, #X);                            \
         MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
-        this->X = reinterpret_cast<decltype(this->X)>(f);                      \
+        if (f) {                                                               \
+            MGE_DEBUG_TRACE(VULKAN) << "Replace " << #X << ": "                \
+                                    << (void*)(this->X) << " by " << (void*)f; \
+            this->X = reinterpret_cast<decltype(this->X)>(f);                  \
+        }                                                                      \
     } while (false);
 
 #define BASIC_INSTANCE_FUNCTION(X)
@@ -205,7 +209,7 @@ namespace mge::vulkan {
 #ifdef MGE_COMPILER_MSVC
 #    pragma warning(pop)
 #endif
-    }
+    } // namespace mge::vulkan
 
     void render_system::clear_functions()
     {
@@ -421,13 +425,24 @@ namespace mge::vulkan {
 
         create_info.pEnabledFeatures = &device_features;
 
-        create_info.enabledExtensionCount = 0;
-        create_info.enabledLayerCount = 0;
+        std::vector<const char*> extensions;
+        std::vector<const char*> layers;
+        extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+
+        if (debug()) {
+            layers.push_back("VK_LAYER_KHRONOS_validation");
+        }
+        create_info.ppEnabledExtensionNames = extensions.data();
+        create_info.enabledExtensionCount =
+            static_cast<uint32_t>(extensions.size());
+        create_info.ppEnabledLayerNames = layers.data();
+        create_info.enabledLayerCount = static_cast<uint32_t>(layers.size());
 
         CHECK_VK_CALL(vkCreateDevice(m_physical_device,
                                      &create_info,
                                      nullptr,
                                      &m_device));
+        MGE_DEBUG_TRACE(VULKAN) << "Created device: " << (void*)m_device;
     }
 
     void render_system::get_device_queue()
@@ -513,6 +528,14 @@ namespace mge::vulkan {
     bool render_system::debug() const
     {
         return true; // return MGE_PARAMETER(vulkan, debug).get();
+    }
+
+    uint32_t render_system::graphics_queue_family_index() const
+    {
+        if (!m_graphics_family.has_value()) {
+            MGE_THROW(vulkan::error) << "No graphics queue family present";
+        }
+        return m_graphics_family.value();
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);

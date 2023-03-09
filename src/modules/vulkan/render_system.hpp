@@ -44,6 +44,7 @@ namespace mge::vulkan {
             return m_physical_device;
         }
         inline VkDevice device() const { return m_device; }
+        uint32_t        graphics_queue_family_index() const;
 
     private:
         void fetch_layers();

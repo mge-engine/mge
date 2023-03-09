@@ -16,10 +16,12 @@ namespace mge {
 
 namespace mge::vulkan {
 
-    render_context::render_context(render_system& system_, window& window_)
+    render_context::render_context(::mge::vulkan::render_system& system_,
+                                   window&                       window_)
         : m_render_system(system_)
         , m_window(window_)
         , m_surface(VK_NULL_HANDLE)
+        , m_used_present_mode(VK_PRESENT_MODE_FIFO_KHR)
     {
         m_used_surface_format.format = VK_FORMAT_UNDEFINED;
     }
@@ -155,6 +157,14 @@ namespace mge::vulkan {
             }
         }
         m_used_surface_format = m_surface_formats.at(0);
+    }
+
+    VkExtent2D render_context::extent() const
+    {
+        VkExtent2D result;
+        result.height = m_window.extent().height;
+        result.width = m_window.extent().width;
+        return result;
     }
 
 } // namespace mge::vulkan
