@@ -5,6 +5,8 @@
 #include "mge/graphics/render_context.hpp"
 #include "vulkan.hpp"
 
+#include <vector>
+
 namespace mge::vulkan {
     class render_system;
     class window;
@@ -30,11 +32,15 @@ namespace mge::vulkan {
     private:
         void create_surface();
         void create_swap_chain();
+        void fetch_surface_capabilities();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
 
-        VkSurfaceKHR m_surface;
+        VkSurfaceKHR                    m_surface;
+        VkSurfaceCapabilitiesKHR        m_surface_capabilities;
+        std::vector<VkSurfaceFormatKHR> m_surface_formats;
+        std::vector<VkPresentModeKHR>   m_surface_present_modes;
     };
 
 } // namespace mge::vulkan

@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "command_list.hpp"
+#include "enumerate.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
 #include "swap_chain.hpp"
@@ -23,6 +24,7 @@ namespace mge::vulkan {
     void render_context::initialize()
     {
         create_surface();
+        fetch_surface_capabilities();
         create_swap_chain();
     }
 
@@ -96,6 +98,37 @@ namespace mge::vulkan {
         command_list_ref result =
             std::make_shared<mge::vulkan::command_list>(*this);
         return result;
+    }
+
+    void render_context::fetch_surface_capabilities()
+    {
+        CHECK_VK_CALL(m_render_system.vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
+            m_render_system.physical_device(),
+            m_surface,
+            &m_surface_capabilities));
+        enumerate(
+            [this](uint32_t* count, VkSurfaceFormatKHR* data) {
+                CHECK_VK_CALL(
+                    m_render_system.vkGetPhysicalDeviceSurfaceFormatsKHR(
+                        m_render_system.physical_device(),
+                        m_surface,
+                        count,
+                        data));
+            },
+            m_surface_formats);
+
+        enumerate(
+            [this](uint32_t* count, VkPresentModeKHR* data) {
+                CHECK_VK_CALL(
+                    m_render_system.vkGetPhysicalDeviceSurfacePresentModesKHR(
+                        m_render_system.physical_device(),
+                        m_surface,
+                        count,
+                        data));
+            },
+            m_surface_present_modes);
+
+        // vkGetPhysicalDeviceSurfacePresentModesKHR
     }
 
 } // namespace mge::vulkan
