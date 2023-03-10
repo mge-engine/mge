@@ -6,6 +6,7 @@
 #include "dump.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
+#include "mge/core/checked_cast.hpp"
 #include "render_system.hpp"
 #include "swap_chain.hpp"
 #include "window.hpp"
@@ -29,6 +30,7 @@ namespace mge::vulkan {
     void render_context::initialize()
     {
         create_surface();
+        select_present_queue();
         fetch_surface_capabilities();
         choose_surface_format();
         create_swap_chain();
@@ -165,6 +167,30 @@ namespace mge::vulkan {
         result.height = m_window.extent().height;
         result.width = m_window.extent().width;
         return result;
+    }
+
+    void render_context::select_present_queue()
+    {
+        const auto queue_families = m_render_system.queue_families();
+        for (size_t i = 0; i < queue_families.size(); ++i) {
+            VkBool32 present_support = VK_FALSE;
+            CHECK_VK_CALL(m_render_system.vkGetPhysicalDeviceSurfaceSupportKHR(
+                m_render_system.physical_device(),
+                checked_cast<uint32_t>(i),
+                m_surface,
+                &present_support));
+            if (present_support) {
+                m_present_family = checked_cast<uint32_t>(i);
+            }
+        }
+    }
+
+    uint32_t render_context::present_queue_family_index() const
+    {
+        if (!m_present_family.has_value()) {
+            MGE_THROW(vulkan::error) << "No present queue family present";
+        }
+        return m_present_family.value();
     }
 
 } // namespace mge::vulkan

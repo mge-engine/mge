@@ -38,13 +38,22 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
-        inline VkInstance       instance() const { return m_instance; }
-        inline VkPhysicalDevice physical_device() const
+        inline VkInstance instance() const noexcept { return m_instance; }
+
+        inline VkPhysicalDevice physical_device() const noexcept
         {
             return m_physical_device;
         }
-        inline VkDevice device() const { return m_device; }
-        uint32_t        graphics_queue_family_index() const;
+
+        inline VkDevice device() const noexcept { return m_device; }
+
+        uint32_t graphics_queue_family_index() const;
+
+        const std::vector<VkQueueFamilyProperties>&
+        queue_families() const noexcept
+        {
+            return m_queue_families;
+        }
 
     private:
         void fetch_layers();

@@ -29,8 +29,19 @@ namespace mge::vulkan {
         create_info.imageExtent = context.extent();
         create_info.imageArrayLayers = 1;
         create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-        // assume the graphics queue is also the presentation queue
-        create_info.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        uint32_t queue_families[] = {
+            context.render_system().graphics_queue_family_index(),
+            context.present_queue_family_index()};
+        // different graphics and present queue
+        if (queue_families[0] != queue_families[1]) {
+            create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+            create_info.queueFamilyIndexCount = 2;
+            create_info.pQueueFamilyIndices = queue_families;
+        } else {
+            create_info.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        }
+
         create_info.preTransform = context.capabilities().currentTransform;
         create_info.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
         create_info.presentMode = context.present_mode();

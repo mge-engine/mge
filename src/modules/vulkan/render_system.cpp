@@ -389,13 +389,14 @@ namespace mge::vulkan {
                                                          data);
             },
             m_queue_families);
+
         MGE_DEBUG_TRACE(VULKAN)
             << "Found " << m_queue_families.size() << " queue families";
+
         for (size_t i = 0; i < m_queue_families.size(); ++i) {
             if (m_queue_families[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-                if (!m_graphics_family.has_value()) {
-                    m_graphics_family = checked_cast<uint32_t>(i);
-                }
+                m_graphics_family = checked_cast<uint32_t>(i);
+                break;
             }
         }
 

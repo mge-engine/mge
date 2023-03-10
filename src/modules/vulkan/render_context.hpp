@@ -52,8 +52,11 @@ namespace mge::vulkan {
             return m_surface_capabilities;
         }
 
+        uint32_t present_queue_family_index() const;
+
     private:
         void create_surface();
+        void select_present_queue();
         void create_swap_chain();
         void fetch_surface_capabilities();
         void choose_surface_format();
@@ -61,9 +64,10 @@ namespace mge::vulkan {
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
 
-        VkSurfaceKHR       m_surface;
-        VkSurfaceFormatKHR m_used_surface_format;
-        VkPresentModeKHR   m_used_present_mode;
+        VkSurfaceKHR            m_surface;
+        std::optional<uint32_t> m_present_family;
+        VkSurfaceFormatKHR      m_used_surface_format;
+        VkPresentModeKHR        m_used_present_mode;
 
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
