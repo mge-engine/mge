@@ -16,7 +16,10 @@ namespace mge::vulkan {
 
     command_list::~command_list() { cleanup(); }
 
-    void command_list::clear(const mge::rgba_color& color) {}
+    void command_list::clear(const mge::rgba_color& color)
+    {
+        m_commands.emplace_back(clear_command{color});
+    }
 
     void command_list::draw(const mge::draw_command& command) {}
 
