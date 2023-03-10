@@ -35,6 +35,7 @@ namespace mge::vulkan {
         choose_surface_format();
         create_swap_chain();
         create_render_pass();
+        create_frame_buffers();
     }
 
     render_context::~render_context()
@@ -117,6 +118,13 @@ namespace mge::vulkan {
     void render_context::create_swap_chain()
     {
         m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
+    }
+
+    void render_context::create_frame_buffers()
+    {
+        auto swap_chain =
+            dynamic_cast<mge::vulkan::swap_chain*>(m_swap_chain.get());
+        swap_chain->create_frame_buffers(m_render_pass);
     }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,

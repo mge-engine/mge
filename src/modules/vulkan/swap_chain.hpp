@@ -16,6 +16,8 @@ namespace mge::vulkan {
         virtual ~swap_chain();
         void present() override;
 
+        void create_frame_buffers(VkRenderPass render_pass);
+
     private:
         void create_swap_chain(render_context& context);
         void get_images(render_context& context);
@@ -24,9 +26,10 @@ namespace mge::vulkan {
         render_context& vulkan_context();
         void            cleanup();
 
-        VkSwapchainKHR           m_swap_chain;
-        std::vector<VkImage>     m_images;
-        std::vector<VkImageView> m_image_views;
+        VkSwapchainKHR             m_swap_chain;
+        std::vector<VkImage>       m_images;
+        std::vector<VkImageView>   m_image_views;
+        std::vector<VkFramebuffer> m_frame_buffers;
     };
 
 } // namespace mge::vulkan

@@ -63,6 +63,7 @@ namespace mge::vulkan {
         void fetch_surface_capabilities();
         void choose_surface_format();
         void create_render_pass();
+        void create_frame_buffers();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;

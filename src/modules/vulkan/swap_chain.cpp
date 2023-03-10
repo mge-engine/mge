@@ -110,6 +110,15 @@ namespace mge::vulkan {
     void swap_chain::cleanup()
     {
         auto& context = vulkan_context();
+
+        for (const auto& fb : m_frame_buffers) {
+            context.render_system().vkDestroyFramebuffer(
+                context.render_system().device(),
+                fb,
+                nullptr);
+        }
+        m_frame_buffers.clear();
+
         for (const auto& iv : m_image_views) {
             context.render_system().vkDestroyImageView(
                 context.render_system().device(),
@@ -117,12 +126,40 @@ namespace mge::vulkan {
                 nullptr);
         }
         m_image_views.clear();
+
         m_images.clear(); // owned by swap chain, no destroy
+
         context.render_system().vkDestroySwapchainKHR(
             context.render_system().device(),
             m_swap_chain,
             nullptr);
         m_swap_chain = VK_NULL_HANDLE;
+    }
+
+    void swap_chain::create_frame_buffers(VkRenderPass render_pass)
+    {
+        auto& context = vulkan_context();
+
+        m_frame_buffers.resize(m_image_views.size(), VK_NULL_HANDLE);
+
+        for (size_t i = 0; i < m_image_views.size(); ++i) {
+            VkImageView attachments[] = {m_image_views[i]};
+
+            VkFramebufferCreateInfo create_info{};
+            create_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+            create_info.renderPass = render_pass;
+            create_info.attachmentCount = 1;
+            create_info.pAttachments = attachments;
+            create_info.width = context.extent().width;
+            create_info.height = context.extent().height;
+            create_info.layers = 1;
+
+            CHECK_VK_CALL(context.render_system().vkCreateFramebuffer(
+                context.render_system().device(),
+                &create_info,
+                nullptr,
+                &m_frame_buffers[i]));
+        }
     }
 
     swap_chain::~swap_chain() { cleanup(); }
