@@ -19,7 +19,7 @@ namespace mge::vulkan {
 
     void command_list::clear(const mge::rgba_color& color)
     {
-        m_commands.emplace_back(clear_command{color});
+        m_clear_color = color;
     }
 
     void command_list::draw(const mge::draw_command& command) {}
@@ -44,7 +44,7 @@ namespace mge::vulkan {
 
     void command_list::cleanup()
     {
-        auto& ctx = dynamic_cast<render_context&>(context());
+        auto& ctx = m_vulkan_context;
         if (m_command_buffer) {
             ctx.vkFreeCommandBuffers(ctx.device(),
                                      ctx.command_pool(),
@@ -54,6 +54,10 @@ namespace mge::vulkan {
         }
     }
 
-    void command_list::record_on_frame(uint32_t image) {}
+    void command_list::record_on_frame(uint32_t image)
+    {
+        auto& ctx = m_vulkan_context;
+        ctx.vkResetCommandBuffer(m_command_buffer, 0);
+    }
 
 } // namespace mge::vulkan

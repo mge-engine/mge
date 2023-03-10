@@ -28,16 +28,8 @@ namespace mge::vulkan {
         void allocate_command_buffer(render_context& context);
         void cleanup();
 
-        struct clear_command
-        {
-            rgba_color clear_color;
-        };
-
-        using command = std::variant<std::monostate, clear_command>;
-        using command_vector = std::vector<command>;
-
         render_context& m_vulkan_context;
         VkCommandBuffer m_command_buffer;
-        command_vector  m_commands;
+        rgba_color      m_clear_color;
     };
 } // namespace mge::vulkan
