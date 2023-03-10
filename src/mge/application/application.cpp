@@ -152,7 +152,11 @@ namespace mge {
             app->clear_listeners();
             MGE_DEBUG_TRACE(APPLICATION) << "Application teardown";
             app->teardown();
-            return app->return_code();
+            auto rc = app->return_code();
+            MGE_DEBUG_TRACE(APPLICATION)
+                << "Application '" << used_application_name
+                << "' has finished with return code " << rc;
+            return rc;
         } catch (const mge::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
                                          << used_application_name << "':";
