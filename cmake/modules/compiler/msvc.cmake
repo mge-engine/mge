@@ -51,9 +51,6 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd5264") # variable not used
     ADD_DEFINITIONS("-wd4883") # function size supresses optimizations
     ADD_DEFINITIONS("-showIncludes")
-    IF("${MSVC_VERSION}" STREQUAL "1900")
-        ADD_DEFINITIONS("-wd4702") # unreachable code
-    ENDIF()
     IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ADD_DEFINITIONS("-wd4548")
         SET(NODEFAULTLIB "-NODEFAULTLIB:libcmt.lib -NODEFAULTLIB:libc.lib -NODEFAULTLIB:libcd.lib -NODEFAULTLIB:libcmtd.lib -NODEFAULTLIB:msvcrt.lib")
