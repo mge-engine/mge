@@ -62,6 +62,7 @@ namespace mge::vulkan {
         void create_swap_chain();
         void fetch_surface_capabilities();
         void choose_surface_format();
+        void create_render_pass();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
@@ -74,6 +75,8 @@ namespace mge::vulkan {
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
+
+        VkRenderPass m_render_pass;
     };
 
 } // namespace mge::vulkan
