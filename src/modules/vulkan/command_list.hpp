@@ -18,5 +18,11 @@ namespace mge::vulkan {
         void draw(const mge::draw_command& command) override;
         void finish() override;
         void execute() override;
+
+    private:
+        void allocate_command_buffer(render_context& context);
+        void cleanup();
+
+        VkCommandBuffer m_command_buffer;
     };
 } // namespace mge::vulkan

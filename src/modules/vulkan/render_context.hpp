@@ -46,6 +46,11 @@ namespace mge::vulkan {
             return m_used_present_mode;
         }
 
+        inline VkCommandPool command_pool() const noexcept
+        {
+            return m_command_pool;
+        }
+
         VkExtent2D                      extent() const;
         const VkSurfaceCapabilitiesKHR& capabilities() const
         {
