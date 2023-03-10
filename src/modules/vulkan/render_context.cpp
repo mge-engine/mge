@@ -22,50 +22,135 @@ namespace mge::vulkan {
         : m_render_system(system_)
         , m_window(window_)
         , m_surface(VK_NULL_HANDLE)
+        , m_device(VK_NULL_HANDLE)
+        , m_graphics_queue(VK_NULL_HANDLE)
+        , m_present_queue(VK_NULL_HANDLE)
         , m_used_present_mode(VK_PRESENT_MODE_FIFO_KHR)
         , m_render_pass(VK_NULL_HANDLE)
         , m_command_pool(VK_NULL_HANDLE)
     {
         m_used_surface_format.format = VK_FORMAT_UNDEFINED;
+        clear_functions();
     }
 
     void render_context::initialize()
     {
-        create_surface();
-        select_present_queue();
-        fetch_surface_capabilities();
-        choose_surface_format();
-        create_swap_chain();
-        create_render_pass();
-        create_frame_buffers();
-        create_command_pool();
+        try {
+            create_surface();
+            select_present_queue();
+            fetch_surface_capabilities();
+            choose_surface_format();
+            create_device();
+            resolve_device_functions();
+            get_graphics_queue();
+            get_present_queue();
+            create_swap_chain();
+            create_render_pass();
+            create_frame_buffers();
+            create_command_pool();
+        } catch (...) {
+            teardown();
+            throw;
+        }
     }
 
-    render_context::~render_context()
+    render_context::~render_context() { teardown(); }
+
+    void render_context::teardown()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Destroy render context";
         if (m_command_pool) {
-            m_render_system.vkDestroyCommandPool(m_render_system.device(),
-                                                 m_command_pool,
-                                                 nullptr);
+            vkDestroyCommandPool(m_device, m_command_pool, nullptr);
             m_command_pool = VK_NULL_HANDLE;
         }
 
         if (m_render_pass) {
-            m_render_system.vkDestroyRenderPass(m_render_system.device(),
-                                                m_render_pass,
-                                                nullptr);
+            vkDestroyRenderPass(m_device, m_render_pass, nullptr);
             m_render_pass = VK_NULL_HANDLE;
         }
 
         m_swap_chain.reset();
+
+        m_graphics_queue = VK_NULL_HANDLE;
+        m_present_queue = VK_NULL_HANDLE;
+
+        if (m_device) {
+            vkDestroyDevice(m_device, nullptr);
+            m_device = VK_NULL_HANDLE;
+        }
 
         if (m_surface) {
             m_render_system.vkDestroySurfaceKHR(m_render_system.instance(),
                                                 m_surface,
                                                 nullptr);
         }
+
+        clear_functions();
     }
+
+    void render_context::clear_functions()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Clear context functions";
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(push)
+#    pragma warning(disable : 4191)
+#endif
+#define RESOLVE(X) this->X = nullptr;
+
+#define BASIC_INSTANCE_FUNCTION(X) RESOLVE(X)
+#define INSTANCE_FUNCTION(X) RESOLVE(X)
+#define DEVICE_FUNCTION(X) RESOLVE(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+#undef RESOLVE
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(pop)
+#endif
+    }
+
+    void render_context::resolve_device_functions()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve device functions";
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(push)
+#    pragma warning(disable : 4191)
+#endif
+#define RESOLVE(X)                                                             \
+    do {                                                                       \
+        this->X = m_render_system.X;                                           \
+        auto f = m_render_system.vkGetDeviceProcAddr(m_device, #X);            \
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
+        if (f) {                                                               \
+            MGE_DEBUG_TRACE(VULKAN) << "Replace " << #X << ": "                \
+                                    << (void*)(this->X) << " by " << (void*)f; \
+            this->X = reinterpret_cast<decltype(this->X)>(f);                  \
+        }                                                                      \
+    } while (false);
+
+#define BASIC_INSTANCE_FUNCTION(X)
+#define INSTANCE_FUNCTION(X)
+#define DEVICE_FUNCTION(X) RESOLVE(X)
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+#undef RESOLVE
+#ifdef MGE_COMPILER_MSVC
+#    pragma warning(pop)
+#endif
+    } // namespace mge::vulkan
 
     void render_context::create_render_pass()
     {
@@ -95,11 +180,10 @@ namespace mge::vulkan {
         render_pass_info.subpassCount = 1;
         render_pass_info.pSubpasses = &subpass;
 
-        CHECK_VK_CALL(
-            m_render_system.vkCreateRenderPass(m_render_system.device(),
-                                               &render_pass_info,
-                                               nullptr,
-                                               &m_render_pass));
+        CHECK_VK_CALL(vkCreateRenderPass(m_device,
+                                         &render_pass_info,
+                                         nullptr,
+                                         &m_render_pass));
     }
 
     void render_context::create_surface()
@@ -126,6 +210,68 @@ namespace mge::vulkan {
 #endif
     }
 
+    void render_context::create_device()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create logical device";
+
+        VkDeviceQueueCreateInfo queue_create_info[2];
+        uint32_t                queue_create_count = 2;
+
+        queue_create_info[0].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queue_create_info[0].queueFamilyIndex =
+            m_render_system.graphics_queue_family_index();
+        queue_create_info[0].queueCount = 1;
+        float priority = 1.0f;
+        queue_create_info[0].pQueuePriorities = &priority;
+        queue_create_info[0].pNext = nullptr;
+
+        if (present_queue_family_index() ==
+            m_render_system.graphics_queue_family_index()) {
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Graphics and present queue are the same";
+            queue_create_count = 1;
+        } else {
+            MGE_DEBUG_TRACE(VULKAN) << "Graphics and present queue differ";
+            queue_create_info[1].sType =
+                VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+            queue_create_info[1].queueFamilyIndex =
+                present_queue_family_index();
+            queue_create_info[1].queueCount = 1;
+            queue_create_info[1].pQueuePriorities = &priority;
+            queue_create_info[1].pNext = nullptr;
+        }
+
+        VkPhysicalDeviceFeatures device_features{};
+
+        VkDeviceCreateInfo create_info{};
+        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+
+        create_info.pQueueCreateInfos = &queue_create_info[0];
+        create_info.queueCreateInfoCount = queue_create_count;
+
+        create_info.pEnabledFeatures = &device_features;
+
+        std::vector<const char*> extensions;
+        std::vector<const char*> layers;
+        extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
+
+        if (m_render_system.debug()) {
+            layers.push_back("VK_LAYER_KHRONOS_validation");
+        }
+        create_info.ppEnabledExtensionNames = extensions.data();
+        create_info.enabledExtensionCount =
+            static_cast<uint32_t>(extensions.size());
+        create_info.ppEnabledLayerNames = layers.data();
+        create_info.enabledLayerCount = static_cast<uint32_t>(layers.size());
+
+        CHECK_VK_CALL(
+            m_render_system.vkCreateDevice(m_render_system.physical_device(),
+                                           &create_info,
+                                           nullptr,
+                                           &m_device));
+        MGE_DEBUG_TRACE(VULKAN) << "Created device: " << (void*)m_device;
+    }
+
     void render_context::create_swap_chain()
     {
         m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
@@ -145,11 +291,10 @@ namespace mge::vulkan {
         create_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
         create_info.queueFamilyIndex =
             m_render_system.graphics_queue_family_index();
-        CHECK_VK_CALL(
-            m_render_system.vkCreateCommandPool(m_render_system.device(),
-                                                &create_info,
-                                                nullptr,
-                                                &m_command_pool));
+        CHECK_VK_CALL(vkCreateCommandPool(m_device,
+                                          &create_info,
+                                          nullptr,
+                                          &m_command_pool));
     }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,
@@ -248,6 +393,7 @@ namespace mge::vulkan {
 
     void render_context::select_present_queue()
     {
+        MGE_DEBUG_TRACE(VULKAN) << "Select present queue";
         const auto queue_families = m_render_system.queue_families();
         for (size_t i = 0; i < queue_families.size(); ++i) {
             VkBool32 present_support = VK_FALSE;
@@ -258,17 +404,29 @@ namespace mge::vulkan {
                 &present_support));
             if (present_support) {
                 m_present_family = checked_cast<uint32_t>(i);
+                break;
             }
         }
 
         if (!m_present_family.has_value()) {
             MGE_THROW(vulkan::error) << "Cannot select present queue";
         }
+    }
 
-        m_render_system.vkGetDeviceQueue(m_render_system.device(),
-                                         m_present_family.value(),
-                                         0u,
-                                         &m_present_queue);
+    void render_context::get_present_queue()
+    {
+        vkGetDeviceQueue(m_device,
+                         m_present_family.value(),
+                         0u,
+                         &m_present_queue);
+    }
+
+    void render_context::get_graphics_queue()
+    {
+        vkGetDeviceQueue(m_device,
+                         m_render_system.graphics_queue_family_index(),
+                         0,
+                         &m_graphics_queue);
     }
 
     uint32_t render_context::present_queue_family_index() const

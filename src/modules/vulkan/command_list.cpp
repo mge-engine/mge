@@ -32,21 +32,19 @@ namespace mge::vulkan {
         alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
         alloc_info.commandBufferCount = 1;
 
-        CHECK_VK_CALL(context.render_system().vkAllocateCommandBuffers(
-            context.render_system().device(),
-            &alloc_info,
-            &m_command_buffer));
+        CHECK_VK_CALL(context.vkAllocateCommandBuffers(context.device(),
+                                                       &alloc_info,
+                                                       &m_command_buffer));
     }
 
     void command_list::cleanup()
     {
         auto& ctx = dynamic_cast<render_context&>(context());
         if (m_command_buffer) {
-            ctx.render_system().vkFreeCommandBuffers(
-                ctx.render_system().device(),
-                ctx.command_pool(),
-                1,
-                &m_command_buffer);
+            ctx.vkFreeCommandBuffers(ctx.device(),
+                                     ctx.command_pool(),
+                                     1,
+                                     &m_command_buffer);
             m_command_buffer = VK_NULL_HANDLE;
         }
     }

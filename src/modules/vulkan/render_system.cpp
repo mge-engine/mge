@@ -33,7 +33,6 @@ namespace mge::vulkan {
         : m_instance(VK_NULL_HANDLE)
         , m_debug_messenger(VK_NULL_HANDLE)
         , m_physical_device(VK_NULL_HANDLE)
-        , m_device(VK_NULL_HANDLE)
         , m_graphics_queue(VK_NULL_HANDLE)
         , m_depth_format(VK_FORMAT_UNDEFINED)
     {
@@ -49,9 +48,6 @@ namespace mge::vulkan {
             create_instance();
             pick_physical_device();
             select_queue_families();
-            create_device();
-            resolve_device_functions();
-            get_device_queue();
             select_depth_format();
         } catch (...) {
             teardown();
@@ -174,42 +170,6 @@ namespace mge::vulkan {
 #    pragma warning(pop)
 #endif
     }
-
-    void render_system::resolve_device_functions()
-    {
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve device functions";
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(push)
-#    pragma warning(disable : 4191)
-#endif
-#define RESOLVE(X)                                                             \
-    do {                                                                       \
-        auto f = vkGetDeviceProcAddr(m_device, #X);                            \
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
-        if (f) {                                                               \
-            MGE_DEBUG_TRACE(VULKAN) << "Replace " << #X << ": "                \
-                                    << (void*)(this->X) << " by " << (void*)f; \
-            this->X = reinterpret_cast<decltype(this->X)>(f);                  \
-        }                                                                      \
-    } while (false);
-
-#define BASIC_INSTANCE_FUNCTION(X)
-#define INSTANCE_FUNCTION(X)
-#define DEVICE_FUNCTION(X) RESOLVE(X)
-
-#include "vulkan_core.inc"
-#ifdef MGE_OS_WINDOWS
-#    include "vulkan_win32.inc"
-#endif
-
-#undef BASIC_INSTANCE_FUNCTION
-#undef INSTANCE_FUNCTION
-#undef DEVICE_FUNCTION
-#undef RESOLVE
-#ifdef MGE_COMPILER_MSVC
-#    pragma warning(pop)
-#endif
-    } // namespace mge::vulkan
 
     void render_system::clear_functions()
     {
@@ -405,55 +365,6 @@ namespace mge::vulkan {
         }
     }
 
-    void render_system::create_device()
-    {
-        MGE_DEBUG_TRACE(VULKAN) << "Create logical device";
-        VkDeviceQueueCreateInfo queue_create_info{};
-        queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queue_create_info.queueFamilyIndex = m_graphics_family.value();
-        queue_create_info.queueCount = 1;
-
-        float priority = 1.0f;
-        queue_create_info.pQueuePriorities = &priority;
-
-        VkPhysicalDeviceFeatures device_features{};
-
-        VkDeviceCreateInfo create_info{};
-        create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-
-        create_info.pQueueCreateInfos = &queue_create_info;
-        create_info.queueCreateInfoCount = 1;
-
-        create_info.pEnabledFeatures = &device_features;
-
-        std::vector<const char*> extensions;
-        std::vector<const char*> layers;
-        extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
-
-        if (debug()) {
-            layers.push_back("VK_LAYER_KHRONOS_validation");
-        }
-        create_info.ppEnabledExtensionNames = extensions.data();
-        create_info.enabledExtensionCount =
-            static_cast<uint32_t>(extensions.size());
-        create_info.ppEnabledLayerNames = layers.data();
-        create_info.enabledLayerCount = static_cast<uint32_t>(layers.size());
-
-        CHECK_VK_CALL(vkCreateDevice(m_physical_device,
-                                     &create_info,
-                                     nullptr,
-                                     &m_device));
-        MGE_DEBUG_TRACE(VULKAN) << "Created device: " << (void*)m_device;
-    }
-
-    void render_system::get_device_queue()
-    {
-        vkGetDeviceQueue(m_device,
-                         m_graphics_family.value(),
-                         0,
-                         &m_graphics_queue);
-    }
-
     void render_system::select_depth_format()
     {
         const VkFormat formats[] = {VK_FORMAT_D32_SFLOAT_S8_UINT,
@@ -495,10 +406,6 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
-        if (m_device && vkDestroyDevice) {
-            vkDestroyDevice(m_device, nullptr);
-            m_device = VK_NULL_HANDLE;
-        }
 
         m_physical_device = VK_NULL_HANDLE;
         m_all_physical_devices.clear();

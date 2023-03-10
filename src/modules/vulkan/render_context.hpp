@@ -34,6 +34,8 @@ namespace mge::vulkan {
             return m_render_system;
         }
 
+        VkDevice device() const noexcept { return m_device; }
+
         inline VkSurfaceKHR surface() noexcept { return m_surface; }
 
         inline VkSurfaceFormatKHR format() noexcept
@@ -61,25 +63,45 @@ namespace mge::vulkan {
 
         uint32_t default_image_count() const;
 
+#define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
+#define INSTANCE_FUNCTION(X) PFN_##X X;
+#define DEVICE_FUNCTION(X) PFN_##X X;
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
+
     private:
         void create_surface();
         void select_present_queue();
-        void create_swap_chain();
         void fetch_surface_capabilities();
         void choose_surface_format();
+        void create_device();
+        void get_present_queue();
+        void get_graphics_queue();
+        void resolve_device_functions();
+        void create_swap_chain();
         void create_render_pass();
         void create_frame_buffers();
         void create_command_pool();
+        void teardown();
+        void clear_functions();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
 
-        VkSurfaceKHR            m_surface;
-        std::optional<uint32_t> m_present_family;
-        VkQueue                 m_present_queue;
-        VkSurfaceFormatKHR      m_used_surface_format;
-        VkPresentModeKHR        m_used_present_mode;
-
+        VkSurfaceKHR                    m_surface;
+        VkDevice                        m_device;
+        std::optional<uint32_t>         m_present_family;
+        VkQueue                         m_graphics_queue;
+        VkQueue                         m_present_queue;
+        VkSurfaceFormatKHR              m_used_surface_format;
+        VkPresentModeKHR                m_used_present_mode;
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;

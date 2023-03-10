@@ -60,11 +60,10 @@ namespace mge::vulkan {
         create_info.clipped = VK_TRUE;
         create_info.oldSwapchain = VK_NULL_HANDLE;
 
-        CHECK_VK_CALL(context.render_system().vkCreateSwapchainKHR(
-            context.render_system().device(),
-            &create_info,
-            nullptr,
-            &m_swap_chain));
+        CHECK_VK_CALL(context.vkCreateSwapchainKHR(context.device(),
+                                                   &create_info,
+                                                   nullptr,
+                                                   &m_swap_chain));
     }
 
     void swap_chain::get_images(render_context& context)
@@ -72,11 +71,10 @@ namespace mge::vulkan {
 
         enumerate(
             [this, &context](uint32_t* count, VkImage* data) {
-                CHECK_VK_CALL(context.render_system().vkGetSwapchainImagesKHR(
-                    context.render_system().device(),
-                    m_swap_chain,
-                    count,
-                    data));
+                CHECK_VK_CALL(context.vkGetSwapchainImagesKHR(context.device(),
+                                                              m_swap_chain,
+                                                              count,
+                                                              data));
             },
             m_images);
     }
@@ -99,11 +97,10 @@ namespace mge::vulkan {
             create_info.subresourceRange.levelCount = 1;
             create_info.subresourceRange.baseArrayLayer = 0;
             create_info.subresourceRange.layerCount = 1;
-            CHECK_VK_CALL(context.render_system().vkCreateImageView(
-                context.render_system().device(),
-                &create_info,
-                nullptr,
-                &m_image_views[i]));
+            CHECK_VK_CALL(context.vkCreateImageView(context.device(),
+                                                    &create_info,
+                                                    nullptr,
+                                                    &m_image_views[i]));
         }
     }
 
@@ -112,27 +109,18 @@ namespace mge::vulkan {
         auto& context = vulkan_context();
 
         for (const auto& fb : m_frame_buffers) {
-            context.render_system().vkDestroyFramebuffer(
-                context.render_system().device(),
-                fb,
-                nullptr);
+            context.vkDestroyFramebuffer(context.device(), fb, nullptr);
         }
         m_frame_buffers.clear();
 
         for (const auto& iv : m_image_views) {
-            context.render_system().vkDestroyImageView(
-                context.render_system().device(),
-                iv,
-                nullptr);
+            context.vkDestroyImageView(context.device(), iv, nullptr);
         }
         m_image_views.clear();
 
         m_images.clear(); // owned by swap chain, no destroy
 
-        context.render_system().vkDestroySwapchainKHR(
-            context.render_system().device(),
-            m_swap_chain,
-            nullptr);
+        context.vkDestroySwapchainKHR(context.device(), m_swap_chain, nullptr);
         m_swap_chain = VK_NULL_HANDLE;
     }
 
@@ -154,11 +142,10 @@ namespace mge::vulkan {
             create_info.height = context.extent().height;
             create_info.layers = 1;
 
-            CHECK_VK_CALL(context.render_system().vkCreateFramebuffer(
-                context.render_system().device(),
-                &create_info,
-                nullptr,
-                &m_frame_buffers[i]));
+            CHECK_VK_CALL(context.vkCreateFramebuffer(context.device(),
+                                                      &create_info,
+                                                      nullptr,
+                                                      &m_frame_buffers[i]));
         }
     }
 

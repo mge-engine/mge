@@ -45,8 +45,6 @@ namespace mge::vulkan {
             return m_physical_device;
         }
 
-        inline VkDevice device() const noexcept { return m_device; }
-
         uint32_t graphics_queue_family_index() const;
 
         const std::vector<VkQueueFamilyProperties>&
@@ -69,9 +67,6 @@ namespace mge::vulkan {
         void destroy_debug_messenger();
         void pick_physical_device();
         void select_queue_families();
-        void create_device();
-        void resolve_device_functions();
-        void get_device_queue();
         void select_depth_format();
 
         static VkBool32
@@ -96,7 +91,6 @@ namespace mge::vulkan {
         std::optional<uint32_t>              m_graphics_family;
 
         VkPhysicalDevice m_physical_device;
-        VkDevice         m_device;
         VkQueue          m_graphics_queue;
         VkFormat         m_depth_format;
 
