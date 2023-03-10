@@ -10,6 +10,8 @@
 namespace mge::vulkan {
     class render_system;
     class window;
+    class command_list;
+    class swap_chain;
 
     class render_context : public mge::render_context
     {
@@ -76,6 +78,9 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
+        void execute_on_frame(command_list* l);
+        void frame();
+
     private:
         void create_surface();
         void select_present_queue();
@@ -89,6 +94,7 @@ namespace mge::vulkan {
         void create_render_pass();
         void create_frame_buffers();
         void create_command_pool();
+        void create_fence();
         void teardown();
         void clear_functions();
 
@@ -106,8 +112,12 @@ namespace mge::vulkan {
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
 
-        VkRenderPass  m_render_pass;
-        VkCommandPool m_command_pool;
+        VkRenderPass             m_render_pass;
+        VkCommandPool            m_command_pool;
+        VkFence                  m_frame_finish_fence;
+        mge::vulkan::swap_chain* m_vulkan_swap_chain;
+
+        std::vector<command_list*> m_frame_commands;
     };
 
 } // namespace mge::vulkan

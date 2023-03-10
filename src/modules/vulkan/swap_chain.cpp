@@ -16,16 +16,29 @@ namespace mge::vulkan {
 
     swap_chain::swap_chain(render_context& context)
         : mge::swap_chain(context)
+        , m_vulkan_context(context)
         , m_swap_chain(VK_NULL_HANDLE)
+        , m_image_available(VK_NULL_HANDLE)
     {
-        create_swap_chain(context);
-        get_images(context);
-        create_image_views(context);
+        try {
+            create_swap_chain(context);
+            get_images(context);
+            create_image_views(context);
+            create_semaphore(context);
+        } catch (...) {
+            cleanup();
+            throw;
+        }
     }
 
-    render_context& swap_chain::vulkan_context()
+    void swap_chain::create_semaphore(render_context& context)
     {
-        return dynamic_cast<render_context&>(context());
+        VkSemaphoreCreateInfo create_info{};
+        create_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+        CHECK_VK_CALL(context.vkCreateSemaphore(context.device(),
+                                                &create_info,
+                                                nullptr,
+                                                &m_image_available));
     }
 
     void swap_chain::create_swap_chain(render_context& context)
@@ -106,7 +119,13 @@ namespace mge::vulkan {
 
     void swap_chain::cleanup()
     {
-        auto& context = vulkan_context();
+        auto& context = m_vulkan_context;
+        if (m_image_available) {
+            context.vkDestroySemaphore(context.device(),
+                                       m_image_available,
+                                       nullptr);
+            m_image_available = VK_NULL_HANDLE;
+        }
 
         for (const auto& fb : m_frame_buffers) {
             context.vkDestroyFramebuffer(context.device(), fb, nullptr);
@@ -120,13 +139,17 @@ namespace mge::vulkan {
 
         m_images.clear(); // owned by swap chain, no destroy
 
-        context.vkDestroySwapchainKHR(context.device(), m_swap_chain, nullptr);
-        m_swap_chain = VK_NULL_HANDLE;
+        if (m_swap_chain) {
+            context.vkDestroySwapchainKHR(context.device(),
+                                          m_swap_chain,
+                                          nullptr);
+            m_swap_chain = VK_NULL_HANDLE;
+        }
     }
 
     void swap_chain::create_frame_buffers(VkRenderPass render_pass)
     {
-        auto& context = vulkan_context();
+        auto& context = m_vulkan_context;
 
         m_frame_buffers.resize(m_image_views.size(), VK_NULL_HANDLE);
 
@@ -151,5 +174,19 @@ namespace mge::vulkan {
 
     swap_chain::~swap_chain() { cleanup(); }
 
-    void swap_chain::present() {}
+    void swap_chain::present() { m_vulkan_context.frame(); }
+
+    uint32_t swap_chain::next_image()
+    {
+        uint32_t image;
+        CHECK_VK_CALL(m_vulkan_context.vkAcquireNextImageKHR(
+            m_vulkan_context.device(),
+            m_swap_chain,
+            std::numeric_limits<uint64_t>::max(),
+            m_image_available,
+            VK_NULL_HANDLE,
+            &image));
+        return image;
+    }
+
 } // namespace mge::vulkan

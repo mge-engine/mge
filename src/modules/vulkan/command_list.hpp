@@ -22,6 +22,8 @@ namespace mge::vulkan {
         void finish() override;
         void execute() override;
 
+        void record_on_frame(uint32_t image);
+
     private:
         void allocate_command_buffer(render_context& context);
         void cleanup();
@@ -34,6 +36,7 @@ namespace mge::vulkan {
         using command = std::variant<std::monostate, clear_command>;
         using command_vector = std::vector<command>;
 
+        render_context& m_vulkan_context;
         VkCommandBuffer m_command_buffer;
         command_vector  m_commands;
     };

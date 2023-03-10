@@ -11,6 +11,8 @@
 #include "swap_chain.hpp"
 #include "window.hpp"
 
+#include <limits>
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -28,9 +30,12 @@ namespace mge::vulkan {
         , m_used_present_mode(VK_PRESENT_MODE_FIFO_KHR)
         , m_render_pass(VK_NULL_HANDLE)
         , m_command_pool(VK_NULL_HANDLE)
+        , m_frame_finish_fence(VK_NULL_HANDLE)
+        , m_vulkan_swap_chain(nullptr)
     {
         m_used_surface_format.format = VK_FORMAT_UNDEFINED;
         clear_functions();
+        m_frame_commands.reserve(20);
     }
 
     void render_context::initialize()
@@ -48,6 +53,7 @@ namespace mge::vulkan {
             create_render_pass();
             create_frame_buffers();
             create_command_pool();
+            create_fence();
         } catch (...) {
             teardown();
             throw;
@@ -69,6 +75,7 @@ namespace mge::vulkan {
             m_render_pass = VK_NULL_HANDLE;
         }
 
+        m_vulkan_swap_chain = nullptr;
         m_swap_chain.reset();
 
         m_graphics_queue = VK_NULL_HANDLE;
@@ -173,12 +180,22 @@ namespace mge::vulkan {
         subpass.colorAttachmentCount = 1;
         subpass.pColorAttachments = &color_attachment_ref;
 
+        VkSubpassDependency dependency{};
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass = 0;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = 0;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
         VkRenderPassCreateInfo render_pass_info{};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         render_pass_info.attachmentCount = 1;
         render_pass_info.pAttachments = &color_attachment;
         render_pass_info.subpassCount = 1;
         render_pass_info.pSubpasses = &subpass;
+        render_pass_info.dependencyCount = 1;
+        render_pass_info.pDependencies = &dependency;
 
         CHECK_VK_CALL(vkCreateRenderPass(m_device,
                                          &render_pass_info,
@@ -274,7 +291,9 @@ namespace mge::vulkan {
 
     void render_context::create_swap_chain()
     {
-        m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
+        auto swc = std::make_shared<mge::vulkan::swap_chain>(*this);
+        m_swap_chain = swc;
+        m_vulkan_swap_chain = swc.get();
     }
 
     void render_context::create_frame_buffers()
@@ -295,6 +314,18 @@ namespace mge::vulkan {
                                           &create_info,
                                           nullptr,
                                           &m_command_pool));
+    }
+
+    void render_context::create_fence()
+    {
+        VkFenceCreateInfo create_info{};
+        create_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        create_info.flags =
+            VK_FENCE_CREATE_SIGNALED_BIT; // initially pass through
+        CHECK_VK_CALL(vkCreateFence(m_device,
+                                    &create_info,
+                                    nullptr,
+                                    &m_frame_finish_fence));
     }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,
@@ -442,6 +473,31 @@ namespace mge::vulkan {
         uint32_t result = std::min(m_surface_capabilities.minImageCount + 1,
                                    m_surface_capabilities.maxImageCount);
         return result;
+    }
+
+    void render_context::execute_on_frame(command_list* l)
+    {
+        m_frame_commands.emplace_back(l);
+    }
+
+    void render_context::frame()
+    {
+        if (m_frame_commands.empty()) {
+            return;
+        }
+        CHECK_VK_CALL(vkWaitForFences(m_device,
+                                      1,
+                                      &m_frame_finish_fence,
+                                      VK_TRUE,
+                                      std::numeric_limits<uint64_t>::max()));
+        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finish_fence));
+
+        uint32_t image = m_vulkan_swap_chain->next_image();
+        for (auto& l : m_frame_commands) {
+            l->record_on_frame(image);
+        }
+
+        m_frame_commands.clear();
     }
 
 } // namespace mge::vulkan

@@ -9,6 +9,7 @@
 namespace mge::vulkan {
     command_list::command_list(render_context& context)
         : mge::command_list(context, true)
+        , m_vulkan_context(context)
         , m_command_buffer(VK_NULL_HANDLE)
     {
         allocate_command_buffer(context);
@@ -25,9 +26,10 @@ namespace mge::vulkan {
 
     void command_list::finish() {}
 
-    void command_list::execute() {}
+    void command_list::execute() { m_vulkan_context.execute_on_frame(this); }
 
     void command_list::allocate_command_buffer(render_context& context)
+
     {
         VkCommandBufferAllocateInfo alloc_info{};
         alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -51,5 +53,7 @@ namespace mge::vulkan {
             m_command_buffer = VK_NULL_HANDLE;
         }
     }
+
+    void command_list::record_on_frame(uint32_t image) {}
 
 } // namespace mge::vulkan

@@ -18,15 +18,18 @@ namespace mge::vulkan {
 
         void create_frame_buffers(VkRenderPass render_pass);
 
+        uint32_t next_image();
+
     private:
         void create_swap_chain(render_context& context);
         void get_images(render_context& context);
         void create_image_views(render_context& context);
+        void create_semaphore(render_context& context);
+        void cleanup();
 
-        render_context& vulkan_context();
-        void            cleanup();
-
+        render_context&            m_vulkan_context;
         VkSwapchainKHR             m_swap_chain;
+        VkSemaphore                m_image_available;
         std::vector<VkImage>       m_images;
         std::vector<VkImageView>   m_image_views;
         std::vector<VkFramebuffer> m_frame_buffers;
