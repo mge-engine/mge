@@ -122,6 +122,22 @@ namespace mge::vulkan {
 #endif
     }
 
+    static void* resolve_device_function(void*                   original,
+                                         PFN_vkGetDeviceProcAddr getDeviceProc,
+                                         VkDevice                device,
+                                         const char*             name)
+    {
+        void* result = original;
+        auto  ptr = getDeviceProc(device, name);
+        if (ptr) {
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Replace " << name << ": " << (void*)(original) << " by "
+                << (void*)ptr;
+            result = ptr;
+        }
+        return result;
+    }
+
     void render_context::resolve_device_functions()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Resolve device functions";
@@ -130,16 +146,11 @@ namespace mge::vulkan {
 #    pragma warning(disable : 4191)
 #endif
 #define RESOLVE(X)                                                             \
-    do {                                                                       \
-        this->X = m_render_system.X;                                           \
-        auto f = m_render_system.vkGetDeviceProcAddr(m_device, #X);            \
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
-        if (f) {                                                               \
-            MGE_DEBUG_TRACE(VULKAN) << "Replace " << #X << ": "                \
-                                    << (void*)(this->X) << " by " << (void*)f; \
-            this->X = reinterpret_cast<decltype(this->X)>(f);                  \
-        }                                                                      \
-    } while (false);
+    this->X = reinterpret_cast<decltype(this->X)>(                             \
+        resolve_device_function((void*)m_render_system.X,                      \
+                                m_render_system.vkGetDeviceProcAddr,           \
+                                m_device,                                      \
+                                #X));
 
 #define BASIC_INSTANCE_FUNCTION(X)
 #define INSTANCE_FUNCTION(X)

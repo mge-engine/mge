@@ -104,6 +104,19 @@ namespace mge::vulkan {
         }
     }
 
+    static void*
+    resolve_basic_instance_function(PFN_vkGetInstanceProcAddr getInstanceProc,
+                                    const char*               name)
+    {
+        auto ptr = getInstanceProc(VK_NULL_HANDLE, name);
+        if (!ptr) {
+            MGE_THROW(vulkan::error)
+                << "Cannot resolve instance function: " << name;
+        }
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << name << ": " << (void*)ptr;
+        return ptr;
+    }
+
     void render_system::resolve_basic_instance_functions()
     {
 #ifdef MGE_COMPILER_MSVC
@@ -111,15 +124,9 @@ namespace mge::vulkan {
 #    pragma warning(disable : 4191)
 #endif
 #define RESOLVE(X)                                                             \
-    do {                                                                       \
-        auto f = m_library->vkGetInstanceProcAddr(VK_NULL_HANDLE, #X);         \
-        if (!f) {                                                              \
-            MGE_THROW(vulkan::error)                                           \
-                << "Cannot resolve instance function: " << #X;                 \
-        }                                                                      \
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
-        this->X = reinterpret_cast<decltype(this->X)>(f);                      \
-    } while (false);
+    this->X = reinterpret_cast<decltype(this->X)>(                             \
+        resolve_basic_instance_function(m_library->vkGetInstanceProcAddr,      \
+                                        #X));
 
 #define BASIC_INSTANCE_FUNCTION(X) RESOLVE(X)
 #define INSTANCE_FUNCTION(X)
@@ -139,6 +146,16 @@ namespace mge::vulkan {
 #endif
     }
 
+    static void*
+    resolve_instance_function(PFN_vkGetInstanceProcAddr getInstanceProc,
+                              VkInstance                instance,
+                              const char*               name)
+    {
+        auto ptr = getInstanceProc(instance, name);
+        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << name << ": " << (void*)ptr;
+        return ptr;
+    }
+
     void render_system::resolve_instance_functions()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Resolve instance functions";
@@ -147,12 +164,10 @@ namespace mge::vulkan {
 #    pragma warning(disable : 4191)
 #endif
 #define RESOLVE(X)                                                             \
-    do {                                                                       \
-        auto f = m_library->vkGetInstanceProcAddr(m_instance, #X);             \
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << #X << ": " << (void*)f;       \
-        this->X = reinterpret_cast<decltype(this->X)>(f);                      \
-    } while (false);
-
+    this->X = reinterpret_cast<decltype(this->X)>(                             \
+        resolve_instance_function(m_library->vkGetInstanceProcAddr,            \
+                                  m_instance,                                  \
+                                  #X));
 #define BASIC_INSTANCE_FUNCTION(X)
 #define INSTANCE_FUNCTION(X) RESOLVE(X)
 #define DEVICE_FUNCTION(X) RESOLVE(X)
