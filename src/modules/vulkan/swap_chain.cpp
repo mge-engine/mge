@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "swap_chain.hpp"
+#include "enumerate.hpp"
 #include "error.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
@@ -17,11 +18,22 @@ namespace mge::vulkan {
         : mge::swap_chain(context)
         , m_swap_chain(VK_NULL_HANDLE)
     {
+        create_swap_chain(context);
+        get_images(context);
+        create_image_views(context);
+    }
+
+    render_context& swap_chain::vulkan_context()
+    {
+        return dynamic_cast<render_context&>(context());
+    }
+
+    void swap_chain::create_swap_chain(render_context& context)
+    {
         VkSwapchainCreateInfoKHR create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
         create_info.surface = context.surface();
-        create_info.minImageCount = 2;
-
+        create_info.minImageCount = context.default_image_count();
         auto surface_format = context.format();
 
         create_info.imageFormat = surface_format.format;
@@ -55,7 +67,65 @@ namespace mge::vulkan {
             &m_swap_chain));
     }
 
-    swap_chain::~swap_chain() {}
+    void swap_chain::get_images(render_context& context)
+    {
+
+        enumerate(
+            [this, &context](uint32_t* count, VkImage* data) {
+                CHECK_VK_CALL(context.render_system().vkGetSwapchainImagesKHR(
+                    context.render_system().device(),
+                    m_swap_chain,
+                    count,
+                    data));
+            },
+            m_images);
+    }
+
+    void swap_chain::create_image_views(render_context& context)
+    {
+        m_image_views.resize(m_images.size(), VK_NULL_HANDLE);
+        for (size_t i = 0; i < m_images.size(); ++i) {
+            VkImageViewCreateInfo create_info = {};
+            create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            create_info.image = m_images[i];
+            create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+            create_info.format = context.format().format;
+            create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            create_info.subresourceRange.baseMipLevel = 0;
+            create_info.subresourceRange.levelCount = 1;
+            create_info.subresourceRange.baseArrayLayer = 0;
+            create_info.subresourceRange.layerCount = 1;
+            CHECK_VK_CALL(context.render_system().vkCreateImageView(
+                context.render_system().device(),
+                &create_info,
+                nullptr,
+                &m_image_views[i]));
+        }
+    }
+
+    void swap_chain::cleanup()
+    {
+        auto& context = vulkan_context();
+        for (const auto& iv : m_image_views) {
+            context.render_system().vkDestroyImageView(
+                context.render_system().device(),
+                iv,
+                nullptr);
+        }
+        m_image_views.clear();
+        m_images.clear(); // owned by swap chain, no destroy
+        context.render_system().vkDestroySwapchainKHR(
+            context.render_system().device(),
+            m_swap_chain,
+            nullptr);
+        m_swap_chain = VK_NULL_HANDLE;
+    }
+
+    swap_chain::~swap_chain() { cleanup(); }
 
     void swap_chain::present() {}
 } // namespace mge::vulkan

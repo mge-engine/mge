@@ -193,4 +193,11 @@ namespace mge::vulkan {
         return m_present_family.value();
     }
 
+    uint32_t render_context::default_image_count() const
+    {
+        uint32_t result = std::min(m_surface_capabilities.minImageCount + 1,
+                                   m_surface_capabilities.maxImageCount);
+        return result;
+    }
+
 } // namespace mge::vulkan

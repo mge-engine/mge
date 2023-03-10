@@ -54,6 +54,8 @@ namespace mge::vulkan {
 
         uint32_t present_queue_family_index() const;
 
+        uint32_t default_image_count() const;
+
     private:
         void create_surface();
         void select_present_queue();
