@@ -23,6 +23,8 @@ namespace mge::vulkan {
         , m_window(window_)
         , m_surface(VK_NULL_HANDLE)
         , m_used_present_mode(VK_PRESENT_MODE_FIFO_KHR)
+        , m_render_pass(VK_NULL_HANDLE)
+        , m_command_pool(VK_NULL_HANDLE)
     {
         m_used_surface_format.format = VK_FORMAT_UNDEFINED;
     }
@@ -36,18 +38,27 @@ namespace mge::vulkan {
         create_swap_chain();
         create_render_pass();
         create_frame_buffers();
+        create_command_pool();
     }
 
     render_context::~render_context()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Destroy render context";
-        m_swap_chain.reset();
+        if (m_command_pool) {
+            m_render_system.vkDestroyCommandPool(m_render_system.device(),
+                                                 m_command_pool,
+                                                 nullptr);
+            m_command_pool = VK_NULL_HANDLE;
+        }
 
         if (m_render_pass) {
             m_render_system.vkDestroyRenderPass(m_render_system.device(),
                                                 m_render_pass,
                                                 nullptr);
+            m_render_pass = VK_NULL_HANDLE;
         }
+
+        m_swap_chain.reset();
 
         if (m_surface) {
             m_render_system.vkDestroySurfaceKHR(m_render_system.instance(),
@@ -125,6 +136,20 @@ namespace mge::vulkan {
         auto swap_chain =
             dynamic_cast<mge::vulkan::swap_chain*>(m_swap_chain.get());
         swap_chain->create_frame_buffers(m_render_pass);
+    }
+
+    void render_context::create_command_pool()
+    {
+        VkCommandPoolCreateInfo create_info{};
+        create_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        create_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+        create_info.queueFamilyIndex =
+            m_render_system.graphics_queue_family_index();
+        CHECK_VK_CALL(
+            m_render_system.vkCreateCommandPool(m_render_system.device(),
+                                                &create_info,
+                                                nullptr,
+                                                &m_command_pool));
     }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,
@@ -235,6 +260,15 @@ namespace mge::vulkan {
                 m_present_family = checked_cast<uint32_t>(i);
             }
         }
+
+        if (!m_present_family.has_value()) {
+            MGE_THROW(vulkan::error) << "Cannot select present queue";
+        }
+
+        m_render_system.vkGetDeviceQueue(m_render_system.device(),
+                                         m_present_family.value(),
+                                         0u,
+                                         &m_present_queue);
     }
 
     uint32_t render_context::present_queue_family_index() const

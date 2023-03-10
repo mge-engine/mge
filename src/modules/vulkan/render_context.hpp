@@ -64,12 +64,14 @@ namespace mge::vulkan {
         void choose_surface_format();
         void create_render_pass();
         void create_frame_buffers();
+        void create_command_pool();
 
         mge::vulkan::render_system& m_render_system;
         mge::vulkan::window&        m_window;
 
         VkSurfaceKHR            m_surface;
         std::optional<uint32_t> m_present_family;
+        VkQueue                 m_present_queue;
         VkSurfaceFormatKHR      m_used_surface_format;
         VkPresentModeKHR        m_used_present_mode;
 
@@ -77,7 +79,8 @@ namespace mge::vulkan {
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
 
-        VkRenderPass m_render_pass;
+        VkRenderPass  m_render_pass;
+        VkCommandPool m_command_pool;
     };
 
 } // namespace mge::vulkan

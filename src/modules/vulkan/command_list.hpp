@@ -3,6 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/command_list.hpp"
+#include "vulkan.hpp"
+
 namespace mge::vulkan {
     class render_context;
 
