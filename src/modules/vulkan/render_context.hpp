@@ -81,6 +81,16 @@ namespace mge::vulkan {
         void execute_on_frame(command_list* l);
         void frame();
 
+        inline VkQueue present_queue() const noexcept
+        {
+            return m_present_queue;
+        }
+
+        inline VkSemaphore render_finished() const noexcept
+        {
+            return m_render_finished;
+        }
+
     private:
         void create_surface();
         void select_present_queue();
@@ -95,6 +105,7 @@ namespace mge::vulkan {
         void create_frame_buffers();
         void create_command_pool();
         void create_fence();
+        void create_semaphores();
         void teardown();
         void clear_functions();
 
@@ -114,10 +125,12 @@ namespace mge::vulkan {
 
         VkRenderPass             m_render_pass;
         VkCommandPool            m_command_pool;
-        VkFence                  m_frame_finish_fence;
+        VkFence                  m_frame_finish;
+        VkSemaphore              m_render_finished;
         mge::vulkan::swap_chain* m_vulkan_swap_chain;
 
-        std::vector<command_list*> m_frame_commands;
+        std::vector<command_list*>   m_frame_commands;
+        std::vector<VkCommandBuffer> m_frame_command_buffers;
     };
 
 } // namespace mge::vulkan

@@ -30,7 +30,8 @@ namespace mge::vulkan {
         , m_used_present_mode(VK_PRESENT_MODE_FIFO_KHR)
         , m_render_pass(VK_NULL_HANDLE)
         , m_command_pool(VK_NULL_HANDLE)
-        , m_frame_finish_fence(VK_NULL_HANDLE)
+        , m_frame_finish(VK_NULL_HANDLE)
+        , m_render_finished(VK_NULL_HANDLE)
         , m_vulkan_swap_chain(nullptr)
     {
         m_used_surface_format.format = VK_FORMAT_UNDEFINED;
@@ -54,6 +55,7 @@ namespace mge::vulkan {
             create_frame_buffers();
             create_command_pool();
             create_fence();
+            create_semaphores();
         } catch (...) {
             teardown();
             throw;
@@ -65,6 +67,17 @@ namespace mge::vulkan {
     void render_context::teardown()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Destroy render context";
+
+        if (m_render_finished) {
+            vkDestroySemaphore(m_device, m_render_finished, nullptr);
+            m_render_finished = VK_NULL_HANDLE;
+        }
+
+        if (m_frame_finish) {
+            vkDestroyFence(m_device, m_frame_finish, nullptr);
+            m_frame_finish = VK_NULL_HANDLE;
+        }
+
         if (m_command_pool) {
             vkDestroyCommandPool(m_device, m_command_pool, nullptr);
             m_command_pool = VK_NULL_HANDLE;
@@ -333,10 +346,18 @@ namespace mge::vulkan {
         create_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         create_info.flags =
             VK_FENCE_CREATE_SIGNALED_BIT; // initially pass through
-        CHECK_VK_CALL(vkCreateFence(m_device,
-                                    &create_info,
-                                    nullptr,
-                                    &m_frame_finish_fence));
+        CHECK_VK_CALL(
+            vkCreateFence(m_device, &create_info, nullptr, &m_frame_finish));
+    }
+
+    void render_context::create_semaphores()
+    {
+        VkSemaphoreCreateInfo create_info{};
+        create_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+        CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                        &create_info,
+                                        nullptr,
+                                        &m_render_finished));
     }
 
     index_buffer_ref render_context::create_index_buffer(data_type dt,
@@ -498,15 +519,40 @@ namespace mge::vulkan {
         }
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
-                                      &m_frame_finish_fence,
+                                      &m_frame_finish,
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
-        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finish_fence));
+        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finish));
 
         uint32_t image = m_vulkan_swap_chain->next_image();
+        m_frame_command_buffers.clear();
+        m_frame_command_buffers.reserve(m_frame_commands.size());
         for (auto& l : m_frame_commands) {
             l->record_on_frame(image);
+            m_frame_command_buffers.emplace_back(l->command_buffer());
         }
+
+        VkSubmitInfo submit_info{};
+        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+
+        VkSemaphore wait_semaphores[] = {
+            m_vulkan_swap_chain->image_available()};
+        VkPipelineStageFlags wait_stages[] = {
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        submit_info.waitSemaphoreCount = 1;
+        submit_info.pWaitSemaphores = wait_semaphores;
+        submit_info.pWaitDstStageMask = wait_stages;
+
+        submit_info.commandBufferCount =
+            checked_cast<uint32_t>(m_frame_command_buffers.size());
+        submit_info.pCommandBuffers = m_frame_command_buffers.data();
+
+        VkSemaphore signal_semaphores[] = {m_render_finished};
+        submit_info.signalSemaphoreCount = 1;
+        submit_info.pSignalSemaphores = signal_semaphores;
+
+        CHECK_VK_CALL(
+            vkQueueSubmit(m_graphics_queue, 1, &submit_info, m_frame_finish));
 
         m_frame_commands.clear();
     }

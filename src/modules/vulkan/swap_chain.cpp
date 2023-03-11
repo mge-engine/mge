@@ -19,6 +19,7 @@ namespace mge::vulkan {
         , m_vulkan_context(context)
         , m_swap_chain(VK_NULL_HANDLE)
         , m_image_available(VK_NULL_HANDLE)
+        , m_current_image(std::numeric_limits<uint32_t>::max())
     {
         try {
             create_swap_chain(context);
@@ -174,19 +175,36 @@ namespace mge::vulkan {
 
     swap_chain::~swap_chain() { cleanup(); }
 
-    void swap_chain::present() { m_vulkan_context.frame(); }
+    void swap_chain::present()
+    {
+        m_vulkan_context.frame();
+
+        VkPresentInfoKHR present_info{};
+        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+
+        VkSemaphore wait_semaphores[] = {m_vulkan_context.render_finished()};
+        present_info.waitSemaphoreCount = 1;
+        present_info.pWaitSemaphores = &wait_semaphores[0];
+
+        present_info.swapchainCount = 1;
+        present_info.pSwapchains = &m_swap_chain;
+        present_info.pImageIndices = &m_current_image;
+
+        CHECK_VK_CALL(
+            m_vulkan_context.vkQueuePresentKHR(m_vulkan_context.present_queue(),
+                                               &present_info));
+    }
 
     uint32_t swap_chain::next_image()
     {
-        uint32_t image;
         CHECK_VK_CALL(m_vulkan_context.vkAcquireNextImageKHR(
             m_vulkan_context.device(),
             m_swap_chain,
             std::numeric_limits<uint64_t>::max(),
             m_image_available,
             VK_NULL_HANDLE,
-            &image));
-        return image;
+            &m_current_image));
+        return m_current_image;
     }
 
 } // namespace mge::vulkan
