@@ -524,11 +524,11 @@ namespace mge::vulkan {
                                       std::numeric_limits<uint64_t>::max()));
         CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finish));
 
-        uint32_t image = m_vulkan_swap_chain->next_image();
+        VkFramebuffer frame_buffer = m_vulkan_swap_chain->next_frame();
         m_frame_command_buffers.clear();
         m_frame_command_buffers.reserve(m_frame_commands.size());
         for (auto& l : m_frame_commands) {
-            l->record_on_frame(image);
+            l->record_on_frame(frame_buffer);
             m_frame_command_buffers.emplace_back(l->command_buffer());
         }
 

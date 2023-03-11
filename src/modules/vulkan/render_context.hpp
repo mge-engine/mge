@@ -91,6 +91,11 @@ namespace mge::vulkan {
             return m_render_finished;
         }
 
+        inline VkRenderPass render_pass() const noexcept
+        {
+            return m_render_pass;
+        }
+
     private:
         void create_surface();
         void select_present_queue();

@@ -7,6 +7,7 @@
 #include "render_system.hpp"
 
 namespace mge::vulkan {
+
     command_list::command_list(render_context& context)
         : mge::command_list(context, true)
         , m_vulkan_context(context)
@@ -54,10 +55,39 @@ namespace mge::vulkan {
         }
     }
 
-    void command_list::record_on_frame(uint32_t image)
+    void command_list::record_on_frame(VkFramebuffer frame_buffer)
     {
         auto& ctx = m_vulkan_context;
-        ctx.vkResetCommandBuffer(m_command_buffer, 0);
+        CHECK_VK_CALL(ctx.vkResetCommandBuffer(m_command_buffer, 0));
+
+        VkCommandBufferBeginInfo begin_info{};
+        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+        CHECK_VK_CALL(ctx.vkBeginCommandBuffer(m_command_buffer, &begin_info));
+
+        VkRenderPassBeginInfo render_pass_info{};
+        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        render_pass_info.renderPass = ctx.render_pass();
+        render_pass_info.framebuffer = frame_buffer;
+        render_pass_info.renderArea.offset = {0, 0};
+        render_pass_info.renderArea.extent.width = ctx.extent().width;
+        render_pass_info.renderArea.extent.height = ctx.extent().height;
+
+        VkClearValue clear_color = {};
+        clear_color.color.float32[0] = m_clear_color.r;
+        clear_color.color.float32[1] = m_clear_color.g;
+        clear_color.color.float32[2] = m_clear_color.b;
+        clear_color.color.float32[3] = m_clear_color.a;
+        render_pass_info.clearValueCount = 1;
+        render_pass_info.pClearValues = &clear_color;
+
+        ctx.vkCmdBeginRenderPass(m_command_buffer,
+                                 &render_pass_info,
+                                 VK_SUBPASS_CONTENTS_INLINE);
+
+        ctx.vkCmdEndRenderPass(m_command_buffer);
+
+        CHECK_VK_CALL(ctx.vkEndCommandBuffer(m_command_buffer));
     }
 
 } // namespace mge::vulkan

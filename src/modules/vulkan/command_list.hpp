@@ -22,7 +22,7 @@ namespace mge::vulkan {
         void finish() override;
         void execute() override;
 
-        void                   record_on_frame(uint32_t image);
+        void                   record_on_frame(VkFramebuffer frame_buffer);
         inline VkCommandBuffer command_buffer() const noexcept
         {
             return m_command_buffer;

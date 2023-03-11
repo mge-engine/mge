@@ -195,7 +195,7 @@ namespace mge::vulkan {
                                                &present_info));
     }
 
-    uint32_t swap_chain::next_image()
+    VkFramebuffer swap_chain::next_frame()
     {
         CHECK_VK_CALL(m_vulkan_context.vkAcquireNextImageKHR(
             m_vulkan_context.device(),
@@ -204,7 +204,7 @@ namespace mge::vulkan {
             m_image_available,
             VK_NULL_HANDLE,
             &m_current_image));
-        return m_current_image;
+        return m_frame_buffers.at(m_current_image);
     }
 
 } // namespace mge::vulkan

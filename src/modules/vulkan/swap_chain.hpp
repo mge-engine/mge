@@ -18,7 +18,7 @@ namespace mge::vulkan {
 
         void create_frame_buffers(VkRenderPass render_pass);
 
-        uint32_t next_image();
+        VkFramebuffer next_frame();
 
         inline VkSemaphore image_available() const noexcept
         {
