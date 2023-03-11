@@ -51,6 +51,11 @@ namespace mge::vulkan {
             return "Too many objects of the type have already been created";
         case VK_ERROR_FORMAT_NOT_SUPPORTED:
             return "A requested format is not supported on this device";
+        case VK_ERROR_FRAGMENTED_POOL:
+            return "A pool allocation has failed due to fragmentation of the "
+                   "pool's memory";
+        case VK_ERROR_UNKNOWN:
+            return "An unknown error has occurred";
         case VK_ERROR_SURFACE_LOST_KHR:
             return "A surface is no longer available";
         case VK_SUBOPTIMAL_KHR:
@@ -88,13 +93,19 @@ namespace mge::vulkan {
         return *this;
     }
 
-    void error::check_vkresult(VkResult    rc,
-                               const char* file,
-                               int         line,
-                               const char* function)
+    VkResult error::check_vkresult(VkResult    rc,
+                                   const char* file,
+                                   int         line,
+                                   const char* function)
     {
         if (rc == VK_SUCCESS) {
-            return;
+            return rc;
+        } else if (rc == VK_SUBOPTIMAL_KHR) {
+            MGE_WARNING_TRACE(VULKAN)
+                << file << ":" << line << ": "
+                << "Call to " << function << " returned: (" << (int)rc << ") "
+                << vkresult_message(rc);
+            return rc;
         } else {
             MGE_ERROR_TRACE(VULKAN) << file << ":" << line << ": "
                                     << "Call to " << function << " failed: ("

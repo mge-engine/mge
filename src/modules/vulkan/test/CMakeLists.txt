@@ -4,7 +4,8 @@
 
 SET(VULKAN_TEST_SOURCES
     vulkan_test.cpp
-    test_render_system.cpp)
+    test_render_system.cpp
+    test_command_list.cpp)
 
 MGE_TEST(
     TARGET      test_vulkan

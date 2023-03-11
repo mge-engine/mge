@@ -5,6 +5,8 @@
 #include "mge/graphics/render_context.hpp"
 
 namespace mge {
+    // MGE_USE_TRACE(GRAPHICS);
+
     window::window(const mge::extent& extent_, const window_options&)
         : m_extent(extent_)
         , m_closing_listener([] { return true; })

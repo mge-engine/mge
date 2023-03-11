@@ -98,6 +98,8 @@ namespace mge {
             }
         }
 
+        void clear() { m_data.clear(); }
+
     private:
         key_type                   m_sequence;
         container_type             m_data;
@@ -182,6 +184,8 @@ namespace mge {
                 throw;
             }
         }
+
+        void clear() { m_data.clear(); }
 
     private:
         key_type                   m_sequence;

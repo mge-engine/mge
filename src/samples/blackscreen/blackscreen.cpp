@@ -35,6 +35,7 @@ namespace mge {
                 });
 
             m_clear_commands = m_window->render_context().create_command_list();
+
             m_clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
 
             add_redraw_listener([&](uint64_t cycle, double delta) {
@@ -43,6 +44,13 @@ namespace mge {
             });
 
             m_window->show();
+        }
+
+        void teardown() override
+        {
+            m_clear_commands.reset();
+            m_window.reset();
+            m_render_system.reset();
         }
 
     private:

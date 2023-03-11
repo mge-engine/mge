@@ -76,5 +76,5 @@ namespace mge {
 #define MGE_DETAILS_OUTPUT(TYPE)                                               \
     template <>                                                                \
     inline std::ostream& operator<<(std::ostream&             os,              \
-                                    const details_type<TYPE>& g)
+                                    const details_type<TYPE>& d)
 } // namespace mge
