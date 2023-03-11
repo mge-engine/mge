@@ -28,10 +28,10 @@ namespace mge::vulkan {
             return *this;
         }
 
-        static void check_vkresult(VkResult    rc,
-                                   const char* file,
-                                   int         line,
-                                   const char* function);
+        static VkResult check_vkresult(VkResult    rc,
+                                       const char* file,
+                                       int         line,
+                                       const char* function);
 
     private:
         error& set_info_from_vkresult(VkResult    rc,
