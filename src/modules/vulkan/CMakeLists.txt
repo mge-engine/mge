@@ -25,6 +25,7 @@ SET(mge_vulkan_module_SOURCES
     render_context.cpp
     swap_chain.cpp
     command_list.cpp
+    shader.cpp
     vulkan_library.cpp
     window.cpp
     error.cpp)

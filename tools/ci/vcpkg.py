@@ -18,7 +18,8 @@ vcpkg_packages = [
     "gtest", "boost-preprocessor", "boost-filesystem",
     "boost-circular-buffer", "boost-lexical-cast", "boost-property-tree",
     "boost-spirit", "boost-locale",
-    "vulkan", "glm", "lua", "python3"
+    "vulkan", "glm", "lua", "python3",
+    "glslang"
 ]
 
 
