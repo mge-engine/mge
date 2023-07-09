@@ -46,7 +46,7 @@ TARGET_INCLUDE_DIRECTORIES(mge_module_vulkan PRIVATE "${CMAKE_BINARY_DIR}/src/mo
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan mge_win32 mgeapplication)
 ENDIF()
-TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vulkan)
+TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vulkan glslang)
 ADD_SUBDIRECTORY(test)
 
 

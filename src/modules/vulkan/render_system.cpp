@@ -274,6 +274,9 @@ namespace mge::vulkan {
             MGE_DEBUG_TRACE(VULKAN) << "Enable extra debug messages";
             init_debug_messenger();
         }
+
+        MGE_DEBUG_TRACE(VULKAN) << "Initializing shader compiler";
+        ShInitialize();
     }
 
     VkBool32 render_system::debug_message_callback(
@@ -417,6 +420,9 @@ namespace mge::vulkan {
         vkDestroyInstance(m_instance, nullptr);
         m_instance = nullptr;
         clear_functions();
+
+        MGE_DEBUG_TRACE(VULKAN) << "Finalize shader compiler";
+        ShFinalize();
     }
 
     void render_system::teardown()
