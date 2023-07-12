@@ -8,6 +8,7 @@
 #include "error.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "render_system.hpp"
+#include "shader.hpp"
 #include "swap_chain.hpp"
 #include "window.hpp"
 
@@ -377,7 +378,7 @@ namespace mge::vulkan {
 
     shader_ref render_context::create_shader(shader_type t)
     {
-        shader_ref result;
+        shader_ref result = std::make_shared<shader>(*this, t);
         return result;
     }
 

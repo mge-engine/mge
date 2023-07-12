@@ -2,12 +2,13 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_system.hpp"
+#include "dump.hpp"
 #include "mge/core/array_size.hpp"
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/trace.hpp"
 
-#include "dump.hpp"
 #include "window.hpp"
 
 #include "enumerate.hpp"
@@ -276,7 +277,11 @@ namespace mge::vulkan {
         }
 
         MGE_DEBUG_TRACE(VULKAN) << "Initializing shader compiler";
-        ShInitialize();
+        auto rc = glslang_initialize_process();
+        if (!rc) {
+            MGE_THROW(vulkan::error)
+                << "Failed to initialize shader compiler: " << rc;
+        }
     }
 
     VkBool32 render_system::debug_message_callback(
@@ -422,7 +427,7 @@ namespace mge::vulkan {
         clear_functions();
 
         MGE_DEBUG_TRACE(VULKAN) << "Finalize shader compiler";
-        ShFinalize();
+        glslang_finalize_process();
     }
 
     void render_system::teardown()

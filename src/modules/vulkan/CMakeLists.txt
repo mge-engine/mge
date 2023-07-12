@@ -26,6 +26,7 @@ SET(mge_vulkan_module_SOURCES
     swap_chain.cpp
     command_list.cpp
     shader.cpp
+    program.cpp
     vulkan_library.cpp
     window.cpp
     error.cpp)
@@ -46,7 +47,14 @@ TARGET_INCLUDE_DIRECTORIES(mge_module_vulkan PRIVATE "${CMAKE_BINARY_DIR}/src/mo
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mge_module_vulkan mge_win32 mgeapplication)
 ENDIF()
-TARGET_LINK_LIBRARIES(mge_module_vulkan mgecore mgegraphics vulkan glslang)
+TARGET_LINK_LIBRARIES(mge_module_vulkan
+    mgecore
+    mgegraphics
+
+    vulkan
+
+    glslang::glslang
+    glslang::glslang-default-resource-limits)
 ADD_SUBDIRECTORY(test)
 
 

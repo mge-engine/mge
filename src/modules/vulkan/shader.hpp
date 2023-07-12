@@ -14,7 +14,10 @@ namespace mge::vulkan {
     protected:
         virtual void on_compile(std::string_view code) override;
         virtual void on_set_code(const mge::buffer& code) override;
+
     private:
-        //TShader shader;
+        glslang_stage_t stage() const;
+
+        glslang_shader_t* m_shader;
     };
 } // namespace mge::vulkan
