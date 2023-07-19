@@ -5,6 +5,11 @@ sourcefile = sys.argv[1]
 targetFile = sys.argv[2]
 
 
+blocked_names = ["VkFaultLevel", "VkFaultType",
+                 "VkFaultQueryBehavior", "VkPipelineMatchControl",
+                 "VkSciSyncClientTypeNV", "VkSciSyncPrimitiveTypeNV",
+                 "VkPipelineCacheValidationVersion"]
+
 fileheader = """// mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
@@ -14,11 +19,6 @@ fileheader = """// mge - Modern Game Engine
 # include "vulkan.hpp"
 # include <iostream>
 
-namespace {
-
-
-
-}
 """
 
 tree = ET.parse(sourcefile)
@@ -40,6 +40,8 @@ class PureEnum:
                 self.values.append(EnumValue(el.get("name"), el.get("value")))
 
     def emit(self, f):
+        if self.name in blocked_names:
+            return
         print("""inline std::ostream& operator <<(std::ostream& os, const %s& v)
 {
     switch(v) {""" % (self.name), file=f)
