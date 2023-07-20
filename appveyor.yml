@@ -30,7 +30,7 @@ before_build:
   - cmd: SET ORIG_PATH=%PATH%
   - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
   - cmd: python tools/ci/vulkan.py
-  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.236.0
+  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.250.1
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
