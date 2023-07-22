@@ -37,7 +37,7 @@ before_build:
   - cmd: SET PATH=C:\projects\mge\sphinx\Scripts;%ORIG_PATH%;C:\PROGRA~1\doxygen\bin
 
 build_script:
-  - cmd: mkdir build
+  - cmd: if not exists build mkdir build
   - cmd: cd build
   - cmd: call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: SET CC=cl.exe
