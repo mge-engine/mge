@@ -68,3 +68,4 @@ cache:
   - C:\projects\mge\vulkan-installer -> tools/ci/vulkan.py
   - C:\VulkanSDK -> tools/ci/vulkan.py
   - C:\PROGRA~1\doxygen -> tools/ci/doxygen.py
+  - C:\projects\mge\build -> tools/ci/vulkan.py, tools/ci/vcpkg_version.py
