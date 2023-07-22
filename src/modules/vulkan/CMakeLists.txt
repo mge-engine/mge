@@ -54,7 +54,8 @@ TARGET_LINK_LIBRARIES(mge_module_vulkan
     vulkan
 
     glslang::glslang
-    glslang::glslang-default-resource-limits)
+    glslang::glslang-default-resource-limits
+    glslang::SPIRV)
 ADD_SUBDIRECTORY(test)
 
 

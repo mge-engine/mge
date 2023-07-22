@@ -13,16 +13,9 @@ namespace mge::vulkan {
 
     shader::shader(render_context& context, shader_type type)
         : mge::shader(context, type)
-        //        , m_vulkan_context(context)
-        , m_shader(nullptr)
     {}
 
-    shader::~shader()
-    {
-        if (m_shader) {
-            glslang_shader_delete(m_shader);
-        }
-    }
+    shader::~shader() {}
 
     glslang_stage_t shader::stage() const
     {
@@ -71,36 +64,73 @@ namespace mge::vulkan {
             .resource = glslang_default_resource(),
         };
 
-        m_shader = glslang_shader_create(&input);
-        if (!m_shader) {
+        auto glsl_shader = glslang_shader_create(&input);
+        if (!glsl_shader) {
             MGE_THROW(mge::vulkan::error) << "Failed to create shader";
         }
-        on_leave cleanup([&]() {
-            if (m_shader) {
-                glslang_shader_delete(m_shader);
+        on_leave cleanup_shader([&]() {
+            if (glsl_shader) {
+                glslang_shader_delete(glsl_shader);
             }
-            m_shader = nullptr;
+            glsl_shader = nullptr;
         });
 
-        if (!glslang_shader_preprocess(m_shader, &input)) {
-            const char* info_log = glslang_shader_get_info_log(m_shader);
+        if (!glslang_shader_preprocess(glsl_shader, &input)) {
+            const char* info_log = glslang_shader_get_info_log(glsl_shader);
             MGE_ERROR_TRACE(VULKAN) << "Fail to preprocess shader:" << info_log;
 
             MGE_THROW(mge::vulkan::error)
                 << "Failed to preprocess shader: " << info_log;
         }
 
-        if (!glslang_shader_parse(m_shader, &input)) {
-            const char* info_log = glslang_shader_get_info_log(m_shader);
+        if (!glslang_shader_parse(glsl_shader, &input)) {
+            const char* info_log = glslang_shader_get_info_log(glsl_shader);
             MGE_ERROR_TRACE(VULKAN) << "Fail to parse shader:" << info_log;
 
             MGE_THROW(mge::vulkan::error)
                 << "Failed to parse shader: " << info_log;
         }
+
+        auto glsl_program = glslang_program_create();
+        if (!glsl_program) {
+            MGE_THROW(mge::vulkan::error) << "Failed to create program";
+        }
+        on_leave cleanup_program([&]() {
+            if (glsl_program) {
+                glslang_program_delete(glsl_program);
+            }
+            glsl_program = nullptr;
+        });
+
+        glslang_program_add_shader(glsl_program, glsl_shader);
+
+        if (!glslang_program_link(glsl_program,
+                                  GLSLANG_MSG_SPV_RULES_BIT |
+                                      GLSLANG_MSG_VULKAN_RULES_BIT)) {
+            const char* info_log = glslang_program_get_info_log(glsl_program);
+            const char* debug_log =
+                glslang_program_get_info_debug_log(glsl_program);
+            MGE_ERROR_TRACE(VULKAN) << "Failed to link program: " << info_log;
+            MGE_DEBUG_TRACE(VULKAN) << "Program link message: " << debug_log;
+            MGE_THROW(mge::vulkan::error)
+                << "Failed to link program: " << info_log;
+        }
+
+        glslang_program_SPIRV_generate(glsl_program, stage());
+        size_t code_size = glslang_program_SPIRV_get_size(glsl_program);
+        if (code_size == 0) {
+            MGE_THROW(mge::vulkan::error) << "Failed to generate SPIR-V code";
+        }
+
+        m_code.resize(code_size);
+        glslang_program_SPIRV_get(
+            glsl_program,
+            reinterpret_cast<unsigned int*>(m_code.data()));
     }
 
     void shader::on_set_code(const mge::buffer& code)
     {
+        m_code = code;
         /*
         VkShaderModuleCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
