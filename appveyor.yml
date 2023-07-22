@@ -24,6 +24,8 @@ image: Visual Studio 2022
 init:
   - git config --global core.autocrlf input
 
+shallow_clone: true
+
 platform: x64
 
 before_build:
