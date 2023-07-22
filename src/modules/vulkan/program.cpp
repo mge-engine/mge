@@ -1,6 +1,7 @@
 #include "program.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
+#include "shader.hpp"
 
 namespace mge {
     MGE_USE_TRACE(VULKAN);
@@ -24,6 +25,11 @@ namespace mge::vulkan {
 
     void program::on_link() {}
 
-    void program::on_set_shader(const shader_ref& shader) {}
+    void program::on_set_shader(const shader_ref& shader)
+    {
+        mge::vulkan::shader* s =
+            static_cast<mge::vulkan::shader*>(shader.get());
+        glslang_program_add_shader(m_program, s->glslang_shader());
+    }
 
 } // namespace mge::vulkan
