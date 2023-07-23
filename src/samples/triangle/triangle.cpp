@@ -66,7 +66,9 @@ namespace mge {
                                       << m_render_system->implementation_name();
 
             if (m_render_system->implementation_name() ==
-                "mge::opengl::render_system") {
+                    "mge::opengl::render_system" ||
+                m_render_system->implementation_name() ==
+                    "mge::vulkan::render_system") {
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core
                     layout(location = 0) in vec3 vertexPosition;
@@ -79,8 +81,7 @@ namespace mge {
 
                 const char* fragment_shader_glsl = R"shader(
                     #version 330 core
-                    out vec3 color;
-
+                    layout(location = 0) out vec3 color;
                     void main() {
                         color = vec3(1,1,1);
                     }
