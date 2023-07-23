@@ -179,10 +179,13 @@ namespace mge::dx12 {
 
     void render_context::initialize()
     {
+        MGE_DEBUG_TRACE(DX12) << "Create swap chain";
         auto swap_chain =
             std::make_shared<mge::dx12::swap_chain>(m_render_system, *this);
         m_swap_chain = swap_chain;
+        MGE_DEBUG_TRACE(DX12) << "Create descriptor heap";
         create_descriptor_heap();
+        MGE_DEBUG_TRACE(DX12) << "Update render target views";
         update_render_target_views(swap_chain);
     }
 
