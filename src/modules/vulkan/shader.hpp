@@ -5,6 +5,7 @@
 
 namespace mge::vulkan {
     class render_context;
+
     class shader : public mge::shader
     {
     public:
@@ -17,7 +18,11 @@ namespace mge::vulkan {
 
     private:
         glslang_stage_t stage() const;
+        void            create_shader_module();
+        void            destroy_shader_module();
 
-        mge::buffer m_code;
+        render_context& m_vulkan_context;
+        VkShaderModule  m_shader_module;
+        mge::buffer     m_code;
     };
 } // namespace mge::vulkan

@@ -13,9 +13,11 @@ namespace mge::vulkan {
 
     shader::shader(render_context& context, shader_type type)
         : mge::shader(context, type)
+        , m_vulkan_context(context)
+        , m_shader_module(VK_NULL_HANDLE)
     {}
 
-    shader::~shader() {}
+    shader::~shader() { destroy_shader_module(); }
 
     glslang_stage_t shader::stage() const
     {
@@ -117,31 +119,47 @@ namespace mge::vulkan {
         }
 
         glslang_program_SPIRV_generate(glsl_program, stage());
-        size_t code_size = glslang_program_SPIRV_get_size(glsl_program);
-        if (code_size == 0) {
+        size_t code_size_words = glslang_program_SPIRV_get_size(glsl_program);
+        if (code_size_words == 0) {
             MGE_THROW(mge::vulkan::error) << "Failed to generate SPIR-V code";
         }
 
-        m_code.resize(code_size);
+        m_code.resize(code_size_words * 4);
         glslang_program_SPIRV_get(
             glsl_program,
             reinterpret_cast<unsigned int*>(m_code.data()));
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Shader code size: " << code_size_words * 4 << " bytes";
+        create_shader_module();
     }
 
     void shader::on_set_code(const mge::buffer& code)
     {
         m_code = code;
-        /*
+        create_shader_module();
+    }
+
+    void shader::create_shader_module()
+    {
         VkShaderModuleCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
-        create_info.codeSize = code.size();
-        create_info.pCode = reinterpret_cast<const uint32_t*>(code.data());
+        create_info.codeSize = m_code.size();
+        create_info.pCode = reinterpret_cast<const uint32_t*>(m_code.data());
 
         CHECK_VK_CALL(
             m_vulkan_context.vkCreateShaderModule(m_vulkan_context.device(),
                                                   &create_info,
                                                   nullptr,
-                                                  &m_module));
-        */
+                                                  &m_shader_module));
+    }
+
+    void shader::destroy_shader_module()
+    {
+        if (m_shader_module) {
+            m_vulkan_context.vkDestroyShaderModule(m_vulkan_context.device(),
+                                                   m_shader_module,
+                                                   nullptr);
+            m_shader_module = VK_NULL_HANDLE;
+        }
     }
 } // namespace mge::vulkan
