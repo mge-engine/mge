@@ -3,7 +3,12 @@
 // All rights reserved.
 #include "shader.hpp"
 #include "error.hpp"
+#include "mge/core/trace.hpp"
 #include "render_context.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(DX11);
+}
 
 namespace mge::dx11 {
     shader::shader(render_context& context, shader_type type)
@@ -113,6 +118,31 @@ namespace mge::dx11 {
             return get_property("profile", "cs_5_0");
         default:
             MGE_THROW(dx11::error) << "Unsupported shader type: " << type();
+        }
+    }
+
+    static void dump_shader_desc(const D3D11_SHADER_DESC& d)
+    {
+        MGE_DEBUG_TRACE(DX11) << "Version: " << d.Version;
+        MGE_DEBUG_TRACE(DX11) << "Creator: " << d.Creator;
+        MGE_DEBUG_TRACE(DX11) << "Flags  : " << d.Flags;
+    }
+
+    void shader::reflect() const
+    {
+        ID3D11ShaderReflection* shader_reflection = nullptr;
+
+        CHECK_HRESULT(D3DReflect(m_code->GetBufferPointer(),
+                                 m_code->GetBufferSize(),
+                                 IID_ID3D11ShaderReflection,
+                                 (void**)&shader_reflection),
+                      ,
+                      D3DReflect);
+        if (shader_reflection) {
+            D3D11_SHADER_DESC shader_desc = {};
+            shader_reflection->GetDesc(&shader_desc);
+            dump_shader_desc(shader_desc);
+            shader_reflection->Release();
         }
     }
 

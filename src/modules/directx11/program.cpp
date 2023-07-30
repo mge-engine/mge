@@ -32,7 +32,13 @@ namespace mge::dx11 {
 
     void program::collect_attributes()
     {
-        // TODO
+        for (const auto& s : m_shaders) {
+            if (s) {
+                const dx11::shader* dx11_s =
+                    static_cast<const dx11::shader*>(s.get());
+                dx11_s->reflect();
+            }
+        }
     }
 
     void program::collect_uniforms()

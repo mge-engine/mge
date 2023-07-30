@@ -32,6 +32,7 @@ namespace mge::dx11 {
                                       domain_shader_t>;
 
         const shader_t& directx_shader() const { return m_shader; }
+        void            reflect() const;
 
     private:
         std::string profile() const;
