@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "command_list.hpp"
 #include "error.hpp"
+#include "program.hpp"
 
 namespace mge::dx11 {
 
@@ -26,7 +27,11 @@ namespace mge::dx11 {
             clearcolor);
     }
 
-    void command_list::draw(const mge::draw_command& command) {}
+    void command_list::draw(const mge::draw_command& command)
+    {
+        [[maybe_unused]] auto dx11_program =
+            static_cast<mge::dx11::program*>(command.program().get());
+    }
 
     void command_list::execute()
     {

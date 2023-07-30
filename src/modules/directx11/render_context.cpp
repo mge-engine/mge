@@ -144,7 +144,6 @@ namespace mge::dx11 {
     mge::program_ref render_context::create_program()
     {
         mge::program_ref result = std::make_shared<program>(*this);
-
         return result;
     }
 

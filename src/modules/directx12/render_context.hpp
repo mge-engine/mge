@@ -50,6 +50,7 @@ namespace mge::dx12 {
         void create_device();
         void enable_debug_messages();
         void create_command_queue();
+
         void create_descriptor_heap();
         void update_render_target_views(
             const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);

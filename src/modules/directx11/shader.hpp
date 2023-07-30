@@ -18,6 +18,7 @@ namespace mge::dx11 {
         virtual void on_compile(std::string_view code) override;
         virtual void on_set_code(const mge::buffer& code) override;
 
+    public:
         using vertex_shader_t = mge::com_unique_ptr<ID3D11VertexShader>;
         using pixel_shader_t = mge::com_unique_ptr<ID3D11PixelShader>;
         using compute_shader_t = mge::com_unique_ptr<ID3D11ComputeShader>;
@@ -29,6 +30,8 @@ namespace mge::dx11 {
                                       compute_shader_t,
                                       hull_shader_t,
                                       domain_shader_t>;
+
+        const shader_t& directx_shader() const { return m_shader; }
 
     private:
         std::string profile() const;
