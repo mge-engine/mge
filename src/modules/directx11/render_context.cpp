@@ -6,6 +6,7 @@
 #include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/trace.hpp"
+#include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
@@ -142,7 +143,8 @@ namespace mge::dx11 {
 
     mge::program_ref render_context::create_program()
     {
-        mge::program_ref result;
+        mge::program_ref result = std::make_shared<program>(*this);
+
         return result;
     }
 

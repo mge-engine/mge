@@ -93,6 +93,37 @@ namespace mge {
                 MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
             } else if (m_render_system->implementation_name() ==
                        "mge::dx11::render_system") {
+
+                const char* vertex_shader_hlsl = R"shader(
+                    struct VS_INPUT {
+                        float3 vertexPosition : POSITION;
+                    };
+
+                    struct VS_OUTPUT {
+                        float4 position : SV_POSITION;
+                    };
+
+                    VS_OUTPUT main(VS_INPUT input) {
+                        VS_OUTPUT output;
+                        output.position.xyz = input.vertexPosition;
+                        output.position.w = 1.0;
+                        return output;
+                    }
+                    )shader";
+
+                const char* fragment_shader_hlsl = R"shader(
+                    float4 main() : SV_TARGET
+                    {
+                        return float4(1.0f, 1.0f, 1.0f, 1.0f);
+                    }
+
+                    )shader";
+                MGE_DEBUG_TRACE(TRIANGLE) << "Compile fragment shader";
+                pixel_shader->compile(fragment_shader_hlsl);
+                MGE_DEBUG_TRACE(TRIANGLE) << "Compile vertex shader";
+                vertex_shader->compile(vertex_shader_hlsl);
+                MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
+
             } else {
                 MGE_ERROR_TRACE(TRIANGLE)
                     << "Cannot create shaders for "
@@ -104,7 +135,7 @@ namespace mge {
             m_program->set_shader(vertex_shader);
             MGE_DEBUG_TRACE(TRIANGLE) << "Linking program";
             m_program->link();
-            MGE_DEBUG_TRACE(TRIANGLE) << "program linked";
+            MGE_DEBUG_TRACE(TRIANGLE) << "Program linked";
 
             float triangle_coords[] = {
                 0.0f,
