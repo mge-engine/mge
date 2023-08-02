@@ -28,8 +28,9 @@ namespace mge::dx11 {
             return m_shaders[mge::to_underlying(t)];
         }
 
-        void collect_attributes();
-        void collect_uniforms();
+        void collect_information(attribute_list&      attributes,
+                                 uniform_list&        uniforms,
+                                 uniform_buffer_list& uniform_buffers);
 
         std::array<shader_ref,
                    mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
