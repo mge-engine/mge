@@ -128,6 +128,42 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11) << "Flags  : " << d.Flags;
     }
 
+    static mge::data_type
+    data_type_of_parameter(const D3D11_SIGNATURE_PARAMETER_DESC& parameter_desc)
+    {
+        switch (parameter_desc.ComponentType) {
+        case D3D_REGISTER_COMPONENT_UINT32:
+            return mge::data_type::UINT32;
+        case D3D_REGISTER_COMPONENT_SINT32:
+            return mge::data_type::INT32;
+        case D3D_REGISTER_COMPONENT_FLOAT32:
+            return mge::data_type::FLOAT;
+        default:
+            MGE_THROW(dx11::error) << "Unsupported component type "
+                                   << parameter_desc.ComponentType;
+        }
+    }
+
+    static uint8_t
+    size_of_parameter(const D3D11_SIGNATURE_PARAMETER_DESC& parameter_desc)
+    {
+        switch (parameter_desc.Mask) {
+        case 0x1:
+            return 1;
+        case 0x3:
+            return 2;
+        case 0x7:
+            return 3;
+        case 0xf:
+            return 4;
+        case 0x0:
+            return 0;
+        default:
+            MGE_THROW(dx11::error)
+                << "Unsupported parameter mask " << (int)parameter_desc.Mask;
+        }
+    }
+
     void
     shader::reflect(mge::program::attribute_list&      attributes,
                     mge::program::uniform_list&        uniforms,
@@ -145,6 +181,18 @@ namespace mge::dx11 {
             D3D11_SHADER_DESC shader_desc = {};
             shader_reflection->GetDesc(&shader_desc);
             dump_shader_desc(shader_desc);
+
+            for (uint32_t i = 0; i < shader_desc.InputParameters; ++i) {
+                D3D11_SIGNATURE_PARAMETER_DESC parameter_desc = {};
+                shader_reflection->GetInputParameterDesc(i, &parameter_desc);
+                attributes.push_back(mge::program::attribute{
+                    parameter_desc.SemanticName,
+                    data_type_of_parameter(parameter_desc),
+                    size_of_parameter(parameter_desc)});
+                MGE_DEBUG_TRACE(DX11)
+                    << "attribute[" << i << "]=" << attributes.back();
+            }
+
             shader_reflection->Release();
         }
     }

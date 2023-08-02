@@ -9,6 +9,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/shader.hpp"
 
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -126,4 +127,7 @@ namespace mge {
         virtual void on_link() = 0;
         virtual void on_set_shader(const shader_ref& shader) = 0;
     };
+
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&             os,
+                                                const program::attribute& a);
 } // namespace mge

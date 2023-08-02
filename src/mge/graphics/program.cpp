@@ -66,4 +66,11 @@ namespace mge {
         }
     }
 
+    std::ostream& operator<<(std::ostream& os, const mge::program::attribute& a)
+    {
+        os << "attribute{name=" << a.name << ",type=" << a.type
+           << ",size=" << static_cast<uint32_t>(a.size) << "}";
+        return os;
+    }
+
 } // namespace mge
