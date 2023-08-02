@@ -20,7 +20,7 @@ namespace mge::dx11 {
             !program_shader(mge::shader_type::FRAGMENT)) {
             MGE_THROW(mge::illegal_state) << "Cannot link empty program";
         }
-        collect_information(m_attributes, m_uniforms, m_uniform_buffers);
+        collect_information();
     }
 
     void program::on_set_shader(const shader_ref& shader)
@@ -29,17 +29,13 @@ namespace mge::dx11 {
         m_shaders[index] = shader;
     }
 
-    void program::collect_information(
-        mge::program::attribute_list&      attributes,
-        mge::program::uniform_list&        uniforms,
-        mge::program::uniform_buffer_list& uniform_buffers)
-
+    void program::collect_information()
     {
         for (const auto& s : m_shaders) {
             if (s) {
                 const dx11::shader* dx11_s =
                     static_cast<const dx11::shader*>(s.get());
-                dx11_s->reflect();
+                dx11_s->reflect(m_attributes, m_uniforms, m_uniform_buffers);
             }
         }
     }

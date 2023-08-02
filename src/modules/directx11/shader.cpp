@@ -128,7 +128,10 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11) << "Flags  : " << d.Flags;
     }
 
-    void shader::reflect() const
+    void
+    shader::reflect(mge::program::attribute_list&      attributes,
+                    mge::program::uniform_list&        uniforms,
+                    mge::program::uniform_buffer_list& uniform_buffers) const
     {
         ID3D11ShaderReflection* shader_reflection = nullptr;
 

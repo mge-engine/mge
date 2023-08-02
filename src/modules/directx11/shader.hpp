@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
+#include "mge/graphics/program.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
@@ -32,7 +33,10 @@ namespace mge::dx11 {
                                       domain_shader_t>;
 
         const shader_t& directx_shader() const { return m_shader; }
-        void            reflect() const;
+
+        void reflect(mge::program::attribute_list&      attributes,
+                     mge::program::uniform_list&        uniforms,
+                     mge::program::uniform_buffer_list& uniform_buffers) const;
 
     private:
         std::string profile() const;
