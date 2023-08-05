@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "shader.hpp"
 #include "error.hpp"
+#include "mge/core/call_debugger.hpp"
 #include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
@@ -145,6 +146,22 @@ namespace mge::dx11 {
         }
     }
 
+    static mge::data_type
+    data_type_of_variable(const D3D11_SHADER_TYPE_DESC& variable_type_desc)
+    {
+        switch (variable_type_desc.Type) {
+        case D3D_SVT_UINT:
+            return mge::data_type::UINT32;
+        case D3D_SVT_INT:
+            return mge::data_type::INT32;
+        case D3D_SVT_FLOAT:
+            return mge::data_type::FLOAT;
+        default:
+            MGE_THROW(dx11::error)
+                << "Unsupported variable type " << variable_type_desc.Type;
+        }
+    }
+
     static uint8_t
     size_of_parameter(const D3D11_SIGNATURE_PARAMETER_DESC& parameter_desc)
     {
@@ -207,15 +224,29 @@ namespace mge::dx11 {
                 cbuffer->GetDesc(&cbuffer_desc);
                 mge::program::uniform_buffer uniform_buffer;
                 uniform_buffer.name = cbuffer_desc.Name;
-
-                for (uint32_t j = 0; j < cbuffer_desc.Size; ++j) {
+                for (uint32_t j = 0; j < cbuffer_desc.Variables; ++j) {
                     ID3D11ShaderReflectionVariable* variable =
                         cbuffer->GetVariableByIndex(j);
                     D3D11_SHADER_VARIABLE_DESC variable_desc = {};
                     variable->GetDesc(&variable_desc);
                     MGE_DEBUG_TRACE(DX11) << variable_desc.Name;
+                    mge::call_debugger();
                     mge::program::uniform u;
                     u.name = variable_desc.Name;
+                    ID3D11ShaderReflectionType* variable_type =
+                        variable->GetType();
+                    D3D11_SHADER_TYPE_DESC variable_type_desc = {};
+                    variable_type->GetDesc(&variable_type_desc);
+                    u.type = data_type_of_variable(variable_type_desc);
+                    u.size = variable_desc.Size;
+                    uniform_buffer.uniforms.push_back(u);
+                }
+                if (uniform_buffer.name == "$Globals") {
+                    uniforms.insert(uniforms.begin(),
+                                    uniform_buffer.uniforms.begin(),
+                                    uniform_buffer.uniforms.end());
+                } else {
+                    uniform_buffers.push_back(uniform_buffer);
                 }
             }
         }

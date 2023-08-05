@@ -403,7 +403,55 @@ namespace mge {
 
         allocator_type get_allocator() const { return m_allocator; }
 
-        // insert
+        template <typename I>
+        constexpr iterator insert(const_iterator pos, I first, I last)
+        {
+            auto n = std::distance(first, last);
+            if (n == 0) {
+                return begin();
+            } else if ((n < S) && (n + size() < S)) {
+                return insert_small_data(pos, first, last, n);
+            } else {
+                return insert_vector(pos, first, last, n);
+            }
+        }
+
+    private:
+        template <typename I>
+        constexpr iterator
+        insert_small_data(const_iterator pos, I first, I last, size_t n)
+        {
+            auto p = begin() + std::distance(cbegin(), pos);
+            auto e = end();
+            if (p == e) {
+                for (; first != last; ++first) {
+                    emplace_back(*first);
+                }
+            } else {
+                auto i = end();
+                for (; i != p; --i) {
+                    *(i + n) = *i;
+                }
+                for (; first != last; ++first) {
+                    *(i + n) = *first;
+                }
+                std::get<1>(m_data).length += n;
+            }
+            return p;
+        }
+
+        template <typename I>
+        constexpr iterator
+        insert_vector(const_iterator pos, I first, I last, size_t n)
+        {
+            convert_to_vector();
+            auto& v = std::get<2>(m_data);
+            auto  p = v.begin() + std::distance(cbegin(), pos);
+            auto  r = v.insert(p, first, last);
+            return v.data() + std::distance(v.begin(), r);
+        }
+
+    public:
         // pop_back
 
         void push_back(const value_type& val)
