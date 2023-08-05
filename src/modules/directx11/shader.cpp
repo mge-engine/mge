@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "shader.hpp"
 #include "error.hpp"
+#include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
 
@@ -177,6 +178,11 @@ namespace mge::dx11 {
                                  (void**)&shader_reflection),
                       ,
                       D3DReflect);
+        on_leave delete_shader_reflection([&]() {
+            if (shader_reflection) {
+                shader_reflection->Release();
+            }
+        });
         if (shader_reflection) {
             D3D11_SHADER_DESC shader_desc = {};
             shader_reflection->GetDesc(&shader_desc);
@@ -193,7 +199,25 @@ namespace mge::dx11 {
                     << "attribute[" << i << "]=" << attributes.back();
             }
 
-            shader_reflection->Release();
+            for (uint32_t i = 0; i < shader_desc.ConstantBuffers; ++i) {
+                ID3D11ShaderReflectionConstantBuffer* cbuffer =
+                    shader_reflection->GetConstantBufferByIndex(i);
+
+                D3D11_SHADER_BUFFER_DESC cbuffer_desc = {};
+                cbuffer->GetDesc(&cbuffer_desc);
+                mge::program::uniform_buffer uniform_buffer;
+                uniform_buffer.name = cbuffer_desc.Name;
+
+                for (uint32_t j = 0; j < cbuffer_desc.Size; ++j) {
+                    ID3D11ShaderReflectionVariable* variable =
+                        cbuffer->GetVariableByIndex(j);
+                    D3D11_SHADER_VARIABLE_DESC variable_desc = {};
+                    variable->GetDesc(&variable_desc);
+                    MGE_DEBUG_TRACE(DX11) << variable_desc.Name;
+                    mge::program::uniform u;
+                    u.name = variable_desc.Name;
+                }
+            }
         }
     }
 
