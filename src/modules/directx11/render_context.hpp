@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
+#include "input_layout_cache.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
@@ -50,11 +51,14 @@ namespace mge::dx11 {
             return m_render_target_view.get();
         }
 
+        input_layout_cache& layouts() { return m_layouts; }
+
     private:
         void create_swap_chain();
 
         mge::dx11::render_system& m_render_system;
         mge::dx11::window&        m_window;
+        input_layout_cache        m_layouts;
 
         com_unique_ptr<ID3D11Device>           m_device;
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;

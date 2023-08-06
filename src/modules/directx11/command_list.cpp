@@ -27,12 +27,39 @@ namespace mge::dx11 {
             m_dx11_context.render_target_view(),
             clearcolor);
     }
+#if 0
+    static void fill_input_layout(const mge::vertex_layout& layout,
+                                  D3D11_INPUT_ELEMENT_DESC* input_layout)
+    {
+        size_t offset = 0;
+        for (const auto& element : layout) {
+            D3D11_INPUT_ELEMENT_DESC& desc = *input_layout++;
+            /*
+            desc.SemanticName =
+            desc.SemanticIndex = element.semantic_index();
+            desc.Format = static_cast<DXGI_FORMAT>(element.format());
+            desc.InputSlot = 0;
+            desc.AlignedByteOffset = static_cast<UINT>(offset);
+            desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+            desc.InstanceDataStepRate = 0;
+            offset += element.binary_size();
+            */
+        }
+    }
+#endif
 
     void command_list::draw(const mge::draw_command& command)
     {
-        [[maybe_unused]] auto dx11_program =
-            static_cast<mge::dx11::program*>(command.program().get());
-        [[maybe_unused]] const auto& layout = command.vertices()->layout();
+#if 0
+        //[[maybe_unused]] auto dx11_program =
+        //    static_cast<mge::dx11::program*>(command.program().get());
+        const auto&               layout = command.vertices()->layout();
+        const size_t              layout_size = layout.size();
+        D3D11_INPUT_ELEMENT_DESC* input_layout =
+            static_cast<D3D11_INPUT_ELEMENT_DESC*>(
+                alloca(layout_size * sizeof(D3D11_INPUT_ELEMENT_DESC)));
+        fill_input_layout(layout, input_layout);
+#endif
     }
 
     void command_list::execute()

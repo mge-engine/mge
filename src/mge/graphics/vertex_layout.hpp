@@ -255,6 +255,16 @@ namespace mge {
 
         auto size() const noexcept { return m_formats.size(); }
 
+        inline bool operator==(const vertex_layout& l) const noexcept
+        {
+            return m_formats == l.m_formats && m_semantics == l.m_semantics;
+        }
+
+        inline bool operator!=(const vertex_layout& l) const noexcept
+        {
+            return !(*this == l);
+        }
+
     private:
         mge::small_vector<vertex_format, 3>      m_formats;
         mge::small_vector<attribute_semantic, 3> m_semantics;
@@ -270,3 +280,20 @@ namespace mge {
                        parse_vertex_layout(std::string_view sv);
 
 } // namespace mge
+
+namespace std {
+    template <> struct hash<mge::vertex_layout>
+    {
+        size_t operator()(const mge::vertex_layout& l) const noexcept
+        {
+            size_t h = 0;
+            for (size_t i = 0; i < l.size(); ++i) {
+                auto entry = l[i];
+                h = std::hash<mge::vertex_format>{}(entry.format);
+                h = h * 31 +
+                    std::hash<mge::attribute_semantic>{}(entry.semantic);
+            }
+            return h;
+        }
+    };
+} // namespace std

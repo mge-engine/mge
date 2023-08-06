@@ -5,6 +5,7 @@
 #include "mge/core/overloaded.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include <array>
+#include <functional>
 #include <iterator>
 #include <limits>
 #include <variant>
@@ -502,6 +503,20 @@ namespace mge {
 
         void swap(small_vector<T, S, Alloc>& v) { m_data.swap(v.m_data); }
 
+        bool operator==(const small_vector<T, S, Alloc>& v) const
+        {
+            if (size() != v.size()) {
+                return false;
+            } else {
+                return std::equal(begin(), end(), v.begin());
+            }
+        }
+
+        bool operator!=(const small_vector<T, S, Alloc>& v) const
+        {
+            return !(*this == v);
+        }
+
     private:
         void push_back_small_data(const value_type& val)
         {
@@ -622,4 +637,22 @@ namespace mge {
         data_type m_data;
         Alloc     m_allocator;
     };
+
 } // namespace mge
+
+namespace std {
+    template <typename T, size_t S, class Alloc>
+    struct hash<typename mge::small_vector<T, S, Alloc>>
+    {
+        std::size_t
+        operator()(const mge::small_vector<T, S, Alloc>& v) const noexcept
+        {
+            std::size_t seed = 0;
+            for (const auto& elem : v) {
+                seed ^= std::hash<T>()(elem) + 0x9e3779b9 + (seed << 6) +
+                        (seed >> 2);
+            }
+            return seed;
+        }
+    };
+} // namespace std

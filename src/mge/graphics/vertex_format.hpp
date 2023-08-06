@@ -132,3 +132,14 @@ namespace mge {
     MGEGRAPHICS_EXPORT vertex_format parse_vertex_format(std::string_view sv);
 
 } // namespace mge
+
+namespace std {
+    template <> struct hash<mge::vertex_format>
+    {
+        size_t operator()(const mge::vertex_format& fmt) const noexcept
+        {
+            return static_cast<size_t>(fmt.type()) ^
+                   static_cast<size_t>(fmt.size());
+        }
+    };
+} // namespace std

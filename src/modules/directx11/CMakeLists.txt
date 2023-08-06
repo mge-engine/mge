@@ -13,6 +13,7 @@ SET(mge_dx11_module_SOURCES
     command_list.cpp
     shader.cpp
     program.cpp
+    input_layout_cache.cpp
 )
 
 ADD_LIBRARY(mge_module_dx11 MODULE
