@@ -18,16 +18,16 @@ namespace mge::dx11 {
         program(render_context& context);
         virtual ~program();
 
-    protected:
-        void on_link() override;
-        void on_set_shader(const shader_ref& shader) override;
-
-    private:
         inline const shader_ref& program_shader(mge::shader_type t) const
         {
             return m_shaders[mge::to_underlying(t)];
         }
 
+    protected:
+        void on_link() override;
+        void on_set_shader(const shader_ref& shader) override;
+
+    private:
         void collect_information();
 
         std::array<shader_ref,

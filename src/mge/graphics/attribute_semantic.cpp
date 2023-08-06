@@ -19,6 +19,8 @@ namespace mge {
             return o << "COLOR";
         case attribute_semantic::TEXCOORD:
             return o << "TEXCOORD";
+        case attribute_semantic::ANY:
+            return o << "ANY";
         default:
             return o << "INVALID(" << static_cast<uint32_t>(s) << ")";
         }

@@ -32,7 +32,18 @@ namespace mge::dx11 {
                                       hull_shader_t,
                                       domain_shader_t>;
 
+        ID3D11VertexShader* directx_vertex_shader() const
+        {
+            return std::get<vertex_shader_t>(m_shader).get();
+        }
+
+        ID3D11PixelShader* directx_pixel_shader() const
+        {
+            return std::get<pixel_shader_t>(m_shader).get();
+        }
+
         const shader_t& directx_shader() const { return m_shader; }
+        ID3DBlob*       code() const { return m_code.get(); }
 
         void reflect(mge::program::attribute_list&      attributes,
                      mge::program::uniform_list&        uniforms,

@@ -50,16 +50,57 @@ namespace mge::dx11 {
 
     void command_list::draw(const mge::draw_command& command)
     {
-#if 0
-        //[[maybe_unused]] auto dx11_program =
-        //    static_cast<mge::dx11::program*>(command.program().get());
+        const dx11::program* dx11_program =
+            static_cast<const dx11 ::program*>(command.program().get());
+
+        const dx11::shader* dx11_vertex_shader =
+            static_cast<const dx11::shader*>(
+                dx11_program->program_shader(mge::shader_type::VERTEX).get());
+
+        const dx11::shader* dx11_pixel_shader =
+            static_cast<const dx11::shader*>(
+                dx11_program->program_shader(mge::shader_type::FRAGMENT).get());
+
+        const dx11::vertex_buffer* dx11_vertex_buffer =
+            static_cast<const dx11::vertex_buffer*>(command.vertices().get());
+
         const auto&               layout = command.vertices()->layout();
         const size_t              layout_size = layout.size();
-        D3D11_INPUT_ELEMENT_DESC* input_layout =
-            static_cast<D3D11_INPUT_ELEMENT_DESC*>(
-                alloca(layout_size * sizeof(D3D11_INPUT_ELEMENT_DESC)));
-        fill_input_layout(layout, input_layout);
-#endif
+        D3D11_INPUT_ELEMENT_DESC* input_desc =
+            m_dx11_context.layouts().get(layout);
+        ID3D11InputLayout* input_layout = nullptr;
+
+        auto rc = m_dx11_context.device()->CreateInputLayout(
+            input_desc,
+            static_cast<UINT>(layout_size),
+            dx11_vertex_shader->code()->GetBufferPointer(),
+            dx11_vertex_shader->code()->GetBufferSize(),
+            &input_layout);
+        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+
+        UINT          stride = static_cast<UINT>(layout.binary_size());
+        UINT          offset = 0;
+        ID3D11Buffer* vertex_buffer = dx11_vertex_buffer->buffer();
+        m_deferred_context->IASetVertexBuffers(0,
+                                               1,
+                                               &vertex_buffer,
+                                               &stride,
+                                               &offset);
+        m_deferred_context->IASetInputLayout(input_layout);
+        m_deferred_context->VSSetShader(
+            dx11_vertex_shader->directx_vertex_shader(),
+            nullptr,
+            0);
+        m_deferred_context->PSSetShader(
+            dx11_pixel_shader->directx_pixel_shader(),
+            nullptr,
+            0);
+
+        m_deferred_context->IASetPrimitiveTopology(
+            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        m_deferred_context->Draw(
+            static_cast<UINT>(command.vertices()->element_count()),
+            0);
     }
 
     void command_list::execute()
