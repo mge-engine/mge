@@ -42,7 +42,7 @@ namespace mge::dx11 {
             desc.AlignedByteOffset = static_cast<UINT>(offset);
             desc.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
             desc.InstanceDataStepRate = 0;
-            offset += element.binary_size();
+       vert     offset += element.binary_size();
             */
         }
     }
