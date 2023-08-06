@@ -39,8 +39,11 @@ A vertex format defines an element of data in a vertex buffer.
 .. doxygenclass:: mge::vertex_format
     :members:
 
+.. doxygenenum:: mge::attribute_semantic
+    :members:
+
 To define the data layout in a vertex buffer, a vertex layout is defined, which
-is a list of vertex formats:
+is a list of vertex formats, and an added attribute semantic.
 
 .. doxygenclass:: mge::vertex_layout
     :members:
