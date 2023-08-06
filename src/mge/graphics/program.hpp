@@ -130,4 +130,8 @@ namespace mge {
 
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&             os,
                                                 const program::attribute& a);
+    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&           os,
+                                                const program::uniform& u);
+    MGEGRAPHICS_EXPORT               std::ostream&
+    operator<<(std::ostream& os, const program::uniform_buffer& ub);
 } // namespace mge

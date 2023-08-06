@@ -229,8 +229,6 @@ namespace mge::dx11 {
                         cbuffer->GetVariableByIndex(j);
                     D3D11_SHADER_VARIABLE_DESC variable_desc = {};
                     variable->GetDesc(&variable_desc);
-                    MGE_DEBUG_TRACE(DX11) << variable_desc.Name;
-                    mge::call_debugger();
                     mge::program::uniform u;
                     u.name = variable_desc.Name;
                     ID3D11ShaderReflectionType* variable_type =
@@ -245,11 +243,17 @@ namespace mge::dx11 {
                     uniforms.insert(uniforms.begin(),
                                     uniform_buffer.uniforms.begin(),
                                     uniform_buffer.uniforms.end());
+                    for (size_t k = 0; k < uniforms.size(); ++k) {
+                        MGE_DEBUG_TRACE(DX11)
+                            << "uniform[" << i << "]=" << uniforms[k];
+                    }
                 } else {
                     uniform_buffers.push_back(uniform_buffer);
+                    MGE_DEBUG_TRACE(DX11)
+                        << "uniform_buffer[" << uniform_buffers.size() - 1
+                        << "]=" << uniform_buffer;
                 }
             }
         }
     }
-
 } // namespace mge::dx11

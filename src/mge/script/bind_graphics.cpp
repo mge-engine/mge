@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/graphics/attribute_semantic.hpp"
 #include "mge/graphics/buffer_type.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/graphics/data_type.hpp"
@@ -222,6 +223,14 @@ namespace mge::script {
                     .enum_value("FLOAT", mge::data_type::FLOAT)
                     .enum_value("DOUBLE", mge::data_type::DOUBLE)
                     .enum_value("LONG_DOUBLE", mge::data_type::LONG_DOUBLE),
+                type<mge::attribute_semantic>("attribute_semantic")
+                    .enum_value("POSITION", mge::attribute_semantic::POSITION)
+                    .enum_value("NORMAL", mge::attribute_semantic::NORMAL)
+                    .enum_value("TANGENT", mge::attribute_semantic::TANGENT)
+                    .enum_value("BITANGENT", mge::attribute_semantic::BITANGENT)
+                    .enum_value("COLOR", mge::attribute_semantic::COLOR)
+                    .enum_value("TEXCOORD", mge::attribute_semantic::TEXCOORD)
+                    .enum_value("ANY", mge::attribute_semantic::ANY),
                 type<mge::extent>("extent")
                     .constructor()
                     .constructor<uint32_t, uint32_t>()

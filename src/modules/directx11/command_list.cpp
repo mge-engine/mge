@@ -4,6 +4,7 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "program.hpp"
+#include "vertex_buffer.hpp"
 
 namespace mge::dx11 {
 
@@ -31,6 +32,7 @@ namespace mge::dx11 {
     {
         [[maybe_unused]] auto dx11_program =
             static_cast<mge::dx11::program*>(command.program().get());
+        [[maybe_unused]] const auto& layout = command.vertices()->layout();
     }
 
     void command_list::execute()

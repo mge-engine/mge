@@ -73,4 +73,17 @@ namespace mge {
         return os;
     }
 
+    std::ostream& operator<<(std::ostream& os, const mge::program::uniform& u)
+    {
+        /* os << "uniform{name=" << u.name << ",type=" << u.type
+           << ",size=" << static_cast<uint32_t>(u.size) << "}"; */
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream&                       os,
+                             const mge::program::uniform_buffer& ub)
+    {
+        return os;
+    }
+
 } // namespace mge
