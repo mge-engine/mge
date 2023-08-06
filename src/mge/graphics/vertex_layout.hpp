@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/small_vector.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/attribute_semantic.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_format.hpp"
@@ -95,7 +96,7 @@ namespace mge {
         class const_iterator
         {
         public:
-            const_iterator(vertex_layout& l, size_t index)
+            const_iterator(const vertex_layout& l, size_t index)
                 : m_layout(l)
                 , m_index(index)
             {}
@@ -211,6 +212,48 @@ namespace mge {
          * @return formats
          */
         const auto& formats() const noexcept { return m_formats; }
+
+        /**
+         * @brief Semantics of vertex layout.
+         *
+         * @return semantics
+         */
+        const auto& semantics() const noexcept { return m_semantics; }
+
+        iterator       begin() { return iterator(*this, 0); }
+        iterator       end() { return iterator(*this, m_formats.size()); }
+        const_iterator begin() const { return const_iterator(*this, 0); }
+        const_iterator end() const
+        {
+            return const_iterator(*this, m_formats.size());
+        }
+        const_iterator cbegin() const { return const_iterator(*this, 0); }
+        const_iterator cend() const
+        {
+            return const_iterator(*this, m_formats.size());
+        }
+
+        inline entry operator[](size_t index)
+        {
+            return entry{m_formats[index], m_semantics[index]};
+        }
+
+        inline const_entry operator[](size_t index) const
+        {
+            return const_entry{m_formats[index], m_semantics[index]};
+        }
+
+        inline entry at(size_t index)
+        {
+            return entry{m_formats.at(index), m_semantics.at(index)};
+        }
+
+        inline const_entry at(size_t index) const
+        {
+            return const_entry{m_formats.at(index), m_semantics.at(index)};
+        }
+
+        auto size() const noexcept { return m_formats.size(); }
 
     private:
         mge::small_vector<vertex_format, 3>      m_formats;
