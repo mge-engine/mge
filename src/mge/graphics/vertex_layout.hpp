@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/small_vector.hpp"
+#include "mge/graphics/attribute_semantic.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_format.hpp"
 #include <iosfwd>
@@ -15,9 +16,138 @@ namespace mge {
      * is a list of vertex formats.
      */
     class MGEGRAPHICS_EXPORT vertex_layout
-        : public mge::small_vector<vertex_format, 5>
     {
     public:
+        /**
+         * @brief Entry in a vertex layout.
+         */
+        struct entry
+        {
+            vertex_format&      format;
+            attribute_semantic& semantic;
+        };
+
+        /**
+         * @brief Const entry in a vertex layout.
+         */
+        struct const_entry
+        {
+            const vertex_format&      format;
+            const attribute_semantic& semantic;
+        };
+
+        class iterator
+        {
+        public:
+            iterator(vertex_layout& l, size_t index)
+                : m_layout(l)
+                , m_index(index)
+            {}
+
+            iterator(const iterator& i) = default;
+            iterator(iterator&& i) = default;
+
+            iterator& operator=(const iterator& i) = default;
+            iterator& operator=(iterator&& i) = default;
+
+            iterator& operator++()
+            {
+                ++m_index;
+                return *this;
+            }
+
+            iterator operator++(int)
+            {
+                iterator tmp(*this);
+                ++m_index;
+                return tmp;
+            }
+
+            bool operator==(const iterator& i) const
+            {
+                return (&m_layout == &i.m_layout) && (m_index == i.m_index);
+            }
+
+            bool operator!=(const iterator& i) const
+            {
+                return (&m_layout != &i.m_layout) || m_index != i.m_index;
+            }
+
+            entry operator*()
+            {
+                entry e{m_layout.m_formats[m_index],
+                        m_layout.m_semantics[m_index]};
+                return e;
+            }
+
+            entry operator->()
+            {
+                entry e{m_layout.m_formats[m_index],
+                        m_layout.m_semantics[m_index]};
+                return e;
+            }
+
+        private:
+            vertex_layout& m_layout;
+            size_t         m_index;
+        };
+
+        class const_iterator
+        {
+        public:
+            const_iterator(vertex_layout& l, size_t index)
+                : m_layout(l)
+                , m_index(index)
+            {}
+
+            const_iterator(const const_iterator& i) = default;
+            const_iterator(const_iterator&& i) = default;
+
+            const_iterator& operator=(const const_iterator& i) = default;
+            const_iterator& operator=(const_iterator&& i) = default;
+
+            const_iterator& operator++()
+            {
+                ++m_index;
+                return *this;
+            }
+
+            const_iterator operator++(int)
+            {
+                const_iterator tmp(*this);
+                ++m_index;
+                return tmp;
+            }
+
+            bool operator==(const const_iterator& i) const
+            {
+                return (&m_layout == &i.m_layout) && (m_index == i.m_index);
+            }
+
+            bool operator!=(const const_iterator& i) const
+            {
+                return (&m_layout != &i.m_layout) || m_index != i.m_index;
+            }
+
+            const_entry operator*() const
+            {
+                const_entry e{m_layout.m_formats[m_index],
+                              m_layout.m_semantics[m_index]};
+                return e;
+            }
+
+            const_entry operator->()
+            {
+                const_entry e{m_layout.m_formats[m_index],
+                              m_layout.m_semantics[m_index]};
+                return e;
+            }
+
+        private:
+            const vertex_layout& m_layout;
+            size_t               m_index;
+        };
+
         /**
          * Constructor.
          */
@@ -67,6 +197,27 @@ namespace mge {
          * @return bytes needed for one element
          */
         size_t binary_size() const;
+
+        /**
+         * @brief Append a format.
+         *
+         * @param f format
+         */
+        void push_back(const vertex_format& f);
+
+        /**
+         * @brief Formats of vertex layout.
+         *
+         * @return formats
+         */
+        const auto& formats() const noexcept { return m_formats; }
+
+    private:
+        mge::small_vector<vertex_format, 3>      m_formats;
+        mge::small_vector<attribute_semantic, 3> m_semantics;
+
+        friend MGEGRAPHICS_EXPORT std::ostream&
+        operator<<(std::ostream& os, const vertex_layout& l);
     };
 
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&        os,

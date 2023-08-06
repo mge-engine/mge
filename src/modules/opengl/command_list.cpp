@@ -40,7 +40,7 @@ namespace mge::opengl {
 
         const auto& layout = command.vertices()->layout();
         uint32_t    index = 0;
-        for (const auto& f : layout) {
+        for (const auto& f : layout.formats()) {
             glEnableVertexAttribArray(index);
             CHECK_OPENGL_ERROR(glEnableVertexAttribArray);
             switch (f.type()) {
