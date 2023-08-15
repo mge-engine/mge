@@ -60,6 +60,13 @@ namespace mge {
                 , length(d.length)
             {}
 
+            small_data& operator=(const small_data& d)
+            {
+                data = d.data;
+                length = d.length;
+                return *this;
+            }
+
             small_data(const_iterator b, const_iterator e)
                 : length(0)
             {

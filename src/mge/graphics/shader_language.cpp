@@ -6,15 +6,11 @@
 
 namespace mge {
 
-    shader_language::shader_language() {}
-
     shader_language::shader_language(std::string_view        name,
                                      const semantic_version& version)
         : m_name(name)
         , m_version(version)
     {}
-
-    shader_language::~shader_language() {}
 
     std::string_view shader_language::name() const { return m_name; }
 

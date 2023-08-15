@@ -18,10 +18,13 @@ namespace mge {
          */
         keyboard_state();
 
+        keyboard_state(const keyboard_state&) = default;
+        keyboard_state& operator=(const keyboard_state&) = default;
+
         /**
          * @brief Destructor
          */
-        ~keyboard_state();
+        ~keyboard_state() = default;
 
         /**
          * @brief Signal press of modifier key.

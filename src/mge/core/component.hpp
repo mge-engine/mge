@@ -45,6 +45,8 @@ namespace mge {
     {
     protected:
         component_base() = default;
+        component_base(const component_base&) = default;
+        component_base& operator=(const component_base&) = default;
 
     public:
         virtual ~component_base() = default;
@@ -177,6 +179,9 @@ namespace mge {
          * Default constructor.
          */
         component() noexcept = default;
+
+        component(const component&) = delete;
+        component& operator=(const component&) = delete;
 
     public:
         /**

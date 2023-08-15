@@ -24,7 +24,7 @@ namespace mge {
         /**
          * @brief Construct an empty uninitialized format.
          */
-        shader_format();
+        shader_format() = default;
 
         /**
          * @brief Construct a shader format.
@@ -41,10 +41,13 @@ namespace mge {
          */
         shader_format(std::string_view name, const semantic_version& version);
 
+        shader_format(const shader_format&) = default;
+        shader_format& operator=(const shader_format&) = default;
+
         /**
          * Destructor
          */
-        ~shader_format();
+        ~shader_format() = default;
 
     private:
         std::string      m_name;

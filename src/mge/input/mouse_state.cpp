@@ -9,8 +9,6 @@ namespace mge {
         , m_y(0)
     {}
 
-    mouse_state::~mouse_state() {}
-
     void mouse_state::press(uint32_t button) { m_buttons.set(button); }
 
     void mouse_state::release(uint32_t button) { m_buttons.reset(button); }

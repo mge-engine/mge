@@ -39,6 +39,9 @@ namespace mge::script {
                      size_t                 size,
                      const char*            used_name);
 
+        type_details(const type_details&) = delete;
+        type_details& operator=(const type_details&) = delete;
+
         virtual ~type_details() = default;
 
         /**

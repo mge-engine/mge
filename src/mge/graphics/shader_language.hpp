@@ -24,7 +24,7 @@ namespace mge {
         /**
          * @brief Construct an empty uninitialized language object.
          */
-        shader_language();
+        shader_language() = default;
 
         /**
          * @brief Create a shader language object.
@@ -34,7 +34,13 @@ namespace mge {
          */
         shader_language(std::string_view name, const semantic_version& version);
 
-        ~shader_language();
+        /**
+         * @brief Default destructor.
+         */
+        ~shader_language() = default;
+
+        shader_language(const shader_language&) = default;
+        shader_language& operator=(const shader_language&) = default;
 
         /**
          * @brief Get shader language name.

@@ -16,7 +16,13 @@ namespace mge {
      */
     class MGECORE_EXPORT trace_sink
     {
+    protected:
+        trace_sink() = default;
+
     public:
+        trace_sink(const trace_sink&) = delete;
+        trace_sink& operator=(const trace_sink&) = delete;
+
         virtual ~trace_sink();
 
         /**

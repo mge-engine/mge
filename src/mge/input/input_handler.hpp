@@ -54,6 +54,9 @@ namespace mge {
         input_handler();
 
     public:
+        input_handler(const input_handler&) = delete;
+        input_handler& operator=(const input_handler&) = delete;
+
         /**
          * Destructor.
          */

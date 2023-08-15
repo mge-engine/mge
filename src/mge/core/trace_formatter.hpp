@@ -9,12 +9,19 @@
 namespace mge {
 
     MGE_DECLARE_REF(trace_formatter);
+
     /**
      * @brief Formats a trace record to an output stream.
      */
     class MGECORE_EXPORT trace_formatter
     {
+    protected:
+        trace_formatter() = default;
+
     public:
+        trace_formatter(const trace_formatter&) = delete;
+        trace_formatter& operator=(const trace_formatter&) = delete;
+
         virtual ~trace_formatter();
         /**
          * @brief Formats the trace record.

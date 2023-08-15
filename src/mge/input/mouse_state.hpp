@@ -21,7 +21,10 @@ namespace mge {
         /**
          * @brief Destructor.
          */
-        ~mouse_state();
+        ~mouse_state() = default;
+
+        mouse_state(const mouse_state&) = default;
+        mouse_state& operator=(const mouse_state&) = default;
 
         /**
          * @brief Signal press of button.

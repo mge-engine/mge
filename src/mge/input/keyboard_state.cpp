@@ -11,8 +11,6 @@ namespace mge {
         m_pressed.resize(key_max);
     }
 
-    keyboard_state::~keyboard_state() {}
-
     void keyboard_state::press(const modifier& m) { m_modifier |= m; }
 
     void keyboard_state::release(const modifier& m) { m_modifier.reset(m); }

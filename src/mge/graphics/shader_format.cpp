@@ -5,8 +5,6 @@
 
 namespace mge {
 
-    shader_format::shader_format() {}
-
     shader_format::shader_format(std::string_view name)
         : m_name(name)
     {}
@@ -17,5 +15,4 @@ namespace mge {
         , m_version(version)
     {}
 
-    shader_format::~shader_format() {}
 } // namespace mge
