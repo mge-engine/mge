@@ -2,6 +2,16 @@
 #include "mge/core/stdexceptions.hpp"
 
 namespace mge::dx11 {
+
+    struct semantic_context
+    {
+        semantic_context()
+            : position_used(false)
+        {}
+
+        bool position_used;
+    };
+
     input_layout_cache::input_layout_cache() {}
 
     input_layout_cache::~input_layout_cache() {}
@@ -21,12 +31,20 @@ namespace mge::dx11 {
         }
     }
 
-    const char*
-    input_layout_cache::make_semantic_name(const attribute_semantic& semantic)
+    static std::string_view
+    make_semantic_name(string_pool&              pool,
+                       const attribute_semantic& semantic,
+                       semantic_context&         context)
     {
         switch (semantic) {
         case attribute_semantic::POSITION:
-            return "POSITION";
+            return pool.get("POSITION");
+        case attribute_semantic::ANY:
+            if (!context.position_used) {
+                context.position_used = true;
+                return pool.get("POSITION");
+            }
+            [[fallthrough]];
         default:
             MGE_THROW(illegal_state) << "Unsupported semantic: " << semantic;
         }
@@ -87,10 +105,13 @@ namespace mge::dx11 {
         const vertex_layout&                   layout,
         std::vector<D3D11_INPUT_ELEMENT_DESC>& desc)
     {
-        size_t offset = 0;
+        size_t           offset = 0;
+        semantic_context context;
         for (const auto& element : layout) {
             D3D11_INPUT_ELEMENT_DESC& desc_element = desc.emplace_back();
-            desc_element.SemanticName = make_semantic_name(element.semantic);
+            desc_element.SemanticName =
+                make_semantic_name(m_semantic_names, element.semantic, context)
+                    .data();
             desc_element.SemanticIndex = 0;
             desc_element.Format = dxgi_format(element.format);
             desc_element.InputSlot = 0;
