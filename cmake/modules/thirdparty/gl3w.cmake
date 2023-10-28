@@ -8,7 +8,7 @@ IF(OpenGL_FOUND)
         MESSAGE("-- Did not find gl3w, need to build it from source")
         FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/gl3w)
         SET(CMAKE_LIST_CONTENT "
-            CMAKE_MINIMUM_REQUIRED(VERSION 3.2)
+            CMAKE_MINIMUM_REQUIRED(VERSION 3.27)
             PROJECT(GL3W)
             INCLUDE(ExternalProject)
             EXTERNALPROJECT_ADD(gl3w-external

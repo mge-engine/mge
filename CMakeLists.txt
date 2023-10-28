@@ -1,6 +1,12 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
+
+
+CMAKE_MINIMUM_REQUIRED(VERSION 3.27)
+PROJECT(MGE)
+
+
 IF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     FILE(REMOVE_RECURSE "${CMAKE_SOURCE_DIR}/CMakeFiles")
     MESSAGE(FATAL_ERROR "In-source builds are not supported")
@@ -18,8 +24,7 @@ IF(NOT EXISTS ${CMAKE_TOOLCHAIN_FILE})
     MESSAGE(FATAL_ERROR "Vcpkg prerequisite seems not to be installed")
 ENDIF()
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.9.0)
-PROJECT(MGE)
+
 SET(MGE_VERSION_MAJOR 0)
 SET(MGE_VERSION_MINOR 1)
 SET(MGE_PATCHLEVEL 0)

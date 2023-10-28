@@ -3,18 +3,18 @@
 # All rights reserved.
 
 ADD_CUSTOM_COMMAND(OUTPUT vulkan_dump.h
-    COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py" "${Vulkan_INCLUDE_DIRS}/../share/vulkan/registry/vk.xml" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h"
+    COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py" "${Vulkan_INCLUDE_DIRS}/../share/vulkan/registry/vk.xml" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_dump.h"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/extract_dump.py"
 )
 
 ADD_CUSTOM_COMMAND(OUTPUT vulkan_core.inc
-    COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py" "${Vulkan_INCLUDE_DIRS}/vulkan/vulkan_core.h" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_core.inc"
+    COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py" "${Vulkan_INCLUDE_DIRS}/vulkan/vulkan_core.h" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_core.inc"
     DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py"
 )
 
 IF(WIN32)
     ADD_CUSTOM_COMMAND(OUTPUT vulkan_win32.inc
-        COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py" "${Vulkan_INCLUDE_DIRS}/vulkan/vulkan_win32.h" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_win32.inc"
+        COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py" "${Vulkan_INCLUDE_DIRS}/vulkan/vulkan_win32.h" "${CMAKE_CURRENT_BINARY_DIR}/vulkan_win32.inc"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/extract_functions.py"
     )
 ENDIF()
