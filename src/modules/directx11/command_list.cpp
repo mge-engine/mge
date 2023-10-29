@@ -103,12 +103,6 @@ namespace mge::dx11 {
         m_dx11_context.device_context()->ExecuteCommandList(
             m_command_list.get(),
             FALSE);
-#if 0
-        float clearcolor[4] = {1.0f, 0.0f, 0.0f, 1.0f};
-        m_dx11_context.device_context()->ClearRenderTargetView(
-            m_dx11_context.render_target_view(),
-            clearcolor);
-#endif
     }
 
 } // namespace mge::dx11

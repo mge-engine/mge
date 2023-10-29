@@ -71,6 +71,7 @@ namespace mge::dx11 {
         m_device_context.reset(tmp_device_context);
 
         if (m_render_system.debug()) {
+            MGE_DEBUG_TRACE(DX11) << "Enable debug breaks";
             ID3D11Debug* d3d_debug = nullptr;
             m_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&d3d_debug);
             if (d3d_debug) {
@@ -87,7 +88,10 @@ namespace mge::dx11 {
                     d3d_infoqueue->Release();
                 }
                 d3d_debug->Release();
+            } else {
+                MGE_WARNING_TRACE(DX11) << "Cannot enable debug breaks";
             }
+
         }
 
         auto swap_chain =
