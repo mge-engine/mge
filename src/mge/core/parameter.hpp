@@ -3,7 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "boost/boost_algorithm_string.hpp"
-#include "boost/boost_lexical_cast.hpp"
+#include "mge/core/lexical_cast.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/make_string_view.hpp"
 
@@ -209,7 +209,7 @@ namespace mge {
 
         void from_string(std::string_view value) override
         {
-            T val = boost::lexical_cast<T>(value);
+            T val = lexical_cast<T>(value);
             m_value = val;
         }
 
