@@ -2,7 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "boost/boost_lexical_cast.hpp"
+#include "mge/core/lexical_cast.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/input_stream.hpp"
 #include "mge/core/memory.hpp"
@@ -54,7 +54,7 @@ namespace mge {
 
             auto it = m_data.find(key);
             if (it != m_data.end()) {
-                return boost::lexical_cast<T>(it->second);
+                return lexical_cast<T>(it->second);
             }
             MGE_THROW(no_such_element) << "No property '" << key << "' found";
         }
@@ -68,7 +68,7 @@ namespace mge {
 
             auto it = m_data.find(key);
             if (it != m_data.end()) {
-                return boost::lexical_cast<T>(it->second);
+                return lexical_cast<T>(it->second);
             } else {
                 return default_value;
             }
@@ -78,7 +78,7 @@ namespace mge {
         {
             auto it = m_data.find(key);
             if (it != m_data.end()) {
-                return boost::lexical_cast<T>(it->second);
+                return lexical_cast<T>(it->second);
             }
             MGE_THROW(no_such_element) << "No property '" << key << "' found";
         }
@@ -88,7 +88,7 @@ namespace mge {
         {
             auto it = m_data.find(key);
             if (it != m_data.end()) {
-                return boost::lexical_cast<T>(it->second);
+                return lexical_cast<T>(it->second);
             } else {
                 return default_value;
             }
