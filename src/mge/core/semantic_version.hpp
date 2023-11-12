@@ -4,6 +4,7 @@
 #pragma once
 #include "boost/boost_operators.hpp"
 #include "mge/core/dllexport.hpp"
+#include <format>
 #include <iosfwd>
 #include <string_view>
 #include <tuple>
@@ -127,3 +128,25 @@ namespace mge {
                                             const semantic_version& v);
 
 } // namespace mge
+
+namespace std {
+    template <> struct formatter<mge::semantic_version> : formatter<string_view>
+    {
+        template <typename FormatContext>
+        auto format(const mge::semantic_version& v, FormatContext& ctx)
+        {
+            if (v.patch() == 0) {
+                if (v.minor() == 0) {
+                    return format_to(ctx.out(), "{}", v.major());
+                } else {
+                    return format_to(ctx.out(), "{}.{}", v.major(), v.minor());
+                }
+            } else
+                return format_to(ctx.out(),
+                                 "{}.{}.{}",
+                                 v.major(),
+                                 v.minor(),
+                                 v.patch());
+        }
+    };
+} // namespace std

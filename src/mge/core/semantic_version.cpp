@@ -90,16 +90,7 @@ namespace mge {
 
     std::ostream& operator<<(std::ostream& os, const semantic_version& v)
     {
-        if (v.patch() == 0) {
-            if (v.minor() == 0) {
-                os << v.major();
-            } else {
-                os << v.major() << "." << v.minor();
-            }
-        } else {
-            return os << v.major() << "." << v.minor() << "." << v.patch();
-        }
-        return os;
+        return os << std::format("{}", v);
     }
 
 } // namespace mge

@@ -38,3 +38,21 @@ TEST(semantic_version, from_string)
     } catch (const mge::illegal_argument&) {
     }
 }
+
+TEST(semantic_version, format)
+{
+    mge::semantic_version v1(1u, 2u, 3u);
+    std::stringstream     ss1;
+    ss1 << std::format("{}", v1);
+    EXPECT_EQ("1.2.3", ss1.str());
+
+    mge::semantic_version v2(1u, 2u, 0u);
+    std::stringstream     ss2;
+    ss2 << std::format("{}", v2);
+    EXPECT_EQ("1.2", ss2.str());
+
+    mge::semantic_version v3(1u, 0u, 0u);
+    std::stringstream     ss3;
+    ss3 << std::format("{}", v3);
+    EXPECT_EQ("1", ss3.str());
+}
