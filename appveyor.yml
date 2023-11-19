@@ -47,19 +47,19 @@ build_script:
   - cmd: SET VCPKG_BINARY_SOURCES=clear;files,C:\projects\mge\vcpkg_binary_cache
   - cmd: SET
   - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
-#  - cmd: cmake --build build --parallel 2 --target all
-#  - cmd: cmake --build build --target documentation
+  - cmd: cmake --build build --parallel 2 --target all
+  - cmd: cmake --build build --target documentation
 
 test_script:
   - cmd: echo "No tests yet"
-#  - cmd: cmake --build build --target test
+  - cmd: cmake --build build --target test
 
 on_success:
   - git config --global credential.helper store
   - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - git config --global user.email "schroeder.alexander@googlemail.com"
   - git config --global user.name "Alexander Schroeder"
-#  - cmd: python ../tools/ci/upload-gh-pages.py
+  - cmd: python ../tools/ci/upload-gh-pages.py
 
 on_finish:
   - ps: $testreportfiles = @(Get-ChildItem test*.xml)
