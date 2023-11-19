@@ -44,7 +44,7 @@ build_script:
   - cmd: SET CXX=cl.exe
   - cmd: SET VCPKG_ROOT=C:\projects\mge\vcpkg
   - cmd: IF NOT EXIST "C:\projects\mge\vcpkg_binary_cache" mkdir "C:\projects\mge\vcpkg_binary_cache"
-  - cmd: SET VCPKG_BINARY_SOURCES="clear;files,C:\projects\mge\vcpkg_binary_cache"
+  - cmd: SET VCPKG_BINARY_SOURCES=clear;files,C:\projects\mge\vcpkg_binary_cache
   - cmd: SET
   - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
 #  - cmd: cmake --build build --parallel 2 --target all
