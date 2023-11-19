@@ -59,7 +59,7 @@ on_success:
   - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - git config --global user.email "schroeder.alexander@googlemail.com"
   - git config --global user.name "Alexander Schroeder"
-  - cmd: python ../tools/ci/upload-gh-pages.py
+  - cmd: python tools/ci/upload-gh-pages.py
 
 on_finish:
   - ps: $testreportfiles = @(Get-ChildItem test*.xml)
