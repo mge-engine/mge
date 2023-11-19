@@ -33,7 +33,6 @@ SET(mgegraphics_sources
     draw_command.cpp
     uniform_data_type.cpp
     attribute_semantic.cpp
-    memory_command_list.cpp
 )
 
 SET(mgegraphics_headers
@@ -66,7 +65,6 @@ SET(mgegraphics_headers
     draw_command.hpp
     uniform_data_type.hpp
     attribute_semantic.hpp
-    memory_command_list.hpp
 )
 
 MGE_LIBRARY(
