@@ -68,7 +68,7 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg_version.py
-#  - C:\projects\mge\vcpkg_binary_cache -> vcpkg.json
+  - C:\projects\mge\vcpkg_binary_cache
   - C:\projects\mge\sphinx -> tools/ci/sphinx.py
   - C:\projects\mge\vulkan-installer -> tools/ci/vulkan.py
   - C:\VulkanSDK -> tools/ci/vulkan.py
