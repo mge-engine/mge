@@ -42,17 +42,14 @@ Microsoft Visual C++ 2019
     Vulkan is a low-overhead, cross-platform graphics and computing API. It is
     used as a possible graphics backend of MGE.
 
+`Ninja <https://ninja-build.org/>`_
+    While cmake can be used to generate Visual Studio project files, or also
+    a build environment suitable for *nmake*, ninja is the preferred build tool.
 .. note::
    It's useful to use a package manager like `Scoop <https://scoop.sh/>`_ or
    `Chocolatey <https://chocolatey.org/>`_ for installing the required tools,
    to keep them up to date and install updates easily.
 
-Optional Software Packages
-**************************
-
-`Ninja <https://ninja-build.org/>`_
-    While cmake can be used to generate Visual Studio project files, or also
-    a build environment suitable for *nmake*, ninja is the preferred build tool.
 
 Build Steps
 ***********
@@ -79,9 +76,8 @@ Third-party libraries are managed by the `vcpkg` tool. The MGE project maintains
 an own fork of `vcpkg`, to tag specific versions of vcpkg for usage with MGE.
 
 This tagging is achieved by a helper script, which ensures that
-- vcpkg is retrieved from the MGE mirror
+- vcpkg is retrieved from the MGE mirror, and
 - the matching version of vcpkg is used
-- all used packages are installed
 
 To setup the libraries, just change into the source code directory and execute
 
@@ -89,8 +85,7 @@ To setup the libraries, just change into the source code directory and execute
 
     C:\mge>python3 tools\ci\vcpkg.py
 
-which will checkout `vcpkg`, bootstrap it, and install all packages. This may
-take a while.
+which will checkout `vcpkg` and bootstrap it.
 
 Configuring Documentation Tools
 ===============================
@@ -104,17 +99,14 @@ The tools needed are `doxygen` and `sphinx`.
 Doxygen can be installed from the download, or by using one of the previously
 mentioned package managers.
 
-Sphinx is usually installed into your local python installation using the `pip`
-package manager:
+Sphinx can be installed using the supplied helper script:
 
 .. code-block::
 
-    C:\>python -m pip install sphinx breathe
+    C:\mge>python3 tools\ci\sphinx.py
 
-You may want to use a `virtualenv` to separate these packages from your
-system-provided Python installation.
-
-Please make sure the installed tools are in the PATH before configuring the build.
+This will create a so called 'virtualenv' in the mge directory, and
+install the needed python packages there.
 
 Configuring the Build
 =====================
@@ -126,17 +118,26 @@ has the correct settings
 
     C:\>SET INCLUDE=
     C:\>SET LIB=
-    C:\>call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-    C:\>set CC=cl
-    C:\>set CXX=cl
+    C:\>CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+    C:\>SET CXX=cl
+    C:\>SET VCPKG_ROOT=C:\mge\vcpkg
+    C:\>SET PATH=%VCPKG_ROOT%;%PATH%
+
+and if you want to build the documentation:
+
+.. code-block::
+
+    C:\mge>sphinx\Scripts\activate.bat
 
 Note the file for setting the Microsoft Visual Studio command prompt may be at
 a different location, depending on your installation.
 
-Make sure `cmake` and Python 3 are also in the PATH and can be called.
+Make sure `cmake` and Python 3 are also in the PATH and can be called, and make
+sure the `cmake` executable is the one you want to use, as multiple programs may
+install an own version of the tool. The same is valid for `vcpkg`.
 
-MGE does not support so-called *in-source* builds, so you need to create a new
-directory that is used for the build:
+MGE does not support so-called *in-source* builds, but comes with a respective
+setup:
 
 .. code-block::
 
@@ -147,10 +148,10 @@ Within the `build` directory, use `cmake` to configure the build:
 
 .. code-block::
 
-    C:\mge\build>cmake -GNinja .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    C:\mge\>cmake --preset=default
 
-CMake allows to configure different build types, the commonly chosen one is
-`RelWithDebInfo` - release with debug informations.
+This configures the build for the `RelWithDebInfo` configuration. It will
+install also all dependencies using `vcpkg`. This may take a while.
 
 Build MGE
 =========
@@ -160,7 +161,7 @@ calling `cmake`:
 
 .. code-block::
 
-    C:\mge\build>cmake --build . --target all
+    C:\mge\>cmake --build build --target all
 
 Again, this may take a while.
 
@@ -186,7 +187,7 @@ The documentation build can also be started by calling `cmake`:
 
 .. code-block::
 
-    C:\mge\build>cmake --build . --target documentation
+    C:\mge\>cmake --build build --target documentation
 
 The generated documentation is in the folder `docsrc/manual/manual-html` of
 the build directory.
