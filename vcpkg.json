@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "dependencies": [
+    "gtest",
+    "boost-preprocessor",
+    "boost-filesystem",
+    "boost-circular-buffer",
+    "boost-lexical-cast",
+    "boost-property-tree",
+    "boost-spirit",
+    "boost-locale",
+    "vulkan",
+    "glm",
+    "lua",
+    {
+      "name": "python3",
+      "default-features": true
+    },
+    "glslang"
+  ]
+}

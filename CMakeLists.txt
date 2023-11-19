@@ -17,12 +17,6 @@ ENDIF()
 # - enable exporting compile_commands.json (for editors etc.)
 ENABLE_TESTING()
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-IF("${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
-    SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/../vcpkg/scripts/buildsystems/vcpkg.cmake")
-ENDIF()
-IF(NOT EXISTS ${CMAKE_TOOLCHAIN_FILE})
-    MESSAGE(FATAL_ERROR "Vcpkg prerequisite seems not to be installed")
-ENDIF()
 
 
 SET(MGE_VERSION_MAJOR 0)
