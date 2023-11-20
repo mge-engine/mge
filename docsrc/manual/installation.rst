@@ -18,7 +18,7 @@ Prerequisites
 MGE depends ony a number of tools and packages, which need to be installed
 before building:
 
-Microsoft Visual C++ 2019
+Microsoft Visual C++ 2022
     MGE currently is built using this compile tool chain.
     The *Community Edition* that can be obtained at
     `https://visualstudio.microsoft.com <https://visualstudio.microsoft.com/>`_
@@ -38,10 +38,6 @@ Microsoft Visual C++ 2019
     Several helper scripts use Python, like the extraction tools to generate
     the Vulkan API helper functions.
 
-`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>`_
-    Vulkan is a low-overhead, cross-platform graphics and computing API. It is
-    used as a possible graphics backend of MGE.
-
 `Ninja <https://ninja-build.org/>`_
     While cmake can be used to generate Visual Studio project files, or also
     a build environment suitable for *nmake*, ninja is the preferred build tool.
@@ -49,6 +45,16 @@ Microsoft Visual C++ 2019
    It's useful to use a package manager like `Scoop <https://scoop.sh/>`_ or
    `Chocolatey <https://chocolatey.org/>`_ for installing the required tools,
    to keep them up to date and install updates easily.
+
+Optional Prerequisites
+**********************
+
+The following packages are optional, leaving them out will disable the
+respective features.
+
+`Vulkan SDK <https://vulkan.lunarg.com/sdk/home>`_
+    Vulkan is a low-overhead, cross-platform graphics and computing API. It is
+    used as a possible graphics backend of MGE.
 
 
 Build Steps
@@ -112,7 +118,7 @@ Configuring the Build
 =====================
 
 To configure, you need to ensure that you are in a `cmd` environment that
-has the correct settings
+has the correct environment settings:
 
 .. code-block::
 
@@ -148,7 +154,7 @@ Within the `build` directory, use `cmake` to configure the build:
 
 .. code-block::
 
-    C:\mge\>cmake --preset=default
+    C:\mge>cmake --preset=default
 
 This configures the build for the `RelWithDebInfo` configuration. It will
 install also all dependencies using `vcpkg`. This may take a while.
@@ -161,7 +167,7 @@ calling `cmake`:
 
 .. code-block::
 
-    C:\mge\>cmake --build build --target all
+    C:\mge>cmake --build build --target all
 
 Again, this may take a while.
 
@@ -187,7 +193,7 @@ The documentation build can also be started by calling `cmake`:
 
 .. code-block::
 
-    C:\mge\>cmake --build build --target documentation
+    C:\mge>cmake --build build --target documentation
 
 The generated documentation is in the folder `docsrc/manual/manual-html` of
 the build directory.
