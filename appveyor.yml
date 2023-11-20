@@ -51,7 +51,6 @@ build_script:
   - cmd: cmake --build build --target documentation
 
 test_script:
-  - cmd: echo "No tests yet"
   - cmd: cmake --build build --target test
 
 on_success:
