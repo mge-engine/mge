@@ -36,28 +36,30 @@ before_build:
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
-  - cmd: SET PATH=C:\projects\mge\sphinx\Scripts;%ORIG_PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: SET PATH=C:\projects\mge\vcpkg;C:\projects\mge\sphinx\Scripts;%ORIG_PATH%;C:\PROGRA~1\doxygen\bin
 
 build_script:
-  - cmd: if not exist "build" mkdir "build"
-  - cmd: cd build
   - cmd: call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: SET CC=cl.exe
   - cmd: SET CXX=cl.exe
+  - cmd: SET VCPKG_ROOT=C:\projects\mge\vcpkg
+  - cmd: IF NOT EXIST "C:\projects\mge\vcpkg_binary_cache" mkdir "C:\projects\mge\vcpkg_binary_cache"
+  - cmd: SET VCPKG_BINARY_SOURCES=clear;default,readwrite;files,C:\projects\mge\vcpkg_binary_cache,readwrite
   - cmd: SET
-  - cmd: cmake -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo .. -DCMAKE_TOOLCHAIN_FILE="../vcpkg/scripts/buildsystems/vcpkg.cmake"
-  - cmd: cmake --build . --parallel 2 --target all
-  - cmd: cmake --build . --target documentation
+  - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
+  - cmd: cmake --build build --parallel 2 --target all
+  - cmd: cmake --build build --target documentation
 
 test_script:
-  - cmd: cmake --build . --target test
+  - cmd: echo "No tests yet"
+  - cmd: cmake --build build --target test
 
 on_success:
   - git config --global credential.helper store
   - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - git config --global user.email "schroeder.alexander@googlemail.com"
   - git config --global user.name "Alexander Schroeder"
-  - cmd: python ../tools/ci/upload-gh-pages.py
+  - cmd: python tools/ci/upload-gh-pages.py
 
 on_finish:
   - ps: $testreportfiles = @(Get-ChildItem test*.xml)
@@ -66,6 +68,8 @@ on_finish:
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg_version.py
+  - C:\projects\mge\vcpkg_binary_cache
+  - C:\Users\appveyor\AppData\Local\vcpkg\archives
   - C:\projects\mge\sphinx -> tools/ci/sphinx.py
   - C:\projects\mge\vulkan-installer -> tools/ci/vulkan.py
   - C:\VulkanSDK -> tools/ci/vulkan.py
