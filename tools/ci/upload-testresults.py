@@ -20,7 +20,7 @@ upload_url = "https://ci.appveyor.com/api/testresults/junit/" + env["APPVEYOR_JO
 for file in test_files:
     with open(file, "rb") as f:
         response = requests.post(upload_url, files={"file": f})
-        if response.status_code == 200:
+        if response.status_code in [200, 204]:
             print(f"Uploaded {file} successfully")
         else:
             print(f"Failed to upload {file}. Status code: {response.status_code}")
