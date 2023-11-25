@@ -66,23 +66,23 @@ def copy2_verbose(src, dst):
 def upload(branch):
     if os.path.exists("gh-pages"):
         print("Remove old gh-pages directory", flush=True)
-        subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
-    print("Cloning gh-pages branch", flush=True)
-    subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
-                    "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
-    print("Remove old files", flush=True)
-    subprocess.run(["git", "rm", "-rf", branch +
-                    "/manual-html"], cwd="gh-pages")
-    subprocess.run(["dir", "..\\docsrc\\manual\\manual-html"],
-                   shell=True, cwd="gh-pages")
-    shutil.copytree("docsrc/manual/manual-html",
-                    "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
-    print("Adding files to git", flush=True)
-    subprocess.run(
-        ["git", "add", branch + "/manual-html"], cwd="gh-pages")
-    print("Commit git changes", flush=True)
-    subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
-    subprocess.run(["git", "push", "origin"], cwd="gh-pages")
+        #subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
+    #print("Cloning gh-pages branch", flush=True)
+    #subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
+    #                "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
+    #print("Remove old files", flush=True)
+    #subprocess.run(["git", "rm", "-rf", branch +
+    #                "/manual-html"], cwd="gh-pages")
+    #subprocess.run(["dir", "..\\docsrc\\manual\\manual-html"],
+    #               shell=True, cwd="gh-pages")
+    #shutil.copytree("docsrc/manual/manual-html",
+    #                "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
+    #print("Adding files to git", flush=True)
+    #subprocess.run(
+    #    ["git", "add", branch + "/manual-html"], cwd="gh-pages")
+    #print("Commit git changes", flush=True)
+    #subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
+    #subprocess.run(["git", "push", "origin"], cwd="gh-pages")
 
 
 try:

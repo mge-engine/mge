@@ -58,13 +58,10 @@ on_success:
   - ps: Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
   - git config --global user.email "schroeder.alexander@googlemail.com"
   - git config --global user.name "Alexander Schroeder"
-  #- cmd: python tools/ci/upload-gh-pages.py
+  - cmd: python tools/ci/upload-gh-pages.py
 
 on_finish:
   - cmd: python tools/ci/upload-testresults.py
-  #- ps: $testreportfiles = @(Get-ChildItem test*.xml)
-  #- ps: $wc = New-Object 'System.Net.WebClient'
-  #- ps: foreach($f in $testreportfiles) { $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path $f)) }
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg_version.py
