@@ -66,10 +66,12 @@ def copy2_verbose(src, dst):
 def upload(branch):
     if os.path.exists("gh-pages"):
         print("Remove old gh-pages directory", flush=True)
-        #subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
-    #print("Cloning gh-pages branch", flush=True)
-    #subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
-    #                "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
+        subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
+    print("Cloning gh-pages branch", flush=True)
+    subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
+                    "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
+    subprocess.run(["git", "status", shell=True)
+
     #print("Remove old files", flush=True)
     #subprocess.run(["git", "rm", "-rf", branch +
     #                "/manual-html"], cwd="gh-pages")
