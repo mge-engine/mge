@@ -63,8 +63,6 @@ def copy2_verbose(src, dst):
     print('Copying {0}'.format(src), flush=True)
     shutil.copy2(src, dst)
 
-
-
 def upload(branch):
     print("Switching to 'build' directory", flush=True)
     os.chdir("build")  # Change current directory to "build"
@@ -87,7 +85,6 @@ def upload(branch):
     print("Commit git changes", flush=True)
     subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
     subprocess.run(["git", "push", "origin"], cwd="gh-pages")
-
 
 try:
     if upload_enabled():
