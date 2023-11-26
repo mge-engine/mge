@@ -26,8 +26,8 @@ def is_doxygen_installed():
         if is_same_or_newer_version(installed_version, doxygen_min_version):
             return True
         else:
-            print("Expected version %s, found version information %s" %
-                  (doxygen_version, installed_version))
+            print("Expected minimal version %s, found version information %s" %
+                  (doxygen_min_version, installed_version))
             return False
     except:
         print("Cannot determine doxygen version %s" %
