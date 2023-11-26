@@ -70,7 +70,7 @@ def upload(branch):
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
-    subprocess.run(["git", "status", shell=True)
+    subprocess.run(["git", "status"], shell=True)
 
     #print("Remove old files", flush=True)
     #subprocess.run(["git", "rm", "-rf", branch +

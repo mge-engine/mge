@@ -38,7 +38,7 @@ namespace mge {
         case trace_level::WARNING:
             stream << "W ";
             break;
-        case trace_level::ERROR:
+        case trace_level::LEVEL_ERROR:
             stream << "E ";
             break;
         case trace_level::FATAL:

@@ -12,7 +12,7 @@
 #endif
 
 namespace mge {
-    void call_debugger()
+    void MGECORE_EXPORT call_debugger()
     {
 #if defined(MGE_OS_WINDOWS)
         if (IsDebuggerPresent()) {

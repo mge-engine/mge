@@ -56,7 +56,7 @@ namespace mge {
         if (s == "DEBUG"s) {
             return trace_level::DEBUG;
         } else if (s == "ERROR"s) {
-            return trace_level::ERROR;
+            return trace_level::LEVEL_ERROR;
         } else if (s == "INFO"s) {
             return trace_level::INFO;
         } else if (s == "WARNING"s) {

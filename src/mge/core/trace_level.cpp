@@ -4,9 +4,9 @@
 #include "mge/core/trace_level.hpp"
 #include <iostream>
 
-#ifdef ERROR
-#    undef ERROR
-#endif
+// #ifdef ERROR
+// #    undef ERROR
+// #endif
 
 namespace mge {
 
@@ -21,7 +21,7 @@ namespace mge {
             return os << "INFO";
         case trace_level::WARNING:
             return os << "WARNING";
-        case trace_level::ERROR:
+        case trace_level::LEVEL_ERROR:
             return os << "ERROR";
         case trace_level::FATAL:
             return os << "FATAL";

@@ -10,6 +10,6 @@ TEST(trace_level, stream_output)
     EXPECT_STREAMOUTPUT("DEBUG", mge::trace_level::DEBUG);
     EXPECT_STREAMOUTPUT("INFO", mge::trace_level::INFO);
     EXPECT_STREAMOUTPUT("WARNING", mge::trace_level::WARNING);
-    EXPECT_STREAMOUTPUT("ERROR", mge::trace_level::ERROR);
+    EXPECT_STREAMOUTPUT("ERROR", mge::trace_level::LEVEL_ERROR);
     EXPECT_STREAMOUTPUT("FATAL", mge::trace_level::FATAL);
 }
