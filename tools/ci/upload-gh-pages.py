@@ -72,7 +72,7 @@ def upload(branch):
         print("Remove old gh-pages directory", flush=True)
         subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
     print("Cloning gh-pages branch", flush=True)
-    subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
+    subprocess.run(["git", "clone", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
     current_dir = os.getcwd()
     print("Current directory:", current_dir)
