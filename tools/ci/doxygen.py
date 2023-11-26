@@ -6,8 +6,15 @@ import sys
 import subprocess
 import shutil
 
-doxygen_version = "1.9.6"
+doxygen_min_version = "1.9.6"
 
+def is_same_or_newer_version(version, min_version):
+    version_parts = version.split(".")
+    min_version_parts = min_version.split(".")
+    for i in range(0, len(min_version_parts)):
+        if int(version_parts[i]) < int(min_version_parts[i]):
+            return False
+    return True
 
 def is_doxygen_installed():
     try:
@@ -15,7 +22,8 @@ def is_doxygen_installed():
             ["C:\\PROGRA~1\\doxygen\\bin\\doxygen.exe", "--version"])
         print("doxygen --version\n%s" % (installed_version), flush=True)
         installed_version = installed_version.decode().replace("\n", "")
-        if installed_version.startswith(doxygen_version):
+
+        if is_same_or_newer_version(installed_version, doxygen_min_version):
             return True
         else:
             print("Expected version %s, found version information %s" %
