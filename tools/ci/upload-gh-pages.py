@@ -5,6 +5,7 @@ import sys
 import os
 import subprocess
 import shutil
+import os
 
 upload_branches = ["main"]
 branch = ""
@@ -63,6 +64,7 @@ def copy2_verbose(src, dst):
     shutil.copy2(src, dst)
 
 
+
 def upload(branch):
     if os.path.exists("gh-pages"):
         print("Remove old gh-pages directory", flush=True)
@@ -70,6 +72,9 @@ def upload(branch):
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "-q", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
+    current_dir = os.getcwd()
+    print("Current directory:", current_dir)
+    print("Getting current status", flush=True)
     subprocess.run(["git", "status"], shell=True)
 
     #print("Remove old files", flush=True)
