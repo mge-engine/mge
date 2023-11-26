@@ -12,6 +12,7 @@ def is_same_or_newer_version(version, min_version):
     version_parts = version.split(".")
     min_version_parts = min_version.split(".")
     for i in range(0, len(min_version_parts)):
+        version_parts[i] = version_parts[i].split()[0]  # Remove everything after 1st whitespace
         if int(version_parts[i]) < int(min_version_parts[i]):
             return False
     return True
