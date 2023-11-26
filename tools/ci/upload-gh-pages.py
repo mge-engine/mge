@@ -74,25 +74,19 @@ def upload(branch):
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
-    os.chdir("gh-pages")
-    current_dir = os.getcwd()
-    print("Current directory:", current_dir)
-    print("Getting current status", flush=True)
-    subprocess.run(["git", "status"], shell=True)
-
-    #print("Remove old files", flush=True)
-    #subprocess.run(["git", "rm", "-rf", branch +
-    #                "/manual-html"], cwd="gh-pages")
-    #subprocess.run(["dir", "..\\docsrc\\manual\\manual-html"],
-    #               shell=True, cwd="gh-pages")
-    #shutil.copytree("docsrc/manual/manual-html",
-    #                "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
-    #print("Adding files to git", flush=True)
-    #subprocess.run(
-    #    ["git", "add", branch + "/manual-html"], cwd="gh-pages")
-    #print("Commit git changes", flush=True)
-    #subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
-    #subprocess.run(["git", "push", "origin"], cwd="gh-pages")
+    print("Remove old files", flush=True)
+    subprocess.run(["git", "rm", "-rf", branch +
+                    "/manual-html"], cwd="gh-pages" ,shell=True)
+    subprocess.run(["dir", "..\\docsrc\\manual\\manual-html"],
+                cwd="gh-pages", shell=True)
+    shutil.copytree("docsrc/manual/manual-html",
+                    "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
+    print("Adding files to git", flush=True)
+    subprocess.run(
+        ["git", "add", branch + "/manual-html"], cwd="gh-pages")
+    print("Commit git changes", flush=True)
+    subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
+    subprocess.run(["git", "push", "origin"], cwd="gh-pages")
 
 
 try:
