@@ -74,6 +74,7 @@ def upload(branch):
     print("Cloning gh-pages branch", flush=True)
     subprocess.run(["git", "clone", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
+    os.chdir("gh-pages")
     current_dir = os.getcwd()
     print("Current directory:", current_dir)
     print("Getting current status", flush=True)
