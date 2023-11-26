@@ -66,6 +66,8 @@ def copy2_verbose(src, dst):
 
 
 def upload(branch):
+    print("Switching to 'build' directory", flush=True")
+    os.chdir("build")  # Change current directory to "build"
     if os.path.exists("gh-pages"):
         print("Remove old gh-pages directory", flush=True)
         subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
