@@ -1,71 +1,141 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Structures &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Data Structures &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Shader Programs" href="shaders.html" />
     <link rel="prev" title="Render Context" href="render_context.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="shaders.html" title="Shader Programs"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="render_context.html" title="Render Context"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Data Structures</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Structures</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#geometry">Geometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6extentE"><code class="docutils literal notranslate"><span class="pre">extent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge5pointE"><code class="docutils literal notranslate"><span class="pre">point</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#color">Color</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE"><code class="docutils literal notranslate"><span class="pre">rgb_color</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE"><code class="docutils literal notranslate"><span class="pre">rgba_color</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Data Structures</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/datastructures.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="data-structures">
-<h1>Data Structures<a class="headerlink" href="#data-structures" title="Permalink to this heading">¶</a></h1>
+<h1>Data Structures<a class="headerlink" href="#data-structures" title="Link to this heading"></a></h1>
 <p>The graphics library contains some commonly used data structures and types.</p>
 <section id="geometry">
-<h2>Geometry<a class="headerlink" href="#geometry" title="Permalink to this heading">¶</a></h2>
+<h2>Geometry<a class="headerlink" href="#geometry" title="Link to this heading"></a></h2>
 <p>Note that the main types for handling geometry, such as vectors and matrices,
 are defined in the math library. Within the graphics library only geometry
 structures to define window sizes and locations are provided.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6extentE">
-<span id="_CPPv3N3mge6extentE"></span><span id="_CPPv2N3mge6extentE"></span><span id="mge::extent"></span><span class="target" id="classmge_1_1extent"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><a class="headerlink" href="#_CPPv4N3mge6extentE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6extentE"></span><span id="_CPPv2N3mge6extentE"></span><span id="mge::extent"></span><span class="target" id="classmge_1_1extent"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><a class="headerlink" href="#_CPPv4N3mge6extentE" title="Link to this definition"></a><br /></dt>
 <dd><p>Extent defined by width and height. </p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5pointE">
-<span id="_CPPv3N3mge5pointE"></span><span id="_CPPv2N3mge5pointE"></span><span id="mge::point"></span><span class="target" id="classmge_1_1point"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">point</span></span></span><a class="headerlink" href="#_CPPv4N3mge5pointE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5pointE"></span><span id="_CPPv2N3mge5pointE"></span><span id="mge::point"></span><span class="target" id="classmge_1_1point"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">point</span></span></span><a class="headerlink" href="#_CPPv4N3mge5pointE" title="Link to this definition"></a><br /></dt>
 <dd><p>A point. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5point5pointE8uint32_t8uint32_t">
-<span id="_CPPv3N3mge5point5pointE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge5point5pointE8uint32_t8uint32_t"></span><span id="mge::point::point__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1point_1ae61c1e223c7b94d4512f8b3632e64559"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">point</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x_</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5point5pointE8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5point5pointE8uint32_t8uint32_t"></span><span id="_CPPv2N3mge5point5pointE8uint32_t8uint32_t"></span><span id="mge::point::point__uint32_t.uint32_t"></span><span class="target" id="classmge_1_1point_1ae61c1e223c7b94d4512f8b3632e64559"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">point</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x_</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5point5pointE8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Create point. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -82,13 +152,13 @@ structures to define window sizes and locations are provided.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5point1xE">
-<span id="_CPPv3N3mge5point1xE"></span><span id="_CPPv2N3mge5point1xE"></span><span id="mge::point::x__uint32_t"></span><span class="target" id="classmge_1_1point_1a6e7731de91a916cb3ce98b3b83b70bad"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">x</span></span></span><a class="headerlink" href="#_CPPv4N3mge5point1xE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5point1xE"></span><span id="_CPPv2N3mge5point1xE"></span><span id="mge::point::x__uint32_t"></span><span class="target" id="classmge_1_1point_1a6e7731de91a916cb3ce98b3b83b70bad"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">x</span></span></span><a class="headerlink" href="#_CPPv4N3mge5point1xE" title="Link to this definition"></a><br /></dt>
 <dd><p>x coordinate </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5point1yE">
-<span id="_CPPv3N3mge5point1yE"></span><span id="_CPPv2N3mge5point1yE"></span><span id="mge::point::y__uint32_t"></span><span class="target" id="classmge_1_1point_1a992166968c9c1d73bb26703c5b996ed0"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">y</span></span></span><a class="headerlink" href="#_CPPv4N3mge5point1yE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5point1yE"></span><span id="_CPPv2N3mge5point1yE"></span><span id="mge::point::y__uint32_t"></span><span class="target" id="classmge_1_1point_1a992166968c9c1d73bb26703c5b996ed0"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">y</span></span></span><a class="headerlink" href="#_CPPv4N3mge5point1yE" title="Link to this definition"></a><br /></dt>
 <dd><p>y coordinate </p>
 </dd></dl>
 
@@ -97,22 +167,22 @@ structures to define window sizes and locations are provided.</p>
 
 </section>
 <section id="color">
-<h2>Color<a class="headerlink" href="#color" title="Permalink to this heading">¶</a></h2>
+<h2>Color<a class="headerlink" href="#color" title="Link to this heading"></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_colorE">
-<span id="_CPPv3N3mge9rgb_colorE"></span><span id="_CPPv2N3mge9rgb_colorE"></span><span id="mge::rgb_color"></span><span class="target" id="classmge_1_1rgb__color"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_colorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_colorE"></span><span id="_CPPv2N3mge9rgb_colorE"></span><span id="mge::rgb_color"></span><span class="target" id="classmge_1_1rgb__color"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_colorE" title="Link to this definition"></a><br /></dt>
 <dd><p>An RGB color. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorEv">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorEv"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEv"></span><span id="mge::rgb_color::rgb_color"></span><span class="target" id="classmge_1_1rgb__color_1aed4ce619b763f607c19b27647c3e8855"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEv"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEv"></span><span id="mge::rgb_color::rgb_color"></span><span class="target" id="classmge_1_1rgb__color_1aed4ce619b763f607c19b27647c3e8855"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. Intializes to zero. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorEj">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorEj"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEj"></span><span id="mge::rgb_color::rgb_color__unsigned-i"></span><span class="target" id="classmge_1_1rgb__color_1a941a3a6dadd441bb46cc2843dce1e9fa"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rgbvalue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEj" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEj"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEj"></span><span id="mge::rgb_color::rgb_color__unsigned-i"></span><span class="target" id="classmge_1_1rgb__color_1a941a3a6dadd441bb46cc2843dce1e9fa"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rgbvalue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEj" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -123,7 +193,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="mge::rgb_color::rgb_color__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a005d5fb99128414a380b4b9f109503af"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="mge::rgb_color::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorERK9rgb_color"></span><span id="mge::rgb_color::rgb_color__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a005d5fb99128414a380b4b9f109503af"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="mge::rgb_color::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorERK9rgb_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -134,7 +204,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorEPKc">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorEPKc"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKc"></span><span id="mge::rgb_color::rgb_color__cCP"></span><span class="target" id="classmge_1_1rgb__color_1add6cb66902273f8f78ef469fe16fe027"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEPKc"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKc"></span><span id="mge::rgb_color::rgb_color__cCP"></span><span class="target" id="classmge_1_1rgb__color_1add6cb66902273f8f78ef469fe16fe027"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKc" title="Link to this definition"></a><br /></dt>
 <dd><p>Create RGB color from color name. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -145,7 +215,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorEKf">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorEKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEKf"></span><span id="mge::rgb_color::rgb_color__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a19a6a44b8cb9c3dcde1a66e5052e0016"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEKf"></span><span id="mge::rgb_color::rgb_color__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a19a6a44b8cb9c3dcde1a66e5052e0016"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct (greyscale) color from single value. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -156,7 +226,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorEfff">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorEfff"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEfff"></span><span id="mge::rgb_color::rgb_color__float.float.float"></span><span class="target" id="classmge_1_1rgb__color_1a4ef750828bd0fabffbe5577244267c17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEfff" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEfff"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEfff"></span><span id="mge::rgb_color::rgb_color__float.float.float"></span><span class="target" id="classmge_1_1rgb__color_1a4ef750828bd0fabffbe5577244267c17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEfff" title="Link to this definition"></a><br /></dt>
 <dd><p>Creates a color </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -171,7 +241,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9rgb_colorEPKf">
-<span id="_CPPv3N3mge9rgb_color9rgb_colorEPKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKf"></span><span id="mge::rgb_color::rgb_color__floatCP"></span><span class="target" id="classmge_1_1rgb__color_1a0f0589e07ea83007c337c379500c9ac8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9rgb_colorEPKf"></span><span id="_CPPv2N3mge9rgb_color9rgb_colorEPKf"></span><span id="mge::rgb_color::rgb_color__floatCP"></span><span class="target" id="classmge_1_1rgb__color_1a0f0589e07ea83007c337c379500c9ac8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgb_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9rgb_colorEPKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Initialize from array. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -182,21 +252,21 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_coloraSERK9rgb_color">
-<span id="_CPPv3N3mge9rgb_coloraSERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_coloraSERK9rgb_color"></span><span id="mge::rgb_color::assign-operator__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a157e6e2e98628c123531c37995f4a96e"></span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_coloraSERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_coloraSERK9rgb_color"></span><span id="_CPPv2N3mge9rgb_coloraSERK9rgb_color"></span><span id="mge::rgb_color::assign-operator__rgb_colorCR"></span><span class="target" id="classmge_1_1rgb__color_1a157e6e2e98628c123531c37995f4a96e"></span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_coloraSERK9rgb_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Assignment operator. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – color to assign. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color7set_redEKf">
-<span id="_CPPv3N3mge9rgb_color7set_redEKf"></span><span id="_CPPv2N3mge9rgb_color7set_redEKf"></span><span id="mge::rgb_color::set_red__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a5293a75faedf2711ce1c3f3291cee733"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_red</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color7set_redEKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color7set_redEKf"></span><span id="_CPPv2N3mge9rgb_color7set_redEKf"></span><span id="mge::rgb_color::set_red__floatC"></span><span class="target" id="classmge_1_1rgb__color_1a5293a75faedf2711ce1c3f3291cee733"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_red</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color7set_redEKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Set red component, </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -207,7 +277,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color9set_greenEKf">
-<span id="_CPPv3N3mge9rgb_color9set_greenEKf"></span><span id="_CPPv2N3mge9rgb_color9set_greenEKf"></span><span id="mge::rgb_color::set_green__floatC"></span><span class="target" id="classmge_1_1rgb__color_1ab7402bce8cc86c713e02418fd0956758"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_green</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9set_greenEKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color9set_greenEKf"></span><span id="_CPPv2N3mge9rgb_color9set_greenEKf"></span><span id="mge::rgb_color::set_green__floatC"></span><span class="target" id="classmge_1_1rgb__color_1ab7402bce8cc86c713e02418fd0956758"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_green</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color9set_greenEKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Set green component. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -218,7 +288,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color8set_blueEKf">
-<span id="_CPPv3N3mge9rgb_color8set_blueEKf"></span><span id="_CPPv2N3mge9rgb_color8set_blueEKf"></span><span id="mge::rgb_color::set_blue__floatC"></span><span class="target" id="classmge_1_1rgb__color_1aa07d336c926330996e3e30351a0b1257"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_blue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color8set_blueEKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color8set_blueEKf"></span><span id="_CPPv2N3mge9rgb_color8set_blueEKf"></span><span id="mge::rgb_color::set_blue__floatC"></span><span class="target" id="classmge_1_1rgb__color_1aa07d336c926330996e3e30351a0b1257"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_blue</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9rgb_color8set_blueEKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Set blue component. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -229,7 +299,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9rgb_color7get_redEv">
-<span id="_CPPv3NK3mge9rgb_color7get_redEv"></span><span id="_CPPv2NK3mge9rgb_color7get_redEv"></span><span id="mge::rgb_color::get_redC"></span><span class="target" id="classmge_1_1rgb__color_1a5d9d5d8e0653d8963b04be6f2f07dbfa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_red</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color7get_redEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge9rgb_color7get_redEv"></span><span id="_CPPv2NK3mge9rgb_color7get_redEv"></span><span id="mge::rgb_color::get_redC"></span><span class="target" id="classmge_1_1rgb__color_1a5d9d5d8e0653d8963b04be6f2f07dbfa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_red</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color7get_redEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get red component. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -240,7 +310,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9rgb_color9get_greenEv">
-<span id="_CPPv3NK3mge9rgb_color9get_greenEv"></span><span id="_CPPv2NK3mge9rgb_color9get_greenEv"></span><span id="mge::rgb_color::get_greenC"></span><span class="target" id="classmge_1_1rgb__color_1aff13b6391520fb9b800d9b672dc7659d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_green</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color9get_greenEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge9rgb_color9get_greenEv"></span><span id="_CPPv2NK3mge9rgb_color9get_greenEv"></span><span id="mge::rgb_color::get_greenC"></span><span class="target" id="classmge_1_1rgb__color_1aff13b6391520fb9b800d9b672dc7659d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_green</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color9get_greenEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get green component. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -251,7 +321,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9rgb_color8get_blueEv">
-<span id="_CPPv3NK3mge9rgb_color8get_blueEv"></span><span id="_CPPv2NK3mge9rgb_color8get_blueEv"></span><span id="mge::rgb_color::get_blueC"></span><span class="target" id="classmge_1_1rgb__color_1a468c131e45fecebbaf17049530ec49b9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_blue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color8get_blueEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge9rgb_color8get_blueEv"></span><span id="_CPPv2NK3mge9rgb_color8get_blueEv"></span><span id="mge::rgb_color::get_blueC"></span><span class="target" id="classmge_1_1rgb__color_1a468c131e45fecebbaf17049530ec49b9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get_blue</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_color8get_blueEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get blue component. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -262,28 +332,28 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9rgb_coloreqERK9rgb_color">
-<span id="_CPPv3NK3mge9rgb_coloreqERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_coloreqERK9rgb_color"></span><span id="mge::rgb_color::eq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a4530c6e35fad00078efc3272bd613d20"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_coloreqERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge9rgb_coloreqERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_coloreqERK9rgb_color"></span><span id="mge::rgb_color::eq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a4530c6e35fad00078efc3272bd613d20"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_coloreqERK9rgb_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – compared color </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color equals <code class="docutils literal notranslate"><span class="pre">c</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color equals <code class="docutils literal notranslate"><span class="pre">c</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9rgb_colorneERK9rgb_color">
-<span id="_CPPv3NK3mge9rgb_colorneERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_colorneERK9rgb_color"></span><span id="mge::rgb_color::neq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a59c17099f88e3152c07f8d9b8e9f2f44"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_colorneERK9rgb_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge9rgb_colorneERK9rgb_color"></span><span id="_CPPv2NK3mge9rgb_colorneERK9rgb_color"></span><span id="mge::rgb_color::neq-operator__rgb_colorCRC"></span><span class="target" id="classmge_1_1rgb__color_1a59c17099f88e3152c07f8d9b8e9f2f44"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9rgb_colorE" title="mge::rgb_color"><span class="n"><span class="pre">rgb_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9rgb_colorneERK9rgb_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – compared color </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color is different from <code class="docutils literal notranslate"><span class="pre">c</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this color is different from <code class="docutils literal notranslate"><span class="pre">c</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -293,19 +363,19 @@ structures to define window sizes and locations are provided.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color1rE">
-<span id="_CPPv3N3mge9rgb_color1rE"></span><span id="_CPPv2N3mge9rgb_color1rE"></span><span id="mge::rgb_color::r__float"></span><span class="target" id="classmge_1_1rgb__color_1a54d2e2405812330339d7ebc50f1f6543"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">r</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color1rE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color1rE"></span><span id="_CPPv2N3mge9rgb_color1rE"></span><span id="mge::rgb_color::r__float"></span><span class="target" id="classmge_1_1rgb__color_1a54d2e2405812330339d7ebc50f1f6543"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">r</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color1rE" title="Link to this definition"></a><br /></dt>
 <dd><p>red </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color1gE">
-<span id="_CPPv3N3mge9rgb_color1gE"></span><span id="_CPPv2N3mge9rgb_color1gE"></span><span id="mge::rgb_color::g__float"></span><span class="target" id="classmge_1_1rgb__color_1a051cdc7acef257b6b42002878116fcdf"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color1gE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color1gE"></span><span id="_CPPv2N3mge9rgb_color1gE"></span><span id="mge::rgb_color::g__float"></span><span class="target" id="classmge_1_1rgb__color_1a051cdc7acef257b6b42002878116fcdf"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color1gE" title="Link to this definition"></a><br /></dt>
 <dd><p>green </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9rgb_color1bE">
-<span id="_CPPv3N3mge9rgb_color1bE"></span><span id="_CPPv2N3mge9rgb_color1bE"></span><span id="mge::rgb_color::b__float"></span><span class="target" id="classmge_1_1rgb__color_1a7306e403c906cba267ef7707d56374d4"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">b</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color1bE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9rgb_color1bE"></span><span id="_CPPv2N3mge9rgb_color1bE"></span><span id="mge::rgb_color::b__float"></span><span class="target" id="classmge_1_1rgb__color_1a7306e403c906cba267ef7707d56374d4"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">b</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rgb_color1bE" title="Link to this definition"></a><br /></dt>
 <dd><p>blue </p>
 </dd></dl>
 
@@ -314,19 +384,19 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_colorE">
-<span id="_CPPv3N3mge10rgba_colorE"></span><span id="_CPPv2N3mge10rgba_colorE"></span><span id="mge::rgba_color"></span><span class="target" id="classmge_1_1rgba__color"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_colorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_colorE"></span><span id="_CPPv2N3mge10rgba_colorE"></span><span id="mge::rgba_color"></span><span class="target" id="classmge_1_1rgba__color"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_colorE" title="Link to this definition"></a><br /></dt>
 <dd><p>An RGBA color. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorEv">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorEv"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEv"></span><span id="mge::rgba_color::rgba_color"></span><span class="target" id="classmge_1_1rgba__color_1a8b04ebd941f786297fac2e7eb10a0de7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEv"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEv"></span><span id="mge::rgba_color::rgba_color"></span><span class="target" id="classmge_1_1rgba__color_1a8b04ebd941f786297fac2e7eb10a0de7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Default constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorEj">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorEj"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEj"></span><span id="mge::rgba_color::rgba_color__unsigned-i"></span><span class="target" id="classmge_1_1rgba__color_1a10eea4bb9835bb948c8d9935acffcacc"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rgbavalue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEj" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEj"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEj"></span><span id="mge::rgba_color::rgba_color__unsigned-i"></span><span class="target" id="classmge_1_1rgba__color_1a10eea4bb9835bb948c8d9935acffcacc"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">rgbavalue</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEj" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -337,7 +407,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="mge::rgba_color::rgba_color__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a4d1b2db7eeb9d9751b1982018cb2de65"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="mge::rgba_color::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorERK10rgba_color"></span><span id="mge::rgba_color::rgba_color__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a4d1b2db7eeb9d9751b1982018cb2de65"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="mge::rgba_color::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -348,7 +418,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorEPKcf">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorEPKcf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKcf"></span><span id="mge::rgba_color::rgba_color__cCP.float"></span><span class="target" id="classmge_1_1rgba__color_1a9cda65aaf36e526387c469974df9359e"></span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKcf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEPKcf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKcf"></span><span id="mge::rgba_color::rgba_color__cCP.float"></span><span class="target" id="classmge_1_1rgba__color_1a9cda65aaf36e526387c469974df9359e"></span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKcf" title="Link to this definition"></a><br /></dt>
 <dd><p>Create RGBA color from color name. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -362,7 +432,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorEKfKf">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorEKfKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEKfKf"></span><span id="mge::rgba_color::rgba_color__floatC.floatC"></span><span class="target" id="classmge_1_1rgba__color_1a6964447ee7c897fe8cf6890ae101bae4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEKfKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEKfKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEKfKf"></span><span id="mge::rgba_color::rgba_color__floatC.floatC"></span><span class="target" id="classmge_1_1rgba__color_1a6964447ee7c897fe8cf6890ae101bae4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEKfKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct (greyscale) color from single value. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -376,7 +446,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorEffff">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorEffff"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEffff"></span><span id="mge::rgba_color::rgba_color__float.float.float.float"></span><span class="target" id="classmge_1_1rgba__color_1a85ebeadba8da788a3a265871311e0097"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEffff" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEffff"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEffff"></span><span id="mge::rgba_color::rgba_color__float.float.float.float"></span><span class="target" id="classmge_1_1rgba__color_1a85ebeadba8da788a3a265871311e0097"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEffff" title="Link to this definition"></a><br /></dt>
 <dd><p>Creates a color </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -392,7 +462,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color10rgba_colorEPKf">
-<span id="_CPPv3N3mge10rgba_color10rgba_colorEPKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKf"></span><span id="mge::rgba_color::rgba_color__floatCP"></span><span class="target" id="classmge_1_1rgba__color_1a3866ab2d409b991f32f00143f27dcd5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKf" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color10rgba_colorEPKf"></span><span id="_CPPv2N3mge10rgba_color10rgba_colorEPKf"></span><span id="mge::rgba_color::rgba_color__floatCP"></span><span class="target" id="classmge_1_1rgba__color_1a3866ab2d409b991f32f00143f27dcd5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rgba_color</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10rgba_color10rgba_colorEPKf" title="Link to this definition"></a><br /></dt>
 <dd><p>Initialize from array. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -403,21 +473,21 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_coloraSERK10rgba_color">
-<span id="_CPPv3N3mge10rgba_coloraSERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_coloraSERK10rgba_color"></span><span id="mge::rgba_color::assign-operator__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a5afd4262d2fea208e6a631f40784dd80"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_coloraSERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_coloraSERK10rgba_color"></span><span id="_CPPv2N3mge10rgba_coloraSERK10rgba_color"></span><span id="mge::rgba_color::assign-operator__rgba_colorCR"></span><span class="target" id="classmge_1_1rgba__color_1a5afd4262d2fea208e6a631f40784dd80"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_coloraSERK10rgba_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Assignment operator. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>c</strong> – color to assign. </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10rgba_coloreqERK10rgba_color">
-<span id="_CPPv3NK3mge10rgba_coloreqERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_coloreqERK10rgba_color"></span><span id="mge::rgba_color::eq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1a74969261d8f41458433992927965a042"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_coloreqERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge10rgba_coloreqERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_coloreqERK10rgba_color"></span><span id="mge::rgba_color::eq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1a74969261d8f41458433992927965a042"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_coloreqERK10rgba_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Compare with other color. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -431,7 +501,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10rgba_colorneERK10rgba_color">
-<span id="_CPPv3NK3mge10rgba_colorneERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_colorneERK10rgba_color"></span><span id="mge::rgba_color::neq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1acfcb5a435a9a2e5966042e3cf70cd6e1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_colorneERK10rgba_color" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge10rgba_colorneERK10rgba_color"></span><span id="_CPPv2NK3mge10rgba_colorneERK10rgba_color"></span><span id="mge::rgba_color::neq-operator__rgba_colorCRC"></span><span class="target" id="classmge_1_1rgba__color_1acfcb5a435a9a2e5966042e3cf70cd6e1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_colorneERK10rgba_color" title="Link to this definition"></a><br /></dt>
 <dd><p>Compare with other color. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -445,7 +515,7 @@ structures to define window sizes and locations are provided.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge10rgba_color4dataEv">
-<span id="_CPPv3NK3mge10rgba_color4dataEv"></span><span id="_CPPv2NK3mge10rgba_color4dataEv"></span><span id="mge::rgba_color::dataC"></span><span class="target" id="classmge_1_1rgba__color_1a4be9ea85665c33fbd6c156eaa5e411e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_color4dataEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge10rgba_color4dataEv"></span><span id="_CPPv2NK3mge10rgba_color4dataEv"></span><span id="mge::rgba_color::dataC"></span><span class="target" id="classmge_1_1rgba__color_1a4be9ea85665c33fbd6c156eaa5e411e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge10rgba_color4dataEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access color as array of floats. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -459,25 +529,25 @@ structures to define window sizes and locations are provided.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color1rE">
-<span id="_CPPv3N3mge10rgba_color1rE"></span><span id="_CPPv2N3mge10rgba_color1rE"></span><span id="mge::rgba_color::r__float"></span><span class="target" id="classmge_1_1rgba__color_1a0c4cff78948b9cc7a5a25522aff2ca26"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">r</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1rE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color1rE"></span><span id="_CPPv2N3mge10rgba_color1rE"></span><span id="mge::rgba_color::r__float"></span><span class="target" id="classmge_1_1rgba__color_1a0c4cff78948b9cc7a5a25522aff2ca26"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">r</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1rE" title="Link to this definition"></a><br /></dt>
 <dd><p>red </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color1gE">
-<span id="_CPPv3N3mge10rgba_color1gE"></span><span id="_CPPv2N3mge10rgba_color1gE"></span><span id="mge::rgba_color::g__float"></span><span class="target" id="classmge_1_1rgba__color_1a7553e2a2c79a82e0d3960b38d74cf586"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1gE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color1gE"></span><span id="_CPPv2N3mge10rgba_color1gE"></span><span id="mge::rgba_color::g__float"></span><span class="target" id="classmge_1_1rgba__color_1a7553e2a2c79a82e0d3960b38d74cf586"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1gE" title="Link to this definition"></a><br /></dt>
 <dd><p>green </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color1bE">
-<span id="_CPPv3N3mge10rgba_color1bE"></span><span id="_CPPv2N3mge10rgba_color1bE"></span><span id="mge::rgba_color::b__float"></span><span class="target" id="classmge_1_1rgba__color_1a02fed29f0fadeebc20e96a4309179df2"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">b</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1bE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color1bE"></span><span id="_CPPv2N3mge10rgba_color1bE"></span><span id="mge::rgba_color::b__float"></span><span class="target" id="classmge_1_1rgba__color_1a02fed29f0fadeebc20e96a4309179df2"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">b</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1bE" title="Link to this definition"></a><br /></dt>
 <dd><p>blue </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10rgba_color1aE">
-<span id="_CPPv3N3mge10rgba_color1aE"></span><span id="_CPPv2N3mge10rgba_color1aE"></span><span id="mge::rgba_color::a__float"></span><span class="target" id="classmge_1_1rgba__color_1a21fd4cf126ded6c9a47772573455e4ab"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">a</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1aE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10rgba_color1aE"></span><span id="_CPPv2N3mge10rgba_color1aE"></span><span id="mge::rgba_color::a__float"></span><span class="target" id="classmge_1_1rgba__color_1a21fd4cf126ded6c9a47772573455e4ab"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">a</span></span></span><a class="headerlink" href="#_CPPv4N3mge10rgba_color1aE" title="Link to this definition"></a><br /></dt>
 <dd><p>alpha </p>
 </dd></dl>
 
@@ -488,74 +558,34 @@ structures to define window sizes and locations are provided.</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Data Structures</a><ul>
-<li><a class="reference internal" href="#geometry">Geometry</a></li>
-<li><a class="reference internal" href="#color">Color</a></li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="render_context.html" class="btn btn-neutral float-left" title="Render Context" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="shaders.html" class="btn btn-neutral float-right" title="Shader Programs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="render_context.html"
-                          title="previous chapter">Render Context</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="shaders.html"
-                          title="next chapter">Shader Programs</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/graphics/datastructures.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="shaders.html" title="Shader Programs"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="render_context.html" title="Render Context"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Data Structures</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

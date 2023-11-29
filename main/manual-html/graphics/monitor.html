@@ -1,50 +1,126 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor Support &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Monitor Support &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Window" href="window.html" />
     <link rel="prev" title="Render System" href="system.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="window.html" title="Window"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="system.html" title="Render System"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Monitor Support</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Monitor Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge7monitorE"><code class="docutils literal notranslate"><span class="pre">monitor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge7monitor21video_mode_collectionE"><code class="docutils literal notranslate"><span class="pre">monitor::video_mode_collection</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge7monitor4nameEv"><code class="docutils literal notranslate"><span class="pre">monitor::name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge7monitor7primaryEv"><code class="docutils literal notranslate"><span class="pre">monitor::primary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge7monitor13physical_sizeEv"><code class="docutils literal notranslate"><span class="pre">monitor::physical_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge7monitor12current_modeEv"><code class="docutils literal notranslate"><span class="pre">monitor::current_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge7monitor15supported_modesEv"><code class="docutils literal notranslate"><span class="pre">monitor::supported_modes()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge10video_modeE"><code class="docutils literal notranslate"><span class="pre">video_mode</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t"><code class="docutils literal notranslate"><span class="pre">video_mode::video_mode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10video_mode6extentE"><code class="docutils literal notranslate"><span class="pre">video_mode::extent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10video_mode12refresh_rateE"><code class="docutils literal notranslate"><span class="pre">video_mode::refresh_rate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10video_mode16ANY_REFRESH_RATEE"><code class="docutils literal notranslate"><span class="pre">video_mode::ANY_REFRESH_RATE</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Monitor Support</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/monitor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="monitor-support">
-<h1>Monitor Support<a class="headerlink" href="#monitor-support" title="Permalink to this heading">¶</a></h1>
+<h1>Monitor Support<a class="headerlink" href="#monitor-support" title="Link to this heading"></a></h1>
 <p>Today many systems have more than one monitor attached. Also, emergence
 of 4K and higher monitors make it necessary to adjust elements of the
 presentation to the actual physical resolution.</p>
@@ -52,12 +128,12 @@ presentation to the actual physical resolution.</p>
 the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monitor"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::monitor</span></code></a> class.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge7monitorE">
-<span id="_CPPv3N3mge7monitorE"></span><span id="_CPPv2N3mge7monitorE"></span><span id="mge::monitor"></span><span class="target" id="classmge_1_1monitor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitor</span></span></span><a class="headerlink" href="#_CPPv4N3mge7monitorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge7monitorE"></span><span id="_CPPv2N3mge7monitorE"></span><span id="mge::monitor"></span><span class="target" id="classmge_1_1monitor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitor</span></span></span><a class="headerlink" href="#_CPPv4N3mge7monitorE" title="Link to this definition"></a><br /></dt>
 <dd><div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge7monitor21video_mode_collectionE">
-<span id="_CPPv3N3mge7monitor21video_mode_collectionE"></span><span id="_CPPv2N3mge7monitor21video_mode_collectionE"></span><span class="target" id="classmge_1_1monitor_1a07b0ebdd4dde6cf39f61c61746665069"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_mode_collection</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10video_modeE" title="mge::video_mode"><span class="n"><span class="pre">video_mode</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge7monitor21video_mode_collectionE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge7monitor21video_mode_collectionE"></span><span id="_CPPv2N3mge7monitor21video_mode_collectionE"></span><span class="target" id="classmge_1_1monitor_1a07b0ebdd4dde6cf39f61c61746665069"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_mode_collection</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10video_modeE" title="mge::video_mode"><span class="n"><span class="pre">video_mode</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge7monitor21video_mode_collectionE" title="Link to this definition"></a><br /></dt>
 <dd><p>Collection of video modes. </p>
 </dd></dl>
 
@@ -66,7 +142,7 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7monitor4nameEv">
-<span id="_CPPv3NK3mge7monitor4nameEv"></span><span id="_CPPv2NK3mge7monitor4nameEv"></span><span id="mge::monitor::nameC"></span><span class="target" id="classmge_1_1monitor_1a96db5cdd06fbf58dae66edb49c131e70"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor4nameEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge7monitor4nameEv"></span><span id="_CPPv2NK3mge7monitor4nameEv"></span><span id="mge::monitor::nameC"></span><span class="target" id="classmge_1_1monitor_1a96db5cdd06fbf58dae66edb49c131e70"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor4nameEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Monitor name. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -77,7 +153,7 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7monitor7primaryEv">
-<span id="_CPPv3NK3mge7monitor7primaryEv"></span><span id="_CPPv2NK3mge7monitor7primaryEv"></span><span id="mge::monitor::primaryC"></span><span class="target" id="classmge_1_1monitor_1ac2aee4285cac2d23477326c8713db47e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">primary</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor7primaryEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge7monitor7primaryEv"></span><span id="_CPPv2NK3mge7monitor7primaryEv"></span><span id="mge::monitor::primaryC"></span><span class="target" id="classmge_1_1monitor_1ac2aee4285cac2d23477326c8713db47e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">primary</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor7primaryEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Return whether this monitor is primary. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -88,7 +164,7 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7monitor13physical_sizeEv">
-<span id="_CPPv3NK3mge7monitor13physical_sizeEv"></span><span id="_CPPv2NK3mge7monitor13physical_sizeEv"></span><span id="mge::monitor::physical_sizeC"></span><span class="target" id="classmge_1_1monitor_1a0d0495ba4d9086c17f445a38fbff2bbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">physical_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor13physical_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge7monitor13physical_sizeEv"></span><span id="_CPPv2NK3mge7monitor13physical_sizeEv"></span><span id="mge::monitor::physical_sizeC"></span><span class="target" id="classmge_1_1monitor_1a0d0495ba4d9086c17f445a38fbff2bbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">physical_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor13physical_sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Physical size in mm. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -99,7 +175,7 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7monitor12current_modeEv">
-<span id="_CPPv3NK3mge7monitor12current_modeEv"></span><span id="_CPPv2NK3mge7monitor12current_modeEv"></span><span id="mge::monitor::current_modeC"></span><span class="target" id="classmge_1_1monitor_1ad7c59739809cf938518cfe8c357e98f8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10video_modeE" title="mge::video_mode"><span class="n"><span class="pre">video_mode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">current_mode</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor12current_modeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge7monitor12current_modeEv"></span><span id="_CPPv2NK3mge7monitor12current_modeEv"></span><span id="mge::monitor::current_modeC"></span><span class="target" id="classmge_1_1monitor_1ad7c59739809cf938518cfe8c357e98f8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10video_modeE" title="mge::video_mode"><span class="n"><span class="pre">video_mode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">current_mode</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor12current_modeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get current video mode. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -110,7 +186,7 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge7monitor15supported_modesEv">
-<span id="_CPPv3NK3mge7monitor15supported_modesEv"></span><span id="_CPPv2NK3mge7monitor15supported_modesEv"></span><span id="mge::monitor::supported_modesC"></span><span class="target" id="classmge_1_1monitor_1ab63d5338761616cecb1b69c07c7bfca5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge7monitor21video_mode_collectionE" title="mge::monitor::video_mode_collection"><span class="n"><span class="pre">video_mode_collection</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">supported_modes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor15supported_modesEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge7monitor15supported_modesEv"></span><span id="_CPPv2NK3mge7monitor15supported_modesEv"></span><span id="mge::monitor::supported_modesC"></span><span class="target" id="classmge_1_1monitor_1ab63d5338761616cecb1b69c07c7bfca5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge7monitor21video_mode_collectionE" title="mge::monitor::video_mode_collection"><span class="n"><span class="pre">video_mode_collection</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">supported_modes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7monitor15supported_modesEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Return supported video modes. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -125,13 +201,13 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 <p>A monitor has a <em>video mode</em> set, and a list of supported video modes.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10video_modeE">
-<span id="_CPPv3N3mge10video_modeE"></span><span id="_CPPv2N3mge10video_modeE"></span><span id="mge::video_mode"></span><span class="target" id="classmge_1_1video__mode"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_mode</span></span></span><a class="headerlink" href="#_CPPv4N3mge10video_modeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10video_modeE"></span><span id="_CPPv2N3mge10video_modeE"></span><span id="mge::video_mode"></span><span class="target" id="classmge_1_1video__mode"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_mode</span></span></span><a class="headerlink" href="#_CPPv4N3mge10video_modeE" title="Link to this definition"></a><br /></dt>
 <dd><p>A video mode. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t">
-<span id="_CPPv3N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t"></span><span id="_CPPv2N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t"></span><span id="mge::video_mode::video_mode__uint32_t.uint32_t.uint32_t"></span><span class="target" id="classmge_1_1video__mode_1a2510ef540053d217420f3a2fc14d8b61"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_mode</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">width</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">height</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">refresh_rate_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t"></span><span id="_CPPv2N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t"></span><span id="mge::video_mode::video_mode__uint32_t.uint32_t.uint32_t"></span><span class="target" id="classmge_1_1video__mode_1a2510ef540053d217420f3a2fc14d8b61"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">video_mode</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">width</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">height</span></span>, <span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">refresh_rate_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge10video_mode10video_modeE8uint32_t8uint32_t8uint32_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Create video mode. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -149,13 +225,13 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10video_mode6extentE">
-<span id="_CPPv3N3mge10video_mode6extentE"></span><span id="_CPPv2N3mge10video_mode6extentE"></span><span id="mge::video_mode::extent__mge::extent"></span><span class="target" id="classmge_1_1video__mode_1a6e72129078dcf7f8dba3814c32905f31"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><a class="headerlink" href="#_CPPv4N3mge10video_mode6extentE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10video_mode6extentE"></span><span id="_CPPv2N3mge10video_mode6extentE"></span><span id="mge::video_mode::extent__mge::extent"></span><span class="target" id="classmge_1_1video__mode_1a6e72129078dcf7f8dba3814c32905f31"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><a class="headerlink" href="#_CPPv4N3mge10video_mode6extentE" title="Link to this definition"></a><br /></dt>
 <dd><p>width and height </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10video_mode12refresh_rateE">
-<span id="_CPPv3N3mge10video_mode12refresh_rateE"></span><span id="_CPPv2N3mge10video_mode12refresh_rateE"></span><span id="mge::video_mode::refresh_rate__uint32_t"></span><span class="target" id="classmge_1_1video__mode_1a14fc07253f48c8d64a69c22ed3ce3c42"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">refresh_rate</span></span></span><a class="headerlink" href="#_CPPv4N3mge10video_mode12refresh_rateE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10video_mode12refresh_rateE"></span><span id="_CPPv2N3mge10video_mode12refresh_rateE"></span><span id="mge::video_mode::refresh_rate__uint32_t"></span><span class="target" id="classmge_1_1video__mode_1a14fc07253f48c8d64a69c22ed3ce3c42"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">refresh_rate</span></span></span><a class="headerlink" href="#_CPPv4N3mge10video_mode12refresh_rateE" title="Link to this definition"></a><br /></dt>
 <dd><p>refresh rate in Hz </p>
 </dd></dl>
 
@@ -164,7 +240,7 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10video_mode16ANY_REFRESH_RATEE">
-<span id="_CPPv3N3mge10video_mode16ANY_REFRESH_RATEE"></span><span id="_CPPv2N3mge10video_mode16ANY_REFRESH_RATEE"></span><span id="mge::video_mode::ANY_REFRESH_RATE__uint32_t"></span><span class="target" id="classmge_1_1video__mode_1a1dd88e9835c6c2818ae4627782f86a36"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ANY_REFRESH_RATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">numeric_limits</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N3mge10video_mode16ANY_REFRESH_RATEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10video_mode16ANY_REFRESH_RATEE"></span><span id="_CPPv2N3mge10video_mode16ANY_REFRESH_RATEE"></span><span id="mge::video_mode::ANY_REFRESH_RATE__uint32_t"></span><span class="target" id="classmge_1_1video__mode_1a1dd88e9835c6c2818ae4627782f86a36"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ANY_REFRESH_RATE</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">numeric_limits</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint32_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">max</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N3mge10video_mode16ANY_REFRESH_RATEE" title="Link to this definition"></a><br /></dt>
 <dd><p>Pseudo refresh rate that allows any refresh rate. </p>
 </dd></dl>
 
@@ -174,63 +250,34 @@ the <a class="reference internal" href="#_CPPv4N3mge7monitorE" title="mge::monit
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="system.html" class="btn btn-neutral float-left" title="Render System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="window.html" class="btn btn-neutral float-right" title="Window" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="system.html"
-                          title="previous chapter">Render System</a></p>
+    </section>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="window.html"
-                          title="next chapter">Window</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/graphics/monitor.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="window.html" title="Window"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="system.html" title="Render System"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Monitor Support</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

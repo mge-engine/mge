@@ -1,68 +1,149 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Window &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Window &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Render Context" href="render_context.html" />
     <link rel="prev" title="Monitor Support" href="monitor.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="render_context.html" title="Render Context"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="monitor.html" title="Monitor Support"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Window</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Window</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge6windowE"><code class="docutils literal notranslate"><span class="pre">window</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window14close_listenerE"><code class="docutils literal notranslate"><span class="pre">window::close_listener</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window16closing_listenerE"><code class="docutils literal notranslate"><span class="pre">window::closing_listener</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window8positionEv"><code class="docutils literal notranslate"><span class="pre">window::position()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window6extentEv"><code class="docutils literal notranslate"><span class="pre">window::extent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window4showEv"><code class="docutils literal notranslate"><span class="pre">window::show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window4hideEv"><code class="docutils literal notranslate"><span class="pre">window::hide()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window7visibleEv"><code class="docutils literal notranslate"><span class="pre">window::visible()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window14render_contextEv"><code class="docutils literal notranslate"><span class="pre">window::render_context()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window14render_contextEv"><code class="docutils literal notranslate"><span class="pre">window::render_context()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window18set_close_listenerERK14close_listener"><code class="docutils literal notranslate"><span class="pre">window::set_close_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window20clear_close_listenerEv"><code class="docutils literal notranslate"><span class="pre">window::clear_close_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window20set_closing_listenerERK16closing_listener"><code class="docutils literal notranslate"><span class="pre">window::set_closing_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window22clear_closing_listenerEv"><code class="docutils literal notranslate"><span class="pre">window::clear_closing_listener()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14window_optionsE"><code class="docutils literal notranslate"><span class="pre">window_options</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14window_options16standard_optionsEv"><code class="docutils literal notranslate"><span class="pre">window_options::standard_options()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14window_options18fullscreen_optionsEv"><code class="docutils literal notranslate"><span class="pre">window_options::fullscreen_options()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Window</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/window.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="window">
-<h1>Window<a class="headerlink" href="#window" title="Permalink to this heading">¶</a></h1>
+<h1>Window<a class="headerlink" href="#window" title="Link to this heading"></a></h1>
 <p>To present something on a screen, a window has to be
 created. The window can of course occupy the whole
 screen.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6windowE">
-<span id="_CPPv3N3mge6windowE"></span><span id="_CPPv2N3mge6windowE"></span><span id="mge::window"></span><span class="target" id="classmge_1_1window"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">window</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_shared_from_this</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge6windowE" title="mge::window"><span class="n"><span class="pre">window</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../input/handler.html#_CPPv4N3mge13input_handlerE" title="mge::input_handler"><span class="n"><span class="pre">input_handler</span></span></a><a class="headerlink" href="#_CPPv4N3mge6windowE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6windowE"></span><span id="_CPPv2N3mge6windowE"></span><span id="mge::window"></span><span class="target" id="classmge_1_1window"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">window</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_shared_from_this</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge6windowE" title="mge::window"><span class="n"><span class="pre">window</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../input/handler.html#_CPPv4N3mge13input_handlerE" title="mge::input_handler"><span class="n"><span class="pre">input_handler</span></span></a><a class="headerlink" href="#_CPPv4N3mge6windowE" title="Link to this definition"></a><br /></dt>
 <dd><p>A window. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window14close_listenerE">
-<span id="_CPPv3N3mge6window14close_listenerE"></span><span id="_CPPv2N3mge6window14close_listenerE"></span><span class="target" id="classmge_1_1window_1aa1093df618bb4cd7d234d02e00fa258b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">close_listener</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">void_function</span></span><a class="headerlink" href="#_CPPv4N3mge6window14close_listenerE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window14close_listenerE"></span><span id="_CPPv2N3mge6window14close_listenerE"></span><span class="target" id="classmge_1_1window_1aa1093df618bb4cd7d234d02e00fa258b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">close_listener</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">void_function</span></span><a class="headerlink" href="#_CPPv4N3mge6window14close_listenerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Listener type for close action. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window16closing_listenerE">
-<span id="_CPPv3N3mge6window16closing_listenerE"></span><span id="_CPPv2N3mge6window16closing_listenerE"></span><span class="target" id="classmge_1_1window_1a2b1ac86f13a9f2ac96bbfe60070326c7"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closing_listener</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge6window16closing_listenerE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window16closing_listenerE"></span><span id="_CPPv2N3mge6window16closing_listenerE"></span><span class="target" id="classmge_1_1window_1a2b1ac86f13a9f2ac96bbfe60070326c7"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closing_listener</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">bool</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge6window16closing_listenerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Listener to check on closing action. </p>
 <p>This listener will be called on close action. If the listener returns <code class="docutils literal notranslate"><span class="pre">false</span></code>, the window will not be closed. </p>
 </dd></dl>
@@ -72,7 +153,7 @@ screen.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge6window8positionEv">
-<span id="_CPPv3NK3mge6window8positionEv"></span><span id="_CPPv2NK3mge6window8positionEv"></span><span id="mge::window::positionC"></span><span class="target" id="classmge_1_1window_1af0710f1cd87aa4c8f7712c7b370e929f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge5pointE" title="mge::point"><span class="n"><span class="pre">point</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window8positionEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge6window8positionEv"></span><span id="_CPPv2NK3mge6window8positionEv"></span><span id="mge::window::positionC"></span><span class="target" id="classmge_1_1window_1af0710f1cd87aa4c8f7712c7b370e929f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge5pointE" title="mge::point"><span class="n"><span class="pre">point</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window8positionEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get window position. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -83,7 +164,7 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge6window6extentEv">
-<span id="_CPPv3NK3mge6window6extentEv"></span><span id="_CPPv2NK3mge6window6extentEv"></span><span id="mge::window::extentC"></span><span class="target" id="classmge_1_1window_1a2c18b7e3b6c5785bfad4ca487a361a62"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window6extentEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge6window6extentEv"></span><span id="_CPPv2NK3mge6window6extentEv"></span><span id="mge::window::extentC"></span><span class="target" id="classmge_1_1window_1a2c18b7e3b6c5785bfad4ca487a361a62"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window6extentEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get window extent. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -94,19 +175,19 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window4showEv">
-<span id="_CPPv3N3mge6window4showEv"></span><span id="_CPPv2N3mge6window4showEv"></span><span id="mge::window::show"></span><span class="target" id="classmge_1_1window_1a2753c1ab80d7cdcca8f0fd8817772f5b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">show</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window4showEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window4showEv"></span><span id="_CPPv2N3mge6window4showEv"></span><span id="mge::window::show"></span><span class="target" id="classmge_1_1window_1a2753c1ab80d7cdcca8f0fd8817772f5b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">show</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window4showEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Shows the window. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window4hideEv">
-<span id="_CPPv3N3mge6window4hideEv"></span><span id="_CPPv2N3mge6window4hideEv"></span><span id="mge::window::hide"></span><span class="target" id="classmge_1_1window_1a348faa9a9358583a8cbacc6bfa5adee7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hide</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window4hideEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window4hideEv"></span><span id="_CPPv2N3mge6window4hideEv"></span><span id="mge::window::hide"></span><span class="target" id="classmge_1_1window_1a348faa9a9358583a8cbacc6bfa5adee7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hide</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window4hideEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Hides the window. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge6window7visibleEv">
-<span id="_CPPv3NK3mge6window7visibleEv"></span><span id="_CPPv2NK3mge6window7visibleEv"></span><span id="mge::window::visibleC"></span><span class="target" id="classmge_1_1window_1a149062a494cd6217b08afce7eb9dff80"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visible</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window7visibleEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge6window7visibleEv"></span><span id="_CPPv2NK3mge6window7visibleEv"></span><span id="mge::window::visibleC"></span><span class="target" id="classmge_1_1window_1a149062a494cd6217b08afce7eb9dff80"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">visible</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window7visibleEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get whether window is visible. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -117,7 +198,7 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window14render_contextEv">
-<span id="_CPPv3N3mge6window14render_contextEv"></span><span id="_CPPv2N3mge6window14render_contextEv"></span><span id="mge::window::render_context"></span><span class="target" id="classmge_1_1window_1a32bcc032169d23af20464ec069d0dab7"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="n"><span class="pre">render_context</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">render_context</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window14render_contextEv"></span><span id="_CPPv2N3mge6window14render_contextEv"></span><span id="mge::window::render_context"></span><span class="target" id="classmge_1_1window_1a32bcc032169d23af20464ec069d0dab7"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="n"><span class="pre">render_context</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">render_context</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window14render_contextEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access render context of window. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -128,7 +209,7 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge6window14render_contextEv">
-<span id="_CPPv3NK3mge6window14render_contextEv"></span><span id="_CPPv2NK3mge6window14render_contextEv"></span><span id="mge::window::render_contextC"></span><span class="target" id="classmge_1_1window_1a2e68ac26515f8caff97e7e6578f04743"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="n"><span class="pre">render_context</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">render_context</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window14render_contextEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge6window14render_contextEv"></span><span id="_CPPv2NK3mge6window14render_contextEv"></span><span id="mge::window::render_contextC"></span><span class="target" id="classmge_1_1window_1a2e68ac26515f8caff97e7e6578f04743"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14render_contextE" title="mge::render_context"><span class="n"><span class="pre">render_context</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">render_context</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge6window14render_contextEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access render context of window. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -139,7 +220,7 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window18set_close_listenerERK14close_listener">
-<span id="_CPPv3N3mge6window18set_close_listenerERK14close_listener"></span><span id="_CPPv2N3mge6window18set_close_listenerERK14close_listener"></span><span id="mge::window::set_close_listener__close_listenerCR"></span><span class="target" id="classmge_1_1window_1a6e6ee7eb0aea00cf5563b9344dddda6d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_close_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge6window14close_listenerE" title="mge::window::close_listener"><span class="n"><span class="pre">close_listener</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">listener</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window18set_close_listenerERK14close_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window18set_close_listenerERK14close_listener"></span><span id="_CPPv2N3mge6window18set_close_listenerERK14close_listener"></span><span id="mge::window::set_close_listener__close_listenerCR"></span><span class="target" id="classmge_1_1window_1a6e6ee7eb0aea00cf5563b9344dddda6d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_close_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge6window14close_listenerE" title="mge::window::close_listener"><span class="n"><span class="pre">close_listener</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">listener</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window18set_close_listenerERK14close_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Set the close listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -150,13 +231,13 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window20clear_close_listenerEv">
-<span id="_CPPv3N3mge6window20clear_close_listenerEv"></span><span id="_CPPv2N3mge6window20clear_close_listenerEv"></span><span id="mge::window::clear_close_listener"></span><span class="target" id="classmge_1_1window_1ae7f0ef51a84ea12f20935cec01e15dd3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_close_listener</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window20clear_close_listenerEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window20clear_close_listenerEv"></span><span id="_CPPv2N3mge6window20clear_close_listenerEv"></span><span id="mge::window::clear_close_listener"></span><span class="target" id="classmge_1_1window_1ae7f0ef51a84ea12f20935cec01e15dd3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_close_listener</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window20clear_close_listenerEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Clears the currently set close listener. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window20set_closing_listenerERK16closing_listener">
-<span id="_CPPv3N3mge6window20set_closing_listenerERK16closing_listener"></span><span id="_CPPv2N3mge6window20set_closing_listenerERK16closing_listener"></span><span id="mge::window::set_closing_listener__closing_listenerCR"></span><span class="target" id="classmge_1_1window_1ae7c015e5f22307f5161da7a760f16ad8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_closing_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge6window16closing_listenerE" title="mge::window::closing_listener"><span class="n"><span class="pre">closing_listener</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">listener</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window20set_closing_listenerERK16closing_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window20set_closing_listenerERK16closing_listener"></span><span id="_CPPv2N3mge6window20set_closing_listenerERK16closing_listener"></span><span id="mge::window::set_closing_listener__closing_listenerCR"></span><span class="target" id="classmge_1_1window_1ae7c015e5f22307f5161da7a760f16ad8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_closing_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge6window16closing_listenerE" title="mge::window::closing_listener"><span class="n"><span class="pre">closing_listener</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">listener</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window20set_closing_listenerERK16closing_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Set the closing listener. </p>
 <p>The closing listener can abort the window close by returning <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 <dl class="field-list simple">
@@ -168,7 +249,7 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6window22clear_closing_listenerEv">
-<span id="_CPPv3N3mge6window22clear_closing_listenerEv"></span><span id="_CPPv2N3mge6window22clear_closing_listenerEv"></span><span id="mge::window::clear_closing_listener"></span><span class="target" id="classmge_1_1window_1a4fb31e96052b9b70c3b84ff64207eb5c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_closing_listener</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window22clear_closing_listenerEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge6window22clear_closing_listenerEv"></span><span id="_CPPv2N3mge6window22clear_closing_listenerEv"></span><span id="mge::window::clear_closing_listener"></span><span class="target" id="classmge_1_1window_1a4fb31e96052b9b70c3b84ff64207eb5c"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_closing_listener</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6window22clear_closing_listenerEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Clears the currently set closing listener. </p>
 </dd></dl>
 
@@ -178,13 +259,13 @@ screen.</p>
 <p>A window is created by specifying its size and some window options:</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14window_optionsE">
-<span id="_CPPv3N3mge14window_optionsE"></span><span id="_CPPv2N3mge14window_optionsE"></span><span id="mge::window_options"></span><span class="target" id="classmge_1_1window__options"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">window_options</span></span></span><a class="headerlink" href="#_CPPv4N3mge14window_optionsE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge14window_optionsE"></span><span id="_CPPv2N3mge14window_optionsE"></span><span id="mge::window_options"></span><span class="target" id="classmge_1_1window__options"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">window_options</span></span></span><a class="headerlink" href="#_CPPv4N3mge14window_optionsE" title="Link to this definition"></a><br /></dt>
 <dd><p>Window options that can be specified when window is created. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14window_options16standard_optionsEv">
-<span id="_CPPv3N3mge14window_options16standard_optionsEv"></span><span id="_CPPv2N3mge14window_options16standard_optionsEv"></span><span id="mge::window_options::standard_options"></span><span class="target" id="classmge_1_1window__options_1ab8fd0851a720a6a7c8c23ca8879cf02a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">standard_options</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14window_options16standard_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge14window_options16standard_optionsEv"></span><span id="_CPPv2N3mge14window_options16standard_optionsEv"></span><span id="mge::window_options::standard_options"></span><span class="target" id="classmge_1_1window__options_1ab8fd0851a720a6a7c8c23ca8879cf02a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">standard_options</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14window_options16standard_optionsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Standard window options. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -195,7 +276,7 @@ screen.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14window_options18fullscreen_optionsEv">
-<span id="_CPPv3N3mge14window_options18fullscreen_optionsEv"></span><span id="_CPPv2N3mge14window_options18fullscreen_optionsEv"></span><span id="mge::window_options::fullscreen_options"></span><span class="target" id="classmge_1_1window__options_1ad6cafc08effcd16a493f0afad25f58a1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fullscreen_options</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14window_options18fullscreen_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge14window_options18fullscreen_optionsEv"></span><span id="_CPPv2N3mge14window_options18fullscreen_optionsEv"></span><span id="mge::window_options::fullscreen_options"></span><span class="target" id="classmge_1_1window__options_1ad6cafc08effcd16a493f0afad25f58a1"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fullscreen_options</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14window_options18fullscreen_optionsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Fullscreen options. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -210,63 +291,34 @@ screen.</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="monitor.html" class="btn btn-neutral float-left" title="Monitor Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="render_context.html" class="btn btn-neutral float-right" title="Render Context" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="monitor.html"
-                          title="previous chapter">Monitor Support</a></p>
+    </section>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="render_context.html"
-                          title="next chapter">Render Context</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/graphics/window.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="render_context.html" title="Render Context"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="monitor.html" title="Monitor Support"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Window</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

@@ -1,51 +1,116 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
-    <title>Installation &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=2709fde1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Core Library" href="mgecore.html" />
     <link rel="prev" title="Introduction" href="introduction.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="mgecore.html" title="Core Library"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="introduction.html" title="Introduction"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MGE 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sdk-and-engine-installation">SDK and Engine Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-from-source">Building From Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#build-steps">Build Steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#obtaining-the-source">Obtaining the Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-third-party-libraries">Configuring Third-Party Libraries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-documentation-tools">Configuring Documentation Tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-the-build">Configuring the Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-mge">Build MGE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#test-mge">Test MGE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#building-documentation">Building Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <section id="sdk-and-engine-installation">
-<h2>SDK and Engine Installation<a class="headerlink" href="#sdk-and-engine-installation" title="Permalink to this heading">¶</a></h2>
+<h2>SDK and Engine Installation<a class="headerlink" href="#sdk-and-engine-installation" title="Link to this heading"></a></h2>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>Due to its early state, MGE does not yet provide an installation package
@@ -53,13 +118,13 @@ yet. Please build the MGE engine and libraries from source.</p>
 </div>
 </section>
 <section id="building-from-source">
-<h2>Building From Source<a class="headerlink" href="#building-from-source" title="Permalink to this heading">¶</a></h2>
+<h2>Building From Source<a class="headerlink" href="#building-from-source" title="Link to this heading"></a></h2>
 <section id="prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h3>
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h3>
 <p>MGE depends ony a number of tools and packages, which need to be installed
 before building:</p>
 <dl class="simple">
-<dt>Microsoft Visual C++ 2019</dt><dd><p>MGE currently is built using this compile tool chain.
+<dt>Microsoft Visual C++ 2022</dt><dd><p>MGE currently is built using this compile tool chain.
 The <em>Community Edition</em> that can be obtained at
 <a class="reference external" href="https://visualstudio.microsoft.com/">https://visualstudio.microsoft.com</a>
 is sufficient.</p>
@@ -90,9 +155,9 @@ to keep them up to date and install updates easily.</p>
 </div>
 </section>
 <section id="build-steps">
-<h3>Build Steps<a class="headerlink" href="#build-steps" title="Permalink to this heading">¶</a></h3>
+<h3>Build Steps<a class="headerlink" href="#build-steps" title="Link to this heading"></a></h3>
 <section id="obtaining-the-source">
-<h4>Obtaining the Source<a class="headerlink" href="#obtaining-the-source" title="Permalink to this heading">¶</a></h4>
+<h4>Obtaining the Source<a class="headerlink" href="#obtaining-the-source" title="Link to this heading"></a></h4>
 <p>Before compiling MGE, you actually need to get the sources. Sources of MGE are
 managed in <a class="reference external" href="https://github.com/mge-engine/mge">Github</a>. While you can download
 MGE as an archive, you usually want to obtain the sources by cloning the git
@@ -104,20 +169,13 @@ repository:</p>
 libraries.</p>
 </section>
 <section id="configuring-third-party-libraries">
-<h4>Configuring Third-Party Libraries<a class="headerlink" href="#configuring-third-party-libraries" title="Permalink to this heading">¶</a></h4>
+<h4>Configuring Third-Party Libraries<a class="headerlink" href="#configuring-third-party-libraries" title="Link to this heading"></a></h4>
 <p>Third-party libraries are managed by the <cite>vcpkg</cite> tool. The MGE project maintains
 an own fork of <cite>vcpkg</cite>, to tag specific versions of vcpkg for usage with MGE.</p>
-<p>This tagging is achieved by a helper script, which ensures that
-- vcpkg is retrieved from the MGE mirror, and
-- the matching version of vcpkg is used</p>
-<p>To setup the libraries, just change into the source code directory and execute</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">python3</span> <span class="n">tools</span>\<span class="n">ci</span>\<span class="n">vcpkg</span><span class="o">.</span><span class="n">py</span>
-</pre></div>
-</div>
-<p>which will checkout <cite>vcpkg</cite> and bootstrap it.</p>
+<p>Building the third-party packages is done when configuring the build.</p>
 </section>
 <section id="configuring-documentation-tools">
-<h4>Configuring Documentation Tools<a class="headerlink" href="#configuring-documentation-tools" title="Permalink to this heading">¶</a></h4>
+<h4>Configuring Documentation Tools<a class="headerlink" href="#configuring-documentation-tools" title="Link to this heading"></a></h4>
 <p>If you need to build the documentation from source, a few additional packages
 are required to be installed. You can usually skip this, as documentation is
 provided at the <a class="reference external" href="https://mge-engine.github.io/mge/main/manual-html/index.html">MGE github.io site</a>.</p>
@@ -132,7 +190,7 @@ mentioned package managers.</p>
 install the needed python packages there.</p>
 </section>
 <section id="configuring-the-build">
-<h4>Configuring the Build<a class="headerlink" href="#configuring-the-build" title="Permalink to this heading">¶</a></h4>
+<h4>Configuring the Build<a class="headerlink" href="#configuring-the-build" title="Link to this heading"></a></h4>
 <p>To configure, you need to ensure that you are in a <cite>cmd</cite> environment that
 has the correct settings</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">INCLUDE</span><span class="o">=</span>
@@ -159,23 +217,23 @@ setup:</p>
 </pre></div>
 </div>
 <p>Within the <cite>build</cite> directory, use <cite>cmake</cite> to configure the build:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span>\<span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">preset</span><span class="o">=</span><span class="n">default</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">preset</span><span class="o">=</span><span class="n">default</span>
 </pre></div>
 </div>
 <p>This configures the build for the <cite>RelWithDebInfo</cite> configuration. It will
 install also all dependencies using <cite>vcpkg</cite>. This may take a while.</p>
 </section>
 <section id="build-mge">
-<h4>Build MGE<a class="headerlink" href="#build-mge" title="Permalink to this heading">¶</a></h4>
+<h4>Build MGE<a class="headerlink" href="#build-mge" title="Link to this heading"></a></h4>
 <p>The build can simply be started after successful configuring by also
 calling <cite>cmake</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span>\<span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="nb">all</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="nb">all</span>
 </pre></div>
 </div>
 <p>Again, this may take a while.</p>
 </section>
 <section id="test-mge">
-<h4>Test MGE<a class="headerlink" href="#test-mge" title="Permalink to this heading">¶</a></h4>
+<h4>Test MGE<a class="headerlink" href="#test-mge" title="Link to this heading"></a></h4>
 <p>After building, you may want to run the unit-tests to ensure a clean build, or
 also to ensure proper quality if you have made a change to the source code:</p>
 <p>The tests can be simply started by running <cite>ctest</cite>:</p>
@@ -186,9 +244,9 @@ also to ensure proper quality if you have made a change to the source code:</p>
 directory, and can be also simply executed and debugged on their own.</p>
 </section>
 <section id="building-documentation">
-<h4>Building Documentation<a class="headerlink" href="#building-documentation" title="Permalink to this heading">¶</a></h4>
+<h4>Building Documentation<a class="headerlink" href="#building-documentation" title="Link to this heading"></a></h4>
 <p>The documentation build can also be started by calling <cite>cmake</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span>\<span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="n">documentation</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="n">documentation</span>
 </pre></div>
 </div>
 <p>The generated documentation is in the folder <cite>docsrc/manual/manual-html</cite> of
@@ -199,86 +257,34 @@ the build directory.</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Installation</a><ul>
-<li><a class="reference internal" href="#sdk-and-engine-installation">SDK and Engine Installation</a></li>
-<li><a class="reference internal" href="#building-from-source">Building From Source</a><ul>
-<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li><a class="reference internal" href="#build-steps">Build Steps</a><ul>
-<li><a class="reference internal" href="#obtaining-the-source">Obtaining the Source</a></li>
-<li><a class="reference internal" href="#configuring-third-party-libraries">Configuring Third-Party Libraries</a></li>
-<li><a class="reference internal" href="#configuring-documentation-tools">Configuring Documentation Tools</a></li>
-<li><a class="reference internal" href="#configuring-the-build">Configuring the Build</a></li>
-<li><a class="reference internal" href="#build-mge">Build MGE</a></li>
-<li><a class="reference internal" href="#test-mge">Test MGE</a></li>
-<li><a class="reference internal" href="#building-documentation">Building Documentation</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mgecore.html" class="btn btn-neutral float-right" title="Core Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="introduction.html"
-                          title="previous chapter">Introduction</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="mgecore.html"
-                          title="next chapter">Core Library</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/installation.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="mgecore.html" title="Core Library"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="introduction.html" title="Introduction"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">MGE 0.1 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Installation</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

@@ -1,77 +1,159 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buffers &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Buffers &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Command Lists" href="command_list.html" />
     <link rel="prev" title="Shader Programs" href="shaders.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="command_list.html" title="Command Lists"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="shaders.html" title="Shader Programs"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Buffers</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Buffers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11buffer_typeE"><code class="docutils literal notranslate"><span class="pre">buffer_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge9data_typeE"><code class="docutils literal notranslate"><span class="pre">data_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14data_type_sizeE9data_type"><code class="docutils literal notranslate"><span class="pre">data_type_size()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-buffer">Hardware Buffer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge15hardware_bufferE"><code class="docutils literal notranslate"><span class="pre">hardware_buffer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vertex-buffer">Vertex Buffer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE"><code class="docutils literal notranslate"><span class="pre">vertex_format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge18attribute_semanticE"><code class="docutils literal notranslate"><span class="pre">attribute_semantic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE"><code class="docutils literal notranslate"><span class="pre">vertex_layout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13vertex_bufferE"><code class="docutils literal notranslate"><span class="pre">vertex_buffer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#index-buffer">Index Buffer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12index_bufferE"><code class="docutils literal notranslate"><span class="pre">index_buffer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#constant-buffer">Constant Buffer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Buffers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/buffers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="buffers">
-<h1>Buffers<a class="headerlink" href="#buffers" title="Permalink to this heading">¶</a></h1>
+<h1>Buffers<a class="headerlink" href="#buffers" title="Link to this heading"></a></h1>
 <p>Buffers are collections of data elements. These data elements define
 geometry data, offsets into geometry data, or input to shader programs.</p>
 <p>A buffer is a <a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::context_object</span></code></a>, i.e. it exists in the scope
 of a render context.</p>
 <section id="types-and-definitions">
-<h2>Types and Definitions<a class="headerlink" href="#types-and-definitions" title="Permalink to this heading">¶</a></h2>
+<h2>Types and Definitions<a class="headerlink" href="#types-and-definitions" title="Link to this heading"></a></h2>
 <p>Buffers are defined by buffer type.</p>
 <dl class="cpp enum-class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11buffer_typeE">
-<span id="_CPPv3N3mge11buffer_typeE"></span><span id="_CPPv2N3mge11buffer_typeE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">buffer_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11buffer_typeE"></span><span id="_CPPv2N3mge11buffer_typeE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">buffer_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>The buffer type describes what data is inside a buffer. </p>
 <p><em>Values:</em></p>
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11buffer_type6VERTEXE">
-<span id="_CPPv3N3mge11buffer_type6VERTEXE"></span><span id="_CPPv2N3mge11buffer_type6VERTEXE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8a0c3e47aef93a7f244f41ab309a33634b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VERTEX</span></span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_type6VERTEXE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11buffer_type6VERTEXE"></span><span id="_CPPv2N3mge11buffer_type6VERTEXE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8a0c3e47aef93a7f244f41ab309a33634b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VERTEX</span></span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_type6VERTEXE" title="Link to this definition"></a><br /></dt>
 <dd><p>buffer containing vertex data </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11buffer_type5INDEXE">
-<span id="_CPPv3N3mge11buffer_type5INDEXE"></span><span id="_CPPv2N3mge11buffer_type5INDEXE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8acb4ae3b37047fb4b2c0d16f8bf84f076"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INDEX</span></span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_type5INDEXE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11buffer_type5INDEXE"></span><span id="_CPPv2N3mge11buffer_type5INDEXE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8acb4ae3b37047fb4b2c0d16f8bf84f076"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INDEX</span></span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_type5INDEXE" title="Link to this definition"></a><br /></dt>
 <dd><p>buffer containing indices, offsets into vertex data </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11buffer_type8CONSTANTE">
-<span id="_CPPv3N3mge11buffer_type8CONSTANTE"></span><span id="_CPPv2N3mge11buffer_type8CONSTANTE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8a8d6b5cada83510220f59e00ce86d4d92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONSTANT</span></span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_type8CONSTANTE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11buffer_type8CONSTANTE"></span><span id="_CPPv2N3mge11buffer_type8CONSTANTE"></span><span class="target" id="namespacemge_1a3edb98744f41740b2e42e8cd33f880b8a8d6b5cada83510220f59e00ce86d4d92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONSTANT</span></span></span><a class="headerlink" href="#_CPPv4N3mge11buffer_type8CONSTANTE" title="Link to this definition"></a><br /></dt>
 <dd><p>buffer containing shader input values </p>
 </dd></dl>
 
@@ -79,96 +161,96 @@ of a render context.</p>
 
 <dl class="cpp enum-class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_typeE">
-<span id="_CPPv3N3mge9data_typeE"></span><span id="_CPPv2N3mge9data_typeE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">data_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge9data_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_typeE"></span><span id="_CPPv2N3mge9data_typeE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">data_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge9data_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Data type. </p>
 <p><em>Values:</em></p>
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type7UNKNOWNE">
-<span id="_CPPv3N3mge9data_type7UNKNOWNE"></span><span id="_CPPv2N3mge9data_type7UNKNOWNE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a696b031073e74bf2cb98e5ef201d4aa3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNKNOWN</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type7UNKNOWNE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type7UNKNOWNE"></span><span id="_CPPv2N3mge9data_type7UNKNOWNE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a696b031073e74bf2cb98e5ef201d4aa3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNKNOWN</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type7UNKNOWNE" title="Link to this definition"></a><br /></dt>
 <dd><p>unknown type </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type4INT8E">
-<span id="_CPPv3N3mge9data_type4INT8E"></span><span id="_CPPv2N3mge9data_type4INT8E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155aee9d73311ff0658494edfff14c3ec1e3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT8</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type4INT8E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type4INT8E"></span><span id="_CPPv2N3mge9data_type4INT8E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155aee9d73311ff0658494edfff14c3ec1e3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT8</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type4INT8E" title="Link to this definition"></a><br /></dt>
 <dd><p>int8_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type5UINT8E">
-<span id="_CPPv3N3mge9data_type5UINT8E"></span><span id="_CPPv2N3mge9data_type5UINT8E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155aecfc091ed2a607335524c8389cfa41b5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT8</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5UINT8E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type5UINT8E"></span><span id="_CPPv2N3mge9data_type5UINT8E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155aecfc091ed2a607335524c8389cfa41b5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT8</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5UINT8E" title="Link to this definition"></a><br /></dt>
 <dd><p>uint8_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type5INT16E">
-<span id="_CPPv3N3mge9data_type5INT16E"></span><span id="_CPPv2N3mge9data_type5INT16E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a5f90af42814c0a419d715d43ae54fd7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT16</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5INT16E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type5INT16E"></span><span id="_CPPv2N3mge9data_type5INT16E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a5f90af42814c0a419d715d43ae54fd7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT16</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5INT16E" title="Link to this definition"></a><br /></dt>
 <dd><p>int16_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type6UINT16E">
-<span id="_CPPv3N3mge9data_type6UINT16E"></span><span id="_CPPv2N3mge9data_type6UINT16E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a48d8f1a723d44ff4a87db1bb6c551c62"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT16</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6UINT16E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type6UINT16E"></span><span id="_CPPv2N3mge9data_type6UINT16E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a48d8f1a723d44ff4a87db1bb6c551c62"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT16</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6UINT16E" title="Link to this definition"></a><br /></dt>
 <dd><p>uint16_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type5INT32E">
-<span id="_CPPv3N3mge9data_type5INT32E"></span><span id="_CPPv2N3mge9data_type5INT32E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a6495adba09844fac8eeb0aba86e6f1bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT32</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5INT32E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type5INT32E"></span><span id="_CPPv2N3mge9data_type5INT32E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a6495adba09844fac8eeb0aba86e6f1bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT32</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5INT32E" title="Link to this definition"></a><br /></dt>
 <dd><p>int32_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type6UINT32E">
-<span id="_CPPv3N3mge9data_type6UINT32E"></span><span id="_CPPv2N3mge9data_type6UINT32E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a17266551181f69a1b4a3ad5c9e270afc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT32</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6UINT32E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type6UINT32E"></span><span id="_CPPv2N3mge9data_type6UINT32E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a17266551181f69a1b4a3ad5c9e270afc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT32</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6UINT32E" title="Link to this definition"></a><br /></dt>
 <dd><p>uint32_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type5INT64E">
-<span id="_CPPv3N3mge9data_type5INT64E"></span><span id="_CPPv2N3mge9data_type5INT64E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a4e866b275c85fbb439f6484251cfb31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT64</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5INT64E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type5INT64E"></span><span id="_CPPv2N3mge9data_type5INT64E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a4e866b275c85fbb439f6484251cfb31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT64</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5INT64E" title="Link to this definition"></a><br /></dt>
 <dd><p>int64_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type6UINT64E">
-<span id="_CPPv3N3mge9data_type6UINT64E"></span><span id="_CPPv2N3mge9data_type6UINT64E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a6de7acf711860176ba606e9aa2b85d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT64</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6UINT64E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type6UINT64E"></span><span id="_CPPv2N3mge9data_type6UINT64E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a6de7acf711860176ba606e9aa2b85d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT64</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6UINT64E" title="Link to this definition"></a><br /></dt>
 <dd><p>uint64_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type6INT128E">
-<span id="_CPPv3N3mge9data_type6INT128E"></span><span id="_CPPv2N3mge9data_type6INT128E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155ac41709f50c4690286b811f5c609b1bba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT128</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6INT128E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type6INT128E"></span><span id="_CPPv2N3mge9data_type6INT128E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155ac41709f50c4690286b811f5c609b1bba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT128</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6INT128E" title="Link to this definition"></a><br /></dt>
 <dd><p>int128_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type7UINT128E">
-<span id="_CPPv3N3mge9data_type7UINT128E"></span><span id="_CPPv2N3mge9data_type7UINT128E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155ad347d28b256daedf5e51278a150457d8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT128</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type7UINT128E" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type7UINT128E"></span><span id="_CPPv2N3mge9data_type7UINT128E"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155ad347d28b256daedf5e51278a150457d8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT128</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type7UINT128E" title="Link to this definition"></a><br /></dt>
 <dd><p>int128_t </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type4HALFE">
-<span id="_CPPv3N3mge9data_type4HALFE"></span><span id="_CPPv2N3mge9data_type4HALFE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a87e955627b59c274ec4cbdd3a130f9bb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HALF</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type4HALFE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type4HALFE"></span><span id="_CPPv2N3mge9data_type4HALFE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155a87e955627b59c274ec4cbdd3a130f9bb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HALF</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type4HALFE" title="Link to this definition"></a><br /></dt>
 <dd><p>half precision float </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type5FLOATE">
-<span id="_CPPv3N3mge9data_type5FLOATE"></span><span id="_CPPv2N3mge9data_type5FLOATE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155ae738c26bf4ce1037fa81b039a915cbf6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5FLOATE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type5FLOATE"></span><span id="_CPPv2N3mge9data_type5FLOATE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155ae738c26bf4ce1037fa81b039a915cbf6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type5FLOATE" title="Link to this definition"></a><br /></dt>
 <dd><p>float </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type6DOUBLEE">
-<span id="_CPPv3N3mge9data_type6DOUBLEE"></span><span id="_CPPv2N3mge9data_type6DOUBLEE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155afd3e4ece78a7d422280d5ed379482229"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6DOUBLEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type6DOUBLEE"></span><span id="_CPPv2N3mge9data_type6DOUBLEE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155afd3e4ece78a7d422280d5ed379482229"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type6DOUBLEE" title="Link to this definition"></a><br /></dt>
 <dd><p>double </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9data_type11LONG_DOUBLEE">
-<span id="_CPPv3N3mge9data_type11LONG_DOUBLEE"></span><span id="_CPPv2N3mge9data_type11LONG_DOUBLEE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155aa30ec41f6da736498c907ffd7b0a082b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LONG_DOUBLE</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type11LONG_DOUBLEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge9data_type11LONG_DOUBLEE"></span><span id="_CPPv2N3mge9data_type11LONG_DOUBLEE"></span><span class="target" id="namespacemge_1ad1df2fb558b1bdc6351b747223a54155aa30ec41f6da736498c907ffd7b0a082b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LONG_DOUBLE</span></span></span><a class="headerlink" href="#_CPPv4N3mge9data_type11LONG_DOUBLEE" title="Link to this definition"></a><br /></dt>
 <dd><p>long double </p>
 </dd></dl>
 
@@ -176,7 +258,7 @@ of a render context.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14data_type_sizeE9data_type">
-<span id="_CPPv3N3mge14data_type_sizeE9data_type"></span><span id="_CPPv2N3mge14data_type_sizeE9data_type"></span><span id="mge::data_type_size__data_type"></span><span class="target" id="namespacemge_1a6f6dae9a23c34565e06ef3a55efcb249"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">data_type_size</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14data_type_sizeE9data_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge14data_type_sizeE9data_type"></span><span id="_CPPv2N3mge14data_type_sizeE9data_type"></span><span id="mge::data_type_size__data_type"></span><span class="target" id="namespacemge_1a6f6dae9a23c34565e06ef3a55efcb249"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">data_type_size</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14data_type_sizeE9data_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the size of one data. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -190,11 +272,11 @@ of a render context.</p>
 
 </section>
 <section id="hardware-buffer">
-<h2>Hardware Buffer<a class="headerlink" href="#hardware-buffer" title="Permalink to this heading">¶</a></h2>
+<h2>Hardware Buffer<a class="headerlink" href="#hardware-buffer" title="Link to this heading"></a></h2>
 <p>Base of all buffer types is the hardware buffer.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_bufferE">
-<span id="_CPPv3N3mge15hardware_bufferE"></span><span id="_CPPv2N3mge15hardware_bufferE"></span><span id="mge::hardware_buffer"></span><span class="target" id="classmge_1_1hardware__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hardware_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge15hardware_bufferE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge15hardware_bufferE"></span><span id="_CPPv2N3mge15hardware_bufferE"></span><span id="mge::hardware_buffer"></span><span class="target" id="classmge_1_1hardware__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hardware_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge15hardware_bufferE" title="Link to this definition"></a><br /></dt>
 <dd><p>Base class for hardware buffers. Hardware buffers are used for indices and vertex data.</p>
 <p>Hardware buffers are <em>context objects</em>, i.e. they can be created only after a context has been created (e.g. a window), and they are tied to the context.</p>
 <p>Graphics APIs usually assign a type to a buffer, that is whether it is used for vertex data (coordinates), index data (describing which vertices are to be drawn in which order), or constants supplied to the shader pipeline. </p>
@@ -203,13 +285,13 @@ of a render context.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_bufferD0Ev">
-<span id="_CPPv3N3mge15hardware_bufferD0Ev"></span><span id="_CPPv2N3mge15hardware_bufferD0Ev"></span><span id="mge::hardware_buffer::~hardware_buffer"></span><span class="target" id="classmge_1_1hardware__buffer_1a63cd5dd848fd88fd47369a0562a38551"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~hardware_buffer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_bufferD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge15hardware_bufferD0Ev"></span><span id="_CPPv2N3mge15hardware_bufferD0Ev"></span><span id="mge::hardware_buffer::~hardware_buffer"></span><span class="target" id="classmge_1_1hardware__buffer_1a63cd5dd848fd88fd47369a0562a38551"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~hardware_buffer</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_bufferD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge15hardware_buffer4sizeEv">
-<span id="_CPPv3NK3mge15hardware_buffer4sizeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4sizeEv"></span><span id="mge::hardware_buffer::sizeC"></span><span class="target" id="classmge_1_1hardware__buffer_1ada36179c28b7c1afff3d29f66003d655"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge15hardware_buffer4sizeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4sizeEv"></span><span id="mge::hardware_buffer::sizeC"></span><span class="target" id="classmge_1_1hardware__buffer_1ada36179c28b7c1afff3d29f66003d655"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Size of buffer in bytes. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -220,7 +302,7 @@ of a render context.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_buffer3mapEv">
-<span id="_CPPv3N3mge15hardware_buffer3mapEv"></span><span id="_CPPv2N3mge15hardware_buffer3mapEv"></span><span id="mge::hardware_buffer::map"></span><span class="target" id="classmge_1_1hardware__buffer_1a1a429949ac06a8b134e0048e95f4cfdc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">map</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer3mapEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge15hardware_buffer3mapEv"></span><span id="_CPPv2N3mge15hardware_buffer3mapEv"></span><span id="mge::hardware_buffer::map"></span><span class="target" id="classmge_1_1hardware__buffer_1a1a429949ac06a8b134e0048e95f4cfdc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">map</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer3mapEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Maps the buffer. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -231,13 +313,13 @@ of a render context.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_buffer5unmapEv">
-<span id="_CPPv3N3mge15hardware_buffer5unmapEv"></span><span id="_CPPv2N3mge15hardware_buffer5unmapEv"></span><span id="mge::hardware_buffer::unmap"></span><span class="target" id="classmge_1_1hardware__buffer_1ae07f465ddbb1416d08f59bec1f590373"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unmap</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer5unmapEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge15hardware_buffer5unmapEv"></span><span id="_CPPv2N3mge15hardware_buffer5unmapEv"></span><span id="mge::hardware_buffer::unmap"></span><span class="target" id="classmge_1_1hardware__buffer_1ae07f465ddbb1416d08f59bec1f590373"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unmap</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer5unmapEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Unmaps the buffer. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge15hardware_buffer6mappedEv">
-<span id="_CPPv3NK3mge15hardware_buffer6mappedEv"></span><span id="_CPPv2NK3mge15hardware_buffer6mappedEv"></span><span id="mge::hardware_buffer::mappedC"></span><span class="target" id="classmge_1_1hardware__buffer_1a72e0224ffa68ca58fdce741008563ee5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapped</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer6mappedEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge15hardware_buffer6mappedEv"></span><span id="_CPPv2NK3mge15hardware_buffer6mappedEv"></span><span id="mge::hardware_buffer::mappedC"></span><span class="target" id="classmge_1_1hardware__buffer_1a72e0224ffa68ca58fdce741008563ee5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapped</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer6mappedEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Return whether buffer is currently mapped. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -248,7 +330,7 @@ of a render context.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge15hardware_buffer4typeEv">
-<span id="_CPPv3NK3mge15hardware_buffer4typeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4typeEv"></span><span id="mge::hardware_buffer::typeC"></span><span class="target" id="classmge_1_1hardware__buffer_1acd27a65e53d252faddaebf2da4f8cc73"></span><a class="reference internal" href="#_CPPv4N3mge11buffer_typeE" title="mge::buffer_type"><span class="n"><span class="pre">buffer_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge15hardware_buffer4typeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4typeEv"></span><span id="mge::hardware_buffer::typeC"></span><span class="target" id="classmge_1_1hardware__buffer_1acd27a65e53d252faddaebf2da4f8cc73"></span><a class="reference internal" href="#_CPPv4N3mge11buffer_typeE" title="mge::buffer_type"><span class="n"><span class="pre">buffer_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4typeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Hardware buffer type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -262,26 +344,26 @@ of a render context.</p>
 
 </section>
 <section id="vertex-buffer">
-<h2>Vertex Buffer<a class="headerlink" href="#vertex-buffer" title="Permalink to this heading">¶</a></h2>
+<h2>Vertex Buffer<a class="headerlink" href="#vertex-buffer" title="Link to this heading"></a></h2>
 <p>Vertex buffers are used to provide vertices, i.e. data that is processed processed
 per vertex. This may be a simple 2D or 3D position, or a combination of position,
 texture coordinate, and normal vector data.</p>
 <p>A vertex format defines an element of data in a vertex buffer.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_formatE">
-<span id="_CPPv3N3mge13vertex_formatE"></span><span id="_CPPv2N3mge13vertex_formatE"></span><span id="mge::vertex_format"></span><span class="target" id="classmge_1_1vertex__format"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formatE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_formatE"></span><span id="_CPPv2N3mge13vertex_formatE"></span><span id="mge::vertex_format"></span><span class="target" id="classmge_1_1vertex__format"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formatE" title="Link to this definition"></a><br /></dt>
 <dd><p>A vertex format describes the format of one vertex. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_format13vertex_formatEv">
-<span id="_CPPv3N3mge13vertex_format13vertex_formatEv"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatEv"></span><span id="mge::vertex_format::vertex_format"></span><span class="target" id="classmge_1_1vertex__format_1a1e8137617af15bef496a459cc4299c2b"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_format13vertex_formatEv"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatEv"></span><span id="mge::vertex_format::vertex_format"></span><span class="target" id="classmge_1_1vertex__format_1a1e8137617af15bef496a459cc4299c2b"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Default constructor. Creates an unknown vertex. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_format13vertex_formatE9data_type6size_t">
-<span id="_CPPv3N3mge13vertex_format13vertex_formatE9data_type6size_t"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatE9data_type6size_t"></span><span id="mge::vertex_format::vertex_format__data_type.s"></span><span class="target" id="classmge_1_1vertex__format_1a17fc50634e3d61a78d00c2d0f7f6667a"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatE9data_type6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_format13vertex_formatE9data_type6size_t"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatE9data_type6size_t"></span><span id="mge::vertex_format::vertex_format__data_type.s"></span><span class="target" id="classmge_1_1vertex__format_1a17fc50634e3d61a78d00c2d0f7f6667a"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatE9data_type6size_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct a new vertex format object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -295,7 +377,7 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format">
-<span id="_CPPv3N3mge13vertex_format13vertex_formatERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatERK13vertex_format"></span><span id="mge::vertex_format::vertex_format__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__format_1a08ada61e1c9054a3017190c373bd8c68"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format" title="mge::vertex_format::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_format13vertex_formatERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatERK13vertex_format"></span><span id="mge::vertex_format::vertex_format__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__format_1a08ada61e1c9054a3017190c373bd8c68"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format" title="mge::vertex_format::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatERK13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Copy constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -306,7 +388,7 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format">
-<span id="_CPPv3N3mge13vertex_format13vertex_formatERR13vertex_format"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatERR13vertex_format"></span><span id="mge::vertex_format::vertex_format__vertex_formatRR"></span><span class="target" id="classmge_1_1vertex__format_1a2b33a82237943886585bb1356aaec435"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format" title="mge::vertex_format::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_format13vertex_formatERR13vertex_format"></span><span id="_CPPv2N3mge13vertex_format13vertex_formatERR13vertex_format"></span><span id="mge::vertex_format::vertex_format__vertex_formatRR"></span><span class="target" id="classmge_1_1vertex__format_1a2b33a82237943886585bb1356aaec435"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_format</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format" title="mge::vertex_format::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_format13vertex_formatERR13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Move constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -317,35 +399,35 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_formataSERK13vertex_format">
-<span id="_CPPv3N3mge13vertex_formataSERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_formataSERK13vertex_format"></span><span id="mge::vertex_format::assign-operator__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__format_1a9ce3c325ac3c1a3cb0caa67c671f029f"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formataSERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_formataSERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_formataSERK13vertex_format"></span><span id="mge::vertex_format::assign-operator__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__format_1a9ce3c325ac3c1a3cb0caa67c671f029f"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formataSERK13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Assignment. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – assigned format </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_formataSERR13vertex_format">
-<span id="_CPPv3N3mge13vertex_formataSERR13vertex_format"></span><span id="_CPPv2N3mge13vertex_formataSERR13vertex_format"></span><span id="mge::vertex_format::assign-operator__vertex_formatRR"></span><span class="target" id="classmge_1_1vertex__format_1a707d8b65efd70b8652dfa09559122e4f"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formataSERR13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_formataSERR13vertex_format"></span><span id="_CPPv2N3mge13vertex_formataSERR13vertex_format"></span><span id="mge::vertex_format::assign-operator__vertex_formatRR"></span><span class="target" id="classmge_1_1vertex__format_1a707d8b65efd70b8652dfa09559122e4f"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_formataSERR13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Move assignment,. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – assigned format </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_format4typeEv">
-<span id="_CPPv3NK3mge13vertex_format4typeEv"></span><span id="_CPPv2NK3mge13vertex_format4typeEv"></span><span id="mge::vertex_format::typeC"></span><span class="target" id="classmge_1_1vertex__format_1afe10de3f012ec1f16df7e6b30ec932bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format4typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_format4typeEv"></span><span id="_CPPv2NK3mge13vertex_format4typeEv"></span><span id="mge::vertex_format::typeC"></span><span class="target" id="classmge_1_1vertex__format_1afe10de3f012ec1f16df7e6b30ec932bb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format4typeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Data type of vertex. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -356,7 +438,7 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_format4sizeEv">
-<span id="_CPPv3NK3mge13vertex_format4sizeEv"></span><span id="_CPPv2NK3mge13vertex_format4sizeEv"></span><span id="mge::vertex_format::sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aabc48df57677e8d25d9f5f49ca459c67"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_format4sizeEv"></span><span id="_CPPv2NK3mge13vertex_format4sizeEv"></span><span id="mge::vertex_format::sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aabc48df57677e8d25d9f5f49ca459c67"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format4sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Number of elements in vertex. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -367,7 +449,7 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_format11binary_sizeEv">
-<span id="_CPPv3NK3mge13vertex_format11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_format11binary_sizeEv"></span><span id="mge::vertex_format::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aac61c56d3ec5a4f30f39399959925cef"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format11binary_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_format11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_format11binary_sizeEv"></span><span id="mge::vertex_format::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__format_1aac61c56d3ec5a4f30f39399959925cef"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_format11binary_sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Binary size of vertex (number of bytes) </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -378,28 +460,28 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_formatltERK13vertex_format">
-<span id="_CPPv3NK3mge13vertex_formatltERK13vertex_format"></span><span id="_CPPv2NK3mge13vertex_formatltERK13vertex_format"></span><span id="mge::vertex_format::lt-operator__vertex_formatCRC"></span><span class="target" id="classmge_1_1vertex__format_1a313af9639a0f301d84d17a7e88cb4981"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_formatltERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_formatltERK13vertex_format"></span><span id="_CPPv2NK3mge13vertex_formatltERK13vertex_format"></span><span id="mge::vertex_format::lt-operator__vertex_formatCRC"></span><span class="target" id="classmge_1_1vertex__format_1a313af9639a0f301d84d17a7e88cb4981"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_formatltERK13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – compared format </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is less than <code class="docutils literal notranslate"><span class="pre">f</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is less than <code class="docutils literal notranslate"><span class="pre">f</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_formateqERK13vertex_format">
-<span id="_CPPv3NK3mge13vertex_formateqERK13vertex_format"></span><span id="_CPPv2NK3mge13vertex_formateqERK13vertex_format"></span><span id="mge::vertex_format::eq-operator__vertex_formatCRC"></span><span class="target" id="classmge_1_1vertex__format_1af93e69384cde6c3d516d8fa4d292fd53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_formateqERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_formateqERK13vertex_format"></span><span id="_CPPv2NK3mge13vertex_formateqERK13vertex_format"></span><span id="mge::vertex_format::eq-operator__vertex_formatCRC"></span><span class="target" id="classmge_1_1vertex__format_1af93e69384cde6c3d516d8fa4d292fd53"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_formateqERK13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Comparison operator. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – compared format </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is equal to <code class="docutils literal notranslate"><span class="pre">f</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this is equal to <code class="docutils literal notranslate"><span class="pre">f</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -409,43 +491,43 @@ texture coordinate, and normal vector data.</p>
 
 <dl class="cpp enum-class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semanticE">
-<span id="_CPPv3N3mge18attribute_semanticE"></span><span id="_CPPv2N3mge18attribute_semanticE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">attribute_semantic</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semanticE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semanticE"></span><span id="_CPPv2N3mge18attribute_semanticE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">attribute_semantic</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semanticE" title="Link to this definition"></a><br /></dt>
 <dd><p>Attribute semantic. </p>
 <p>Vertex attributes carry a semantic, which describes the attribute’s purpose. </p>
 <p><em>Values:</em></p>
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic8POSITIONE">
-<span id="_CPPv3N3mge18attribute_semantic8POSITIONE"></span><span id="_CPPv2N3mge18attribute_semantic8POSITIONE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a90b4ba73224408e82ade8a072a3712c1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POSITION</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic8POSITIONE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic8POSITIONE"></span><span id="_CPPv2N3mge18attribute_semantic8POSITIONE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a90b4ba73224408e82ade8a072a3712c1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POSITION</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic8POSITIONE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic6NORMALE">
-<span id="_CPPv3N3mge18attribute_semantic6NORMALE"></span><span id="_CPPv2N3mge18attribute_semantic6NORMALE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a1e23852820b9154316c7c06e2b7ba051"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NORMAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic6NORMALE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic6NORMALE"></span><span id="_CPPv2N3mge18attribute_semantic6NORMALE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a1e23852820b9154316c7c06e2b7ba051"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NORMAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic6NORMALE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic7TANGENTE">
-<span id="_CPPv3N3mge18attribute_semantic7TANGENTE"></span><span id="_CPPv2N3mge18attribute_semantic7TANGENTE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a4da56c3c2d4ee59a3461da5b2ad1a25d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TANGENT</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic7TANGENTE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic7TANGENTE"></span><span id="_CPPv2N3mge18attribute_semantic7TANGENTE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a4da56c3c2d4ee59a3461da5b2ad1a25d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TANGENT</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic7TANGENTE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic9BITANGENTE">
-<span id="_CPPv3N3mge18attribute_semantic9BITANGENTE"></span><span id="_CPPv2N3mge18attribute_semantic9BITANGENTE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a3f35107364f7170d7c47165316701feb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BITANGENT</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic9BITANGENTE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic9BITANGENTE"></span><span id="_CPPv2N3mge18attribute_semantic9BITANGENTE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a3f35107364f7170d7c47165316701feb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BITANGENT</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic9BITANGENTE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic5COLORE">
-<span id="_CPPv3N3mge18attribute_semantic5COLORE"></span><span id="_CPPv2N3mge18attribute_semantic5COLORE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a04bd834032febb3fda8c6936ee140949"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic5COLORE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic5COLORE"></span><span id="_CPPv2N3mge18attribute_semantic5COLORE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a04bd834032febb3fda8c6936ee140949"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COLOR</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic5COLORE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic8TEXCOORDE">
-<span id="_CPPv3N3mge18attribute_semantic8TEXCOORDE"></span><span id="_CPPv2N3mge18attribute_semantic8TEXCOORDE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2ae406d3f48e0ec122e180637b66787651"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TEXCOORD</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic8TEXCOORDE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic8TEXCOORDE"></span><span id="_CPPv2N3mge18attribute_semantic8TEXCOORDE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2ae406d3f48e0ec122e180637b66787651"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TEXCOORD</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic8TEXCOORDE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge18attribute_semantic3ANYE">
-<span id="_CPPv3N3mge18attribute_semantic3ANYE"></span><span id="_CPPv2N3mge18attribute_semantic3ANYE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a8e1bde3c3d303163521522cf1d62f21f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ANY</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic3ANYE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge18attribute_semantic3ANYE"></span><span id="_CPPv2N3mge18attribute_semantic3ANYE"></span><span class="target" id="namespacemge_1a2e259f3382db3f204febb98bf1a18ab2a8e1bde3c3d303163521522cf1d62f21f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ANY</span></span></span><a class="headerlink" href="#_CPPv4N3mge18attribute_semantic3ANYE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -454,19 +536,19 @@ texture coordinate, and normal vector data.</p>
 is a list of vertex formats, and an added attribute semantic.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layoutE">
-<span id="_CPPv3N3mge13vertex_layoutE"></span><span id="_CPPv2N3mge13vertex_layoutE"></span><span id="mge::vertex_layout"></span><span class="target" id="classmge_1_1vertex__layout"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layoutE"></span><span id="_CPPv2N3mge13vertex_layoutE"></span><span id="mge::vertex_layout"></span><span class="target" id="classmge_1_1vertex__layout"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutE" title="Link to this definition"></a><br /></dt>
 <dd><p>A vertex layout defines the layout of some vertex buffer, and such is a list of vertex formats. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout13vertex_layoutEv">
-<span id="_CPPv3N3mge13vertex_layout13vertex_layoutEv"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutEv"></span><span id="mge::vertex_layout::vertex_layout"></span><span class="target" id="classmge_1_1vertex__layout_1af3d71b742ca28a30c3f26efe7e059c17"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout13vertex_layoutEv"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutEv"></span><span id="mge::vertex_layout::vertex_layout"></span><span class="target" id="classmge_1_1vertex__layout_1af3d71b742ca28a30c3f26efe7e059c17"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE">
-<span id="_CPPv3N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE"></span><span id="mge::vertex_layout::vertex_layout__std::initializer_list:vertex_format:CR"></span><span class="target" id="classmge_1_1vertex__layout_1a3dc843de7c8a4d64353b44a9a9f72958"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE"></span><span id="mge::vertex_layout::vertex_layout__std::initializer_list:vertex_format:CR"></span><span class="target" id="classmge_1_1vertex__layout_1a3dc843de7c8a4d64353b44a9a9f72958"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">initializer_list</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERKNSt16initializer_listI13vertex_formatEE" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -477,7 +559,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout">
-<span id="_CPPv3N3mge13vertex_layout13vertex_layoutERK13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERK13vertex_layout"></span><span id="mge::vertex_layout::vertex_layout__vertex_layoutCR"></span><span class="target" id="classmge_1_1vertex__layout_1a3d7f418d82a33831c09fe7ddb1ff13fb"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout" title="mge::vertex_layout::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout13vertex_layoutERK13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERK13vertex_layout"></span><span id="mge::vertex_layout::vertex_layout__vertex_layoutCR"></span><span class="target" id="classmge_1_1vertex__layout_1a3d7f418d82a33831c09fe7ddb1ff13fb"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout" title="mge::vertex_layout::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERK13vertex_layout" title="Link to this definition"></a><br /></dt>
 <dd><p>Copy constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -488,7 +570,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout">
-<span id="_CPPv3N3mge13vertex_layout13vertex_layoutERR13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERR13vertex_layout"></span><span id="mge::vertex_layout::vertex_layout__vertex_layoutRR"></span><span class="target" id="classmge_1_1vertex__layout_1af08f12a8880b08b224ffe6dddf5ffa4e"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout" title="mge::vertex_layout::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout13vertex_layoutERR13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layout13vertex_layoutERR13vertex_layout"></span><span id="mge::vertex_layout::vertex_layout__vertex_layoutRR"></span><span class="target" id="classmge_1_1vertex__layout_1af08f12a8880b08b224ffe6dddf5ffa4e"></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_layout</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout" title="mge::vertex_layout::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout13vertex_layoutERR13vertex_layout" title="Link to this definition"></a><br /></dt>
 <dd><p>Move constructor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -499,41 +581,41 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layoutD0Ev">
-<span id="_CPPv3N3mge13vertex_layoutD0Ev"></span><span id="_CPPv2N3mge13vertex_layoutD0Ev"></span><span id="mge::vertex_layout::~vertex_layout"></span><span class="target" id="classmge_1_1vertex__layout_1a221a0d43c5ad639e908fc39085778680"></span><span class="sig-name descname"><span class="n"><span class="pre">~vertex_layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layoutD0Ev"></span><span id="_CPPv2N3mge13vertex_layoutD0Ev"></span><span id="mge::vertex_layout::~vertex_layout"></span><span class="target" id="classmge_1_1vertex__layout_1a221a0d43c5ad639e908fc39085778680"></span><span class="sig-name descname"><span class="n"><span class="pre">~vertex_layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layoutaSERK13vertex_layout">
-<span id="_CPPv3N3mge13vertex_layoutaSERK13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layoutaSERK13vertex_layout"></span><span id="mge::vertex_layout::assign-operator__vertex_layoutCR"></span><span class="target" id="classmge_1_1vertex__layout_1adad081d8706da17ef18c8d702f68dd9e"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutaSERK13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layoutaSERK13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layoutaSERK13vertex_layout"></span><span id="mge::vertex_layout::assign-operator__vertex_layoutCR"></span><span class="target" id="classmge_1_1vertex__layout_1adad081d8706da17ef18c8d702f68dd9e"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutaSERK13vertex_layout" title="Link to this definition"></a><br /></dt>
 <dd><p>Assignment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – assigned layout </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layoutaSERR13vertex_layout">
-<span id="_CPPv3N3mge13vertex_layoutaSERR13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layoutaSERR13vertex_layout"></span><span id="mge::vertex_layout::assign-operator__vertex_layoutRR"></span><span class="target" id="classmge_1_1vertex__layout_1ab83e430342c7a76121bd411a90ef2b59"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutaSERR13vertex_layout" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layoutaSERR13vertex_layout"></span><span id="_CPPv2N3mge13vertex_layoutaSERR13vertex_layout"></span><span id="mge::vertex_layout::assign-operator__vertex_layoutRR"></span><span class="target" id="classmge_1_1vertex__layout_1ab83e430342c7a76121bd411a90ef2b59"></span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layoutaSERR13vertex_layout" title="Link to this definition"></a><br /></dt>
 <dd><p>Move assignment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>l</strong> – moved layout </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_layout11binary_sizeEv">
-<span id="_CPPv3NK3mge13vertex_layout11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_layout11binary_sizeEv"></span><span id="mge::vertex_layout::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__layout_1abbdabbf3f529ed95063bb98c95154a94"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout11binary_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_layout11binary_sizeEv"></span><span id="_CPPv2NK3mge13vertex_layout11binary_sizeEv"></span><span id="mge::vertex_layout::binary_sizeC"></span><span class="target" id="classmge_1_1vertex__layout_1abbdabbf3f529ed95063bb98c95154a94"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">binary_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout11binary_sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the binary size of one element as defined by the layout.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -544,7 +626,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout9push_backERK13vertex_format">
-<span id="_CPPv3N3mge13vertex_layout9push_backERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_layout9push_backERK13vertex_format"></span><span id="mge::vertex_layout::push_back__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__layout_1a0c3e4df2b4a7e2b0d77d32e6c6f8c7da"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">push_back</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout9push_backERK13vertex_format" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout9push_backERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_layout9push_backERK13vertex_format"></span><span id="mge::vertex_layout::push_back__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__layout_1a0c3e4df2b4a7e2b0d77d32e6c6f8c7da"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">push_back</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout9push_backERK13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Append a format. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -555,7 +637,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_layout7formatsEv">
-<span id="_CPPv3NK3mge13vertex_layout7formatsEv"></span><span id="_CPPv2NK3mge13vertex_layout7formatsEv"></span><span id="mge::vertex_layout::formatsC"></span><span class="target" id="classmge_1_1vertex__layout_1adc7bfd36a8928781d856fce74a5402fb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">formats</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout7formatsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_layout7formatsEv"></span><span id="_CPPv2NK3mge13vertex_layout7formatsEv"></span><span id="mge::vertex_layout::formatsC"></span><span class="target" id="classmge_1_1vertex__layout_1adc7bfd36a8928781d856fce74a5402fb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">formats</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout7formatsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Formats of vertex layout. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -566,7 +648,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_layout9semanticsEv">
-<span id="_CPPv3NK3mge13vertex_layout9semanticsEv"></span><span id="_CPPv2NK3mge13vertex_layout9semanticsEv"></span><span id="mge::vertex_layout::semanticsC"></span><span class="target" id="classmge_1_1vertex__layout_1a09abb64e5279a7e49ca673551f44e7d4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">semantics</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout9semanticsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_layout9semanticsEv"></span><span id="_CPPv2NK3mge13vertex_layout9semanticsEv"></span><span id="mge::vertex_layout::semanticsC"></span><span class="target" id="classmge_1_1vertex__layout_1a09abb64e5279a7e49ca673551f44e7d4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">semantics</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout9semanticsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Semantics of vertex layout. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -578,24 +660,24 @@ is a list of vertex formats, and an added attribute semantic.</p>
 </div>
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout11const_entryE">
-<span id="_CPPv3N3mge13vertex_layout11const_entryE"></span><span id="_CPPv2N3mge13vertex_layout11const_entryE"></span><span id="mge::vertex_layout::const_entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1const__entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout11const_entryE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout11const_entryE"></span><span id="_CPPv2N3mge13vertex_layout11const_entryE"></span><span id="mge::vertex_layout::const_entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1const__entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout11const_entryE" title="Link to this definition"></a><br /></dt>
 <dd><p>Const entry in a vertex layout. </p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout14const_iteratorE">
-<span id="_CPPv3N3mge13vertex_layout14const_iteratorE"></span><span id="_CPPv2N3mge13vertex_layout14const_iteratorE"></span><span id="mge::vertex_layout::const_iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1const__iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout14const_iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout14const_iteratorE"></span><span id="_CPPv2N3mge13vertex_layout14const_iteratorE"></span><span id="mge::vertex_layout::const_iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1const__iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">const_iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout14const_iteratorE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout5entryE">
-<span id="_CPPv3N3mge13vertex_layout5entryE"></span><span id="_CPPv2N3mge13vertex_layout5entryE"></span><span id="mge::vertex_layout::entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout5entryE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout5entryE"></span><span id="_CPPv2N3mge13vertex_layout5entryE"></span><span id="mge::vertex_layout::entry"></span><span class="target" id="structmge_1_1vertex__layout_1_1entry"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">entry</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout5entryE" title="Link to this definition"></a><br /></dt>
 <dd><p>Entry in a vertex layout. </p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout8iteratorE">
-<span id="_CPPv3N3mge13vertex_layout8iteratorE"></span><span id="_CPPv2N3mge13vertex_layout8iteratorE"></span><span id="mge::vertex_layout::iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout8iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_layout8iteratorE"></span><span id="_CPPv2N3mge13vertex_layout8iteratorE"></span><span id="mge::vertex_layout::iterator"></span><span class="target" id="classmge_1_1vertex__layout_1_1iterator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">iterator</span></span></span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout8iteratorE" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -603,13 +685,13 @@ is a list of vertex formats, and an added attribute semantic.</p>
 <p>Vertex layouts are used to defined the structure of a vertex buffer.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_bufferE">
-<span id="_CPPv3N3mge13vertex_bufferE"></span><span id="_CPPv2N3mge13vertex_bufferE"></span><span id="mge::vertex_buffer"></span><span class="target" id="classmge_1_1vertex__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15hardware_bufferE" title="mge::hardware_buffer"><span class="n"><span class="pre">hardware_buffer</span></span></a><a class="headerlink" href="#_CPPv4N3mge13vertex_bufferE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13vertex_bufferE"></span><span id="_CPPv2N3mge13vertex_bufferE"></span><span id="mge::vertex_buffer"></span><span class="target" id="classmge_1_1vertex__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15hardware_bufferE" title="mge::hardware_buffer"><span class="n"><span class="pre">hardware_buffer</span></span></a><a class="headerlink" href="#_CPPv4N3mge13vertex_bufferE" title="Link to this definition"></a><br /></dt>
 <dd><p>A vertex buffer. A vertex buffer contains vertices, in a layout defined by the buffer’s layout. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_buffer6layoutEv">
-<span id="_CPPv3NK3mge13vertex_buffer6layoutEv"></span><span id="_CPPv2NK3mge13vertex_buffer6layoutEv"></span><span id="mge::vertex_buffer::layoutC"></span><span class="target" id="classmge_1_1vertex__buffer_1a9b02e3b24174754b0c9c3a87a930d63e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_buffer6layoutEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_buffer6layoutEv"></span><span id="_CPPv2NK3mge13vertex_buffer6layoutEv"></span><span id="mge::vertex_buffer::layoutC"></span><span class="target" id="classmge_1_1vertex__buffer_1a9b02e3b24174754b0c9c3a87a930d63e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_buffer6layoutEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the layout of this buffer. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -620,7 +702,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_buffer13element_countEv">
-<span id="_CPPv3NK3mge13vertex_buffer13element_countEv"></span><span id="_CPPv2NK3mge13vertex_buffer13element_countEv"></span><span id="mge::vertex_buffer::element_countC"></span><span class="target" id="classmge_1_1vertex__buffer_1a468d4306f045d9bf8d8446af0864572c"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_buffer13element_countEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13vertex_buffer13element_countEv"></span><span id="_CPPv2NK3mge13vertex_buffer13element_countEv"></span><span id="mge::vertex_buffer::element_countC"></span><span class="target" id="classmge_1_1vertex__buffer_1a468d4306f045d9bf8d8446af0864572c"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_buffer13element_countEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the element count of this buffer. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -634,17 +716,17 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 </section>
 <section id="index-buffer">
-<h2>Index Buffer<a class="headerlink" href="#index-buffer" title="Permalink to this heading">¶</a></h2>
+<h2>Index Buffer<a class="headerlink" href="#index-buffer" title="Link to this heading"></a></h2>
 <p>Index buffers are used to provide indices into vertex buffers.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12index_bufferE">
-<span id="_CPPv3N3mge12index_bufferE"></span><span id="_CPPv2N3mge12index_bufferE"></span><span id="mge::index_buffer"></span><span class="target" id="classmge_1_1index__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">index_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15hardware_bufferE" title="mge::hardware_buffer"><span class="n"><span class="pre">hardware_buffer</span></span></a><a class="headerlink" href="#_CPPv4N3mge12index_bufferE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12index_bufferE"></span><span id="_CPPv2N3mge12index_bufferE"></span><span id="mge::index_buffer"></span><span class="target" id="classmge_1_1index__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">index_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15hardware_bufferE" title="mge::hardware_buffer"><span class="n"><span class="pre">hardware_buffer</span></span></a><a class="headerlink" href="#_CPPv4N3mge12index_bufferE" title="Link to this definition"></a><br /></dt>
 <dd><p>An index buffer. An index buffer contains integer offsets into a vertex buffer, so primitives may be rendered more efficiently. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge12index_buffer12element_typeEv">
-<span id="_CPPv3NK3mge12index_buffer12element_typeEv"></span><span id="_CPPv2NK3mge12index_buffer12element_typeEv"></span><span id="mge::index_buffer::element_typeC"></span><span class="target" id="classmge_1_1index__buffer_1a27a9ebe5dfad78a5991a570c9ff6c322"></span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge12index_buffer12element_typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge12index_buffer12element_typeEv"></span><span id="_CPPv2NK3mge12index_buffer12element_typeEv"></span><span id="mge::index_buffer::element_typeC"></span><span class="target" id="classmge_1_1index__buffer_1a27a9ebe5dfad78a5991a570c9ff6c322"></span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge12index_buffer12element_typeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the type of index buffer element. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -655,7 +737,7 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge12index_buffer13element_countEv">
-<span id="_CPPv3NK3mge12index_buffer13element_countEv"></span><span id="_CPPv2NK3mge12index_buffer13element_countEv"></span><span id="mge::index_buffer::element_countC"></span><span class="target" id="classmge_1_1index__buffer_1aefa431461845b8db946b74a7abf97223"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12index_buffer13element_countEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge12index_buffer13element_countEv"></span><span id="_CPPv2NK3mge12index_buffer13element_countEv"></span><span id="mge::index_buffer::element_countC"></span><span class="target" id="classmge_1_1index__buffer_1aefa431461845b8db946b74a7abf97223"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">element_count</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12index_buffer13element_countEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the number of elements in the buffer. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -669,82 +751,39 @@ is a list of vertex formats, and an added attribute semantic.</p>
 
 </section>
 <section id="constant-buffer">
-<h2>Constant Buffer<a class="headerlink" href="#constant-buffer" title="Permalink to this heading">¶</a></h2>
+<h2>Constant Buffer<a class="headerlink" href="#constant-buffer" title="Link to this heading"></a></h2>
 </section>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Buffers</a><ul>
-<li><a class="reference internal" href="#types-and-definitions">Types and Definitions</a></li>
-<li><a class="reference internal" href="#hardware-buffer">Hardware Buffer</a></li>
-<li><a class="reference internal" href="#vertex-buffer">Vertex Buffer</a></li>
-<li><a class="reference internal" href="#index-buffer">Index Buffer</a></li>
-<li><a class="reference internal" href="#constant-buffer">Constant Buffer</a></li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="shaders.html" class="btn btn-neutral float-left" title="Shader Programs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="command_list.html" class="btn btn-neutral float-right" title="Command Lists" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="shaders.html"
-                          title="previous chapter">Shader Programs</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="command_list.html"
-                          title="next chapter">Command Lists</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/graphics/buffers.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="command_list.html" title="Command Lists"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="shaders.html" title="Shader Programs"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Buffers</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

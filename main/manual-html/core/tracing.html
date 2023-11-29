@@ -1,50 +1,133 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracing &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Tracing &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Configuration" href="configuration.html" />
     <link rel="prev" title="Definitions" href="definitions.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="configuration.html" title="Configuration"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="definitions.html" title="Definitions"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Tracing</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Tracing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#severity">Severity</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11trace_levelE"><code class="docutils literal notranslate"><span class="pre">trace_level</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-topic">Trace Topic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#defining-a-trace-topic">Defining a Trace Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-a-trace-topic">Using a Trace Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trace-topic-reference">Trace Topic Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-trace-messages">Writing Trace Messages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge5traceE"><code class="docutils literal notranslate"><span class="pre">trace</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-processing">Trace Processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trace-record">Trace Record</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trace-sink">Trace Sink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trace-formatter">Trace Formatter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Tracing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/tracing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="tracing">
-<h1>Tracing<a class="headerlink" href="#tracing" title="Permalink to this heading">¶</a></h1>
+<h1>Tracing<a class="headerlink" href="#tracing" title="Link to this heading"></a></h1>
 <p>MGE defines a tracing using a system of trace topics having active trace levels
 and trace sinks configured.</p>
 <ul class="simple">
@@ -63,18 +146,18 @@ trace message and details on its origin.</p></li>
 environment variables can be used:</p>
 <dl class="std envvar">
 <dt class="sig sig-object std" id="envvar-MGE_TRACE_TO_STDOUT">
-<span class="sig-name descname"><span class="pre">MGE_TRACE_TO_STDOUT</span></span><a class="headerlink" href="#envvar-MGE_TRACE_TO_STDOUT" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MGE_TRACE_TO_STDOUT</span></span><a class="headerlink" href="#envvar-MGE_TRACE_TO_STDOUT" title="Link to this definition"></a></dt>
 <dd><p>Set to “1” to print all trace to standard output.</p>
 </dd></dl>
 
 <dl class="std envvar">
 <dt class="sig sig-object std" id="envvar-MGE_ENABLE_TRACE">
-<span class="sig-name descname"><span class="pre">MGE_ENABLE_TRACE</span></span><a class="headerlink" href="#envvar-MGE_ENABLE_TRACE" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MGE_ENABLE_TRACE</span></span><a class="headerlink" href="#envvar-MGE_ENABLE_TRACE" title="Link to this definition"></a></dt>
 <dd><p>Set to “1” to enable all trace.</p>
 </dd></dl>
 
 <section id="severity">
-<h2>Severity<a class="headerlink" href="#severity" title="Permalink to this heading">¶</a></h2>
+<h2>Severity<a class="headerlink" href="#severity" title="Link to this heading"></a></h2>
 <p>Trace messages can have a different severities, indicated by a trace level.</p>
 <table class="docutils align-default">
 <thead>
@@ -102,54 +185,54 @@ environment variables can be used:</p>
 </table>
 <dl class="cpp enum-class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_levelE">
-<span id="_CPPv3N3mge11trace_levelE"></span><span id="_CPPv2N3mge11trace_levelE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">trace_level</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge11trace_levelE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_levelE"></span><span id="_CPPv2N3mge11trace_levelE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61e"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">trace_level</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge11trace_levelE" title="Link to this definition"></a><br /></dt>
 <dd><p>Trace level of trace event. </p>
 <p><em>Values:</em></p>
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level4NONEE">
-<span id="_CPPv3N3mge11trace_level4NONEE"></span><span id="_CPPv2N3mge11trace_level4NONEE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61eab50339a10e1de285ac99d4c3990b8693"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NONE</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level4NONEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level4NONEE"></span><span id="_CPPv2N3mge11trace_level4NONEE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61eab50339a10e1de285ac99d4c3990b8693"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NONE</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level4NONEE" title="Link to this definition"></a><br /></dt>
 <dd><p>special level for enabling/disabling </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level5DEBUGE">
-<span id="_CPPv3N3mge11trace_level5DEBUGE"></span><span id="_CPPv2N3mge11trace_level5DEBUGE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61eadc30ec20708ef7b0f641ef78b7880a15"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEBUG</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level5DEBUGE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level5DEBUGE"></span><span id="_CPPv2N3mge11trace_level5DEBUGE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61eadc30ec20708ef7b0f641ef78b7880a15"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DEBUG</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level5DEBUGE" title="Link to this definition"></a><br /></dt>
 <dd><p>debug message </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level4INFOE">
-<span id="_CPPv3N3mge11trace_level4INFOE"></span><span id="_CPPv2N3mge11trace_level4INFOE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea551b723eafd6a31d444fcb2f5920fbd3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INFO</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level4INFOE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level4INFOE"></span><span id="_CPPv2N3mge11trace_level4INFOE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea551b723eafd6a31d444fcb2f5920fbd3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INFO</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level4INFOE" title="Link to this definition"></a><br /></dt>
 <dd><p>information message </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level7WARNINGE">
-<span id="_CPPv3N3mge11trace_level7WARNINGE"></span><span id="_CPPv2N3mge11trace_level7WARNINGE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea059e9861e0400dfbe05c98a841f3f96b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WARNING</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level7WARNINGE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level7WARNINGE"></span><span id="_CPPv2N3mge11trace_level7WARNINGE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea059e9861e0400dfbe05c98a841f3f96b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WARNING</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level7WARNINGE" title="Link to this definition"></a><br /></dt>
 <dd><p>warning message, potential problem </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level5ERRORE">
-<span id="_CPPv3N3mge11trace_level5ERRORE"></span><span id="_CPPv2N3mge11trace_level5ERRORE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61eabb1ca97ec761fc37101737ba0aa2e7c5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ERROR</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level5ERRORE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level5ERRORE"></span><span id="_CPPv2N3mge11trace_level5ERRORE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61eabb1ca97ec761fc37101737ba0aa2e7c5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ERROR</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level5ERRORE" title="Link to this definition"></a><br /></dt>
 <dd><p>severe malfunction message </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level11LEVEL_ERRORE">
-<span id="_CPPv3N3mge11trace_level11LEVEL_ERRORE"></span><span id="_CPPv2N3mge11trace_level11LEVEL_ERRORE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea584c2bd79384769a6d0407d70b8e2a11"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LEVEL_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level11LEVEL_ERRORE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level11LEVEL_ERRORE"></span><span id="_CPPv2N3mge11trace_level11LEVEL_ERRORE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea584c2bd79384769a6d0407d70b8e2a11"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LEVEL_ERROR</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level11LEVEL_ERRORE" title="Link to this definition"></a><br /></dt>
 <dd><p>alias for ERROR which is sometimes defined and can’t be used as identifier </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level5FATALE">
-<span id="_CPPv3N3mge11trace_level5FATALE"></span><span id="_CPPv2N3mge11trace_level5FATALE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea19da7170bea36556dde582519795f3fc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FATAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level5FATALE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level5FATALE"></span><span id="_CPPv2N3mge11trace_level5FATALE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea19da7170bea36556dde582519795f3fc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FATAL</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level5FATALE" title="Link to this definition"></a><br /></dt>
 <dd><p>fatal message, program will exit </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_level3ALLE">
-<span id="_CPPv3N3mge11trace_level3ALLE"></span><span id="_CPPv2N3mge11trace_level3ALLE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea5fb1f955b45e38e31789286a1790398d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ALL</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level3ALLE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_level3ALLE"></span><span id="_CPPv2N3mge11trace_level3ALLE"></span><span class="target" id="namespacemge_1a918bcc53e986d84fc0fd6c022490f61ea5fb1f955b45e38e31789286a1790398d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ALL</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_level3ALLE" title="Link to this definition"></a><br /></dt>
 <dd><p>special level for enabling/disabling </p>
 </dd></dl>
 
@@ -157,17 +240,17 @@ environment variables can be used:</p>
 
 </section>
 <section id="trace-topic">
-<h2>Trace Topic<a class="headerlink" href="#trace-topic" title="Permalink to this heading">¶</a></h2>
+<h2>Trace Topic<a class="headerlink" href="#trace-topic" title="Link to this heading"></a></h2>
 <p>Trace topics partition trace output into different categories. Trace can be
 enabled or disabled per category. There exists a pseudo-category for enabling
 and disabling trace at a global level.</p>
 <section id="defining-a-trace-topic">
-<h3>Defining a Trace Topic<a class="headerlink" href="#defining-a-trace-topic" title="Permalink to this heading">¶</a></h3>
+<h3>Defining a Trace Topic<a class="headerlink" href="#defining-a-trace-topic" title="Link to this heading"></a></h3>
 <p>In a source file, a trace topic must be defined. This is best done using
 the predefined macro <a class="reference internal" href="#c.MGE_DEFINE_TRACE" title="MGE_DEFINE_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_DEFINE_TRACE</span></code></a>.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DEFINE_TRACE">
-<span class="target" id="trace__topic_8hpp_1a1f3a0834fa663ae04adf3286e6aa9ad4"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEFINE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEFINE_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace__topic_8hpp_1a1f3a0834fa663ae04adf3286e6aa9ad4"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEFINE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEFINE_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Define a trace topic. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -180,13 +263,13 @@ the predefined macro <a class="reference internal" href="#c.MGE_DEFINE_TRACE" ti
 
 </section>
 <section id="using-a-trace-topic">
-<h3>Using a Trace Topic<a class="headerlink" href="#using-a-trace-topic" title="Permalink to this heading">¶</a></h3>
+<h3>Using a Trace Topic<a class="headerlink" href="#using-a-trace-topic" title="Link to this heading"></a></h3>
 <p>If you just want to use a trace topic for tracing, a forward declaration
 must be done. This is done using <a class="reference internal" href="#c.MGE_USE_TRACE" title="MGE_USE_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_USE_TRACE</span></code></a>, or <a class="reference internal" href="#c.MGE_USE_IMPORTED_TRACE" title="MGE_USE_IMPORTED_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_USE_IMPORTED_TRACE</span></code></a>
 in case the topic is defined in another dynamic library.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_USE_TRACE">
-<span class="target" id="trace__topic_8hpp_1a256a16752f484fbb622dbf05430e06ac"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_USE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_USE_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace__topic_8hpp_1a256a16752f484fbb622dbf05430e06ac"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_USE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_USE_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Use an already defined trace topic locally. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -199,7 +282,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_USE_IMPORTED_TRACE">
-<span class="target" id="trace__topic_8hpp_1a0d7b5acc2272f8c11f909403375d3936"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_USE_IMPORTED_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_USE_IMPORTED_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace__topic_8hpp_1a0d7b5acc2272f8c11f909403375d3936"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_USE_IMPORTED_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_USE_IMPORTED_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Use an already defined trace from another library locally. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -213,7 +296,7 @@ in case the topic is defined in another dynamic library.</p>
 <p>If you need to inspect a trace topic directly, the following macros can be used:</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_TRACE_TOPIC">
-<span class="target" id="trace__topic_8hpp_1aabbf735f0115801a16f17f8fff2b1475"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_TRACE_TOPIC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_TRACE_TOPIC" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace__topic_8hpp_1aabbf735f0115801a16f17f8fff2b1475"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_TRACE_TOPIC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_TRACE_TOPIC" title="Link to this definition"></a><br /></dt>
 <dd><p>Access a trace topic. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -226,7 +309,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_NS_TRACE_TOPIC">
-<span class="target" id="trace__topic_8hpp_1a897e869c00c9903f5ff6634c4742f9b8"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_NS_TRACE_TOPIC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">NS</span></span>, <span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_NS_TRACE_TOPIC" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace__topic_8hpp_1a897e869c00c9903f5ff6634c4742f9b8"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_NS_TRACE_TOPIC</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">NS</span></span>, <span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_NS_TRACE_TOPIC" title="Link to this definition"></a><br /></dt>
 <dd><p>Access a trace topic defined in another namespace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -240,17 +323,17 @@ in case the topic is defined in another dynamic library.</p>
 
 </section>
 <section id="trace-topic-reference">
-<h3>Trace Topic Reference<a class="headerlink" href="#trace-topic-reference" title="Permalink to this heading">¶</a></h3>
+<h3>Trace Topic Reference<a class="headerlink" href="#trace-topic-reference" title="Link to this heading"></a></h3>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topicE">
-<span id="_CPPv3N3mge11trace_topicE"></span><span id="_CPPv2N3mge11trace_topicE"></span><span id="mge::trace_topic"></span><span class="target" id="classmge_1_1trace__topic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_topic</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_topicE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topicE"></span><span id="_CPPv2N3mge11trace_topicE"></span><span id="mge::trace_topic"></span><span class="target" id="classmge_1_1trace__topic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_topic</span></span></span><a class="headerlink" href="#_CPPv4N3mge11trace_topicE" title="Link to this definition"></a><br /></dt>
 <dd><p>Trace topic. </p>
 <p>Trace can be enabled/disabled per level and topic. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc">
-<span id="_CPPv3I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc"></span><span id="_CPPv2I_NSt6size_tEEN3mge11trace_topic11trace_topicERAN_Kc"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1trace__topic_1ae6d22c43f8b81809d5a94533d1520b91"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_topic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc" title="mge::trace_topic::trace_topic::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc"></span><span id="_CPPv2I_NSt6size_tEEN3mge11trace_topic11trace_topicERAN_Kc"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1trace__topic_1ae6d22c43f8b81809d5a94533d1520b91"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_topic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc" title="mge::trace_topic::trace_topic::N"><span class="n"><span class="pre">N</span></span></a><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
@@ -261,7 +344,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11trace_topic7enabledE11trace_level">
-<span id="_CPPv3NK3mge11trace_topic7enabledE11trace_level"></span><span id="_CPPv2NK3mge11trace_topic7enabledE11trace_level"></span><span id="mge::trace_topic::enabled__trace_levelC"></span><span class="target" id="classmge_1_1trace__topic_1a0f945c9ebafca6c193a769b2a81515c5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge11trace_topic7enabledE11trace_level" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge11trace_topic7enabledE11trace_level"></span><span id="_CPPv2NK3mge11trace_topic7enabledE11trace_level"></span><span id="mge::trace_topic::enabled__trace_levelC"></span><span class="target" id="classmge_1_1trace__topic_1a0f945c9ebafca6c193a769b2a81515c5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enabled</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge11trace_topic7enabledE11trace_level" title="Link to this definition"></a><br /></dt>
 <dd><p>Return whether a trace level is enabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -278,7 +361,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic6enableE11trace_level">
-<span id="_CPPv3N3mge11trace_topic6enableE11trace_level"></span><span id="_CPPv2N3mge11trace_topic6enableE11trace_level"></span><span id="mge::trace_topic::enable__trace_level"></span><span class="target" id="classmge_1_1trace__topic_1ac585f160555318843c741f3f881c0601"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic6enableE11trace_level" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic6enableE11trace_level"></span><span id="_CPPv2N3mge11trace_topic6enableE11trace_level"></span><span id="mge::trace_topic::enable__trace_level"></span><span class="target" id="classmge_1_1trace__topic_1ac585f160555318843c741f3f881c0601"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic6enableE11trace_level" title="Link to this definition"></a><br /></dt>
 <dd><p>Enable trace level. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -289,7 +372,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic7disableE11trace_level">
-<span id="_CPPv3N3mge11trace_topic7disableE11trace_level"></span><span id="_CPPv2N3mge11trace_topic7disableE11trace_level"></span><span id="mge::trace_topic::disable__trace_level"></span><span class="target" id="classmge_1_1trace__topic_1a02f86d90be7f8f5e21111165df4e6d3d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic7disableE11trace_level" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic7disableE11trace_level"></span><span id="_CPPv2N3mge11trace_topic7disableE11trace_level"></span><span id="mge::trace_topic::disable__trace_level"></span><span class="target" id="classmge_1_1trace__topic_1a02f86d90be7f8f5e21111165df4e6d3d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disable</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic7disableE11trace_level" title="Link to this definition"></a><br /></dt>
 <dd><p>Disable trace level. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -300,7 +383,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic9set_levelE11trace_level">
-<span id="_CPPv3N3mge11trace_topic9set_levelE11trace_level"></span><span id="_CPPv2N3mge11trace_topic9set_levelE11trace_level"></span><span id="mge::trace_topic::set_level__trace_level"></span><span class="target" id="classmge_1_1trace__topic_1af0dd3bd7a9fe5aa6da4d12e87b39b6b3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_level</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic9set_levelE11trace_level" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic9set_levelE11trace_level"></span><span id="_CPPv2N3mge11trace_topic9set_levelE11trace_level"></span><span id="mge::trace_topic::set_level__trace_level"></span><span class="target" id="classmge_1_1trace__topic_1af0dd3bd7a9fe5aa6da4d12e87b39b6b3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_level</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic9set_levelE11trace_level" title="Link to this definition"></a><br /></dt>
 <dd><p>Set trace level. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -311,7 +394,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic9set_levelE7uint8_t">
-<span id="_CPPv3N3mge11trace_topic9set_levelE7uint8_t"></span><span id="_CPPv2N3mge11trace_topic9set_levelE7uint8_t"></span><span id="mge::trace_topic::set_level__uint8_t"></span><span class="target" id="classmge_1_1trace__topic_1acaa2020dc52bb296477e8569a1f255f4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_level</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic9set_levelE7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic9set_levelE7uint8_t"></span><span id="_CPPv2N3mge11trace_topic9set_levelE7uint8_t"></span><span id="mge::trace_topic::set_level__uint8_t"></span><span class="target" id="classmge_1_1trace__topic_1acaa2020dc52bb296477e8569a1f255f4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_level</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic9set_levelE7uint8_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Set trace level. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -322,7 +405,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11trace_topic4nameEv">
-<span id="_CPPv3NK3mge11trace_topic4nameEv"></span><span id="_CPPv2NK3mge11trace_topic4nameEv"></span><span id="mge::trace_topic::nameC"></span><span class="target" id="classmge_1_1trace__topic_1a84c73d31ef0eaa505f889cf2952aef01"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge11trace_topic4nameEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge11trace_topic4nameEv"></span><span id="_CPPv2NK3mge11trace_topic4nameEv"></span><span id="mge::trace_topic::nameC"></span><span class="target" id="classmge_1_1trace__topic_1a84c73d31ef0eaa505f889cf2952aef01"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge11trace_topic4nameEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Name of trace topic. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -333,7 +416,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11trace_topic6globalEv">
-<span id="_CPPv3NK3mge11trace_topic6globalEv"></span><span id="_CPPv2NK3mge11trace_topic6globalEv"></span><span id="mge::trace_topic::globalC"></span><span class="target" id="classmge_1_1trace__topic_1a3c57b1c6abc8e790fd99a057aad89c0c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">global</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge11trace_topic6globalEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge11trace_topic6globalEv"></span><span id="_CPPv2NK3mge11trace_topic6globalEv"></span><span id="mge::trace_topic::globalC"></span><span class="target" id="classmge_1_1trace__topic_1a3c57b1c6abc8e790fd99a057aad89c0c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">global</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge11trace_topic6globalEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Return whether topic is the global topic. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -347,7 +430,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic7publishERK12trace_record">
-<span id="_CPPv3N3mge11trace_topic7publishERK12trace_record"></span><span id="_CPPv2N3mge11trace_topic7publishERK12trace_record"></span><span id="mge::trace_topic::publish__trace_recordCR"></span><span class="target" id="classmge_1_1trace__topic_1a4f85351bd68e5def35a9f95a5ec8d974"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic7publishERK12trace_record" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic7publishERK12trace_record"></span><span id="_CPPv2N3mge11trace_topic7publishERK12trace_record"></span><span id="mge::trace_topic::publish__trace_recordCR"></span><span class="target" id="classmge_1_1trace__topic_1a4f85351bd68e5def35a9f95a5ec8d974"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic7publishERK12trace_record" title="Link to this definition"></a><br /></dt>
 <dd><p>Publish a trace record. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -358,7 +441,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE">
-<span id="_CPPv3N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="_CPPv2N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="mge::trace_topic::add_sink__std::shared_ptr:trace_sink:CR"></span><span class="target" id="classmge_1_1trace__topic_1a46174ee7cdc2259420871e8f7e0c8d9a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_sink</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="_CPPv2N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="mge::trace_topic::add_sink__std::shared_ptr:trace_sink:CR"></span><span class="target" id="classmge_1_1trace__topic_1a46174ee7cdc2259420871e8f7e0c8d9a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_sink</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic8add_sinkERKNSt10shared_ptrI10trace_sinkEE" title="Link to this definition"></a><br /></dt>
 <dd><p>Add a trace sink. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -369,7 +452,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE">
-<span id="_CPPv3N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="_CPPv2N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="mge::trace_topic::remove_sink__std::shared_ptr:trace_sink:CR"></span><span class="target" id="classmge_1_1trace__topic_1ae71f26638e378ef5e2d1236e2c080521"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_sink</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="_CPPv2N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE"></span><span id="mge::trace_topic::remove_sink__std::shared_ptr:trace_sink:CR"></span><span class="target" id="classmge_1_1trace__topic_1ae71f26638e378ef5e2d1236e2c080521"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_sink</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">shared_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11trace_topic11remove_sinkERKNSt10shared_ptrI10trace_sinkEE" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove a sink. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -384,17 +467,17 @@ in case the topic is defined in another dynamic library.</p>
 </section>
 </section>
 <section id="writing-trace-messages">
-<h2>Writing Trace Messages<a class="headerlink" href="#writing-trace-messages" title="Permalink to this heading">¶</a></h2>
+<h2>Writing Trace Messages<a class="headerlink" href="#writing-trace-messages" title="Link to this heading"></a></h2>
 <p>A <a class="reference internal" href="#_CPPv4N3mge5traceE" title="mge::trace"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::trace</span></code></a> object covers the trace writing process.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5traceE">
-<span id="_CPPv3N3mge5traceE"></span><span id="_CPPv2N3mge5traceE"></span><span id="mge::trace"></span><span class="target" id="classmge_1_1trace"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace</span></span></span><a class="headerlink" href="#_CPPv4N3mge5traceE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5traceE"></span><span id="_CPPv2N3mge5traceE"></span><span id="mge::trace"></span><span class="target" id="classmge_1_1trace"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace</span></span></span><a class="headerlink" href="#_CPPv4N3mge5traceE" title="Link to this definition"></a><br /></dt>
 <dd><p>Trace object. Objects of this class are temporarily constructed to create trace records. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5trace5traceER11trace_topicK11trace_level">
-<span id="_CPPv3N3mge5trace5traceER11trace_topicK11trace_level"></span><span id="_CPPv2N3mge5trace5traceER11trace_topicK11trace_level"></span><span id="mge::trace::trace__trace_topicR.trace_levelC"></span><span class="target" id="classmge_1_1trace_1ada3e7ffbbd1a3cbda5074e96effa0c71"></span><span class="sig-name descname"><span class="n"><span class="pre">trace</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_topicE" title="mge::trace_topic"><span class="n"><span class="pre">trace_topic</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">topic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">level</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5trace5traceER11trace_topicK11trace_level" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5trace5traceER11trace_topicK11trace_level"></span><span id="_CPPv2N3mge5trace5traceER11trace_topicK11trace_level"></span><span id="mge::trace::trace__trace_topicR.trace_levelC"></span><span class="target" id="classmge_1_1trace_1ada3e7ffbbd1a3cbda5074e96effa0c71"></span><span class="sig-name descname"><span class="n"><span class="pre">trace</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_topicE" title="mge::trace_topic"><span class="n"><span class="pre">trace_topic</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">topic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">level</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5trace5traceER11trace_topicK11trace_level" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct a new trace object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -408,13 +491,13 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5traceD0Ev">
-<span id="_CPPv3N3mge5traceD0Ev"></span><span id="_CPPv2N3mge5traceD0Ev"></span><span id="mge::trace::~trace"></span><span class="target" id="classmge_1_1trace_1a26900db36d8bf1fce4d06c4400faa331"></span><span class="sig-name descname"><span class="n"><span class="pre">~trace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5traceD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5traceD0Ev"></span><span id="_CPPv2N3mge5traceD0Ev"></span><span id="mge::trace::~trace"></span><span class="target" id="classmge_1_1trace_1a26900db36d8bf1fce4d06c4400faa331"></span><span class="sig-name descname"><span class="n"><span class="pre">~trace</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5traceD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Destructs trace object and before flushes the record, if trace is enabled. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge5tracelsER5traceRK1T">
-<span id="_CPPv3I0EN3mge5tracelsERK1T"></span><span id="_CPPv2I0EN3mge5tracelsERK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1trace_1acc37743833fb1c585151000a13dbdc3c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge5traceE" title="mge::trace"><span class="n"><span class="pre">trace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge5tracelsER5traceRK1T" title="mge::trace::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge5tracelsER5traceRK1T" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0EN3mge5tracelsERK1T"></span><span id="_CPPv2I0EN3mge5tracelsERK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1trace_1acc37743833fb1c585151000a13dbdc3c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge5traceE" title="mge::trace"><span class="n"><span class="pre">trace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge5tracelsER5traceRK1T" title="mge::trace::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge5tracelsER5traceRK1T" title="Link to this definition"></a><br /></dt>
 <dd><p>Write into trace. No-op if trace level is disabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
@@ -424,21 +507,21 @@ in case the topic is defined in another dynamic library.</p>
 <dd class="field-even"><p><strong>value</strong> – value to write </p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5tracelsERKNSt7wstringE">
-<span id="_CPPv3N3mge5tracelsERKNSt7wstringE"></span><span id="_CPPv2N3mge5tracelsERKNSt7wstringE"></span><span id="mge::trace::lshift-operator__std::wstringCR"></span><span class="target" id="classmge_1_1trace_1a7bb4290e94456ddc9c32862c0f030af0"></span><a class="reference internal" href="#_CPPv4N3mge5traceE" title="mge::trace"><span class="n"><span class="pre">trace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">wstring</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5tracelsERKNSt7wstringE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge5tracelsERKNSt7wstringE"></span><span id="_CPPv2N3mge5tracelsERKNSt7wstringE"></span><span id="mge::trace::lshift-operator__std::wstringCR"></span><span class="target" id="classmge_1_1trace_1a7bb4290e94456ddc9c32862c0f030af0"></span><a class="reference internal" href="#_CPPv4N3mge5traceE" title="mge::trace"><span class="n"><span class="pre">trace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">wstring</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5tracelsERKNSt7wstringE" title="Link to this definition"></a><br /></dt>
 <dd><p>Traces wide character string. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>value</strong> – string to trace </p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code> </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -449,7 +532,7 @@ in case the topic is defined in another dynamic library.</p>
 <p>For composing trace, various macros can be used:</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_TRACE">
-<span class="target" id="trace_8hpp_1a999adb332c5fb3b3a786593cc701fcd7"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="n"><span class="pre">LEVEL</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1a999adb332c5fb3b3a786593cc701fcd7"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="n"><span class="pre">LEVEL</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -463,7 +546,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DEBUG_TRACE">
-<span class="target" id="trace_8hpp_1a355856746263c08e286d7c56703c05cf"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1a355856746263c08e286d7c56703c05cf"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke debug trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -476,7 +559,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_INFO_TRACE">
-<span class="target" id="trace_8hpp_1ab7e5fb8665388615484d1f381263f487"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1ab7e5fb8665388615484d1f381263f487"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke info trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -489,7 +572,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_WARNING_TRACE">
-<span class="target" id="trace_8hpp_1ae2a9c2d85eea564952380232041b9ad0"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1ae2a9c2d85eea564952380232041b9ad0"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke warning trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -502,7 +585,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_ERROR_TRACE">
-<span class="target" id="trace_8hpp_1ad85504fecd4628d87038e68a52e363ab"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1ad85504fecd4628d87038e68a52e363ab"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke error trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -515,7 +598,7 @@ in case the topic is defined in another dynamic library.</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_FATAL_TRACE">
-<span class="target" id="trace_8hpp_1af7b6fe736d1bc5fe547c0da108f055da"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1af7b6fe736d1bc5fe547c0da108f055da"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke fatal trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -536,7 +619,7 @@ a particular trace is disabled. A number of check macros is available for this
 purpose:</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DEBUG_TRACE_ENABLED">
-<span class="target" id="trace_8hpp_1a209ab2d4916a85a68f1355f954d2069b"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE_ENABLED" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1a209ab2d4916a85a68f1355f954d2069b"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE_ENABLED" title="Link to this definition"></a><br /></dt>
 <dd><p>Check whether DEBUG trace is enabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -549,7 +632,7 @@ purpose:</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_INFO_TRACE_ENABLED">
-<span class="target" id="trace_8hpp_1a8a559799d33009ce3b9fb558a08a1941"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE_ENABLED" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1a8a559799d33009ce3b9fb558a08a1941"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE_ENABLED" title="Link to this definition"></a><br /></dt>
 <dd><p>Check whether INFO trace is enabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -562,7 +645,7 @@ purpose:</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_WARNING_TRACE_ENABLED">
-<span class="target" id="trace_8hpp_1ae59b48f7e291393cf4eecb4b663b184b"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE_ENABLED" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1ae59b48f7e291393cf4eecb4b663b184b"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE_ENABLED" title="Link to this definition"></a><br /></dt>
 <dd><p>Check whether WARNING trace is enabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -575,7 +658,7 @@ purpose:</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_ERROR_TRACE_ENABLED">
-<span class="target" id="trace_8hpp_1af9e324d8fb353565086b52c05f65fe87"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE_ENABLED" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1af9e324d8fb353565086b52c05f65fe87"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE_ENABLED" title="Link to this definition"></a><br /></dt>
 <dd><p>Check whether ERROR trace is enabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -588,7 +671,7 @@ purpose:</p>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_FATAL_TRACE_ENABLED">
-<span class="target" id="trace_8hpp_1a1f75a66448becf3592724e8c84aa03ea"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE_ENABLED" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1a1f75a66448becf3592724e8c84aa03ea"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE_ENABLED</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE_ENABLED" title="Link to this definition"></a><br /></dt>
 <dd><p>Check whether FATAL trace is enabled. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -607,7 +690,7 @@ grep for. Note that the released code of MGE does not contain any ‘XDEBUG’
 trace.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_XDEBUG">
-<span class="target" id="trace_8hpp_1a564831de8199dee796260f1ddc789315"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_XDEBUG</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_XDEBUG" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="trace_8hpp_1a564831de8199dee796260f1ddc789315"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_XDEBUG</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_XDEBUG" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke debug trace. </p>
 <p>Used for temporary tracing when hunting bugs or alike. Submitted changes should never have a MGE_XDEBUG trace statement.</p>
 <dl class="field-list simple">
@@ -621,51 +704,51 @@ trace.</p>
 
 </section>
 <section id="trace-processing">
-<h2>Trace Processing<a class="headerlink" href="#trace-processing" title="Permalink to this heading">¶</a></h2>
+<h2>Trace Processing<a class="headerlink" href="#trace-processing" title="Link to this heading"></a></h2>
 <section id="trace-record">
-<h3>Trace Record<a class="headerlink" href="#trace-record" title="Permalink to this heading">¶</a></h3>
+<h3>Trace Record<a class="headerlink" href="#trace-record" title="Link to this heading"></a></h3>
 <p>A trace record describes a trace event. Note that a trace record contains
 temporary information and must not be stored - except if the fields are
 materialized.</p>
 <dl class="cpp struct">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_recordE">
-<span id="_CPPv3N3mge12trace_recordE"></span><span id="_CPPv2N3mge12trace_recordE"></span><span id="mge::trace_record"></span><span class="target" id="structmge_1_1trace__record"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_record</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_recordE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_recordE"></span><span id="_CPPv2N3mge12trace_recordE"></span><span id="mge::trace_record"></span><span class="target" id="structmge_1_1trace__record"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_record</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_recordE" title="Link to this definition"></a><br /></dt>
 <dd><p>A trace record. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record5topicE">
-<span id="_CPPv3N3mge12trace_record5topicE"></span><span id="_CPPv2N3mge12trace_record5topicE"></span><span id="mge::trace_record::topic__trace_topicCP"></span><span class="target" id="structmge_1_1trace__record_1a027edbb0c6576a38ca6115a6da768f8d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11trace_topicE" title="mge::trace_topic"><span class="n"><span class="pre">trace_topic</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">topic</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record5topicE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_record5topicE"></span><span id="_CPPv2N3mge12trace_record5topicE"></span><span id="mge::trace_record::topic__trace_topicCP"></span><span class="target" id="structmge_1_1trace__record_1a027edbb0c6576a38ca6115a6da768f8d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11trace_topicE" title="mge::trace_topic"><span class="n"><span class="pre">trace_topic</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">topic</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record5topicE" title="Link to this definition"></a><br /></dt>
 <dd><p>trace topic </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record7messageE">
-<span id="_CPPv3N3mge12trace_record7messageE"></span><span id="_CPPv2N3mge12trace_record7messageE"></span><span id="mge::trace_record::message__std::string_view"></span><span class="target" id="structmge_1_1trace__record_1aeb5851837c6b520471c82eab648b289b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record7messageE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_record7messageE"></span><span id="_CPPv2N3mge12trace_record7messageE"></span><span id="mge::trace_record::message__std::string_view"></span><span class="target" id="structmge_1_1trace__record_1aeb5851837c6b520471c82eab648b289b"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">message</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record7messageE" title="Link to this definition"></a><br /></dt>
 <dd><p>trace message </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record4timeE">
-<span id="_CPPv3N3mge12trace_record4timeE"></span><span id="_CPPv2N3mge12trace_record4timeE"></span><span id="mge::trace_record::time__clock::time_point"></span><span class="target" id="structmge_1_1trace__record_1a8236fffa02fcebc03e5469a0f8ca7678"></span><span class="n"><span class="pre">clock</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">time_point</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record4timeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_record4timeE"></span><span id="_CPPv2N3mge12trace_record4timeE"></span><span id="mge::trace_record::time__clock::time_point"></span><span class="target" id="structmge_1_1trace__record_1a8236fffa02fcebc03e5469a0f8ca7678"></span><span class="n"><span class="pre">clock</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">time_point</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">time</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record4timeE" title="Link to this definition"></a><br /></dt>
 <dd><p>time of the trace event </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record6threadE">
-<span id="_CPPv3N3mge12trace_record6threadE"></span><span id="_CPPv2N3mge12trace_record6threadE"></span><span id="mge::trace_record::thread__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1a8a48798d81f0bd7788ccb704ccd03bf5"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record6threadE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_record6threadE"></span><span id="_CPPv2N3mge12trace_record6threadE"></span><span id="mge::trace_record::thread__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1a8a48798d81f0bd7788ccb704ccd03bf5"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record6threadE" title="Link to this definition"></a><br /></dt>
 <dd><p>thread id </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record8sequenceE">
-<span id="_CPPv3N3mge12trace_record8sequenceE"></span><span id="_CPPv2N3mge12trace_record8sequenceE"></span><span id="mge::trace_record::sequence__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1aa056161699b89ed5b76a2c44c21664b9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sequence</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record8sequenceE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_record8sequenceE"></span><span id="_CPPv2N3mge12trace_record8sequenceE"></span><span id="mge::trace_record::sequence__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1aa056161699b89ed5b76a2c44c21664b9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sequence</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record8sequenceE" title="Link to this definition"></a><br /></dt>
 <dd><p>sequence number of trace event </p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record5levelE">
-<span id="_CPPv3N3mge12trace_record5levelE"></span><span id="_CPPv2N3mge12trace_record5levelE"></span><span id="mge::trace_record::level__trace_level"></span><span class="target" id="structmge_1_1trace__record_1a21cee71d360808387d74a436c5247f1c"></span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">level</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record5levelE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12trace_record5levelE"></span><span id="_CPPv2N3mge12trace_record5levelE"></span><span id="mge::trace_record::level__trace_level"></span><span class="target" id="structmge_1_1trace__record_1a21cee71d360808387d74a436c5247f1c"></span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">level</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record5levelE" title="Link to this definition"></a><br /></dt>
 <dd><p>trace event trace level </p>
 </dd></dl>
 
@@ -674,18 +757,18 @@ materialized.</p>
 
 </section>
 <section id="trace-sink">
-<h3>Trace Sink<a class="headerlink" href="#trace-sink" title="Permalink to this heading">¶</a></h3>
+<h3>Trace Sink<a class="headerlink" href="#trace-sink" title="Link to this heading"></a></h3>
 <p>A trace sink defines the destination of trace records.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10trace_sinkE">
-<span id="_CPPv3N3mge10trace_sinkE"></span><span id="_CPPv2N3mge10trace_sinkE"></span><span id="mge::trace_sink"></span><span class="target" id="classmge_1_1trace__sink"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_sink</span></span></span><a class="headerlink" href="#_CPPv4N3mge10trace_sinkE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10trace_sinkE"></span><span id="_CPPv2N3mge10trace_sinkE"></span><span id="mge::trace_sink"></span><span class="target" id="classmge_1_1trace__sink"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_sink</span></span></span><a class="headerlink" href="#_CPPv4N3mge10trace_sinkE" title="Link to this definition"></a><br /></dt>
 <dd><p>A trace sink. A trace sink is the destination of trace records, to be displayed or written into a file. </p>
 <p>Subclassed by <a class="reference internal" href="#classmge_1_1memory__trace__sink"><span class="std std-ref">mge::memory_trace_sink</span></a>, <a class="reference internal" href="#classmge_1_1stream__trace__sink"><span class="std std-ref">mge::stream_trace_sink</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10trace_sink7publishERK12trace_record">
-<span id="_CPPv3N3mge10trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge10trace_sink7publishERK12trace_record"></span><span id="mge::trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1trace__sink_1aa597ffd057214bb7d85838b691ff7ebf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge10trace_sink7publishERK12trace_record" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge10trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge10trace_sink7publishERK12trace_record"></span><span id="mge::trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1trace__sink_1aa597ffd057214bb7d85838b691ff7ebf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge10trace_sink7publishERK12trace_record" title="Link to this definition"></a><br /></dt>
 <dd><p>Process a trace record. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -701,19 +784,19 @@ materialized.</p>
 writes trace records to a stream.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sinkE">
-<span id="_CPPv3N3mge17memory_trace_sinkE"></span><span id="_CPPv2N3mge17memory_trace_sinkE"></span><span id="mge::memory_trace_sink"></span><span class="target" id="classmge_1_1memory__trace__sink"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">memory_trace_sink</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sinkE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sinkE"></span><span id="_CPPv2N3mge17memory_trace_sinkE"></span><span id="mge::memory_trace_sink"></span><span class="target" id="classmge_1_1memory__trace__sink"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">memory_trace_sink</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sinkE" title="Link to this definition"></a><br /></dt>
 <dd><p>Memory trace sink. A memory trace sink stores trace records in a circular buffer. It is used to capture trace records which may get finally published using another sink. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink13capacity_typeE">
-<span id="_CPPv3N3mge17memory_trace_sink13capacity_typeE"></span><span id="_CPPv2N3mge17memory_trace_sink13capacity_typeE"></span><span class="target" id="classmge_1_1memory__trace__sink_1a43464e1cc1a581cd959a49c5ce364272"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capacity_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">record_buffer</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">capacity_type</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sink13capacity_typeE"></span><span id="_CPPv2N3mge17memory_trace_sink13capacity_typeE"></span><span class="target" id="classmge_1_1memory__trace__sink_1a43464e1cc1a581cd959a49c5ce364272"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capacity_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">record_buffer</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">capacity_type</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Type of this sink’s capacity. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink9size_typeE">
-<span id="_CPPv3N3mge17memory_trace_sink9size_typeE"></span><span id="_CPPv2N3mge17memory_trace_sink9size_typeE"></span><span class="target" id="classmge_1_1memory__trace__sink_1adefda92e6645b0d71a16563a7cce695a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">record_buffer</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_type</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink9size_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sink9size_typeE"></span><span id="_CPPv2N3mge17memory_trace_sink9size_typeE"></span><span class="target" id="classmge_1_1memory__trace__sink_1adefda92e6645b0d71a16563a7cce695a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">record_buffer</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_type</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink9size_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Type of this sink’s size. </p>
 </dd></dl>
 
@@ -722,7 +805,7 @@ writes trace records to a stream.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink7publishERK12trace_record">
-<span id="_CPPv3N3mge17memory_trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge17memory_trace_sink7publishERK12trace_record"></span><span id="mge::memory_trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1memory__trace__sink_1a61eedc128184a4c1e93b89e3b8ddf801"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink7publishERK12trace_record" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge17memory_trace_sink7publishERK12trace_record"></span><span id="mge::memory_trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1memory__trace__sink_1a61eedc128184a4c1e93b89e3b8ddf801"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink7publishERK12trace_record" title="Link to this definition"></a><br /></dt>
 <dd><p>Process a trace record. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -733,7 +816,7 @@ writes trace records to a stream.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge17memory_trace_sink8capacityEv">
-<span id="_CPPv3NK3mge17memory_trace_sink8capacityEv"></span><span id="_CPPv2NK3mge17memory_trace_sink8capacityEv"></span><span id="mge::memory_trace_sink::capacityC"></span><span class="target" id="classmge_1_1memory__trace__sink_1aed8431a8ca7c8c98ffc143a327317d1b"></span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="mge::memory_trace_sink::capacity_type"><span class="n"><span class="pre">capacity_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capacity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge17memory_trace_sink8capacityEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge17memory_trace_sink8capacityEv"></span><span id="_CPPv2NK3mge17memory_trace_sink8capacityEv"></span><span id="mge::memory_trace_sink::capacityC"></span><span class="target" id="classmge_1_1memory__trace__sink_1aed8431a8ca7c8c98ffc143a327317d1b"></span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="mge::memory_trace_sink::capacity_type"><span class="n"><span class="pre">capacity_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capacity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge17memory_trace_sink8capacityEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Capacity of this sink. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -744,7 +827,7 @@ writes trace records to a stream.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink12set_capacityE13capacity_type">
-<span id="_CPPv3N3mge17memory_trace_sink12set_capacityE13capacity_type"></span><span id="_CPPv2N3mge17memory_trace_sink12set_capacityE13capacity_type"></span><span id="mge::memory_trace_sink::set_capacity__capacity_type"></span><span class="target" id="classmge_1_1memory__trace__sink_1ad800e7a82179135438d07d9ab38e490d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_capacity</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="mge::memory_trace_sink::capacity_type"><span class="n"><span class="pre">capacity_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink12set_capacityE13capacity_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sink12set_capacityE13capacity_type"></span><span id="_CPPv2N3mge17memory_trace_sink12set_capacityE13capacity_type"></span><span id="mge::memory_trace_sink::set_capacity__capacity_type"></span><span class="target" id="classmge_1_1memory__trace__sink_1ad800e7a82179135438d07d9ab38e490d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_capacity</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="mge::memory_trace_sink::capacity_type"><span class="n"><span class="pre">capacity_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink12set_capacityE13capacity_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Set the capacity of this sink. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -755,7 +838,7 @@ writes trace records to a stream.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge17memory_trace_sink4sizeEv">
-<span id="_CPPv3NK3mge17memory_trace_sink4sizeEv"></span><span id="_CPPv2NK3mge17memory_trace_sink4sizeEv"></span><span id="mge::memory_trace_sink::sizeC"></span><span class="target" id="classmge_1_1memory__trace__sink_1a6a7ce45fe52c6005ae05f4fbb7a13aa9"></span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink9size_typeE" title="mge::memory_trace_sink::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge17memory_trace_sink4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge17memory_trace_sink4sizeEv"></span><span id="_CPPv2NK3mge17memory_trace_sink4sizeEv"></span><span id="mge::memory_trace_sink::sizeC"></span><span class="target" id="classmge_1_1memory__trace__sink_1a6a7ce45fe52c6005ae05f4fbb7a13aa9"></span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink9size_typeE" title="mge::memory_trace_sink::size_type"><span class="n"><span class="pre">size_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge17memory_trace_sink4sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Size of this sink, i.e. number of stored records. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -766,13 +849,13 @@ writes trace records to a stream.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink5clearEv">
-<span id="_CPPv3N3mge17memory_trace_sink5clearEv"></span><span id="_CPPv2N3mge17memory_trace_sink5clearEv"></span><span id="mge::memory_trace_sink::clear"></span><span class="target" id="classmge_1_1memory__trace__sink_1a25b4e25e6db8fd951d8e27051c6c9d31"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink5clearEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sink5clearEv"></span><span id="_CPPv2N3mge17memory_trace_sink5clearEv"></span><span id="mge::memory_trace_sink::clear"></span><span class="target" id="classmge_1_1memory__trace__sink_1a25b4e25e6db8fd951d8e27051c6c9d31"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink5clearEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Clears the sink. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink7forwardER10trace_sink">
-<span id="_CPPv3N3mge17memory_trace_sink7forwardER10trace_sink"></span><span id="_CPPv2N3mge17memory_trace_sink7forwardER10trace_sink"></span><span id="mge::memory_trace_sink::forward__trace_sinkR"></span><span class="target" id="classmge_1_1memory__trace__sink_1acde531c26827d8aecf849ee54725c356"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">forward</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink7forwardER10trace_sink" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17memory_trace_sink7forwardER10trace_sink"></span><span id="_CPPv2N3mge17memory_trace_sink7forwardER10trace_sink"></span><span id="mge::memory_trace_sink::forward__trace_sinkR"></span><span class="target" id="classmge_1_1memory__trace__sink_1acde531c26827d8aecf849ee54725c356"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">forward</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sink</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink7forwardER10trace_sink" title="Link to this definition"></a><br /></dt>
 <dd><p>Forwards all entries to another sink. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -786,13 +869,13 @@ writes trace records to a stream.</p>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17stream_trace_sinkE">
-<span id="_CPPv3N3mge17stream_trace_sinkE"></span><span id="_CPPv2N3mge17stream_trace_sinkE"></span><span id="mge::stream_trace_sink"></span><span class="target" id="classmge_1_1stream__trace__sink"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stream_trace_sink</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><a class="headerlink" href="#_CPPv4N3mge17stream_trace_sinkE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17stream_trace_sinkE"></span><span id="_CPPv2N3mge17stream_trace_sinkE"></span><span id="mge::stream_trace_sink"></span><span class="target" id="classmge_1_1stream__trace__sink"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stream_trace_sink</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge10trace_sinkE" title="mge::trace_sink"><span class="n"><span class="pre">trace_sink</span></span></a><a class="headerlink" href="#_CPPv4N3mge17stream_trace_sinkE" title="Link to this definition"></a><br /></dt>
 <dd><p>Stream trace sink that writes trace records to a stream. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref">
-<span id="_CPPv3N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref"></span><span id="_CPPv2N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref"></span><span id="mge::stream_trace_sink::stream_trace_sink__osR.trace_formatter_refCR"></span><span class="target" id="classmge_1_1stream__trace__sink_1a3ece9fe24c2782f116b2bbcd1b8971d7"></span><span class="sig-name descname"><span class="n"><span class="pre">stream_trace_sink</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">trace_formatter_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">formatter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref"></span><span id="_CPPv2N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref"></span><span id="mge::stream_trace_sink::stream_trace_sink__osR.trace_formatter_refCR"></span><span class="target" id="classmge_1_1stream__trace__sink_1a3ece9fe24c2782f116b2bbcd1b8971d7"></span><span class="sig-name descname"><span class="n"><span class="pre">stream_trace_sink</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">trace_formatter_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">formatter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17stream_trace_sink17stream_trace_sinkERNSt7ostreamERK19trace_formatter_ref" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct a new stream trace sink object. The target stream must have a life time longer than this sink. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -806,7 +889,7 @@ writes trace records to a stream.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17stream_trace_sink7publishERK12trace_record">
-<span id="_CPPv3N3mge17stream_trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge17stream_trace_sink7publishERK12trace_record"></span><span id="mge::stream_trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1stream__trace__sink_1a43692ec089df087f500fba0c04daec79"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge17stream_trace_sink7publishERK12trace_record" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge17stream_trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge17stream_trace_sink7publishERK12trace_record"></span><span id="mge::stream_trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1stream__trace__sink_1a43692ec089df087f500fba0c04daec79"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge17stream_trace_sink7publishERK12trace_record" title="Link to this definition"></a><br /></dt>
 <dd><p>Process a trace record. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -820,19 +903,19 @@ writes trace records to a stream.</p>
 
 </section>
 <section id="trace-formatter">
-<h3>Trace Formatter<a class="headerlink" href="#trace-formatter" title="Permalink to this heading">¶</a></h3>
+<h3>Trace Formatter<a class="headerlink" href="#trace-formatter" title="Link to this heading"></a></h3>
 <p>To write trace to a stream, it is formatted. This is achieved by implementations
 of the <a class="reference internal" href="#_CPPv4N3mge15trace_formatterE" title="mge::trace_formatter"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::trace_formatter</span></code></a> interface.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15trace_formatterE">
-<span id="_CPPv3N3mge15trace_formatterE"></span><span id="_CPPv2N3mge15trace_formatterE"></span><span id="mge::trace_formatter"></span><span class="target" id="classmge_1_1trace__formatter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_formatter</span></span></span><a class="headerlink" href="#_CPPv4N3mge15trace_formatterE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge15trace_formatterE"></span><span id="_CPPv2N3mge15trace_formatterE"></span><span id="mge::trace_formatter"></span><span class="target" id="classmge_1_1trace__formatter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trace_formatter</span></span></span><a class="headerlink" href="#_CPPv4N3mge15trace_formatterE" title="Link to this definition"></a><br /></dt>
 <dd><p>Formats a trace record to an output stream. </p>
 <p>Subclassed by <a class="reference internal" href="#classmge_1_1simple__trace__formatter"><span class="std std-ref">mge::simple_trace_formatter</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record">
-<span id="_CPPv3N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="_CPPv2N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="mge::trace_formatter::format__osR.trace_recordCR"></span><span class="target" id="classmge_1_1trace__formatter_1acbe7e3e88697d77432c05c546a3451d4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="_CPPv2N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="mge::trace_formatter::format__osR.trace_recordCR"></span><span class="target" id="classmge_1_1trace__formatter_1acbe7e3e88697d77432c05c546a3451d4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge15trace_formatter6formatERNSt7ostreamERK12trace_record" title="Link to this definition"></a><br /></dt>
 <dd><p>Formats the trace record. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -850,13 +933,13 @@ of the <a class="reference internal" href="#_CPPv4N3mge15trace_formatterE" title
 <p>A simple trace formatter is provided.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge22simple_trace_formatterE">
-<span id="_CPPv3N3mge22simple_trace_formatterE"></span><span id="_CPPv2N3mge22simple_trace_formatterE"></span><span id="mge::simple_trace_formatter"></span><span class="target" id="classmge_1_1simple__trace__formatter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">simple_trace_formatter</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15trace_formatterE" title="mge::trace_formatter"><span class="n"><span class="pre">trace_formatter</span></span></a><a class="headerlink" href="#_CPPv4N3mge22simple_trace_formatterE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge22simple_trace_formatterE"></span><span id="_CPPv2N3mge22simple_trace_formatterE"></span><span id="mge::simple_trace_formatter"></span><span class="target" id="classmge_1_1simple__trace__formatter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">simple_trace_formatter</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15trace_formatterE" title="mge::trace_formatter"><span class="n"><span class="pre">trace_formatter</span></span></a><a class="headerlink" href="#_CPPv4N3mge22simple_trace_formatterE" title="Link to this definition"></a><br /></dt>
 <dd><p>Simple fixed format trace formatter. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record">
-<span id="_CPPv3N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="_CPPv2N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="mge::simple_trace_formatter::format__osR.trace_recordCR"></span><span class="target" id="classmge_1_1simple__trace__formatter_1a3a637ec2a853c6b47892a2977c0c1778"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="_CPPv2N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record"></span><span id="mge::simple_trace_formatter::format__osR.trace_recordCR"></span><span class="target" id="classmge_1_1simple__trace__formatter_1a3a637ec2a853c6b47892a2977c0c1778"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">format</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stream</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge22simple_trace_formatter6formatERNSt7ostreamERK12trace_record" title="Link to this definition"></a><br /></dt>
 <dd><p>Formats the trace record. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -876,86 +959,34 @@ of the <a class="reference internal" href="#_CPPv4N3mge15trace_formatterE" title
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Tracing</a><ul>
-<li><a class="reference internal" href="#severity">Severity</a></li>
-<li><a class="reference internal" href="#trace-topic">Trace Topic</a><ul>
-<li><a class="reference internal" href="#defining-a-trace-topic">Defining a Trace Topic</a></li>
-<li><a class="reference internal" href="#using-a-trace-topic">Using a Trace Topic</a></li>
-<li><a class="reference internal" href="#trace-topic-reference">Trace Topic Reference</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#writing-trace-messages">Writing Trace Messages</a></li>
-<li><a class="reference internal" href="#trace-processing">Trace Processing</a><ul>
-<li><a class="reference internal" href="#trace-record">Trace Record</a></li>
-<li><a class="reference internal" href="#trace-sink">Trace Sink</a></li>
-<li><a class="reference internal" href="#trace-formatter">Trace Formatter</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="definitions.html" class="btn btn-neutral float-left" title="Definitions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="definitions.html"
-                          title="previous chapter">Definitions</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="configuration.html"
-                          title="next chapter">Configuration</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/core/tracing.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="configuration.html" title="Configuration"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="definitions.html" title="Definitions"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Tracing</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

@@ -1,52 +1,127 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Definitions &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Definitions &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Tracing" href="tracing.html" />
     <link rel="prev" title="Core Library" href="../mgecore.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="tracing.html" title="Tracing"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../mgecore.html" title="Core Library"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Definitions</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Definitions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#system-identification">System Identification</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compiler">Compiler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operating-system">Operating System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#platform-namespace">Platform Namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#common-attributes">Common Attributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#symbol-visiblity">Symbol Visiblity</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Definitions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/definitions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="definitions">
-<h1>Definitions<a class="headerlink" href="#definitions" title="Permalink to this heading">¶</a></h1>
+<h1>Definitions<a class="headerlink" href="#definitions" title="Link to this heading"></a></h1>
 <section id="system-identification">
-<h2>System Identification<a class="headerlink" href="#system-identification" title="Permalink to this heading">¶</a></h2>
+<h2>System Identification<a class="headerlink" href="#system-identification" title="Link to this heading"></a></h2>
 <p>While MGE strives for portability, it acknowledges it is sometimes
 necessary to identify the nature of the environment. So, some
 identification macros are provided, in <code class="file docutils literal notranslate"><span class="pre">mge/config.hpp</span></code>.</p>
@@ -57,63 +132,63 @@ some other definitions are provided, however no implementation exist for
 other    operating systems, compilers, and CPU architectures</p>
 </div>
 <section id="compiler">
-<h3>Compiler<a class="headerlink" href="#compiler" title="Permalink to this heading">¶</a></h3>
+<h3>Compiler<a class="headerlink" href="#compiler" title="Link to this heading"></a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_COMPILER_MSVC">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_MSVC</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_MSVC" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_MSVC</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_MSVC" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the compiler is Microsoft Visual C++.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_COMPILER_GNUC">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_GNUC</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_GNUC" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_GNUC</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_GNUC" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the compiler is GNU C++.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_COMPILER_MINGW">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_MINGW</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_MINGW" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_MINGW</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_MINGW" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the compiler is MinGW (in this case also
 <cite>MGE_COMPILER_GNUC</cite> is defined).`</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_COMPILER_CLANG">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_CLANG</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_CLANG" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_COMPILER_CLANG</span></span></span><a class="headerlink" href="#c.MGE_COMPILER_CLANG" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the compiler is <code class="docutils literal notranslate"><span class="pre">clang</span></code>.</p>
 </dd></dl>
 
 </section>
 <section id="operating-system">
-<h3>Operating System<a class="headerlink" href="#operating-system" title="Permalink to this heading">¶</a></h3>
+<h3>Operating System<a class="headerlink" href="#operating-system" title="Link to this heading"></a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_OS_LINUX">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_LINUX</span></span></span><a class="headerlink" href="#c.MGE_OS_LINUX" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_LINUX</span></span></span><a class="headerlink" href="#c.MGE_OS_LINUX" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the operating system is Linux.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_OS_WINDOWS">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_WINDOWS</span></span></span><a class="headerlink" href="#c.MGE_OS_WINDOWS" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_WINDOWS</span></span></span><a class="headerlink" href="#c.MGE_OS_WINDOWS" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the operating system is Microsoft Windows.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_OS_MACOSX">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_MACOSX</span></span></span><a class="headerlink" href="#c.MGE_OS_MACOSX" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_MACOSX</span></span></span><a class="headerlink" href="#c.MGE_OS_MACOSX" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the operating system is Mac OS X.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_OS_UNIX">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_UNIX</span></span></span><a class="headerlink" href="#c.MGE_OS_UNIX" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_OS_UNIX</span></span></span><a class="headerlink" href="#c.MGE_OS_UNIX" title="Link to this definition"></a><br /></dt>
 <dd><p>Defined if the operating system is a Unix-style system, like
 Linux and Mac OS X.</p>
 </dd></dl>
 
 </section>
 <section id="platform-namespace">
-<h3>Platform Namespace<a class="headerlink" href="#platform-namespace" title="Permalink to this heading">¶</a></h3>
+<h3>Platform Namespace<a class="headerlink" href="#platform-namespace" title="Link to this heading"></a></h3>
 <p>By convention, platform specific code resides under a specific namespace,
 as follows:</p>
 <table class="docutils align-default">
@@ -137,14 +212,14 @@ as follows:</p>
 </section>
 </section>
 <section id="attributes">
-<h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading">¶</a></h2>
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
 <p>Attributes are additional tags on declarations that influence how the compiler
 interprets them (and what conditions need to be warned on).</p>
 <section id="common-attributes">
-<h3>Common Attributes<a class="headerlink" href="#common-attributes" title="Permalink to this heading">¶</a></h3>
+<h3>Common Attributes<a class="headerlink" href="#common-attributes" title="Link to this heading"></a></h3>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_NO_RETURN">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_NO_RETURN</span></span></span><a class="headerlink" href="#c.MGE_NO_RETURN" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_NO_RETURN</span></span></span><a class="headerlink" href="#c.MGE_NO_RETURN" title="Link to this definition"></a><br /></dt>
 <dd><p>Attribute that describes a function does not return
 (<a class="reference external" href="https://en.cppreference.com/w/cpp/language/attributes/noreturn">[[noreturn]]</a>
 in C++11).</p>
@@ -152,33 +227,33 @@ in C++11).</p>
 
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_NO_INLINE">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_NO_INLINE</span></span></span><a class="headerlink" href="#c.MGE_NO_INLINE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_NO_INLINE</span></span></span><a class="headerlink" href="#c.MGE_NO_INLINE" title="Link to this definition"></a><br /></dt>
 <dd><p>Attribute forcing a function not to be inlined.</p>
 </dd></dl>
 
 </section>
 <section id="symbol-visiblity">
-<h3>Symbol Visiblity<a class="headerlink" href="#symbol-visiblity" title="Permalink to this heading">¶</a></h3>
+<h3>Symbol Visiblity<a class="headerlink" href="#symbol-visiblity" title="Link to this heading"></a></h3>
 <p>The file <code class="file docutils literal notranslate"><span class="pre">mge/dllexport.hpp</span></code> defines some macros used for symbol visiblity.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DLLEXPORT">
-<span class="target" id="dllexport_8hpp_1a62ee7763c38abe892c4a53bed7c01537"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DLLEXPORT</span></span></span><a class="headerlink" href="#c.MGE_DLLEXPORT" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="dllexport_8hpp_1a62ee7763c38abe892c4a53bed7c01537"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DLLEXPORT</span></span></span><a class="headerlink" href="#c.MGE_DLLEXPORT" title="Link to this definition"></a><br /></dt>
 <dd><p>Macro to declare class or function to be exported from DLL. </p>
 </dd></dl>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DLLIMPORT">
-<span class="target" id="dllexport_8hpp_1a15a25ae5ed32a82ecef114a1159dd000"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DLLIMPORT</span></span></span><a class="headerlink" href="#c.MGE_DLLIMPORT" title="Permalink to this definition">¶</a><br /></dt>
+<span class="target" id="dllexport_8hpp_1a15a25ae5ed32a82ecef114a1159dd000"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DLLIMPORT</span></span></span><a class="headerlink" href="#c.MGE_DLLIMPORT" title="Link to this definition"></a><br /></dt>
 <dd><p>Macro to declare class or function to be imported from DLL. </p>
 </dd></dl>
 
 </section>
 </section>
 <section id="utilities">
-<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading">¶</a></h2>
+<h2>Utilities<a class="headerlink" href="#utilities" title="Link to this heading"></a></h2>
 <dl class="c macro">
 <dt class="sig sig-object c" id="c.MGE_FUNCTION_SIGNATURE">
-<span class="sig-name descname"><span class="n"><span class="pre">MGE_FUNCTION_SIGNATURE</span></span></span><a class="headerlink" href="#c.MGE_FUNCTION_SIGNATURE" title="Permalink to this definition">¶</a><br /></dt>
+<span class="sig-name descname"><span class="n"><span class="pre">MGE_FUNCTION_SIGNATURE</span></span></span><a class="headerlink" href="#c.MGE_FUNCTION_SIGNATURE" title="Link to this definition"></a><br /></dt>
 <dd><p>Expands to the function signature as text.</p>
 </dd></dl>
 
@@ -186,84 +261,34 @@ in C++11).</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Definitions</a><ul>
-<li><a class="reference internal" href="#system-identification">System Identification</a><ul>
-<li><a class="reference internal" href="#compiler">Compiler</a></li>
-<li><a class="reference internal" href="#operating-system">Operating System</a></li>
-<li><a class="reference internal" href="#platform-namespace">Platform Namespace</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#attributes">Attributes</a><ul>
-<li><a class="reference internal" href="#common-attributes">Common Attributes</a></li>
-<li><a class="reference internal" href="#symbol-visiblity">Symbol Visiblity</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#utilities">Utilities</a></li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../mgecore.html" class="btn btn-neutral float-left" title="Core Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tracing.html" class="btn btn-neutral float-right" title="Tracing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="../mgecore.html"
-                          title="previous chapter">Core Library</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="tracing.html"
-                          title="next chapter">Tracing</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/core/definitions.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="tracing.html" title="Tracing"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../mgecore.html" title="Core Library"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Definitions</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

@@ -1,81 +1,152 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streams &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Streams &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Utilities" href="utilities.html" />
     <link rel="prev" title="System Abstractions" href="system.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="utilities.html" title="Utilities"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="system.html" title="System Abstractions"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgecore.html" accesskey="U">Core Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Streams</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Streams</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-stream">Input Stream</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12input_streamE"><code class="docutils literal notranslate"><span class="pre">input_stream</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#output-stream">Output Stream</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13output_streamE"><code class="docutils literal notranslate"><span class="pre">output_stream</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">Versions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Streams</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/streams.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="streams">
-<h1>Streams<a class="headerlink" href="#streams" title="Permalink to this heading">¶</a></h1>
+<h1>Streams<a class="headerlink" href="#streams" title="Link to this heading"></a></h1>
 <p>MGE defines an input and outüut stream base, which allows an easy implementation
 of custom data sources or targets. These streams also each provide a method to
 retrieve a <code class="xref any docutils literal notranslate"><span class="pre">std::istream</span></code> or <code class="xref any docutils literal notranslate"><span class="pre">std::ostream</span></code>.</p>
 <section id="input-stream">
-<h2>Input Stream<a class="headerlink" href="#input-stream" title="Permalink to this heading">¶</a></h2>
+<h2>Input Stream<a class="headerlink" href="#input-stream" title="Link to this heading"></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_streamE">
-<span id="_CPPv3N3mge12input_streamE"></span><span id="_CPPv2N3mge12input_streamE"></span><span id="mge::input_stream"></span><span class="target" id="classmge_1_1input__stream"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_stream</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_streamE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_streamE"></span><span id="_CPPv2N3mge12input_streamE"></span><span id="mge::input_stream"></span><span class="target" id="classmge_1_1input__stream"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_stream</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_streamE" title="Link to this definition"></a><br /></dt>
 <dd><p>An input stream to read bytes. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp enum">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream14direction_typeE">
-<span id="_CPPv3N3mge12input_stream14direction_typeE"></span><span id="_CPPv2N3mge12input_stream14direction_typeE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618fe"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">direction_type</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream14direction_typeE"></span><span id="_CPPv2N3mge12input_stream14direction_typeE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618fe"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">direction_type</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Seek direction type. </p>
 <p><em>Values:</em></p>
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream14direction_type7POS_BEGE">
-<span id="_CPPv3N3mge12input_stream14direction_type7POS_BEGE"></span><span id="_CPPv2N3mge12input_stream14direction_type7POS_BEGE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618feacdf93641809ca97a1c9548e6afa77b58"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POS_BEG</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_type7POS_BEGE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream14direction_type7POS_BEGE"></span><span id="_CPPv2N3mge12input_stream14direction_type7POS_BEGE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618feacdf93641809ca97a1c9548e6afa77b58"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POS_BEG</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_type7POS_BEGE" title="Link to this definition"></a><br /></dt>
 <dd><p>seek from beginning </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream14direction_type7POS_CURE">
-<span id="_CPPv3N3mge12input_stream14direction_type7POS_CURE"></span><span id="_CPPv2N3mge12input_stream14direction_type7POS_CURE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618fea46fc6aed5e3131dd0617de115bf072b7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POS_CUR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_type7POS_CURE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream14direction_type7POS_CURE"></span><span id="_CPPv2N3mge12input_stream14direction_type7POS_CURE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618fea46fc6aed5e3131dd0617de115bf072b7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POS_CUR</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_type7POS_CURE" title="Link to this definition"></a><br /></dt>
 <dd><p>seek from current position </p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream14direction_type7POS_ENDE">
-<span id="_CPPv3N3mge12input_stream14direction_type7POS_ENDE"></span><span id="_CPPv2N3mge12input_stream14direction_type7POS_ENDE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618fea45dcff3217dc909e7dafbc2a145d8658"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POS_END</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_type7POS_ENDE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream14direction_type7POS_ENDE"></span><span id="_CPPv2N3mge12input_stream14direction_type7POS_ENDE"></span><span class="target" id="classmge_1_1input__stream_1ad464a87685adbabaa8863fbd19c618fea45dcff3217dc909e7dafbc2a145d8658"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POS_END</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream14direction_type7POS_ENDE" title="Link to this definition"></a><br /></dt>
 <dd><p>seek from end </p>
 </dd></dl>
 
@@ -83,13 +154,13 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream11offset_typeE">
-<span id="_CPPv3N3mge12input_stream11offset_typeE"></span><span id="_CPPv2N3mge12input_stream11offset_typeE"></span><span class="target" id="classmge_1_1input__stream_1a8b8c8bca9bbfc3d60b4543d393959307"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamoff</span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream11offset_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream11offset_typeE"></span><span id="_CPPv2N3mge12input_stream11offset_typeE"></span><span class="target" id="classmge_1_1input__stream_1a8b8c8bca9bbfc3d60b4543d393959307"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamoff</span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream11offset_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Type of positions and offsets. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream15streamsize_typeE">
-<span id="_CPPv3N3mge12input_stream15streamsize_typeE"></span><span id="_CPPv2N3mge12input_stream15streamsize_typeE"></span><span class="target" id="classmge_1_1input__stream_1a8bdcc36c6aa0e25879de5fe5525ea707"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">streamsize_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamsize</span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream15streamsize_typeE"></span><span id="_CPPv2N3mge12input_stream15streamsize_typeE"></span><span class="target" id="classmge_1_1input__stream_1a8bdcc36c6aa0e25879de5fe5525ea707"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">streamsize_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamsize</span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Type of number of bytes read. </p>
 </dd></dl>
 
@@ -98,19 +169,19 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream12input_streamEv">
-<span id="_CPPv3N3mge12input_stream12input_streamEv"></span><span id="_CPPv2N3mge12input_stream12input_streamEv"></span><span id="mge::input_stream::input_stream"></span><span class="target" id="classmge_1_1input__stream_1a1c954454c94715458f9cc25753eee878"></span><span class="sig-name descname"><span class="n"><span class="pre">input_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream12input_streamEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream12input_streamEv"></span><span id="_CPPv2N3mge12input_stream12input_streamEv"></span><span id="mge::input_stream::input_stream"></span><span class="target" id="classmge_1_1input__stream_1a1c954454c94715458f9cc25753eee878"></span><span class="sig-name descname"><span class="n"><span class="pre">input_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge12input_stream12input_streamEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_streamD0Ev">
-<span id="_CPPv3N3mge12input_streamD0Ev"></span><span id="_CPPv2N3mge12input_streamD0Ev"></span><span id="mge::input_stream::~input_stream"></span><span class="target" id="classmge_1_1input__stream_1a2a386a48fd32a1a71477c0d1cf3ef09d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~input_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge12input_streamD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_streamD0Ev"></span><span id="_CPPv2N3mge12input_streamD0Ev"></span><span id="mge::input_stream::~input_stream"></span><span class="target" id="classmge_1_1input__stream_1a2a386a48fd32a1a71477c0d1cf3ef09d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~input_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge12input_streamD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream4readEv">
-<span id="_CPPv3N3mge12input_stream4readEv"></span><span id="_CPPv2N3mge12input_stream4readEv"></span><span id="mge::input_stream::read"></span><span class="target" id="classmge_1_1input__stream_1aeed702f7123d73de0ea7dce2cd327df9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="mge::input_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4readEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream4readEv"></span><span id="_CPPv2N3mge12input_stream4readEv"></span><span id="mge::input_stream::read"></span><span class="target" id="classmge_1_1input__stream_1aeed702f7123d73de0ea7dce2cd327df9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="mge::input_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4readEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Read one byte from the input stream. The default implementation uses the <code class="docutils literal notranslate"><span class="pre">read(void*,int)</span></code> method to obtain the data. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Throws<span class="colon">:</span></dt>
@@ -124,7 +195,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream4readEPv15streamsize_type">
-<span id="_CPPv3N3mge12input_stream4readEPv15streamsize_type"></span><span id="_CPPv2N3mge12input_stream4readEPv15streamsize_type"></span><span id="mge::input_stream::read__voidP.streamsize_type"></span><span class="target" id="classmge_1_1input__stream_1aafeddd10934b2aaf9c11fa420528de7a"></span><a class="reference internal" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="mge::input_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">destination</span></span>, <a class="reference internal" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="mge::input_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4readEPv15streamsize_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream4readEPv15streamsize_type"></span><span id="_CPPv2N3mge12input_stream4readEPv15streamsize_type"></span><span id="mge::input_stream::read__voidP.streamsize_type"></span><span class="target" id="classmge_1_1input__stream_1aafeddd10934b2aaf9c11fa420528de7a"></span><a class="reference internal" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="mge::input_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">destination</span></span>, <a class="reference internal" href="#_CPPv4N3mge12input_stream15streamsize_typeE" title="mge::input_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4readEPv15streamsize_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Read more bytes from the input stream. The default implementation is always at EOF. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -141,7 +212,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream8positionEv">
-<span id="_CPPv3N3mge12input_stream8positionEv"></span><span id="_CPPv2N3mge12input_stream8positionEv"></span><span id="mge::input_stream::position"></span><span class="target" id="classmge_1_1input__stream_1a2010c336dbe433b56bc54f52ccb030c2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream8positionEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream8positionEv"></span><span id="_CPPv2N3mge12input_stream8positionEv"></span><span id="mge::input_stream::position"></span><span class="target" id="classmge_1_1input__stream_1a2010c336dbe433b56bc54f52ccb030c2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream8positionEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get current position. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -152,7 +223,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream4seekE11offset_type14direction_type">
-<span id="_CPPv3N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="_CPPv2N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="mge::input_stream::seek__offset_type.direction_type"></span><span class="target" id="classmge_1_1input__stream_1a3cb20ca0cb7fd202709fe833a84c7425"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seek</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span>, <a class="reference internal" href="#_CPPv4N3mge12input_stream14direction_typeE" title="mge::input_stream::direction_type"><span class="n"><span class="pre">direction_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4seekE11offset_type14direction_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="_CPPv2N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="mge::input_stream::seek__offset_type.direction_type"></span><span class="target" id="classmge_1_1input__stream_1a3cb20ca0cb7fd202709fe833a84c7425"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seek</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span>, <a class="reference internal" href="#_CPPv4N3mge12input_stream14direction_typeE" title="mge::input_stream::direction_type"><span class="n"><span class="pre">direction_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4seekE11offset_type14direction_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Seek relative to a specific position. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -169,7 +240,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream7istreamEv">
-<span id="_CPPv3N3mge12input_stream7istreamEv"></span><span id="_CPPv2N3mge12input_stream7istreamEv"></span><span id="mge::input_stream::istream"></span><span class="target" id="classmge_1_1input__stream_1a65b61956abeb49f9466d280700d0f822"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">istream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">istream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream7istreamEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream7istreamEv"></span><span id="_CPPv2N3mge12input_stream7istreamEv"></span><span id="mge::input_stream::istream"></span><span class="target" id="classmge_1_1input__stream_1a65b61956abeb49f9466d280700d0f822"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">istream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">istream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream7istreamEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access the stream as an <code class="docutils literal notranslate"><span class="pre">std::istream</span></code> </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -180,7 +251,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream3eofEv">
-<span id="_CPPv3N3mge12input_stream3eofEv"></span><span id="_CPPv2N3mge12input_stream3eofEv"></span><span id="mge::input_stream::eof"></span><span class="target" id="classmge_1_1input__stream_1af5a2c043bb3a882b7906da041768a368"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eof</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream3eofEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream3eofEv"></span><span id="_CPPv2N3mge12input_stream3eofEv"></span><span id="mge::input_stream::eof"></span><span class="target" id="classmge_1_1input__stream_1af5a2c043bb3a882b7906da041768a368"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eof</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream3eofEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Return whether stream is at end-of-file. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -191,7 +262,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream17add_read_listenerERK13read_listener">
-<span id="_CPPv3N3mge12input_stream17add_read_listenerERK13read_listener"></span><span id="_CPPv2N3mge12input_stream17add_read_listenerERK13read_listener"></span><span id="mge::input_stream::add_read_listener__read_listenerCR"></span><span class="target" id="classmge_1_1input__stream_1afadfb2a66832c313ba4e3dcf1e05bd05"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_read_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">read_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream17add_read_listenerERK13read_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream17add_read_listenerERK13read_listener"></span><span id="_CPPv2N3mge12input_stream17add_read_listenerERK13read_listener"></span><span id="mge::input_stream::add_read_listener__read_listenerCR"></span><span class="target" id="classmge_1_1input__stream_1afadfb2a66832c313ba4e3dcf1e05bd05"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_read_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">read_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream17add_read_listenerERK13read_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Add a read listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -205,7 +276,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream20remove_read_listenerEj">
-<span id="_CPPv3N3mge12input_stream20remove_read_listenerEj"></span><span id="_CPPv2N3mge12input_stream20remove_read_listenerEj"></span><span id="mge::input_stream::remove_read_listener__unsigned-i"></span><span class="target" id="classmge_1_1input__stream_1a5b7f37f9dab6175a77cafb09ee730f55"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_read_listener</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream20remove_read_listenerEj" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge12input_stream20remove_read_listenerEj"></span><span id="_CPPv2N3mge12input_stream20remove_read_listenerEj"></span><span id="mge::input_stream::remove_read_listener__unsigned-i"></span><span class="target" id="classmge_1_1input__stream_1a5b7f37f9dab6175a77cafb09ee730f55"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_read_listener</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream20remove_read_listenerEj" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove read listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -219,22 +290,22 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 </section>
 <section id="output-stream">
-<h2>Output Stream<a class="headerlink" href="#output-stream" title="Permalink to this heading">¶</a></h2>
+<h2>Output Stream<a class="headerlink" href="#output-stream" title="Link to this heading"></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_streamE">
-<span id="_CPPv3N3mge13output_streamE"></span><span id="_CPPv2N3mge13output_streamE"></span><span id="mge::output_stream"></span><span class="target" id="classmge_1_1output__stream"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">output_stream</span></span></span><a class="headerlink" href="#_CPPv4N3mge13output_streamE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_streamE"></span><span id="_CPPv2N3mge13output_streamE"></span><span id="mge::output_stream"></span><span class="target" id="classmge_1_1output__stream"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">output_stream</span></span></span><a class="headerlink" href="#_CPPv4N3mge13output_streamE" title="Link to this definition"></a><br /></dt>
 <dd><p>An output stream to write bytes. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream15streamsize_typeE">
-<span id="_CPPv3N3mge13output_stream15streamsize_typeE"></span><span id="_CPPv2N3mge13output_stream15streamsize_typeE"></span><span class="target" id="classmge_1_1output__stream_1a60025d47bd140c97a6ccd829610eae4a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">streamsize_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamsize</span></span><a class="headerlink" href="#_CPPv4N3mge13output_stream15streamsize_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream15streamsize_typeE"></span><span id="_CPPv2N3mge13output_stream15streamsize_typeE"></span><span class="target" id="classmge_1_1output__stream_1a60025d47bd140c97a6ccd829610eae4a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">streamsize_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamsize</span></span><a class="headerlink" href="#_CPPv4N3mge13output_stream15streamsize_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Type of number of bytes read. </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream11offset_typeE">
-<span id="_CPPv3N3mge13output_stream11offset_typeE"></span><span id="_CPPv2N3mge13output_stream11offset_typeE"></span><span class="target" id="classmge_1_1output__stream_1a6f52a340ac30a9c275268233a4fd08e9"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamoff</span></span><a class="headerlink" href="#_CPPv4N3mge13output_stream11offset_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream11offset_typeE"></span><span id="_CPPv2N3mge13output_stream11offset_typeE"></span><span class="target" id="classmge_1_1output__stream_1a6f52a340ac30a9c275268233a4fd08e9"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">streamoff</span></span><a class="headerlink" href="#_CPPv4N3mge13output_stream11offset_typeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Type of positions and offsets. </p>
 </dd></dl>
 
@@ -243,19 +314,19 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream13output_streamEv">
-<span id="_CPPv3N3mge13output_stream13output_streamEv"></span><span id="_CPPv2N3mge13output_stream13output_streamEv"></span><span id="mge::output_stream::output_stream"></span><span class="target" id="classmge_1_1output__stream_1a36b44471bb73527b94e8811f53996cce"></span><span class="sig-name descname"><span class="n"><span class="pre">output_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13output_stream13output_streamEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream13output_streamEv"></span><span id="_CPPv2N3mge13output_stream13output_streamEv"></span><span id="mge::output_stream::output_stream"></span><span class="target" id="classmge_1_1output__stream_1a36b44471bb73527b94e8811f53996cce"></span><span class="sig-name descname"><span class="n"><span class="pre">output_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13output_stream13output_streamEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Constructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_streamD0Ev">
-<span id="_CPPv3N3mge13output_streamD0Ev"></span><span id="_CPPv2N3mge13output_streamD0Ev"></span><span id="mge::output_stream::~output_stream"></span><span class="target" id="classmge_1_1output__stream_1a648e30e1866ce5c309f78d0210ff055b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~output_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13output_streamD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_streamD0Ev"></span><span id="_CPPv2N3mge13output_streamD0Ev"></span><span id="mge::output_stream::~output_stream"></span><span class="target" id="classmge_1_1output__stream_1a648e30e1866ce5c309f78d0210ff055b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~output_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13output_streamD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Destructor. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream5writeE7uint8_t">
-<span id="_CPPv3N3mge13output_stream5writeE7uint8_t"></span><span id="_CPPv2N3mge13output_stream5writeE7uint8_t"></span><span id="mge::output_stream::write__uint8_t"></span><span class="target" id="classmge_1_1output__stream_1a860640a1e92dbddedde151559e2dc151"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">byte</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream5writeE7uint8_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream5writeE7uint8_t"></span><span id="_CPPv2N3mge13output_stream5writeE7uint8_t"></span><span id="mge::output_stream::write__uint8_t"></span><span class="target" id="classmge_1_1output__stream_1a860640a1e92dbddedde151559e2dc151"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">byte</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream5writeE7uint8_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Write one byte to the stream. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Throws<span class="colon">:</span></dt>
@@ -266,7 +337,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream5writeEPKv15streamsize_type">
-<span id="_CPPv3N3mge13output_stream5writeEPKv15streamsize_type"></span><span id="_CPPv2N3mge13output_stream5writeEPKv15streamsize_type"></span><span id="mge::output_stream::write__voidCP.streamsize_type"></span><span class="target" id="classmge_1_1output__stream_1a6f65281b0129a7e14836dfbfe1acd0fb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buffer</span></span>, <a class="reference internal" href="#_CPPv4N3mge13output_stream15streamsize_typeE" title="mge::output_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream5writeEPKv15streamsize_type" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream5writeEPKv15streamsize_type"></span><span id="_CPPv2N3mge13output_stream5writeEPKv15streamsize_type"></span><span id="mge::output_stream::write__voidCP.streamsize_type"></span><span class="target" id="classmge_1_1output__stream_1a6f65281b0129a7e14836dfbfe1acd0fb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buffer</span></span>, <a class="reference internal" href="#_CPPv4N3mge13output_stream15streamsize_typeE" title="mge::output_stream::streamsize_type"><span class="n"><span class="pre">streamsize_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream5writeEPKv15streamsize_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Write number of bytes to the stream implementation is always at EOF. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -280,7 +351,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream7ostreamEv">
-<span id="_CPPv3N3mge13output_stream7ostreamEv"></span><span id="_CPPv2N3mge13output_stream7ostreamEv"></span><span id="mge::output_stream::ostream"></span><span class="target" id="classmge_1_1output__stream_1a29c2e9e2965c8318dace1b0191ca02e1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ostream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream7ostreamEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream7ostreamEv"></span><span id="_CPPv2N3mge13output_stream7ostreamEv"></span><span id="mge::output_stream::ostream"></span><span class="target" id="classmge_1_1output__stream_1a29c2e9e2965c8318dace1b0191ca02e1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ostream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream7ostreamEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access the stream as an <code class="docutils literal notranslate"><span class="pre">std::ostream</span></code> </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -291,7 +362,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream18add_write_listenerERK14write_listener">
-<span id="_CPPv3N3mge13output_stream18add_write_listenerERK14write_listener"></span><span id="_CPPv2N3mge13output_stream18add_write_listenerERK14write_listener"></span><span id="mge::output_stream::add_write_listener__write_listenerCR"></span><span class="target" id="classmge_1_1output__stream_1ab6099eb69d90000796866df448f2f328"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_write_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">write_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream18add_write_listenerERK14write_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream18add_write_listenerERK14write_listener"></span><span id="_CPPv2N3mge13output_stream18add_write_listenerERK14write_listener"></span><span id="mge::output_stream::add_write_listener__write_listenerCR"></span><span class="target" id="classmge_1_1output__stream_1ab6099eb69d90000796866df448f2f328"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_write_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">write_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream18add_write_listenerERK14write_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Add a write listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -305,7 +376,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream21remove_write_listenerE8uint32_t">
-<span id="_CPPv3N3mge13output_stream21remove_write_listenerE8uint32_t"></span><span id="_CPPv2N3mge13output_stream21remove_write_listenerE8uint32_t"></span><span id="mge::output_stream::remove_write_listener__uint32_t"></span><span class="target" id="classmge_1_1output__stream_1ad1183f99acecf5546b1d56e00aa5237a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_write_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream21remove_write_listenerE8uint32_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream21remove_write_listenerE8uint32_t"></span><span id="_CPPv2N3mge13output_stream21remove_write_listenerE8uint32_t"></span><span id="mge::output_stream::remove_write_listener__uint32_t"></span><span class="target" id="classmge_1_1output__stream_1ad1183f99acecf5546b1d56e00aa5237a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_write_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">key</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream21remove_write_listenerE8uint32_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove write listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -316,7 +387,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13output_stream5flushEv">
-<span id="_CPPv3N3mge13output_stream5flushEv"></span><span id="_CPPv2N3mge13output_stream5flushEv"></span><span id="mge::output_stream::flush"></span><span class="target" id="classmge_1_1output__stream_1a9e82e22efbaab3412fb38ad548a24065"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flush</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream5flushEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13output_stream5flushEv"></span><span id="_CPPv2N3mge13output_stream5flushEv"></span><span id="mge::output_stream::flush"></span><span class="target" id="classmge_1_1output__stream_1a9e82e22efbaab3412fb38ad548a24065"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flush</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13output_stream5flushEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Enforces stream flush (i.e. force the streams data to be really written). </p>
 </dd></dl>
 
@@ -327,74 +398,34 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h3><a href="../index.html">Table of Contents</a></h3>
-    <ul>
-<li><a class="reference internal" href="#">Streams</a><ul>
-<li><a class="reference internal" href="#input-stream">Input Stream</a></li>
-<li><a class="reference internal" href="#output-stream">Output Stream</a></li>
-</ul>
-</li>
-</ul>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="system.html" class="btn btn-neutral float-left" title="System Abstractions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
   </div>
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="system.html"
-                          title="previous chapter">System Abstractions</a></p>
-  </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="utilities.html"
-                          title="next chapter">Utilities</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/core/streams.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="utilities.html" title="Utilities"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="system.html" title="System Abstractions"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgecore.html" >Core Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Streams</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

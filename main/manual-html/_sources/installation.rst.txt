@@ -18,7 +18,7 @@ Prerequisites
 MGE depends ony a number of tools and packages, which need to be installed
 before building:
 
-Microsoft Visual C++ 2019
+Microsoft Visual C++ 2022
     MGE currently is built using this compile tool chain.
     The *Community Edition* that can be obtained at
     `https://visualstudio.microsoft.com <https://visualstudio.microsoft.com/>`_
@@ -45,6 +45,7 @@ Microsoft Visual C++ 2019
 `Ninja <https://ninja-build.org/>`_
     While cmake can be used to generate Visual Studio project files, or also
     a build environment suitable for *nmake*, ninja is the preferred build tool.
+
 .. note::
    It's useful to use a package manager like `Scoop <https://scoop.sh/>`_ or
    `Chocolatey <https://chocolatey.org/>`_ for installing the required tools,
@@ -75,17 +76,7 @@ Configuring Third-Party Libraries
 Third-party libraries are managed by the `vcpkg` tool. The MGE project maintains
 an own fork of `vcpkg`, to tag specific versions of vcpkg for usage with MGE.
 
-This tagging is achieved by a helper script, which ensures that
-- vcpkg is retrieved from the MGE mirror, and
-- the matching version of vcpkg is used
-
-To setup the libraries, just change into the source code directory and execute
-
-.. code-block::
-
-    C:\mge>python3 tools\ci\vcpkg.py
-
-which will checkout `vcpkg` and bootstrap it.
+Building the third-party packages is done when configuring the build.
 
 Configuring Documentation Tools
 ===============================
@@ -148,7 +139,7 @@ Within the `build` directory, use `cmake` to configure the build:
 
 .. code-block::
 
-    C:\mge\>cmake --preset=default
+    C:\mge>cmake --preset=default
 
 This configures the build for the `RelWithDebInfo` configuration. It will
 install also all dependencies using `vcpkg`. This may take a while.
@@ -161,7 +152,7 @@ calling `cmake`:
 
 .. code-block::
 
-    C:\mge\>cmake --build build --target all
+    C:\mge>cmake --build build --target all
 
 Again, this may take a while.
 
@@ -187,7 +178,7 @@ The documentation build can also be started by calling `cmake`:
 
 .. code-block::
 
-    C:\mge\>cmake --build build --target documentation
+    C:\mge>cmake --build build --target documentation
 
 The generated documentation is in the folder `docsrc/manual/manual-html` of
 the build directory.

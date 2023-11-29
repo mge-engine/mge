@@ -1,55 +1,134 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Application &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Asset Library" href="../mgeasset.html" />
     <link rel="prev" title="Interaction Loop" href="loop.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../mgeasset.html" title="Asset Library"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="loop.html" title="Interaction Loop"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgeapplication.html" accesskey="U">Application Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Application</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgeapplication.html">Application Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="loop.html">Interaction Loop</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge11applicationE"><code class="docutils literal notranslate"><span class="pre">application</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11application4argcEv"><code class="docutils literal notranslate"><span class="pre">application::argc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11application4argvEi"><code class="docutils literal notranslate"><span class="pre">application::argv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11application7is_quitEv"><code class="docutils literal notranslate"><span class="pre">application::is_quit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application8set_quitEv"><code class="docutils literal notranslate"><span class="pre">application::set_quit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application5setupEv"><code class="docutils literal notranslate"><span class="pre">application::setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application11async_setupEv"><code class="docutils literal notranslate"><span class="pre">application::async_setup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application8teardownEv"><code class="docutils literal notranslate"><span class="pre">application::teardown()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application3runEv"><code class="docutils literal notranslate"><span class="pre">application::run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application5inputE8uint64_t"><code class="docutils literal notranslate"><span class="pre">application::input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application6updateE8uint64_tdd"><code class="docutils literal notranslate"><span class="pre">application::update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application7presentE8uint64_td"><code class="docutils literal notranslate"><span class="pre">application::present()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application18add_input_listenerERK14input_listener"><code class="docutils literal notranslate"><span class="pre">application::add_input_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application21remove_input_listenerE18input_listener_key"><code class="docutils literal notranslate"><span class="pre">application::remove_input_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application19add_update_listenerERK15update_listener"><code class="docutils literal notranslate"><span class="pre">application::add_update_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application22remove_update_listenerE19update_listener_key"><code class="docutils literal notranslate"><span class="pre">application::remove_update_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener"><code class="docutils literal notranslate"><span class="pre">application::add_redraw_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key"><code class="docutils literal notranslate"><span class="pre">application::remove_redraw_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application17add_quit_listenerERK13quit_listener"><code class="docutils literal notranslate"><span class="pre">application::add_quit_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key"><code class="docutils literal notranslate"><span class="pre">application::remove_quit_listener()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc"><code class="docutils literal notranslate"><span class="pre">application::main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application4mainEiPPKc"><code class="docutils literal notranslate"><span class="pre">application::main()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application8instanceEv"><code class="docutils literal notranslate"><span class="pre">application::instance()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgeapplication.html">Application Library</a></li>
+      <li class="breadcrumb-item active">Application</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/application/application.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="application">
-<h1>Application<a class="headerlink" href="#application" title="Permalink to this heading">¶</a></h1>
+<h1>Application<a class="headerlink" href="#application" title="Link to this heading"></a></h1>
 <p>The application class provides facilities to create a
 typical MGE application.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11applicationE">
-<span id="_CPPv3N3mge11applicationE"></span><span id="_CPPv2N3mge11applicationE"></span><span id="mge::application"></span><span class="target" id="classmge_1_1application"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="n"><span class="pre">application</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="loop.html#_CPPv4N3mge11loop_targetE" title="mge::loop_target"><span class="n"><span class="pre">loop_target</span></span></a><a class="headerlink" href="#_CPPv4N3mge11applicationE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11applicationE"></span><span id="_CPPv2N3mge11applicationE"></span><span id="mge::application"></span><span class="target" id="classmge_1_1application"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="n"><span class="pre">application</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="loop.html#_CPPv4N3mge11loop_targetE" title="mge::loop_target"><span class="n"><span class="pre">loop_target</span></span></a><a class="headerlink" href="#_CPPv4N3mge11applicationE" title="Link to this definition"></a><br /></dt>
 <dd><p>Application framework. </p>
 <p>An application allows to attach input, update, and redraw listeners which are called during the update loop.</p>
 <p>Also a quit listener can be attached which is called when the application is terminating. </p>
@@ -57,7 +136,7 @@ typical MGE application.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11application4argcEv">
-<span id="_CPPv3NK3mge11application4argcEv"></span><span id="_CPPv2NK3mge11application4argcEv"></span><span id="mge::application::argcC"></span><span class="target" id="classmge_1_1application_1a6f1864ba40df5be01a7ec61e7cd4a267"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">argc</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11application4argcEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge11application4argcEv"></span><span id="_CPPv2NK3mge11application4argcEv"></span><span id="mge::application::argcC"></span><span class="target" id="classmge_1_1application_1a6f1864ba40df5be01a7ec61e7cd4a267"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">argc</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11application4argcEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Argument count. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -68,7 +147,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11application4argvEi">
-<span id="_CPPv3NK3mge11application4argvEi"></span><span id="_CPPv2NK3mge11application4argvEi"></span><span id="mge::application::argv__iC"></span><span class="target" id="classmge_1_1application_1ae3dbfad6a2bc29c34f0925286790d8a1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">argv</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11application4argvEi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge11application4argvEi"></span><span id="_CPPv2NK3mge11application4argvEi"></span><span id="mge::application::argv__iC"></span><span class="target" id="classmge_1_1application_1ae3dbfad6a2bc29c34f0925286790d8a1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">argv</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11application4argvEi" title="Link to this definition"></a><br /></dt>
 <dd><p>Argument value. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -82,7 +161,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11application7is_quitEv">
-<span id="_CPPv3NK3mge11application7is_quitEv"></span><span id="_CPPv2NK3mge11application7is_quitEv"></span><span id="mge::application::is_quitC"></span><span class="target" id="classmge_1_1application_1ab24821da4612741c654f234e0de2651f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_quit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge11application7is_quitEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge11application7is_quitEv"></span><span id="_CPPv2NK3mge11application7is_quitEv"></span><span id="mge::application::is_quitC"></span><span class="target" id="classmge_1_1application_1ab24821da4612741c654f234e0de2651f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_quit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge11application7is_quitEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Shall the application quit? </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -93,37 +172,37 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application8set_quitEv">
-<span id="_CPPv3N3mge11application8set_quitEv"></span><span id="_CPPv2N3mge11application8set_quitEv"></span><span id="mge::application::set_quit"></span><span class="target" id="classmge_1_1application_1a682cd1df5fd90aa108bf3d0487d727fc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_quit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application8set_quitEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application8set_quitEv"></span><span id="_CPPv2N3mge11application8set_quitEv"></span><span id="mge::application::set_quit"></span><span class="target" id="classmge_1_1application_1a682cd1df5fd90aa108bf3d0487d727fc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_quit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application8set_quitEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Signal that application shall quit. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application5setupEv">
-<span id="_CPPv3N3mge11application5setupEv"></span><span id="_CPPv2N3mge11application5setupEv"></span><span id="mge::application::setup"></span><span class="target" id="classmge_1_1application_1a88e72c5ac67a90765ae0f56f6ae4e5f4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application5setupEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application5setupEv"></span><span id="_CPPv2N3mge11application5setupEv"></span><span id="mge::application::setup"></span><span class="target" id="classmge_1_1application_1a88e72c5ac67a90765ae0f56f6ae4e5f4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application5setupEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Basic setup of the application. Default implementation does nothing. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application11async_setupEv">
-<span id="_CPPv3N3mge11application11async_setupEv"></span><span id="_CPPv2N3mge11application11async_setupEv"></span><span id="mge::application::async_setup"></span><span class="target" id="classmge_1_1application_1afa1549bc3d1ce682dd00ca9530b192ab"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_setup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application11async_setupEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application11async_setupEv"></span><span id="_CPPv2N3mge11application11async_setupEv"></span><span id="mge::application::async_setup"></span><span class="target" id="classmge_1_1application_1afa1549bc3d1ce682dd00ca9530b192ab"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">async_setup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application11async_setupEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Setup that is started asynchronously to the event loop. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application8teardownEv">
-<span id="_CPPv3N3mge11application8teardownEv"></span><span id="_CPPv2N3mge11application8teardownEv"></span><span id="mge::application::teardown"></span><span class="target" id="classmge_1_1application_1a8f790b375c77b29f983b39866920f5e3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">teardown</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application8teardownEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application8teardownEv"></span><span id="_CPPv2N3mge11application8teardownEv"></span><span id="mge::application::teardown"></span><span class="target" id="classmge_1_1application_1a8f790b375c77b29f983b39866920f5e3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">teardown</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application8teardownEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Basic teardown of the application. Default implementation does nothing. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application3runEv">
-<span id="_CPPv3N3mge11application3runEv"></span><span id="_CPPv2N3mge11application3runEv"></span><span id="mge::application::run"></span><span class="target" id="classmge_1_1application_1a3a5e0866d3a4a14dc2279369b12f38cc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">run</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application3runEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application3runEv"></span><span id="_CPPv2N3mge11application3runEv"></span><span id="mge::application::run"></span><span class="target" id="classmge_1_1application_1a3a5e0866d3a4a14dc2279369b12f38cc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">run</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application3runEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Run the application. This executes the input loop until the quit flag is set. </p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application5inputE8uint64_t">
-<span id="_CPPv3N3mge11application5inputE8uint64_t"></span><span id="_CPPv2N3mge11application5inputE8uint64_t"></span><span id="mge::application::input__uint64_t"></span><span class="target" id="classmge_1_1application_1a15fe9696bed6594addd609a346a42bec"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge11application5inputE8uint64_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application5inputE8uint64_t"></span><span id="_CPPv2N3mge11application5inputE8uint64_t"></span><span id="mge::application::input__uint64_t"></span><span class="target" id="classmge_1_1application_1a15fe9696bed6594addd609a346a42bec"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge11application5inputE8uint64_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Retrieve and process input in an loop step. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -134,7 +213,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application6updateE8uint64_tdd">
-<span id="_CPPv3N3mge11application6updateE8uint64_tdd"></span><span id="_CPPv2N3mge11application6updateE8uint64_tdd"></span><span id="mge::application::update__uint64_t.double.double"></span><span class="target" id="classmge_1_1application_1aee42dc8b510b731e3864cb6aab5ed169"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elapsed</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">delta</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge11application6updateE8uint64_tdd" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application6updateE8uint64_tdd"></span><span id="_CPPv2N3mge11application6updateE8uint64_tdd"></span><span id="mge::application::update__uint64_t.double.double"></span><span class="target" id="classmge_1_1application_1aee42dc8b510b731e3864cb6aab5ed169"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">update</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elapsed</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">delta</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge11application6updateE8uint64_tdd" title="Link to this definition"></a><br /></dt>
 <dd><p>Update state in a step. </p>
 <p>Note <code class="docutils literal notranslate"><span class="pre">cycle</span></code> may be the same for multiple calls.</p>
 <dl class="field-list simple">
@@ -150,7 +229,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application7presentE8uint64_td">
-<span id="_CPPv3N3mge11application7presentE8uint64_td"></span><span id="_CPPv2N3mge11application7presentE8uint64_td"></span><span id="mge::application::present__uint64_t.double"></span><span class="target" id="classmge_1_1application_1a176dba854c2b7f20950400c1cc7c8cdb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">present</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">peek</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge11application7presentE8uint64_td" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application7presentE8uint64_td"></span><span id="_CPPv2N3mge11application7presentE8uint64_td"></span><span id="mge::application::present__uint64_t.double"></span><span class="target" id="classmge_1_1application_1a176dba854c2b7f20950400c1cc7c8cdb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">present</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cycle</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">peek</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge11application7presentE8uint64_td" title="Link to this definition"></a><br /></dt>
 <dd><p>Presents the state. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -164,7 +243,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application18add_input_listenerERK14input_listener">
-<span id="_CPPv3N3mge11application18add_input_listenerERK14input_listener"></span><span id="_CPPv2N3mge11application18add_input_listenerERK14input_listener"></span><span id="mge::application::add_input_listener__input_listenerCR"></span><span class="target" id="classmge_1_1application_1ab29b5e195d9cdf5ef1e4070b7b3620aa"></span><span class="n"><span class="pre">input_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_input_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">input_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application18add_input_listenerERK14input_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application18add_input_listenerERK14input_listener"></span><span id="_CPPv2N3mge11application18add_input_listenerERK14input_listener"></span><span id="mge::application::add_input_listener__input_listenerCR"></span><span class="target" id="classmge_1_1application_1ab29b5e195d9cdf5ef1e4070b7b3620aa"></span><span class="n"><span class="pre">input_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_input_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">input_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application18add_input_listenerERK14input_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Add an input listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -178,7 +257,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application21remove_input_listenerE18input_listener_key">
-<span id="_CPPv3N3mge11application21remove_input_listenerE18input_listener_key"></span><span id="_CPPv2N3mge11application21remove_input_listenerE18input_listener_key"></span><span id="mge::application::remove_input_listener__input_listener_key"></span><span class="target" id="classmge_1_1application_1ab26ec20c84d560770b3148e73773c949"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_input_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">input_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application21remove_input_listenerE18input_listener_key" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application21remove_input_listenerE18input_listener_key"></span><span id="_CPPv2N3mge11application21remove_input_listenerE18input_listener_key"></span><span id="mge::application::remove_input_listener__input_listener_key"></span><span class="target" id="classmge_1_1application_1ab26ec20c84d560770b3148e73773c949"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_input_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">input_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application21remove_input_listenerE18input_listener_key" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove update listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -189,7 +268,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application19add_update_listenerERK15update_listener">
-<span id="_CPPv3N3mge11application19add_update_listenerERK15update_listener"></span><span id="_CPPv2N3mge11application19add_update_listenerERK15update_listener"></span><span id="mge::application::add_update_listener__update_listenerCR"></span><span class="target" id="classmge_1_1application_1a10fbb077f7e63f4240e3ec5ad0dab80e"></span><span class="n"><span class="pre">update_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_update_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">update_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application19add_update_listenerERK15update_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application19add_update_listenerERK15update_listener"></span><span id="_CPPv2N3mge11application19add_update_listenerERK15update_listener"></span><span id="mge::application::add_update_listener__update_listenerCR"></span><span class="target" id="classmge_1_1application_1a10fbb077f7e63f4240e3ec5ad0dab80e"></span><span class="n"><span class="pre">update_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_update_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">update_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application19add_update_listenerERK15update_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Add an update listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -203,7 +282,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application22remove_update_listenerE19update_listener_key">
-<span id="_CPPv3N3mge11application22remove_update_listenerE19update_listener_key"></span><span id="_CPPv2N3mge11application22remove_update_listenerE19update_listener_key"></span><span id="mge::application::remove_update_listener__update_listener_key"></span><span class="target" id="classmge_1_1application_1adb151a6d6743f43e1fd88aea5acc7c51"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_update_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">update_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_update_listenerE19update_listener_key" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application22remove_update_listenerE19update_listener_key"></span><span id="_CPPv2N3mge11application22remove_update_listenerE19update_listener_key"></span><span id="mge::application::remove_update_listener__update_listener_key"></span><span class="target" id="classmge_1_1application_1adb151a6d6743f43e1fd88aea5acc7c51"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_update_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">update_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_update_listenerE19update_listener_key" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove update listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -214,7 +293,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener">
-<span id="_CPPv3N3mge11application19add_redraw_listenerERK15redraw_listener"></span><span id="_CPPv2N3mge11application19add_redraw_listenerERK15redraw_listener"></span><span id="mge::application::add_redraw_listener__redraw_listenerCR"></span><span class="target" id="classmge_1_1application_1a4bf04571fe124074ab85bb92da2be0f3"></span><span class="n"><span class="pre">redraw_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_redraw_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">redraw_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application19add_redraw_listenerERK15redraw_listener"></span><span id="_CPPv2N3mge11application19add_redraw_listenerERK15redraw_listener"></span><span id="mge::application::add_redraw_listener__redraw_listenerCR"></span><span class="target" id="classmge_1_1application_1a4bf04571fe124074ab85bb92da2be0f3"></span><span class="n"><span class="pre">redraw_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_redraw_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">redraw_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Add a redraw listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -228,7 +307,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key">
-<span id="_CPPv3N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="_CPPv2N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="mge::application::remove_redraw_listener__redraw_listener_key"></span><span class="target" id="classmge_1_1application_1aea7a762d9c4f8d27dacd3fb5742ee9a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_redraw_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">redraw_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="_CPPv2N3mge11application22remove_redraw_listenerE19redraw_listener_key"></span><span id="mge::application::remove_redraw_listener__redraw_listener_key"></span><span class="target" id="classmge_1_1application_1aea7a762d9c4f8d27dacd3fb5742ee9a1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_redraw_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">redraw_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove redraw listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -239,7 +318,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application17add_quit_listenerERK13quit_listener">
-<span id="_CPPv3N3mge11application17add_quit_listenerERK13quit_listener"></span><span id="_CPPv2N3mge11application17add_quit_listenerERK13quit_listener"></span><span id="mge::application::add_quit_listener__quit_listenerCR"></span><span class="target" id="classmge_1_1application_1aeb48334edc5c21f0dc289a6d8b947f07"></span><span class="n"><span class="pre">quit_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_quit_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">quit_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application17add_quit_listenerERK13quit_listener" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application17add_quit_listenerERK13quit_listener"></span><span id="_CPPv2N3mge11application17add_quit_listenerERK13quit_listener"></span><span id="mge::application::add_quit_listener__quit_listenerCR"></span><span class="target" id="classmge_1_1application_1aeb48334edc5c21f0dc289a6d8b947f07"></span><span class="n"><span class="pre">quit_listener_key</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_quit_listener</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">quit_listener</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application17add_quit_listenerERK13quit_listener" title="Link to this definition"></a><br /></dt>
 <dd><p>Add a quit listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -253,7 +332,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key">
-<span id="_CPPv3N3mge11application20remove_quit_listenerE17quit_listener_key"></span><span id="_CPPv2N3mge11application20remove_quit_listenerE17quit_listener_key"></span><span id="mge::application::remove_quit_listener__quit_listener_key"></span><span class="target" id="classmge_1_1application_1a304a941819eb1094c405602189f0fad7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_quit_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">quit_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application20remove_quit_listenerE17quit_listener_key"></span><span id="_CPPv2N3mge11application20remove_quit_listenerE17quit_listener_key"></span><span id="mge::application::remove_quit_listener__quit_listener_key"></span><span class="target" id="classmge_1_1application_1a304a941819eb1094c405602189f0fad7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">remove_quit_listener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">quit_listener_key</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">k</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key" title="Link to this definition"></a><br /></dt>
 <dd><p>Remove update listener. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -267,7 +346,7 @@ typical MGE application.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application4mainENSt11string_viewEiPPKc">
-<span id="_CPPv3N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="_CPPv2N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="mge::application::main__std::string_view.i.cCPP"></span><span class="target" id="classmge_1_1application_1a94e49cb7519e4d932a45a27b7e6bc207"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">main</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">application</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">argc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">argv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="_CPPv2N3mge11application4mainENSt11string_viewEiPPKc"></span><span id="mge::application::main__std::string_view.i.cCPP"></span><span class="target" id="classmge_1_1application_1a94e49cb7519e4d932a45a27b7e6bc207"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">main</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">application</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">argc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">argv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc" title="Link to this definition"></a><br /></dt>
 <dd><p>Run an application implementation. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -285,7 +364,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application4mainEiPPKc">
-<span id="_CPPv3N3mge11application4mainEiPPKc"></span><span id="_CPPv2N3mge11application4mainEiPPKc"></span><span id="mge::application::main__i.cCPP"></span><span class="target" id="classmge_1_1application_1a35e6e8579de648a8a825f1988141dd09"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">main</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">argc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">argv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainEiPPKc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application4mainEiPPKc"></span><span id="_CPPv2N3mge11application4mainEiPPKc"></span><span id="mge::application::main__i.cCPP"></span><span class="target" id="classmge_1_1application_1a35e6e8579de648a8a825f1988141dd09"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">main</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">argc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">argv</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application4mainEiPPKc" title="Link to this definition"></a><br /></dt>
 <dd><p>Run default application implementation. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -302,7 +381,7 @@ typical MGE application.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11application8instanceEv">
-<span id="_CPPv3N3mge11application8instanceEv"></span><span id="_CPPv2N3mge11application8instanceEv"></span><span id="mge::application::instance"></span><span class="target" id="classmge_1_1application_1a69b0c2d50117cb7230eac11272f8bd99"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="n"><span class="pre">application</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">instance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application8instanceEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge11application8instanceEv"></span><span id="_CPPv2N3mge11application8instanceEv"></span><span id="mge::application::instance"></span><span class="target" id="classmge_1_1application_1a69b0c2d50117cb7230eac11272f8bd99"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="n"><span class="pre">application</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">instance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11application8instanceEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access singleton/current instance. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -317,63 +396,34 @@ typical MGE application.</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loop.html" class="btn btn-neutral float-left" title="Interaction Loop" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mgeasset.html" class="btn btn-neutral float-right" title="Asset Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="loop.html"
-                          title="previous chapter">Interaction Loop</a></p>
+    </section>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="../mgeasset.html"
-                          title="next chapter">Asset Library</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/application/application.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../mgeasset.html" title="Asset Library"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="loop.html" title="Interaction Loop"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgeapplication.html" >Application Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Application</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

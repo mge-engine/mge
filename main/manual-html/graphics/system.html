@@ -1,50 +1,120 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Render System &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
-    <title>Render System &#8212; MGE 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinxdoc.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Monitor Support" href="monitor.html" />
     <link rel="prev" title="Graphics Library" href="../mgegraphics.html" /> 
-  </head><body>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="monitor.html" title="Monitor Support"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../mgegraphics.html" title="Graphics Library"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" accesskey="U">Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Render System</a></li> 
-      </ul>
-    </div>  
+</head>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
-            
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Render System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge13render_systemE"><code class="docutils literal notranslate"><span class="pre">render_system</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowEv"><code class="docutils literal notranslate"><span class="pre">render_system::create_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options"><code class="docutils literal notranslate"><span class="pre">render_system::create_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system8monitorsEv"><code class="docutils literal notranslate"><span class="pre">render_system::monitors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge13render_system19system_capabilitiesEv"><code class="docutils literal notranslate"><span class="pre">render_system::system_capabilities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system6createEv"><code class="docutils literal notranslate"><span class="pre">render_system::create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system6createENSt11string_viewE"><code class="docutils literal notranslate"><span class="pre">render_system::create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilitiesE"><code class="docutils literal notranslate"><span class="pre">render_system::capabilities</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Render System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/system.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="render-system">
-<h1>Render System<a class="headerlink" href="#render-system" title="Permalink to this heading">¶</a></h1>
+<h1>Render System<a class="headerlink" href="#render-system" title="Link to this heading"></a></h1>
 <p>The render system is the basic entry point into the graphics library.</p>
 <dl class="simple">
 <dt>The default render system can be selected by</dt><dd><ul class="simple">
@@ -55,14 +125,14 @@
 </dl>
 <dl class="std envvar">
 <dt class="sig sig-object std" id="envvar-MGE_RENDER_SYSTEM">
-<span class="sig-name descname"><span class="pre">MGE_RENDER_SYSTEM</span></span><a class="headerlink" href="#envvar-MGE_RENDER_SYSTEM" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">MGE_RENDER_SYSTEM</span></span><a class="headerlink" href="#envvar-MGE_RENDER_SYSTEM" title="Link to this definition"></a></dt>
 <dd><p>Specifies the render system implementation to be used, such as “opengl”
 or “vulkan”.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_systemE">
-<span id="_CPPv3N3mge13render_systemE"></span><span id="_CPPv2N3mge13render_systemE"></span><span id="mge::render_system"></span><span class="target" id="classmge_1_1render__system"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">render_system</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13render_systemE" title="mge::render_system"><span class="n"><span class="pre">render_system</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13render_systemE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_systemE"></span><span id="_CPPv2N3mge13render_systemE"></span><span id="mge::render_system"></span><span class="target" id="classmge_1_1render__system"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">render_system</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13render_systemE" title="mge::render_system"><span class="n"><span class="pre">render_system</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13render_systemE" title="Link to this definition"></a><br /></dt>
 <dd><p>Render system interface. </p>
 <p>The render system defines a mechanism to produce graphics output, that is:</p>
 <p><ul class="simple">
@@ -75,7 +145,7 @@ or “vulkan”.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system13create_windowEv">
-<span id="_CPPv3N3mge13render_system13create_windowEv"></span><span id="_CPPv2N3mge13render_system13create_windowEv"></span><span id="mge::render_system::create_window"></span><span class="target" id="classmge_1_1render__system_1affd339a873845398b4d64861a2a74e34"></span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system13create_windowEv"></span><span id="_CPPv2N3mge13render_system13create_windowEv"></span><span id="mge::render_system::create_window"></span><span class="target" id="classmge_1_1render__system_1affd339a873845398b4d64861a2a74e34"></span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Create window with default settings. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -86,7 +156,7 @@ or “vulkan”.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options">
-<span id="_CPPv3N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="_CPPv2N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="mge::render_system::create_window__extentCR.window_optionsCR"></span><span class="target" id="classmge_1_1render__system_1a3bbf4612abb1d1e7dea1c656f043905d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="mge::render_system::create_window::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="window.html#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="_CPPv2N3mge13render_system13create_windowERK6extentRK14window_options"></span><span id="mge::render_system::create_window__extentCR.window_optionsCR"></span><span class="target" id="classmge_1_1render__system_1a3bbf4612abb1d1e7dea1c656f043905d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="mge::render_system::create_window::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="window.html#_CPPv4N3mge14window_optionsE" title="mge::window_options"><span class="n"><span class="pre">window_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options" title="Link to this definition"></a><br /></dt>
 <dd><p>Create a window. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -103,7 +173,7 @@ or “vulkan”.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system8monitorsEv">
-<span id="_CPPv3N3mge13render_system8monitorsEv"></span><span id="_CPPv2N3mge13render_system8monitorsEv"></span><span id="mge::render_system::monitors"></span><span class="target" id="classmge_1_1render__system_1a46caf82aef3a27accdabfa2e585b757a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">monitor_collection</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system8monitorsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system8monitorsEv"></span><span id="_CPPv2N3mge13render_system8monitorsEv"></span><span id="mge::render_system::monitors"></span><span class="target" id="classmge_1_1render__system_1a46caf82aef3a27accdabfa2e585b757a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">monitor_collection</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">monitors</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system8monitorsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get monitors of the system. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -114,7 +184,7 @@ or “vulkan”.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13render_system19system_capabilitiesEv">
-<span id="_CPPv3NK3mge13render_system19system_capabilitiesEv"></span><span id="_CPPv2NK3mge13render_system19system_capabilitiesEv"></span><span id="mge::render_system::system_capabilitiesC"></span><span class="target" id="classmge_1_1render__system_1a72458fef0129960b6b7f3c0f7dcd6c24"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge13render_systemE" title="mge::render_system"><span class="n"><span class="pre">render_system</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilitiesE" title="mge::render_system::capabilities"><span class="n"><span class="pre">capabilities</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">system_capabilities</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system19system_capabilitiesEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13render_system19system_capabilitiesEv"></span><span id="_CPPv2NK3mge13render_system19system_capabilitiesEv"></span><span id="mge::render_system::system_capabilitiesC"></span><span class="target" id="classmge_1_1render__system_1a72458fef0129960b6b7f3c0f7dcd6c24"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge13render_systemE" title="mge::render_system"><span class="n"><span class="pre">render_system</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilitiesE" title="mge::render_system::capabilities"><span class="n"><span class="pre">capabilities</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">system_capabilities</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system19system_capabilitiesEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Access render system capabilities. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -128,7 +198,7 @@ or “vulkan”.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system6createEv">
-<span id="_CPPv3N3mge13render_system6createEv"></span><span id="_CPPv2N3mge13render_system6createEv"></span><span id="mge::render_system::create"></span><span class="target" id="classmge_1_1render__system_1aea3b63ca6c59db3dba890a2d6b2279cb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">render_system_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system6createEv"></span><span id="_CPPv2N3mge13render_system6createEv"></span><span id="mge::render_system::create"></span><span class="target" id="classmge_1_1render__system_1aea3b63ca6c59db3dba890a2d6b2279cb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">render_system_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Create default render system. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -139,7 +209,7 @@ or “vulkan”.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system6createENSt11string_viewE">
-<span id="_CPPv3N3mge13render_system6createENSt11string_viewE"></span><span id="_CPPv2N3mge13render_system6createENSt11string_viewE"></span><span id="mge::render_system::create__std::string_view"></span><span class="target" id="classmge_1_1render__system_1a000d4eda8ec71325638d4ec882596d86"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">render_system_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">implementation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system6createENSt11string_viewE"></span><span id="_CPPv2N3mge13render_system6createENSt11string_viewE"></span><span id="mge::render_system::create__std::string_view"></span><span class="target" id="classmge_1_1render__system_1a000d4eda8ec71325638d4ec882596d86"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">render_system_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">implementation</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system6createENSt11string_viewE" title="Link to this definition"></a><br /></dt>
 <dd><p>Create a specific render system. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -154,19 +224,19 @@ or “vulkan”.</p>
 </div>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system12capabilitiesE">
-<span id="_CPPv3N3mge13render_system12capabilitiesE"></span><span id="_CPPv2N3mge13render_system12capabilitiesE"></span><span id="mge::render_system::capabilities"></span><span class="target" id="classmge_1_1render__system_1_1capabilities"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capabilities</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4N3mge13render_system12capabilitiesE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system12capabilitiesE"></span><span id="_CPPv2N3mge13render_system12capabilitiesE"></span><span id="mge::render_system::capabilities"></span><span class="target" id="classmge_1_1render__system_1_1capabilities"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">capabilities</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4N3mge13render_system12capabilitiesE" title="Link to this definition"></a><br /></dt>
 <dd><p>Capabilities of the render system to check for optional features. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system12capabilities20shader_language_listE">
-<span id="_CPPv3N3mge13render_system12capabilities20shader_language_listE"></span><span id="_CPPv2N3mge13render_system12capabilities20shader_language_listE"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a2cd23f07f8dacb1b2d8be46fb359b8f9"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader_language_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">shader_language</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system12capabilities20shader_language_listE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system12capabilities20shader_language_listE"></span><span id="_CPPv2N3mge13render_system12capabilities20shader_language_listE"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a2cd23f07f8dacb1b2d8be46fb359b8f9"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader_language_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">shader_language</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system12capabilities20shader_language_listE" title="Link to this definition"></a><br /></dt>
 <dd><p>list of supported shader languages </p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system12capabilities18shader_format_listE">
-<span id="_CPPv3N3mge13render_system12capabilities18shader_format_listE"></span><span id="_CPPv2N3mge13render_system12capabilities18shader_format_listE"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a5999514b8a3fc3a2e7a947a1c1f2697e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader_format_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">shader_format</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system12capabilities18shader_format_listE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N3mge13render_system12capabilities18shader_format_listE"></span><span id="_CPPv2N3mge13render_system12capabilities18shader_format_listE"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a5999514b8a3fc3a2e7a947a1c1f2697e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader_format_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">shader_format</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13render_system12capabilities18shader_format_listE" title="Link to this definition"></a><br /></dt>
 <dd><p>list of supported shader formats </p>
 </dd></dl>
 
@@ -175,7 +245,7 @@ or “vulkan”.</p>
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13render_system12capabilities16shader_languagesEv">
-<span id="_CPPv3NK3mge13render_system12capabilities16shader_languagesEv"></span><span id="_CPPv2NK3mge13render_system12capabilities16shader_languagesEv"></span><span id="mge::render_system::capabilities::shader_languagesC"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1acb1d864d382da598cd537ece5be48f82"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilities20shader_language_listE" title="mge::render_system::capabilities::shader_language_list"><span class="n"><span class="pre">shader_language_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">shader_languages</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system12capabilities16shader_languagesEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13render_system12capabilities16shader_languagesEv"></span><span id="_CPPv2NK3mge13render_system12capabilities16shader_languagesEv"></span><span id="mge::render_system::capabilities::shader_languagesC"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1acb1d864d382da598cd537ece5be48f82"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilities20shader_language_listE" title="mge::render_system::capabilities::shader_language_list"><span class="n"><span class="pre">shader_language_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">shader_languages</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system12capabilities16shader_languagesEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get supported shader languages. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -186,7 +256,7 @@ or “vulkan”.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge13render_system12capabilities14shader_formatsEv">
-<span id="_CPPv3NK3mge13render_system12capabilities14shader_formatsEv"></span><span id="_CPPv2NK3mge13render_system12capabilities14shader_formatsEv"></span><span id="mge::render_system::capabilities::shader_formatsC"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a195e2488ecc3cc2bb70a731695f62a24"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilities18shader_format_listE" title="mge::render_system::capabilities::shader_format_list"><span class="n"><span class="pre">shader_format_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">shader_formats</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system12capabilities14shader_formatsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK3mge13render_system12capabilities14shader_formatsEv"></span><span id="_CPPv2NK3mge13render_system12capabilities14shader_formatsEv"></span><span id="mge::render_system::capabilities::shader_formatsC"></span><span class="target" id="classmge_1_1render__system_1_1capabilities_1a195e2488ecc3cc2bb70a731695f62a24"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilities18shader_format_listE" title="mge::render_system::capabilities::shader_format_list"><span class="n"><span class="pre">shader_format_list</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">shader_formats</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system12capabilities14shader_formatsEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get supported shader formats. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -203,63 +273,34 @@ or “vulkan”.</p>
 </section>
 
 
-            <div class="clearer"></div>
+           </div>
           </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../mgegraphics.html" class="btn btn-neutral float-left" title="Graphics Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="monitor.html" class="btn btn-neutral float-right" title="Monitor Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <div>
-    <h4>Previous topic</h4>
-    <p class="topless"><a href="../mgegraphics.html"
-                          title="previous chapter">Graphics Library</a></p>
+    </section>
   </div>
-  <div>
-    <h4>Next topic</h4>
-    <p class="topless"><a href="monitor.html"
-                          title="next chapter">Monitor Support</a></p>
-  </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/graphics/system.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="monitor.html" title="Monitor Support"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../mgegraphics.html" title="Graphics Library"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">MGE 0.1 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../mgegraphics.html" >Graphics Library</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Render System</a></li> 
-      </ul>
-    </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2023, Alexander Schroeder.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
-    </div>
-  </body>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>
