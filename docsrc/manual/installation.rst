@@ -45,6 +45,7 @@ Microsoft Visual C++ 2022
 `Ninja <https://ninja-build.org/>`_
     While cmake can be used to generate Visual Studio project files, or also
     a build environment suitable for *nmake*, ninja is the preferred build tool.
+
 .. note::
    It's useful to use a package manager like `Scoop <https://scoop.sh/>`_ or
    `Chocolatey <https://chocolatey.org/>`_ for installing the required tools,
