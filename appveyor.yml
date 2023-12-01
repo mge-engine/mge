@@ -47,7 +47,7 @@ build_script:
   - cmd: SET VCPKG_BINARY_SOURCES=clear;default,readwrite;files,C:\projects\mge\vcpkg_binary_cache,readwrite
   - cmd: SET
   - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - cmd: cmake --build build --parallel 8 --target all
+  - cmd: cmake --build build --target all
   - cmd: cmake --build build --target documentation
 
 test_script:
