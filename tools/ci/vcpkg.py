@@ -17,7 +17,7 @@ vcpkg_githash = vcpkg_version.vcpkg_githash
 
 def install_vcpkg():
     print("Cloning vcpkg git mirror", flush=True)
-    subprocess.run(["git", "clone", "https://github.com/mge-engine/vcpkg.git"])
+    subprocess.run(["git", "clone", "--depth", "1", "https://github.com/mge-engine/vcpkg.git"])
     subprocess.run(
         ["git", "config", "advice.detachedHead", "false"], cwd="vcpkg")
     print("Checking out configured version %s" % (vcpkg_githash), flush=True)
