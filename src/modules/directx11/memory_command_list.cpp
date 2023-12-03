@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #include "memory_command_list.hpp"
 #include "mge/core/overloaded.hpp"
 
