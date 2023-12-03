@@ -17,6 +17,8 @@ namespace mge::dx11 {
         void execute() override;
 
     private:
+        void perform_drawing(const mge::draw_command& command);
+
         struct clear_command
         {
             rgba_color clear_color;
