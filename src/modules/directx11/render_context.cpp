@@ -5,6 +5,7 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "memory_command_list.hpp"
 #include "mge/core/trace.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -91,7 +92,6 @@ namespace mge::dx11 {
             } else {
                 MGE_WARNING_TRACE(DX11) << "Cannot enable debug breaks";
             }
-
         }
 
         auto swap_chain =
@@ -153,7 +153,7 @@ namespace mge::dx11 {
 
     mge::command_list_ref render_context::create_command_list()
     {
-        auto result = std::make_shared<mge::dx11::command_list>(*this);
+        auto result = std::make_shared<mge::dx11::memory_command_list>(*this);
         return result;
     }
 
