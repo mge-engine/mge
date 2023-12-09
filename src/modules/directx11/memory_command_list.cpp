@@ -10,6 +10,15 @@
 
 namespace mge::dx11 {
 
+    struct semantic_context
+    {
+        semantic_context()
+            : position_used(false)
+        {}
+
+        bool position_used;
+    };
+
     memory_command_list::memory_command_list(render_context& context)
         : mge::command_list(context, false)
         , m_dx11_context(context)
@@ -50,35 +59,6 @@ namespace mge::dx11 {
     }
 
     void memory_command_list::perform_drawing(const mge::draw_command& command)
-    {
-        const dx11::program* dx11_program =
-            static_cast<const dx11 ::program*>(command.program().get());
-
-        const dx11::shader* dx11_vertex_shader =
-            static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::VERTEX).get());
-#if 0
-        const dx11::shader* dx11_pixel_shader =
-            static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::FRAGMENT).get());
-
-        const dx11::vertex_buffer* dx11_vertex_buffer =
-            static_cast<const dx11::vertex_buffer*>(command.vertices().get());
-#endif
-
-        const auto&               layout = command.vertices()->layout();
-        const size_t              layout_size = layout.size();
-        D3D11_INPUT_ELEMENT_DESC* input_desc =
-            m_dx11_context.layouts().get(layout);
-        ID3D11InputLayout* input_layout = nullptr;
-
-        auto rc = m_dx11_context.device()->CreateInputLayout(
-            input_desc,
-            static_cast<UINT>(layout_size),
-            dx11_vertex_shader->code()->GetBufferPointer(),
-            dx11_vertex_shader->code()->GetBufferSize(),
-            &input_layout);
-        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
-    }
+    {}
 
 } // namespace mge::dx11

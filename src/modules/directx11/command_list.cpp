@@ -31,6 +31,7 @@ namespace mge::dx11 {
 
     void command_list::draw(const mge::draw_command& command)
     {
+#if 0
         const dx11::program* dx11_program =
             static_cast<const dx11 ::program*>(command.program().get());
 
@@ -89,6 +90,7 @@ namespace mge::dx11 {
             static_cast<UINT>(command.indices()->element_count()),
             0,
             0);
+#endif
     }
 
     void command_list::execute()
