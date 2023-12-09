@@ -5,6 +5,8 @@
 #include "mge/graphics/command_list.hpp"
 #include "render_context.hpp"
 
+#include <unordered_map>
+
 namespace mge::dx11 {
     class memory_command_list : public mge::command_list
     {
@@ -36,6 +38,8 @@ namespace mge::dx11 {
 
         render_context& m_dx11_context;
         command_vector  m_commands;
+        std::unordered_map<const mge::draw_command*, ID3D11InputLayout*>
+            m_layouts;
     };
 
 } // namespace mge::dx11

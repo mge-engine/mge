@@ -34,6 +34,35 @@ namespace mge::dx11 {
     void memory_command_list::draw(const mge::draw_command& command)
     {
         m_commands.push_back(draw_command{command});
+
+        D3D11_INPUT_ELEMENT_DESC input_elements[] = {
+            {"POSITION",
+             0,
+             DXGI_FORMAT_R32G32B32_FLOAT,
+             0,
+             0,
+             D3D11_INPUT_PER_VERTEX_DATA,
+             0},
+        };
+
+        const dx11::program* dx11_program =
+            static_cast<const dx11 ::program*>(command.program().get());
+
+        const dx11::shader* dx11_vertex_shader =
+            static_cast<const dx11::shader*>(
+                dx11_program->program_shader(mge::shader_type::VERTEX).get());
+
+        ID3D11InputLayout* input_layout = nullptr;
+
+        auto rc = m_dx11_context.device()->CreateInputLayout(
+            input_elements,
+            1,
+            dx11_vertex_shader->code()->GetBufferPointer(),
+            dx11_vertex_shader->code()->GetBufferSize(),
+            &input_layout);
+        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+
+        m_layouts[&command] = input_layout;
     }
 
     void memory_command_list::execute()
