@@ -5,8 +5,6 @@
 #include "mge/graphics/command_list.hpp"
 #include "render_context.hpp"
 
-#include <unordered_map>
-
 namespace mge::dx11 {
     class memory_command_list : public mge::command_list
     {
@@ -19,8 +17,6 @@ namespace mge::dx11 {
         void execute() override;
 
     private:
-        void perform_drawing(const mge::draw_command& command);
-
         struct clear_command
         {
             rgba_color clear_color;
@@ -28,8 +24,11 @@ namespace mge::dx11 {
 
         struct draw_command
         {
-            std::reference_wrapper<const mge::draw_command> command;
+            mge::draw_command  command;
+            ID3D11InputLayout* layout;
         };
+
+        void perform_drawing(const draw_command& command);
 
         using command =
             std::variant<std::monostate, clear_command, draw_command>;
@@ -38,8 +37,6 @@ namespace mge::dx11 {
 
         render_context& m_dx11_context;
         command_vector  m_commands;
-        std::unordered_map<const mge::draw_command*, ID3D11InputLayout*>
-            m_layouts;
     };
 
 } // namespace mge::dx11
