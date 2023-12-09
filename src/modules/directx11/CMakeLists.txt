@@ -11,6 +11,7 @@ SET(mge_dx11_module_SOURCES
     index_buffer.cpp
     vertex_buffer.cpp
     command_list.cpp
+    memory_command_list.cpp
     shader.cpp
     program.cpp
     input_layout_cache.cpp

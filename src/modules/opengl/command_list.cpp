@@ -5,7 +5,6 @@
 #include "common.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
-#include "mge/core/overloaded.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "opengl.hpp"
 #include "program.hpp"
@@ -77,34 +76,35 @@ namespace mge::opengl {
     void command_list::execute()
     {
         for (const auto& cmd : m_commands) {
-            std::visit(overloaded{[](const std::monostate&) {},
-                                  [](const clear_command& c) {
-                                      glClearColor(c.clear_color.r,
-                                                   c.clear_color.g,
-                                                   c.clear_color.b,
-                                                   c.clear_color.a);
-                                      CHECK_OPENGL_ERROR(glClearColor);
-                                      glClear(GL_COLOR_BUFFER_BIT);
-                                      CHECK_OPENGL_ERROR(
-                                          glClear(GL_COLOR_BUFFER_BIT));
-                                  },
-                                  [](const draw_command& c) {
-                                      glUseProgram(c.program_name);
-                                      CHECK_OPENGL_ERROR(glUseProgram);
-                                      glBindVertexArray(c.vao);
-                                      CHECK_OPENGL_ERROR(glBindVertexArray);
-                                      glDrawElements(c.topology,
-                                                     c.element_count,
-                                                     GL_UNSIGNED_INT,
-                                                     nullptr);
-                                      CHECK_OPENGL_ERROR(glDrawElements(...));
+            std::visit(
+                [&](auto&& arg) {
+                    using T = std::decay_t<decltype(arg)>;
+                    if constexpr (std::is_same_v<T, clear_command>) {
+                        glClearColor(arg.clear_color.r,
+                                     arg.clear_color.g,
+                                     arg.clear_color.b,
+                                     arg.clear_color.a);
+                        CHECK_OPENGL_ERROR(glClearColor);
+                        glClear(GL_COLOR_BUFFER_BIT);
+                        CHECK_OPENGL_ERROR(glClear(GL_COLOR_BUFFER_BIT));
+                    } else if constexpr (std::is_same_v<T, draw_command>) {
+                        glUseProgram(arg.program_name);
+                        CHECK_OPENGL_ERROR(glUseProgram);
+                        glBindVertexArray(arg.vao);
+                        CHECK_OPENGL_ERROR(glBindVertexArray);
+                        glDrawElements(arg.topology,
+                                       arg.element_count,
+                                       GL_UNSIGNED_INT,
+                                       nullptr);
+                        CHECK_OPENGL_ERROR(glDrawElements(...));
 
-                                      glBindVertexArray(0);
-                                      CHECK_OPENGL_ERROR(glBindVertexArray(0));
-                                      glUseProgram(0);
-                                      CHECK_OPENGL_ERROR(glUseProgram(0));
-                                  }},
-                       cmd);
+                        glBindVertexArray(0);
+                        CHECK_OPENGL_ERROR(glBindVertexArray(0));
+                        glUseProgram(0);
+                        CHECK_OPENGL_ERROR(glUseProgram(0));
+                    }
+                },
+                cmd);
         }
     }
 
