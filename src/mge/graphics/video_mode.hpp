@@ -6,7 +6,7 @@
 #include "mge/graphics/extent.hpp"
 
 #include <iosfwd>
-#include <numeric>
+#include <limits>
 
 #ifdef max
 #    undef max

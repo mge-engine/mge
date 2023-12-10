@@ -5,8 +5,8 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
-#include <iosfwd>
 #include <format>
+#include <iosfwd>
 
 namespace mge {
 
@@ -25,39 +25,45 @@ namespace mge {
     };
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&      os,
                                                 const shader_type& t);
-}
+} // namespace mge
 
-namespace std {
+template <typename C>
+struct std::formatter<mge::shader_type, C> : std::formatter<std::string_view, C>
+{
+    auto format(const mge::shader_type& t, auto& ctx) const
+        -> std::format_context::iterator
+    {
+        switch (t) {
+        case mge::shader_type::VERTEX:
+            return std::formatter<std::string_view, C>::format(
+                std::string_view{"VERTEX"},
+                ctx);
+        case mge::shader_type::FRAGMENT:
+            return std::formatter<std::string_view, C>::format(
+                std::string_view{"FRAGMENT"},
+                ctx);
+        case mge::shader_type::COMPUTE:
+            return std::formatter<std::string_view, C>::format(
+                std::string_view{"COMPUTE"},
+                ctx);
 
+        case mge::shader_type::TESSELATION_CONTROL:
+            return std::formatter<std::string_view, C>::format(
+                std::string_view{"TESSELATION_CONTROL"},
+                ctx);
 
-    template <>
-    struct std::formatter<mge::shader_type> : std::formatter<std::string_view> {
-        auto format(mge::shader_type t, std::format_context& ctx) -> std::format_context::iterator {
-            std::string_view name;
-            switch (t) {
-                case mge::shader_type::VERTEX:
-                    name = "VERTEX";
-                    break;
-                case mge::shader_type::FRAGMENT:
-                    name = "FRAGMENT";
-                    break;
-                case mge::shader_type::COMPUTE:
-                    name = "COMPUTE";
-                    break;
-                case mge::shader_type::TESSELATION_CONTROL:
-                    name = "TESSELATION_CONTROL";
-                    break;
-                case mge::shader_type::TESSELATION_EVALUATION:
-                    name = "TESSELATION_EVALUATION";
-                    break;
-                case mge::shader_type::GEOMETRY:
-                    name = "GEOMETRY";
-                    break;
-                default:
-                    return std::format_to(ctx.out(), "INVALID({})", (int)t);
-                    break;
-            }
-            return std::formatter<std::string_view>::format(name, ctx);
+        case mge::shader_type::TESSELATION_EVALUATION:
+            return std::formatter<std::string_view, C>::format(
+                std::string_view{"TESSELATION_EVALUATION"},
+                ctx);
+
+        case mge::shader_type::GEOMETRY:
+            return std::formatter<std::string_view, C>::format(
+                std::string_view{"GEOMETRY"},
+                ctx);
+
+        default:
+            return std::format_to(ctx.out(), "INVALID({})", (int)t);
         }
-    };
-}
+    }
+};

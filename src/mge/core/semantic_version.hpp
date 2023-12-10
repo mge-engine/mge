@@ -129,24 +129,23 @@ namespace mge {
 
 } // namespace mge
 
-namespace std {
-    template <> struct formatter<mge::semantic_version> : formatter<string_view>
+template <typename C>
+struct std::formatter<mge::semantic_version, C>
+    : std::formatter<std::string_view, C>
+{
+    auto format(const mge::semantic_version& v, auto& ctx) const
     {
-        template <typename FormatContext>
-        auto format(const mge::semantic_version& v, FormatContext& ctx)
-        {
-            if (v.patch() == 0) {
-                if (v.minor() == 0) {
-                    return format_to(ctx.out(), "{}", v.major());
-                } else {
-                    return format_to(ctx.out(), "{}.{}", v.major(), v.minor());
-                }
-            } else
-                return format_to(ctx.out(),
-                                 "{}.{}.{}",
-                                 v.major(),
-                                 v.minor(),
-                                 v.patch());
-        }
-    };
-} // namespace std
+        if (v.patch() == 0) {
+            if (v.minor() == 0) {
+                return std::format_to(ctx.out(), "{}", v.major());
+            } else {
+                return std::format_to(ctx.out(), "{}.{}", v.major(), v.minor());
+            }
+        } else
+            return std::format_to(ctx.out(),
+                                  "{}.{}.{}",
+                                  v.major(),
+                                  v.minor(),
+                                  v.patch());
+    }
+};
