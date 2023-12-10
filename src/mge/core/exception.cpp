@@ -13,7 +13,14 @@ namespace mge {
         }
     }
 
-    exception::exception() { t_current_exception = this; }
+    exception::exception(const std::source_location& loc)
+    {
+        t_current_exception = this;
+
+        set_info(source_file(loc.file_name()));
+        set_info(source_line(loc.line()));
+        set_info(function(loc.function_name()));
+    }
 
     exception::exception(const exception& e)
         : std::exception(e)

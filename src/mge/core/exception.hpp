@@ -9,11 +9,13 @@
 #include <any>
 #include <exception>
 #include <optional>
+#include <source_location>
 #include <sstream>
 #include <string_view>
 #include <type_traits>
 #include <typeindex>
 #include <typeinfo>
+
 namespace mge {
 
     /**
@@ -194,8 +196,10 @@ namespace mge {
 
         /**
          * @brief Construct empty exception.
+         * @param loc source location
          */
-        exception();
+        exception(
+            const std::source_location& loc = std::source_location::current());
 
         /**
          * @brief Copy constructor.
@@ -382,10 +386,7 @@ namespace mge {
  * @param ex exception type
  */
 #define MGE_THROW(ex)                                                          \
-    throw(ex().set_info(mge::exception::source_file(__FILE__))                 \
-              .set_info(mge::exception::source_line(__LINE__))                 \
-              .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))      \
-              .set_info(mge::exception::stack(mge::stacktrace()))              \
+    throw(ex().set_info(mge::exception::stack(mge::stacktrace()))              \
               .set_info(mge::exception::type_name(mge::type_name<ex>())))
 
 /**
@@ -395,9 +396,6 @@ namespace mge {
  */
 #define MGE_THROW_WITH_CAUSE(ex, causing_exception)                            \
     throw ex()                                                                 \
-        .set_info(mge::exception::source_file(__FILE__))                       \
-        .set_info(mge::exception::source_line(__LINE__))                       \
-        .set_info(mge::exception::function(MGE_FUNCTION_SIGNATURE))            \
         .set_info(mge::exception::stack(mge::stacktrace()))                    \
         .set_info(mge::exception::type_name(mge::type_name<ex>()))             \
         .set_info(mge::exception::cause(causing_exception))
