@@ -46,17 +46,18 @@ TEST(exception, set_info_using_operator)
     std::stringstream msg;
     msg << ex.details();
 
-    EXPECT_EQ(
-        std::string(
+    EXPECT_THAT(
+        msg.str(),
+        MatchesRegex(
             "Exception details:\n"
             "Exception type: unknown mge::exception\n"
             "Exception location: "
-            "G:\\w\\mge\\mge\\src\\mge\\core\\test\\test_exception.cpp:44\n"
+            ".*\\\\mge\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception."
+            "cpp:44\n"
             "Exception raising function: void __cdecl "
-            "exception_set_info_using_operator_Test::TestBody(void)\n"
+            "exception_set_info_using_operator_Test::TestBody\\(void\\)\n"
             "Calling library/system function: FOOBAR\n"
-            "Exception message: test message\n"),
-        msg.str());
+            "Exception message: test message\n"));
 }
 
 TEST(exception, throw_macro)
