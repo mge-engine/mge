@@ -10,6 +10,7 @@
 using namespace std::chrono_literals;
 
 namespace mge {
+
     simple_trace_formatter::simple_trace_formatter() {}
 
     void simple_trace_formatter::format(std::ostream&       stream,
@@ -49,6 +50,8 @@ namespace mge {
             break;
         }
         stream << " " << std::setw(16) << r.topic->name();
+        // by intention we do not write file, line number and function name
+        // in simple formatter
         if (r.message.empty()) {
             stream << std::endl;
         } else {

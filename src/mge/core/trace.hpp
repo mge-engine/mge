@@ -8,6 +8,7 @@
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_topic.hpp"
 #include <optional>
+#include <source_location>
 #include <sstream>
 
 namespace mge {
@@ -25,8 +26,12 @@ namespace mge {
          *
          * @param topic trace topic
          * @param level level of trace event
+         * @param loc source location
          */
-        trace(trace_topic& topic, const trace_level level);
+        trace(
+            trace_topic&                topic,
+            const trace_level           level,
+            const std::source_location& loc = std::source_location::current());
 
         /**
          * Destructs trace object and before flushes the record,
@@ -69,6 +74,9 @@ namespace mge {
             uint32_t               sequence;
             trace_level            level;
             mge::thread::system_id thread;
+            const char*            file;
+            const char*            function;
+            uint32_t               line;
         };
 
         std::optional<entry>             m_entry;

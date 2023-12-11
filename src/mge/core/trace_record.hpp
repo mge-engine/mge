@@ -18,8 +18,11 @@ namespace mge {
         const trace_topic* topic;    //!< trace topic
         std::string_view   message;  //!< trace message
         clock::time_point  time;     //!< time of the trace event
+        const char*        file;     //!< source file
+        const char*        function; //!< function name
         uint32_t           thread;   //!< thread id
         uint32_t           sequence; //!< sequence number of trace event
+        uint32_t           line;     //!< source line
         trace_level        level;    //!< trace event trace level
     };
 
