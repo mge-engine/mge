@@ -52,7 +52,7 @@ TEST(exception, set_info_using_operator)
             "Exception details:\n"
             "Exception type: unknown mge::exception\n"
             "Exception location: "
-            ".*\\\\mge\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception."
+            ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception."
             "cpp:44\n"
             "Exception raising function: void __cdecl "
             "exception_set_info_using_operator_Test::TestBody\\(void\\)\n"
