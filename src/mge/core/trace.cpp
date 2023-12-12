@@ -11,7 +11,9 @@ namespace mge {
 
     static std::atomic<uint32_t> s_trace_sequence;
 
-    trace::trace(trace_topic& topic, const trace_level level)
+    trace::trace(trace_topic&                topic,
+                 const trace_level           level,
+                 const std::source_location& loc)
         : m_topic(topic)
         , m_enabled(topic.enabled(level))
     {
@@ -21,7 +23,9 @@ namespace mge {
             m_entry->level = level;
             m_entry->sequence = ++s_trace_sequence;
             m_entry->thread = mge::this_thread::system_id();
-
+            m_entry->file = loc.file_name();
+            m_entry->line = loc.line();
+            m_entry->function = loc.function_name();
             m_stream = std::stringstream();
         }
     }
@@ -44,6 +48,9 @@ namespace mge {
         r.time = m_entry->time;
         r.thread = m_entry->thread;
         r.topic = &m_topic;
+        r.file = m_entry->file;
+        r.line = m_entry->line;
+        r.function = m_entry->function;
         r.message = std::string_view(msg.begin(), msg.end());
         m_topic.publish(r);
     }
