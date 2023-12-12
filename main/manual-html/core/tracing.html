@@ -476,14 +476,15 @@ in case the topic is defined in another dynamic library.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge5trace5traceER11trace_topicK11trace_level">
-<span id="_CPPv3N3mge5trace5traceER11trace_topicK11trace_level"></span><span id="_CPPv2N3mge5trace5traceER11trace_topicK11trace_level"></span><span id="mge::trace::trace__trace_topicR.trace_levelC"></span><span class="target" id="classmge_1_1trace_1ada3e7ffbbd1a3cbda5074e96effa0c71"></span><span class="sig-name descname"><span class="n"><span class="pre">trace</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_topicE" title="mge::trace_topic"><span class="n"><span class="pre">trace_topic</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">topic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">level</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5trace5traceER11trace_topicK11trace_level" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5trace5traceER11trace_topicK11trace_levelRKNSt15source_locationE">
+<span id="_CPPv3N3mge5trace5traceER11trace_topicK11trace_levelRKNSt15source_locationE"></span><span id="_CPPv2N3mge5trace5traceER11trace_topicK11trace_levelRKNSt15source_locationE"></span><span id="mge::trace::trace__trace_topicR.trace_levelC.std::source_locationCR"></span><span class="target" id="classmge_1_1trace_1a6544bc9e7493ccc8bd48d243239c7a1f"></span><span class="sig-name descname"><span class="n"><span class="pre">trace</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge11trace_topicE" title="mge::trace_topic"><span class="n"><span class="pre">trace_topic</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">topic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge11trace_levelE" title="mge::trace_level"><span class="n"><span class="pre">trace_level</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">level</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">source_location</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">loc</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">source_location</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">current</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5trace5traceER11trace_topicK11trace_levelRKNSt15source_locationE" title="Link to this definition"></a><br /></dt>
 <dd><p>Construct a new trace object. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>topic</strong> – trace topic </p></li>
 <li><p><strong>level</strong> – level of trace event </p></li>
+<li><p><strong>loc</strong> – source location </p></li>
 </ul>
 </dd>
 </dl>
@@ -735,6 +736,18 @@ materialized.</p>
 </dd></dl>
 
 <dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record4fileE">
+<span id="_CPPv3N3mge12trace_record4fileE"></span><span id="_CPPv2N3mge12trace_record4fileE"></span><span id="mge::trace_record::file__cCP"></span><span class="target" id="structmge_1_1trace__record_1a80153742a430855ac1f8a983e471ae5d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">file</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record4fileE" title="Link to this definition"></a><br /></dt>
+<dd><p>source file </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record8functionE">
+<span id="_CPPv3N3mge12trace_record8functionE"></span><span id="_CPPv2N3mge12trace_record8functionE"></span><span id="mge::trace_record::function__cCP"></span><span class="target" id="structmge_1_1trace__record_1a2fe69c01ea97bdd7c86168547817bb6f"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">function</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record8functionE" title="Link to this definition"></a><br /></dt>
+<dd><p>function name </p>
+</dd></dl>
+
+<dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record6threadE">
 <span id="_CPPv3N3mge12trace_record6threadE"></span><span id="_CPPv2N3mge12trace_record6threadE"></span><span id="mge::trace_record::thread__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1a8a48798d81f0bd7788ccb704ccd03bf5"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">thread</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record6threadE" title="Link to this definition"></a><br /></dt>
 <dd><p>thread id </p>
@@ -744,6 +757,12 @@ materialized.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record8sequenceE">
 <span id="_CPPv3N3mge12trace_record8sequenceE"></span><span id="_CPPv2N3mge12trace_record8sequenceE"></span><span id="mge::trace_record::sequence__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1aa056161699b89ed5b76a2c44c21664b9"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sequence</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record8sequenceE" title="Link to this definition"></a><br /></dt>
 <dd><p>sequence number of trace event </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12trace_record4lineE">
+<span id="_CPPv3N3mge12trace_record4lineE"></span><span id="_CPPv2N3mge12trace_record4lineE"></span><span id="mge::trace_record::line__uint32_t"></span><span class="target" id="structmge_1_1trace__record_1a5cc08fb40db0d29f52f4401a46db7fa2"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">line</span></span></span><a class="headerlink" href="#_CPPv4N3mge12trace_record4lineE" title="Link to this definition"></a><br /></dt>
+<dd><p>source line </p>
 </dd></dl>
 
 <dl class="cpp var">
