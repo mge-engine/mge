@@ -252,10 +252,10 @@ namespace mge::script {
                 return types;
             }
 
-            static void invoke(const C& callable, call_context& context)
+            static void invoke(const C& callable_obj, call_context& context)
             {
                 invoke_helper<Args...>::call_callable(
-                    callable,
+                    callable_obj,
                     context,
                     std::make_index_sequence<sizeof...(Args)>{});
             }
@@ -264,11 +264,11 @@ namespace mge::script {
         using concrete_utils = callable_utils<decltype(&C::operator())>;
 
     public:
-        callable_function(const std::string& name, C&& callable)
+        callable_function(const std::string& name, C&& callable_obj)
         {
             if constexpr (concrete_utils::arity >= 1) {
                 auto invoke_function =
-                    [c = std::move(callable)](call_context& context) {
+                    [c = std::move(callable_obj)](call_context& context) {
                         concrete_utils::invoke(c, context);
                     };
                 auto arg_types = concrete_utils::arg_types();
@@ -283,7 +283,7 @@ namespace mge::script {
                 auto result_type =
                     std::type_index(typeid(concrete_utils::return_type));
                 auto invoke_function =
-                    [c = std::move(callable)](call_context& context) {
+                    [c = std::move(callable_obj)](call_context& context) {
                         concrete_utils::invoke(c, context);
                     };
                 m_details =

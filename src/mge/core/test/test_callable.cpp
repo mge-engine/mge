@@ -28,4 +28,15 @@ namespace mge {
         EXPECT_TRUE(mge::is_callable<decltype(f)>::value);
     }
 
+    template <callable C> int bar(C c) { return 42; }
+
+    TEST(callable, template_callable)
+    {
+        auto x = [](int x) {};
+        auto y = []() -> int { return 12; };
+
+        EXPECT_EQ(42, bar(x));
+        EXPECT_EQ(42, bar(y));
+    }
+
 } // namespace mge

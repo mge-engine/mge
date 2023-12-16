@@ -18,4 +18,7 @@ namespace mge {
     template <typename T>
     inline constexpr bool is_callable_v = is_callable<T>::value;
 
+    template <typename T>
+    concept callable = is_callable_v<T>;
+
 } // namespace mge
