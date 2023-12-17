@@ -123,12 +123,12 @@ namespace mge::script {
 
     static mge::singleton<type_dictionary> s_type_dictionary;
 
-    type_details::type_details(const std::string&         automatic_name,
+    type_details::type_details(const std::string_view&    automatic_name,
                                const std::type_index&     ti,
                                const mge::script::traits& t,
                                size_t                     size,
                                const char*                name)
-        : m_automatic_name(automatic_name)
+        : m_automatic_name(automatic_name.begin(), automatic_name.end())
         , m_name(name == nullptr ? "" : name)
         , m_unique_name(ti.name())
         , m_type_index(ti)
@@ -226,7 +226,6 @@ namespace mge::script {
 
     void enum_type_details::apply(const type_details_ref& self, visitor& v)
     {
-
         if (self.get() != this) {
             MGE_THROW(mge::illegal_argument)
                 << "Passed type details reference must be same as this";

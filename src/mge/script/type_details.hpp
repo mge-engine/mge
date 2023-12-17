@@ -33,11 +33,11 @@ namespace mge::script {
          * @param used_name     used name (like 'string' for
          * 'std::basic_string<...>')
          */
-        type_details(const std::string&     name,
-                     const std::type_index& ti,
-                     const traits&          t,
-                     size_t                 size,
-                     const char*            used_name);
+        type_details(const std::string_view& name,
+                     const std::type_index&  ti,
+                     const traits&           t,
+                     size_t                  size,
+                     const char*             used_name);
 
         type_details(const type_details&) = delete;
         type_details& operator=(const type_details&) = delete;

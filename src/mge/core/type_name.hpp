@@ -4,6 +4,7 @@
 #pragma once
 
 #include "mge/core/dllexport.hpp"
+#include <source_location>
 #include <string>
 #include <typeinfo>
 
@@ -31,16 +32,62 @@ namespace mge {
      */
     MGECORE_EXPORT std::string namespace_name(const std::type_info& ti);
 
+    namespace {
+
+        template <typename T> struct $h$type_name$
+        {
+            static consteval auto name()
+            {
+                std::string_view prefix("::$h$type_name$<");
+                std::string_view func_name(
+                    std::source_location::current().function_name());
+
+                const auto pos = func_name.find(prefix);
+                if (pos == std::string::npos) {
+                    return std::string_view("xxx");
+                }
+
+                std::remove_const_t<decltype(pos)> end =
+                    pos + prefix.size() + 1;
+                int level = 1;
+                while (level > 0) {
+                    ++end;
+                    if (func_name[end] == '<') {
+                        ++level;
+                    } else if (func_name[end] == '>') {
+                        --level;
+                    }
+                    if (end >= func_name.size()) {
+                        return std::string_view("???");
+                    }
+                }
+
+                while (func_name[end - 1] == ' ') {
+                    --end;
+                }
+
+                auto n = func_name.substr(pos + prefix.size(),
+                                          end - pos - prefix.size());
+                if (n.starts_with("class "))
+                    n = n.substr(6);
+                else if (n.starts_with("struct "))
+                    n = n.substr(7);
+                return n;
+            }
+        };
+    } // namespace
+
     /**
      * @brief Get type name of type.
      *
      * @tparam T inspected type
      * @return type name
      */
-    template <typename T> inline std::string type_name()
+    template <typename T> consteval std::string_view type_name()
     {
-        return type_name(typeid(T));
+        return $h$type_name$<T>::name();
     }
+
     /**
      * @brief Get base name of type.
      *
