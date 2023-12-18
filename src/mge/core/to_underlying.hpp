@@ -3,13 +3,15 @@
 // All rights reserved.
 #pragma once
 #include <type_traits>
-
+#include <utility>
 namespace mge {
-
-    template <class Enum>
-    constexpr std::underlying_type_t<Enum> to_underlying(Enum e) noexcept
+#if __cpp_lib_to_underlying >= 202102L
+    using std::to_underlying;
+#else
+    template <typename E>
+    constexpr auto to_underlying(E e) -> typename std::underlying_type<E>::type
     {
-        return static_cast<std::underlying_type_t<Enum>>(e);
+        return static_cast<typename std::underlying_type<E>::type>(e);
     }
-
+#endif
 } // namespace mge
