@@ -44,8 +44,6 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, IDXGISwapChain1, As);
     }
 
-    swap_chain::~swap_chain() {}
-
     void swap_chain::present() { m_swap_chain->Present(0, 0); }
 
 } // namespace mge::dx12

@@ -15,7 +15,7 @@ namespace mge::dx12 {
     {
     public:
         swap_chain(render_system& system, render_context& context);
-        ~swap_chain();
+        ~swap_chain() = default;
         void present() override;
 
         IDXGISwapChain4* dxgi_swap_chain() const { return m_swap_chain.Get(); }
