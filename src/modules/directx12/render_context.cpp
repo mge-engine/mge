@@ -9,6 +9,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "render_system.hpp"
+#include "shader.hpp"
 #include "swap_chain.hpp"
 #include "window.hpp"
 
@@ -243,7 +244,7 @@ namespace mge::dx12 {
 
     mge::shader_ref render_context::create_shader(shader_type t)
     {
-        mge::shader_ref ref;
+        auto ref = std::make_shared<shader>(*this, t);
         return ref;
     }
 
