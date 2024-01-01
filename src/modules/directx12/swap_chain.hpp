@@ -22,6 +22,7 @@ namespace mge::dx12 {
 
     private:
         mge::com_ptr<IDXGISwapChain4> m_swap_chain;
+        uint32_t                      m_frame_index;
     };
 
 } // namespace mge::dx12
