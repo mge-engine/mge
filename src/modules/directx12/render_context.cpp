@@ -192,6 +192,36 @@ namespace mge::dx12 {
             D3D12_COMMAND_LIST_TYPE_DIRECT,
             IID_PPV_ARGS(&m_command_allocator));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        create_root_signature();
+    }
+
+    void render_context::create_root_signature()
+    {
+        D3D12_VERSIONED_ROOT_SIGNATURE_DESC versioned_root_signature_desc = {
+            .Version = D3D_ROOT_SIGNATURE_VERSION_1_0,
+            .Desc_1_0 =
+                {.Flags =
+                     D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT},
+        };
+
+        mge::com_ptr<ID3DBlob> signature;
+        mge::com_ptr<ID3DBlob> error;
+        auto                   rc =
+            D3D12SerializeVersionedRootSignature(&versioned_root_signature_desc,
+                                                 &signature,
+                                                 &error);
+        if (rc != S_OK) {
+            MGE_THROW(dx12::error)
+                << "Failed to serialize root signature: "
+                << static_cast<const char*>(error->GetBufferPointer());
+        }
+
+        mge::com_ptr<ID3D12RootSignature> root_signature;
+        rc = m_device->CreateRootSignature(0,
+                                           signature->GetBufferPointer(),
+                                           signature->GetBufferSize(),
+                                           IID_PPV_ARGS(&root_signature));
+        CHECK_HRESULT(rc, ID3D12Device, CreateRootSignature);
     }
 
     render_context::~render_context() {}
