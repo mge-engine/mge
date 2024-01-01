@@ -63,6 +63,7 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12Device2>               m_device;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
+        mge::com_ptr<ID3D12CommandAllocator>      m_command_allocator;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
         uint32_t                                  m_rtv_descriptor_size;
     };

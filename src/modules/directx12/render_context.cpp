@@ -187,6 +187,11 @@ namespace mge::dx12 {
         create_descriptor_heap();
         MGE_DEBUG_TRACE(DX12) << "Update render target views";
         update_render_target_views(swap_chain);
+        MGE_DEBUG_TRACE(DX12) << "Create command allocator";
+        auto rc = m_device->CreateCommandAllocator(
+            D3D12_COMMAND_LIST_TYPE_DIRECT,
+            IID_PPV_ARGS(&m_command_allocator));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
     }
 
     render_context::~render_context() {}
