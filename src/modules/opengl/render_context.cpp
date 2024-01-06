@@ -146,9 +146,6 @@ namespace mge::opengl {
         return result;
     }
 
-    void render_context::execute(const mge::command_sequence& sequence)
-    {
-        // TODO
-    }
+    void render_context::execute(const mge::command_sequence& sequence) {}
 
 } // namespace mge::opengl
