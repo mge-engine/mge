@@ -224,4 +224,9 @@ namespace mge::dx12 {
         return result;
     }
 
+    void render_context::execute(const mge::command_sequence& sequence)
+    {
+        // TODO
+    }
+
 } // namespace mge::dx12

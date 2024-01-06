@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/command_sequence.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
@@ -71,6 +72,13 @@ namespace mge {
          * @return command list
          */
         virtual command_list_ref create_command_list() = 0;
+
+        /**
+         * @brief Execute a command sequence.
+         *
+         * @param sequence command sequence
+         */
+        virtual void execute(const command_sequence& sequence) = 0;
 
         /**
          * @brief Get swap chain of context.

@@ -30,6 +30,7 @@ namespace mge::dx11 {
         mge::shader_ref       create_shader(mge::shader_type t) override;
         mge::program_ref      create_program() override;
         mge::command_list_ref create_command_list() override;
+        void execute(const mge::command_sequence& sequence) override;
 
         const ::mge::dx11::window& window() const { return m_window; }
 
