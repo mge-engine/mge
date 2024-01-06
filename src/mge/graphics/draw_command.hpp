@@ -5,12 +5,15 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/topology.hpp"
+#include "mge/core/sequenced.hpp"
+
 namespace mge {
 
     /**
      * @brief A draw command executes a program with a given set of buffers.
      */
     class MGEGRAPHICS_EXPORT draw_command
+        : public sequenced<draw_command>
     {
     public:
         /**
