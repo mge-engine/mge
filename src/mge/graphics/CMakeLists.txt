@@ -33,6 +33,7 @@ SET(mgegraphics_sources
     draw_command.cpp
     uniform_data_type.cpp
     attribute_semantic.cpp
+    command_sequence.cpp
 )
 
 SET(mgegraphics_headers
