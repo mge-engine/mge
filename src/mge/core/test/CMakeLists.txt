@@ -33,6 +33,7 @@ SET(MGECORE_TEST_SOURCES
     test_call_debugger.cpp
     test_nargs.cpp
     test_sequenced.cpp
+    test_lru_cache.cpp
 )
 
 MGE_TEST(

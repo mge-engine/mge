@@ -9,6 +9,7 @@
     "boost-property-tree",
     "boost-spirit",
     "boost-locale",
+    "boost-bimap",
     "glm",
     "lua",
     {
