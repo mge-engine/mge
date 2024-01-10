@@ -38,6 +38,13 @@ namespace mge {
         void clear(const rgba_color& c);
         void draw(const mge::draw_command& command);
 
+        template <typename C> void for_each(C&& c) const
+        {
+            for (auto& cmd : m_commands) {
+                std::visit(c, cmd);
+            }
+        }
+
     private:
         using command_vector = std::vector<command>;
         command_vector m_commands;

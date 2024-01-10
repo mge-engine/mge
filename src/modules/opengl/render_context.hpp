@@ -1,7 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "draw_command_info.hpp"
 #include "mge/config.hpp"
+#include "mge/core/lru_cache.hpp"
 #include "mge/core/mutex.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/thread.hpp"
@@ -54,7 +56,12 @@ namespace mge {
 #else
 #    error Missing port
 #endif
+            void execute_draw_command(
+                const mge::command_sequence::draw_command& cmd);
+
             static singleton<opengl_info> s_glinfo;
+            mge::lru_cache<uint64_t, draw_command_info>
+                m_draw_command_cache;
         };
     } // namespace opengl
 } // namespace mge

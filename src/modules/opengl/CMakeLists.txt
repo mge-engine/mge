@@ -14,7 +14,8 @@ SET(mge_opengl_module_SOURCES
     shader.cpp
     error.cpp
     common.cpp
-    program.cpp)
+    program.cpp
+    draw_command_info.cpp)
 
 ADD_LIBRARY(mge_module_opengl MODULE
             ${mge_opengl_module_SOURCES})
