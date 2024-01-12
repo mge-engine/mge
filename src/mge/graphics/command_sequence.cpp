@@ -4,6 +4,10 @@
 #include "mge/graphics/command_sequence.hpp"
 namespace mge {
 
+    command_sequence::command_sequence(render_context& context)
+        : context_object(context)
+    {}
+
     void command_sequence::clear(const rgba_color& c)
     {
         m_commands.push_back(clear_command{c});

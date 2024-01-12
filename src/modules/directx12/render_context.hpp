@@ -31,9 +31,11 @@ namespace mge::dx12 {
                              size_t                    data_size,
                              void*                     data) override;
 
-        mge::shader_ref       create_shader(shader_type t) override;
-        mge::program_ref      create_program() override;
-        mge::command_list_ref create_command_list() override;
+        mge::shader_ref           create_shader(shader_type t) override;
+        mge::program_ref          create_program() override;
+        mge::command_list_ref     create_command_list() override;
+        mge::command_sequence_ref create_command_sequence() override;
+
         void execute(const mge::command_sequence& sequence) override;
 
         const mge::dx12::window& window() const { return m_window; }

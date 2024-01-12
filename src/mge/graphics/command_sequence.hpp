@@ -4,8 +4,11 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 
+#include "mge/graphics/context_object.hpp"
 #include "mge/graphics/draw_command.hpp"
 #include "mge/graphics/rgba_color.hpp"
+
+#include <ranges>
 #include <variant>
 #include <vector>
 
@@ -14,7 +17,7 @@ namespace mge {
     /**
      * @brief Sequence of commands.
      */
-    class MGEGRAPHICS_EXPORT command_sequence
+    class MGEGRAPHICS_EXPORT command_sequence : public context_object
     {
     public:
         struct clear_command
@@ -30,23 +33,17 @@ namespace mge {
         using command =
             std::variant<std::monostate, clear_command, draw_command>;
 
-        command_sequence() = default;
-        command_sequence(const command_sequence&) = default;
-        command_sequence(command_sequence&&) = default;
-        ~command_sequence() = default;
+        command_sequence(render_context&);
+        command_sequence(const command_sequence&) = delete;
+        command_sequence(command_sequence&&) = delete;
+        virtual ~command_sequence() = default;
 
         void clear(const rgba_color& c);
         void draw(const mge::draw_command& command);
 
-        template <typename C> void for_each(C&& c) const
-        {
-            for (auto& cmd : m_commands) {
-                std::visit(c, cmd);
-            }
-        }
-
     private:
         using command_vector = std::vector<command>;
+
         command_vector m_commands;
     };
 } // namespace mge

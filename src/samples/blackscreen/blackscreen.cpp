@@ -33,9 +33,11 @@ namespace mge {
                         set_quit();
                     }
                 });
-            m_clear_commands.clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+            m_clear_commands =
+                m_window->render_context().create_command_sequence();
+            m_clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
             add_redraw_listener([&](uint64_t cycle, double delta) {
-                m_window->render_context().execute(m_clear_commands);
+                m_window->render_context().execute(*m_clear_commands);
                 m_window->render_context().swap_chain()->present();
             });
 
@@ -49,9 +51,9 @@ namespace mge {
         }
 
     private:
-        render_system_ref m_render_system;
-        window_ref        m_window;
-        command_sequence  m_clear_commands;
+        render_system_ref    m_render_system;
+        window_ref           m_window;
+        command_sequence_ref m_clear_commands;
     };
 
     MGE_REGISTER_IMPLEMENTATION(blackscreen, mge::application, blackscreen);
