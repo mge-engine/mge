@@ -510,6 +510,12 @@ namespace mge {
 
         void swap(small_vector<T, S, Alloc>& v) { m_data.swap(v.m_data); }
 
+        void clear()
+        {
+            small_vector<T, S, Alloc> empty;
+            swap(empty);
+        }
+
         bool operator==(const small_vector<T, S, Alloc>& v) const
         {
             if (size() != v.size()) {

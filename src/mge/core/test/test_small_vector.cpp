@@ -20,3 +20,10 @@ TEST(small_vector, ctor_with_default)
     EXPECT_EQ(300u, v2.size());
     EXPECT_EQ(0u, v3.size());
 }
+
+TEST(small_vector, clear)
+{
+    mge::small_vector<int, 5> v1(3, 15);
+    v1.clear();
+    EXPECT_EQ(0u, v1.size());
+}
