@@ -34,9 +34,9 @@ namespace mge {
                         set_quit();
                     }
                 });
-
-            m_clear_commands = m_window->render_context().create_command_list();
-            m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+            m_clear_command_seq =
+                m_window->render_context().create_command_sequence();
+            m_clear_command_seq->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 this->draw(cycle, delta);
             });
@@ -47,7 +47,7 @@ namespace mge {
         void draw(uint64_t cycle, double delta)
         {
             if (!m_initialized) {
-                m_clear_commands->execute();
+                m_window->render_context().execute(*m_clear_command_seq);
             } else {
                 m_draw_commands->execute();
             }
@@ -149,7 +149,17 @@ namespace mge {
                 sizeof(triangle_indices),
                 triangle_indices);
 
+            m_draw_command_seq =
+                m_window->render_context().create_command_sequence();
+            m_draw_command_seq->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+            m_draw_command_seq->draw(
+                mge::draw_command(m_program,
+                                  m_vertices,
+                                  m_indices,
+                                  mge::topology::TRIANGLES));
+
             m_draw_commands = m_window->render_context().create_command_list();
+
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
             m_draw_commands->draw(mge::draw_command(m_program,
                                                     m_vertices,
@@ -162,14 +172,16 @@ namespace mge {
         }
 
     private:
-        render_system_ref m_render_system;
-        window_ref        m_window;
-        std::atomic<bool> m_initialized;
-        command_list_ref  m_clear_commands;
-        command_list_ref  m_draw_commands;
-        program_ref       m_program;
-        vertex_buffer_ref m_vertices;
-        index_buffer_ref  m_indices;
+        render_system_ref    m_render_system;
+        window_ref           m_window;
+        std::atomic<bool>    m_initialized;
+        command_sequence_ref m_clear_command_seq;
+        command_sequence_ref m_draw_command_seq;
+        command_list_ref     m_clear_commands;
+        command_list_ref     m_draw_commands;
+        program_ref          m_program;
+        vertex_buffer_ref    m_vertices;
+        index_buffer_ref     m_indices;
     };
 
     MGE_REGISTER_IMPLEMENTATION(triangle, mge::application, triangle);
