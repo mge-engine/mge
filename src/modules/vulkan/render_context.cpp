@@ -569,4 +569,8 @@ namespace mge::vulkan {
         m_frame_commands.clear();
     }
 
+    void render_context::clear(const rgba_color& c) {}
+
+    void render_context::draw(const draw_command& command) {}
+
 } // namespace mge::vulkan

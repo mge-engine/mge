@@ -35,8 +35,10 @@ namespace mge {
             mge::program_ref          create_program() override;
             mge::command_list_ref     create_command_list() override;
             mge::command_sequence_ref create_command_sequence() override;
-
             void execute(const mge::command_sequence& sequence) override;
+
+            void clear(const mge::rgba_color& c) override;
+            void draw(const mge::draw_command& command) override;
 
 #ifdef MGE_OS_WINDOWS
 

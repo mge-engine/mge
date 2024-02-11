@@ -27,11 +27,14 @@ namespace mge::dx11 {
                              size_t                    data_size,
                              void*                     data) override;
 
-        mge::shader_ref       create_shader(mge::shader_type t) override;
-        mge::program_ref      create_program() override;
-        mge::command_list_ref create_command_list() override;
+        mge::shader_ref           create_shader(mge::shader_type t) override;
+        mge::program_ref          create_program() override;
+        mge::command_list_ref     create_command_list() override;
         mge::command_sequence_ref create_command_sequence() override;
         void execute(const mge::command_sequence& sequence) override;
+
+        void clear(const mge::rgba_color& c) override;
+        void draw(const mge::draw_command& command) override;
 
         const ::mge::dx11::window& window() const { return m_window; }
 

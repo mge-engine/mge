@@ -94,6 +94,20 @@ namespace mge {
          */
         const swap_chain_ref& swap_chain() const;
 
+        /**
+         * @brief Clears the color buffer with the requested color.
+         *
+         * @param color clear color
+         */
+        virtual void clear(const rgba_color& c) = 0;
+
+        /**
+         * @brief Draws a draw command.
+         *
+         * @param command draw command
+         */
+        virtual void draw(const draw_command& command) = 0;
+
     protected:
         render_context();
 

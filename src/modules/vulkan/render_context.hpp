@@ -31,6 +31,9 @@ namespace mge::vulkan {
         command_sequence_ref create_command_sequence() override;
         void execute(const mge::command_sequence& sequence) override;
 
+        void clear(const mge::rgba_color& c) override;
+        void draw(const mge::draw_command& command) override;
+
         void initialize();
 
         inline mge::vulkan::render_system& render_system() noexcept

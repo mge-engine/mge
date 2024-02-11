@@ -168,4 +168,16 @@ namespace mge::dx11 {
         // TODO
     }
 
+    void render_context::clear(const mge::rgba_color& c)
+    {
+        float color[4] = {c.r, c.g, c.b, c.a};
+        m_device_context->ClearRenderTargetView(m_render_target_view.get(),
+                                                color);
+    }
+
+    void render_context::draw(const mge::draw_command& command)
+    {
+        // TODO
+    }
+
 } // namespace mge::dx11
