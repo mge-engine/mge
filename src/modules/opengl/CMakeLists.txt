@@ -15,7 +15,8 @@ SET(mge_opengl_module_SOURCES
     error.cpp
     common.cpp
     program.cpp
-    command_sequence.cpp)
+    command_sequence.cpp
+    draw_command.cpp)
 
 ADD_LIBRARY(mge_module_opengl MODULE
             ${mge_opengl_module_SOURCES})

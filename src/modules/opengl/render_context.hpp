@@ -10,6 +10,7 @@
 #include "opengl.hpp"
 #include "opengl_info.hpp"
 #include "window.hpp"
+#include <unordered_map>
 
 namespace mge {
 
@@ -38,6 +39,11 @@ namespace mge {
             void execute(const mge::command_sequence& sequence) override;
 
             void clear(const mge::rgba_color& c) override;
+            mge::draw_command_ref
+                 create_draw_command(const mge::program_ref&       program,
+                                     const mge::vertex_buffer_ref& vertices,
+                                     const mge::index_buffer_ref&  indices,
+                                     mge::topology                 t) override;
             void draw(const mge::draw_command& command) override;
 
 #ifdef MGE_OS_WINDOWS

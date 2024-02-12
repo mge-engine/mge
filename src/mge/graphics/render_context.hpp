@@ -5,6 +5,7 @@
 #include "mge/graphics/command_sequence.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/draw_command.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/vertex_layout.hpp"
@@ -100,6 +101,21 @@ namespace mge {
          * @param color clear color
          */
         virtual void clear(const rgba_color& c) = 0;
+
+        /**
+         * @brief Create a draw command.
+         *
+         * @param program program to draw
+         * @param vertices  vectices
+         * @param indices  indices
+         * @param t topology
+         * @return draw command
+         */
+        virtual draw_command_ref
+        create_draw_command(const program_ref&       program,
+                            const vertex_buffer_ref& vertices,
+                            const index_buffer_ref&  indices,
+                            topology                 t) = 0;
 
         /**
          * @brief Draws a draw command.

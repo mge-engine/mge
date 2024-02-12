@@ -148,7 +148,7 @@ namespace mge {
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
                 triangle_indices);
-
+            /*
             m_draw_command_seq =
                 m_window->render_context().create_command_sequence();
             m_draw_command_seq->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
@@ -157,6 +157,7 @@ namespace mge {
                                   m_vertices,
                                   m_indices,
                                   mge::topology::TRIANGLES));
+            */
             MGE_DEBUG_TRACE(TRIANGLE) << "Initializing objects done";
             m_initialized = true;
         }
