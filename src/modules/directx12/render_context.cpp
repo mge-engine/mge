@@ -235,14 +235,4 @@ namespace mge::dx12 {
         // TODO
     }
 
-    void render_context::clear(const mge::rgba_color& c)
-    {
-        // TODO
-    }
-
-    void render_context::draw(const mge::draw_command& command)
-    {
-        // TODO
-    }
-
 } // namespace mge::dx12

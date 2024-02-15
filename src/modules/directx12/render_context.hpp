@@ -38,9 +38,6 @@ namespace mge::dx12 {
 
         void execute(const mge::command_sequence& sequence) override;
 
-        void clear(const mge::rgba_color& c) override;
-        void draw(const mge::draw_command& command) override;
-
         const mge::dx12::window& window() const { return m_window; }
 
         const mge::com_ptr<IDXGIFactory4>& factory() const { return m_factory; }

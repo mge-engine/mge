@@ -157,8 +157,4 @@ namespace mge::opengl {
 
     void render_context::execute(const mge::command_sequence& sequence) {}
 
-    void render_context::clear(const mge::rgba_color& c) {}
-
-    void render_context::draw(const mge::draw_command& command) {}
-
 } // namespace mge::opengl
