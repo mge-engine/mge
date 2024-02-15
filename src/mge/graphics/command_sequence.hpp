@@ -38,8 +38,8 @@ namespace mge {
         command_sequence(command_sequence&&) = delete;
         virtual ~command_sequence() = default;
 
-        virtual void clear(const rgba_color& c);
-        virtual void draw(const mge::draw_command& command);
+        void clear(const rgba_color& c);
+        void draw(const mge::draw_command& command);
 
     private:
         using command_vector = std::vector<command>;
