@@ -395,11 +395,6 @@ namespace mge::vulkan {
         return result;
     }
 
-    void render_context::execute(const mge::command_sequence& sequence)
-    {
-        // TODO
-    }
-
     void render_context::fetch_surface_capabilities()
     {
         CHECK_VK_CALL(m_render_system.vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
