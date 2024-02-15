@@ -157,12 +157,6 @@ namespace mge::dx11 {
         return result;
     }
 
-    mge::command_sequence_ref render_context::create_command_sequence()
-    {
-        mge::command_sequence_ref result;
-        return result;
-    }
-
     void render_context::execute(const mge::command_sequence& sequence)
     {
         // TODO

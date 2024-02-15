@@ -395,12 +395,6 @@ namespace mge::vulkan {
         return result;
     }
 
-    command_sequence_ref render_context::create_command_sequence()
-    {
-        command_sequence_ref result;
-        return result;
-    }
-
     void render_context::execute(const mge::command_sequence& sequence)
     {
         // TODO

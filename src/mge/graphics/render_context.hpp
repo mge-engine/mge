@@ -74,13 +74,6 @@ namespace mge {
         virtual command_list_ref create_command_list() = 0;
 
         /**
-         * @brief Create a command sequence.
-         *
-         * @return empty command sequence
-         */
-        virtual command_sequence_ref create_command_sequence() = 0;
-
-        /**
          * @brief Execute a command sequence.
          *
          * @param sequence command sequence

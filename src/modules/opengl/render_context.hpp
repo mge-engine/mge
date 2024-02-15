@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "draw_command_info.hpp"
 #include "mge/config.hpp"
 #include "mge/core/lru_cache.hpp"
 #include "mge/core/mutex.hpp"
@@ -31,11 +32,9 @@ namespace mge {
 
             opengl_info& gl_info() { return *s_glinfo; }
 
-            mge::shader_ref           create_shader(shader_type t) override;
-            mge::program_ref          create_program() override;
-            mge::command_list_ref     create_command_list() override;
-            mge::command_sequence_ref create_command_sequence() override;
-
+            mge::shader_ref       create_shader(shader_type t) override;
+            mge::program_ref      create_program() override;
+            mge::command_list_ref create_command_list() override;
             void execute(const mge::command_sequence& sequence) override;
 
 #ifdef MGE_OS_WINDOWS
@@ -57,7 +56,12 @@ namespace mge {
 #else
 #    error Missing port
 #endif
+            void execute_draw_command(
+                const mge::command_sequence::draw_command& cmd);
+
             static singleton<opengl_info> s_glinfo;
+            mge::lru_cache<uint64_t, draw_command_info>
+                m_draw_command_cache;
         };
     } // namespace opengl
 } // namespace mge

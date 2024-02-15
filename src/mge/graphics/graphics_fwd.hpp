@@ -17,6 +17,5 @@ namespace mge {
     MGE_DECLARE_REF(shader);
     MGE_DECLARE_REF(program);
     MGE_DECLARE_REF(command_list);
-    MGE_DECLARE_REF(command_sequence);
 
 } // namespace mge

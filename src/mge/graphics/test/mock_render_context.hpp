@@ -22,6 +22,5 @@ public:
     MOCK_METHOD(mge::shader_ref, create_shader, (mge::shader_type), ());
     MOCK_METHOD(mge::program_ref, create_program, (), ());
     MOCK_METHOD(mge::command_list_ref, create_command_list, (), ());
-    MOCK_METHOD(mge::command_sequence_ref, create_command_sequence, (), ());
     MOCK_METHOD(void, execute, (const mge::command_sequence&), ());
 };
