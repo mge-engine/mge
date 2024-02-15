@@ -571,16 +571,6 @@ namespace mge::vulkan {
 
     void render_context::clear(const rgba_color& c) {}
 
-    mge::draw_command_ref
-    render_context::create_draw_command(const mge::program_ref&       program,
-                                        const mge::vertex_buffer_ref& vertices,
-                                        const mge::index_buffer_ref&  indices,
-                                        mge::topology                 t)
-    {
-        mge::draw_command_ref result;
-        return result;
-    }
-
     void render_context::draw(const draw_command& command) {}
 
 } // namespace mge::vulkan

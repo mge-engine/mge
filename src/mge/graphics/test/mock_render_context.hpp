@@ -27,13 +27,5 @@ public:
     MOCK_METHOD(void, execute, (const mge::command_sequence&), ());
 
     MOCK_METHOD(void, clear, (const mge::rgba_color&), ());
-    MOCK_METHOD(mge::draw_command_ref,
-                create_draw_command,
-                (const mge::program_ref&,
-                 const mge::vertex_buffer_ref&,
-                 const mge::index_buffer_ref&,
-                 mge::topology),
-                ());
-
     MOCK_METHOD(void, draw, (const mge::draw_command&), ());
 };

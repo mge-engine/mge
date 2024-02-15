@@ -58,7 +58,7 @@ namespace mge::dx11 {
             &input_layout);
         CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
 
-        // m_commands.push_back(draw_command{command, input_layout});
+        m_commands.push_back(draw_command{command, input_layout});
 
         MGE_DEBUG_TRACE(DX11) << "Draw call";
     }
@@ -88,7 +88,6 @@ namespace mge::dx11 {
     void memory_command_list::perform_drawing(
         const mge::dx11::memory_command_list::draw_command& cmd)
     {
-#if 0
         auto device_context = m_dx11_context.device_context();
 
         auto input_layout = cmd.layout;
@@ -96,7 +95,7 @@ namespace mge::dx11 {
 
         const dx11::vertex_buffer* dx11_vertex_buffer =
             static_cast<const dx11::vertex_buffer*>(
-                cmd.command-vertices().get());
+                cmd.command.vertices().get());
         UINT element_size =
             static_cast<UINT>(cmd.command.vertices()->layout().binary_size());
         UINT          stride = 0;
@@ -135,7 +134,6 @@ namespace mge::dx11 {
         UINT element_count =
             static_cast<UINT>(cmd.command.indices()->element_count());
         device_context->DrawIndexed(element_count, 0, 0);
-#endif
     }
 
 } // namespace mge::dx11

@@ -18,6 +18,5 @@ namespace mge {
     MGE_DECLARE_REF(program);
     MGE_DECLARE_REF(command_list);
     MGE_DECLARE_REF(command_sequence);
-    MGE_DECLARE_REF(draw_command);
 
 } // namespace mge

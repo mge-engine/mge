@@ -24,7 +24,7 @@ namespace mge::dx11 {
 
         struct draw_command
         {
-            mge::draw_command_ref  command;
+            mge::draw_command  command;
             ID3D11InputLayout* layout;
         };
 

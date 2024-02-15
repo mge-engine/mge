@@ -39,11 +39,6 @@ namespace mge::dx12 {
         void execute(const mge::command_sequence& sequence) override;
 
         void clear(const mge::rgba_color& c) override;
-        mge::draw_command_ref
-             create_draw_command(const mge::program_ref&       program,
-                                 const mge::vertex_buffer_ref& vertices,
-                                 const mge::index_buffer_ref&  indices,
-                                 mge::topology                 t) override;
         void draw(const mge::draw_command& command) override;
 
         const mge::dx12::window& window() const { return m_window; }

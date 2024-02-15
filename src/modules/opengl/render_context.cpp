@@ -4,8 +4,6 @@
 #include "render_context.hpp"
 #include "command_list.hpp"
 #include "command_sequence.hpp"
-#include "common.hpp"
-#include "draw_command.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/system_error.hpp"
@@ -159,33 +157,8 @@ namespace mge::opengl {
 
     void render_context::execute(const mge::command_sequence& sequence) {}
 
-    void render_context::clear(const mge::rgba_color& c)
-    {
-        glClearColor(c.r, c.g, c.b, c.a);
-        CHECK_OPENGL_ERROR(glClearColor);
-        glClear(GL_COLOR_BUFFER_BIT);
-        CHECK_OPENGL_ERROR(glClear(GL_COLOR_BUFFER_BIT));
-    }
+    void render_context::clear(const mge::rgba_color& c) {}
 
-    mge::draw_command_ref
-    render_context::create_draw_command(const mge::program_ref&       program,
-                                        const mge::vertex_buffer_ref& vertices,
-                                        const mge::index_buffer_ref&  indices,
-                                        mge::topology                 t)
-    {
-        mge::draw_command_ref result;
-        return result;
-    }
-
-    void render_context::draw(const mge::draw_command& command)
-    {
-        const mge::opengl::draw_command* gl_command =
-            static_cast<const mge::opengl::draw_command*>(&command);
-        if (gl_command->vao() == 0) {
-            gl_command->prepare();
-        }
-        // auto program = gl_program(command.program());
-        // auto topology = gl_topology(command.topology());
-    }
+    void render_context::draw(const mge::draw_command& command) {}
 
 } // namespace mge::opengl
