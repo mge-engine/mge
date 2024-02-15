@@ -3,7 +3,6 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "command_list.hpp"
-#include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
@@ -12,6 +11,7 @@
 #include "shader.hpp"
 #include "swap_chain.hpp"
 #include "vertex_buffer.hpp"
+
 namespace mge {
 
     MGE_USE_TRACE(OPENGL);
@@ -24,7 +24,6 @@ namespace mge::opengl {
         , m_hdc(0)
         , m_primary_hglrc(0)
         , m_lock("opengl::render_context")
-        , m_draw_command_cache(256)
     {
         m_hdc = GetDC(m_hwnd);
         if (!m_hdc) {
@@ -147,38 +146,6 @@ namespace mge::opengl {
         return result;
     }
 
-    void render_context::execute(const mge::command_sequence& sequence)
-    {
-        sequence.for_each([&](auto&& cmd) {
-            using command_t = std::decay_t<decltype(cmd)>;
-            if constexpr (std::is_same_v<
-                              command_t,
-                              mge::command_sequence::clear_command>) {
-                glClearColor(cmd.clear_color.r,
-                             cmd.clear_color.g,
-                             cmd.clear_color.b,
-                             cmd.clear_color.a);
-                glClear(GL_COLOR_BUFFER_BIT);
-            } else if constexpr (std::is_same_v<command_t, draw_command>) {
-                execute_draw_command(cmd);
-            } else {
-                MGE_THROW(opengl::error)
-                    << "Unsupported command type " << typeid(cmd).name();
-            }
-        });
-    }
-
-    void render_context::execute_draw_command(
-        const mge::command_sequence::draw_command& cmd)
-    {
-#if 0
-        auto cmd_info = m_draw_command_cache.get(&cmd);
-        if (!cmd_info.has_value()) {
-            cmd_info = draw_command_info();
-            cmd_info->program_name = gl_program(cmd.program());
-            m_draw_command_cache.put(&cmd, cmd_info.value());
-        }
-#endif
-    }
+    void render_context::execute(const mge::command_sequence& sequence) {}
 
 } // namespace mge::opengl
