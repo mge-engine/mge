@@ -5,7 +5,6 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
-#include "memory_command_list.hpp"
 #include "mge/core/trace.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -33,12 +32,10 @@ namespace mge::dx11 {
     {
         MGE_DEBUG_TRACE(DX11) << "Initialize render context";
         DXGI_SWAP_CHAIN_DESC swap_chain_desc = {};
-        UINT                 flags = D3D11_CREATE_DEVICE_DEBUG;
-        D3D_DRIVER_TYPE      driver_type = D3D_DRIVER_TYPE_HARDWARE;
-        // UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG :
-        // 0); D3D_DRIVER_TYPE driver_type =
-        //     (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
-        //                                        : D3D_DRIVER_TYPE_HARDWARE);
+        UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
+        D3D_DRIVER_TYPE driver_type =
+            (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
+                                               : D3D_DRIVER_TYPE_HARDWARE);
 
         swap_chain_desc.BufferCount = 1;
         swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
