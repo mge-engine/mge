@@ -57,6 +57,7 @@ namespace mge::dx11 {
         mge::dx11::window&                     m_window;
         com_unique_ptr<ID3D11Device>           m_device;
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
+        com_unique_ptr<ID3D11DeviceContext>    m_deferred_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
     };
 
