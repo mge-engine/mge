@@ -122,12 +122,6 @@ namespace mge::dx11 {
         viewport.MaxDepth = 0.0;
         MGE_DEBUG_TRACE(DX11) << "Set view port";
         m_device_context->RSSetViewports(1, &viewport);
-
-        MGE_DEBUG_TRACE(DX11) << "Create default deferred context";
-        ID3D11DeviceContext* deferred_context;
-        rc = m_device->CreateDeferredContext(0, &deferred_context);
-        CHECK_HRESULT(rc, ID3D11Device, CreateDeferredContext);
-        m_deferred_context.reset(deferred_context);
     }
 
     mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
