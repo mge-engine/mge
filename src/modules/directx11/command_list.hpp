@@ -17,8 +17,16 @@ namespace mge::dx11 {
         void clear(const rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
         void execute() override;
+        void finish() override;
 
     private:
+        bool is_recording() const
+        {
+            return m_deferred_context.get() != nullptr;
+        }
+
+        void start_recording();
+
         render_context&                     m_dx11_context;
         com_unique_ptr<ID3D11DeviceContext> m_deferred_context;
         com_unique_ptr<ID3D11CommandList>   m_command_list;

@@ -4,25 +4,46 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "mge/core/trace.hpp"
 #include "program.hpp"
 #include "vertex_buffer.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(DX11);
+}
 
 namespace mge::dx11 {
 
     command_list::command_list(render_context& context)
         : mge::command_list(context, true)
         , m_dx11_context(context)
+    {}
+
+    void command_list::start_recording()
     {
+        if (is_recording()) {
+            return;
+        }
+
         ID3D11DeviceContext* deferred_context;
-        auto hr = context.device()->CreateDeferredContext(0, &deferred_context);
+
+        auto hr =
+            m_dx11_context.device()->CreateDeferredContext(0,
+                                                           &deferred_context);
         CHECK_HRESULT(hr, ID3D11Device, CreateDeferredContext);
         m_deferred_context.reset(deferred_context);
     }
 
-    command_list::~command_list() {}
+    command_list::~command_list()
+    {
+        if (is_recording()) {
+            MGE_WARNING_TRACE(DX11) << "Command list destroyed while recording";
+        }
+    }
 
     void command_list::clear(const rgba_color& c)
     {
+        start_recording();
         float clearcolor[4] = {c.r, c.g, c.b, c.a};
         m_deferred_context->ClearRenderTargetView(
             m_dx11_context.render_target_view(),
@@ -93,14 +114,23 @@ namespace mge::dx11 {
 #endif
     }
 
+    void command_list::finish()
+    {
+        if (!is_recording()) {
+            MGE_THROW(mge::illegal_state)
+                << "Command list not in recording state";
+        }
+        ID3D11CommandList* command_list = nullptr;
+        auto hr = m_deferred_context->FinishCommandList(FALSE, &command_list);
+        CHECK_HRESULT(hr, ID3D11DeviceContext, FinishCommandList);
+        m_command_list.reset(command_list);
+        m_deferred_context.reset();
+    }
+
     void command_list::execute()
     {
-        if (!m_command_list) {
-            ID3D11CommandList* command_list = nullptr;
-            auto               hr =
-                m_deferred_context->FinishCommandList(FALSE, &command_list);
-            CHECK_HRESULT(hr, ID3D11DeviceContext, FinishCommandList);
-            m_command_list.reset(command_list);
+        if (is_recording()) {
+            finish();
         }
         m_dx11_context.device_context()->ExecuteCommandList(
             m_command_list.get(),

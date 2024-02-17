@@ -153,7 +153,7 @@ namespace mge::dx11 {
 
     mge::command_list_ref render_context::create_command_list()
     {
-        auto result = std::make_shared<mge::dx11::memory_command_list>(*this);
+        auto result = std::make_shared<mge::dx11::command_list>(*this);
         return result;
     }
 
