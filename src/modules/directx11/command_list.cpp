@@ -4,6 +4,7 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "program.hpp"
 #include "vertex_buffer.hpp"
@@ -32,6 +33,7 @@ namespace mge::dx11 {
                                                            &deferred_context);
         CHECK_HRESULT(hr, ID3D11Device, CreateDeferredContext);
         m_deferred_context.reset(deferred_context);
+        m_dx11_context.setup_context(*m_deferred_context);
     }
 
     command_list::~command_list()
@@ -52,7 +54,6 @@ namespace mge::dx11 {
 
     void command_list::draw(const mge::draw_command& command)
     {
-#if 0
         const dx11::program* dx11_program =
             static_cast<const dx11 ::program*>(command.program().get());
 
@@ -60,58 +61,47 @@ namespace mge::dx11 {
             static_cast<const dx11::shader*>(
                 dx11_program->program_shader(mge::shader_type::VERTEX).get());
 
-        const dx11::shader* dx11_pixel_shader =
-            static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::FRAGMENT).get());
+        ID3D11InputLayout* input_layout = dx11_vertex_shader->input_layout();
+        if (input_layout == nullptr) {
+            MGE_THROW(mge::illegal_state)
+                << "No input layout for vertex shader";
+        }
+        m_deferred_context->IASetInputLayout(input_layout);
 
         const dx11::vertex_buffer* dx11_vertex_buffer =
             static_cast<const dx11::vertex_buffer*>(command.vertices().get());
-
-        const auto&               layout = command.vertices()->layout();
-        const size_t              layout_size = layout.size();
-        D3D11_INPUT_ELEMENT_DESC* input_desc =
-            m_dx11_context.layouts().get(layout);
-        ID3D11InputLayout* input_layout = nullptr;
-
-        auto rc = m_dx11_context.device()->CreateInputLayout(
-            input_desc,
-            static_cast<UINT>(layout_size),
-            dx11_vertex_shader->code()->GetBufferPointer(),
-            dx11_vertex_shader->code()->GetBufferSize(),
-            &input_layout);
-        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
-
-        UINT          stride = static_cast<UINT>(layout.binary_size());
-        UINT          offset = 0;
+        UINT element_size =
+            static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
+        UINT          stride = 0;
         ID3D11Buffer* vertex_buffer = dx11_vertex_buffer->buffer();
         m_deferred_context->IASetVertexBuffers(0,
                                                1,
                                                &vertex_buffer,
-                                               &stride,
-                                               &offset);
-        m_deferred_context->IASetInputLayout(input_layout);
+                                               &element_size,
+                                               &stride);
+
         const dx11::index_buffer* dx11_index_buffer =
             static_cast<const dx11::index_buffer*>(command.indices().get());
         ID3D11Buffer* index_buffer = dx11_index_buffer->buffer();
         m_deferred_context->IASetIndexBuffer(index_buffer,
                                              DXGI_FORMAT_R32_UINT,
                                              0);
+
         m_deferred_context->VSSetShader(
             dx11_vertex_shader->directx_vertex_shader(),
             nullptr,
             0);
+
+        const dx11::shader* dx11_pixel_shader =
+            static_cast<const dx11::shader*>(
+                dx11_program->program_shader(mge::shader_type::FRAGMENT).get());
         m_deferred_context->PSSetShader(
             dx11_pixel_shader->directx_pixel_shader(),
             nullptr,
             0);
-
-        m_deferred_context->IASetPrimitiveTopology(
-            D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-        m_deferred_context->DrawIndexed(
-            static_cast<UINT>(command.indices()->element_count()),
-            0,
-            0);
-#endif
+        UINT element_count =
+            static_cast<UINT>(dx11_index_buffer->element_count());
+        m_deferred_context->DrawIndexed(element_count, 0, 0);
     }
 
     void command_list::finish()
@@ -134,7 +124,7 @@ namespace mge::dx11 {
         }
         m_dx11_context.device_context()->ExecuteCommandList(
             m_command_list.get(),
-            FALSE);
+            TRUE);
     }
 
 } // namespace mge::dx11

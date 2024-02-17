@@ -50,6 +50,8 @@ namespace mge::dx11 {
             return m_render_target_view.get();
         }
 
+        void setup_context(ID3D11DeviceContext& context);
+
     private:
         void create_swap_chain();
 

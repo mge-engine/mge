@@ -33,10 +33,12 @@ namespace mge::dx11 {
     {
         MGE_DEBUG_TRACE(DX11) << "Initialize render context";
         DXGI_SWAP_CHAIN_DESC swap_chain_desc = {};
-        UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
-        D3D_DRIVER_TYPE driver_type =
-            (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
-                                               : D3D_DRIVER_TYPE_HARDWARE);
+        UINT                 flags = D3D11_CREATE_DEVICE_DEBUG;
+        D3D_DRIVER_TYPE      driver_type = D3D_DRIVER_TYPE_HARDWARE;
+        // UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG :
+        // 0); D3D_DRIVER_TYPE driver_type =
+        //     (m_render_system.software_device() ? D3D_DRIVER_TYPE_WARP
+        //                                        : D3D_DRIVER_TYPE_HARDWARE);
 
         swap_chain_desc.BufferCount = 1;
         swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -109,10 +111,14 @@ namespace mge::dx11 {
         CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
         back_buffer.reset();
         MGE_DEBUG_TRACE(DX11) << "Set render target";
-        m_device_context->OMSetRenderTargets(1,
-                                             &tmp_render_target_view,
-                                             nullptr);
         m_render_target_view.reset(tmp_render_target_view);
+        setup_context(*m_device_context);
+    }
+
+    void render_context::setup_context(ID3D11DeviceContext& context)
+    {
+        ID3D11RenderTargetView* rtv = m_render_target_view.get();
+        context.OMSetRenderTargets(1, &rtv, nullptr);
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0;
         viewport.TopLeftY = 0;
@@ -120,8 +126,7 @@ namespace mge::dx11 {
         viewport.Height = static_cast<float>(window().extent().height);
         viewport.MinDepth = 0.0;
         viewport.MaxDepth = 0.0;
-        MGE_DEBUG_TRACE(DX11) << "Set view port";
-        m_device_context->RSSetViewports(1, &viewport);
+        context.RSSetViewports(1, &viewport);
     }
 
     mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
