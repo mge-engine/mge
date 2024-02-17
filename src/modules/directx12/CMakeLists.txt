@@ -8,6 +8,7 @@ SET(mge_dx12_module_SOURCES
     render_system.cpp
     render_context.cpp
     swap_chain.cpp
+    command_list.cpp
 )
 
 ADD_LIBRARY(mge_module_dx12 MODULE

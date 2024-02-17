@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#pragma once
 #include "dx12.hpp"
 #include "mge/config.hpp"
 #include "mge/graphics/render_context.hpp"
@@ -43,6 +44,8 @@ namespace mge::dx12 {
         {
             return m_command_queue;
         }
+
+        ID3D12Device2* device() const { return m_device.Get(); }
 
     private:
         void create_factory();

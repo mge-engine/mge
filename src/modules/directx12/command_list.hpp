@@ -19,8 +19,9 @@ namespace mge::dx12 {
         void execute() override;
 
     private:
-        render_context&                           m_dx12_context;
-        com_unique_ptr<ID3D12GraphicsCommandList> m_command_list;
+        render_context&                    m_dx12_context;
+        com_ptr<ID3D12CommandAllocator>    m_bundle_allocator;
+        com_ptr<ID3D12GraphicsCommandList> m_command_list;
     };
 
 } // namespace mge::dx12
