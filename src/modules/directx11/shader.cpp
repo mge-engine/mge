@@ -3,7 +3,6 @@
 // All rights reserved.
 #include "shader.hpp"
 #include "error.hpp"
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/on_leave.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"

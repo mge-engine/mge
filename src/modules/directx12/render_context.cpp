@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "command_list.hpp"
 #include "error.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
@@ -220,7 +221,8 @@ namespace mge::dx12 {
 
     mge::command_list_ref render_context::create_command_list()
     {
-        mge::command_list_ref result;
+        mge::command_list_ref result =
+            std::make_shared<dx12::command_list>(*this);
         return result;
     }
 
