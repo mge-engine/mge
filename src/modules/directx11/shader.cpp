@@ -80,6 +80,7 @@ namespace mge::dx11 {
                                                   &vertex_shader);
             CHECK_HRESULT(rc, ID3D11Device, CreateVertexShader);
             m_shader = mge::make_com_unique_ptr(vertex_shader);
+            create_input_layout();
             break;
         }
         case mge::shader_type::COMPUTE: {
@@ -255,5 +256,73 @@ namespace mge::dx11 {
                 }
             }
         }
+    }
+
+    void shader::create_input_layout()
+    {
+        D3D11_INPUT_ELEMENT_DESC input_elements[] = {
+            {"POSITION",
+             0,
+             DXGI_FORMAT_R32G32B32_FLOAT,
+             0,
+             0,
+             D3D11_INPUT_PER_VERTEX_DATA,
+             0},
+        };
+
+        ID3D11InputLayout* input_layout = nullptr;
+        render_context&    ctx = dx11_context(context());
+
+        auto rc = ctx.device()->CreateInputLayout(input_elements,
+                                                  1,
+                                                  m_code->GetBufferPointer(),
+                                                  m_code->GetBufferSize(),
+                                                  &input_layout);
+        CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+        m_input_layout = mge::make_com_unique_ptr(input_layout);
+
+#if 0
+        ID3D11ShaderReflection* shader_reflection = nullptr;
+
+        CHECK_HRESULT(D3DReflect(m_code->GetBufferPointer(),
+                                 m_code->GetBufferSize(),
+                                 IID_ID3D11ShaderReflection,
+                                 (void**)&shader_reflection),
+                      ,
+                      D3DReflect);
+        on_leave delete_shader_reflection([&]() {
+            if (shader_reflection) {
+                shader_reflection->Release();
+            }
+        });
+        if (shader_reflection) {
+            D3D11_SHADER_DESC shader_desc = {};
+            shader_reflection->GetDesc(&shader_desc);
+            dump_shader_desc(shader_desc);
+
+            std::vector<D3D11_INPUT_ELEMENT_DESC> input_elements;
+            for (uint32_t i = 0; i < shader_desc.InputParameters; ++i) {
+                D3D11_SIGNATURE_PARAMETER_DESC parameter_desc = {};
+                shader_reflection->GetInputParameterDesc(i, &parameter_desc);
+                D3D11_INPUT_ELEMENT_DESC input_element = {};
+                input_element.SemanticName = parameter_desc.SemanticName;
+                input_element.SemanticIndex = parameter_desc.SemanticIndex;
+                input_element.InputSlot = 0;
+                input_element.AlignedByteOffset = D3D11_APPEND_ALIGNED_ELEMENT;
+                input_element.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+                input_element.InstanceDataStepRate = 0;
+                input_element.Format = DXGI_FORMAT_R32G32B32_FLOAT;
+                input_elements.push_back(input_element);
+            }
+
+            HRESULT rc = dx11_context(context()).device()->CreateInputLayout(
+                input_elements.data(),
+                input_elements.size(),
+                m_code->GetBufferPointer(),
+                m_code->GetBufferSize(),
+                &m_input_layout);
+            CHECK_HRESULT(rc, ID3D11Device, CreateInputLayout);
+        }
+#endif
     }
 } // namespace mge::dx11

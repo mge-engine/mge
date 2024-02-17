@@ -52,8 +52,10 @@ namespace mge::dx11 {
     private:
         std::string profile() const;
         void        create_shader();
+        void        create_input_layout();
 
-        shader_t                      m_shader;
-        mge::com_unique_ptr<ID3DBlob> m_code;
+        shader_t                               m_shader;
+        mge::com_unique_ptr<ID3DBlob>          m_code;
+        mge::com_unique_ptr<ID3D11InputLayout> m_input_layout;
     };
 } // namespace mge::dx11
