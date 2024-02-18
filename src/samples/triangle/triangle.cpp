@@ -94,7 +94,9 @@ namespace mge {
                 vertex_shader->compile(vertex_shader_glsl);
                 MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
             } else if (m_render_system->implementation_name() ==
-                       "mge::dx11::render_system") {
+                           "mge::dx11::render_system" ||
+                       m_render_system->implementation_name() ==
+                           "mge::dx12::render_system") {
 
                 const char* vertex_shader_hlsl = R"shader(
                     float4 main( float4 pos : POSITION ) : SV_POSITION
