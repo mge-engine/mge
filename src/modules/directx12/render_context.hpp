@@ -53,6 +53,7 @@ namespace mge::dx12 {
         void create_device();
         void enable_debug_messages();
         void create_command_queue();
+        void create_direct_command_list();
 
         void create_descriptor_heap();
         void update_render_target_views(
@@ -67,7 +68,10 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
-        uint32_t                                  m_rtv_descriptor_size;
+
+        mge::com_ptr<ID3D12CommandAllocator>         m_command_list_allocator;
+        mge::com_ptr<ID3D12GraphicsCommandList> m_direct_command_list;
+        uint32_t                                m_rtv_descriptor_size;
     };
 
     inline render_context& dx12_context(mge::render_context& context)

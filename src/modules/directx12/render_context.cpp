@@ -30,6 +30,7 @@ namespace mge::dx12 {
         create_device();
         enable_debug_messages();
         create_command_queue();
+        create_direct_command_list();
     }
 
     void render_context::create_command_queue()
@@ -43,6 +44,24 @@ namespace mge::dx12 {
         auto rc =
             m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
+    }
+
+    void render_context::create_direct_command_list()
+    {
+        MGE_DEBUG_TRACE(DX12)
+            << "Initialize command allocator for direct command list";
+        auto rc = m_device->CreateCommandAllocator(
+            D3D12_COMMAND_LIST_TYPE_DIRECT,
+            IID_PPV_ARGS(&m_command_list_allocator));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        MGE_DEBUG_TRACE(DX12) << "Create direct command list";
+
+        rc = m_device->CreateCommandList(0,
+                                         D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                         m_command_list_allocator.Get(),
+                                         nullptr,
+                                         IID_PPV_ARGS(&m_direct_command_list));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
     }
 
     void render_context::create_device()
