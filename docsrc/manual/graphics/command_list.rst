@@ -2,12 +2,11 @@
 Command Lists
 *************
 
-Command lists capture state changes on a graphics pipeline, that is,
-setting buffers and shaders, and submitting draw calls that make use
-of them.
+Command lists capture state changes on a graphics pipeline.
 
-Command lists can be *native*, i.e. implemented by the underlying render
-API.
+They are used record commands that will be sent to the GPU. In a multi-threaded
+application, command lists can be recorded on multiple threads and then submitted
+to the GPU on a single thread.
 
 .. doxygenclass:: mge::command_list
     :members:
