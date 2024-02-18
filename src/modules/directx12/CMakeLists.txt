@@ -11,6 +11,7 @@ SET(mge_dx12_module_SOURCES
     command_list.cpp
     shader.cpp
     program.cpp
+    vertex_buffer.cpp
 )
 
 ADD_LIBRARY(mge_module_dx12 MODULE

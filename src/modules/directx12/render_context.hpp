@@ -70,4 +70,15 @@ namespace mge::dx12 {
         uint32_t                                  m_rtv_descriptor_size;
     };
 
+    inline render_context& dx12_context(mge::render_context& context)
+    {
+        return dynamic_cast<render_context&>(context);
+    }
+
+    inline const render_context&
+    dx12_context(const mge::render_context& context)
+    {
+        return dynamic_cast<const render_context&>(context);
+    }
+
 } // namespace mge::dx12
