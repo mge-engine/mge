@@ -8,7 +8,7 @@
 #include "mge/win32/com_unique_ptr.hpp"
 #include "render_context.hpp"
 
-namespace mge::dx11 {
+namespace mge::dx12 {
     class vertex_buffer : public mge::vertex_buffer
     {
     public:
@@ -31,4 +31,4 @@ namespace mge::dx11 {
         void*                               m_mapped_memory;
     };
 
-} // namespace mge::dx11
+} // namespace mge::dx12
