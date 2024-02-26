@@ -46,6 +46,7 @@ namespace mge::dx12 {
         }
 
         ID3D12Device2* device() const { return m_device.Get(); }
+        void           copy_resource(ID3D12Resource* dst, ID3D12Resource* src);
 
     private:
         void create_factory();
@@ -66,10 +67,13 @@ namespace mge::dx12 {
         mge::com_ptr<IDXGIAdapter4>               m_adapter;
         mge::com_ptr<ID3D12Device2>               m_device;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
+        mge::com_ptr<ID3D12Fence>                 m_command_queue_fence;
+        uint64_t                                  m_command_queue_fence_value;
+        HANDLE                                    m_command_queue_fence_event;
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
 
-        mge::com_ptr<ID3D12CommandAllocator>         m_command_list_allocator;
+        mge::com_ptr<ID3D12CommandAllocator>    m_command_list_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_direct_command_list;
         uint32_t                                m_rtv_descriptor_size;
     };

@@ -59,6 +59,27 @@ namespace mge::dx12 {
             IID_PPV_ARGS(&buffer));
         CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
         m_buffer.reset(buffer);
+
+        ID3D12Resource* upload_buffer = nullptr;
+        heap_properties.Type = D3D12_HEAP_TYPE_UPLOAD;
+        hr = dx12_context(context()).device()->CreateCommittedResource(
+            &heap_properties,
+            D3D12_HEAP_FLAG_NONE,
+            &buffer_desc,
+            D3D12_RESOURCE_STATE_GENERIC_READ,
+            nullptr,
+            IID_PPV_ARGS(&upload_buffer));
+        CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
+        mge::com_unique_ptr<ID3D12Resource> upload_buffer_ptr(upload_buffer);
+
+        void* mapped_data = nullptr;
+        hr = upload_buffer->Map(0, nullptr, &mapped_data);
+        CHECK_HRESULT(hr, ID3D12Resource, Map);
+        memcpy(mapped_data, data, size());
+        upload_buffer->Unmap(0, nullptr);
+
+        dx12_context(context()).copy_resource(m_buffer.get(),
+                                              upload_buffer_ptr.get());
     }
 
 } // namespace mge::dx12

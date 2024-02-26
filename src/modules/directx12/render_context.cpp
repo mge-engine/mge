@@ -7,6 +7,7 @@
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/parameter.hpp"
+#include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "program.hpp"
@@ -24,6 +25,8 @@ namespace mge::dx12 {
                                    mge::dx12::window&        window_)
         : m_render_system(render_system_)
         , m_window(window_)
+        , m_command_queue_fence_value(0)
+        , m_command_queue_fence_event(0)
     {
         create_factory();
         create_adapter();
@@ -44,6 +47,17 @@ namespace mge::dx12 {
         auto rc =
             m_device->CreateCommandQueue(&desc, IID_PPV_ARGS(&m_command_queue));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
+
+        MGE_DEBUG_TRACE(DX12) << "Create command queue fence";
+        rc = m_device->CreateFence(0,
+                                   D3D12_FENCE_FLAG_NONE,
+                                   IID_PPV_ARGS(&m_command_queue_fence));
+        CHECK_HRESULT(rc, ID3D12Device, CreateFence);
+        m_command_queue_fence_event =
+            CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        if (m_command_queue_fence_event == 0) {
+            MGE_THROW(dx12::error) << "CreateEvent failed";
+        }
     }
 
     void render_context::create_direct_command_list()
@@ -245,6 +259,31 @@ namespace mge::dx12 {
         mge::command_list_ref result =
             std::make_shared<dx12::command_list>(*this);
         return result;
+    }
+
+    void render_context::copy_resource(ID3D12Resource* dst, ID3D12Resource* src)
+    {
+        m_direct_command_list->CopyResource(dst, src);
+        ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
+        m_command_queue->ExecuteCommandLists(1, lists);
+        HRESULT rc = m_command_queue->Signal(m_command_queue_fence.Get(),
+                                             ++m_command_queue_fence_value);
+        CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
+        if (m_command_queue_fence->GetCompletedValue() <
+            m_command_queue_fence_value) {
+            m_command_queue_fence->SetEventOnCompletion(
+                m_command_queue_fence_value,
+                m_command_queue_fence_event);
+            CHECK_HRESULT(rc, ID3D12CommandQueue, SetEventOnCompletion);
+            DWORD wait_rc =
+                WaitForSingleObject(m_command_queue_fence_event, INFINITE);
+            if (wait_rc == WAIT_FAILED) {
+                MGE_CHECK_SYSTEM_ERROR(WaitForSingleObject);
+            }
+            if (!ResetEvent(m_command_queue_fence_event)) {
+                MGE_CHECK_SYSTEM_ERROR(ResetEvent);
+            }
+        }
     }
 
 } // namespace mge::dx12
