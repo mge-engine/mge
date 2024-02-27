@@ -12,6 +12,7 @@
 namespace mge::dx12 {
     class index_buffer : public mge::index_buffer
     {
+    public:
         index_buffer(render_context& context,
                      mge::data_type  type,
                      size_t          data_size,

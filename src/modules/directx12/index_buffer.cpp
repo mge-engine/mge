@@ -38,9 +38,9 @@ namespace mge::dx12 {
 
     void index_buffer::create_buffer(void* data)
     {
-        ID3D12Resource*       buffer = nullptr;
         D3D12_HEAP_PROPERTIES heap_properties = {};
         heap_properties.Type = D3D12_HEAP_TYPE_DEFAULT;
+
         D3D12_RESOURCE_DESC buffer_desc = {};
         buffer_desc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
         buffer_desc.Width = mge::checked_cast<UINT>(size());
@@ -52,39 +52,50 @@ namespace mge::dx12 {
         buffer_desc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
         buffer_desc.Flags = D3D12_RESOURCE_FLAG_NONE;
 
-        auto hr = dx12_context(context()).device()->CreateCommittedResource(
-            &heap_properties,
-            D3D12_HEAP_FLAG_NONE,
-            &buffer_desc,
-            D3D12_RESOURCE_STATE_COPY_DEST,
-            nullptr,
-            IID_PPV_ARGS(&buffer));
-        CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
-        m_buffer.reset(buffer);
+        // buffer needs to be created only once as parameters are immutable
+        if (!m_buffer) {
+            ID3D12Resource* buffer = nullptr;
 
-        ID3D12Resource* upload_buffer = nullptr;
-        heap_properties.Type = D3D12_HEAP_TYPE_UPLOAD;
-        hr = dx12_context(context()).device()->CreateCommittedResource(
-            &heap_properties,
-            D3D12_HEAP_FLAG_NONE,
-            &buffer_desc,
-            D3D12_RESOURCE_STATE_GENERIC_READ,
-            nullptr,
-            IID_PPV_ARGS(&upload_buffer));
-        CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
-        mge::com_unique_ptr<ID3D12Resource> upload_buffer_ptr(upload_buffer);
+            auto hr = dx12_context(context()).device()->CreateCommittedResource(
+                &heap_properties,
+                D3D12_HEAP_FLAG_NONE,
+                &buffer_desc,
+                D3D12_RESOURCE_STATE_COPY_DEST,
+                nullptr,
+                IID_PPV_ARGS(&buffer));
+            CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
+            m_buffer.reset(buffer);
+        }
+        if (data) {
+            ID3D12Resource* upload_buffer = nullptr;
+            heap_properties.Type = D3D12_HEAP_TYPE_UPLOAD;
+            auto hr = dx12_context(context()).device()->CreateCommittedResource(
+                &heap_properties,
+                D3D12_HEAP_FLAG_NONE,
+                &buffer_desc,
+                D3D12_RESOURCE_STATE_GENERIC_READ,
+                nullptr,
+                IID_PPV_ARGS(&upload_buffer));
+            CHECK_HRESULT(hr, ID3D12Device, CreateCommittedResource);
+            mge::com_unique_ptr<ID3D12Resource> upload_buffer_ptr(
+                upload_buffer);
 
-        void* mapped_data = nullptr;
-        hr = upload_buffer->Map(0, nullptr, &mapped_data);
-        CHECK_HRESULT(hr, ID3D12Resource, Map);
-        memcpy(mapped_data, data, size());
-        upload_buffer->Unmap(0, nullptr);
+            void* mapped_data = nullptr;
+            hr = upload_buffer->Map(0, nullptr, &mapped_data);
+            CHECK_HRESULT(hr, ID3D12Resource, Map);
+            memcpy(mapped_data, data, size());
+            upload_buffer->Unmap(0, nullptr);
 
-        dx12_context(context()).copy_resource(m_buffer.get(),
-                                              upload_buffer_ptr.get());
+            dx12_context(context()).copy_resource(m_buffer.get(),
+                                                  upload_buffer_ptr.get());
 
-        m_buffer_view.BufferLocation = m_buffer->GetGPUVirtualAddress();
-        m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size());
-        m_buffer_view.Format = dx12_format(element_type());
+            m_buffer_view.BufferLocation = m_buffer->GetGPUVirtualAddress();
+            m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size());
+            m_buffer_view.Format = dx12_format(element_type());
+        } else {
+            m_buffer_view.BufferLocation = 0;
+            m_buffer_view.SizeInBytes = 0;
+            m_buffer_view.Format = dx12_format(element_type());
+        }
     }
 } // namespace mge::dx12

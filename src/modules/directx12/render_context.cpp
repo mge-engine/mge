@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "command_list.hpp"
 #include "error.hpp"
+#include "index_buffer.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/parameter.hpp"
@@ -14,6 +15,7 @@
 #include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
+#include "vertex_buffer.hpp"
 #include "window.hpp"
 
 namespace mge {
@@ -231,14 +233,19 @@ namespace mge::dx12 {
                                                               size_t data_size,
                                                               void*  data)
     {
-        mge::index_buffer_ref ref;
+        mge::index_buffer_ref ref =
+            std::make_shared<dx12::index_buffer>(*this, dt, data_size, data);
         return ref;
     }
 
     mge::vertex_buffer_ref render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        mge::vertex_buffer_ref ref;
+        mge::vertex_buffer_ref ref =
+            std::make_shared<dx12::vertex_buffer>(*this,
+                                                  layout,
+                                                  data_size,
+                                                  data);
         return ref;
     }
 

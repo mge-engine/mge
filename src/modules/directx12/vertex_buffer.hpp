@@ -29,6 +29,7 @@ namespace mge::dx12 {
 
         mge::com_unique_ptr<ID3D12Resource> m_buffer;
         void*                               m_mapped_memory;
+        D3D12_VERTEX_BUFFER_VIEW            m_buffer_view;
     };
 
 } // namespace mge::dx12

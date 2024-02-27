@@ -200,6 +200,13 @@ namespace mge {
         size_t binary_size() const;
 
         /**
+         * Get the stride (binary size) of the layout.
+         *
+         * @return stride
+         */
+        inline size_t stride() const { return binary_size(); }
+
+        /**
          * @brief Append a format.
          *
          * @param f format
