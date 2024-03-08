@@ -34,6 +34,7 @@ SET(MGECORE_TEST_SOURCES
     test_nargs.cpp
     test_sequenced.cpp
     test_lru_cache.cpp
+    test_lexical_cast.cpp
 )
 
 MGE_TEST(
