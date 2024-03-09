@@ -44,3 +44,27 @@ TEST_F(vertex_buffer_test, map_unmap)
     memcpy(data, triangle_coords, sizeof(triangle_coords));
     buffer->unmap();
 }
+
+TEST_F(vertex_buffer_test, multiple_vertex_buffers)
+{
+    auto& context = m_window->render_context();
+    float triangle_coords[] = {
+        0.0f,
+        0.5f,
+        0.0f,
+        0.45f,
+        -0.5,
+        0.0f,
+        -0.45f,
+        -0.5f,
+        0.0f,
+    };
+    mge::vertex_layout layout;
+    layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
+    for (int i = 0; i < 3; ++i) {
+        auto buffer = context.create_vertex_buffer(layout,
+                                                   sizeof(triangle_coords),
+                                                   triangle_coords);
+        EXPECT_EQ(3, buffer->element_count());
+    }
+}

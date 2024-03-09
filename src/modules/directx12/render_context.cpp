@@ -80,6 +80,13 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
     }
 
+    void render_context::reset_direct_command_list()
+    {
+        auto rc = m_direct_command_list->Reset(m_command_list_allocator.Get(),
+                                               nullptr);
+        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+    }
+
     void render_context::create_device()
     {
         MGE_DEBUG_TRACE(DX12) << "Create D3D12Device";
@@ -271,6 +278,7 @@ namespace mge::dx12 {
     void render_context::copy_resource(ID3D12Resource* dst, ID3D12Resource* src)
     {
         m_direct_command_list->CopyResource(dst, src);
+        m_direct_command_list->Close();
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
         HRESULT rc = m_command_queue->Signal(m_command_queue_fence.Get(),
@@ -291,6 +299,7 @@ namespace mge::dx12 {
                 MGE_CHECK_SYSTEM_ERROR(ResetEvent);
             }
         }
+        reset_direct_command_list();
     }
 
 } // namespace mge::dx12

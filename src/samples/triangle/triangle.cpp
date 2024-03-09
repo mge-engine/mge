@@ -59,6 +59,7 @@ namespace mge {
         void initialize()
         {
             MGE_DEBUG_TRACE(TRIANGLE) << "Initializing objects";
+
             auto pixel_shader =
                 m_window->render_context().create_shader(shader_type::FRAGMENT);
             auto vertex_shader =
@@ -152,7 +153,6 @@ namespace mge {
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
                 triangle_indices);
-
             m_draw_commands = m_window->render_context().create_command_list();
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
             m_draw_commands->draw(mge::draw_command(m_program,

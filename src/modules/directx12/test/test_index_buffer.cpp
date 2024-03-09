@@ -32,3 +32,18 @@ TEST_F(index_buffer_test, map_unmap)
     }
     buffer->unmap();
 }
+
+TEST_F(index_buffer_test, repeated_create)
+{
+    auto& context = m_window->render_context();
+
+    int triangle_indices[] = {0, 1, 2};
+
+    for (int i = 0; i < 3; ++i) {
+        auto buffer = context.create_index_buffer(mge::data_type::INT32,
+                                                  sizeof(triangle_indices),
+                                                  triangle_indices);
+
+        EXPECT_EQ(3, buffer->element_count());
+    }
+}
