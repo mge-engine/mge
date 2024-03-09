@@ -11,6 +11,7 @@ namespace mge::dx12 {
     command_list::command_list(render_context& context)
         : mge::command_list(context, true)
         , m_dx12_context(context)
+        , m_color_set(false)
     {
         HRESULT rc = m_dx12_context.device()->CreateCommandAllocator(
             D3D12_COMMAND_LIST_TYPE_BUNDLE,
@@ -28,7 +29,12 @@ namespace mge::dx12 {
 
     command_list::~command_list() {}
 
-    void command_list::clear(const rgba_color& c) {}
+    void command_list::clear(const rgba_color& c)
+    {
+        m_color_set = true;
+        m_clear_color = c;
+    }
+
     void command_list::draw(const mge::draw_command& command) {}
     void command_list::execute() {}
 

@@ -22,6 +22,8 @@ namespace mge::dx12 {
         render_context&                    m_dx12_context;
         com_ptr<ID3D12CommandAllocator>    m_bundle_allocator;
         com_ptr<ID3D12GraphicsCommandList> m_command_list;
+        rgba_color                         m_clear_color;
+        bool                               m_color_set;
     };
 
 } // namespace mge::dx12
