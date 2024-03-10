@@ -38,4 +38,14 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12RootSignature> m_root_signature;
     };
 
+    inline program& dx12_program(mge::program& p)
+    {
+        return static_cast<program&>(p);
+    }
+
+    inline const program& dx12_program(const mge::program& p)
+    {
+        return static_cast<const program&>(p);
+    }
+
 } // namespace mge::dx12
