@@ -3,8 +3,13 @@
 // All rights reserved.
 #include "swap_chain.hpp"
 #include "error.hpp"
+#include "mge/core/trace.hpp"
 #include "render_context.hpp"
 #include "render_system.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(DX12);
+}
 
 namespace mge::dx12 {
 
@@ -44,6 +49,11 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, IDXGISwapChain1, As);
     }
 
-    void swap_chain::present() { m_swap_chain->Present(0, 0); }
+    void swap_chain::present()
+    {
+        dx12_context(context()).end_draw();
+        m_swap_chain->Present(0, 0);
+        dx12_context(context()).wait_for_command_queue();
+    }
 
 } // namespace mge::dx12

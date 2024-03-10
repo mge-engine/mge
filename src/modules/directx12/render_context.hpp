@@ -12,6 +12,7 @@ namespace mge::dx12 {
     class window;
     class render_system;
     class swap_chain;
+    class command_list;
 
     class render_context : public mge::render_context
     {
@@ -48,7 +49,11 @@ namespace mge::dx12 {
         ID3D12Device2* device() const { return m_device.Get(); }
         void           copy_resource(ID3D12Resource* dst, ID3D12Resource* src);
 
+        void execute(command_list& cl);
+
     private:
+        friend class swap_chain;
+
         void create_factory();
         void create_adapter();
         void create_device();
@@ -59,9 +64,11 @@ namespace mge::dx12 {
         void create_descriptor_heap();
         void update_render_target_views(
             const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
-        void               reset_direct_command_list();
-        void               begin_draw();
-        void               end_draw();
+        void reset_direct_command_list();
+        void begin_draw();
+        void end_draw();
+        void wait_for_command_queue();
+
         render_system&     m_render_system;
         mge::dx12::window& m_window;
 

@@ -292,6 +292,11 @@ namespace mge::dx12 {
         m_direct_command_list->Close();
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
+        wait_for_command_queue();
+    }
+
+    void render_context::wait_for_command_queue()
+    {
         HRESULT rc = m_command_queue->Signal(m_command_queue_fence.Get(),
                                              ++m_command_queue_fence_value);
         CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
@@ -315,7 +320,6 @@ namespace mge::dx12 {
 
     void render_context::begin_draw()
     {
-        reset_direct_command_list();
         m_direct_command_list->RSSetViewports(1, &m_viewport);
         m_direct_command_list->RSSetScissorRects(1, &m_scissor_rect);
 
@@ -337,10 +341,20 @@ namespace mge::dx12 {
 
     void render_context::end_draw()
     {
+        if (!m_drawing) {
+            return;
+        }
         m_direct_command_list->Close();
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
         m_drawing = false;
+    }
+
+    void render_context::execute(command_list& cl)
+    {
+        if (!m_drawing) {
+            begin_draw();
+        }
     }
 
 } // namespace mge::dx12

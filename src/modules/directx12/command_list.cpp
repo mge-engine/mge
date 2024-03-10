@@ -36,6 +36,7 @@ namespace mge::dx12 {
     }
 
     void command_list::draw(const mge::draw_command& command) {}
-    void command_list::execute() {}
+
+    void command_list::execute() { m_dx12_context.execute(*this); }
 
 } // namespace mge::dx12
