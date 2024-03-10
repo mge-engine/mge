@@ -89,6 +89,8 @@ namespace mge::dx12 {
                                          nullptr,
                                          IID_PPV_ARGS(&m_direct_command_list));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
+        m_direct_command_list->Close();
+        reset_direct_command_list();
     }
 
     void render_context::reset_direct_command_list()
@@ -293,6 +295,7 @@ namespace mge::dx12 {
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
         wait_for_command_queue();
+        reset_direct_command_list();
     }
 
     void render_context::wait_for_command_queue()
@@ -315,7 +318,6 @@ namespace mge::dx12 {
                 MGE_CHECK_SYSTEM_ERROR(ResetEvent);
             }
         }
-        reset_direct_command_list();
     }
 
     void render_context::begin_draw()
@@ -336,6 +338,14 @@ namespace mge::dx12 {
                            .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
         };
         m_direct_command_list->ResourceBarrier(1, &barrier);
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+
+        m_direct_command_list->OMSetRenderTargets(1,
+                                                  &rtv_handle,
+                                                  FALSE,
+                                                  nullptr);
+
         m_drawing = true;
     }
 
@@ -355,6 +365,18 @@ namespace mge::dx12 {
         if (!m_drawing) {
             begin_draw();
         }
+        if (cl.color_set()) {
+            m_direct_command_list->ClearRenderTargetView(
+                m_rtv_heap->GetCPUDescriptorHandleForHeapStart(),
+                cl.clear_color().data(),
+                0,
+                nullptr);
+        }
+        /*
+        if (!cl.empty()) {
+            m_direct_command_list->ExecuteBundle(cl.bundle());
+        }
+        */
     }
 
 } // namespace mge::dx12

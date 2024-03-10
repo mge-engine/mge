@@ -39,4 +39,6 @@ namespace mge::dx12 {
 
     void command_list::execute() { m_dx12_context.execute(*this); }
 
+    bool command_list::empty() const { return true; }
+
 } // namespace mge::dx12

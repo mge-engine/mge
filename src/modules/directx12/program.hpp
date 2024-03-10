@@ -6,6 +6,7 @@
 #include "mge/core/to_underlying.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/shader_type.hpp"
+#include "mge/win32/com_ptr.hpp"
 #include "shader.hpp"
 
 #include <array>
@@ -29,10 +30,12 @@ namespace mge::dx12 {
 
     private:
         void collect_information();
+        void create_root_signature();
 
         std::array<shader_ref,
                    mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
-            m_shaders;
+                                          m_shaders;
+        mge::com_ptr<ID3D12RootSignature> m_root_signature;
     };
 
 } // namespace mge::dx12

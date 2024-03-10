@@ -18,6 +18,11 @@ namespace mge::dx12 {
         void draw(const mge::draw_command& command) override;
         void execute() override;
 
+        inline bool              color_set() const { return m_color_set; }
+        inline const rgba_color& clear_color() const { return m_clear_color; }
+
+        bool empty() const;
+
     private:
         render_context&                    m_dx12_context;
         com_ptr<ID3D12CommandAllocator>    m_bundle_allocator;
