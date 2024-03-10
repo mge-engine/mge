@@ -80,6 +80,7 @@ namespace mge::dx12 {
         D3D12_VIEWPORT                          m_viewport;
         D3D12_RECT                              m_scissor_rect;
         uint32_t                                m_rtv_descriptor_size;
+        bool                                    m_drawing;
     };
 
     inline render_context& dx12_context(mge::render_context& context)

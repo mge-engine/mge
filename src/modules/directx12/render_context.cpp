@@ -29,6 +29,7 @@ namespace mge::dx12 {
         , m_window(window_)
         , m_command_queue_fence_value(0)
         , m_command_queue_fence_event(0)
+        , m_drawing(false)
     {
         m_viewport = {0.0f,
                       0.0f,
@@ -331,6 +332,7 @@ namespace mge::dx12 {
                            .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
         };
         m_direct_command_list->ResourceBarrier(1, &barrier);
+        m_drawing = true;
     }
 
     void render_context::end_draw()
@@ -338,6 +340,7 @@ namespace mge::dx12 {
         m_direct_command_list->Close();
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
+        m_drawing = false;
     }
 
 } // namespace mge::dx12

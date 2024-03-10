@@ -26,4 +26,14 @@ namespace mge::dx12 {
         bool                               m_color_set;
     };
 
+    inline command_list& dx12_command_list(mge::command_list& cl)
+    {
+        return static_cast<command_list&>(cl);
+    }
+
+    inline const command_list& dx12_command_list(const mge::command_list& cl)
+    {
+        return static_cast<const command_list&>(cl);
+    }
+
 } // namespace mge::dx12
