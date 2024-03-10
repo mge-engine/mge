@@ -30,6 +30,16 @@ namespace mge::dx12 {
         , m_command_queue_fence_value(0)
         , m_command_queue_fence_event(0)
     {
+        m_viewport = {0.0f,
+                      0.0f,
+                      static_cast<float>(window_.extent().width),
+                      static_cast<float>(window_.extent().height),
+                      0.0f,
+                      0.0f};
+        m_scissor_rect = {0,
+                          0,
+                          static_cast<LONG>(window_.extent().width),
+                          static_cast<LONG>(window_.extent().height)};
         create_factory();
         create_adapter();
         create_device();
@@ -300,6 +310,34 @@ namespace mge::dx12 {
             }
         }
         reset_direct_command_list();
+    }
+
+    void render_context::begin_draw()
+    {
+        reset_direct_command_list();
+        m_direct_command_list->RSSetViewports(1, &m_viewport);
+        m_direct_command_list->RSSetScissorRects(1, &m_scissor_rect);
+
+        D3D12_RESOURCE_BARRIER barrier = {
+            .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
+            .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
+            .Transition = {.pResource =
+                               m_backbuffers[dx12_swap_chain(*m_swap_chain)
+                                                 .current_back_buffer_index()]
+                                   .Get(),
+                           .Subresource =
+                               D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
+                           .StateBefore = D3D12_RESOURCE_STATE_PRESENT,
+                           .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
+        };
+        m_direct_command_list->ResourceBarrier(1, &barrier);
+    }
+
+    void render_context::end_draw()
+    {
+        m_direct_command_list->Close();
+        ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
+        m_command_queue->ExecuteCommandLists(1, lists);
     }
 
 } // namespace mge::dx12

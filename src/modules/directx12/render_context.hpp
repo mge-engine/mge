@@ -59,8 +59,9 @@ namespace mge::dx12 {
         void create_descriptor_heap();
         void update_render_target_views(
             const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
-        void reset_direct_command_list();
-
+        void               reset_direct_command_list();
+        void               begin_draw();
+        void               end_draw();
         render_system&     m_render_system;
         mge::dx12::window& m_window;
 
@@ -76,18 +77,20 @@ namespace mge::dx12 {
 
         mge::com_ptr<ID3D12CommandAllocator>    m_command_list_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_direct_command_list;
+        D3D12_VIEWPORT                          m_viewport;
+        D3D12_RECT                              m_scissor_rect;
         uint32_t                                m_rtv_descriptor_size;
     };
 
     inline render_context& dx12_context(mge::render_context& context)
     {
-        return dynamic_cast<render_context&>(context);
+        return static_cast<render_context&>(context);
     }
 
     inline const render_context&
     dx12_context(const mge::render_context& context)
     {
-        return dynamic_cast<const render_context&>(context);
+        return static_cast<const render_context&>(context);
     }
 
 } // namespace mge::dx12
