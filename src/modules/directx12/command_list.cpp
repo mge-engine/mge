@@ -72,7 +72,7 @@ namespace mge::dx12 {
 
     void command_list::draw(const mge::draw_command& command)
     {
-        ID3D12CommandList* command_list = nullptr;
+        ID3D12GraphicsCommandList* command_list = nullptr;
 
         auto rc = m_dx12_context.device()->CreateCommandList(
             0,
@@ -129,6 +129,11 @@ namespace mge::dx12 {
 
     void command_list::execute() { m_dx12_context.execute(*this); }
 
-    bool command_list::empty() const { return true; }
+    bool command_list::empty() const { return m_draw_list.empty(); }
+
+    const command_list::draw_list& command_list::elements() const
+    {
+        return m_draw_list;
+    }
 
 } // namespace mge::dx12

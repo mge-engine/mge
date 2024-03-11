@@ -372,11 +372,13 @@ namespace mge::dx12 {
                 0,
                 nullptr);
         }
-        /*
         if (!cl.empty()) {
-            m_direct_command_list->ExecuteBundle(cl.bundle());
+            for (auto& d : cl.elements()) {
+                m_direct_command_list->SetGraphicsRootSignature(std::get<0>(d));
+                m_direct_command_list->SetPipelineState(std::get<1>(d));
+                m_direct_command_list->ExecuteBundle(std::get<2>(d));
+            }
         }
-        */
     }
 
 } // namespace mge::dx12

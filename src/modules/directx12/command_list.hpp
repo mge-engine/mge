@@ -14,6 +14,11 @@ namespace mge::dx12 {
     class command_list : public mge::command_list
     {
     public:
+        using draw_data = std::tuple<ID3D12RootSignature*,
+                                     ID3D12PipelineState*,
+                                     ID3D12GraphicsCommandList*>;
+        using draw_list = small_vector<draw_data, 4>;
+
         command_list(render_context& context);
         ~command_list();
 
@@ -24,18 +29,14 @@ namespace mge::dx12 {
         inline bool              color_set() const { return m_color_set; }
         inline const rgba_color& clear_color() const { return m_clear_color; }
 
-        bool empty() const;
+        bool             empty() const;
+        const draw_list& elements() const;
 
     private:
         void release_draw_list();
 
         render_context&                 m_dx12_context;
         com_ptr<ID3D12CommandAllocator> m_bundle_allocator;
-
-        using draw_data = std::tuple<ID3D12RootSignature*,
-                                     ID3D12PipelineState*,
-                                     ID3D12CommandList*>;
-        using draw_list = small_vector<draw_data, 4>;
 
         draw_list             m_draw_list;
         rgba_color            m_clear_color;
