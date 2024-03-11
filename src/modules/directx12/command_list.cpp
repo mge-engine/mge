@@ -106,18 +106,22 @@ namespace mge::dx12 {
         pso_desc.NumRenderTargets = 1;
         pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
         pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
-
+        ID3D12PipelineState* pipeline_state = nullptr;
         try {
-            ID3D12PipelineState* pipeline_state = nullptr;
             rc = m_dx12_context.device()->CreateGraphicsPipelineState(
                 &pso_desc,
                 IID_PPV_ARGS(&pipeline_state));
 
             CHECK_HRESULT(rc, ID3D12Device, CreateGraphicsPipelineState);
 
-            m_draw_list.push_back(
-                std::make_tuple(nullptr, pipeline_state, command_list));
+            m_draw_list.push_back(std::make_tuple(
+                dx12_program(*command.program()).root_signature(),
+                pipeline_state,
+                command_list));
         } catch (...) {
+            if (pipeline_state) {
+                pipeline_state->Release();
+            }
             command_list->Release();
             throw;
         }
