@@ -2,9 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/small_vector.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 #include "render_context.hpp"
+
+#include <tuple>
 
 namespace mge::dx12 {
 
@@ -24,11 +27,21 @@ namespace mge::dx12 {
         bool empty() const;
 
     private:
-        render_context&                    m_dx12_context;
-        com_ptr<ID3D12CommandAllocator>    m_bundle_allocator;
-        com_ptr<ID3D12GraphicsCommandList> m_command_list;
-        rgba_color                         m_clear_color;
-        bool                               m_color_set;
+        void release_draw_list();
+
+        render_context&                 m_dx12_context;
+        com_ptr<ID3D12CommandAllocator> m_bundle_allocator;
+
+        using draw_data = std::tuple<ID3D12RootSignature*,
+                                     ID3D12PipelineState*,
+                                     ID3D12CommandList*>;
+        using draw_list = small_vector<draw_data, 4>;
+
+        draw_list             m_draw_list;
+        rgba_color            m_clear_color;
+        D3D12_RASTERIZER_DESC m_rasterizer_desc;
+        D3D12_BLEND_DESC      m_blend_desc;
+        bool                  m_color_set;
     };
 
     inline command_list& dx12_command_list(mge::command_list& cl)

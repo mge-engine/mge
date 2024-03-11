@@ -24,6 +24,11 @@ namespace mge::dx12 {
             return m_shaders[mge::to_underlying(t)];
         }
 
+        ID3D12RootSignature* root_signature() const
+        {
+            return m_root_signature.Get();
+        }
+
     protected:
         void on_link() override;
         void on_set_shader(const shader_ref& shader) override;

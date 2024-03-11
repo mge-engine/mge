@@ -12,7 +12,16 @@ namespace mge {
 namespace mge::dx12 {
     shader::shader(render_context& context, shader_type type)
         : mge::shader(context, type)
-    {}
+    {
+        m_input_layout.emplace_back(
+            D3D12_INPUT_ELEMENT_DESC{"POSITION",
+                                     0,
+                                     DXGI_FORMAT_R32G32B32_FLOAT,
+                                     0,
+                                     0,
+                                     D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,
+                                     0});
+    }
 
     shader::~shader() {}
 

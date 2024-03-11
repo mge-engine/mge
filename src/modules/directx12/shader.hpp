@@ -15,6 +15,16 @@ namespace mge::dx12 {
         shader(render_context& context, shader_type type);
         ~shader();
 
+        const D3D12_INPUT_ELEMENT_DESC* input_layout() const
+        {
+            return m_input_layout.data();
+        }
+
+        uint32_t input_layout_count() const
+        {
+            return static_cast<uint32_t>(m_input_layout.size());
+        }
+
     protected:
         virtual void on_compile(std::string_view code) override;
         virtual void on_set_code(const mge::buffer& code) override;
@@ -29,6 +39,18 @@ namespace mge::dx12 {
     private:
         std::string profile() const;
 
-        mge::com_unique_ptr<ID3DBlob> m_code;
+        mge::com_unique_ptr<ID3DBlob>         m_code;
+        std::vector<D3D12_INPUT_ELEMENT_DESC> m_input_layout;
     };
+
+    inline shader& dx12_shader(mge::shader& s)
+    {
+        return static_cast<shader&>(s);
+    }
+
+    inline const shader& dx12_shader(const mge::shader& s)
+    {
+        return static_cast<const shader&>(s);
+    }
+
 } // namespace mge::dx12
