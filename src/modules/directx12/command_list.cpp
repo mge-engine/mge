@@ -3,9 +3,11 @@
 // All rights reserved.
 #include "command_list.hpp"
 #include "error.hpp"
+#include "index_buffer.hpp"
 #include "program.hpp"
 #include "render_context.hpp"
 #include "shader.hpp"
+#include "vertex_buffer.hpp"
 
 namespace mge::dx12 {
 #include <d3d12.h> // Include the necessary header file
@@ -106,6 +108,8 @@ namespace mge::dx12 {
         pso_desc.NumRenderTargets = 1;
         pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
         pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
+
+        auto root_signature = dx12_program(*command.program()).root_signature();
         ID3D12PipelineState* pipeline_state = nullptr;
         try {
             rc = m_dx12_context.device()->CreateGraphicsPipelineState(
@@ -114,10 +118,26 @@ namespace mge::dx12 {
 
             CHECK_HRESULT(rc, ID3D12Device, CreateGraphicsPipelineState);
 
-            m_draw_list.push_back(std::make_tuple(
-                dx12_program(*command.program()).root_signature(),
-                pipeline_state,
-                command_list));
+            command_list->SetGraphicsRootSignature(root_signature);
+            command_list->SetPipelineState(pipeline_state);
+            command_list->IASetPrimitiveTopology(
+                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            command_list->IASetVertexBuffers(
+                0,
+                1,
+                &dx12_vertex_buffer(*command.vertices()).view());
+            command_list->IASetIndexBuffer(
+                &dx12_index_buffer(*command.indices()).view());
+            command_list->DrawIndexedInstanced(
+                static_cast<UINT>(command.indices()->element_count()),
+                1,
+                0,
+                0,
+                0);
+
+            command_list->Close();
+            m_draw_list.push_back(
+                std::make_tuple(root_signature, pipeline_state, command_list));
         } catch (...) {
             if (pipeline_state) {
                 pipeline_state->Release();

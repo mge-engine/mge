@@ -75,6 +75,7 @@ namespace mge::dx12 {
         mge::com_ptr<IDXGIFactory4>               m_factory;
         mge::com_ptr<IDXGIAdapter4>               m_adapter;
         mge::com_ptr<ID3D12Device2>               m_device;
+        mge::com_ptr<ID3D12InfoQueue1>            m_info_queue;
         mge::com_ptr<ID3D12CommandQueue>          m_command_queue;
         mge::com_ptr<ID3D12Fence>                 m_command_queue_fence;
         uint64_t                                  m_command_queue_fence_value;

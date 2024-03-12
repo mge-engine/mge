@@ -60,11 +60,11 @@ namespace mge::dx12 {
     {
         if (debug()) {
             MGE_DEBUG_TRACE(DX12) << "Enable debug layer";
-            mge::com_ptr<ID3D12Debug> debug_interface;
+            mge::com_ptr<ID3D12Debug1> debug_interface;
             auto rc = D3D12GetDebugInterface(IID_PPV_ARGS(&debug_interface));
             CHECK_HRESULT(rc, , D3D12GetDebugInterface);
             debug_interface->EnableDebugLayer();
-            // TODO: check about GPU based validation
+            debug_interface->SetEnableGPUBasedValidation(TRUE);
         }
     }
 

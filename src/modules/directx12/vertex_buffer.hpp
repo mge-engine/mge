@@ -19,6 +19,7 @@ namespace mge::dx12 {
         ~vertex_buffer();
 
         ID3D12Resource* buffer() const { return m_buffer.get(); }
+        const D3D12_VERTEX_BUFFER_VIEW& view() const { return m_buffer_view; }
 
     protected:
         void* on_map() override;
@@ -31,5 +32,15 @@ namespace mge::dx12 {
         void*                               m_mapped_memory;
         D3D12_VERTEX_BUFFER_VIEW            m_buffer_view;
     };
+
+    inline vertex_buffer& dx12_vertex_buffer(mge::vertex_buffer& vb)
+    {
+        return static_cast<vertex_buffer&>(vb);
+    }
+
+    inline const vertex_buffer& dx12_vertex_buffer(const mge::vertex_buffer& vb)
+    {
+        return static_cast<const vertex_buffer&>(vb);
+    }
 
 } // namespace mge::dx12

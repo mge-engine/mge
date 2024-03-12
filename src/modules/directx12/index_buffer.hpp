@@ -19,6 +19,8 @@ namespace mge::dx12 {
                      void*           data);
         virtual ~index_buffer();
 
+        const D3D12_INDEX_BUFFER_VIEW& view() const { return m_buffer_view; }
+
     protected:
         void* on_map() override;
         void  on_unmap() override;
@@ -30,4 +32,14 @@ namespace mge::dx12 {
         void*                               m_mapped_memory;
         D3D12_INDEX_BUFFER_VIEW             m_buffer_view;
     };
+
+    inline index_buffer& dx12_index_buffer(mge::index_buffer& ib)
+    {
+        return static_cast<index_buffer&>(ib);
+    }
+
+    inline const index_buffer& dx12_index_buffer(const mge::index_buffer& ib)
+    {
+        return static_cast<const index_buffer&>(ib);
+    }
 } // namespace mge::dx12
