@@ -49,11 +49,19 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, IDXGISwapChain1, As);
     }
 
+    uint32_t swap_chain::current_back_buffer_index() const
+    {
+        uint32_t index = m_swap_chain->GetCurrentBackBufferIndex();
+        // MGE_DEBUG_TRACE(DX12) << "Current back buffer index: " << index;
+        return index;
+    }
+
     void swap_chain::present()
     {
         dx12_context(context()).end_draw();
         m_swap_chain->Present(0, 0);
         dx12_context(context()).wait_for_command_queue();
+        dx12_context(context()).reset_direct_command_list();
     }
 
 } // namespace mge::dx12

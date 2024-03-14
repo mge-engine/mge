@@ -6,6 +6,10 @@
 #include "mge/core/checked_cast.hpp"
 #include "render_context.hpp"
 
+namespace mge {
+    MGE_USE_TRACE(DX12);
+}
+
 namespace mge::dx12 {
     vertex_buffer::vertex_buffer(render_context&      context,
                                  const vertex_layout& layout,
@@ -13,7 +17,9 @@ namespace mge::dx12 {
                                  void*                initial_data)
         : mge::vertex_buffer(context, layout, data_size, initial_data)
         , m_mapped_memory(nullptr)
-    {}
+    {
+        create_buffer(initial_data);
+    }
 
     vertex_buffer::~vertex_buffer() {}
 
@@ -83,13 +89,19 @@ namespace mge::dx12 {
             memcpy(mapped_data, data, size());
             upload_buffer->Unmap(0, nullptr);
 
-            dx12_context(context()).copy_resource(m_buffer.get(),
-                                                  upload_buffer_ptr.get());
+            dx12_context(context()).copy_resource(
+                m_buffer.get(),
+                upload_buffer_ptr.get(),
+                D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
 
             m_buffer_view.BufferLocation = m_buffer->GetGPUVirtualAddress();
             m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size());
             m_buffer_view.StrideInBytes =
                 mge::checked_cast<UINT>(layout().stride());
+            MGE_DEBUG_TRACE(DX12)
+                << "Vertex buffer view: " << m_buffer_view.BufferLocation << " "
+                << m_buffer_view.SizeInBytes << " "
+                << m_buffer_view.StrideInBytes;
         } else {
             m_buffer_view.BufferLocation = 0;
             m_buffer_view.SizeInBytes = 0;

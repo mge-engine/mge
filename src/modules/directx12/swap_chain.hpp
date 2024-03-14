@@ -20,10 +20,7 @@ namespace mge::dx12 {
 
         IDXGISwapChain4* dxgi_swap_chain() const { return m_swap_chain.Get(); }
 
-        uint32_t current_back_buffer_index() const
-        {
-            return m_swap_chain->GetCurrentBackBufferIndex();
-        }
+        uint32_t current_back_buffer_index() const;
 
     private:
         mge::com_ptr<IDXGISwapChain4> m_swap_chain;

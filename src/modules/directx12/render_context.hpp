@@ -47,7 +47,9 @@ namespace mge::dx12 {
         }
 
         ID3D12Device2* device() const { return m_device.Get(); }
-        void           copy_resource(ID3D12Resource* dst, ID3D12Resource* src);
+        void           copy_resource(ID3D12Resource*       dst,
+                                     ID3D12Resource*       src,
+                                     D3D12_RESOURCE_STATES state_after);
 
         void execute(command_list& cl);
 

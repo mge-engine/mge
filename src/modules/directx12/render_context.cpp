@@ -97,8 +97,11 @@ namespace mge::dx12 {
 
     void render_context::reset_direct_command_list()
     {
-        auto rc = m_direct_command_list->Reset(m_command_list_allocator.Get(),
-                                               nullptr);
+        // MGE_DEBUG_TRACE(DX12) << "Reset direct command list";
+        auto rc = m_command_list_allocator->Reset();
+        CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+        rc = m_direct_command_list->Reset(m_command_list_allocator.Get(),
+                                          nullptr);
         CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
     }
 
@@ -146,7 +149,7 @@ namespace mge::dx12 {
 
                 rc = m_info_queue->RegisterMessageCallback(
                     &message_func,
-                    D3D12_MESSAGE_CALLBACK_FLAG_NONE,
+                    D3D12_MESSAGE_CALLBACK_IGNORE_FILTERS,
                     nullptr,
                     &m_callback_cookie);
                 CHECK_HRESULT(rc, ID3D12InfoQueue1, RegisterMessageCallback);
@@ -293,6 +296,9 @@ namespace mge::dx12 {
             m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
 
         for (int i = 0; i < buffer_count; ++i) {
+            MGE_DEBUG_TRACE(DX12)
+                << "Create render target view for back buffer #" << i
+                << " of swap chain";
             mge::com_ptr<ID3D12Resource> backbuffer;
             auto rc = swap_chain->dxgi_swap_chain()->GetBuffer(
                 i,
@@ -364,9 +370,20 @@ namespace mge::dx12 {
         return result;
     }
 
-    void render_context::copy_resource(ID3D12Resource* dst, ID3D12Resource* src)
+    void render_context::copy_resource(ID3D12Resource*       dst,
+                                       ID3D12Resource*       src,
+                                       D3D12_RESOURCE_STATES state_after)
     {
         m_direct_command_list->CopyResource(dst, src);
+
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        barrier.Transition.pResource = dst;
+        barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+        barrier.Transition.StateAfter = state_after;
+        barrier.Transition.Subresource =
+            D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        m_direct_command_list->ResourceBarrier(1, &barrier);
         m_direct_command_list->Close();
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
@@ -376,19 +393,32 @@ namespace mge::dx12 {
 
     void render_context::wait_for_command_queue()
     {
-        HRESULT rc = m_command_queue->Signal(m_command_queue_fence.Get(),
-                                             ++m_command_queue_fence_value);
+        auto fence = m_command_queue_fence_value++;
+
+        HRESULT rc =
+            m_command_queue->Signal(m_command_queue_fence.Get(), fence);
         CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
-        if (m_command_queue_fence->GetCompletedValue() <
-            m_command_queue_fence_value) {
-            m_command_queue_fence->SetEventOnCompletion(
-                m_command_queue_fence_value,
+        uint64_t fence_completed_value =
+            m_command_queue_fence->GetCompletedValue();
+        // MGE_DEBUG_TRACE(DX12) << "Target command fence value: " <<
+        // m_command_queue_fence_value;
+
+        // MGE_DEBUG_TRACE(DX12) << "Fence completed value: " <<
+        // fence_completed_value;
+        if (fence_completed_value < fence) {
+            // MGE_DEBUG_TRACE(DX12) << "Using SetEventOnCompletion to wait for
+            // fence";
+            rc = m_command_queue_fence->SetEventOnCompletion(
+                fence,
                 m_command_queue_fence_event);
             CHECK_HRESULT(rc, ID3D12CommandQueue, SetEventOnCompletion);
             DWORD wait_rc =
-                WaitForSingleObject(m_command_queue_fence_event, INFINITE);
+                WaitForSingleObject(m_command_queue_fence_event, 10000);
             if (wait_rc == WAIT_FAILED) {
                 MGE_CHECK_SYSTEM_ERROR(WaitForSingleObject);
+            } else if (wait_rc == WAIT_TIMEOUT) {
+                MGE_THROW(dx12::error)
+                    << "Wait for command queue fence timed out";
             }
             if (!ResetEvent(m_command_queue_fence_event)) {
                 MGE_CHECK_SYSTEM_ERROR(ResetEvent);
@@ -398,24 +428,28 @@ namespace mge::dx12 {
 
     void render_context::begin_draw()
     {
-        m_direct_command_list->RSSetViewports(1, &m_viewport);
-        m_direct_command_list->RSSetScissorRects(1, &m_scissor_rect);
+        auto current_buffer_index =
+            dx12_swap_chain(*m_swap_chain).current_back_buffer_index();
 
         D3D12_RESOURCE_BARRIER barrier = {
             .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
             .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
-            .Transition = {.pResource =
-                               m_backbuffers[dx12_swap_chain(*m_swap_chain)
-                                                 .current_back_buffer_index()]
-                                   .Get(),
+            .Transition = {.pResource = m_backbuffers[current_buffer_index]
+
+                                            .Get(),
                            .Subresource =
                                D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
                            .StateBefore = D3D12_RESOURCE_STATE_PRESENT,
                            .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
         };
         m_direct_command_list->ResourceBarrier(1, &barrier);
+        m_direct_command_list->RSSetViewports(1, &m_viewport);
+        m_direct_command_list->RSSetScissorRects(1, &m_scissor_rect);
+
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
             m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+
+        rtv_handle.ptr += m_rtv_descriptor_size * current_buffer_index;
 
         m_direct_command_list->OMSetRenderTargets(1,
                                                   &rtv_handle,
@@ -430,6 +464,18 @@ namespace mge::dx12 {
         if (!m_drawing) {
             return;
         }
+
+        D3D12_RESOURCE_BARRIER barrier = {
+            .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
+            .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
+            .Transition = {
+                .pResource = m_backbuffers[dx12_swap_chain(*m_swap_chain)
+                                               .current_back_buffer_index()]
+                                 .Get(),
+                .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
+                .StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET,
+                .StateAfter = D3D12_RESOURCE_STATE_PRESENT}};
+        m_direct_command_list->ResourceBarrier(1, &barrier);
         m_direct_command_list->Close();
         ID3D12CommandList* lists[] = {m_direct_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
@@ -442,8 +488,12 @@ namespace mge::dx12 {
             begin_draw();
         }
         if (cl.color_set()) {
+            auto handle = m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+            handle.ptr +=
+                m_rtv_descriptor_size *
+                dx12_swap_chain(*m_swap_chain).current_back_buffer_index();
             m_direct_command_list->ClearRenderTargetView(
-                m_rtv_heap->GetCPUDescriptorHandleForHeapStart(),
+                handle,
                 cl.clear_color().data(),
                 0,
                 nullptr);

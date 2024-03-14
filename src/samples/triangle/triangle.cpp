@@ -145,10 +145,12 @@ namespace mge {
             int                triangle_indices[] = {0, 1, 2};
             mge::vertex_layout layout;
             layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
+            MGE_DEBUG_TRACE(TRIANGLE) << "Create vertex buffer";
             m_vertices = m_window->render_context().create_vertex_buffer(
                 layout,
                 sizeof(triangle_coords),
                 triangle_coords);
+            MGE_DEBUG_TRACE(TRIANGLE) << "Create index buffer";
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
                 sizeof(triangle_indices),

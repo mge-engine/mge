@@ -86,8 +86,10 @@ namespace mge::dx12 {
             memcpy(mapped_data, data, size());
             upload_buffer->Unmap(0, nullptr);
 
-            dx12_context(context()).copy_resource(m_buffer.get(),
-                                                  upload_buffer_ptr.get());
+            dx12_context(context()).copy_resource(
+                m_buffer.get(),
+                upload_buffer_ptr.get(),
+                D3D12_RESOURCE_STATE_INDEX_BUFFER);
 
             m_buffer_view.BufferLocation = m_buffer->GetGPUVirtualAddress();
             m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size());
