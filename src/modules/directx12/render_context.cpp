@@ -23,12 +23,14 @@ namespace mge {
 }
 
 namespace mge::dx12 {
+
     render_context::render_context(mge::dx12::render_system& render_system_,
                                    mge::dx12::window&        window_)
         : m_render_system(render_system_)
         , m_window(window_)
         , m_command_queue_fence_value(0)
         , m_command_queue_fence_event(0)
+        , m_callback_cookie(0)
         , m_drawing(false)
     {
         m_viewport = {0.0f,
@@ -141,7 +143,77 @@ namespace mge::dx12 {
                 deny_filter.DenyList.pIDList = denied_message_ids;
                 auto rc = m_info_queue->PushStorageFilter(&deny_filter);
                 CHECK_HRESULT(rc, ID3D12InfoQueue, PushStorageFilter);
+
+                rc = m_info_queue->RegisterMessageCallback(
+                    &message_func,
+                    D3D12_MESSAGE_CALLBACK_FLAG_NONE,
+                    nullptr,
+                    &m_callback_cookie);
+                CHECK_HRESULT(rc, ID3D12InfoQueue1, RegisterMessageCallback);
             }
+        }
+    }
+
+    static const char* message_category(D3D12_MESSAGE_CATEGORY category)
+    {
+        switch (category) {
+        case D3D12_MESSAGE_CATEGORY_APPLICATION_DEFINED:
+            return "APPLICATION_DEFINED";
+        case D3D12_MESSAGE_CATEGORY_MISCELLANEOUS:
+            return "MISCELLANEOUS";
+        case D3D12_MESSAGE_CATEGORY_INITIALIZATION:
+            return "INITIALIZATION";
+        case D3D12_MESSAGE_CATEGORY_CLEANUP:
+            return "CLEANUP";
+        case D3D12_MESSAGE_CATEGORY_COMPILATION:
+            return "COMPILATION";
+        case D3D12_MESSAGE_CATEGORY_STATE_CREATION:
+            return "STATE_CREATION";
+        case D3D12_MESSAGE_CATEGORY_STATE_SETTING:
+            return "STATE_SETTING";
+        case D3D12_MESSAGE_CATEGORY_STATE_GETTING:
+            return "STATE_GETTING";
+        case D3D12_MESSAGE_CATEGORY_RESOURCE_MANIPULATION:
+            return "RESOURCE_MANIPULATION";
+        case D3D12_MESSAGE_CATEGORY_EXECUTION:
+            return "EXECUTION";
+        case D3D12_MESSAGE_CATEGORY_SHADER:
+            return "SHADER";
+        default:
+            return "UNKNOWN";
+        }
+    }
+
+    void render_context::message_func(D3D12_MESSAGE_CATEGORY category,
+                                      D3D12_MESSAGE_SEVERITY severity,
+                                      D3D12_MESSAGE_ID       id,
+                                      LPCSTR                 description,
+                                      void*                  context)
+    {
+        switch (severity) {
+        case D3D12_MESSAGE_SEVERITY_CORRUPTION:
+            MGE_ERROR_TRACE(DX12)
+                << message_category(category) << ": (" << static_cast<int>(id)
+                << ") " << description;
+            break;
+        case D3D12_MESSAGE_SEVERITY_ERROR:
+            MGE_ERROR_TRACE(DX12)
+                << message_category(category) << ": (" << static_cast<int>(id)
+                << ") " << description;
+            break;
+        case D3D12_MESSAGE_SEVERITY_WARNING:
+            MGE_WARNING_TRACE(DX12)
+                << message_category(category) << ": (" << static_cast<int>(id)
+                << ") " << description;
+            break;
+        case D3D12_MESSAGE_SEVERITY_INFO:
+            MGE_INFO_TRACE(DX12) << message_category(category) << ": ("
+                                 << static_cast<int>(id) << ") " << description;
+            break;
+        default:
+            MGE_DEBUG_TRACE(DX12)
+                << message_category(category) << ": (" << static_cast<int>(id)
+                << ") " << description;
         }
     }
 
@@ -246,7 +318,12 @@ namespace mge::dx12 {
         update_render_target_views(swap_chain);
     }
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        if (m_info_queue && m_callback_cookie != 0) {
+            m_info_queue->UnregisterMessageCallback(m_callback_cookie);
+        }
+    }
 
     mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
                                                               size_t data_size,

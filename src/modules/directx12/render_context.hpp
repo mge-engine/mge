@@ -69,6 +69,12 @@ namespace mge::dx12 {
         void end_draw();
         void wait_for_command_queue();
 
+        static void message_func(D3D12_MESSAGE_CATEGORY category,
+                                 D3D12_MESSAGE_SEVERITY severity,
+                                 D3D12_MESSAGE_ID       id,
+                                 LPCSTR                 description,
+                                 void*                  context);
+
         render_system&     m_render_system;
         mge::dx12::window& m_window;
 
@@ -88,6 +94,7 @@ namespace mge::dx12 {
         D3D12_VIEWPORT                          m_viewport;
         D3D12_RECT                              m_scissor_rect;
         uint32_t                                m_rtv_descriptor_size;
+        DWORD                                   m_callback_cookie;
         bool                                    m_drawing;
     };
 

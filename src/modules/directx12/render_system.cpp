@@ -46,7 +46,7 @@ namespace mge::dx12 {
 
     bool render_system::debug() const
     {
-        return MGE_PARAMETER(directx12, debug).get();
+        return true; // MGE_PARAMETER(directx12, debug).get();
     }
 
     bool render_system::warp() const
