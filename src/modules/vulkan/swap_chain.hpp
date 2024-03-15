@@ -19,6 +19,7 @@ namespace mge::vulkan {
         void create_frame_buffers(VkRenderPass render_pass);
 
         VkFramebuffer next_frame();
+        VkFramebuffer current_frame();
 
         inline VkSemaphore image_available() const noexcept
         {
@@ -36,6 +37,7 @@ namespace mge::vulkan {
         VkSwapchainKHR  m_swap_chain;
         VkSemaphore     m_image_available;
         uint32_t        m_current_image;
+
 
         std::vector<VkImage>       m_images;
         std::vector<VkImageView>   m_image_views;

@@ -78,9 +78,6 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
-        void execute_on_frame(command_list* l);
-        void frame();
-
         inline VkQueue present_queue() const noexcept
         {
             return m_present_queue;
@@ -95,6 +92,10 @@ namespace mge::vulkan {
         {
             return m_render_pass;
         }
+
+        void begin_draw();
+        void end_draw();
+        void wait_for_frame_completion();
 
     private:
         void create_surface();
