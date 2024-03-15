@@ -119,16 +119,17 @@ namespace mge::dx12 {
         if (m_render_system.debug()) {
             MGE_DEBUG_TRACE(DX12) << "Enabling debug messages";
             if (SUCCEEDED(m_device.As(&m_info_queue))) {
-                /* will call into the debugger
+                HRESULT rc = S_OK;
+#if 0
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION,
                                               TRUE);
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR,
                                               TRUE);
                 infoqueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_WARNING,
+
                                               TRUE);
-                */
-                // D3D12_MESSAGE_SEVERITY denied_severities[] = {
-                //     D3D12_MESSAGE_SEVERITY_INFO};
+                D3D12_MESSAGE_SEVERITY denied_severities[] = {
+                    D3D12_MESSAGE_SEVERITY_INFO};
 
                 D3D12_MESSAGE_ID denied_message_ids[] = {
                     // clear render target with different color
@@ -144,9 +145,9 @@ namespace mge::dx12 {
                 deny_filter.DenyList.NumIDs =
                     checked_cast<UINT>(array_size(denied_message_ids));
                 deny_filter.DenyList.pIDList = denied_message_ids;
-                auto rc = m_info_queue->PushStorageFilter(&deny_filter);
+                rc = m_info_queue->PushStorageFilter(&deny_filter);
                 CHECK_HRESULT(rc, ID3D12InfoQueue, PushStorageFilter);
-
+#endif
                 rc = m_info_queue->RegisterMessageCallback(
                     &message_func,
                     D3D12_MESSAGE_CALLBACK_IGNORE_FILTERS,
