@@ -11,6 +11,8 @@
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/window_options.hpp"
 
+#include <span>
+
 namespace mge {
     /**
      * @brief Render system interface.
@@ -94,14 +96,12 @@ namespace mge {
          */
         static render_system_ref create(std::string_view implementation);
 
-        using monitor_collection = std::vector<monitor_ref>;
-
         /**
          * @brief Get monitors of the system.
          *
          * @return attached monitors
          */
-        virtual monitor_collection monitors() = 0;
+        virtual std::span<monitor_ref> monitors() = 0;
 
         /**
          * @brief Access render system capabilities.

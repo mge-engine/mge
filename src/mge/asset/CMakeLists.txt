@@ -9,7 +9,7 @@ SET(mgeasset_sources
     asset.cpp
     asset_access_factory.cpp
     asset_access.cpp
-    asser_loader.cpp
+    asset_loader.cpp
 )
 
 SET(mgeasset_headers

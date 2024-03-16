@@ -35,7 +35,7 @@ namespace mge {
                 return ref;
             }
 
-            monitor_collection monitors()
+            std::span<mge::monitor_ref> monitors() override
             {
 #ifdef MGE_OS_WINDOWS
                 return mge::win32::monitor::all_monitors();

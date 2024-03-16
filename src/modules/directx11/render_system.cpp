@@ -28,7 +28,7 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11) << "Creating DirectX 11 render system";
     }
 
-    render_system::monitor_collection render_system::monitors()
+    std::span<mge::monitor_ref> render_system::monitors()
     {
         return mge::win32::monitor::all_monitors();
     }

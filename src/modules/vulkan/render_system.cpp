@@ -450,7 +450,7 @@ namespace mge::vulkan {
         return std::make_shared<mge::vulkan::window>(*this, extent, options);
     }
 
-    mge::render_system::monitor_collection render_system::monitors()
+    std::span<mge::monitor_ref> render_system::monitors()
     {
 #ifdef MGE_OS_WINDOWS
         return mge::win32::monitor::all_monitors();

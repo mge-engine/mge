@@ -112,9 +112,7 @@ namespace mge::script {
                             &mge::window_options::standard_options)
                     .method("fullscreen_options",
                             &mge::window_options::fullscreen_options),
-                type<mge::render_system>("render_system")(
-                    type<render_system::monitor_collection>(
-                        "monitor_collection"))
+                type<mge::render_system>("render_system")()
                     .method(
                         "create_window",
                         static_cast<mge::window_ref (render_system::*)(void)>(
