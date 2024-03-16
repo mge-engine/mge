@@ -31,5 +31,6 @@ INCLUDE(thirdparty/sphinx)
 INCLUDE(thirdparty/glm)
 INCLUDE(thirdparty/lua)
 INCLUDE(thirdparty/linenoise)
+INCLUDE(thirdparty/stb)
 
 

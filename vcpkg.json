@@ -16,6 +16,7 @@
       "name": "python3",
       "default-features": true
     },
-    "glslang"
+    "glslang",
+    "stb"
   ]
 }
