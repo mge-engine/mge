@@ -1,7 +1,6 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-/** @file */
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
@@ -30,8 +29,8 @@ namespace mge {
 template <typename C>
 struct std::formatter<mge::shader_type, C> : std::formatter<std::string_view, C>
 {
-    auto format(const mge::shader_type& t, auto& ctx) const
-        -> std::format_context::iterator
+    auto format(const mge::shader_type& t,
+                auto& ctx) const -> std::format_context::iterator
     {
         switch (t) {
         case mge::shader_type::VERTEX:
