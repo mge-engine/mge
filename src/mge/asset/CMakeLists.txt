@@ -3,7 +3,6 @@
 # All rights reserved.
 SET(mgeasset_sources
     asset_type.cpp
-    asset_handle.cpp
     asset_not_found.cpp
     asset_locator.cpp
     asset.cpp
@@ -15,7 +14,6 @@ SET(mgeasset_sources
 SET(mgeasset_headers
     dllexport.hpp
     asset_type.hpp
-    asset_handle.hpp
     asset_not_found.hpp
     asset_locator.hpp
     asset.hpp
