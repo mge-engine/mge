@@ -39,6 +39,11 @@ namespace mge {
             return width != e.width || height != e.height;
         }
 
+        size_t area() const noexcept
+        {
+            return static_cast<size_t>(width) * static_cast<size_t>(height);
+        }
+
         uint32_t width;
         uint32_t height;
     };

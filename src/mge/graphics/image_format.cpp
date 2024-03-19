@@ -11,4 +11,20 @@ namespace mge {
         return os << std::format("{}", f);
     }
 
-}
+    size_t binary_size(image_format f)
+    {
+        switch (f) {
+        case image_format::RGB_BYTE:
+            return 3;
+        case image_format::RGBA_BYTE:
+            return 4;
+        case image_format::RGB_FLOAT:
+            return 3 * sizeof(float);
+        case image_format::RGBA_FLOAT:
+            return 4 * sizeof(float);
+        default:
+            return 0;
+        }
+    }
+
+} // namespace mge

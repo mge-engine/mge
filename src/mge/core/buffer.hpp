@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 

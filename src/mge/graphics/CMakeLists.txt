@@ -35,6 +35,7 @@ SET(mgegraphics_sources
     attribute_semantic.cpp
     texture_type.cpp
     image_format.cpp
+    memory_image.cpp
 )
 
 SET(mgegraphics_headers
@@ -71,6 +72,7 @@ SET(mgegraphics_headers
     texture.hpp
     image.hpp
     image_format.hpp
+    memory_image.hpp
 )
 
 MGE_LIBRARY(
