@@ -16,6 +16,9 @@ namespace mge {
     public:
         asset_loader() = default;
         virtual ~asset_loader() = default;
+
+        virtual std::any load(const asset& asset) = 0;
+
         virtual std::span<asset_type> handled_types() const = 0;
     };
 

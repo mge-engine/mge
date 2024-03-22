@@ -3,8 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "boost/boost_algorithm_string.hpp"
-#include "mge/core/lexical_cast.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/lexical_cast.hpp"
 #include "mge/core/make_string_view.hpp"
 
 #include <any>
@@ -325,6 +325,45 @@ namespace mge {
         std::vector<T> m_values;
     };
 
+    /**
+     * @brief Parameter section.
+     */
+    class MGECORE_EXPORT parameter_section
+    {
+    public:
+        parameter_section(std::string_view name, std::string_view description);
+        ~parameter_section() = default;
+
+        parameter_section(const parameter_section&) = delete;
+        parameter_section& operator=(const parameter_section&) = delete;
+        parameter_section(parameter_section&&) = delete;
+        parameter_section& operator=(parameter_section&&) = delete;
+
+        /**
+         * @brief Parameter name.
+         *
+         * @return parameter name
+         */
+        std::string_view name() const noexcept;
+        /**
+         * @brief Parameter description.
+         *
+         * @return parameter description text
+         */
+        std::string_view description() const noexcept;
+
+    private:
+        std::string_view m_name;
+        std::string_view m_description;
+    };
+
+/**
+ * @def MGE_DEFINE_PARAMTER_SECTION
+ * @brief Subsection of paramters
+ */
+#define MGE_DEFINE_PARAMTER_SECTION(SECTION, DESCRIPTION)                      \
+    ::mge::parameter_section ps_##SECTION(#SECTION, DESCRIPTION);
+
 /**
  * @def MGE_DEFINE_PARAMETER
  * @brief Define a parameter.
@@ -362,4 +401,12 @@ namespace mge {
  * @param NAME parameter name
  */
 #define MGE_PARAMETER(SECTION, NAME) p_##SECTION##_##NAME
+
+/**
+ * @def MGE_PARAMETER_SECTION
+ * @brief Access a parameter section.
+ * @param SECTION parameter section
+ */
+#define MGE_PARAMETER_SECTION(SECTION) ps_##SECTION
+
 } // namespace mge

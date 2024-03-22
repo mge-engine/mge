@@ -56,4 +56,17 @@ namespace mge {
 
     void basic_parameter::reset() {}
 
+    parameter_section::parameter_section(std::string_view name,
+                                         std::string_view description)
+        : m_name(name)
+        , m_description(description)
+    {}
+
+    std::string_view parameter_section::name() const noexcept { return m_name; }
+
+    std::string_view parameter_section::description() const noexcept
+    {
+        return m_description;
+    }
+
 } // namespace mge
