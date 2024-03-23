@@ -38,3 +38,11 @@ TEST(concepts, is_sequence_container)
     EXPECT_FALSE(is_sequence_container_std_array);
     EXPECT_FALSE(is_sequence_container<int>());
 }
+
+TEST(concepts, string_container)
+{
+    EXPECT_FALSE(is_sequence_container<std::string>());
+    EXPECT_FALSE(is_sequence_container<std::wstring>());
+    EXPECT_FALSE(is_sequence_container<std::string_view>());
+    EXPECT_FALSE(is_sequence_container<std::wstring_view>());
+}

@@ -4,6 +4,7 @@
 #pragma once
 #include "boost/boost_algorithm_string.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/is_container.hpp"
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/make_string_view.hpp"
 #include "mge/core/path.hpp"

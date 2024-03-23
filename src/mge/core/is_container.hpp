@@ -7,6 +7,7 @@
 
 #include <array>
 #include <concepts>
+#include <string>
 #include <tuple>
 
 namespace mge {
@@ -15,6 +16,10 @@ namespace mge {
 
         template <typename T>
         concept allows_tuple_size = requires { std::tuple_size<T>::value; };
+
+        template <typename T>
+        concept is_any_string_type =
+            std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;
 
     } // namespace
 
@@ -27,7 +32,7 @@ namespace mge {
              std::array<typename T::value_type, std::tuple_size_v<T>>>);
 
     template <typename T>
-    concept is_container = requires(T t) {
+    concept is_container = !is_any_string_type<T> && requires(T t) {
         typename T::value_type;
         typename T::size_type;
         typename T::reference;
