@@ -8,10 +8,10 @@ namespace mge {
     basic_parameter::basic_parameter(std::string_view section,
                                      std::string_view name,
                                      std::string_view description)
-        : m_section(section)
-        , m_name(name)
-        , m_description(description)
+        : m_description(description)
     {
+        m_path /= section;
+        m_path /= name;
         configuration::register_parameter(*this);
     }
 
@@ -20,12 +20,7 @@ namespace mge {
         configuration::unregister_parameter(*this);
     }
 
-    std::string_view basic_parameter::section() const noexcept
-    {
-        return m_section;
-    }
-
-    std::string_view basic_parameter::name() const noexcept { return m_name; }
+    const mge::path& basic_parameter::path() const { return m_path; }
 
     std::string_view basic_parameter::description() const noexcept
     {
@@ -55,18 +50,5 @@ namespace mge {
     }
 
     void basic_parameter::reset() {}
-
-    parameter_section::parameter_section(std::string_view name,
-                                         std::string_view description)
-        : m_name(name)
-        , m_description(description)
-    {}
-
-    std::string_view parameter_section::name() const noexcept { return m_name; }
-
-    std::string_view parameter_section::description() const noexcept
-    {
-        return m_description;
-    }
 
 } // namespace mge

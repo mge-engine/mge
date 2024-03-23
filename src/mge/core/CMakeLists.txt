@@ -86,6 +86,7 @@ SET(mgecore_headers
     call_debugger.cpp
     line_editor.hpp
     mutex.hpp
+    is_container.hpp
 )
 
 MGE_LIBRARY(

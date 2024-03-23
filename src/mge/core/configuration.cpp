@@ -55,45 +55,26 @@ namespace mge {
         void     fetch_parameter(basic_parameter& p);
         void     write_parameter(basic_parameter& p);
 
-        using parameter_map = std::map<std::string_view, basic_parameter*>;
-        using section_map = std::map<std::string_view, parameter_map>;
+        using parameter_map = std::map<mge::path, basic_parameter*>;
 
-        section_map m_sections;
-        pt::ptree   m_raw_settings;
-        bool        m_loaded;
-        bool        m_update_needed;
+        parameter_map m_parameters;
+        pt::ptree     m_raw_settings;
+        bool          m_loaded;
+        bool          m_update_needed;
     };
 
     void configuration_instance::register_parameter(basic_parameter& p)
     {
-        MGE_DEBUG_TRACE(CORE)
-            << "Register parameter " << p.section() << "/" << p.name();
-        auto pmap_it = m_sections.find(p.section());
-        if (pmap_it != m_sections.end()) {
-            auto p_it = pmap_it->second.find(p.name());
-            if (p_it != pmap_it->second.end()) {
-                MGE_ERROR_TRACE(CORE) << "Parameter " << p.section() << "/"
-                                      << p.name() << " is already registered";
-                MGE_THROW(mge::duplicate_element)
-                    << "Parameter " << p.section() << "/" << p.name()
-                    << " already registered";
-            } else {
-                pmap_it->second[p.name()] = &p;
-            }
-        } else {
-            m_sections[p.section()][p.name()] = &p;
-        }
+        MGE_DEBUG_TRACE(CORE) << "Register parameter " << p.path();
+        m_parameters[p.path()] = &p;
         m_update_needed = true;
     }
 
     void configuration_instance::unregister_parameter(basic_parameter& p)
     {
-        auto pmap_it = m_sections.find(p.section());
-        if (pmap_it != m_sections.end()) {
-            auto p_it = pmap_it->second.find(p.name());
-            if (p_it != pmap_it->second.end()) {
-                pmap_it->second.erase(p_it);
-            }
+        auto it = m_parameters.find(p.path());
+        if (it != m_parameters.end()) {
+            m_parameters.erase(it);
         }
     }
 
@@ -102,16 +83,18 @@ namespace mge {
                                                     std::string_view name)
     {
         std::optional<std::reference_wrapper<basic_parameter>> result;
+
+        mge::path key;
+        key /= section;
+        key /= name;
+
         if (m_update_needed && m_loaded) {
             set_registered_parameters();
             m_update_needed = false;
         }
-        auto pmap_it = m_sections.find(section);
-        if (pmap_it != m_sections.end()) {
-            auto p_it = pmap_it->second.find(name);
-            if (p_it != pmap_it->second.end()) {
-                return *p_it->second;
-            }
+        auto p_it = m_parameters.find(key);
+        if (p_it != m_parameters.end()) {
+            return *p_it->second;
         }
         return result;
     }
@@ -124,12 +107,14 @@ namespace mge {
             set_registered_parameters();
             m_update_needed = false;
         }
-        auto pmap_it = m_sections.find(section);
-        if (pmap_it != m_sections.end()) {
-            auto p_it = pmap_it->second.find(name);
-            if (p_it != pmap_it->second.end()) {
-                return *p_it->second;
-            }
+
+        mge::path key;
+        key /= section;
+        key /= name;
+
+        auto p_it = m_parameters.find(key);
+        if (p_it != m_parameters.end()) {
+            return *p_it->second;
         }
         MGE_THROW(mge::runtime_exception)
             << "Unknown parameter " << section << "/" << name;
@@ -189,10 +174,8 @@ namespace mge {
 
     void configuration_instance::set_registered_parameters()
     {
-        for (auto& s : m_sections) {
-            for (auto& p : s.second) {
-                fetch_parameter(*p.second);
-            }
+        for (auto& p : m_parameters) {
+            fetch_parameter(*p.second);
         }
     }
 
@@ -218,30 +201,29 @@ namespace mge {
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
         pt::ptree::path_type parameter_path;
-        parameter_path /= std::string(p.section().begin(), p.section().end());
-        parameter_path /= std::string(p.name().begin(), p.name().end());
-
-        auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
-        if (ov.has_value()) {
-            MGE_DEBUG_TRACE(CORE) << "Set parameter " << p.section() << "/"
-                                  << p.name() << " to " << ov.get();
-            p.from_string(ov.get());
-        } else {
-            MGE_DEBUG_TRACE(CORE)
-                << "Reset parameter " << p.section() << "/" << p.name();
-            p.reset();
+        for (const auto& e : p.path()) {
+            parameter_path /= e.string();
         }
-        MGE_DEBUG_TRACE(CORE)
-            << "Notify change of parameter " << p.section() << "/" << p.name();
-        p.notify_change();
+        if (p.value_type() == basic_parameter::type::VALUE) {
+            auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
+            if (ov.has_value()) {
+                MGE_DEBUG_TRACE(CORE)
+                    << "Set parameter " << p.path() << " to " << ov.get();
+                p.from_string(ov.get());
+            } else {
+                MGE_DEBUG_TRACE(CORE) << "Reset parameter " << p.path();
+                p.reset();
+            }
+            MGE_DEBUG_TRACE(CORE) << "Notify change of parameter " << p.path();
+            p.notify_change();
+        } else {
+        }
     }
 
     void configuration_instance::store()
     {
-        for (auto& s : m_sections) {
-            for (auto& p : s.second) {
-                write_parameter(*p.second);
-            }
+        for (auto& p : m_parameters) {
+            write_parameter(*p.second);
         }
 
         auto file_path = find_config_file();
@@ -265,20 +247,41 @@ namespace mge {
 
     void configuration_instance::write_parameter(basic_parameter& p)
     {
-        pt::ptree::path_type parameter_path;
-        parameter_path /= std::string(p.section().begin(), p.section().end());
-        parameter_path /= std::string(p.name().begin(), p.name().end());
-        pt::ptree ::assoc_iterator x;
-
         if (p.has_value()) {
-            m_raw_settings.put(parameter_path, p.to_string());
+            if (p.value_type() == basic_parameter::type::VALUE) {
+                pt::ptree::path_type parameter_path;
+                for (const auto& e : p.path()) {
+                    parameter_path /= e.string();
+                }
+                if (p.has_value()) {
+                    m_raw_settings.put(parameter_path, p.to_string());
+                }
+            } else {
+            }
         } else {
-            auto section_it = m_raw_settings.find(
-                std::string(p.section().begin(), p.section().end()));
-            if (section_it != m_raw_settings.not_found()) {
-                auto& value_tree = section_it->second;
-                auto  value_it = value_tree.find(
-                    std::string(p.name().begin(), p.name().end()));
+            std::string folder_path;
+            auto        i = p.path().begin();
+            auto        e = p.path().end();
+            if (i == e) {
+                MGE_THROW(illegal_state)
+                    << "Parameter path must contain 2 or more components";
+            }
+            folder_path = i->string();
+            ++i;
+            if (i == e) {
+                MGE_THROW(illegal_state)
+                    << "Parameter path must contain 2 or more components";
+            }
+            --e;
+            while (i != e) {
+                folder_path += ".";
+                folder_path += i->string();
+                ++i;
+            }
+            auto folder_it = m_raw_settings.find(folder_path);
+            if (folder_it != m_raw_settings.not_found()) {
+                auto& value_tree = folder_it->second;
+                auto  value_it = value_tree.find(e->string());
                 if (value_it != value_tree.not_found()) {
                     value_tree.erase(value_tree.to_iterator(value_it));
                 }

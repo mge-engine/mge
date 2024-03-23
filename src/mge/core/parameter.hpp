@@ -6,12 +6,14 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/make_string_view.hpp"
+#include "mge/core/path.hpp"
 
 #include <any>
 #include <functional>
 #include <mutex>
 #include <sstream>
 #include <string_view>
+#include <variant>
 #include <vector>
 
 namespace mge {
@@ -23,6 +25,14 @@ namespace mge {
     class MGECORE_EXPORT basic_parameter
     {
     public:
+        enum class type
+        {
+            VALUE,
+            VALUE_LIST,
+            MAP_LIST,
+            MAP
+        };
+
         using change_callback = std::function<void()>;
 
         /**
@@ -35,20 +45,31 @@ namespace mge {
         basic_parameter(std::string_view section,
                         std::string_view name,
                         std::string_view description);
+
+        /**
+         * @brief Construct a parameter.
+         *
+         * @param path          path to parameter
+         * @param description   parameter description
+         */
+        basic_parameter(const mge::path path, std::string_view description);
+
         virtual ~basic_parameter();
 
         /**
-         * @brief Parameter section.
+         * @brief Whether this parameter is a plain value, or a list.
          *
-         * @return parameter section name
+         * @return true if it is a list
          */
-        std::string_view section() const noexcept;
+        virtual type value_type() const { return type::VALUE; }
+
         /**
-         * @brief Parameter name.
+         * @brief return the parameter path.
          *
-         * @return parameter name
+         * @return parameter path
          */
-        std::string_view name() const noexcept;
+        const mge::path& path() const;
+
         /**
          * @brief Parameter description.
          *
@@ -67,6 +88,7 @@ namespace mge {
          * @brief Unset or clears a parameter.
          */
         virtual void reset();
+
         /**
          * @brief Sets parameter from string
          *
@@ -79,6 +101,13 @@ namespace mge {
          * @return parameter value
          */
         virtual std::string to_string() const = 0;
+
+        /**
+         * @brief Add a value to a value list parameter.
+         *
+         * @param value value to add
+         */
+        virtual void add_value(std::string_view value) = 0;
 
         /**
          * @brief Call to notify a change.
@@ -101,8 +130,7 @@ namespace mge {
         void set_change_handler(const change_callback& handler);
 
     private:
-        std::string_view m_section;
-        std::string_view m_name;
+        mge::path        m_path;
         std::string_view m_description;
 
         mutable std::mutex m_change_lock;
@@ -171,6 +199,30 @@ namespace mge {
             : basic_parameter(section, name, description)
         {}
 
+        /**
+         * @brief Construct a new parameter object
+         *
+         * @param path parameter path
+         * @param description parameter description
+         */
+        parameter(const mge::path& path, std::string_view description)
+            : basic_parameter(path, description)
+        {}
+
+        /**
+         * @brief Construct a parameter
+         *
+         * @param path          path to parameter
+         * @param description   parameter description
+         * @param default_value default value
+         */
+        parameter(const mge::path& path,
+                  std::string_view description,
+                  const T&         default_value)
+            : basic_parameter(path, description)
+            , m_default_value(default_value)
+        {}
+
         virtual ~parameter() = default;
 
         bool has_value() const override
@@ -220,6 +272,11 @@ namespace mge {
             return ss.str();
         }
 
+        void add_value(std::string_view value) override
+        {
+            MGE_THROW(not_implemented) << "Parameter is not a value list";
+        }
+
         void reset() override { m_value.reset(); }
 
     private:
@@ -227,8 +284,10 @@ namespace mge {
         const std::any m_default_value;
     };
 
+#if 0
     template <typename T>
-    class parameter<std::vector<T>> : public basic_parameter
+        requires mge::is_list<T> && !mge::is_string<T>
+                                class parameter<T> : public basic_parameter
     {
     public:
         /**
@@ -250,119 +309,50 @@ namespace mge {
                               make_string_view(description))
         {}
 
-        /**
-         * @brief Construct a new parameter object
-         *
-         * @param section parameter section
-         * @param name parameter name
-         * @param description parameter description
-         */
-        parameter(std::string_view section,
-                  std::string_view name,
-                  std::string_view description)
-            : basic_parameter(section, name, description)
-        {}
-
         virtual ~parameter() = default;
 
-        bool has_value() const override { return !m_values.empty(); }
-
-        /**
-         * @brief Retrieve typed value.
-         *
-         * @return stored value
-         */
-        typename const std::vector<T>& get() const { return m_values; }
-
-        /**
-         * @brief Retrieve typed value, checking default.
-         *
-         * @param default_value default value
-         * @return config value or default value if not set
-         */
-        typename const std::vector<T>&
-        get(const std::vector<T>& default_value) const
+        mge::basic_parameter::type value_type() const override
         {
-            if (has_value()) {
-                return get();
-            } else {
-                return default_value;
-            }
+            return mge::basic_parameter::type::VALUE_LIST;
         }
 
-        void from_string(std::string_view value) override
+        bool has_value() const override { return !m_value.empty(); }
+
+        void from_string(std::string_view value)
         {
-            std::vector<std::string> string_values;
-            boost::split(string_values,
-                         value,
-                         boost::is_any_of(","),
-                         boost::token_compress_on);
-            for (auto& string_val : string_values) {
-                boost::trim(string_val);
-            }
-            m_values.clear();
-            for (const auto& string_val : string_values) {
-                m_values.emplace_back(boost::lexical_cast<T>(string_val));
-            }
+            MGE_THROW(not_implemented) << "Parameter is not a value";
         }
 
         std::string to_string() const override
         {
-            std::stringstream ss;
-            const auto&       values = get();
-            if (!values.empty()) {
-                std::copy(std::begin(values),
-                          std::prev(std::end(values)),
-                          std::ostream_iterator<T>(ss, ", "));
-                ss << values.back();
-            }
-            return ss.str();
+            MGE_THROW(not_implemented) << "Parameter is not a value";
         }
 
-        void reset() override { m_values.clear(); }
+        void add_value(std::string_view value) override
+        {
+            T val = lexical_cast<T>(value);
+            m_value.push_back(val);
+        }
+
+        const T& values() const { return m_value; }
 
     private:
-        std::vector<T> m_values;
+        T m_value;
     };
+#endif
 
-    /**
-     * @brief Parameter section.
-     */
-    class MGECORE_EXPORT parameter_section
-    {
-    public:
-        parameter_section(std::string_view name, std::string_view description);
-        ~parameter_section() = default;
+#if 0
+    template <typename T>
+        requires mge::is_list<T> && mge::is_map<T::value_type> &&
+                 mge::is_string<T::value_type::key_type>
+    class parameter<T> : public basic_parameter
+    {};
 
-        parameter_section(const parameter_section&) = delete;
-        parameter_section& operator=(const parameter_section&) = delete;
-        parameter_section(parameter_section&&) = delete;
-        parameter_section& operator=(parameter_section&&) = delete;
-
-        /**
-         * @brief Parameter name.
-         *
-         * @return parameter name
-         */
-        std::string_view name() const noexcept;
-        /**
-         * @brief Parameter description.
-         *
-         * @return parameter description text
-         */
-        std::string_view description() const noexcept;
-
-    private:
-        std::string_view m_name;
-        std::string_view m_description;
-    };
-
-/**
- * @def MGE_DEFINE_PARAMTER_SECTION
- * @brief Subsection of paramters
- */
-#define MGE_DEFINE_PARAMTER_SECTION(SECTION, DESCRIPTION)                      \
-    ::mge::parameter_section ps_##SECTION(#SECTION, DESCRIPTION);
+    template <typename T>
+        requires mge::is_map<T> && mge::is_string<T::key_type>
+    class parameter<T> : public basic_parameter
+    {};
+#endif
 
 /**
  * @def MGE_DEFINE_PARAMETER
@@ -401,12 +391,5 @@ namespace mge {
  * @param NAME parameter name
  */
 #define MGE_PARAMETER(SECTION, NAME) p_##SECTION##_##NAME
-
-/**
- * @def MGE_PARAMETER_SECTION
- * @brief Access a parameter section.
- * @param SECTION parameter section
- */
-#define MGE_PARAMETER_SECTION(SECTION) ps_##SECTION
 
 } // namespace mge

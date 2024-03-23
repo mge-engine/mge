@@ -14,7 +14,7 @@ MGE_DEFINE_PARAMETER(std::string, test, test_parameter2, "a test parameter");
 TEST(configuration, find_parameter)
 {
     auto& p = mge::configuration::find_parameter("test"sv, "test_parameter2"sv);
-    EXPECT_EQ("test_parameter2"sv, p.name());
+    EXPECT_EQ("test/test_parameter2"sv, p.path().string());
 }
 
 TEST(configuration, find_parameter_throws_on_unknown)
