@@ -54,6 +54,7 @@ namespace mge {
         void     set_registered_parameters();
         void     fetch_parameter(basic_parameter& p);
         void     write_parameter(basic_parameter& p);
+        void     erase_parameter(basic_parameter& p);
 
         using parameter_map = std::map<mge::path, basic_parameter*>;
 
@@ -201,6 +202,7 @@ namespace mge {
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
         pt::ptree::path_type parameter_path;
+
         for (const auto& e : p.path()) {
             parameter_path /= e.string();
         }
@@ -211,12 +213,50 @@ namespace mge {
                     << "Set parameter " << p.path() << " to " << ov.get();
                 p.from_string(ov.get());
             } else {
-                MGE_DEBUG_TRACE(CORE) << "Reset parameter " << p.path();
+                MGE_DEBUG_TRACE(CORE)
+                    << "Reset parameter " << p.path().generic_string();
                 p.reset();
             }
-            MGE_DEBUG_TRACE(CORE) << "Notify change of parameter " << p.path();
+            MGE_DEBUG_TRACE(CORE)
+                << "Notify change of parameter " << p.path().generic_string();
             p.notify_change();
-        } else {
+        } else if (p.value_type() == basic_parameter::type::VALUE_LIST) {
+            p.reset();
+            std::string parameter_string;
+            auto        s = p.path().begin();
+            auto        e = p.path().end();
+            if (s == e) {
+                MGE_THROW(illegal_state)
+                    << "Parameter path must contain 2 components";
+            }
+            parameter_string = s->string();
+            ++s;
+            if (s == e) {
+                MGE_THROW(illegal_state)
+                    << "Parameter path must contain 2 components";
+            }
+            --e;
+            while (s != e) {
+                parameter_string += ".";
+                parameter_string += s->string();
+                ++s;
+            }
+            std::string key = e->string();
+            auto        it = m_raw_settings.find(parameter_string);
+            if (it == m_raw_settings.not_found()) {
+                MGE_DEBUG_TRACE(CORE)
+                    << "Reset parameter " << p.path().generic_string();
+                p.reset();
+            } else {
+                for (const auto el : it->second) {
+                    if (el.first == key && !el.second.data().empty()) {
+                        p.add_value(el.second.data());
+                    }
+                }
+            }
+            MGE_DEBUG_TRACE(CORE)
+                << "Notify change of parameter " << p.path().generic_string();
+            p.notify_change();
         }
     }
 
@@ -245,6 +285,38 @@ namespace mge {
         }
     }
 
+    void configuration_instance::erase_parameter(basic_parameter& p)
+    {
+        std::string folder_path;
+        auto        i = p.path().begin();
+        auto        e = p.path().end();
+        if (i == e) {
+            MGE_THROW(illegal_state)
+                << "Parameter path must contain 2 or more components";
+        }
+        folder_path = i->string();
+        ++i;
+        if (i == e) {
+            MGE_THROW(illegal_state)
+                << "Parameter path must contain 2 or more components";
+        }
+        --e;
+        while (i != e) {
+            folder_path += ".";
+            folder_path += i->string();
+            ++i;
+        }
+        auto folder_it = m_raw_settings.find(folder_path);
+        if (folder_it != m_raw_settings.not_found()) {
+            auto& value_tree = folder_it->second;
+            auto  value_it = value_tree.find(e->string());
+            while (value_it != value_tree.not_found()) {
+                value_tree.erase(value_tree.to_iterator(value_it));
+                value_it = value_tree.find(e->string());
+            }
+        }
+    }
+
     void configuration_instance::write_parameter(basic_parameter& p)
     {
         if (p.has_value()) {
@@ -253,39 +325,21 @@ namespace mge {
                 for (const auto& e : p.path()) {
                     parameter_path /= e.string();
                 }
-                if (p.has_value()) {
-                    m_raw_settings.put(parameter_path, p.to_string());
+                m_raw_settings.put(parameter_path, p.to_string());
+
+            } else if (p.value_type() == basic_parameter::type::VALUE_LIST) {
+                erase_parameter(p);
+                pt::ptree::path_type parameter_path;
+                for (const auto& e : p.path()) {
+                    parameter_path /= e.string();
                 }
-            } else {
+
+                p.for_each_value([&](const std::string& v) {
+                    m_raw_settings.add(parameter_path, v);
+                });
             }
         } else {
-            std::string folder_path;
-            auto        i = p.path().begin();
-            auto        e = p.path().end();
-            if (i == e) {
-                MGE_THROW(illegal_state)
-                    << "Parameter path must contain 2 or more components";
-            }
-            folder_path = i->string();
-            ++i;
-            if (i == e) {
-                MGE_THROW(illegal_state)
-                    << "Parameter path must contain 2 or more components";
-            }
-            --e;
-            while (i != e) {
-                folder_path += ".";
-                folder_path += i->string();
-                ++i;
-            }
-            auto folder_it = m_raw_settings.find(folder_path);
-            if (folder_it != m_raw_settings.not_found()) {
-                auto& value_tree = folder_it->second;
-                auto  value_it = value_tree.find(e->string());
-                if (value_it != value_tree.not_found()) {
-                    value_tree.erase(value_tree.to_iterator(value_it));
-                }
-            }
+            erase_parameter(p);
         }
     }
 

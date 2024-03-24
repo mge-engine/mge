@@ -5,10 +5,10 @@
 #include "test/googletest.hpp"
 using namespace std::string_view_literals;
 MGE_DEFINE_PARAMETER(bool, test, test_parameter1, "a test parameter");
-// MGE_DEFINE_PARAMETER(std::vector<int>,
-//                      test,
-//                      test_parameter_vec,
-//                      "a test parameter");
+MGE_DEFINE_PARAMETER(std::vector<int>,
+                     test,
+                     test_parameter_vec,
+                     "a test parameter");
 
 TEST(parameter, simple_access)
 {
@@ -40,8 +40,8 @@ TEST(parameter, from_string_to_string)
 
 TEST(parameter, vec)
 {
-    // EXPECT_FALSE(MGE_PARAMETER(test, test_parameter_vec).has_value());
-    // EXPECT_TRUE((MGE_PARAMETER(test, test_parameter_vec).values().empty()));
+    EXPECT_FALSE(MGE_PARAMETER(test, test_parameter_vec).has_value());
+    EXPECT_TRUE((MGE_PARAMETER(test, test_parameter_vec).values().empty()));
 
     // MGE_PARAMETER(test, test_parameter_vec).from_string("1, 2, 3");
     // EXPECT_TRUE(MGE_PARAMETER(test, test_parameter_vec).has_value());

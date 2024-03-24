@@ -111,6 +111,18 @@ namespace mge {
         virtual void add_value(std::string_view value) = 0;
 
         /**
+         * @brief Method to read out each value in case of a value
+         * list parameter.
+         *
+         * @param f function called
+         */
+        virtual void
+        for_each_value(const std::function<void(const std::string&)>& f) const
+        {
+            f(to_string());
+        }
+
+        /**
          * @brief Call to notify a change.
          * If a change listener is registered, call that.
          */
@@ -283,6 +295,83 @@ namespace mge {
     private:
         std::any       m_value;
         const std::any m_default_value;
+    };
+
+    template <typename T>
+        requires mge::is_sequence_container<T>
+    class parameter<T> : public basic_parameter
+    {
+    public:
+        /**
+         * @brief Construct a new parameter.
+         *
+         * @tparam SECTION_N length of section literal
+         * @tparam NAME_N length of name literal
+         * @tparam DESCRIPTION_N  length of description literal
+         * @param section parameter section
+         * @param name parameter name
+         * @param description parameter description
+         */
+        template <size_t SECTION_N, size_t NAME_N, size_t DESCRIPTION_N>
+        parameter(const char (&section)[SECTION_N],
+                  const char (&name)[NAME_N],
+                  const char (&description)[DESCRIPTION_N])
+            : basic_parameter(make_string_view(section),
+                              make_string_view(name),
+                              make_string_view(description))
+        {}
+
+        /**
+         * @brief Construct a new parameter object
+         *
+         * @param path parameter path
+         * @param description parameter description
+         */
+        parameter(const mge::path& path, std::string_view description)
+            : basic_parameter(path, description)
+        {}
+
+        virtual ~parameter() = default;
+
+        basic_parameter::type value_type() const override
+        {
+            return basic_parameter::type::VALUE_LIST;
+        }
+
+        bool has_value() const override { return !m_values.empty(); }
+
+        void from_string(std::string_view value) override
+        {
+            MGE_THROW(not_implemented) << "Parameter is not a value";
+        }
+
+        std::string to_string() const override
+        {
+            MGE_THROW(not_implemented) << "Parameter is not a value";
+        }
+
+        void add_value(std::string_view value) override
+        {
+            typename T::value_type val = lexical_cast<T::value_type>(value);
+            m_values.push_back(val);
+        }
+
+        void for_each_value(
+            const std::function<void(const std::string&)>& f) const override
+        {
+            for (const auto& v : m_values) {
+                std::stringstream ss;
+                ss << v;
+                f(ss.str());
+            }
+        }
+
+        void reset() override { m_values.clear(); }
+
+        const T& values() const { return m_values; }
+
+    private:
+        T m_values;
     };
 
 #if 0
