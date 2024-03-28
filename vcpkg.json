@@ -17,6 +17,7 @@
       "default-features": true
     },
     "glslang",
-    "stb"
+    "stb",
+    "simdjson"
   ]
 }

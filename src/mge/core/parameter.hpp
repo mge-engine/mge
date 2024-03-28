@@ -3,7 +3,9 @@
 // All rights reserved.
 #pragma once
 #include "boost/boost_algorithm_string.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/is_associative_container.hpp"
 #include "mge/core/is_container.hpp"
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/make_string_view.hpp"
@@ -26,14 +28,8 @@ namespace mge {
     class MGECORE_EXPORT basic_parameter
     {
     public:
-        enum class type
-        {
-            VALUE,
-            VALUE_LIST,
-            MAP_LIST,
-            MAP
-        };
-
+        using set_function =
+            std::function<void(const mge::configuration::element_ref&)>;
         using change_callback = std::function<void()>;
 
         /**
@@ -58,13 +54,6 @@ namespace mge {
         virtual ~basic_parameter();
 
         /**
-         * @brief Whether this parameter is a plain value, or a list.
-         *
-         * @return true if it is a list
-         */
-        virtual type value_type() const { return type::VALUE; }
-
-        /**
          * @brief return the parameter path.
          *
          * @return parameter path
@@ -85,6 +74,7 @@ namespace mge {
          * configuration
          */
         virtual bool has_value() const = 0;
+#if 0
         /**
          * @brief Unset or clears a parameter.
          */
@@ -96,19 +86,23 @@ namespace mge {
          * @param value parameter string value
          */
         virtual void from_string(std::string_view value) = 0;
+#endif
         /**
          * @brief Retrieves parameter as string.
          *
          * @return parameter value
          */
         virtual std::string to_string() const = 0;
-
+#if 0
         /**
          * @brief Add a value to a value list parameter.
          *
          * @param value value to add
          */
-        virtual void add_value(std::string_view value) = 0;
+        virtual void add_value(std::string_view value)
+        {
+            MGE_THROW(not_implemented) << "Parameter is not a value list";
+        }
 
         /**
          * @brief Method to read out each value in case of a value
@@ -121,6 +115,12 @@ namespace mge {
         {
             f(to_string());
         }
+
+        virtual void add_value(std::string_view key, std::string_view value)
+        {
+            MGE_THROW(not_implemented) << "Parameter is not a map";
+        }
+#endif
 
         /**
          * @brief Call to notify a change.
@@ -141,6 +141,11 @@ namespace mge {
          * @param handler new change handler
          */
         void set_change_handler(const change_callback& handler);
+
+        void apply(const mge::configuration::element_ref& element);
+
+    protected:
+        set_function m_set_function;
 
     private:
         mge::path        m_path;
@@ -175,7 +180,9 @@ namespace mge {
             : basic_parameter(make_string_view(section),
                               make_string_view(name),
                               make_string_view(description))
-        {}
+        {
+            init_set_function();
+        }
 
         /**
          * @brief Construct a new parameter.
@@ -197,7 +204,9 @@ namespace mge {
                               make_string_view(name),
                               make_string_view(description))
             , m_default_value(default_value)
-        {}
+        {
+            init_set_function();
+        }
 
         /**
          * @brief Construct a new parameter object
@@ -210,7 +219,9 @@ namespace mge {
                   std::string_view name,
                   std::string_view description)
             : basic_parameter(section, name, description)
-        {}
+        {
+            init_set_function();
+        }
 
         /**
          * @brief Construct a new parameter object
@@ -220,7 +231,9 @@ namespace mge {
          */
         parameter(const mge::path& path, std::string_view description)
             : basic_parameter(path, description)
-        {}
+        {
+            init_set_function();
+        }
 
         /**
          * @brief Construct a parameter
@@ -234,7 +247,9 @@ namespace mge {
                   const T&         default_value)
             : basic_parameter(path, description)
             , m_default_value(default_value)
-        {}
+        {
+            init_set_function();
+        }
 
         virtual ~parameter() = default;
 
@@ -272,12 +287,6 @@ namespace mge {
             }
         }
 
-        void from_string(std::string_view value) override
-        {
-            T val = lexical_cast<T>(value);
-            m_value = val;
-        }
-
         std::string to_string() const override
         {
             std::stringstream ss;
@@ -285,14 +294,18 @@ namespace mge {
             return ss.str();
         }
 
-        void add_value(std::string_view value) override
+    private:
+        void init_set_function()
         {
-            MGE_THROW(not_implemented) << "Parameter is not a value list";
+            m_set_function = [this](const mge::configuration::element_ref& e) {
+                if (e) {
+                    m_value = mge::lexical_cast<T>(e->value());
+                } else {
+                    m_value.reset();
+                }
+            };
         }
 
-        void reset() override { m_value.reset(); }
-
-    private:
         std::any       m_value;
         const std::any m_default_value;
     };
@@ -333,40 +346,12 @@ namespace mge {
 
         virtual ~parameter() = default;
 
-        basic_parameter::type value_type() const override
-        {
-            return basic_parameter::type::VALUE_LIST;
-        }
-
         bool has_value() const override { return !m_values.empty(); }
-
-        void from_string(std::string_view value) override
-        {
-            MGE_THROW(not_implemented) << "Parameter is not a value";
-        }
 
         std::string to_string() const override
         {
             MGE_THROW(not_implemented) << "Parameter is not a value";
         }
-
-        void add_value(std::string_view value) override
-        {
-            typename T::value_type val = lexical_cast<T::value_type>(value);
-            m_values.push_back(val);
-        }
-
-        void for_each_value(
-            const std::function<void(const std::string&)>& f) const override
-        {
-            for (const auto& v : m_values) {
-                std::stringstream ss;
-                ss << v;
-                f(ss.str());
-            }
-        }
-
-        void reset() override { m_values.clear(); }
 
         const T& values() const { return m_values; }
 
@@ -376,8 +361,8 @@ namespace mge {
 
 #if 0
     template <typename T>
-        requires mge::is_list<T> && !mge::is_string<T>
-                                class parameter<T> : public basic_parameter
+        requires mge::is_associative_container<T> && mge::is_string<T::key_type>
+    class parameter<T> : public basic_parameter
     {
     public:
         /**
@@ -399,16 +384,26 @@ namespace mge {
                               make_string_view(description))
         {}
 
+        /**
+         * @brief Construct a new parameter object
+         *
+         * @param path parameter path
+         * @param description parameter description
+         */
+        parameter(const mge::path& path, std::string_view description)
+            : basic_parameter(path, description)
+        {}
+
         virtual ~parameter() = default;
 
-        mge::basic_parameter::type value_type() const override
+        basic_parameter::type value_type() const override
         {
-            return mge::basic_parameter::type::VALUE_LIST;
+            return basic_parameter::type::MAP
         }
 
-        bool has_value() const override { return !m_value.empty(); }
+        bool has_value() const override { return !m_values.empty(); }
 
-        void from_string(std::string_view value)
+        void from_string(std::string_view value) override
         {
             MGE_THROW(not_implemented) << "Parameter is not a value";
         }
@@ -420,23 +415,25 @@ namespace mge {
 
         void add_value(std::string_view value) override
         {
-            T val = lexical_cast<T>(value);
-            m_value.push_back(val);
+            MGE_THROW(not_implemented) << "Parameter is not a value list";
         }
 
-        const T& values() const { return m_value; }
+        void for_each_value(
+            const std::function<void(const std::string&)>& f) const override
+        {
+            MGE_THROW(not_implemented) << "Parameter is not a value list";
+        }
+
+        void reset() override { m_values.clear(); }
+
+        const T& values() const { return m_values; }
 
     private:
-        T m_value;
+        T m_values;
     };
 #endif
 
 #if 0
-    template <typename T>
-        requires mge::is_list<T> && mge::is_map<T::value_type> &&
-                 mge::is_string<T::value_type::key_type>
-    class parameter<T> : public basic_parameter
-    {};
 
     template <typename T>
         requires mge::is_map<T> && mge::is_string<T::key_type>

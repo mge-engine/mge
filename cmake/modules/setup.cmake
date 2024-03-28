@@ -32,5 +32,6 @@ INCLUDE(thirdparty/glm)
 INCLUDE(thirdparty/lua)
 INCLUDE(thirdparty/linenoise)
 INCLUDE(thirdparty/stb)
+INCLUDE(thirdparty/simdjson)
 
 

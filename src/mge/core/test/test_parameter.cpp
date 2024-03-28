@@ -19,6 +19,7 @@ TEST(parameter, simple_access)
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
 }
 
+#if 0
 TEST(parameter, from_string_get)
 {
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
@@ -37,6 +38,7 @@ TEST(parameter, from_string_to_string)
               MGE_PARAMETER(test, test_parameter1).to_string());
     MGE_PARAMETER(test, test_parameter1).reset();
 }
+#endif
 
 TEST(parameter, vec)
 {

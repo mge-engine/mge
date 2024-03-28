@@ -27,7 +27,7 @@ TEST(configuration, find_parameter_throws_on_unknown)
         mge::configuration::find_parameter("test"sv, "unknown_parameter"sv),
         mge::exception);
 }
-
+#if 0
 TEST(configuration, store)
 {
     std::filesystem::path cfgfile("test_core.json");
@@ -41,6 +41,7 @@ TEST(configuration, store)
 
     MGE_PARAMETER(test, test_parameter2)
         .from_string("my hoovercraft is full of eels");
+
     MGE_PARAMETER(test, test_parameter_vec_save).reset();
     MGE_PARAMETER(test, test_parameter_vec_save).add_value("1");
     MGE_PARAMETER(test, test_parameter_vec_save).add_value("2");
@@ -51,3 +52,4 @@ TEST(configuration, store)
     mge::configuration::load();
     EXPECT_EQ(3, MGE_PARAMETER(test, test_parameter_vec_save).values().size());
 }
+#endif

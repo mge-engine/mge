@@ -49,6 +49,11 @@ namespace mge {
         m_change_callback = callback;
     }
 
-    void basic_parameter::reset() {}
+    void basic_parameter::apply(const mge::configuration::element_ref& element)
+    {
+        if (m_set_function) {
+            m_set_function(element);
+        }
+    }
 
 } // namespace mge

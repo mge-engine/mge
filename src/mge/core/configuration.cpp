@@ -11,6 +11,7 @@
 // property tree use deprecated boost bind
 // placeholders
 #include "boost/boost_property_tree.hpp"
+#include "simdjson.h"
 
 #include <filesystem>
 #include <map>
@@ -18,6 +19,7 @@
 
 namespace fs = std::filesystem;
 namespace pt = boost::property_tree;
+namespace sj = simdjson;
 
 namespace mge {
 
@@ -36,18 +38,21 @@ namespace mge {
         void register_parameter(basic_parameter& p);
         void unregister_parameter(basic_parameter& p);
 
+        basic_parameter& find_parameter(const mge::path& path);
         basic_parameter& find_parameter(std::string_view section,
                                         std::string_view name);
 
         std::optional<std::reference_wrapper<basic_parameter>>
              find_optional_parameter(std::string_view section,
                                      std::string_view name);
-        void load(bool allow_missing);
+        void load();
         void store();
         bool loaded() const { return m_loaded; }
         void set_raw(std::string_view section,
                      std::string_view name,
                      std::string_view value);
+
+        const configuration::element_ref& root() { return m_root; }
 
     private:
         fs::path find_config_file();
@@ -58,10 +63,11 @@ namespace mge {
 
         using parameter_map = std::map<mge::path, basic_parameter*>;
 
-        parameter_map m_parameters;
-        pt::ptree     m_raw_settings;
-        bool          m_loaded;
-        bool          m_update_needed;
+        parameter_map              m_parameters;
+        pt::ptree                  m_raw_settings;
+        configuration::element_ref m_root;
+        bool                       m_loaded;
+        bool                       m_update_needed;
     };
 
     void configuration_instance::register_parameter(basic_parameter& p)
@@ -101,6 +107,21 @@ namespace mge {
     }
 
     basic_parameter&
+    configuration_instance::find_parameter(const mge::path& path)
+    {
+        if (m_update_needed && m_loaded) {
+            set_registered_parameters();
+            m_update_needed = false;
+        }
+
+        auto p_it = m_parameters.find(path);
+        if (p_it != m_parameters.end()) {
+            return *p_it->second;
+        }
+        MGE_THROW(mge::runtime_exception) << "Unknown parameter " << path;
+    }
+
+    basic_parameter&
     configuration_instance::find_parameter(std::string_view section,
                                            std::string_view name)
     {
@@ -123,7 +144,7 @@ namespace mge {
 
     fs::path configuration_instance::find_config_file()
     {
-        const char* suffixes[] = {"json", "ini", "xml", "info", 0};
+        const char* suffixes[] = {"json", 0};
         auto        base_name = executable_name();
 
         if (fs::is_directory("config")) {
@@ -152,23 +173,78 @@ namespace mge {
         return fs::path();
     }
 
-    void configuration_instance::load(bool allow_missing)
+    class config_element : public configuration::element
     {
-        auto configfile_path = find_config_file();
-        if (configfile_path.empty() && !allow_missing) {
-            return;
-        } else {
-            std::ifstream input(configfile_path);
-            if (configfile_path.extension() == ".xml") {
-                boost::property_tree::read_xml(input, m_raw_settings);
-            } else if (configfile_path.extension() == ".json") {
-                boost::property_tree::read_json(input, m_raw_settings);
-            } else if (configfile_path.extension() == ".ini") {
-                boost::property_tree::read_ini(input, m_raw_settings);
-            } else if (configfile_path.extension() == ".info") {
-                boost::property_tree::read_info(input, m_raw_settings);
+    public:
+        config_element(const std::shared_ptr<sj::dom::parser>& parser,
+                       const sj::dom::element&                 element)
+            : m_parser(parser)
+            , m_element(element)
+        {}
+
+        virtual ~config_element() {}
+
+        configuration::element_ref child(const std::string& name) const override
+        {
+            auto child = m_element[name.data()];
+            if (child.error()) {
+                return nullptr;
+            }
+            return std::make_shared<config_element>(m_parser, child.value());
+        }
+
+        configuration::element::data_type type() const override
+        {
+            switch (m_element.type()) {
+            case sj::dom::element_type::ARRAY:
+                return configuration::element::data_type::TYPE_ARRAY;
+            case sj::dom::element_type::OBJECT:
+                return configuration::element::data_type::TYPE_OBJECT;
+            case sj::dom::element_type::STRING:
+            case sj::dom::element_type::BOOL:
+            case sj::dom::element_type::DOUBLE:
+            case sj::dom::element_type::INT64:
+            case sj::dom::element_type::UINT64:
+                return configuration::element::data_type::TYPE_VALUE;
+            default:
+            case sj::dom::element_type::NULL_VALUE:
+                return configuration::element::data_type::TYPE_NULL;
             }
         }
+
+        std::string_view value() const override
+        {
+            auto r = m_element.get_string();
+            if (r.error()) {
+                return std::string_view();
+            } else {
+                return r.value();
+            }
+        }
+
+    private:
+        std::shared_ptr<sj::dom::parser> m_parser;
+        sj::dom::element                 m_element;
+    };
+
+    void configuration_instance::load()
+    {
+        auto configfile_path = find_config_file();
+        if (configfile_path.empty()) {
+            return;
+        }
+
+        std::shared_ptr<sj::dom::parser> parser =
+            std::make_shared<sj::dom::parser>();
+        sj::dom::element root;
+
+        auto err = parser->load(configfile_path.string()).get(root);
+        if (err) {
+            MGE_THROW(mge::runtime_exception)
+                << "Error loading configuration file " << configfile_path
+                << ": " << err;
+        }
+        m_root = std::make_shared<config_element>(parser, root);
         set_registered_parameters();
         m_loaded = true;
     }
@@ -194,16 +270,25 @@ namespace mge {
         m_raw_settings.put(parameter_path, value);
         auto param = find_optional_parameter(section, name);
         if (param.has_value()) {
-            param->get().from_string(value);
+            MGE_THROW_NOT_IMPLEMENTED;
             param->get().notify_change();
         }
     }
 
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
-        pt::ptree::path_type parameter_path;
-
+        auto el = m_root;
         for (const auto& e : p.path()) {
+            auto child = el->child(e.string());
+            if (!child) {
+                p.apply(child);
+                return;
+            } else {
+                el = child;
+            }
+        }
+        p.apply(el);
+#if 0
             parameter_path /= e.string();
         }
         if (p.value_type() == basic_parameter::type::VALUE) {
@@ -258,6 +343,7 @@ namespace mge {
                 << "Notify change of parameter " << p.path().generic_string();
             p.notify_change();
         }
+#endif
     }
 
     void configuration_instance::store()
@@ -266,23 +352,9 @@ namespace mge {
             write_parameter(*p.second);
         }
 
-        auto file_path = find_config_file();
-        if (file_path.empty()) {
-            std::string name = executable_name();
-            name += ".json";
-            file_path = fs::path(name);
-        }
-        std::ofstream output(file_path);
-
-        if (file_path.extension() == ".json") {
-            boost::property_tree::write_json(output, m_raw_settings);
-        } else if (file_path.extension() == ".xml") {
-            boost::property_tree::write_xml(output, m_raw_settings);
-        } else if (file_path.extension() == ".info") {
-            boost::property_tree::write_info(output, m_raw_settings);
-        } else if (file_path.extension() == ".ini") {
-            boost::property_tree::write_ini(output, m_raw_settings);
-        }
+        std::string name = executable_name();
+        name += ".json";
+        fs::path file_path = fs::path(name);
     }
 
     void configuration_instance::erase_parameter(basic_parameter& p)
@@ -319,6 +391,7 @@ namespace mge {
 
     void configuration_instance::write_parameter(basic_parameter& p)
     {
+#if 0
         if (p.has_value()) {
             if (p.value_type() == basic_parameter::type::VALUE) {
                 pt::ptree::path_type parameter_path;
@@ -341,6 +414,7 @@ namespace mge {
         } else {
             erase_parameter(p);
         }
+#endif
     }
 
     static singleton<configuration_instance> s_configuration_instance;
@@ -361,10 +435,7 @@ namespace mge {
         return s_configuration_instance->find_parameter(section, name);
     }
 
-    void configuration::load(bool allow_missing)
-    {
-        s_configuration_instance->load(allow_missing);
-    }
+    void configuration::load() { s_configuration_instance->load(); }
 
     void configuration::evaluate_command_line(
         const std::vector<const char*>& cmdline)
@@ -419,5 +490,10 @@ namespace mge {
     void configuration::store() { s_configuration_instance->store(); }
 
     bool configuration::loaded() { return s_configuration_instance->loaded(); }
+
+    const configuration::element_ref& configuration::root()
+    {
+        return s_configuration_instance->root();
+    }
 
 } // namespace mge
