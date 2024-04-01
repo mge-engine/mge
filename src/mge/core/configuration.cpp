@@ -11,6 +11,7 @@
 // property tree use deprecated boost bind
 // placeholders
 #include "boost/boost_property_tree.hpp"
+#include "nlohmann/json.hpp"
 #include "simdjson.h"
 
 #include <filesystem>
@@ -20,6 +21,7 @@
 namespace fs = std::filesystem;
 namespace pt = boost::property_tree;
 namespace sj = simdjson;
+namespace js = nlohmann;
 
 namespace mge {
 
@@ -176,55 +178,59 @@ namespace mge {
     class config_element : public configuration::element
     {
     public:
-        config_element(const std::shared_ptr<sj::dom::parser>& parser,
-                       const sj::dom::element&                 element)
-            : m_parser(parser)
-            , m_element(element)
+        config_element(const js::json& document)
+            : m_document(std::make_shared<js::json>(document))
+        {}
+
+        config_element(const std::shared_ptr<js::json>& document,
+                       const js::json::json_pointer&    pos)
+            : m_document(document)
+            , m_pos(pos)
         {}
 
         virtual ~config_element() {}
 
         configuration::element_ref child(const std::string& name) const override
         {
-            auto child = m_element[name.data()];
-            if (child.error()) {
+            js::json::json_pointer p = m_pos;
+            p /= name;
+
+            if (m_document->contains(p)) {
+                return std::make_shared<config_element>(m_document, p);
+            } else {
                 return nullptr;
             }
-            return std::make_shared<config_element>(m_parser, child.value());
         }
 
         configuration::element::data_type type() const override
         {
-            switch (m_element.type()) {
-            case sj::dom::element_type::ARRAY:
-                return configuration::element::data_type::TYPE_ARRAY;
-            case sj::dom::element_type::OBJECT:
-                return configuration::element::data_type::TYPE_OBJECT;
-            case sj::dom::element_type::STRING:
-            case sj::dom::element_type::BOOL:
-            case sj::dom::element_type::DOUBLE:
-            case sj::dom::element_type::INT64:
-            case sj::dom::element_type::UINT64:
-                return configuration::element::data_type::TYPE_VALUE;
-            default:
-            case sj::dom::element_type::NULL_VALUE:
+            auto r = m_document->at(m_pos);
+            if (r.is_null()) {
                 return configuration::element::data_type::TYPE_NULL;
+            } else if (r.is_array()) {
+                return configuration::element::data_type::TYPE_ARRAY;
+            } else if (r.is_object()) {
+                return configuration::element::data_type::TYPE_OBJECT;
+            } else {
+                return configuration::element::data_type::TYPE_VALUE;
             }
         }
 
-        std::string_view value() const override
+        std::string value() const override
         {
-            auto r = m_element.get_string();
-            if (r.error()) {
-                return std::string_view();
-            } else {
-                return r.value();
+            auto r = m_document->at(m_pos);
+            if (r.is_null()) {
+                return "";
+            } else if (r.is_array() || r.is_object()) {
+                MGE_THROW(illegal_state)
+                    << "Element at '" << m_pos << "' is not a value";
             }
+            return r.get<std::string>();
         }
 
     private:
-        std::shared_ptr<sj::dom::parser> m_parser;
-        sj::dom::element                 m_element;
+        std::shared_ptr<js::json> m_document;
+        js::json::json_pointer    m_pos;
     };
 
     void configuration_instance::load()
@@ -234,17 +240,16 @@ namespace mge {
             return;
         }
 
-        std::shared_ptr<sj::dom::parser> parser =
-            std::make_shared<sj::dom::parser>();
-        sj::dom::element root;
-
-        auto err = parser->load(configfile_path.string()).get(root);
-        if (err) {
+        std::ifstream ifs(configfile_path);
+        try {
+            auto j = js::json::parse(ifs);
+            m_root = std::make_shared<config_element>(j);
+        } catch (js::json::parse_error& e) {
             MGE_THROW(mge::runtime_exception)
-                << "Error loading configuration file " << configfile_path
-                << ": " << err;
+                << "Error parsing configuration file " << configfile_path
+                << ": " << e.what();
         }
-        m_root = std::make_shared<config_element>(parser, root);
+
         set_registered_parameters();
         m_loaded = true;
     }

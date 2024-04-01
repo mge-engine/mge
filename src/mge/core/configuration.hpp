@@ -105,7 +105,7 @@ namespace mge {
              *
              * @return element value
              */
-            virtual std::string_view value() const = 0;
+            virtual std::string value() const = 0;
         };
 
         /**

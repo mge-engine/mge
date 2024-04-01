@@ -18,6 +18,7 @@
     },
     "glslang",
     "stb",
-    "simdjson"
+    "simdjson",
+    "nlohmann-json"
   ]
 }
