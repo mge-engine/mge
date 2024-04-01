@@ -19,9 +19,6 @@
 #include <stdexcept>
 
 namespace fs = std::filesystem;
-namespace pt = boost::property_tree;
-namespace sj = simdjson;
-namespace js = nlohmann;
 
 namespace mge {
 
@@ -54,7 +51,7 @@ namespace mge {
                      std::string_view name,
                      std::string_view value);
 
-        const configuration::element_ref& root() { return m_root; }
+        const mge::json::json& root() { return m_raw_settings; }
 
     private:
         fs::path find_config_file();
@@ -65,11 +62,10 @@ namespace mge {
 
         using parameter_map = std::map<mge::path, basic_parameter*>;
 
-        parameter_map              m_parameters;
-        pt::ptree                  m_raw_settings;
-        configuration::element_ref m_root;
-        bool                       m_loaded;
-        bool                       m_update_needed;
+        parameter_map m_parameters;
+        json::json    m_raw_settings;
+        bool          m_loaded;
+        bool          m_update_needed;
     };
 
     void configuration_instance::register_parameter(basic_parameter& p)
@@ -175,64 +171,6 @@ namespace mge {
         return fs::path();
     }
 
-    class config_element : public configuration::element
-    {
-    public:
-        config_element(const js::json& document)
-            : m_document(std::make_shared<js::json>(document))
-        {}
-
-        config_element(const std::shared_ptr<js::json>& document,
-                       const js::json::json_pointer&    pos)
-            : m_document(document)
-            , m_pos(pos)
-        {}
-
-        virtual ~config_element() {}
-
-        configuration::element_ref child(const std::string& name) const override
-        {
-            js::json::json_pointer p = m_pos;
-            p /= name;
-
-            if (m_document->contains(p)) {
-                return std::make_shared<config_element>(m_document, p);
-            } else {
-                return nullptr;
-            }
-        }
-
-        configuration::element::data_type type() const override
-        {
-            auto r = m_document->at(m_pos);
-            if (r.is_null()) {
-                return configuration::element::data_type::TYPE_NULL;
-            } else if (r.is_array()) {
-                return configuration::element::data_type::TYPE_ARRAY;
-            } else if (r.is_object()) {
-                return configuration::element::data_type::TYPE_OBJECT;
-            } else {
-                return configuration::element::data_type::TYPE_VALUE;
-            }
-        }
-
-        std::string value() const override
-        {
-            auto r = m_document->at(m_pos);
-            if (r.is_null()) {
-                return "";
-            } else if (r.is_array() || r.is_object()) {
-                MGE_THROW(illegal_state)
-                    << "Element at '" << m_pos << "' is not a value";
-            }
-            return r.get<std::string>();
-        }
-
-    private:
-        std::shared_ptr<js::json> m_document;
-        js::json::json_pointer    m_pos;
-    };
-
     void configuration_instance::load()
     {
         auto configfile_path = find_config_file();
@@ -242,14 +180,12 @@ namespace mge {
 
         std::ifstream ifs(configfile_path);
         try {
-            auto j = js::json::parse(ifs);
-            m_root = std::make_shared<config_element>(j);
-        } catch (js::json::parse_error& e) {
+            m_raw_settings = json::json::parse(ifs);
+        } catch (json::json::parse_error& e) {
             MGE_THROW(mge::runtime_exception)
                 << "Error parsing configuration file " << configfile_path
                 << ": " << e.what();
         }
-
         set_registered_parameters();
         m_loaded = true;
     }
@@ -268,11 +204,11 @@ namespace mge {
         MGE_DEBUG_TRACE(CORE) << "Set parameter value " << section << "/"
                               << name << " to '" << value << "'";
 
-        pt::ptree::path_type parameter_path;
+        mge::json::json_pointer<mge::json::json::string_t> parameter_path;
         parameter_path /= std::string(section.begin(), section.end());
         parameter_path /= std::string(name.begin(), name.end());
 
-        m_raw_settings.put(parameter_path, value);
+        m_raw_settings[parameter_path] = value;
         auto param = find_optional_parameter(section, name);
         if (param.has_value()) {
             MGE_THROW_NOT_IMPLEMENTED;
@@ -282,73 +218,8 @@ namespace mge {
 
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
-        auto el = m_root;
-        for (const auto& e : p.path()) {
-            auto child = el->child(e.string());
-            if (!child) {
-                p.apply(child);
-                return;
-            } else {
-                el = child;
-            }
-        }
-        p.apply(el);
-#if 0
-            parameter_path /= e.string();
-        }
-        if (p.value_type() == basic_parameter::type::VALUE) {
-            auto ov = m_raw_settings.get_optional<std::string>(parameter_path);
-            if (ov.has_value()) {
-                MGE_DEBUG_TRACE(CORE)
-                    << "Set parameter " << p.path() << " to " << ov.get();
-                p.from_string(ov.get());
-            } else {
-                MGE_DEBUG_TRACE(CORE)
-                    << "Reset parameter " << p.path().generic_string();
-                p.reset();
-            }
-            MGE_DEBUG_TRACE(CORE)
-                << "Notify change of parameter " << p.path().generic_string();
-            p.notify_change();
-        } else if (p.value_type() == basic_parameter::type::VALUE_LIST) {
-            p.reset();
-            std::string parameter_string;
-            auto        s = p.path().begin();
-            auto        e = p.path().end();
-            if (s == e) {
-                MGE_THROW(illegal_state)
-                    << "Parameter path must contain 2 components";
-            }
-            parameter_string = s->string();
-            ++s;
-            if (s == e) {
-                MGE_THROW(illegal_state)
-                    << "Parameter path must contain 2 components";
-            }
-            --e;
-            while (s != e) {
-                parameter_string += ".";
-                parameter_string += s->string();
-                ++s;
-            }
-            std::string key = e->string();
-            auto        it = m_raw_settings.find(parameter_string);
-            if (it == m_raw_settings.not_found()) {
-                MGE_DEBUG_TRACE(CORE)
-                    << "Reset parameter " << p.path().generic_string();
-                p.reset();
-            } else {
-                for (const auto el : it->second) {
-                    if (el.first == key && !el.second.data().empty()) {
-                        p.add_value(el.second.data());
-                    }
-                }
-            }
-            MGE_DEBUG_TRACE(CORE)
-                << "Notify change of parameter " << p.path().generic_string();
-            p.notify_change();
-        }
-#endif
+        p.set_value(m_raw_settings);
+        p.notify_change();
     }
 
     void configuration_instance::store()
@@ -384,13 +255,8 @@ namespace mge {
             ++i;
         }
         auto folder_it = m_raw_settings.find(folder_path);
-        if (folder_it != m_raw_settings.not_found()) {
-            auto& value_tree = folder_it->second;
-            auto  value_it = value_tree.find(e->string());
-            while (value_it != value_tree.not_found()) {
-                value_tree.erase(value_tree.to_iterator(value_it));
-                value_it = value_tree.find(e->string());
-            }
+        if (folder_it != m_raw_settings.end()) {
+            m_raw_settings.erase(folder_it);
         }
     }
 
@@ -496,7 +362,7 @@ namespace mge {
 
     bool configuration::loaded() { return s_configuration_instance->loaded(); }
 
-    const configuration::element_ref& configuration::root()
+    const mge::json::json& configuration::root()
     {
         return s_configuration_instance->root();
     }

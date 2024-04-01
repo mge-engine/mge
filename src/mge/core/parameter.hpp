@@ -7,6 +7,7 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/is_associative_container.hpp"
 #include "mge/core/is_container.hpp"
+#include "mge/core/json.hpp"
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/make_string_view.hpp"
 #include "mge/core/path.hpp"
@@ -28,8 +29,7 @@ namespace mge {
     class MGECORE_EXPORT basic_parameter
     {
     public:
-        using set_function =
-            std::function<void(const mge::configuration::element_ref&)>;
+        using set_function = std::function<void(const mge::json::json&)>;
         using change_callback = std::function<void()>;
 
         /**
@@ -142,7 +142,12 @@ namespace mge {
          */
         void set_change_handler(const change_callback& handler);
 
-        void apply(const mge::configuration::element_ref& element);
+        /**
+         * @brief Set parameter value from json document.
+         *
+         * @param document json document
+         */
+        void set_value(const mge::json::json& document);
 
     protected:
         set_function m_set_function;
@@ -297,12 +302,12 @@ namespace mge {
     private:
         void init_set_function()
         {
-            m_set_function = [this](const mge::configuration::element_ref& e) {
-                if (e) {
-                    m_value = mge::lexical_cast<T>(e->value());
-                } else {
+            m_set_function = [this](const mge::json::json& js) {
+                if (js.is_null()) {
                     m_value.reset();
-                }
+                } else {
+                    m_value = mge::lexical_cast<T>(js.get<std::string>());
+                };
             };
         }
 
@@ -332,7 +337,9 @@ namespace mge {
             : basic_parameter(make_string_view(section),
                               make_string_view(name),
                               make_string_view(description))
-        {}
+        {
+            init_set_function();
+        }
 
         /**
          * @brief Construct a new parameter object
@@ -342,7 +349,9 @@ namespace mge {
          */
         parameter(const mge::path& path, std::string_view description)
             : basic_parameter(path, description)
-        {}
+        {
+            init_set_function();
+        }
 
         virtual ~parameter() = default;
 
@@ -356,6 +365,19 @@ namespace mge {
         const T& values() const { return m_values; }
 
     private:
+        void init_set_function()
+        {
+            m_set_function = [this](const mge::json::json& js) {
+                m_values.clear();
+                if (js.is_array()) {
+                    for (const auto& e : js) {
+                        m_values.push_back(
+                            mge::lexical_cast<typename T::value_type>(
+                                e.get<std::string>()));
+                    }
+                }
+            };
+        }
         T m_values;
     };
 

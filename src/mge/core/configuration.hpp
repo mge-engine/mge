@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/json.hpp"
 #include "mge/core/path.hpp"
 
 #include <string_view>
@@ -65,55 +66,11 @@ namespace mge {
          * @return @c true if already loaded
          */
         static bool loaded();
-        class element;
-
-        using element_ref = std::shared_ptr<element>;
-
-        class element
-        {
-        public:
-            /**
-             * @brief Contained data type.
-             */
-            enum class data_type
-            {
-                TYPE_VALUE,  //!< single value
-                TYPE_ARRAY,  //!< array of values
-                TYPE_OBJECT, //!< object, i.e. key-value pairs
-                TYPE_NULL    //!< null value
-            };
-
-            /**
-             * @brief Destroy the element object
-             */
-            virtual ~element() = default;
-            /**
-             * @brief Get the child object.
-             *
-             * @param name key of child
-             * @return refernce to child, null reference if not found
-             */
-            virtual element_ref child(const std::string& name) const = 0;
-            /**
-             * @brief Get element data type.
-             * @return data type
-             */
-            virtual data_type type() const = 0;
-
-            /**
-             * @brief Get element value.
-             *
-             * @return element value
-             */
-            virtual std::string value() const = 0;
-        };
 
         /**
-         * @brief Root configuration element.
-         *
-         * @return element&
+         * @brief Root configuration.
          */
-        static const element_ref& root();
+        static const mge::json::json& root();
     };
 
 } // namespace mge

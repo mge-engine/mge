@@ -49,11 +49,17 @@ namespace mge {
         m_change_callback = callback;
     }
 
-    void basic_parameter::apply(const mge::configuration::element_ref& element)
+    void basic_parameter::set_value(const mge::json::json& doc)
     {
         if (m_set_function) {
-            m_set_function(element);
+            mge::json::json_pointer<mge::json::json::string_t> ptr;
+            for (const auto& e : m_path) {
+                ptr /= e.string();
+            }
+            auto it = doc.find(ptr.to_string());
+            if (it != doc.cend()) {
+                m_set_function(*it);
+            }
         }
     }
-
 } // namespace mge
