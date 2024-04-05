@@ -94,4 +94,7 @@ namespace mge {
     {
         j = t;
     }
+
+    inline void to_json(json::json& j, const char* v) { j = std::string(v); }
+
 } // namespace mge

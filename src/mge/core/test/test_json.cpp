@@ -63,3 +63,11 @@ TEST(json, from_json_map)
     mge::from_json(js, values);
     EXPECT_EQ(3u, values.size());
 }
+
+TEST(json, to_json_char_pointer)
+{
+    mge::json::json doc;
+    const char*     v = "value";
+    mge::to_json(doc["wurst"], v);
+    EXPECT_STREQ("{\"wurst\":\"value\"}", doc.dump().c_str());
+}
