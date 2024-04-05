@@ -43,7 +43,7 @@ TEST(parameter, from_string_to_string)
 TEST(parameter, vec)
 {
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter_vec).has_value());
-    EXPECT_TRUE((MGE_PARAMETER(test, test_parameter_vec).values().empty()));
+    EXPECT_TRUE((MGE_PARAMETER(test, test_parameter_vec).value().empty()));
 
     // MGE_PARAMETER(test, test_parameter_vec).from_string("1, 2, 3");
     // EXPECT_TRUE(MGE_PARAMETER(test, test_parameter_vec).has_value());

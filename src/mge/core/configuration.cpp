@@ -218,7 +218,7 @@ namespace mge {
 
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
-        p.set_value(m_raw_settings);
+        p.read_value(m_raw_settings);
         p.notify_change();
     }
 
@@ -262,30 +262,11 @@ namespace mge {
 
     void configuration_instance::write_parameter(basic_parameter& p)
     {
-#if 0
         if (p.has_value()) {
-            if (p.value_type() == basic_parameter::type::VALUE) {
-                pt::ptree::path_type parameter_path;
-                for (const auto& e : p.path()) {
-                    parameter_path /= e.string();
-                }
-                m_raw_settings.put(parameter_path, p.to_string());
-
-            } else if (p.value_type() == basic_parameter::type::VALUE_LIST) {
-                erase_parameter(p);
-                pt::ptree::path_type parameter_path;
-                for (const auto& e : p.path()) {
-                    parameter_path /= e.string();
-                }
-
-                p.for_each_value([&](const std::string& v) {
-                    m_raw_settings.add(parameter_path, v);
-                });
-            }
+            p.write_value(m_raw_settings);
         } else {
             erase_parameter(p);
         }
-#endif
     }
 
     static singleton<configuration_instance> s_configuration_instance;
