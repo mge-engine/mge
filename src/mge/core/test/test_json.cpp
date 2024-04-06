@@ -71,3 +71,28 @@ TEST(json, to_json_char_pointer)
     mge::to_json(doc["wurst"], v);
     EXPECT_STREQ("{\"wurst\":\"value\"}", doc.dump().c_str());
 }
+
+TEST(json, to_json_map)
+{
+    std::map<std::string, std::string> values = {{"key1", "value1"},
+                                                 {"key2", "value2"},
+                                                 {"key3", "value3"}};
+
+    mge::json::json js;
+    mge::to_json(js, values);
+    EXPECT_EQ(3u, js.size());
+    EXPECT_EQ("value1", js["key1"]);
+    EXPECT_EQ("value2", js["key2"]);
+    EXPECT_EQ("value3", js["key3"]);
+}
+
+TEST(json, to_json_vector)
+{
+    std::vector<int> values = {1, 2, 3};
+    mge::json::json  js;
+    mge::to_json(js, values);
+    EXPECT_EQ(3u, js.size());
+    EXPECT_EQ(1, js[0]);
+    EXPECT_EQ(2, js[1]);
+    EXPECT_EQ(3, js[2]);
+}
