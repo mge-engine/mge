@@ -12,6 +12,8 @@
 #include "mge/core/reset.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include "boost/preprocessor.hpp"
+
 #include <functional>
 #include <mutex>
 #include <optional>
@@ -333,7 +335,7 @@ namespace mge {
  * @param DESCRIPTION parameter description
  */
 #define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                 \
-    ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
+    ::mge::parameter<typename BOOST_PP_REMOVE_PARENS(TYPE)> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
 
 /**
  * @def MGE_DEFINE_PARAMETER_WITH_DEFAULT
