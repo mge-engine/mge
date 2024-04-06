@@ -29,8 +29,8 @@ namespace mge {
     class MGECORE_EXPORT basic_parameter
     {
     public:
-        using set_function = std::function<void(const mge::json::json&)>;
-        using put_function = std::function<void(mge::json::json&)>;
+        using read_function = std::function<void(const mge::json::json&)>;
+        using write_function = std::function<void(mge::json::json&)>;
 
         using change_callback = std::function<void()>;
 
@@ -117,8 +117,8 @@ namespace mge {
         void write_value(mge::json::json& document) const;
 
     protected:
-        set_function m_set_function;
-        put_function m_put_function;
+        read_function  m_read_function;
+        write_function m_write_function;
 
     private:
         mge::path        m_path;
@@ -155,7 +155,20 @@ namespace mge {
                               make_string_view(description))
             , m_has_value(false)
         {
-            init_set_function();
+            m_read_function = [&](const mge::json::json& j) {
+                if (j.is_null() || j.is_discarded()) {
+                    reset();
+                } else {
+                    from_json(j, m_value);
+                    m_has_value = true;
+                }
+            };
+
+            m_write_function = [&](mge::json::json& j) {
+                if (has_value()) {
+                    to_json(j, m_value);
+                }
+            };
         }
 
         /**
@@ -180,8 +193,14 @@ namespace mge {
             , m_default_value(default_value)
             , m_has_value(false)
         {
-            init_set_function();
-            init_put_function();
+            m_read_function = [&](const mge::json::json& j) {
+                if (j.is_null() || j.is_discarded()) {
+                    reset();
+                } else {
+                    from_json(j, m_value);
+                    m_has_value = true;
+                }
+            };
         }
 
         /**
@@ -197,8 +216,14 @@ namespace mge {
             : basic_parameter(section, name, description)
             , m_has_value(false)
         {
-            init_set_function();
-            init_put_function();
+            m_read_function = [&](const mge::json::json& j) {
+                if (j.is_null() || j.is_discarded()) {
+                    reset();
+                } else {
+                    from_json(j, m_value);
+                    m_has_value = true;
+                }
+            };
         }
 
         /**
@@ -209,9 +234,16 @@ namespace mge {
          */
         parameter(const mge::path& path, std::string_view description)
             : basic_parameter(path, description)
+            , m_has_value(false)
         {
-            init_set_function();
-            init_put_function();
+            m_read_function = [&](const mge::json::json& j) {
+                if (j.is_null() || j.is_discarded()) {
+                    reset();
+                } else {
+                    from_json(j, m_value);
+                    m_has_value = true;
+                }
+            };
         }
 
         /**
@@ -226,9 +258,16 @@ namespace mge {
                   const T&         default_value)
             : basic_parameter(path, description)
             , m_default_value(default_value)
+            , m_has_value(false)
         {
-            init_set_function();
-            init_put_function();
+            m_read_function = [&](const mge::json::json& j) {
+                if (j.is_null() || j.is_discarded()) {
+                    reset();
+                } else {
+                    from_json(j, m_value);
+                    m_has_value = true;
+                }
+            };
         }
 
         virtual ~parameter() = default;
@@ -241,7 +280,11 @@ namespace mge {
             m_has_value = false;
         }
 
-        T& value() { return m_value; }
+        T& value()
+        {
+            m_has_value = true;
+            return m_value;
+        }
 
         /**
          * @brief Retrieve typed value.
@@ -276,30 +319,6 @@ namespace mge {
         }
 
     private:
-        void init_set_function()
-        {
-            m_set_function = [this](const mge::json::json& js) {
-                auto j = &js;
-                for (const auto& e : path()) {
-                    if (j->contains(e.string())) {
-                        j = &(*j)[e.string()];
-                    } else {
-                        reset();
-                        return;
-                    }
-
-                    if (j->is_null()) {
-                        reset();
-                        return;
-                    } else {
-                        m_value = j->get<T>();
-                    }
-                }
-            };
-        }
-
-        void init_put_function() {}
-
         T                m_value;
         std::optional<T> m_default_value;
         bool             m_has_value;

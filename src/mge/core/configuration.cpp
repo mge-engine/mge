@@ -208,17 +208,22 @@ namespace mge {
         parameter_path /= std::string(section.begin(), section.end());
         parameter_path /= std::string(name.begin(), name.end());
 
-        m_raw_settings[parameter_path] = value;
+        to_json(m_raw_settings[parameter_path], value);
         auto param = find_optional_parameter(section, name);
-        if (param.has_value()) {
-            MGE_THROW_NOT_IMPLEMENTED;
-            param->get().notify_change();
+        if (param) {
+            fetch_parameter(param.value().get());
         }
     }
 
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
-        p.read_value(m_raw_settings);
+        mge::json::json_pointer<mge::json::json::string_t> parameter_path;
+        for (auto& c : p.path()) {
+            parameter_path /= c.string();
+        }
+        if (m_raw_settings.contains(parameter_path)) {
+            p.read_value(m_raw_settings.at(parameter_path));
+        }
         p.notify_change();
     }
 
@@ -231,39 +236,30 @@ namespace mge {
         std::string name = executable_name();
         name += ".json";
         fs::path file_path = fs::path(name);
+
+        std::ofstream ofs(file_path);
+        ofs << m_raw_settings.dump(4);
     }
 
     void configuration_instance::erase_parameter(basic_parameter& p)
     {
-        std::string folder_path;
-        auto        i = p.path().begin();
-        auto        e = p.path().end();
-        if (i == e) {
-            MGE_THROW(illegal_state)
-                << "Parameter path must contain 2 or more components";
+        mge::json::json_pointer<mge::json::json::string_t> parameter_path;
+        for (auto& c : p.path()) {
+            parameter_path /= c.string();
         }
-        folder_path = i->string();
-        ++i;
-        if (i == e) {
-            MGE_THROW(illegal_state)
-                << "Parameter path must contain 2 or more components";
-        }
-        --e;
-        while (i != e) {
-            folder_path += ".";
-            folder_path += i->string();
-            ++i;
-        }
-        auto folder_it = m_raw_settings.find(folder_path);
-        if (folder_it != m_raw_settings.end()) {
-            m_raw_settings.erase(folder_it);
+        if (m_raw_settings.contains(parameter_path)) {
+            m_raw_settings.erase(parameter_path.to_string());
         }
     }
 
     void configuration_instance::write_parameter(basic_parameter& p)
     {
         if (p.has_value()) {
-            p.write_value(m_raw_settings);
+            mge::json::json_pointer<mge::json::json::string_t> parameter_path;
+            for (auto& c : p.path()) {
+                parameter_path /= c.string();
+            }
+            p.write_value(m_raw_settings[parameter_path]);
         } else {
             erase_parameter(p);
         }

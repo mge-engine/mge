@@ -51,15 +51,15 @@ namespace mge {
 
     void basic_parameter::read_value(const mge::json::json& doc)
     {
-        if (m_set_function) {
-            m_set_function(doc);
+        if (m_read_function) {
+            m_read_function(doc);
         }
     }
 
     void basic_parameter::write_value(mge::json::json& doc) const
     {
-        if (m_put_function) {
-            m_put_function(doc);
+        if (m_write_function) {
+            m_write_function(doc);
         }
     }
 
