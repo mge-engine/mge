@@ -129,7 +129,7 @@ namespace mge {
         uint8_t          m_enabled_levels;
         sink_vector      m_sinks;
 
-        parameter<std::string> m_level_config;
+        parameter<std::vector<std::string>> m_level_config;
     };
 
 /**

@@ -88,22 +88,15 @@ namespace mge {
     {
         disable(trace_level::ALL);
         if (m_level_config.has_value()) {
-            std::string              level_list_str = m_level_config.get();
-            std::vector<std::string> level_list;
-            boost::split(level_list,
-                         level_list_str,
-                         boost::is_any_of(","),
-                         boost::token_compress_on);
-            std::for_each(level_list.begin(),
-                          level_list.end(),
-                          [&](std::string& s) {
-                              boost::to_upper(s);
-                              boost::trim(s);
-                              trace_level l = level_from_string(s);
-                              if (l != trace_level::NONE) {
-                                  this->enable(l);
-                              }
-                          });
+            for (const auto& l : m_level_config.get()) {
+                std::string levelstr = l;
+                boost::to_upper(levelstr);
+                boost::trim(levelstr);
+                trace_level level = level_from_string(levelstr);
+                if (level != trace_level::NONE) {
+                    enable(level);
+                }
+            }
         }
         if (m_topic == "MGE"sv) {
             if (global_trace_enabled()) {
