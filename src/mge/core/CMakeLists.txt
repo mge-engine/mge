@@ -97,6 +97,6 @@ MGE_LIBRARY(
     ${mgecore_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp simdjson::simdjson nlohmann_json::nlohmann_json)
+TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp nlohmann_json::nlohmann_json)
 ADD_SUBDIRECTORY(test)
 

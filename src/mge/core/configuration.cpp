@@ -3,18 +3,14 @@
 // All rights reserved.
 #include "mge/core/configuration.hpp"
 #include "mge/core/executable_name.hpp"
+#include "mge/core/json.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 
-// property tree use deprecated boost bind
-// placeholders
-#include "boost/boost_property_tree.hpp"
-#include "nlohmann/json.hpp"
-#include "simdjson.h"
-
 #include <filesystem>
+#include <fstream>
 #include <map>
 #include <stdexcept>
 

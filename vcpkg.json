@@ -6,7 +6,6 @@
     "boost-filesystem",
     "boost-circular-buffer",
     "boost-lexical-cast",
-    "boost-property-tree",
     "boost-spirit",
     "boost-locale",
     "boost-bimap",
@@ -18,7 +17,6 @@
     },
     "glslang",
     "stb",
-    "simdjson",
     "nlohmann-json"
   ]
 }
