@@ -154,6 +154,19 @@ namespace mge {
          */
         static asset locate(std::string_view name, const asset_type& type);
 
+        /**
+         * @brief mount a specific asset factory at a mount point.
+         *
+         * @param mount_point mount point
+         * @param type        asset access type
+         * @param options     mount options
+         */
+        static void mount(const mge::path&   mount_point,
+                          const std::string& type,
+                          const ::mge::properties&  options);
+
+        static void umount(const mge::path& mount_point);
+
     private:
         mge::path                m_path;
         mutable asset_access_ref m_access;

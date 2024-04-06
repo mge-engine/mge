@@ -229,6 +229,10 @@ namespace mge {
             write_parameter(*p.second);
         }
 
+        if (m_raw_settings.is_null()) {
+            m_raw_settings = json::json::object();
+        }
+
         std::string name = executable_name();
         name += ".json";
         fs::path file_path = fs::path(name);
