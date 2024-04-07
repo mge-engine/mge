@@ -161,13 +161,20 @@ namespace mge {
          * @param type        asset access type
          * @param options     mount options
          */
-        static void mount(const mge::path&   mount_point,
-                          const std::string& type,
-                          const ::mge::properties&  options);
+        static void mount(const mge::path&         mount_point,
+                          const std::string&       type,
+                          const ::mge::properties& options);
 
+        /**
+         * @brief Unmount a mount point.
+         *
+         * @param mount_point mount point
+         */
         static void umount(const mge::path& mount_point);
 
     private:
+        bool resolve() const;
+
         mge::path                m_path;
         mutable asset_access_ref m_access;
     };

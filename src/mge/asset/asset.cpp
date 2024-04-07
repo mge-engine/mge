@@ -48,8 +48,58 @@ namespace mge {
                          "Asset configuration");
 
     class mount_table
-    {};
+    {
+    public:
+        mount_table()
+        {
+            MGE_PARAMETER(asset, repositories).set_change_handler([this]() {
+                configure();
+            });
+        }
+
+        ~mount_table() {}
+
+        asset_access_ref resolve(const mge::path& p) const
+        {
+            return asset_access_ref();
+        }
+
+    private:
+        void configure();
+
+        std::map<path, asset_access_factory_ref> m_mounts;
+        std::map<path, std::string>              m_mount_points;
+        std::map<path, properties>               m_mount_properties;
+    };
+
+    void mount_table::configure()
+    {
+        MGE_DEBUG_TRACE(ASSET) << "Configuring mounted assets";
+#if 0
+        std::map<path, asset_access_factory_ref> mounts;
+        std::map<path, std::string>              mount_points;
+        std::map<path, properties>               mount_properties;
+
+        const auto& entries = MGE_PARAMETER(asset, repositories).get();
+        for (const auto& e : entries) {
+        }
+#endif
+    }
 
     static ::mge::singleton<mount_table> mtab;
+
+    bool asset::exists() const { return m_access || resolve(); }
+
+    bool asset::exists(const mge::path& p)
+    {
+        asset tmp(p);
+        return tmp.exists();
+    }
+
+    bool asset::resolve() const
+    {
+        this->m_access = mtab->resolve(m_path);
+        return m_access.operator bool();
+    }
 
 } // namespace mge
