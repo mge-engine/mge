@@ -50,14 +50,13 @@ ENDIF()
 TARGET_LINK_LIBRARIES(mge_module_vulkan
     mgecore
     mgegraphics
-
-    vulkan
-
-    glslang::glslang
-    glslang::glslang-default-resource-limits
-    glslang::SPIRV)
+    Vulkan::Vulkan
+    Vulkan::SPIRV-Tools
+    Vulkan::glslang
+    Vulkan::shaderc_combined
+    Vulkan::glslang-default-resource-limits
+)
 ADD_SUBDIRECTORY(test)
-
 
 
 
