@@ -75,15 +75,27 @@ namespace mge {
     void mount_table::configure()
     {
         MGE_DEBUG_TRACE(ASSET) << "Configuring mounted assets";
-#if 0
-        std::map<path, asset_access_factory_ref> mounts;
-        std::map<path, std::string>              mount_points;
-        std::map<path, properties>               mount_properties;
+        std::map<path, std::string> mount_types;
+        std::map<path, properties>  mount_properties;
 
         const auto& entries = MGE_PARAMETER(asset, repositories).get();
         for (const auto& e : entries) {
+            if (e.find("mount_point") == e.end()) {
+                MGE_ERROR_TRACE(ASSET)
+                    << "Repository entry without mount point";
+            } else if (e.find("type") == e.end()) {
+                MGE_ERROR_TRACE(ASSET) << "Repository entry without type";
+            } else {
+                path mount_point(e.find("mount_point")->second);
+                mount_types[mount_point] = e.find("type")->second;
+                properties& mp = mount_properties[mount_point];
+                for (const auto [key, value] : e) {
+                    if (key != "mount_point" && key != "type") {
+                        mp.put(key, value);
+                    }
+                }
+            }
         }
-#endif
     }
 
     static ::mge::singleton<mount_table> mtab;
@@ -98,7 +110,7 @@ namespace mge {
 
     bool asset::resolve() const
     {
-        this->m_access = mtab->resolve(m_path);
+        m_access = mtab->resolve(m_path);
         return m_access.operator bool();
     }
 
