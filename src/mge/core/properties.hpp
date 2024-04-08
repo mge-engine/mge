@@ -2,9 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/lexical_cast.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/input_stream.hpp"
+#include "mge/core/lexical_cast.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include <string_view>
@@ -123,6 +123,16 @@ namespace mge {
         const_iterator cend() const { return m_data.cend(); }
         const_iterator begin() const { return cbegin(); }
         const_iterator end() const { return cend(); }
+
+        inline bool operator==(const properties& p) const
+        {
+            return m_data == p.m_data;
+        }
+
+        inline bool operator!=(const properties& p) const
+        {
+            return m_data != p.m_data;
+        }
 
     private:
         map_type m_data;

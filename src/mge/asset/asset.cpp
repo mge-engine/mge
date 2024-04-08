@@ -67,9 +67,15 @@ namespace mge {
     private:
         void configure();
 
-        std::map<path, asset_access_factory_ref> m_mounts;
-        std::map<path, std::string>              m_mount_points;
-        std::map<path, properties>               m_mount_properties;
+        struct mount_info
+        {
+            asset_access_factory_ref factory;
+            std::string              type;
+            mge::path                mount_point;
+            ::mge::properties        properties;
+        };
+
+        std::map<mge::path, mount_info> m_mounts;
     };
 
     void mount_table::configure()
@@ -96,6 +102,34 @@ namespace mge {
                 }
             }
         }
+        std::map<mge::path, mount_info> new_mounts;
+        for (const auto& [mount_point, type] : mount_types) {
+            auto it = m_mounts.find(mount_point);
+            if (it != m_mounts.end()) {
+                if (it->second.type == type) {
+                    if (it->second.properties ==
+                        mount_properties[mount_point]) {
+                        new_mounts[mount_point] = it->second;
+                        continue;
+                    }
+                }
+            }
+            mount_info mi;
+            mi.mount_point = mge::path(mount_point);
+            mi.type = type;
+            mi.properties = mount_properties[mount_point];
+            mi.factory = component<asset_access_factory>::create(type);
+            if (!mi.factory) {
+                MGE_THROW(illegal_state)
+                    << "Invalid mount point type for mount point '"
+                    << mount_point << "' : " << type;
+            } else {
+                mi.factory->configure(mi.properties);
+                mi.factory->set_mount_point(mount_point);
+                new_mounts[mount_point] = mi;
+            }
+        }
+        m_mounts.swap(new_mounts);
     }
 
     static ::mge::singleton<mount_table> mtab;
