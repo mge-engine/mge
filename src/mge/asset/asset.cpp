@@ -61,6 +61,18 @@ namespace mge {
 
         asset_access_ref resolve(const mge::path& p) const
         {
+            if (m_mounts.empty()) {
+                return asset_access_ref();
+            } else {
+                auto it = m_mounts.lower_bound(p);
+                if (it == m_mounts.begin()) {
+                    return asset_access_ref();
+                } else {
+                    --it;
+                    return it->second.factory->access(p);
+                }
+            }
+
             return asset_access_ref();
         }
 

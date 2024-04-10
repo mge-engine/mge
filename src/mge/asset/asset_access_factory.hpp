@@ -40,10 +40,10 @@ namespace mge {
         /**
          * @brief Resolve path into asset object.
          *
-         * @param p path
+         * @param p path, absolute (includes the mount point)
          * @return asset located at path
          */
-        virtual asset_access_ref create_asset_access(const mge::path& p) = 0;
+        virtual asset_access_ref access(const mge::path& p) = 0;
         /**
          * @brief Check whether asset at given path exists.
          *
