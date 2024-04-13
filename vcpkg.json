@@ -16,6 +16,7 @@
       "default-features": true
     },
     "stb",
-    "nlohmann-json"
+    "nlohmann-json",
+    "glslang"
   ]
 }

@@ -32,7 +32,7 @@ before_build:
   - cmd: SET ORIG_PATH=%PATH%
   - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
   - cmd: python tools/ci/vulkan.py
-  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.250.1
+  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.280.0
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
@@ -45,6 +45,7 @@ build_script:
   - cmd: SET VCPKG_ROOT=C:\projects\mge\vcpkg
   - cmd: IF NOT EXIST "C:\projects\mge\vcpkg_binary_cache" mkdir "C:\projects\mge\vcpkg_binary_cache"
   - cmd: SET VCPKG_BINARY_SOURCES=clear;default,readwrite;files,C:\projects\mge\vcpkg_binary_cache,readwrite
+  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.280.0
   - cmd: SET
   - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
   - cmd: cmake --build build --target all
