@@ -344,4 +344,6 @@ namespace mge {
         return s_configuration_instance->root();
     }
 
+    MGE_DEFINE_EXCEPTION_CLASS(bad_configuration)
+
 } // namespace mge

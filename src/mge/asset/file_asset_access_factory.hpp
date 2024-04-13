@@ -1,18 +1,22 @@
 #pragma once
-#include "mge/asset/asset_access_factory.hpp
+#include "mge/asset/asset_access_factory.hpp"
 #include "mge/asset/file_asset_access.hpp"
 namespace mge {
 
-    class file_access_factory : public asset_access_factory
+    class file_asset_access_factory : public asset_access_factory
     {
     public:
-        file_access_factory() = default;
-        virtual ~file_access_factory() = default;
+        file_asset_access_factory();
+        virtual ~file_asset_access_factory() = default;
+        void             configure(const mge::properties& p) override;
+        bool             is_configured() const override;
+        asset_access_ref access(const mge::path& p) override;
+        bool             asset_exists(const mge::path& p) override;
+        void             gist(std::ostream& os) const override;
 
-        virtual asset_access_ref create(const mge::path& p) override
-        {
-            return std::make_shared<file_asset_access>(p);
-        }
+    public:
+        mge::path m_directory;
+        bool      m_configured;
     };
 
 } // namespace mge

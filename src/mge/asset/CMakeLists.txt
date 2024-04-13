@@ -9,6 +9,7 @@ SET(mgeasset_sources
     asset_access.cpp
     asset_loader.cpp
     file_asset_access.cpp
+    file_asset_access_factory.cpp
 )
 
 SET(mgeasset_headers
@@ -20,6 +21,7 @@ SET(mgeasset_headers
     asset_access.hpp
     asset_loader.hpp
     file_asset_access.hpp
+    file_asset_access_factory.hpp
 )
 
 MGE_LIBRARY(

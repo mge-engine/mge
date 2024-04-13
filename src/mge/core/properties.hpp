@@ -23,7 +23,7 @@ namespace mge {
     class MGECORE_EXPORT properties
     {
     public:
-        using map_type = std::unordered_map<std::string, std::string>;
+        using map_type = std::map<std::string, std::string, std::less<>>;
         using const_iterator = map_type::const_iterator;
         using iterator = map_type::iterator;
         using value_type = map_type::value_type;
@@ -37,10 +37,14 @@ namespace mge {
         properties& operator=(const properties& p);
         properties& operator=(properties&& p);
 
-        bool exists(std::string_view key) const
+        bool exists(const char* key) const
         {
-            return m_data.find(std::string(key.begin(), key.end())) !=
-                   m_data.end();
+            return m_data.find(key) != m_data.end();
+        }
+
+        bool exists(const std::string_view& key) const
+        {
+            return m_data.find(key) != m_data.end();
         }
 
         bool exists(const std::string& key) const
@@ -48,6 +52,32 @@ namespace mge {
             return m_data.find(key) != m_data.end();
         }
 
+        template <typename T> T get(const char* key) const
+        {
+            if (key == nullptr) {
+                MGE_THROW(null_pointer) << "Argument 'key' must not be null";
+            }
+            auto it = m_data.find(key);
+            if (it != m_data.end()) {
+                return lexical_cast<T>(it->second);
+            }
+            MGE_THROW(no_such_element) << "No property '" << key << "' found";
+        }
+
+        template <typename T, typename D>
+        T get(const char* key, const D& default_value) const
+        {
+            if (key == nullptr) {
+                return default_value;
+            }
+
+            auto it = m_data.find(key);
+            if (it != m_data.end()) {
+                return lexical_cast<T>(it->second);
+            } else {
+                return default_value;
+            }
+        }
         template <typename T> T get(std::string_view key) const
         {
             if (key == nullptr) {

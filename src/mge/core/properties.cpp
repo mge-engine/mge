@@ -45,7 +45,7 @@ namespace mge {
 
     void properties::load(std::istream& s)
     {
-        std::unordered_map<std::string, std::string> tmp_data;
+        map_type tmp_data;
 
         std::string line;
 

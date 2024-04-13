@@ -5,6 +5,7 @@
 #include "mge/core/dllexport.hpp"
 #include "mge/core/json.hpp"
 #include "mge/core/path.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 #include <string_view>
 #include <vector>
@@ -72,5 +73,8 @@ namespace mge {
          */
         static const mge::json::json& root();
     };
+
+    /** @brief Throw if a configuration does not fulfill constraints. */
+    MGECORE_DECLARE_EXCEPTION_CLASS(bad_configuration);
 
 } // namespace mge
