@@ -4,7 +4,6 @@
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_access.hpp"
 #include "mge/asset/asset_access_factory.hpp"
-#include "mge/asset/asset_locator.hpp"
 #include "mge/asset/asset_not_found.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/singleton.hpp"

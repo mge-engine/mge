@@ -4,22 +4,22 @@
 SET(mgeasset_sources
     asset_type.cpp
     asset_not_found.cpp
-    asset_locator.cpp
     asset.cpp
     asset_access_factory.cpp
     asset_access.cpp
     asset_loader.cpp
+    file_asset_access.cpp
 )
 
 SET(mgeasset_headers
     dllexport.hpp
     asset_type.hpp
     asset_not_found.hpp
-    asset_locator.hpp
     asset.hpp
     asset_access_factory.hpp
     asset_access.hpp
     asset_loader.hpp
+    file_asset_access.hpp
 )
 
 MGE_LIBRARY(

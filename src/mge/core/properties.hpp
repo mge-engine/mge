@@ -7,6 +7,7 @@
 #include "mge/core/lexical_cast.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
+
 #include <string_view>
 #include <unordered_map>
 
@@ -30,6 +31,7 @@ namespace mge {
         properties();
         properties(const properties& p);
         properties(properties&& p);
+        properties(std::istream& input);
         properties(const input_stream_ref& input);
 
         properties& operator=(const properties& p);

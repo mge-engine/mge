@@ -37,6 +37,8 @@ SET(mgecore_sources
     call_debugger.cpp
     line_editor.cpp
     mutex.cpp
+    io_exception.cpp
+    file_input_stream.cpp
 )
 
 SET(mgecore_headers
@@ -87,6 +89,9 @@ SET(mgecore_headers
     line_editor.hpp
     mutex.hpp
     is_container.hpp
+    is_associative_container.hpp
+    io_exception.hpp
+    file_input_stream.hpp
 )
 
 MGE_LIBRARY(

@@ -20,6 +20,8 @@ namespace mge {
         load(input->istream());
     }
 
+    properties::properties(std::istream& s) { load(s); }
+
     properties& properties::operator=(const properties& p)
     {
         m_data = p.m_data;

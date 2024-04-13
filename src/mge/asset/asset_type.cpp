@@ -65,4 +65,8 @@ namespace mge {
         }
     } // namespace literals
 
+    using namespace literals;
+
+    const asset_type asset_type::UNKNOWN = "unknown/unknown"_at;
+
 } // namespace mge

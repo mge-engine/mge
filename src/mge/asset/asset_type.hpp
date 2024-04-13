@@ -20,6 +20,8 @@ namespace mge {
     class MGEASSET_EXPORT asset_type : public boost::totally_ordered<asset_type>
     {
     public:
+        static const asset_type UNKNOWN;
+
         /**
          * @brief Construct empty/unknown asset type.
          */
