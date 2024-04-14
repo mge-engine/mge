@@ -3,8 +3,8 @@
 // All rights reserved.
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_access.hpp"
-#include "mge/asset/asset_access_factory.hpp"
 #include "mge/asset/asset_not_found.hpp"
+#include "mge/asset/asset_source.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
@@ -80,10 +80,10 @@ namespace mge {
 
         struct mount_info
         {
-            asset_access_factory_ref factory;
-            std::string              type;
-            mge::path                mount_point;
-            ::mge::properties        properties;
+            asset_source_ref  factory;
+            std::string       type;
+            mge::path         mount_point;
+            ::mge::properties properties;
         };
 
         std::map<mge::path, mount_info> m_mounts;
@@ -129,7 +129,7 @@ namespace mge {
             mi.mount_point = mge::path(mount_point);
             mi.type = type;
             mi.properties = mount_properties[mount_point];
-            mi.factory = component<asset_access_factory>::create(type);
+            mi.factory = component<asset_source>::create(type);
             if (!mi.factory) {
                 MGE_THROW(illegal_state)
                     << "Invalid mount point type for mount point '"

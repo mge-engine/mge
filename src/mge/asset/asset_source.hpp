@@ -8,7 +8,7 @@
 #include "mge/core/path.hpp"
 
 namespace mge {
-    MGE_DECLARE_REF(asset_access_factory);
+    MGE_DECLARE_REF(asset_source);
 
     /**
      * @brief An asset access factory.
@@ -16,12 +16,11 @@ namespace mge {
      * An asset access factory is 'mounted' below a specific path, and serves
      * all assets that are looked for beneath this path.
      */
-    class MGEASSET_EXPORT asset_access_factory
-        : public component<asset_access_factory>
+    class MGEASSET_EXPORT asset_source : public component<asset_source>
     {
     public:
-        asset_access_factory() = default;
-        virtual ~asset_access_factory() = default;
+        asset_source() = default;
+        virtual ~asset_source() = default;
 
         /**
          * @brief Configure factory.
