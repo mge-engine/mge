@@ -142,7 +142,7 @@ Within the `build` directory, use `cmake` to configure the build:
     C:\mge>cmake --preset=default
 
 This configures the build for the `RelWithDebInfo` configuration. It will
-install also all dependencies using `vcpkg`. This may take a while.
+install also all dependencies using `vcpkg`. It may take a while.
 
 Build MGE
 =========

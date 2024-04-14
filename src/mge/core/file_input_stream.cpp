@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/file_input_stream.hpp"
 #include "mge/core/io_exception.hpp"
 #include "mge/core/stdexceptions.hpp"

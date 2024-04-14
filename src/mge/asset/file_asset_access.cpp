@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #include "mge/asset/file_asset_access.hpp"
 #include "mge/asset/asset_type.hpp"
 #include <filesystem>
