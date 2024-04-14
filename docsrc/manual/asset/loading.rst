@@ -69,5 +69,17 @@ following properties:
 file
     The zip file from which to load assets.
 
+Implementing an Asset Source
+============================
 
+To implement a new asset source, you need to create a class that implements
+the `asset_source` interface and register it as a component.
 
+.. doxygenclass:: mge::asset_source
+    :members:
+
+Furthermore, you need to implement the `asset_access` interface for an individual
+asset.
+
+.. doxygenclass:: mge::asset_access
+    :members:

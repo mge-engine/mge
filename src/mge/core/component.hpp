@@ -185,7 +185,7 @@ namespace mge {
 
     public:
         /**
-         * Destructor-
+         * Destructor.
          */
         virtual ~component() noexcept = default;
 
