@@ -18,5 +18,6 @@ abstraction.
     graphics/shaders.rst
     graphics/buffers.rst
     graphics/texture.rst
+    graphics/image.rst
     graphics/command_list.rst
 

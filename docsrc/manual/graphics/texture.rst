@@ -2,9 +2,10 @@
 Texture
 *******
 
-A texture is an image or a collection of images that is applied to a 3D model
-or a 2D surface. Textures are used to enhance the visual appearance of objects
-and help to simulate various materials, for example wood or stone.
+A texture is an image or a collection of data that is applied to a 3D model
+or a 2D surface, or used in a shader program. Textures are used to enhance the
+visual appearance of objects and help to simulate various materials, for example
+wood or stone.
 
 Textures are typically initialized from image files, but can be also generated
 by rendering to a texture.
