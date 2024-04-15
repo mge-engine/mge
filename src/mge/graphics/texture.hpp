@@ -4,6 +4,9 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/context_object.hpp"
+#include "mge/graphics/extent.hpp"
+#include "mge/graphics/image.hpp"
+#include "mge/graphics/image_format.hpp"
 #include "mge/graphics/texture_type.hpp"
 
 namespace mge {
@@ -39,6 +42,25 @@ namespace mge {
          * @return texture type
          */
         texture_type type() const;
+
+        /**
+         * @brief Set data of the texture.
+         *
+         * @param format image format
+         * @param extent image extent
+         * @param data image data
+         * @param size size of data
+         */
+        virtual void set_data(image_format       format,
+                              const mge::extent& extent,
+                              const void*        data,
+                              size_t             size) = 0;
+        /**
+         * @brief Set data of texture.
+         *
+         * @param img image
+         */
+        void set_data(const image& img);
 
     private:
         texture_type m_type;
