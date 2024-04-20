@@ -9,6 +9,8 @@ branches:
     - gh-pages
 
 environment:
+  global:
+    APPVEYOR_SAVE_CACHE_ON_ERROR: true
   access_token:
     secure: d8ut1+6Q451ZF/0s99hcWS9SUhGJ7usjjCCpkdvUy4o4C3Q8+LZw+vmsR13esiwe
 
