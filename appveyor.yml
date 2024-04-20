@@ -33,6 +33,7 @@ platform: x64
 before_build:
   - cmd: SET ORIG_PATH=%PATH%
   - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: choco --version
   - cmd: python tools/ci/vulkan.py
   - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.280.0
   - cmd: python tools/ci/vcpkg.py
