@@ -97,6 +97,20 @@ namespace mge {
         bool exists() const;
 
         /**
+         * @brief Load the asset.
+         *
+         * @return loaded asset, depends on asset type
+         */
+        std::any load() const;
+
+        /**
+         * @brief Adds an asset loader.
+         *
+         * @param loader loader that is added.
+         */
+        static void add_loader(const asset_loader_ref& loader);
+
+        /**
          * Get whether path can be found as asset.
          *
          * @param path asset path
@@ -174,6 +188,7 @@ namespace mge {
 
     private:
         bool resolve() const;
+        asset_type magic() const;
 
         mge::path                m_path;
         mutable asset_access_ref m_access;

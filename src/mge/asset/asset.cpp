@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_access.hpp"
+#include "mge/asset/asset_loader.hpp"
 #include "mge/asset/asset_not_found.hpp"
 #include "mge/asset/asset_source.hpp"
 #include "mge/core/configuration.hpp"
@@ -145,6 +146,47 @@ namespace mge {
 
     static ::mge::singleton<mount_table> mtab;
 
+    class loader_table
+    {
+    public:
+        loader_table() { instantiate_loaders(); }
+        ~loader_table() = default;
+
+        asset_loader_ref resolve(const asset_type& t) const
+        {
+            auto it = m_loaders.find(t);
+            if (it == m_loaders.end()) {
+                return asset_loader_ref();
+            } else {
+                return it->second;
+            }
+        }
+
+        void add_loader(const asset_loader_ref& loader)
+        {
+            if (loader) {
+                for (const auto& t : loader->handled_types()) {
+                    m_loaders[t] = loader;
+                }
+            }
+        }
+
+    private:
+        void instantiate_loaders();
+
+        std::map<asset_type, asset_loader_ref> m_loaders;
+    };
+
+    void loader_table::instantiate_loaders()
+    {
+        asset_loader::implementations([&](std::string_view name) {
+            asset_loader_ref loader = asset_loader::create(name);
+            add_loader(loader);
+        });
+    }
+
+    static ::mge::singleton<loader_table> loaders;
+
     bool asset::exists() const { return m_access || resolve(); }
 
     bool asset::exists(const mge::path& p)
@@ -158,5 +200,34 @@ namespace mge {
         m_access = mtab->resolve(m_path);
         return m_access.operator bool();
     }
+
+    asset_type asset::type() const
+    {
+        if (!m_access) {
+            if (!resolve()) {
+                MGE_THROW(asset_not_found)
+                    << "Asset not found: " << m_path.string();
+            }
+        }
+        auto t = m_access->type();
+        if (t == asset_type::UNKNOWN) {
+            return magic();
+        }
+        return t;
+    }
+
+    std::any asset::load() const
+    {
+        // will resolve (and throw if asset not found)
+        auto t = type();
+        auto l = loaders->resolve(t);
+        if (!l) {
+            MGE_THROW(illegal_state) << "No loader for asset type '" << t
+                                     << "' for asset: " << m_path.string();
+        }
+        return l->load(*this);
+    }
+
+    asset_type asset::magic() const { return asset_type::UNKNOWN; }
 
 } // namespace mge

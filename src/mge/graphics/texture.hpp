@@ -17,7 +17,6 @@ namespace mge {
      * A texture is a set of data mapped onto a geometry or used in a shader
      * program. Textures can be used for color information, normal information,
      * bump mapping and other cases. Textures can be 1D, 2D, 3D or cube maps.
-     *
      */
     class MGEGRAPHICS_EXPORT texture : public context_object
     {
