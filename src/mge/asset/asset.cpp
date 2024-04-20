@@ -242,6 +242,17 @@ namespace mge {
         return m_access->size();
     }
 
+    mge::input_stream_ref asset::data() const
+    {
+        if (!m_access) {
+            if (!resolve()) {
+                MGE_THROW(asset_not_found)
+                    << "Asset not found: " << m_path.string();
+            }
+        }
+        return m_access->data();
+    }
+
     bool asset::resolve() const
     {
         m_access = mtab->resolve(m_path);

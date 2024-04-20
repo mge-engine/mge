@@ -3,6 +3,8 @@
 // All rights reserved.
 #include "asset_test.hpp"
 #include "mge/asset/asset.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/image.hpp"
 
 class test_asset : public mge::asset_test
 {
@@ -26,4 +28,17 @@ TEST_F(test_asset, red_jpg)
     EXPECT_EQ(382u, a->size());
     EXPECT_EQ("image/jpeg"_at, a->type());
     EXPECT_EQ("image/jpeg"_at, a->type());
+}
+
+TEST_F(test_asset, red_jpg_load)
+{
+    using namespace mge::literals;
+    mge::asset_ref a = std::make_shared<mge::asset>("/images/red.jpg");
+    auto           load_result = a->load();
+    EXPECT_STREQ("class std::shared_ptr<class mge::image>",
+                 load_result.type().name());
+    mge::image_ref image = std::any_cast<mge::image_ref>(load_result);
+    EXPECT_TRUE(image);
+    EXPECT_EQ(100, image->extent().width);
+    EXPECT_EQ(100, image->extent().height);
 }

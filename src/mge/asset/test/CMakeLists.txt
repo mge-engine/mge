@@ -12,6 +12,6 @@ MGE_TEST(
     TARGET      test_asset
     SOURCES     ${MGEASSET_TEST_SOURCES}
     NOMAIN
-    LIBRARIES   mgeasset mgecore mgeapplication
+    LIBRARIES   mgeasset mgecore mgegraphics mgeapplication
 )
 

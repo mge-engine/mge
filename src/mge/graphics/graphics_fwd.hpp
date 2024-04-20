@@ -17,5 +17,7 @@ namespace mge {
     MGE_DECLARE_REF(shader);
     MGE_DECLARE_REF(program);
     MGE_DECLARE_REF(command_list);
+    MGE_DECLARE_REF(texture);
+    MGE_DECLARE_REF(image);
 
 } // namespace mge

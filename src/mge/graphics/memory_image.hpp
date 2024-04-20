@@ -21,7 +21,13 @@ namespace mge {
                      const mge::extent& extent_,
                      size_t             size = 0);
 
-        virtual ~memory_image() = default;
+        memory_image(image_format       format_,
+                     const mge::extent& extent_,
+                     void*              data,
+                     bool               copy_data = false,
+                     size_t             size = 0);
+
+        virtual ~memory_image();
 
         void* data() const override;
 
@@ -30,6 +36,7 @@ namespace mge {
         size_t binary_size() const override;
 
     private:
-        mge::buffer m_data;
+        void*  m_data;
+        size_t m_data_size;
     };
 } // namespace mge
