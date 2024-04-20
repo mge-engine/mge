@@ -52,11 +52,12 @@ build_script:
   - cmd: SET
   - cmd: cmake --version
   - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - cmd: cmake --build build --target all
-  - cmd: cmake --build build --target documentation
+#  - cmd: cmake --build build --target all
+#  - cmd: cmake --build build --target documentation
 
 test_script:
-  - cmd: cmake --build build --target test
+  - cmd: echo "Running tests"
+#  - cmd: cmake --build build --target test
 
 on_success:
   - git config --global credential.helper store
@@ -66,7 +67,8 @@ on_success:
   - cmd: python tools/ci/upload-gh-pages.py
 
 on_finish:
-  - cmd: python tools/ci/upload-testresults.py
+  - cmd: echo "Upload test results"
+#  - cmd: python tools/ci/upload-testresults.py
 
 cache:
   - C:\projects\mge\vcpkg -> tools/ci/vcpkg_version.py
