@@ -49,6 +49,9 @@ namespace mge {
 
         ~asset_type() = default;
 
+        asset_type& operator=(const asset_type& t) = default;
+        asset_type& operator=(asset_type&& t) = default;
+
         /**
          * @brief Access asset type.
          *

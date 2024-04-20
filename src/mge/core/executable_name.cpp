@@ -30,4 +30,19 @@ namespace mge {
         return std::string((const char*)basenamestart + 1, (const char*)dot);
     }
 
+    std::string executable_path()
+    {
+        char buffer[2048];
+        GetModuleFileName(0, buffer, sizeof(buffer));
+
+        char* basenamestart = strrchr(buffer, '\\');
+#if 0
+        if (basenamestart == nullptr) {
+            throw MGE_EXCEPTION(illegal_state)
+                << "Cannot compute executable path (directory not found).";
+        }
+#endif
+        return std::string(buffer, basenamestart);
+    }
+
 } // namespace mge

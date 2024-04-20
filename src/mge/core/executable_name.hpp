@@ -21,4 +21,10 @@ namespace mge {
      */
     MGECORE_EXPORT std::string executable_name();
 
+    /**
+     * @brief Get path of the current executable.
+     * @return path of executable program.
+     */
+    MGECORE_EXPORT std::string executable_path();
+
 } // namespace mge

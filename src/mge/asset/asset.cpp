@@ -7,6 +7,7 @@
 #include "mge/asset/asset_not_found.hpp"
 #include "mge/asset/asset_source.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
 
@@ -230,6 +231,17 @@ namespace mge {
         return tmp.exists();
     }
 
+    size_t asset::size() const
+    {
+        if (!m_access) {
+            if (!resolve()) {
+                MGE_THROW(asset_not_found)
+                    << "Asset not found: " << m_path.string();
+            }
+        }
+        return m_access->size();
+    }
+
     bool asset::resolve() const
     {
         m_access = mtab->resolve(m_path);
@@ -238,17 +250,21 @@ namespace mge {
 
     asset_type asset::type() const
     {
+        if (m_type.has_value()) {
+            return m_type.value();
+        }
+
         if (!m_access) {
             if (!resolve()) {
                 MGE_THROW(asset_not_found)
                     << "Asset not found: " << m_path.string();
             }
         }
-        auto t = m_access->type();
-        if (t == asset_type::UNKNOWN) {
-            return magic();
+        m_type = m_access->type();
+        if (m_type.value() == asset_type::UNKNOWN) {
+            m_type = magic();
         }
-        return t;
+        return m_type.value();
     }
 
     std::any asset::load() const
@@ -263,18 +279,71 @@ namespace mge {
         return l->load(*this);
     }
 
+    class magican
+    {
+    public:
+        magican();
+        ~magican();
+
+        asset_type magic(const void* buffer, size_t size) const;
+
+    private:
+        magic_t m_magic;
+    };
+
+    magican::magican()
+        : m_magic(magic_open(MAGIC_MIME_TYPE))
+    {
+        if (m_magic == nullptr) {
+            MGE_THROW(runtime_exception) << "Cannot open magic database";
+        }
+
+        std::string magic_file = mge::executable_path();
+        magic_file += "\\mge_magic.mgc";
+
+        if (magic_load(m_magic, magic_file.c_str()) != 0) {
+            std::string err = magic_error(m_magic);
+            magic_close(m_magic);
+            m_magic = nullptr;
+            MGE_THROW(runtime_exception)
+                << "Cannot load magic database: " << err;
+        }
+    }
+
+    magican::~magican()
+    {
+        if (m_magic) {
+            magic_close(m_magic);
+            m_magic = nullptr;
+        }
+    }
+
+    asset_type magican::magic(const void* buffer, size_t size) const
+    {
+        const char* mf = magic_buffer(m_magic, buffer, size);
+        if (mf == nullptr) {
+            std::string err = magic_error(m_magic);
+            MGE_THROW(runtime_exception)
+                << "Cannot determine asset type: " << err;
+        }
+        asset_type result = asset_type::parse(mf);
+        return result;
+    }
+
+    static mge::singleton<magican> s_magican;
+
     asset_type asset::magic() const
     {
         MGE_DEBUG_TRACE(ASSET) << "Determining asset type using magic";
-        MGE_DEBUG_TRACE(ASSET)
-            << "Magic database path: " << magic_getpath(nullptr, 0);
+        char buffer[1024];
 
-        magic_t myt = magic_open(MAGIC_MIME_TYPE);
-        if (myt == nullptr) {
-            MGE_THROW(runtime_exception) << "Cannot open magic database";
-        }
-        magic_close(myt);
-        return asset_type::UNKNOWN;
+        mge::input_stream::streamsize_type buffersize =
+            std::min(m_access->size(), sizeof(buffer));
+
+        auto pos = m_access->data()->position();
+        m_access->data()->read(buffer, buffersize);
+        m_access->data()->seek(pos, mge::input_stream::POS_BEG);
+        return s_magican->magic(buffer, buffersize);
     }
 
     void asset::mount(const mge::path&         mount_point,

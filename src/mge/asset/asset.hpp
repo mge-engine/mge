@@ -200,8 +200,9 @@ namespace mge {
         bool       resolve() const;
         asset_type magic() const;
 
-        mge::path                m_path;
-        mutable asset_access_ref m_access;
+        mge::path                         m_path;
+        mutable asset_access_ref          m_access;
+        mutable std::optional<asset_type> m_type;
     };
 
     namespace string_literals {

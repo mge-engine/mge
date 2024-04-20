@@ -18,3 +18,12 @@ protected:
 };
 
 TEST_F(test_asset, mount_unmount) {}
+
+TEST_F(test_asset, red_jpg)
+{
+    using namespace mge::literals;
+    mge::asset_ref a = std::make_shared<mge::asset>("/images/red.jpg");
+    EXPECT_EQ(382u, a->size());
+    EXPECT_EQ("image/jpeg"_at, a->type());
+    EXPECT_EQ("image/jpeg"_at, a->type());
+}
