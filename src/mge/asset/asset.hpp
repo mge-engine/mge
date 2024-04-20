@@ -186,8 +186,18 @@ namespace mge {
          */
         static void umount(const mge::path& mount_point);
 
+        /**
+         * @brief  Unmount a mount point.
+         *
+         * @param mount_point
+         */
+        static inline void unmount(const mge::path& mount_point)
+        {
+            umount(mount_point);
+        }
+
     private:
-        bool resolve() const;
+        bool       resolve() const;
         asset_type magic() const;
 
         mge::path                m_path;

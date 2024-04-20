@@ -5,8 +5,12 @@
 #include "mge/asset/file_asset_access.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 
 namespace mge {
+
+    MGE_DEFINE_TRACE(FILE_ASSET);
+
     MGE_REGISTER_IMPLEMENTATION(file_asset_source, mge::asset_source, file, fs);
 
     file_asset_source::file_asset_source()
@@ -17,6 +21,9 @@ namespace mge {
     {
         if (p.exists("directory")) {
             m_directory = p.get<std::string>("directory");
+            MGE_DEBUG_TRACE(FILE_ASSET)
+                << "Configured file asset source with directory "
+                << m_directory;
         } else {
             MGE_THROW(bad_configuration)
                 << "File asset access factory requires 'directory' property";

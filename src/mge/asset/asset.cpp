@@ -13,6 +13,8 @@
 #include <map>
 #include <string>
 
+#include <magic.h>
+
 namespace mge {
     MGE_DEFINE_TRACE(ASSET);
 
@@ -76,6 +78,37 @@ namespace mge {
             return asset_access_ref();
         }
 
+        void mount(const mge::path&         mount_point,
+                   const std::string&       type,
+                   const ::mge::properties& options)
+        {
+            MGE_DEBUG_TRACE(ASSET)
+                << "Mounting " << type << " asset source at " << mount_point;
+            mount_info mi;
+            mi.mount_point = mount_point;
+            mi.type = type;
+            mi.properties = options;
+            mi.factory = component<asset_source>::create(type);
+            if (!mi.factory) {
+                MGE_THROW(illegal_state)
+                    << "Invalid mount point type for mount point '"
+                    << mount_point << "' : " << type;
+            } else {
+                mi.factory->configure(mi.properties);
+                mi.factory->set_mount_point(mount_point);
+                m_mounts[mount_point] = mi;
+            }
+        }
+
+        void umount(const mge::path& mount_point)
+        {
+            MGE_DEBUG_TRACE(ASSET) << "Unmounting " << mount_point;
+            auto it = m_mounts.find(mount_point);
+            if (it != m_mounts.end()) {
+                m_mounts.erase(it);
+            }
+        }
+
     private:
         void configure();
 
@@ -116,6 +149,8 @@ namespace mge {
         }
         std::map<mge::path, mount_info> new_mounts;
         for (const auto& [mount_point, type] : mount_types) {
+            MGE_DEBUG_TRACE(ASSET)
+                << "Mounting " << type << " asset source at " << mount_point;
             auto it = m_mounts.find(mount_point);
             if (it != m_mounts.end()) {
                 if (it->second.type == type) {
@@ -228,6 +263,27 @@ namespace mge {
         return l->load(*this);
     }
 
-    asset_type asset::magic() const { return asset_type::UNKNOWN; }
+    asset_type asset::magic() const
+    {
+        MGE_DEBUG_TRACE(ASSET) << "Determining asset type using magic";
+        MGE_DEBUG_TRACE(ASSET)
+            << "Magic database path: " << magic_getpath(nullptr, 0);
+
+        magic_t myt = magic_open(MAGIC_MIME_TYPE);
+        if (myt == nullptr) {
+            MGE_THROW(runtime_exception) << "Cannot open magic database";
+        }
+        magic_close(myt);
+        return asset_type::UNKNOWN;
+    }
+
+    void asset::mount(const mge::path&         mount_point,
+                      const std::string&       type,
+                      const ::mge::properties& options)
+    {
+        mtab->mount(mount_point, type, options);
+    }
+
+    void asset::umount(const mge::path& path) { mtab->umount(path); }
 
 } // namespace mge

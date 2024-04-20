@@ -33,5 +33,6 @@ INCLUDE(thirdparty/lua)
 INCLUDE(thirdparty/linenoise)
 INCLUDE(thirdparty/stb)
 INCLUDE(thirdparty/nlohmann)
+INCLUDE(thirdparty/libmagic)
 
 

@@ -126,6 +126,26 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Set a value.
+         *
+         * @tparam K key type
+         * @tparam T value type
+         * @param k key
+         * @param value value
+         */
+        template <typename K, typename T> inline void set(K&& k, T&& value)
+        {
+            put(std::forward<K>(k), std::forward<T>(value));
+        }
+
+        template <typename T> inline void put(const char* key, const T& value)
+        {
+            std::stringstream ss;
+            ss << value;
+            m_data[key] = ss.str();
+        }
+
         template <typename T>
         inline void put(std::string_view key, const T& value)
         {

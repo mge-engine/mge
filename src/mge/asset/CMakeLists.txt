@@ -32,6 +32,10 @@ MGE_LIBRARY(
     ${mgeasset_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgeasset mgecore boost-all)
+TARGET_LINK_LIBRARIES(mgeasset PRIVATE
+    mgecore
+
+    unofficial::libmagic::libmagic
+    boost-all)
 
 ADD_SUBDIRECTORY(test)
