@@ -10,5 +10,5 @@ jobs:
     steps:
       - name : Setup PATH
         run: |
-          echo "##[add-path]C:\Users\schro\scoop\shims"
+          echo "C:\Users\schro\scoop\shims" >> %GITHUB_PATH%
       - uses: actions/checkout@v3
