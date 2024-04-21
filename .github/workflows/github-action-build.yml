@@ -11,4 +11,8 @@ jobs:
       - name : Setup PATH
         run: |
           echo "C:\Users\schro\scoop\shims" >> %GITHUB_PATH%
-      - uses: actions/checkout@v3
+      - name: Verify Git version
+        run: git --version
+      - name : Checkout
+        uses: actions/checkout@v3
+
