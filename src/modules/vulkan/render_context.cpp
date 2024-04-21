@@ -28,6 +28,7 @@ namespace mge::vulkan {
         , m_device(VK_NULL_HANDLE)
         , m_graphics_queue(VK_NULL_HANDLE)
         , m_present_queue(VK_NULL_HANDLE)
+        , m_used_surface_format{.format = VK_FORMAT_UNDEFINED}
         , m_used_present_mode(VK_PRESENT_MODE_FIFO_KHR)
         , m_render_pass(VK_NULL_HANDLE)
         , m_command_pool(VK_NULL_HANDLE)
@@ -35,9 +36,7 @@ namespace mge::vulkan {
         , m_render_finished(VK_NULL_HANDLE)
         , m_vulkan_swap_chain(nullptr)
     {
-        m_used_surface_format.format = VK_FORMAT_UNDEFINED;
         clear_functions();
-        m_frame_commands.reserve(20);
     }
 
     void render_context::initialize()
@@ -508,6 +507,21 @@ namespace mge::vulkan {
         return result;
     }
 
+    void render_context::wait_for_frame_completion()
+    {
+        CHECK_VK_CALL(vkWaitForFences(m_device,
+                                      1,
+                                      &m_frame_finish,
+                                      VK_TRUE,
+                                      std::numeric_limits<uint64_t>::max()));
+        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finish));
+    }
+
+    void render_context::begin_draw() {}
+
+    void render_context::end_draw() {}
+
+#if 0
     void render_context::execute_on_frame(command_list* l)
     {
         m_frame_commands.emplace_back(l);
@@ -557,5 +571,6 @@ namespace mge::vulkan {
 
         m_frame_commands.clear();
     }
+#endif
 
 } // namespace mge::vulkan

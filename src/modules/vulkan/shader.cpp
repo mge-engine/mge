@@ -43,12 +43,6 @@ namespace mge::vulkan {
         }
     }
 
-    static const glslang_resource_t* glslang_default_resource(void)
-    {
-        return reinterpret_cast<const glslang_resource_t*>(
-            GetDefaultResources());
-    }
-
     void shader::on_compile(std::string_view code)
     {
         std::string code_str(code.begin(), code.end());
@@ -66,8 +60,7 @@ namespace mge::vulkan {
             .force_default_version_and_profile = false,
             .forward_compatible = false,
             .messages = GLSLANG_MSG_ENHANCED,
-            .resource = glslang_default_resource(),
-        };
+            .resource = glslang_default_resource()};
 
         auto glsl_shader = glslang_shader_create(&input);
         if (!glsl_shader) {

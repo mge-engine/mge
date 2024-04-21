@@ -11,8 +11,6 @@ namespace mge {
         class monitor : public mge::monitor
         {
         public:
-            using monitor_collection = mge::render_system::monitor_collection;
-
             monitor(const DISPLAY_DEVICEW& adapter_device,
                     const DISPLAY_DEVICEW& display_device,
                     bool                   primary);
@@ -25,7 +23,7 @@ namespace mge {
             video_mode            current_mode() const override;
             video_mode_collection supported_modes() const override;
 
-            static monitor_collection all_monitors();
+            static std::span<monitor_ref> all_monitors();
 
         private:
             void compute_physical_size();

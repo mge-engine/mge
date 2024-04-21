@@ -45,19 +45,19 @@ ADD_LIBRARY(mge_module_vulkan MODULE
 TARGET_INCLUDE_DIRECTORIES(mge_module_vulkan PRIVATE "${CMAKE_BINARY_DIR}/src/modules/vulkan")
 
 IF(WIN32)
-    TARGET_LINK_LIBRARIES(mge_module_vulkan mge_win32 mgeapplication)
+    TARGET_LINK_LIBRARIES(mge_module_vulkan PRIVATE mge_win32 mgeapplication)
 ENDIF()
 TARGET_LINK_LIBRARIES(mge_module_vulkan
+    PRIVATE
     mgecore
     mgegraphics
-
-    vulkan
-
+    Vulkan::Vulkan
     glslang::glslang
     glslang::glslang-default-resource-limits
-    glslang::SPIRV)
+    glslang::SPIRV
+    glslang::SPVRemapper
+)
 ADD_SUBDIRECTORY(test)
-
 
 
 

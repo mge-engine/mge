@@ -177,7 +177,7 @@ namespace mge::vulkan {
 
     void swap_chain::present()
     {
-        m_vulkan_context.frame();
+        m_vulkan_context.end_draw();
 
         VkPresentInfoKHR present_info{};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -193,6 +193,15 @@ namespace mge::vulkan {
         CHECK_VK_CALL(
             m_vulkan_context.vkQueuePresentKHR(m_vulkan_context.present_queue(),
                                                &present_info));
+
+        m_vulkan_context.wait_for_frame_completion();
+        // advance to next frame
+        next_frame();
+    }
+
+    VkFramebuffer swap_chain::current_frame()
+    {
+        return m_frame_buffers[m_current_image];
     }
 
     VkFramebuffer swap_chain::next_frame()
@@ -204,7 +213,7 @@ namespace mge::vulkan {
             m_image_available,
             VK_NULL_HANDLE,
             &m_current_image));
-        return m_frame_buffers.at(m_current_image);
+        return m_frame_buffers[m_current_image];
     }
 
 } // namespace mge::vulkan

@@ -31,7 +31,7 @@ namespace mge::dx12 {
         check_tearing_support();
     }
 
-    mge::render_system::monitor_collection render_system::monitors()
+    std::span<mge::monitor_ref> render_system::monitors()
     {
         return mge::win32::monitor::all_monitors();
     }

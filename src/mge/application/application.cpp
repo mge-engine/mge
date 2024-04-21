@@ -156,6 +156,10 @@ namespace mge {
             MGE_DEBUG_TRACE(APPLICATION)
                 << "Application '" << used_application_name
                 << "' has finished with return code " << rc;
+            // store config if all is well
+            if (!rc) {
+                configuration::store();
+            }
             return rc;
         } catch (const mge::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"

@@ -11,9 +11,7 @@ namespace mge::dx11 {
         render_system();
         ~render_system() = default;
 
-        using mge::render_system::monitor_collection;
-
-        monitor_collection monitors() override;
+        std::span<mge::monitor_ref> monitors() override;
 
         mge::window_ref render_system::create_window(
             const mge::extent&         extent,

@@ -11,9 +11,10 @@ namespace mge::dx12 {
         render_system();
         virtual ~render_system() = default;
 
-        monitor_collection monitors();
-        mge::window_ref    create_window(const mge::extent&         extent,
-                                         const mge::window_options& options);
+        std::span<mge::monitor_ref> monitors() override;
+
+        mge::window_ref create_window(const mge::extent&         extent,
+                                      const mge::window_options& options);
 
         bool debug() const;
         bool warp() const;

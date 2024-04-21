@@ -97,6 +97,20 @@ namespace mge {
         bool exists() const;
 
         /**
+         * @brief Load the asset.
+         *
+         * @return loaded asset, depends on asset type
+         */
+        std::any load() const;
+
+        /**
+         * @brief Adds an asset loader.
+         *
+         * @param loader loader that is added.
+         */
+        static void add_loader(const asset_loader_ref& loader);
+
+        /**
          * Get whether path can be found as asset.
          *
          * @param path asset path
@@ -154,9 +168,41 @@ namespace mge {
          */
         static asset locate(std::string_view name, const asset_type& type);
 
+        /**
+         * @brief mount a specific asset factory at a mount point.
+         *
+         * @param mount_point mount point
+         * @param type        asset access type
+         * @param options     mount options
+         */
+        static void mount(const mge::path&         mount_point,
+                          const std::string&       type,
+                          const ::mge::properties& options);
+
+        /**
+         * @brief Unmount a mount point.
+         *
+         * @param mount_point mount point
+         */
+        static void umount(const mge::path& mount_point);
+
+        /**
+         * @brief  Unmount a mount point.
+         *
+         * @param mount_point
+         */
+        static inline void unmount(const mge::path& mount_point)
+        {
+            umount(mount_point);
+        }
+
     private:
-        mge::path                m_path;
-        mutable asset_access_ref m_access;
+        bool       resolve() const;
+        asset_type magic() const;
+
+        mge::path                         m_path;
+        mutable asset_access_ref          m_access;
+        mutable std::optional<asset_type> m_type;
     };
 
     namespace string_literals {

@@ -3,6 +3,10 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/json.hpp"
+#include "mge/core/path.hpp"
+#include "mge/core/stdexceptions.hpp"
+
 #include <string_view>
 #include <vector>
 
@@ -29,11 +33,21 @@ namespace mge {
          */
         static basic_parameter& find_parameter(std::string_view section,
                                                std::string_view name);
+
+        /**
+         * @brief Find a parameter,
+         *
+         * @param section   parameter section
+         * @param name      parameter name
+         * @return parameter as registered, a  @c std::runtime_error is
+         * thrown if parameter is not found
+         */
+        static basic_parameter& find_parameter(const mge::path& path);
+
         /**
          * @brief Load configuration.
-         * @param allow_missing succeeds even if no configuration is found
          */
-        static void load(bool allow_missing = true);
+        static void load();
 
         /**
          * @brief Evaluates the command line for configuration changes.
@@ -53,6 +67,14 @@ namespace mge {
          * @return @c true if already loaded
          */
         static bool loaded();
+
+        /**
+         * @brief Root configuration.
+         */
+        static const mge::json::json& root();
     };
+
+    /** @brief Throw if a configuration does not fulfill constraints. */
+    MGECORE_DECLARE_EXCEPTION_CLASS(bad_configuration);
 
 } // namespace mge

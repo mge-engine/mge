@@ -37,6 +37,8 @@ SET(mgecore_sources
     call_debugger.cpp
     line_editor.cpp
     mutex.cpp
+    io_exception.cpp
+    file_input_stream.cpp
 )
 
 SET(mgecore_headers
@@ -86,6 +88,10 @@ SET(mgecore_headers
     call_debugger.cpp
     line_editor.hpp
     mutex.hpp
+    is_container.hpp
+    is_associative_container.hpp
+    io_exception.hpp
+    file_input_stream.hpp
 )
 
 MGE_LIBRARY(
@@ -96,6 +102,6 @@ MGE_LIBRARY(
     ${mgecore_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp)
+TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp nlohmann_json::nlohmann_json)
 ADD_SUBDIRECTORY(test)
 

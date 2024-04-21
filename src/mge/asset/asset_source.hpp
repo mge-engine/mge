@@ -8,7 +8,7 @@
 #include "mge/core/path.hpp"
 
 namespace mge {
-    MGE_DECLARE_REF(asset_access_factory);
+    MGE_DECLARE_REF(asset_source);
 
     /**
      * @brief An asset access factory.
@@ -16,20 +16,33 @@ namespace mge {
      * An asset access factory is 'mounted' below a specific path, and serves
      * all assets that are looked for beneath this path.
      */
-    class MGEASSET_EXPORT asset_access_factory
-        : public component<asset_access_factory>
+    class MGEASSET_EXPORT asset_source : public component<asset_source>
     {
     public:
-        asset_access_factory() = default;
-        virtual ~asset_access_factory() = default;
+        asset_source() = default;
+        virtual ~asset_source() = default;
+
+        /**
+         * @brief Configure factory.
+         *
+         * @param p configuration properties
+         */
+        virtual void configure(const mge::properties& p) = 0;
+
+        /**
+         * @brief Check whether factory is configured.
+         *
+         * @return @c true if configured
+         */
+        virtual bool is_configured() const = 0;
 
         /**
          * @brief Resolve path into asset object.
          *
-         * @param p path
+         * @param p path, absolute (includes the mount point)
          * @return asset located at path
          */
-        virtual asset_access_ref create_asset_access(const mge::path& p) = 0;
+        virtual asset_access_ref access(const mge::path& p) = 0;
         /**
          * @brief Check whether asset at given path exists.
          *
@@ -53,16 +66,18 @@ namespace mge {
          *
          * @param mountpoint new mount point
          */
-        void set_mountpoint(const mge::path& mountpoint);
+        void set_mount_point(const mge::path& mountpoint);
 
         /**
          * @brief Get current mount point.
          *
          * @return mount point
          */
-        const mge::path& mountpoint() const noexcept { return m_mountpoint; }
+        const mge::path& mount_point() const noexcept { return m_mount_point; }
 
-    private:
-        mge::path m_mountpoint;
+    protected:
+        virtual void on_set_mount_point(const mge::path& mount_point);
+
+        mge::path m_mount_point;
     };
 } // namespace mge

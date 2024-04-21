@@ -20,6 +20,8 @@ namespace mge {
         load(input->istream());
     }
 
+    properties::properties(std::istream& s) { load(s); }
+
     properties& properties::operator=(const properties& p)
     {
         m_data = p.m_data;
@@ -43,7 +45,7 @@ namespace mge {
 
     void properties::load(std::istream& s)
     {
-        std::unordered_map<std::string, std::string> tmp_data;
+        map_type tmp_data;
 
         std::string line;
 

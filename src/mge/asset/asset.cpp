@@ -3,233 +3,367 @@
 // All rights reserved.
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_access.hpp"
-#include "mge/asset/asset_access_factory.hpp"
-#include "mge/asset/asset_locator.hpp"
+#include "mge/asset/asset_loader.hpp"
 #include "mge/asset/asset_not_found.hpp"
+#include "mge/asset/asset_source.hpp"
 #include "mge/core/configuration.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
+
 #include <map>
-#if 0
-MGE_DEFINE_TRACE(ASSET);
-MGE_DEFINE_PARAMETER(std::string, asset, repositories, "List of ");
+#include <string>
+
+#include <magic.h>
 
 namespace mge {
+    MGE_DEFINE_TRACE(ASSET);
 
-    class asset_repository_manager
+    // Asset configuration is in the executable configuration
+    // under the "asset" section.
+    // The configuration is a list of repositories, each with
+    // a type and a mount point.
+    // Example:
+    // {
+    //    "asset": {
+    //        "repositories": [
+    //            {
+    //                "type": "file",
+    //                "mount_point": "/",
+    //                "directory": "."
+    //            },
+    //            {
+    //                "type": "file",
+    //                "mount_point": "/assets"
+    //                "directory": "assets"
+    //            },
+    //            {
+    //                "type": "zip",
+    //                "mount_point": "/zipassets",
+    //                "file": "assets.zip"
+    //            }
+    //        ]
+    //    }
+    // }
+    MGE_DEFINE_PARAMETER((std::vector<std::map<std::string, std::string>>),
+                         asset,
+                         repositories,
+                         "Asset configuration");
+
+    class mount_table
     {
     public:
-        asset_repository_manager()
-            : m_configured(false)
+        mount_table()
         {
-            try_configure();
-        }
-
-        bool asset_exists(const mge::path& path)
-        {
-            mge::path asset_path(path);
-            if (!asset_path.is_absolute()) {
-                asset_path = mge::path("/") / asset_path;
-            }
-
-            if (!m_configured) {
+            MGE_PARAMETER(asset, repositories).set_change_handler([this]() {
                 configure();
-            }
-
-            auto lb = m_mtab.lower_bound(asset_path);
-            if (lb == m_mtab.begin()) {
-                return false;
-            }
-
-            auto factory = (--lb)->second;
-            return factory->asset_exists(path);
+            });
         }
 
-        asset_access_ref access(const mge::path& path)
+        ~mount_table() {}
+
+        asset_access_ref resolve(const mge::path& p) const
         {
-            mge::path asset_path(path);
-            if (!asset_path.is_absolute()) {
-                asset_path = mge::path("/") / asset_path;
-            }
-
-            if (!m_configured) {
-                configure();
-            }
-
-            auto lb = m_mtab.lower_bound(asset_path);
-            if (lb == m_mtab.begin()) {
-                MGE_THROW(mge::no_such_element)
-                    << "Cannot resolve asset '" << asset_path << "'";
-            }
-            auto factory = (--lb)->second;
-            return factory->create_asset_access(asset_path);
-        }
-
-        void configure()
-        {
-            MGE_DEBUG_TRACE(ASSET) << "Configuring asset repository";
-
-            mge::configuration asset_config("asset");
-            if (asset_config.contains_key("repositories")) {
-                for (const auto& repo :
-                     asset_config.list_value("repositories")) {
-                    std::string config_name("asset.repository.");
-                    config_name += repo;
-                    configuration repo_config(config_name);
-                    std::string   factory_class = repo_config.value("class");
-                    auto factory = asset_access_factory::create(factory_class);
-                    if (!factory) {
-                        continue;
-                    }
-                    factory->configure(repo_config);
-                    mge::path mount_point = repo_config.value("mount_point");
-                    factory->set_mountpoint(mount_point);
-                    m_mtab[mount_point] = factory;
+            if (m_mounts.empty()) {
+                return asset_access_ref();
+            } else {
+                auto it = m_mounts.lower_bound(p);
+                if (it == m_mounts.begin()) {
+                    return asset_access_ref();
+                } else {
+                    --it;
+                    return it->second.factory->access(p);
                 }
             }
-            mge::path default_path("assets/");
-            mge::path default_mount_point("/");
-            if (m_mtab.find(default_mount_point) == m_mtab.end()) {
-                mge::configuration default_config(
-                    mge::configuration::transient);
-                default_config.set("directory", default_path.string());
-                auto default_factory = asset_access_factory::create("file");
-                default_factory->configure(default_config);
-                default_factory->set_mountpoint(default_mount_point);
-                m_mtab[default_mount_point] = default_factory;
+
+            return asset_access_ref();
+        }
+
+        void mount(const mge::path&         mount_point,
+                   const std::string&       type,
+                   const ::mge::properties& options)
+        {
+            MGE_DEBUG_TRACE(ASSET)
+                << "Mounting " << type << " asset source at " << mount_point;
+            mount_info mi;
+            mi.mount_point = mount_point;
+            mi.type = type;
+            mi.properties = options;
+            mi.factory = component<asset_source>::create(type);
+            if (!mi.factory) {
+                MGE_THROW(illegal_state)
+                    << "Invalid mount point type for mount point '"
+                    << mount_point << "' : " << type;
+            } else {
+                mi.factory->configure(mi.properties);
+                mi.factory->set_mount_point(mount_point);
+                m_mounts[mount_point] = mi;
             }
-            MGE_DEBUG_LOG(ASSET) << "Asset mount table:";
-            MGE_DEBUG_LOG(ASSET) << mge::line(60);
-            for (const auto& [key, value] : m_mtab) {
-                MGE_DEBUG_LOG(ASSET) << key << " => " << gist(*value);
+        }
+
+        void umount(const mge::path& mount_point)
+        {
+            MGE_DEBUG_TRACE(ASSET) << "Unmounting " << mount_point;
+            auto it = m_mounts.find(mount_point);
+            if (it != m_mounts.end()) {
+                m_mounts.erase(it);
             }
-            MGE_DEBUG_LOG(ASSET) << mge::line(60);
-            m_configured = true;
         }
 
     private:
-        void try_configure()
+        void configure();
+
+        struct mount_info
         {
-            try {
-                configure();
-            } catch (const mge::exception&) {
-                // ignore
+            asset_source_ref  factory;
+            std::string       type;
+            mge::path         mount_point;
+            ::mge::properties properties;
+        };
+
+        std::map<mge::path, mount_info> m_mounts;
+    };
+
+    void mount_table::configure()
+    {
+        MGE_DEBUG_TRACE(ASSET) << "Configuring mounted assets";
+        std::map<path, std::string> mount_types;
+        std::map<path, properties>  mount_properties;
+
+        const auto& entries = MGE_PARAMETER(asset, repositories).get();
+        for (const auto& e : entries) {
+            if (e.find("mount_point") == e.end()) {
+                MGE_ERROR_TRACE(ASSET)
+                    << "Repository entry without mount point";
+            } else if (e.find("type") == e.end()) {
+                MGE_ERROR_TRACE(ASSET) << "Repository entry without type";
+            } else {
+                path mount_point(e.find("mount_point")->second);
+                mount_types[mount_point] = e.find("type")->second;
+                properties& mp = mount_properties[mount_point];
+                for (const auto [key, value] : e) {
+                    if (key != "mount_point" && key != "type") {
+                        mp.put(key, value);
+                    }
+                }
             }
         }
-        bool                                          m_configured;
-        std::map<mge::path, asset_access_factory_ref> m_mtab;
+        std::map<mge::path, mount_info> new_mounts;
+        for (const auto& [mount_point, type] : mount_types) {
+            MGE_DEBUG_TRACE(ASSET)
+                << "Mounting " << type << " asset source at " << mount_point;
+            auto it = m_mounts.find(mount_point);
+            if (it != m_mounts.end()) {
+                if (it->second.type == type) {
+                    if (it->second.properties ==
+                        mount_properties[mount_point]) {
+                        new_mounts[mount_point] = it->second;
+                        continue;
+                    }
+                }
+            }
+            mount_info mi;
+            mi.mount_point = mge::path(mount_point);
+            mi.type = type;
+            mi.properties = mount_properties[mount_point];
+            mi.factory = component<asset_source>::create(type);
+            if (!mi.factory) {
+                MGE_THROW(illegal_state)
+                    << "Invalid mount point type for mount point '"
+                    << mount_point << "' : " << type;
+            } else {
+                mi.factory->configure(mi.properties);
+                mi.factory->set_mount_point(mount_point);
+                new_mounts[mount_point] = mi;
+            }
+        }
+        m_mounts.swap(new_mounts);
+    }
+
+    static ::mge::singleton<mount_table> mtab;
+
+    class loader_table
+    {
+    public:
+        loader_table() { instantiate_loaders(); }
+        ~loader_table() = default;
+
+        asset_loader_ref resolve(const asset_type& t) const
+        {
+            auto it = m_loaders.find(t);
+            if (it == m_loaders.end()) {
+                return asset_loader_ref();
+            } else {
+                return it->second;
+            }
+        }
+
+        void add_loader(const asset_loader_ref& loader)
+        {
+            if (loader) {
+                for (const auto& t : loader->handled_types()) {
+                    m_loaders[t] = loader;
+                }
+            }
+        }
+
+    private:
+        void instantiate_loaders();
+
+        std::map<asset_type, asset_loader_ref> m_loaders;
     };
-    static singleton<asset_repository_manager> repository_manager;
+
+    void loader_table::instantiate_loaders()
+    {
+        asset_loader::implementations([&](std::string_view name) {
+            asset_loader_ref loader = asset_loader::create(name);
+            add_loader(loader);
+        });
+    }
+
+    static ::mge::singleton<loader_table> loaders;
+
+    bool asset::exists() const { return m_access || resolve(); }
+
+    bool asset::exists(const mge::path& p)
+    {
+        asset tmp(p);
+        return tmp.exists();
+    }
 
     size_t asset::size() const
     {
         if (!m_access) {
-            m_access = repository_manager->access(m_path);
+            if (!resolve()) {
+                MGE_THROW(asset_not_found)
+                    << "Asset not found: " << m_path.string();
+            }
         }
         return m_access->size();
-    }
-
-    bool asset::exists() const
-    {
-        return repository_manager->asset_exists(m_path);
-    }
-
-    bool asset::exists(const mge::path& path)
-    {
-        return repository_manager->asset_exists(path);
     }
 
     mge::input_stream_ref asset::data() const
     {
         if (!m_access) {
-            m_access = repository_manager->access(m_path);
+            if (!resolve()) {
+                MGE_THROW(asset_not_found)
+                    << "Asset not found: " << m_path.string();
+            }
         }
         return m_access->data();
     }
 
+    bool asset::resolve() const
+    {
+        m_access = mtab->resolve(m_path);
+        return m_access.operator bool();
+    }
+
     asset_type asset::type() const
     {
-        if (!m_access) {
-            m_access = repository_manager->access(m_path);
+        if (m_type.has_value()) {
+            return m_type.value();
         }
-        return m_access->type();
-    }
 
-    bool asset::has_properties() const
-    {
         if (!m_access) {
-            m_access = repository_manager->access(m_path);
-        }
-        return m_access->has_properties();
-    }
-
-    properties_ref asset::properties() const
-    {
-        if (!m_access) {
-            m_access = repository_manager->access(m_path);
-        }
-        return m_access->properties();
-    }
-
-    void asset::gist(std::ostream& os) const
-    {
-        os << "asset[" << path() << "]";
-    }
-
-    namespace {
-        class locator_registry
-        {
-        public:
-            mge::path locate(std::string_view name, const asset_type& type)
-            {
-                mge::path result;
-                for (const auto& [locator_name, locator] : m_locators) {
-                    result = locator->locate(name, type);
-                    if (!result.empty()) {
-                        return result;
-                    }
-                }
-                size_t implementations_count = 0;
-                asset_locator::implementations(
-                    [&](const std::string&) { ++implementations_count; });
-                if (implementations_count != m_locators.size()) {
-                    asset_locator::implementations(
-                        [&](const std::string& implementation_name) {
-                            if (m_locators.find(implementation_name) ==
-                                m_locators.end()) {
-                                m_locators[implementation_name] =
-                                    asset_locator::create(implementation_name);
-                            }
-                        });
-                    return locate(name, type);
-                } else {
-                    return mge::path();
-                }
+            if (!resolve()) {
+                MGE_THROW(asset_not_found)
+                    << "Asset not found: " << m_path.string();
             }
+        }
+        m_type = m_access->type();
+        if (m_type.value() == asset_type::UNKNOWN) {
+            m_type = magic();
+        }
+        return m_type.value();
+    }
 
-        private:
-            std::map<std::string, asset_locator_ref> m_locators;
-        };
-
-        static mge::singleton<locator_registry> s_locator_registry;
-    } // namespace
-
-    asset asset::locate(std::string_view name, const asset_type& type)
+    std::any asset::load() const
     {
-        auto p = s_locator_registry->locate(name, type);
-        if (p.empty()) {
-            MGE_THROW(asset_not_found)
-                << "Asset with name '" << name << "' could not be looked up";
-        } else {
-            return asset(p);
+        // will resolve (and throw if asset not found)
+        auto t = type();
+        auto l = loaders->resolve(t);
+        if (!l) {
+            MGE_THROW(illegal_state) << "No loader for asset type '" << t
+                                     << "' for asset: " << m_path.string();
+        }
+        return l->load(*this);
+    }
+
+    class magican
+    {
+    public:
+        magican();
+        ~magican();
+
+        asset_type magic(const void* buffer, size_t size) const;
+
+    private:
+        magic_t m_magic;
+    };
+
+    magican::magican()
+        : m_magic(magic_open(MAGIC_MIME_TYPE))
+    {
+        if (m_magic == nullptr) {
+            MGE_THROW(runtime_exception) << "Cannot open magic database";
+        }
+
+        std::string magic_file = mge::executable_path();
+        magic_file += "\\mge_magic.mgc";
+
+        if (magic_load(m_magic, magic_file.c_str()) != 0) {
+            std::string err = magic_error(m_magic);
+            magic_close(m_magic);
+            m_magic = nullptr;
+            MGE_THROW(runtime_exception)
+                << "Cannot load magic database: " << err;
         }
     }
 
-    namespace string_literals {
-        asset operator""_asset(const char* s, size_t sz)
-        {
-            return asset(std::string(s, s + sz));
+    magican::~magican()
+    {
+        if (m_magic) {
+            magic_close(m_magic);
+            m_magic = nullptr;
         }
-    } // namespace string_literals
+    }
+
+    asset_type magican::magic(const void* buffer, size_t size) const
+    {
+        const char* mf = magic_buffer(m_magic, buffer, size);
+        if (mf == nullptr) {
+            std::string err = magic_error(m_magic);
+            MGE_THROW(runtime_exception)
+                << "Cannot determine asset type: " << err;
+        }
+        asset_type result = asset_type::parse(mf);
+        return result;
+    }
+
+    static mge::singleton<magican> s_magican;
+
+    asset_type asset::magic() const
+    {
+        MGE_DEBUG_TRACE(ASSET) << "Determining asset type using magic";
+        char buffer[1024];
+
+        mge::input_stream::streamsize_type buffersize =
+            std::min(m_access->size(), sizeof(buffer));
+
+        auto pos = m_access->data()->position();
+        m_access->data()->read(buffer, buffersize);
+        m_access->data()->seek(pos, mge::input_stream::POS_BEG);
+        return s_magican->magic(buffer, buffersize);
+    }
+
+    void asset::mount(const mge::path&         mount_point,
+                      const std::string&       type,
+                      const ::mge::properties& options)
+    {
+        mtab->mount(mount_point, type, options);
+    }
+
+    void asset::umount(const mge::path& path) { mtab->umount(path); }
+
 } // namespace mge
-#endif

@@ -22,7 +22,7 @@ namespace mge::vulkan {
         create_window(const mge::extent&         extent,
                       const mge::window_options& options) override;
 
-        mge::render_system::monitor_collection monitors() override;
+        std::span<mge::monitor_ref> monitors() override;
 
         bool debug() const;
 

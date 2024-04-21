@@ -9,6 +9,8 @@ branches:
     - gh-pages
 
 environment:
+  global:
+    APPVEYOR_SAVE_CACHE_ON_ERROR: true
   access_token:
     secure: d8ut1+6Q451ZF/0s99hcWS9SUhGJ7usjjCCpkdvUy4o4C3Q8+LZw+vmsR13esiwe
 
@@ -31,8 +33,9 @@ platform: x64
 before_build:
   - cmd: SET ORIG_PATH=%PATH%
   - cmd: SET PATH=C:\Python39-x64;%PATH%;C:\PROGRA~1\doxygen\bin
+  - cmd: choco install cmake --version 3.29.2
   - cmd: python tools/ci/vulkan.py
-  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.250.1
+  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.280.0
   - cmd: python tools/ci/vcpkg.py
   - cmd: python tools/ci/doxygen.py
   - cmd: python tools/ci/sphinx.py
@@ -45,12 +48,15 @@ build_script:
   - cmd: SET VCPKG_ROOT=C:\projects\mge\vcpkg
   - cmd: IF NOT EXIST "C:\projects\mge\vcpkg_binary_cache" mkdir "C:\projects\mge\vcpkg_binary_cache"
   - cmd: SET VCPKG_BINARY_SOURCES=clear;default,readwrite;files,C:\projects\mge\vcpkg_binary_cache,readwrite
+  - cmd: SET VULKAN_SDK=C:\VulkanSDK\1.3.280.0
   - cmd: SET
+  - cmd: cmake --version
   - cmd: cmake --preset=default -GNinja -DHEADLESS_ENVIRONMENT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo
   - cmd: cmake --build build --target all
   - cmd: cmake --build build --target documentation
 
 test_script:
+  - cmd: echo "Running tests"
   - cmd: cmake --build build --target test
 
 on_success:
@@ -61,6 +67,7 @@ on_success:
   - cmd: python tools/ci/upload-gh-pages.py
 
 on_finish:
+  - cmd: echo "Upload test results"
   - cmd: python tools/ci/upload-testresults.py
 
 cache:

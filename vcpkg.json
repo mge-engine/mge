@@ -6,7 +6,6 @@
     "boost-filesystem",
     "boost-circular-buffer",
     "boost-lexical-cast",
-    "boost-property-tree",
     "boost-spirit",
     "boost-locale",
     "boost-bimap",
@@ -16,6 +15,9 @@
       "name": "python3",
       "default-features": true
     },
-    "glslang"
+    "stb",
+    "nlohmann-json",
+    "glslang",
+    "libmagic"
   ]
 }

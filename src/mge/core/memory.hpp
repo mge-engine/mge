@@ -47,4 +47,18 @@ namespace mge {
      * @param ptr pointer to memory to free.
      */
     MGECORE_EXPORT void free(void* ptr);
+
+    /**
+     * @brief Reallocate memory.
+     *
+     * This function is similar to :any:`realloc` from the C standard
+     * library. If the pointer is :any:`nullptr`, the function behaves
+     * like :any:`malloc`. If the size is 0, the function behaves like
+     * :any:`free`.
+     *
+     * @param ptr pointer to memory to reallocate
+     * @param size new size of memory block
+     * @return pointer to reallocated memory
+     */
+    MGECORE_EXPORT void* realloc(void* ptr, size_t size);
 } // namespace mge

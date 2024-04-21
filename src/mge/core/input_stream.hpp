@@ -83,7 +83,15 @@ namespace mge {
          * @param dir    seek direction
          * @return position after seek, -1 if not known
          */
-        virtual offset_type seek(offset_type offset, direction_type dir);
+        virtual offset_type seek(offset_type    offset,
+                                 direction_type dir = POS_BEG);
+
+        /**
+         * @brief Rewind to beginning.
+         *
+         * @return true if rewind succeded, false if rewinding isn't supported
+         */
+        inline bool rewind() { return seek(0, POS_BEG) != -1; }
 
         /**
          * Access the stream as an @c std::istream

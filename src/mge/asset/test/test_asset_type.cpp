@@ -4,6 +4,9 @@
 #include "mge/asset/asset_type.hpp"
 #include "test/googletest.hpp"
 #include "test/test_stream_op.hpp"
+#include <iostream>
+#include <map>
+#include <string>
 
 TEST(asset_type, create)
 {
