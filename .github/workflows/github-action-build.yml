@@ -8,4 +8,7 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
+      - name : Setup PATH
+        run: |
+          echo "##[add-path]C:\Users\schro\scoop\shims"
       - uses: actions/checkout@v3
