@@ -8,19 +8,17 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-      - name: Display environment
+      - name: Display PATH
         run: |
-          echo "PATH: $PATH"
-          echo "GITHUB_PATH: $GITHUB_PATH"
-          set
+          Write-Output $env:PATH
+          Write-Output $env:GITHUB_PATH
       - name : Setup PATH
         run: |
-          echo "C:\Users\schro\scoop\shims" >> %GITHUB_PATH%
-      - name: Display environment after setup
+          Write-Output "C:\Users\schro\scoop\shims" >> $env:GITHUB_PATH
+      - name: Display PATH after change
         run: |
-          echo "PATH: $PATH"
-          echo "GITHUB_PATH: $GITHUB_PATH"
-          set
+          Write-Output $env:PATH
+          Write-Output $env:GITHUB_PATH
       - name: Verify Git version
         run: git --version
       - name : Checkout
