@@ -8,19 +8,24 @@ jobs:
   build:
     runs-on: self-hosted
     steps:
-      - name: Display PATH
+      - name: display-path
         run: |
           Write-Output $env:PATH
           Write-Output $env:GITHUB_PATH
-      - name : Setup PATH
+      - name : setup-path
         run: |
           Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
-      - name: Display PATH after change
+      - name: display-path
         run: |
           Write-Output $env:PATH
           Write-Output $env:GITHUB_PATH
-      - name: Verify Git version
+      - name: verify-git-version
         run: git --version
-      - name : Checkout
+      - name : checkout
         uses: actions/checkout@v3
-
+      - name : setup-environment
+        run: |
+          Remove-Item -Path "Env:INCLUDE" -ErrorAction SilentlyContinue
+          Remove-Item -Path "Env:LIB" -ErrorAction SilentlyContinue
+          & "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          Write-Output $env:CL
