@@ -28,3 +28,9 @@ jobs:
       - name: show-compiler
         run: |
           cl.exe
+      - name: configure
+        run: |
+          $env:CC = "cl.exe"
+          $env:CXX = "cl.exe"
+          $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
+          cmake --preset=ci-build 
