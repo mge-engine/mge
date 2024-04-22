@@ -1,4 +1,4 @@
-name: MGE Build and Test
+name: mge-build-test
 run-name: Build ${{ github.run_id }} - ${{ github.run_number }}
 on:
   - push
@@ -14,7 +14,7 @@ jobs:
           Write-Output $env:GITHUB_PATH
       - name : Setup PATH
         run: |
-          Write-Output "C:\Users\schro\scoop\shims" >> $env:GITHUB_PATH
+          Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
       - name: Display PATH after change
         run: |
           Write-Output $env:PATH
