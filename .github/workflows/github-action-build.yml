@@ -28,4 +28,4 @@ jobs:
           Remove-Item -Path "Env:INCLUDE" -ErrorAction SilentlyContinue
           Remove-Item -Path "Env:LIB" -ErrorAction SilentlyContinue
           & "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-          Write-Output $env:CL
+          cl.exe
