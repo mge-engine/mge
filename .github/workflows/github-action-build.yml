@@ -25,7 +25,14 @@ jobs:
         uses: actions/checkout@v3
       - name : setup-environment
         run: |
+          # remove unwanted INCLUDE global path
           Remove-Item -Path "Env:INCLUDE" -ErrorAction SilentlyContinue
+
+          # remove unwanted LIB global path
           Remove-Item -Path "Env:LIB" -ErrorAction SilentlyContinue
-          "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          
+          # setup environment
+          & "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          
+          # invoke compiler
           cl.exe
