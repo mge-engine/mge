@@ -1,4 +1,4 @@
-name: mge-build-test
+name: MGE Windows CI/CD Build
 run-name: Build ${{ github.run_id }} - ${{ github.run_number }}
 on:
   - push
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, msvc-x64-windows]
     steps:
       - name: display-path
         run: |
@@ -33,4 +33,8 @@ jobs:
           $env:CC = "cl.exe"
           $env:CXX = "cl.exe"
           $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
+          $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+          $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
           cmake --preset=ci-build 
+          cmake --build build --target all
+          cmake --build build --target documentation
