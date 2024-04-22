@@ -2,8 +2,7 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
-
-CMAKE_MINIMUM_REQUIRED(VERSION 3.27)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.29.2)
 PROJECT(MGE)
 
 
