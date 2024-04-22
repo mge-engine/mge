@@ -23,16 +23,5 @@ jobs:
         run: git --version
       - name : checkout
         uses: actions/checkout@v3
-      - name : setup-environment
-        run: |
-          # remove unwanted INCLUDE global path
-          Remove-Item -Path "Env:INCLUDE" -ErrorAction SilentlyContinue
-
-          # remove unwanted LIB global path
-          Remove-Item -Path "Env:LIB" -ErrorAction SilentlyContinue
-          
-          # setup environment
-          & "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
-          
-          # invoke compiler
-          cl.exe
+      - name: setup-msvc
+        uses: ilammy/msvc-dev-cmd@v1
