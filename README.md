@@ -2,9 +2,7 @@
 
 ## Summary
 
-MGE is an attempt to create a graphics and game engine putting modern concepts
-of C++ and realtime graphics together. It also serves as an abstraction to
-the supported graphics mechanisms at some level.
+MGE is an attempt to create a graphics and game engine putting modern concepts of C++ and realtime graphics together. 
 
 ## Status
 
