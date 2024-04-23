@@ -170,17 +170,16 @@ namespace mge {
     void configuration_instance::load()
     {
         auto configfile_path = find_config_file();
-        if (configfile_path.empty()) {
-            return;
-        }
 
-        std::ifstream ifs(configfile_path);
-        try {
-            m_raw_settings = json::json::parse(ifs);
-        } catch (json::json::parse_error& e) {
-            MGE_THROW(mge::runtime_exception)
-                << "Error parsing configuration file " << configfile_path
-                << ": " << e.what();
+        if (!configfile_path.empty()) {
+            std::ifstream ifs(configfile_path);
+            try {
+                m_raw_settings = json::json::parse(ifs);
+            } catch (json::json::parse_error& e) {
+                MGE_THROW(mge::runtime_exception)
+                    << "Error parsing configuration file " << configfile_path
+                    << ": " << e.what();
+            }
         }
         set_registered_parameters();
         m_loaded = true;
