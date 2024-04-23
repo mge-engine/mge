@@ -8,7 +8,7 @@ the supported graphics mechanisms at some level.
 
 ## Status
 
-![Build status](https://github.com/mge-engine/mge/actions/workflows/github-action-build.yml/badge.svg)
+![build-status-x64-windows-msvc](https://github.com/mge-engine/mge/actions/workflows/github-action-build-x64-windows.yml/badge.svg)
 
 ## Table Of Contents
 
