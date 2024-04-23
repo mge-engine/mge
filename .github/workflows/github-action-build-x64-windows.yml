@@ -1,4 +1,4 @@
-name: MGE Windows CI/CD Build
+name: MGE CI/CD Build - Microsoft Windows MSVC x64
 run-name: Build ${{ github.run_id }} - ${{ github.run_number }}
 on:
   - push
@@ -8,29 +8,29 @@ jobs:
   build:
     runs-on: [self-hosted, msvc-x64-windows]
     steps:
-      - name: display-path
+      - name: Display path
         run: |
           Write-Output $env:PATH
           Write-Output $env:GITHUB_PATH
-      - name : setup-path
+      - name : Setup path to tools
         run: |
           Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
-      - name: display-path
+      - name: Display configured path
         run: |
           Write-Output $env:PATH
           Write-Output $env:GITHUB_PATH
-      - name: verify-git-version
+      - name: Display git version
         run: git --version
-      - name : checkout
+      - name : Checkout source code
         uses: actions/checkout@v3
         with:
             clean: false
-      - name: setup-msvc
+      - name: Setup Microsoft Visual C++ 
         uses: ilammy/msvc-dev-cmd@v1
       - name: show-compiler
         run: |
           cl.exe
-      - name: configure
+      - name: Configure project
         run: |
           $env:CC = "cl.exe"
           $env:CXX = "cl.exe"
@@ -38,7 +38,7 @@ jobs:
           $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
           $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
           cmake --preset=ci-build 
-      - name: build
+      - name: Build project
         run: |
             $env:CC = "cl.exe"
             $env:CXX = "cl.exe"
@@ -46,7 +46,7 @@ jobs:
             $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
             $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
             cmake --build build --target all
-      - name: documentation
+      - name: Build documentation
         run: |
             $env:CC = "cl.exe"
             $env:CXX = "cl.exe"
@@ -54,7 +54,7 @@ jobs:
             $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
             $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
             cmake --build build --target documentation
-      - name: test
+      - name: Run tests
         run: |
             $env:CC = "cl.exe"
             $env:CXX = "cl.exe"
