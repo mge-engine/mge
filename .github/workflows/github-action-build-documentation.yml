@@ -58,9 +58,6 @@ jobs:
       - name: Push to gh-pages
         working-directory: ./build/gh-pages
         run: |
-            git config --global core.autocrlf true
-            git config --global user.email "schroeder.alexander@googlemail.com"
-            git config --global user.name "Alexander Schroeder"
             git push origin 
 
           
