@@ -2,8 +2,6 @@ name: MGE CI/CD Build - Build & Deploy Documentation
 run-name: Build ${{ github.run_id }} - ${{ github.run_number }}
 on:
   push:
-    branches:
-      - main
     branches-ignore:
       - gh-pages
 
