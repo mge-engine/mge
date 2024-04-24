@@ -13,7 +13,7 @@ def run_command(command, shell=False, cwd=None):
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         universal_newlines=True,
-        shell=shell
+        shell=shell,
         cwd=cwd
     )
     
