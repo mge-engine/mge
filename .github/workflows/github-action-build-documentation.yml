@@ -74,6 +74,18 @@ jobs:
             echo "Event: $env:CURRENT_EVENT"
             python tools/ci/upload-gh-pages.py
       - name: Push to gh-pages
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+            branch: gh-pages
+            directory: ./build/gh-pages
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+
+              
+  
+
+
+
+      - name: Push to gh-pages
         working-directory: ./build/gh-pages
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
