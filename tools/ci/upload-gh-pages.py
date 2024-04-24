@@ -91,10 +91,8 @@ def upload(branch):
     print("Adding files to git", flush=True)
     run_command(
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
-    print("Commit git changes", flush=True)
-    run_command(["git", "commit", "-m", message], cwd="gh-pages")
-    print("Push git changes", flush=True)
-    run_command(["git", "push", "origin"], cwd="gh-pages")
+#    print("Commit git changes", flush=True)
+#    run_command(["git", "commit", "-m", message], cwd="gh-pages")
 
 try:
     if upload_enabled():
