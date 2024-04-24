@@ -7,6 +7,26 @@ import subprocess
 import shutil
 import os
 
+def run_command(command, shell=False, cwd=None):
+    process = subprocess.Popen(
+        args=command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        universal_newlines=True,
+        shell=shell
+        cwd=cwd
+    )
+    
+    for line in process.stdout:
+        print(line, end='', flush=True)
+
+    process.stdout.close()
+    return_code = process.wait()
+
+    if return_code:
+        raise subprocess.CalledProcessError(return_code, command)
+
+
 upload_branches = ["main"]
 branch = ""
 event = ""
@@ -54,23 +74,24 @@ def upload(branch):
     os.chdir("build")  # Change current directory to "build"
     if os.path.exists("gh-pages"):
         print("Remove old gh-pages directory", flush=True)
-        subprocess.run(["rd", "/s", "/q", "gh-pages"], shell=True)
+        run_command(command= ["rd", "/s", "/q", "gh-pages"], shell=True)
     print("Cloning gh-pages branch", flush=True)
-    subprocess.run(["git", "clone", "--branch=gh-pages",
+    run_command(["git", "clone", "--branch=gh-pages",
                     "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
     print("Remove old files", flush=True)
-    subprocess.run(["git", "rm", "-rf", branch +
+    run_command(["git", "rm", "-rf", branch +
                     "/manual-html"], cwd="gh-pages" ,shell=True)
-    subprocess.run(["dir", "..\\docsrc\\manual\\manual-html"],
+    run_command(["dir", "..\\docsrc\\manual\\manual-html"],
                 cwd="gh-pages", shell=True)
     shutil.copytree("docsrc/manual/manual-html",
                     "gh-pages/" + branch + "/manual-html", copy_function=copy2_verbose)
     print("Adding files to git", flush=True)
-    subprocess.run(
+    run_command(
         ["git", "add", branch + "/manual-html"], cwd="gh-pages")
     print("Commit git changes", flush=True)
-    subprocess.run(["git", "commit", "-m", message], cwd="gh-pages")
-    subprocess.run(["git", "push", "origin"], cwd="gh-pages")
+    run_command(["git", "commit", "-m", message], cwd="gh-pages")
+    print("Push git changes", flush=True)
+    run_command(["git", "push", "origin"], cwd="gh-pages")
 
 try:
     if upload_enabled():
