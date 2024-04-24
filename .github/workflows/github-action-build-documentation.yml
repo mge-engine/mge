@@ -46,7 +46,14 @@ jobs:
             $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
             $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
             $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+            Set-Content -Path "$HOME\.git-credentials" -Value "https://$($env:access_token):x-oauth-basic@github.com`n" -NoNewline
             cmake --build build --target documentation
+            git config --global credential.helper store
+            git config --global user.email "schroeder.alexander@googlemail.com"
+            git config --global user.name "Alexander Schroeder"
+            $CURRENT_BRANCH = "${env:GITHUB_REF}".Replace('refs/heads/', '')
+            echo "BRANCH is $CURRENT_BRANCH"
+# python tools/ci/upload-gh-pages.py
 
           
       
