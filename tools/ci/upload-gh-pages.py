@@ -24,8 +24,8 @@ message = "Update gh-pages from generated documentation"
 def upload_enabled():
     try:
         env = os.environ.copy()
-        if pull_request_number != "":
-            print("Commit is a pull request, not uploading", flush=True)
+        if event != "push":
+            print("Commit is not a push, not uploading", flush=True)
             return False
         if branch in upload_branches:
             print("Branch is %s, upload enabled" %
@@ -34,19 +34,6 @@ def upload_enabled():
     except:
         pass
     return False
-
-
-def upload_enabled_special_commit():
-    try:
-        env = os.environ.copy()
-        if "update gh-pages" in env["APPVEYOR_REPO_COMMIT_MESSAGE"]:
-            branch = "main"  # treat this as dev version
-            print("Updating gh-pages due to special commit message", flush=True)
-            return True
-    except:
-        pass
-    return False
-
 
 def upload_enabled_sys_argv():
     try:
@@ -89,7 +76,7 @@ def upload(branch):
 try:
     if upload_enabled():
         upload(branch)
-    elif upload_enabled_special_commit() or upload_enabled_sys_argv():
+    elif upload_enabled_sys_argv():
         upload("main")
     else:
         print("No upload to gh-pages from this build")

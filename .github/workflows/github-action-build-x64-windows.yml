@@ -1,8 +1,10 @@
 name: MGE CI/CD Build - Microsoft Windows MSVC x64
 run-name: Build ${{ github.run_id }} - ${{ github.run_number }}
 on:
-  - push
-  - pull_request
+  workflow_dispatch:
+#
+#  - push
+#  - pull_request
 
 jobs:
   build:

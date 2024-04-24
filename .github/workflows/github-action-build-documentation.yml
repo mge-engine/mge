@@ -54,7 +54,7 @@ jobs:
             $CURRENT_BRANCH = "${env:GITHUB_REF}".Replace('refs/heads/', '')
             $CURRENT_EVENT = "${{ github.event_name }}"
             echo "Branch is $CURRENT_BRANCH, EVENT is $CURRENT_EVENT"
-# python tools/ci/upload-gh-pages.py
+            python tools/ci/upload-gh-pages.py
 
           
       
