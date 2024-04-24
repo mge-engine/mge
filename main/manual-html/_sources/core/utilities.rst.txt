@@ -5,10 +5,12 @@ Utilities
 General Utilities
 =================
 
-Executable Name
----------------
+Executable Name and Path
+------------------------
 
 .. doxygenfunction:: mge::executable_name
+
+.. doxygenfunction:: mge::executable_path
 
 Type Name
 ---------

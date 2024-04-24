@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Texture &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Image" href="image.html" />
+    <link rel="prev" title="Buffers" href="buffers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Texture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12texture_typeE"><code class="docutils literal notranslate"><span class="pre">texture_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge7textureE"><code class="docutils literal notranslate"><span class="pre">texture</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Texture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/texture.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="texture">
+<h1>Texture<a class="headerlink" href="#texture" title="Link to this heading"></a></h1>
+<p>A texture is an image or a collection of data that is applied to a 3D model
+or a 2D surface, or used in a shader program. Textures are used to enhance the
+visual appearance of objects and help to simulate various materials, for example
+wood or stone.</p>
+<p>Textures are typically initialized from image files, but can be also generated
+by rendering to a texture.</p>
+<p>When textures are applied to a model or surface, texture coordinates are used
+to map the texture onto the surface. This process is known as texture mapping.</p>
+<p>A texture is a <a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::context_object</span></code></a>, i.e. it exists in the scope
+of a render context.</p>
+<section id="types-and-definitions">
+<h2>Types and Definitions<a class="headerlink" href="#types-and-definitions" title="Link to this heading"></a></h2>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12texture_typeE">
+<span id="_CPPv3N3mge12texture_typeE"></span><span id="_CPPv2N3mge12texture_typeE"></span><span class="target" id="namespacemge_1a323c21ecd4ecf51305a6f7e4dad70382"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">texture_type</span></span></span><a class="headerlink" href="#_CPPv4N3mge12texture_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type of texture. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12texture_type7TYPE_1DE">
+<span id="_CPPv3N3mge12texture_type7TYPE_1DE"></span><span id="_CPPv2N3mge12texture_type7TYPE_1DE"></span><span class="target" id="namespacemge_1a323c21ecd4ecf51305a6f7e4dad70382afcac1bbd2c5da5bfcb247422fdb09b88"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TYPE_1D</span></span></span><a class="headerlink" href="#_CPPv4N3mge12texture_type7TYPE_1DE" title="Link to this definition"></a><br /></dt>
+<dd><p>1D texture </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12texture_type7TYPE_2DE">
+<span id="_CPPv3N3mge12texture_type7TYPE_2DE"></span><span id="_CPPv2N3mge12texture_type7TYPE_2DE"></span><span class="target" id="namespacemge_1a323c21ecd4ecf51305a6f7e4dad70382a4ae84963058d3c2cc2c6ac6734df34ad"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TYPE_2D</span></span></span><a class="headerlink" href="#_CPPv4N3mge12texture_type7TYPE_2DE" title="Link to this definition"></a><br /></dt>
+<dd><p>2D texture </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12texture_type7TYPE_3DE">
+<span id="_CPPv3N3mge12texture_type7TYPE_3DE"></span><span id="_CPPv2N3mge12texture_type7TYPE_3DE"></span><span class="target" id="namespacemge_1a323c21ecd4ecf51305a6f7e4dad70382ab3af166025e451f4314c7b854990b94a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TYPE_3D</span></span></span><a class="headerlink" href="#_CPPv4N3mge12texture_type7TYPE_3DE" title="Link to this definition"></a><br /></dt>
+<dd><p>3D texture </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12texture_type13TYPE_CUBE_MAPE">
+<span id="_CPPv3N3mge12texture_type13TYPE_CUBE_MAPE"></span><span id="_CPPv2N3mge12texture_type13TYPE_CUBE_MAPE"></span><span class="target" id="namespacemge_1a323c21ecd4ecf51305a6f7e4dad70382a75866aa74dababa7a06cca5af449784d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TYPE_CUBE_MAP</span></span></span><a class="headerlink" href="#_CPPv4N3mge12texture_type13TYPE_CUBE_MAPE" title="Link to this definition"></a><br /></dt>
+<dd><p>Cube map texture. </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7textureE">
+<span id="_CPPv3N3mge7textureE"></span><span id="_CPPv2N3mge7textureE"></span><span id="mge::texture"></span><span class="target" id="classmge_1_1texture"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">texture</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge7textureE" title="Link to this definition"></a><br /></dt>
+<dd><p>A texture. </p>
+<p>A texture is a set of data mapped onto a geometry or used in a shader program. Textures can be used for color information, normal information, bump mapping and other cases. Textures can be 1D, 2D, 3D or cube maps. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7textureD0Ev">
+<span id="_CPPv3N3mge7textureD0Ev"></span><span id="_CPPv2N3mge7textureD0Ev"></span><span id="mge::texture::~texture"></span><span class="target" id="classmge_1_1texture_1adc91d5acaa4ecb1e4746af58068d3e09"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~texture</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge7textureD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destroy the texture object. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7texture4typeEv">
+<span id="_CPPv3NK3mge7texture4typeEv"></span><span id="_CPPv2NK3mge7texture4typeEv"></span><span id="mge::texture::typeC"></span><span class="target" id="classmge_1_1texture_1a42f149571f09b9268dc51e33b9094d56"></span><a class="reference internal" href="#_CPPv4N3mge12texture_typeE" title="mge::texture_type"><span class="n"><span class="pre">texture_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7texture4typeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the texture type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>texture type </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7texture8set_dataE12image_formatRKN3mge6extentEPKv6size_t">
+<span id="_CPPv3N3mge7texture8set_dataE12image_formatRKN3mge6extentEPKv6size_t"></span><span id="_CPPv2N3mge7texture8set_dataE12image_formatRKN3mge6extentEPKv6size_t"></span><span id="mge::texture::set_data__image_format.mge::extentCR.voidCP.s"></span><span class="target" id="classmge_1_1texture_1addde2089478a2efa68ff624cfa93cf39"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_data</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">image_format</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">format</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">extent</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge7texture8set_dataE12image_formatRKN3mge6extentEPKv6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set data of the texture. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>format</strong> – image format </p></li>
+<li><p><strong>extent</strong> – image extent </p></li>
+<li><p><strong>data</strong> – image data </p></li>
+<li><p><strong>size</strong> – size of data </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7texture8set_dataERK5image">
+<span id="_CPPv3N3mge7texture8set_dataERK5image"></span><span id="_CPPv2N3mge7texture8set_dataERK5image"></span><span id="mge::texture::set_data__imageCR"></span><span class="target" id="classmge_1_1texture_1a03690113caab808ae7158feed935d9d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_data</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="image.html#_CPPv4N3mge5imageE" title="mge::image"><span class="n"><span class="pre">image</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">img</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7texture8set_dataERK5image" title="Link to this definition"></a><br /></dt>
+<dd><p>Set data of texture. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>img</strong> – image </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="buffers.html" class="btn btn-neutral float-left" title="Buffers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="image.html" class="btn btn-neutral float-right" title="Image" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

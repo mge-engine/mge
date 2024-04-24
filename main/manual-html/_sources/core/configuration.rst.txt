@@ -23,10 +23,13 @@ The parameter interface is further refined into the :any:`mge::parameter`
 template class. It allows to retrieve the parameter value as a typed
 value.
 
-.. note::
-    The :any:`mge::basic_parameter::from_string` and :any:`mge::basic_parameter::to_string`
-    methods are used to convert the parameter value back and forth, this uses a
-    `lexical_cast` for that purpose.
+The following classes are supported by default:
+
+* numeric types like `int`, `float`, `double`
+* strings, i.e. `std::string`
+* containers of supported types, like `std::vector` or `std::list`
+* maps mapping strings to supported types, like `std::map` or `std::unordered_map`
+* :any:`mge::properties` for simple key-value pairs
 
 .. doxygenclass:: mge::parameter
     :members:
@@ -54,18 +57,9 @@ For loading the configuration, the following process is used:
 
 #. :any:`mge::executable_name` is used to retrieve the base name
    of the configuration
-#. a valid configuration file is looked up, in the formats supported
-   by `boost::property_tree`, the first match is used:
-
-   * `<executable_name>.json`
-
-   * `<executable_name>.xml`
-
-   * `<executable_name>.info`
-
-   * `<executable_name>.ini`
-
+#. a valid configuration file is looked up, in json format, named
+   `<executable_name>.json`
 #. The file is read, and the parameters registered are populated.
 
 If a configuration was loaded, the same file type is used when storing it.
-If it was not loaded before, a `.json` file is created.
+If it was not loaded before, a `<executable_name>.json` file is created.

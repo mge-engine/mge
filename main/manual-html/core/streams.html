@@ -16,7 +16,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=2709fde1"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -125,6 +125,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_streamE">
 <span id="_CPPv3N3mge12input_streamE"></span><span id="_CPPv2N3mge12input_streamE"></span><span id="mge::input_stream"></span><span class="target" id="classmge_1_1input__stream"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">input_stream</span></span></span><a class="headerlink" href="#_CPPv4N3mge12input_streamE" title="Link to this definition"></a><br /></dt>
 <dd><p>An input stream to read bytes. </p>
+<p>Subclassed by mge::file_input_stream</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
 <dl class="cpp enum">
@@ -223,7 +224,7 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream4seekE11offset_type14direction_type">
-<span id="_CPPv3N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="_CPPv2N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="mge::input_stream::seek__offset_type.direction_type"></span><span class="target" id="classmge_1_1input__stream_1a3cb20ca0cb7fd202709fe833a84c7425"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seek</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span>, <a class="reference internal" href="#_CPPv4N3mge12input_stream14direction_typeE" title="mge::input_stream::direction_type"><span class="n"><span class="pre">direction_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4seekE11offset_type14direction_type" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="_CPPv2N3mge12input_stream4seekE11offset_type14direction_type"></span><span id="mge::input_stream::seek__offset_type.direction_type"></span><span class="target" id="classmge_1_1input__stream_1af4e1f90f1261a8cc35d72b2003172d6e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">seek</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12input_stream11offset_typeE" title="mge::input_stream::offset_type"><span class="n"><span class="pre">offset_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">offset</span></span>, <a class="reference internal" href="#_CPPv4N3mge12input_stream14direction_typeE" title="mge::input_stream::direction_type"><span class="n"><span class="pre">direction_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">dir</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">POS_BEG</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream4seekE11offset_type14direction_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Seek relative to a specific position. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -234,6 +235,17 @@ retrieve a <code class="xref any docutils literal notranslate"><span class="pre"
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>position after seek, -1 if not known </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12input_stream6rewindEv">
+<span id="_CPPv3N3mge12input_stream6rewindEv"></span><span id="_CPPv2N3mge12input_stream6rewindEv"></span><span id="mge::input_stream::rewind"></span><span class="target" id="classmge_1_1input__stream_1a712d2fff0778e55dce63bcb27a514f7a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rewind</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12input_stream6rewindEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Rewind to beginning. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if rewind succeded, false if rewinding isn’t supported </p>
 </dd>
 </dl>
 </dd></dl>

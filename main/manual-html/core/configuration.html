@@ -16,7 +16,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=2709fde1"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -130,7 +130,7 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15basic_parameterE">
 <span id="_CPPv3N3mge15basic_parameterE"></span><span id="_CPPv2N3mge15basic_parameterE"></span><span id="mge::basic_parameter"></span><span class="target" id="classmge_1_1basic__parameter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">basic_parameter</span></span></span><a class="headerlink" href="#_CPPv4N3mge15basic_parameterE" title="Link to this definition"></a><br /></dt>
 <dd><p>Configuration parameter. Implements the interface to describe, read and write a parameter. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; std::string &gt;</span></a>, <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; T &gt;</span></a>, mge::parameter&lt; std::vector&lt; T &gt; &gt;</p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; std::vector&lt; std::string &gt; &gt;</span></a>, <a class="reference internal" href="#classmge_1_1parameter"><span class="std std-ref">mge::parameter&lt; T &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -149,23 +149,26 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge15basic_parameter7sectionEv">
-<span id="_CPPv3NK3mge15basic_parameter7sectionEv"></span><span id="_CPPv2NK3mge15basic_parameter7sectionEv"></span><span id="mge::basic_parameter::sectionC"></span><span class="target" id="classmge_1_1basic__parameter_1afbda48269da722a7daadc17b698caf44"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">section</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15basic_parameter7sectionEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Parameter section. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15basic_parameter15basic_parameterEKN3mge4pathENSt11string_viewE">
+<span id="_CPPv3N3mge15basic_parameter15basic_parameterEKN3mge4pathENSt11string_viewE"></span><span id="_CPPv2N3mge15basic_parameter15basic_parameterEKN3mge4pathENSt11string_viewE"></span><span id="mge::basic_parameter::basic_parameter__mge::pathC.std::string_view"></span><span class="target" id="classmge_1_1basic__parameter_1a9afca9b80d14cb15242cc5ed736d720e"></span><span class="sig-name descname"><span class="n"><span class="pre">basic_parameter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">path</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">description</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15basic_parameter15basic_parameterEKN3mge4pathENSt11string_viewE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a parameter. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>parameter section name </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to parameter </p></li>
+<li><p><strong>description</strong> – parameter description </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge15basic_parameter4nameEv">
-<span id="_CPPv3NK3mge15basic_parameter4nameEv"></span><span id="_CPPv2NK3mge15basic_parameter4nameEv"></span><span id="mge::basic_parameter::nameC"></span><span class="target" id="classmge_1_1basic__parameter_1af34105593663b0076e1bb0e933e98de1"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15basic_parameter4nameEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Parameter name. </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15basic_parameter4pathEv">
+<span id="_CPPv3NK3mge15basic_parameter4pathEv"></span><span id="_CPPv2NK3mge15basic_parameter4pathEv"></span><span id="mge::basic_parameter::pathC"></span><span class="target" id="classmge_1_1basic__parameter_1a66e9c39337dd718657615ac05bdf4c5b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">path</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15basic_parameter4pathEv" title="Link to this definition"></a><br /></dt>
+<dd><p>return the parameter path. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>parameter name </p>
+<dd class="field-odd"><p>parameter path </p>
 </dd>
 </dl>
 </dd></dl>
@@ -199,28 +202,6 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge15basic_parameter11from_stringENSt11string_viewE">
-<span id="_CPPv3N3mge15basic_parameter11from_stringENSt11string_viewE"></span><span id="_CPPv2N3mge15basic_parameter11from_stringENSt11string_viewE"></span><span id="mge::basic_parameter::from_string__std::string_view"></span><span class="target" id="classmge_1_1basic__parameter_1a74549f40b04c98f9b2104f4fd8b3124a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">from_string</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge15basic_parameter11from_stringENSt11string_viewE" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets parameter from string. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> – parameter string value </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge15basic_parameter9to_stringEv">
-<span id="_CPPv3NK3mge15basic_parameter9to_stringEv"></span><span id="_CPPv2NK3mge15basic_parameter9to_stringEv"></span><span id="mge::basic_parameter::to_stringC"></span><span class="target" id="classmge_1_1basic__parameter_1a79f14faa4e168412379f42efebef9a68"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">to_string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge15basic_parameter9to_stringEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Retrieves parameter as string. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>parameter value </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge15basic_parameter13notify_changeEv">
 <span id="_CPPv3N3mge15basic_parameter13notify_changeEv"></span><span id="_CPPv2N3mge15basic_parameter13notify_changeEv"></span><span id="mge::basic_parameter::notify_change"></span><span class="target" id="classmge_1_1basic__parameter_1a13cf5235c54b1fe7b599dfd97468750b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">notify_change</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15basic_parameter13notify_changeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Call to notify a change. If a change listener is registered, call that. </p>
@@ -248,6 +229,28 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15basic_parameter10read_valueERKN3mge4json4jsonE">
+<span id="_CPPv3N3mge15basic_parameter10read_valueERKN3mge4json4jsonE"></span><span id="_CPPv2N3mge15basic_parameter10read_valueERKN3mge4json4jsonE"></span><span id="mge::basic_parameter::read_value__mge::json::jsonCR"></span><span class="target" id="classmge_1_1basic__parameter_1ab2a614792ba0ab012d1bc6807c4d669e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">read_value</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">json</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">document</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15basic_parameter10read_valueERKN3mge4json4jsonE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set parameter value from json document. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>document</strong> – json document </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15basic_parameter11write_valueERN3mge4json4jsonE">
+<span id="_CPPv3NK3mge15basic_parameter11write_valueERN3mge4json4jsonE"></span><span id="_CPPv2NK3mge15basic_parameter11write_valueERN3mge4json4jsonE"></span><span id="mge::basic_parameter::write_value__mge::json::jsonRC"></span><span class="target" id="classmge_1_1basic__parameter_1a7925951307ae66bef74d43c637d9a461"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">write_value</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">json</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">document</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15basic_parameter11write_valueERN3mge4json4jsonE" title="Link to this definition"></a><br /></dt>
+<dd><p>Write parameter value to json document. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>document</strong> – json document </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
@@ -257,12 +260,14 @@ the <a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="m
 <p>The parameter interface is further refined into the <a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::parameter</span></code></a>
 template class. It allows to retrieve the parameter value as a typed
 value.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="#_CPPv4N3mge15basic_parameter11from_stringENSt11string_viewE" title="mge::basic_parameter::from_string"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::basic_parameter::from_string()</span></code></a> and <a class="reference internal" href="#_CPPv4NK3mge15basic_parameter9to_stringEv" title="mge::basic_parameter::to_string"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::basic_parameter::to_string()</span></code></a>
-methods are used to convert the parameter value back and forth, this uses a
-<cite>lexical_cast</cite> for that purpose.</p>
-</div>
+<p>The following classes are supported by default:</p>
+<ul class="simple">
+<li><p>numeric types like <cite>int</cite>, <cite>float</cite>, <cite>double</cite></p></li>
+<li><p>strings, i.e. <cite>std::string</cite></p></li>
+<li><p>containers of supported types, like <cite>std::vector</cite> or <cite>std::list</cite></p></li>
+<li><p>maps mapping strings to supported types, like <cite>std::map</cite> or <cite>std::unordered_map</cite></p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">mge::properties</span></code> for simple key-value pairs</p></li>
+</ul>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge9parameterE">
 <span id="_CPPv3I0EN3mge9parameterE"></span><span id="_CPPv2I0EN3mge9parameterE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1parameter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parameter</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="mge::basic_parameter"><span class="n"><span class="pre">basic_parameter</span></span></a><a class="headerlink" href="#_CPPv4I0EN3mge9parameterE" title="Link to this definition"></a><br /></dt>
@@ -335,6 +340,35 @@ methods are used to convert the parameter value back and forth, this uses a
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge9parameter9parameterERKN3mge4pathENSt11string_viewE">
+<span id="_CPPv3N3mge9parameter9parameterERKN3mge4pathENSt11string_viewE"></span><span id="_CPPv2N3mge9parameter9parameterERKN3mge4pathENSt11string_viewE"></span><span id="mge::parameter::parameter__mge::pathCR.std::string_view"></span><span class="target" id="classmge_1_1parameter_1ab108f75d733a8793b99f55243f714dff"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parameter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">path</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">description</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9parameter9parameterERKN3mge4pathENSt11string_viewE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a new parameter object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – parameter path </p></li>
+<li><p><strong>description</strong> – parameter description </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge9parameter9parameterERKN3mge4pathENSt11string_viewERK1T">
+<span id="_CPPv3N3mge9parameter9parameterERKN3mge4pathENSt11string_viewERK1T"></span><span id="_CPPv2N3mge9parameter9parameterERKN3mge4pathENSt11string_viewERK1T"></span><span id="mge::parameter::parameter__mge::pathCR.std::string_view.TCR"></span><span class="target" id="classmge_1_1parameter_1a2279077912c61ea484c34401fb755c3f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parameter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">path</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">description</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">default_value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9parameter9parameterERKN3mge4pathENSt11string_viewERK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a parameter. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – path to parameter </p></li>
+<li><p><strong>description</strong> – parameter description </p></li>
+<li><p><strong>default_value</strong> – default value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9parameter9has_valueEv">
 <span id="_CPPv3NK3mge9parameter9has_valueEv"></span><span id="_CPPv2NK3mge9parameter9has_valueEv"></span><span id="mge::parameter::has_valueC"></span><span class="target" id="classmge_1_1parameter_1a495b432bf3bba5c6ae6dd6bf1e0a1fd8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter9has_valueEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Check whether parameter is set. </p>
@@ -346,8 +380,14 @@ methods are used to convert the parameter value back and forth, this uses a
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge9parameter5resetEv">
+<span id="_CPPv3N3mge9parameter5resetEv"></span><span id="_CPPv2N3mge9parameter5resetEv"></span><span id="mge::parameter::reset"></span><span class="target" id="classmge_1_1parameter_1a3f9e44c86dcc82c5a142976e5372bfd0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge9parameter5resetEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Unset or clears a parameter. </p>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9parameter3getEv">
-<span id="_CPPv3NK3mge9parameter3getEv"></span><span id="_CPPv2NK3mge9parameter3getEv"></span><span id="mge::parameter::getC"></span><span class="target" id="classmge_1_1parameter_1a20c459235446c21ce129d86d4af4ae09"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter3getEv" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3NK3mge9parameter3getEv"></span><span id="_CPPv2NK3mge9parameter3getEv"></span><span id="mge::parameter::getC"></span><span class="target" id="classmge_1_1parameter_1ac189d8abda20ddcba0d64a307adc676c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter3getEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Retrieve typed value. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -358,7 +398,7 @@ methods are used to convert the parameter value back and forth, this uses a
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9parameter3getERK1T">
-<span id="_CPPv3NK3mge9parameter3getERK1T"></span><span id="_CPPv2NK3mge9parameter3getERK1T"></span><span id="mge::parameter::get__TCRC"></span><span class="target" id="classmge_1_1parameter_1a808d80d19c4164990aaeb3f51500bb7d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">default_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter3getERK1T" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3NK3mge9parameter3getERK1T"></span><span id="_CPPv2NK3mge9parameter3getERK1T"></span><span id="mge::parameter::get__TCRC"></span><span class="target" id="classmge_1_1parameter_1ad694815cbec5e55b2f03b15b38858928"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">default_value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter3getERK1T" title="Link to this definition"></a><br /></dt>
 <dd><p>Retrieve typed value, checking default. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -368,34 +408,6 @@ methods are used to convert the parameter value back and forth, this uses a
 <dd class="field-even"><p>config value or default value if not set </p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge9parameter11from_stringENSt11string_viewE">
-<span id="_CPPv3N3mge9parameter11from_stringENSt11string_viewE"></span><span id="_CPPv2N3mge9parameter11from_stringENSt11string_viewE"></span><span id="mge::parameter::from_string__std::string_view"></span><span class="target" id="classmge_1_1parameter_1a2ce9a7e0a74c294e929ad40c5fe98633"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">from_string</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge9parameter11from_stringENSt11string_viewE" title="Link to this definition"></a><br /></dt>
-<dd><p>Sets parameter from string. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> – parameter string value </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge9parameter9to_stringEv">
-<span id="_CPPv3NK3mge9parameter9to_stringEv"></span><span id="_CPPv2NK3mge9parameter9to_stringEv"></span><span id="mge::parameter::to_stringC"></span><span class="target" id="classmge_1_1parameter_1a9941970afa42892d77c673bb576c908e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">to_string</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter9to_stringEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Retrieves parameter as string. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>parameter value </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge9parameter5resetEv">
-<span id="_CPPv3N3mge9parameter5resetEv"></span><span id="_CPPv2N3mge9parameter5resetEv"></span><span id="mge::parameter::reset"></span><span class="target" id="classmge_1_1parameter_1a3f9e44c86dcc82c5a142976e5372bfd0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge9parameter5resetEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Unset or clears a parameter. </p>
 </dd></dl>
 
 </div>
@@ -466,14 +478,26 @@ are intentionally meant to be value within their compilation unit only.</p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration4loadEb">
-<span id="_CPPv3N3mge13configuration4loadEb"></span><span id="_CPPv2N3mge13configuration4loadEb"></span><span id="mge::configuration::load__b"></span><span class="target" id="classmge_1_1configuration_1a9ceb79dc7465f089a2ff1009600783f3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">allow_missing</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">true</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration4loadEb" title="Link to this definition"></a><br /></dt>
-<dd><p>Load configuration. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration14find_parameterERKN3mge4pathE">
+<span id="_CPPv3N3mge13configuration14find_parameterERKN3mge4pathE"></span><span id="_CPPv2N3mge13configuration14find_parameterERKN3mge4pathE"></span><span id="mge::configuration::find_parameter__mge::pathCR"></span><span class="target" id="classmge_1_1configuration_1ad9ce42ffdb2bbd6e9b7f69bb2f9d60a3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="mge::basic_parameter"><span class="n"><span class="pre">basic_parameter</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">find_parameter</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration14find_parameterERKN3mge4pathE" title="Link to this definition"></a><br /></dt>
+<dd><p>Find a parameter,. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>allow_missing</strong> – succeeds even if no configuration is found </p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section</strong> – parameter section </p></li>
+<li><p><strong>name</strong> – parameter name </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>parameter as registered, a <code class="docutils literal notranslate"><span class="pre">std::runtime_error</span></code> is thrown if parameter is not found </p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration4loadEv">
+<span id="_CPPv3N3mge13configuration4loadEv"></span><span id="_CPPv2N3mge13configuration4loadEv"></span><span id="mge::configuration::load"></span><span class="target" id="classmge_1_1configuration_1a82234b1396a2d1ecb5c0c4bb717ed14b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration4loadEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Load configuration. </p>
 </dd></dl>
 
 <dl class="cpp function">
@@ -504,6 +528,12 @@ are intentionally meant to be value within their compilation unit only.</p>
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration4rootEv">
+<span id="_CPPv3N3mge13configuration4rootEv"></span><span id="_CPPv2N3mge13configuration4rootEv"></span><span id="mge::configuration::root"></span><span class="target" id="classmge_1_1configuration_1af8c5776351900ef40bb66961b77ec92f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">json</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">root</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration4rootEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Root configuration. </p>
+</dd></dl>
+
 </div>
 </dd></dl>
 
@@ -511,19 +541,12 @@ are intentionally meant to be value within their compilation unit only.</p>
 <ol class="arabic simple">
 <li><p><a class="reference internal" href="utilities.html#_CPPv4N3mge15executable_nameEv" title="mge::executable_name"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::executable_name()</span></code></a> is used to retrieve the base name
 of the configuration</p></li>
-<li><p>a valid configuration file is looked up, in the formats supported
-by <cite>boost::property_tree</cite>, the first match is used:</p>
-<ul class="simple">
-<li><p><cite>&lt;executable_name&gt;.json</cite></p></li>
-<li><p><cite>&lt;executable_name&gt;.xml</cite></p></li>
-<li><p><cite>&lt;executable_name&gt;.info</cite></p></li>
-<li><p><cite>&lt;executable_name&gt;.ini</cite></p></li>
-</ul>
-</li>
+<li><p>a valid configuration file is looked up, in json format, named
+<cite>&lt;executable_name&gt;.json</cite></p></li>
 <li><p>The file is read, and the parameters registered are populated.</p></li>
 </ol>
 <p>If a configuration was loaded, the same file type is used when storing it.
-If it was not loaded before, a <cite>.json</cite> file is created.</p>
+If it was not loaded before, a <cite>&lt;executable_name&gt;.json</cite> file is created.</p>
 </section>
 </section>
 

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asset Loading &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=2709fde1"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Scripting Library" href="../mgescript.html" />
+    <link rel="prev" title="Asset Management" href="asset.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgeasset.html">Asset Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="asset.html">Asset Management</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Asset Loading</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-asset-sources">Supported Asset Sources</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#file-asset-source">File Asset Source</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#zip-asset-source">Zip Asset Source</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementing-an-asset-source">Implementing an Asset Source</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_sourceE"><code class="docutils literal notranslate"><span class="pre">asset_source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_accessE"><code class="docutils literal notranslate"><span class="pre">asset_access</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgescript.html">Scripting Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgeasset.html">Asset Library</a></li>
+      <li class="breadcrumb-item active">Asset Loading</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/asset/loading.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="asset-loading">
+<h1>Asset Loading<a class="headerlink" href="#asset-loading" title="Link to this heading"></a></h1>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>Assets are identified by a path, which is used to look up the asset in a
+virtual filesystem managed by the asset subsystem.</p>
+<p>Asset access factories are mounted at specific directories and are responsible
+for loading assets having paths that start with the directory they are mounted.</p>
+<p>The asset subsystem is configured in the configuration by the <cite>asset/repository</cite>
+parameter, which manages a list of mounted asset repositories.</p>
+<p>The following properties have to be specified for each mounted repository:</p>
+<dl class="simple">
+<dt>type</dt><dd><p>The type defines the factory used to load the assets.</p>
+</dd>
+<dt>mount_point</dt><dd><p>The directory where the asset repository is mounted.</p>
+</dd>
+</dl>
+<p>Additional properties specific to the type can be specified too,
+as can be seen in following example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;repositories&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;/assets&quot;</span>
+<span class="w">            </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assets&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zip&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/zipassets&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assets.zip&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="supported-asset-sources">
+<h2>Supported Asset Sources<a class="headerlink" href="#supported-asset-sources" title="Link to this heading"></a></h2>
+<p>The following asset sources are built into the asset subsystem:</p>
+<section id="file-asset-source">
+<h3>File Asset Source<a class="headerlink" href="#file-asset-source" title="Link to this heading"></a></h3>
+<p>The file asset source loads assets from the filesystem. It is configured with
+the following properties:</p>
+<dl class="simple">
+<dt>directory</dt><dd><p>The directory from which to load assets.</p>
+</dd>
+</dl>
+</section>
+<section id="zip-asset-source">
+<h3>Zip Asset Source<a class="headerlink" href="#zip-asset-source" title="Link to this heading"></a></h3>
+<p>The zip asset source loads assets from a zip file. It is configured with the
+following properties:</p>
+<dl class="simple">
+<dt>file</dt><dd><p>The zip file from which to load assets.</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="implementing-an-asset-source">
+<h2>Implementing an Asset Source<a class="headerlink" href="#implementing-an-asset-source" title="Link to this heading"></a></h2>
+<p>To implement a new asset source, you need to create a class that implements
+the <cite>asset_source</cite> interface and register it as a component.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_sourceE">
+<span id="_CPPv3N3mge12asset_sourceE"></span><span id="_CPPv2N3mge12asset_sourceE"></span><span id="mge::asset_source"></span><span class="target" id="classmge_1_1asset__source"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_source</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge12asset_sourceE" title="mge::asset_source"><span class="n"><span class="pre">asset_source</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_sourceE" title="Link to this definition"></a><br /></dt>
+<dd><p>An asset access factory. </p>
+<p>An asset access factory is ‘mounted’ below a specific path, and serves all assets that are looked for beneath this path. </p>
+<p>Subclassed by mge::file_asset_source</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source9configureERKN3mge10propertiesE">
+<span id="_CPPv3N3mge12asset_source9configureERKN3mge10propertiesE"></span><span id="_CPPv2N3mge12asset_source9configureERKN3mge10propertiesE"></span><span id="mge::asset_source::configure__mge::propertiesCR"></span><span class="target" id="classmge_1_1asset__source_1a7bba78cddff88e21648d2d4085815eb0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">configure</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">properties</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source9configureERKN3mge10propertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Configure factory. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – configuration properties </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_source13is_configuredEv">
+<span id="_CPPv3NK3mge12asset_source13is_configuredEv"></span><span id="_CPPv2NK3mge12asset_source13is_configuredEv"></span><span id="mge::asset_source::is_configuredC"></span><span class="target" id="classmge_1_1asset__source_1acd7cc9c18752fae9af4cd97ebe0b5d29"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_configured</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_source13is_configuredEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether factory is configured. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if configured </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source6accessERKN3mge4pathE">
+<span id="_CPPv3N3mge12asset_source6accessERKN3mge4pathE"></span><span id="_CPPv2N3mge12asset_source6accessERKN3mge4pathE"></span><span id="mge::asset_source::access__mge::pathCR"></span><span class="target" id="classmge_1_1asset__source_1aaaf1190e6035a1e7d4d6f28c92c3dc13"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">asset_access_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">access</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source6accessERKN3mge4pathE" title="Link to this definition"></a><br /></dt>
+<dd><p>Resolve path into asset object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – path, absolute (includes the mount point) </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>asset located at path </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source12asset_existsERKN3mge4pathE">
+<span id="_CPPv3N3mge12asset_source12asset_existsERKN3mge4pathE"></span><span id="_CPPv2N3mge12asset_source12asset_existsERKN3mge4pathE"></span><span id="mge::asset_source::asset_exists__mge::pathCR"></span><span class="target" id="classmge_1_1asset__source_1ac2885f4e5a689c9aef0806512de13ece"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_exists</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source12asset_existsERKN3mge4pathE" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether asset at given path exists. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – path </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>true if asset exists </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_source4gistERNSt7ostreamE">
+<span id="_CPPv3NK3mge12asset_source4gistERNSt7ostreamE"></span><span id="_CPPv2NK3mge12asset_source4gistERNSt7ostreamE"></span><span id="mge::asset_source::gist__osRC"></span><span class="target" id="classmge_1_1asset__source_1aa27e18f480b754750ab7cd3eefa0d157"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gist</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_source4gistERNSt7ostreamE" title="Link to this definition"></a><br /></dt>
+<dd><p>Get factory details. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>os</strong> – output stream </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source15set_mount_pointERKN3mge4pathE">
+<span id="_CPPv3N3mge12asset_source15set_mount_pointERKN3mge4pathE"></span><span id="_CPPv2N3mge12asset_source15set_mount_pointERKN3mge4pathE"></span><span id="mge::asset_source::set_mount_point__mge::pathCR"></span><span class="target" id="classmge_1_1asset__source_1a5b8d5d14411e30f256477f6638ff7dcd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_mount_point</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mountpoint</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12asset_source15set_mount_pointERKN3mge4pathE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the mount point. </p>
+<p>The mount point is a path prefix of all assets managed by this factory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mountpoint</strong> – new mount point </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_source11mount_pointEv">
+<span id="_CPPv3NK3mge12asset_source11mount_pointEv"></span><span id="_CPPv2NK3mge12asset_source11mount_pointEv"></span><span id="mge::asset_source::mount_pointC"></span><span class="target" id="classmge_1_1asset__source_1a1637961de364e31c3eb40c2bdc96aca6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">mount_point</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_source11mount_pointEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get current mount point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mount point </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<p>Furthermore, you need to implement the <cite>asset_access</cite> interface for an individual
+asset.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_accessE">
+<span id="_CPPv3N3mge12asset_accessE"></span><span id="_CPPv2N3mge12asset_accessE"></span><span id="mge::asset_access"></span><span class="target" id="classmge_1_1asset__access"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_access</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4N3mge12asset_accessE" title="Link to this definition"></a><br /></dt>
+<dd><p>Access to an asset. </p>
+<p>An asset access factory creates instances of this interface which implement the actual properties of an asset. </p>
+<p>Subclassed by mge::file_asset_access</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_access4sizeEv">
+<span id="_CPPv3NK3mge12asset_access4sizeEv"></span><span id="_CPPv2NK3mge12asset_access4sizeEv"></span><span id="mge::asset_access::sizeC"></span><span class="target" id="classmge_1_1asset__access_1a0e0163cf55ebf0756819a5e29ae2154b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_access4sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Total size of asset data, in bytes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>asset size </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_access4dataEv">
+<span id="_CPPv3NK3mge12asset_access4dataEv"></span><span id="_CPPv2NK3mge12asset_access4dataEv"></span><span id="mge::asset_access::dataC"></span><span class="target" id="classmge_1_1asset__access_1abd00bf061c89bbed150fd0f8b774d21c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">input_stream_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_access4dataEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Asset data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>input stream of asset data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_access4typeEv">
+<span id="_CPPv3NK3mge12asset_access4typeEv"></span><span id="_CPPv2NK3mge12asset_access4typeEv"></span><span id="mge::asset_access::typeC"></span><span class="target" id="classmge_1_1asset__access_1a1dd8a17b50fb52db7f8ada0c5655849f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_access4typeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Asset type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>asset type </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_access14has_propertiesEv">
+<span id="_CPPv3NK3mge12asset_access14has_propertiesEv"></span><span id="_CPPv2NK3mge12asset_access14has_propertiesEv"></span><span id="mge::asset_access::has_propertiesC"></span><span class="target" id="classmge_1_1asset__access_1a3b17712882a150cfc8159f74eb279545"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_properties</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_access14has_propertiesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get whether the asset has properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>true if the asset has properties </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_access10propertiesEv">
+<span id="_CPPv3NK3mge12asset_access10propertiesEv"></span><span id="_CPPv2NK3mge12asset_access10propertiesEv"></span><span id="mge::asset_access::propertiesC"></span><span class="target" id="classmge_1_1asset__access_1ac628f59e48e8f70b7c3a6669aa979fc5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">properties_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">properties</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_access10propertiesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Asset properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>properties </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="asset.html" class="btn btn-neutral float-left" title="Asset Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../mgescript.html" class="btn btn-neutral float-right" title="Scripting Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
