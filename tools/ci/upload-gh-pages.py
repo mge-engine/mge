@@ -75,12 +75,6 @@ def copy2_verbose(src, dst):
 def upload(branch):
     print("Switching to 'build' directory", flush=True)
     os.chdir("build")  # Change current directory to "build"
-    if os.path.exists("gh-pages"):
-        print("Remove old gh-pages directory", flush=True)
-        run_command(command= ["rd", "/s", "/q", "gh-pages"], shell=True)
-    print("Cloning gh-pages branch", flush=True)
-    run_command(["git", "clone", "--branch=gh-pages",
-                    "https://github.com/mge-engine/mge.git", "gh-pages"], shell=True)
     print("Remove old files", flush=True)
     run_command(["git", "rm", "-rf", branch +
                     "/manual-html"], cwd="gh-pages" ,shell=True)
