@@ -9,13 +9,13 @@ import os
 
 upload_branches = ["main"]
 branch = ""
-pull_request_number = ""
+event = ""
 try:
-    branch = os.environ["APPVEYOR_REPO_BRANCH"]
+    branch = os.environ["CURRENT_BRANCH"]
 except:
     pass
 try:
-    pull_request_number = os.environ["APPVEYOR_PULL_REQUEST_NUMBER"]
+    event = os.environ["CURRENT_EVENT"]
 except:
     pass
 message = "Update gh-pages from generated documentation"
@@ -29,7 +29,7 @@ def upload_enabled():
             return False
         if branch in upload_branches:
             print("Branch is %s, upload enabled" %
-                  (env["APPVEYOR_REPO_BRANCH"]), flush=True)
+                  (env["CURRENT_BRANCH"]), flush=True)
             return True
     except:
         pass
