@@ -52,7 +52,8 @@ jobs:
             git config --global user.email "schroeder.alexander@googlemail.com"
             git config --global user.name "Alexander Schroeder"
             $CURRENT_BRANCH = "${env:GITHUB_REF}".Replace('refs/heads/', '')
-            echo "BRANCH is $CURRENT_BRANCH"
+            $CURRENT_EVENT = "${{ github.event_name }}"
+            echo "Branch is $CURRENT_BRANCH, EVENT is $CURRENT_EVENT"
 # python tools/ci/upload-gh-pages.py
 
           
