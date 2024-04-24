@@ -20,9 +20,6 @@ except:
     pass
 message = "Update gh-pages from generated documentation"
 
-env = os.environ.copy()
-print(env)
-
 def upload_enabled():
     try:
         env = os.environ.copy()
