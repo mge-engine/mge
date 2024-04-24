@@ -8,13 +8,16 @@ import shutil
 import os
 
 def run_command(command, shell=False, cwd=None):
+    env = os.environ.copy()
+    env["GIT_TRACE"] = "1"
     process = subprocess.Popen(
         args=command,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         universal_newlines=True,
         shell=shell,
-        cwd=cwd
+        cwd=cwd,
+        env=env
     )
     
     for line in process.stdout:
