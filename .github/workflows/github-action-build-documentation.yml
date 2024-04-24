@@ -54,16 +54,12 @@ jobs:
             $env:CURRENT_EVENT = "${{ github.event_name }}"
             echo "Branch: $env:CURRENT_BRANCH"
             echo "Event: $env:CURRENT_EVENT"
+            #python tools/ci/upload-gh-pages.py
       - name: Checkout gh-pages
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
             ref: gh-pages
-            path: ./build/gh-pages
-      - name: Copy documentation
-        run: |
-            $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-            $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-            python tools/ci/upload-gh-pages.py
+            directory: ./build/gh-pages
       - name: Push to gh-pages
         working-directory: ./build/gh-pages
         env:
@@ -71,8 +67,8 @@ jobs:
         run: |
             git config --global user.email "action@github.com"
             git config --global user.name "GitHub Action"
-#            git config --global credential.helper 'store --file=.git-credentials'
-#            echo "https://${GITHUB_TOKEN}@github.com" > .git-credentials
+            git config --global credential.helper 'store --file=.git-credentials'
+            echo "https://${GITHUB_TOKEN}@github.com" > .git-credentials
             git push origin 
 
           
