@@ -1,4 +1,4 @@
-name: MGE CI/CD Build - Microsoft Windows MSVC x64
+name: MGE CI/CD Build
 run-name: Build ${{ github.run_id }} - ${{ github.run_number }}
 on:
   workflow_dispatch:
