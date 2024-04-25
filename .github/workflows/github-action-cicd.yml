@@ -79,6 +79,11 @@ jobs:
         runs-on: [self-hosted, msvc-x64-windows]
         needs: build-documentation-x64-windows
         steps:
+            - name : Setup path to tools
+              run: |
+                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
+            - name: Setup Microsoft Visual C++ 
+              uses: ilammy/msvc-dev-cmd@v1
             - name: Checkout gh-pages
               uses: actions/checkout@v4
               with:
