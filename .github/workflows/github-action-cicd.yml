@@ -51,6 +51,8 @@ jobs:
         runs-on: [self-hosted, msvc-x64-windows]
         needs: configure-msvc-x64-windows
         steps:
+            - name: Setup Microsoft Visual C++ 
+              uses: ilammy/msvc-dev-cmd@v1
             - name: Build project
               run: |
                 $env:CC = "cl.exe"
