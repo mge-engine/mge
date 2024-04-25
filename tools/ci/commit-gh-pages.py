@@ -9,7 +9,6 @@ import os
 
 def run_command(command, shell=False, cwd=None):
     env = os.environ.copy()
-    env["GIT_TRACE"] = "1"
     process = subprocess.Popen(
         args=command,
         stdout=subprocess.PIPE,
@@ -28,7 +27,6 @@ def run_command(command, shell=False, cwd=None):
 
     if return_code:
         raise subprocess.CalledProcessError(return_code, command)
-
 
 upload_branches = ["main"]
 branch = ""

@@ -75,7 +75,6 @@ jobs:
     upload-gh-pages:
         name: Upload documentation to gh-pages
         runs-on: [self-hosted, msvc-x64-windows]
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         needs: build-documentation-x64-windows
         steps:
             - name: Checkout gh-pages
@@ -95,7 +94,7 @@ jobs:
                 $env:CURRENT_EVENT = "${{ github.event_name }}"
                 echo "Branch: $env:CURRENT_BRANCH"
                 echo "Event: $env:CURRENT_EVENT"
-                python tools/ci/upload-gh-pages.py
+                python tools/ci/commit-gh-pages.py
             - name: Push to gh-pages
               uses: ad-m/github-push-action@v0.8.0
               with:
