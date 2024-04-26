@@ -131,6 +131,9 @@ jobs:
               run: |
                 Write-Output $env:PATH
                 Write-Output $env:GITHUB_PATH
+            - name : Check cmake version
+              run: |
+                cmake --version
             - name : Install cmake
               run: |
-                chocolatey install cmake --version 3.29.2
+                choc install cmake --version 3.29.2
