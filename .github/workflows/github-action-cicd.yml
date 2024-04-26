@@ -123,20 +123,27 @@ jobs:
                 $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
                 cmake --build build --target test
 # -- windows latest runner
-    prepare-env-windows-latest:
-        name: Prepare environment for Windows latest
+    display-env-windows-latest:
+        name: Display environment (windows-latest)
         runs-on: windows-latest
         steps:
             - name: Display path
               run: |
                 Write-Output $env:PATH
                 Write-Output $env:GITHUB_PATH
-            - name : Check cmake version
+    check-cmake-version-windows-latest:
+        name: Check cmake version (windows latest)
+        runs-on: windows-latest
+        needs: display-env-windows-latest
+        steps:
+            - name: Check CMake version
               run: |
                 cmake --version
-            - name : Check Ninja version
-              run: |
-                ninja --version
-            - name : Check Python version
+    check-python-version-windows-latest:
+        name: Check python version (windows latest)
+        runs-on: windows-latest
+        needs: display-env-windows-latest
+        steps:
+            - name: Check Python version
               run: |
                 python --version
