@@ -7,6 +7,7 @@ on:
   pull_request:
 
 jobs:
+# -- self hosted windows runner
     prepare-env-x64-windows:
         name: Prepare environment for x64 Windows
         runs-on: [self-hosted, msvc-x64-windows]
@@ -121,5 +122,15 @@ jobs:
                 $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
                 $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
                 cmake --build build --target test
-
-
+# -- windows latest runner
+    prepare-env-windows-latest:
+        name: Prepare environment for Windows latest
+        runs-on: windows-latest
+        steps:
+            - name: Display path
+              run: |
+                Write-Output $env:PATH
+                Write-Output $env:GITHUB_PATH
+            - name : Install cmake
+              run: |
+                chocolatey install cmake --version 3.29.2
