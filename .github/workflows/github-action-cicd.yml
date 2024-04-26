@@ -134,6 +134,9 @@ jobs:
             - name : Check cmake version
               run: |
                 cmake --version
-            - name : Install cmake
+            - name : Check Ninja version
               run: |
-                choc install cmake --version 3.29.2
+                ninja --version
+            - name : Check Python version
+              run: |
+                python --version
