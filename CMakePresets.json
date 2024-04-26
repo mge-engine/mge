@@ -11,6 +11,16 @@
             }
         },
         {
+            "name": "mingw",
+            "binaryDir": "${sourceDir}/build.mingw",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+
+        {
             "name": "ci-build",
             "binaryDir": "${sourceDir}/build",
             "generator": "Ninja",

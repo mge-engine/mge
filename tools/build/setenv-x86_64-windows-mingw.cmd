@@ -1,0 +1,6 @@
+SET INCLUDE=
+SET LIB=
+SET VCPKG_ROOT=%~dp0..\..\..\vcpkg
+SET PATH=%VCPKG_ROOT%;%PATH%
+SET CC=gcc
+SET CXX=
