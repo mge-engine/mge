@@ -7,20 +7,6 @@ on:
   pull_request:
 
 jobs:
-    check_cpp_changes:
-        name: Check for C++ file changes
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-            - name: Check for C++ file changes
-              id: check_changes
-              run: |
-                if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '(\.(cpp|hpp|c|h|cmake))|CMakeLists.txt|github-actions'; then
-                    echo "cpp_changed=true" >> $GITHUB_OUTPUT
-                else
-                    echo "cpp_changed=false" >> $GITHUB_OUTPUT
-                fi
     prepare-env-x64-windows:
         name: Prepare environment for x64 Windows
         runs-on: [self-hosted, msvc-x64-windows]
@@ -48,8 +34,7 @@ jobs:
     configure-msvc-x64-windows:
         name: Configure project for MSVC x64 Windows
         runs-on: [self-hosted, msvc-x64-windows]
-        needs: [checkout-x64-windows, check_cpp_changes]
-        if : ${{ step.check_cpp_changes.outputs.cpp_changed == 'true' }}
+        needs: [checkout-x64-windows]
         steps:
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1
