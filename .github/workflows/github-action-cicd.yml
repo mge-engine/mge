@@ -49,7 +49,7 @@ jobs:
         name: Configure project for MSVC x64 Windows
         runs-on: [self-hosted, msvc-x64-windows]
         needs: [checkout-x64-windows, check_cpp_changes]
-        if : ${{ steps.check_cpp_changes.outputs.cpp_changed == 'true' }}
+        if : ${{ step.check_cpp_changes.outputs.cpp_changed == 'true' }}
         steps:
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1
