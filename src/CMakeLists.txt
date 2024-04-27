@@ -3,6 +3,6 @@
 # All rights reserved.
 
 ADD_SUBDIRECTORY(mge)
-ADD_SUBDIRECTORY(modules)
-ADD_SUBDIRECTORY(test)
-ADD_SUBDIRECTORY(samples)
+#ADD_SUBDIRECTORY(modules)
+#ADD_SUBDIRECTORY(test)
+#ADD_SUBDIRECTORY(samples)
