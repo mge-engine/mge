@@ -160,18 +160,14 @@ jobs:
                   Write-Output "vcpkg does not exist, need to build"
                   Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
                 }
-            - name: Show the variable
-              run: |
-                Write-Output ${{ steps.check-vcpkg.outputs.vcpkg_found }}
-            - name: Conditional 1
-              if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
-              run: |
-                Write-Output "Building vcpkg because it was not found"
-            - name: Conditional 2
-              if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
-              run: |
-                Write-Output "Keeping vcpkg because it was found"
+            - name: Cache vcpkg
+              id: cache-vcpkg
+              uses: actions/cache@v2
+              with:
+                path: ${{ github.workspace }}/vcpkg
+                key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
             - name: Checkout vcpkg
+              if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
               uses: actions/checkout@v4
               with:
                 repository: mge-engine/vcpkg
