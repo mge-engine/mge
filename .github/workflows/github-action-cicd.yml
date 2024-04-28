@@ -140,6 +140,9 @@ jobs:
             - name: Show CMake version
               run: |
                 cmake --version
+            - name: Install Ninja
+              run: |
+                choco install ninja
             - name: Show Ninja version
               run: |
                 ninja --version
