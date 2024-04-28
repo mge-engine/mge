@@ -131,14 +131,6 @@ jobs:
               run: |
                 Write-Output $env:PATH
                 Write-Output $env:GITHUB_PATH
-    check-cmake-version-windows-latest:
-        name: Check cmake version (windows latest)
-        runs-on: windows-latest
-        needs: display-env-windows-latest
-        steps:
-            - name: Check CMake version
-              run: |
-                cmake --version
     check-python-version-windows-latest:
         name: Check python version (windows latest)
         runs-on: windows-latest
@@ -158,3 +150,12 @@ jobs:
             - name: Show CMake version
               run: |
                 cmake --version
+    checkout-windows-latest:
+        name: Checkout source code
+        runs-on: windows-latest
+        needs:  [install-cmake-windows-latest, check-python-version-windows-latest]
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+              with:
+                clean: false
