@@ -150,8 +150,8 @@ jobs:
             - name: Show CMake version
               run: |
                 cmake --version
-    build-windows-latest:
-        name: Configure and Build on windows-latest
+    checkout-windows-latest:
+        name: Checkout source code (windows latest)
         runs-on: windows-latest
         needs:  [install-cmake-windows-latest, check-python-version-windows-latest]
         steps:
@@ -165,12 +165,21 @@ jobs:
                 repository: mge-engine/vcpkg
                 path: ${{ github.workspace }}/vcpkg
                 clean: false
+    configure-msvc-windows-latest:
+        name: Configure project for MSVC Windows (windows latest)
+        runs-on: windows-latest
+        needs: [checkout-windows-latest]
+        steps:
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1
             - name: Configure project
               run: |
                 dir ${{ github.workspace }}
-                $env:CC = "cl.exe"
-                $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
-                cmake --preset=ci-build 
+                
+                
+                
+                
+#                $env:CC = "cl.exe"
+#                $env:CXX = "cl.exe"
+#                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
+#                cmake --preset=ci-build 
