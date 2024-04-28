@@ -185,4 +185,4 @@ jobs:
                 $env:VULKAN_SDK = "C:\VulkanSDK\1.3.280.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --preset=ci-build 
-# C:\Users\runneradmin\AppData\Local\vcpkg
+                cmake --build build --target all
