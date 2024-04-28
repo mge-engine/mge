@@ -123,8 +123,8 @@ jobs:
                 $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
                 cmake --build build --target test
 # -- windows latest runner
-    build-windows-latest:
-        name: Display environment (windows-latest)
+    build-msvc-windows-latest:
+        name: Build on Windows latest (MSVC)
         runs-on: windows-latest
         steps:
             - name: Display path
