@@ -127,7 +127,7 @@ jobs:
         name: Build x64-windows-msvc
         runs-on: windows-latest
         env: 
-            VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+            VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\vcpkg_binary_cache,readwrite"
         steps:
             - name: Display path
               run: |
@@ -158,6 +158,12 @@ jobs:
               with:
                 path: ${{ github.workspace }}/vcpkg
                 key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+            - name: Cache vcpkg binary cache
+              id: cache-vcpkg-binary
+              uses: actions/cache@v4
+              with:
+                path: ${{ github.workspace }}/vcpkg_binary_cache
+                key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
             - name: Check whether vcpkg exists
               id: check-vcpkg
               run: |
@@ -167,6 +173,11 @@ jobs:
                 } else {
                   Write-Output "vcpkg does not exist, need to build"
                   Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
+                }
+            - name: Create vcpkg cache directory
+              run: |
+                if (!(Test-Path "${{ github.workspace }}/vcpkg_binary_cache")) {
+                  New-Item -Path "${{ github.workspace }}/vcpkg_binary_cache" -ItemType Directory
                 }
             - name: Checkout vcpkg
               if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
