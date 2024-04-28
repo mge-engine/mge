@@ -150,6 +150,12 @@ jobs:
               uses: actions/checkout@v4
               with:
                 clean: false
+            - name: Cache vcpkg
+              id: cache-vcpkg
+              uses: actions/cache@v2
+              with:
+                path: ${{ github.workspace }}/vcpkg
+                key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
             - name: Check whether vcpkg exists
               id: check-vcpkg
               run: |
@@ -160,12 +166,6 @@ jobs:
                   Write-Output "vcpkg does not exist, need to build"
                   Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
                 }
-            - name: Cache vcpkg
-              id: cache-vcpkg
-              uses: actions/cache@v2
-              with:
-                path: ${{ github.workspace }}/vcpkg
-                key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
             - name: Checkout vcpkg
               if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
               uses: actions/checkout@v4
