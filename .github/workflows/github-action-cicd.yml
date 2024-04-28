@@ -170,7 +170,7 @@ jobs:
                 repository: mge/vcpkg
                 path: ./vcpkg
                 clean: false
-   configure-msvc-x64-windows:
+    configure-msvc-x64-windows:
        name: Configure project for MSVC x64 Windows
        runs-on: windows-latest
        needs: [checkout-windows-latest, checkout-vcpkg-windows-latest]
