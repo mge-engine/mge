@@ -174,7 +174,7 @@ jobs:
               uses: ilammy/msvc-dev-cmd@v1
             - name: Configure project
               run: |
-                dir ${{ github.workspace }}
+                Get-ChildItem -Path $Env:GITHUB_WORKSPACE
                 
                 
                 
