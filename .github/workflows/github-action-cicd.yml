@@ -150,6 +150,13 @@ jobs:
               uses: actions/checkout@v4
               with:
                 clean: false
+            - name: Check whether vcpkg exists
+              run: |
+                if (Test-Path "${{ github.workspace }}/vcpkg/vcpkg.exe") {
+                  Write-Output "vcpkg exists"
+                } else {
+                  Write-Output "vcpkg does not exist, need to build"
+                }
             - name: Checkout vcpkg
               uses: actions/checkout@v4
               with:
