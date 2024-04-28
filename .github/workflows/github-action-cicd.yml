@@ -171,10 +171,10 @@ jobs:
                 path: ./vcpkg
                 clean: false
     configure-msvc-x64-windows:
-       name: Configure project for MSVC x64 Windows
-       runs-on: windows-latest
-       needs: [checkout-windows-latest, checkout-vcpkg-windows-latest]
-       steps:
+        name: Configure project for MSVC x64 Windows
+        runs-on: windows-latest
+        needs: [checkout-windows-latest, checkout-vcpkg-windows-latest]
+        steps:
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1
             - name: Configure project
@@ -182,6 +182,4 @@ jobs:
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
-#                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-#                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
                 cmake --preset=ci-build 
