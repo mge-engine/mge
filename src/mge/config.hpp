@@ -10,7 +10,7 @@
 
 #ifdef _MSC_VER
 #    define MGE_COMPILER_MSVC 1
-#elif defined(__CLANG__)
+#elif defined(__clang__)
 #    define MGE_COMPILER_CLANG 1
 #elif defined(__GNUC__)
 #    define MGE_COMPILER_GCC 1
@@ -66,4 +66,3 @@ namespace mge {
  * Stringifies the arguments.
  */
 #define MGE_STRINGIFY(...) #__VA_ARGS__
-

@@ -3,16 +3,17 @@
 // All rights reserved.
 #include "mge/config.hpp"
 #ifdef MGE_OS_WINDOWS
-#    include <windows.h>
-
 #    include <DbgHelp.h>
-
 #    include <TlHelp32.h>
+#    include <windows.h>
 
 extern "C" {
 __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 }
 #    include <unordered_set>
+#endif
+#ifdef MGE_OS_MACOSX
+#    include "boost/boost_stacktrace.hpp"
 #endif
 
 #include "mge/core/stacktrace.hpp"
@@ -171,7 +172,9 @@ namespace mge {
         fill_stacktrace(current_thread, &context, frames, strings);
         CloseHandle(current_thread);
     }
-
+#elif defined(MGE_OS_MACOSX)
+    template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
+    {}
 #endif
     stacktrace::frame::frame(const void*      address,
                              std::string_view module,

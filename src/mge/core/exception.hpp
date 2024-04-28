@@ -238,7 +238,7 @@ namespace mge {
          * Overrides @c std::exception @c what function.
          * @return exception message
          */
-        const char* what() const override;
+        const char* what() const noexcept override;
 
         /**
          * Get current exception of this thread.

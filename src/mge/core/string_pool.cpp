@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/core/string_pool.hpp"
 #include <stdexcept>
+#include <string_view>
 
 namespace mge {
     string_pool::string_pool() {}
