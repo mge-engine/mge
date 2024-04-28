@@ -167,7 +167,7 @@ jobs:
             - name: Checkout vcpkg
               uses: actions/checkout@v4
               with:
-                repository: https://github.com/mge-engine/vcpkg.git
+                repository: mge-engine/vcpkg
                 branch: master
                 path: ./vcpkg
                 clean: false
