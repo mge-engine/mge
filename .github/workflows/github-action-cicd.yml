@@ -150,8 +150,8 @@ jobs:
             - name: Show CMake version
               run: |
                 cmake --version
-    checkout-windows-latest:
-        name: Checkout source code
+    build-windows-latest:
+        name: Configure and Build on windows-latest
         runs-on: windows-latest
         needs:  [install-cmake-windows-latest, check-python-version-windows-latest]
         steps:
@@ -159,22 +159,12 @@ jobs:
               uses: actions/checkout@v4
               with:
                 clean: false
-    checkout-vcpkg-windows-latest:
-        name: Checkout vcpkg
-        runs-on: windows-latest
-        needs:  [install-cmake-windows-latest, check-python-version-windows-latest]
-        steps:
             - name: Checkout vcpkg
               uses: actions/checkout@v4
               with:
                 repository: mge-engine/vcpkg
                 path: ./vcpkg
                 clean: false
-    configure-windows-latest:
-        name: Configure project for MSVC x64 Windows
-        runs-on: windows-latest
-        needs: [checkout-windows-latest, checkout-vcpkg-windows-latest]
-        steps:
             - name: Setup Microsoft Visual C++ 
               uses: ilammy/msvc-dev-cmd@v1
             - name: Configure project
