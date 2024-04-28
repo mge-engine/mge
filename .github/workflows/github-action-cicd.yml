@@ -127,7 +127,7 @@ jobs:
         name: Build x64-windows-msvc
         runs-on: windows-latest
         env: 
-            VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\vcpkg_binary_cache,readwrite"
+            VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
             - name: Display path
               run: |
