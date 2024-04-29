@@ -229,7 +229,7 @@ jobs:
             - name: Install Ninja
               run: |
                 choco install ninja
-            - name: Install doxygen
+            - name: Install doxygen.portable
               run: |
                 choco install doxygen
             - name: Checkout source code
