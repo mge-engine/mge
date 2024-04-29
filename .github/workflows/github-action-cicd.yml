@@ -186,7 +186,7 @@ jobs:
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
-                cmake --preset=ci-build --target documentation
+                cmake --build build --target documentation
             - name: Checkout gh-pages
               uses: actions/checkout@v4
               with:
