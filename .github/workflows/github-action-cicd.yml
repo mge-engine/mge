@@ -8,120 +8,120 @@ on:
 
 jobs:
 # -- self hosted windows runner
-    prepare-env-x64-windows:
-        name: Prepare environment for x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        steps:
-            - name: Display path
-              run: |
-                Write-Output $env:PATH
-                Write-Output $env:GITHUB_PATH
-            - name : Setup path to tools
-              run: |
-                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
-            - name: Display configured path
-              run: |
-                Write-Output $env:PATH
-                Write-Output $env:GITHUB_PATH
-    checkout-x64-windows:
-        name: Checkout source code
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs:  prepare-env-x64-windows
-        steps:
-            - name: Checkout source code
-              uses: actions/checkout@v4
-              with:
-                clean: false
-    configure-msvc-x64-windows:
-        name: Configure project for MSVC x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: [checkout-x64-windows]
-        steps:
-            - name: Setup Microsoft Visual C++ 
-              uses: ilammy/msvc-dev-cmd@v1
-            - name: Configure project
-              run: |
-                $env:CC = "cl.exe"
-                $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                cmake --preset=ci-build 
-    build-msvc-x64-windows:
-        name: Build project for MSVC x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: configure-msvc-x64-windows
-        steps:
-            - name: Setup Microsoft Visual C++ 
-              uses: ilammy/msvc-dev-cmd@v1
-            - name: Build project
-              run: |
-                $env:CC = "cl.exe"
-                $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                cmake --build build --target all
-    build-documentation-x64-windows:
-        name: Build documentation
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: configure-msvc-x64-windows
-        steps:
-            - name: Build documentation
-              run: |
-                $env:CC = "cl.exe"
-                $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                cmake --build build --target documentation
-    upload-gh-pages:
-        name: Upload documentation to gh-pages
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: build-documentation-x64-windows
-        steps:
-            - name : Setup path to tools
-              run: |
-                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
-            - name: Setup Microsoft Visual C++ 
-              uses: ilammy/msvc-dev-cmd@v1
-            - name: Checkout gh-pages
-              uses: actions/checkout@v4
-              with:
-                ref: gh-pages
-                path: ./build/gh-pages
-                clean: false
-            - name: Copy documentation for deployment
-              run: |
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                git config --global core.autocrlf true
-                git config --global user.email "schroeder.alexander@googlemail.com"
-                git config --global user.name "Alexander Schroeder"
-                $env:CURRENT_BRANCH = "${env:GITHUB_REF}".Replace('refs/heads/', '')
-                $env:CURRENT_EVENT = "${{ github.event_name }}"
-                echo "Branch: $env:CURRENT_BRANCH"
-                echo "Event: $env:CURRENT_EVENT"
-                python tools/ci/commit-gh-pages.py
-            - name: Push to gh-pages
-              uses: ad-m/github-push-action@v0.8.0
-              with:
-                branch: gh-pages
-                directory: ./build/gh-pages
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-    test-msvc-x64-windows:
-        name: Run tests for for MSVC x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: build-msvc-x64-windows
-        steps:
-            - name: Run tests
-              run: |
-                $env:CC = "cl.exe"
-                $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                cmake --build build --target test
+#    prepare-env-x64-windows:
+#        name: Prepare environment for x64 Windows
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        steps:
+#            - name: Display path
+#              run: |
+#                Write-Output $env:PATH
+#                Write-Output $env:GITHUB_PATH
+#            - name : Setup path to tools
+#              run: |
+#                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
+#            - name: Display configured path
+#              run: |
+#                Write-Output $env:PATH
+#                Write-Output $env:GITHUB_PATH
+#    checkout-x64-windows:
+#        name: Checkout source code
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        needs:  prepare-env-x64-windows
+#        steps:
+#            - name: Checkout source code
+#              uses: actions/checkout@v4
+#              with:
+#                clean: false
+#    configure-msvc-x64-windows:
+#        name: Configure project for MSVC x64 Windows
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        needs: [checkout-x64-windows]
+#        steps:
+#            - name: Setup Microsoft Visual C++ 
+#              uses: ilammy/msvc-dev-cmd@v1
+#            - name: Configure project
+#              run: |
+#                $env:CC = "cl.exe"
+#                $env:CXX = "cl.exe"
+#                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
+#                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+#                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+#                cmake --preset=ci-build 
+#    build-msvc-x64-windows:
+#        name: Build project for MSVC x64 Windows
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        needs: configure-msvc-x64-windows
+#        steps:
+#            - name: Setup Microsoft Visual C++ 
+#              uses: ilammy/msvc-dev-cmd@v1
+#            - name: Build project
+#              run: |
+#                $env:CC = "cl.exe"
+#                $env:CXX = "cl.exe"
+#                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
+#                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+#                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+#                cmake --build build --target all
+#    build-documentation-x64-windows:
+#        name: Build documentation
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        needs: configure-msvc-x64-windows
+#        steps:
+#            - name: Build documentation
+#              run: |
+#                $env:CC = "cl.exe"
+#                $env:CXX = "cl.exe"
+#                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
+#                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+#                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+#                cmake --build build --target documentation
+#    upload-gh-pages:
+#        name: Upload documentation to gh-pages
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        needs: build-documentation-x64-windows
+#        steps:
+#            - name : Setup path to tools
+#              run: |
+#                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
+#            - name: Setup Microsoft Visual C++ 
+#              uses: ilammy/msvc-dev-cmd@v1
+#            - name: Checkout gh-pages
+#              uses: actions/checkout@v4
+#              with:
+#                ref: gh-pages
+#                path: ./build/gh-pages
+#                clean: false
+#            - name: Copy documentation for deployment
+#              run: |
+#                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+#                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+#                git config --global core.autocrlf true
+#                git config --global user.email "schroeder.alexander@googlemail.com"
+#                git config --global user.name "Alexander Schroeder"
+#                $env:CURRENT_BRANCH = "${env:GITHUB_REF}".Replace('refs/heads/', '')
+#                $env:CURRENT_EVENT = "${{ github.event_name }}"
+#                echo "Branch: $env:CURRENT_BRANCH"
+#                echo "Event: $env:CURRENT_EVENT"
+#                python tools/ci/commit-gh-pages.py
+#            - name: Push to gh-pages
+#              uses: ad-m/github-push-action@v0.8.0
+#              with:
+#                branch: gh-pages
+#                directory: ./build/gh-pages
+#                github_token: ${{ secrets.GITHUB_TOKEN }}
+#    test-msvc-x64-windows:
+#        name: Run tests for for MSVC x64 Windows
+#        runs-on: [self-hosted, msvc-x64-windows]
+#        needs: build-msvc-x64-windows
+#        steps:
+#            - name: Run tests
+#              run: |
+#                $env:CC = "cl.exe"
+#                $env:CXX = "cl.exe"
+#                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
+#                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+#                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+#                cmake --build build --target test
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
         name: Build x64-windows-msvc
@@ -296,3 +296,34 @@ jobs:
                 $env:CXX = "cl.exe"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --preset=ci-build 
+            - name: Build documentation
+              run: |
+                $env:CC = "cl.exe"
+                $env:CXX = "cl.exe"
+                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
+                cmake --preset=ci-build 
+            - name: Checkout gh-pages
+              uses: actions/checkout@v4
+              with:
+                ref: gh-pages
+                path: ./build/gh-pages
+                clean: false
+            - name: Copy documentation for deployment
+              run: |
+                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+                git config --global core.autocrlf true
+                git config --global user.email "schroeder.alexander@googlemail.com"
+                git config --global user.name "Alexander Schroeder"
+                $env:CURRENT_BRANCH = "${env:GITHUB_REF}".Replace('refs/heads/', '')
+                $env:CURRENT_EVENT = "${{ github.event_name }}"
+                echo "Branch: $env:CURRENT_BRANCH"
+                echo "Event: $env:CURRENT_EVENT"
+                python tools/ci/commit-gh-pages.py
+            - name: Push to gh-pages
+              uses: ad-m/github-push-action@v0.8.0
+              with:
+                branch: gh-pages
+                directory: ./build/gh-pages
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+            
