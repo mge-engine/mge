@@ -218,7 +218,7 @@ jobs:
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --target test
     build-documentation-windows-latest:
-        name: Build x64-windows-msvc
+        name: Build documentation
         runs-on: windows-latest
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
@@ -229,7 +229,7 @@ jobs:
             - name: Install Ninja
               run: |
                 choco install ninja
-            - name: Install doxygen.portable
+            - name: Install doxygen.install
               run: |
                 choco install doxygen
             - name: Checkout source code
