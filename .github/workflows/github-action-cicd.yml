@@ -179,6 +179,8 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
+                $env:VIRTUAL_ENV = "${{ github.workspace }}\sphinx"      
+                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --preset=ci-build 
             - name: Build documentation
