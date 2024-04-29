@@ -190,6 +190,11 @@ jobs:
                 repository: mge-engine/vcpkg
                 path: ${{ github.workspace }}/vcpkg
                 clean: false
+            - name: Update vcpkg
+              if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
+              working-directory: ${{ github.workspace }}/vcpkg
+              run: |
+                git pull origin master
             - name: Export GitHub Actions cache environment variables
               uses: actions/github-script@v6
               with:
