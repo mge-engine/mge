@@ -6,8 +6,8 @@ MGE is an attempt to create a graphics and game engine putting modern concepts o
 
 ## Status
 
-* ![build-status-x64-windows-msvc](https://github.com/mge-engine/mge/actions/workflows/github-action-build-x64-windows.yml/badge.svg)
-* ![build-status-documentation](https://github.com/mge-engine/mge/actions/workflows/github-action-build-documentation.yml/badge.svg)
+* [![MGE CI/CD Build](https://github.com/mge-engine/mge/actions/workflows/github-action-cicd.yml/badge.svg)](https://github.com/mge-engine/mge/actions/workflows/github-action-cicd.yml)
+
 
 ## Table Of Contents
 

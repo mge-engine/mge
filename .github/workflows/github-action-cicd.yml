@@ -7,83 +7,188 @@ on:
   pull_request:
 
 jobs:
-    prepare-env-x64-windows:
-        name: Prepare environment for x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
+# -- windows latest runner - msvc
+    build-msvc-windows-latest:
+        name: Build x64-windows-msvc
+        runs-on: windows-latest
+        env: 
+            VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
-            - name: Display path
+            - name: Show Python version
               run: |
-                Write-Output $env:PATH
-                Write-Output $env:GITHUB_PATH
-            - name : Setup path to tools
+                python --version
+            - name: Install CMake
               run: |
-                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
-            - name: Display configured path
+                choco install cmake --version 3.29.2
+            - name: Install Ninja
               run: |
-                Write-Output $env:PATH
-                Write-Output $env:GITHUB_PATH
-    checkout-x64-windows:
-        name: Checkout source code
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs:  prepare-env-x64-windows
-        steps:
+                choco install ninja
             - name: Checkout source code
               uses: actions/checkout@v4
               with:
                 clean: false
-    configure-msvc-x64-windows:
-        name: Configure project for MSVC x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: [checkout-x64-windows]
-        steps:
+            - name: Cache vcpkg
+              id: cache-vcpkg
+              uses: actions/cache@v4
+              with:
+                path: ${{ github.workspace }}/vcpkg
+                key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+                restore-keys: |
+                  vcpkg-${{ runner.os }}-
+            - name: Cache vcpkg binary cache
+              id: cache-vcpkg-binary
+              uses: actions/cache@v4
+              with:
+                path: ${{ github.workspace }}/vcpkg_binary_cache
+                key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+                restore-keys: |
+                  vcpkg-binary-cache-${{ runner.os }}-
+            - name: Check whether vcpkg exists
+              id: check-vcpkg
+              run: |
+                if (Test-Path "${{ github.workspace }}/vcpkg/vcpkg.exe") {
+                  Write-Output "vcpkg exists"
+                  Write-Output "vcpkg_found=true" >> $env:GITHUB_OUTPUT
+                } else {
+                  Write-Output "vcpkg does not exist, need to build"
+                  Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
+                }
+            - name: Create vcpkg cache directory
+              run: |
+                if (!(Test-Path "${{ github.workspace }}/vcpkg_binary_cache")) {
+                  New-Item -Path "${{ github.workspace }}/vcpkg_binary_cache" -ItemType Directory
+                }
+            - name: Checkout vcpkg
+              if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
+              uses: actions/checkout@v4
+              with:
+                repository: mge-engine/vcpkg
+                path: ${{ github.workspace }}/vcpkg
+                clean: false
+            - name: Update vcpkg
+              if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
+              working-directory: ${{ github.workspace }}/vcpkg
+              run: |
+                git pull origin master
+            - name: Export GitHub Actions cache environment variables
+              uses: actions/github-script@v6
+              with:
+                script: |
+                    core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+                    core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');                
+            - name: Setup Vulkan
+              run: |
+                python tools/ci/vulkan.py
             - name: Setup Microsoft Visual C++ 
-              uses: ilammy/msvc-dev-cmd@v1
+              uses: ilammy/msvc-dev-cmd@v1           
             - name: Configure project
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.3.280.0"
+                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --preset=ci-build 
-    build-msvc-x64-windows:
-        name: Build project for MSVC x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: configure-msvc-x64-windows
-        steps:
-            - name: Setup Microsoft Visual C++ 
-              uses: ilammy/msvc-dev-cmd@v1
             - name: Build project
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                cmake --build build --target all
-    build-documentation-x64-windows:
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.3.280.0"
+                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
+                cmake --build build --parallel 8 --target all
+            - name: Run Tests
+              run: |
+                $env:CC = "cl.exe"
+                $env:CXX = "cl.exe"
+                $env:VULKAN_SDK = "C:\VulkanSDK\1.3.280.0"
+                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
+                cmake --build build --target test
+    build-documentation-windows-latest:
         name: Build documentation
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: configure-msvc-x64-windows
+        runs-on: windows-latest
+        env: 
+            VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
+            - name: Install CMake
+              run: |
+                choco install cmake --version 3.29.2
+            - name: Install Ninja
+              run: |
+                choco install ninja
+            - name: Install doxygen.install
+              run: |
+                choco install doxygen.install
+            - name: Checkout source code
+              uses: actions/checkout@v4
+              with:
+                clean: false
+            - name: Install Sphinx
+              run: |
+                python tools/ci/sphinx.py
+            - name: Cache vcpkg
+              id: cache-vcpkg
+              uses: actions/cache@v4
+              with:
+                path: ${{ github.workspace }}/vcpkg
+                key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+                restore-keys: |
+                  vcpkg-${{ runner.os }}-
+            - name: Cache vcpkg binary cache
+              id: cache-vcpkg-binary
+              uses: actions/cache@v4
+              with:
+                path: ${{ github.workspace }}/vcpkg_binary_cache
+                key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+                restore-keys: |
+                  vcpkg-binary-cache-${{ runner.os }}-
+            - name: Check whether vcpkg exists
+              id: check-vcpkg
+              run: |
+                if (Test-Path "${{ github.workspace }}/vcpkg/vcpkg.exe") {
+                  Write-Output "vcpkg exists"
+                  Write-Output "vcpkg_found=true" >> $env:GITHUB_OUTPUT
+                } else {
+                  Write-Output "vcpkg does not exist, need to build"
+                  Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
+                }
+            - name: Create vcpkg cache directory
+              run: |
+                if (!(Test-Path "${{ github.workspace }}/vcpkg_binary_cache")) {
+                  New-Item -Path "${{ github.workspace }}/vcpkg_binary_cache" -ItemType Directory
+                }
+            - name: Checkout vcpkg
+              if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
+              uses: actions/checkout@v4
+              with:
+                repository: mge-engine/vcpkg
+                path: ${{ github.workspace }}/vcpkg
+                clean: false
+            - name: Update vcpkg
+              if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
+              working-directory: ${{ github.workspace }}/vcpkg
+              run: |
+                git pull origin master
+            - name: Export GitHub Actions cache environment variables
+              uses: actions/github-script@v6
+              with:
+                script: |
+                    core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+                    core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');                
+            - name: Setup Microsoft Visual C++ 
+              uses: ilammy/msvc-dev-cmd@v1           
+            - name: Configure project
+              run: |
+                $env:CC = "cl.exe"
+                $env:CXX = "cl.exe"
+                $env:VIRTUAL_ENV = "${{ github.workspace }}\sphinx"      
+                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
+                cmake --preset=ci-build 
             - name: Build documentation
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
+                $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --target documentation
-    upload-gh-pages:
-        name: Upload documentation to gh-pages
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: build-documentation-x64-windows
-        steps:
-            - name : Setup path to tools
-              run: |
-                Write-Output "F:\arun\scoop\shims" >> $env:GITHUB_PATH
-            - name: Setup Microsoft Visual C++ 
-              uses: ilammy/msvc-dev-cmd@v1
             - name: Checkout gh-pages
               uses: actions/checkout@v4
               with:
@@ -92,7 +197,7 @@ jobs:
                 clean: false
             - name: Copy documentation for deployment
               run: |
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
+                $env:VIRTUAL_ENV = "${{ github.workspace }}\sphinx"      
                 $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
                 git config --global core.autocrlf true
                 git config --global user.email "schroeder.alexander@googlemail.com"
@@ -108,18 +213,4 @@ jobs:
                 branch: gh-pages
                 directory: ./build/gh-pages
                 github_token: ${{ secrets.GITHUB_TOKEN }}
-    test-msvc-x64-windows:
-        name: Run tests for for MSVC x64 Windows
-        runs-on: [self-hosted, msvc-x64-windows]
-        needs: build-msvc-x64-windows
-        steps:
-            - name: Run tests
-              run: |
-                $env:CC = "cl.exe"
-                $env:CXX = "cl.exe"
-                $env:VCPKG_ROOT = "F:\arun\_work\mge\vcpkg"
-                $env:VIRTUAL_ENV = "F:\arun\_work\mge\sphinx"      
-                $env:PATH = "$env:VIRTUAL_ENV/Scripts;" + $env:PATH
-                cmake --build build --target test
-
-
+            
