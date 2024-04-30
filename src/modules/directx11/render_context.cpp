@@ -159,4 +159,10 @@ namespace mge::dx11 {
         return result;
     }
 
+    mge::texture_ref render_context::create_texture(mge::texture_type type)
+    {
+        mge::texture_ref result;
+        return result;
+    }
+
 } // namespace mge::dx11

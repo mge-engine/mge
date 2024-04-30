@@ -13,6 +13,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_hardware_buffer.cpp
     test_vertex_format.cpp
     test_shader_type.cpp
+    test_texture.cpp
 )
 
 MGE_TEST(

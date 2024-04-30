@@ -6,7 +6,9 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_type.hpp"
+#include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/vertex_layout.hpp"
+
 #include <memory>
 
 namespace mge {
@@ -71,6 +73,14 @@ namespace mge {
          * @return command list
          */
         virtual command_list_ref create_command_list() = 0;
+
+        /**
+         * @brief Create a texture object.
+         *
+         * @param type texture type
+         * @return created texture
+         */
+        virtual texture_ref create_texture(texture_type type) = 0;
 
         /**
          * @brief Get swap chain of context.

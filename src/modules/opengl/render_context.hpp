@@ -33,6 +33,7 @@ namespace mge {
             mge::shader_ref       create_shader(shader_type t) override;
             mge::program_ref      create_program() override;
             mge::command_list_ref create_command_list() override;
+            mge::texture_ref      create_texture(texture_type type) override;
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const { return m_hdc; }

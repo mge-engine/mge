@@ -508,4 +508,10 @@ namespace mge::dx12 {
         }
     }
 
+    mge::texture_ref render_context::create_texture(texture_type type)
+    {
+        mge::texture_ref result;
+        return result;
+    }
+
 } // namespace mge::dx12

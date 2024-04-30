@@ -28,6 +28,7 @@ namespace mge::vulkan {
         shader_ref        create_shader(shader_type t) override;
         program_ref       create_program() override;
         command_list_ref  create_command_list() override;
+        texture_ref       create_texture(texture_type type) override;
 
         void initialize();
 

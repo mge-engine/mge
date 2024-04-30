@@ -521,6 +521,12 @@ namespace mge::vulkan {
 
     void render_context::end_draw() {}
 
+    texture_ref render_context::create_texture(texture_type type)
+    {
+        texture_ref result;
+        return result;
+    }
+
 #if 0
     void render_context::execute_on_frame(command_list* l)
     {
