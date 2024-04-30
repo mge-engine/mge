@@ -1,10 +1,6 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-
-// mge - Modern Game Engine
-// Copyright (c) 2017-2023 by Alexander Schroeder
-// All rights reserved.
 #pragma once
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/extent.hpp"
