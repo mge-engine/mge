@@ -63,9 +63,9 @@ namespace mge::script {
 
         /**
          * Provides gist of contained information.
-         * @param os output stream
+         * @param context format context
          */
-        void gist(std::ostream& os) const;
+        void gist(std::format_context& context) const;
 
     private:
         small_vector<std::optional<std::type_index>, 3> m_types;

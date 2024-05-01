@@ -21,28 +21,28 @@ namespace mge {
         }
     } // namespace vulkan
 
-    MGE_GIST_OUTPUT(VkLayerProperties)
+    inline void gist(const VkLayerProperties& p, std::format_context& ctx)
     {
-        os << "{Layer " << g.value->layerName << "}";
-        return os;
+        std::format_to(ctx.out(), "{{Layer {}}}", p.layerName);
     }
 
-    MGE_GIST_OUTPUT(VkExtensionProperties)
+    inline void gist(const VkExtensionProperties& p, std::format_context& ctx)
     {
-        os << "{Extension " << g.value->extensionName << "}";
-        return os;
+        std::format_to(ctx.out(), "{{Extension {}}}", p.extensionName);
     }
 
-    MGE_GIST_OUTPUT(VkPhysicalDeviceProperties)
+    inline void gist(const VkPhysicalDeviceProperties& p,
+                     std::format_context&              ctx)
     {
-        os << "{PhysicalDevice " << g.value->deviceName << "}";
-        return os;
+        std::format_to(ctx.out(), "{{PhysicalDevice {}}}", p.deviceName);
     }
 
-    MGE_GIST_OUTPUT(VkSurfaceFormatKHR)
+    inline void gist(const VkSurfaceFormatKHR& p, std::format_context& ctx)
     {
-        return os << "{VkSurfaceFormatKHR format=" << g.value->format
-                  << ", colorSpace=" << g.value->colorSpace << " }";
+        std::format_to(ctx.out(),
+                       "{{VkSurfaceFormatKHR format={}, colorSpace={}}}",
+                       static_cast<int>(p.format),
+                       static_cast<int>(p.colorSpace));
     }
 
     MGE_DETAILS_OUTPUT(VkLayerProperties)

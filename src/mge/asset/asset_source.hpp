@@ -54,9 +54,9 @@ namespace mge {
         /**
          * @brief Get factory details.
          *
-         * @param os output stream
+         * @param context format context
          */
-        virtual void gist(std::ostream& os) const = 0;
+        virtual void gist(std::format_context& context) const = 0;
 
         /**
          * @brief Set the mount point.

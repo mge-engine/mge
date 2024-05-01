@@ -15,7 +15,7 @@ namespace mge {
         bool             is_configured() const override;
         asset_access_ref access(const mge::path& p) override;
         bool             asset_exists(const mge::path& p) override;
-        void             gist(std::ostream& os) const override;
+        void             gist(std::format_context& context) const override;
 
     public:
         mge::path m_directory;
