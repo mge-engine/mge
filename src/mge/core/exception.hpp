@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/type_name.hpp"
 #include <any>
@@ -341,6 +342,11 @@ namespace mge {
             return *this;
         }
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "{}", what());
+        }
+
     private:
         using exception_info_map = std::map<std::type_index, std::any>;
         exception_info_map m_infos;
@@ -411,16 +417,6 @@ namespace mge {
  * @endcode
  */
 #define MGE_CALLED_FUNCTION(X) ::mge::exception::called_function(#X)
-
-    /**
-     * @brief Print exception message.
-     *
-     * @param os output stream
-     * @param ex exception
-     * @return @c os
-     */
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream&    os,
-                                            const exception& ex);
 
     /**
      * @brief Print exception details.
