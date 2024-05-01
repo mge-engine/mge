@@ -4,7 +4,7 @@
 #pragma once
 #include "boost/boost_operators.hpp"
 #include "mge/core/dllexport.hpp"
-#include <format>
+#include "mge/core/format.hpp"
 #include <iosfwd>
 #include <string_view>
 #include <tuple>
@@ -120,32 +120,23 @@ namespace mge {
          */
         uint32_t patch() const noexcept;
 
+        inline void format(std::format_context& ctx) const
+        {
+            if (patch() == 0) {
+                if (minor() == 0) {
+                    std::format_to(ctx.out(), "{}", major());
+                } else {
+                    std::format_to(ctx.out(), "{}.{}", major(), minor());
+                }
+            } else
+                std::format_to(ctx.out(),
+                               "{}.{}.{}",
+                               major(),
+                               minor(),
+                               patch());
+        }
+
     private:
         std::tuple<uint32_t, uint32_t, uint32_t> m_data;
     };
-
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream&           os,
-                                            const semantic_version& v);
-
 } // namespace mge
-
-template <typename C>
-struct std::formatter<mge::semantic_version, C>
-    : std::formatter<std::string_view, C>
-{
-    auto format(const mge::semantic_version& v, auto& ctx) const
-    {
-        if (v.patch() == 0) {
-            if (v.minor() == 0) {
-                return std::format_to(ctx.out(), "{}", v.major());
-            } else {
-                return std::format_to(ctx.out(), "{}.{}", v.major(), v.minor());
-            }
-        } else
-            return std::format_to(ctx.out(),
-                                  "{}.{}.{}",
-                                  v.major(),
-                                  v.minor(),
-                                  v.patch());
-    }
-};
