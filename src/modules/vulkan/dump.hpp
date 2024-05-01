@@ -45,30 +45,46 @@ namespace mge {
                        static_cast<int>(p.colorSpace));
     }
 
-    MGE_DETAILS_OUTPUT(VkLayerProperties)
+    inline void details(const VkLayerProperties& p, std::format_context& ctx)
     {
-        os << "{Layer "
-           << "layerName=" << d.value->layerName << ", "
-           << "description=" << d.value->description << ", "
-           << "specVersion=";
-        vulkan::dump_version(os, d.value->specVersion);
-        os << ", "
-           << "implementationVersion=";
-        vulkan::dump_version(os, d.value->implementationVersion);
-        os << "}";
-        return os;
+        auto spec_major = VK_API_VERSION_MAJOR(p.specVersion);
+        auto spec_minor = VK_API_VERSION_MINOR(p.specVersion);
+        auto spec_patch = VK_API_VERSION_PATCH(p.specVersion);
+
+        auto impl_major = VK_API_VERSION_MAJOR(p.implementationVersion);
+        auto impl_minor = VK_API_VERSION_MINOR(p.implementationVersion);
+        auto impl_patch = VK_API_VERSION_PATCH(p.implementationVersion);
+
+        std::format_to(ctx.out(),
+                       "{{Layer layerName={}, description={}, "
+                       "specVersion={}.{}.{}, implementationVersion={}.{}.{}}}",
+                       p.layerName,
+                       p.description,
+                       spec_major,
+                       spec_minor,
+                       spec_patch,
+                       impl_major,
+                       impl_minor,
+                       impl_patch);
     }
 
-    MGE_DETAILS_OUTPUT(VkExtensionProperties)
+    inline void details(const VkExtensionProperties& p,
+                        std::format_context&         ctx)
     {
-        os << "{Extension extensionName=" << d.value->extensionName
-           << ", specVersion=";
-        vulkan::dump_version(os, d.value->specVersion);
-        os << "}";
-        return os;
+        auto spec_major = VK_API_VERSION_MAJOR(p.specVersion);
+        auto spec_minor = VK_API_VERSION_MINOR(p.specVersion);
+        auto spec_patch = VK_API_VERSION_PATCH(p.specVersion);
+
+        std::format_to(ctx.out(),
+                       "{{Extension extensionName={}, specVersion={}.{}.{} }}",
+                       p.extensionName,
+                       spec_major,
+                       spec_minor,
+                       spec_patch);
     }
 
-    MGE_DETAILS_OUTPUT(VkPhysicalDeviceProperties)
+    inline void details(const VkPhysicalDeviceProperties& p,
+                        std::format_context&              ctx)
     {
         // TODO: print more as needed
         // uint32_t                            apiVersion;
@@ -79,14 +95,25 @@ namespace mge {
         // char deviceName[VK_MAX_PHYSICAL_DEVICE_NAME_SIZE]; uint8_t
         // pipelineCacheUUID[VK_UUID_SIZE]; VkPhysicalDeviceLimits limits;
         // VkPhysicalDeviceSparseProperties    sparseProperties;
-        os << "{PhysicalDevice deviceName=" << d.value->deviceName << "}";
-        return os;
+
+        auto api_major = VK_VERSION_MAJOR(p.apiVersion);
+        auto api_minor = VK_VERSION_MINOR(p.apiVersion);
+        auto api_patch = VK_VERSION_PATCH(p.apiVersion);
+
+        std::format_to(ctx.out(),
+                       "{{PhysicalDevice deviceName={}, apiVersion={}.{}.{} }}",
+                       p.deviceName,
+                       api_major,
+                       api_minor,
+                       api_patch);
     }
 
-    MGE_DETAILS_OUTPUT(VkSurfaceFormatKHR)
+    inline void details(const VkSurfaceFormatKHR& p, std::format_context& ctx)
     {
-        return os << "{VkSurfaceFormatKHR format=" << d.value->format
-                  << ", colorSpace=" << d.value->colorSpace << " }";
+        std::format_to(ctx.out(),
+                       "{{VkSurfaceFormatKHR format={}, colorSpace={}}}",
+                       static_cast<int>(p.format),
+                       static_cast<int>(p.colorSpace));
     }
 
 } // namespace mge
