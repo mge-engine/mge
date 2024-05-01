@@ -4,7 +4,8 @@
 #pragma once
 #include "boost/boost_operators.hpp"
 #include "mge/asset/dllexport.hpp"
-#include <iosfwd>
+#include "mge/core/format.hpp"
+
 #include <string>
 #include <string_view>
 
@@ -66,6 +67,11 @@ namespace mge {
          */
         std::string_view subtype() const;
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "{}/{}", type(), subtype());
+        }
+
         bool operator==(const asset_type& t) const;
         bool operator<(const asset_type& t) const;
 
@@ -75,9 +81,6 @@ namespace mge {
         std::string m_type;
         std::string m_subtype;
     };
-
-    MGEASSET_EXPORT std::ostream& operator<<(std::ostream&     os,
-                                             const asset_type& t);
 
     namespace literals {
         MGEASSET_EXPORT asset_type operator""_at(const char* s, size_t l);

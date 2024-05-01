@@ -38,11 +38,6 @@ namespace mge {
         }
     }
 
-    std::ostream& operator<<(std::ostream& os, const asset_type& t)
-    {
-        return os << t.type() << "/" << t.subtype();
-    }
-
     asset_type asset_type::parse(std::string_view sv)
     {
         auto p = sv.find_first_of('/');
