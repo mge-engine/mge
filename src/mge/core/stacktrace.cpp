@@ -242,26 +242,28 @@ namespace mge {
 
     stacktrace::size_type stacktrace::size() const { return m_frames.size(); }
 
-    std::ostream& operator<<(std::ostream& os, const stacktrace& s)
+    void stacktrace::format(std::format_context& ctx) const
     {
         uint32_t fno = 0;
-        for (const auto& f : s) {
-            os << "#" << fno << " " << f.address() << " in ";
+        for (const auto& f : *this) {
+            std::format_to(ctx.out(), "#{} {} in ", fno, f.address());
             if (f.name().empty()) {
-                os << "??";
+                std::format_to(ctx.out(), "??");
             } else {
-                os << f.name();
+                std::format_to(ctx.out(), "{}", f.name());
             }
             if (!f.source_file().empty()) {
-                os << " at " << f.source_file() << ":" << f.source_line();
+                std::format_to(ctx.out(),
+                               " at {}:{}",
+                               f.source_file(),
+                               f.source_line());
             }
             if (!f.module().empty()) {
-                os << " of " << f.module();
+                std::format_to(ctx.out(), " of {}", f.module());
             }
-            os << "\n";
+            std::format_to(ctx.out(), "\n");
             ++fno;
         }
-        return os;
     }
 
 #if 0

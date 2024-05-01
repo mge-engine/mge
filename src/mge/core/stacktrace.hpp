@@ -4,10 +4,12 @@
 /** @file */
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/string_pool.hpp"
 #include <string>
 #include <string_view>
 #include <vector>
+
 namespace mge {
 
     /**
@@ -179,19 +181,16 @@ namespace mge {
          */
         bool operator!=(const stacktrace& s) const;
 
+        /**
+         * @brief Format stack trace.
+         *
+         * @param ctx format context
+         */
+        void format(std::format_context& ctx) const;
+
     private:
         frame_vector m_frames;
         string_pool  m_strings;
     };
-
-    /**
-     * @brief Dump stack into stream.
-     *
-     * @param os output stream
-     * @param s stack backtrace
-     * @return @c os
-     */
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream&     os,
-                                            const stacktrace& s);
 
 } // namespace mge
