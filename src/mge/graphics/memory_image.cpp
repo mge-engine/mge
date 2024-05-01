@@ -14,7 +14,7 @@ namespace mge {
         , m_data_size(0)
     {
         if (size == 0) {
-            size = extent_.area() * mge::binary_size(format_);
+            size = extent_.area() * format_.binary_size();
             if (size == 0) {
                 MGE_THROW(illegal_argument)
                     << "Size must be specified for format " << format_;
@@ -34,7 +34,7 @@ namespace mge {
         , m_data_size(0)
     {
         if (size == 0) {
-            size = extent_.area() * mge::binary_size(format_);
+            size = extent_.area() * format_.binary_size();
             if (size == 0) {
                 MGE_THROW(illegal_argument)
                     << "Size must be specified for format " << format_;

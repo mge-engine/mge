@@ -11,9 +11,13 @@ TEST(texture, set_data)
     auto              ctx = std::make_shared<MOCK_render_context>();
     MOCK_texture      tex(*ctx, mge::texture_type::TYPE_2D);
     mge::extent       ext(1024, 1024);
-    mge::memory_image img(mge::image_format::RGBA_BYTE, ext);
+    mge::memory_image img(
+        mge::image_format(mge::image_format::data_format::RGBA,
+                          mge::data_type::UINT8),
+        ext);
     EXPECT_CALL(tex,
-                set_data(mge::image_format::RGBA_BYTE,
+                set_data(mge::image_format(mge::image_format::data_format::RGBA,
+                                           mge::data_type::UINT8),
                          ext,
                          img.data(),
                          img.binary_size()))

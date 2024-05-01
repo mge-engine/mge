@@ -80,7 +80,8 @@ namespace mge {
                                                STBI_rgb_alpha);
         try {
             mge::image_ref result = std::make_shared<mge::memory_image>(
-                mge::image_format::RGBA_BYTE,
+                mge::image_format(mge::image_format::data_format::RGBA,
+                                  mge::data_type::UINT8),
                 mge::extent(x, y),
                 loaded,
                 false,

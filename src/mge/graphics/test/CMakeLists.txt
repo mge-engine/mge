@@ -14,6 +14,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_vertex_format.cpp
     test_shader_type.cpp
     test_texture.cpp
+    test_image_format.cpp
 )
 
 MGE_TEST(
