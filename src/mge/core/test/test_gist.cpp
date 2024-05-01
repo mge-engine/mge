@@ -50,6 +50,10 @@ TEST(gist, has_gist)
     EXPECT_TRUE(mge::has_gist_method<has_gist>);
     auto s = std::format("{}", gg);
     EXPECT_STREQ("gist from has_gist", s.c_str());
+
+    std::stringstream ss;
+    ss << mge::gist(g);
+    EXPECT_STREQ("gist from has_gist", ss.str().c_str());
 }
 
 struct no_gist
