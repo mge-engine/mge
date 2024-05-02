@@ -2,10 +2,11 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
-#include <iosfwd>
+
 
 namespace mge {
 
@@ -43,16 +44,13 @@ namespace mge {
         point& operator=(const point&) = default;
         point& operator=(point&&) = default;
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "point{{x={}, y={}}}", x, y);
+        }
+
         uint32_t x; //!< x coordinate
         uint32_t y; //!< y coordinate
     };
 
-    /**
-     * @brief Stream output operator.
-     * @param os output stream
-     * @param p  point
-     * @return @c os
-     */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os,
-                                                const point&  p);
 } // namespace mge

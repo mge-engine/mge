@@ -4,7 +4,6 @@
 
 SET(mgegraphics_sources
     render_system.cpp
-    point.cpp
     window_options.cpp
     window.cpp
     monitor.cpp
