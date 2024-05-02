@@ -2,8 +2,8 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
-#include <iosfwd>
 
 namespace mge {
 
@@ -133,6 +133,11 @@ namespace mge {
          */
         bool operator!=(const rgb_color& c) const;
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "rgb_color{{r={}, g={}, b={}}}", r, g, b);
+        }
+
         float r; //!< red
         float g; //!< green
         float b; //!< blue
@@ -144,12 +149,4 @@ namespace mge {
      */
     MGEGRAPHICS_EXPORT rgb_color operator"" _rgb(const char*, size_t);
 
-    /**
-     * Stream dump operator.
-     * @param o output stream
-     * @param c color to dump
-     * @return @c o
-     */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&    o,
-                                                const rgb_color& c);
 } // namespace mge

@@ -37,12 +37,6 @@ namespace mge {
         return r != c.r || g != c.g || b != c.b;
     }
 
-    std::ostream& operator<<(std::ostream& o, const rgb_color& c)
-    {
-        return o << "rgb_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b
-                 << "]";
-    }
-
     rgb_color operator"" _rgb(const char* name, size_t)
     {
         return rgb_color(name);

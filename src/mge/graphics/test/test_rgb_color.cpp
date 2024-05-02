@@ -21,5 +21,5 @@ TEST(rgb_color, stream_output)
     rgb_color         c("orange");
     std::stringstream ss;
     ss << c;
-    EXPECT_EQ(ss.str(), std::string("rgb_color[r=1, g=0.647059, b=0]"));
+    EXPECT_EQ(ss.str(), std::string("rgb_color{r=1, g=0.64705884, b=0}"));
 }
