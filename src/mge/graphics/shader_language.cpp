@@ -32,9 +32,4 @@ namespace mge {
             return false;
         }
     }
-
-    std::ostream& operator<<(std::ostream& os, const shader_language& l)
-    {
-        return os << l.name() << " " << l.version();
-    }
 } // namespace mge

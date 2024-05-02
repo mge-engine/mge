@@ -2,10 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/core/semantic_version.hpp"
 #include "mge/graphics/dllexport.hpp"
 
-#include <iosfwd>
 #include <string>
 #include <string_view>
 
@@ -73,11 +73,14 @@ namespace mge {
          */
         bool compatible(const shader_language& other) const;
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "{} {}", m_name, m_version);
+        }
+
     private:
         std::string      m_name;
         semantic_version m_version;
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&          os,
-                                                const shader_language& l);
 } // namespace mge
