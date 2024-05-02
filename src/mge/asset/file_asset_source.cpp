@@ -55,10 +55,12 @@ namespace mge {
         return std::filesystem::exists(file_path);
     }
 
-    void file_asset_source::gist(std::ostream& os) const
+    void file_asset_source::gist(std::format_context& context) const
     {
-        os << "{type: file, mount_point: " << m_mount_point.string()
-           << ", directory: " << m_directory.string() << "}";
+        std::format_to(context.out(),
+                       "{{type: file, mount_point: {}, directory: {}}}",
+                       m_mount_point.string(),
+                       m_directory.string());
     }
 
 } // namespace mge

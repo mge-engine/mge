@@ -2,9 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
-#include <iosfwd>
 
 namespace mge {
     /**
@@ -29,12 +29,12 @@ namespace mge {
         extent& operator=(const extent&) = default;
         extent& operator=(extent&&) = default;
 
-        bool operator==(const extent& e) const
+        constexpr bool operator==(const extent& e) const
         {
             return width == e.width && height == e.height;
         }
 
-        bool operator!=(const extent& e) const
+        constexpr bool operator!=(const extent& e) const
         {
             return width != e.width || height != e.height;
         }
@@ -44,10 +44,16 @@ namespace mge {
             return static_cast<size_t>(width) * static_cast<size_t>(height);
         }
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(),
+                           "extent{{width={}, height={}}}",
+                           width,
+                           height);
+        }
+
         uint32_t width;
         uint32_t height;
     };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream& os,
-                                                const extent& d);
 } // namespace mge

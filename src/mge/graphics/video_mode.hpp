@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 
@@ -65,9 +66,16 @@ namespace mge {
         {
             return this->extent != m.extent || !is_refresh_rate(m.refresh_rate);
         }
-    };
 
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&     os,
-                                                const video_mode& m);
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "{}x{}", extent.width, extent.height);
+            if (refresh_rate == ANY_REFRESH_RATE) {
+                std::format_to(ctx.out(), "@ANY");
+            } else {
+                std::format_to(ctx.out(), "@{}", refresh_rate);
+            }
+        }
+    };
 
 } // namespace mge

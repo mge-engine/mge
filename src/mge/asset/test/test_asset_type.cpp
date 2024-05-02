@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/asset/asset_type.hpp"
 #include "test/googletest.hpp"
+#include "test/test_format.hpp"
 #include "test/test_stream_op.hpp"
 #include <iostream>
 #include <map>
@@ -19,6 +20,12 @@ TEST(asset_type, output)
 {
     mge::asset_type t("image", "jpeg");
     mge::test_stream_output(t, "image/jpeg");
+}
+
+TEST(asset_type, format_to)
+{
+    mge::asset_type t("image", "jpeg");
+    mge::test_format(t, "image/jpeg");
 }
 
 TEST(asset_type, literals)

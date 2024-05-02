@@ -87,10 +87,4 @@ namespace mge {
     {
         return std::get<2>(m_data);
     }
-
-    std::ostream& operator<<(std::ostream& os, const semantic_version& v)
-    {
-        return os << std::format("{}", v);
-    }
-
 } // namespace mge

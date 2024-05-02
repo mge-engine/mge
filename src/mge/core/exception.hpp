@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/stacktrace.hpp"
 #include "mge/core/type_name.hpp"
 #include <any>
@@ -34,6 +35,8 @@ namespace mge {
                 : m_ex(ex)
             {}
             inline const mge::exception* ex() const noexcept { return m_ex; }
+
+            inline void format(std::format_context& ctx) const;
 
         private:
             const mge::exception* m_ex;
@@ -341,6 +344,11 @@ namespace mge {
             return *this;
         }
 
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(), "{}", what());
+        }
+
     private:
         using exception_info_map = std::map<std::type_index, std::any>;
         exception_info_map m_infos;
@@ -381,6 +389,62 @@ namespace mge {
         mge::exception m_value;
     };
 
+    inline void
+    exception::exception_details::format(std::format_context& ctx) const
+    {
+        if (ex()) {
+            std::format_to(ctx.out(), "Exception details:\n");
+            auto type = ex()->get<mge::exception::type_name>();
+            if (type) {
+                std::format_to(ctx.out(), "Exception type: {}\n", type.value());
+            } else {
+                std::format_to(ctx.out(),
+                               "Exception type: unknown mge::exception\n");
+            }
+
+            auto file = ex()->get<mge::exception::source_file>();
+            auto line = ex()->get<mge::exception::source_line>();
+            if (file && line) {
+                std::format_to(ctx.out(),
+                               "Exception location: {}:{}\n",
+                               file.value(),
+                               line.value());
+            }
+
+            auto function = ex()->get<mge::exception::function>();
+            if (function) {
+                std::format_to(ctx.out(),
+                               "Exception raising function: {}\n",
+                               function.value());
+            }
+
+            auto called_function = ex()->get<mge::exception::called_function>();
+            if (called_function) {
+                std::format_to(ctx.out(),
+                               "Calling library/system function: {}\n",
+                               called_function.value());
+            }
+
+            auto stack = ex()->get<mge::exception::stack>();
+            if (stack) {
+                std::format_to(ctx.out(),
+                               "Exception stack: {}\n",
+                               stack.value());
+            }
+
+            std::format_to(ctx.out(), "Exception message: {}\n", ex()->what());
+
+            auto cause = ex()->get<mge::exception::cause>();
+            if (cause) {
+                std::format_to(ctx.out(),
+                               "Exception caused by:\n{}",
+                               cause.value().details());
+            }
+        } else {
+            std::format_to(ctx.out(), "Invalid exception details\n");
+        }
+    }
+
 /**
  * Throw exception instance.
  * @param ex exception type
@@ -411,26 +475,6 @@ namespace mge {
  * @endcode
  */
 #define MGE_CALLED_FUNCTION(X) ::mge::exception::called_function(#X)
-
-    /**
-     * @brief Print exception message.
-     *
-     * @param os output stream
-     * @param ex exception
-     * @return @c os
-     */
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream&    os,
-                                            const exception& ex);
-
-    /**
-     * @brief Print exception details.
-     *
-     * @param os output stream
-     * @param details wrapped exception
-     * @return @c os
-     */
-    MGECORE_EXPORT std::ostream&
-    operator<<(std::ostream& os, const exception::exception_details& details);
 
     /**
      * @brief Re-throws the current exception.

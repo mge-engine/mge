@@ -4,12 +4,9 @@
 
 SET(mgegraphics_sources
     render_system.cpp
-    extent.cpp
-    point.cpp
     window_options.cpp
     window.cpp
     monitor.cpp
-    video_mode.cpp
     render_context.cpp
     shader_type.cpp
     shader_language.cpp

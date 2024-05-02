@@ -9,72 +9,151 @@
 #include <type_traits>
 namespace mge {
 
-    /**
-     * @brief Helper type for details output.
-     *
-     * @tparam T contained type
-     */
     template <typename T> struct details_type
     {
-        explicit details_type(const T* value_)
-            : value(value_)
-        {}
-
-        details_type(const details_type<T>&) = default;
-        details_type(details_type<T>&&) = default;
-
-        details_type<T>& operator=(const details_type<T>&) = default;
-        details_type<T>& operator=(details_type<T>&&) = default;
-
-        /**
-         * @brief Access to the value to be printed.
-         */
         const T* value;
     };
 
-    template <typename T> details_type<T> details(const T& t)
+    template <typename T> inline details_type<T> details(const T& t)
     {
         return details_type<T>(&t);
     }
 
     template <typename T>
-    std::ostream& operator<<(std::ostream& os, const details_type<T>& g)
+    concept has_details_method = requires(T obj, std::format_context& ctx) {
+        {
+            obj.details(ctx)
+        } -> std::convertible_to<void>;
+    };
+
+    template <typename T>
+    concept exists_details_function =
+        requires(T obj, std::format_context& ctx) {
+            {
+                ::mge::details(obj, ctx)
+            } -> std::convertible_to<void>;
+        };
+} // namespace mge
+
+template <typename T, typename C>
+    requires std::is_arithmetic_v<T>
+struct std::formatter<mge::details_type<T>, C> : public std::formatter<T, C>
+{
+    template <typename FormatContext>
+    auto format(mge::details_type<T> g, FormatContext& ctx) const
     {
-        if constexpr (mge::is_shared_ptr_v<T> || std::is_pointer_v<T>) {
-            if (g.value) {
-                os << mge::type_name<T>() << " -> " << details(*g.value);
-            } else {
-                os << mge::type_name<T>() << " -> nullptr";
-            }
-        } else if constexpr (std::is_trivial_v<T> && !std::is_class_v<T>) {
-            os << *g.value;
-        } else {
-            if constexpr (requires { g.value->details(os); }) {
-                if (g.value) {
-                    g.value->details(os);
-                } else {
-                    os << mge::type_name<T>() << " -> nullptr";
-                }
-            } else {
-                os << mge::type_name<T>() << "@" << (void*)g.value;
-            }
+        if (!g.value) {
+            return std::format_to(ctx.out(), "nullptr");
         }
+        return std::formatter<T, C>::format(*g.value, ctx);
+    }
+};
+
+template <typename T, typename C>
+    requires std::is_pointer_v<T>
+struct std::formatter<mge::details_type<T>, C>
+    : public std::formatter<std::string_view, C>
+{
+    template <typename FormatContext>
+    auto format(mge::details_type<T> g, FormatContext& ctx) const
+    {
+        if (!g.value) {
+            return std::format_to(ctx.out(), "nullptr");
+        } else if (*g.value == nullptr) {
+            return std::format_to(ctx.out(),
+                                  "{} -> nullptr",
+                                  mge::type_name<T>());
+        } else {
+            return std::format_to(ctx.out(),
+                                  "{} -> {}",
+                                  mge::type_name<T>(),
+                                  mge::details(**g.value));
+        }
+    }
+};
+
+template <typename T, typename C>
+    requires mge::is_shared_ptr_v<T>
+struct std::formatter<mge::details_type<T>, C>
+    : public std::formatter<std::string_view, C>
+{
+    template <typename FormatContext>
+    auto format(mge::details_type<T> g, FormatContext& ctx) const
+    {
+        if (!g.value) {
+            return std::format_to(ctx.out(), "nullptr");
+        } else if (g.value->get() == nullptr) {
+            return std::format_to(ctx.out(),
+                                  "{} -> nullptr",
+                                  mge::type_name<T::element_type>());
+        } else {
+            return std::format_to(ctx.out(),
+                                  "std::shared_ptr<{}> -> {}",
+                                  mge::type_name<T::element_type>(),
+                                  mge::details(**g.value));
+        }
+    }
+};
+
+template <typename T, typename C>
+    requires mge::has_details_method<T> &&
+             !mge::exists_details_function<T>
+             struct std::formatter<mge::details_type<T>, C>
+    : public std::formatter<std::string_view, C>
+{
+    template <typename FormatContext>
+    auto format(mge::details_type<T> g, FormatContext& ctx) const
+    {
+        if (!g.value) {
+            return std::format_to(ctx.out(), "nullptr");
+        }
+        g.value->details(ctx);
+        return ctx.out();
+    }
+};
+
+template <typename T, typename C>
+    requires mge::exists_details_function<T> &&
+             !mge::has_details_method<T>
+             struct std::formatter<mge::details_type<T>, C>
+    : public std::formatter<std::string_view, C>
+{
+    template <typename FormatContext>
+    auto format(mge::details_type<T> g, FormatContext& ctx) const
+    {
+        if (!g.value) {
+            return std::format_to(ctx.out(), "nullptr");
+        }
+        ::mge::details(*g.value, ctx);
+        return ctx.out();
+    }
+};
+
+template <typename T, typename C>
+    requires !mge::has_details_method<T> && !mge::exists_details_function<T> &&
+             !std::is_pointer_v<T> && !mge::is_shared_ptr_v<T> &&
+             !std::is_arithmetic_v<T>
+             struct std::formatter<mge::details_type<T>, C>
+    : public std::formatter<std::string_view, C>
+{
+    template <typename FormatContext>
+    auto format(mge::details_type<T> g, FormatContext& ctx) const
+    {
+        return std::format_to(ctx.out(),
+                              "{}@{}",
+                              mge::type_name<T>(),
+                              (void*)g.value);
+    }
+};
+
+namespace mge {
+
+    template <typename T>
+    inline std::ostream& operator<<(std::ostream&               os,
+                                    const mge::details_type<T>& g)
+    {
+        std::ostream_iterator<char> out(os);
+        std::format_to(out, "{}", g);
         return os;
     }
-
-/**
- * @brief Helper macro for details implementation.
- *
- * Provides the prototype for an out of class gist
- * print helper operator. The parameters are
- *
- * - @c os output stream
- * - @c d details helper of type @c TYPE
- *
- * @param TYPE type the details output is implemented for
- */
-#define MGE_DETAILS_OUTPUT(TYPE)                                               \
-    template <>                                                                \
-    inline std::ostream& operator<<(std::ostream&             os,              \
-                                    const details_type<TYPE>& d)
 } // namespace mge

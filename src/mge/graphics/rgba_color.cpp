@@ -47,10 +47,4 @@ namespace mge {
         return r != c.r || g != c.g || b != c.b || a != c.a;
     }
 
-    std::ostream& operator<<(std::ostream& o, const rgba_color& c)
-    {
-        return o << "rgba_color[r=" << c.r << ", g=" << c.g << ", b=" << c.b
-                 << ", a=" << c.a << "]";
-    }
-
 } // namespace mge

@@ -36,28 +36,27 @@ namespace mge::script {
 
     const signature& signature::empty_signature() { return s_empty_signature; }
 
-    void signature::gist(std::ostream& os) const
+    void signature::gist(std::format_context& ctx) const
     {
-        os << "(";
+        std::format_to(ctx.out(), "(");
         auto it = m_types.begin();
         if (it != m_types.end()) {
             if (it->has_value()) {
-                os << it->value().name();
+                std::format_to(ctx.out(), "{}", it->value().name());
             } else {
-                os << "?";
+                std::format_to(ctx.out(), "?");
             }
             ++it;
             while (it != m_types.end()) {
-                os << ", ";
                 if (it->has_value()) {
-                    os << it->value().name();
+                    std::format_to(ctx.out(), ", {}", it->value().name());
                 } else {
-                    os << "?";
+                    std::format_to(ctx.out(), ", ?");
                 }
                 ++it;
             }
         }
-        os << ")";
+        std::format_to(ctx.out(), ")");
     }
 
 } // namespace mge::script
