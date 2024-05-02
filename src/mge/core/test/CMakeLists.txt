@@ -37,6 +37,7 @@ SET(MGECORE_TEST_SOURCES
     test_lexical_cast.cpp
     test_concepts.cpp
     test_json.cpp
+    test_enum.cpp
 )
 
 MGE_TEST(
