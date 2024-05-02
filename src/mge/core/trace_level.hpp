@@ -6,6 +6,8 @@
 
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/enum.hpp"
+
 #include <cstdint>
 #include <iosfwd>
 
@@ -31,7 +33,4 @@ namespace mge {
         FATAL = 16,      //!< fatal message, program will exit
         ALL = 31         //!< special level for enabling/disabling
     };
-
-    MGECORE_EXPORT std::ostream& operator<<(std::ostream&      os,
-                                            const trace_level& l);
 } // namespace mge
