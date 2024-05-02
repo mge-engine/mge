@@ -7,7 +7,6 @@ SET(mgegraphics_sources
     window_options.cpp
     window.cpp
     monitor.cpp
-    video_mode.cpp
     render_context.cpp
     shader_type.cpp
     shader_language.cpp
