@@ -40,5 +40,5 @@ TEST(rgba_color, stream_output)
     rgba_color        c1(0.1f, 0.2f, 0.3f, 1.0f);
     std::stringstream ss;
     ss << c1;
-    EXPECT_EQ(ss.str(), "rgba_color[r=0.1, g=0.2, b=0.3, a=1]");
+    EXPECT_EQ(ss.str(), "rgba_color{r=0.1, g=0.2, b=0.3, a=1}");
 }
