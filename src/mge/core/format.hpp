@@ -12,7 +12,8 @@ namespace mge {
             obj.format(ctx)
         } -> std::convertible_to<void>;
     };
-}
+
+} // namespace mge
 
 template <typename T, typename C>
     requires mge::has_format_method<T>
