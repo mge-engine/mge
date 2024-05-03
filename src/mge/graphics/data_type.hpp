@@ -2,11 +2,13 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
 #include <string_view>
+
 
 namespace mge {
 
@@ -32,16 +34,6 @@ namespace mge {
         DOUBLE,      //!< double
         LONG_DOUBLE, //!< long double
     };
-
-    /**
-     * @brief Output operator.
-     *
-     * @param os output stream
-     * @param t data type printed
-     * @return @c os
-     */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&    os,
-                                                const data_type& t);
 
     /**
      * @brief Get the size of one data

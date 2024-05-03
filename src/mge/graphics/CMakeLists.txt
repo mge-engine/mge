@@ -15,7 +15,6 @@ SET(mgegraphics_sources
     color_names.cpp
     rgb_color.cpp
     rgba_color.cpp
-    buffer_type.cpp
     hardware_buffer.cpp
     data_type.cpp
     index_buffer.cpp

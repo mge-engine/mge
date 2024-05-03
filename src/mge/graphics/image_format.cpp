@@ -6,9 +6,9 @@
 
 namespace mge {
 
-    std::ostream& operator<<(std::ostream& os, const image_format& f)
+    void image_format::format(std::format_context& context) const
     {
-        return os << std::format("{}", f);
+        std::format_to(context.out(), "{}_{}", m_format, m_type);
     }
 
 } // namespace mge

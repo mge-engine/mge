@@ -2,9 +2,11 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <iosfwd>
 #include <string_view>
+
 
 namespace mge {
 
@@ -24,16 +26,6 @@ namespace mge {
         TEXCOORD,
         ANY
     };
-
-    /**
-     * @brief Output operator.
-     *
-     * @param os output stream
-     * @param t data type printed
-     * @return @c os
-     */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&             os,
-                                                const attribute_semantic& t);
 
     /**
      * @brief Parse data type from string view.

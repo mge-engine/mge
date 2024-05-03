@@ -7,43 +7,6 @@
 #include <string_view>
 
 namespace mge {
-    std::ostream& operator<<(std::ostream& os, const data_type& t)
-    {
-        switch (t) {
-        case data_type::UNKNOWN:
-            return os << "unknown";
-        case data_type::INT8:
-            return os << "int8";
-        case data_type::UINT8:
-            return os << "uint8";
-        case data_type::INT16:
-            return os << "int16";
-        case data_type::UINT16:
-            return os << "uint16";
-        case data_type::INT32:
-            return os << "int32";
-        case data_type::UINT32:
-            return os << "uint32";
-        case data_type::INT64:
-            return os << "int64";
-        case data_type::UINT64:
-            return os << "uint64";
-        case data_type::INT128:
-            return os << "int128";
-        case data_type::UINT128:
-            return os << "uint128";
-        case data_type::HALF:
-            return os << "half";
-        case data_type::FLOAT:
-            return os << "float";
-        case data_type::DOUBLE:
-            return os << "double";
-        case data_type::LONG_DOUBLE:
-            return os << "long double";
-        default:
-            return os << "invalid(" << static_cast<uint32_t>(t) << ")";
-        }
-    }
 
     data_type parse_data_type(std::string_view sv)
     {

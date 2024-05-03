@@ -5,9 +5,11 @@
  *  @brief buffer type
  */
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
+
 
 namespace mge {
 
@@ -20,8 +22,4 @@ namespace mge {
         INDEX,   //!< buffer containing indices, offsets into vertex data
         CONSTANT //!< buffer containing shader input values
     };
-
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&      os,
-                                                const buffer_type& t);
-
 } // namespace mge

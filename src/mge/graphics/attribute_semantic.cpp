@@ -7,28 +7,6 @@
 
 namespace mge {
 
-    std::ostream& operator<<(std::ostream& o, const attribute_semantic& s)
-    {
-        switch (s) {
-        case attribute_semantic::POSITION:
-            return o << "POSITION";
-        case attribute_semantic::NORMAL:
-            return o << "NORMAL";
-        case attribute_semantic::TANGENT:
-            return o << "TANGENT";
-        case attribute_semantic::BITANGENT:
-            return o << "BITANGENT";
-        case attribute_semantic::COLOR:
-            return o << "COLOR";
-        case attribute_semantic::TEXCOORD:
-            return o << "TEXCOORD";
-        case attribute_semantic::ANY:
-            return o << "ANY";
-        default:
-            return o << "INVALID(" << static_cast<uint32_t>(s) << ")";
-        }
-    }
-
     attribute_semantic parse_attribute_semantic(std::string_view sv)
     {
         using namespace std::literals;
