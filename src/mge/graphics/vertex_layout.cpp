@@ -42,7 +42,6 @@ namespace mge {
     void vertex_layout::format(std::format_context& context) const
     {
         std::format_to(context.out(), "[");
-#if 0        
         auto it = m_formats.cbegin();
         auto sem_it = m_semantics.cbegin();
         std::format_to(context.out(),
@@ -59,7 +58,6 @@ namespace mge {
             ++it;
             ++sem_it;
         }
-#endif
         format_to(context.out(), "]");
     }
 

@@ -24,14 +24,13 @@ namespace mge {
         return data_type_size(m_type) * m_size;
     }
 
-    std::ostream& operator<<(std::ostream& os, const vertex_format& fmt)
+    void vertex_format::format(std::format_context& context) const
     {
-        if (fmt.size() == 1) {
-            os << fmt.type();
+        if (m_size == 1) {
+            std::format_to(context.out(), "{}", m_type);
         } else {
-            os << fmt.type() << "[" << static_cast<uint32_t>(fmt.size()) << "]";
+            std::format_to(context.out(), "{}[{}]", m_type, m_size);
         }
-        return os;
     }
 
     vertex_format parse_vertex_format(std::string_view sv)

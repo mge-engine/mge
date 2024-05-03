@@ -2,10 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 
-#include <iosfwd>
 #include <string_view>
 
 namespace mge {
@@ -105,23 +105,16 @@ namespace mge {
             return m_type == f.m_type && m_size == f.m_size;
         }
 
+        /**
+         * @brief Format value for output.
+         * @param ctx format context
+         */
+        void format(std::format_context& context) const;
+
     private:
         data_type m_type;
         uint8_t   m_size;
     };
-
-    /**
-     * @brief Prints a vertex format.
-     *
-     * Printed is either the data type, if size is 1, or
-     * data type followed by '[' size ']'.
-     *
-     * @param os output stream
-     * @param fmt vertex format to print
-     * @return @c os
-     */
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&        os,
-                                                const vertex_format& fmt);
 
     /**
      * @brief Parse a vertex format.
