@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/details.hpp"
+#include "mge/core/enum.hpp"
 #include "mge/core/gist.hpp"
 #include "vulkan.hpp"
 #include "vulkan_dump.h"
@@ -41,8 +42,8 @@ namespace mge {
     {
         std::format_to(ctx.out(),
                        "{{VkSurfaceFormatKHR format={}, colorSpace={}}}",
-                       static_cast<int>(p.format),
-                       static_cast<int>(p.colorSpace));
+                       static_cast<uint32_t>(p.format),
+                       static_cast<uint32_t>(p.colorSpace));
     }
 
     inline void details(const VkLayerProperties& p, std::format_context& ctx)

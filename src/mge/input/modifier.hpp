@@ -3,6 +3,7 @@
 // All rights reserved.
 /** @file */
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/core/enum_set.hpp"
 #include "mge/input/dllexport.hpp"
 #include <iosfwd>
@@ -23,15 +24,5 @@ namespace mge {
      * @brief Modifier type, set of modifier keys pressed at the same time.
      */
     using modifier = enum_set<modifier_value, modifier_value::ALT>;
-
-    /**
-     * @brief Stream output operator.
-     *
-     * @param os    output stream
-     * @param v     modifier value
-     * @return @c os
-     */
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream&         os,
-                                             const modifier_value& v);
 
 } // namespace mge

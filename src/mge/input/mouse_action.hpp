@@ -2,8 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/input/dllexport.hpp"
 #include <iosfwd>
+
 
 namespace mge {
 
@@ -19,7 +21,4 @@ namespace mge {
 #endif
         MOUSE_ACTION_DOUBLE_CLICK = 2
     };
-
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream&       os,
-                                             const mouse_action& a);
 } // namespace mge
