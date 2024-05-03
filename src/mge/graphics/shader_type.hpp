@@ -2,10 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
 #include <format>
 #include <iosfwd>
+
 
 namespace mge {
 
@@ -22,47 +24,4 @@ namespace mge {
         GEOMETRY = 5,               //!< geometry
         MAX_SHADER_TYPE = GEOMETRY
     };
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&      os,
-                                                const shader_type& t);
 } // namespace mge
-
-template <typename C>
-struct std::formatter<mge::shader_type, C> : std::formatter<std::string_view, C>
-{
-    auto format(const mge::shader_type& t,
-                auto& ctx) const -> std::format_context::iterator
-    {
-        switch (t) {
-        case mge::shader_type::VERTEX:
-            return std::formatter<std::string_view, C>::format(
-                std::string_view{"VERTEX"},
-                ctx);
-        case mge::shader_type::FRAGMENT:
-            return std::formatter<std::string_view, C>::format(
-                std::string_view{"FRAGMENT"},
-                ctx);
-        case mge::shader_type::COMPUTE:
-            return std::formatter<std::string_view, C>::format(
-                std::string_view{"COMPUTE"},
-                ctx);
-
-        case mge::shader_type::TESSELATION_CONTROL:
-            return std::formatter<std::string_view, C>::format(
-                std::string_view{"TESSELATION_CONTROL"},
-                ctx);
-
-        case mge::shader_type::TESSELATION_EVALUATION:
-            return std::formatter<std::string_view, C>::format(
-                std::string_view{"TESSELATION_EVALUATION"},
-                ctx);
-
-        case mge::shader_type::GEOMETRY:
-            return std::formatter<std::string_view, C>::format(
-                std::string_view{"GEOMETRY"},
-                ctx);
-
-        default:
-            return std::format_to(ctx.out(), "INVALID({})", (int)t);
-        }
-    }
-};

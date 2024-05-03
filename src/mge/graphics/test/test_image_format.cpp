@@ -12,3 +12,11 @@ TEST(image_format, components)
                           mge::data_type::FLOAT);
     EXPECT_EQ(4, f.components());
 }
+
+TEST(image_format, name)
+{
+    mge::image_format f(mge::image_format::data_format::RGB,
+                        mge::data_type::FLOAT);
+    auto              s = std::format("{}", f);
+    EXPECT_STREQ("RGB_FLOAT", s.c_str());
+}

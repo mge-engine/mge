@@ -8,11 +8,11 @@
 TEST(vertex_format, output)
 {
     mge::vertex_format f(mge::data_type::FLOAT, 3);
-    mge::test_stream_output(f, "float[3]");
+    mge::test_stream_output(f, "FLOAT[3]");
 }
 
 TEST(vertex_format, parse)
 {
     mge::vertex_format f(mge::data_type::FLOAT, 3);
-    EXPECT_EQ(f, mge::parse_vertex_format("float[3]"));
+    EXPECT_EQ(f, mge::parse_vertex_format("FLOAT[3]"));
 }

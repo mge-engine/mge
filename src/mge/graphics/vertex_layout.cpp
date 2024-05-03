@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/vertex_layout.hpp"
+#include "mge/core/format.hpp"
 #include <iostream>
 #include <numeric>
 #include <ranges>
@@ -38,25 +39,26 @@ namespace mge {
         m_semantics.push_back(mge::attribute_semantic::ANY);
     }
 
-    std::ostream& operator<<(std::ostream& os, const vertex_layout& l)
+    void vertex_layout::format(std::format_context& context) const
     {
-        if (l.m_formats.empty()) {
-            os << "[]";
-        } else {
-            os << "[";
-            auto it = l.m_formats.cbegin();
-            auto sem_it = l.m_semantics.cbegin();
-            os << "{format=" << *it << ", semantic=" << *sem_it << "}";
+        std::format_to(context.out(), "[");
+        auto it = m_formats.cbegin();
+        auto sem_it = m_semantics.cbegin();
+        std::format_to(context.out(),
+                       "{{format={}, semantic={}}}",
+                       *it,
+                       *sem_it);
+        ++it;
+        ++sem_it;
+        while (it != m_formats.cend()) {
+            std::format_to(context.out(),
+                           ", {{format={}, semantic={}}}",
+                           *it,
+                           *sem_it);
             ++it;
             ++sem_it;
-            while (it != l.m_formats.cend()) {
-                os << "{format=" << *it << ", semantic=" << *sem_it << "}";
-                ++it;
-                ++sem_it;
-            }
-            os << "]";
         }
-        return os;
+        format_to(context.out(), "]");
     }
 
     vertex_layout parse_vertex_layout(std::string_view sv)

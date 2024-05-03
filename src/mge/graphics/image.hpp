@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/image_format.hpp"
@@ -57,6 +58,14 @@ namespace mge {
         virtual std::span<uint8_t> data_span() const = 0;
 
         virtual size_t binary_size() const = 0;
+
+        inline void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(),
+                           "image{{format={}, extent={}}}",
+                           m_format,
+                           m_extent);
+        }
 
     private:
         image_format m_format;

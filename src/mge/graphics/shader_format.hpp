@@ -2,8 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/core/semantic_version.hpp"
 #include "mge/graphics/dllexport.hpp"
+
 
 #include <iosfwd>
 #include <string>
@@ -48,6 +50,14 @@ namespace mge {
          * Destructor
          */
         ~shader_format() = default;
+
+        void format(std::format_context& ctx) const
+        {
+            std::format_to(ctx.out(),
+                           "shader_format{{name={}, version={}}}",
+                           m_name,
+                           m_version);
+        }
 
     private:
         std::string      m_name;
