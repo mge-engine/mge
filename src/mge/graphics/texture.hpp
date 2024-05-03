@@ -49,10 +49,10 @@ namespace mge {
          * @param data image data
          * @param size size of data
          */
-        virtual void set_data(image_format       format,
-                              const mge::extent& extent,
-                              const void*        data,
-                              size_t             size) = 0;
+        virtual void set_data(const image_format& format,
+                              const mge::extent&  extent,
+                              const void*         data,
+                              size_t              size) = 0;
         /**
          * @brief Set data of texture.
          *
