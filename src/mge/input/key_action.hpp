@@ -2,9 +2,11 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/input/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
+
 
 namespace mge {
 
@@ -18,6 +20,4 @@ namespace mge {
         REPEAT = 2
     };
 
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream&     os,
-                                             const key_action& a);
 } // namespace mge

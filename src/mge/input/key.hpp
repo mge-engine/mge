@@ -3,6 +3,7 @@
 // All rights reserved.
 /** @file */
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/input/dllexport.hpp"
 #include <cstdint>
 #include <iosfwd>
@@ -124,6 +125,10 @@ namespace mge {
 
         KEY_MAX //!< maximum possible key
     };
-
-    MGEINPUT_EXPORT std::ostream& operator<<(std::ostream& os, const key& k);
 } // namespace mge
+
+template <> struct mge::enum_range<mge::key>
+{
+    static constexpr int min = static_cast<int>(mge::key::INVALID);
+    static constexpr int max = static_cast<int>(mge::key::KEY_MAX);
+};

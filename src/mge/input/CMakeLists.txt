@@ -3,8 +3,6 @@
 # All rights reserved.
 
 SET(mgeinput_sources
-   key.cpp
-   key_action.cpp
    modifier.cpp
    keyboard_state.cpp
    mouse_state.cpp
