@@ -38,24 +38,18 @@ namespace mge {
     {
         auto bpos = sv.find('[');
         if (bpos == std::string_view::npos) {
-            try {
-                auto dt = parse_data_type(sv);
-                return vertex_format(dt);
-            } catch (const mge::exception& ex) {
-                MGE_THROW_WITH_CAUSE(illegal_argument, ex)
-                    << "Invalid vertex format: " << sv;
+            auto dt = mge::enum_cast<data_type>(sv);
+            if (dt.has_value()) {
+                return vertex_format(dt.value());
             }
+            MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
         } else {
             std::string_view dtsv =
                 std::string_view(sv.begin(), sv.begin() + bpos);
-            data_type dt = data_type::UNKNOWN;
-            try {
-                dt = parse_data_type(dtsv);
-            } catch (const mge::exception& ex) {
-                MGE_THROW_WITH_CAUSE(illegal_argument, ex)
-                    << "Invalid vertex format: " << sv;
+            auto dt = mge::enum_cast<data_type>(dtsv);
+            if (!dt.has_value()) {
+                MGE_THROW(illegal_argument) << "Invalid vertex format: " << sv;
             }
-
             auto it = sv.begin() + bpos + 1;
             auto e = sv.end();
             if (it != e) {
@@ -86,7 +80,7 @@ namespace mge {
                             MGE_THROW(illegal_argument)
                                 << "Invalid vertex format: " << sv;
                         }
-                        return vertex_format(dt, size);
+                        return vertex_format(dt.value(), size);
                     } else {
                         MGE_THROW(illegal_argument)
                             << "Invalid vertex format: " << sv;
@@ -112,7 +106,7 @@ namespace mge {
                             MGE_THROW(illegal_argument)
                                 << "Invalid vertex format: " << sv;
                         }
-                        return vertex_format(dt, size);
+                        return vertex_format(dt.value(), size);
                     } else {
                         MGE_THROW(illegal_argument)
                             << "Invalid vertex format: " << sv;
@@ -135,7 +129,7 @@ namespace mge {
                 if (*it == ']') {
                     ++it;
                     if (it == e) {
-                        return vertex_format(dt, size);
+                        return vertex_format(dt.value(), size);
                     } else {
                         MGE_THROW(illegal_argument)
                             << "Invalid vertex format: " << sv;

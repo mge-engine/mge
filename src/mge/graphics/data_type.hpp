@@ -6,9 +6,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
-#include <iosfwd>
 #include <string_view>
-
 
 namespace mge {
 
@@ -72,18 +70,16 @@ namespace mge {
         }
     }
 
-    /**
-     * @brief Parse data type from string view.
-     *
-     * @param sv string view
-     * @return parsed data type
-     */
-    MGEGRAPHICS_EXPORT data_type parse_data_type(std::string_view sv);
-
     namespace literals {
         inline data_type operator""_type(const char* s, size_t l)
         {
-            return parse_data_type(std::string_view(s, s + l));
+            auto sv = std::string_view(s, s + l);
+            auto v = mge::enum_cast<data_type>(sv);
+            if (v.has_value()) {
+                return v.value();
+            }
+            MGE_THROW(illegal_argument)
+                << "Invalid data type definition: " << sv;
         }
     } // namespace literals
 

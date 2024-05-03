@@ -133,13 +133,11 @@ namespace mge {
 
 } // namespace mge
 
-namespace std {
-    template <> struct hash<mge::vertex_format>
+template <> struct std::hash<mge::vertex_format>
+{
+    size_t operator()(const mge::vertex_format& fmt) const noexcept
     {
-        size_t operator()(const mge::vertex_format& fmt) const noexcept
-        {
-            return static_cast<size_t>(fmt.type()) ^
-                   static_cast<size_t>(fmt.size());
-        }
-    };
-} // namespace std
+        return static_cast<size_t>(fmt.type()) ^
+               static_cast<size_t>(fmt.size());
+    }
+};
