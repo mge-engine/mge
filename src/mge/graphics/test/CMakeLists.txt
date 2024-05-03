@@ -15,6 +15,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_shader_type.cpp
     test_texture.cpp
     test_image_format.cpp
+    test_attribute_semantic.cpp
 )
 
 MGE_TEST(

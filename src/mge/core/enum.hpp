@@ -2,6 +2,7 @@
 #include "mge/config.hpp"
 #include "mge/core/format.hpp"
 #include <magic_enum.hpp>
+#include <magic_enum_flags.hpp>
 
 namespace mge {
     using magic_enum::enum_cast;
@@ -18,6 +19,12 @@ namespace mge {
     using magic_enum::is_unscoped_enum;
     using magic_enum::is_unscoped_enum_v;
     using magic_enum::customize::enum_range;
+
+    using magic_enum::enum_flags_cast;
+    using magic_enum::enum_flags_contains;
+    using magic_enum::enum_flags_name;
+
+    namespace bitwise_enum_operators = magic_enum::bitwise_operators;
 
     template <typename E> using provide_formatter = std::true_type;
 } // namespace mge

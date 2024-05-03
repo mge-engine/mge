@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/core/small_vector.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/attribute_semantic.hpp"
@@ -9,6 +10,7 @@
 #include "mge/graphics/vertex_format.hpp"
 #include <iosfwd>
 #include <string_view>
+
 
 namespace mge {
 
@@ -272,35 +274,28 @@ namespace mge {
             return !(*this == l);
         }
 
+        void format(std::format_context& context) const;
+
     private:
         mge::small_vector<vertex_format, 3>      m_formats;
         mge::small_vector<attribute_semantic, 3> m_semantics;
-
-        friend MGEGRAPHICS_EXPORT std::ostream&
-        operator<<(std::ostream& os, const vertex_layout& l);
     };
-
-    MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&        os,
-                                                const vertex_layout& l);
 
     MGEGRAPHICS_EXPORT mge::vertex_layout
                        parse_vertex_layout(std::string_view sv);
 
 } // namespace mge
 
-namespace std {
-    template <> struct hash<mge::vertex_layout>
+template <> struct std::hash<mge::vertex_layout>
+{
+    size_t operator()(const mge::vertex_layout& l) const noexcept
     {
-        size_t operator()(const mge::vertex_layout& l) const noexcept
-        {
-            size_t h = 0;
-            for (size_t i = 0; i < l.size(); ++i) {
-                auto entry = l[i];
-                h = std::hash<mge::vertex_format>{}(entry.format);
-                h = h * 31 +
-                    std::hash<mge::attribute_semantic>{}(entry.semantic);
-            }
-            return h;
+        size_t h = 0;
+        for (size_t i = 0; i < l.size(); ++i) {
+            auto entry = l[i];
+            h = std::hash<mge::vertex_format>{}(entry.format);
+            h = h * 31 + std::hash<mge::attribute_semantic>{}(entry.semantic);
         }
-    };
-} // namespace std
+        return h;
+    }
+};
