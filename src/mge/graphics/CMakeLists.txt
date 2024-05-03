@@ -8,7 +8,6 @@ SET(mgegraphics_sources
     window.cpp
     monitor.cpp
     render_context.cpp
-    shader_type.cpp
     shader_language.cpp
     context_object.cpp
     command_list.cpp
@@ -29,7 +28,6 @@ SET(mgegraphics_sources
     draw_command.cpp
     uniform_data_type.cpp
     attribute_semantic.cpp
-    texture_type.cpp
     image_format.cpp
     memory_image.cpp
 )
