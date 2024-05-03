@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #include "mge/graphics/memory_image.hpp"
 #include "mge/graphics/texture_type.hpp"
 #include "mock_render_context.hpp"
