@@ -11,6 +11,10 @@
 #include <functional>
 #include <thread>
 
+#ifdef MGE_OS_MACOSX
+#    include <pthread.h>
+#endif
+
 namespace mge {
 
     class thread_group;
@@ -41,6 +45,8 @@ namespace mge {
 
 #ifdef MGE_OS_WINDOWS
         using system_id = uint32_t;
+#elif defined(MGE_OS_MACOSX)
+        using system_id = pthread_t;
 #else
 #    error missing port
 #endif

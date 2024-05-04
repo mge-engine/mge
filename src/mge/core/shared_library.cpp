@@ -5,8 +5,13 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/system_error.hpp"
 #include <mutex>
-#include <windows.h>
+#ifdef MGE_OS_WINDOWS
+#    include <windows.h>
+#endif
 
+#ifdef MGE_OS_MACOSX
+#    include <dlfcn.h>
+#endif
 namespace mge {
 
     class loaded_libraries_dict
@@ -41,6 +46,8 @@ namespace mge {
             } else {
 #ifdef MGE_OS_WINDOWS
                 FreeLibrary(handle);
+#elif defined(MGE_OS_MACOSX)
+                dlclose(handle);
 #else
 #    error Missing Port
 #endif
@@ -73,6 +80,7 @@ namespace mge {
 
     void shared_library::load()
     {
+#ifdef MGE_OS_WINDOWS
         HMODULE handle = s_loaded_libraries->get(m_name);
         if (handle == nil_handle) {
             handle = LoadLibraryW(m_name.c_str());
@@ -82,19 +90,43 @@ namespace mge {
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
         }
-
+#elif defined(MGE_OS_MACOSX)
+        void* handle = s_loaded_libraries->get(m_name);
+        if (handle == nil_handle) {
+            handle = dlopen(m_name.c_str(), RTLD_LAZY);
+            if (!handle) {
+                MGE_THROW(system_error)
+                    << "Cannot load library '" << m_name << "'";
+            }
+            handle = s_loaded_libraries->try_put(m_name, handle);
+        }
+#else
+#    error Missing port
+#endif
         m_handle = handle;
     }
 
     void* shared_library::symbol(const char* name) const
     {
+#ifdef MGE_OS_WINDOWS
         auto address = GetProcAddress(m_handle, name);
+#elif defined(MGE_OS_MACOSX)
+        auto address = dlsym(m_handle, name);
+#else
+#    error Missing port
+#endif
         return reinterpret_cast<void*>(address);
     }
 
     void* shared_library::symbol(const std::string& name) const
     {
+#ifdef MGE_OS_WINDOWS
         auto address = GetProcAddress(m_handle, name.c_str());
+#elif defined(MGE_OS_MACOSX)
+        auto address = dlsym(m_handle, name.c_str());
+#else
+#    error Missing port
+#endif
         return reinterpret_cast<void*>(address);
     }
 

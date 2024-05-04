@@ -14,6 +14,9 @@
 #    include <windows.h>
 #endif
 
+#ifdef MGE_OS_MACOS
+#    include <dlfcn.h>
+#endif
 namespace mge {
 
     MGE_DECLARE_REF(shared_library);
@@ -26,8 +29,10 @@ namespace mge {
     public:
 #ifdef MGE_OS_WINDOWS
         using handle_type = HMODULE;
-
         static constexpr handle_type nil_handle = 0;
+#elif defined(MGE_OS_MACOSX)
+        using handle_type = void*;
+        static constexpr handle_type nil_handle = nullptr;
 #else
 #    error Missing port
 #endif

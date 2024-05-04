@@ -99,9 +99,9 @@ namespace mge {
             if (size == 0) {
                 // nothing
             } else if (size <= S) {
-                m_data.emplace<1>(size, val);
+                m_data.template emplace<1>(size, val);
             } else {
-                m_data.emplace<2>(size, val);
+                m_data.template emplace<2>(size, val);
             }
         }
 

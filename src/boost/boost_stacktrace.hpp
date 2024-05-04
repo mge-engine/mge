@@ -5,4 +5,5 @@
 #include "mge/config.hpp"
 
 #define BOOST_STACKTRACE_USE_BACKTRACE 1
+#define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED 1
 #include <boost/stacktrace.hpp>
