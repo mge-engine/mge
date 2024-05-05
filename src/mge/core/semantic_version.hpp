@@ -50,6 +50,8 @@ namespace mge {
          */
         explicit semantic_version(std::string_view version_str);
 
+        // TODO: make all functions inline and constexpr if possible
+
         /**
          * @brief Copy constructor.
          *
@@ -120,20 +122,21 @@ namespace mge {
          */
         uint32_t patch() const noexcept;
 
-        inline void format(std::format_context& ctx) const
+        template <typename FormatContext>
+        constexpr void format(FormatContext& ctx) const
         {
-            if (patch() == 0) {
-                if (minor() == 0) {
-                    std::format_to(ctx.out(), "{}", major());
+            const auto p = std::get<2>(m_data);
+            const auto mi = std::get<1>(m_data);
+            const auto ma = std::get<0>(m_data);
+
+            if (p == 0) {
+                if (mi == 0) {
+                    std::format_to(ctx.out(), "{}", ma);
                 } else {
-                    std::format_to(ctx.out(), "{}.{}", major(), minor());
+                    std::format_to(ctx.out(), "{}.{}", ma, mi);
                 }
             } else
-                std::format_to(ctx.out(),
-                               "{}.{}.{}",
-                               major(),
-                               minor(),
-                               patch());
+                std::format_to(ctx.out(), "{}.{}.{}", ma, mi, p);
         }
 
     private:
