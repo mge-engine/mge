@@ -56,9 +56,9 @@ jobs:
               fi
           - name: Create vcpkg cache directory
             run: |
-              if (!(Test-Path "${{ github.workspace }}/vcpkg_binary_cache")) {
-                New-Item -Path "${{ github.workspace }}/vcpkg_binary_cache" -ItemType Directory
-              }
+              if [ ! -d "${{ github.workspace }}/vcpkg_binary_cache" ]; then
+                mkdir -p "${{ github.workspace }}/vcpkg_binary_cache"
+              fi
           - name: Checkout vcpkg
             if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
             uses: actions/checkout@v4
