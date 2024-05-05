@@ -18,9 +18,9 @@ jobs:
           - name: Show Python version
             run: |
               python --version
-          - name: Install CMake
+          - name: Brew update
             run: |
-              brew install cmake
+              brew update
           - name: Install Ninja
             run: |
               brew install ninja
