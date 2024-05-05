@@ -2,7 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/statistics.hpp"
+#include "mge/core/crash.hpp"
 #include "mge/core/singleton.hpp"
+
 #include <cstdlib>
 
 using namespace std::string_view_literals;
@@ -97,8 +99,7 @@ namespace mge {
     statistics::~statistics()
     {
         if (m_owned && this != &s_root) {
-            // TODO: crash
-            ::abort();
+            mge::crash();
         }
     }
 
