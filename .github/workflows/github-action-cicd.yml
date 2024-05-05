@@ -79,7 +79,8 @@ jobs:
                     core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');                
           - name: Install llvm
             run: |
-              brew install llvm    
+              brew install llvm@18
+########################################################################################################################    
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
