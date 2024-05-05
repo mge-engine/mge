@@ -7,6 +7,79 @@ on:
   pull_request:
 
 jobs:
+# -- macos x latest runner (using brew clang)
+    build-macos-latest-brew-clang:
+      if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+      name: Build macosx-latest-brew-clang
+      runs-on: macos-latest
+      env: 
+        VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+      steps:
+          - name: Show Python version
+            run: |
+              python --version
+          - name: Install CMake
+            run: |
+              brew install cmake
+          - name: Install Ninja
+            run: |
+              brew install ninja
+          - name: Checkout source code
+            uses: actions/checkout@v4
+            with:
+              clean: false
+          - name: Cache vcpkg
+            id: cache-vcpkg
+            uses: actions/cache@v4
+            with:
+              path: ${{ github.workspace }}/vcpkg
+              key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+              restore-keys: |
+                vcpkg-${{ runner.os }}-
+          - name: Cache vcpkg binary cache
+            id: cache-vcpkg-binary
+            uses: actions/cache@v4
+            with:
+              path: ${{ github.workspace }}/vcpkg_binary_cache
+              key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+              restore-keys: |
+                vcpkg-binary-cache-${{ runner.os }}-
+          - name: Check whether vcpkg exists
+            id: check-vcpkg
+            run: |
+              if (Test-Path "${{ github.workspace }}/vcpkg/vcpkg") {
+                Write-Output "vcpkg exists"
+                Write-Output "vcpkg_found=true" >> $env:GITHUB_OUTPUT
+              } else {
+                Write-Output "vcpkg does not exist, need to build"
+                Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
+              }
+          - name: Create vcpkg cache directory
+            run: |
+              if (!(Test-Path "${{ github.workspace }}/vcpkg_binary_cache")) {
+                New-Item -Path "${{ github.workspace }}/vcpkg_binary_cache" -ItemType Directory
+              }
+          - name: Checkout vcpkg
+            if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
+            uses: actions/checkout@v4
+            with:
+              repository: mge-engine/vcpkg
+              path: ${{ github.workspace }}/vcpkg
+              clean: false
+          - name;: Update vcpkg
+            if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
+            working-directory: ${{ github.workspace }}/vcpkg
+            run: |
+              git pull origin master
+          - name: Export GitHub Actions cache environment variables
+            uses: actions/github-script@v6
+            with:
+                script: |
+                    core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+                    core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');                
+          - name: Install llvm
+            run: |
+              brew install llvm    
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
         if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
