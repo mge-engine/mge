@@ -36,7 +36,8 @@ namespace mge {
             {}
             inline const mge::exception* ex() const noexcept { return m_ex; }
 
-            inline void format(std::format_context& ctx) const;
+            template <typename FormatContext>
+            void format(FormatContext& ctx) const;
 
         private:
             const mge::exception* m_ex;
@@ -344,7 +345,8 @@ namespace mge {
             return *this;
         }
 
-        inline void format(std::format_context& ctx) const
+        template <typename FormatContext>
+        inline void format(FormatContext& ctx) const
         {
             std::format_to(ctx.out(), "{}", what());
         }
@@ -389,8 +391,8 @@ namespace mge {
         mge::exception m_value;
     };
 
-    inline void
-    exception::exception_details::format(std::format_context& ctx) const
+    template <typename FormatContext>
+    void exception::exception_details::format(FormatContext& ctx) const
     {
         if (ex()) {
             std::format_to(ctx.out(), "Exception details:\n");
@@ -431,9 +433,7 @@ namespace mge {
                                "Exception stack: {}\n",
                                stack.value());
             }
-
             std::format_to(ctx.out(), "Exception message: {}\n", ex()->what());
-
             auto cause = ex()->get<mge::exception::cause>();
             if (cause) {
                 std::format_to(ctx.out(),

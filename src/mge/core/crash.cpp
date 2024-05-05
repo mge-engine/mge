@@ -22,7 +22,9 @@ namespace mge {
         va_end(args);
         vsnprintf(buf, needed, fmt, args2);
         stacktrace st;
+#if 0
         std::cerr << buf << std::endl << st << std::endl;
+#endif
         va_end(args);
         abort();
     }

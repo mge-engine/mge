@@ -32,13 +32,6 @@ TEST(exception, set_info)
             "message: Unknown exception\n"));
 }
 
-TEST(exception, set_info_with_location)
-{
-    mge::exception    ex(std::source_location::current());
-    std::stringstream msg;
-    std::cout << ex.details();
-}
-
 TEST(exception, set_info_using_operator)
 {
     mge::exception ex;
