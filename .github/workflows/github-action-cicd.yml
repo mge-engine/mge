@@ -9,6 +9,7 @@ on:
 jobs:
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build x64-windows-msvc
         runs-on: windows-latest
         env: 
