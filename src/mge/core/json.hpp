@@ -114,6 +114,7 @@ namespace mge {
                  std::is_same_v<typename T::key_type, std::string>
     inline void to_json(json::json& j, const T& v)
     {
+
         for (const auto& [key, value] : v) {
             to_json(j[key], value);
         }
