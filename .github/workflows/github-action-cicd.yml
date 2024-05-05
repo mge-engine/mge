@@ -47,13 +47,13 @@ jobs:
           - name: Check whether vcpkg exists
             id: check-vcpkg
             run: |
-              if (Test-Path "${{ github.workspace }}/vcpkg/vcpkg") {
-                Write-Output "vcpkg exists"
-                Write-Output "vcpkg_found=true" >> $env:GITHUB_OUTPUT
-              } else {
-                Write-Output "vcpkg does not exist, need to build"
-                Write-Output "vcpkg_found=false" >> $env:GITHUB_OUTPUT
-              }
+              if [ -d "${{ github.workspace }}/vcpkg/vcpkg" ]; then
+                echo "vcpkg exists"
+                echo "vcpkg_found=true" >> $GITHUB_ENV
+              else
+                echo "vcpkg does not exist, need to build"
+                echo "vcpkg_found=false" >> $GITHUB_ENV
+              fi
           - name: Create vcpkg cache directory
             run: |
               if (!(Test-Path "${{ github.workspace }}/vcpkg_binary_cache")) {
