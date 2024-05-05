@@ -8,7 +8,7 @@ TEST(make_string_view, empty)
 {
     auto sv = mge::make_string_view("");
     EXPECT_EQ(0, sv.size());
-    EXPECT_EQ(nullptr, sv.data());
+    EXPECT_NE(nullptr, sv.data());
 }
 
 TEST(make_string_view, non_empty)
