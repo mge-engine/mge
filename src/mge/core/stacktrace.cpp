@@ -3,15 +3,16 @@
 // All rights reserved.
 #include "mge/config.hpp"
 #ifdef MGE_OS_WINDOWS
+#    include <windows.h>
 #    include <DbgHelp.h>
 #    include <TlHelp32.h>
-#    include <windows.h>
 
 extern "C" {
 __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 }
 #    include <unordered_set>
 #endif
+
 #ifdef MGE_OS_MACOSX
 #    include "boost/boost_stacktrace.hpp"
 #endif
