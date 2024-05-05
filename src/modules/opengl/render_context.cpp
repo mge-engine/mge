@@ -10,6 +10,7 @@
 #include "program.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
+#include "texture.hpp"
 #include "vertex_buffer.hpp"
 
 namespace mge {
@@ -148,7 +149,7 @@ namespace mge::opengl {
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)
     {
-        mge::texture_ref result;
+        mge::texture_ref result = std::make_shared<texture>(*this, type);
         return result;
     }
 
