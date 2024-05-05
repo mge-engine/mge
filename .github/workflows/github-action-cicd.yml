@@ -47,7 +47,7 @@ jobs:
           - name: Check whether vcpkg exists
             id: check-vcpkg
             run: |
-              if [ -d "${{ github.workspace }}/vcpkg/vcpkg" ]; then
+              if [ -d "${{ github.workspace }}/vcpkg" ]; then
                 echo "vcpkg exists"
                 echo "vcpkg_found=true" >> $GITHUB_ENV
               else
@@ -60,7 +60,7 @@ jobs:
                 mkdir -p "${{ github.workspace }}/vcpkg_binary_cache"
               fi
           - name: Checkout vcpkg
-            if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
+            #if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
             uses: actions/checkout@v4
             with:
               repository: mge-engine/vcpkg
