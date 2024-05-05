@@ -3,6 +3,9 @@
 # All rights reserved.
 
 ADD_SUBDIRECTORY(mge)
-#ADD_SUBDIRECTORY(modules)
-#ADD_SUBDIRECTORY(test)
-#ADD_SUBDIRECTORY(samples)
+# TODO: Add support for Apple
+if (NOT APPLE)
+    ADD_SUBDIRECTORY(modules)
+    ADD_SUBDIRECTORY(test)
+    ADD_SUBDIRECTORY(samples)
+endif()
