@@ -29,7 +29,7 @@ TEST(benchmark, memory_cycle)
 TEST(benchmark, empty_cycle)
 {
     try {
-        mge::benchmark().run("empty", [&]() {});
+        mge::benchmark().show_results().run("empty", [&]() {});
         FAIL() << "Empty benchmark shall raise exception";
     } catch (const std::exception& ex) {
         EXPECT_STREQ("Benchmark 'empty' did run too little time", ex.what());
@@ -38,7 +38,7 @@ TEST(benchmark, empty_cycle)
 
 TEST(benchmark, throw_catch_cycle)
 {
-    mge::benchmark().run("throw_catch", [&]() {
+    mge::benchmark().show_results().run("throw_catch", [&]() {
         try {
             throw std::logic_error("test");
         } catch (const std::exception& e) {
