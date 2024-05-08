@@ -46,3 +46,14 @@ TEST(benchmark, throw_catch_cycle)
         }
     });
 }
+
+#ifdef _MSC_VER
+#    pragma warning(disable : 5214)
+#endif
+TEST(benchmark, bogomips)
+{
+    mge::benchmark().show_results().run("bogomips", [&]() {
+        for (volatile long i = 0; i < 1000000; ++i) {
+        }
+    });
+}
