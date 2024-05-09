@@ -52,8 +52,17 @@ TEST(benchmark, throw_catch_cycle)
 #endif
 TEST(benchmark, bogomips)
 {
-    mge::benchmark().show_results().run("bogomips", [&]() {
-        for (volatile long i = 0; i < 1000000; ++i) {
-        }
-    });
+    mge::benchmark()
+        .show_results()
+        .run("bogomips",
+             [&]() {
+                 for (volatile long i = 0; i < 1000000; ++i) {
+                 }
+             })
+        .run("bogomips_float", [&]() {
+            volatile float f = 0.0f;
+            for (long i = 0; i < 1000000; ++i) {
+                f += 0.333f;
+            }
+        });
 }

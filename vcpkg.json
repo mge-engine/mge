@@ -19,6 +19,6 @@
     "nlohmann-json",
     "glslang",
     "libmagic",
-    "magic-enum"
+    "magic-enum",
   ]
 }
