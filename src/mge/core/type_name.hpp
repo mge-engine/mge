@@ -44,7 +44,7 @@ namespace mge {
 
                 const auto pos = func_name.find(prefix);
                 if (pos == std::string::npos) {
-                    return std::string_view("xxx");
+                    return std::string_view("???");
                 }
 
                 std::remove_const_t<decltype(pos)> end =
@@ -73,6 +73,38 @@ namespace mge {
                 else if (n.starts_with("struct "))
                     n = n.substr(7);
                 return n;
+            }
+        };
+
+        template <typename T> struct $h$namespace_name$
+        {
+            static constexpr auto name()
+            {
+                constexpr std::string_view func_name(
+                    std::source_location::current().function_name());
+                constexpr std::string_view prefix("::$h$namespace_name$<");
+                constexpr auto             pos = func_name.find(prefix);
+                if constexpr (pos == std::string::npos) {
+                    return std::string_view("???");
+                }
+                constexpr std::string_view from_pos =
+                    func_name.substr(pos + prefix.size());
+                constexpr auto end = from_pos.find(">::name");
+                if constexpr (end == std::string::npos) {
+                    return std::string_view("???");
+                }
+
+                constexpr std::string_view n = from_pos.substr(0, end);
+                constexpr std::size_t      left = n.starts_with("class ")    ? 6
+                                                  : n.starts_with("struct ") ? 7
+                                                                             : 0;
+                constexpr std::string_view ns_sep("::");
+                constexpr auto             ns_pos = n.rfind(ns_sep);
+                if constexpr (ns_pos == std::string::npos) {
+                    return std::string_view("");
+                }
+                constexpr std::string_view ns = n.substr(left, ns_pos - left);
+                return ns;
             }
         };
     } // namespace
@@ -104,9 +136,9 @@ namespace mge {
      * @tparam T inspected type
      * @return namespace name
      */
-    template <typename T> inline std::string namespace_name()
+    template <typename T> consteval std::string_view namespace_name()
     {
-        return namespace_name(typeid(T));
+        return $h$namespace_name$<T>::name();
     }
 
 } // namespace mge

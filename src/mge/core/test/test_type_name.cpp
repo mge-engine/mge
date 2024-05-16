@@ -46,3 +46,14 @@ TEST(type_name, signed_char)
     auto tn = std::string(mge::type_name<signed char>());
     EXPECT_STREQ("signed char", tn.c_str());
 }
+
+namespace foofoo {
+    struct barbar
+    {};
+} // namespace foofoo
+
+TEST(type_name, namespace_name)
+{
+    auto tn = std::string(mge::namespace_name<foofoo::barbar>());
+    EXPECT_STREQ("foofoo", tn.c_str());
+}
