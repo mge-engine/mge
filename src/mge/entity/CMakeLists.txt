@@ -3,12 +3,12 @@
 # All rights reserved.
 
 SET(mgeentity_sources
-   schema.cpp
+   registry.cpp
 )
 
 SET(mgeentity_headers
     dllexport.hpp
-    schema.hpp
+    registry.hpp
 )
 
 

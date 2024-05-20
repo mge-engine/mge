@@ -5,11 +5,11 @@
 
 namespace mge::entity {
 
-    class MGEENTITY_EXPORT schema
+    class MGEENTITY_EXPORT registry
     {
     public:
-        schema() = default;
-        ~schema() = default;
+        registry() = default;
+        ~registry() = default;
 
     private:
         std::atomic<id_type> m_id_sequence;
