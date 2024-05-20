@@ -1,5 +1,6 @@
 #pragma once
 #include "mge/entity/dllexport.hpp"
+#include "mge/entity/entity.hpp"
 #include "mge/entity/id_type.hpp"
 #include <atomic>
 

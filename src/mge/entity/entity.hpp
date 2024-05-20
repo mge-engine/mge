@@ -13,6 +13,19 @@ namespace mge::entity {
             : m_id(id)
         {}
 
+        entity(entity&& e)
+            : m_id(e.m_id)
+        {
+            e.m_id = 0;
+        }
+
+        entity& operator=(entity&& e)
+        {
+            m_id = e.m_id;
+            e.m_id = 0;
+            return *this;
+        }
+
         inline constexpr auto id() const { return m_id; }
 
         template <typename FormatContext>

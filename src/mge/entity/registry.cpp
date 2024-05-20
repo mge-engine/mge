@@ -1,3 +1,3 @@
-#include "mge/entity/schema.hpp"
+#include "mge/entity/registry.hpp"
 
 namespace mge::entity {}
