@@ -1,10 +1,13 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/entity/dllexport.hpp"
-#include "mge/entity/entity_id.hpp"
+#include "mge/entity/id_type.hpp"
 #include <mge/core/format.hpp>
 
 namespace mge::entity {
-    class MGENTITY_DLLEXPORT entity
+    class MGEENTITY_EXPORT entity
     {
     public:
         entity() = default;
@@ -35,7 +38,7 @@ namespace mge::entity {
         }
 
     private:
-        const id_type m_id{0};
+        id_type m_id{0};
     };
-}
-}
+
+} // namespace mge::entity
