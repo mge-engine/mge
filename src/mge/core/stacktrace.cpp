@@ -4,15 +4,17 @@
 #include "mge/config.hpp"
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
-
 #    include <DbgHelp.h>
-
 #    include <TlHelp32.h>
 
 extern "C" {
 __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 }
 #    include <unordered_set>
+#endif
+
+#ifdef MGE_OS_MACOSX
+#    include "boost/boost_stacktrace.hpp"
 #endif
 
 #include "mge/core/stacktrace.hpp"
@@ -171,7 +173,9 @@ namespace mge {
         fill_stacktrace(current_thread, &context, frames, strings);
         CloseHandle(current_thread);
     }
-
+#elif defined(MGE_OS_MACOSX)
+    template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
+    {}
 #endif
     stacktrace::frame::frame(const void*      address,
                              std::string_view module,
@@ -241,30 +245,6 @@ namespace mge {
     }
 
     stacktrace::size_type stacktrace::size() const { return m_frames.size(); }
-
-    void stacktrace::format(std::format_context& ctx) const
-    {
-        uint32_t fno = 0;
-        for (const auto& f : *this) {
-            std::format_to(ctx.out(), "#{} {} in ", fno, f.address());
-            if (f.name().empty()) {
-                std::format_to(ctx.out(), "??");
-            } else {
-                std::format_to(ctx.out(), "{}", f.name());
-            }
-            if (!f.source_file().empty()) {
-                std::format_to(ctx.out(),
-                               " at {}:{}",
-                               f.source_file(),
-                               f.source_line());
-            }
-            if (!f.module().empty()) {
-                std::format_to(ctx.out(), " of {}", f.module());
-            }
-            std::format_to(ctx.out(), "\n");
-            ++fno;
-        }
-    }
 
 #if 0
     void stacktrace::fill(const std::thread &t)

@@ -34,7 +34,8 @@ template <typename E>
              (mge::is_scoped_enum_v<E> || mge::is_unscoped_enum_v<E>)
 struct std::formatter<E> : public std::formatter<std::string_view>
 {
-    constexpr auto format_if_valid(E e, std::format_context& ctx) const
+    template <typename FormatContext>
+    constexpr auto format_if_valid(E e, FormatContext& ctx) const
     {
         if (mge::enum_contains(e)) {
             std::format_to(ctx.out(), "{}", mge::enum_name(e));
@@ -44,7 +45,8 @@ struct std::formatter<E> : public std::formatter<std::string_view>
         }
     }
 
-    template <typename FormatContext> auto format(E e, FormatContext& ctx) const
+    template <typename FormatContext>
+    constexpr auto format(E e, FormatContext& ctx) const
     {
         if (!format_if_valid(e, ctx)) {
             using ut = std::underlying_type<E>::type;

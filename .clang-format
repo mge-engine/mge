@@ -47,3 +47,7 @@ MaxEmptyLinesToKeep: 1
 AllowAllArgumentsOnNextLine: false
 NamespaceIndentation: All
 IndentPPDirectives: AfterHash
+# preserve include blocks
+IncludeBlocks: Preserve
+# do not sort includes, will reorder system includes!
+SortIncludes: false

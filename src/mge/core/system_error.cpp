@@ -3,8 +3,20 @@
 // All rights reserved.
 #include "mge/core/system_error.hpp"
 
+#if defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
+#    include <stdio.h>
+#    include <string.h>
+#endif
+
 namespace mge {
+
+#if defined(MGE_OS_WINDOWS)
     system_error::system_error() { set_error_code(GetLastError()); }
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
+    system_error::system_error() { set_error_code(errno); }
+#else
+#    error Missing port
+#endif
 
     void system_error::set_error_code(system_error::error_code_type ec)
     {
@@ -26,6 +38,11 @@ namespace mge {
             throw;
         }
         LocalFree(msgbuf);
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
+        char msgbuf[1024];
+        int  fmtok = strerror_r(ec, msgbuf, sizeof(msgbuf));
+        // todo: handle fmtok
+        (*this) << "(" << ec << "): " << msgbuf;
 #else
 #    error Missing port
 #endif
@@ -57,6 +74,7 @@ namespace mge {
                                    const char* signature,
                                    const char* function)
     {
+#ifdef MGE_OS_WINDOWS
         auto code = GetLastError();
         if (code == NO_ERROR) {
             return;
@@ -68,6 +86,21 @@ namespace mge {
             .set_info(mge::exception::function(signature))
             .set_info(mge::exception::stack(mge::stacktrace()))
             .set_info(mge::exception::called_function(function));
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
+        auto code = errno;
+        if (code == 0) {
+            return;
+        }
+
+        throw system_error(code)
+            .set_info(mge::exception::source_file(file))
+            .set_info(mge::exception::source_line(line))
+            .set_info(mge::exception::function(signature))
+            .set_info(mge::exception::stack(mge::stacktrace()))
+            .set_info(mge::exception::called_function(function));
+#else
+#    error Missing port
+#endif
     }
 
 } // namespace mge

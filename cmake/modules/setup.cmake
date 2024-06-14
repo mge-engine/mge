@@ -3,6 +3,7 @@
 # All rights reserved.
 
 INCLUDE(compiler/msvc)
+INCLUDE(compiler/clang)
 
 INCLUDE(settings/debugrelease)
 INCLUDE(settings/headless)

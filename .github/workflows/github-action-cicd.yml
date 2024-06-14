@@ -7,8 +7,83 @@ on:
   pull_request:
 
 jobs:
+# -- macos x latest runner (using brew clang)
+    build-macos-latest-brew-clang:
+      if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+      name: Build macosx-latest-brew-clang
+      runs-on: macos-latest
+      env: 
+        VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+      steps:
+          - name: Show Python version
+            run: |
+              python --version
+          - name: Brew update & upgrade
+            run: |
+              brew update && brew upgrade
+          - name: Install Ninja
+            run: |
+              brew install ninja
+          - name: Checkout source code
+            uses: actions/checkout@v4
+            with:
+              clean: false
+          - name: Cache vcpkg
+            id: cache-vcpkg
+            uses: actions/cache@v4
+            with:
+              path: ${{ github.workspace }}/vcpkg
+              key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+              restore-keys: |
+                vcpkg-${{ runner.os }}-
+          - name: Cache vcpkg binary cache
+            id: cache-vcpkg-binary
+            uses: actions/cache@v4
+            with:
+              path: ${{ github.workspace }}/vcpkg_binary_cache
+              key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+              restore-keys: |
+                vcpkg-binary-cache-${{ runner.os }}-
+          - name: Check whether vcpkg exists
+            id: check-vcpkg
+            run: |
+              if [ -d "${{ github.workspace }}/vcpkg" ]; then
+                echo "vcpkg exists"
+                echo "vcpkg_found=true" >> $GITHUB_ENV
+              else
+                echo "vcpkg does not exist, need to build"
+                echo "vcpkg_found=false" >> $GITHUB_ENV
+              fi
+          - name: Create vcpkg cache directory
+            run: |
+              if [ ! -d "${{ github.workspace }}/vcpkg_binary_cache" ]; then
+                mkdir -p "${{ github.workspace }}/vcpkg_binary_cache"
+              fi
+          - name: Checkout vcpkg
+            #if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
+            uses: actions/checkout@v4
+            with:
+              repository: mge-engine/vcpkg
+              path: ${{ github.workspace }}/vcpkg
+              clean: false
+          - name: Update vcpkg
+            if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
+            working-directory: ${{ github.workspace }}/vcpkg
+            run: |
+              git pull origin master
+          - name: Export GitHub Actions cache environment variables
+            uses: actions/github-script@v6
+            with:
+                script: |
+                    core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+                    core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');                
+          - name: Install llvm
+            run: |
+              brew install llvm@18
+########################################################################################################################    
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build x64-windows-msvc
         runs-on: windows-latest
         env: 
@@ -24,6 +99,7 @@ jobs:
             - name: Install Ninja
               run: |
                 choco install ninja
+                ninja --version
             - name: Checkout source code
               uses: actions/checkout@v4
               with:
@@ -104,6 +180,7 @@ jobs:
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --target test
     build-documentation-windows-latest:
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build documentation
         runs-on: windows-latest
         env: 

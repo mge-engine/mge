@@ -9,6 +9,10 @@
     "boost-spirit",
     "boost-locale",
     "boost-bimap",
+    {
+      "name": "boost-stacktrace",
+      "platform": "osx"
+    },
     "glm",
     "lua",
     {
@@ -19,6 +23,10 @@
     "nlohmann-json",
     "glslang",
     "libmagic",
-    "magic-enum"
+    "magic-enum",
+    {
+      "name":"libbacktrace",
+      "platform":"osx"
+    }
   ]
 }

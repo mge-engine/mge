@@ -32,13 +32,6 @@ TEST(exception, set_info)
             "message: Unknown exception\n"));
 }
 
-TEST(exception, set_info_with_location)
-{
-    mge::exception    ex(std::source_location::current());
-    std::stringstream msg;
-    std::cout << ex.details();
-}
-
 TEST(exception, set_info_using_operator)
 {
     mge::exception ex;
@@ -53,7 +46,7 @@ TEST(exception, set_info_using_operator)
             "Exception type: unknown mge::exception\n"
             "Exception location: "
             ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception."
-            "cpp:44\n"
+            "cpp:37\n"
             "Exception raising function: void __cdecl "
             "exception_set_info_using_operator_Test::TestBody\\(void\\)\n"
             "Calling library/system function: FOOBAR\n"

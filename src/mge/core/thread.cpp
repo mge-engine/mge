@@ -72,6 +72,13 @@ namespace mge {
     }
 
     namespace this_thread {
+#ifdef MGE_OS_WINDOWS
         mge::thread::system_id system_id() { return GetCurrentThreadId(); }
+#elif defined(MGE_OS_MACOSX) || defined(MGE_OS_LINUX)
+        mge::thread::system_id system_id() { return pthread_self(); }
+#else
+#    error Missing port
+#endif
+
     } // namespace this_thread
 } // namespace mge

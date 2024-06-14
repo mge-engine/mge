@@ -19,7 +19,11 @@ TEST(simple_trace_formatter, create)
 
     r.level = mge::trace_level::WARNING;
     r.sequence = 3;
-    r.thread = 0x1234;
+#ifdef MGE_OS_WINDOWS
+    r.thread = static_cast<decltype(r.thread)>(0x1234);
+#else
+    r.thread = reinterpret_cast<decltype(r.thread)>(0x1234);
+#endif
     r.time = mge::clock::time_point(0h);
     r.topic = &(MGE_NS_TRACE_TOPIC(mge, CORE));
     r.message = std::string_view(m.begin(), m.end());
