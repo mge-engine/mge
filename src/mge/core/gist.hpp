@@ -86,11 +86,11 @@ struct std::formatter<mge::gist_type<T>, C>
         } else if (g.value->get() == nullptr) {
             return std::format_to(ctx.out(),
                                   "{} -> nullptr",
-                                  mge::type_name<T::element_type>());
+                                  mge::type_name<typename T::element_type>());
         } else {
             return std::format_to(ctx.out(),
                                   "std::shared_ptr<{}> -> {}",
-                                  mge::type_name<T::element_type>(),
+                                  mge::type_name<typename T::element_type>(),
                                   mge::gist(**g.value));
         }
     }
