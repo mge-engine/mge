@@ -12,10 +12,18 @@ namespace mge::entity {
     class MGEENTITY_EXPORT registry
     {
     public:
-        registry() = default;
-        ~registry() = default;
+        registry();
+
+        ~registry();
+
+        inline constexpr registry_id_type id() const noexcept
+        {
+            return m_registry_id;
+        }
 
     private:
-        std::atomic<id_type> m_id_sequence;
+        std::atomic<id_type>                 m_id_sequence;
+        registry_id_type                     m_registry_id;
+        static std::atomic<registry_id_type> s_registry_id_sequence;
     };
 } // namespace mge::entity

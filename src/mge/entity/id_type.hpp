@@ -6,6 +6,7 @@
 #include <cstdint>
 namespace mge::entity {
 
-    using id_type = uint32_t;
+    using id_type = uint64_t;
+    using registry_id_type = uint16_t;
 
 } // namespace mge::entity
