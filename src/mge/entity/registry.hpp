@@ -31,6 +31,7 @@ namespace mge::entity {
         }
 
         static registry& get(registry_id_type id);
+        static registry& get(id_type id);
 
     private:
         std::atomic<id_type> m_id_sequence;

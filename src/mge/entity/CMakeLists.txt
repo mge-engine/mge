@@ -21,5 +21,5 @@ MGE_LIBRARY(
     ${mgeentity_sources}
     ${mgeentity_headers}
 )
-TARGET_LINK_LIBRARIES(mgecore boost-all)
+TARGET_LINK_LIBRARIES(mgeentity mgecore boost-all)
 ADD_SUBDIRECTORY(test)
