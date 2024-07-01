@@ -9,6 +9,8 @@ SET(mgeentity_sources
 SET(mgeentity_headers
     dllexport.hpp
     registry.hpp
+    entity.hpp
+    component.hpp
 )
 
 

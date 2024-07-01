@@ -69,6 +69,19 @@ namespace mge::entity {
             std::format_to(ctx.out(), "entity#{}", id());
         }
 
+        /*
+         * Set a component to this entity.
+         */
+        template <typename Component> void set(const Component& c) {}
+
+        /*
+         * Get a component from this entity.
+         */
+        template <typename Component> const Component& get() const
+        {
+            return Component{};
+        }
+
     private:
         id_type m_id{0};
     };
