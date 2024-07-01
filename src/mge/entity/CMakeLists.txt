@@ -4,6 +4,7 @@
 
 SET(mgeentity_sources
    registry.cpp
+   entity.cpp
 )
 
 SET(mgeentity_headers

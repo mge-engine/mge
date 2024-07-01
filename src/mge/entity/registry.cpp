@@ -100,4 +100,23 @@ namespace mge::entity {
         return get(rid);
     }
 
+    entity registry::create_entity()
+    {
+        id_type id = m_id_sequence++;
+        id |= static_cast<id_type>(m_registry_id) << 48;
+        return entity(id);
+    }
+
+    void registry::discard_entity(entity& e)
+    {
+        if (e.id() == 0) {
+            return;
+        }
+        if (e.id() >> 48 != m_registry_id) {
+            MGE_THROW(mge::runtime_exception)
+                << "Entity does not belong to this registry";
+        }
+        m_discarded_entities.insert(e.id() & 0xFFFFFFFFFFFF);
+    }
+
 } // namespace mge::entity

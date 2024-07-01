@@ -51,6 +51,8 @@ namespace mge::entity {
             return *this;
         }
 
+        ~entity();
+
         /**
          * @brief Get the id of the entity.
          * @return entity id
