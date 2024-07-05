@@ -2,10 +2,11 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "dx11.hpp"
 #include "mge/graphics/texture.hpp"
-#include "opengl.hpp"
+#include "mge/win32/com_unique_ptr.hpp"
 
-namespace mge::opengl {
+namespace mge::dx11 {
     class render_context;
 
     class texture : public mge::texture
@@ -20,10 +21,7 @@ namespace mge::opengl {
                       size_t                   size) override;
 
     private:
-        GLint  internal_format(const mge::image_format& format) const;
-        GLenum pixel_format(const mge::image_format& format) const;
-        GLenum pixel_type(const mge::image_format& format) const;
-
-        GLuint m_texture;
+        DXGI_FORMAT texture_format(const mge::image_format& format) const;
+        mge::com_unique_ptr<ID3D11Texture2D> m_texture;
     };
-} // namespace mge::opengl
+} // namespace mge::dx11

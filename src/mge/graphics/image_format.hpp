@@ -42,7 +42,7 @@ namespace mge {
         data_format format() const { return m_format; }
         data_type   type() const { return m_type; }
 
-        inline constexpr size_t components() noexcept
+        inline constexpr size_t components() const noexcept
         {
             switch (m_format) {
             case data_format::RGB:
@@ -54,7 +54,7 @@ namespace mge {
             }
         }
 
-        inline size_t binary_size() noexcept
+        inline size_t binary_size() const noexcept
         {
             return components() * data_type_size(m_type);
         }
