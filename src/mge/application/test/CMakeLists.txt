@@ -16,3 +16,8 @@ MGE_TEST(TARGET test_applicationtest
          SOURCES test_applicationtest.cpp
          NOMAIN
          LIBRARIES mgeapplication mgecore)
+
+MGE_TEST(TARGET test_simple_application
+         SOURCES test_simple_application.cpp
+         NOMAIN
+         LIBRARIES mgeapplication mgecore)
