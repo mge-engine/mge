@@ -18,6 +18,6 @@ CMakeCache.txt
 # -- created by CI tools
 vcpkg/*
 # -- vscode browse db
-BROWSE.DB
-BROWSE.DB-shm
-BROWSE.DB-wal
+BROWSE*.DB
+BROWSE*.DB-shm
+BROWSE*.DB-wal
