@@ -21,15 +21,17 @@ ENDIF()
 
 SET(mge_vulkan_module_SOURCES
     common.cpp
+    vulkan_library.cpp
+    error.cpp
 #    render_system.cpp
 #    render_context.cpp
 #    swap_chain.cpp
 #    command_list.cpp
 #    shader.cpp
 #    program.cpp
-#    vulkan_library.cpp
+
 #    window.cpp
-    error.cpp)
+)
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
         "${CMAKE_CURRENT_BINARY_DIR}/vulkan_core.inc"
