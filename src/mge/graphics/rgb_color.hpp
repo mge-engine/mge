@@ -16,11 +16,7 @@ namespace mge {
         /**
          * Constructor. Intializes to zero.
          */
-        inline rgb_color()
-            : r(0.0f)
-            , g(0.0f)
-            , b(0.0f)
-        {}
+        inline rgb_color() {}
 
         /**
          * Constructor.
@@ -138,9 +134,9 @@ namespace mge {
             std::format_to(ctx.out(), "rgb_color{{r={}, g={}, b={}}}", r, g, b);
         }
 
-        float r; //!< red
-        float g; //!< green
-        float b; //!< blue
+        float r{0.0f}; //!< red
+        float g{0.0f}; //!< green
+        float b{0.0f}; //!< blue
     };
 
     /**

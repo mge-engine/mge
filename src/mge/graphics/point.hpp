@@ -7,7 +7,6 @@
 #include "mge/graphics/dllexport.hpp"
 #include <cstdint>
 
-
 namespace mge {
 
 #ifdef BUILD_GRAPHICS
@@ -22,10 +21,7 @@ namespace mge {
     class MGEGRAPHICS_EXPORT point
     {
     public:
-        point()
-            : x(0)
-            , y(0)
-        {}
+        point() {}
 
         /**
          * @brief Create point.
@@ -49,8 +45,8 @@ namespace mge {
             std::format_to(ctx.out(), "point{{x={}, y={}}}", x, y);
         }
 
-        uint32_t x; //!< x coordinate
-        uint32_t y; //!< y coordinate
+        uint32_t x{0}; //!< x coordinate
+        uint32_t y{0}; //!< y coordinate
     };
 
 } // namespace mge

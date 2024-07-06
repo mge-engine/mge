@@ -5,7 +5,6 @@
 #include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 
-
 namespace mge {
 
     class rgb_color;
@@ -19,12 +18,7 @@ namespace mge {
         /**
          * Default constructor.
          */
-        inline rgba_color()
-            : r(0.0f)
-            , g(0.0f)
-            , b(0.0f)
-            , a(0.0f)
-        {}
+        inline rgba_color() {}
 
         /**
          * Constructor
@@ -137,10 +131,10 @@ namespace mge {
                            a);
         }
 
-        float r; //!< red
-        float g; //!< green
-        float b; //!< blue
-        float a; //!< alpha
+        float r{0.0f}; //!< red
+        float g{0.0f}; //!< green
+        float b{0.0f}; //!< blue
+        float a{0.0f}; //!< alpha
     };
 
 } // namespace mge
