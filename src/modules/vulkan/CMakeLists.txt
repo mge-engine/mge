@@ -23,7 +23,7 @@ SET(mge_vulkan_module_SOURCES
     common.cpp
     vulkan_library.cpp
     error.cpp
-#    render_system.cpp
+    render_system.cpp
 #    render_context.cpp
 #    swap_chain.cpp
 #    command_list.cpp

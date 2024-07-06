@@ -3,6 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/render_system.hpp"
+#include "vulkan.hpp"
+#include "vulkan_library.hpp"
 
 namespace mge::vulkan {
 
@@ -17,6 +19,19 @@ namespace mge::vulkan {
                       const mge::window_options& options) override;
 
         std::span<mge::monitor_ref> monitors() override;
+
+#define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
+#define INSTANCE_FUNCTION(X) PFN_##X X;
+#define DEVICE_FUNCTION(X) PFN_##X X;
+
+#include "vulkan_core.inc"
+#ifdef MGE_OS_WINDOWS
+#    include "vulkan_win32.inc"
+#endif
+
+#undef BASIC_INSTANCE_FUNCTION
+#undef INSTANCE_FUNCTION
+#undef DEVICE_FUNCTION
     };
 
 } // namespace mge::vulkan
