@@ -127,12 +127,18 @@ namespace mge {
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {
+                    MGE_DEBUG_TRACE(APPLICATION)
+                        << "Application name parameter found";
                     application_name_parameter_value =
                         MGE_PARAMETER(application, name).get();
                     used_application_name = application_name_parameter_value;
                 }
                 if (used_application_name.empty()) {
-                    used_application_name = mge::executable_name();
+                    MGE_DEBUG_TRACE(APPLICATION)
+                        << "No application name parameter found, falling back "
+                           "to executable name";
+                    application_name_parameter_value = mge::executable_name();
+                    used_application_name = application_name_parameter_value;
                 }
             }
 

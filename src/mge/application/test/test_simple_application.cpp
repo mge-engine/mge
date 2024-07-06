@@ -30,7 +30,9 @@ namespace mge {
         }
     };
 
-    MGE_REGISTER_IMPLEMENTATION(simpleapp, mge::application, simpleapp);
+    MGE_REGISTER_IMPLEMENTATION(simpleapp,
+                                mge::application,
+                                test_simple_application);
 } // namespace mge
 
 MGE_MAINFUNCTION
