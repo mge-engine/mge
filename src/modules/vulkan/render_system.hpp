@@ -34,11 +34,13 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
+        bool              debug() const;
         inline VkInstance instance() const noexcept { return m_instance; }
 
     private:
         void resolve_basic_instance_functions();
         void resolve_layer_properties();
+        void create_instance();
         void teardown();
 
         std::shared_ptr<vulkan_library> m_library;

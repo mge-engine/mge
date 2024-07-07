@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_system.hpp"
 #include "error.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
 
@@ -25,9 +26,37 @@ namespace mge::vulkan {
             m_library = std::make_shared<vulkan_library>();
             resolve_basic_instance_functions();
             resolve_layer_properties();
+            create_instance();
         } catch (...) {
             teardown();
             throw;
+        }
+    }
+
+#ifdef MGE_OS_WINDOWS
+    static const char* s_default_extensions[] = {"VK_KHR_surface",
+                                                 "VK_KHR_win32_surface"};
+#else
+#    error Missing port
+#endif
+
+    void render_system::create_instance()
+    {
+        auto application_name = mge::executable_name();
+
+        VkApplicationInfo app_info = {};
+        app_info.pApplicationName = exe_name.c_str();
+        // TODO: manage application version
+        // app_info.applicationVersion = ...
+        app_info.pEngineName = "mge";
+        // TODO: manage engine (library version)
+        // app_info.engineVersion = ...
+        app_info.apiVersion = VK_API_VERSION_1_3;
+
+        std::vector<const char*> extensions;
+        std::vector<const char*> layers;
+        for (const auto& e : s_default_extensions) {
+            extensions.push_back(e);
         }
     }
 
@@ -125,6 +154,22 @@ namespace mge::vulkan {
 #else
 #    error Missing Port
 #endif
+    }
+
+    bool render_system::debug() const
+    {
+
+        if (MGE_PARAMETER(vulkan, debug).has_value()) {
+            return MGE_PARAMETER(vulkan, debug).get();
+        } else {
+            const char* vulkan_debug_env = std::getenv("MGE_VULKAN_DEBUG");
+            if (vulkan_debug_env != nullptr) {
+                return std::string(vulkan_debug_env) == "1" ||
+                       std::string(vulkan_debug_env) == "true";
+            } else {
+                return false;
+            }
+        }
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
