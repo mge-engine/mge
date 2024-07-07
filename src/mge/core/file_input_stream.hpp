@@ -15,14 +15,15 @@ namespace mge {
         virtual ~file_input_stream();
 
         offset_type position() override;
-        offset_type seek(offset_type offset, direction_type dir) override;;
+        offset_type seek(offset_type offset, direction_type dir) override;
+        ;
 
     private:
         streamsize_type on_read(void*           destination,
                                 streamsize_type size) override;
 
         path  m_path;
-        FILE* m_file;
+        FILE* m_file{nullptr};
     };
 
 } // namespace mge

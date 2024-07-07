@@ -6,6 +6,7 @@
 #include <bitset>
 namespace mge {
 
+    // TODO: Mouse wheel support
     /**
      * @brief Current state of mouse input.
      *
@@ -71,7 +72,7 @@ namespace mge {
 
     private:
         std::bitset<32> m_buttons;
-        uint32_t        m_x;
-        uint32_t        m_y;
+        uint32_t        m_x{0};
+        uint32_t        m_y{0};
     };
 } // namespace mge

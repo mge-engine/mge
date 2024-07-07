@@ -31,10 +31,7 @@ namespace mge {
         using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
 
-        callback_map()
-            : m_sequence(0)
-            , m_calling(false)
-        {}
+        callback_map() {}
 
         /**
          * @brief Inserts a callback.
@@ -101,10 +98,10 @@ namespace mge {
         void clear() { m_data.clear(); }
 
     private:
-        key_type                   m_sequence;
+        key_type                   m_sequence{0};
         container_type             m_data;
         mutable key_container_type m_delayed_erase;
-        mutable bool               m_calling;
+        mutable bool               m_calling{false};
     };
 
     template <> class callback_map<void> : public noncopyable
@@ -118,10 +115,7 @@ namespace mge {
         using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
 
-        callback_map()
-            : m_sequence(0)
-            , m_calling(false)
-        {}
+        callback_map() {}
 
         /**
          * @brief Inserts a callback.
@@ -188,9 +182,9 @@ namespace mge {
         void clear() { m_data.clear(); }
 
     private:
-        key_type                   m_sequence;
+        key_type                   m_sequence{0};
         container_type             m_data;
         mutable key_container_type m_delayed_erase;
-        mutable bool               m_calling;
+        mutable bool               m_calling{false};
     };
 } // namespace mge

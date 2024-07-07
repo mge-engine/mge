@@ -10,7 +10,6 @@
 namespace mge {
     file_input_stream::file_input_stream(const path& path)
         : m_path(path)
-        , m_file(nullptr)
     {
         m_file = ::_wfopen(path.native().c_str(), L"rb");
         if (!m_file) {
