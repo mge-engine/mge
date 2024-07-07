@@ -158,19 +158,15 @@ namespace mge::vulkan {
 
     bool render_system::debug() const
     {
-
-        if (MGE_PARAMETER(vulkan, debug).has_value()) {
-            return MGE_PARAMETER(vulkan, debug).get();
-        } else {
-            const char* vulkan_debug_env = std::getenv("MGE_VULKAN_DEBUG");
-            if (vulkan_debug_env != nullptr) {
-                return std::string(vulkan_debug_env) == "1" ||
-                       std::string(vulkan_debug_env) == "true";
-            } else {
-                return false;
-            }
+        const char* vulkan_debug_env = std::getenv("MGE_VULKAN_DEBUG");
+        bool        result = MGE_PARAMETER(vulkan, debug).get(false);
+        if (!result && vulkan_debug_env != nullptr) {
+            return std::string(vulkan_debug_env) == "1" ||
+                   std::string(vulkan_debug_env) == "true";
         }
+        return result;
     }
+}
 
-    MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
+MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
 } // namespace mge::vulkan
