@@ -31,6 +31,12 @@ namespace mge::vulkan {
 
     std::span<mge::monitor_ref> render_system::monitors()
     {
-        return std::span<mge::monitor_ref>();
+#ifdef MGE_OS_WINDOWS
+        return mge::win32::monitor::all_monitors();
+#else
+#    error Missing Port
+#endif
     }
+
+    MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
 } // namespace mge::vulkan
