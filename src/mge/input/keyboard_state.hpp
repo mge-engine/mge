@@ -80,7 +80,7 @@ namespace mge {
     private:
         mge::modifier     m_modifier;
         std::vector<bool> m_pressed;
-        bool              m_invalid_pressed;
+        bool              m_invalid_pressed{false};
     };
 
 } // namespace mge

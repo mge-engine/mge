@@ -5,7 +5,6 @@
 
 namespace mge {
     keyboard_state::keyboard_state()
-        : m_invalid_pressed(false)
     {
         const uint32_t key_max = static_cast<uint32_t>(key::KEY_MAX);
         m_pressed.resize(key_max);

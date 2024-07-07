@@ -98,7 +98,6 @@ namespace mge {
     {
     public:
         inline component_registry_entry()
-            : m_name(type_name<Class>())
         {
             static_assert(
                 std::is_base_of<component_base, Class>::value,
@@ -109,7 +108,7 @@ namespace mge {
         std::string_view name() const noexcept override { return m_name; }
 
     private:
-        std::string m_name;
+        std::string m_name{mge::type_name<Class>()};
     };
 
     template <typename ComponentType, typename ImplementationType>
@@ -118,8 +117,6 @@ namespace mge {
     {
     public:
         inline implementation_registry_entry()
-            : m_component_name(type_name<ComponentType>())
-            , m_name(type_name<ImplementationType>())
         {
             static_assert(
                 std::is_base_of<ComponentType, ImplementationType>::value,
@@ -130,9 +127,7 @@ namespace mge {
         }
 
         inline implementation_registry_entry(const char* alias_names)
-            : m_component_name(type_name<ComponentType>())
-            , m_name(type_name<ImplementationType>())
-            , m_alias_names(alias_names)
+            : m_alias_names(alias_names)
         {
             static_assert(
                 std::is_base_of<ComponentType, ImplementationType>::value,
@@ -158,8 +153,8 @@ namespace mge {
         }
 
     private:
-        std::string m_component_name;
-        std::string m_name;
+        std::string m_component_name{mge::type_name<ComponentType>()};
+        std::string m_name{mge::type_name<ImplementationType>()};
         std::string m_alias_names;
     };
 
