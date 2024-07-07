@@ -105,19 +105,6 @@ namespace mge::vulkan {
         }
     }
 
-    static void*
-    resolve_basic_instance_function(PFN_vkGetInstanceProcAddr getInstanceProc,
-                                    const char*               name)
-    {
-        auto ptr = getInstanceProc(VK_NULL_HANDLE, name);
-        if (!ptr) {
-            MGE_THROW(vulkan::error)
-                << "Cannot resolve instance function: " << name;
-        }
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << name << ": " << (void*)ptr;
-        return ptr;
-    }
-
     void render_system::resolve_basic_instance_functions()
     {
 #ifdef MGE_COMPILER_MSVC

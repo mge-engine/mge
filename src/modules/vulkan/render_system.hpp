@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "error.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "vulkan.hpp"
 #include "vulkan_library.hpp"
@@ -32,6 +33,16 @@ namespace mge::vulkan {
 #undef BASIC_INSTANCE_FUNCTION
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
-    };
 
+        inline VkInstance instance() const noexcept { return m_instance; }
+
+    private:
+        void resolve_basic_instance_functions();
+        void resolve_layer_properties();
+        void teardown();
+
+        std::shared_ptr<vulkan_library> m_library;
+        std::vector<VkLayerProperties>  m_layer_properties;
+        VkInstance                      m_instance{VK_NULL_HANDLE};
+    };
 } // namespace mge::vulkan

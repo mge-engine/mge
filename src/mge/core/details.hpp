@@ -26,13 +26,6 @@ namespace mge {
         } -> std::convertible_to<void>;
     };
 
-    template <typename T>
-    concept exists_details_function =
-        requires(T obj, std::format_context& ctx) {
-            {
-                ::mge::details(obj, ctx)
-            } -> std::convertible_to<void>;
-        };
 } // namespace mge
 
 template <typename T, typename C>
@@ -96,9 +89,8 @@ struct std::formatter<mge::details_type<T>, C>
 };
 
 template <typename T, typename C>
-    requires mge::has_details_method<T> &&
-             !mge::exists_details_function<T>
-             struct std::formatter<mge::details_type<T>, C>
+    requires mge::has_details_method<T>
+struct std::formatter<mge::details_type<T>, C>
     : public std::formatter<std::string_view, C>
 {
     template <typename FormatContext>
@@ -113,25 +105,8 @@ template <typename T, typename C>
 };
 
 template <typename T, typename C>
-    requires mge::exists_details_function<T> &&
-             !mge::has_details_method<T>
-             struct std::formatter<mge::details_type<T>, C>
-    : public std::formatter<std::string_view, C>
-{
-    template <typename FormatContext>
-    auto format(mge::details_type<T> g, FormatContext& ctx) const
-    {
-        if (!g.value) {
-            return std::format_to(ctx.out(), "nullptr");
-        }
-        ::mge::details(*g.value, ctx);
-        return ctx.out();
-    }
-};
-
-template <typename T, typename C>
-    requires !mge::has_details_method<T> && !mge::exists_details_function<T> &&
-             !std::is_pointer_v<T> && !mge::is_shared_ptr_v<T> &&
+    requires !mge::has_details_method<T> && !std::is_pointer_v<T> &&
+             !mge::is_shared_ptr_v<T> &&
              !std::is_arithmetic_v<T>
              struct std::formatter<mge::details_type<T>, C>
     : public std::formatter<std::string_view, C>
@@ -153,6 +128,7 @@ namespace mge {
                                     const mge::details_type<T>& g)
     {
         std::ostream_iterator<char> out(os);
+        g.format(out);
         std::format_to(out, "{}", g);
         return os;
     }
