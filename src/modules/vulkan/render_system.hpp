@@ -38,9 +38,17 @@ namespace mge::vulkan {
         inline VkInstance instance() const noexcept { return m_instance; }
 
     private:
+        static VkBool32
+        debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
+                               VkDebugUtilsMessageTypeFlagsEXT        type,
+                               const VkDebugUtilsMessengerCallbackDataEXT* data,
+                               void* userdata);
+
         void resolve_basic_instance_functions();
         void resolve_layer_properties();
         void create_instance();
+        void destroy_instance();
+        void resolve_instance_functions();
         void teardown();
 
         std::shared_ptr<vulkan_library> m_library;
