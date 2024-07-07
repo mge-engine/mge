@@ -43,6 +43,8 @@ namespace mge::vulkan {
 
         std::shared_ptr<vulkan_library> m_library;
         std::vector<VkLayerProperties>  m_layer_properties;
-        VkInstance                      m_instance{VK_NULL_HANDLE};
+        std::map<std::string, std::vector<VkExtensionProperties>>
+                   m_instance_extensions;
+        VkInstance m_instance{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan

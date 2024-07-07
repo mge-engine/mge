@@ -44,6 +44,23 @@ namespace mge::vulkan {
         for (const auto& layer : m_layer_properties) {
             MGE_DEBUG_TRACE(VULKAN)
                 << "  " << layer.layerName << ": " << layer.description;
+            uint32_t extension_count = 0;
+            CHECK_VK_CALL(
+                vkEnumerateInstanceExtensionProperties(layer.layerName,
+                                                       &extension_count,
+                                                       nullptr));
+            if (extension_count) {
+                std::vector<VkExtensionProperties> properties(extension_count);
+                CHECK_VK_CALL(
+                    vkEnumerateInstanceExtensionProperties(layer.layerName,
+                                                           &extension_count,
+                                                           properties.data()));
+                MGE_DEBUG_TRACE(VULKAN) << "    Extensions:";
+                for (const auto& prop : properties) {
+                    MGE_DEBUG_TRACE(VULKAN) << "      " << prop.extensionName;
+                }
+                m_instance_extensions[layer.layerName] = std::move(properties);
+            }
         }
     }
 
