@@ -46,6 +46,7 @@ namespace mge::vulkan {
         const VkDebugUtilsMessengerCallbackDataEXT* data,
         void*                                       userdata)
     {
+        // TODO: more detailed debug message reporting
         switch (severity) {
         default:
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
