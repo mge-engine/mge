@@ -11,7 +11,9 @@
 #include "mge/graphics/shader_language.hpp"
 #include "mge/graphics/window_options.hpp"
 
+#include <algorithm>
 #include <span>
+#include <vector>
 
 namespace mge {
     /**
@@ -39,28 +41,19 @@ namespace mge {
 
         public:
             virtual ~capabilities();
-            /// @brief  list of supported shader languages
-            using shader_language_list = std::vector<shader_language>;
-            /// @brief  list of supported shader formats
-            using shader_format_list = std::vector<shader_format>;
-
             /**
              * @brief Get supported shader languages.
              *
              * @return list of supported shader languages
              */
-            const shader_language_list& shader_languages() const;
+            virtual std::span<const shader_language> shader_languages() const;
 
             /**
              * @brief Get supported shader formats.
              *
              * @return list of supported shader formats
              */
-            const shader_format_list& shader_formats() const;
-
-        protected:
-            shader_language_list m_shader_languages;
-            shader_format_list   m_shader_formats;
+            virtual std::span<const shader_format> shader_formats() const;
         };
 
         virtual ~render_system() = default;

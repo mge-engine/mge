@@ -52,16 +52,16 @@ namespace mge {
 
     render_system::capabilities::~capabilities() {}
 
-    const render_system::capabilities::shader_language_list&
+    std::span<const shader_language>
     render_system::capabilities::shader_languages() const
     {
-        return m_shader_languages;
+        return std::span<const shader_language>();
     }
 
-    const render_system::capabilities::shader_format_list&
+    std::span<const shader_format>
     render_system::capabilities::shader_formats() const
     {
-        return m_shader_formats;
+        return std::span<const shader_format>();
     }
 
 } // namespace mge

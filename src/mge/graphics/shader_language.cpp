@@ -24,6 +24,11 @@ namespace mge {
         return m_name == l.m_name && m_version == l.m_version;
     }
 
+    bool shader_language::operator!=(const shader_language& l) const
+    {
+        return m_name != l.m_name || m_version != l.m_version;
+    }
+
     bool shader_language::compatible(const shader_language& other) const
     {
         if (m_name == other.m_name) {

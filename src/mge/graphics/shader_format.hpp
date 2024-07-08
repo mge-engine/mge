@@ -6,7 +6,6 @@
 #include "mge/core/semantic_version.hpp"
 #include "mge/graphics/dllexport.hpp"
 
-
 #include <iosfwd>
 #include <string>
 #include <string_view>
@@ -58,6 +57,32 @@ namespace mge {
                            m_name,
                            m_version);
         }
+
+        /**
+         * Comparison operator.
+         * @param other compared shader format
+         * @return @c true if equal
+         */
+        bool operator==(const shader_format& other) const;
+
+        /**
+         * Comparison operator.
+         * @param other compared shader format
+         * @return @c true if not equal
+         */
+        bool operator!=(const shader_format& other) const;
+
+        /**
+         * @brief Get shader format name.
+         * @return shader format name
+         */
+        const std::string& name() const { return m_name; }
+
+        /**
+         * @brief Get shader format version.
+         * @return shader format version
+         */
+        const semantic_version& version() const { return m_version; }
 
     private:
         std::string      m_name;
