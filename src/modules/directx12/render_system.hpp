@@ -25,5 +25,6 @@ namespace mge::dx12 {
 
         void enable_debug_layer();
         void check_tearing_support();
+        void init_capabilities();
     };
 } // namespace mge::dx12

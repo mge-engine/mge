@@ -19,6 +19,9 @@ namespace mge::dx11 {
 
         bool debug() const;
         bool software_device() const;
+
+    private:
+        void init_capabilities();
     };
 
 } // namespace mge::dx11
