@@ -65,6 +65,13 @@ namespace mge {
         bool operator==(const shader_language& l) const;
 
         /**
+         * @brief Comparison operator.
+         * @param l compared language
+         * @return @c true if not equal
+         */
+        bool operator!=(const shader_language& l) const;
+
+        /**
          * @brief Return this language is compatible with the other
          *
          * @param other
