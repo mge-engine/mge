@@ -55,6 +55,7 @@ namespace mge::vulkan {
         }
 
     private:
+        void init_capabilities();
         void fetch_layers();
         void fetch_instance_extensions(
             const char* layer, std::vector<VkExtensionProperties>& properties);
