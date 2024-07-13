@@ -21,3 +21,5 @@ vcpkg/*
 BROWSE*.DB
 BROWSE*.DB-shm
 BROWSE*.DB-wal
+# -- sphinx venv
+sphinx/**/*
