@@ -47,6 +47,26 @@ namespace mge {
             public:
                 capabilities(render_system* system);
                 ~capabilities() = default;
+
+                std::span<const mge::shader_language>
+                shader_languages() const override
+                {
+                    return std::span<const mge::shader_language>(
+                        m_shader_languages.data(),
+                        m_shader_languages.size());
+                }
+
+                std::span<const mge::shader_format>
+                shader_formats() const override
+                {
+                    return std::span<const mge::shader_format>(
+                        m_shader_formats.data(),
+                        m_shader_formats.size());
+                }
+
+            private:
+                std::vector<mge::shader_language> m_shader_languages;
+                std::vector<mge::shader_format>   m_shader_formats;
             };
 
             void init_capabilities()

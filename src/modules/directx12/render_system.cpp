@@ -29,6 +29,46 @@ namespace mge::dx12 {
         MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
         enable_debug_layer();
         check_tearing_support();
+        init_capabilities();
+    }
+
+    void render_system::init_capabilities()
+    {
+        class capabilities : public mge::render_system::capabilities
+        {
+        public:
+            capabilities()
+            {
+                // TODO: resolve actual shader model (up to version 6.6)
+                shader_language hlsl{"hlsl"sv, mge::semantic_version(5, 0)};
+                m_shader_languages.push_back(hlsl);
+                shader_format bytecode{"bytecode"sv,
+                                       mge::semantic_version(5, 0)};
+                m_shader_formats.push_back(bytecode);
+            }
+            ~capabilities() = default;
+
+            std::span<const mge::shader_language>
+            shader_languages() const override
+            {
+                return std::span<const mge::shader_language>(
+                    m_shader_languages.data(),
+                    m_shader_languages.size());
+            }
+
+            std::span<const mge::shader_format> shader_formats() const override
+            {
+                return std::span<const mge::shader_format>(
+                    m_shader_formats.data(),
+                    m_shader_formats.size());
+            }
+
+        private:
+            std::vector<mge::shader_language> m_shader_languages;
+            std::vector<mge::shader_format>   m_shader_formats;
+        };
+
+        m_capabilities = std::make_unique<capabilities>();
     }
 
     std::span<mge::monitor_ref> render_system::monitors()

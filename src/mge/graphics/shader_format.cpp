@@ -15,4 +15,14 @@ namespace mge {
         , m_version(version)
     {}
 
+    bool shader_format::operator==(const shader_format& other) const
+    {
+        return m_name == other.m_name && m_version == other.m_version;
+    }
+
+    bool shader_format::operator!=(const shader_format& other) const
+    {
+        return m_name != other.m_name || m_version != other.m_version;
+    }
+
 } // namespace mge

@@ -23,6 +23,8 @@ namespace mge::vulkan {
     render_system::render_system()
     {
         try {
+            MGE_INFO_TRACE(VULKAN) << "Creating Vulkan render system";
+            init_capabilities();
             m_library = std::make_shared<vulkan_library>();
             resolve_basic_instance_functions();
             resolve_layer_properties();
@@ -33,6 +35,51 @@ namespace mge::vulkan {
         }
     }
 
+    void render_system::init_capabilities()
+    {
+        class capabilities : public mge::render_system::capabilities
+        {
+        public:
+            capabilities()
+            {
+                shader_language glsl{"glsl"sv, mge::semantic_version(4, 6)};
+                m_shader_languages.push_back(glsl);
+                shader_format spirv{"spirv"sv, mge::semantic_version(1, 5)};
+                m_shader_formats.push_back(spirv);
+            }
+            ~capabilities() = default;
+
+            std::span<const mge::shader_language>
+            shader_languages() const override
+            {
+                return std::span<const mge::shader_language>(
+                    m_shader_languages.data(),
+                    m_shader_languages.size());
+            }
+
+            std::span<const mge::shader_format> shader_formats() const override
+            {
+                return std::span<const mge::shader_format>(
+                    m_shader_formats.data(),
+                    m_shader_formats.size());
+            }
+
+        private:
+            std::vector<mge::shader_language> m_shader_languages;
+            std::vector<mge::shader_format>   m_shader_formats;
+        };
+
+        m_capabilities = std::make_unique<capabilities>();
+    }
+
+    render_system::~render_system()
+    {
+        try {
+            teardown();
+        } catch (const std::exception& e) {
+            MGE_ERROR_TRACE(VULKAN) << "Error in Vulkan teardown: " << e.what();
+        }
+    }
 #ifdef MGE_OS_WINDOWS
     static const char* s_default_extensions[] = {"VK_KHR_surface",
                                                  "VK_KHR_win32_surface"};
@@ -248,8 +295,6 @@ namespace mge::vulkan {
         destroy_instance();
         m_library.reset();
     }
-
-    render_system::~render_system() { teardown(); }
 
     mge::window_ref
     render_system::create_window(const mge::extent&         extent,

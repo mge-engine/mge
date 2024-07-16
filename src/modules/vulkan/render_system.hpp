@@ -38,6 +38,7 @@ namespace mge::vulkan {
         inline VkInstance instance() const noexcept { return m_instance; }
 
     private:
+        void init_capabilities();
         static VkBool32
         debug_message_callback(VkDebugUtilsMessageSeverityFlagBitsEXT severity,
                                VkDebugUtilsMessageTypeFlagsEXT        type,
