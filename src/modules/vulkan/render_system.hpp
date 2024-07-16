@@ -50,12 +50,14 @@ namespace mge::vulkan {
         void create_instance();
         void destroy_instance();
         void resolve_instance_functions();
+        void pick_physical_device();
         void teardown();
 
         std::shared_ptr<vulkan_library> m_library;
         std::vector<VkLayerProperties>  m_layer_properties;
         std::map<std::string, std::vector<VkExtensionProperties>>
-                   m_instance_extensions;
-        VkInstance m_instance{VK_NULL_HANDLE};
+                                      m_instance_extensions;
+        VkInstance                    m_instance{VK_NULL_HANDLE};
+        std::vector<VkPhysicalDevice> m_all_physical_devices;
     };
 } // namespace mge::vulkan

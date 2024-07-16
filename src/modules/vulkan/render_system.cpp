@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_system.hpp"
+#include "enumerate.hpp"
 #include "error.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/parameter.hpp"
@@ -290,9 +291,10 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
+        m_all_physical_devices.clear();
+        destroy_instance();
         m_instance_extensions.clear();
         m_layer_properties.clear();
-        destroy_instance();
         m_library.reset();
     }
 
@@ -328,6 +330,26 @@ namespace mge::vulkan {
         if (m_instance != VK_NULL_HANDLE && vkDestroyInstance != nullptr) {
             vkDestroyInstance(m_instance, nullptr);
             m_instance = VK_NULL_HANDLE;
+        }
+    }
+
+    void render_system::pick_physical_device()
+    {
+        enumerate(
+            [this](uint32_t* count, VkPhysicalDevice* data) {
+                CHECK_VK_CALL(
+                    vkEnumeratePhysicalDevices(m_instance, count, data));
+            },
+            m_all_physical_devices);
+
+        if (m_all_physical_devices.size() == 1) {
+            MGE_DEBUG_TRACE(VULKAN) << "Found 1 physical device";
+        } else {
+            MGE_DEBUG_TRACE(VULKAN) << "Found " << m_all_physical_devices.size()
+                                    << " physical devices";
+        }
+        if (m_all_physical_devices.empty()) {
+            MGE_THROW(error) << "No physical devices found";
         }
     }
 
