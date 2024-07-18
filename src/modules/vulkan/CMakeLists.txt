@@ -24,7 +24,8 @@ SET(mge_vulkan_module_SOURCES
     vulkan_library.cpp
     error.cpp
     render_system.cpp
-#    render_context.cpp
+    render_context.cpp
+    window.cpp
 #    swap_chain.cpp
 #    command_list.cpp
 #    shader.cpp
