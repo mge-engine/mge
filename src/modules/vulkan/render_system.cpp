@@ -4,6 +4,8 @@
 #include "render_system.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
+#include "window.hpp"
+
 #include "mge/core/executable_name.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
@@ -302,7 +304,7 @@ namespace mge::vulkan {
     render_system::create_window(const mge::extent&         extent,
                                  const mge::window_options& options)
     {
-        return nullptr;
+        return std::make_shared<window>(*this, extent, options);
     }
 
     std::span<mge::monitor_ref> render_system::monitors()
