@@ -353,6 +353,25 @@ namespace mge::vulkan {
         if (m_all_physical_devices.empty()) {
             MGE_THROW(error) << "No physical devices found";
         }
+
+        for (const auto& device : m_all_physical_devices) {
+            VkPhysicalDeviceProperties properties;
+            VkPhysicalDeviceFeatures   features;
+            vkGetPhysicalDeviceProperties(device, &properties);
+            vkGetPhysicalDeviceFeatures(device, &features);
+            m_physical_device_properties[device] = properties;
+            m_physical_device_features[device] = features;
+            if (m_physical_device == VK_NULL_HANDLE) {
+                if (properties.deviceType ==
+                    VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+                    m_physical_device = device;
+                }
+            }
+        }
+
+        if (m_physical_device == VK_NULL_HANDLE) {
+            MGE_THROW(error) << "No discrete GPU found to use as Vulkan device";
+        }
     }
 
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);

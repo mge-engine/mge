@@ -34,8 +34,12 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
-        bool              debug() const;
-        inline VkInstance instance() const noexcept { return m_instance; }
+        bool                    debug() const;
+        inline VkInstance       instance() const noexcept { return m_instance; }
+        inline VkPhysicalDevice physical_device() const noexcept
+        {
+            return m_physical_device;
+        }
 
     private:
         void init_capabilities();
@@ -58,6 +62,11 @@ namespace mge::vulkan {
         std::map<std::string, std::vector<VkExtensionProperties>>
                                       m_instance_extensions;
         VkInstance                    m_instance{VK_NULL_HANDLE};
+        VkPhysicalDevice              m_physical_device{VK_NULL_HANDLE};
         std::vector<VkPhysicalDevice> m_all_physical_devices;
+        std::map<VkPhysicalDevice, VkPhysicalDeviceProperties>
+            m_physical_device_properties;
+        std::map<VkPhysicalDevice, VkPhysicalDeviceFeatures>
+            m_physical_device_features;
     };
 } // namespace mge::vulkan
