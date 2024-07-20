@@ -18,7 +18,9 @@ namespace mge::vulkan {
         : mge::shader(context, type)
         , m_vulkan_context(context)
         , m_shader_module(VK_NULL_HANDLE)
-    {}
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create shader of type " << type;
+    }
 
     shader::~shader() { destroy_shader_module(); }
 

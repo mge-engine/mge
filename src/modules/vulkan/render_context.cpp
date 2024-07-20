@@ -5,6 +5,7 @@
 #include "enumerate.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
+#include "shader.hpp"
 #include "swap_chain.hpp"
 #include "window.hpp"
 
@@ -30,11 +31,17 @@ namespace mge::vulkan {
             create_swap_chain();
             create_image_views();
 
-            m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
         } catch (...) {
             teardown();
             throw;
         }
+    }
+
+    void render_context::init_swap_chain()
+    {
+        // called after construction, as otherwise the shared_from_this() call
+        // would fail
+        m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
     }
 
     render_context::~render_context() { teardown(); }
@@ -56,7 +63,7 @@ namespace mge::vulkan {
 
     mge::shader_ref render_context::create_shader(shader_type t)
     {
-        mge::shader_ref result;
+        mge::shader_ref result = std::make_shared<shader>(*this, t);
         return result;
     }
 

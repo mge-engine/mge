@@ -5,6 +5,7 @@
 SET(VULKAN_TEST_SOURCES
     vulkan_test.cpp
     test_render_system.cpp
+    test_shader.cpp
     )
 
 MGE_TEST(

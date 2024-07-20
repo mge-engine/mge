@@ -54,6 +54,7 @@ namespace mge::vulkan {
         }
 
         void present();
+        void init_swap_chain();
 
     private:
         void create_surface();

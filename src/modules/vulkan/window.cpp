@@ -24,11 +24,11 @@ namespace mge::vulkan {
     void window::create_render_context()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Create render context";
-        m_render_context =
+        auto context =
             std::make_shared<::mge::vulkan::render_context>(m_render_system,
                                                             *this);
-        // context->initialize();
-        // m_render_context = context;
+        context->init_swap_chain();
+        m_render_context = context;
     }
 
 } // namespace mge::vulkan
