@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "enumerate.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
 #include "window.hpp"
@@ -249,6 +250,38 @@ namespace mge::vulkan {
             m_render_system.physical_device(),
             m_surface,
             &m_surface_capabilities));
+        enumerate(
+            [this](uint32_t* count, VkSurfaceFormatKHR* data) {
+                CHECK_VK_CALL(
+                    m_render_system.vkGetPhysicalDeviceSurfaceFormatsKHR(
+                        m_render_system.physical_device(),
+                        m_surface,
+                        count,
+                        data));
+            },
+            m_surface_formats);
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Found " << m_surface_formats.size() << " surface formats";
+        for (const auto& format : m_surface_formats) {
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    " << format.format << "/" << format.colorSpace;
+        }
+        enumerate(
+            [this](uint32_t* count, VkPresentModeKHR* data) {
+                CHECK_VK_CALL(
+                    m_render_system.vkGetPhysicalDeviceSurfacePresentModesKHR(
+                        m_render_system.physical_device(),
+                        m_surface,
+                        count,
+                        data));
+            },
+            m_surface_present_modes);
+
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Found " << m_surface_present_modes.size() << " present modes";
+        for (const auto& f : m_surface_present_modes) {
+            MGE_DEBUG_TRACE(VULKAN) << "    " << f;
+        }
     }
 
 } // namespace mge::vulkan
