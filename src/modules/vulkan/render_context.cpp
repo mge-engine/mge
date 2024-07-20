@@ -143,6 +143,8 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        m_swap_chain_images.clear();
+
         if (m_swap_chain != VK_NULL_HANDLE && vkDestroySwapchainKHR) {
             vkDestroySwapchainKHR(m_device, m_swap_chain, nullptr);
             m_swap_chain = VK_NULL_HANDLE;
@@ -380,6 +382,17 @@ namespace mge::vulkan {
                                            &create_info,
                                            nullptr,
                                            &m_swap_chain));
+
+        enumerate(
+            [this](uint32_t* count, VkImage* data) {
+                CHECK_VK_CALL(vkGetSwapchainImagesKHR(m_device,
+                                                      m_swap_chain,
+                                                      count,
+                                                      data));
+            },
+            m_swap_chain_images);
+        MGE_DEBUG_TRACE(VULKAN) << "Created swap chain with "
+                                << m_swap_chain_images.size() << " images";
     }
 
 } // namespace mge::vulkan
