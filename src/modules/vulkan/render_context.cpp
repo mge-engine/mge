@@ -21,6 +21,8 @@ namespace mge::vulkan {
         try {
             create_surface();
             create_device();
+            resolve_device_functions();
+            get_device_queue();
         } catch (...) {
             teardown();
             throw;
@@ -137,10 +139,14 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        m_queue = VK_NULL_HANDLE;
+
         if (m_device && vkDestroyDevice) {
             vkDestroyDevice(m_device, nullptr);
             m_device = VK_NULL_HANDLE;
         }
+
+        clear_functions();
 
         if (m_surface != VK_NULL_HANDLE &&
             m_render_system.vkDestroySurfaceKHR) {
@@ -224,6 +230,15 @@ namespace mge::vulkan {
 #ifdef MGE_COMPILER_MSVC
 #    pragma warning(pop)
 #endif
+    }
+
+    void render_context::get_device_queue()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Get device queue";
+        vkGetDeviceQueue(m_device,
+                         m_render_system.graphics_queue_index(),
+                         0,
+                         &m_queue);
     }
 
 } // namespace mge::vulkan

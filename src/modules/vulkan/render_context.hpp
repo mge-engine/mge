@@ -39,9 +39,14 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
+        VkQueue graphics_queue() const noexcept { return m_queue; }
+        // TODO: support different present queue
+        VkQueue present_queue() const noexcept { return m_queue; }
+
     private:
         void create_surface();
         void create_device();
+        void get_device_queue();
         void teardown();
         void resolve_device_functions();
         void clear_functions();
@@ -50,5 +55,6 @@ namespace mge::vulkan {
         window&        m_window;
         VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
         VkDevice       m_device{VK_NULL_HANDLE};
+        VkQueue        m_queue{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan
