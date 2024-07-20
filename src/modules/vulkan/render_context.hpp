@@ -60,6 +60,7 @@ namespace mge::vulkan {
         void fetch_surface_capabilities();
         void choose_extent();
         void create_swap_chain();
+        void create_image_views();
         void teardown();
         void resolve_device_functions();
         void clear_functions();
@@ -78,5 +79,6 @@ namespace mge::vulkan {
         VkExtent2D                      m_extent;
         VkSwapchainKHR                  m_swap_chain{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
+        std::vector<VkImageView>        m_swap_chain_image_views;
     };
 } // namespace mge::vulkan

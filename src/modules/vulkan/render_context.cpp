@@ -27,6 +27,7 @@ namespace mge::vulkan {
             fetch_surface_capabilities();
             choose_extent();
             create_swap_chain();
+            create_image_views();
         } catch (...) {
             teardown();
             throw;
@@ -143,6 +144,15 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        if (vkDestroyImageView) {
+            for (auto view : m_swap_chain_image_views) {
+                if (view != VK_NULL_HANDLE) {
+                    vkDestroyImageView(m_device, view, nullptr);
+                }
+            }
+        }
+        m_swap_chain_image_views.clear();
+
         m_swap_chain_images.clear();
 
         if (m_swap_chain != VK_NULL_HANDLE && vkDestroySwapchainKHR) {
@@ -393,6 +403,32 @@ namespace mge::vulkan {
             m_swap_chain_images);
         MGE_DEBUG_TRACE(VULKAN) << "Created swap chain with "
                                 << m_swap_chain_images.size() << " images";
+    }
+
+    void render_context::create_image_views()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create image views";
+        m_swap_chain_image_views.resize(m_swap_chain_images.size());
+        for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
+            VkImageViewCreateInfo create_info = {};
+            create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+            create_info.image = m_swap_chain_images[i];
+            create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+            create_info.format = m_used_surface_format.format;
+            create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+            create_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            create_info.subresourceRange.baseMipLevel = 0;
+            create_info.subresourceRange.levelCount = 1;
+            create_info.subresourceRange.baseArrayLayer = 0;
+            create_info.subresourceRange.layerCount = 1;
+            CHECK_VK_CALL(vkCreateImageView(m_device,
+                                            &create_info,
+                                            nullptr,
+                                            &m_swap_chain_image_views[i]));
+        }
     }
 
 } // namespace mge::vulkan
