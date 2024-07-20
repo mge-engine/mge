@@ -41,13 +41,24 @@ namespace mge::vulkan {
 
         VkQueue graphics_queue() const noexcept { return m_queue; }
         // TODO: support different present queue
-        VkQueue present_queue() const noexcept { return m_queue; }
+        VkQueue  present_queue() const noexcept { return m_queue; }
+        VkDevice device() const noexcept { return m_device; }
+        const VkSurfaceFormatKHR& surface_format() const noexcept
+        {
+            return m_used_surface_format;
+        }
+
+        VkPresentModeKHR present_mode() const noexcept
+        {
+            return m_used_present_mode;
+        }
 
     private:
         void create_surface();
         void create_device();
         void get_device_queue();
         void fetch_surface_capabilities();
+        void choose_extent();
         void teardown();
         void resolve_device_functions();
         void clear_functions();
@@ -63,5 +74,6 @@ namespace mge::vulkan {
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
+        VkExtent2D                      m_extent;
     };
 } // namespace mge::vulkan

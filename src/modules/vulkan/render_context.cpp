@@ -25,6 +25,7 @@ namespace mge::vulkan {
             resolve_device_functions();
             get_device_queue();
             fetch_surface_capabilities();
+            choose_extent();
         } catch (...) {
             teardown();
             throw;
@@ -298,6 +299,36 @@ namespace mge::vulkan {
         for (const auto& f : m_surface_present_modes) {
             MGE_DEBUG_TRACE(VULKAN) << "    " << f;
         }
+
+        m_used_present_mode = VK_PRESENT_MODE_FIFO_KHR;
+        for (const auto& mode : m_surface_present_modes) {
+            if (mode == VK_PRESENT_MODE_MAILBOX_KHR) {
+                m_used_present_mode = VK_PRESENT_MODE_MAILBOX_KHR;
+                break;
+            }
+        }
+
+        MGE_DEBUG_TRACE(VULKAN) << "Using present mode " << m_used_present_mode;
+    }
+
+    void render_context::choose_extent()
+    {
+
+        MGE_DEBUG_TRACE(VULKAN) << "Choose extent";
+        if (m_surface_capabilities.currentExtent.width != UINT32_MAX) {
+            m_extent = m_surface_capabilities.currentExtent;
+        } else {
+            m_extent.width =
+                std::max(m_surface_capabilities.minImageExtent.width,
+                         std::min(m_surface_capabilities.maxImageExtent.width,
+                                  m_window.extent().width));
+            m_extent.height =
+                std::max(m_surface_capabilities.minImageExtent.height,
+                         std::min(m_surface_capabilities.maxImageExtent.height,
+                                  m_window.extent().height));
+        }
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Using extent " << m_extent.width << "x" << m_extent.height;
     }
 
 } // namespace mge::vulkan
