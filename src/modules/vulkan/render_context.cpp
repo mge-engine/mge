@@ -262,10 +262,26 @@ namespace mge::vulkan {
             m_surface_formats);
         MGE_DEBUG_TRACE(VULKAN)
             << "Found " << m_surface_formats.size() << " surface formats";
+        size_t format_index = m_surface_formats.size();
         for (const auto& format : m_surface_formats) {
             MGE_DEBUG_TRACE(VULKAN)
                 << "    " << format.format << "/" << format.colorSpace;
+            if (format.format == VK_FORMAT_B8G8R8A8_SRGB &&
+                format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+                format_index = &format - m_surface_formats.data();
+            }
         }
+
+        if (format_index < m_surface_formats.size()) {
+            m_used_surface_format = m_surface_formats[format_index];
+        } else {
+            m_used_surface_format = m_surface_formats[0];
+        }
+
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Using surface format " << m_used_surface_format.format << "/"
+            << m_used_surface_format.colorSpace;
+
         enumerate(
             [this](uint32_t* count, VkPresentModeKHR* data) {
                 CHECK_VK_CALL(
