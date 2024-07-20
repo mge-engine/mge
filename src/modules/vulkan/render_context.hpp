@@ -47,6 +47,7 @@ namespace mge::vulkan {
         void create_surface();
         void create_device();
         void get_device_queue();
+        void fetch_surface_capabilities();
         void teardown();
         void resolve_device_functions();
         void clear_functions();
@@ -56,5 +57,11 @@ namespace mge::vulkan {
         VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
         VkDevice       m_device{VK_NULL_HANDLE};
         VkQueue        m_queue{VK_NULL_HANDLE};
+
+        VkSurfaceFormatKHR              m_used_surface_format;
+        VkPresentModeKHR                m_used_present_mode;
+        VkSurfaceCapabilitiesKHR        m_surface_capabilities;
+        std::vector<VkSurfaceFormatKHR> m_surface_formats;
+        std::vector<VkPresentModeKHR>   m_surface_present_modes;
     };
 } // namespace mge::vulkan

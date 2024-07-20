@@ -23,6 +23,7 @@ namespace mge::vulkan {
             create_device();
             resolve_device_functions();
             get_device_queue();
+            fetch_surface_capabilities();
         } catch (...) {
             teardown();
             throw;
@@ -239,6 +240,15 @@ namespace mge::vulkan {
                          m_render_system.graphics_queue_index(),
                          0,
                          &m_queue);
+    }
+
+    void render_context::fetch_surface_capabilities()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Fetch surface capabilities";
+        CHECK_VK_CALL(m_render_system.vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
+            m_render_system.physical_device(),
+            m_surface,
+            &m_surface_capabilities));
     }
 
 } // namespace mge::vulkan
