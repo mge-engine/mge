@@ -76,5 +76,6 @@ namespace mge::vulkan {
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
         VkExtent2D                      m_extent;
+        VkSwapchainKHR                  m_swap_chain{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan

@@ -26,6 +26,7 @@ namespace mge::vulkan {
             get_device_queue();
             fetch_surface_capabilities();
             choose_extent();
+            create_swap_chain();
         } catch (...) {
             teardown();
             throw;
@@ -142,6 +143,11 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        if (m_swap_chain != VK_NULL_HANDLE && vkDestroySwapchainKHR) {
+            vkDestroySwapchainKHR(m_device, m_swap_chain, nullptr);
+            m_swap_chain = VK_NULL_HANDLE;
+        }
+
         m_surface_capabilities = {};
         m_surface_formats.clear();
         m_surface_present_modes.clear();
@@ -332,6 +338,48 @@ namespace mge::vulkan {
         }
         MGE_DEBUG_TRACE(VULKAN)
             << "Using extent " << m_extent.width << "x" << m_extent.height;
+    }
+
+    void render_context::create_swap_chain()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create swap chain";
+        uint32_t image_count = m_surface_capabilities.minImageCount + 1;
+        if (m_surface_capabilities.maxImageCount > 0 &&
+            image_count > m_surface_capabilities.maxImageCount) {
+            image_count = m_surface_capabilities.maxImageCount;
+        }
+        MGE_DEBUG_TRACE(VULKAN) << "Using " << image_count << " images";
+
+        VkSwapchainCreateInfoKHR create_info = {};
+        create_info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+        create_info.surface = m_surface;
+        create_info.minImageCount = image_count;
+        create_info.imageFormat = m_used_surface_format.format;
+        create_info.imageColorSpace = m_used_surface_format.colorSpace;
+        create_info.imageExtent = m_extent;
+        create_info.imageArrayLayers = 1;
+        create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        uint32_t queue_indices[] = {m_render_system.graphics_queue_index(),
+                                    m_render_system.present_queue_index()};
+
+        if (m_render_system.graphics_queue_index() !=
+            m_render_system.present_queue_index()) {
+            create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+            create_info.queueFamilyIndexCount = 2;
+            create_info.pQueueFamilyIndices = queue_indices;
+        } else {
+            create_info.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+        }
+
+        create_info.preTransform = m_surface_capabilities.currentTransform;
+        create_info.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+        create_info.presentMode = m_used_present_mode;
+        create_info.clipped = VK_TRUE;
+        create_info.oldSwapchain = VK_NULL_HANDLE;
+        CHECK_VK_CALL(vkCreateSwapchainKHR(m_device,
+                                           &create_info,
+                                           nullptr,
+                                           &m_swap_chain));
     }
 
 } // namespace mge::vulkan

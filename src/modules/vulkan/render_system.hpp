@@ -46,6 +46,11 @@ namespace mge::vulkan {
             return static_cast<uint32_t>(m_graphics_queue_index);
         }
 
+        inline uint32_t present_queue_index() const noexcept
+        {
+            return static_cast<uint32_t>(m_graphics_queue_index);
+        }
+
     private:
         void init_capabilities();
         static VkBool32
