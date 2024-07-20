@@ -40,8 +40,15 @@ namespace mge::vulkan {
 #undef DEVICE_FUNCTION
 
     private:
+        void create_surface();
+        void create_device();
+        void teardown();
+        void resolve_device_functions();
+        void clear_functions();
+
         render_system& m_render_system;
         window&        m_window;
+        VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
         VkDevice       m_device{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan
