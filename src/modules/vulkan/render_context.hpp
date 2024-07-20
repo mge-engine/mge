@@ -53,6 +53,8 @@ namespace mge::vulkan {
             return m_used_present_mode;
         }
 
+        void present();
+
     private:
         void create_surface();
         void create_device();
@@ -77,7 +79,7 @@ namespace mge::vulkan {
         std::vector<VkSurfaceFormatKHR> m_surface_formats;
         std::vector<VkPresentModeKHR>   m_surface_present_modes;
         VkExtent2D                      m_extent;
-        VkSwapchainKHR                  m_swap_chain{VK_NULL_HANDLE};
+        VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
     };

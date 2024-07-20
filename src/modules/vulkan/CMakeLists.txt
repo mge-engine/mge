@@ -26,12 +26,11 @@ SET(mge_vulkan_module_SOURCES
     render_system.cpp
     render_context.cpp
     window.cpp
-#    swap_chain.cpp
+    swap_chain.cpp
+    shader.cpp
 #    command_list.cpp
-#    shader.cpp
-#    program.cpp
 
-#    window.cpp
+#    program.cpp
 )
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES

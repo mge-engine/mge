@@ -5,6 +5,7 @@
 #include "enumerate.hpp"
 #include "error.hpp"
 #include "render_system.hpp"
+#include "swap_chain.hpp"
 #include "window.hpp"
 
 #include "mge/core/trace.hpp"
@@ -28,6 +29,8 @@ namespace mge::vulkan {
             choose_extent();
             create_swap_chain();
             create_image_views();
+
+            m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
         } catch (...) {
             teardown();
             throw;
@@ -155,9 +158,9 @@ namespace mge::vulkan {
 
         m_swap_chain_images.clear();
 
-        if (m_swap_chain != VK_NULL_HANDLE && vkDestroySwapchainKHR) {
-            vkDestroySwapchainKHR(m_device, m_swap_chain, nullptr);
-            m_swap_chain = VK_NULL_HANDLE;
+        if (m_swap_chain_khr != VK_NULL_HANDLE && vkDestroySwapchainKHR) {
+            vkDestroySwapchainKHR(m_device, m_swap_chain_khr, nullptr);
+            m_swap_chain_khr = VK_NULL_HANDLE;
         }
 
         m_surface_capabilities = {};
@@ -391,12 +394,12 @@ namespace mge::vulkan {
         CHECK_VK_CALL(vkCreateSwapchainKHR(m_device,
                                            &create_info,
                                            nullptr,
-                                           &m_swap_chain));
+                                           &m_swap_chain_khr));
 
         enumerate(
             [this](uint32_t* count, VkImage* data) {
                 CHECK_VK_CALL(vkGetSwapchainImagesKHR(m_device,
-                                                      m_swap_chain,
+                                                      m_swap_chain_khr,
                                                       count,
                                                       data));
             },
@@ -430,5 +433,7 @@ namespace mge::vulkan {
                                             &m_swap_chain_image_views[i]));
         }
     }
+
+    void render_context::present() {}
 
 } // namespace mge::vulkan
