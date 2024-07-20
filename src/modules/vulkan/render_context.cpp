@@ -142,6 +142,10 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        m_surface_capabilities = {};
+        m_surface_formats.clear();
+        m_surface_present_modes.clear();
+
         m_queue = VK_NULL_HANDLE;
 
         if (m_device && vkDestroyDevice) {
@@ -313,7 +317,6 @@ namespace mge::vulkan {
 
     void render_context::choose_extent()
     {
-
         MGE_DEBUG_TRACE(VULKAN) << "Choose extent";
         if (m_surface_capabilities.currentExtent.width != UINT32_MAX) {
             m_extent = m_surface_capabilities.currentExtent;

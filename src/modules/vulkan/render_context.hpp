@@ -59,6 +59,7 @@ namespace mge::vulkan {
         void get_device_queue();
         void fetch_surface_capabilities();
         void choose_extent();
+        void create_swap_chain();
         void teardown();
         void resolve_device_functions();
         void clear_functions();
