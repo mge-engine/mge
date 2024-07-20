@@ -7,6 +7,7 @@
 #include "window.hpp"
 
 #include "mge/core/executable_name.hpp"
+#include "mge/core/iterator_index.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/trace.hpp"
 
@@ -32,6 +33,8 @@ namespace mge::vulkan {
             resolve_basic_instance_functions();
             resolve_layer_properties();
             create_instance();
+            pick_physical_device();
+            select_queue_families();
         } catch (...) {
             teardown();
             throw;
@@ -293,6 +296,11 @@ namespace mge::vulkan {
 
     void render_system::teardown()
     {
+        m_graphics_queue_index = 0;
+        m_queue_family_properties.clear();
+        m_physical_device = VK_NULL_HANDLE;
+        m_physical_device_features.clear();
+        m_physical_device_properties.clear();
         m_all_physical_devices.clear();
         destroy_instance();
         m_instance_extensions.clear();
@@ -359,6 +367,12 @@ namespace mge::vulkan {
             VkPhysicalDeviceFeatures   features;
             vkGetPhysicalDeviceProperties(device, &properties);
             vkGetPhysicalDeviceFeatures(device, &features);
+            MGE_DEBUG_TRACE(VULKAN) << "Physical device: " << device;
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    Device name: " << properties.deviceName;
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    Device type: " << properties.deviceType;
+
             m_physical_device_properties[device] = properties;
             m_physical_device_features[device] = features;
             if (m_physical_device == VK_NULL_HANDLE) {
@@ -371,6 +385,50 @@ namespace mge::vulkan {
 
         if (m_physical_device == VK_NULL_HANDLE) {
             MGE_THROW(error) << "No discrete GPU found to use as Vulkan device";
+        }
+    }
+
+    void render_system::select_queue_families()
+    {
+        enumerate(
+            [this](uint32_t* count, VkQueueFamilyProperties* data) {
+                vkGetPhysicalDeviceQueueFamilyProperties(physical_device(),
+                                                         count,
+                                                         data);
+            },
+            m_queue_family_properties);
+        MGE_DEBUG_TRACE(VULKAN) << "Found " << m_queue_family_properties.size()
+                                << " queue families";
+
+        if (m_queue_family_properties.empty()) {
+            MGE_THROW(error) << "No queue families found";
+        }
+        m_graphics_queue_index = m_queue_family_properties.size();
+        for (size_t index = 0; index < m_queue_family_properties.size();
+             ++index) {
+            const auto& qf = m_queue_family_properties[index];
+            MGE_DEBUG_TRACE(VULKAN) << "Queue family " << index << ": "
+                                    << qf.queueCount << " queues";
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    Graphics: "
+                << ((qf.queueFlags & VK_QUEUE_GRAPHICS_BIT) ? "yes" : "no");
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    Compute: "
+                << ((qf.queueFlags & VK_QUEUE_COMPUTE_BIT) ? "yes" : "no");
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    Transfer: "
+                << ((qf.queueFlags & VK_QUEUE_TRANSFER_BIT) ? "yes" : "no");
+            MGE_DEBUG_TRACE(VULKAN)
+                << "    Sparse binding: "
+                << ((qf.queueFlags & VK_QUEUE_SPARSE_BINDING_BIT) ? "yes"
+                                                                  : "no");
+            if (qf.queueFlags & VK_QUEUE_GRAPHICS_BIT &&
+                m_graphics_queue_index == m_queue_family_properties.size()) {
+                m_graphics_queue_index = index;
+            }
+        }
+        if (m_graphics_queue_index == m_queue_family_properties.size()) {
+            MGE_THROW(error) << "No graphics queue family found";
         }
     }
 

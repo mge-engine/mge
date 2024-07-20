@@ -21,9 +21,9 @@ namespace mge::vulkan {
 
         std::span<mge::monitor_ref> monitors() override;
 
-#define BASIC_INSTANCE_FUNCTION(X) PFN_##X X;
-#define INSTANCE_FUNCTION(X) PFN_##X X;
-#define DEVICE_FUNCTION(X) PFN_##X X;
+#define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
+#define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
+#define DEVICE_FUNCTION(X) PFN_##X X{nullptr};
 
 #include "vulkan_core.inc"
 #ifdef MGE_OS_WINDOWS
@@ -55,6 +55,7 @@ namespace mge::vulkan {
         void destroy_instance();
         void resolve_instance_functions();
         void pick_physical_device();
+        void select_queue_families();
         void teardown();
 
         std::shared_ptr<vulkan_library> m_library;
@@ -67,6 +68,8 @@ namespace mge::vulkan {
         std::map<VkPhysicalDevice, VkPhysicalDeviceProperties>
             m_physical_device_properties;
         std::map<VkPhysicalDevice, VkPhysicalDeviceFeatures>
-            m_physical_device_features;
+                                             m_physical_device_features;
+        std::vector<VkQueueFamilyProperties> m_queue_family_properties;
+        size_t                               m_graphics_queue_index{0};
     };
 } // namespace mge::vulkan

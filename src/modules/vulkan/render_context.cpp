@@ -2,10 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
-#include "mge/core/trace.hpp"
 #include "render_system.hpp"
 #include "window.hpp"
 
+#include "mge/core/trace.hpp"
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -14,6 +14,8 @@ namespace mge::vulkan {
 
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
+        : m_render_system(render_system_)
+        , m_window(window_)
     {}
 
     render_context::~render_context() {}
