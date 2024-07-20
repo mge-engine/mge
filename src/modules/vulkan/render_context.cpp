@@ -127,10 +127,11 @@ namespace mge::vulkan {
             static_cast<uint32_t>(device_extensions.size());
         device_create_info.ppEnabledExtensionNames = device_extensions.data();
 
-        CHECK_VK_CALL(vkCreateDevice(m_render_system.physical_device(),
-                                     &device_create_info,
-                                     nullptr,
-                                     &m_device));
+        CHECK_VK_CALL(
+            m_render_system.vkCreateDevice(m_render_system.physical_device(),
+                                           &device_create_info,
+                                           nullptr,
+                                           &m_device));
         MGE_DEBUG_TRACE(VULKAN) << "Created logical device: " << m_device;
     }
 
