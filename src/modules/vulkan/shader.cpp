@@ -64,6 +64,7 @@ namespace mge::vulkan {
             .messages = GLSLANG_MSG_ENHANCED,
             .resource = glslang_default_resource()};
 
+        MGE_DEBUG_TRACE(VULKAN) << "Compile shader: glslang_shader_create";
         auto glsl_shader = glslang_shader_create(&input);
         if (!glsl_shader) {
             MGE_THROW(mge::vulkan::error) << "Failed to create shader";
@@ -74,7 +75,7 @@ namespace mge::vulkan {
             }
             glsl_shader = nullptr;
         });
-
+        MGE_DEBUG_TRACE(VULKAN) << "Compile shader: glslang_shader_preprocess";
         if (!glslang_shader_preprocess(glsl_shader, &input)) {
             const char* info_log = glslang_shader_get_info_log(glsl_shader);
             MGE_ERROR_TRACE(VULKAN) << "Fail to preprocess shader:" << info_log;
@@ -82,7 +83,7 @@ namespace mge::vulkan {
             MGE_THROW(mge::vulkan::error)
                 << "Failed to preprocess shader: " << info_log;
         }
-
+        MGE_DEBUG_TRACE(VULKAN) << "Compile shader: glslang_shader_parse";
         if (!glslang_shader_parse(glsl_shader, &input)) {
             const char* info_log = glslang_shader_get_info_log(glsl_shader);
             MGE_ERROR_TRACE(VULKAN) << "Fail to parse shader:" << info_log;
@@ -101,9 +102,9 @@ namespace mge::vulkan {
             }
             glsl_program = nullptr;
         });
-
+        MGE_DEBUG_TRACE(VULKAN) << "Compile shader: glslang_prohram_add_shader";
         glslang_program_add_shader(glsl_program, glsl_shader);
-
+        MGE_DEBUG_TRACE(VULKAN) << "Compile shader: glslang_program_link";
         if (!glslang_program_link(glsl_program,
                                   GLSLANG_MSG_SPV_RULES_BIT |
                                       GLSLANG_MSG_VULKAN_RULES_BIT)) {
@@ -115,13 +116,14 @@ namespace mge::vulkan {
             MGE_THROW(mge::vulkan::error)
                 << "Failed to link program: " << info_log;
         }
-
+        MGE_DEBUG_TRACE(VULKAN)
+            << "Compile shader: glslang_program_SPIRV_generate";
         glslang_program_SPIRV_generate(glsl_program, stage());
         size_t code_size_words = glslang_program_SPIRV_get_size(glsl_program);
         if (code_size_words == 0) {
             MGE_THROW(mge::vulkan::error) << "Failed to generate SPIR-V code";
         }
-
+        MGE_DEBUG_TRACE(VULKAN) << "Compile shader: glslang_program_SPIRV_get";
         m_code.resize(code_size_words * 4);
         glslang_program_SPIRV_get(
             glsl_program,
@@ -139,6 +141,7 @@ namespace mge::vulkan {
 
     void shader::create_shader_module()
     {
+        MGE_DEBUG_TRACE(VULKAN) << "Create shader module";
         VkShaderModuleCreateInfo create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
         create_info.codeSize = m_code.size();

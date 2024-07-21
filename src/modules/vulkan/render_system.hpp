@@ -66,6 +66,7 @@ namespace mge::vulkan {
         void resolve_instance_functions();
         void pick_physical_device();
         void select_queue_families();
+        void init_glslang();
         void teardown();
 
         std::shared_ptr<vulkan_library> m_library;
@@ -81,5 +82,6 @@ namespace mge::vulkan {
                                              m_physical_device_features;
         std::vector<VkQueueFamilyProperties> m_queue_family_properties;
         size_t                               m_graphics_queue_index{0};
+        static std::once_flag                s_glslang_initialized;
     };
 } // namespace mge::vulkan

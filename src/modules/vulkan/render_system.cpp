@@ -4,8 +4,10 @@
 #include "render_system.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
+#include "glslang.hpp"
 #include "window.hpp"
 
+#include "mge/core/atexit.hpp"
 #include "mge/core/executable_name.hpp"
 #include "mge/core/iterator_index.hpp"
 #include "mge/core/parameter.hpp"
@@ -24,6 +26,8 @@ namespace mge {
 
 namespace mge::vulkan {
 
+    std::once_flag render_system::s_glslang_initialized;
+
     render_system::render_system()
     {
         try {
@@ -35,10 +39,27 @@ namespace mge::vulkan {
             create_instance();
             pick_physical_device();
             select_queue_families();
+            init_glslang();
         } catch (...) {
             teardown();
             throw;
         }
+    }
+
+    void render_system::init_glslang()
+    {
+        std::call_once(s_glslang_initialized, []() {
+            MGE_DEBUG_TRACE(VULKAN) << "Initializing shader compiler";
+            auto rc = glslang_initialize_process();
+            if (!rc) {
+                MGE_THROW(vulkan::error)
+                    << "Failed to initialize shader compiler: " << rc;
+            }
+            mge::atexit::run([]() {
+                MGE_DEBUG_TRACE(VULKAN) << "Finalizing shader compiler";
+                glslang_finalize_process();
+            });
+        });
     }
 
     void render_system::init_capabilities()

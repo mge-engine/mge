@@ -38,6 +38,7 @@ SET(MGECORE_TEST_SOURCES
     test_concepts.cpp
     test_json.cpp
     test_enum.cpp
+    test_atexit.cpp
 )
 
 MGE_TEST(
