@@ -25,6 +25,7 @@ namespace mge::vulkan {
             create_surface();
             create_device();
             resolve_device_functions();
+            create_allocator();
             get_device_queue();
             fetch_surface_capabilities();
             choose_extent();
