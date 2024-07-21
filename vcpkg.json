@@ -19,6 +19,7 @@
     "nlohmann-json",
     "glslang",
     "libmagic",
-    "magic-enum"
+    "magic-enum",
+    "vulkan-memory-allocator"
   ]
 }

@@ -176,6 +176,11 @@ namespace mge::vulkan {
 
         m_queue = VK_NULL_HANDLE;
 
+        if (m_allocator) {
+            vmaDestroyAllocator(m_allocator);
+            m_allocator = VK_NULL_HANDLE;
+        }
+
         if (m_device && vkDestroyDevice) {
             vkDestroyDevice(m_device, nullptr);
             m_device = VK_NULL_HANDLE;
@@ -442,5 +447,23 @@ namespace mge::vulkan {
     }
 
     void render_context::present() {}
+
+    void render_context::create_allocator()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create allocator";
+        VmaVulkanFunctions vk_functions = {};
+        vk_functions.vkGetInstanceProcAddr =
+            m_render_system.library().vkGetInstanceProcAddr;
+        vk_functions.vkGetDeviceProcAddr = m_render_system.vkGetDeviceProcAddr;
+
+        VmaAllocatorCreateInfo allocator_info = {};
+        allocator_info.physicalDevice = m_render_system.physical_device();
+        allocator_info.device = m_device;
+        allocator_info.instance = m_render_system.instance();
+        allocator_info.flags = VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
+        allocator_info.pVulkanFunctions = &vk_functions;
+        allocator_info.vulkanApiVersion = VK_API_VERSION_1_3;
+        CHECK_VK_CALL(vmaCreateAllocator(&allocator_info, &m_allocator));
+    }
 
 } // namespace mge::vulkan

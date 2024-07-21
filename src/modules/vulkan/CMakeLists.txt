@@ -28,6 +28,7 @@ SET(mge_vulkan_module_SOURCES
     window.cpp
     swap_chain.cpp
     shader.cpp
+    vulkan_memory_allocator.cpp
 #    command_list.cpp
 
 #    program.cpp
@@ -54,11 +55,11 @@ TARGET_LINK_LIBRARIES(mge_module_vulkan
     mgecore
     mgegraphics
     Vulkan::Vulkan
+    GPUOpen::VulkanMemoryAllocator
     glslang::glslang
     glslang::glslang-default-resource-limits
     glslang::SPIRV
     glslang::SPVRemapper
 )
-
 
 ADD_SUBDIRECTORY(test)

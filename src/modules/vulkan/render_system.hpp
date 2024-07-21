@@ -51,6 +51,8 @@ namespace mge::vulkan {
             return static_cast<uint32_t>(m_graphics_queue_index);
         }
 
+        inline vulkan_library& library() noexcept { return *m_library; }
+
     private:
         void init_capabilities();
         static VkBool32

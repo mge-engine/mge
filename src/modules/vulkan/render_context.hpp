@@ -59,6 +59,7 @@ namespace mge::vulkan {
     private:
         void create_surface();
         void create_device();
+        void create_allocator();
         void get_device_queue();
         void fetch_surface_capabilities();
         void choose_extent();
@@ -72,6 +73,7 @@ namespace mge::vulkan {
         window&        m_window;
         VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
         VkDevice       m_device{VK_NULL_HANDLE};
+        VmaAllocator   m_allocator{VK_NULL_HANDLE};
         VkQueue        m_queue{VK_NULL_HANDLE};
 
         VkSurfaceFormatKHR              m_used_surface_format;
