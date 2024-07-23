@@ -14,5 +14,5 @@ MGE_TEST(
     TARGET      test_opengl
     SOURCES     ${OPENGL_TEST_SOURCES}
     NOMAIN NEEDSDISPLAY
-    LIBRARIES   mgecore mgegraphics mgeapplication mgeinput
+    LIBRARIES   mgecore mgegraphics mgeapplication mgeinput benchmark
 )

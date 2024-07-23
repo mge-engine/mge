@@ -5,6 +5,7 @@
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/shader.hpp"
 #include "opengl_test.hpp"
+#include "test/benchmark.hpp"
 
 class shader_test : public mge::opengl::opengltest
 {};
@@ -72,4 +73,23 @@ TEST_F(shader_test, set_code_failed)
     } catch (const mge::exception&) {
         // expected
     }
+}
+
+TEST_F(shader_test, bench_compile_successfully)
+{
+    using namespace std::literals;
+    auto vertex_shader_glsl = "#version 330 core\n"
+                              "layout(location = 0) in vec3 vertexPosition;\n"
+                              "\n"
+                              "void main() {\n"
+                              "  gl_Position.xyz = vertexPosition;\n"
+                              "  gl_Position.w = 1.0;\n"
+                              "}"sv;
+
+    auto& context = m_window->render_context();
+
+    mge::benchmark().show_results().run("shader_compile", [&]() {
+        auto shader = context.create_shader(mge::shader_type::VERTEX);
+        shader->compile(vertex_shader_glsl);
+    });
 }
