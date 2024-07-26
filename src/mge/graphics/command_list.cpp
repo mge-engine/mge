@@ -16,4 +16,8 @@ namespace mge {
 
     void command_list::finish() {}
 
+    void command_list::scissor(const rectangle& rect) {}
+
+    void command_list::default_scissor() {}
+
 } // namespace mge
