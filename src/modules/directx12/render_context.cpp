@@ -427,6 +427,23 @@ namespace mge::dx12 {
         }
     }
 
+    mge::com_ptr<ID3D12CommandAllocator> render_context::get_command_allocator()
+    {
+        mge::com_ptr<ID3D12CommandAllocator> result;
+
+        auto rc =
+            m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                             IID_PPV_ARGS(&result));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        return result;
+    }
+
+    void render_context::release_command_allocator(
+        mge::com_ptr<ID3D12CommandAllocator>& allocator)
+    {
+        allocator->Release();
+    }
+
 #if 0
     void render_context::begin_draw()
     {

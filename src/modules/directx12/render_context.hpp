@@ -52,7 +52,10 @@ namespace mge::dx12 {
                                      ID3D12Resource*       src,
                                      D3D12_RESOURCE_STATES state_after);
 
-        // void execute(command_list& cl);
+        mge::com_ptr<ID3D12CommandAllocator> get_command_allocator();
+
+        void release_command_allocator(
+            mge::com_ptr<ID3D12CommandAllocator>& allocator);
 
     private:
         friend class swap_chain;
