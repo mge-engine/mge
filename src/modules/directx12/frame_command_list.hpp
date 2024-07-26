@@ -1,16 +1,15 @@
 #pragma once
 #include "dx12.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/win32/com_ptr.hpp"
 
 namespace mge::dx12 {
     class render_context;
     class frame_command_list : public mge::frame_command_list
     {
     public:
-        frame_command_list(render_context& context,
-                           uint32_t        backbuffer_index,
-                           bool            native);
-        ~frame_command_list() = default;
+        frame_command_list(render_context& context, uint32_t backbuffer_index);
+        ~frame_command_list();
 
         void clear(const mge::rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
@@ -18,6 +17,8 @@ namespace mge::dx12 {
         void finish() override;
 
     private:
-        render_context& m_dx12_context;
+        render_context&                         m_dx12_context;
+        mge::com_ptr<ID3D12CommandAllocator>    m_command_allocator;
+        mge::com_ptr<ID3D12GraphicsCommandList> m_command_list;
     };
 } // namespace mge::dx12

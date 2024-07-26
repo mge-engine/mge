@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "command_list.hpp"
 #include "error.hpp"
+#include "frame_command_list.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
@@ -368,6 +369,15 @@ namespace mge::dx12 {
     {
         mge::command_list_ref result =
             std::make_shared<dx12::command_list>(*this);
+        return result;
+    }
+
+    mge::frame_command_list_ref
+    render_context::create_current_frame_command_list()
+    {
+        auto backbuffer_index = m_swap_chain->current_back_buffer_index();
+        mge::frame_command_list_ref result =
+            std::make_shared<dx12::frame_command_list>(*this, backbuffer_index);
         return result;
     }
 

@@ -26,6 +26,11 @@ namespace mge::vulkan {
             return m_image_available;
         }
 
+        uint32_t current_back_buffer_index() const override
+        {
+            return m_current_image;
+        }
+
     private:
         void create_swap_chain(render_context& context);
         void get_images(render_context& context);
@@ -37,7 +42,6 @@ namespace mge::vulkan {
         VkSwapchainKHR  m_swap_chain;
         VkSemaphore     m_image_available;
         uint32_t        m_current_image;
-
 
         std::vector<VkImage>       m_images;
         std::vector<VkImageView>   m_image_views;

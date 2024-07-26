@@ -23,5 +23,11 @@ namespace mge {
          * @brief Presents the next frame buffer.
          */
         virtual void present() = 0;
+
+        /**
+         * @brief Returns the current back buffer index.
+         * @return index of current back buffer
+         */
+        virtual uint32_t current_back_buffer_index() const = 0;
     };
 } // namespace mge

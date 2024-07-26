@@ -36,7 +36,9 @@ namespace mge::dx12 {
         mge::shader_ref       create_shader(shader_type t) override;
         mge::program_ref      create_program() override;
         mge::command_list_ref create_command_list() override;
-        mge::texture_ref      create_texture(texture_type type) override;
+        mge::frame_command_list_ref
+                         create_current_frame_command_list() override;
+        mge::texture_ref create_texture(texture_type type) override;
 
         const mge::dx12::window& window() const { return m_window; }
 
