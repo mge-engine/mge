@@ -52,7 +52,7 @@ namespace mge::dx12 {
                                      ID3D12Resource*       src,
                                      D3D12_RESOURCE_STATES state_after);
 
-        void execute(command_list& cl);
+        // void execute(command_list& cl);
 
     private:
         friend class swap_chain;
@@ -68,8 +68,8 @@ namespace mge::dx12 {
         void update_render_target_views(
             const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
         void reset_direct_command_list();
-        void begin_draw();
-        void end_draw();
+        //  void begin_draw();
+        //  void end_draw();
         void wait_for_command_queue();
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,

@@ -147,7 +147,9 @@ namespace mge::dx12 {
         }
     }
 
-    void command_list::execute() { m_dx12_context.execute(*this); }
+    void command_list::execute()
+    { // m_dx12_context.execute(*this);
+    }
 
     bool command_list::empty() const { return m_draw_list.empty(); }
 

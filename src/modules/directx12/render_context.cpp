@@ -427,6 +427,7 @@ namespace mge::dx12 {
         }
     }
 
+#if 0
     void render_context::begin_draw()
     {
         auto current_buffer_index =
@@ -507,6 +508,7 @@ namespace mge::dx12 {
             }
         }
     }
+#endif
 
     mge::texture_ref render_context::create_texture(texture_type type)
     {
