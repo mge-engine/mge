@@ -59,6 +59,17 @@ namespace mge::dx12 {
         void release_command_allocator(
             mge::com_ptr<ID3D12CommandAllocator>& allocator);
 
+        const mge::com_ptr<ID3D12Resource>& backbuffer(uint32_t index) const
+        {
+            return m_backbuffers[index];
+        }
+
+        const D3D12_VIEWPORT& viewport() const { return m_viewport; }
+        const D3D12_RECT&     scissor_rect() const { return m_scissor_rect; }
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
+
+        void wait_for_command_queue();
+
     private:
         friend class swap_chain;
 
@@ -75,7 +86,6 @@ namespace mge::dx12 {
         void reset_direct_command_list();
         //  void begin_draw();
         //  void end_draw();
-        void wait_for_command_queue();
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
                                  D3D12_MESSAGE_SEVERITY severity,

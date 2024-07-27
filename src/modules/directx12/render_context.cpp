@@ -454,6 +454,14 @@ namespace mge::dx12 {
         allocator->Release();
     }
 
+    D3D12_CPU_DESCRIPTOR_HANDLE render_context::rtv_handle(uint32_t index) const
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE result =
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+        result.ptr += m_rtv_descriptor_size * index;
+        return result;
+    }
+
 #if 0
     void render_context::begin_draw()
     {

@@ -38,7 +38,7 @@ namespace mge {
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 auto clear_commands = m_window->render_context()
                                           .create_current_frame_command_list();
-                clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
                 clear_commands->finish();
                 clear_commands->execute();
                 m_window->render_context().swap_chain()->present();
