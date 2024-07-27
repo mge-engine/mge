@@ -66,6 +66,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context13create_shaderE11shader_type"><code class="docutils literal notranslate"><span class="pre">render_context::create_shader()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context14create_programEv"><code class="docutils literal notranslate"><span class="pre">render_context::create_program()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context19create_command_listEv"><code class="docutils literal notranslate"><span class="pre">render_context::create_command_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context33create_current_frame_command_listEv"><code class="docutils literal notranslate"><span class="pre">render_context::create_current_frame_command_list()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context14create_textureE12texture_type"><code class="docutils literal notranslate"><span class="pre">render_context::create_texture()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context10swap_chainEv"><code class="docutils literal notranslate"><span class="pre">render_context::swap_chain()</span></code></a></li>
 </ul>
@@ -73,6 +74,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14context_objectE"><code class="docutils literal notranslate"><span class="pre">context_object</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge10swap_chainE"><code class="docutils literal notranslate"><span class="pre">swap_chain</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10swap_chain7presentEv"><code class="docutils literal notranslate"><span class="pre">swap_chain::present()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv"><code class="docutils literal notranslate"><span class="pre">swap_chain::current_back_buffer_index()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -205,6 +207,17 @@ has a 1:1 relationship with the window.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context33create_current_frame_command_listEv">
+<span id="_CPPv3N3mge14render_context33create_current_frame_command_listEv"></span><span id="_CPPv2N3mge14render_context33create_current_frame_command_listEv"></span><span id="mge::render_context::create_current_frame_command_list"></span><span class="target" id="classmge_1_1render__context_1a36f4695253a3b72860c41855762bb362"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">frame_command_list_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_current_frame_command_list</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context33create_current_frame_command_listEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a command list object for the current frame. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>command list </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context14create_textureE12texture_type">
 <span id="_CPPv3N3mge14render_context14create_textureE12texture_type"></span><span id="_CPPv2N3mge14render_context14create_textureE12texture_type"></span><span id="mge::render_context::create_texture__texture_type"></span><span class="target" id="classmge_1_1render__context_1a5925a3890af8b8e86b3a9cdf62f8e6f7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">texture_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_texture</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="texture.html#_CPPv4N3mge12texture_typeE" title="mge::texture_type"><span class="n"><span class="pre">texture_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge14render_context14create_textureE12texture_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Create a texture object. </p>
@@ -255,6 +268,17 @@ rates and enable presenting frames.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge10swap_chain7presentEv">
 <span id="_CPPv3N3mge10swap_chain7presentEv"></span><span id="_CPPv2N3mge10swap_chain7presentEv"></span><span id="mge::swap_chain::present"></span><span class="target" id="classmge_1_1swap__chain_1aa8d78088a328ec7fb377dd4cbf6e7017"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">present</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge10swap_chain7presentEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Presents the next frame buffer. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv">
+<span id="_CPPv3NK3mge10swap_chain25current_back_buffer_indexEv"></span><span id="_CPPv2NK3mge10swap_chain25current_back_buffer_indexEv"></span><span id="mge::swap_chain::current_back_buffer_indexC"></span><span class="target" id="classmge_1_1swap__chain_1a6bff40df66de5d466332d30bb8cee91e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">current_back_buffer_index</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the current back buffer index. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>index of current back buffer </p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

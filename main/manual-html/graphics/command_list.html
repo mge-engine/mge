@@ -68,6 +68,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Command Lists</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge12command_listE"><code class="docutils literal notranslate"><span class="pre">command_list</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_listD0Ev"><code class="docutils literal notranslate"><span class="pre">command_list::~command_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7scissorERK9rectangle"><code class="docutils literal notranslate"><span class="pre">command_list::scissor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list15default_scissorEv"><code class="docutils literal notranslate"><span class="pre">command_list::default_scissor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge12command_list6nativeEv"><code class="docutils literal notranslate"><span class="pre">command_list::native()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list5clearERK10rgba_color"><code class="docutils literal notranslate"><span class="pre">command_list::clear()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list4drawERK12draw_command"><code class="docutils literal notranslate"><span class="pre">command_list::draw()</span></code></a></li>
@@ -125,12 +127,30 @@ to the GPU on a single thread.</p>
 <span id="_CPPv3N3mge12command_listE"></span><span id="_CPPv2N3mge12command_listE"></span><span id="mge::command_list"></span><span class="target" id="classmge_1_1command__list"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">command_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge12command_listE" title="Link to this definition"></a><br /></dt>
 <dd><p>A sequence of state changes. </p>
 <p>A list of state-changing commands which can be applied to a render context. </p>
+<p>Subclassed by mge::frame_command_list</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12command_listD0Ev">
 <span id="_CPPv3N3mge12command_listD0Ev"></span><span id="_CPPv2N3mge12command_listD0Ev"></span><span id="mge::command_list::~command_list"></span><span class="target" id="classmge_1_1command__list_1a7c32d9b7c306ad55618c21d79674a7af"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~command_list</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_listD0Ev" title="Link to this definition"></a><br /></dt>
 <dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list7scissorERK9rectangle">
+<span id="_CPPv3N3mge12command_list7scissorERK9rectangle"></span><span id="_CPPv2N3mge12command_list7scissorERK9rectangle"></span><span id="mge::command_list::scissor__rectangleCR"></span><span class="target" id="classmge_1_1command__list_1a365445bedbd082995bd223ea3a802772"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scissor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">rectangle</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rect</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_list7scissorERK9rectangle" title="Link to this definition"></a><br /></dt>
+<dd><p>Set scissor rectangle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rect</strong> – scissor rectangle </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list15default_scissorEv">
+<span id="_CPPv3N3mge12command_list15default_scissorEv"></span><span id="_CPPv2N3mge12command_list15default_scissorEv"></span><span id="mge::command_list::default_scissor"></span><span class="target" id="classmge_1_1command__list_1ade0c120456103e3d53952e563f0b8877"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_scissor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_list15default_scissorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Set default scissor for the render context. </p>
 </dd></dl>
 
 <dl class="cpp function">
