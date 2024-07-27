@@ -36,7 +36,9 @@ namespace mge::dx12 {
         mge::shader_ref       create_shader(shader_type t) override;
         mge::program_ref      create_program() override;
         mge::command_list_ref create_command_list() override;
-        mge::texture_ref      create_texture(texture_type type) override;
+        mge::frame_command_list_ref
+                         create_current_frame_command_list() override;
+        mge::texture_ref create_texture(texture_type type) override;
 
         const mge::dx12::window& window() const { return m_window; }
 
@@ -52,7 +54,21 @@ namespace mge::dx12 {
                                      ID3D12Resource*       src,
                                      D3D12_RESOURCE_STATES state_after);
 
-        void execute(command_list& cl);
+        mge::com_ptr<ID3D12CommandAllocator> get_command_allocator();
+
+        void release_command_allocator(
+            mge::com_ptr<ID3D12CommandAllocator>& allocator);
+
+        const mge::com_ptr<ID3D12Resource>& backbuffer(uint32_t index) const
+        {
+            return m_backbuffers[index];
+        }
+
+        const D3D12_VIEWPORT& viewport() const { return m_viewport; }
+        const D3D12_RECT&     scissor_rect() const { return m_scissor_rect; }
+        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
+
+        void wait_for_command_queue();
 
     private:
         friend class swap_chain;
@@ -68,9 +84,8 @@ namespace mge::dx12 {
         void update_render_target_views(
             const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
         void reset_direct_command_list();
-        void begin_draw();
-        void end_draw();
-        void wait_for_command_queue();
+        //  void begin_draw();
+        //  void end_draw();
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
                                  D3D12_MESSAGE_SEVERITY severity,

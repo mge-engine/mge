@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "command_list.hpp"
 #include "error.hpp"
+#include "frame_command_list.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
@@ -371,6 +372,15 @@ namespace mge::dx12 {
         return result;
     }
 
+    mge::frame_command_list_ref
+    render_context::create_current_frame_command_list()
+    {
+        auto backbuffer_index = m_swap_chain->current_back_buffer_index();
+        mge::frame_command_list_ref result =
+            std::make_shared<dx12::frame_command_list>(*this, backbuffer_index);
+        return result;
+    }
+
     void render_context::copy_resource(ID3D12Resource*       dst,
                                        ID3D12Resource*       src,
                                        D3D12_RESOURCE_STATES state_after)
@@ -427,6 +437,32 @@ namespace mge::dx12 {
         }
     }
 
+    mge::com_ptr<ID3D12CommandAllocator> render_context::get_command_allocator()
+    {
+        mge::com_ptr<ID3D12CommandAllocator> result;
+
+        auto rc =
+            m_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                             IID_PPV_ARGS(&result));
+        CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+        return result;
+    }
+
+    void render_context::release_command_allocator(
+        mge::com_ptr<ID3D12CommandAllocator>& allocator)
+    {
+        allocator->Release();
+    }
+
+    D3D12_CPU_DESCRIPTOR_HANDLE render_context::rtv_handle(uint32_t index) const
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE result =
+            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+        result.ptr += m_rtv_descriptor_size * index;
+        return result;
+    }
+
+#if 0
     void render_context::begin_draw()
     {
         auto current_buffer_index =
@@ -507,6 +543,7 @@ namespace mge::dx12 {
             }
         }
     }
+#endif
 
     mge::texture_ref render_context::create_texture(texture_type type)
     {

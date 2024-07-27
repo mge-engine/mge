@@ -58,10 +58,11 @@ namespace mge::dx12 {
 
     void swap_chain::present()
     {
-        dx12_context(context()).end_draw();
+        // dx12_context(context()).end_draw();
+        // TODO: 1st argument should be 1 for vsync
         m_swap_chain->Present(0, 0);
         dx12_context(context()).wait_for_command_queue();
-        dx12_context(context()).reset_direct_command_list();
+        // dx12_context(context()).reset_direct_command_list();
     }
 
 } // namespace mge::dx12

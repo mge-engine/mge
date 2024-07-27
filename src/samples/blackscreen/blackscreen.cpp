@@ -4,6 +4,7 @@
 #include "mge/application/application.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
+#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
@@ -34,12 +35,12 @@ namespace mge {
                     }
                 });
 
-            m_clear_commands = m_window->render_context().create_command_list();
-
-            m_clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
-
             add_redraw_listener([&](uint64_t cycle, double delta) {
-                m_clear_commands->execute();
+                auto clear_commands = m_window->render_context()
+                                          .create_current_frame_command_list();
+                clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                clear_commands->finish();
+                clear_commands->execute();
                 m_window->render_context().swap_chain()->present();
             });
 
@@ -48,7 +49,6 @@ namespace mge {
 
         void teardown() override
         {
-            m_clear_commands.reset();
             m_window.reset();
             m_render_system.reset();
         }
@@ -56,7 +56,6 @@ namespace mge {
     private:
         render_system_ref m_render_system;
         window_ref        m_window;
-        command_list_ref  m_clear_commands;
     };
 
     MGE_REGISTER_IMPLEMENTATION(blackscreen, mge::application, blackscreen);
