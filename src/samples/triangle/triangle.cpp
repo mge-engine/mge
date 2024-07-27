@@ -5,6 +5,7 @@
 #include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
+#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
@@ -13,6 +14,7 @@
 #include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
+
 
 MGE_DEFINE_TRACE(TRIANGLE);
 
@@ -51,7 +53,16 @@ namespace mge {
             if (!m_initialized) {
                 m_clear_commands->execute();
             } else {
-                m_draw_commands->execute();
+                auto draw_commands = m_window->render_context()
+                                         .create_current_frame_command_list();
+                draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                draw_commands->draw(
+                    mge::draw_command(m_program,
+                                      m_vertices,
+                                      m_indices,
+                                      mge::topology::TRIANGLES));
+                draw_commands->finish();
+                draw_commands->execute();
             }
             m_window->render_context().swap_chain()->present();
         }

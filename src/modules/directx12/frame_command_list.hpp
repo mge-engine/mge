@@ -20,5 +20,7 @@ namespace mge::dx12 {
         render_context&                         m_dx12_context;
         mge::com_ptr<ID3D12CommandAllocator>    m_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_command_list;
+        D3D12_RASTERIZER_DESC                   m_rasterizer_desc;
+        D3D12_BLEND_DESC                        m_blend_desc;
     };
 } // namespace mge::dx12

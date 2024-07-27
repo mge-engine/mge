@@ -1,6 +1,10 @@
 #include "frame_command_list.hpp"
 #include "error.hpp"
+#include "index_buffer.hpp"
+#include "program.hpp"
 #include "render_context.hpp"
+#include "shader.hpp"
+#include "vertex_buffer.hpp"
 
 namespace mge::dx12 {
     frame_command_list::frame_command_list(render_context& context,
@@ -37,6 +41,34 @@ namespace mge::dx12 {
         m_command_list->RSSetScissorRects(1, &m_dx12_context.scissor_rect());
         auto rtv_handle = m_dx12_context.rtv_handle(backbuffer_index);
         m_command_list->OMSetRenderTargets(1, &rtv_handle, FALSE, nullptr);
+
+        m_rasterizer_desc = {
+            .FillMode = D3D12_FILL_MODE_SOLID,
+            .CullMode = D3D12_CULL_MODE_BACK,
+            .FrontCounterClockwise = FALSE,
+            .DepthBias = D3D12_DEFAULT_DEPTH_BIAS,
+            .DepthBiasClamp = D3D12_DEFAULT_DEPTH_BIAS_CLAMP,
+            .SlopeScaledDepthBias = D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS,
+            .DepthClipEnable = TRUE,
+            .MultisampleEnable = FALSE,
+            .AntialiasedLineEnable = FALSE,
+            .ForcedSampleCount = 0,
+            .ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF};
+
+        m_blend_desc = {.AlphaToCoverageEnable = FALSE,
+                        .IndependentBlendEnable = FALSE};
+
+        m_blend_desc.RenderTarget[0] = {.BlendEnable = FALSE,
+                                        .LogicOpEnable = FALSE,
+                                        .SrcBlend = D3D12_BLEND_ONE,
+                                        .DestBlend = D3D12_BLEND_ZERO,
+                                        .BlendOp = D3D12_BLEND_OP_ADD,
+                                        .SrcBlendAlpha = D3D12_BLEND_ONE,
+                                        .DestBlendAlpha = D3D12_BLEND_ZERO,
+                                        .BlendOpAlpha = D3D12_BLEND_OP_ADD,
+                                        .LogicOp = D3D12_LOGIC_OP_NOOP,
+                                        .RenderTargetWriteMask =
+                                            D3D12_COLOR_WRITE_ENABLE_ALL};
     }
 
     frame_command_list::~frame_command_list()
@@ -50,7 +82,69 @@ namespace mge::dx12 {
         m_command_list->ClearRenderTargetView(rtv_handle, c.data(), 0, nullptr);
     }
 
-    void frame_command_list::draw(const mge::draw_command& command) {}
+    void frame_command_list::draw(const mge::draw_command& command)
+    {
+        auto vs_ref = dx12_program(*command.program())
+                          .program_shader(shader_type::VERTEX);
+        auto ps_ref = dx12_program(*command.program())
+                          .program_shader(shader_type::FRAGMENT);
+        auto& vs = dx12_shader(*vs_ref);
+        auto& ps = dx12_shader(*ps_ref);
+
+        D3D12_GRAPHICS_PIPELINE_STATE_DESC pso_desc = {};
+        pso_desc.InputLayout = {vs.input_layout(), vs.input_layout_count()};
+        pso_desc.pRootSignature =
+            dx12_program(*command.program()).root_signature();
+        pso_desc.VS = {vs.code()->GetBufferPointer(),
+                       vs.code()->GetBufferSize()};
+        pso_desc.PS = {ps.code()->GetBufferPointer(),
+                       ps.code()->GetBufferSize()};
+
+        pso_desc.RasterizerState = m_rasterizer_desc;
+        pso_desc.BlendState = m_blend_desc;
+        pso_desc.DepthStencilState = {.DepthEnable = false,
+                                      .StencilEnable = false};
+        pso_desc.SampleMask = UINT_MAX;
+        pso_desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+        pso_desc.NumRenderTargets = 1;
+        pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+        pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
+
+        auto root_signature = dx12_program(*command.program()).root_signature();
+        ID3D12PipelineState* pipeline_state = nullptr;
+        try {
+            auto rc = m_dx12_context.device()->CreateGraphicsPipelineState(
+                &pso_desc,
+                IID_PPV_ARGS(&pipeline_state));
+
+            CHECK_HRESULT(rc, ID3D12Device, CreateGraphicsPipelineState);
+
+            m_command_list->SetGraphicsRootSignature(root_signature);
+            m_command_list->SetPipelineState(pipeline_state);
+            pipeline_state->Release();
+            pipeline_state = nullptr;
+            m_command_list->IASetPrimitiveTopology(
+                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            m_command_list->IASetVertexBuffers(
+                0,
+                1,
+                &dx12_vertex_buffer(*command.vertices()).view());
+            m_command_list->IASetIndexBuffer(
+                &dx12_index_buffer(*command.indices()).view());
+            m_command_list->DrawIndexedInstanced(
+                static_cast<UINT>(command.indices()->element_count()),
+                1,
+                0,
+                0,
+                0);
+        } catch (...) {
+            if (pipeline_state) {
+                pipeline_state->Release();
+            }
+            // leaves behind command list in somewhat undefined state
+            throw;
+        }
+    }
 
     void frame_command_list::execute()
     {
