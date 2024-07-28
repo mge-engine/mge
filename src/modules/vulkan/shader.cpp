@@ -24,6 +24,11 @@ namespace mge::vulkan {
 
     shader::~shader() { destroy_shader_module(); }
 
+    const VkPipelineShaderStageCreateInfo& shader::pipeline_stage_info() const
+    {
+        return m_pipeline_stage_info;
+    }
+
     glslang_stage_t shader::stage() const
     {
         switch (type()) {
@@ -139,6 +144,19 @@ namespace mge::vulkan {
         create_shader_module();
     }
 
+    VkShaderStageFlagBits shader::vk_stage_flags() const
+    {
+        switch (type()) {
+        case shader_type::VERTEX:
+            return VK_SHADER_STAGE_VERTEX_BIT;
+        case shader_type::FRAGMENT:
+            return VK_SHADER_STAGE_FRAGMENT_BIT;
+        default:
+            MGE_THROW(mge::vulkan::error)
+                << "Unsupported shader type " << type();
+        }
+    }
+
     void shader::create_shader_module()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Create shader module";
@@ -152,6 +170,14 @@ namespace mge::vulkan {
                                                   &create_info,
                                                   nullptr,
                                                   &m_shader_module));
+
+        auto main_function = get_property("main_function", "main");
+
+        m_pipeline_stage_info = {
+            .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+            .stage = vk_stage_flags(),
+            .module = m_shader_module,
+            .pName = main_function.c_str()};
     }
 
     void shader::destroy_shader_module()

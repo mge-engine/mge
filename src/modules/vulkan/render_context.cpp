@@ -32,6 +32,7 @@ namespace mge::vulkan {
             create_swap_chain();
             create_image_views();
             create_render_pass();
+            create_graphics_command_pool();
             create_framebuffers();
             create_fence();
             create_semaphores();
@@ -192,6 +193,11 @@ namespace mge::vulkan {
                 }
             }
             m_swap_chain_framebuffers.clear();
+        }
+
+        if (vkDestroyCommandPool && m_graphics_command_pool) {
+            vkDestroyCommandPool(m_device, m_graphics_command_pool, nullptr);
+            m_graphics_command_pool = VK_NULL_HANDLE;
         }
 
         if (vkDestroyRenderPass && m_render_pass) {
@@ -554,6 +560,20 @@ namespace mge::vulkan {
                                          &render_pass_info,
                                          nullptr,
                                          &m_render_pass));
+    }
+
+    void render_context::create_graphics_command_pool()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create graphics command pool";
+        VkCommandPoolCreateInfo pool_info = {};
+        pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+        pool_info.queueFamilyIndex = m_render_system.graphics_queue_index();
+        pool_info.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
+
+        CHECK_VK_CALL(vkCreateCommandPool(m_device,
+                                          &pool_info,
+                                          nullptr,
+                                          &m_graphics_command_pool));
     }
 
     void render_context::create_framebuffers()

@@ -60,6 +60,11 @@ namespace mge::vulkan {
             return m_current_image_index;
         }
 
+        VkCommandPool graphics_command_pool() const noexcept
+        {
+            return m_graphics_command_pool;
+        }
+
     private:
         void create_surface();
         void create_device();
@@ -70,6 +75,7 @@ namespace mge::vulkan {
         void create_swap_chain();
         void create_image_views();
         void create_render_pass();
+        void create_graphics_command_pool();
         void create_framebuffers();
         void create_fence();
         void create_semaphores();
@@ -86,6 +92,7 @@ namespace mge::vulkan {
         VmaAllocator   m_allocator{VK_NULL_HANDLE};
         VkQueue        m_queue{VK_NULL_HANDLE};
         VkRenderPass   m_render_pass{VK_NULL_HANDLE};
+        VkCommandPool  m_graphics_command_pool{VK_NULL_HANDLE};
         VkSemaphore    m_image_available_semaphore{VK_NULL_HANDLE};
         VkSemaphore    m_render_finished_semaphore{VK_NULL_HANDLE};
         VkFence        m_fence{VK_NULL_HANDLE};
