@@ -38,6 +38,7 @@ SET(mgecore_sources
     mutex.cpp
     io_exception.cpp
     file_input_stream.cpp
+    memory_resource.cpp
 )
 
 SET(mgecore_headers
@@ -91,6 +92,7 @@ SET(mgecore_headers
     is_associative_container.hpp
     io_exception.hpp
     file_input_stream.hpp
+    memory_resource.hpp
 )
 
 MGE_LIBRARY(
@@ -101,6 +103,10 @@ MGE_LIBRARY(
     ${mgecore_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp nlohmann_json::nlohmann_json)
+TARGET_LINK_LIBRARIES(mgecore 
+    boost-all 
+    linenoise 
+    dbghelp 
+    nlohmann_json::nlohmann_json
+    jemalloc::jemalloc)
 ADD_SUBDIRECTORY(test)
-
