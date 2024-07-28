@@ -13,6 +13,7 @@ which are not directly related to graphics or game programming.
     core/definitions.rst
     core/tracing.rst
     core/configuration.rst
+    core/memory.rst
     core/statistics.rst
     core/exception.rst
     core/component.rst
