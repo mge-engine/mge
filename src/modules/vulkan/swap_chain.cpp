@@ -13,7 +13,7 @@ namespace mge::vulkan {
 
     uint32_t swap_chain::current_back_buffer_index() const
     {
-        return m_render_context.current_back_buffer_index();
+        return m_render_context.current_image_index();
     }
 
 } // namespace mge::vulkan

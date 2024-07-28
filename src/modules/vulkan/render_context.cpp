@@ -47,6 +47,8 @@ namespace mge::vulkan {
             // called after construction, as otherwise the shared_from_this()
             // call would fail
             m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
+            // we are always in a frame, ready to draw
+            begin_frame(); // acquire first image
         } catch (...) {
             teardown();
             throw;
