@@ -29,7 +29,7 @@ SET(mge_vulkan_module_SOURCES
     swap_chain.cpp
     shader.cpp
     vulkan_memory_allocator.cpp
-#    command_list.cpp
+    frame_command_list.cpp
 
 #    program.cpp
 )

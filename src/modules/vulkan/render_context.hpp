@@ -65,6 +65,8 @@ namespace mge::vulkan {
         void choose_extent();
         void create_swap_chain();
         void create_image_views();
+        void create_render_pass();
+        void create_framebuffers();
         void teardown();
         void resolve_device_functions();
         void clear_functions();
@@ -75,6 +77,7 @@ namespace mge::vulkan {
         VkDevice       m_device{VK_NULL_HANDLE};
         VmaAllocator   m_allocator{VK_NULL_HANDLE};
         VkQueue        m_queue{VK_NULL_HANDLE};
+        VkRenderPass   m_render_pass{VK_NULL_HANDLE};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
@@ -85,5 +88,6 @@ namespace mge::vulkan {
         VkSwapchainKHR                  m_swap_chain_khr{VK_NULL_HANDLE};
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
+        std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
     };
 } // namespace mge::vulkan

@@ -31,7 +31,6 @@ namespace mge::vulkan {
             choose_extent();
             create_swap_chain();
             create_image_views();
-
         } catch (...) {
             teardown();
             throw;
@@ -40,9 +39,14 @@ namespace mge::vulkan {
 
     void render_context::init_swap_chain()
     {
-        // called after construction, as otherwise the shared_from_this() call
-        // would fail
-        m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
+        try {
+            // called after construction, as otherwise the shared_from_this()
+            // call would fail
+            m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
+        } catch (...) {
+            teardown();
+            throw;
+        }
     }
 
     render_context::~render_context() { teardown(); }
@@ -155,6 +159,20 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        if (vkDestroyFramebuffer) {
+            for (auto fb : m_swap_chain_framebuffers) {
+                if (fb != VK_NULL_HANDLE) {
+                    vkDestroyFramebuffer(m_device, fb, nullptr);
+                }
+            }
+            m_swap_chain_framebuffers.clear();
+        }
+
+        if (vkDestroyRenderPass && m_render_pass) {
+            vkDestroyRenderPass(m_device, m_render_pass, nullptr);
+            m_render_pass = VK_NULL_HANDLE;
+        }
+
         if (vkDestroyImageView) {
             for (auto view : m_swap_chain_image_views) {
                 if (view != VK_NULL_HANDLE) {
@@ -465,6 +483,74 @@ namespace mge::vulkan {
         allocator_info.pVulkanFunctions = &vk_functions;
         allocator_info.vulkanApiVersion = VK_API_VERSION_1_3;
         CHECK_VK_CALL(vmaCreateAllocator(&allocator_info, &m_allocator));
+    }
+
+    void render_context::create_render_pass()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create render pass";
+        VkAttachmentDescription color_attachment = {};
+        color_attachment.format = m_used_surface_format.format;
+        color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+        VkAttachmentReference color_attachment_ref = {};
+        color_attachment_ref.attachment = 0;
+        color_attachment_ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        VkSubpassDescription subpass = {};
+        subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        subpass.colorAttachmentCount = 1;
+        subpass.pColorAttachments = &color_attachment_ref;
+
+        VkSubpassDependency dependency = {};
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass = 0;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = 0;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+        VkRenderPassCreateInfo render_pass_info = {};
+        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+        render_pass_info.attachmentCount = 1;
+        render_pass_info.pAttachments = &color_attachment;
+        render_pass_info.subpassCount = 1;
+        render_pass_info.pSubpasses = &subpass;
+        render_pass_info.dependencyCount = 1;
+        render_pass_info.pDependencies = &dependency;
+
+        CHECK_VK_CALL(vkCreateRenderPass(m_device,
+                                         &render_pass_info,
+                                         nullptr,
+                                         &m_render_pass));
+    }
+
+    void render_context::create_framebuffers()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create framebuffers";
+        m_swap_chain_framebuffers.resize(m_swap_chain_image_views.size());
+        for (size_t i = 0; i < m_swap_chain_image_views.size(); ++i) {
+            VkImageView attachments[] = {m_swap_chain_image_views[i]};
+
+            VkFramebufferCreateInfo framebuffer_info = {};
+            framebuffer_info.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+            framebuffer_info.renderPass = m_render_pass;
+            framebuffer_info.attachmentCount = 1;
+            framebuffer_info.pAttachments = attachments;
+            framebuffer_info.width = m_extent.width;
+            framebuffer_info.height = m_extent.height;
+            framebuffer_info.layers = 1;
+
+            CHECK_VK_CALL(vkCreateFramebuffer(m_device,
+                                              &framebuffer_info,
+                                              nullptr,
+                                              &m_swap_chain_framebuffers[i]));
+        }
     }
 
 } // namespace mge::vulkan
