@@ -43,6 +43,20 @@ namespace mge {
          */
         draw_command(draw_command&&) = default;
 
+        /**
+         * Assignment operator.
+         * @param cmd command to assign
+         * @return @c *this
+         */
+        inline draw_command& operator=(const draw_command& cmd) = default;
+
+        /**
+         * Move assignment operator.
+         * @param cmd command to move
+         * @return @c *this
+         */
+        draw_command& operator=(draw_command&&) = default;
+
         ~draw_command();
 
         /**
@@ -70,10 +84,10 @@ namespace mge {
         mge::topology topology() const { return m_topology; }
 
     private:
-        const program_ref       m_program;
-        const vertex_buffer_ref m_vertices;
-        const index_buffer_ref  m_indices;
-        const mge::topology     m_topology;
+        program_ref       m_program;
+        vertex_buffer_ref m_vertices;
+        index_buffer_ref  m_indices;
+        mge::topology     m_topology;
     };
 
 } // namespace mge

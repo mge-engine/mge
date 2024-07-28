@@ -18,6 +18,7 @@ namespace mge::dx11 {
         void present() override;
 
         com_unique_ptr<ID3D11Texture2D> back_buffer() const;
+        uint32_t current_back_buffer_index() const override { return 0; }
 
     private:
         com_unique_ptr<IDXGISwapChain>          m_swap_chain;

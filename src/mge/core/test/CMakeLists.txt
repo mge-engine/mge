@@ -39,7 +39,11 @@ SET(MGECORE_TEST_SOURCES
     test_json.cpp
     test_enum.cpp
     test_atexit.cpp
+    test_memory_resource.cpp
 )
+
+SET(MGECORE_BENCH_SOURCES
+    bench_memory.cpp)
 
 MGE_TEST(
     TARGET      test_core
@@ -48,3 +52,8 @@ MGE_TEST(
 )
 
 
+MGE_TEST(
+    TARGET      bench_core
+    SOURCES     ${MGECORE_BENCH_SOURCES}
+    LIBRARIES   mgecore benchmark
+)

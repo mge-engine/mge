@@ -75,6 +75,12 @@ namespace mge {
         virtual command_list_ref create_command_list() = 0;
 
         /**
+         * @brief Create a command list object for the current frame.
+         * @return command list
+         */
+        virtual frame_command_list_ref create_current_frame_command_list();
+
+        /**
          * @brief Create a texture object.
          *
          * @param type texture type

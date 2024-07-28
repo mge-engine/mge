@@ -20,6 +20,7 @@
     "glslang",
     "libmagic",
     "magic-enum",
-    "vulkan-memory-allocator"
+    "vulkan-memory-allocator",
+    "jemalloc"
   ]
 }

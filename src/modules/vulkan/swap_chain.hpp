@@ -10,7 +10,8 @@ namespace mge::vulkan {
     public:
         swap_chain(render_context& context);
         virtual ~swap_chain();
-        void present() override;
+        void     present() override;
+        uint32_t current_back_buffer_index() const override;
 
     private:
         render_context& m_render_context;

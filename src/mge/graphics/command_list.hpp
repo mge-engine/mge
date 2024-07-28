@@ -6,6 +6,7 @@
 
 #include "mge/graphics/context_object.hpp"
 #include "mge/graphics/draw_command.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
 
 namespace mge {
@@ -33,6 +34,17 @@ namespace mge {
          * @brief Destructor.
          */
         virtual ~command_list();
+
+        /**
+         * @brief Set scissor rectangle.
+         * @param rect scissor rectangle
+         */
+        virtual void scissor(const rectangle& rect);
+
+        /**
+         * Set default scissor for the render context.
+         */
+        virtual void default_scissor();
 
         /**
          * @brief Returns whether this command list is native.
