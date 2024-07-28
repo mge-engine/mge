@@ -31,4 +31,15 @@ namespace mge::vulkan {
         mge::buffer                     m_code;
         VkPipelineShaderStageCreateInfo m_pipeline_stage_info;
     };
+
+    inline shader& vulkan_shader(mge::shader& s)
+    {
+        return static_cast<shader&>(s);
+    }
+
+    inline const shader& vulkan_shader(const mge::shader& s)
+    {
+        return static_cast<const shader&>(s);
+    }
+
 } // namespace mge::vulkan

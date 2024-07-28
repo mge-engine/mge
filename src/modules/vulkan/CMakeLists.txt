@@ -30,8 +30,7 @@ SET(mge_vulkan_module_SOURCES
     shader.cpp
     vulkan_memory_allocator.cpp
     frame_command_list.cpp
-
-#    program.cpp
+    program.cpp
 )
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
