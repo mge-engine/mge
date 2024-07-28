@@ -582,7 +582,8 @@ namespace mge::vulkan {
         MGE_DEBUG_TRACE(VULKAN) << "Create fence";
         VkFenceCreateInfo fence_info = {};
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-        // fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+        // enable first draw begin to pass through
+        fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
         CHECK_VK_CALL(vkCreateFence(m_device, &fence_info, nullptr, &m_fence));
     }
 
@@ -599,6 +600,28 @@ namespace mge::vulkan {
                                         &semaphore_info,
                                         nullptr,
                                         &m_render_finished_semaphore));
+    }
+
+    void render_context::begin_frame()
+    {
+        // wait for previous frame to finish
+        // TODO: use a sensible timeout
+        CHECK_VK_CALL(vkWaitForFences(m_device,
+                                      1,
+                                      &m_fence,
+                                      VK_TRUE,
+                                      std::numeric_limits<uint64_t>::max()));
+        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_fence));
+
+        // acquire next image
+        // TODO: use a sensible timeout
+        CHECK_VK_CALL(
+            vkAcquireNextImageKHR(m_device,
+                                  m_swap_chain_khr,
+                                  std::numeric_limits<uint64_t>::max(),
+                                  m_image_available_semaphore,
+                                  VK_NULL_HANDLE,
+                                  &m_current_image_index));
     }
 
 } // namespace mge::vulkan

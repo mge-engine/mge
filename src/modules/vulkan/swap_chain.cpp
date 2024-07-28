@@ -11,6 +11,9 @@ namespace mge::vulkan {
 
     void swap_chain::present() {}
 
-    uint32_t swap_chain::current_back_buffer_index() const { return 0; }
+    uint32_t swap_chain::current_back_buffer_index() const
+    {
+        return m_render_context.current_back_buffer_index();
+    }
 
 } // namespace mge::vulkan

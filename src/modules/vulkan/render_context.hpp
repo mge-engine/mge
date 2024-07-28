@@ -53,8 +53,12 @@ namespace mge::vulkan {
             return m_used_present_mode;
         }
 
-        void present();
-        void init_swap_chain();
+        void     present();
+        void     init_swap_chain();
+        uint32_t current_image_index() const noexcept
+        {
+            return m_current_image_index;
+        }
 
     private:
         void create_surface();
@@ -73,6 +77,8 @@ namespace mge::vulkan {
         void resolve_device_functions();
         void clear_functions();
 
+        void begin_frame();
+
         render_system& m_render_system;
         window&        m_window;
         VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
@@ -83,6 +89,7 @@ namespace mge::vulkan {
         VkSemaphore    m_image_available_semaphore{VK_NULL_HANDLE};
         VkSemaphore    m_render_finished_semaphore{VK_NULL_HANDLE};
         VkFence        m_fence{VK_NULL_HANDLE};
+        uint32_t       m_current_image_index{0};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
