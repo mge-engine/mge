@@ -38,6 +38,7 @@ SET(mgecore_sources
     mutex.cpp
     io_exception.cpp
     file_input_stream.cpp
+    memory_resource.cpp
 )
 
 SET(mgecore_headers
@@ -91,6 +92,7 @@ SET(mgecore_headers
     is_associative_container.hpp
     io_exception.hpp
     file_input_stream.hpp
+    memory_resource.hpp
 )
 
 MGE_LIBRARY(
@@ -108,5 +110,3 @@ TARGET_LINK_LIBRARIES(mgecore
     nlohmann_json::nlohmann_json
     jemalloc::jemalloc)
 ADD_SUBDIRECTORY(test)
-PRINT_TARGET_PROPERTIES(nlohmann_json::nlohmann_json)
-PRINT_VARIABLES()

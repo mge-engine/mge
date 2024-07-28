@@ -61,4 +61,8 @@ namespace mge {
      * @return pointer to reallocated memory
      */
     MGECORE_EXPORT void* realloc(void* ptr, size_t size);
+
+    // support functions for memory_resource implementation
+    MGECORE_EXPORT void* allocate(size_t bytes, size_t alignment);
+    MGECORE_EXPORT void  deallocate(void* p, size_t bytes, size_t alignment);
 } // namespace mge
