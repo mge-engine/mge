@@ -31,6 +31,10 @@ namespace mge::vulkan {
             choose_extent();
             create_swap_chain();
             create_image_views();
+            create_render_pass();
+            create_framebuffers();
+            create_fence();
+            create_semaphores();
         } catch (...) {
             teardown();
             throw;
@@ -159,6 +163,26 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        if (vkDestroySemaphore) {
+            if (m_image_available_semaphore) {
+                vkDestroySemaphore(m_device,
+                                   m_image_available_semaphore,
+                                   nullptr);
+                m_image_available_semaphore = VK_NULL_HANDLE;
+            }
+            if (m_render_finished_semaphore) {
+                vkDestroySemaphore(m_device,
+                                   m_render_finished_semaphore,
+                                   nullptr);
+                m_render_finished_semaphore = VK_NULL_HANDLE;
+            }
+        }
+
+        if (vkDestroyFence && m_fence) {
+            vkDestroyFence(m_device, m_fence, nullptr);
+            m_fence = VK_NULL_HANDLE;
+        }
+
         if (vkDestroyFramebuffer) {
             for (auto fb : m_swap_chain_framebuffers) {
                 if (fb != VK_NULL_HANDLE) {
@@ -551,6 +575,30 @@ namespace mge::vulkan {
                                               nullptr,
                                               &m_swap_chain_framebuffers[i]));
         }
+    }
+
+    void render_context::create_fence()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create fence";
+        VkFenceCreateInfo fence_info = {};
+        fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        // fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+        CHECK_VK_CALL(vkCreateFence(m_device, &fence_info, nullptr, &m_fence));
+    }
+
+    void render_context::create_semaphores()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create semaphores";
+        VkSemaphoreCreateInfo semaphore_info = {};
+        semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+        CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                        &semaphore_info,
+                                        nullptr,
+                                        &m_image_available_semaphore));
+        CHECK_VK_CALL(vkCreateSemaphore(m_device,
+                                        &semaphore_info,
+                                        nullptr,
+                                        &m_render_finished_semaphore));
     }
 
 } // namespace mge::vulkan
