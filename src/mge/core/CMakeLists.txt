@@ -101,6 +101,12 @@ MGE_LIBRARY(
     ${mgecore_headers}
 )
 
-TARGET_LINK_LIBRARIES(mgecore boost-all linenoise dbghelp nlohmann_json::nlohmann_json)
+TARGET_LINK_LIBRARIES(mgecore 
+    boost-all 
+    linenoise 
+    dbghelp 
+    nlohmann_json::nlohmann_json
+    jemalloc::jemalloc)
 ADD_SUBDIRECTORY(test)
-
+PRINT_TARGET_PROPERTIES(nlohmann_json::nlohmann_json)
+PRINT_VARIABLES()
