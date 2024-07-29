@@ -635,15 +635,18 @@ namespace mge::vulkan {
 
     void render_context::begin_frame()
     {
-        // wait for previous frame to finish
-        // TODO: use a sensible timeout
+        // MGE_DEBUG_TRACE(VULKAN) << "Begin frame, wait for previous frame";
+// wait for previous frame to finish
+// TODO: use a sensible timeout
+#if 0
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
                                       &m_fence,
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
+#endif
         CHECK_VK_CALL(vkResetFences(m_device, 1, &m_fence));
-
+        // MGE_DEBUG_TRACE(VULKAN) << "Acquire next image";
         // acquire next image
         // TODO: use a sensible timeout
         CHECK_VK_CALL(
@@ -653,10 +656,13 @@ namespace mge::vulkan {
                                   m_image_available_semaphore,
                                   VK_NULL_HANDLE,
                                   &m_current_image_index));
+        // MGE_DEBUG_TRACE(VULKAN) << "Image acquired:" <<
+        // m_current_image_index;
     }
 
     void render_context::present()
     {
+        // MGE_DEBUG_TRACE(VULKAN) << "Present";
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         present_info.waitSemaphoreCount = 1;
@@ -664,9 +670,8 @@ namespace mge::vulkan {
         present_info.swapchainCount = 1;
         present_info.pSwapchains = &m_swap_chain_khr;
         present_info.pImageIndices = &m_current_image_index;
-
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
-
+        // MGE_DEBUG_TRACE(VULKAN) << "Presented, starting next image";
         begin_frame();
     }
 
