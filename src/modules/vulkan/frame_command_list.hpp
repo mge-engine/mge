@@ -19,6 +19,7 @@ namespace mge::vulkan {
 
     private:
         render_context& m_vulkan_context;
+        VkCommandBuffer m_command_buffer;
     };
 
 } // namespace mge::vulkan
