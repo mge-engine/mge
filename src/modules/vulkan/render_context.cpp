@@ -4,6 +4,7 @@
 #include "render_context.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
+#include "frame_command_list.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
@@ -89,6 +90,14 @@ namespace mge::vulkan {
     mge::command_list_ref render_context::create_command_list()
     {
         mge::command_list_ref result;
+        return result;
+    }
+
+    mge::frame_command_list_ref
+    render_context::create_current_frame_command_list()
+    {
+        auto result =
+            std::make_shared<frame_command_list>(*this, m_current_image_index);
         return result;
     }
 
@@ -498,8 +507,6 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::present() {}
-
     void render_context::create_allocator()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Create allocator";
@@ -541,6 +548,14 @@ namespace mge::vulkan {
         subpass.colorAttachmentCount = 1;
         subpass.pColorAttachments = &color_attachment_ref;
 
+        VkSubpassDependency dependency = {};
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass = 0;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = 0;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
         VkRenderPassCreateInfo render_pass_info = {};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         render_pass_info.attachmentCount = 1;
@@ -548,6 +563,7 @@ namespace mge::vulkan {
         render_pass_info.subpassCount = 1;
         render_pass_info.pSubpasses = &subpass;
         render_pass_info.dependencyCount = 1;
+        render_pass_info.pDependencies = &dependency;
 
         CHECK_VK_CALL(vkCreateRenderPass(m_device,
                                          &render_pass_info,
@@ -637,6 +653,21 @@ namespace mge::vulkan {
                                   m_image_available_semaphore,
                                   VK_NULL_HANDLE,
                                   &m_current_image_index));
+    }
+
+    void render_context::present()
+    {
+        VkPresentInfoKHR present_info = {};
+        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        present_info.waitSemaphoreCount = 1;
+        present_info.pWaitSemaphores = &m_render_finished_semaphore;
+        present_info.swapchainCount = 1;
+        present_info.pSwapchains = &m_swap_chain_khr;
+        present_info.pImageIndices = &m_current_image_index;
+
+        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
+
+        begin_frame();
     }
 
 } // namespace mge::vulkan

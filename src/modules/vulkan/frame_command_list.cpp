@@ -36,15 +36,19 @@ namespace mge::vulkan {
 
     void frame_command_list::clear(const mge::rgba_color& c)
     {
-        MGE_THROW_NOT_IMPLEMENTED;
+        // MGE_THROW_NOT_IMPLEMENTED;
     }
 
     void frame_command_list::draw(const mge::draw_command& command)
     {
-        MGE_THROW_NOT_IMPLEMENTED;
+        // MGE_THROW_NOT_IMPLEMENTED;
     }
 
-    void frame_command_list::execute() { MGE_THROW_NOT_IMPLEMENTED; }
+    void frame_command_list::execute()
+    { // MGE_THROW_NOT_IMPLEMENTED;
+    }
 
-    void frame_command_list::finish() { MGE_THROW_NOT_IMPLEMENTED; }
+    void frame_command_list::finish()
+    { // MGE_THROW_NOT_IMPLEMENTED;
+    }
 } // namespace mge::vulkan

@@ -9,7 +9,7 @@ namespace mge::vulkan {
 
     swap_chain::~swap_chain() {}
 
-    void swap_chain::present() {}
+    void swap_chain::present() { m_render_context.present(); }
 
     uint32_t swap_chain::current_back_buffer_index() const
     {

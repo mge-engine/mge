@@ -23,8 +23,10 @@ namespace mge::vulkan {
                                                     void*  data) override;
         mge::shader_ref        create_shader(shader_type t) override;
         mge::program_ref       create_program() override;
-        mge::command_list_ref  create_command_list() override;
-        mge::texture_ref       create_texture(texture_type type) override;
+        mge::frame_command_list_ref
+                              create_current_frame_command_list() override;
+        mge::command_list_ref create_command_list() override;
+        mge::texture_ref      create_texture(texture_type type) override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -53,7 +55,9 @@ namespace mge::vulkan {
             return m_used_present_mode;
         }
 
-        void     present();
+        void begin_frame();
+        void present();
+
         void     init_swap_chain();
         uint32_t current_image_index() const noexcept
         {
@@ -82,8 +86,6 @@ namespace mge::vulkan {
         void teardown();
         void resolve_device_functions();
         void clear_functions();
-
-        void begin_frame();
 
         render_system& m_render_system;
         window&        m_window;
