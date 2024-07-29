@@ -10,7 +10,6 @@
 #include "swap_chain.hpp"
 #include "window.hpp"
 
-
 #include "mge/core/trace.hpp"
 namespace mge {
     MGE_USE_TRACE(VULKAN);
@@ -524,8 +523,9 @@ namespace mge::vulkan {
         MGE_DEBUG_TRACE(VULKAN) << "Create render pass";
         VkAttachmentDescription color_attachment = {};
         color_attachment.format = m_used_surface_format.format;
+        // TODO: multisampling in vulkan
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
@@ -541,14 +541,6 @@ namespace mge::vulkan {
         subpass.colorAttachmentCount = 1;
         subpass.pColorAttachments = &color_attachment_ref;
 
-        VkSubpassDependency dependency = {};
-        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
-        dependency.dstSubpass = 0;
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-        dependency.srcAccessMask = 0;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-
         VkRenderPassCreateInfo render_pass_info = {};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
         render_pass_info.attachmentCount = 1;
@@ -556,7 +548,6 @@ namespace mge::vulkan {
         render_pass_info.subpassCount = 1;
         render_pass_info.pSubpasses = &subpass;
         render_pass_info.dependencyCount = 1;
-        render_pass_info.pDependencies = &dependency;
 
         CHECK_VK_CALL(vkCreateRenderPass(m_device,
                                          &render_pass_info,
