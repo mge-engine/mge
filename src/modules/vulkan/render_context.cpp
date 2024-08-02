@@ -529,13 +529,18 @@ namespace mge::vulkan {
     {
         MGE_DEBUG_TRACE(VULKAN) << "Create render pass";
         VkAttachmentDescription color_attachment = {};
+        // single color buffer used for presentation
         color_attachment.format = m_used_surface_format.format;
         // TODO: multisampling in vulkan
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        // don't care about content of the image at beginning
         color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        // store content of the image for later
         color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        // nothing needed for stencil
         color_attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+
         color_attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
         color_attachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
@@ -577,7 +582,8 @@ namespace mge::vulkan {
         VkCommandPoolCreateInfo pool_info = {};
         pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         pool_info.queueFamilyIndex = m_render_system.graphics_queue_index();
-        pool_info.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
+        pool_info.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT |
+                          VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
         CHECK_VK_CALL(vkCreateCommandPool(m_device,
                                           &pool_info,

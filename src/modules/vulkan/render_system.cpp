@@ -21,7 +21,11 @@ namespace mge {
     MGE_USE_TRACE(VULKAN);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
         bool, vulkan, debug, "Enable Vulkan debug mode", false);
-
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(bool,
+                                      vulkan,
+                                      stop_on_validation_error,
+                                      "Stop on Vulkan validation errors",
+                                      false);
 } // namespace mge
 
 namespace mge::vulkan {
@@ -161,6 +165,8 @@ namespace mge::vulkan {
         }
 
         if (debug()) {
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Enabling Vulkan instance debug extensions";
             extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
             layers.push_back("VK_LAYER_KHRONOS_validation");
         }
@@ -178,6 +184,7 @@ namespace mge::vulkan {
         // need to create always as it has to be in scope
         VkDebugUtilsMessengerCreateInfoEXT debug_create_info = {};
         if (debug()) {
+            MGE_DEBUG_TRACE(VULKAN) << "Attaching debug message callback";
             debug_create_info.sType =
                 VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
             debug_create_info.messageSeverity =
@@ -197,6 +204,12 @@ namespace mge::vulkan {
         CHECK_VK_CALL(
             vkCreateInstance(&instance_create_info, nullptr, &m_instance));
         resolve_instance_functions();
+        if (debug() && vkCreateDebugUtilsMessengerEXT) {
+            CHECK_VK_CALL(vkCreateDebugUtilsMessengerEXT(m_instance,
+                                                         &debug_create_info,
+                                                         nullptr,
+                                                         &m_debug_messenger));
+        }
     }
 
     void render_system::resolve_layer_properties()
@@ -347,17 +360,23 @@ namespace mge::vulkan {
 
     bool render_system::debug() const
     {
-        const char* vulkan_debug_env = std::getenv("MGE_VULKAN_DEBUG");
-        bool        result = MGE_PARAMETER(vulkan, debug).get(false);
-        if (!result && vulkan_debug_env != nullptr) {
-            return std::string(vulkan_debug_env) == "1" ||
-                   std::string(vulkan_debug_env) == "true";
-        }
-        return result;
+        return MGE_PARAMETER(vulkan, debug).get();
+    }
+
+    bool render_system::stop_on_validation_errors() const
+    {
+        return MGE_PARAMETER(vulkan, stop_on_validation_error).get();
     }
 
     void render_system::destroy_instance()
     {
+        if (m_debug_messenger && vkDestroyDebugUtilsMessengerEXT) {
+            vkDestroyDebugUtilsMessengerEXT(m_instance,
+                                            m_debug_messenger,
+                                            nullptr);
+            m_debug_messenger = VK_NULL_HANDLE;
+        }
+
         if (m_instance != VK_NULL_HANDLE && vkDestroyInstance != nullptr) {
             vkDestroyInstance(m_instance, nullptr);
             m_instance = VK_NULL_HANDLE;

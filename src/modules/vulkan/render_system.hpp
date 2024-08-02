@@ -35,6 +35,7 @@ namespace mge::vulkan {
 #undef DEVICE_FUNCTION
 
         bool                    debug() const;
+        bool                    stop_on_validation_errors() const;
         inline VkInstance       instance() const noexcept { return m_instance; }
         inline VkPhysicalDevice physical_device() const noexcept
         {
@@ -76,6 +77,7 @@ namespace mge::vulkan {
         std::map<std::string, std::vector<VkExtensionProperties>>
                                       m_instance_extensions;
         VkInstance                    m_instance{VK_NULL_HANDLE};
+        VkDebugUtilsMessengerEXT      m_debug_messenger{VK_NULL_HANDLE};
         VkPhysicalDevice              m_physical_device{VK_NULL_HANDLE};
         std::vector<VkPhysicalDevice> m_all_physical_devices;
         std::map<VkPhysicalDevice, VkPhysicalDeviceProperties>

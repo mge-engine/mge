@@ -18,6 +18,8 @@ namespace mge::vulkan {
         void finish() override;
 
     private:
+        void begin();
+
         render_context& m_vulkan_context;
         VkCommandBuffer m_command_buffer{VK_NULL_HANDLE};
     };

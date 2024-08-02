@@ -18,6 +18,7 @@ namespace mge::vulkan {
             m_vulkan_context.vkAllocateCommandBuffers(m_vulkan_context.device(),
                                                       &alloc_info,
                                                       &m_command_buffer));
+        begin();
     }
 
     frame_command_list::~frame_command_list()
@@ -32,6 +33,13 @@ namespace mge::vulkan {
                 &m_command_buffer);
             m_command_buffer = VK_NULL_HANDLE;
         }
+    }
+
+    void frame_command_list::begin()
+    {
+        // initially reset command buffer
+        CHECK_VK_CALL(
+            m_vulkan_context.vkResetCommandBuffer(m_command_buffer, 0));
     }
 
     void frame_command_list::clear(const mge::rgba_color& c)
