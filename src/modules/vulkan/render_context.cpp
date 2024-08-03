@@ -53,8 +53,6 @@ namespace mge::vulkan {
             // called after construction, as otherwise the shared_from_this()
             // call would fail
             m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
-            // we are always in a frame, ready to draw
-            begin_frame(); // acquire first image
         } catch (...) {
             teardown();
             throw;
@@ -195,9 +193,9 @@ namespace mge::vulkan {
             }
         }
 
-        if (vkDestroyFence && m_fence) {
-            vkDestroyFence(m_device, m_fence, nullptr);
-            m_fence = VK_NULL_HANDLE;
+        if (vkDestroyFence && m_frame_finished_fence) {
+            vkDestroyFence(m_device, m_frame_finished_fence, nullptr);
+            m_frame_finished_fence = VK_NULL_HANDLE;
         }
 
         if (vkDestroyFramebuffer) {
@@ -626,7 +624,10 @@ namespace mge::vulkan {
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         // enable first draw begin to pass through
         fence_info.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-        CHECK_VK_CALL(vkCreateFence(m_device, &fence_info, nullptr, &m_fence));
+        CHECK_VK_CALL(vkCreateFence(m_device,
+                                    &fence_info,
+                                    nullptr,
+                                    &m_frame_finished_fence));
     }
 
     void render_context::create_semaphores()
@@ -644,25 +645,6 @@ namespace mge::vulkan {
                                         &m_render_finished_semaphore));
     }
 
-    void render_context::begin_frame()
-    {
-        CHECK_VK_CALL(vkWaitForFences(m_device,
-                                      1,
-                                      &m_fence,
-                                      VK_TRUE,
-                                      std::numeric_limits<uint64_t>::max()));
-
-        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_fence));
-        // TODO: use a sensible timeout
-        CHECK_VK_CALL(
-            vkAcquireNextImageKHR(m_device,
-                                  m_swap_chain_khr,
-                                  std::numeric_limits<uint64_t>::max(),
-                                  m_image_available_semaphore,
-                                  VK_NULL_HANDLE,
-                                  &m_current_image_index));
-    }
-
     void render_context::tmp_create_command_buffer()
     {
         VkCommandBufferAllocateInfo alloc_info = {};
@@ -674,13 +656,78 @@ namespace mge::vulkan {
         CHECK_VK_CALL(vkAllocateCommandBuffers(m_device,
                                                &alloc_info,
                                                &m_tmp_command_buffer));
+
+        CHECK_VK_CALL(vkResetCommandBuffer(m_tmp_command_buffer, 0));
     }
 
-    void render_context::tmp_draw_all() {}
+    void render_context::tmp_draw_all()
+    {
+        // wait for finish of last frame
+        CHECK_VK_CALL(vkWaitForFences(m_device,
+                                      1,
+                                      &m_frame_finished_fence,
+                                      VK_TRUE,
+                                      std::numeric_limits<uint64_t>::max()));
+        // acquire next swap chain image
+        CHECK_VK_CALL(
+            vkAcquireNextImageKHR(m_device,
+                                  m_swap_chain_khr,
+                                  std::numeric_limits<uint64_t>::max(),
+                                  m_image_available_semaphore,
+                                  VK_NULL_HANDLE,
+                                  &m_current_image_index));
+
+        // begin command buffer recording
+        VkCommandBufferBeginInfo begin_info = {};
+        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        begin_info.flags = 0;
+        begin_info.pInheritanceInfo = nullptr;
+
+        CHECK_VK_CALL(vkBeginCommandBuffer(m_tmp_command_buffer, &begin_info));
+
+        VkRenderPassBeginInfo render_pass_info{};
+        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        render_pass_info.renderPass = m_render_pass;
+        render_pass_info.framebuffer =
+            m_swap_chain_framebuffers[m_current_image_index];
+
+        render_pass_info.renderArea.offset = {0, 0};
+        render_pass_info.renderArea.extent = m_extent;
+
+        VkClearValue clear_color = {{{0.0f, 0.0f, 1.0f, 1.0f}}};
+        render_pass_info.clearValueCount = 1;
+        render_pass_info.pClearValues = &clear_color;
+
+        vkCmdBeginRenderPass(m_tmp_command_buffer,
+                             &render_pass_info,
+                             VK_SUBPASS_CONTENTS_INLINE);
+
+        VkViewport viewport{};
+        viewport.x = 0.0f;
+        viewport.y = 0.0f;
+        viewport.width = static_cast<float>(m_extent.width);
+        viewport.height = static_cast<float>(m_extent.height);
+        viewport.minDepth = 0.0f;
+        viewport.maxDepth = 1.0f;
+        vkCmdSetViewport(m_tmp_command_buffer, 0, 1, &viewport);
+
+        VkRect2D scissor{};
+        scissor.offset = {0, 0};
+        scissor.extent = m_extent;
+        vkCmdSetScissor(m_tmp_command_buffer, 0, 1, &scissor);
+
+        // pipeline
+        // draw
+
+        vkCmdEndRenderPass(m_tmp_command_buffer);
+        CHECK_VK_CALL(vkEndCommandBuffer(m_tmp_command_buffer));
+    }
 
     void render_context::present()
     {
         tmp_draw_all();
+#if 0
+        
         // MGE_DEBUG_TRACE(VULKAN) << "Present";
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -691,6 +738,7 @@ namespace mge::vulkan {
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
         // MGE_DEBUG_TRACE(VULKAN) << "Presented, starting next image";
+#endif
     }
 
 } // namespace mge::vulkan

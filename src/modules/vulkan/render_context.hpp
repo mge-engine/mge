@@ -55,7 +55,6 @@ namespace mge::vulkan {
             return m_used_present_mode;
         }
 
-        void begin_frame();
         void present();
 
         void     init_swap_chain();
@@ -100,7 +99,7 @@ namespace mge::vulkan {
         VkCommandPool  m_graphics_command_pool{VK_NULL_HANDLE};
         VkSemaphore    m_image_available_semaphore{VK_NULL_HANDLE};
         VkSemaphore    m_render_finished_semaphore{VK_NULL_HANDLE};
-        VkFence        m_fence{VK_NULL_HANDLE};
+        VkFence        m_frame_finished_fence{VK_NULL_HANDLE};
         uint32_t       m_current_image_index{0};
 
         VkSurfaceFormatKHR              m_used_surface_format;
