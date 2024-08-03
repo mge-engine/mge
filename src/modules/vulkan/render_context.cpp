@@ -641,16 +641,17 @@ namespace mge::vulkan {
 
     void render_context::begin_frame()
     {
+#if 0
         // MGE_DEBUG_TRACE(VULKAN) << "Begin frame, wait for previous frame";
 // wait for previous frame to finish
 // TODO: use a sensible timeout
-#if 0
+
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
                                       &m_fence,
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
-#endif
+
         CHECK_VK_CALL(vkResetFences(m_device, 1, &m_fence));
         // MGE_DEBUG_TRACE(VULKAN) << "Acquire next image";
         // acquire next image
@@ -664,6 +665,7 @@ namespace mge::vulkan {
                                   &m_current_image_index));
         // MGE_DEBUG_TRACE(VULKAN) << "Image acquired:" <<
         // m_current_image_index;
+#endif
     }
 
     void render_context::present()
@@ -671,8 +673,8 @@ namespace mge::vulkan {
         // MGE_DEBUG_TRACE(VULKAN) << "Present";
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-        present_info.waitSemaphoreCount = 1;
-        present_info.pWaitSemaphores = &m_render_finished_semaphore;
+        present_info.waitSemaphoreCount = 0;
+        present_info.pWaitSemaphores = nullptr; // &m_render_finished_semaphore;
         present_info.swapchainCount = 1;
         present_info.pSwapchains = &m_swap_chain_khr;
         present_info.pImageIndices = &m_current_image_index;
