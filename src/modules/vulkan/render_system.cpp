@@ -20,12 +20,12 @@
 namespace mge {
     MGE_USE_TRACE(VULKAN);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
-        bool, vulkan, debug, "Enable Vulkan debug mode", false);
+        bool, vulkan, debug, "Enable Vulkan debug mode", true);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(bool,
                                       vulkan,
                                       stop_on_validation_error,
                                       "Stop on Vulkan validation errors",
-                                      false);
+                                      true);
 } // namespace mge
 
 namespace mge::vulkan {
@@ -125,6 +125,10 @@ namespace mge::vulkan {
         void*                                       userdata)
     {
         // TODO: more detailed debug message reporting
+        bool stop_on_error =
+            MGE_PARAMETER(vulkan, stop_on_validation_error).get();
+        bool is_error = false;
+
         switch (severity) {
         default:
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
@@ -138,10 +142,14 @@ namespace mge::vulkan {
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
             MGE_ERROR_TRACE(VULKAN) << data->pMessage;
+            is_error = true;
             break;
         }
-
-        return VK_FALSE; // TODO: check when call shall be aborted
+        if (is_error && stop_on_error) {
+            return VK_TRUE;
+        } else {
+            return VK_FALSE;
+        }
     }
 
     void render_system::create_instance()
