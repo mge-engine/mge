@@ -5,10 +5,12 @@
 #include "mge/core/mutex.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/thread.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "opengl.hpp"
 #include "opengl_info.hpp"
 #include "window.hpp"
+
 
 namespace mge {
 
@@ -34,6 +36,7 @@ namespace mge {
             mge::program_ref      create_program() override;
             mge::command_list_ref create_command_list() override;
             mge::texture_ref      create_texture(texture_type type) override;
+            mge::rectangle        default_scissor() const;
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const { return m_hdc; }
@@ -45,6 +48,7 @@ namespace mge {
             void init_gl3w();
             void collect_opengl_info();
 
+            mge::opengl::window*        m_window;
             HWND                        m_hwnd;
             HDC                         m_hdc;
             HGLRC                       m_primary_hglrc;

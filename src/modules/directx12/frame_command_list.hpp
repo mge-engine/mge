@@ -11,6 +11,9 @@ namespace mge::dx12 {
         frame_command_list(render_context& context, uint32_t backbuffer_index);
         ~frame_command_list();
 
+        void viewport(const mge::viewport& vp) override;
+        void scissor(const mge::rectangle& r) override;
+        void default_scissor() override;
         void clear(const mge::rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
         void execute() override;

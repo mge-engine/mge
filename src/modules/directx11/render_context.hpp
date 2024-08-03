@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
 
@@ -52,6 +53,8 @@ namespace mge::dx11 {
         }
 
         void setup_context(ID3D11DeviceContext& context);
+
+        mge::rectangle default_scissor() const;
 
     private:
         void create_swap_chain();

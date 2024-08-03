@@ -21,7 +21,8 @@ namespace mge {
 namespace mge::opengl {
 #ifdef MGE_OS_WINDOWS
     render_context::render_context(mge::opengl::window* context_window)
-        : m_hwnd(context_window->hwnd())
+        : m_window(context_window)
+        , m_hwnd(context_window->hwnd())
         , m_hdc(0)
         , m_primary_hglrc(0)
         , m_lock("opengl::render_context")
@@ -151,6 +152,11 @@ namespace mge::opengl {
     {
         mge::texture_ref result = std::make_shared<texture>(*this, type);
         return result;
+    }
+
+    mge::rectangle render_context::default_scissor() const
+    {
+        return mge::rectangle(m_window->position(), m_window->extent());
     }
 
 } // namespace mge::opengl

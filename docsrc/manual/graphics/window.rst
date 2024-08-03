@@ -2,9 +2,7 @@
 Window
 ******
 
-To present something on a screen, a window has to be
-created. The window can of course occupy the whole
-screen.
+A window is an area of the screen that is used to display graphics output. 
 
 .. doxygenclass:: mge::window
     :members:

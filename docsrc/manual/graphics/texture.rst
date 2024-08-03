@@ -8,7 +8,7 @@ visual appearance of objects and help to simulate various materials, for example
 wood or stone.
 
 Textures are typically initialized from image files, but can be also generated
-by rendering to a texture.
+by rendering to a texture or generating procedural textures.
 
 When textures are applied to a model or surface, texture coordinates are used
 to map the texture onto the surface. This process is known as texture mapping.

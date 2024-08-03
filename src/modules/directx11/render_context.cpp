@@ -166,4 +166,9 @@ namespace mge::dx11 {
         return result;
     }
 
+    mge::rectangle render_context::default_scissor() const
+    {
+        return mge::rectangle(m_window.position(), m_window.extent());
+    }
+
 } // namespace mge::dx11

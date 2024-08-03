@@ -14,6 +14,10 @@ namespace mge::dx11 {
         command_list(render_context& context);
         ~command_list();
 
+        void viewport(const mge::viewport& vp) override;
+        void scissor(const rectangle& rect) override;
+        void default_scissor() override;
+
         void clear(const rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
         void execute() override;

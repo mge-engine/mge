@@ -43,6 +43,37 @@ namespace mge::dx11 {
         }
     }
 
+    void command_list::viewport(const mge::viewport& vp)
+    {
+        start_recording();
+        D3D11_VIEWPORT dx11_vp = {
+            .TopLeftX = vp.x,
+            .TopLeftY = vp.y - vp.height,
+            .Width = vp.width,
+            .Height = vp.height,
+            .MinDepth = vp.min_depth,
+            .MaxDepth = vp.max_depth,
+        };
+        m_deferred_context->RSSetViewports(1, &dx11_vp);
+    }
+
+    void command_list::scissor(const rectangle& rect)
+    {
+        start_recording();
+        D3D11_RECT dx11_rect = {
+            .left = static_cast<LONG>(rect.left),
+            .top = static_cast<LONG>(rect.top),
+            .right = static_cast<LONG>(rect.right),
+            .bottom = static_cast<LONG>(rect.bottom),
+        };
+        m_deferred_context->RSSetScissorRects(1, &dx11_rect);
+    }
+
+    void command_list::default_scissor()
+    {
+        scissor(m_dx11_context.default_scissor());
+    }
+
     void command_list::clear(const rgba_color& c)
     {
         start_recording();

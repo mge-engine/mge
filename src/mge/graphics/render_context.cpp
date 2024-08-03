@@ -27,6 +27,21 @@ namespace mge {
 
             ~delegating_frame_command_list() {}
 
+            void viewport(const mge::viewport& vp) override
+            {
+                m_command_list->viewport(vp);
+            }
+
+            void scissor(const rectangle& rect) override
+            {
+                m_command_list->scissor(rect);
+            }
+
+            void default_scissor() override
+            {
+                m_command_list->default_scissor();
+            }
+
             void clear(const rgba_color& c) override
             {
                 m_command_list->clear(c);

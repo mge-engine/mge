@@ -8,6 +8,8 @@
 #include "mge/graphics/draw_command.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/viewport.hpp"
+
 
 namespace mge {
 
@@ -36,15 +38,21 @@ namespace mge {
         virtual ~command_list();
 
         /**
+         * @brief Set viewport.
+         * @param vp viewport
+         */
+        virtual void viewport(const mge::viewport& vp) = 0;
+
+        /**
          * @brief Set scissor rectangle.
          * @param rect scissor rectangle
          */
-        virtual void scissor(const rectangle& rect);
+        virtual void scissor(const rectangle& rect) = 0;
 
         /**
          * Set default scissor for the render context.
          */
-        virtual void default_scissor();
+        virtual void default_scissor() = 0;
 
         /**
          * @brief Returns whether this command list is native.
