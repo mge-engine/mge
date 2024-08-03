@@ -39,6 +39,8 @@ namespace mge::vulkan {
             create_framebuffers();
             create_fence();
             create_semaphores();
+
+            tmp_create_command_buffer();
         } catch (...) {
             teardown();
             throw;
@@ -268,9 +270,10 @@ namespace mge::vulkan {
         void* result = original;
         auto  ptr = getDeviceProc(device, name);
         if (ptr) {
-            MGE_DEBUG_TRACE(VULKAN)
-                << "Replace " << name << ": " << (void*)(original) << " by "
-                << (void*)ptr;
+            // Too much output
+            // MGE_DEBUG_TRACE(VULKAN)
+            //    << "Replace " << name << ": " << (void*)(original) << " by "
+            //    << (void*)ptr;
             result = ptr;
         }
         return result;
@@ -536,7 +539,7 @@ namespace mge::vulkan {
         // TODO: multisampling in vulkan
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
         // don't care about content of the image at beginning
-        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
         // store content of the image for later
         color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         // nothing needed for stencil
@@ -643,11 +646,6 @@ namespace mge::vulkan {
 
     void render_context::begin_frame()
     {
-#if 0
-        // MGE_DEBUG_TRACE(VULKAN) << "Begin frame, wait for previous frame";
-// wait for previous frame to finish
-// TODO: use a sensible timeout
-
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
                                       &m_fence,
@@ -655,8 +653,6 @@ namespace mge::vulkan {
                                       std::numeric_limits<uint64_t>::max()));
 
         CHECK_VK_CALL(vkResetFences(m_device, 1, &m_fence));
-        // MGE_DEBUG_TRACE(VULKAN) << "Acquire next image";
-        // acquire next image
         // TODO: use a sensible timeout
         CHECK_VK_CALL(
             vkAcquireNextImageKHR(m_device,
@@ -665,13 +661,26 @@ namespace mge::vulkan {
                                   m_image_available_semaphore,
                                   VK_NULL_HANDLE,
                                   &m_current_image_index));
-        // MGE_DEBUG_TRACE(VULKAN) << "Image acquired:" <<
-        // m_current_image_index;
-#endif
     }
+
+    void render_context::tmp_create_command_buffer()
+    {
+        VkCommandBufferAllocateInfo alloc_info = {};
+        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        alloc_info.commandPool = m_graphics_command_pool;
+        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        alloc_info.commandBufferCount = 1;
+
+        CHECK_VK_CALL(vkAllocateCommandBuffers(m_device,
+                                               &alloc_info,
+                                               &m_tmp_command_buffer));
+    }
+
+    void render_context::tmp_draw_all() {}
 
     void render_context::present()
     {
+        tmp_draw_all();
         // MGE_DEBUG_TRACE(VULKAN) << "Present";
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -682,7 +691,6 @@ namespace mge::vulkan {
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
         // MGE_DEBUG_TRACE(VULKAN) << "Presented, starting next image";
-        begin_frame();
     }
 
 } // namespace mge::vulkan

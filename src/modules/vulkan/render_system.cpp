@@ -254,8 +254,9 @@ namespace mge::vulkan {
             MGE_THROW(vulkan::error)
                 << "Cannot resolve instance function: " << name;
         }
-        MGE_DEBUG_TRACE(VULKAN)
-            << "Resolve instance proc: " << name << ": " << (void*)ptr;
+        // Too much output
+        // MGE_DEBUG_TRACE(VULKAN)
+        //     << "Resolve instance proc: " << name << ": " << (void*)ptr;
         return ptr;
     }
 

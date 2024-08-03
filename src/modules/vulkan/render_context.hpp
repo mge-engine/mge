@@ -87,6 +87,9 @@ namespace mge::vulkan {
         void resolve_device_functions();
         void clear_functions();
 
+        void tmp_create_command_buffer();
+        void tmp_draw_all();
+
         render_system& m_render_system;
         window&        m_window;
         VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
@@ -110,5 +113,7 @@ namespace mge::vulkan {
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
+
+        VkCommandBuffer m_tmp_command_buffer;
     };
 } // namespace mge::vulkan
