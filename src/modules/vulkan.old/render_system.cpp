@@ -140,7 +140,7 @@ namespace mge::vulkan {
                               const char*               name)
     {
         auto ptr = getInstanceProc(instance, name);
-        MGE_DEBUG_TRACE(VULKAN) << "Resolve " << name << ": " << (void*)ptr;
+        // MGE_DEBUG_TRACE(VULKAN) << "Resolve " << name << ": " << (void*)ptr;
         return ptr;
     }
 
