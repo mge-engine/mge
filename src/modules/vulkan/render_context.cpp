@@ -9,6 +9,7 @@
 #include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
+#include "vertex_buffer.hpp"
 #include "window.hpp"
 
 #include "mge/core/trace.hpp"
@@ -71,7 +72,8 @@ namespace mge::vulkan {
     mge::vertex_buffer_ref render_context::create_vertex_buffer(
         const vertex_layout& layout, size_t data_size, void* data)
     {
-        mge::vertex_buffer_ref result;
+        mge::vertex_buffer_ref result =
+            std::make_shared<vertex_buffer>(*this, layout, data_size, data);
         return result;
     }
 

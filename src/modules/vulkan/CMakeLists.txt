@@ -31,6 +31,8 @@ SET(mge_vulkan_module_SOURCES
     vulkan_memory_allocator.cpp
     frame_command_list.cpp
     program.cpp
+    vertex_buffer.cpp
+    index_buffer.cpp
 )
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES
