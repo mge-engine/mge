@@ -95,9 +95,19 @@ namespace mge::vulkan {
         return result;
     }
 
+    void render_context::update_current_image()
+    {
+        if (m_current_image_index == std::numeric_limits<uint32_t>::max()) {
+            wait_for_frame_finished();
+            acquire_next_image();
+        }
+    }
+
     mge::frame_command_list_ref
     render_context::create_current_frame_command_list()
     {
+        update_current_image();
+
         auto result =
             std::make_shared<frame_command_list>(*this, m_current_image_index);
         return result;
@@ -660,7 +670,7 @@ namespace mge::vulkan {
         CHECK_VK_CALL(vkResetCommandBuffer(m_tmp_command_buffer, 0));
     }
 
-    void render_context::tmp_draw_all()
+    void render_context::wait_for_frame_finished()
     {
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
@@ -668,6 +678,12 @@ namespace mge::vulkan {
                                       &m_frame_finished_fence,
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
+        // reset fence
+        CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finished_fence));
+    }
+
+    void render_context::acquire_next_image()
+    {
         // acquire next swap chain image
         CHECK_VK_CALL(
             vkAcquireNextImageKHR(m_device,
@@ -676,6 +692,14 @@ namespace mge::vulkan {
                                   m_image_available_semaphore,
                                   VK_NULL_HANDLE,
                                   &m_current_image_index));
+    }
+
+    void render_context::tmp_draw_all()
+    {
+        wait_for_frame_finished();
+        acquire_next_image();
+
+        CHECK_VK_CALL(vkResetCommandBuffer(m_tmp_command_buffer, 0));
 
         // begin command buffer recording
         VkCommandBufferBeginInfo begin_info = {};
@@ -721,11 +745,42 @@ namespace mge::vulkan {
 
         vkCmdEndRenderPass(m_tmp_command_buffer);
         CHECK_VK_CALL(vkEndCommandBuffer(m_tmp_command_buffer));
+
+        VkSubmitInfo submit_info{};
+        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        VkSemaphore wait_semaphores[] = {m_image_available_semaphore};
+        VkSemaphore signal_semaphores[] = {m_render_finished_semaphore};
+        VkPipelineStageFlags wait_stages[] = {
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        submit_info.waitSemaphoreCount = 1;
+        submit_info.pWaitSemaphores = wait_semaphores;
+        submit_info.pWaitDstStageMask = wait_stages;
+        submit_info.signalSemaphoreCount = 1;
+        submit_info.pSignalSemaphores = signal_semaphores;
+        submit_info.commandBufferCount = 1;
+        submit_info.pCommandBuffers = &m_tmp_command_buffer;
+
+        CHECK_VK_CALL(
+            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+
+        VkPresentInfoKHR present_info = {};
+        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        present_info.waitSemaphoreCount = 1;
+        present_info.pWaitSemaphores = signal_semaphores;
+        present_info.swapchainCount = 1;
+        present_info.pSwapchains = &m_swap_chain_khr;
+        present_info.pImageIndices = &m_current_image_index;
+        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
     }
 
     void render_context::present()
     {
         tmp_draw_all();
+
+        if (m_current_image_index == std::numeric_limits<uint32_t>::max()) {
+            MGE_THROW(error) << "No current image index";
+        }
+
 #if 0
         
         // MGE_DEBUG_TRACE(VULKAN) << "Present";

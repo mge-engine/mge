@@ -86,6 +86,10 @@ namespace mge::vulkan {
         void resolve_device_functions();
         void clear_functions();
 
+        void update_current_image();
+        void wait_for_frame_finished();
+        void acquire_next_image();
+
         void tmp_create_command_buffer();
         void tmp_draw_all();
 
@@ -100,7 +104,7 @@ namespace mge::vulkan {
         VkSemaphore    m_image_available_semaphore{VK_NULL_HANDLE};
         VkSemaphore    m_render_finished_semaphore{VK_NULL_HANDLE};
         VkFence        m_frame_finished_fence{VK_NULL_HANDLE};
-        uint32_t       m_current_image_index{0};
+        uint32_t m_current_image_index{std::numeric_limits<uint32_t>::max()};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
