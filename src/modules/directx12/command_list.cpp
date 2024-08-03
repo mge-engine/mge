@@ -48,4 +48,13 @@ namespace mge::dx12 {
 
     void command_list::finish() { return; }
 
+    void command_list::scissor(const mge::rectangle& rect) { m_scissor = rect; }
+
+    void command_list::viewport(const mge::viewport& vp) { m_viewport = vp; }
+
+    void command_list::default_scissor()
+    {
+        m_scissor = m_dx12_context.default_scissor();
+    }
+
 } // namespace mge::dx12

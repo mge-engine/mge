@@ -8,16 +8,17 @@
 #include <variant>
 
 namespace mge::opengl {
+    class render_context;
 
     class command_list : public mge::command_list
     {
     public:
-        command_list(render_context& ctx)
-            : mge::command_list(ctx, false)
-        {}
-
+        command_list(render_context& ctx);
         ~command_list();
 
+        void viewport(const mge::viewport& vp) override;
+        void scissor(const mge::rectangle& rect) override;
+        void default_scissor() override;
         void clear(const rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
 
@@ -39,11 +40,25 @@ namespace mge::opengl {
             GLsizei element_count;
         };
 
-        using command =
-            std::variant<std::monostate, clear_command, draw_command>;
+        struct scissor_command
+        {
+            mge::rectangle scissor;
+        };
+
+        struct viewport_command
+        {
+            mge::viewport viewport;
+        };
+
+        using command = std::variant<std::monostate,
+                                     clear_command,
+                                     draw_command,
+                                     scissor_command,
+                                     viewport_command>;
 
         using command_vector = std::vector<command>;
 
+        render_context&              m_opengl_context;
         command_vector               m_commands;
         mge::small_vector<GLuint, 3> m_all_vaos;
     };

@@ -4,9 +4,11 @@
 #pragma once
 #include "dx12.hpp"
 #include "mge/config.hpp"
+#include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
+
 
 namespace mge::dx12 {
     class window;
@@ -66,6 +68,7 @@ namespace mge::dx12 {
 
         const D3D12_VIEWPORT& viewport() const { return m_viewport; }
         const D3D12_RECT&     scissor_rect() const { return m_scissor_rect; }
+        mge::rectangle        default_scissor() const;
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
 
         void wait_for_command_queue();

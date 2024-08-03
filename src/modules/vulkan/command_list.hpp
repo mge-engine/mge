@@ -17,6 +17,10 @@ namespace mge::vulkan {
         command_list(render_context& context);
         ~command_list();
 
+        void viewport(const mge::viewport& vp) override {}
+        void scissor(const mge::rectangle& rect) override {}
+        void default_scissor() override {}
+
         void clear(const mge::rgba_color& color) override;
         void draw(const mge::draw_command& command) override;
         void finish() override;

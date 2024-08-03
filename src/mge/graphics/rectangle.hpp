@@ -25,6 +25,13 @@ namespace mge {
     public:
         rectangle() {}
 
+        rectangle(const point& top_left_, const extent& size_)
+            : left(top_left_.x)
+            , top(top_left_.y)
+            , right(top_left_.x + size_.width)
+            , bottom(top_left_.y + size_.height)
+        {}
+
         rectangle(uint32_t left_,
                   uint32_t top_,
                   uint32_t right_,

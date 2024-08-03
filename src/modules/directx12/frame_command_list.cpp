@@ -37,8 +37,8 @@ namespace mge::dx12 {
                  .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
         }; // namespace mge::dx12
         m_command_list->ResourceBarrier(1, &barrier);
-        m_command_list->RSSetViewports(1, &m_dx12_context.viewport());
-        m_command_list->RSSetScissorRects(1, &m_dx12_context.scissor_rect());
+        // m_command_list->RSSetViewports(1, &m_dx12_context.viewport());
+        // m_command_list->RSSetScissorRects(1, &m_dx12_context.scissor_rect());
         auto rtv_handle = m_dx12_context.rtv_handle(backbuffer_index);
         m_command_list->OMSetRenderTargets(1, &rtv_handle, FALSE, nullptr);
 
@@ -74,6 +74,31 @@ namespace mge::dx12 {
     frame_command_list::~frame_command_list()
     {
         m_dx12_context.release_command_allocator(m_command_allocator);
+    }
+
+    void frame_command_list::scissor(const mge::rectangle& r)
+    {
+        D3D12_RECT rect = {.left = static_cast<LONG>(r.left),
+                           .top = static_cast<LONG>(r.top),
+                           .right = static_cast<LONG>(r.right),
+                           .bottom = static_cast<LONG>(r.bottom)};
+        m_command_list->RSSetScissorRects(1, &rect);
+    }
+
+    void frame_command_list::viewport(const mge::viewport& vp)
+    {
+        D3D12_VIEWPORT viewport = {.TopLeftX = vp.x,
+                                   .TopLeftY = vp.y - vp.height,
+                                   .Width = vp.width,
+                                   .Height = vp.height,
+                                   .MinDepth = vp.min_depth,
+                                   .MaxDepth = vp.max_depth};
+        m_command_list->RSSetViewports(1, &viewport);
+    }
+
+    void frame_command_list::default_scissor()
+    {
+        m_command_list->RSSetScissorRects(1, &m_dx12_context.scissor_rect());
     }
 
     void frame_command_list::clear(const mge::rgba_color& c)

@@ -8,11 +8,33 @@
 #include "mge/graphics/data_type.hpp"
 #include "opengl.hpp"
 #include "program.hpp"
+#include "render_context.hpp"
 #include "vertex_buffer.hpp"
 
 namespace mge::opengl {
 
+    command_list::command_list(render_context& ctx)
+        : mge::command_list(ctx, false)
+        , m_opengl_context(ctx)
+    {}
+
     command_list::~command_list() { destroy(); }
+
+    void command_list::viewport(const mge::viewport& vp)
+    {
+        m_commands.emplace_back(viewport_command{vp});
+    }
+
+    void command_list::scissor(const mge::rectangle& scissor)
+    {
+        m_commands.emplace_back(scissor_command{scissor});
+    }
+
+    void command_list::default_scissor()
+    {
+        m_commands.emplace_back(
+            scissor_command{m_opengl_context.default_scissor()});
+    }
 
     void command_list::clear(const rgba_color& c)
     {
@@ -87,6 +109,23 @@ namespace mge::opengl {
                         CHECK_OPENGL_ERROR(glClearColor);
                         glClear(GL_COLOR_BUFFER_BIT);
                         CHECK_OPENGL_ERROR(glClear(GL_COLOR_BUFFER_BIT));
+                    } else if constexpr (std::is_same_v<T, scissor_command>) {
+                        glEnable(GL_SCISSOR_TEST);
+                        CHECK_OPENGL_ERROR(glEnable);
+                        glScissor(arg.scissor.bottom_left().x,
+                                  arg.scissor.bottom_left().y,
+                                  arg.scissor.width(),
+                                  arg.scissor.height());
+                        CHECK_OPENGL_ERROR(glScissor);
+                    } else if constexpr (std::is_same_v<T, viewport_command>) {
+                        glViewport(arg.viewport.lower_left().x,
+                                   arg.viewport.lower_left().y,
+                                   static_cast<GLsizei>(arg.viewport.width),
+                                   static_cast<GLsizei>(arg.viewport.height));
+                        CHECK_OPENGL_ERROR(glViewport);
+                        glDepthRange(arg.viewport.min_depth,
+                                     arg.viewport.max_depth);
+
                     } else if constexpr (std::is_same_v<T, draw_command>) {
                         glUseProgram(arg.program_name);
                         CHECK_OPENGL_ERROR(glUseProgram);

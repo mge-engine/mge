@@ -63,3 +63,5 @@ Index buffers are used to provide indices into vertex buffers.
 
 Constant Buffer
 ===============
+
+Constant buffers are used to provide constant data to shader programs.
