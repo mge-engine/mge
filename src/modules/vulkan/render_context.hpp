@@ -68,6 +68,15 @@ namespace mge::vulkan {
             return m_graphics_command_pool;
         }
 
+        VkRenderPass render_pass() const noexcept { return m_render_pass; }
+
+        VkFramebuffer framebuffer(uint32_t index) const
+        {
+            return m_swap_chain_framebuffers[index];
+        }
+
+        void execute_frame_command_buffer(VkCommandBuffer command_buffer);
+
     private:
         void create_surface();
         void create_device();
@@ -87,12 +96,28 @@ namespace mge::vulkan {
         void resolve_device_functions();
         void clear_functions();
 
-        void update_current_image();
         void wait_for_frame_finished();
         void acquire_next_image();
 
         void tmp_create_command_buffer();
         void tmp_draw_all();
+        void begin_draw();
+        void end_draw();
+        void begin_frame();
+        void initialize_drawing();
+
+        VkCommandBuffer current_primary_command_buffer() const
+        {
+            return m_primary_command_buffers[m_current_image_index];
+        }
+
+        enum class frame_state
+        {
+            BEFORE_DRAW,  // draw not started, need to wait for frame
+                          // available
+            DRAW,         // drawing in progress
+            DRAW_FINISHED // drawing finished, submit & present
+        };
 
         std::shared_ptr<render_system> m_render_system;
         window&                        m_window;
@@ -105,7 +130,8 @@ namespace mge::vulkan {
         VkSemaphore m_image_available_semaphore{VK_NULL_HANDLE};
         VkSemaphore m_render_finished_semaphore{VK_NULL_HANDLE};
         VkFence     m_frame_finished_fence{VK_NULL_HANDLE};
-        uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
+
+        uint32_t m_current_image_index{std::numeric_limits<uint32_t>::max()};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
@@ -118,6 +144,9 @@ namespace mge::vulkan {
         std::vector<VkImageView>        m_swap_chain_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
+        std::vector<VkCommandBuffer>    m_pending_command_buffers;
+        bool                            m_drawing_initialized{false};
+        frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
 
         VkCommandBuffer m_tmp_command_buffer;
     };
