@@ -40,7 +40,6 @@ namespace mge::vulkan {
             create_framebuffers();
             create_fence();
             create_semaphores();
-            tmp_create_command_buffer();
         } catch (...) {
             teardown();
             throw;
@@ -688,21 +687,6 @@ namespace mge::vulkan {
                                         &m_render_finished_semaphore));
     }
 
-    void render_context::tmp_create_command_buffer()
-    {
-        VkCommandBufferAllocateInfo alloc_info = {};
-        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        alloc_info.commandPool = m_graphics_command_pool;
-        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        alloc_info.commandBufferCount = 1;
-
-        CHECK_VK_CALL(vkAllocateCommandBuffers(m_device,
-                                               &alloc_info,
-                                               &m_tmp_command_buffer));
-
-        CHECK_VK_CALL(vkResetCommandBuffer(m_tmp_command_buffer, 0));
-    }
-
     void render_context::wait_for_frame_finished()
     {
         if (m_pending_command_buffers.size() >= 5) {
@@ -771,7 +755,7 @@ namespace mge::vulkan {
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS);
         m_current_frame_state = frame_state::DRAW;
-        MGE_DEBUG_TRACE(VULKAN) << "Begin draw";
+        // MGE_DEBUG_TRACE(VULKAN) << "Begin draw";
     }
 
     void
@@ -788,15 +772,15 @@ namespace mge::vulkan {
     void render_context::end_draw()
     {
         if (m_pending_command_buffers.size() > 0) {
-            MGE_DEBUG_TRACE(VULKAN)
-                << "Execute " << m_pending_command_buffers.size()
-                << " secondary command buffers";
+            // MGE_DEBUG_TRACE(VULKAN)
+            //    << "Execute " << m_pending_command_buffers.size()
+            //    << " secondary command buffers";
             vkCmdExecuteCommands(
                 current_primary_command_buffer(),
                 mge::checked_cast<uint32_t>(m_pending_command_buffers.size()),
                 m_pending_command_buffers.data());
         }
-        MGE_DEBUG_TRACE(VULKAN) << "End render pass";
+        //  MGE_DEBUG_TRACE(VULKAN) << "End render pass";
         vkCmdEndRenderPass(current_primary_command_buffer());
         CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
 
@@ -820,7 +804,7 @@ namespace mge::vulkan {
         m_current_frame_state = frame_state::DRAW_FINISHED;
         m_pending_command_buffers.clear();
     }
-
+#if 0
     void render_context::tmp_draw_all()
     {
         wait_for_frame_finished();
@@ -898,11 +882,97 @@ namespace mge::vulkan {
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
     }
+#endif
 
     void render_context::initialize_drawing()
     {
         // draw one frame to boot up the acquire/release cycle
-        tmp_draw_all();
+        wait_for_frame_finished();
+        acquire_next_image();
+
+        VkCommandBuffer             tmp_command_buffer;
+        VkCommandBufferAllocateInfo alloc_info = {};
+        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        alloc_info.commandPool = m_graphics_command_pool;
+        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        alloc_info.commandBufferCount = 1;
+
+        CHECK_VK_CALL(vkAllocateCommandBuffers(m_device,
+                                               &alloc_info,
+                                               &tmp_command_buffer));
+
+        CHECK_VK_CALL(vkResetCommandBuffer(tmp_command_buffer, 0));
+
+        // begin command buffer recording
+        VkCommandBufferBeginInfo begin_info = {};
+        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        begin_info.flags = 0;
+        begin_info.pInheritanceInfo = nullptr;
+        CHECK_VK_CALL(vkBeginCommandBuffer(tmp_command_buffer, &begin_info));
+
+        VkRenderPassBeginInfo render_pass_info{};
+        render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+        render_pass_info.renderPass = m_render_pass;
+        render_pass_info.framebuffer =
+            m_swap_chain_framebuffers[m_current_image_index];
+
+        render_pass_info.renderArea.offset = {0, 0};
+        render_pass_info.renderArea.extent = m_extent;
+
+        VkClearValue clear_color = {{{0.0f, 0.0f, 0.0f, 1.0f}}};
+        render_pass_info.clearValueCount = 1;
+        render_pass_info.pClearValues = &clear_color;
+
+        vkCmdBeginRenderPass(tmp_command_buffer,
+                             &render_pass_info,
+                             VK_SUBPASS_CONTENTS_INLINE);
+
+        VkViewport viewport{};
+        viewport.x = 0.0f;
+        viewport.y = 0.0f;
+        viewport.width = static_cast<float>(m_extent.width);
+        viewport.height = static_cast<float>(m_extent.height);
+        viewport.minDepth = 0.0f;
+        viewport.maxDepth = 1.0f;
+        vkCmdSetViewport(tmp_command_buffer, 0, 1, &viewport);
+
+        VkRect2D scissor{};
+        scissor.offset = {0, 0};
+        scissor.extent = m_extent;
+        vkCmdSetScissor(tmp_command_buffer, 0, 1, &scissor);
+
+        vkCmdEndRenderPass(tmp_command_buffer);
+        CHECK_VK_CALL(vkEndCommandBuffer(tmp_command_buffer));
+
+        VkSubmitInfo submit_info{};
+        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        VkSemaphore wait_semaphores[] = {m_image_available_semaphore};
+        VkSemaphore signal_semaphores[] = {m_render_finished_semaphore};
+        VkPipelineStageFlags wait_stages[] = {
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+        submit_info.waitSemaphoreCount = 1;
+        submit_info.pWaitSemaphores = wait_semaphores;
+        submit_info.pWaitDstStageMask = wait_stages;
+        submit_info.signalSemaphoreCount = 1;
+        submit_info.pSignalSemaphores = signal_semaphores;
+        submit_info.commandBufferCount = 1;
+        submit_info.pCommandBuffers = &tmp_command_buffer;
+
+        CHECK_VK_CALL(
+            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+
+        VkPresentInfoKHR present_info = {};
+        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        present_info.waitSemaphoreCount = 1;
+        present_info.pWaitSemaphores = signal_semaphores;
+        present_info.swapchainCount = 1;
+        present_info.pSwapchains = &m_swap_chain_khr;
+        present_info.pImageIndices = &m_current_image_index;
+        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
+
+        // schedule command buffer for gc
+        m_deleted_command_buffers.emplace_back(0, tmp_command_buffer);
+
         m_drawing_initialized = true;
     }
 

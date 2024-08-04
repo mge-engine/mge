@@ -77,7 +77,25 @@ namespace mge::vulkan {
         m_vulkan_context.vkCmdSetScissor(m_command_buffer, 0, 1, &vk_cp);
     }
 
-    void frame_command_list::clear(const mge::rgba_color& c) {}
+    void frame_command_list::clear(const mge::rgba_color& c)
+    {
+        VkClearValue clear_color = {};
+        clear_color.color = {{c.r, c.g, c.b, c.a}};
+        VkClearAttachment clear_attachment = {};
+        clear_attachment.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        clear_attachment.colorAttachment = 0;
+        clear_attachment.clearValue = clear_color;
+        VkClearRect clear_rect = {};
+        clear_rect.rect.offset = {0, 0};
+        clear_rect.rect.extent = m_vulkan_context.extent();
+        clear_rect.baseArrayLayer = 0;
+        clear_rect.layerCount = 1;
+        m_vulkan_context.vkCmdClearAttachments(m_command_buffer,
+                                               1,
+                                               &clear_attachment,
+                                               1,
+                                               &clear_rect);
+    }
 
     void frame_command_list::draw(const mge::draw_command& command)
     {

@@ -105,8 +105,7 @@ namespace mge::vulkan {
         void wait_for_frame_finished();
         void acquire_next_image();
 
-        void tmp_create_command_buffer();
-        void tmp_draw_all();
+        // void tmp_draw_all();
         void begin_draw();
         void end_draw();
         void begin_frame();
@@ -157,7 +156,5 @@ namespace mge::vulkan {
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
-
-        VkCommandBuffer m_tmp_command_buffer;
     };
 } // namespace mge::vulkan
