@@ -1,4 +1,8 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #pragma once
+#include "glslang.hpp"
 #include "mge/graphics/program.hpp"
 
 namespace mge::vulkan {
@@ -12,5 +16,8 @@ namespace mge::vulkan {
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(const shader_ref& shader) override;
+
+    private:
+        glslang_program_t* m_program;
     };
 } // namespace mge::vulkan

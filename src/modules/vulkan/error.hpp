@@ -42,7 +42,7 @@ namespace mge::vulkan {
 } // namespace mge::vulkan
 
 #define CHECK_VKRESULT(rc, function)                                           \
-    ::vulkan::error::check_vkresult(rc, __FILE__, __LINE__, #function)
+    ::mge::vulkan::error::check_vkresult(rc, __FILE__, __LINE__, #function)
 
 #define CHECK_VK_CALL(call) CHECK_VK_CALL2(call, __FILE__, __LINE__)
 
