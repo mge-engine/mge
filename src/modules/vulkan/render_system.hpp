@@ -9,7 +9,8 @@
 
 namespace mge::vulkan {
 
-    class render_system : public mge::render_system
+    class render_system : public mge::render_system,
+                          public std::enable_shared_from_this<render_system>
     {
     public:
         render_system();

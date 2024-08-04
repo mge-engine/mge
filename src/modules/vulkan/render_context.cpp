@@ -21,7 +21,7 @@ namespace mge::vulkan {
 
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
-        : m_render_system(render_system_)
+        : m_render_system(render_system_.shared_from_this())
         , m_window(window_)
     {
         try {
@@ -106,7 +106,7 @@ namespace mge::vulkan {
     mge::frame_command_list_ref
     render_context::create_current_frame_command_list()
     {
-        update_current_image();
+        // update_current_image();
 
         auto result =
             std::make_shared<frame_command_list>(*this, m_current_image_index);
@@ -123,7 +123,7 @@ namespace mge::vulkan {
     {
 #ifdef MGE_OS_WINDOWS
         MGE_DEBUG_TRACE(VULKAN) << "Create Vulkan surface (Win32)";
-        if (!m_render_system.vkCreateWin32SurfaceKHR) {
+        if (!m_render_system->vkCreateWin32SurfaceKHR) {
             MGE_THROW(error)
                 << "Cannot create surface: vkCreateWin32SurfaceKHR function "
                    "missing";
@@ -134,11 +134,11 @@ namespace mge::vulkan {
         create_info.hinstance = GetModuleHandle(nullptr);
         create_info.hwnd = m_window.hwnd();
         create_info.flags = 0; // must be 0, reserved
-        CHECK_VK_CALL(
-            m_render_system.vkCreateWin32SurfaceKHR(m_render_system.instance(),
-                                                    &create_info,
-                                                    nullptr,
-                                                    &m_surface));
+        CHECK_VK_CALL(m_render_system->vkCreateWin32SurfaceKHR(
+            m_render_system->instance(),
+            &create_info,
+            nullptr,
+            &m_surface));
 
 #else
 #    error Missing port
@@ -151,7 +151,7 @@ namespace mge::vulkan {
         VkDeviceQueueCreateInfo queue_create_info{};
         queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queue_create_info.queueFamilyIndex =
-            m_render_system.graphics_queue_index();
+            m_render_system->graphics_queue_index();
         queue_create_info.queueCount = 1;
         float queue_priority = 1.0f;
         queue_create_info.pQueuePriorities = &queue_priority;
@@ -168,7 +168,7 @@ namespace mge::vulkan {
         device_extensions.push_back(VK_KHR_SWAPCHAIN_EXTENSION_NAME);
 
         std::vector<const char*> device_layers;
-        if (m_render_system.debug()) {
+        if (m_render_system->debug()) {
             device_layers.push_back("VK_LAYER_KHRONOS_validation");
         }
         device_create_info.ppEnabledLayerNames = device_layers.data();
@@ -179,10 +179,10 @@ namespace mge::vulkan {
         device_create_info.ppEnabledExtensionNames = device_extensions.data();
 
         CHECK_VK_CALL(
-            m_render_system.vkCreateDevice(m_render_system.physical_device(),
-                                           &device_create_info,
-                                           nullptr,
-                                           &m_device));
+            m_render_system->vkCreateDevice(m_render_system->physical_device(),
+                                            &device_create_info,
+                                            nullptr,
+                                            &m_device));
         MGE_DEBUG_TRACE(VULKAN) << "Created logical device: " << m_device;
     }
 
@@ -262,10 +262,10 @@ namespace mge::vulkan {
         clear_functions();
 
         if (m_surface != VK_NULL_HANDLE &&
-            m_render_system.vkDestroySurfaceKHR) {
-            m_render_system.vkDestroySurfaceKHR(m_render_system.instance(),
-                                                m_surface,
-                                                nullptr);
+            m_render_system->vkDestroySurfaceKHR) {
+            m_render_system->vkDestroySurfaceKHR(m_render_system->instance(),
+                                                 m_surface,
+                                                 nullptr);
             m_surface = VK_NULL_HANDLE;
         }
     }
@@ -296,8 +296,8 @@ namespace mge::vulkan {
 #endif
 #define RESOLVE(X)                                                             \
     this->X = reinterpret_cast<decltype(this->X)>(                             \
-        resolve_device_function((void*)m_render_system.X,                      \
-                                m_render_system.vkGetDeviceProcAddr,           \
+        resolve_device_function((void*)m_render_system->X,                     \
+                                m_render_system->vkGetDeviceProcAddr,          \
                                 m_device,                                      \
                                 #X));
 
@@ -350,7 +350,7 @@ namespace mge::vulkan {
     {
         MGE_DEBUG_TRACE(VULKAN) << "Get device queue";
         vkGetDeviceQueue(m_device,
-                         m_render_system.graphics_queue_index(),
+                         m_render_system->graphics_queue_index(),
                          0,
                          &m_queue);
     }
@@ -358,15 +358,16 @@ namespace mge::vulkan {
     void render_context::fetch_surface_capabilities()
     {
         MGE_DEBUG_TRACE(VULKAN) << "Fetch surface capabilities";
-        CHECK_VK_CALL(m_render_system.vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
-            m_render_system.physical_device(),
-            m_surface,
-            &m_surface_capabilities));
+        CHECK_VK_CALL(
+            m_render_system->vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
+                m_render_system->physical_device(),
+                m_surface,
+                &m_surface_capabilities));
         enumerate(
             [this](uint32_t* count, VkSurfaceFormatKHR* data) {
                 CHECK_VK_CALL(
-                    m_render_system.vkGetPhysicalDeviceSurfaceFormatsKHR(
-                        m_render_system.physical_device(),
+                    m_render_system->vkGetPhysicalDeviceSurfaceFormatsKHR(
+                        m_render_system->physical_device(),
                         m_surface,
                         count,
                         data));
@@ -397,8 +398,8 @@ namespace mge::vulkan {
         enumerate(
             [this](uint32_t* count, VkPresentModeKHR* data) {
                 CHECK_VK_CALL(
-                    m_render_system.vkGetPhysicalDeviceSurfacePresentModesKHR(
-                        m_render_system.physical_device(),
+                    m_render_system->vkGetPhysicalDeviceSurfacePresentModesKHR(
+                        m_render_system->physical_device(),
                         m_surface,
                         count,
                         data));
@@ -460,11 +461,11 @@ namespace mge::vulkan {
         create_info.imageExtent = m_extent;
         create_info.imageArrayLayers = 1;
         create_info.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-        uint32_t queue_indices[] = {m_render_system.graphics_queue_index(),
-                                    m_render_system.present_queue_index()};
+        uint32_t queue_indices[] = {m_render_system->graphics_queue_index(),
+                                    m_render_system->present_queue_index()};
 
-        if (m_render_system.graphics_queue_index() !=
-            m_render_system.present_queue_index()) {
+        if (m_render_system->graphics_queue_index() !=
+            m_render_system->present_queue_index()) {
             create_info.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
             create_info.queueFamilyIndexCount = 2;
             create_info.pQueueFamilyIndices = queue_indices;
@@ -525,13 +526,13 @@ namespace mge::vulkan {
         MGE_DEBUG_TRACE(VULKAN) << "Create allocator";
         VmaVulkanFunctions vk_functions = {};
         vk_functions.vkGetInstanceProcAddr =
-            m_render_system.library().vkGetInstanceProcAddr;
-        vk_functions.vkGetDeviceProcAddr = m_render_system.vkGetDeviceProcAddr;
+            m_render_system->library().vkGetInstanceProcAddr;
+        vk_functions.vkGetDeviceProcAddr = m_render_system->vkGetDeviceProcAddr;
 
         VmaAllocatorCreateInfo allocator_info = {};
-        allocator_info.physicalDevice = m_render_system.physical_device();
+        allocator_info.physicalDevice = m_render_system->physical_device();
         allocator_info.device = m_device;
-        allocator_info.instance = m_render_system.instance();
+        allocator_info.instance = m_render_system->instance();
         allocator_info.flags = VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
         allocator_info.pVulkanFunctions = &vk_functions;
         allocator_info.vulkanApiVersion = VK_API_VERSION_1_3;
@@ -594,7 +595,7 @@ namespace mge::vulkan {
         MGE_DEBUG_TRACE(VULKAN) << "Create graphics command pool";
         VkCommandPoolCreateInfo pool_info = {};
         pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-        pool_info.queueFamilyIndex = m_render_system.graphics_queue_index();
+        pool_info.queueFamilyIndex = m_render_system->graphics_queue_index();
         pool_info.flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT |
                           VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
@@ -776,10 +777,6 @@ namespace mge::vulkan {
     void render_context::present()
     {
         tmp_draw_all();
-
-        if (m_current_image_index == std::numeric_limits<uint32_t>::max()) {
-            MGE_THROW(error) << "No current image index";
-        }
 
 #if 0
         

@@ -93,18 +93,18 @@ namespace mge::vulkan {
         void tmp_create_command_buffer();
         void tmp_draw_all();
 
-        render_system& m_render_system;
-        window&        m_window;
-        VkSurfaceKHR   m_surface{VK_NULL_HANDLE};
-        VkDevice       m_device{VK_NULL_HANDLE};
-        VmaAllocator   m_allocator{VK_NULL_HANDLE};
-        VkQueue        m_queue{VK_NULL_HANDLE};
-        VkRenderPass   m_render_pass{VK_NULL_HANDLE};
-        VkCommandPool  m_graphics_command_pool{VK_NULL_HANDLE};
-        VkSemaphore    m_image_available_semaphore{VK_NULL_HANDLE};
-        VkSemaphore    m_render_finished_semaphore{VK_NULL_HANDLE};
-        VkFence        m_frame_finished_fence{VK_NULL_HANDLE};
-        uint32_t m_current_image_index{std::numeric_limits<uint32_t>::max()};
+        std::shared_ptr<render_system> m_render_system;
+        window&                        m_window;
+        VkSurfaceKHR                   m_surface{VK_NULL_HANDLE};
+        VkDevice                       m_device{VK_NULL_HANDLE};
+        VmaAllocator                   m_allocator{VK_NULL_HANDLE};
+        VkQueue                        m_queue{VK_NULL_HANDLE};
+        VkRenderPass                   m_render_pass{VK_NULL_HANDLE};
+        VkCommandPool                  m_graphics_command_pool{VK_NULL_HANDLE};
+        VkSemaphore m_image_available_semaphore{VK_NULL_HANDLE};
+        VkSemaphore m_render_finished_semaphore{VK_NULL_HANDLE};
+        VkFence     m_frame_finished_fence{VK_NULL_HANDLE};
+        uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
 
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
