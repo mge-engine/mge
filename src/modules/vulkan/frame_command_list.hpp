@@ -9,12 +9,14 @@ namespace mge::vulkan {
     class frame_command_list : public mge::frame_command_list
     {
     public:
-        frame_command_list(render_context& context, uint32_t backbuffer_index);
+        frame_command_list(render_context& context,
+                           uint64_t        frame,
+                           uint32_t        backbuffer_index);
         virtual ~frame_command_list();
 
-        void viewport(const mge::viewport& vp) override {}
-        void scissor(const mge::rectangle& r) override {}
-        void default_scissor() override {}
+        void viewport(const mge::viewport& vp) override;
+        void scissor(const mge::rectangle& r) override;
+        void default_scissor() override;
 
         void clear(const mge::rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
@@ -25,6 +27,7 @@ namespace mge::vulkan {
         void begin();
 
         render_context& m_vulkan_context;
+        uint64_t        m_frame{0};
         VkCommandBuffer m_command_buffer{VK_NULL_HANDLE};
     };
 

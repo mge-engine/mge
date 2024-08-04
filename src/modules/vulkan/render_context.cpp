@@ -110,7 +110,9 @@ namespace mge::vulkan {
                 << m_current_frame_state;
         }
         auto result =
-            std::make_shared<frame_command_list>(*this, m_current_image_index);
+            std::make_shared<frame_command_list>(*this,
+                                                 m_frame,
+                                                 m_current_image_index);
         return result;
     }
 
@@ -703,12 +705,16 @@ namespace mge::vulkan {
 
     void render_context::wait_for_frame_finished()
     {
+        if (m_pending_command_buffers.size() >= 5) {
+            command_buffer_gc();
+        };
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
                                       &m_frame_finished_fence,
                                       VK_TRUE,
                                       std::numeric_limits<uint64_t>::max()));
+        ++m_frame;
         // reset fence
         CHECK_VK_CALL(vkResetFences(m_device, 1, &m_frame_finished_fence));
     }
@@ -765,6 +771,7 @@ namespace mge::vulkan {
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_SECONDARY_COMMAND_BUFFERS);
         m_current_frame_state = frame_state::DRAW;
+        MGE_DEBUG_TRACE(VULKAN) << "Begin draw";
     }
 
     void
@@ -780,15 +787,18 @@ namespace mge::vulkan {
 
     void render_context::end_draw()
     {
-        vkCmdEndRenderPass(current_primary_command_buffer());
-        CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
-
         if (m_pending_command_buffers.size() > 0) {
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Execute " << m_pending_command_buffers.size()
+                << " secondary command buffers";
             vkCmdExecuteCommands(
                 current_primary_command_buffer(),
                 mge::checked_cast<uint32_t>(m_pending_command_buffers.size()),
                 m_pending_command_buffers.data());
         }
+        MGE_DEBUG_TRACE(VULKAN) << "End render pass";
+        vkCmdEndRenderPass(current_primary_command_buffer());
+        CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
 
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -807,7 +817,6 @@ namespace mge::vulkan {
 
         CHECK_VK_CALL(
             vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
-
         m_current_frame_state = frame_state::DRAW_FINISHED;
         m_pending_command_buffers.clear();
     }
@@ -921,6 +930,37 @@ namespace mge::vulkan {
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
 
         m_current_frame_state = frame_state::BEFORE_DRAW;
+    }
+
+    void render_context::discard_command_buffer(uint64_t        frame,
+                                                VkCommandBuffer command_buffer)
+    {
+        if (frame < m_frame) {
+            destroy_command_buffer(command_buffer);
+        } else {
+            m_deleted_command_buffers.emplace_back(frame, command_buffer);
+        }
+    }
+
+    void render_context::destroy_command_buffer(VkCommandBuffer command_buffer)
+    {
+        vkFreeCommandBuffers(m_device,
+                             m_graphics_command_pool,
+                             1,
+                             &command_buffer);
+    }
+
+    void render_context::command_buffer_gc()
+    {
+        std::vector<std::pair<uint64_t, VkCommandBuffer>> new_deleted;
+        for (auto& cb : m_deleted_command_buffers) {
+            if (cb.first < m_frame) {
+                destroy_command_buffer(cb.second);
+            } else {
+                new_deleted.push_back(cb);
+            }
+        }
+        m_deleted_command_buffers.swap(new_deleted);
     }
 
 } // namespace mge::vulkan

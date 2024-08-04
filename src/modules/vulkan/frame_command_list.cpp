@@ -4,9 +4,11 @@
 
 namespace mge::vulkan {
     frame_command_list::frame_command_list(render_context& context,
+                                           uint64_t        frame,
                                            uint32_t        backbuffer_index)
         : mge::frame_command_list(context, backbuffer_index, true)
         , m_vulkan_context(context)
+        , m_frame(frame)
     {
         VkCommandBufferAllocateInfo alloc_info = {};
         alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -23,14 +25,8 @@ namespace mge::vulkan {
 
     frame_command_list::~frame_command_list()
     {
-        if (m_command_buffer && m_vulkan_context.device() &&
-            m_vulkan_context.graphics_command_pool() &&
-            m_vulkan_context.vkFreeCommandBuffers) {
-            m_vulkan_context.vkFreeCommandBuffers(
-                m_vulkan_context.device(),
-                m_vulkan_context.graphics_command_pool(),
-                1,
-                &m_command_buffer);
+        if (m_command_buffer) {
+            m_vulkan_context.discard_command_buffer(m_frame, m_command_buffer);
             m_command_buffer = VK_NULL_HANDLE;
         }
     }
@@ -54,6 +50,31 @@ namespace mge::vulkan {
         begin_info.pInheritanceInfo = &inheritance_info;
         CHECK_VK_CALL(m_vulkan_context.vkBeginCommandBuffer(m_command_buffer,
                                                             &begin_info));
+    }
+
+    void frame_command_list::viewport(const mge::viewport& vp)
+    {
+        const VkViewport* p_vk_cp =
+            reinterpret_cast<const VkViewport*>(vp.data());
+        m_vulkan_context.vkCmdSetViewport(m_command_buffer, 0, 1, p_vk_cp);
+    }
+
+    void frame_command_list::scissor(const mge::rectangle& r)
+    {
+        VkRect2D vk_cp = {};
+        vk_cp.offset.x = static_cast<int32_t>(r.left);
+        vk_cp.offset.y = static_cast<int32_t>(r.top);
+        vk_cp.extent.width = static_cast<int32_t>(r.width());
+        vk_cp.extent.height = static_cast<int32_t>(r.height());
+        m_vulkan_context.vkCmdSetScissor(m_command_buffer, 0, 1, &vk_cp);
+    }
+
+    void frame_command_list::default_scissor()
+    {
+        VkRect2D vk_cp = {};
+        vk_cp.offset = {0, 0};
+        vk_cp.extent = m_vulkan_context.extent();
+        m_vulkan_context.vkCmdSetScissor(m_command_buffer, 0, 1, &vk_cp);
     }
 
     void frame_command_list::clear(const mge::rgba_color& c) {}

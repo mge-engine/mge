@@ -75,7 +75,13 @@ namespace mge::vulkan {
             return m_swap_chain_framebuffers[index];
         }
 
+        VkExtent2D extent() const noexcept { return m_extent; }
+
         void execute_frame_command_buffer(VkCommandBuffer command_buffer);
+        void discard_command_buffer(uint64_t        frame,
+                                    VkCommandBuffer command_buffer);
+        void destroy_command_buffer(VkCommandBuffer command_buffer);
+        void command_buffer_gc();
 
     private:
         void create_surface();
@@ -131,8 +137,6 @@ namespace mge::vulkan {
         VkSemaphore m_render_finished_semaphore{VK_NULL_HANDLE};
         VkFence     m_frame_finished_fence{VK_NULL_HANDLE};
 
-        uint32_t m_current_image_index{std::numeric_limits<uint32_t>::max()};
-
         VkSurfaceFormatKHR              m_used_surface_format;
         VkPresentModeKHR                m_used_present_mode;
         VkSurfaceCapabilitiesKHR        m_surface_capabilities;
@@ -145,7 +149,13 @@ namespace mge::vulkan {
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
         std::vector<VkCommandBuffer>    m_pending_command_buffers;
-        bool                            m_drawing_initialized{false};
+        std::atomic<uint64_t>           m_frame{0};
+
+        std::vector<std::pair<uint64_t, VkCommandBuffer>>
+            m_deleted_command_buffers;
+
+        uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
+        bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
 
         VkCommandBuffer m_tmp_command_buffer;
