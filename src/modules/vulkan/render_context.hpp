@@ -79,6 +79,7 @@ namespace mge::vulkan {
         void create_image_views();
         void create_render_pass();
         void create_graphics_command_pool();
+        void create_primary_command_buffers();
         void create_framebuffers();
         void create_fence();
         void create_semaphores();
@@ -116,6 +117,7 @@ namespace mge::vulkan {
         std::vector<VkImage>            m_swap_chain_images;
         std::vector<VkImageView>        m_swap_chain_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
+        std::vector<VkCommandBuffer>    m_primary_command_buffers;
 
         VkCommandBuffer m_tmp_command_buffer;
     };

@@ -36,11 +36,13 @@ namespace mge::vulkan {
             create_image_views();
             create_render_pass();
             create_graphics_command_pool();
+            create_primary_command_buffers();
             create_framebuffers();
             create_fence();
             create_semaphores();
-
             tmp_create_command_buffer();
+
+            acquire_next_image();
         } catch (...) {
             teardown();
             throw;
@@ -215,6 +217,15 @@ namespace mge::vulkan {
                 }
             }
             m_swap_chain_framebuffers.clear();
+        }
+
+        if (vkFreeCommandBuffers && m_primary_command_buffers.size() > 0) {
+            vkFreeCommandBuffers(
+                m_device,
+                m_graphics_command_pool,
+                mge::checked_cast<uint32_t>(m_primary_command_buffers.size()),
+                m_primary_command_buffers.data());
+            m_primary_command_buffers.clear();
         }
 
         if (vkDestroyCommandPool && m_graphics_command_pool) {
@@ -603,6 +614,26 @@ namespace mge::vulkan {
                                           &pool_info,
                                           nullptr,
                                           &m_graphics_command_pool));
+    }
+
+    void render_context::create_primary_command_buffers()
+    {
+        MGE_DEBUG_TRACE(VULKAN) << "Create " << m_swap_chain_images.size()
+                                << " primary command buffers";
+        VkCommandBufferAllocateInfo alloc_info = {};
+        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        alloc_info.commandPool = m_graphics_command_pool;
+        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        alloc_info.commandBufferCount =
+            mge::checked_cast<uint32_t>(m_swap_chain_images.size());
+        m_primary_command_buffers.resize(m_swap_chain_images.size());
+        CHECK_VK_CALL(
+            vkAllocateCommandBuffers(m_device,
+                                     &alloc_info,
+                                     m_primary_command_buffers.data()));
+        for (auto& cb : m_primary_command_buffers) {
+            CHECK_VK_CALL(vkResetCommandBuffer(cb, 0));
+        }
     }
 
     void render_context::create_framebuffers()

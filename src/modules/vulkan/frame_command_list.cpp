@@ -42,10 +42,7 @@ namespace mge::vulkan {
             m_vulkan_context.vkResetCommandBuffer(m_command_buffer, 0));
     }
 
-    void frame_command_list::clear(const mge::rgba_color& c)
-    {
-        // MGE_THROW_NOT_IMPLEMENTED;
-    }
+    void frame_command_list::clear(const mge::rgba_color& c) {}
 
     void frame_command_list::draw(const mge::draw_command& command)
     {
