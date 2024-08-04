@@ -80,12 +80,14 @@ namespace mge {
 
         /**
          * Lower left corner as point.
+         * @param window_height height of window of viewport
          * @return lower left corner
          */
-        mge::point lower_left() const
+        mge::point lower_left(uint32_t window_height) const
         {
             return mge::point(static_cast<uint32_t>(x),
-                              static_cast<uint32_t>(y));
+                              window_height -
+                                  static_cast<uint32_t>(y + height));
         }
 
         float x{0.0f};

@@ -159,4 +159,9 @@ namespace mge::opengl {
         return mge::rectangle(m_window->position(), m_window->extent());
     }
 
+    uint32_t render_context::window_height() const
+    {
+        return m_window->extent().height;
+    }
+
 } // namespace mge::opengl

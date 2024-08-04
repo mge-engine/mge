@@ -118,8 +118,10 @@ namespace mge::opengl {
                                   arg.scissor.height());
                         CHECK_OPENGL_ERROR(glScissor);
                     } else if constexpr (std::is_same_v<T, viewport_command>) {
-                        glViewport(arg.viewport.lower_left().x,
-                                   arg.viewport.lower_left().y,
+                        auto ll = arg.viewport.lower_left(
+                            m_opengl_context.window_height());
+                        glViewport(ll.x,
+                                   ll.y,
                                    static_cast<GLsizei>(arg.viewport.width),
                                    static_cast<GLsizei>(arg.viewport.height));
                         CHECK_OPENGL_ERROR(glViewport);
