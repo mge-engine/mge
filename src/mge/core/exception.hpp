@@ -401,15 +401,6 @@ namespace mge {
                 std::format_to(ctx.out(),
                                "Exception type: unknown mge::exception\n");
             }
-            auto message = ex()->get<mge::exception::message>();
-            if (message) {
-                std::format_to(ctx.out(),
-                               "Exception message: {}\n",
-                               message.value());
-            } else {
-                std::format_to(ctx.out(), "No exception message");
-            }
-
             auto file = ex()->get<mge::exception::source_file>();
             auto line = ex()->get<mge::exception::source_line>();
             if (file && line) {
@@ -439,7 +430,6 @@ namespace mge {
                                "Exception stack: {}\n",
                                stack.value());
             }
-
             std::format_to(ctx.out(), "Exception message: {}\n", ex()->what());
 
             auto cause = ex()->get<mge::exception::cause>();
