@@ -9,6 +9,7 @@
 #include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
 
+
 namespace mge::dx12 {
     class window;
     class render_system;
@@ -85,8 +86,6 @@ namespace mge::dx12 {
         void create_descriptor_heap();
         void update_render_target_views(
             const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
-        void create_primary_command_lists();
-
         void reset_direct_command_list();
         //  void begin_draw();
         //  void end_draw();
@@ -113,16 +112,11 @@ namespace mge::dx12 {
 
         mge::com_ptr<ID3D12CommandAllocator>    m_command_list_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_direct_command_list;
-
-        std::vector<mge::com_ptr<ID3D12CommandAllocator>>
-            m_primary_command_allocators;
-        std::vector<mge::com_ptr<ID3D12GraphicsCommandList>>
-                       m_primary_command_lists;
-        D3D12_VIEWPORT m_viewport;
-        D3D12_RECT     m_scissor_rect;
-        uint32_t       m_rtv_descriptor_size;
-        DWORD          m_callback_cookie;
-        bool           m_drawing;
+        D3D12_VIEWPORT                          m_viewport;
+        D3D12_RECT                              m_scissor_rect;
+        uint32_t                                m_rtv_descriptor_size;
+        DWORD                                   m_callback_cookie;
+        bool                                    m_drawing;
     };
 
     inline render_context& dx12_context(mge::render_context& context)
