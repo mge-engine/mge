@@ -69,6 +69,7 @@ namespace mge::dx12 {
                                    D3D12_FENCE_FLAG_NONE,
                                    IID_PPV_ARGS(&m_command_queue_fence));
         CHECK_HRESULT(rc, ID3D12Device, CreateFence);
+        MGE_DEBUG_TRACE(DX12) << "Create command queue fence event";
         m_command_queue_fence_event =
             CreateEvent(nullptr, FALSE, FALSE, nullptr);
         if (m_command_queue_fence_event == 0) {
@@ -94,6 +95,33 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
         m_direct_command_list->Close();
         reset_direct_command_list();
+    }
+
+    void render_context::create_primary_command_lists()
+    {
+        m_primary_command_allocators.resize(buffer_count);
+        m_primary_command_lists.resize(buffer_count);
+        for (size_t i = 0; i < buffer_count; ++i) {
+            MGE_DEBUG_TRACE(DX12) << "Create primary command list #" << i;
+            auto rc = m_device->CreateCommandAllocator(
+                D3D12_COMMAND_LIST_TYPE_DIRECT,
+                IID_PPV_ARGS(&m_primary_command_allocators[i]));
+            CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
+            rc = m_device->CreateCommandList(
+                0,
+                D3D12_COMMAND_LIST_TYPE_DIRECT,
+                m_primary_command_allocators[i].Get(),
+                nullptr,
+                IID_PPV_ARGS(&(m_primary_command_lists[i])));
+            CHECK_HRESULT(rc, ID3D12Device, CreateCommandList);
+            m_primary_command_lists[i]->Close();
+            rc = m_primary_command_allocators[i].Reset();
+            CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+            rc = m_primary_command_lists[i]->Reset(
+                m_primary_command_allocators[i].Get(),
+                nullptr);
+            CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+        }
     }
 
     void render_context::reset_direct_command_list()
@@ -324,6 +352,8 @@ namespace mge::dx12 {
         create_descriptor_heap();
         MGE_DEBUG_TRACE(DX12) << "Update render target views";
         update_render_target_views(swap_chain);
+        MGE_DEBUG_TRACE(DX12) << "Create prinary command lists";
+        create_primary_command_lists();
     }
 
     render_context::~render_context()
