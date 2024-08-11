@@ -33,6 +33,7 @@ SET(mge_vulkan_module_SOURCES
     program.cpp
     vertex_buffer.cpp
     index_buffer.cpp
+    command_list.cpp
 )
 IF(WIN32)
     SET(mge_vulkan_platform_SOURCES

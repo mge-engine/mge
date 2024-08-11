@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
+#include "command_list.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
 #include "frame_command_list.hpp"
@@ -90,7 +91,8 @@ namespace mge::vulkan {
 
     mge::command_list_ref render_context::create_command_list()
     {
-        mge::command_list_ref result;
+        mge::command_list_ref result =
+            std::make_shared<mge::vulkan::command_list>(*this);
         return result;
     }
 
