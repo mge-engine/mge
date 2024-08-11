@@ -15,7 +15,6 @@
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
 
-
 MGE_DEFINE_TRACE(TRIANGLE);
 
 namespace mge {
@@ -50,12 +49,11 @@ namespace mge {
 
         void draw(uint64_t cycle, double delta)
         {
-            if (!m_initialized) {
-                m_clear_commands->execute();
-            } else {
+            if (m_initialized) {
                 auto draw_commands = m_window->render_context()
                                          .create_current_frame_command_list();
                 draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                draw_commands->default_scissor();
                 draw_commands->draw(
                     mge::draw_command(m_program,
                                       m_vertices,
