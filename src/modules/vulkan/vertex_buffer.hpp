@@ -16,12 +16,22 @@ namespace mge::vulkan {
 
         ~vertex_buffer();
 
+        VkVertexInputBindingDescription    binding_description() const;
+        VkVertexInputAttributeDescription* attribute_description() const
+        {
+            return m_attribute_desciptions.data();
+        }
+
     protected:
         virtual void* on_map() override;
         virtual void  on_unmap() override;
 
     private:
-        render_context& m_vulkan_context;
+        void fill_attribute_descriptions();
+
+        render_context&                                m_vulkan_context;
+        VkVertexInputBindingDescription                m_binding_description;
+        std::vector<VkVertexInputAttributeDescription> m_attribute_descriptions;
     };
 
 } // namespace mge::vulkan
