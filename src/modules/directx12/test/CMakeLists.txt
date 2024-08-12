@@ -12,6 +12,6 @@ SET(DX12_TEST_SOURCES
 MGE_TEST(
     TARGET      test_dx12
     SOURCES     ${DX12_TEST_SOURCES}
-    NOMAIN NEEDSDISPLAY
+    NOMAIN 
     LIBRARIES   mgecore mgegraphics mgeapplication mgeinput
 )

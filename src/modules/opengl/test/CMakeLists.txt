@@ -13,6 +13,6 @@ SET(OPENGL_TEST_SOURCES
 MGE_TEST(
     TARGET      test_opengl
     SOURCES     ${OPENGL_TEST_SOURCES}
-    NOMAIN NEEDSDISPLAY
+    NOMAIN 
     LIBRARIES   mgecore mgegraphics mgeapplication mgeinput benchmark
 )
