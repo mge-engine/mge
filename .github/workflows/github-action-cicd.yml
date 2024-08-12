@@ -103,7 +103,7 @@ jobs:
                 $env:CXX = "cl.exe"
                 $env:VULKAN_SDK = "C:\VulkanSDK\1.3.280.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
-                cmake --build . --target test
+                ctest --verbose
     build-documentation-windows-latest:
         name: Build documentation
         runs-on: windows-latest
