@@ -1,4 +1,5 @@
 #include "vertex_buffer.hpp"
+#include "error.hpp"
 #include "render_context.hpp"
 
 namespace mge::vulkan {
@@ -10,6 +11,7 @@ namespace mge::vulkan {
         : mge::vertex_buffer(context, layout, data_size, initial_data)
         , m_vulkan_context(context)
     {
+        create_buffer();
         m_binding_description.binding = 0;
         m_binding_description.stride = static_cast<uint32_t>(layout.stride());
         m_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
@@ -49,7 +51,33 @@ namespace mge::vulkan {
         }
     }
 
-    vertex_buffer::~vertex_buffer() {}
+    void vertex_buffer::create_buffer()
+    {
+        VkBufferCreateInfo buffer_info{};
+        buffer_info.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        buffer_info.size = size();
+        buffer_info.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+        buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        CHECK_VK_CALL(m_vulkan_context.vkCreateBuffer(m_vulkan_context.device(),
+                                                      &buffer_info,
+                                                      nullptr,
+                                                      &m_buffer));
+
+        // VkMemoryRequirements memRequirements;
+        // vkGetBufferMemoryRequirements(device, vertexBuffer,
+        // &memRequirements);
+    }
+
+    vertex_buffer::~vertex_buffer()
+    {
+        if (m_buffer && m_vulkan_context.vkDestroyBuffer) {
+            m_vulkan_context.vkDestroyBuffer(m_vulkan_context.device(),
+                                             m_buffer,
+                                             nullptr);
+            m_buffer = VK_NULL_HANDLE;
+        }
+    }
 
     void* vertex_buffer::on_map() { return nullptr; }
 
