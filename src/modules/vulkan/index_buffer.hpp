@@ -21,7 +21,11 @@ namespace mge::vulkan {
         virtual void  on_unmap() override;
 
     private:
+        void create_buffer();
+
         render_context& m_vulkan_context;
+        VkBuffer        m_buffer{VK_NULL_HANDLE};
+        VmaAllocation   m_allocation{VK_NULL_HANDLE};
     };
 
 } // namespace mge::vulkan

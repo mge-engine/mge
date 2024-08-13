@@ -16,6 +16,13 @@ namespace mge::vulkan {
         m_binding_description.stride = static_cast<uint32_t>(layout.stride());
         m_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
         fill_attribute_descriptions();
+
+        // TODO: allocate mapped
+        if (initial_data) {
+            void* data = map();
+            memcpy(data, initial_data, data_size);
+            unmap();
+        }
     }
 
     static inline VkFormat vk_format(const mge::vertex_format& fmt)
@@ -59,28 +66,45 @@ namespace mge::vulkan {
         buffer_info.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
         buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-        CHECK_VK_CALL(m_vulkan_context.vkCreateBuffer(m_vulkan_context.device(),
-                                                      &buffer_info,
-                                                      nullptr,
-                                                      &m_buffer));
+        VmaAllocationCreateInfo alloc_info = {};
+        alloc_info.usage = VMA_MEMORY_USAGE_AUTO;
+        alloc_info.flags =
+            VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
 
-        // VkMemoryRequirements memRequirements;
-        // vkGetBufferMemoryRequirements(device, vertexBuffer,
-        // &memRequirements);
+        CHECK_VK_CALL(vmaCreateBuffer(m_vulkan_context.allocator(),
+                                      &buffer_info,
+                                      &alloc_info,
+                                      &m_buffer,
+                                      &m_allocation,
+                                      nullptr));
     }
 
     vertex_buffer::~vertex_buffer()
     {
-        if (m_buffer && m_vulkan_context.vkDestroyBuffer) {
-            m_vulkan_context.vkDestroyBuffer(m_vulkan_context.device(),
-                                             m_buffer,
-                                             nullptr);
+        if (m_buffer && m_allocation) {
+            vmaDestroyBuffer(m_vulkan_context.allocator(),
+                             m_buffer,
+                             m_allocation);
             m_buffer = VK_NULL_HANDLE;
+            m_allocation = VK_NULL_HANDLE;
         }
     }
 
-    void* vertex_buffer::on_map() { return nullptr; }
+    void* vertex_buffer::on_map()
+    {
+        void* data = nullptr;
+        CHECK_VK_CALL(
+            vmaMapMemory(m_vulkan_context.allocator(), m_allocation, &data));
+        return data;
+    }
 
-    void vertex_buffer::on_unmap() {}
+    void vertex_buffer::on_unmap()
+    {
+        CHECK_VK_CALL(vmaFlushAllocation(m_vulkan_context.allocator(),
+                                         m_allocation,
+                                         0,
+                                         VK_WHOLE_SIZE));
+        vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
+    }
 
 } // namespace mge::vulkan

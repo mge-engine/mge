@@ -30,9 +30,10 @@ namespace mge::vulkan {
         void create_buffer();
         void fill_attribute_descriptions();
 
-        render_context&                                m_vulkan_context;
-        VkBuffer                                       m_buffer{VK_NULL_HANDLE};
-        VkVertexInputBindingDescription                m_binding_description;
+        render_context&                 m_vulkan_context;
+        VkBuffer                        m_buffer{VK_NULL_HANDLE};
+        VmaAllocation                   m_allocation{VK_NULL_HANDLE};
+        VkVertexInputBindingDescription m_binding_description;
         std::vector<VkVertexInputAttributeDescription> m_attribute_descriptions;
     };
 

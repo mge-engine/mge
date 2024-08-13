@@ -57,7 +57,8 @@ namespace mge::vulkan {
 
         void present();
 
-        void     init_swap_chain();
+        void init_swap_chain();
+
         uint32_t current_image_index() const noexcept
         {
             return m_current_image_index;
@@ -76,6 +77,8 @@ namespace mge::vulkan {
         }
 
         VkExtent2D extent() const noexcept { return m_extent; }
+
+        VmaAllocator allocator() const noexcept { return m_allocator; }
 
         void execute_frame_command_buffer(VkCommandBuffer command_buffer);
         void discard_command_buffer(uint64_t        frame,
