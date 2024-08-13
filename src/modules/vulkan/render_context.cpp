@@ -6,6 +6,7 @@
 #include "enumerate.hpp"
 #include "error.hpp"
 #include "frame_command_list.hpp"
+#include "index_buffer.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
@@ -65,7 +66,8 @@ namespace mge::vulkan {
                                                               size_t data_size,
                                                               void*  data)
     {
-        mge::index_buffer_ref result;
+        mge::index_buffer_ref result =
+            std::make_shared<index_buffer>(*this, dt, data_size, data);
         return result;
     }
 
