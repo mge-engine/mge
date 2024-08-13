@@ -99,6 +99,19 @@ namespace mge::vulkan {
 
     void frame_command_list::draw(const mge::draw_command& command)
     {
+#if 0
+        vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &uniformBuffers[currentFrame].descriptorSet, 0, nullptr);
+		// Bind the rendering pipeline
+		// The pipeline (state object) contains all states of the rendering pipeline, binding it will set all the states specified at pipeline creation time
+		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
+		// Bind triangle vertex buffer (contains position and colors)
+		VkDeviceSize offsets[1]{ 0 };
+		vkCmdBindVertexBuffers(commandBuffer, 0, 1, &vertices.buffer, offsets);
+		// Bind triangle index buffer
+		vkCmdBindIndexBuffer(commandBuffer, indices.buffer, 0, VK_INDEX_TYPE_UINT32);
+		// Draw indexed triangle
+		vkCmdDrawIndexed(commandBuffer, indices.count, 1, 0, 0, 1);
+#endif
         // MGE_THROW_NOT_IMPLEMENTED;
     }
 
