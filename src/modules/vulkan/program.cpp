@@ -1,5 +1,6 @@
 #include "program.hpp"
 #include "render_context.hpp"
+#include "shader.hpp"
 
 namespace mge::vulkan {
     program::program(render_context& context)
@@ -10,5 +11,10 @@ namespace mge::vulkan {
 
     void program::on_link() {}
 
-    void program::on_set_shader(const shader_ref& shader) {}
+    void program::on_set_shader(const shader_ref& shader)
+    {
+        auto vulkan_shader =
+            std::dynamic_pointer_cast<mge::vulkan::shader>(shader);
+        m_shaders.push_back(vulkan_shader);
+    }
 } // namespace mge::vulkan

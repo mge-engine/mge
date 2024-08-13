@@ -1,8 +1,10 @@
 #pragma once
 #include "mge/graphics/program.hpp"
+#include "vulkan.hpp"
 
 namespace mge::vulkan {
     class render_context;
+    class shader;
     class program : public mge::program
     {
     public:
@@ -12,5 +14,7 @@ namespace mge::vulkan {
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(const shader_ref& shader) override;
+
+        std::vector<std::shared_ptr<mge::vulkan::shader>> m_shaders;
     };
 } // namespace mge::vulkan
