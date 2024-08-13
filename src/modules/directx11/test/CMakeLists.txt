@@ -14,6 +14,6 @@ SET(DX11_TEST_SOURCES
 MGE_TEST(
     TARGET      test_dx11
     SOURCES     ${DX11_TEST_SOURCES}
-    NOMAIN 
+    NOMAIN # NEEDSDISPLAY
     LIBRARIES   mgecore mgegraphics mgeapplication mgeinput benchmark
 )
