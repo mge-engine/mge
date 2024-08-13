@@ -19,15 +19,7 @@
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
                 "HEADLESS_ENVIRONMENT": "ON"
             }
-        },
-        {
-            "name": "ci-build-ui",
-            "binaryDir": "${sourceDir}/build",
-            "generator": "Ninja",
-            "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
-            }
         }
+
     ]
 }
