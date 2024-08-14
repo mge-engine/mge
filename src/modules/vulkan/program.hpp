@@ -10,12 +10,17 @@ namespace mge::vulkan {
     public:
         program(render_context& context);
         ~program();
+        const auto& shader_stage_create_infos() const
+        {
+            return m_shader_stage_create_infos;
+        }
 
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(const shader_ref& shader) override;
 
-        std::vector<VkPipelineShaderStageCreateInfo>      m_shader_stage_infos;
+        std::vector<VkPipelineShaderStageCreateInfo>
+            m_shader_stage_create_infos;
         std::vector<std::shared_ptr<mge::vulkan::shader>> m_shaders;
     };
 } // namespace mge::vulkan

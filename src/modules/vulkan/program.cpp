@@ -11,9 +11,10 @@ namespace mge::vulkan {
 
     void program::on_link()
     {
-        m_shader_stage_infos.clear();
+        m_shader_stage_create_infos.clear();
         for (const auto& shader : m_shaders) {
-            m_shader_stage_infos.push_back(shader->pipeline_stage_info());
+            m_shader_stage_create_infos.push_back(
+                shader->pipeline_stage_info());
         }
     }
 

@@ -100,8 +100,8 @@ namespace mge::vulkan {
 
     void frame_command_list::draw(const mge::draw_command& command)
     {
-        // mge::vulkan::program* draw_program =
-        //    static_cast<mge::vulkan::program*>(command.program().get());
+        mge::vulkan::program* draw_program =
+            static_cast<mge::vulkan::program*>(command.program().get());
 
         VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
                                            VK_DYNAMIC_STATE_SCISSOR};
@@ -157,6 +157,16 @@ namespace mge::vulkan {
         rasterization_state_create_info.depthBiasClamp = 0.0f;
         rasterization_state_create_info.depthBiasSlopeFactor = 0.0f;
 
+        VkPipelineMultisampleStateCreateInfo multisampling_create_info{};
+        multisampling_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+        multisampling_create_info.sampleShadingEnable = VK_FALSE;
+        multisampling_create_info.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+        multisampling_create_info.minSampleShading = 1.0f;
+        multisampling_create_info.pSampleMask = nullptr;
+        multisampling_create_info.alphaToCoverageEnable = VK_FALSE;
+        multisampling_create_info.alphaToOneEnable = VK_FALSE;
+
         // no depth stencil tests
         // VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info
         // =
@@ -206,6 +216,39 @@ namespace mge::vulkan {
             nullptr,
             &pipeline_layout));
 
+        VkGraphicsPipelineCreateInfo pipeline_create_info = {};
+        pipeline_create_info.sType =
+            VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+        pipeline_create_info.stageCount = static_cast<uint32_t>(
+            draw_program->shader_stage_create_infos().size());
+        pipeline_create_info.pStages =
+            draw_program->shader_stage_create_infos().data();
+        pipeline_create_info.pVertexInputState =
+            &vertex_input_state_create_info;
+        pipeline_create_info.pInputAssemblyState =
+            &input_assembly_state_create_info;
+        pipeline_create_info.pViewportState = &viewport_state_create_info;
+        pipeline_create_info.pRasterizationState =
+            &rasterization_state_create_info;
+        pipeline_create_info.pMultisampleState = &multisampling_create_info;
+        pipeline_create_info.pDepthStencilState = nullptr;
+        pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
+        pipeline_create_info.pDynamicState = &dynamic_state_create_info;
+        pipeline_create_info.layout = pipeline_layout;
+        pipeline_create_info.renderPass = m_vulkan_context.render_pass();
+        pipeline_create_info.subpass = 0;
+        pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;
+        pipeline_create_info.basePipelineIndex = -1;
+
+        VkPipeline pipeline{VK_NULL_HANDLE};
+        CHECK_VK_CALL(m_vulkan_context.vkCreateGraphicsPipelines(
+            m_vulkan_context.device(),
+            VK_NULL_HANDLE,
+            1,
+            &pipeline_create_info,
+            nullptr,
+            &pipeline));
+
 #if 0
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &uniformBuffers[currentFrame].descriptorSet, 0, nullptr);
 		// Bind the rendering pipeline
@@ -219,6 +262,10 @@ namespace mge::vulkan {
 		// Draw indexed triangle
 		vkCmdDrawIndexed(commandBuffer, indices.count, 1, 0, 0, 1);
 #endif
+        m_vulkan_context.vkDestroyPipeline(m_vulkan_context.device(),
+                                           pipeline,
+                                           nullptr);
+
         m_vulkan_context.vkDestroyPipelineLayout(m_vulkan_context.device(),
                                                  pipeline_layout,
                                                  nullptr);
