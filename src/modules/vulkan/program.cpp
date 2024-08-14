@@ -9,7 +9,13 @@ namespace mge::vulkan {
 
     program::~program() {}
 
-    void program::on_link() {}
+    void program::on_link()
+    {
+        m_shader_stage_infos.clear();
+        for (const auto& shader : m_shaders) {
+            m_shader_stage_infos.push_back(shader->pipeline_stage_info());
+        }
+    }
 
     void program::on_set_shader(const shader_ref& shader)
     {
