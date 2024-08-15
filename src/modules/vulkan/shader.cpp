@@ -171,13 +171,13 @@ namespace mge::vulkan {
                                                   nullptr,
                                                   &m_shader_module));
 
-        auto main_function = get_property("main_function", "main");
+        m_main_function = get_property("main_function", "main");
 
         m_pipeline_stage_info = {
             .sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
             .stage = vk_stage_flags(),
             .module = m_shader_module,
-            .pName = main_function.c_str()};
+            .pName = m_main_function.c_str()};
     }
 
     void shader::destroy_shader_module()

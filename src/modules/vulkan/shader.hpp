@@ -29,6 +29,7 @@ namespace mge::vulkan {
         render_context&                 m_vulkan_context;
         VkShaderModule                  m_shader_module;
         mge::buffer                     m_code;
+        std::string                     m_main_function;
         VkPipelineShaderStageCreateInfo m_pipeline_stage_info;
     };
 
