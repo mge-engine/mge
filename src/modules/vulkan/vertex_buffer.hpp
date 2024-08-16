@@ -16,10 +16,14 @@ namespace mge::vulkan {
 
         ~vertex_buffer();
 
-        VkVertexInputBindingDescription          binding_description() const;
-        const VkVertexInputAttributeDescription* attribute_description() const
+        const VkVertexInputBindingDescription& binding_description() const
         {
-            return m_attribute_descriptions.data();
+            return m_binding_description;
+        }
+
+        const auto& attribute_descriptions() const
+        {
+            return m_attribute_descriptions;
         }
 
     protected:

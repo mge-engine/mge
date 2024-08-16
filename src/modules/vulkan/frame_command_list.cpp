@@ -2,6 +2,7 @@
 #include "error.hpp"
 #include "program.hpp"
 #include "render_context.hpp"
+#include "vertex_buffer.hpp"
 
 namespace mge::vulkan {
     frame_command_list::frame_command_list(render_context& context,
@@ -102,7 +103,8 @@ namespace mge::vulkan {
     {
         mge::vulkan::program* draw_program =
             static_cast<mge::vulkan::program*>(command.program().get());
-
+        mge::vulkan::vertex_buffer* vertex_buffer =
+            static_cast<mge::vulkan::vertex_buffer*>(command.vertices().get());
         VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
                                            VK_DYNAMIC_STATE_SCISSOR};
 
@@ -116,8 +118,14 @@ namespace mge::vulkan {
             {};
         vertex_input_state_create_info.sType =
             VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertex_input_state_create_info.vertexBindingDescriptionCount = 0;
-        vertex_input_state_create_info.vertexAttributeDescriptionCount = 0;
+        vertex_input_state_create_info.vertexBindingDescriptionCount = 1;
+        vertex_input_state_create_info.pVertexBindingDescriptions =
+            &vertex_buffer->binding_description();
+        vertex_input_state_create_info.vertexAttributeDescriptionCount =
+            static_cast<uint32_t>(
+                vertex_buffer->attribute_descriptions().size());
+        vertex_input_state_create_info.pVertexAttributeDescriptions =
+            vertex_buffer->attribute_descriptions().data();
 
         VkPipelineInputAssemblyStateCreateInfo
             input_assembly_state_create_info = {};
