@@ -777,9 +777,9 @@ namespace mge::vulkan {
     void render_context::end_draw()
     {
         if (m_pending_command_buffers.size() > 0) {
-            // MGE_DEBUG_TRACE(VULKAN)
-            //    << "Execute " << m_pending_command_buffers.size()
-            //    << " secondary command buffers";
+            MGE_DEBUG_TRACE(VULKAN)
+                << "Execute " << m_pending_command_buffers.size()
+                << " secondary command buffers";
             vkCmdExecuteCommands(
                 current_primary_command_buffer(),
                 mge::checked_cast<uint32_t>(m_pending_command_buffers.size()),

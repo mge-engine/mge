@@ -10,4 +10,5 @@ TARGET_LINK_LIBRARIES(triangle
     mgegraphics
     mgeapplication
     mgeinput
-    mgegraphics)
+    mgegraphics
+    mgeasset)

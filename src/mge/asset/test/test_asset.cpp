@@ -42,3 +42,13 @@ TEST_F(test_asset, red_jpg_load)
     EXPECT_EQ(100, image->extent().width);
     EXPECT_EQ(100, image->extent().height);
 }
+
+TEST_F(test_asset, triangle_frag_spv)
+{
+    using namespace mge::literals;
+    mge::asset_ref a =
+        std::make_shared<mge::asset>("/shaders/triangle.frag.spv");
+    auto load_result = a->load();
+    EXPECT_STREQ(typeid(std::shared_ptr<mge::buffer>).name(),
+                 load_result.type().name());
+}

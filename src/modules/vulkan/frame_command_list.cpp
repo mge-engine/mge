@@ -82,6 +82,7 @@ namespace mge::vulkan {
 
     void frame_command_list::clear(const mge::rgba_color& c)
     {
+        /*
         VkClearValue clear_color = {};
         clear_color.color = {{c.r, c.g, c.b, c.a}};
         VkClearAttachment clear_attachment = {};
@@ -98,6 +99,7 @@ namespace mge::vulkan {
                                                &clear_attachment,
                                                1,
                                                &clear_rect);
+        */
     }
 
     void frame_command_list::draw(const mge::draw_command& command)

@@ -10,6 +10,7 @@ SET(mgeasset_sources
     asset_loader.cpp
     file_asset_access.cpp
     file_asset_source.cpp
+    application_octet_stream_loader.cpp
 )
 
 SET(mgeasset_headers
