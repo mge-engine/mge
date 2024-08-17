@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #include "mge/core/atexit.hpp"
 #include "mge/core/crash.hpp"
 #include "test/googletest.hpp"
