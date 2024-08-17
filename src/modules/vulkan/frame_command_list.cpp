@@ -261,6 +261,12 @@ namespace mge::vulkan {
             nullptr,
             &pipeline));
 
+        VkViewport vp = {0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
+        vp.width = static_cast<float>(m_vulkan_context.extent().width);
+        vp.height = static_cast<float>(m_vulkan_context.extent().height);
+
+        m_vulkan_context.vkCmdSetViewport(m_command_buffer, 0, 1, &vp);
+
         m_vulkan_context.vkCmdBindPipeline(m_command_buffer,
                                            VK_PIPELINE_BIND_POINT_GRAPHICS,
                                            pipeline);
