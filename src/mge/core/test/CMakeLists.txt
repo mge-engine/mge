@@ -55,5 +55,6 @@ MGE_TEST(
 MGE_TEST(
     TARGET      bench_core
     SOURCES     ${MGECORE_BENCH_SOURCES}
+    DISABLED
     LIBRARIES   mgecore benchmark
 )
