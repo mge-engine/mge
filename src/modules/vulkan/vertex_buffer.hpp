@@ -16,6 +16,8 @@ namespace mge::vulkan {
 
         ~vertex_buffer();
 
+        VkBuffer vk_buffer() const { return m_buffer; }
+
         const VkVertexInputBindingDescription& binding_description() const
         {
             return m_binding_description;

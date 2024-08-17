@@ -69,4 +69,19 @@ namespace mge::vulkan {
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
 
+    VkIndexType index_buffer::vk_index_type() const
+    {
+        switch (element_type()) {
+        case mge::data_type::INT16:
+        case mge::data_type::UINT16:
+            return VK_INDEX_TYPE_UINT16;
+        case mge::data_type::INT32:
+        case mge::data_type::UINT32:
+            return VK_INDEX_TYPE_UINT32;
+        default:
+            MGE_THROW(vulkan::error)
+                << "Unsupported index buffer element type " << element_type();
+        }
+    }
+
 } // namespace mge::vulkan

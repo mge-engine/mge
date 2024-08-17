@@ -16,6 +16,9 @@ namespace mge::vulkan {
 
         ~index_buffer();
 
+        VkBuffer    vk_buffer() const { return m_buffer; }
+        VkIndexType vk_index_type() const;
+
     protected:
         virtual void* on_map() override;
         virtual void  on_unmap() override;

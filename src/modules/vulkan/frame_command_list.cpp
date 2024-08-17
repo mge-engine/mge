@@ -1,5 +1,6 @@
 #include "frame_command_list.hpp"
 #include "error.hpp"
+#include "index_buffer.hpp"
 #include "program.hpp"
 #include "render_context.hpp"
 #include "vertex_buffer.hpp"
@@ -105,6 +106,9 @@ namespace mge::vulkan {
             static_cast<mge::vulkan::program*>(command.program().get());
         mge::vulkan::vertex_buffer* vertex_buffer =
             static_cast<mge::vulkan::vertex_buffer*>(command.vertices().get());
+        mge::vulkan::index_buffer* index_buffer =
+            static_cast<mge::vulkan::index_buffer*>(command.indices().get());
+
         VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
                                            VK_DYNAMIC_STATE_SCISSOR};
 
@@ -260,14 +264,31 @@ namespace mge::vulkan {
         m_vulkan_context.vkCmdBindPipeline(m_command_buffer,
                                            VK_PIPELINE_BIND_POINT_GRAPHICS,
                                            pipeline);
+        VkDeviceSize offsets[1]{0};
+        VkBuffer     buffers[1]{vertex_buffer->vk_buffer()};
+        m_vulkan_context.vkCmdBindVertexBuffers(m_command_buffer,
+                                                0,
+                                                1,
+                                                buffers,
+                                                offsets);
+        m_vulkan_context.vkCmdBindIndexBuffer(m_command_buffer,
+                                              index_buffer->vk_buffer(),
+                                              0,
+                                              index_buffer->vk_index_type());
+        m_vulkan_context.vkCmdDrawIndexed(
+            m_command_buffer,
+            static_cast<uint32_t>(index_buffer->element_count()),
+            1,
+            0,
+            0,
+            0);
 #if 0
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &uniformBuffers[currentFrame].descriptorSet, 0, nullptr);
 		// Bind the rendering pipeline
 		// The pipeline (state object) contains all states of the rendering pipeline, binding it will set all the states specified at pipeline creation time
 		
 		// Bind triangle vertex buffer (contains position and colors)
-		VkDeviceSize offsets[1]{ 0 };
-		vkCmdBindVertexBuffers(commandBuffer, 0, 1, &vertices.buffer, offsets);
+		
 		// Bind triangle index buffer
 		vkCmdBindIndexBuffer(commandBuffer, indices.buffer, 0, VK_INDEX_TYPE_UINT32);
 		// Draw indexed triangle
