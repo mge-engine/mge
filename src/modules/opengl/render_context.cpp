@@ -14,7 +14,6 @@
 #include "vertex_buffer.hpp"
 
 namespace mge {
-
     MGE_USE_TRACE(OPENGL);
 }
 

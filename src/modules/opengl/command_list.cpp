@@ -11,6 +11,10 @@
 #include "render_context.hpp"
 #include "vertex_buffer.hpp"
 
+namespace mge {
+    MGE_USE_TRACE(OPENGL);
+}
+
 namespace mge::opengl {
 
     command_list::command_list(render_context& ctx)
@@ -113,7 +117,8 @@ namespace mge::opengl {
                         glEnable(GL_SCISSOR_TEST);
                         CHECK_OPENGL_ERROR(glEnable);
                         glScissor(arg.scissor.bottom_left().x,
-                                  arg.scissor.bottom_left().y,
+                                  arg.scissor.bottom_left().y -
+                                      arg.scissor.height(),
                                   arg.scissor.width(),
                                   arg.scissor.height());
                         CHECK_OPENGL_ERROR(glScissor);
