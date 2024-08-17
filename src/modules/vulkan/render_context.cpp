@@ -693,8 +693,9 @@ namespace mge::vulkan {
 
     void render_context::wait_for_frame_finished()
     {
-        if (m_pending_command_buffers.size() >= 5) {
-            command_buffer_gc();
+        if (m_deleted_command_buffers.size() + m_deleted_pipelines.size() >=
+            5) {
+            gc();
         };
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
@@ -1016,6 +1017,20 @@ namespace mge::vulkan {
         }
     }
 
+    void render_context::discard_pipeline(uint64_t frame, VkPipeline pipeline)
+    {
+        if (frame < m_frame) {
+            destroy_pipeline(pipeline);
+        } else {
+            m_deleted_pipelines.emplace_back(frame, pipeline);
+        }
+    }
+
+    void render_context::destroy_pipeline(VkPipeline pipeline)
+    {
+        vkDestroyPipeline(m_device, pipeline, nullptr);
+    }
+
     void render_context::destroy_command_buffer(VkCommandBuffer command_buffer)
     {
         vkFreeCommandBuffers(m_device,
@@ -1024,7 +1039,7 @@ namespace mge::vulkan {
                              &command_buffer);
     }
 
-    void render_context::command_buffer_gc()
+    void render_context::gc()
     {
         std::vector<std::pair<uint64_t, VkCommandBuffer>> new_deleted;
         for (auto& cb : m_deleted_command_buffers) {

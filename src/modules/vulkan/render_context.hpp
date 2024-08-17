@@ -84,7 +84,11 @@ namespace mge::vulkan {
         void discard_command_buffer(uint64_t        frame,
                                     VkCommandBuffer command_buffer);
         void destroy_command_buffer(VkCommandBuffer command_buffer);
-        void command_buffer_gc();
+
+        void discard_pipeline(uint64_t frame, VkPipeline command_buffer);
+        void destroy_pipeline(VkPipeline command_buffer);
+
+        void gc();
 
     private:
         void create_surface();
@@ -151,10 +155,12 @@ namespace mge::vulkan {
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
         std::vector<VkCommandBuffer>    m_pending_command_buffers;
-        std::atomic<uint64_t>           m_frame{0};
+
+        std::atomic<uint64_t> m_frame{0};
 
         std::vector<std::pair<uint64_t, VkCommandBuffer>>
-            m_deleted_command_buffers;
+                                                     m_deleted_command_buffers;
+        std::vector<std::pair<uint64_t, VkPipeline>> m_deleted_pipelines;
 
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};

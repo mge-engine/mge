@@ -257,11 +257,14 @@ namespace mge::vulkan {
             nullptr,
             &pipeline));
 
+        m_vulkan_context.vkCmdBindPipeline(m_command_buffer,
+                                           VK_PIPELINE_BIND_POINT_GRAPHICS,
+                                           pipeline);
 #if 0
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &uniformBuffers[currentFrame].descriptorSet, 0, nullptr);
 		// Bind the rendering pipeline
 		// The pipeline (state object) contains all states of the rendering pipeline, binding it will set all the states specified at pipeline creation time
-		vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipeline);
+		
 		// Bind triangle vertex buffer (contains position and colors)
 		VkDeviceSize offsets[1]{ 0 };
 		vkCmdBindVertexBuffers(commandBuffer, 0, 1, &vertices.buffer, offsets);
@@ -270,10 +273,7 @@ namespace mge::vulkan {
 		// Draw indexed triangle
 		vkCmdDrawIndexed(commandBuffer, indices.count, 1, 0, 0, 1);
 #endif
-        m_vulkan_context.vkDestroyPipeline(m_vulkan_context.device(),
-                                           pipeline,
-                                           nullptr);
-
+        m_vulkan_context.discard_pipeline(m_frame, pipeline);
         m_vulkan_context.vkDestroyPipelineLayout(m_vulkan_context.device(),
                                                  pipeline_layout,
                                                  nullptr);
