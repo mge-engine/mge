@@ -82,7 +82,6 @@ namespace mge::vulkan {
 
     void frame_command_list::clear(const mge::rgba_color& c)
     {
-        /*
         VkClearValue clear_color = {};
         clear_color.color = {{c.r, c.g, c.b, c.a}};
         VkClearAttachment clear_attachment = {};
@@ -99,7 +98,6 @@ namespace mge::vulkan {
                                                &clear_attachment,
                                                1,
                                                &clear_rect);
-        */
     }
 
     void frame_command_list::draw(const mge::draw_command& command)
@@ -161,7 +159,7 @@ namespace mge::vulkan {
         rasterization_state_create_info.lineWidth = 1.0f;
 
         rasterization_state_create_info.cullMode =
-            VK_CULL_MODE_BACK_BIT; // cull back faces
+            VK_CULL_MODE_NONE; // cull back faces
         rasterization_state_create_info.frontFace =
             VK_FRONT_FACE_CLOCKWISE; // clockwise front face
 
@@ -289,7 +287,7 @@ namespace mge::vulkan {
             1,
             0,
             0,
-            0);
+            1);
 #if 0
         vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1, &uniformBuffers[currentFrame].descriptorSet, 0, nullptr);
 		// Bind the rendering pipeline
