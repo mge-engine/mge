@@ -84,13 +84,16 @@ namespace mge {
                                       << m_render_system->implementation_name();
 
             if (m_render_system->implementation_name() ==
-                "mge::opengl::render_system") {
+                    "mge::opengl::render_system" ||
+                m_render_system->implementation_name() ==
+                    "mge::vulkan::render_system") {
                 const char* vertex_shader_glsl = R"shader(
                     #version 330 core
                     layout(location = 0) in vec3 vertexPosition;
 
                     void main() {
                       gl_Position.xyz = vertexPosition;
+                      gl_Position.y = gl_Position.y;
                       gl_Position.w = 1.0;
                     }
                 )shader";

@@ -261,10 +261,15 @@ namespace mge::vulkan {
             nullptr,
             &pipeline));
 
-        VkViewport vp = {0.0, 0.0, 0.0, 0.0, 0.0, 1.0};
-        vp.width = static_cast<float>(m_vulkan_context.extent().width);
-        vp.height = static_cast<float>(m_vulkan_context.extent().height);
-
+        // use flipped view port to align with opengl and dx
+        // https://www.saschawillems.de/blog/2019/03/29/flipping-the-vulkan-viewport/#:~:text=The%20cause%20for%20this%20is,scene%20is%20rendered%20upside%20down.
+        auto       extent = m_vulkan_context.extent();
+        VkViewport vp = {0.0,
+                         static_cast<float>(extent.height),
+                         static_cast<float>(extent.width),
+                         -static_cast<float>(extent.height),
+                         0.0,
+                         1.0};
         m_vulkan_context.vkCmdSetViewport(m_command_buffer, 0, 1, &vp);
 
         m_vulkan_context.vkCmdBindPipeline(m_command_buffer,
