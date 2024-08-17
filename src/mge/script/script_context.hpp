@@ -6,7 +6,9 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <string>
 #include <string_view>
+
 
 namespace mge {
     /**
