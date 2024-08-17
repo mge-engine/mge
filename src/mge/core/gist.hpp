@@ -28,12 +28,6 @@ namespace mge {
         } -> std::convertible_to<void>;
     };
 
-    template <typename T>
-    concept exists_gist_function = requires(T obj, std::format_context& ctx) {
-        {
-            ::mge::gist(obj, ctx)
-        } -> std::convertible_to<void>;
-    };
 } // namespace mge
 
 template <typename T, typename C>
@@ -97,8 +91,8 @@ struct std::formatter<mge::gist_type<T>, C>
 };
 
 template <typename T, typename C>
-    requires mge::has_gist_method<T> && !mge::exists_gist_function<T>
-                                    struct std::formatter<mge::gist_type<T>, C>
+    requires mge::has_gist_method<T>
+struct std::formatter<mge::gist_type<T>, C>
     : public std::formatter<std::string_view, C>
 {
     template <typename FormatContext>
@@ -113,25 +107,8 @@ template <typename T, typename C>
 };
 
 template <typename T, typename C>
-    requires mge::exists_gist_function<T> &&
-             !mge::has_gist_method<T>
-             struct std::formatter<mge::gist_type<T>, C>
-    : public std::formatter<std::string_view, C>
-{
-    template <typename FormatContext>
-    auto format(mge::gist_type<T> g, FormatContext& ctx) const
-    {
-        if (!g.value) {
-            return std::format_to(ctx.out(), "nullptr");
-        }
-        ::mge::gist(*g.value, ctx);
-        return ctx.out();
-    }
-};
-
-template <typename T, typename C>
-    requires !mge::has_gist_method<T> && !mge::exists_gist_function<T> &&
-             !std::is_pointer_v<T> && !mge::is_shared_ptr_v<T> &&
+    requires !mge::has_gist_method<T> && !std::is_pointer_v<T> &&
+             !mge::is_shared_ptr_v<T> &&
              !std::is_arithmetic_v<T>
              struct std::formatter<mge::gist_type<T>, C>
     : public std::formatter<std::string_view, C>

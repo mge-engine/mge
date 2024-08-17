@@ -2,14 +2,13 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/small_vector.hpp"
 #include "mge/graphics/command_list.hpp"
-#include "vulkan.hpp"
+#include "render_context.hpp"
 
-#include <variant>
-#include <vector>
+#include <tuple>
 
 namespace mge::vulkan {
-    class render_context;
 
     class command_list : public mge::command_list
     {
@@ -17,21 +16,20 @@ namespace mge::vulkan {
         command_list(render_context& context);
         ~command_list();
 
-        void viewport(const mge::viewport& vp) override {}
-        void scissor(const mge::rectangle& rect) override {}
-        void default_scissor() override {}
-
-        void clear(const mge::rgba_color& color) override;
+        void scissor(const mge::rectangle& rect) override;
+        void viewport(const mge::viewport& vp) override;
+        void default_scissor() override;
+        void clear(const rgba_color& c) override;
         void draw(const mge::draw_command& command) override;
         void finish() override;
         void execute() override;
 
     private:
-        void allocate_command_buffer(render_context& context);
-        void cleanup();
-
-        render_context& m_vulkan_context;
-        VkCommandBuffer m_command_buffer;
-        rgba_color      m_clear_color;
+        render_context&                          m_vulkan_context;
+        mge::small_vector<mge::draw_command, 16> m_draw_commands;
+        rgba_color                               m_clear_color;
+        mge::rectangle                           m_scissor;
+        mge::viewport                            m_viewport;
+        bool                                     m_color_set;
     };
 } // namespace mge::vulkan

@@ -3,3 +3,4 @@
 # All rights reserved.
 
 ADD_SUBDIRECTORY(images)
+ADD_SUBDIRECTORY(shaders)

@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 
+#include "mge/core/buffer.hpp"
 #include "mge/core/callback_map.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/memory.hpp"
@@ -70,6 +71,12 @@ namespace mge {
          * @return number of bytes read, 0 on EOF
          */
         streamsize_type read(void* destination, streamsize_type size);
+
+        /**
+         * Read the stream data fully into the buffer.
+         * @param b buffer to read into
+         */
+        void read(buffer& b);
 
         /**
          * Get current position.

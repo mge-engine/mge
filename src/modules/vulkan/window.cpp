@@ -4,7 +4,6 @@
 #include "window.hpp"
 #include "render_context.hpp"
 #include "render_system.hpp"
-
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -24,10 +23,11 @@ namespace mge::vulkan {
 
     void window::create_render_context()
     {
+        MGE_DEBUG_TRACE(VULKAN) << "Create render context";
         auto context =
             std::make_shared<::mge::vulkan::render_context>(m_render_system,
                                                             *this);
-        context->initialize();
+        context->init_swap_chain();
         m_render_context = context;
     }
 

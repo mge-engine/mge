@@ -179,6 +179,28 @@ namespace mge {
         return result;
     }
 
+    void input_stream::read(buffer& b)
+    {
+        // TODO more intelligent size handling
+        const streamsize_type chunk_size = 4096;
+        b.clear();
+        while (true) {
+            auto buffer_start_pos = b.size();
+            b.resize(buffer_start_pos + chunk_size);
+            auto read_bytes = read(b.data() + buffer_start_pos, chunk_size);
+            if (read_bytes == -1) {
+                b.resize(buffer_start_pos);
+                return;
+            }
+            b.resize(buffer_start_pos + read_bytes);
+            if (read_bytes < chunk_size) {
+                if (eof() || read_bytes == 0) {
+                    return;
+                }
+            }
+        }
+    }
+
     bool input_stream::eof()
     {
         char c;

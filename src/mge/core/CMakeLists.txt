@@ -38,6 +38,7 @@ SET(mgecore_sources
     mutex.cpp
     io_exception.cpp
     file_input_stream.cpp
+    atexit.cpp
     memory_resource.cpp
 )
 
@@ -92,6 +93,7 @@ SET(mgecore_headers
     is_associative_container.hpp
     io_exception.hpp
     file_input_stream.hpp
+    atexit.hpp
     memory_resource.hpp
 )
 

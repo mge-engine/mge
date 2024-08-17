@@ -19,7 +19,7 @@ namespace mge {
     /**
      * A viewport defines the transformation to the frame buffer.
      *
-     * The viewport is defined by the lower left corner and the width and
+     * The viewport is defined by the top left corner and the width and
      * height, as well as the depth range.
      */
     class MGEGRAPHICS_EXPORT viewport
@@ -32,8 +32,8 @@ namespace mge {
 
         /**
          * Construct a viewport.
-         * @param x_         x coordinate of lower left corner
-         * @param y_         y coordinate of lower left corner
+         * @param x_         x coordinate of top left corner
+         * @param y_         y coordinate of top left corner
          * @param width_     width of viewport
          * @param height_    height of viewport
          * @param min_depth_ minimum depth value
@@ -80,12 +80,14 @@ namespace mge {
 
         /**
          * Lower left corner as point.
+         * @param window_height height of window of viewport
          * @return lower left corner
          */
-        mge::point lower_left() const
+        mge::point lower_left(uint32_t window_height) const
         {
             return mge::point(static_cast<uint32_t>(x),
-                              static_cast<uint32_t>(y));
+                              window_height -
+                                  static_cast<uint32_t>(y + height));
         }
 
         float x{0.0f};

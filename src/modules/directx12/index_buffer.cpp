@@ -86,7 +86,7 @@ namespace mge::dx12 {
             memcpy(mapped_data, data, size());
             upload_buffer->Unmap(0, nullptr);
 
-            dx12_context(context()).copy_resource(
+            dx12_context(context()).copy_resource_sync(
                 m_buffer.get(),
                 upload_buffer_ptr.get(),
                 D3D12_RESOURCE_STATE_INDEX_BUFFER);

@@ -6,7 +6,7 @@ ENABLE_TESTING()
 
 FUNCTION(MGE_TEST)
     # -- argument parsing
-    SET(OPTIONS NEEDSDISPLAY NOMAIN SHOWTRACE)
+    SET(OPTIONS NEEDSDISPLAY NOMAIN SHOWTRACE DISABLED)
     SET(ONE_VALUE_ARGS TARGET)
     SET(MULTI_VALUE_ARGS SOURCES LIBRARIES)
     CMAKE_PARSE_ARGUMENTS(MGE_TEST "${OPTIONS}" "${ONE_VALUE_ARGS}"
@@ -38,24 +38,28 @@ FUNCTION(MGE_TEST)
     ENDIF()
     # building the test works in all environments, but execution may not
     # happen in headless environments for e.g. graphics tests
-    IF(MGE_TEST_NEEDSDISPLAY)
-        IF(HEADLESS_ENVIRONMENT)
-            MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to headless environment")
+    IF(MGE_TEST_DISABLED)
+        MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to DISABLED flag")
+    ELSE()
+        IF(MGE_TEST_NEEDSDISPLAY)
+            IF(HEADLESS_ENVIRONMENT)
+                MESSAGE("-- Skipping test ${MGE_TEST_TARGET} due to headless environment")
+            ELSE()
+                ADD_TEST(NAME ${MGE_TEST_TARGET}
+                        COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
+                        WORKING_DIRECTORY "${_BINARY_DIR}")
+            ENDIF()
         ELSE()
             ADD_TEST(NAME ${MGE_TEST_TARGET}
                     COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
                     WORKING_DIRECTORY "${_BINARY_DIR}")
         ENDIF()
-    ELSE()
-        ADD_TEST(NAME ${MGE_TEST_TARGET}
-                COMMAND ${_BINARY_DIR}/${MGE_TEST_TARGET} --gtest_output=xml:${MGE_TEST_TARGET}.xml
-                WORKING_DIRECTORY "${_BINARY_DIR}")
-    ENDIF()
-    IF(MGE_TEST_SHOWTRACE)
-        SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                    PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
-        SET_PROPERTY(TEST ${MGE_TEST_TARGET}
-                    APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+        IF(MGE_TEST_SHOWTRACE)
+            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                        PROPERTY ENVIRONMENT "MGE_TRACE_ENABLED=1")
+            SET_PROPERTY(TEST ${MGE_TEST_TARGET}
+                        APPEND PROPERTY ENVIRONMENT "MGE_TRACE_TO_STDOUT=1")
+        ENDIF()
     ENDIF()
 ENDFUNCTION()
 

@@ -11,7 +11,6 @@
 #include "opengl_info.hpp"
 #include "window.hpp"
 
-
 namespace mge {
 
     namespace opengl {
@@ -37,6 +36,7 @@ namespace mge {
             mge::command_list_ref create_command_list() override;
             mge::texture_ref      create_texture(texture_type type) override;
             mge::rectangle        default_scissor() const;
+            uint32_t              window_height() const;
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const { return m_hdc; }

@@ -21,14 +21,13 @@ TEST_F(shader_test, compile_successfully)
 
     auto& context = m_window->render_context();
     auto  shader = context.create_shader(mge::shader_type::VERTEX);
-
-    auto vertex_shader_glsl = "#version 330 core\n"
-                              "layout(location = 0) in vec3 vertexPosition;\n"
-                              "\n"
-                              "void main() {\n"
-                              "  gl_Position.xyz = vertexPosition;\n"
-                              "  gl_Position.w = 1.0;\n"
-                              "}"sv;
+    auto  vertex_shader_glsl = "#version 330 core\n"
+                               "layout(location = 0) in vec3 vertexPosition;\n"
+                               "\n"
+                               "void main() {\n"
+                               "  gl_Position.xyz = vertexPosition;\n"
+                               "  gl_Position.w = 1.0;\n"
+                               "}"sv;
 
     shader->compile(vertex_shader_glsl);
 }

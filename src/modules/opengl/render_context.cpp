@@ -14,7 +14,6 @@
 #include "vertex_buffer.hpp"
 
 namespace mge {
-
     MGE_USE_TRACE(OPENGL);
 }
 
@@ -157,6 +156,11 @@ namespace mge::opengl {
     mge::rectangle render_context::default_scissor() const
     {
         return mge::rectangle(m_window->position(), m_window->extent());
+    }
+
+    uint32_t render_context::window_height() const
+    {
+        return m_window->extent().height;
     }
 
 } // namespace mge::opengl

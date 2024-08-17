@@ -38,6 +38,7 @@ SET(MGECORE_TEST_SOURCES
     test_concepts.cpp
     test_json.cpp
     test_enum.cpp
+    test_atexit.cpp
     test_memory_resource.cpp
 )
 
@@ -54,5 +55,6 @@ MGE_TEST(
 MGE_TEST(
     TARGET      bench_core
     SOURCES     ${MGECORE_BENCH_SOURCES}
+    DISABLED
     LIBRARIES   mgecore benchmark
 )

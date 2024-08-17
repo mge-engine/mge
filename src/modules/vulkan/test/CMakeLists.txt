@@ -5,13 +5,13 @@
 SET(VULKAN_TEST_SOURCES
     vulkan_test.cpp
     test_render_system.cpp
-    test_command_list.cpp
     test_shader.cpp
+    test_index_buffer.cpp
     )
 
 MGE_TEST(
     TARGET      test_vulkan
     SOURCES     ${VULKAN_TEST_SOURCES}
     NOMAIN NEEDSDISPLAY
-    LIBRARIES   mgecore mgegraphics mgeapplication mgeinput
+    LIBRARIES   mgecore mgegraphics mgeapplication mgeinput benchmark
 )

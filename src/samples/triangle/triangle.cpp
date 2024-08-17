@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/application/application.hpp"
+#include "mge/asset/asset.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
@@ -15,7 +16,6 @@
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
 
-
 MGE_DEFINE_TRACE(TRIANGLE);
 
 namespace mge {
@@ -27,6 +27,11 @@ namespace mge {
         void setup() override
         {
             MGE_DEBUG_TRACE(TRIANGLE) << "Setup triangle";
+
+            mge::properties p;
+            p.set("directory", "./assets");
+            mge::asset::mount("/", "file", p);
+
             m_render_system = render_system::create();
             m_window = m_render_system->create_window();
             m_window->set_close_listener([&] { set_quit(); });
@@ -50,12 +55,11 @@ namespace mge {
 
         void draw(uint64_t cycle, double delta)
         {
-            if (!m_initialized) {
-                m_clear_commands->execute();
-            } else {
+            if (m_initialized) {
                 auto draw_commands = m_window->render_context()
                                          .create_current_frame_command_list();
                 draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                draw_commands->default_scissor();
                 draw_commands->draw(
                     mge::draw_command(m_program,
                                       m_vertices,
@@ -89,6 +93,7 @@ namespace mge {
 
                     void main() {
                       gl_Position.xyz = vertexPosition;
+                      gl_Position.y = gl_Position.y;
                       gl_Position.w = 1.0;
                     }
                 )shader";
@@ -105,6 +110,23 @@ namespace mge {
                 MGE_DEBUG_TRACE(TRIANGLE) << "Compile vertex shader";
                 vertex_shader->compile(vertex_shader_glsl);
                 MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
+            } else if (m_render_system->implementation_name() ==
+                       "mge::vulkan::render_system") {
+                auto pixel_shader_code_any =
+                    mge::asset("/shaders/triangle.frag.spv").load();
+                auto vertex_shader_code_any =
+                    mge::asset("/shaders/triangle.vert.spv").load();
+                auto pixel_shader_code =
+                    std::any_cast<std::shared_ptr<mge::buffer>>(
+                        pixel_shader_code_any);
+                auto vertex_shader_code =
+                    std::any_cast<std::shared_ptr<mge::buffer>>(
+                        vertex_shader_code_any);
+                MGE_DEBUG_TRACE(TRIANGLE) << "Set code for fragment shader";
+                pixel_shader->set_code(*pixel_shader_code);
+                MGE_DEBUG_TRACE(TRIANGLE) << "Set code for vertex shader";
+                vertex_shader->set_code(*vertex_shader_code);
+                MGE_DEBUG_TRACE(TRIANGLE) << "Shaders created";
             } else if (m_render_system->implementation_name() ==
                            "mge::dx11::render_system" ||
                        m_render_system->implementation_name() ==
@@ -128,7 +150,6 @@ namespace mge {
                 MGE_DEBUG_TRACE(TRIANGLE) << "Compile vertex shader";
                 vertex_shader->compile(vertex_shader_hlsl);
                 MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
-
             } else {
                 MGE_ERROR_TRACE(TRIANGLE)
                     << "Cannot create shaders for "

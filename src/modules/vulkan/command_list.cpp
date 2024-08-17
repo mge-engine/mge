@@ -3,55 +3,62 @@
 // All rights reserved.
 #include "command_list.hpp"
 #include "error.hpp"
+#include "frame_command_list.hpp"
+#include "index_buffer.hpp"
+#include "program.hpp"
 #include "render_context.hpp"
-#include "render_system.hpp"
+#include "shader.hpp"
+#include "vertex_buffer.hpp"
 
 namespace mge::vulkan {
-
     command_list::command_list(render_context& context)
-        : mge::command_list(context, true)
+        : mge::command_list(context, false)
         , m_vulkan_context(context)
-        , m_command_buffer(VK_NULL_HANDLE)
+        , m_color_set(false)
+    {}
+
+    command_list::~command_list() {}
+
+    void command_list::clear(const rgba_color& c)
     {
-        allocate_command_buffer(context);
+        m_color_set = true;
+        m_clear_color = c;
     }
 
-    command_list::~command_list() { cleanup(); }
-
-    void command_list::clear(const mge::rgba_color& color)
+    void command_list::draw(const mge::draw_command& command)
     {
-        m_clear_color = color;
+        m_draw_commands.push_back(command);
     }
 
-    void command_list::draw(const mge::draw_command& command) {}
-
-    void command_list::finish() {}
-
-    void command_list::execute() {}
-
-    void command_list::allocate_command_buffer(render_context& context)
+    void command_list::execute()
     {
-        VkCommandBufferAllocateInfo alloc_info{};
-        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        alloc_info.commandPool = context.command_pool();
-        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        alloc_info.commandBufferCount = 1;
-
-        CHECK_VK_CALL(context.vkAllocateCommandBuffers(context.device(),
-                                                       &alloc_info,
-                                                       &m_command_buffer));
-    }
-
-    void command_list::cleanup()
-    {
-        auto& ctx = m_vulkan_context;
-        if (m_command_buffer) {
-            ctx.vkFreeCommandBuffers(ctx.device(),
-                                     ctx.command_pool(),
-                                     1,
-                                     &m_command_buffer);
-            m_command_buffer = VK_NULL_HANDLE;
+        if (m_draw_commands.empty() && !m_color_set) {
+            return;
         }
+        auto frame_cmds = m_vulkan_context.create_current_frame_command_list();
+        if (m_color_set) {
+            frame_cmds->clear(m_clear_color);
+        }
+        for (const auto& command : m_draw_commands) {
+            frame_cmds->draw(command);
+        }
+        frame_cmds->finish();
+        frame_cmds->execute();
+    }
+
+    void command_list::finish() { return; }
+
+    void command_list::scissor(const mge::rectangle& rect) { m_scissor = rect; }
+
+    void command_list::viewport(const mge::viewport& vp) { m_viewport = vp; }
+
+    void command_list::default_scissor()
+    {
+        auto ext = m_vulkan_context.extent();
+        m_scissor.left = 0;
+        m_scissor.top = 0;
+        m_scissor.right = ext.width;
+        m_scissor.bottom = ext.height;
     }
 
 } // namespace mge::vulkan
