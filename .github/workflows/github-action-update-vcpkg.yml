@@ -1,3 +1,4 @@
+name: Update used vcpkg version
 on:
   workflow_dispatch:
 
