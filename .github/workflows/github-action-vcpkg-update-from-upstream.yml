@@ -10,11 +10,16 @@ jobs:
         uses: "actions/checkout@v4"
         with:
           repository: "mge-engine/vcpkg"
+          path: "vcpkg"
           ref: "master"
       - name: Add upstream remote
-        run: git remote add upstream  https://github.com/microsoft/vcpkg.git
+        run: |
+          cd vcpkg
+          git remote add upstream  https://github.com/microsoft/vcpkg.git
       - name: Fetch upstream
-        run: git fetch upstream
+        run: |
+          cd vcpkg
+          git fetch upstream
       - name: Merge upstream
         run: git merge upstream/master
       - name: Push to mge vcpkg fork
