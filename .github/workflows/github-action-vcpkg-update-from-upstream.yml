@@ -1,0 +1,13 @@
+name: "Update mge vcpkg fork from upstream"
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Checkout vcpkg 
+        uses: "actions/checkout@v4"
+        with:
+          repository: "mge-engine/vcpkg"
+          ref: "master"
