@@ -9,4 +9,16 @@ jobs:
           uses: "actions/checkout@v4"
           with:
             ref: "main"
-        
+        - name: Create branch update-vcpkg-${{ github.run_number }}
+          run: |
+            git config --global user.name 'github-actions'
+            git config --global user.email 'github-actions@github.com'
+            git checkout -b update-vcpkg-${{ github.run_number }}
+        - name: Check whether vcpkg needs an update, and update it
+          run: |
+            echo "Checking whether vcpkg needs an update"
+        - name: Commit and push changes
+          run: |
+            git add .
+            git commit -m "Update vcpkg"
+            git push origin update-vcpkg-${{ github.run_number }}
