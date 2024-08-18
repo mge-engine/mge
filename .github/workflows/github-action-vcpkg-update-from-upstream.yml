@@ -15,3 +15,7 @@ jobs:
         run: git remote add upstream  https://github.com/microsoft/vcpkg.git
       - name: Fetch upstream
         run: git fetch upstream
+      - name: Merge upstream
+        run: git merge upstream/master
+      - name: Push to mge vcpkg fork
+        run: git push origin master
