@@ -11,3 +11,7 @@ jobs:
         with:
           repository: "mge-engine/vcpkg"
           ref: "master"
+      - name: Add upstream remote
+        run: git remote add upstream  https://github.com/microsoft/vcpkg.git
+      - name: Fetch upstream
+        run: git fetch upstream
