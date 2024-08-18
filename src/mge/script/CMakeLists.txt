@@ -5,6 +5,8 @@
 SET(mgescript_sources
     script_engine.cpp
     script_context.cpp
+
+    module.cpp
 )
 
  SET(mgescript_headers
@@ -13,6 +15,8 @@ SET(mgescript_sources
     script_fwd.hpp
     script_engine.hpp
     script_context.hpp
+
+    module.hpp
  )
 
 MGE_LIBRARY(

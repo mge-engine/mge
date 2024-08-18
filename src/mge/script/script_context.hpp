@@ -4,9 +4,14 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <string>
+
 namespace mge {
 
-    class MGE_SCRIPT_EXPORT script_context
+    /**
+     * Context of script invocation.
+     */
+    class MGESCRIPT_EXPORT script_context
     {
     protected:
         script_context();
