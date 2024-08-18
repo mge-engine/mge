@@ -1,19 +1,22 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #pragma once
 #include "mge/core/component.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
-
 namespace mge {
 
     /**
      * @brief A script engine.
      *
      * A script engine wraps up a language or system that is integrated.
+     *
      */
     class MGESCRIPT_EXPORT script_engine : public component<script_engine>
     {
     protected:
-        script_engine() = default;
+        script_engine();
 
     public:
         /**
