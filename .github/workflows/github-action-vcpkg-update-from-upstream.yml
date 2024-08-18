@@ -1,6 +1,7 @@
 name: "Update mge vcpkg fork from upstream"
 on:
-  workflow_dispatch:
+  schedule:
+    - cron:  '0 2 * * *'  # Runs 2 am UTC every day
 
 jobs:
   build:
