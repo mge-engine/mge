@@ -12,6 +12,7 @@ jobs:
           repository: "mge-engine/vcpkg"
           path: "vcpkg"
           ref: "master"
+          token: ${{ secrets.MGE_GITHUB_TOKEN }}
       - name: Add upstream remote
         run: |
           cd vcpkg
@@ -21,10 +22,10 @@ jobs:
           cd vcpkg
           git fetch upstream
       - name: Merge upstream
-        run: git merge upstream/master
+        run: |
+          cd vcpkg
+          git merge upstream/master
       - name: Push to mge vcpkg fork
         run: |
-            pwd
-            
-#          git config --unset-all http.https://github.com/.extraheader 
-#          git push origin master
+          cd vcpkg
+          git push origin master
