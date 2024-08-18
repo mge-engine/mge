@@ -18,4 +18,6 @@ jobs:
       - name: Merge upstream
         run: git merge upstream/master
       - name: Push to mge vcpkg fork
-        run: git push origin master
+        run: |
+          git config --unset-all http.https://github.com/.extraheader 
+          git push origin master
