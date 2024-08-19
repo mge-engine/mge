@@ -7,6 +7,8 @@ SET(mgescript_sources
     script_context.cpp
 
     module.cpp
+
+    module_data.cpp
 )
 
  SET(mgescript_headers
@@ -17,6 +19,8 @@ SET(mgescript_sources
     script_context.hpp
 
     module.hpp
+
+    module_data.hpp
  )
 
 MGE_LIBRARY(
@@ -28,3 +32,4 @@ MGE_LIBRARY(
 )
 TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
 
+ADD_SUBDIRECTORY(test)
