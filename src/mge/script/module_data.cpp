@@ -60,4 +60,16 @@ namespace mge::script {
         parent->m_modules.push_back(result);
         return result;
     }
+
+    void module_data::add(const function_data_ref& f)
+    {
+        for (const auto& m : m_functions) {
+            if (m->name() == f->name()) {
+                MGE_THROW(illegal_argument) << "Function '" << f->name()
+                                            << "' already exists in module";
+            }
+        }
+
+        m_functions.push_back(f);
+    }
 } // namespace mge::script

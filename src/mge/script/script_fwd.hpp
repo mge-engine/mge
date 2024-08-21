@@ -10,7 +10,7 @@ namespace mge {
     namespace script {
         class module;
         class type;
-        class function;
+        template <typename R, typename... Args> class function;
         class method;
         class constructor;
         class destructor;

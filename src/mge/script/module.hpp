@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/stdexceptions.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/function.hpp"
 #include "mge/script/script_fwd.hpp"
 
 #include <string>
@@ -61,9 +62,14 @@ namespace mge::script {
 
         inline module& operator()() { return *this; }
 
+        template <typename R, typename... Args>
+        void add(const mge::script::function<R, Args...> f)
+        {
+            add(f.data());
+        }
+
     private:
-        void add(const type& t);
-        void add(const function& f);
+        void add(const function_data_ref& f);
 
         module_data_ref m_data;
     };

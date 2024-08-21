@@ -14,6 +14,8 @@ namespace mge::script {
         function_data(const char* name, void* fptr);
         ~function_data() = default;
 
+        const std::string& name() const noexcept { return m_name; }
+
     private:
         std::string          m_name;
         void*                m_fptr;

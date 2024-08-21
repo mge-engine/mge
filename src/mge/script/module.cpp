@@ -23,4 +23,6 @@ namespace mge::script {
         return module(m_data->parent());
     }
 
+    void module::add(const function_data_ref& f) { m_data->add(f); }
+
 } // namespace mge::script

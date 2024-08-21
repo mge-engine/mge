@@ -4,6 +4,7 @@
 
 SET(MGESCRIPT_TEST_SOURCES
     test_module.cpp
+    test_function.cpp
 )
 
 MGE_TEST(

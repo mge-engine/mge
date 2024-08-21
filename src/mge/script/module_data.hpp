@@ -62,6 +62,8 @@ namespace mge::script {
         const std::string& name() const { return m_name; }
         module_data_ref    parent() const { return m_parent.lock(); }
 
+        void add(const function_data_ref& f);
+
     private:
         std::string                    m_name;
         module_data_weak_ref           m_parent;

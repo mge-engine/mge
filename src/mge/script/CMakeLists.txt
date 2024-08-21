@@ -10,6 +10,7 @@ SET(mgescript_sources
 
     module_data.cpp
     type_data.cpp
+    function_data.cpp
 )
 
  SET(mgescript_headers
@@ -23,6 +24,7 @@ SET(mgescript_sources
 
     module_data.hpp
     type_data.hpp   
+    function_data.hpp
  )
 
 MGE_LIBRARY(
