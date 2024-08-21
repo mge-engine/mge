@@ -6,6 +6,7 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/script/module.hpp"
+#include "mge/script/type_data.hpp"
 
 namespace mge::script {
 
