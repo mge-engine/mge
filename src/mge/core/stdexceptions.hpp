@@ -69,7 +69,8 @@ namespace mge {
 /**
  * @brief Throw not implemented error.
  */
-#define MGE_THROW_NOT_IMPLEMENTED MGE_THROW(mge::not_yet_implemented)
+#define MGE_THROW_NOT_IMPLEMENTED                                              \
+    MGE_THROW(mge::not_yet_implemented) << "Not implemented: "
 
 /**
  * @brief Helper macro to define an exception class.
