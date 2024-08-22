@@ -2,6 +2,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <functional>
 namespace mge::script {
 
     /**
@@ -12,9 +13,13 @@ namespace mge::script {
      */
     class MGESCRIPT_EXPORT call_context
     {
+    protected:
+        call_context() = default;
+
     public:
-        call_context();
-        ~call_context();
+        virtual ~call_context() = default;
     };
+
+    using invoke_function = std::function<void(call_context&)>;
 
 } // namespace mge::script

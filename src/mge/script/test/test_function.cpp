@@ -3,9 +3,12 @@
 // All rights reserved.
 #include "mge/script/function.hpp"
 #include "mge/script/module.hpp"
+#include "mock_call_context.hpp"
 #include "test/googletest.hpp"
 
-void test_function_1(void) {}
+int test_function_1_called = 0;
+
+void test_function_1(void) { test_function_1_called = 42; }
 
 TEST(function, void_c_function)
 {
@@ -13,4 +16,7 @@ TEST(function, void_c_function)
 
     mge::script::module m;
     m(function("test_function_1", test_function_1));
+    MOCK_call_context ctx;
+    m.function("test_function_1").invoke(ctx);
+    EXPECT_EQ(42, test_function_1_called);
 }

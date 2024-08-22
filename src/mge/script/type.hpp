@@ -38,8 +38,6 @@ namespace mge::script {
         //  concept is_shared_ptr = std::is_same_v<T, std::shared_ptr<T>>;
     } // namespace
 
-    template <typename T> class type;
-
     // Simple Types
     // - integers
     // - floating point

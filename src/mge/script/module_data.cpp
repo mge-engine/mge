@@ -72,4 +72,14 @@ namespace mge::script {
 
         m_functions.push_back(f);
     }
+
+    const function_data& module_data::function(const char* name) const
+    {
+        for (const auto& f : m_functions) {
+            if (f->name() == name) {
+                return *f;
+            }
+        }
+        MGE_THROW(no_such_element) << "Function '" << name << "' not found";
+    }
 } // namespace mge::script

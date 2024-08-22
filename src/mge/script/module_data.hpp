@@ -64,6 +64,8 @@ namespace mge::script {
 
         void add(const function_data_ref& f);
 
+        const function_data& function(const char* name) const;
+
     private:
         std::string                    m_name;
         module_data_weak_ref           m_parent;
