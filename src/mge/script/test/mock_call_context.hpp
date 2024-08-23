@@ -44,4 +44,18 @@ public:
     }
 
     virtual void exception_thrown() override { exception_thrown_noargs(); }
+
+    MOCK_METHOD(bool, get_bool_parameter, (size_t), ());
+    MOCK_METHOD(int8_t, get_int8_t_parameter, (size_t), ());
+    MOCK_METHOD(int16_t, get_int16_t_parameter, (size_t), ());
+    MOCK_METHOD(int32_t, get_int32_t_parameter, (size_t), ());
+    MOCK_METHOD(int64_t, get_int64_t_parameter, (size_t), ());
+    MOCK_METHOD(uint8_t, get_uint8_t_parameter, (size_t), ());
+    MOCK_METHOD(uint16_t, get_uint16_t_parameter, (size_t), ());
+    MOCK_METHOD(uint32_t, get_uint32_t_parameter, (size_t), ());
+    MOCK_METHOD(uint64_t, get_uint64_t_parameter, (size_t), ());
+    MOCK_METHOD(float, get_float_parameter, (size_t), ());
+    MOCK_METHOD(double, get_double_parameter, (size_t), ());
+    MOCK_METHOD(long double, get_long_double_parameter, (size_t), ());
+    MOCK_METHOD(std::string, get_string_parameter, (size_t), ());
 };
