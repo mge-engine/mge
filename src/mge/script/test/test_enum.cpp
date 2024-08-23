@@ -18,4 +18,7 @@ TEST(enum, create)
 
     mge::script::module m;
     m(type<test_enum>());
+
+    const auto& t = m.type("test_enum");
+    EXPECT_EQ("test_enum", t.name());
 }

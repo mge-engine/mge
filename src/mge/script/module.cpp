@@ -32,4 +32,9 @@ namespace mge::script {
         return m_data->function(name);
     }
 
+    const type_data& module::type(const char* name) const
+    {
+        return m_data->type(name);
+    }
+
 } // namespace mge::script

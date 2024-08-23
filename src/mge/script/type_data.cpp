@@ -1,5 +1,6 @@
 #include "mge/script/type_data.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/type_name.hpp"
 
 #include <map>
 #include <typeindex>
@@ -54,7 +55,7 @@ namespace mge::script {
     const std::string& type_data::name() const
     {
         if (m_name.empty()) {
-            m_name = m_type_info->name();
+            m_name = mge::base_type_name(*m_type_info);
         }
         return m_name;
     }

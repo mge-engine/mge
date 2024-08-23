@@ -19,6 +19,25 @@ namespace mge::script {
     {
     public:
         type_data(const std::type_info& ti);
+        type_data(const type_data&) = delete;
+        type_data& operator=(const type_data&) = delete;
+
+        type_data(type_data&& t)
+            : m_type_info(t.m_type_info)
+            , m_module(std::move(t.m_module))
+            , m_name(std::move(t.m_name))
+            , m_initialized(t.m_initialized)
+        {}
+
+        type_data& operator=(type_data&& other)
+        {
+            m_type_info = std::move(other.m_type_info);
+            m_module = std::move(other.m_module);
+            m_name = std::move(other.m_name);
+            m_initialized = std::move(other.m_initialized);
+            return *this;
+        }
+
         ~type_data();
 
         static type_data_ref get(const std::type_info& ti);
