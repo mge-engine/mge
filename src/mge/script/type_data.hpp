@@ -9,6 +9,8 @@
 #include <string>
 #include <typeindex>
 #include <typeinfo>
+#include <variant>
+#include <vector>
 
 namespace mge::script {
 
@@ -18,7 +20,14 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_data
     {
     public:
-        type_data(const std::type_info& ti);
+        enum class type_kind
+        {
+            ENUM,
+            CLASS,
+            POD
+        };
+
+        type_data(const std::type_info& ti, type_kind kind);
         type_data(const type_data&) = delete;
         type_data& operator=(const type_data&) = delete;
 
@@ -41,17 +50,32 @@ namespace mge::script {
         ~type_data();
 
         static type_data_ref get(const std::type_info& ti);
-        static type_data_ref create(const std::type_info& ti);
+        static type_data_ref create(const std::type_info& ti, type_kind kind);
 
         const std::string& name() const;
+        struct enum_details
+        {
+            type_data_ref                                underlying_type;
+            std::vector<std::pair<int64_t, std::string>> values;
+        };
+
+        struct class_details
+        {};
+
+        type_data::enum_details&  enum_details();
+        type_data::class_details& class_details();
 
     private:
         friend class module_data;
 
+        // using details_type =
+        //     std::variant<type_data::enum_details, type_data::class_details>;
+
         const std::type_info* m_type_info{nullptr};
         module_data_weak_ref  m_module;
         mutable std::string   m_name;
-        bool                  m_initialized{false};
+        // details_type          m_details;
+        bool m_initialized{false};
     };
 
 } // namespace mge::script

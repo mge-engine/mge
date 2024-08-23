@@ -39,14 +39,15 @@ namespace mge::script {
         return s_all_types->get(std::type_index(ti));
     }
 
-    type_data_ref type_data::create(const std::type_info& ti)
+    type_data_ref type_data::create(const std::type_info& ti,
+                                    type_data::type_kind  kind)
     {
-        auto td = std::make_shared<type_data>(ti);
+        auto td = std::make_shared<type_data>(ti, kind);
         s_all_types->put(std::type_index(ti), td);
         return td;
     }
 
-    type_data::type_data(const std::type_info& ti)
+    type_data::type_data(const std::type_info& ti, type_data::type_kind kind)
         : m_type_info(&ti)
     {}
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "mge/core/enum.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
@@ -50,7 +51,10 @@ namespace mge::script {
         {
             m_data = type_data::get(typeid(T));
             if (!m_data) {
-                m_data = type_data::create(typeid(T));
+                m_data =
+                    type_data::create(typeid(T), type_data::type_kind::ENUM);
+                auto ut_data =
+                    type_data::get(typeid(mge::underlying_type_t<T>));
             }
         }
 

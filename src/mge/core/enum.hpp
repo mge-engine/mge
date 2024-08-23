@@ -17,6 +17,9 @@ namespace mge {
     using magic_enum::enum_name;
     using magic_enum::enum_type_name;
     using magic_enum::enum_values;
+    using magic_enum::underlying_type;
+    using magic_enum::underlying_type_t;
+
     using magic_enum::is_scoped_enum;
     using magic_enum::is_scoped_enum_v;
     using magic_enum::is_unscoped_enum;
