@@ -25,6 +25,8 @@ namespace mge::script {
 
     void module::add(const function_data_ref& f) { m_data->add(f); }
 
+    void module::add(const type_data_ref& t) { m_data->add(t); }
+
     const function_data& module::function(const char* name) const
     {
         return m_data->function(name);

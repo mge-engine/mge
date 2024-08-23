@@ -5,6 +5,7 @@
 SET(MGESCRIPT_TEST_SOURCES
     test_module.cpp
     test_function.cpp
+    test_enum.cpp
 )
 
 MGE_TEST(

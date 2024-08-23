@@ -18,16 +18,21 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_data
     {
     public:
-        type_data(const module_data_ref& module, const std::string& name)
-            : m_module(module)
-            , m_name(name)
-        {}
+        type_data(const std::type_info& ti);
+        ~type_data();
 
-        ~type_data() = default;
+        static type_data_ref get(const std::type_info& ti);
+        static type_data_ref create(const std::type_info& ti);
+
+        const std::string& name() const;
 
     private:
-        module_data_weak_ref m_module;
-        std::string          m_name;
+        friend class module_data;
+
+        const std::type_info* m_type_info{nullptr};
+        module_data_weak_ref  m_module;
+        mutable std::string   m_name;
+        bool                  m_initialized{false};
     };
 
 } // namespace mge::script

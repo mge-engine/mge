@@ -73,6 +73,22 @@ namespace mge::script {
         m_functions.push_back(f);
     }
 
+    void module_data::add(const type_data_ref& t)
+    {
+        if (!t->m_module.expired()) {
+            MGE_THROW(illegal_argument)
+                << "Type '" << t->name() << "' already belongs to a module";
+        }
+        t->m_module = shared_from_this();
+        for (const auto& m : m_types) {
+            if (m->name() == t->name()) {
+                MGE_THROW(illegal_argument)
+                    << "Type '" << t->name() << "' already exists in module";
+            }
+        }
+        m_types.push_back(t);
+    }
+
     const function_data& module_data::function(const char* name) const
     {
         for (const auto& f : m_functions) {
@@ -81,5 +97,15 @@ namespace mge::script {
             }
         }
         MGE_THROW(no_such_element) << "Function '" << name << "' not found";
+    }
+
+    const type_data& module_data::type(const char* name) const
+    {
+        for (const auto& t : m_types) {
+            if (t->name() == name) {
+                return *t;
+            }
+        }
+        MGE_THROW(no_such_element) << "Type '" << name << "' not found";
     }
 } // namespace mge::script

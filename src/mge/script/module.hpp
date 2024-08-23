@@ -68,10 +68,13 @@ namespace mge::script {
             add(f.data());
         }
 
+        template <typename T> void add(const type<T>& t) { add(t.data()); }
+
         const function_data& function(const char* name) const;
 
     private:
         void add(const function_data_ref& f);
+        void add(const type_data_ref& t);
 
         module_data_ref m_data;
     };

@@ -17,6 +17,7 @@ namespace mge::script {
      * This class is the internal representation of a module.
      */
     class MGESCRIPT_EXPORT module_data
+        : public std::enable_shared_from_this<module_data>
     {
     public:
         module_data() = default;
@@ -63,8 +64,10 @@ namespace mge::script {
         module_data_ref    parent() const { return m_parent.lock(); }
 
         void add(const function_data_ref& f);
+        void add(const type_data_ref& t);
 
         const function_data& function(const char* name) const;
+        const type_data&     type(const char* name) const;
 
     private:
         std::string                    m_name;
