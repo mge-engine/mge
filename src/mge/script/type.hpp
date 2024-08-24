@@ -41,10 +41,30 @@ namespace mge::script {
     // - unique_ptr<T>
     // - containers of classes
 
-    template <> class type<void>
-    {};
-
     template <typename T> class type;
+
+    template <> class type<void>
+    {
+    public:
+        type()
+        {
+            m_data = type_data::get(typeid(void));
+            if (!m_data) {
+                m_data =
+                    type_data::create(typeid(void), type_data::type_kind::VOID);
+            }
+        }
+        bool is_void() const noexcept { return true; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+
+        type_data_ref data() const noexcept { return m_data; }
+
+    private:
+        type_data_ref m_data;
+    };
 
     template <typename T>
         requires std::is_enum_v<T>
@@ -66,6 +86,7 @@ namespace mge::script {
             }
         }
 
+        bool is_void() const noexcept { return false; }
         bool is_bool() const noexcept { return false; }
         bool is_enum() const noexcept { return true; }
         bool is_pod() const noexcept { return false; }
@@ -93,6 +114,7 @@ namespace mge::script {
             }
         }
 
+        bool is_void() const noexcept { return false; }
         bool is_bool() const noexcept { return false; }
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return true; }
@@ -156,6 +178,7 @@ namespace mge::script {
             }
         }
 
+        bool is_void() const noexcept { return false; }
         bool is_bool() const noexcept { return false; }
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return false; }
@@ -215,6 +238,79 @@ namespace mge::script {
             return *this;
         }
 
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            method(const char* name, R (T::*method)(Args...))
+        {
+            type<R> return_type;
+            if (!return_type.registered()) {
+                MGE_THROW(illegal_state)
+                    << "Return type " << mge::type_name<R>()
+                    << " not registered";
+            }
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            for (size_t i = 0; i < arg_types.size(); ++i) {
+                if (!arg_types[i]->registered()) {
+                    MGE_THROW(illegal_state)
+                        << "Argument type " << mge::type_name<Args>()
+                        << " for argument " << (i + 1) << " not registered";
+                }
+            }
+            type_data::call_signature sig = {typeid(Args)...};
+            m_data.class_specific().methods.emplace_back(
+                name,
+                return_type.data(),
+                sig,
+                [method](call_context& ctx) {
+                    try {
+                        T*     obj = static_cast<T*>(ctx.get_this());
+                        size_t index{0};
+                        ctx.store_result((obj->*method)(
+                            ctx.get_parameter<Args>(index++)...));
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename... Args>
+        type<T>& method(const char* name, void (T::*method)(Args...))
+        {
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            for (size_t i = 0; i < arg_types.size(); ++i) {
+                if (!arg_types[i]->registered()) {
+                    MGE_THROW(illegal_state)
+                        << "Argument type " << mge::type_name<Args>()
+                        << " for argument " << (i + 1) << " not registered";
+                }
+            }
+            type_data::call_signature sig = {typeid(Args)...};
+            m_data.class_specific().methods.emplace_back(
+                name,
+                type<void>().data(),
+                sig,
+                [method](call_context& ctx) {
+                    try {
+                        T*     obj = static_cast<T*>(ctx.get_this());
+                        size_t index{0};
+                        (obj->*method)(ctx.get_parameter<Args>(index++)...);
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
     private:
         void initialize()
         {
@@ -268,6 +364,8 @@ namespace mge::script {
                     std::is_volatile_v<std::remove_pointer_t<T>>;
             }
         }
+
+        bool is_void() const noexcept { return false; }
         bool is_bool() const noexcept { return false; }
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return false; }

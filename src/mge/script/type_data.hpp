@@ -32,7 +32,8 @@ namespace mge::script {
             POD,
             POINTER,
             REFERENCE,
-            RVALUE_REFERENCE
+            RVALUE_REFERENCE,
+            VOID
         };
 
         type_data(const std::type_info& ti,
@@ -80,6 +81,7 @@ namespace mge::script {
         bool is_pointer() const;
         bool is_reference() const;
         bool is_rvalue_reference() const;
+        bool is_void() const;
 
         bool is_string() const;
         bool is_wstring() const;
@@ -113,6 +115,11 @@ namespace mge::script {
                                    mge::script::invoke_function,
                                    mge::script::invoke_function>>
                 fields;
+            std::vector<std::tuple<std::string,
+                                   type_data_ref,
+                                   call_signature,
+                                   mge::script::invoke_function>>
+                methods;
         };
 
         struct pod_details
@@ -141,12 +148,16 @@ namespace mge::script {
             bool          is_volatile{false};
         };
 
+        struct void_details
+        {};
+
         type_data::enum_details&             enum_specific();
         type_data::class_details&            class_specific();
         type_data::pod_details&              pod_specific();
         type_data::pointer_details&          pointer_specific();
         type_data::reference_details&        reference_specific();
         type_data::rvalue_reference_details& rvalue_reference_specific();
+        type_data::void_details&             void_specific();
 
         const type_data::enum_details&      enum_specific() const;
         const type_data::class_details&     class_specific() const;
@@ -154,7 +165,8 @@ namespace mge::script {
         const type_data::pointer_details&   pointer_specific() const;
         const type_data::reference_details& reference_specific() const;
         const type_data::rvalue_reference_details&
-        rvalue_reference_specific() const;
+                                       rvalue_reference_specific() const;
+        const type_data::void_details& void_specific() const;
 
     private:
         friend class module_data;
@@ -165,7 +177,8 @@ namespace mge::script {
                                           type_data::pod_details,
                                           type_data::pointer_details,
                                           type_data::reference_details,
-                                          type_data::rvalue_reference_details>;
+                                          type_data::rvalue_reference_details,
+                                          type_data::void_details>;
 
         const std::type_info* m_type_info{nullptr};
 

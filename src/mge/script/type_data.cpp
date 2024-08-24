@@ -77,6 +77,9 @@ namespace mge::script {
         case type_kind::RVALUE_REFERENCE:
             m_details = rvalue_reference_details();
             break;
+        case type_kind::VOID:
+            m_details = void_details();
+            break;
         default:
             break;
         }
@@ -140,6 +143,14 @@ namespace mge::script {
         return std::get<rvalue_reference_details>(m_details);
     }
 
+    type_data::void_details& type_data::void_specific()
+    {
+        if (m_details.index() != 7) {
+            MGE_THROW(illegal_state) << "Type is not void";
+        }
+        return std::get<void_details>(m_details);
+    }
+
     const type_data::enum_details& type_data::enum_specific() const
     {
         if (m_details.index() != 1) {
@@ -189,6 +200,14 @@ namespace mge::script {
         return std::get<rvalue_reference_details>(m_details);
     }
 
+    const type_data::void_details& type_data::void_specific() const
+    {
+        if (m_details.index() != 7) {
+            MGE_THROW(illegal_state) << "Type is not void";
+        }
+        return std::get<void_details>(m_details);
+    }
+
     bool type_data::is_pod() const { return m_details.index() == 3; }
 
     bool type_data::is_enum() const { return m_details.index() == 1; }
@@ -203,6 +222,8 @@ namespace mge::script {
     {
         return m_details.index() == 6;
     }
+
+    bool type_data::is_void() const { return m_details.index() == 7; }
 
     bool type_data::is_string() const
     {

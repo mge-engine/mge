@@ -19,7 +19,8 @@ namespace mge::script {
             : root(std::make_shared<module_data>())
         {
             mge::script::module m(root);
-            m(type<bool>(),
+            m(type<void>(),
+              type<bool>(),
               type<int8_t>(),
               type<int16_t>(),
               type<int32_t>(),
