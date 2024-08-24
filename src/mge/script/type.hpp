@@ -140,6 +140,9 @@ namespace mge::script {
                     m_data->class_specific().is_wstring = true;
                 }
                 m_data->class_specific().size = sizeof(T);
+                if (std::is_destructible_v<T>) {
+                    // m_data->class_specific().destructor
+                }
             }
         }
 
@@ -165,6 +168,13 @@ namespace mge::script {
         bool is_class() const noexcept { return true; }
 
         const type_data_ref& data() const noexcept { return m_data; }
+
+        std::enable_if_t<std::is_default_constructible_v<T>, type<T>&>
+        constructor()
+        {
+            // m_data->class_specific().is_default_constructible = true;
+            return *this;
+        }
 
     private:
         type_data_ref m_data;

@@ -85,6 +85,8 @@ namespace mge::script {
             }
         }
 
+        virtual void* get_this() = 0;
+
         virtual void store_bool_result(bool result) = 0;
         virtual void store_int8_t_result(int8_t result) = 0;
         virtual void store_uint8_t_result(uint8_t result) = 0;
