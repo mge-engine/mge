@@ -41,15 +41,19 @@ namespace mge::script {
     }
 
     type_data_ref type_data::create(const std::type_info& ti,
-                                    type_data::type_kind  kind)
+                                    type_data::type_kind  kind,
+                                    const char*           alias_name)
     {
-        auto td = std::make_shared<type_data>(ti, kind);
+        auto td = std::make_shared<type_data>(ti, kind, alias_name);
         s_all_types->put(std::type_index(ti), td);
         return td;
     }
 
-    type_data::type_data(const std::type_info& ti, type_data::type_kind kind)
+    type_data::type_data(const std::type_info& ti,
+                         type_data::type_kind  kind,
+                         const char*           alias_name)
         : m_type_info(&ti)
+        , m_alias_name(alias_name ? alias_name : "")
     {
         switch (kind) {
         case type_kind::ENUM:
@@ -60,6 +64,15 @@ namespace mge::script {
             break;
         case type_kind::POD:
             m_details = pod_details();
+            break;
+        case type_kind::POINTER:
+            m_details = pointer_details();
+            break;
+        case type_kind::REFERENCE:
+            m_details = reference_details();
+            break;
+        case type_kind::RVALUE_REFERENCE:
+            m_details = rvalue_reference_details();
             break;
         default:
             break;
@@ -92,6 +105,38 @@ namespace mge::script {
         return std::get<class_details>(m_details);
     }
 
+    type_data::pod_details& type_data::pod_specific()
+    {
+        if (m_details.index() != 3) {
+            MGE_THROW(illegal_state) << "Type is not a pod type";
+        }
+        return std::get<pod_details>(m_details);
+    }
+
+    type_data::pointer_details& type_data::pointer_specific()
+    {
+        if (m_details.index() != 4) {
+            MGE_THROW(illegal_state) << "Type is not a pointer";
+        }
+        return std::get<pointer_details>(m_details);
+    }
+
+    type_data::reference_details& type_data::reference_specific()
+    {
+        if (m_details.index() != 5) {
+            MGE_THROW(illegal_state) << "Type is not a reference";
+        }
+        return std::get<reference_details>(m_details);
+    }
+
+    type_data::rvalue_reference_details& type_data::rvalue_reference_specific()
+    {
+        if (m_details.index() != 6) {
+            MGE_THROW(illegal_state) << "Type is not a rvalue reference";
+        }
+        return std::get<rvalue_reference_details>(m_details);
+    }
+
     const type_data::enum_details& type_data::enum_specific() const
     {
         if (m_details.index() != 1) {
@@ -106,6 +151,94 @@ namespace mge::script {
             MGE_THROW(illegal_state) << "Type is not a class";
         }
         return std::get<class_details>(m_details);
+    }
+
+    const type_data::pod_details& type_data::pod_specific() const
+    {
+        if (m_details.index() != 3) {
+            MGE_THROW(illegal_state) << "Type is not a pod type";
+        }
+        return std::get<pod_details>(m_details);
+    }
+
+    const type_data::pointer_details& type_data::pointer_specific() const
+    {
+        if (m_details.index() != 4) {
+            MGE_THROW(illegal_state) << "Type is not a pointer";
+        }
+        return std::get<pointer_details>(m_details);
+    }
+
+    const type_data::reference_details& type_data::reference_specific() const
+    {
+        if (m_details.index() != 5) {
+            MGE_THROW(illegal_state) << "Type is not a reference";
+        }
+        return std::get<reference_details>(m_details);
+    }
+
+    const type_data::rvalue_reference_details&
+    type_data::rvalue_reference_specific() const
+    {
+        if (m_details.index() != 6) {
+            MGE_THROW(illegal_state) << "Type is not a rvalue reference";
+        }
+        return std::get<rvalue_reference_details>(m_details);
+    }
+
+    bool type_data::is_pod() const { return m_details.index() == 3; }
+
+    bool type_data::is_enum() const { return m_details.index() == 1; }
+
+    bool type_data::is_class() const { return m_details.index() == 2; }
+
+    bool type_data::is_pointer() const { return m_details.index() == 4; }
+
+    bool type_data::is_reference() const { return m_details.index() == 5; }
+
+    bool type_data::is_rvalue_reference() const
+    {
+        return m_details.index() == 6;
+    }
+
+    bool type_data::is_string() const
+    {
+        return m_details.index() == 2 &&
+               std::get<class_details>(m_details).is_string;
+    }
+
+    bool type_data::is_wstring() const
+    {
+        return m_details.index() == 2 &&
+               std::get<class_details>(m_details).is_wstring;
+    }
+
+    bool type_data::is_const() const
+    {
+        switch (m_details.index()) {
+        case 4:
+            return std::get<pointer_details>(m_details).is_const;
+        case 5:
+            return std::get<reference_details>(m_details).is_const;
+        case 6:
+            return std::get<rvalue_reference_details>(m_details).is_const;
+        default:
+            return false;
+        }
+    }
+
+    bool type_data::is_volatile() const
+    {
+        switch (m_details.index()) {
+        case 4:
+            return std::get<pointer_details>(m_details).is_volatile;
+        case 5:
+            return std::get<reference_details>(m_details).is_volatile;
+        case 6:
+            return std::get<rvalue_reference_details>(m_details).is_volatile;
+        default:
+            return false;
+        }
     }
 
 } // namespace mge::script

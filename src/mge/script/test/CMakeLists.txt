@@ -7,6 +7,7 @@ SET(MGESCRIPT_TEST_SOURCES
     test_function.cpp
     test_enum.cpp
     test_bool.cpp
+    test_pointer.cpp
 )
 
 MGE_TEST(
