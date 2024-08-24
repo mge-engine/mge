@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/memory.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
@@ -93,10 +94,12 @@ namespace mge::script {
 
         struct class_details
         {
-            std::vector<type_data_ref> base_classes;
-            bool                       is_string{false};
-            bool                       is_wstring{false};
-            size_t                     size{0};
+            std::vector<type_data_ref>   base_classes;
+            bool                         is_string{false};
+            bool                         is_wstring{false};
+            size_t                       size{0};
+            mge::script::invoke_function destroy;
+            mge::script::invoke_function default_construct;
         };
 
         struct pod_details

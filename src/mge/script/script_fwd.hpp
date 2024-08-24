@@ -3,6 +3,9 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/memory.hpp"
+
+#include <functional>
+
 namespace mge {
     MGE_DECLARE_REF(script_engine);
     MGE_DECLARE_REF(script_context);
@@ -22,5 +25,8 @@ namespace mge {
         MGE_DECLARE_REF(constructor_data);
         MGE_DECLARE_REF(destructor_data);
         MGE_DECLARE_WEAK_REF(module_data);
+
+        class call_context;
+        using invoke_function = std::function<void(call_context&)>;
     } // namespace script
 } // namespace mge

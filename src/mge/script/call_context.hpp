@@ -6,7 +6,7 @@
 #include "mge/core/type_name.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
-#include "mge/script/type.hpp"
+#include "mge/script/type_data.hpp"
 
 #include <functional>
 #include <string>
@@ -83,8 +83,13 @@ namespace mge::script {
                                  std::is_same_v<T, const std::wstring&>) {
                 store_wstring_result(value);
             } else {
-                type<PlainType> result_type;
-                store_object_result(&value, result_type.data());
+                auto t = type_data::get(typeid(PlainType));
+                if (!t) {
+                    MGE_THROW(illegal_argument)
+                        << "Type " << type_name<PlainType>()
+                        << " is not registered";
+                }
+                store_object_result(&value, t);
             }
         }
 
@@ -160,7 +165,5 @@ namespace mge::script {
         virtual long double get_long_double_parameter(size_t index) = 0;
         virtual std::string get_string_parameter(size_t index) = 0;
     };
-
-    using invoke_function = std::function<void(call_context&)>;
 
 } // namespace mge::script

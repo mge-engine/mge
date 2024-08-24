@@ -3,9 +3,11 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/enum.hpp"
+#include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
+
 
 #include <type_traits>
 
@@ -137,15 +139,7 @@ namespace mge::script {
             if (!m_data) {
                 m_data =
                     type_data::create(typeid(T), type_data::type_kind::CLASS);
-                if constexpr (std::is_same_v<T, std::string>) {
-                    m_data->class_specific().is_string = true;
-                } else if constexpr (std::is_same_v<T, std::wstring>) {
-                    m_data->class_specific().is_wstring = true;
-                }
-                m_data->class_specific().size = sizeof(T);
-                if (std::is_destructible_v<T>) {
-                    // m_data->class_specific().destructor
-                }
+                initialize();
             }
         }
 
@@ -156,12 +150,7 @@ namespace mge::script {
                 m_data = type_data::create(typeid(T),
                                            type_data::type_kind::CLASS,
                                            alias_name);
-                if constexpr (std::is_same_v<T, std::string>) {
-                    m_data->class_specific().is_string = true;
-                } else if constexpr (std::is_same_v<T, std::wstring>) {
-                    m_data->class_specific().is_wstring = true;
-                }
-                m_data->class_specific().size = sizeof(T);
+                initialize();
             }
         }
 
@@ -180,6 +169,29 @@ namespace mge::script {
         }
 
     private:
+        void initialize()
+        {
+            if constexpr (std::is_same_v<T, std::string>) {
+                m_data->class_specific().is_string = true;
+            } else if constexpr (std::is_same_v<T, std::wstring>) {
+                m_data->class_specific().is_wstring = true;
+            }
+            m_data->class_specific().size = sizeof(T);
+            if (std::is_destructible_v<T>) {
+                m_data->class_specific().destroy = [](call_context& ctx) {
+                    T* obj = static_cast<T*>(ctx.get_this());
+                    obj->~T();
+                };
+            }
+            if (std::is_default_constructible_v<T>) {
+                m_data->class_specific().default_construct =
+                    [](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.get_this());
+                        new (obj) T();
+                    };
+            }
+        }
+
         type_data_ref m_data;
     };
 
