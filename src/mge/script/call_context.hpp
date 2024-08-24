@@ -3,6 +3,7 @@
 #include "mge/core/type_name.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type.hpp"
 
 #include <functional>
 #include <string>
@@ -75,9 +76,12 @@ namespace mge::script {
             } else if constexpr (std::is_same_v<PlainType, std::string> ||
                                  std::is_same_v<T, const std::string&>) {
                 store_string_result(value);
+            } else if constexpr (std::is_same_v<PlainType, std::wstring> ||
+                                 std::is_same_v<T, const std::wstring&>) {
+                store_wstring_result(value);
             } else {
-                MGE_THROW_NOT_IMPLEMENTED << "Result type " << type_name<T>()
-                                          << " not supported";
+                type<PlainType> result_type;
+                store_object_result(&value, result_type.data());
             }
         }
 
@@ -94,6 +98,7 @@ namespace mge::script {
         virtual void store_double_result(double result) = 0;
         virtual void store_long_double_result(long double result) = 0;
         virtual void store_string_result(const std::string& result) = 0;
+        virtual void store_wstring_result(const std::wstring& result) = 0;
 
         virtual void store_object_result(void*                result,
                                          const type_data_ref& t) = 0;

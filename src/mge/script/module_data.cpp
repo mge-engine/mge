@@ -94,7 +94,6 @@ namespace mge::script {
             MGE_THROW(illegal_argument)
                 << "Type '" << t->name() << "' already belongs to a module";
         }
-        t->m_module = shared_from_this();
         for (const auto& m : m_types) {
             if (m->name() == t->name()) {
                 MGE_THROW(illegal_argument)
@@ -102,6 +101,7 @@ namespace mge::script {
             }
         }
         m_types.push_back(t);
+        t->set_module(shared_from_this());
     }
 
     const function_data& module_data::function(const char* name) const

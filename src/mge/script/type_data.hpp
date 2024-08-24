@@ -42,7 +42,8 @@ namespace mge::script {
             , m_module(std::move(t.m_module))
             , m_name(std::move(t.m_name))
             , m_alias_name(std::move(t.m_alias_name))
-            , m_initialized(t.m_initialized)
+            , m_details(std::move(t.m_details))
+            , m_registered(t.m_registered)
         {}
 
         type_data& operator=(type_data&& other)
@@ -50,7 +51,9 @@ namespace mge::script {
             m_type_info = std::move(other.m_type_info);
             m_module = std::move(other.m_module);
             m_name = std::move(other.m_name);
-            m_initialized = std::move(other.m_initialized);
+            m_alias_name = std::move(other.m_alias_name);
+            m_details = std::move(other.m_details);
+            m_registered = std::move(other.m_registered);
             return *this;
         }
 
@@ -60,6 +63,12 @@ namespace mge::script {
         static type_data_ref create(const std::type_info& ti,
                                     type_kind             kind,
                                     const char*           alias_name = nullptr);
+
+        void set_module(const module_data_ref& m)
+        {
+            m_module = m;
+            m_registered = true;
+        }
 
         bool is_pod() const;
         bool is_enum() const;
@@ -72,6 +81,8 @@ namespace mge::script {
         bool is_wstring() const;
         bool is_const() const;
         bool is_volatile() const;
+
+        bool registered() const;
 
         const std::string& name() const;
         struct enum_details
@@ -146,7 +157,7 @@ namespace mge::script {
         mutable std::string        m_name;
         std::optional<std::string> m_alias_name;
         details_type               m_details;
-        bool                       m_initialized{false};
+        bool                       m_registered{false};
     };
 
 } // namespace mge::script

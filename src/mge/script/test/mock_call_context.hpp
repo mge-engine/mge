@@ -24,6 +24,7 @@ public:
     MOCK_METHOD(void, store_double_result, (double), ());
     MOCK_METHOD(void, store_long_double_result, (long double), ());
     MOCK_METHOD(void, store_string_result, (const std::string&), ());
+    MOCK_METHOD(void, store_wstring_result, (const std::wstring&), ());
     MOCK_METHOD(void,
                 store_object_result,
                 (void*, const mge::script::type_data_ref&),

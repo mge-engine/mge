@@ -241,4 +241,25 @@ namespace mge::script {
         }
     }
 
+    bool type_data::registered() const
+    {
+        if (m_registered) {
+            return true;
+        } else {
+            switch (m_details.index()) {
+            case 4:
+                return std::get<pointer_details>(m_details)
+                    .pointee->registered();
+            case 5:
+                return std::get<reference_details>(m_details)
+                    .referencee->registered();
+            case 6:
+                return std::get<rvalue_reference_details>(m_details)
+                    .referencee->registered();
+            default:
+                return false;
+            }
+        }
+    }
+
 } // namespace mge::script
