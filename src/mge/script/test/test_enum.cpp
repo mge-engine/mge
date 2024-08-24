@@ -21,4 +21,10 @@ TEST(enum, create)
 
     const auto& t = m.type("test_enum");
     EXPECT_EQ("test_enum", t.name());
+    EXPECT_EQ("int", t.enum_specific().underlying_type->name());
+    EXPECT_EQ(2, t.enum_specific().values.size());
+    EXPECT_EQ("TEST1", t.enum_specific().values[0].second);
+    EXPECT_EQ(0, t.enum_specific().values[0].first);
+    EXPECT_EQ("TEST2", t.enum_specific().values[1].second);
+    EXPECT_EQ(1, t.enum_specific().values[1].first);
 }

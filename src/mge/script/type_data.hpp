@@ -62,20 +62,28 @@ namespace mge::script {
         struct class_details
         {};
 
-        type_data::enum_details&  enum_details();
-        type_data::class_details& class_details();
+        struct pod_details
+        {};
+
+        type_data::enum_details&  enum_specific();
+        type_data::class_details& class_specific();
+
+        const type_data::enum_details&  enum_specific() const;
+        const type_data::class_details& class_specific() const;
 
     private:
         friend class module_data;
 
-        // using details_type =
-        //     std::variant<type_data::enum_details, type_data::class_details>;
+        using details_type = std::variant<std::monostate,
+                                          type_data::enum_details,
+                                          type_data::class_details,
+                                          type_data::pod_details>;
 
         const std::type_info* m_type_info{nullptr};
         module_data_weak_ref  m_module;
         mutable std::string   m_name;
-        // details_type          m_details;
-        bool m_initialized{false};
+        details_type          m_details;
+        bool                  m_initialized{false};
     };
 
 } // namespace mge::script

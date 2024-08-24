@@ -1,5 +1,6 @@
 #include "mge/script/type_data.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/type_name.hpp"
 
 #include <map>
@@ -49,7 +50,21 @@ namespace mge::script {
 
     type_data::type_data(const std::type_info& ti, type_data::type_kind kind)
         : m_type_info(&ti)
-    {}
+    {
+        switch (kind) {
+        case type_kind::ENUM:
+            m_details = enum_details();
+            break;
+        case type_kind::CLASS:
+            m_details = class_details();
+            break;
+        case type_kind::POD:
+            m_details = pod_details();
+            break;
+        default:
+            break;
+        }
+    }
 
     type_data::~type_data() = default;
 
@@ -59,6 +74,38 @@ namespace mge::script {
             m_name = mge::base_type_name(*m_type_info);
         }
         return m_name;
+    }
+
+    type_data::enum_details& type_data::enum_specific()
+    {
+        if (m_details.index() != 1) {
+            MGE_THROW(illegal_state) << "Type is not an enum";
+        }
+        return std::get<enum_details>(m_details);
+    }
+
+    type_data::class_details& type_data::class_specific()
+    {
+        if (m_details.index() != 2) {
+            MGE_THROW(illegal_state) << "Type is not a class";
+        }
+        return std::get<class_details>(m_details);
+    }
+
+    const type_data::enum_details& type_data::enum_specific() const
+    {
+        if (m_details.index() != 1) {
+            MGE_THROW(illegal_state) << "Type is not an enum";
+        }
+        return std::get<enum_details>(m_details);
+    }
+
+    const type_data::class_details& type_data::class_specific() const
+    {
+        if (m_details.index() != 2) {
+            MGE_THROW(illegal_state) << "Type is not a class";
+        }
+        return std::get<class_details>(m_details);
     }
 
 } // namespace mge::script

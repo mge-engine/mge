@@ -53,10 +53,18 @@ namespace mge::script {
             if (!m_data) {
                 m_data =
                     type_data::create(typeid(T), type_data::type_kind::ENUM);
-                auto ut_data =
+                m_data->enum_specific().underlying_type =
                     type_data::get(typeid(mge::underlying_type_t<T>));
+                for (auto& v : mge::enum_entries<T>()) {
+                    m_data->enum_specific().values.emplace_back(v.first,
+                                                                v.second);
+                }
             }
         }
+
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return true; }
+        bool is_pod() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
 
@@ -64,4 +72,49 @@ namespace mge::script {
         type_data_ref m_data;
     };
 
+    template <typename T>
+        requires std::is_integral_v<T> || std::is_floating_point_v<T>
+    class type<T>
+    {
+    public:
+        type()
+        {
+            m_data = type_data::get(typeid(T));
+            if (!m_data) {
+                m_data =
+                    type_data::create(typeid(T), type_data::type_kind::POD);
+            }
+        }
+
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return true; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+    private:
+        type_data_ref m_data;
+    };
+
+    template <> class type<bool>
+    {
+    public:
+        type()
+        {
+            m_data = type_data::get(typeid(bool));
+            if (!m_data) {
+                m_data =
+                    type_data::create(typeid(bool), type_data::type_kind::POD);
+            }
+        }
+
+        bool is_bool() const noexcept { return true; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return true; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+    private:
+        type_data_ref m_data;
+    };
 } // namespace mge::script

@@ -6,6 +6,7 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/script/module.hpp"
+#include "mge/script/type.hpp"
 #include "mge/script/type_data.hpp"
 
 namespace mge::script {
@@ -16,7 +17,21 @@ namespace mge::script {
 
         root_module_data_holder()
             : root(std::make_shared<module_data>())
-        {}
+        {
+            mge::script::module m(root);
+            m(type<bool>(),
+              type<int8_t>(),
+              type<int16_t>(),
+              type<int32_t>(),
+              type<int64_t>(),
+              type<uint8_t>(),
+              type<uint16_t>(),
+              type<uint32_t>(),
+              type<uint64_t>(),
+              type<float>(),
+              type<double>(),
+              type<long double>());
+        }
     };
 
     mge::singleton<root_module_data_holder> s_root_module_data_holder;
