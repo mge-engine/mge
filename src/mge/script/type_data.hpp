@@ -7,6 +7,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <iostream>
 #include <optional>
 #include <string>
 #include <typeindex>
@@ -22,6 +23,8 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_data
     {
     public:
+        using call_signature = std::vector<std::type_index>;
+
         enum class type_kind
         {
             ENUM,
@@ -97,9 +100,19 @@ namespace mge::script {
             std::vector<type_data_ref>   base_classes;
             bool                         is_string{false};
             bool                         is_wstring{false};
+            bool                         is_abstract{false};
             size_t                       size{0};
             mge::script::invoke_function destroy;
             mge::script::invoke_function default_construct;
+            std::vector<std::pair<call_signature, mge::script::invoke_function>>
+                constructors;
+
+            // name, type, getter, setter
+            std::vector<std::tuple<std::string,
+                                   type_data_ref,
+                                   mge::script::invoke_function,
+                                   mge::script::invoke_function>>
+                fields;
         };
 
         struct pod_details

@@ -8,7 +8,6 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
 
-
 #include <type_traits>
 
 namespace mge::script {
@@ -73,6 +72,7 @@ namespace mge::script {
         bool is_class() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
+        bool registered() const noexcept { return m_data->registered(); }
 
     private:
         type_data_ref m_data;
@@ -99,6 +99,7 @@ namespace mge::script {
         bool is_class() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
+        bool registered() const noexcept { return m_data->registered(); }
 
     private:
         type_data_ref m_data;
@@ -123,6 +124,7 @@ namespace mge::script {
         bool is_class() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
+        bool registered() const noexcept { return m_data->registered(); }
 
     private:
         type_data_ref m_data;
@@ -160,11 +162,56 @@ namespace mge::script {
         bool is_class() const noexcept { return true; }
 
         const type_data_ref& data() const noexcept { return m_data; }
+        bool registered() const noexcept { return m_data->registered(); }
 
-        std::enable_if_t<std::is_default_constructible_v<T>, type<T>&>
-        constructor()
+        template <typename... Args> type<T>& constructor()
         {
-            // m_data->class_specific().is_default_constructible = true;
+            if constexpr (std::is_abstract_v<T>) {
+                MGE_THROW(illegal_state)
+                    << "Cannot create constructor for abstract class";
+            }
+            type_data::call_signature sig = {typeid(Args)...};
+
+            m_data->class_specific().constructors.emplace_back(
+                sig,
+                [](call_context& ctx) {
+                    T*     obj = static_cast<T*>(ctx.get_this());
+                    size_t index{0};
+                    new (obj) T(ctx.get_parameter<Args>(index++)...);
+                });
+
+            return *this;
+        }
+
+        template <typename F> type<T>& field(const char* name, F T::*field)
+        {
+            type<F> field_type;
+            if (!field_type.registered()) {
+                MGE_THROW(illegal_state) << "Field type " << mge::type_name<F>()
+                                         << " not registered";
+            }
+            if constexpr (std::is_const_v<F>) {
+                m_data->class_specific().fields.emplace_back(
+                    name,
+                    field_type.data(),
+                    [field](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.get_this());
+                        ctx.store_result(obj->*field);
+                    },
+                    nullptr);
+            } else {
+                m_data->class_specific().fields.emplace_back(
+                    name,
+                    field_type.data(),
+                    [field](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.get_this());
+                        ctx.store_result(obj->*field);
+                    },
+                    [field](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.get_this());
+                        obj->*field = ctx.get_parameter<F>(0);
+                    });
+            }
             return *this;
         }
 
@@ -177,18 +224,24 @@ namespace mge::script {
                 m_data->class_specific().is_wstring = true;
             }
             m_data->class_specific().size = sizeof(T);
-            if (std::is_destructible_v<T>) {
-                m_data->class_specific().destroy = [](call_context& ctx) {
-                    T* obj = static_cast<T*>(ctx.get_this());
-                    obj->~T();
-                };
+            if constexpr (std::is_abstract_v<T>) {
+                m_data->class_specific().is_abstract = true;
             }
-            if (std::is_default_constructible_v<T>) {
-                m_data->class_specific().default_construct =
-                    [](call_context& ctx) {
+            if constexpr (!std::is_same_v<T, std::string> &&
+                          !std::is_same_v<T, std::wstring>) {
+                if constexpr (std::is_destructible_v<T>) {
+                    m_data->class_specific().destroy = [](call_context& ctx) {
                         T* obj = static_cast<T*>(ctx.get_this());
-                        new (obj) T();
+                        obj->~T();
                     };
+                }
+                if constexpr (std::is_default_constructible_v<T>) {
+                    m_data->class_specific().default_construct =
+                        [](call_context& ctx) {
+                            T* obj = static_cast<T*>(ctx.get_this());
+                            new (obj) T();
+                        };
+                }
             }
         }
 
@@ -221,6 +274,7 @@ namespace mge::script {
         bool is_class() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
+        bool registered() const noexcept { return m_data->registered(); }
 
     private:
         type_data_ref m_data;

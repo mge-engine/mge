@@ -57,7 +57,7 @@ namespace mge::script {
         inline module& operator()(const T& arg0, const Args&... args)
         {
             add(arg0);
-            return *this;
+            return operator()(args...);
         }
 
         inline module& operator()() { return *this; }

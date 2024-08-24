@@ -43,3 +43,25 @@ TEST(type, ctor_dtor)
     test_class_dtor_called = false;
     mge::free(data);
 }
+
+struct test_fields
+{
+    int       x;
+    const int y;
+};
+
+TEST(type, fields)
+{
+    using namespace mge::script;
+
+    mge::script::module m;
+    m(type<test_fields>()
+          .field("x", &test_fields::x)
+          .field("y", &test_fields::y));
+
+    const auto& t = m.type("test_fields");
+    const auto& fields = t.class_specific().fields;
+    EXPECT_EQ(2, fields.size());
+    auto const_setter = std::get<3>(fields[1]);
+    EXPECT_FALSE(const_setter);
+};
