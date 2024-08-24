@@ -5,6 +5,7 @@
 SET(mgescript_sources
     script_engine.cpp
     script_context.cpp
+    script_binder.cpp
 
     module.cpp
 
@@ -19,6 +20,7 @@ SET(mgescript_sources
     script_fwd.hpp
     script_engine.hpp
     script_context.hpp
+    script_binder.hpp
 
     module.hpp
 
