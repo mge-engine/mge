@@ -5,8 +5,10 @@
 #include "mge/core/enum.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/proxy.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
+
 
 #include <type_traits>
 

@@ -1,10 +1,13 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/call_debugger.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/type.hpp"
 #include "mock_call_context.hpp"
 #include "test/googletest.hpp"
+
+#include <typeinfo>
 
 using namespace testing;
 
@@ -65,3 +68,32 @@ TEST(type, fields)
     auto const_setter = std::get<3>(fields[1]);
     EXPECT_FALSE(const_setter);
 };
+
+class c1
+{
+public:
+    c1() = default;
+    virtual ~c1() = default;
+
+    virtual int f1() { return 42; }
+};
+
+class c2 : public c1
+{
+public:
+    c2() = default;
+    virtual ~c2() = default;
+
+    virtual int f1() override { return 666; }
+};
+
+TEST(type, virtual_functions)
+{
+    auto member_function = &c1::f1;
+    auto closure = [member_function](c1* obj) {
+        return (obj->*member_function)();
+    };
+
+    c2 obj;
+    EXPECT_EQ(666, closure(&obj));
+}
