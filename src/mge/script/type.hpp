@@ -254,12 +254,53 @@ namespace mge::script {
             for (size_t i = 0; i < arg_types.size(); ++i) {
                 if (!arg_types[i]->registered()) {
                     MGE_THROW(illegal_state)
-                        << "Argument type " << mge::type_name<Args>()
+                        << "Argument type " << arg_types[i]->name()
                         << " for argument " << (i + 1) << " not registered";
                 }
             }
             type_data::call_signature sig = {typeid(Args)...};
-            m_data.class_specific().methods.emplace_back(
+            m_data->class_specific().methods.emplace_back(
+                name,
+                return_type.data(),
+                sig,
+                [method](call_context& ctx) {
+                    try {
+                        T*     obj = static_cast<T*>(ctx.get_this());
+                        size_t index{0};
+                        ctx.store_result((obj->*method)(
+                            ctx.get_parameter<Args>(index++)...));
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            method(const char* name, R (T::*method)(Args...) const)
+        {
+            type<R> return_type;
+            if (!return_type.registered()) {
+                MGE_THROW(illegal_state)
+                    << "Return type " << mge::type_name<R>()
+                    << " not registered";
+            }
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            for (size_t i = 0; i < arg_types.size(); ++i) {
+                if (!arg_types[i]->registered()) {
+                    MGE_THROW(illegal_state)
+                        << "Argument type " << arg_types[i]->name()
+                        << " for argument " << (i + 1) << " not registered";
+                }
+            }
+            type_data::call_signature sig = {typeid(Args)...};
+            m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
                 sig,

@@ -27,7 +27,11 @@ namespace mge::script {
                     .constructor<uint32_t>()
                     .constructor<uint32_t, uint32_t>()
                     .constructor<uint32_t, uint32_t, uint32_t>()
-                    .constructor<std::string_view>());
+                    .constructor<std::string_view>()
+                    .method("empty", &semantic_version::empty)
+                    .method("major", &semantic_version::major)
+                    .method("minor", &semantic_version::minor)
+                    .method("patch", &semantic_version::patch));
         }
     };
 } // namespace mge::script
