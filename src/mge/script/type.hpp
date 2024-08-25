@@ -9,7 +9,6 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
 
-
 #include <type_traits>
 
 namespace mge::script {
@@ -352,6 +351,13 @@ namespace mge::script {
                         ctx.exception_thrown();
                     }
                 });
+            return *this;
+        }
+
+        template <typename Proxy>
+            requires std::is_base_of_v<proxy<T>, Proxy>
+        type<T>& proxy()
+        {
             return *this;
         }
 
