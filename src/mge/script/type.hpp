@@ -80,8 +80,9 @@ namespace mge::script {
                 m_data->enum_specific().underlying_type =
                     type_data::get(typeid(mge::underlying_type_t<T>));
                 for (auto& v : mge::enum_entries<T>()) {
-                    m_data->enum_specific().values.emplace_back(v.first,
-                                                                v.second);
+                    m_data->enum_specific().values.emplace_back(
+                        static_cast<int64_t>(v.first),
+                        v.second);
                 }
             }
         }
@@ -324,7 +325,9 @@ namespace mge::script {
                 m_data->class_specific().is_abstract = true;
             }
             if constexpr (!std::is_same_v<T, std::string> &&
-                          !std::is_same_v<T, std::wstring>) {
+                          !std::is_same_v<T, std::wstring> &&
+                          !std::is_same_v<T, std::string_view> &&
+                          !std::is_same_v<T, std::wstring_view>) {
                 if constexpr (std::is_destructible_v<T>) {
                     m_data->class_specific().destroy = [](call_context& ctx) {
                         T* obj = static_cast<T*>(ctx.get_this());
@@ -337,6 +340,15 @@ namespace mge::script {
                             T* obj = static_cast<T*>(ctx.get_this());
                             new (obj) T();
                         };
+                }
+                if constexpr (std::is_copy_constructible_v<T>) {
+                    type_data::call_signature sig = {typeid(const T&)};
+                    m_data->class_specific().constructors.emplace_back(
+                        sig,
+                        [](call_context& ctx) {
+                            T* obj = static_cast<T*>(ctx.get_this());
+                            new (obj) T(ctx.get_parameter<const T&>(0));
+                        });
                 }
             }
         }

@@ -14,7 +14,7 @@ static bool test_class_dtor_called{false};
 struct test_class
 {
     test_class() { test_class_ctor_called = true; }
-
+    test_class(const test_class&) = delete;
     ~test_class() { test_class_dtor_called = true; }
 };
 

@@ -38,4 +38,10 @@ MGE_LIBRARY(
 )
 TARGET_LINK_LIBRARIES(mgescript mgecore boost-all)
 
+SET(mge_module_script_core_SOURCES
+    bind_core.cpp)
+ADD_LIBRARY(mge_module_script_core MODULE ${mge_module_script_core_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_core mgescript mgecore)
+
+
 ADD_SUBDIRECTORY(test)
