@@ -1,7 +1,9 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "boost/boost_preprocessor.hpp"
 #include "mge/core/call_debugger.hpp"
+#include "mge/script/invocation_context.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/type.hpp"
 #include "mock_call_context.hpp"
@@ -69,31 +71,29 @@ TEST(type, fields)
     EXPECT_FALSE(const_setter);
 };
 
-class c1
+class base
 {
 public:
-    c1() = default;
-    virtual ~c1() = default;
-
-    virtual int f1() { return 42; }
+    base() {}
+    base(const base&) = delete;
+    virtual ~base() {}
+    virtual int f() { return 42; }
 };
 
-class c2 : public c1
+class script_impl : public mge::script::proxy<base>
 {
 public:
-    c2() = default;
-    virtual ~c2() = default;
+    script_impl() {}
 
-    virtual int f1() override { return 666; }
+    virtual ~script_impl() {}
+
+    virtual int f() { return m_context->call<int>("f"); };
 };
 
-TEST(type, virtual_functions)
+TEST(type, proxy)
 {
-    auto member_function = &c1::f1;
-    auto closure = [member_function](c1* obj) {
-        return (obj->*member_function)();
-    };
+    using namespace mge::script;
 
-    c2 obj;
-    EXPECT_EQ(666, closure(&obj));
-}
+    mge::script::module m;
+    m(type<base>().proxy<script_impl>());
+};

@@ -9,13 +9,66 @@
 
 namespace mge::script {
 
+    /**
+     * @brief Context for implememting methods in a script language.
+     *
+     * The invocation context is used to implement methods in a script language,
+     * i.e. to implememnt C++ interfaces.
+     *
+     * When a method of a C++ interface is called, the protocol is as follows:
+     *
+     * 1. It is checked if the method is implemented in the script language
+     *    using <tt>call_implemented</tt>. If the method is not implemented, the
+     *
+     * call is forwarded to the base class.
+     * 2. If the method is implemented, the arguments are stored using the
+     *    <tt>store_*</tt> methods. Arguments are stored in the order they are
+     *    passed to the method.
+     * 3. The method is called using <tt>call_method</tt>. The method name is
+     *   passed as argument, allowing to dispatch the call.
+     * 4. If the call returns <tt>CALL_EXECUTED</tt>, the result is retrieved
+     *    using one of the <tt>get_*_result</tt> methods.
+     * 5. If the call returns <tt>CALL_NOT_FOUND</tt>, the call is forwarded to
+     *   the base class.
+     * 6. If the call returns <tt>CALL_FAILED</tt>, an error was raised
+     *   the script language and an exception is thrown in C++.
+     */
     class MGESCRIPT_EXPORT invocation_context
     {
     public:
+        /**
+         * @brief Result of a call.
+         */
+        enum class call_result_type
+        {
+            CALL_EXECUTED = 0, // call was executed, result is available
+            CALL_NOT_FOUND =
+                1,          // call was not found, e.g. method does not
+                            // exist in script language interface implementation
+            CALL_FAILED = 2 // call failed, e.g. exception was thrown
+        };
+
         invocation_context() = default;
         virtual ~invocation_context() = default;
 
-        template <typenameT> void store_argument(size_t index, T value)
+        /**
+         * @brief Call a method with arguments.
+         * @tparam R return type
+         * @tparam Args argument types
+         * @param method method name
+         * @param args arguments
+         * @return result of the method call
+         */
+        template <typename R, typename... Args>
+        R call(const char* method, Args... args)
+        {
+            size_t index = 0;
+            (store_argument<Args>(index++, args), ...);
+            return invoke_method<R>(method);
+        }
+
+    private:
+        template <typename T> void store_argument(size_t index, T value)
         {
             using PlainType = std::remove_cv_t<T>;
             if constexpr (std::is_same_v<PlainType, bool>) {
@@ -57,7 +110,7 @@ namespace mge::script {
 
         template <typename R> R invoke_method(const char* method)
         {
-            call(method);
+            call_method(method);
             return get_result<R>();
         }
 
@@ -95,15 +148,16 @@ namespace mge::script {
             }
         }
 
-        template <typename R, typename... Args>
-        R call(const char* method, Args... args)
-        {
-            size_t index = 0;
-            (store_argument<Args>(index++, args), ...);
-            return invoke_method<R>(method);
-        }
-
-        virtual void call(const char* method) = 0;
+    protected:
+        /**
+         * @brief Check if a method is implemented.
+         *
+         * Check if a method is implemented in the scripting language. If a
+         * method is not implemented, the base class will be called.
+         *
+         * @param method method name
+         */
+        virtual bool call_implemented(const char* method) { return true; }
 
         virtual void store_bool_argument(size_t index, bool value) = 0;
         virtual void store_int8_t_argument(size_t index, int8_t value) = 0;
@@ -123,6 +177,8 @@ namespace mge::script {
         virtual void store_object_argument(size_t               index,
                                            void*                value,
                                            const type_data_ref& t) = 0;
+
+        virtual call_result_type call_method(const char* method) = 0;
 
         virtual bool        get_bool_result() = 0;
         virtual int8_t      get_int8_t_result() = 0;
