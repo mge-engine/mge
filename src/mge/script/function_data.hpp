@@ -20,7 +20,6 @@ namespace mge::script {
 
         void set_invoker(const invoke_function& invoker)
         {
-            // std::cerr << "Setting invoker for " << m_name << std::endl;
             m_invoker = invoker;
         }
 

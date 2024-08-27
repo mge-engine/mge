@@ -119,7 +119,14 @@ namespace mge::script {
                                    type_data_ref,
                                    call_signature,
                                    mge::script::invoke_function>>
-                               methods;
+                methods;
+
+            std::vector<std::tuple<std::string,
+                                   type_data_ref,
+                                   call_signature,
+                                   mge::script::invoke_function>>
+                functions;
+
             type_data_ref      proxy_type;
             type_data_weak_ref interface_type;
         };

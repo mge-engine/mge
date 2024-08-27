@@ -355,6 +355,37 @@ namespace mge::script {
             return *this;
         }
 
+        template <typename... Args>
+        type<T>& function(const char* name, void (*func)(Args...))
+        {
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            for (size_t i = 0; i < arg_types.size(); ++i) {
+                if (!arg_types[i]->registered()) {
+                    MGE_THROW(illegal_state)
+                        << "Argument type " << arg_types[i]->name()
+                        << " for argument " << (i + 1) << " not registered";
+                }
+            }
+            type_data::call_signature sig = {typeid(Args)...};
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<void>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        size_t index{0};
+                        func(ctx.get_parameter<Args>(index++)...);
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
         template <typename Proxy>
             requires std::is_base_of_v<proxy<T>, Proxy>
         type<T>& proxy()

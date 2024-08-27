@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/atexit.hpp"
 #include "mge/core/call_debugger.hpp"
 #include "mge/core/crash.hpp"
 #include "mge/core/semantic_version.hpp"
@@ -31,7 +32,9 @@ namespace mge::script {
                     .method("empty", &semantic_version::empty)
                     .method("major", &semantic_version::major)
                     .method("minor", &semantic_version::minor)
-                    .method("patch", &semantic_version::patch));
+                    .method("patch", &semantic_version::patch),
+                type<atexit>().function("stop_processing",
+                                        &atexit::stop_processing));
         }
     };
 

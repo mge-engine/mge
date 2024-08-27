@@ -15,6 +15,11 @@ namespace mge {
     class MGECORE_EXPORT atexit
     {
     public:
+        atexit() = delete;
+        atexit(const atexit&) = delete;
+        atexit& operator=(const atexit&) = delete;
+        ~atexit() = delete;
+
         using callback = std::function<void()>;
 
         /**
@@ -30,6 +35,6 @@ namespace mge {
          * processing, or before processing atexit callbacks to prevent
          * processing at all.
          */
-        void stop_processing();
+        static void stop_processing();
     };
 } // namespace mge
