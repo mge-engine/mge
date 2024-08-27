@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
@@ -155,7 +156,7 @@ namespace mge::script {
     };
 
     template <typename T>
-        requires std::is_class_v<T>
+        requires(std::is_class_v<T> && !mge::is_callable_v<T>)
     class type<T>
     {
     public:
@@ -358,6 +359,14 @@ namespace mge::script {
             requires std::is_base_of_v<proxy<T>, Proxy>
         type<T>& proxy()
         {
+            type<Proxy> proxy_type;
+            if (proxy_type.registered()) {
+                MGE_THROW(illegal_state)
+                    << "Proxy type " << mge::type_name<Proxy>()
+                    << " is already registered";
+            }
+            m_data->class_specific().proxy_type = proxy_type.data();
+            proxy_type.data()->class_specific().interface_type = m_data;
             return *this;
         }
 

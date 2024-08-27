@@ -21,6 +21,7 @@ namespace mge {
 
         MGE_DECLARE_REF(module_data);
         MGE_DECLARE_REF(type_data);
+        MGE_DECLARE_WEAK_REF(type_data);
         MGE_DECLARE_REF(function_data);
         MGE_DECLARE_REF(method_data);
         MGE_DECLARE_REF(constructor_data);

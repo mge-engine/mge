@@ -119,7 +119,9 @@ namespace mge::script {
                                    type_data_ref,
                                    call_signature,
                                    mge::script::invoke_function>>
-                methods;
+                               methods;
+            type_data_ref      proxy_type;
+            type_data_weak_ref interface_type;
         };
 
         struct pod_details

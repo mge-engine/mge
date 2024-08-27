@@ -271,6 +271,17 @@ namespace mge::script {
             return true;
         } else {
             switch (m_details.index()) {
+            case 2:
+                // a proxy class (this type) is registered if the interface
+                // type is registered
+                if (!std::get<class_details>(m_details)
+                         .interface_type.expired()) {
+                    return std::get<class_details>(m_details)
+                        .interface_type.lock()
+                        ->registered();
+                } else {
+                    return false;
+                }
             case 4:
                 return std::get<pointer_details>(m_details)
                     .pointee->registered();
