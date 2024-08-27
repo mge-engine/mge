@@ -44,4 +44,10 @@ ADD_LIBRARY(mge_module_script_core MODULE ${mge_module_script_core_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_core mgescript mgecore)
 
 
+SET(mge_module_script_application_SOURCES
+    bind_application.cpp)
+ADD_LIBRARY(mge_module_script_application MODULE ${mge_module_script_application_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_application mgescript mgecore mgeapplication)
+
+
 ADD_SUBDIRECTORY(test)

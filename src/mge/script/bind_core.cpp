@@ -12,7 +12,7 @@
 #include "mge/script/type.hpp"
 
 namespace mge::script {
-    class core_script_binder : script_binder
+    class core_script_binder : public script_binder
     {
     public:
         core_script_binder() = default;
@@ -34,4 +34,10 @@ namespace mge::script {
                     .method("patch", &semantic_version::patch));
         }
     };
+
+    MGE_REGISTER_IMPLEMENTATION(core_script_binder,
+                                mge::script_binder,
+                                mgecore,
+                                core);
+
 } // namespace mge::script
