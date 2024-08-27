@@ -97,3 +97,43 @@ TEST(type, proxy)
     mge::script::module m;
     m(type<base>().proxy<script_impl>());
 };
+
+class overloaded_methods
+{
+public:
+    overloaded_methods() = default;
+    overloaded_methods(const overloaded_methods&) = delete;
+    overloaded_methods& operator=(const overloaded_methods&) = delete;
+    ~overloaded_methods() = default;
+
+    int foobar(int x) { return x; }
+    int foobar(float x) { return static_cast<int>(-x); }
+};
+
+TEST(type, overloaded_methods)
+{
+    using namespace mge::script;
+
+    mge::script::module m;
+    m(type<overloaded_methods>()
+          .method("foobar",
+                  static_cast<int (overloaded_methods::*)(int)>(
+                      &overloaded_methods::foobar))
+          .method("foobar",
+                  static_cast<int (overloaded_methods::*)(float)>(
+                      &overloaded_methods::foobar)));
+
+    const auto& t = m.type("overloaded_methods");
+    const auto& methods = t.class_specific().methods;
+
+    EXPECT_EQ(2, methods.size());
+    overloaded_methods om;
+    MOCK_call_context  ctx;
+    EXPECT_CALL(ctx, get_this()).WillRepeatedly(Return(&om));
+    EXPECT_CALL(ctx, store_int32_t_result(42)).Times(1);
+    EXPECT_CALL(ctx, get_int32_t_parameter(0)).WillOnce(Return(42));
+    std::get<3>(methods[0])(ctx);
+    EXPECT_CALL(ctx, store_int32_t_result(-42)).Times(1);
+    EXPECT_CALL(ctx, get_float_parameter(0)).WillOnce(Return(42.0f));
+    std::get<3>(methods[1])(ctx);
+};
