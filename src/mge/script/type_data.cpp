@@ -44,19 +44,15 @@ namespace mge::script {
     }
 
     type_data_ref type_data::create(const std::type_info& ti,
-                                    type_data::type_kind  kind,
-                                    const char*           alias_name)
+                                    type_data::type_kind  kind)
     {
-        auto td = std::make_shared<type_data>(ti, kind, alias_name);
+        auto td = std::make_shared<type_data>(ti, kind);
         s_all_types->put(std::type_index(ti), td);
         return td;
     }
 
-    type_data::type_data(const std::type_info& ti,
-                         type_data::type_kind  kind,
-                         const char*           alias_name)
+    type_data::type_data(const std::type_info& ti, type_data::type_kind kind)
         : m_type_info(&ti)
-        , m_alias_name(alias_name ? alias_name : "")
     {
         switch (kind) {
         case type_kind::ENUM:
@@ -87,13 +83,7 @@ namespace mge::script {
 
     type_data::~type_data() = default;
 
-    const std::string& type_data::name() const
-    {
-        if (m_name.empty()) {
-            m_name = mge::base_type_name(*m_type_info);
-        }
-        return m_name;
-    }
+    std::string type_data::name() const { return ""; }
 
     type_data::enum_details& type_data::enum_specific()
     {
@@ -267,7 +257,7 @@ namespace mge::script {
 
     bool type_data::registered() const
     {
-        if (m_registered) {
+        if (m_module.lock()) {
             return true;
         } else {
             switch (m_details.index()) {
