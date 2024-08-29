@@ -54,8 +54,11 @@ namespace mge::script {
         return td;
     }
 
-    type_data::type_data(const std::type_info& ti, type_data::type_kind kind)
+    type_data::type_data(const std::type_info& ti,
+                         type_data::type_kind  kind,
+                         uint8_t               cv)
         : m_type_info(&ti)
+        , m_key(std::type_index(ti), kind, cv)
     {
         MGE_DEBUG_TRACE(SCRIPT)
             << "Creating type data for '" << type_name(ti) << "'";

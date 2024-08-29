@@ -33,8 +33,9 @@ namespace mge::script {
                     .method("major", &semantic_version::major)
                     .method("minor", &semantic_version::minor)
                     .method("patch", &semantic_version::patch),
-                type<atexit>().function("stop_processing",
-                                        &atexit::stop_processing));
+                type<atexit>()
+                    .function("stop_processing", &atexit::stop_processing)
+                    .function("run", &atexit::run));
         }
     };
 

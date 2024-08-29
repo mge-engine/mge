@@ -136,4 +136,4 @@ TEST(type, overloaded_methods)
     EXPECT_CALL(ctx, store_int32_t_result(-42)).Times(1);
     EXPECT_CALL(ctx, get_float_parameter(0)).WillOnce(Return(42.0f));
     std::get<3>(methods[1])(ctx);
-};
+}

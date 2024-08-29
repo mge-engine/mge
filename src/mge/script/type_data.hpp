@@ -36,12 +36,25 @@ namespace mge::script {
             VOID
         };
 
-        type_data(const std::type_info& ti, type_kind kind);
+        enum class type_cv : uint8_t
+        {
+            NONE = 0,
+            CONST = 1,
+            VOLATILE = 2,
+            CONST_VOLATILE = 3
+        };
+
+        using type_key = std::tuple<std::type_index, type_kind, uint8_t>;
+
+        type_data(const std::type_info& ti,
+                  type_kind             kind,
+                  uint8_t               cv = std::to_underlying(type_cv::NONE));
         type_data(const type_data&) = delete;
         type_data& operator=(const type_data&) = delete;
 
         type_data(type_data&& t)
             : m_type_info(t.m_type_info)
+            , m_key(std::move(t.m_key))
             , m_module(std::move(t.m_module))
             , m_details(std::move(t.m_details))
         {}
@@ -49,6 +62,7 @@ namespace mge::script {
         type_data& operator=(type_data&& other)
         {
             m_type_info = std::move(other.m_type_info);
+            m_key = std::move(other.m_key);
             m_module = std::move(other.m_module);
             m_details = std::move(other.m_details);
             return *this;
@@ -61,6 +75,11 @@ namespace mge::script {
 
         void set_module(const module_data_ref& m) { m_module = m; }
 
+        template <typename T> bool same_as() const
+        {
+            return m_type_info == &typeid(T);
+        }
+
         bool is_pod() const;
         bool is_enum() const;
         bool is_class() const;
@@ -68,6 +87,7 @@ namespace mge::script {
         bool is_reference() const;
         bool is_rvalue_reference() const;
         bool is_void() const;
+        bool is_callable() const;
 
         bool is_string() const;
         bool is_wstring() const;
@@ -91,6 +111,7 @@ namespace mge::script {
             bool                         is_string{false};
             bool                         is_wstring{false};
             bool                         is_abstract{false};
+            bool                         is_callable{false};
             size_t                       size{0};
             mge::script::invoke_function destroy;
             mge::script::invoke_function default_construct;
@@ -179,6 +200,7 @@ namespace mge::script {
                                           type_data::void_details>;
 
         const std::type_info* m_type_info{nullptr};
+        type_key              m_key;
         module_data_weak_ref  m_module;
         details_type          m_details;
     };

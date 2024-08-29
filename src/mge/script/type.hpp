@@ -14,9 +14,7 @@
 
 namespace mge::script {
 
-    namespace {} // namespace
-
-    // Simple Types
+    // POD Types
     // - integers
     // - floating point
     // - boolean
@@ -61,6 +59,9 @@ namespace mge::script {
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return false; }
         bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
         type_data_ref data() const noexcept { return m_data; }
 
@@ -94,9 +95,16 @@ namespace mge::script {
         bool is_enum() const noexcept { return true; }
         bool is_pod() const noexcept { return false; }
         bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
-        bool registered() const noexcept { return m_data->registered(); }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
 
     private:
         type_data_ref m_data;
@@ -122,6 +130,9 @@ namespace mge::script {
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return true; }
         bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
 
@@ -151,6 +162,9 @@ namespace mge::script {
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return true; }
         bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
 
@@ -194,6 +208,9 @@ namespace mge::script {
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return false; }
         bool is_class() const noexcept { return true; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
 
@@ -312,14 +329,7 @@ namespace mge::script {
         type<T>& method(const char* name, void (T::*method)(Args...))
         {
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            for (size_t i = 0; i < arg_types.size(); ++i) {
-                if (!arg_types[i]->registered()) {
-                    MGE_THROW(illegal_state)
-                        << "Argument type " << mge::type_name<Args>()
-                        << " for argument " << (i + 1) << " not registered";
-                }
-            }
-            type_data::call_signature sig = {typeid(Args)...};
+            type_data::call_signature  sig = {typeid(Args)...};
             m_data.class_specific().methods.emplace_back(
                 name,
                 type<void>().data(),
@@ -418,6 +428,40 @@ namespace mge::script {
         type_data_ref m_data;
     };
 
+    template <typename R, typename... Args>
+    class type<std::function<R(Args...)>>
+    {
+    public:
+        type()
+        {
+            m_data = type_data::get(typeid(std::function<R(Args...)>));
+            if (!m_data) {
+                m_data = type_data::create(typeid(std::function<R(Args...)>),
+                                           type_data::type_kind::CLASS);
+                m_data->class_specific().is_callable = true;
+            }
+        }
+
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return true; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
+
+    private:
+        type_data_ref m_data;
+    };
+
     template <typename T>
         requires std::is_pointer_v<T>
     class type<T>
@@ -444,9 +488,101 @@ namespace mge::script {
         bool is_enum() const noexcept { return false; }
         bool is_pod() const noexcept { return false; }
         bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return true; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
-        bool registered() const noexcept { return m_data->registered(); }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
+
+    private:
+        type_data_ref m_data;
+    };
+
+    template <typename T>
+        requires(std::is_reference_v<T> && !std::is_rvalue_reference_v<T>)
+    class type<T>
+    {
+    public:
+        type()
+        {
+            m_data = type_data::get(typeid(T));
+            if (!m_data) {
+                m_data = type_data::create(typeid(T),
+                                           type_data::type_kind::REFERENCE);
+                type<std::remove_cv_t<std::remove_reference_t<T>>>
+                    referencee_type;
+                m_data->reference_specific().referencee =
+                    referencee_type.data();
+                m_data->reference_specific().is_const =
+                    std::is_const_v<std::remove_reference_t<T>>;
+                m_data->reference_specific().is_volatile =
+                    std::is_volatile_v<std::remove_reference_t<T>>;
+            }
+        }
+
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
+
+    private:
+        type_data_ref m_data;
+    };
+
+    template <typename T>
+        requires std::is_rvalue_reference_v<T>
+    class type<T>
+    {
+    public:
+        type()
+        {
+            m_data = type_data::get(typeid(T));
+            if (!m_data) {
+                m_data =
+                    type_data::create(typeid(T),
+                                      type_data::type_kind::RVALUE_REFERENCE);
+                type<std::remove_cv_t<std::remove_reference_t<T>>>
+                    referencee_type;
+                m_data->rvalue_reference_specific().referencee =
+                    referencee_type.data();
+                m_data->rvalue_reference_specific().is_const =
+                    std::is_const_v<std::remove_reference_t<T>>;
+                m_data->rvalue_reference_specific().is_volatile =
+                    std::is_volatile_v<std::remove_reference_t<T>>;
+            }
+        }
+
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return true; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
 
     private:
         type_data_ref m_data;
