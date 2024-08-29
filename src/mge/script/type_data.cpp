@@ -255,36 +255,6 @@ namespace mge::script {
         }
     }
 
-    bool type_data::registered() const
-    {
-        if (m_module.lock()) {
-            return true;
-        } else {
-            switch (m_details.index()) {
-            case 2:
-                // a proxy class (this type) is registered if the interface
-                // type is registered
-                if (!std::get<class_details>(m_details)
-                         .interface_type.expired()) {
-                    return std::get<class_details>(m_details)
-                        .interface_type.lock()
-                        ->registered();
-                } else {
-                    return false;
-                }
-            case 4:
-                return std::get<pointer_details>(m_details)
-                    .pointee->registered();
-            case 5:
-                return std::get<reference_details>(m_details)
-                    .referencee->registered();
-            case 6:
-                return std::get<rvalue_reference_details>(m_details)
-                    .referencee->registered();
-            default:
-                return false;
-            }
-        }
-    }
+    bool type_data::exposed_directly() const { return !m_module.expired(); }
 
 } // namespace mge::script

@@ -124,7 +124,11 @@ namespace mge::script {
         bool is_class() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
-        bool registered() const noexcept { return m_data->registered(); }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
 
     private:
         type_data_ref m_data;
@@ -149,7 +153,11 @@ namespace mge::script {
         bool is_class() const noexcept { return false; }
 
         const type_data_ref& data() const noexcept { return m_data; }
-        bool registered() const noexcept { return m_data->registered(); }
+
+        bool exposed_directly() const noexcept
+        {
+            return m_data->exposed_directly();
+        }
 
     private:
         type_data_ref m_data;
@@ -188,7 +196,11 @@ namespace mge::script {
         bool is_class() const noexcept { return true; }
 
         const type_data_ref& data() const noexcept { return m_data; }
-        bool registered() const noexcept { return m_data->registered(); }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
 
         template <typename... Args> type<T>& constructor()
         {
@@ -212,10 +224,6 @@ namespace mge::script {
         template <typename F> type<T>& field(const char* name, F T::*field)
         {
             type<F> field_type;
-            if (!field_type.registered()) {
-                MGE_THROW(illegal_state) << "Field type " << mge::type_name<F>()
-                                         << " not registered";
-            }
             if constexpr (std::is_const_v<F>) {
                 m_data->class_specific().fields.emplace_back(
                     name,
@@ -247,20 +255,9 @@ namespace mge::script {
             method(const char* name, R (T::*method)(Args...))
         {
             type<R> return_type;
-            if (!return_type.registered()) {
-                MGE_THROW(illegal_state)
-                    << "Return type " << mge::type_name<R>()
-                    << " not registered";
-            }
+
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            for (size_t i = 0; i < arg_types.size(); ++i) {
-                if (!arg_types[i]->registered()) {
-                    MGE_THROW(illegal_state)
-                        << "Argument type " << arg_types[i]->name()
-                        << " for argument " << (i + 1) << " not registered";
-                }
-            }
-            type_data::call_signature sig = {typeid(Args)...};
+            type_data::call_signature  sig = {typeid(Args)...};
             m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
@@ -287,21 +284,9 @@ namespace mge::script {
                      type<T> &
             method(const char* name, R (T::*method)(Args...) const)
         {
-            type<R> return_type;
-            if (!return_type.registered()) {
-                MGE_THROW(illegal_state)
-                    << "Return type " << mge::type_name<R>()
-                    << " not registered";
-            }
+            type<R>                    return_type;
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            for (size_t i = 0; i < arg_types.size(); ++i) {
-                if (!arg_types[i]->registered()) {
-                    MGE_THROW(illegal_state)
-                        << "Argument type " << arg_types[i]->name()
-                        << " for argument " << (i + 1) << " not registered";
-                }
-            }
-            type_data::call_signature sig = {typeid(Args)...};
+            type_data::call_signature  sig = {typeid(Args)...};
             m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
@@ -359,14 +344,7 @@ namespace mge::script {
         type<T>& function(const char* name, void (*func)(Args...))
         {
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            for (size_t i = 0; i < arg_types.size(); ++i) {
-                if (!arg_types[i]->registered()) {
-                    MGE_THROW(illegal_state)
-                        << "Argument type " << arg_types[i]->name()
-                        << " for argument " << (i + 1) << " not registered";
-                }
-            }
-            type_data::call_signature sig = {typeid(Args)...};
+            type_data::call_signature  sig = {typeid(Args)...};
             m_data->class_specific().functions.emplace_back(
                 name,
                 type<void>().data(),
@@ -391,11 +369,6 @@ namespace mge::script {
         type<T>& proxy()
         {
             type<Proxy> proxy_type;
-            if (proxy_type.registered()) {
-                MGE_THROW(illegal_state)
-                    << "Proxy type " << mge::type_name<Proxy>()
-                    << " is already registered";
-            }
             m_data->class_specific().proxy_type = proxy_type.data();
             proxy_type.data()->class_specific().interface_type = m_data;
             return *this;

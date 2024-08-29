@@ -74,7 +74,7 @@ namespace mge::script {
         bool is_const() const;
         bool is_volatile() const;
 
-        bool registered() const;
+        bool exposed_directly() const;
 
         std::string name() const;
         struct enum_details
