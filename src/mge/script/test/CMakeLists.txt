@@ -17,4 +17,8 @@ MGE_TEST(
     LIBRARIES   mgecore mgescript
 )
 
-
+MGE_TEST(
+    TARGET      test_script_context
+    SOURCES     test_script_context.cpp
+    LIBRARIES   mgecore mgescript
+)

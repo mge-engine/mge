@@ -8,8 +8,8 @@
 class MOCK_call_context : public mge::script::call_context
 {
 public:
-    MOCK_call_context() {}
-    ~MOCK_call_context() {}
+    MOCK_call_context() = default;
+    ~MOCK_call_context() = default;
 
     MOCK_METHOD(void*, get_this, (), (override));
 
