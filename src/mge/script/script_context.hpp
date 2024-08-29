@@ -32,6 +32,11 @@ namespace mge {
          * @return return code
          */
         virtual int main(int argc, const char** argv) = 0;
+
+        /**
+         * Resolve bindings without creating a script context.
+         */
+        static void resolve_bindings();
     };
 
     MGE_DECLARE_REF(script_context);

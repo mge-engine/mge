@@ -36,4 +36,6 @@ namespace mge {
     static singleton<binder> s_binder;
 
     script_context::script_context() { s_binder->resolve(); }
+
+    void script_context::resolve_bindings() { s_binder->resolve(); }
 } // namespace mge

@@ -4,11 +4,14 @@
 #include "mge/script/type_data.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/core/type_name.hpp"
-
 #include <map>
 #include <typeindex>
 
+namespace mge {
+    MGE_USE_TRACE(SCRIPT);
+}
 namespace mge::script {
     class type_dictionary
     {
@@ -54,6 +57,8 @@ namespace mge::script {
     type_data::type_data(const std::type_info& ti, type_data::type_kind kind)
         : m_type_info(&ti)
     {
+        MGE_DEBUG_TRACE(SCRIPT)
+            << "Creating type data for '" << type_name(ti) << "'";
         switch (kind) {
         case type_kind::ENUM:
             m_details = enum_details();
@@ -83,7 +88,7 @@ namespace mge::script {
 
     type_data::~type_data() = default;
 
-    std::string type_data::name() const { return ""; }
+    std::string type_data::name() const { return type_name(*m_type_info); }
 
     type_data::enum_details& type_data::enum_specific()
     {

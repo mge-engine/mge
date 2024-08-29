@@ -79,12 +79,14 @@ namespace mge::script {
         std::string name() const;
         struct enum_details
         {
+            std::string                                  name;
             type_data_ref                                underlying_type;
             std::vector<std::pair<int64_t, std::string>> values;
         };
 
         struct class_details
         {
+            std::string                  name;
             std::vector<type_data_ref>   base_classes;
             bool                         is_string{false};
             bool                         is_wstring{false};
@@ -119,7 +121,8 @@ namespace mge::script {
 
         struct pod_details
         {
-            size_t size{0};
+            std::string name;
+            size_t      size{0};
         };
 
         struct pointer_details
