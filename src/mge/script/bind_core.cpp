@@ -3,10 +3,11 @@
 // All rights reserved.
 #include "mge/core/atexit.hpp"
 #include "mge/core/call_debugger.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/parameter.hpp"
 #include "mge/core/semantic_version.hpp"
 #include "mge/core/trace_level.hpp"
-
 #include "mge/script/function.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/script_binder.hpp"
@@ -35,7 +36,27 @@ namespace mge::script {
                     .method("patch", &semantic_version::patch),
                 type<atexit>()
                     .function("stop_processing", &atexit::stop_processing)
-                    .function("run", &atexit::run));
+                    .function("run", &atexit::run),
+                // type<buffer>(),
+                type<configuration>()
+                    .function("register_parameter",
+                              &configuration::register_parameter)
+                    .function("unregister_parameter",
+                              &configuration::unregister_parameter)
+                    // .function(
+                    //     "find_parameter",
+                    //     static_cast<basic_parameter& (*)(std::string_view,
+                    //                                      std::string_view)>(
+                    //         &configuration::find_parameter))
+                    .function("load", &configuration::load)
+                    .function("evaluate_command_line",
+                              &configuration::evaluate_command_line)
+                    .function("store", &configuration::store)
+                    .function("loaded", &configuration::loaded)
+                // .function("root", &configuration::root)
+
+                // ,type<mge::exception>().method("what", &mge::exception::what)
+            );
         }
     };
 

@@ -6,6 +6,7 @@
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type_identifier.hpp"
 
 #include <iostream>
 #include <optional>
@@ -23,38 +24,15 @@ namespace mge::script {
     class MGESCRIPT_EXPORT type_data
     {
     public:
-        using call_signature = std::vector<std::type_index>;
+        using call_signature = std::vector<type_identifier>;
 
-        enum class type_kind
-        {
-            ENUM,
-            CLASS,
-            POD,
-            POINTER,
-            REFERENCE,
-            RVALUE_REFERENCE,
-            VOID
-        };
-
-        enum class type_cv : uint8_t
-        {
-            NONE = 0,
-            CONST = 1,
-            VOLATILE = 2,
-            CONST_VOLATILE = 3
-        };
-
-        using type_key = std::tuple<std::type_index, type_kind, uint8_t>;
-
-        type_data(const std::type_info& ti,
-                  type_kind             kind,
-                  uint8_t               cv = std::to_underlying(type_cv::NONE));
+        type_data(const std::type_info& ti, const type_identifier& id);
         type_data(const type_data&) = delete;
         type_data& operator=(const type_data&) = delete;
 
         type_data(type_data&& t)
             : m_type_info(t.m_type_info)
-            , m_key(std::move(t.m_key))
+            , m_identifier(std::move(t.m_identifier))
             , m_module(std::move(t.m_module))
             , m_details(std::move(t.m_details))
         {}
@@ -62,7 +40,7 @@ namespace mge::script {
         type_data& operator=(type_data&& other)
         {
             m_type_info = std::move(other.m_type_info);
-            m_key = std::move(other.m_key);
+            m_identifier = std::move(other.m_identifier);
             m_module = std::move(other.m_module);
             m_details = std::move(other.m_details);
             return *this;
@@ -70,8 +48,14 @@ namespace mge::script {
 
         ~type_data();
 
-        static type_data_ref get(const std::type_info& ti);
-        static type_data_ref create(const std::type_info& ti, type_kind kind);
+        static type_data_ref get(const type_identifier& key);
+        static type_data_ref create(const std::type_info&  ti,
+                                    const type_identifier& id);
+
+        const type_identifier& identifier() const noexcept
+        {
+            return m_identifier;
+        }
 
         void set_module(const module_data_ref& m) { m_module = m; }
 
@@ -149,22 +133,16 @@ namespace mge::script {
         struct pointer_details
         {
             type_data_ref pointee;
-            bool          is_const{false};
-            bool          is_volatile{false};
         };
 
         struct reference_details
         {
             type_data_ref referencee;
-            bool          is_const{false};
-            bool          is_volatile{false};
         };
 
         struct rvalue_reference_details
         {
             type_data_ref referencee;
-            bool          is_const{false};
-            bool          is_volatile{false};
         };
 
         struct void_details
@@ -200,7 +178,7 @@ namespace mge::script {
                                           type_data::void_details>;
 
         const std::type_info* m_type_info{nullptr};
-        type_key              m_key;
+        type_identifier       m_identifier;
         module_data_weak_ref  m_module;
         details_type          m_details;
     };

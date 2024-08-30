@@ -48,10 +48,10 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(void));
+            type_identifier id = make_type_identifier<void>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(void), type_data::type_kind::VOID);
+                m_data = type_data::create(typeid(void), id);
             }
         }
         bool is_void() const noexcept { return true; }
@@ -76,12 +76,14 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(T), type_data::type_kind::ENUM);
+                m_data = type_data::create(typeid(T), id);
+                type_identifier underlying_id =
+                    make_type_identifier<mge::underlying_type_t<T>>();
                 m_data->enum_specific().underlying_type =
-                    type_data::get(typeid(mge::underlying_type_t<T>));
+                    type_data::get(underlying_id);
                 for (auto& v : mge::enum_entries<T>()) {
                     m_data->enum_specific().values.emplace_back(
                         static_cast<int64_t>(v.first),
@@ -117,10 +119,10 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(T), type_data::type_kind::POD);
+                m_data = type_data::create(typeid(T), id);
                 m_data->pod_specific().size = sizeof(T);
             }
         }
@@ -150,10 +152,10 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(bool));
+            type_identifier id = make_type_identifier<bool>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(bool), type_data::type_kind::POD);
+                m_data = type_data::create(typeid(bool), id);
                 m_data->pod_specific().size = sizeof(bool);
             }
         }
@@ -184,21 +186,20 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(T), type_data::type_kind::CLASS);
+                m_data = type_data::create(typeid(T), id);
                 initialize();
             }
         }
 
         type(const char* alias_name)
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data = type_data::create(typeid(T),
-                                           type_data::type_kind::CLASS,
-                                           alias_name);
+                m_data = type_data::create(typeid(T), id, alias_name);
                 initialize();
             }
         }
@@ -225,7 +226,7 @@ namespace mge::script {
                 MGE_THROW(illegal_state)
                     << "Cannot create constructor for abstract class";
             }
-            type_data::call_signature sig = {typeid(Args)...};
+            type_data::call_signature sig = {make_type_identifier<Args>()...};
 
             m_data->class_specific().constructors.emplace_back(
                 sig,
@@ -274,7 +275,7 @@ namespace mge::script {
             type<R> return_type;
 
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {typeid(Args)...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
             m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
@@ -354,7 +355,7 @@ namespace mge::script {
         type<T>& function(const char* name, void (*func)(Args...))
         {
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {typeid(Args)...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
             m_data->class_specific().functions.emplace_back(
                 name,
                 type<void>().data(),
@@ -363,6 +364,33 @@ namespace mge::script {
                     try {
                         size_t index{0};
                         func(ctx.get_parameter<Args>(index++)...);
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            function(const char* name, R (*func)(Args...))
+        {
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {typeid(Args)...};
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<R>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        size_t index{0};
+                        ctx.store_result(
+                            func(ctx.get_parameter<Args>(index++)...));
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
                     } catch (const std::exception& e) {
@@ -414,7 +442,8 @@ namespace mge::script {
                         };
                 }
                 if constexpr (std::is_copy_constructible_v<T>) {
-                    type_data::call_signature sig = {typeid(const T&)};
+                    type_data::call_signature sig = {
+                        make_type_identifier<const T&>()};
                     m_data->class_specific().constructors.emplace_back(
                         sig,
                         [](call_context& ctx) {
@@ -434,10 +463,12 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(std::function<R(Args...)>));
+            type_identifier id =
+                make_type_identifier<std::function<R(Args...)>>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data = type_data::create(typeid(std::function<R(Args...)>),
-                                           type_data::type_kind::CLASS);
+                m_data =
+                    type_data::create(typeid(std::function<R(Args...)>), id);
                 m_data->class_specific().is_callable = true;
             }
         }
@@ -462,24 +493,18 @@ namespace mge::script {
         type_data_ref m_data;
     };
 
-    template <typename T>
-        requires std::is_pointer_v<T>
-    class type<T>
+    template <typename T> class type<T*>
     {
     public:
         type()
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T*>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(T), type_data::type_kind::POINTER);
+                m_data = type_data::create(typeid(T*), id);
                 // plain pointee type, no const here
-                type<std::remove_cv_t<std::remove_pointer_t<T>>> pointee_type;
+                type<std::remove_cv_t<T>> pointee_type;
                 m_data->pointer_specific().pointee = pointee_type.data();
-                m_data->pointer_specific().is_const =
-                    std::is_const_v<std::remove_pointer_t<T>>;
-                m_data->pointer_specific().is_volatile =
-                    std::is_volatile_v<std::remove_pointer_t<T>>;
             }
         }
 
@@ -510,18 +535,14 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data = type_data::create(typeid(T),
-                                           type_data::type_kind::REFERENCE);
+                m_data = type_data::create(typeid(T), id);
                 type<std::remove_cv_t<std::remove_reference_t<T>>>
                     referencee_type;
                 m_data->reference_specific().referencee =
                     referencee_type.data();
-                m_data->reference_specific().is_const =
-                    std::is_const_v<std::remove_reference_t<T>>;
-                m_data->reference_specific().is_volatile =
-                    std::is_volatile_v<std::remove_reference_t<T>>;
             }
         }
 
@@ -552,19 +573,14 @@ namespace mge::script {
     public:
         type()
         {
-            m_data = type_data::get(typeid(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
             if (!m_data) {
-                m_data =
-                    type_data::create(typeid(T),
-                                      type_data::type_kind::RVALUE_REFERENCE);
+                m_data = type_data::create(typeid(T), id);
                 type<std::remove_cv_t<std::remove_reference_t<T>>>
                     referencee_type;
                 m_data->rvalue_reference_specific().referencee =
                     referencee_type.data();
-                m_data->rvalue_reference_specific().is_const =
-                    std::is_const_v<std::remove_reference_t<T>>;
-                m_data->rvalue_reference_specific().is_volatile =
-                    std::is_volatile_v<std::remove_reference_t<T>>;
             }
         }
 

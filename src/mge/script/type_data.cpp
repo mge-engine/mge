@@ -19,11 +19,11 @@ namespace mge::script {
         type_dictionary() = default;
         ~type_dictionary() = default;
 
-        type_data_ref get(const std::type_index& ti)
+        type_data_ref get(const type_identifier& k)
         {
             type_data_ref result;
 
-            auto i = m_types.find(ti);
+            auto i = m_types.find(k);
             if (i != m_types.end()) {
                 result = i->second;
             }
@@ -31,57 +31,51 @@ namespace mge::script {
             return result;
         }
 
-        void put(const std::type_index& ti, const type_data_ref& td)
-        {
-            m_types[ti] = td;
-        }
+        void put(const type_data_ref& td) { m_types[td->identifier()] = td; }
 
-        std::map<std::type_index, type_data_ref> m_types;
+        std::map<type_identifier, type_data_ref> m_types;
     };
 
     mge::singleton<type_dictionary> s_all_types;
 
-    type_data_ref type_data::get(const std::type_info& ti)
+    type_data_ref type_data::get(const type_identifier& id)
     {
-        return s_all_types->get(std::type_index(ti));
+        return s_all_types->get(id);
     }
 
-    type_data_ref type_data::create(const std::type_info& ti,
-                                    type_data::type_kind  kind)
+    type_data_ref type_data::create(const std::type_info&  ti,
+                                    const type_identifier& id)
     {
-        auto td = std::make_shared<type_data>(ti, kind);
-        s_all_types->put(std::type_index(ti), td);
+        auto td = std::make_shared<type_data>(ti, id);
+        s_all_types->put(td);
         return td;
     }
 
-    type_data::type_data(const std::type_info& ti,
-                         type_data::type_kind  kind,
-                         uint8_t               cv)
+    type_data::type_data(const std::type_info& ti, const type_identifier& id)
         : m_type_info(&ti)
-        , m_key(std::type_index(ti), kind, cv)
+        , m_identifier(id)
     {
-        MGE_DEBUG_TRACE(SCRIPT)
-            << "Creating type data for '" << type_name(ti) << "'";
-        switch (kind) {
-        case type_kind::ENUM:
+        MGE_DEBUG_TRACE(SCRIPT) << "Creating type data for '" << name() << "'";
+        switch (m_identifier.kind()) {
+        case type_identifier::TYPE_ENUM:
             m_details = enum_details();
             break;
-        case type_kind::CLASS:
+        case type_identifier::TYPE_CLASS:
             m_details = class_details();
             break;
-        case type_kind::POD:
+        case type_identifier::TYPE_POD:
             m_details = pod_details();
             break;
-        case type_kind::POINTER:
+        case type_identifier::TYPE_POINTER:
             m_details = pointer_details();
             break;
-        case type_kind::REFERENCE:
+        case type_identifier::TYPE_REFERENCE:
             m_details = reference_details();
             break;
-        case type_kind::RVALUE_REFERENCE:
+        case type_identifier::TYPE_RVALUE_REFERENCE:
             m_details = rvalue_reference_details();
             break;
-        case type_kind::VOID:
+        case type_identifier::TYPE_VOID:
             m_details = void_details();
             break;
         default:
@@ -91,7 +85,31 @@ namespace mge::script {
 
     type_data::~type_data() = default;
 
-    std::string type_data::name() const { return type_name(*m_type_info); }
+    std::string type_data::name() const
+    {
+        std::string result;
+        if (m_identifier.is_const()) {
+            result += "const ";
+        }
+        if (m_identifier.is_volatile()) {
+            result += "volatile ";
+        }
+        result += type_name(*m_type_info);
+        auto kind = m_identifier.kind();
+        switch (kind) {
+        case type_identifier::TYPE_POINTER:
+            break;
+        case type_identifier::TYPE_REFERENCE:
+            result += "&";
+            break;
+        case type_identifier::TYPE_RVALUE_REFERENCE:
+            result += "&&";
+            break;
+        default:
+            break;
+        }
+        return result;
+    }
 
     type_data::enum_details& type_data::enum_specific()
     {
@@ -235,33 +253,9 @@ namespace mge::script {
                std::get<class_details>(m_details).is_wstring;
     }
 
-    bool type_data::is_const() const
-    {
-        switch (m_details.index()) {
-        case 4:
-            return std::get<pointer_details>(m_details).is_const;
-        case 5:
-            return std::get<reference_details>(m_details).is_const;
-        case 6:
-            return std::get<rvalue_reference_details>(m_details).is_const;
-        default:
-            return false;
-        }
-    }
+    bool type_data::is_const() const { return m_identifier.is_const(); }
 
-    bool type_data::is_volatile() const
-    {
-        switch (m_details.index()) {
-        case 4:
-            return std::get<pointer_details>(m_details).is_volatile;
-        case 5:
-            return std::get<reference_details>(m_details).is_volatile;
-        case 6:
-            return std::get<rvalue_reference_details>(m_details).is_volatile;
-        default:
-            return false;
-        }
-    }
+    bool type_data::is_volatile() const { return m_identifier.is_volatile(); }
 
     bool type_data::exposed_directly() const { return !m_module.expired(); }
 

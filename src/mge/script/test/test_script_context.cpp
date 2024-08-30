@@ -3,6 +3,8 @@
 // All rights reserved.
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
+#include "mge/script/type.hpp"
+
 #include "mock_script_context.hpp"
 #include "test/googletest.hpp"
 
@@ -19,3 +21,10 @@ protected:
 };
 
 TEST_F(script_context_test, create) { MOCK_script_context ctx; }
+
+TEST_F(script_context_test, add_pointer_types)
+{
+    mge::script::type<int***>     t;
+    mge::script::type<const int*> t2;
+    mge::script::type<const int&> t3;
+}

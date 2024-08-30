@@ -7,10 +7,10 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
-
 #include <functional>
 #include <string>
 #include <type_traits>
+
 namespace mge::script {
 
     /**

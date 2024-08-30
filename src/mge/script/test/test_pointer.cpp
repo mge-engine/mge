@@ -16,6 +16,6 @@ TEST(pointer, create)
     const auto& t = m.type("int*");
     EXPECT_EQ("int*", t.name());
     EXPECT_EQ("int", t.pointer_specific().pointee->name());
-    EXPECT_FALSE(t.pointer_specific().is_const);
-    EXPECT_FALSE(t.pointer_specific().is_volatile);
+    EXPECT_FALSE(t.is_const());
+    EXPECT_FALSE(t.is_volatile());
 }

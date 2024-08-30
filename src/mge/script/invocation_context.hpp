@@ -6,6 +6,7 @@
 #include "mge/core/type_name.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type_identifier.hpp"
 
 namespace mge::script {
 
