@@ -33,7 +33,7 @@ SET(mgecore_sources
     properties.cpp
     property_object.cpp
     memory.cpp
-    call_debugger.cpp
+    debugging.cpp
     line_editor.cpp
     mutex.cpp
     io_exception.cpp
@@ -86,7 +86,7 @@ SET(mgecore_headers
     properties.hpp
     property_object.hpp
     checked_cast.hpp
-    call_debugger.cpp
+    debugging.cpp
     line_editor.hpp
     mutex.hpp
     is_container.hpp

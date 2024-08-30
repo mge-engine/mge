@@ -2,7 +2,6 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/callable.hpp"
 #include "mge/core/nth_type.hpp"
 #include "mge/core/trace.hpp"
@@ -483,7 +482,7 @@ namespace mge::script {
         {
             template <typename R, std::size_t... I>
             static inline void call(call_context& ctx,
-                                    R (T::*mptr)(MethodArgs...),
+                                    R             (T::*mptr)(MethodArgs...),
                                     std::index_sequence<I...>)
             {
                 T* objptr = static_cast<T*>(ctx.this_ptr());
@@ -524,7 +523,7 @@ namespace mge::script {
 
             template <typename InvokeResult, std::size_t... I>
             static inline void
-            call_cfunction(InvokeResult (*fptr)(MethodArgs...),
+            call_cfunction(InvokeResult  (*fptr)(MethodArgs...),
                            call_context& context,
                            std::index_sequence<I...>)
             {
@@ -570,7 +569,7 @@ namespace mge::script {
 
         template <typename R, typename... MethodArgs>
         self_type& method(const std::string& name,
-                          R (T::*mptr)(MethodArgs...) noexcept)
+                          R                  (T::*mptr)(MethodArgs...) noexcept)
         {
             std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
                 std::type_index(typeid(MethodArgs))...};
@@ -589,7 +588,7 @@ namespace mge::script {
 
         template <typename R, typename... MethodArgs>
         self_type& method(const std::string& name,
-                          R (T::*mptr)(MethodArgs...) const)
+                          R                  (T::*mptr)(MethodArgs...) const)
         {
             std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
                 std::type_index(typeid(MethodArgs))...};

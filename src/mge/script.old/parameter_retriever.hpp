@@ -2,7 +2,6 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/call_context.hpp"
 
@@ -138,11 +137,7 @@ namespace mge::script {
             , position(position)
         {}
 
-        const T& get()
-        {
-            mge::call_debugger();
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
+        const T& get() { MGE_THROW_NOT_IMPLEMENTED; }
 
         call_context& context;
         size_t        position;
@@ -155,11 +150,7 @@ namespace mge::script {
             , position(position)
         {}
 
-        const T& get()
-        {
-            mge::call_debugger();
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
+        const T& get() { MGE_THROW_NOT_IMPLEMENTED; }
 
         call_context& context;
         size_t        position;
@@ -172,11 +163,7 @@ namespace mge::script {
             , position(position_)
         {}
 
-        void* get()
-        {
-            mge::call_debugger();
-            MGE_THROW_NOT_IMPLEMENTED;
-        }
+        void* get() { MGE_THROW_NOT_IMPLEMENTED; }
 
         call_context& context;
         size_t        position;

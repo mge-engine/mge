@@ -130,11 +130,17 @@ check logic that prevents overflows and unexpected truncation of values.
 
 .. doxygenfunction:: mge::checked_cast
 
-Debugger Breakpoint
+Debugging
 -------------------
 
-Sometimes it may be useful to programmatically raise a debug breakpoint,
-i.e. stop execution when inside a debuggger. This is abstracted by
-:any:`mge::call_debugger`
+C++26 proposes an API to interact with the debugger, i.e.
+- raise a breakpoint
+- check if a debugger is attached
+- check if a debugger is attached and break
+The proposed API is implemented in the ``mge`` namespace.
 
-.. doxygenfunction:: mge::call_debugger
+.. doxygenfunction:: mge::breakpoint
+
+.. doxygenfunction:: mge::breakpoint_if_debugging 
+
+.. doxygenfunction:: mge::is_debugger_present

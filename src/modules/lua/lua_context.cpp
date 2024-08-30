@@ -6,7 +6,6 @@
 #include "lua_binder.hpp"
 #include "lua_error.hpp"
 
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/line_editor.hpp"
 
 #include <iostream>

@@ -2,7 +2,6 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/call_debugger.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/signature.hpp"
@@ -39,11 +38,7 @@ namespace mge::script {
         {
             result_retriever(invoke_context* context) {}
 
-            R retrieve() const
-            {
-                call_debugger();
-                return R();
-            }
+            R retrieve() const { return R(); }
         };
 
         template <> struct result_retriever<void>

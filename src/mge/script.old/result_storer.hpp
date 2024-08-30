@@ -2,7 +2,6 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/is_shared_ptr.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/script/call_context.hpp"
@@ -58,7 +57,6 @@ namespace mge::script {
     {
         static void store(call_context& context, void* value)
         {
-            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };
@@ -82,7 +80,6 @@ namespace mge::script {
     {
         static void store(call_context& context, T& value)
         {
-            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };
@@ -98,7 +95,6 @@ namespace mge::script {
     {
         static void store(call_context& context, const T& value)
         {
-            mge::call_debugger();
             MGE_THROW_NOT_IMPLEMENTED;
         }
     };

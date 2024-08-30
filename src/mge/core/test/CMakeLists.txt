@@ -30,7 +30,7 @@ SET(MGECORE_TEST_SOURCES
     test_checked_cast.cpp
     test_callable.cpp
     test_gist.cpp
-    test_call_debugger.cpp
+    test_debugging.cpp
     test_nargs.cpp
     test_sequenced.cpp
     test_lru_cache.cpp

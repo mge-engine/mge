@@ -2,9 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/atexit.hpp"
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/debugging.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/semantic_version.hpp"
 #include "mge/core/trace_level.hpp"
@@ -23,7 +23,10 @@ namespace mge::script {
         {
             mge::script::module mge("mge");
             mge(function("crash", &mge::crash),
-                function("call_debugger", &mge::call_debugger),
+                function("breakpoint", &mge::breakpoint),
+                function("breakpoint_if_debugging",
+                         &mge::breakpoint_if_debugging),
+                function("is_debugger_present", &mge::is_debugger_present),
                 type<trace_level>(),
                 type<semantic_version>()
                     .constructor<uint32_t>()

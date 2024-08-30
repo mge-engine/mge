@@ -2,7 +2,6 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "boost/boost_preprocessor.hpp"
-#include "mge/core/call_debugger.hpp"
 #include "mge/script/invocation_context.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/type.hpp"
