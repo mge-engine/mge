@@ -220,6 +220,16 @@ namespace mge::script {
             return m_data->directly_exposed();
         }
 
+        template <typename B>
+        type<T>& base()
+            requires std::is_base_of_v<B, T>
+        {
+            type<B> base_type;
+            m_data->class_specific().base_classes.emplace_back(
+                base_type.data());
+            return *this;
+        }
+
         template <typename... Args> type<T>& constructor()
         {
             if constexpr (std::is_abstract_v<T>) {

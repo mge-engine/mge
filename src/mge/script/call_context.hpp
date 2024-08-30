@@ -77,13 +77,15 @@ namespace mge::script {
             } else if constexpr (std::is_same_v<PlainType, long double>) {
                 store_long_double_result(value);
             } else if constexpr (std::is_same_v<PlainType, std::string> ||
-                                 std::is_same_v<T, const std::string&>) {
+                                 std::is_same_v<T, const std::string&> ||
+                                 std::is_same_v<T, std::string_view> ||
+                                 std::is_same_v<T, const char*>) {
                 store_string_result(value);
             } else if constexpr (std::is_same_v<PlainType, std::wstring> ||
                                  std::is_same_v<T, const std::wstring&>) {
                 store_wstring_result(value);
             } else {
-                auto t = type_data::get(typeid(PlainType));
+                auto t = type_data::get(make_type_identifier<PlainType>());
                 if (!t) {
                     MGE_THROW(illegal_argument)
                         << "Type " << type_name<PlainType>()

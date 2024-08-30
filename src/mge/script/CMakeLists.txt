@@ -12,6 +12,8 @@ SET(mgescript_sources
     module_data.cpp
     type_data.cpp
     function_data.cpp
+
+    bind_std.cpp
 )
 
  SET(mgescript_headers

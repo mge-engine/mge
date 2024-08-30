@@ -55,7 +55,9 @@ namespace mge::script {
                     .function("loaded", &configuration::loaded)
                 // .function("root", &configuration::root)
 
-                // ,type<mge::exception>().method("what", &mge::exception::what)
+                ,
+                type<mge::exception>().base<std::exception>()
+                //
             );
         }
     };
