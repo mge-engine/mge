@@ -314,7 +314,7 @@ namespace mge::script {
         {
             type<R>                    return_type;
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {typeid(Args)...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
             m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
@@ -340,8 +340,8 @@ namespace mge::script {
         type<T>& method(const char* name, void (T::*method)(Args...))
         {
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {typeid(Args)...};
-            m_data.class_specific().methods.emplace_back(
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            m_data->class_specific().methods.emplace_back(
                 name,
                 type<void>().data(),
                 sig,
@@ -391,7 +391,7 @@ namespace mge::script {
             function(const char* name, R (*func)(Args...))
         {
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {typeid(Args)...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
             m_data->class_specific().functions.emplace_back(
                 name,
                 type<R>().data(),

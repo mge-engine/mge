@@ -78,9 +78,10 @@ namespace mge::script {
                 store_long_double_result(value);
             } else if constexpr (std::is_same_v<PlainType, std::string> ||
                                  std::is_same_v<T, const std::string&> ||
-                                 std::is_same_v<T, std::string_view> ||
                                  std::is_same_v<T, const char*>) {
                 store_string_result(value);
+            } else if constexpr (std::is_same_v<T, std::string_view>) {
+                store_string_result(std::string(value.begin(), value.end()));
             } else if constexpr (std::is_same_v<PlainType, std::wstring> ||
                                  std::is_same_v<T, const std::wstring&>) {
                 store_wstring_result(value);
