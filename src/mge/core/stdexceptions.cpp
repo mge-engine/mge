@@ -16,4 +16,5 @@ namespace mge {
     MGE_DEFINE_EXCEPTION_CLASS(out_of_memory)
     MGE_DEFINE_EXCEPTION_CLASS(numeric_overflow)
     MGE_DEFINE_EXCEPTION_CLASS(not_implemented)
+    MGE_DEFINE_EXCEPTION_CLASS(pure_virtual_method)
 } // namespace mge

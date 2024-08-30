@@ -57,6 +57,9 @@ namespace mge {
     MGECORE_DECLARE_EXCEPTION_CLASS(numeric_overflow);
     /** @brief Thrown if a method is not implemented. */
     MGECORE_DECLARE_EXCEPTION_CLASS(not_implemented);
+    /** @brief Thrown if a method is logically pure virtual, but has an actual
+     * implementation for technical reasons. */
+    MGECORE_DECLARE_EXCEPTION_CLASS(pure_virtual_method);
 
 /**
  * @brief Helper macro to throw if argument is null.
