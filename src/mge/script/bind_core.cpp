@@ -7,6 +7,7 @@
 #include "mge/core/debugging.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/semantic_version.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/script/function.hpp"
 #include "mge/script/module.hpp"
@@ -56,10 +57,23 @@ namespace mge::script {
                               &configuration::evaluate_command_line)
                     .function("store", &configuration::store)
                     .function("loaded", &configuration::loaded)
-                // .function("root", &configuration::root)
+                    .function("root", &configuration::root),
 
-                ,
-                type<mge::exception>().base<std::exception>()
+                type<mge::exception>().base<std::exception>(),
+                type<mge::illegal_state>().base<mge::exception>(),
+                type<mge::illegal_argument>().base<mge::exception>(),
+                type<mge::out_of_range>().base<mge::exception>(),
+                type<mge::duplicate_element>().base<mge::exception>(),
+                type<mge::bad_cast>().base<mge::exception>(),
+                type<no_such_element>().base<mge::exception>(),
+                type<runtime_exception>().base<mge::exception>(),
+                type<not_yet_implemented>().base<mge::exception>(),
+                type<null_pointer>().base<mge::exception>(),
+                type<out_of_memory>().base<mge::exception>(),
+                type<numeric_overflow>().base<mge::exception>(),
+                type<not_implemented>().base<mge::exception>(),
+                type<pure_virtual_method>().base<mge::exception>()
+
                 //
             );
         }
