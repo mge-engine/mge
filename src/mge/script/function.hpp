@@ -112,6 +112,20 @@ namespace mge::script {
                             ctx.exception_thrown();
                         }
                     });
+                } else if constexpr (std::is_enum_v<R>) {
+                    m_data->set_invoker([f](call_context& ctx) {
+                        try {
+                            std::size_t index = 0;
+                            ctx.store_result(
+                                f((ctx.get_parameter<Args>(index++))...));
+                        } catch (const mge::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (const std::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
+                    });
                 } else {
                     MGE_THROW_NOT_IMPLEMENTED << "Function with "
                                               << type_name<R>()

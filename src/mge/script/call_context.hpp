@@ -7,6 +7,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_data.hpp"
+#include "mge/script/type_identifier.hpp"
 #include <functional>
 #include <string>
 #include <type_traits>
@@ -45,6 +46,14 @@ namespace mge::script {
                    std::is_same_v<PlainType, double> ||
                    std::is_same_v<PlainType, long double> ||
                    std::is_same_v<PlainType, std::string>;
+        }
+
+        template <typename T>
+            requires std::is_enum_v<T>
+        void store_result(T value)
+        {
+            type_data_ref t = type_data::get(make_type_identifier<T>());
+            store_object_result(&value, t);
         }
 
         template <typename T> void store_result(T value)
