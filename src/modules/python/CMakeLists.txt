@@ -15,8 +15,8 @@ TARGET_LINK_LIBRARIES(mge_module_python
     Python3::Python
     psapi)
 
-#ADD_EXECUTABLE(mgepython mgepython.cpp)
-#TARGET_LINK_LIBRARIES(mgepython mgecore mgescript)
+ADD_EXECUTABLE(mgepython mgepython.cpp)
+TARGET_LINK_LIBRARIES(mgepython mgecore mgescript)
 
 
 ADD_SUBDIRECTORY(test)
