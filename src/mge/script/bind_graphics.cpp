@@ -37,6 +37,7 @@ namespace mge::script {
 
     MGE_REGISTER_IMPLEMENTATION(graphics_script_binder,
                                 mge::script_binder,
-                                mgegraphics graphics);
+                                mgegraphics,
+                                graphics);
 
 } // namespace mge::script

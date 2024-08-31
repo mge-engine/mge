@@ -45,22 +45,24 @@ SET(mge_module_script_core_SOURCES
 ADD_LIBRARY(mge_module_script_core MODULE ${mge_module_script_core_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_core mgescript mgecore)
 
-
 SET(mge_module_script_application_SOURCES
     bind_application.cpp)
 ADD_LIBRARY(mge_module_script_application MODULE ${mge_module_script_application_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_application mgescript mgecore mgeapplication)
-
 
 SET(mge_module_script_input_SOURCES
     bind_input.cpp)
 ADD_LIBRARY(mge_module_script_input MODULE ${mge_module_script_input_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_input mgescript mgecore mgeinput)
 
+SET(mge_module_script_math_SOURCES
+    bind_math.cpp)
+ADD_LIBRARY(mge_module_script_math MODULE ${mge_module_script_math_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_script_math mgescript mgecore mgemath)
+
 SET(mge_module_script_graphics_SOURCES
     bind_graphics.cpp)
 ADD_LIBRARY(mge_module_script_graphics MODULE ${mge_module_script_graphics_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_script_graphics mgescript mgecore mgegraphics)
-
 
 ADD_SUBDIRECTORY(test)

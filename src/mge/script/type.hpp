@@ -196,12 +196,8 @@ namespace mge::script {
 
         type(const char* alias_name)
         {
-            type_identifier id = make_type_identifier<T>();
-            m_data = type_data::get(id);
-            if (!m_data) {
-                m_data = type_data::create(typeid(T), id, alias_name);
-                initialize();
-            }
+            type<T> pure_type;
+            m_data = type_data::create(alias_name, pure_type.data());
         }
 
         bool is_void() const noexcept { return false; }

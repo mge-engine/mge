@@ -2,10 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/type_data.hpp"
+
 #include "mge/core/singleton.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/type_name.hpp"
+
 #include <map>
 #include <typeindex>
 
@@ -51,6 +53,13 @@ namespace mge::script {
         return td;
     }
 
+    type_data_ref type_data::create(const char*          alias_name,
+                                    const type_data_ref& aliased_type)
+    {
+        auto td = std::make_shared<type_data>(alias_name, aliased_type);
+        return td;
+    }
+
     type_data::type_data(const std::type_info& ti, const type_identifier& id)
         : m_type_info(&ti)
         , m_identifier(id)
@@ -83,10 +92,27 @@ namespace mge::script {
         }
     }
 
+    type_data::type_data(const char*          alias_name,
+                         const type_data_ref& aliased_type)
+        : m_identifier(aliased_type->m_identifier)
+    {
+        MGE_DEBUG_TRACE(SCRIPT) << "Creating alias type data  '" << alias_name
+                                << "' for '" << aliased_type->name() << "'";
+        m_type_info = aliased_type->m_type_info;
+        m_identifier = aliased_type->m_identifier;
+        m_details = alias_details();
+        alias_specific().name = alias_name;
+        alias_specific().aliased_type = aliased_type;
+    }
+
     type_data::~type_data() = default;
 
     std::string type_data::name() const
     {
+        // TODO: Use name in type identifier
+
+        // alias has type identifier of aliased type
+        // so "pure name" does not change
         std::string result;
         if (m_identifier.is_const()) {
             result += "const ";
@@ -113,6 +139,9 @@ namespace mge::script {
 
     type_data::enum_details& type_data::enum_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->enum_specific();
+        }
         if (m_details.index() != 1) {
             MGE_THROW(illegal_state) << "Type is not an enum";
         }
@@ -121,6 +150,9 @@ namespace mge::script {
 
     type_data::class_details& type_data::class_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->class_specific();
+        }
         if (m_details.index() != 2) {
             MGE_THROW(illegal_state) << "Type is not a class";
         }
@@ -129,6 +161,9 @@ namespace mge::script {
 
     type_data::pod_details& type_data::pod_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->pod_specific();
+        }
         if (m_details.index() != 3) {
             MGE_THROW(illegal_state) << "Type is not a pod type";
         }
@@ -137,6 +172,9 @@ namespace mge::script {
 
     type_data::pointer_details& type_data::pointer_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->pointer_specific();
+        }
         if (m_details.index() != 4) {
             MGE_THROW(illegal_state) << "Type is not a pointer";
         }
@@ -145,6 +183,9 @@ namespace mge::script {
 
     type_data::reference_details& type_data::reference_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->reference_specific();
+        }
         if (m_details.index() != 5) {
             MGE_THROW(illegal_state) << "Type is not a reference";
         }
@@ -153,6 +194,9 @@ namespace mge::script {
 
     type_data::rvalue_reference_details& type_data::rvalue_reference_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->rvalue_reference_specific();
+        }
         if (m_details.index() != 6) {
             MGE_THROW(illegal_state) << "Type is not a rvalue reference";
         }
@@ -161,14 +205,28 @@ namespace mge::script {
 
     type_data::void_details& type_data::void_specific()
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->void_specific();
+        }
         if (m_details.index() != 7) {
             MGE_THROW(illegal_state) << "Type is not void";
         }
         return std::get<void_details>(m_details);
     }
 
+    type_data::alias_details& type_data::alias_specific()
+    {
+        if (m_details.index() != 8) {
+            MGE_THROW(illegal_state) << "Type is not an alias";
+        }
+        return std::get<alias_details>(m_details);
+    }
+
     const type_data::enum_details& type_data::enum_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->enum_specific();
+        }
         if (m_details.index() != 1) {
             MGE_THROW(illegal_state) << "Type is not an enum";
         }
@@ -177,6 +235,9 @@ namespace mge::script {
 
     const type_data::class_details& type_data::class_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->class_specific();
+        }
         if (m_details.index() != 2) {
             MGE_THROW(illegal_state) << "Type is not a class";
         }
@@ -185,6 +246,9 @@ namespace mge::script {
 
     const type_data::pod_details& type_data::pod_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->pod_specific();
+        }
         if (m_details.index() != 3) {
             MGE_THROW(illegal_state) << "Type is not a pod type";
         }
@@ -193,6 +257,9 @@ namespace mge::script {
 
     const type_data::pointer_details& type_data::pointer_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->pointer_specific();
+        }
         if (m_details.index() != 4) {
             MGE_THROW(illegal_state) << "Type is not a pointer";
         }
@@ -201,6 +268,9 @@ namespace mge::script {
 
     const type_data::reference_details& type_data::reference_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->reference_specific();
+        }
         if (m_details.index() != 5) {
             MGE_THROW(illegal_state) << "Type is not a reference";
         }
@@ -210,6 +280,9 @@ namespace mge::script {
     const type_data::rvalue_reference_details&
     type_data::rvalue_reference_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->rvalue_reference_specific();
+        }
         if (m_details.index() != 6) {
             MGE_THROW(illegal_state) << "Type is not a rvalue reference";
         }
@@ -218,10 +291,21 @@ namespace mge::script {
 
     const type_data::void_details& type_data::void_specific() const
     {
+        if (is_alias()) {
+            return alias_specific().aliased_type->void_specific();
+        }
         if (m_details.index() != 7) {
             MGE_THROW(illegal_state) << "Type is not void";
         }
         return std::get<void_details>(m_details);
+    }
+
+    const type_data::alias_details& type_data::alias_specific() const
+    {
+        if (m_details.index() != 8) {
+            MGE_THROW(illegal_state) << "Type is not an alias";
+        }
+        return std::get<alias_details>(m_details);
     }
 
     bool type_data::is_pod() const { return m_details.index() == 3; }
@@ -256,6 +340,8 @@ namespace mge::script {
     bool type_data::is_const() const { return m_identifier.is_const(); }
 
     bool type_data::is_volatile() const { return m_identifier.is_volatile(); }
+
+    bool type_data::is_alias() const { return m_details.index() == 8; }
 
     bool type_data::exposed_directly() const { return !m_module.expired(); }
 

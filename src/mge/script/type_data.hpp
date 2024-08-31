@@ -27,6 +27,7 @@ namespace mge::script {
         using call_signature = std::vector<type_identifier>;
 
         type_data(const std::type_info& ti, const type_identifier& id);
+        type_data(const char* alias_name, const type_data_ref& aliased_type);
         type_data(const type_data&) = delete;
         type_data& operator=(const type_data&) = delete;
 
@@ -51,6 +52,8 @@ namespace mge::script {
         static type_data_ref get(const type_identifier& key);
         static type_data_ref create(const std::type_info&  ti,
                                     const type_identifier& id);
+        static type_data_ref create(const char*          alias_name,
+                                    const type_data_ref& aliased_type);
 
         const type_identifier& identifier() const noexcept
         {
@@ -77,6 +80,8 @@ namespace mge::script {
         bool is_wstring() const;
         bool is_const() const;
         bool is_volatile() const;
+
+        bool is_alias() const;
 
         bool exposed_directly() const;
 
@@ -148,6 +153,12 @@ namespace mge::script {
         struct void_details
         {};
 
+        struct alias_details
+        {
+            std::string   name;
+            type_data_ref aliased_type;
+        };
+
         type_data::enum_details&             enum_specific();
         type_data::class_details&            class_specific();
         type_data::pod_details&              pod_specific();
@@ -155,6 +166,7 @@ namespace mge::script {
         type_data::reference_details&        reference_specific();
         type_data::rvalue_reference_details& rvalue_reference_specific();
         type_data::void_details&             void_specific();
+        type_data::alias_details&            alias_specific();
 
         const type_data::enum_details&      enum_specific() const;
         const type_data::class_details&     class_specific() const;
@@ -162,8 +174,9 @@ namespace mge::script {
         const type_data::pointer_details&   pointer_specific() const;
         const type_data::reference_details& reference_specific() const;
         const type_data::rvalue_reference_details&
-                                       rvalue_reference_specific() const;
-        const type_data::void_details& void_specific() const;
+                                        rvalue_reference_specific() const;
+        const type_data::void_details&  void_specific() const;
+        const type_data::alias_details& alias_specific() const;
 
     private:
         friend class module_data;
@@ -175,7 +188,8 @@ namespace mge::script {
                                           type_data::pointer_details,
                                           type_data::reference_details,
                                           type_data::rvalue_reference_details,
-                                          type_data::void_details>;
+                                          type_data::void_details,
+                                          type_data::alias_details>;
 
         const std::type_info* m_type_info{nullptr};
         type_identifier       m_identifier;
