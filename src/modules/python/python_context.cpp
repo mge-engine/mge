@@ -22,14 +22,22 @@ namespace mge::python {
 
     void python_context::eval(const std::string& code)
     {
-        try {
-            std::lock_guard<gil_lock> lock(gil_lock::instance());
-            pyobject_ref main_module(PyImport_AddModule("__main__"));
-            pyobject_ref main_dict(PyModule_GetDict(main_module.get()));
-            error::check_error();
-        } catch (...) {
-            throw;
+        std::lock_guard<gil_lock> lock(gil_lock::instance());
+        pyobject_ref              main_module(PyImport_AddModule("__main__"));
+        error::check_error();
+        if (!main_module) {
+            MGE_THROW(python::error) << "Cannot get main module";
         }
+        pyobject_ref main_dict(PyModule_GetDict(main_module.get()));
+        error::check_error();
+        if (!main_dict) {
+            MGE_THROW(python::error) << "Cannot get main module dictionary";
+        }
+        pyobject_ref result(PyRun_String(code.c_str(),
+                                         Py_file_input,
+                                         main_dict.get(),
+                                         main_dict.get()));
+        error::check_error();
     }
 
     int python_context::main(int argc, const char** argv)
