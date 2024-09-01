@@ -6,6 +6,15 @@
 namespace mge::python {
     MGE_DEFINE_EXCEPTION_CLASS(error);
 
+    void error::check_status(const PyStatus& status)
+    {
+        if (PyStatus_Exception(status)) {
+            MGE_THROW(mge::python::error)
+                << "Python error: "
+                << (status.err_msg ? status.err_msg : "(no error message)");
+        }
+    }
+
     void error::check_error()
     {
         PyObject* exc = PyErr_Occurred();

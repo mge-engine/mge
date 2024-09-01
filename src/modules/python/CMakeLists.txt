@@ -5,6 +5,9 @@
 SET(mge_python_module_SOURCES
     python_engine.cpp
     python_context.cpp
+    python_error.cpp
+
+    gil_lock.cpp
 )
 
 ADD_LIBRARY(mge_module_python MODULE

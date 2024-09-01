@@ -68,7 +68,10 @@ namespace mge::python {
             return *this;
         }
 
+        static void check_status(const PyStatus& status);
         static void check_error();
     };
+
+#define PYTHON_CHECK_STATUS(status) ::mge::python::error::check_status(status)
 
 } // namespace mge::python
