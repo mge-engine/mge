@@ -6,6 +6,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <span>
 #include <string>
 #include <vector>
 
@@ -60,8 +61,13 @@ namespace mge::script {
         static module_data_ref get(const std::string& name);
 
         bool is_root() const { return m_parent.expired() && m_name.empty(); }
-        const std::string& name() const { return m_name; }
-        module_data_ref    parent() const { return m_parent.lock(); }
+        const std::string&         name() const { return m_name; }
+        module_data_ref            parent() const { return m_parent.lock(); }
+        std::span<module_data_ref> modules()
+        {
+            return std::span<module_data_ref>(m_modules.begin(),
+                                              m_modules.end());
+        }
 
         void add(const function_data_ref& f);
         void add(const type_data_ref& t);

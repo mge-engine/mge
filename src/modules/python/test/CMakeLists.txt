@@ -1,7 +1,7 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
-IF(FALSE)
+
 
 SET(PYTHON_TEST_SOURCES
     pythontest.cpp
@@ -37,4 +37,3 @@ MGE_TEST(
     LIBRARIES   mgescript mgeapplication mgecore
 )
 
-ENDIF()

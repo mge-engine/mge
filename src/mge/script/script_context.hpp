@@ -34,6 +34,13 @@ namespace mge {
         virtual int main(int argc, const char** argv) = 0;
 
         /**
+         * Bind all exposed modules, types, and functions. Without calling this,
+         * the script will just be plain and doesn't know anything aside
+         * builtins.
+         */
+        virtual void bind() = 0;
+
+        /**
          * Resolve bindings without creating a script context.
          */
         static void resolve_bindings();

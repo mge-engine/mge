@@ -12,4 +12,5 @@ public:
 
     MOCK_METHOD(void, eval, (const std::string&), (override));
     MOCK_METHOD(int, main, (int, const char**), (override));
+    MOCK_METHOD(void, bind, (), (override));
 };

@@ -5,7 +5,8 @@
 #include "python_error.hpp"
 
 #include "mge/core/trace.hpp"
-
+#include "mge/script/module.hpp"
+#include "mge/script/module_data.hpp"
 #include <mutex>
 
 namespace mge {
@@ -45,6 +46,15 @@ namespace mge::python {
         int rc = Py_BytesMain(argc, const_cast<char**>(argv));
         MGE_DEBUG_TRACE(PYTHON) << "Python main returned " << rc;
         return rc;
+    }
+
+    void python_context::bind()
+    {
+        mge::script::module root = mge::script::module::root();
+
+        for (const auto& m : root.data()->modules()) {
+            MGE_DEBUG_TRACE(PYTHON) << "Bind module " << m->name();
+        }
     }
 
 } // namespace mge::python

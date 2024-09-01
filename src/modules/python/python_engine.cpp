@@ -55,13 +55,16 @@ namespace mge::python {
         PyConfig config;
         PyConfig_InitPythonConfig(&config);
 
-        static auto home = compute_python_home();
+        m_home = compute_python_home();
 
         config.parse_argv = 0;
         config.install_signal_handlers = 0;
-        config.home = const_cast<wchar_t*>(home.c_str());
 
-        auto status = Py_InitializeFromConfig(&config);
+        PyStatus status =
+            PyConfig_SetString(&config, &config.home, m_home.c_str());
+        PYTHON_CHECK_STATUS(status);
+
+        status = Py_InitializeFromConfig(&config);
         MGE_DEBUG_TRACE(PYTHON)
             << "Python initialization status: " << status.exitcode;
         PyConfig_Clear(&config);

@@ -26,5 +26,6 @@ namespace mge::python {
         void finalize_interpreter();
 
         static std::atomic<uint64_t> s_initialized_engines;
+        std::wstring                 m_home;
     };
 } // namespace mge::python

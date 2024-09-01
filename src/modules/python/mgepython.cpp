@@ -7,7 +7,6 @@
 #include "mge/script/script_context.hpp"
 #include "mge/script/script_engine.hpp"
 
-
 MGE_DEFINE_TRACE(MGEPYTHON);
 
 int main(int argc, const char** argv)
@@ -22,7 +21,7 @@ int main(int argc, const char** argv)
         MGE_DEBUG_TRACE(MGEPYTHON) << "Creating python context";
         mge::script_context_ref context = engine->create_context();
         MGE_DEBUG_TRACE(MGEPYTHON) << "Binding types";
-        //
+        context->bind();
         int rc = context->main(argc, argv);
         MGE_DEBUG_TRACE(MGEPYTHON) << "Python main returned: " << rc;
         MGE_DEBUG_TRACE(MGEPYTHON) << "Releasing context";

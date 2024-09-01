@@ -11,6 +11,8 @@ namespace mge::script {
 
     module::~module() {}
 
+    mge::script::module module::root() { return mge::script::module(); }
+
     bool module::is_root() const { return m_data->is_root(); }
 
     const std::string& module::name() const { return m_data->name(); }

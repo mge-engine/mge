@@ -11,6 +11,7 @@ namespace mge::python {
 
         void eval(const std::string& code) override;
         int  main(int argc, const char** argv) override;
+        void bind() override;
 
     private:
         python_engine_ref m_engine;

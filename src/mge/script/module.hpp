@@ -52,6 +52,7 @@ namespace mge::script {
         const std::string&  name() const;
         mge::script::module parent() const;
         static module       root();
+        module_data_ref     data() const { return m_data; }
 
         template <typename T, typename... Args>
         inline module& operator()(const T& arg0, const Args&... args)
