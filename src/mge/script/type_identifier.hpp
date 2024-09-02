@@ -35,6 +35,11 @@ namespace mge::script {
             TYPE_RVALUE_REFERENCE, //!< Rvalue reference type.
         };
 
+        type_identifier()
+            : m_type_index(typeid(void))
+            , m_kind(TYPE_VOID)
+        {}
+
         /**
          * @brief Construct a new type identifier object.
          * @param ti type information

@@ -1,4 +1,5 @@
 #include "python_context.hpp"
+#include "bind_step.hpp"
 #include "gil_lock.hpp"
 #include "pyobject_ref.hpp"
 #include "python_engine.hpp"
@@ -52,8 +53,13 @@ namespace mge::python {
     {
         mge::script::module root = mge::script::module::root();
 
+        std::vector<bind_step_ref> steps;
+
         for (const auto& m : root.data()->modules()) {
-            MGE_DEBUG_TRACE(PYTHON) << "Bind module " << m->name();
+            steps.emplace_back(std::make_shared<bind_step_module>(m));
+            for (const auto& f : m->functions()) {
+                steps.emplace_back(std::make_shared<bind_step_function>(m, f));
+            }
         }
     }
 

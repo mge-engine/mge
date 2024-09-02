@@ -13,6 +13,8 @@ SET(mgescript_sources
     type_data.cpp
     function_data.cpp
 
+    dependency.cpp  
+
     bind_std.cpp
 )
 
@@ -29,6 +31,8 @@ SET(mgescript_sources
     module_data.hpp
     type_data.hpp   
     function_data.hpp
+
+    dependency.hpp
  )
 
 MGE_LIBRARY(

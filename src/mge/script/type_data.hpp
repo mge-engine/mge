@@ -4,9 +4,11 @@
 #pragma once
 #include "mge/core/memory.hpp"
 #include "mge/script/call_context.hpp"
+#include "mge/script/dependency.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_identifier.hpp"
+
 
 #include <iostream>
 #include <optional>

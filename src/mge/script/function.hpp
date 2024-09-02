@@ -9,6 +9,8 @@
 #include "mge/script/function_data.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type.hpp"
+#include "mge/script/type_data.hpp"
+#include "mge/script/type_identifier.hpp"
 
 #include <cstdint>
 #include <iostream>
@@ -44,6 +46,12 @@ namespace mge::script {
             : m_data(std::make_shared<function_data>(
                   name, reinterpret_cast<void*>(f)))
         {
+            auto return_type = type<R>();
+            m_data->set_return_type(return_type.data()->identifier());
+            type_data::call_signature signature = {
+                make_type_identifier<Args>()...};
+            m_data->set_signature(signature);
+
             if constexpr (sizeof...(Args) == 0) {
                 if constexpr (std::is_same_v<R, void>) {
                     m_data->set_invoker([f](call_context& ctx) {

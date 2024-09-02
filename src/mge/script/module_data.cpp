@@ -42,6 +42,18 @@ namespace mge::script {
         return s_root_module_data_holder->root;
     }
 
+    std::string module_data::full_name() const
+    {
+        if (is_root()) {
+            return "";
+        }
+        if (m_parent.expired()) {
+            MGE_THROW(illegal_state)
+                << "Parent module of '" << name() << "' is expired";
+        }
+        return m_parent.lock()->full_name() + "." + name();
+    }
+
     module_data_ref module_data::get(const std::string& name)
     {
         auto sep_pos = name.rfind("::");
@@ -85,7 +97,7 @@ namespace mge::script {
                                             << "' already exists in module";
             }
         }
-
+        f->set_module(shared_from_this());
         m_functions.push_back(f);
     }
 
