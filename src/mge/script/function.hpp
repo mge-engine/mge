@@ -50,8 +50,9 @@ namespace mge::script {
             m_data->set_return_type(return_type.data()->identifier());
             type_data::call_signature signature = {
                 make_type_identifier<Args>()...};
+            ((m_data->add_dependency(type<Args>().data())), ...);
+            m_data->add_dependency(return_type.data());
             m_data->set_signature(signature);
-
             if constexpr (sizeof...(Args) == 0) {
                 if constexpr (std::is_same_v<R, void>) {
                     m_data->set_invoker([f](call_context& ctx) {

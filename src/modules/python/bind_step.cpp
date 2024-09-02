@@ -9,11 +9,7 @@ namespace mge::python {
 
     bind_step_module::bind_step_module(const mge::script::module_data_ref& data)
         : m_data(data)
-    {
-        if (!m_data->is_root()) {
-            m_dependencies.push_back(m_data->parent());
-        }
-    }
+    {}
 
     void bind_step_module::execute()
     {
@@ -47,9 +43,9 @@ namespace mge::python {
         error::check_error();
     }
 
-    std::span<bind_step::dependency> bind_step_module::dependencies() const
+    mge::script::dependency bind_step_module::provides() const
     {
-        return const_cast<std::vector<bind_step::dependency>&>(m_dependencies);
+        return m_data;
     }
 
     bind_step_function::bind_step_function(
@@ -61,9 +57,19 @@ namespace mge::python {
 
     void bind_step_function::execute() {}
 
-    std::span<bind_step::dependency> bind_step_function::dependencies() const
+    mge::script::dependency bind_step_function::provides() const
     {
-        return const_cast<std::vector<bind_step::dependency>&>(m_dependencies);
+        return m_data;
     }
+
+    bind_step_type::bind_step_type(const mge::script::module_data_ref& module,
+                                   const mge::script::type_data_ref&   data)
+        : m_module(module)
+        , m_data(data)
+    {}
+
+    void bind_step_type::execute() {}
+
+    mge::script::dependency bind_step_type::provides() const { return m_data; }
 
 } // namespace mge::python

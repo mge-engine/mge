@@ -49,6 +49,8 @@ namespace mge::script {
             m_invoker = invoker;
         }
 
+        void add_dependency(const dependency& dep);
+
         const invoke_function& invoker() const noexcept { return m_invoker; }
 
         void invoke(call_context& context) const;
