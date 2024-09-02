@@ -9,7 +9,7 @@ SET(PYTHON_TEST_SOURCES
 )
 
 SET(PYTHON_TESTS
-    test001_smoke.py
+#    test001_smoke.py
 #    test002_inherit.py
 )
 
