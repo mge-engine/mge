@@ -9,14 +9,15 @@
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_identifier.hpp"
 
-
 #include <iostream>
 #include <optional>
+#include <set>
 #include <string>
 #include <typeindex>
 #include <typeinfo>
 #include <variant>
 #include <vector>
+
 
 namespace mge::script {
 
@@ -63,6 +64,11 @@ namespace mge::script {
         }
 
         void set_module(const module_data_ref& m) { m_module = m; }
+
+        void add_dependency(const dependency& dep)
+        {
+            m_dependencies.insert(dep);
+        }
 
         template <typename T> bool same_as() const
         {
@@ -196,6 +202,7 @@ namespace mge::script {
         const std::type_info* m_type_info{nullptr};
         type_identifier       m_identifier;
         module_data_weak_ref  m_module;
+        std::set<dependency>  m_dependencies;
         details_type          m_details;
     };
 

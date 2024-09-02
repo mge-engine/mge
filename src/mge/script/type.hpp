@@ -84,6 +84,8 @@ namespace mge::script {
                     make_type_identifier<mge::underlying_type_t<T>>();
                 m_data->enum_specific().underlying_type =
                     type_data::get(underlying_id);
+                m_data->add_dependency(
+                    dependency(m_data->enum_specific().underlying_type));
                 for (auto& v : mge::enum_entries<T>()) {
                     m_data->enum_specific().values.emplace_back(
                         static_cast<int64_t>(v.first),
@@ -223,6 +225,7 @@ namespace mge::script {
             type<B> base_type;
             m_data->class_specific().base_classes.emplace_back(
                 base_type.data());
+            m_data->add_dependency(dependency(base_type.data()));
             return *this;
         }
 
@@ -233,7 +236,7 @@ namespace mge::script {
                     << "Cannot create constructor for abstract class";
             }
             type_data::call_signature sig = {make_type_identifier<Args>()...};
-
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
             m_data->class_specific().constructors.emplace_back(
                 sig,
                 [](call_context& ctx) {
@@ -248,6 +251,7 @@ namespace mge::script {
         template <typename F> type<T>& field(const char* name, F T::*field)
         {
             type<F> field_type;
+            m_data->add_dependency(dependency(field_type.data()));
             if constexpr (std::is_const_v<F>) {
                 m_data->class_specific().fields.emplace_back(
                     name,
@@ -279,9 +283,10 @@ namespace mge::script {
             method(const char* name, R (T::*method)(Args...))
         {
             type<R> return_type;
-
+            m_data->add_dependency(dependency(return_type.data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            type_data::call_signature sig = {make_type_identifier<Args>()...};
             m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
@@ -308,9 +313,11 @@ namespace mge::script {
                      type<T> &
             method(const char* name, R (T::*method)(Args...) const)
         {
-            type<R>                    return_type;
+            type<R> return_type;
+            m_data->add_dependency(dependency(return_type.data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
-            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            type_data::call_signature sig = {make_type_identifier<Args>()...};
             m_data->class_specific().methods.emplace_back(
                 name,
                 return_type.data(),
@@ -335,8 +342,10 @@ namespace mge::script {
         template <typename... Args>
         type<T>& method(const char* name, void (T::*method)(Args...))
         {
+            m_data->add_dependency(dependency(type<void>().data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
             type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
             m_data->class_specific().methods.emplace_back(
                 name,
                 type<void>().data(),
@@ -360,8 +369,10 @@ namespace mge::script {
         template <typename... Args>
         type<T>& function(const char* name, void (*func)(Args...))
         {
+            m_data->add_dependency(dependency(type<void>().data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
             type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
             m_data->class_specific().functions.emplace_back(
                 name,
                 type<void>().data(),
@@ -386,8 +397,10 @@ namespace mge::script {
                      type<T> &
             function(const char* name, R (*func)(Args...))
         {
+            m_data->add_dependency(dependency(type<R>().data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
             type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
             m_data->class_specific().functions.emplace_back(
                 name,
                 type<R>().data(),
@@ -413,6 +426,7 @@ namespace mge::script {
         type<T>& proxy()
         {
             type<Proxy> proxy_type;
+            proxy_type.data()->add_dependency(dependency(m_data));
             m_data->class_specific().proxy_type = proxy_type.data();
             proxy_type.data()->class_specific().interface_type = m_data;
             return *this;
@@ -476,6 +490,8 @@ namespace mge::script {
                 m_data =
                     type_data::create(typeid(std::function<R(Args...)>), id);
                 m_data->class_specific().is_callable = true;
+                m_data->add_dependency(dependency(type<R>().data()));
+                (m_data->add_dependency(dependency(type<Args>().data())), ...);
             }
         }
 
@@ -511,6 +527,7 @@ namespace mge::script {
                 // plain pointee type, no const here
                 type<std::remove_cv_t<T>> pointee_type;
                 m_data->pointer_specific().pointee = pointee_type.data();
+                m_data->add_dependency(dependency(pointee_type.data()));
             }
         }
 
@@ -549,6 +566,7 @@ namespace mge::script {
                     referencee_type;
                 m_data->reference_specific().referencee =
                     referencee_type.data();
+                m_data->add_dependency(dependency(referencee_type.data()));
             }
         }
 
@@ -587,6 +605,7 @@ namespace mge::script {
                     referencee_type;
                 m_data->rvalue_reference_specific().referencee =
                     referencee_type.data();
+                m_data->add_dependency(dependency(referencee_type.data()));
             }
         }
 
