@@ -3,7 +3,6 @@
 // All rights reserved.
 
 #include "lua_context.hpp"
-#include "lua_binder.hpp"
 #include "lua_error.hpp"
 
 #include "mge/core/line_editor.hpp"
@@ -43,16 +42,6 @@ namespace mge::lua {
         if (m_lua_state) {
             lua_close(m_lua_state);
         }
-    }
-
-    void lua_context::add_module(const lua::module_ref& m)
-    {
-        m_all_modules.push_back(m);
-    }
-
-    void lua_context::add_type(const lua::type_ref& m)
-    {
-        m_all_types.push_back(m);
     }
 
 /* bits of various argument indicators in 'args' */
@@ -590,42 +579,5 @@ namespace mge::lua {
         CHECK_STATUS(rc, m_lua_state);
     }
 
-    void lua_context::bind(const mge::script::module& m)
-    {
-        lua_binder b(*this);
-        b.bind(m);
-    }
-
-    script_type_ref lua_context::type_of(const std::string& expression)
-    {
-        script_type_ref result;
-        return result;
-    }
-
-    void lua_context::details(std::ostream& os) const
-    {
-        auto L = m_lua_state;
-        int  top = lua_gettop(L);
-        os << "LUA stack top: " << top << "\n";
-        for (int i = 1; i <= top; ++i) {
-            os << "  [" << i << "] <" << luaL_typename(L, i) << ">";
-            switch (lua_type(m_lua_state, i)) {
-            case LUA_TNUMBER:
-                os << "= " << lua_tonumber(L, i);
-                break;
-            case LUA_TSTRING:
-                os << "= " << lua_tostring(L, i);
-                break;
-            case LUA_TBOOLEAN:
-                os << "= " << (lua_toboolean(L, i) ? "true" : "false");
-                break;
-            default:
-                os << "@" << lua_topointer(L, i);
-                break;
-            }
-            os << "\n";
-        }
-        os << std::flush;
-    }
-
+    void lua_context::bind() {}
 } // namespace mge::lua
