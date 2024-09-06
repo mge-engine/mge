@@ -1,6 +1,8 @@
 #pragma once
-#include "mge/script/script_context.hpp"
+#include "bind_step.hpp"
 #include "python_fwd.hpp"
+
+#include "mge/script/script_context.hpp"
 
 namespace mge::python {
     class python_context : public mge::script_context
@@ -14,6 +16,8 @@ namespace mge::python {
         void bind() override;
 
     private:
+        void create_steps_for_module(const mge::script::module_data_ref& module,
+                                     std::vector<bind_step_ref>&         steps);
         python_engine_ref m_engine;
     };
 } // namespace mge::python

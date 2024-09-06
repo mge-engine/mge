@@ -48,6 +48,15 @@ namespace mge::python {
         return m_data;
     }
 
+    mge::script::dependency_set bind_step_module::dependencies() const
+    {
+        mge::script::dependency_set deps;
+        if (!m_data->is_root()) {
+            deps.insert(m_data->parent());
+        }
+        return deps;
+    }
+
     bind_step_function::bind_step_function(
         const mge::script::module_data_ref&   module,
         const mge::script::function_data_ref& data)
@@ -62,11 +71,21 @@ namespace mge::python {
         return m_data;
     }
 
+    mge::script::dependency_set bind_step_function::dependencies() const
+    {
+        return m_data->dependencies();
+    }
+
     bind_step_type::bind_step_type(const mge::script::module_data_ref& module,
                                    const mge::script::type_data_ref&   data)
         : m_module(module)
         , m_data(data)
     {}
+
+    mge::script::dependency_set bind_step_type::dependencies() const
+    {
+        return m_data->dependencies();
+    }
 
     void bind_step_type::execute() {}
 

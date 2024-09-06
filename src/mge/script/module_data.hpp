@@ -77,6 +77,11 @@ namespace mge::script {
                                                 m_functions.end());
         }
 
+        std::span<type_data_ref> types()
+        {
+            return std::span<type_data_ref>(m_types.begin(), m_types.end());
+        }
+
         void add(const function_data_ref& f);
         void add(const type_data_ref& t);
 

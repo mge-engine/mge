@@ -2,8 +2,10 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <set>
 #include <variant>
 #include <vector>
+
 
 namespace mge::script {
 
@@ -52,5 +54,7 @@ namespace mge::script {
     private:
         dependency_type m_data;
     };
+
+    using dependency_set = std::set<dependency>;
 
 } // namespace mge::script

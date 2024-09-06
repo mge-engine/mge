@@ -51,6 +51,11 @@ namespace mge::script {
 
         void add_dependency(const dependency& dep);
 
+        const dependency_set& dependencies() const noexcept
+        {
+            return m_dependencies;
+        }
+
         const invoke_function& invoker() const noexcept { return m_invoker; }
 
         void invoke(call_context& context) const;
@@ -62,6 +67,6 @@ namespace mge::script {
         type_identifier           m_return_type;
         type_data::call_signature m_signature;
         invoke_function           m_invoker;
-        std::set<dependency>      m_dependencies;
+        dependency_set            m_dependencies;
     };
 } // namespace mge::script

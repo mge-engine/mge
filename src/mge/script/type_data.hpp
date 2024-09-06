@@ -18,7 +18,6 @@
 #include <variant>
 #include <vector>
 
-
 namespace mge::script {
 
     /**
@@ -68,6 +67,11 @@ namespace mge::script {
         void add_dependency(const dependency& dep)
         {
             m_dependencies.insert(dep);
+        }
+
+        const dependency_set& dependencies() const noexcept
+        {
+            return m_dependencies;
         }
 
         template <typename T> bool same_as() const
@@ -202,7 +206,7 @@ namespace mge::script {
         const std::type_info* m_type_info{nullptr};
         type_identifier       m_identifier;
         module_data_weak_ref  m_module;
-        std::set<dependency>  m_dependencies;
+        dependency_set        m_dependencies;
         details_type          m_details;
     };
 
