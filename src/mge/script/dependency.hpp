@@ -2,10 +2,10 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 
+#include <iosfwd>
 #include <set>
 #include <variant>
 #include <vector>
-
 
 namespace mge::script {
 
@@ -51,10 +51,15 @@ namespace mge::script {
 
         bool operator<(const dependency& other) const;
 
+        const auto& data() const noexcept { return m_data; }
+
     private:
         dependency_type m_data;
     };
 
     using dependency_set = std::set<dependency>;
+
+    MGESCRIPT_EXPORT std::ostream& operator<<(std::ostream&     os,
+                                              const dependency& d);
 
 } // namespace mge::script
