@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/atexit.hpp"
+#include "mge/core/buffer.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/crash.hpp"
 #include "mge/core/debugging.hpp"
@@ -13,6 +14,7 @@
 #include "mge/script/module.hpp"
 #include "mge/script/script_binder.hpp"
 #include "mge/script/type.hpp"
+
 
 namespace mge::script {
     class core_script_binder : public script_binder
@@ -41,7 +43,7 @@ namespace mge::script {
                 type<atexit>()
                     .function("stop_processing", &atexit::stop_processing)
                     .function("run", &atexit::run),
-                // type<buffer>(),
+                type<buffer>("buffer"),
                 type<configuration>()
                     .function("register_parameter",
                               &configuration::register_parameter)

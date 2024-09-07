@@ -35,7 +35,24 @@ namespace mge::script {
 
     dependency_set& dependency::builtin_dependencies()
     {
-        static dependency_set s_builtin_dependencies{type<void>().data()};
+        static dependency_set s_builtin_dependencies{
+            type<void>().data(),
+            type<bool>().data(),
+            type<uint8_t>().data(),
+            type<int8_t>().data(),
+            type<signed char>().data(),
+            type<uint16_t>().data(),
+            type<int16_t>().data(),
+            type<uint32_t>().data(),
+            type<int32_t>().data(),
+            type<uint64_t>().data(),
+            type<int64_t>().data(),
+            type<float>().data(),
+            type<double>().data(),
+            type<long double>().data(),
+            type<std::string>().data(),
+            type<std::string_view>().data(),
+            type<const char*>().data()};
         return s_builtin_dependencies;
     }
 
