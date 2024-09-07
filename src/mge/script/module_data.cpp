@@ -51,6 +51,9 @@ namespace mge::script {
             MGE_THROW(illegal_state)
                 << "Parent module of '" << name() << "' is expired";
         }
+        if (m_parent.lock()->is_root()) {
+            return name();
+        }
         return m_parent.lock()->full_name() + "." + name();
     }
 
