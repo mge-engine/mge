@@ -2,6 +2,7 @@
 #include "mge/core/overloaded.hpp"
 #include "mge/script/function_data.hpp"
 #include "mge/script/module_data.hpp"
+#include "mge/script/type.hpp"
 
 namespace mge::script {
     bool dependency::operator<(const dependency& other) const
@@ -17,14 +18,25 @@ namespace mge::script {
 
     std::ostream& operator<<(std::ostream& os, const dependency& d)
     {
-        std::visit(overloaded{
-                       [&os](const std::monostate&) { os << "none"; },
-                       [&os](const module_data_ref& m) { os << m->name(); },
-                       [&os](const function_data_ref& f) { os << f->name(); },
-                       [&os](const type_data_ref& t) { os << t->name(); },
-                   },
-                   d.data());
+        std::visit(
+            overloaded{
+                [&os](const std::monostate&) { os << "???"; },
+                [&os](const module_data_ref& m) {
+                    os << "module: " << m->name();
+                },
+                [&os](const function_data_ref& f) {
+                    os << "function: " << f->name();
+                },
+                [&os](const type_data_ref& t) { os << "type: " << t->name(); },
+            },
+            d.data());
         return os;
+    }
+
+    dependency_set& dependency::builtin_dependencies()
+    {
+        static dependency_set s_builtin_dependencies{type<void>().data()};
+        return s_builtin_dependencies;
     }
 
 } // namespace mge::script

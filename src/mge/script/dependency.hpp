@@ -9,6 +9,9 @@
 
 namespace mge::script {
 
+    class dependency;
+    using dependency_set = std::set<dependency>;
+
     class MGESCRIPT_EXPORT dependency
     {
     public:
@@ -53,11 +56,11 @@ namespace mge::script {
 
         const auto& data() const noexcept { return m_data; }
 
+        static dependency_set& builtin_dependencies();
+
     private:
         dependency_type m_data;
     };
-
-    using dependency_set = std::set<dependency>;
 
     MGESCRIPT_EXPORT std::ostream& operator<<(std::ostream&     os,
                                               const dependency& d);

@@ -51,7 +51,7 @@ namespace mge::python {
     mge::script::dependency_set bind_step_module::dependencies() const
     {
         mge::script::dependency_set deps;
-        if (!m_data->is_root()) {
+        if (!m_data->is_root() && !m_data->parent()->is_root()) {
             deps.insert(m_data->parent());
         }
         return deps;

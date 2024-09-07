@@ -57,14 +57,20 @@ namespace mge::python {
     {
         bind_step_ref step = std::make_shared<bind_step_module>(module);
         steps.push_back(step);
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Created step for module: " << step->provides();
         for (const auto& f : module->functions()) {
             bind_step_ref fstep =
                 std::make_shared<bind_step_function>(module, f);
             steps.push_back(fstep);
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Created step for function: " << fstep->provides();
         }
         for (const auto& t : module->types()) {
             bind_step_ref tstep = std::make_shared<bind_step_type>(module, t);
             steps.push_back(tstep);
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Created step for type: " << tstep->provides();
         }
         for (const auto& m : module->modules()) {
             create_steps_for_module(m, steps);
@@ -81,21 +87,24 @@ namespace mge::python {
             create_steps_for_module(m, steps);
         }
 
-        mge::script::dependency_set fulfilled_dependencies;
-        std::vector<bind_step_ref>  sorted_steps;
+        mge::script::dependency_set fulfilled_dependencies(
+            mge::script::dependency::builtin_dependencies());
+        std::vector<bind_step_ref> sorted_steps;
         while (!steps.empty()) {
             bool found = false;
             for (auto it = steps.begin(); it != steps.end();) {
                 const auto& deps = (*it)->dependencies();
                 bool        deps_included =
-                    std::includes(fulfilled_dependencies.begin(),
-                                  fulfilled_dependencies.end(),
-                                  deps.begin(),
-                                  deps.end());
+                    std::includes(deps.begin(),
+                                  deps.end(),
+                                  fulfilled_dependencies.begin(),
+                                  fulfilled_dependencies.end());
 
                 if (deps_included) {
                     sorted_steps.push_back(*it);
                     fulfilled_dependencies.insert((*it)->provides());
+                    MGE_DEBUG_TRACE(PYTHON)
+                        << "Resolved step: " << (*it)->provides();
                     it = steps.erase(it);
                     found = true;
                 } else {
@@ -108,6 +117,13 @@ namespace mge::python {
         }
         MGE_DEBUG_TRACE(PYTHON) << "Resolved steps: " << sorted_steps.size();
         MGE_DEBUG_TRACE(PYTHON) << "Unresolved steps: " << steps.size();
+
+        for (const auto& step : steps) {
+            MGE_DEBUG_TRACE(PYTHON) << "Unresolved step: " << step->provides();
+            for (const auto& dep : step->dependencies()) {
+                MGE_DEBUG_TRACE(PYTHON) << "  depends on: " << dep;
+            }
+        }
     }
 
 } // namespace mge::python
