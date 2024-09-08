@@ -2,6 +2,7 @@
 #include "mge/script/script_context.hpp"
 #include "python_fwd.hpp"
 
+#include <map>
 namespace mge::python {
     class python_context : public mge::script_context
     {
@@ -16,7 +17,9 @@ namespace mge::python {
     private:
         void bind_module(const mge::script::module_data_ref& data);
         void bind_helper_module();
+        bool is_builtin(const mge::script::type_data_ref& t) const;
 
-        python_engine_ref m_engine;
+        python_engine_ref                                     m_engine;
+        std::map<mge::script::type_data_ref, python_type_ref> m_types;
     };
 } // namespace mge::python

@@ -7,6 +7,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_data.hpp"
+#include "mge/script/type_data.hpp"
 #include <mutex>
 
 namespace mge {
@@ -48,6 +49,12 @@ namespace mge::python {
         return rc;
     }
 
+    bool python_context::is_builtin(const mge::script::type_data_ref& t) const
+    {
+        return mge::script::dependency::builtin_dependencies().find(t) !=
+               mge::script::dependency::builtin_dependencies().end();
+    }
+
     void python_context::bind()
     {
         mge::script::module root = mge::script::module::root();
@@ -57,6 +64,18 @@ namespace mge::python {
         for (const auto& m : root.data()->modules()) {
             bind_module(m);
         }
+#if 0        
+        for (const auto& t : mge::script::type_data::all()) {
+            MGE_DEBUG_TRACE(PYTHON) << "Creating type " << t->name();
+            if (is_builtin(t)) {
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "Type " << t->name() << " is builtin";
+                continue;
+            }
+            python_type_ref pt = std::make_shared<python_type>(t);
+            m_types[t] = pt;
+        }
+#endif
     }
 
     void python_context::bind_module(const mge::script::module_data_ref& data)
@@ -95,7 +114,7 @@ namespace mge::python {
 
     void python_context::bind_helper_module()
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Binding helper module '__mge__'";
+        MGE_DEBUG_TRACE(PYTHON) << "Binding helper module __mge__";
         PyObject* module(PyImport_AddModule("__mge__"));
         error::check_error();
         if (!module) {

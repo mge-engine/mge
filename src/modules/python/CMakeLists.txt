@@ -6,7 +6,7 @@ SET(mge_python_module_SOURCES
     python_engine.cpp
     python_context.cpp
     python_error.cpp
-    bind_step.cpp
+    python_type.cpp
     gil_lock.cpp
 )
 
