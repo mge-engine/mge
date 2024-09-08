@@ -46,6 +46,7 @@ namespace mge::python {
     int python_context::main(int argc, const char** argv)
     {
         int rc = Py_BytesMain(argc, const_cast<char**>(argv));
+        m_engine->interpreter_lost();
         MGE_DEBUG_TRACE(PYTHON) << "Python main returned " << rc;
         return rc;
     }
@@ -81,7 +82,8 @@ namespace mge::python {
 
     void python_context::bind_module(const mge::script::module_data_ref& data)
     {
-        m_modules[data->full_name()] = std::make_shared<python_module>(data);
+        m_modules[data->full_name()] =
+            std::make_shared<python_module>(*this, data);
         for (const auto& m : data->modules()) {
             bind_module(m);
         }
@@ -89,7 +91,15 @@ namespace mge::python {
 
     void python_context::bind_helper_module()
     {
-        m_modules["__mge__"] = std::make_shared<python_module>("__mge__");
+        m_modules["__mge__"] =
+            std::make_shared<python_module>(*this, "__mge__");
+    }
+
+    void python_context::restore()
+    {
+        for (const auto& entry : m_restore_actions) {
+            entry.second();
+        }
     }
 
 } // namespace mge::python

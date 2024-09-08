@@ -46,7 +46,32 @@ namespace mge::python {
     {
         auto result = std::make_shared<python_context>(
             std::dynamic_pointer_cast<python_engine>(self().lock()));
+        m_contexts.push_back(result);
         return result;
+    }
+
+    void python_engine::interpreter_lost()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Python interpreter lost";
+        PyConfig config;
+        PyConfig_InitPythonConfig(&config);
+        config.parse_argv = 0;
+        config.install_signal_handlers = 0;
+        PyStatus status =
+            PyConfig_SetString(&config, &config.home, m_home.c_str());
+        PYTHON_CHECK_STATUS(status);
+        status = Py_InitializeFromConfig(&config);
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Python initialization status: " << status.exitcode;
+        PyConfig_Clear(&config);
+        PYTHON_CHECK_STATUS(status);
+        for (auto& context : m_contexts) {
+            auto c = context.lock();
+            if (c) {
+                c->restore();
+            }
+        }
+        MGE_DEBUG_TRACE(PYTHON) << "Python interpreter restored";
     }
 
     void python_engine::initialize_interpreter()
