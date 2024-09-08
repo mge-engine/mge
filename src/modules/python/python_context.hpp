@@ -21,5 +21,6 @@ namespace mge::python {
 
         python_engine_ref                                     m_engine;
         std::map<mge::script::type_data_ref, python_type_ref> m_types;
+        std::map<std::string, python_module_ref>              m_modules;
     };
 } // namespace mge::python

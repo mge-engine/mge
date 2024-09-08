@@ -6,11 +6,21 @@ namespace mge::python {
     class pyobject_ref
     {
     public:
+        enum class incref : bool
+        {
+            yes = true,
+            no = false
+        };
+
         pyobject_ref() {}
 
-        pyobject_ref(PyObject* object)
+        pyobject_ref(PyObject* object, incref inc = incref::no)
             : m_object(object)
-        {}
+        {
+            if (inc == incref::yes) {
+                Py_XINCREF(m_object);
+            }
+        }
 
         pyobject_ref(const pyobject_ref& other)
             : m_object(other.m_object)
@@ -54,6 +64,8 @@ namespace mge::python {
         const PyObject* operator->() const noexcept { return m_object; }
 
         inline operator bool() const noexcept { return m_object != nullptr; }
+
+        void reset(PyObject* object = nullptr) noexcept { m_object = object; }
 
     private:
         PyObject* m_object{nullptr};

@@ -137,6 +137,23 @@ namespace mge::script {
         return result;
     }
 
+    std::string type_data::exposed_name() const
+    {
+        if (is_alias()) {
+            return alias_specific().name;
+        } else {
+            if (is_enum()) {
+                return enum_specific().name;
+            } else if (is_class()) {
+                return class_specific().name;
+            } else {
+                std::stringstream ss;
+                ss << "type_" << static_cast<const void*>(this);
+                return ss.str();
+            }
+        }
+    }
+
     type_data::enum_details& type_data::enum_specific()
     {
         if (is_alias()) {

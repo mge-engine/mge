@@ -3,6 +3,7 @@
 #include "pyobject_ref.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
+#include "python_module.hpp"
 
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"

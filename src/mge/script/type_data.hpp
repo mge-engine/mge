@@ -64,6 +64,8 @@ namespace mge::script {
 
         void set_module(const module_data_ref& m) { m_module = m; }
 
+        const module_data_weak_ref& module() const noexcept { return m_module; }
+
         void add_dependency(const dependency& dep)
         {
             m_dependencies.insert(dep);
@@ -98,6 +100,8 @@ namespace mge::script {
         bool exposed_directly() const;
 
         std::string name() const;
+        std::string exposed_name() const;
+
         struct enum_details
         {
             std::string                                  name;
