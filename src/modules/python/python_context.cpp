@@ -81,33 +81,7 @@ namespace mge::python {
 
     void python_context::bind_module(const mge::script::module_data_ref& data)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Binding module " << data->full_name();
-        PyObject* module(PyImport_AddModule(data->full_name().c_str()));
-        error::check_error();
-        if (!module) {
-            MGE_THROW(python::error)
-                << "Cannot create module " << data->full_name();
-        }
-        std::string parent_name;
-        if (data->parent()->is_root()) {
-            parent_name = "__main__";
-        } else {
-            parent_name = data->parent()->full_name();
-        }
-        pyobject_ref parent_module(PyImport_ImportModule(parent_name.c_str()));
-        error::check_error();
-        if (!parent_module) {
-            MGE_THROW(python::error)
-                << "Cannot import parent module " << parent_name;
-        }
-        PyObject* parent_dict = PyModule_GetDict(parent_module.get());
-        error::check_error();
-        if (!parent_dict) {
-            MGE_THROW(python::error)
-                << "Cannot get dictionary of parent module " << parent_name;
-        }
-        PyDict_SetItemString(parent_dict, data->name().c_str(), module);
-        error::check_error();
+        m_modules[data->full_name()] = std::make_shared<python_module>(data);
         for (const auto& m : data->modules()) {
             bind_module(m);
         }
@@ -115,25 +89,7 @@ namespace mge::python {
 
     void python_context::bind_helper_module()
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Binding helper module __mge__";
-        PyObject* module(PyImport_AddModule("__mge__"));
-        error::check_error();
-        if (!module) {
-            MGE_THROW(python::error) << "Cannot create module __mge__";
-        }
-        pyobject_ref parent_module(PyImport_ImportModule("__main__"));
-        error::check_error();
-        if (!parent_module) {
-            MGE_THROW(python::error) << "Cannot import parent module __main__";
-        }
-        PyObject* parent_dict = PyModule_GetDict(parent_module.get());
-        error::check_error();
-        if (!parent_dict) {
-            MGE_THROW(python::error)
-                << "Cannot get dictionary of parent module __main__";
-        }
-        PyDict_SetItemString(parent_dict, "__mge__", module);
-        error::check_error();
+        m_modules["__mge__"] = std::make_shared<python_module>("__mge__");
     }
 
 } // namespace mge::python
