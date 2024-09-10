@@ -9,6 +9,7 @@
 #include "mge/core/type_name.hpp"
 
 #include <map>
+#include <ranges>
 #include <typeindex>
 
 namespace mge {
@@ -31,6 +32,10 @@ namespace mge::script {
             }
 
             return result;
+        }
+        const auto& all()
+        {
+            return std::ranges::subrange(m_types.begin(), m_types.end());
         }
 
         void put(const type_data_ref& td) { m_types[td->identifier()] = td; }
