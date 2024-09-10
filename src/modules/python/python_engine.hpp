@@ -17,21 +17,15 @@ namespace mge::python {
 
         mge::script_context_ref create_context() override;
 
-        void interpreter_lost();
+        static void interpreter_lost();
+
+        bool interpreter_initialized() const;
+        void initialize_interpreter();
+
+        void on_interpreter_loss();
+        void on_interpreter_restore();
 
     private:
-#ifdef MGE_OS_WINDOWS
-        static void  function_with_address_in_this_module();
-        std::wstring compute_python_home();
-#else
-#    error Missing port
-#endif
-
-        void initialize_interpreter();
-        void finalize_interpreter();
-
-        static std::atomic<uint64_t>         s_initialized_engines;
         std::vector<python_context_weak_ref> m_contexts;
-        std::wstring                         m_home;
     };
 } // namespace mge::python

@@ -26,7 +26,12 @@ namespace mge::python {
     void python_context::eval(const std::string& code)
     {
         std::lock_guard<gil_lock> lock(gil_lock::instance());
-        pyobject_ref              main_module(PyImport_AddModule("__main__"));
+
+        if (!m_engine->interpreter_initialized()) {
+            m_engine->initialize_interpreter();
+        }
+
+        pyobject_ref main_module(PyImport_AddModule("__main__"));
         error::check_error();
         if (!main_module) {
             MGE_THROW(python::error) << "Cannot get main module";
@@ -43,10 +48,22 @@ namespace mge::python {
         error::check_error();
     }
 
+    void interpreter_lost()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Py_AtExit handler, intepreter lost";
+        python_engine::interpreter_lost();
+    }
+
     int python_context::main(int argc, const char** argv)
     {
-        int rc = Py_BytesMain(argc, const_cast<char**>(argv));
-        m_engine->interpreter_lost();
+        int rc = 0;
+        {
+            PyGILState_STATE gstate;
+            gstate = PyGILState_Ensure();
+            Py_AtExit(interpreter_lost);
+            rc = Py_BytesMain(argc, const_cast<char**>(argv));
+            // no release as interpreter thread state already lost
+        }
         MGE_DEBUG_TRACE(PYTHON) << "Python main returned " << rc;
         return rc;
     }
@@ -62,11 +79,10 @@ namespace mge::python {
         mge::script::module root = mge::script::module::root();
 
         bind_helper_module();
-
         for (const auto& m : root.data()->modules()) {
             bind_module(m);
         }
-#if 0        
+#if 0
         for (const auto& t : mge::script::type_data::all()) {
             MGE_DEBUG_TRACE(PYTHON) << "Creating type " << t->name();
             if (is_builtin(t)) {
@@ -74,7 +90,7 @@ namespace mge::python {
                     << "Type " << t->name() << " is builtin";
                 continue;
             }
-            python_type_ref pt = std::make_shared<python_type>(t);
+            python_type_ref pt = std::make_shared<python_type>(*this, t);
             m_types[t] = pt;
         }
 #endif
@@ -95,10 +111,17 @@ namespace mge::python {
             std::make_shared<python_module>(*this, "__mge__");
     }
 
-    void python_context::restore()
+    void python_context::on_interpreter_loss()
     {
-        for (const auto& entry : m_restore_actions) {
-            entry.second();
+        for (auto& m : m_modules) {
+            m.second->on_interpreter_loss();
+        }
+    }
+
+    void python_context::on_interpreter_restore()
+    {
+        for (auto& m : m_modules) {
+            m.second->on_interpreter_restore();
         }
     }
 

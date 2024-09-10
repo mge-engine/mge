@@ -17,9 +17,11 @@ namespace mge::python {
 
         ~python_module();
 
+        void on_interpreter_loss();
+        void on_interpreter_restore();
+
     private:
         python_context&              m_context;
-        uint64_t                     m_restore_token{0};
         mge::script::module_data_ref m_data;
         std::string                  m_name;
         pyobject_ref                 m_module;
