@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <optional>
+#include <ranges>
 #include <set>
 #include <string>
 #include <typeindex>
@@ -25,7 +26,13 @@ namespace mge::script {
      */
     class MGESCRIPT_EXPORT type_data
     {
+    private:
+        using type_data_map_type = std::map<type_identifier, type_data_ref>;
+        using type_data_map_iterator = type_data_map_type::iterator;
+
     public:
+        using range_type = std::ranges::subrange<type_data_map_iterator>;
+
         using call_signature = std::vector<type_identifier>;
 
         type_data(const std::type_info& ti, const type_identifier& id);
@@ -101,6 +108,8 @@ namespace mge::script {
 
         std::string name() const;
         std::string exposed_name() const;
+
+        static range_type all();
 
         struct enum_details
         {

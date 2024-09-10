@@ -4,6 +4,7 @@
 #include "python_engine.hpp"
 #include "python_error.hpp"
 #include "python_module.hpp"
+#include "python_type.hpp"
 
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
@@ -82,8 +83,7 @@ namespace mge::python {
         for (const auto& m : root.data()->modules()) {
             bind_module(m);
         }
-#if 0
-        for (const auto& t : mge::script::type_data::all()) {
+        for (const auto& [id, t] : mge::script::type_data::all()) {
             MGE_DEBUG_TRACE(PYTHON) << "Creating type " << t->name();
             if (is_builtin(t)) {
                 MGE_DEBUG_TRACE(PYTHON)
@@ -93,7 +93,6 @@ namespace mge::python {
             python_type_ref pt = std::make_shared<python_type>(*this, t);
             m_types[t] = pt;
         }
-#endif
     }
 
     void python_context::bind_module(const mge::script::module_data_ref& data)

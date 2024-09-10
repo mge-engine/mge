@@ -33,7 +33,8 @@ namespace mge::script {
 
             return result;
         }
-        const auto& all()
+
+        auto all()
         {
             return std::ranges::subrange(m_types.begin(), m_types.end());
         }
@@ -49,6 +50,8 @@ namespace mge::script {
     {
         return s_all_types->get(id);
     }
+
+    type_data::range_type type_data::all() { return s_all_types->all(); }
 
     type_data_ref type_data::create(const std::type_info&  ti,
                                     const type_identifier& id)
