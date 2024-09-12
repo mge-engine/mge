@@ -11,8 +11,8 @@ SET(PYTHON_TEST_SOURCES
 SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
-    test003_simple_object.py
-)
+    test003_object.py 
+    test004_function.py)
 
 LIST(TRANSFORM
     PYTHON_TESTS
