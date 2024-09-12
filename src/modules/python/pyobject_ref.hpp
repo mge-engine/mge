@@ -68,7 +68,7 @@ namespace mge::python {
 
         inline operator bool() const noexcept { return m_object != nullptr; }
 
-        void reset(PyObject* object = nullptr) noexcept { m_object = object; }
+        inline void release() noexcept { m_object = nullptr; }
 
     private:
         PyObject* m_object{nullptr};

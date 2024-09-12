@@ -111,9 +111,9 @@ namespace mge::python {
 
     void python_type::on_interpreter_loss()
     {
-        m_type_object.reset();
+        m_type_object.release();
         for (auto& [name, attr] : m_attributes) {
-            attr.reset();
+            attr.release();
         }
     }
 

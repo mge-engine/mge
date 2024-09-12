@@ -90,7 +90,7 @@ namespace mge::python {
     void python_module::on_interpreter_loss()
     {
         MGE_DEBUG_TRACE(PYTHON) << "Module " << m_name << " interpreter loss";
-        m_module.reset();
+        m_module.release();
     }
 
     void python_module::on_interpreter_restore()
