@@ -153,12 +153,13 @@ namespace mge::script {
             if (is_enum()) {
                 return enum_specific().name;
             } else if (is_class()) {
-                return class_specific().name;
-            } else {
-                std::stringstream ss;
-                ss << "type_" << static_cast<const void*>(this);
-                return ss.str();
+                if (!class_specific().name.empty()) {
+                    return class_specific().name;
+                }
             }
+            std::stringstream ss;
+            ss << "type_" << static_cast<const void*>(this);
+            return ss.str();
         }
     }
 

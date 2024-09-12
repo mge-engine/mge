@@ -82,6 +82,7 @@ namespace mge::script {
                 m_data = type_data::create(typeid(T), id);
                 type_identifier underlying_id =
                     make_type_identifier<mge::underlying_type_t<T>>();
+                m_data->enum_specific().name = mge::enum_type_name<T>();
                 m_data->enum_specific().underlying_type =
                     type_data::get(underlying_id);
                 m_data->add_dependency(
@@ -448,6 +449,7 @@ namespace mge::script {
                           !std::is_same_v<T, std::wstring> &&
                           !std::is_same_v<T, std::string_view> &&
                           !std::is_same_v<T, std::wstring_view>) {
+                m_data->class_specific().name = mge::base_type_name<T>();
                 if constexpr (std::is_destructible_v<T>) {
                     m_data->class_specific().destroy = [](call_context& ctx) {
                         T* obj = static_cast<T*>(ctx.get_this());

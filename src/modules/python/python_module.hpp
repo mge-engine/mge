@@ -20,6 +20,8 @@ namespace mge::python {
         void on_interpreter_loss();
         void on_interpreter_restore();
 
+        const pyobject_ref& pymodule() const { return m_module; }
+
     private:
         python_context&              m_context;
         mge::script::module_data_ref m_data;

@@ -40,6 +40,7 @@ namespace mge::script {
             type<bool>().data(),
             type<uint8_t>().data(),
             type<int8_t>().data(),
+            type<char>().data(),
             type<signed char>().data(),
             type<uint16_t>().data(),
             type<int16_t>().data(),

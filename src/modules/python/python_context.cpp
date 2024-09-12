@@ -75,6 +75,16 @@ namespace mge::python {
                mge::script::dependency::builtin_dependencies().end();
     }
 
+    const python_module_ref&
+    python_context::get_module(const std::string& name) const
+    {
+        auto it = m_modules.find(name);
+        if (it == m_modules.end()) {
+            MGE_THROW(python::error) << "Module " << name << " not found";
+        }
+        return it->second;
+    }
+
     void python_context::bind()
     {
         mge::script::module root = mge::script::module::root();
@@ -92,6 +102,10 @@ namespace mge::python {
             }
             python_type_ref pt = std::make_shared<python_type>(*this, t);
             m_types[t] = pt;
+        }
+        for (auto& [t, pt] : m_types) {
+            MGE_DEBUG_TRACE(PYTHON) << "Defining type " << t->name();
+            pt->define_in_interpreter();
         }
     }
 
@@ -115,12 +129,18 @@ namespace mge::python {
         for (auto& m : m_modules) {
             m.second->on_interpreter_loss();
         }
+        for (auto& t : m_types) {
+            t.second->on_interpreter_loss();
+        }
     }
 
     void python_context::on_interpreter_restore()
     {
         for (auto& m : m_modules) {
             m.second->on_interpreter_restore();
+        }
+        for (auto& t : m_types) {
+            t.second->on_interpreter_restore();
         }
     }
 
