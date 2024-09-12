@@ -11,7 +11,7 @@ SET(PYTHON_TEST_SOURCES
 SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
-#    test002_inherit.py
+    test003_simple_object.py
 )
 
 LIST(TRANSFORM

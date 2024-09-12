@@ -38,6 +38,8 @@ namespace mge::python {
     {
         if (m_type->is_enum()) {
             init_enum();
+        } else if (m_type->is_class()) {
+            init_class();
         }
     }
 
@@ -49,19 +51,24 @@ namespace mge::python {
 
         m_spec = {.name = m_name.c_str(),
                   .basicsize = sizeof(PyLongObject),
-                  .flags = Py_TPFLAGS_BASETYPE | Py_TPFLAGS_LONG_SUBCLASS,
+                  .flags = Py_TPFLAGS_BASETYPE | Py_TPFLAGS_LONG_SUBCLASS |
+                           Py_TPFLAGS_HEAPTYPE,
                   .slots = s_empty_slots};
 
         for (const auto& e : m_type->enum_specific().values) {
             // overwrite on purpose for interpreter lost scenario
             m_attributes[e.second] = pyobject_ref(PyLong_FromLongLong(e.first));
         }
-    } // namespace mge::python
+    }
+
+    void python_type::init_class() {}
 
     void python_type::define_in_interpreter()
     {
         if (m_type->is_enum()) {
             define_enum();
+        } else if (m_type->is_class()) {
+            define_class();
         }
     }
 
@@ -96,6 +103,8 @@ namespace mge::python {
             MGE_THROW(python::error) << "Cannot add type to module";
         }
     }
+
+    void python_type::define_class() {}
 
     void python_type::on_interpreter_loss()
     {

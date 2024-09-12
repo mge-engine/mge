@@ -22,7 +22,9 @@ namespace mge::python {
         void initialize();
 
         void init_enum();
+        void init_class();
         void define_enum();
+        void define_class();
 
         python_context& m_context;
         std::string     m_name_in_module; // name as it appaers in the module

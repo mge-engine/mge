@@ -10,3 +10,4 @@ class TestEnum (unittest.TestCase):
         val = mge.trace_level.DEBUG
         self.assertEqual(val, 1)
 
+        
