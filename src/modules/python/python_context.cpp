@@ -1,3 +1,6 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
 #include "python_context.hpp"
 #include "gil_lock.hpp"
 #include "pyobject_ref.hpp"
