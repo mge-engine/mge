@@ -127,10 +127,12 @@ namespace mge::script {
             bool                         is_abstract{false};
             bool                         is_callable{false};
             size_t                       size{0};
+            size_t                       shared_ptr_size{0};
             mge::script::invoke_function destroy;
-            mge::script::invoke_function default_construct;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
                 constructors;
+            std::vector<std::pair<call_signature, mge::script::invoke_function>>
+                make_shared_constructors;
 
             // name, type, getter, setter
             std::vector<std::tuple<std::string,

@@ -245,7 +245,13 @@ namespace mge::script {
                     size_t index{0};
                     new (obj) T(ctx.get_parameter<Args>(index++)...);
                 });
-
+            m_data->class_specific().make_shared_constructors.emplace_back(
+                sig,
+                [](call_context& ctx) {
+                    std::shared_ptr<T>* obj =
+                        static_cast<std::shared_ptr<T>*>(ctx.get_this());
+                    *obj = std::make_shared<T>(ctx.get_parameter<Args>(0)...);
+                });
             return *this;
         }
 
@@ -442,6 +448,8 @@ namespace mge::script {
                 m_data->class_specific().is_wstring = true;
             }
             m_data->class_specific().size = sizeof(T);
+            m_data->class_specific().shared_ptr_size =
+                sizeof(std::shared_ptr<T>);
             if constexpr (std::is_abstract_v<T>) {
                 m_data->class_specific().is_abstract = true;
             }
@@ -457,11 +465,22 @@ namespace mge::script {
                     };
                 }
                 if constexpr (std::is_default_constructible_v<T>) {
-                    m_data->class_specific().default_construct =
+                    type_data::call_signature sig = {};
+                    m_data->class_specific().constructors.emplace_back(
+                        sig,
                         [](call_context& ctx) {
                             T* obj = static_cast<T*>(ctx.get_this());
                             new (obj) T();
-                        };
+                        });
+                    m_data->class_specific()
+                        .make_shared_constructors.emplace_back(
+                            sig,
+                            [](call_context& ctx) {
+                                std::shared_ptr<T>* obj =
+                                    static_cast<std::shared_ptr<T>*>(
+                                        ctx.get_this());
+                                *obj = std::make_shared<T>();
+                            });
                 }
                 if constexpr (std::is_copy_constructible_v<T>) {
                     type_data::call_signature sig = {
@@ -472,6 +491,16 @@ namespace mge::script {
                             T* obj = static_cast<T*>(ctx.get_this());
                             new (obj) T(ctx.get_parameter<const T&>(0));
                         });
+                    m_data->class_specific()
+                        .make_shared_constructors.emplace_back(
+                            sig,
+                            [](call_context& ctx) {
+                                std::shared_ptr<T>* obj =
+                                    static_cast<std::shared_ptr<T>*>(
+                                        ctx.get_this());
+                                *obj = std::make_shared<T>(
+                                    ctx.get_parameter<const T&>(0));
+                            });
                 }
             }
         }

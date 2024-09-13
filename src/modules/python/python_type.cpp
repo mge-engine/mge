@@ -7,6 +7,7 @@
 #include "python_error.hpp"
 #include "python_module.hpp"
 
+#include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module_data.hpp"
 #include "mge/script/type_data.hpp"
@@ -127,7 +128,16 @@ namespace mge::python {
         }
     }
 
-    void python_type::define_regular_class() {}
+    void python_type::define_regular_class()
+    {
+        const auto& class_specific = m_type->class_specific();
+
+        m_spec = {.name = m_name.c_str(),
+                  .basicsize = mge::checked_cast<int>(
+                      sizeof(PyObject) + class_specific.shared_ptr_size),
+                  .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE,
+                  .slots = s_empty_slots};
+    }
 
     void python_type::define_callable_class() {}
 

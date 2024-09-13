@@ -31,15 +31,16 @@ TEST(type, ctor_dtor)
 
     const auto& t = m.type("test_class");
     EXPECT_EQ("test_class", t.name());
-    EXPECT_TRUE(t.class_specific().default_construct);
     EXPECT_TRUE(t.class_specific().destroy);
     EXPECT_EQ(1, t.class_specific().size);
+    EXPECT_EQ(1, t.class_specific().constructors.size());
+    EXPECT_EQ(1, t.class_specific().make_shared_constructors.size());
 
     MOCK_call_context ctx;
     void*             data = mge::malloc(1);
 
     EXPECT_CALL(ctx, get_this()).WillRepeatedly(Return(data));
-    t.class_specific().default_construct(ctx);
+    t.class_specific().constructors[0].second(ctx);
     EXPECT_TRUE(test_class_ctor_called);
     test_class_ctor_called = false;
     t.class_specific().destroy(ctx);
