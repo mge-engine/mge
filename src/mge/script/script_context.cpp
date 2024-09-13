@@ -16,7 +16,6 @@ namespace mge {
 
         void resolve()
         {
-            MGE_DEBUG_TRACE(SCRIPT) << "Resolve bindings";
             script_binder::implementations([&](std::string_view s) {
                 if (m_processed_binders.find(s) == m_processed_binders.end()) {
                     MGE_DEBUG_TRACE(SCRIPT)

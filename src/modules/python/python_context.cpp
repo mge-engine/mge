@@ -29,27 +29,20 @@ namespace mge::python {
 
     void python_context::eval(const std::string& code)
     {
-        std::lock_guard<gil_lock> lock(gil_lock::instance());
-
         if (!m_engine->interpreter_initialized()) {
             m_engine->initialize_interpreter();
         }
-        pyobject_ref globals(PyDict_New());
-        PyObject*    builtins = PyEval_GetBuiltins();
-        PyDict_SetItemString(globals.get(), "__builtins__", builtins);
-        pyobject_ref main_module(PyImport_AddModule("__main__"));
-        error::check_error();
-        if (!main_module) {
-            MGE_THROW(python::error) << "Cannot get main module";
+        std::lock_guard<gil_lock> lock(gil_lock::instance());
+        PyObject*                 main_module = PyImport_AddModule("__main__");
+        PyObject*                 global_dict = PyModule_GetDict(main_module);
+        pyobject_ref              local_dict(PyDict_New());
+        pyobject_ref              result(PyRun_String(code.c_str(),
+                                         Py_file_input,
+                                         global_dict,
+                                         local_dict.get()));
+        if (!result) {
+            error::check_error();
         }
-        PyObject* main_dict(PyModule_GetDict(main_module.get()));
-        error::check_error();
-        if (!main_dict) {
-            MGE_THROW(python::error) << "Cannot get main module dictionary";
-        }
-        pyobject_ref result(
-            PyRun_String(code.c_str(), Py_file_input, main_dict, main_dict));
-        error::check_error();
     }
 
     void interpreter_lost()
