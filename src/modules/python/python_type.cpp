@@ -64,7 +64,18 @@ namespace mge::python {
         }
     }
 
-    void python_type::init_class() {}
+    void python_type::init_class()
+    {
+        if (m_type->is_callable()) {
+            init_callable_class();
+        } else {
+            init_regular_class();
+        }
+    }
+
+    void python_type::init_regular_class() {}
+
+    void python_type::init_callable_class() {}
 
     void python_type::define_in_interpreter()
     {
@@ -107,7 +118,18 @@ namespace mge::python {
         }
     }
 
-    void python_type::define_class() {}
+    void python_type::define_class()
+    {
+        if (m_type->is_callable()) {
+            define_callable_class();
+        } else {
+            define_regular_class();
+        }
+    }
+
+    void python_type::define_regular_class() {}
+
+    void python_type::define_callable_class() {}
 
     void python_type::on_interpreter_loss()
     {

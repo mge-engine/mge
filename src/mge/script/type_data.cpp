@@ -351,6 +351,12 @@ namespace mge::script {
 
     bool type_data::is_void() const { return m_details.index() == 7; }
 
+    bool type_data::is_callable() const
+    {
+        return m_details.index() == 2 &&
+               std::get<class_details>(m_details).is_callable;
+    }
+
     bool type_data::is_string() const
     {
         return m_details.index() == 2 &&

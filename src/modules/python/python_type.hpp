@@ -26,8 +26,12 @@ namespace mge::python {
 
         void init_enum();
         void init_class();
+        void init_callable_class();
+        void init_regular_class();
         void define_enum();
         void define_class();
+        void define_callable_class();
+        void define_regular_class();
 
         python_context& m_context;
         std::string     m_name_in_module; // name as it appaers in the module
