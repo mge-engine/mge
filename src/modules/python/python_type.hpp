@@ -39,6 +39,7 @@ namespace mge::python {
         std::string     m_module_name;    // qualified name of the module
         PyType_Spec     m_spec{};
         pyobject_ref    m_type_object;
+        std::vector<PyType_Slot>            m_type_slots;
         std::map<std::string, pyobject_ref> m_attributes;
         mge::script::type_data_ref          m_type;
     };

@@ -47,17 +47,18 @@ namespace mge::python {
         }
     }
 
-    static PyType_Slot s_empty_slots[] = {{0, nullptr}};
-
     void python_type::init_enum()
     {
         std::lock_guard<gil_lock> lock(gil_lock::instance());
+        if (m_type_slots.empty() || m_type_slots.last().slot != 0) {
+            m_type_slots.push_back({0, nullptr});
+        }
 
         m_spec = {.name = m_name.c_str(),
                   .basicsize = sizeof(PyLongObject),
                   .flags = Py_TPFLAGS_BASETYPE | Py_TPFLAGS_LONG_SUBCLASS |
                            Py_TPFLAGS_HEAPTYPE,
-                  .slots = s_empty_slots};
+                  .slots = m_type_slots.data()};
 
         for (const auto& e : m_type->enum_specific().values) {
             // overwrite on purpose for interpreter lost scenario
