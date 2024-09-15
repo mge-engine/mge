@@ -463,6 +463,13 @@ namespace mge::script {
                         T* obj = static_cast<T*>(ctx.get_this());
                         obj->~T();
                     };
+                    m_data->class_specific().destroy_shared =
+                        [](call_context& ctx) {
+                            std::shared_ptr<T>* obj =
+                                static_cast<std::shared_ptr<T>*>(
+                                    ctx.get_this());
+                            obj->~shared_ptr<T>();
+                        };
                 }
                 if constexpr (std::is_default_constructible_v<T>) {
                     type_data::call_signature sig = {};

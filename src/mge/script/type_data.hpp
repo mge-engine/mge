@@ -129,6 +129,7 @@ namespace mge::script {
             size_t                       size{0};
             size_t                       shared_ptr_size{0};
             mge::script::invoke_function destroy;
+            mge::script::invoke_function destroy_shared;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
                 constructors;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
