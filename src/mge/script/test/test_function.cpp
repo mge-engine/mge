@@ -55,7 +55,7 @@ TEST(function, int8_t_c_function)
     m(function("test_function_int8_t_throw_mge_exception",
                test_function_int8_t_throw_mge_exception));
     MOCK_call_context ctx;
-    EXPECT_CALL(ctx, store_int8_t_result(42)).Times(1);
+    EXPECT_CALL(ctx, int8_t_result(42)).Times(1);
     m.function("test_function_int8_t").invoke(ctx);
     EXPECT_CALL(ctx, exception_thrown_mge(_)).Times(1);
     m.function("test_function_int8_t_throw_mge_exception").invoke(ctx);
@@ -70,8 +70,8 @@ TEST(function, test_function_sum)
     mge::script::module m;
     m(function("test_function_sum", test_function_sum));
     MOCK_call_context ctx;
-    EXPECT_CALL(ctx, store_int32_t_result(42)).Times(1);
-    EXPECT_CALL(ctx, get_int32_t_parameter(0)).WillOnce(Return(20));
-    EXPECT_CALL(ctx, get_int32_t_parameter(1)).WillOnce(Return(22));
+    EXPECT_CALL(ctx, int32_t_result(42)).Times(1);
+    EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(20));
+    EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(22));
     m.function("test_function_sum").invoke(ctx);
 }

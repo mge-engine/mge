@@ -241,16 +241,16 @@ namespace mge::script {
             m_data->class_specific().constructors.emplace_back(
                 sig,
                 [](call_context& ctx) {
-                    T*     obj = static_cast<T*>(ctx.get_this());
+                    T*     obj = static_cast<T*>(ctx.this_ptr());
                     size_t index{0};
-                    new (obj) T(ctx.get_parameter<Args>(index++)...);
+                    new (obj) T(ctx.parameter<Args>(index++)...);
                 });
             m_data->class_specific().make_shared_constructors.emplace_back(
                 sig,
                 [](call_context& ctx) {
                     std::shared_ptr<T>* obj =
-                        static_cast<std::shared_ptr<T>*>(ctx.get_this());
-                    *obj = std::make_shared<T>(ctx.get_parameter<Args>(0)...);
+                        static_cast<std::shared_ptr<T>*>(ctx.this_ptr());
+                    *obj = std::make_shared<T>(ctx.parameter<Args>(0)...);
                 });
             return *this;
         }
@@ -264,8 +264,8 @@ namespace mge::script {
                     name,
                     field_type.data(),
                     [field](call_context& ctx) {
-                        T* obj = static_cast<T*>(ctx.get_this());
-                        ctx.store_result(obj->*field);
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.result(obj->*field);
                     },
                     nullptr);
             } else {
@@ -273,12 +273,12 @@ namespace mge::script {
                     name,
                     field_type.data(),
                     [field](call_context& ctx) {
-                        T* obj = static_cast<T*>(ctx.get_this());
-                        ctx.store_result(obj->*field);
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.result(obj->*field);
                     },
                     [field](call_context& ctx) {
-                        T* obj = static_cast<T*>(ctx.get_this());
-                        obj->*field = ctx.get_parameter<F>(0);
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        obj->*field = ctx.parameter<F>(0);
                     });
             }
             return *this;
@@ -300,10 +300,10 @@ namespace mge::script {
                 sig,
                 [method](call_context& ctx) {
                     try {
-                        T*     obj = static_cast<T*>(ctx.get_this());
+                        T*     obj = static_cast<T*>(ctx.this_ptr());
                         size_t index{0};
-                        ctx.store_result((obj->*method)(
-                            ctx.get_parameter<Args>(index++)...));
+                        ctx.result(
+                            (obj->*method)(ctx.parameter<Args>(index++)...));
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
                     } catch (const std::exception& e) {
@@ -331,10 +331,10 @@ namespace mge::script {
                 sig,
                 [method](call_context& ctx) {
                     try {
-                        T*     obj = static_cast<T*>(ctx.get_this());
+                        T*     obj = static_cast<T*>(ctx.this_ptr());
                         size_t index{0};
-                        ctx.store_result((obj->*method)(
-                            ctx.get_parameter<Args>(index++)...));
+                        ctx.result(
+                            (obj->*method)(ctx.parameter<Args>(index++)...));
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
                     } catch (const std::exception& e) {
@@ -359,9 +359,9 @@ namespace mge::script {
                 sig,
                 [method](call_context& ctx) {
                     try {
-                        T*     obj = static_cast<T*>(ctx.get_this());
+                        T*     obj = static_cast<T*>(ctx.this_ptr());
                         size_t index{0};
-                        (obj->*method)(ctx.get_parameter<Args>(index++)...);
+                        (obj->*method)(ctx.parameter<Args>(index++)...);
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
                     } catch (const std::exception& e) {
@@ -387,7 +387,7 @@ namespace mge::script {
                 [func](call_context& ctx) {
                     try {
                         size_t index{0};
-                        func(ctx.get_parameter<Args>(index++)...);
+                        func(ctx.parameter<Args>(index++)...);
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
                     } catch (const std::exception& e) {
@@ -415,8 +415,7 @@ namespace mge::script {
                 [func](call_context& ctx) {
                     try {
                         size_t index{0};
-                        ctx.store_result(
-                            func(ctx.get_parameter<Args>(index++)...));
+                        ctx.result(func(ctx.parameter<Args>(index++)...));
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
                     } catch (const std::exception& e) {
@@ -460,15 +459,16 @@ namespace mge::script {
                 m_data->class_specific().name = mge::base_type_name<T>();
                 if constexpr (std::is_destructible_v<T>) {
                     m_data->class_specific().destroy = [](call_context& ctx) {
-                        T* obj = static_cast<T*>(ctx.get_this());
+                        T* obj = static_cast<T*>(ctx.this_ptr());
                         obj->~T();
                     };
                     m_data->class_specific().destroy_shared =
                         [](call_context& ctx) {
-                            std::shared_ptr<T>* obj =
+                            std::shared_ptr<T>* sp =
                                 static_cast<std::shared_ptr<T>*>(
-                                    ctx.get_this());
-                            obj->~shared_ptr<T>();
+                                    ctx.shared_ptr_address());
+                            if (sp)
+                                sp->~shared_ptr<T>();
                         };
                 }
                 if constexpr (std::is_default_constructible_v<T>) {
@@ -476,7 +476,7 @@ namespace mge::script {
                     m_data->class_specific().constructors.emplace_back(
                         sig,
                         [](call_context& ctx) {
-                            T* obj = static_cast<T*>(ctx.get_this());
+                            T* obj = static_cast<T*>(ctx.this_ptr());
                             new (obj) T();
                         });
                     m_data->class_specific()
@@ -485,7 +485,7 @@ namespace mge::script {
                             [](call_context& ctx) {
                                 std::shared_ptr<T>* obj =
                                     static_cast<std::shared_ptr<T>*>(
-                                        ctx.get_this());
+                                        ctx.this_ptr());
                                 *obj = std::make_shared<T>();
                             });
                 }
@@ -495,8 +495,8 @@ namespace mge::script {
                     m_data->class_specific().constructors.emplace_back(
                         sig,
                         [](call_context& ctx) {
-                            T* obj = static_cast<T*>(ctx.get_this());
-                            new (obj) T(ctx.get_parameter<const T&>(0));
+                            T* obj = static_cast<T*>(ctx.this_ptr());
+                            new (obj) T(ctx.parameter<const T&>(0));
                         });
                     m_data->class_specific()
                         .make_shared_constructors.emplace_back(
@@ -504,9 +504,9 @@ namespace mge::script {
                             [](call_context& ctx) {
                                 std::shared_ptr<T>* obj =
                                     static_cast<std::shared_ptr<T>*>(
-                                        ctx.get_this());
+                                        ctx.this_ptr());
                                 *obj = std::make_shared<T>(
-                                    ctx.get_parameter<const T&>(0));
+                                    ctx.parameter<const T&>(0));
                             });
                 }
             }

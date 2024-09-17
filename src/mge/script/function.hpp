@@ -70,7 +70,7 @@ namespace mge::script {
                                      std::is_same_v<R, const std::string&>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
-                            ctx.store_result(f());
+                            ctx.result(f());
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
                         } catch (const std::exception& e) {
@@ -97,7 +97,7 @@ namespace mge::script {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
                             std::size_t index = 0;
-                            f((ctx.get_parameter<Args>(index++))...);
+                            f((ctx.parameter<Args>(index++))...);
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
                         } catch (const std::exception& e) {
@@ -111,8 +111,7 @@ namespace mge::script {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
                             std::size_t index = 0;
-                            ctx.store_result(
-                                f((ctx.get_parameter<Args>(index++))...));
+                            ctx.result(f((ctx.parameter<Args>(index++))...));
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
                         } catch (const std::exception& e) {
@@ -125,8 +124,7 @@ namespace mge::script {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
                             std::size_t index = 0;
-                            ctx.store_result(
-                                f((ctx.get_parameter<Args>(index++))...));
+                            ctx.result(f((ctx.parameter<Args>(index++))...));
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
                         } catch (const std::exception& e) {

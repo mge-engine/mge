@@ -11,24 +11,25 @@ public:
     MOCK_call_context() = default;
     ~MOCK_call_context() = default;
 
-    MOCK_METHOD(void*, get_this, (), (override));
+    MOCK_METHOD(void*, this_ptr, (), (override));
+    MOCK_METHOD(void*, shared_ptr_address, (), (override));
 
-    MOCK_METHOD(void, store_bool_result, (bool), (override));
-    MOCK_METHOD(void, store_int8_t_result, (int8_t), (override));
-    MOCK_METHOD(void, store_int16_t_result, (int16_t), (override));
-    MOCK_METHOD(void, store_int32_t_result, (int32_t), (override));
-    MOCK_METHOD(void, store_int64_t_result, (int64_t), (override));
-    MOCK_METHOD(void, store_uint8_t_result, (uint8_t), (override));
-    MOCK_METHOD(void, store_uint16_t_result, (uint16_t), (override));
-    MOCK_METHOD(void, store_uint32_t_result, (uint32_t), (override));
-    MOCK_METHOD(void, store_uint64_t_result, (uint64_t), (override));
-    MOCK_METHOD(void, store_float_result, (float), (override));
-    MOCK_METHOD(void, store_double_result, (double), (override));
-    MOCK_METHOD(void, store_long_double_result, (long double), (override));
-    MOCK_METHOD(void, store_string_result, (const std::string&), (override));
-    MOCK_METHOD(void, store_wstring_result, (const std::wstring&), (override));
+    MOCK_METHOD(void, bool_result, (bool), (override));
+    MOCK_METHOD(void, int8_t_result, (int8_t), (override));
+    MOCK_METHOD(void, int16_t_result, (int16_t), (override));
+    MOCK_METHOD(void, int32_t_result, (int32_t), (override));
+    MOCK_METHOD(void, int64_t_result, (int64_t), (override));
+    MOCK_METHOD(void, uint8_t_result, (uint8_t), (override));
+    MOCK_METHOD(void, uint16_t_result, (uint16_t), (override));
+    MOCK_METHOD(void, uint32_t_result, (uint32_t), (override));
+    MOCK_METHOD(void, uint64_t_result, (uint64_t), (override));
+    MOCK_METHOD(void, float_result, (float), (override));
+    MOCK_METHOD(void, double_result, (double), (override));
+    MOCK_METHOD(void, long_double_result, (long double), (override));
+    MOCK_METHOD(void, string_result, (const std::string&), (override));
+    MOCK_METHOD(void, wstring_result, (const std::wstring&), (override));
     MOCK_METHOD(void,
-                store_object_result,
+                object_result,
                 (void*, const mge::script::type_data_ref&),
                 ());
 
@@ -48,17 +49,17 @@ public:
 
     virtual void exception_thrown() override { exception_thrown_noargs(); }
 
-    MOCK_METHOD(bool, get_bool_parameter, (size_t), ());
-    MOCK_METHOD(int8_t, get_int8_t_parameter, (size_t), ());
-    MOCK_METHOD(int16_t, get_int16_t_parameter, (size_t), ());
-    MOCK_METHOD(int32_t, get_int32_t_parameter, (size_t), ());
-    MOCK_METHOD(int64_t, get_int64_t_parameter, (size_t), ());
-    MOCK_METHOD(uint8_t, get_uint8_t_parameter, (size_t), ());
-    MOCK_METHOD(uint16_t, get_uint16_t_parameter, (size_t), ());
-    MOCK_METHOD(uint32_t, get_uint32_t_parameter, (size_t), ());
-    MOCK_METHOD(uint64_t, get_uint64_t_parameter, (size_t), ());
-    MOCK_METHOD(float, get_float_parameter, (size_t), ());
-    MOCK_METHOD(double, get_double_parameter, (size_t), ());
-    MOCK_METHOD(long double, get_long_double_parameter, (size_t), ());
-    MOCK_METHOD(std::string, get_string_parameter, (size_t), ());
+    MOCK_METHOD(bool, bool_parameter, (size_t), ());
+    MOCK_METHOD(int8_t, int8_t_parameter, (size_t), ());
+    MOCK_METHOD(int16_t, int16_t_parameter, (size_t), ());
+    MOCK_METHOD(int32_t, int32_t_parameter, (size_t), ());
+    MOCK_METHOD(int64_t, int64_t_parameter, (size_t), ());
+    MOCK_METHOD(uint8_t, uint8_t_parameter, (size_t), ());
+    MOCK_METHOD(uint16_t, uint16_t_parameter, (size_t), ());
+    MOCK_METHOD(uint32_t, uint32_t_parameter, (size_t), ());
+    MOCK_METHOD(uint64_t, uint64_t_parameter, (size_t), ());
+    MOCK_METHOD(float, float_parameter, (size_t), ());
+    MOCK_METHOD(double, double_parameter, (size_t), ());
+    MOCK_METHOD(long double, long_double_parameter, (size_t), ());
+    MOCK_METHOD(std::string, string_parameter, (size_t), ());
 };

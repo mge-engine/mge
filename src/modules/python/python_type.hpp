@@ -33,6 +33,10 @@ namespace mge::python {
         void define_callable_class();
         void define_regular_class();
 
+        static PyObject*
+        tp_new(PyTypeObject* subtype, PyObject* args, PyObject* kwds);
+        static void tp_dealloc(PyObject* self);
+
         python_context& m_context;
         std::string     m_name_in_module; // name as it appaers in the module
         std::string     m_name;           // name for type spec, qualified fully
@@ -42,5 +46,14 @@ namespace mge::python {
         std::vector<PyType_Slot>            m_type_slots;
         std::map<std::string, pyobject_ref> m_attributes;
         mge::script::type_data_ref          m_type;
+
+        struct object
+        {
+            // clang-format off
+            PyObject_HEAD 
+            void* shared_ptr_address; // std::shared_ptr<T>* shared_ptr_address
+            // clang-format on
+        };
     };
+
 } // namespace mge::python

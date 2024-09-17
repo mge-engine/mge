@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "python_type.hpp"
 #include "gil_lock.hpp"
+#include "python_call_context.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_module.hpp"
@@ -50,7 +51,7 @@ namespace mge::python {
     void python_type::init_enum()
     {
         std::lock_guard<gil_lock> lock(gil_lock::instance());
-        if (m_type_slots.empty() || m_type_slots.last().slot != 0) {
+        if (m_type_slots.empty() || m_type_slots.rbegin()->slot != 0) {
             m_type_slots.push_back({0, nullptr});
         }
 
@@ -75,7 +76,38 @@ namespace mge::python {
         }
     }
 
-    void python_type::init_regular_class() {}
+    void python_type::init_regular_class()
+    {
+        m_type_slots.emplace_back(Py_tp_new, &python_type::tp_new);
+    }
+
+    PyObject*
+    python_type::tp_new(PyTypeObject* subtype, PyObject* args, PyObject* kwds)
+    {
+        object* self;
+        self = reinterpret_cast<object*>(subtype->tp_alloc(subtype, 0));
+        if (self != nullptr) {
+            self->shared_ptr_address = nullptr;
+        }
+        return reinterpret_cast<PyObject*>(self);
+    }
+
+    void python_type::tp_dealloc(PyObject* self)
+    {
+        object* obj = reinterpret_cast<object*>(self);
+        if (obj->shared_ptr_address) {
+            // shared_ptr_address is the address of the shared_ptr
+            // that holds the object
+            // we need to decrement the reference count
+            // and if it is zero, delete the object
+            python_call_context ctx(nullptr, obj->shared_ptr_address);
+
+            // and set shared_ptr_address to nullptr
+            // to avoid double deletion
+            obj->shared_ptr_address = nullptr;
+        }
+        Py_TYPE(self)->tp_free(self);
+    }
 
     void python_type::init_callable_class() {}
 
@@ -131,13 +163,43 @@ namespace mge::python {
 
     void python_type::define_regular_class()
     {
-        const auto& class_specific = m_type->class_specific();
+        // const auto& class_specific = m_type->class_specific();
+
+        if (m_type_slots.empty() || m_type_slots.rbegin()->slot != 0) {
+            m_type_slots.push_back({0, nullptr});
+        }
 
         m_spec = {.name = m_name.c_str(),
-                  .basicsize = mge::checked_cast<int>(
-                      sizeof(PyObject) + class_specific.shared_ptr_size),
+                  .basicsize =
+                      mge::checked_cast<int>(sizeof(PyObject) + sizeof(void*)),
                   .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE,
-                  .slots = s_empty_slots};
+                  .slots = m_type_slots.data()};
+
+        std::lock_guard<gil_lock> lock(gil_lock::instance());
+
+        python_module_ref module = m_context.get_module(m_module_name);
+        m_type_object = PyType_FromModuleAndSpec(module->pymodule().get(),
+                                                 &m_spec,
+                                                 nullptr);
+        if (!m_type_object) {
+            error::check_error();
+        }
+        PyObject* capsule = PyCapsule_New(this, "python_type", nullptr);
+        if (!capsule) {
+            error::check_error();
+            MGE_THROW(python::error) << "Cannot create python type capsule";
+        }
+        PyTypeObject* type =
+            reinterpret_cast<PyTypeObject*>(m_type_object.get());
+        if (PyDict_SetItemString(type->tp_dict,
+                                 "__mge__python_type__",
+                                 capsule)) {
+            Py_DECREF(capsule);
+            error::check_error();
+            MGE_THROW(python::error)
+                << "Cannot set type attribute for python type";
+        }
+        Py_DECREF(capsule);
     }
 
     void python_type::define_callable_class() {}
