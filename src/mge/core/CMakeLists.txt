@@ -40,6 +40,7 @@ SET(mgecore_sources
     file_input_stream.cpp
     atexit.cpp
     memory_resource.cpp
+    closure.cpp
 )
 
 SET(mgecore_headers
@@ -95,6 +96,7 @@ SET(mgecore_headers
     file_input_stream.hpp
     atexit.hpp
     memory_resource.hpp
+    closure.hpp
 )
 
 MGE_LIBRARY(
@@ -110,5 +112,7 @@ TARGET_LINK_LIBRARIES(mgecore
     linenoise 
     dbghelp 
     nlohmann_json::nlohmann_json
-    jemalloc::jemalloc)
+    jemalloc::jemalloc
+    PkgConfig::LIBFFI
+)
 ADD_SUBDIRECTORY(test)
