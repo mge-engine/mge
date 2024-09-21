@@ -24,6 +24,7 @@ namespace mge {
                                void*      binding_function,
                                void*      user_data)
     {
+
         ffi_status status = ffi_prep_cif(&m_cif,
                                          FFI_DEFAULT_ABI,
                                          nargs,

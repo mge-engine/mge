@@ -1,9 +1,12 @@
 #pragma once
+#include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/nth_type.hpp"
 #include <ffi.h>
 
 #include <array>
 #include <cstdint>
+#include <tuple>
 #include <type_traits>
 
 namespace mge {
@@ -149,13 +152,189 @@ namespace mge {
         }
 
     private:
+        template <typename A> static A arg(int n, void** args)
+        {
+            return *reinterpret_cast<A*>(args[n]);
+        }
+
         static void
         binding_function(ffi_cif* cif, void* ret, void* args[], void* userdata)
         {
-            auto self = reinterpret_cast<closure*>(userdata);
-            R*   ret_address = reinterpret_cast<R*>(ret);
-            *ret_address =
-                self->execute((*reinterpret_cast<Args*>(args[0]))...);
+            auto          self = reinterpret_cast<closure*>(userdata);
+            R*            ret_address = reinterpret_cast<R*>(ret);
+            constexpr int n = sizeof...(Args);
+            static_assert(n <= 16, "Too many arguments");
+            if constexpr (n == 0) {
+                *ret_address = self->execute();
+            } else if constexpr (n == 1) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]));
+            } else if constexpr (n == 2) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]));
+            } else if constexpr (n == 3) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]));
+            } else if constexpr (n == 4) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]));
+            } else if constexpr (n == 5) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]));
+            } else if constexpr (n == 6) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]));
+            } else if constexpr (n == 7) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]));
+            } else if constexpr (n == 8) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]));
+            } else if constexpr (n == 9) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]));
+            } else if constexpr (n == 10) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]));
+            } else if constexpr (n == 11) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]));
+            } else if constexpr (n == 12) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]));
+            } else if constexpr (n == 13) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]));
+            } else if constexpr (n == 14) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]),
+                    *reinterpret_cast<nth_type<13, Args...>*>(args[13]));
+            } else if constexpr (n == 15) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]),
+                    *reinterpret_cast<nth_type<13, Args...>*>(args[13]),
+                    *reinterpret_cast<nth_type<14, Args...>*>(args[14]));
+            } else if constexpr (n == 16) {
+                *ret_address = self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]),
+                    *reinterpret_cast<nth_type<13, Args...>*>(args[13]),
+                    *reinterpret_cast<nth_type<14, Args...>*>(args[14]),
+                    *reinterpret_cast<nth_type<15, Args...>*>(args[15]));
+            }
         }
 
         std::array<ffi_type*, sizeof...(Args)> m_arg_types;
@@ -206,8 +385,180 @@ namespace mge {
         static void
         binding_function(ffi_cif* cif, void* ret, void* args[], void* userdata)
         {
-            auto self = reinterpret_cast<closure*>(userdata);
-            self->execute((*reinterpret_cast<Args*>(args[0]))...);
+            auto          self = reinterpret_cast<closure*>(userdata);
+            constexpr int n = sizeof...(Args);
+            static_assert(n <= 16, "Too many arguments");
+            if constexpr (n == 0) {
+                self->execute();
+            } else if constexpr (n == 1) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]));
+            } else if constexpr (n == 2) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]));
+            } else if constexpr (n == 3) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]));
+            } else if constexpr (n == 4) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]));
+            } else if constexpr (n == 5) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]));
+            } else if constexpr (n == 6) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]));
+            } else if constexpr (n == 7) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]));
+            } else if constexpr (n == 8) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]));
+            } else if constexpr (n == 9) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]));
+            } else if constexpr (n == 10) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]));
+            } else if constexpr (n == 11) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]));
+            } else if constexpr (n == 12) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]));
+            } else if constexpr (n == 13) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]));
+            } else if constexpr (n == 14) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]),
+                    *reinterpret_cast<nth_type<13, Args...>*>(args[13]));
+            } else if constexpr (n == 15) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]),
+                    *reinterpret_cast<nth_type<13, Args...>*>(args[13]),
+                    *reinterpret_cast<nth_type<14, Args...>*>(args[14]));
+            } else if constexpr (n == 16) {
+                self->execute(
+                    *reinterpret_cast<nth_type<0, Args...>*>(args[0]),
+                    *reinterpret_cast<nth_type<1, Args...>*>(args[1]),
+                    *reinterpret_cast<nth_type<2, Args...>*>(args[2]),
+                    *reinterpret_cast<nth_type<3, Args...>*>(args[3]),
+                    *reinterpret_cast<nth_type<4, Args...>*>(args[4]),
+                    *reinterpret_cast<nth_type<5, Args...>*>(args[5]),
+                    *reinterpret_cast<nth_type<6, Args...>*>(args[6]),
+                    *reinterpret_cast<nth_type<7, Args...>*>(args[7]),
+                    *reinterpret_cast<nth_type<8, Args...>*>(args[8]),
+                    *reinterpret_cast<nth_type<9, Args...>*>(args[9]),
+                    *reinterpret_cast<nth_type<10, Args...>*>(args[10]),
+                    *reinterpret_cast<nth_type<11, Args...>*>(args[11]),
+                    *reinterpret_cast<nth_type<12, Args...>*>(args[12]),
+                    *reinterpret_cast<nth_type<13, Args...>*>(args[13]),
+                    *reinterpret_cast<nth_type<14, Args...>*>(args[14]),
+                    *reinterpret_cast<nth_type<15, Args...>*>(args[15]));
+            }
         }
 
         std::array<ffi_type*, sizeof...(Args)> m_arg_types;

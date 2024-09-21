@@ -28,3 +28,31 @@ TEST(closure, simple_int)
     int_closure c;
     EXPECT_EQ(42, c.function()(41));
 }
+
+TEST(closure, three_params)
+{
+    struct int_closure : public mge::closure<int, int, int, int>
+    {
+        int execute(int x, int y, int z) override
+        {
+            return z + y * 10 + x * 100;
+        }
+    };
+
+    int_closure c;
+    EXPECT_EQ(123, c.function()(1, 2, 3));
+}
+
+TEST(closure, different_ints)
+{
+    struct int_closure : public mge::closure<int64_t, int16_t, int32_t, int64_t>
+    {
+        int64_t execute(int16_t x, int32_t y, int64_t z) override
+        {
+            return z + y * 10 + x * 100;
+        }
+    };
+
+    int_closure c;
+    EXPECT_EQ(123, c.function()(1, 2, 3));
+}

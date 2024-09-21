@@ -150,7 +150,21 @@ namespace mge::python {
             PyErr_SetString(PyExc_RuntimeError, "No constructors available");
             return -1;
         }
-        if (kwargs) {
+
+        // print arguments
+        PyObject* repr = PyObject_Repr(args);
+        if (repr) {
+            MGE_DEBUG_TRACE(PYTHON) << "Arguments: " << PyUnicode_AsUTF8(repr);
+            Py_DECREF(repr);
+        }
+        PyObject* repr_kw = PyObject_Repr(kwargs);
+        if (repr_kw) {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Keyword arguments: " << PyUnicode_AsUTF8(repr_kw);
+            Py_DECREF(repr_kw);
+        }
+
+        if (kwargs && PyDict_Check(kwargs) && PyDict_Size(kwargs) > 0) {
             PyErr_SetString(PyExc_RuntimeError,
                             "Keyword arguments not supported");
             return -1;
@@ -255,6 +269,13 @@ namespace mge::python {
                 << "Cannot set type attribute for python type";
         }
         Py_DECREF(capsule);
+
+        if (PyModule_AddObject(module->pymodule().get(),
+                               m_name_in_module.c_str(),
+                               m_type_object.get())) {
+            error::check_error();
+            MGE_THROW(python::error) << "Cannot add type to module";
+        }
     }
 
     void python_type::define_callable_class() {}
