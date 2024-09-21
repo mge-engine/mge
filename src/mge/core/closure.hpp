@@ -98,11 +98,27 @@ namespace mge {
         static ffi_type* type() { return &ffi_type_pointer; }
     };
 
+    /**
+     * Base class for closures. A closure is a function object that exposes
+     * a function pointer to be called from C code.
+     *
+     * To create a closure, derive from this class and implement the
+     * <tt>execute</tt> method.
+     *
+     * Note that the closure object must be kept alive as long as the
+     * function pointer is used.
+     */
     template <typename R, typename... Args> class closure : public closure_base
     {
     public:
+        /**
+         * Type of the function pointer.
+         */
         using function_type = R (*)(Args...);
 
+        /**
+         * Constructor.
+         */
         closure()
         {
             m_arg_types = {{mge::ffi_compute_type<Args>::type()}...};
@@ -113,10 +129,26 @@ namespace mge {
                     this);
         }
 
+        /**
+         * Destructor.
+         */
         ~closure() = default;
 
+        /**
+         * Execute the closure.
+         */
         virtual R execute(Args...) = 0;
 
+        /**
+         * Returns the function pointer.
+         * @return function pointer
+         */
+        function_type function() const
+        {
+            return reinterpret_cast<function_type>(m_executable_address);
+        }
+
+    private:
         static void
         binding_function(ffi_cif* cif, void* ret, void* args[], void* userdata)
         {
@@ -126,12 +158,6 @@ namespace mge {
                 self->execute((*reinterpret_cast<Args*>(args[0]))...);
         }
 
-        function_type function() const
-        {
-            return reinterpret_cast<function_type>(m_executable_address);
-        }
-
-    private:
         std::array<ffi_type*, sizeof...(Args)> m_arg_types;
     };
 
@@ -153,16 +179,17 @@ namespace mge {
 
         virtual void execute() = 0;
 
+        function_type function() const
+        {
+            return reinterpret_cast<function_type>(m_executable_address);
+        }
+
+    private:
         static void
         binding_function(ffi_cif* cif, void* ret, void* args[], void* userdata)
         {
             auto self = reinterpret_cast<closure*>(userdata);
             self->execute();
-        }
-
-        function_type function() const
-        {
-            return reinterpret_cast<function_type>(m_executable_address);
         }
     };
 

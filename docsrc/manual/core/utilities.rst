@@ -131,7 +131,7 @@ check logic that prevents overflows and unexpected truncation of values.
 .. doxygenfunction:: mge::checked_cast
 
 Debugging
--------------------
+---------
 
 C++26 proposes an API to interact with the debugger, i.e.
 - raise a breakpoint
@@ -144,3 +144,14 @@ The proposed API is implemented in the ``mge`` namespace.
 .. doxygenfunction:: mge::breakpoint_if_debugging 
 
 .. doxygenfunction:: mge::is_debugger_present
+
+Closure
+-------
+
+A closure is a function object that captures its environment. While 
+C++ makes this easy with lambdas, such a lambda cannot be used in place
+of a function pointer. :any:`mge::closure` provides a way to create
+a closure that can be used as a function pointer.
+
+.. doxygenclass:: mge::closure
+    :members:
