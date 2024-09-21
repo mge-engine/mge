@@ -78,35 +78,90 @@ namespace mge::python {
 
     void python_type::init_regular_class()
     {
-        m_type_slots.emplace_back(Py_tp_new, &python_type::tp_new);
+        struct new_closure : tp_new_closure
+        {
+            PyObject*
+            execute(PyTypeObject* subtype, PyObject* args, PyObject* kwds)
+            {
+                object* self;
+                self = reinterpret_cast<object*>(subtype->tp_alloc(subtype, 0));
+                if (self != nullptr) {
+                    self->shared_ptr_address = nullptr;
+                }
+                return reinterpret_cast<PyObject*>(self);
+            }
+        };
+
+        struct dealloc_closure : tp_dealloc_closure
+        {
+            dealloc_closure(const mge::script::type_data_ref& type)
+                : m_type(type)
+            {}
+
+            void execute(PyObject* self)
+            {
+                object* obj = reinterpret_cast<object*>(self);
+                if (obj->shared_ptr_address) {
+                    // shared_ptr_address is the address of the shared_ptr
+                    // that holds the object
+                    // we need to decrement the reference count
+                    // and if it is zero, delete the object
+                    python_call_context ctx(nullptr, obj->shared_ptr_address);
+                    m_type->class_specific().destroy_shared(ctx);
+                    // and set shared_ptr_address to nullptr
+                    // to avoid double deletion
+                    obj->shared_ptr_address = nullptr;
+                }
+                Py_TYPE(self)->tp_free(self);
+            }
+            const mge::script::type_data_ref& m_type;
+        };
+
+        struct init_closure : tp_init_closure
+        {
+            init_closure(const python_type* python_type)
+                : m_python_type(python_type)
+            {}
+
+            int execute(PyObject* self, PyObject* args, PyObject* kwds)
+            {
+                return m_python_type->tp_init(self, args, kwds);
+            }
+            const python_type* m_python_type;
+        };
+
+        m_tp_new_closure = std::make_shared<new_closure>();
+        m_tp_dealloc_closure = std::make_shared<dealloc_closure>(m_type);
+        m_tp_init_closure = std::make_shared<init_closure>(this);
+
+        m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
+        if (!m_type->class_specific().constructors.empty()) {
+            m_type_slots.emplace_back(Py_tp_dealloc,
+                                      m_tp_dealloc_closure->function());
+            m_type_slots.emplace_back(Py_tp_init,
+                                      m_tp_init_closure->function());
+        }
     }
 
-    PyObject*
-    python_type::tp_new(PyTypeObject* subtype, PyObject* args, PyObject* kwds)
+    int
+    python_type::tp_init(PyObject* self, PyObject* args, PyObject* kwargs) const
     {
-        object* self;
-        self = reinterpret_cast<object*>(subtype->tp_alloc(subtype, 0));
-        if (self != nullptr) {
-            self->shared_ptr_address = nullptr;
+        if (m_type->class_specific().constructors.empty()) {
+            PyErr_SetString(PyExc_RuntimeError, "No constructors available");
+            return -1;
         }
-        return reinterpret_cast<PyObject*>(self);
-    }
-
-    void python_type::tp_dealloc(PyObject* self)
-    {
-        object* obj = reinterpret_cast<object*>(self);
-        if (obj->shared_ptr_address) {
-            // shared_ptr_address is the address of the shared_ptr
-            // that holds the object
-            // we need to decrement the reference count
-            // and if it is zero, delete the object
-            python_call_context ctx(nullptr, obj->shared_ptr_address);
-
-            // and set shared_ptr_address to nullptr
-            // to avoid double deletion
-            obj->shared_ptr_address = nullptr;
+        if (kwargs) {
+            PyErr_SetString(PyExc_RuntimeError,
+                            "Keyword arguments not supported");
+            return -1;
         }
-        Py_TYPE(self)->tp_free(self);
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_RuntimeError, "Arguments must be a tuple");
+            return -1;
+        }
+
+        PyErr_SetString(PyExc_RuntimeError, "Not yet implemented: constructor");
+        return -1;
     }
 
     void python_type::init_callable_class() {}

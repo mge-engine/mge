@@ -2,7 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/closure.hpp"
 #include "mge/core/memory.hpp"
+
 #include "mge/script/type_data.hpp"
 
 #include "pyobject_ref.hpp"
@@ -33,9 +35,7 @@ namespace mge::python {
         void define_callable_class();
         void define_regular_class();
 
-        static PyObject*
-        tp_new(PyTypeObject* subtype, PyObject* args, PyObject* kwds);
-        static void tp_dealloc(PyObject* self);
+        int tp_init(PyObject* self, PyObject* args, PyObject* kwds) const;
 
         python_context& m_context;
         std::string     m_name_in_module; // name as it appaers in the module
@@ -54,6 +54,16 @@ namespace mge::python {
             void* shared_ptr_address; // std::shared_ptr<T>* shared_ptr_address
             // clang-format on
         };
+
+        using tp_new_closure =
+            mge::closure<PyObject*, PyTypeObject*, PyObject*, PyObject*>;
+        using tp_dealloc_closure = mge::closure<void, PyObject*>;
+        using tp_init_closure =
+            mge::closure<int, PyObject*, PyObject*, PyObject*>;
+
+        std::shared_ptr<tp_new_closure>     m_tp_new_closure;
+        std::shared_ptr<tp_dealloc_closure> m_tp_dealloc_closure;
+        std::shared_ptr<tp_init_closure>    m_tp_init_closure;
     };
 
 } // namespace mge::python

@@ -120,8 +120,8 @@ namespace mge {
          * Constructor.
          */
         closure()
+            : m_arg_types{{(mge::ffi_compute_type<Args>::type())...}}
         {
-            m_arg_types = {{mge::ffi_compute_type<Args>::type()}...};
             prepare(mge::ffi_compute_type<R>::type(),
                     m_arg_types.data(),
                     sizeof...(Args),
@@ -156,6 +156,58 @@ namespace mge {
             R*   ret_address = reinterpret_cast<R*>(ret);
             *ret_address =
                 self->execute((*reinterpret_cast<Args*>(args[0]))...);
+        }
+
+        std::array<ffi_type*, sizeof...(Args)> m_arg_types;
+    };
+
+    template <typename... Args>
+    class closure<void, Args...> : public closure_base
+    {
+    public:
+        /**
+         * Type of the function pointer.
+         */
+        using function_type = void (*)(Args...);
+
+        /**
+         * Constructor.
+         */
+        closure()
+            : m_arg_types{{mge::ffi_compute_type<Args>::type()...}}
+        {
+            prepare(mge::ffi_compute_type<void>::type(),
+                    m_arg_types.data(),
+                    sizeof...(Args),
+                    &binding_function,
+                    this);
+        }
+
+        /**
+         * Destructor.
+         */
+        ~closure() = default;
+
+        /**
+         * Execute the closure.
+         */
+        virtual void execute(Args...) = 0;
+
+        /**
+         * Returns the function pointer.
+         * @return function pointer
+         */
+        function_type function() const
+        {
+            return reinterpret_cast<function_type>(m_executable_address);
+        }
+
+    private:
+        static void
+        binding_function(ffi_cif* cif, void* ret, void* args[], void* userdata)
+        {
+            auto self = reinterpret_cast<closure*>(userdata);
+            self->execute((*reinterpret_cast<Args*>(args[0]))...);
         }
 
         std::array<ffi_type*, sizeof...(Args)> m_arg_types;
