@@ -21,6 +21,8 @@ namespace mge::lua {
         int  main(int argc, const char** argv) override;
         void bind() override;
 
+        lua_State* lua_state() const noexcept { return m_lua_state; }
+
     private:
         lua_State* m_lua_state;
     };

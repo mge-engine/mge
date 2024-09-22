@@ -7,4 +7,6 @@ namespace mge::lua {
 
     class lua_context;
     class lua_engine;
+
+    MGE_DECLARE_REF(scope);
 } // namespace mge::lua

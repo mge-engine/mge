@@ -5,6 +5,7 @@ SET(mge_lua_module_SOURCES
     lua_engine.cpp
     lua_context.cpp
     lua_datatype.cpp
+    lua_scope.cpp
     lua_error.cpp
 )
 
