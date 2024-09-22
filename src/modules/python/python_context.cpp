@@ -121,8 +121,9 @@ namespace mge::python {
 
     void python_context::bind_module(const mge::script::module_data_ref& data)
     {
-        m_modules[data->full_name()] =
-            std::make_shared<python_module>(*this, data);
+        auto mod = std::make_shared<python_module>(*this, data);
+        m_modules[data->full_name()] = mod;
+        m_all_modules.push_back(mod);
         for (const auto& m : data->modules()) {
             bind_module(m);
         }
@@ -130,14 +131,20 @@ namespace mge::python {
 
     void python_context::bind_helper_module()
     {
-        m_modules["__mge__"] =
-            std::make_shared<python_module>(*this, "__mge__");
+        auto mod = std::make_shared<python_module>(*this, "__mge__");
+        m_modules["__mge__"] = mod;
+        m_all_modules.push_back(mod);
+        create_function_helper_type(mod);
     }
+
+    void
+    python_context::create_function_helper_type(const python_module_ref& mod)
+    {}
 
     void python_context::on_interpreter_loss()
     {
-        for (auto& m : m_modules) {
-            m.second->on_interpreter_loss();
+        for (auto& m : m_all_modules) {
+            m->on_interpreter_loss();
         }
         for (auto& t : m_types) {
             t.second->on_interpreter_loss();
@@ -146,9 +153,10 @@ namespace mge::python {
 
     void python_context::on_interpreter_restore()
     {
-        for (auto& m : m_modules) {
-            m.second->on_interpreter_restore();
+        for (auto& m : m_all_modules) {
+            m->on_interpreter_restore();
         }
+        // restore function type
         for (auto& t : m_types) {
             t.second->on_interpreter_restore();
         }

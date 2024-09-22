@@ -26,6 +26,8 @@ namespace mge::python {
         const pyobject_ref& pymodule() const { return m_module; }
 
     private:
+        void initialize();
+
         python_context&              m_context;
         mge::script::module_data_ref m_data;
         std::string                  m_name;
