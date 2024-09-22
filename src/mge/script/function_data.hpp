@@ -25,6 +25,8 @@ namespace mge::script {
             m_dependencies.insert(dependency(m));
         }
 
+        const module_data_weak_ref& module() const noexcept { return m_module; }
+
         const std::string& name() const noexcept { return m_name; }
 
         void set_return_type(const type_identifier& t) { m_return_type = t; }
