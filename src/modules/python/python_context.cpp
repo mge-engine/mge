@@ -6,6 +6,7 @@
 #include "pyobject_ref.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
+#include "python_function.hpp"
 #include "python_module.hpp"
 #include "python_type.hpp"
 
@@ -139,7 +140,9 @@ namespace mge::python {
 
     void
     python_context::create_function_helper_type(const python_module_ref& mod)
-    {}
+    {
+        python_function::register_function_type(mod);
+    }
 
     void python_context::on_interpreter_loss()
     {

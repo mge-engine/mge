@@ -2,6 +2,8 @@
 #include "mge/script/function_data.hpp"
 #include "mge/script/module_data.hpp"
 #include "python_error.hpp"
+#include "python_module.hpp"
+
 namespace mge::python {
 
     python_function::python_function(
@@ -26,7 +28,7 @@ namespace mge::python {
         "__mge__.__function__",         /* tp_name */
         sizeof(python_function_object), /* tp_basicsize */
         0,                              /* tp_itemsize */
-        0,                              /* tp_dealloc */
+        &python_function::tp_dealloc,   /* tp_dealloc */
         0,                              /* tp_print */
         0,                              /* tp_getattr */
         0,                              /* tp_setattr */
@@ -72,14 +74,21 @@ namespace mge::python {
         0,                              /* tp_finalize */
     };
 
-    void python_function::register_function_type(PyObject* module)
+    void python_function::tp_dealloc(PyObject* self)
+    {
+        Py_TYPE(self)->tp_free(self);
+    }
+
+    void
+    python_function::register_function_type(const python_module_ref& module)
     {
         if (PyType_Ready(&s_type) < 0) {
             error::check_error();
         }
-
         Py_INCREF(&s_type);
-        PyModule_AddObject(module,
+
+        PyObject* pymodule = module->pymodule().get();
+        PyModule_AddObject(pymodule,
                            "__function__",
                            reinterpret_cast<PyObject*>(&s_type));
         error::check_error();

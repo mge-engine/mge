@@ -6,6 +6,7 @@
 #include "lua_error.hpp"
 
 #include "mge/core/line_editor.hpp"
+#include "mge/script/module.hpp"
 
 #include <iostream>
 #include <string>
@@ -579,5 +580,15 @@ namespace mge::lua {
         CHECK_STATUS(rc, m_lua_state);
     }
 
-    void lua_context::bind() {}
+    void lua_context::bind()
+    {
+        bind_helper_module();
+        mge::script::module root = mge::script::module::root();
+    }
+
+    void lua_context::bind_helper_module()
+    {
+        // lua::scope s(*this, "mge");
+        // s.add("version", 1);
+    }
 } // namespace mge::lua

@@ -16,9 +16,11 @@ namespace mge::python {
         void on_interpreter_loss();
         void on_interpreter_restore();
 
-        static void register_function_type(PyObject* module);
+        static void register_function_type(const python_module_ref& mod);
 
     private:
+        static void tp_dealloc(PyObject* self);
+
         void initialize();
 
         python_context& m_context;

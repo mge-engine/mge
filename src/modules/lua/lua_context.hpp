@@ -24,6 +24,7 @@ namespace mge::lua {
         lua_State* lua_state() const noexcept { return m_lua_state; }
 
     private:
+        void       bind_helper_module();
         lua_State* m_lua_state;
     };
 } // namespace mge::lua
