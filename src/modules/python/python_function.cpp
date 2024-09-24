@@ -21,6 +21,10 @@ namespace mge::python {
 
     void python_function::initialize() {}
 
+    static PyMethodDef python_function_methods[] = {
+        {NULL} /* Sentinel */
+    };
+
     PyTypeObject python_function::s_type = {
         // clang-format off
         PyVarObject_HEAD_INIT(nullptr, 0)
@@ -38,7 +42,7 @@ namespace mge::python {
         0,                              /* tp_as_sequence */
         0,                              /* tp_as_mapping */
         0,                              /* tp_hash */
-        0,                              /* tp_call */
+        &python_function::tp_call,      /* tp_call */
         0,                              /* tp_str */
         0,                              /* tp_getattro */
         0,                              /* tp_setattro */
@@ -51,7 +55,7 @@ namespace mge::python {
         0,                              /* tp_weaklistoffset */
         0,                              /* tp_iter */
         0,                              /* tp_iternext */
-        0,                              /* tp_methods */
+        python_function_methods,        /* tp_methods */
         0,                              /* tp_members */
         0,                              /* tp_getset */
         0,                              /* tp_base */
@@ -61,7 +65,7 @@ namespace mge::python {
         0,                              /* tp_dictoffset */
         0,                              /* tp_init */
         0,                              /* tp_alloc */
-        0,                              /* tp_new */
+        &python_function::tp_new,       /* tp_new */
         0,                              /* tp_free */
         0,                              /* tp_is_gc */
         0,                              /* tp_bases */
@@ -76,7 +80,31 @@ namespace mge::python {
 
     void python_function::tp_dealloc(PyObject* self)
     {
+        python_function_object* obj =
+            reinterpret_cast<python_function_object*>(self);
+        obj->function.~python_function_ref();
         Py_TYPE(self)->tp_free(self);
+    }
+
+    PyObject*
+    python_function::tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
+    {
+        python_function_object*                       self =
+            reinterpret_cast<python_function_object*> PyObject_New(
+                python_function_object,
+                type);
+        if (self != nullptr) {
+            new (&self->function) python_function_ref();
+        }
+        return reinterpret_cast<PyObject*>(self);
+    }
+
+    PyObject*
+    python_function::tp_call(PyObject* self, PyObject* args, PyObject* kwds)
+    {
+        python_function_object* obj =
+            reinterpret_cast<python_function_object*>(self);
+        return obj->function->call(args, kwds);
     }
 
     void
@@ -92,6 +120,11 @@ namespace mge::python {
                            "__function__",
                            reinterpret_cast<PyObject*>(&s_type));
         error::check_error();
+    }
+
+    PyObject* python_function::call(PyObject* args, PyObject* kwds)
+    {
+        return Py_None;
     }
 
 } // namespace mge::python

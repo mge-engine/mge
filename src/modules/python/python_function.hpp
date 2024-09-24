@@ -20,8 +20,13 @@ namespace mge::python {
 
     private:
         static void tp_dealloc(PyObject* self);
+        static PyObject*
+        tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
+        static PyObject*
+        tp_call(PyObject* self, PyObject* args, PyObject* kwds);
 
-        void initialize();
+        PyObject* call(PyObject* args, PyObject* kwds);
+        void      initialize();
 
         python_context& m_context;
         std::string     m_name;
