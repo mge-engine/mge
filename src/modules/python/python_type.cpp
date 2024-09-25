@@ -193,11 +193,11 @@ namespace mge::python {
     {
         std::lock_guard<gil_lock> lock(gil_lock::instance());
 
-        python_module_ref module = m_context.get_module(m_module_name);
+        python_module_ref module = m_context.module(m_module_name);
         PyObject*         base = reinterpret_cast<PyObject*>(&PyLong_Type);
 
         m_type_object = PyType_FromModuleAndSpec(
-            m_context.get_module(m_module_name)->pymodule().get(),
+            m_context.module(m_module_name)->pymodule().get(),
             &m_spec,
             base);
         if (!m_type_object) {
@@ -246,7 +246,7 @@ namespace mge::python {
 
         std::lock_guard<gil_lock> lock(gil_lock::instance());
 
-        python_module_ref module = m_context.get_module(m_module_name);
+        python_module_ref module = m_context.module(m_module_name);
         m_type_object = PyType_FromModuleAndSpec(module->pymodule().get(),
                                                  &m_spec,
                                                  nullptr);

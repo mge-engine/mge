@@ -73,7 +73,7 @@ namespace mge::python {
     }
 
     const python_module_ref&
-    python_context::get_module(const std::string& name) const
+    python_context::module(const std::string& name) const
     {
         auto it = m_modules.find(name);
         if (it == m_modules.end()) {

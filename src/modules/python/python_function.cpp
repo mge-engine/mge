@@ -1,6 +1,7 @@
 #include "python_function.hpp"
 #include "mge/script/function_data.hpp"
 #include "mge/script/module_data.hpp"
+#include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_module.hpp"
 
@@ -19,7 +20,23 @@ namespace mge::python {
 
     void python_function::on_interpreter_restore() { initialize(); }
 
-    void python_function::initialize() {}
+    void python_function::initialize()
+    {
+        PyObject* pymodule = m_context.module(m_module_name)->pymodule().get();
+        PyObject* pyfunc =
+            PyObject_CallObject(reinterpret_cast<PyObject*>(&s_type), nullptr);
+        if (pyfunc == nullptr) {
+            error::check_error();
+        }
+
+        python_function_object* obj =
+            reinterpret_cast<python_function_object*>(pyfunc);
+        new (&obj->function) python_function_ref(this);
+        m_object = pyobject_ref(pyfunc);
+
+        PyModule_AddObject(pymodule, m_name.c_str(), pyfunc);
+        error::check_error();
+    }
 
     static PyMethodDef python_function_methods[] = {
         {NULL} /* Sentinel */
