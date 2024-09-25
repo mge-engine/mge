@@ -86,7 +86,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#copy-of-structures">Copy of Structures</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#clear-memory-of-structures">Clear Memory of Structures</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#checked-type-cast">Checked Type Cast</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#debugger-breakpoint">Debugger Breakpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging">Debugging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#closure">Closure</a></li>
 </ul>
 </li>
 </ul>
@@ -634,7 +635,7 @@ assignment operatpr deleted.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11noncopyableE">
 <span id="_CPPv3N3mge11noncopyableE"></span><span id="_CPPv2N3mge11noncopyableE"></span><span id="mge::noncopyable"></span><span class="target" id="classmge_1_1noncopyable"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">noncopyable</span></span></span><a class="headerlink" href="#_CPPv4N3mge11noncopyableE" title="Link to this definition"></a><br /></dt>
 <dd><p>Object that can’t be copied. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; std::streamsize &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; streamsize_type &gt;</span></a>, <a class="reference internal" href="../asset/loading.html#classmge_1_1asset__access"><span class="std std-ref">mge::asset_access</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, mge::property_object, <a class="reference internal" href="../graphics/system.html#classmge_1_1render__system_1_1capabilities"><span class="std std-ref">mge::render_system::capabilities</span></a>, mge::script_context, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, mge::std_istream, mge::std_ostream, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; uint64_t, double &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; std::streamsize &gt;</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; streamsize_type &gt;</span></a>, <a class="reference internal" href="../asset/loading.html#classmge_1_1asset__access"><span class="std std-ref">mge::asset_access</span></a>, <a class="reference internal" href="#classmge_1_1callback__map"><span class="std std-ref">mge::callback_map&lt; Args &gt;</span></a>, mge::callback_map&lt; void &gt;, <a class="reference internal" href="../graphics/render_context.html#classmge_1_1context__object"><span class="std std-ref">mge::context_object</span></a>, mge::module, mge::property_object, <a class="reference internal" href="../graphics/system.html#classmge_1_1render__system_1_1capabilities"><span class="std std-ref">mge::render_system::capabilities</span></a>, <a class="reference internal" href="system.html#classmge_1_1shared__library"><span class="std std-ref">mge::shared_library</span></a>, mge::std_istream, mge::std_ostream, <a class="reference internal" href="concurrency.html#classmge_1_1thread"><span class="std std-ref">mge::thread</span></a>, <a class="reference internal" href="concurrency.html#classmge_1_1thread__group"><span class="std std-ref">mge::thread_group</span></a></p>
 </dd></dl>
 
 </section>
@@ -910,15 +911,83 @@ check logic that prevents overflows and unexpected truncation of values.</p>
 </dd></dl>
 
 </section>
-<section id="debugger-breakpoint">
-<h3>Debugger Breakpoint<a class="headerlink" href="#debugger-breakpoint" title="Link to this heading"></a></h3>
-<p>Sometimes it may be useful to programmatically raise a debug breakpoint,
-i.e. stop execution when inside a debuggger. This is abstracted by
-<a class="reference internal" href="#_CPPv4N3mge13call_debuggerEv" title="mge::call_debugger"><code class="xref any cpp cpp-func docutils literal notranslate"><span class="pre">mge::call_debugger()</span></code></a></p>
+<section id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Link to this heading"></a></h3>
+<p>C++26 proposes an API to interact with the debugger, i.e.
+- raise a breakpoint
+- check if a debugger is attached
+- check if a debugger is attached and break
+The proposed API is implemented in the <code class="docutils literal notranslate"><span class="pre">mge</span></code> namespace.</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13call_debuggerEv">
-<span id="_CPPv3N3mge13call_debuggerEv"></span><span id="_CPPv2N3mge13call_debuggerEv"></span><span id="mge::call_debugger"></span><span class="target" id="namespacemge_1a10d3c3aa3e5816aa4584b164ea1a9cac"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">call_debugger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13call_debuggerEv" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10breakpointEv">
+<span id="_CPPv3N3mge10breakpointEv"></span><span id="_CPPv2N3mge10breakpointEv"></span><span id="mge::breakpoint"></span><span class="target" id="namespacemge_1a855ebf488888d2d7cc710cf990b2b3dd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">breakpoint</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge10breakpointEv" title="Link to this definition"></a><br /></dt>
 <dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge23breakpoint_if_debuggingEv">
+<span id="_CPPv3N3mge23breakpoint_if_debuggingEv"></span><span id="_CPPv2N3mge23breakpoint_if_debuggingEv"></span><span id="mge::breakpoint_if_debugging"></span><span class="target" id="namespacemge_1a8565001ebc4533a14bd20ee03ce6215e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">breakpoint_if_debugging</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge23breakpoint_if_debuggingEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge19is_debugger_presentEv">
+<span id="_CPPv3N3mge19is_debugger_presentEv"></span><span id="_CPPv2N3mge19is_debugger_presentEv"></span><span id="mge::is_debugger_present"></span><span class="target" id="namespacemge_1ae1759cd42f044687add6ef6b44dea1bb"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_debugger_present</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge19is_debugger_presentEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</section>
+<section id="closure">
+<h3>Closure<a class="headerlink" href="#closure" title="Link to this heading"></a></h3>
+<p>A closure is a function object that captures its environment. While
+C++ makes this easy with lambdas, such a lambda cannot be used in place
+of a function pointer. <a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure"><code class="xref any cpp cpp-class docutils literal notranslate"><span class="pre">mge::closure</span></code></a> provides a way to create
+a closure that can be used as a function pointer.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN3mge7closureE">
+<span id="_CPPv3I0DpEN3mge7closureE"></span><span id="_CPPv2I0DpEN3mge7closureE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1closure"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closure</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">closure_base</span></span><a class="headerlink" href="#_CPPv4I0DpEN3mge7closureE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base class for closures. A closure is a function object that exposes a function pointer to be called from C code.</p>
+<p>To create a closure, derive from this class and implement the <code class="docutils literal notranslate"><span class="pre">execute</span></code> method.</p>
+<p>Note that the closure object must be kept alive as long as the function pointer is used. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closure13function_typeE">
+<span id="_CPPv3N3mge7closure13function_typeE"></span><span id="_CPPv2N3mge7closure13function_typeE"></span><span class="target" id="classmge_1_1closure_1a3bffd8d09a6388755cf3a097f61fb338"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::R"><span class="n"><span class="pre">R</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N3mge7closure13function_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type of the function pointer. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closure7closureEv">
+<span id="_CPPv3N3mge7closure7closureEv"></span><span id="_CPPv2N3mge7closure7closureEv"></span><span id="mge::closure::closure"></span><span class="target" id="classmge_1_1closure_1a397e7a774ac2d08f4a740a168c5f9a9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closure</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7closure7closureEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closureD0Ev">
+<span id="_CPPv3N3mge7closureD0Ev"></span><span id="_CPPv2N3mge7closureD0Ev"></span><span id="mge::closure::~closure"></span><span class="target" id="classmge_1_1closure_1a0fda7356e75ddc1e44d467aa5ab3d828"></span><span class="sig-name descname"><span class="n"><span class="pre">~closure</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge7closureD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closure7executeEDp4Args">
+<span id="_CPPv3N3mge7closure7executeEDp4Args"></span><span id="_CPPv2N3mge7closure7executeEDp4Args"></span><span id="mge::closure::execute__ArgsDp"></span><span class="target" id="classmge_1_1closure_1a82f6ee6a3f2da8ed911244566fb71110"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::R"><span class="n"><span class="pre">R</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">execute</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge7closure7executeEDp4Args" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute the closure. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7closure8functionEv">
+<span id="_CPPv3NK3mge7closure8functionEv"></span><span id="_CPPv2NK3mge7closure8functionEv"></span><span id="mge::closure::functionC"></span><span class="target" id="classmge_1_1closure_1a7a73d684358075dab402dc2676cb2f8b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge7closure13function_typeE" title="mge::closure::function_type"><span class="n"><span class="pre">function_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7closure8functionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function pointer </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
 
 </section>
 </section>
