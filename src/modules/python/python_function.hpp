@@ -1,66 +1,48 @@
-// mge - Modern Game Engine
-// Copyright (c) 2017-2023 by Alexander Schroeder
-// All rights reserved.
 #pragma once
-#include "mge/core/small_vector.hpp"
 #include "mge/script/script_fwd.hpp"
-#include "mge/script/signature.hpp"
-
-#include "python.hpp"
+#include "pyobject_ref.hpp"
 #include "python_fwd.hpp"
-#include "python_object.hpp"
+
+#include <string>
 
 namespace mge::python {
 
-    class python_function : public std::enable_shared_from_this<python_function>
+    class python_function
     {
     public:
-        python_function(const std::string&                  name,
-                        const std::type_index&              return_type,
-                        const mge::script::signature&       sig,
-                        const mge::script::invoke_function& invoke);
-        ~python_function();
+        python_function(python_context&                       context,
+                        const mge::script::function_data_ref& function);
+        virtual ~python_function() = default;
+        void on_interpreter_loss();
+        void on_interpreter_restore();
 
-        const std::string& name() const { return m_name; }
-        PyObject*          py_object() const;
-
-        static void init(PyObject* module);
-
-        void interpreter_lost();
-        void add_signature(const std::type_index&              return_type,
-                           const mge::script::signature&       sig,
-                           const mge::script::invoke_function& invoke);
+        static void register_function_type(const python_module_ref& mod);
 
     private:
-        const std::string& m_name;
+        static void tp_dealloc(PyObject* self);
+        static PyObject*
+        tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
+        static PyObject*
+        tp_call(PyObject* self, PyObject* args, PyObject* kwds);
 
-        struct details
+        PyObject* call(PyObject* args, PyObject* kwds);
+        void      initialize();
+
+        python_context& m_context;
+        std::string     m_name;
+        std::string     m_module_name;
+
+        pyobject_ref                   m_object;
+        mge::script::function_data_ref m_function;
+
+        struct python_function_object
         {
-            const std::type_index*              return_type;
-            const mge::script::signature*       signature;
-            const mge::script::invoke_function* invoke;
-        };
-
-        mge::small_vector<details, 1> m_details;
-        mutable python_object         m_object;
-
-        static PyObject* call(PyObject* self, PyObject* args, PyObject* kwargs);
-        static void      dealloc(PyObject* self);
-
-        // clang-format off
-        struct python_function_pyobject
-        {
+            // clang-format off
             PyObject_HEAD
-            python_function_ref method;
+            python_function_ref function;
+            // clang-format on
         };
-        // clang-format on
-
-        static inline python_function_pyobject* to_function_object(PyObject* o)
-        {
-            return reinterpret_cast<python_function_pyobject*>(o);
-        }
 
         static PyTypeObject s_type;
     };
-
 } // namespace mge::python

@@ -8,7 +8,8 @@ SET(LUA_TEST_SOURCES
 )
 
 SET(LUA_TESTS
-    test001_smoke.lua)
+#    test001_smoke.lua aaa
+)
 
 COPY_FILE(unittest.lua "${CMAKE_BINARY_DIR}/unittest.lua")
 

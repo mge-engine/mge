@@ -33,13 +33,14 @@ SET(mgecore_sources
     properties.cpp
     property_object.cpp
     memory.cpp
-    call_debugger.cpp
+    debugging.cpp
     line_editor.cpp
     mutex.cpp
     io_exception.cpp
     file_input_stream.cpp
     atexit.cpp
     memory_resource.cpp
+    closure.cpp
 )
 
 SET(mgecore_headers
@@ -86,7 +87,7 @@ SET(mgecore_headers
     properties.hpp
     property_object.hpp
     checked_cast.hpp
-    call_debugger.cpp
+    debugging.cpp
     line_editor.hpp
     mutex.hpp
     is_container.hpp
@@ -95,6 +96,7 @@ SET(mgecore_headers
     file_input_stream.hpp
     atexit.hpp
     memory_resource.hpp
+    closure.hpp
 )
 
 MGE_LIBRARY(
@@ -110,5 +112,7 @@ TARGET_LINK_LIBRARIES(mgecore
     linenoise 
     dbghelp 
     nlohmann_json::nlohmann_json
-    jemalloc::jemalloc)
+    jemalloc::jemalloc
+    PkgConfig::LIBFFI
+)
 ADD_SUBDIRECTORY(test)

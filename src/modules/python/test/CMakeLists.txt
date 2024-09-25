@@ -2,15 +2,17 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
+
 SET(PYTHON_TEST_SOURCES
     pythontest.cpp
     test_context.cpp
 )
 
 SET(PYTHON_TESTS
-    test001_smoke.py
-    test002_inherit.py
-)
+    test001_basic.py
+    test002_enum.py
+    test003_object.py 
+    test004_function.py)
 
 LIST(TRANSFORM
     PYTHON_TESTS

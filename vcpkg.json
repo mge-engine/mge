@@ -21,6 +21,7 @@
     "libmagic",
     "magic-enum",
     "vulkan-memory-allocator",
-    "jemalloc"
+    "jemalloc",
+    "libffi"
   ]
 }

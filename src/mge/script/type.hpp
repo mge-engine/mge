@@ -2,671 +2,669 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/call_debugger.hpp"
 #include "mge/core/callable.hpp"
-#include "mge/core/nth_type.hpp"
-#include "mge/core/trace.hpp"
-#include "mge/core/type_name.hpp"
+#include "mge/core/enum.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
-#include "mge/script/parameter_retriever.hpp"
 #include "mge/script/proxy.hpp"
-#include "mge/script/result_storer.hpp"
 #include "mge/script/script_fwd.hpp"
-#include "mge/script/signature.hpp"
-#include "mge/script/traits.hpp"
+#include "mge/script/type_data.hpp"
 
-#include <functional>
-#include <iostream>
-#include <string>
-
-namespace mge {
-#ifdef BUILD_SCRIPT
-    MGE_USE_TRACE(SCRIPT);
-#else
-    MGE_USE_IMPORTED_TRACE(SCRIPT);
-#endif
-} // namespace mge
+#include <type_traits>
 
 namespace mge::script {
 
-    /**
-     * @brief Base type for type representations.
-     */
-    class MGESCRIPT_EXPORT type_base
+    // POD Types
+    // - integers
+    // - floating point
+    // - boolean
+    // - string, wstring, ...
+    // - enumerations
+    // - void
+    // Object Types
+    // - classes
+    // - shared_ptr<T>
+    // Container Types
+    // - vector<T>
+    // - map<K,V>
+    // - set<T>
+    // - list<T>
+    // - array<T,N>
+    // - tuple<T...>
+    // Function Type
+    // - std::function
+    // - function pointers ?
+    // Uncreatable Types
+    // - references to simple types, objects or containers
+    // - pointers to simple types, objects or containers
+    // Incompatible Types
+    // - unique_ptr<T>
+    // - containers of classes
+
+    template <typename T> class type;
+
+    template <> class type<void>
     {
     public:
-        /**
-         * @brief Default constructor.
-         */
-        type_base();
+        type()
+        {
+            type_identifier id = make_type_identifier<void>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(void), id);
+            }
+        }
+        bool is_void() const noexcept { return true; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
-        /**
-         * @brief Assigment
-         * @param t assigned type
-         * @return @c *this
-         */
-        type_base& operator=(const type_base& t);
-
-        /**
-         * @brief Destructor.
-         */
-        ~type_base() = default;
-
-        const std::string&      name() const;
-        mge::script::module     module() const;
-        const std::type_index&  type_index() const;
-        const type_details_ref& details() const;
-        type_details_ref&       details();
-
-    protected:
-        void init_details(const std::type_index& index);
-        void init_enum_details(const std::type_index& index,
-                               const std::string&     name,
-                               const traits&          tr,
-                               size_t                 size);
-        void init_class_details(const std::type_index& index,
-                                const std::string&     name,
-                                const traits&          tr,
-                                size_t                 size);
-        void get_class_details(const std::type_index& index);
-        void set_base(const type_details_ref& base_details);
-        void set_destructor(const invoke_function& delete_ptr,
-                            const invoke_function& delete_shared_ptr);
-        void add_constructor(const signature&       signature,
-                             const invoke_function& ctor,
-                             const invoke_function& make_shared);
-
-        void add_method(const std::string&     name,
-                        const std::type_index& return_type,
-                        const signature&       signature,
-                        const invoke_function& invoke);
-
-        void add_static_method(const std::string&     name,
-                               const std::type_index& return_type,
-                               const signature&       signature,
-                               const invoke_function& invoke);
-
-        void add_field(const std::string&     name,
-                       const type_base&       type,
-                       const invoke_function& getter);
-        void add_field(const std::string&     name,
-                       const type_base&       type,
-                       const invoke_function& getter,
-                       const invoke_function& setter);
-
-        void enum_value(const std::string& name, int64_t value);
-
-        void add_member(type_base& t);
+        type_data_ref data() const noexcept { return m_data; }
 
     private:
-        type_details_ref m_details;
-    };
-
-    /**
-     * @brief Type class.
-     *
-     * @tparam T type represented by class
-     * @tparam typename type used for SFINAE, must resolve to @c void
-     */
-    template <typename T, typename = void> class type : public type_base
-    {
-    public:
-        inline type();
-    };
-
-    /**
-     * @brief Simple type specialization.
-     *
-     * @tparam T type represented, must be simple type
-     */
-    template <typename T>
-    class type<T, typename std::enable_if<is_simple_type<T>>::type>
-        : public type_base
-    {
-    public:
-        inline type() { init_details(std::type_index(typeid(T))); }
-
-        using type_base::details;
-        using type_base::module;
-        using type_base::name;
-        using type_base::type_index;
+        type_data_ref m_data;
     };
 
     template <typename T>
-    class type<T, typename std::enable_if<std::is_enum_v<T>>::type>
-        : public type_base
+        requires std::is_enum_v<T>
+    class type<T>
     {
     public:
-        inline explicit type(const std::string& n)
+        type()
         {
-            auto ti = std::type_index(typeid(T));
-            auto tr = traits_of<T>();
-            init_enum_details(ti, n, tr, sizeof(T));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T), id);
+                type_identifier underlying_id =
+                    make_type_identifier<mge::underlying_type_t<T>>();
+                m_data->enum_specific().name = mge::enum_type_name<T>();
+                m_data->enum_specific().underlying_type =
+                    type_data::get(underlying_id);
+                m_data->add_dependency(
+                    dependency(m_data->enum_specific().underlying_type));
+                for (auto& v : mge::enum_entries<T>()) {
+                    m_data->enum_specific().values.emplace_back(
+                        static_cast<int64_t>(v.first),
+                        v.second);
+                }
+            }
         }
 
-        inline explicit type()
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return true; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
         {
-            auto ti = std::type_index(typeid(T));
-            auto n = mge::base_type_name<T>();
-            auto tr = traits_of<T>();
-            init_enum_details(ti, n, tr, sizeof(T));
+            return m_data->directly_exposed();
         }
 
-        auto& enum_value(const std::string& name, T value)
+    private:
+        type_data_ref m_data;
+    };
+
+    template <typename T>
+        requires std::is_integral_v<T> || std::is_floating_point_v<T>
+    class type<T>
+    {
+    public:
+        type()
         {
-            type_base::enum_value(name, static_cast<int64_t>(value));
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T), id);
+                m_data->pod_specific().size = sizeof(T);
+            }
+        }
+
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return true; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
+
+    private:
+        type_data_ref m_data;
+    };
+
+    template <> class type<bool>
+    {
+    public:
+        type()
+        {
+            type_identifier id = make_type_identifier<bool>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(bool), id);
+                m_data->pod_specific().size = sizeof(bool);
+            }
+        }
+
+        bool is_bool() const noexcept { return true; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return true; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool exposed_directly() const noexcept
+        {
+            return m_data->exposed_directly();
+        }
+
+    private:
+        type_data_ref m_data;
+    };
+
+    template <typename T>
+        requires(std::is_class_v<T> && !mge::is_callable_v<T>)
+    class type<T>
+    {
+    public:
+        type()
+        {
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T), id);
+                initialize();
+            }
+        }
+
+        type(const char* alias_name)
+        {
+            type<T> pure_type;
+            m_data = type_data::create(alias_name, pure_type.data());
+        }
+
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return true; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
+
+        template <typename B>
+        type<T>& base()
+            requires std::is_base_of_v<B, T>
+        {
+            type<B> base_type;
+            m_data->class_specific().base_classes.emplace_back(
+                base_type.data());
+            m_data->add_dependency(dependency(base_type.data()));
             return *this;
         }
 
-        using type_base::details;
-        using type_base::module;
-        using type_base::name;
-        using type_base::type_index;
+        template <typename... Args> type<T>& constructor()
+        {
+            if constexpr (std::is_abstract_v<T>) {
+                MGE_THROW(illegal_state)
+                    << "Cannot create constructor for abstract class";
+            }
+            type_data::call_signature sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().constructors.emplace_back(
+                sig,
+                [](call_context& ctx) {
+                    T*     obj = static_cast<T*>(ctx.this_ptr());
+                    size_t index{0};
+                    new (obj) T(ctx.parameter<Args>(index++)...);
+                });
+            m_data->class_specific().make_shared_constructors.emplace_back(
+                sig,
+                [](call_context& ctx) {
+                    std::shared_ptr<T>* obj =
+                        static_cast<std::shared_ptr<T>*>(ctx.this_ptr());
+                    *obj = std::make_shared<T>(ctx.parameter<Args>(0)...);
+                });
+            return *this;
+        }
+
+        template <typename F> type<T>& field(const char* name, F T::*field)
+        {
+            type<F> field_type;
+            m_data->add_dependency(dependency(field_type.data()));
+            if constexpr (std::is_const_v<F>) {
+                m_data->class_specific().fields.emplace_back(
+                    name,
+                    field_type.data(),
+                    [field](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.result(obj->*field);
+                    },
+                    nullptr);
+            } else {
+                m_data->class_specific().fields.emplace_back(
+                    name,
+                    field_type.data(),
+                    [field](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.result(obj->*field);
+                    },
+                    [field](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        obj->*field = ctx.parameter<F>(0);
+                    });
+            }
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            method(const char* name, R (T::*method)(Args...))
+        {
+            type<R> return_type;
+            m_data->add_dependency(dependency(return_type.data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            type_data::call_signature sig = {make_type_identifier<Args>()...};
+            m_data->class_specific().methods.emplace_back(
+                name,
+                return_type.data(),
+                sig,
+                [method](call_context& ctx) {
+                    try {
+                        T*     obj = static_cast<T*>(ctx.this_ptr());
+                        size_t index{0};
+                        ctx.result(
+                            (obj->*method)(ctx.parameter<Args>(index++)...));
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            method(const char* name, R (T::*method)(Args...) const)
+        {
+            type<R> return_type;
+            m_data->add_dependency(dependency(return_type.data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            type_data::call_signature sig = {make_type_identifier<Args>()...};
+            m_data->class_specific().methods.emplace_back(
+                name,
+                return_type.data(),
+                sig,
+                [method](call_context& ctx) {
+                    try {
+                        T*     obj = static_cast<T*>(ctx.this_ptr());
+                        size_t index{0};
+                        ctx.result(
+                            (obj->*method)(ctx.parameter<Args>(index++)...));
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename... Args>
+        type<T>& method(const char* name, void (T::*method)(Args...))
+        {
+            m_data->add_dependency(dependency(type<void>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().methods.emplace_back(
+                name,
+                type<void>().data(),
+                sig,
+                [method](call_context& ctx) {
+                    try {
+                        T*     obj = static_cast<T*>(ctx.this_ptr());
+                        size_t index{0};
+                        (obj->*method)(ctx.parameter<Args>(index++)...);
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename... Args>
+        type<T>& function(const char* name, void (*func)(Args...))
+        {
+            m_data->add_dependency(dependency(type<void>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<void>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        size_t index{0};
+                        func(ctx.parameter<Args>(index++)...);
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            function(const char* name, R (*func)(Args...))
+        {
+            m_data->add_dependency(dependency(type<R>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<R>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        size_t index{0};
+                        ctx.result(func(ctx.parameter<Args>(index++)...));
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename Proxy>
+            requires std::is_base_of_v<proxy<T>, Proxy>
+        type<T>& proxy()
+        {
+            type<Proxy> proxy_type;
+            proxy_type.data()->add_dependency(dependency(m_data));
+            m_data->class_specific().proxy_type = proxy_type.data();
+            proxy_type.data()->class_specific().interface_type = m_data;
+            return *this;
+        }
+
+    private:
+        void initialize()
+        {
+            if constexpr (std::is_same_v<T, std::string>) {
+                m_data->class_specific().is_string = true;
+            } else if constexpr (std::is_same_v<T, std::wstring>) {
+                m_data->class_specific().is_wstring = true;
+            }
+            m_data->class_specific().size = sizeof(T);
+            m_data->class_specific().shared_ptr_size =
+                sizeof(std::shared_ptr<T>);
+            if constexpr (std::is_abstract_v<T>) {
+                m_data->class_specific().is_abstract = true;
+            }
+            if constexpr (!std::is_same_v<T, std::string> &&
+                          !std::is_same_v<T, std::wstring> &&
+                          !std::is_same_v<T, std::string_view> &&
+                          !std::is_same_v<T, std::wstring_view>) {
+                m_data->class_specific().name = mge::base_type_name<T>();
+                if constexpr (std::is_destructible_v<T>) {
+                    m_data->class_specific().destroy = [](call_context& ctx) {
+                        T* obj = static_cast<T*>(ctx.this_ptr());
+                        obj->~T();
+                    };
+                    m_data->class_specific().destroy_shared =
+                        [](call_context& ctx) {
+                            std::shared_ptr<T>* sp =
+                                static_cast<std::shared_ptr<T>*>(
+                                    ctx.shared_ptr_address());
+                            if (sp)
+                                sp->~shared_ptr<T>();
+                        };
+                }
+                if constexpr (std::is_default_constructible_v<T>) {
+                    type_data::call_signature sig = {};
+                    m_data->class_specific().constructors.emplace_back(
+                        sig,
+                        [](call_context& ctx) {
+                            T* obj = static_cast<T*>(ctx.this_ptr());
+                            new (obj) T();
+                        });
+                    m_data->class_specific()
+                        .make_shared_constructors.emplace_back(
+                            sig,
+                            [](call_context& ctx) {
+                                std::shared_ptr<T>* obj =
+                                    static_cast<std::shared_ptr<T>*>(
+                                        ctx.this_ptr());
+                                *obj = std::make_shared<T>();
+                            });
+                }
+                if constexpr (std::is_copy_constructible_v<T>) {
+                    type_data::call_signature sig = {
+                        make_type_identifier<const T&>()};
+                    m_data->class_specific().constructors.emplace_back(
+                        sig,
+                        [](call_context& ctx) {
+                            T* obj = static_cast<T*>(ctx.this_ptr());
+                            new (obj) T(ctx.parameter<const T&>(0));
+                        });
+                    m_data->class_specific()
+                        .make_shared_constructors.emplace_back(
+                            sig,
+                            [](call_context& ctx) {
+                                std::shared_ptr<T>* obj =
+                                    static_cast<std::shared_ptr<T>*>(
+                                        ctx.this_ptr());
+                                *obj = std::make_shared<T>(
+                                    ctx.parameter<const T&>(0));
+                            });
+                }
+            }
+        }
+
+        type_data_ref m_data;
     };
 
     template <typename R, typename... Args>
-    class type<std::function<R(Args...)>, void> : public type_base
+    class type<std::function<R(Args...)>>
     {
-    private:
-        using self_type = std::function<R(Args...)>;
-
     public:
-        inline explicit type()
+        type()
         {
-            auto ti = std::type_index(typeid(self_type));
-            init_details(ti);
+            type_identifier id =
+                make_type_identifier<std::function<R(Args...)>>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data =
+                    type_data::create(typeid(std::function<R(Args...)>), id);
+                m_data->class_specific().is_callable = true;
+                m_data->add_dependency(dependency(type<R>().data()));
+                (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            }
         }
 
-        inline explicit type(const std::string& n)
-        {
-            auto ti = std::type_index(typeid(self_type));
-            auto tr = traits_of<self_type>();
-            init_class_details(ti, n, tr, sizeof(self_type));
-            add_default_constructor();
-            add_copy_constructor();
-            add_move_constructor();
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return true; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
 
-            if constexpr (std::is_destructible_v<self_type>) {
-                if constexpr (std::is_trivially_destructible_v<self_type>) {
-                    set_destructor(
-                        [](call_context& context) {},
-                        [](call_context& context) {
-                            void* shared_ptr_addr_untyped =
-                                context.shared_ptr_address();
-                            std::shared_ptr<self_type>** shared_ptr_addr =
-                                reinterpret_cast<std::shared_ptr<self_type>**>(
-                                    shared_ptr_addr_untyped);
-                            delete (*shared_ptr_addr);
-                            (*shared_ptr_addr) = nullptr;
-                        });
-                } else {
-                    set_destructor(
-                        [](call_context& context) {
-                            self_type* self = reinterpret_cast<self_type*>(
-                                context.this_ptr());
-                            self->~self_type();
-                        },
-                        [](call_context& context) {
-                            void* shared_ptr_addr_untyped =
-                                context.shared_ptr_address();
-                            std::shared_ptr<self_type>** shared_ptr_addr =
-                                reinterpret_cast<std::shared_ptr<self_type>**>(
-                                    shared_ptr_addr_untyped);
-                            delete (*shared_ptr_addr);
-                            (*shared_ptr_addr) = nullptr;
-                        });
-                }
-            }
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
         }
 
     private:
+        type_data_ref m_data;
+    };
+
+    template <typename T> class type<T*>
+    {
+    public:
+        type()
+        {
+            type_identifier id = make_type_identifier<T*>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T*), id);
+                // plain pointee type, no const here
+                type<std::remove_cv_t<T>> pointee_type;
+                m_data->pointer_specific().pointee = pointee_type.data();
+                m_data->add_dependency(dependency(pointee_type.data()));
+            }
+        }
+
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return true; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
+        }
+
     private:
-        template <typename... ConstructorArgs> struct constructor_helper
-        {
-            template <std::size_t... I>
-            static void construct(call_context& context,
-                                  std::index_sequence<I...>)
-            {
-                if constexpr ((sizeof...(I) == 1) &&
-                              std::is_same_v<nth_type<0, ConstructorArgs...>,
-                                             void>) {
-                    new (context.this_ptr()) self_type();
-                } else {
-                    new (context.this_ptr()) self_type(
-                        parameter_retriever<nth_type<I, ConstructorArgs...>>(
-                            context,
-                            I)
-                            .get()...);
-                }
-            }
-        };
-
-        template <typename... ConstructorArgs> struct new_shared_helper
-        {
-            template <std::size_t... I>
-            static void new_shared(call_context& context,
-                                   std::index_sequence<I...>)
-            {
-                void* shared_ptr_address_untyped = context.shared_ptr_address();
-                std::shared_ptr<self_type>** shared_ptr_address =
-                    reinterpret_cast<std::shared_ptr<self_type>**>(
-                        shared_ptr_address_untyped);
-                (*shared_ptr_address) = new std::shared_ptr<self_type>();
-                if constexpr ((sizeof...(I) == 1) &&
-                              std::is_same_v<nth_type<0, ConstructorArgs...>,
-                                             void>) {
-                    (**shared_ptr_address) = std::make_shared<self_type>();
-                } else {
-                    (**shared_ptr_address) = std::make_shared<self_type>(
-                        parameter_retriever<nth_type<I, ConstructorArgs...>>(
-                            context,
-                            I)
-                            .get()...);
-                }
-            }
-        };
-
-        void add_default_constructor()
-        {
-            auto new_at = [](call_context& ctx) {
-                new (ctx.this_ptr()) self_type();
-            };
-            auto new_shared = [](call_context& context) {
-                void* shared_ptr_addr_untyped = context.shared_ptr_address();
-                std::shared_ptr<self_type>** shared_ptr_addr =
-                    reinterpret_cast<std::shared_ptr<self_type>**>(
-                        shared_ptr_addr_untyped);
-                (*shared_ptr_addr) = new std::shared_ptr<self_type>();
-                (**shared_ptr_addr) = std::make_shared<self_type>();
-            };
-            signature empty;
-            add_constructor(empty, new_at, new_shared);
-        }
-
-        template <typename... ConstructorArgs> void constructor()
-        {
-            std::array<std::type_index, sizeof...(ConstructorArgs)> arg_types =
-                {std::type_index(typeid(ConstructorArgs))...};
-            auto construct = [](call_context& ctx) {
-                constructor_helper<ConstructorArgs...>::construct(
-                    ctx,
-                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
-            };
-            auto new_shared = [](call_context& ctx) {
-                new_shared_helper<ConstructorArgs...>::new_shared(
-                    ctx,
-                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
-            };
-            signature s(arg_types);
-            add_constructor(s, construct, new_shared);
-            return;
-        }
-
-        inline void add_copy_constructor() { constructor<const self_type&>(); }
-
-        inline void add_move_constructor() { constructor<self_type&&>(); }
+        type_data_ref m_data;
     };
 
     template <typename T>
-    class type<T,
-               typename std::enable_if<std::is_class_v<T> &&
-                                       !mge::is_callable_v<T>>::type>
-        : public type_base
+        requires(std::is_reference_v<T> && !std::is_rvalue_reference_v<T>)
+    class type<T>
     {
-    private:
-        template <typename... ConstructorArgs> struct constructor_helper
-        {
-            template <std::size_t... I>
-            static void construct(call_context& context,
-                                  std::index_sequence<I...>)
-            {
-                if constexpr ((sizeof...(I) == 1) &&
-                              std::is_same_v<nth_type<0, ConstructorArgs...>,
-                                             void>) {
-                    new (context.this_ptr()) T();
-                } else {
-                    new (context.this_ptr())
-                        T(parameter_retriever<nth_type<I, ConstructorArgs...>>(
-                              context,
-                              I)
-                              .get()...);
-                }
-            }
-        };
-
-        template <typename... ConstructorArgs> struct new_shared_helper
-        {
-            template <std::size_t... I>
-            static void new_shared(call_context& context,
-                                   std::index_sequence<I...>)
-            {
-                void* shared_ptr_address_untyped = context.shared_ptr_address();
-                std::shared_ptr<T>** shared_ptr_address =
-                    reinterpret_cast<std::shared_ptr<T>**>(
-                        shared_ptr_address_untyped);
-                (*shared_ptr_address) = new std::shared_ptr<T>();
-                if constexpr ((sizeof...(I) == 1) &&
-                              std::is_same_v<nth_type<0, ConstructorArgs...>,
-                                             void>) {
-                    (**shared_ptr_address) = std::make_shared<T>();
-                } else {
-                    (**shared_ptr_address) = std::make_shared<T>(
-                        parameter_retriever<nth_type<I, ConstructorArgs...>>(
-                            context,
-                            I)
-                            .get()...);
-                }
-            }
-        };
-
     public:
-        using self_type =
-            type<T, typename std::enable_if<std::is_class_v<T>>::type>;
-
-        inline explicit type()
+        type()
         {
-            auto ti = std::type_index(typeid(T));
-            init_details(ti);
-        }
-
-        inline explicit type(const std::string& n)
-        {
-            auto ti = std::type_index(typeid(T));
-            auto tr = traits_of<T>();
-            init_class_details(ti, n, tr, sizeof(T));
-            if constexpr (std::is_destructible_v<T>) {
-                if constexpr (std::is_trivially_destructible_v<T>) {
-                    set_destructor(
-                        [](call_context& context) {},
-                        [](call_context& context) {
-                            void* shared_ptr_addr_untyped =
-                                context.shared_ptr_address();
-                            std::shared_ptr<T>** shared_ptr_addr =
-                                reinterpret_cast<std::shared_ptr<T>**>(
-                                    shared_ptr_addr_untyped);
-                            delete (*shared_ptr_addr);
-                            (*shared_ptr_addr) = nullptr;
-                        });
-                } else {
-                    set_destructor(
-                        [](call_context& context) {
-                            T* self = reinterpret_cast<T*>(context.this_ptr());
-                            self->~T();
-                        },
-                        [](call_context& context) {
-                            void* shared_ptr_addr_untyped =
-                                context.shared_ptr_address();
-                            std::shared_ptr<T>** shared_ptr_addr =
-                                reinterpret_cast<std::shared_ptr<T>**>(
-                                    shared_ptr_addr_untyped);
-                            delete (*shared_ptr_addr);
-                            (*shared_ptr_addr) = nullptr;
-                        });
-                }
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T), id);
+                type<std::remove_cv_t<std::remove_reference_t<T>>>
+                    referencee_type;
+                m_data->reference_specific().referencee =
+                    referencee_type.data();
+                m_data->add_dependency(dependency(referencee_type.data()));
             }
         }
 
-        template <typename... ConstructorArgs> self_type& constructor()
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return false; }
+
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
         {
-            std::array<std::type_index, sizeof...(ConstructorArgs)> arg_types =
-                {std::type_index(typeid(ConstructorArgs))...};
-            auto construct = [](call_context& ctx) {
-                constructor_helper<ConstructorArgs...>::construct(
-                    ctx,
-                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
-            };
-            auto new_shared = [](call_context& ctx) {
-                new_shared_helper<ConstructorArgs...>::new_shared(
-                    ctx,
-                    std::make_index_sequence<sizeof...(ConstructorArgs)>{});
-            };
-            signature s(arg_types);
-            add_constructor(s, construct, new_shared);
-            return *this;
-        }
-
-        inline self_type& constructor()
-        {
-            auto new_at = [](call_context& ctx) { new (ctx.this_ptr()) T(); };
-            auto new_shared = [](call_context& context) {
-                void* shared_ptr_addr_untyped = context.shared_ptr_address();
-                std::shared_ptr<T>** shared_ptr_addr =
-                    reinterpret_cast<std::shared_ptr<T>**>(
-                        shared_ptr_addr_untyped);
-                (*shared_ptr_addr) = new std::shared_ptr<T>();
-                (**shared_ptr_addr) = std::make_shared<T>();
-            };
-            signature empty;
-            add_constructor(empty, new_at, new_shared);
-            return *this;
-        }
-
-        inline self_type& copy_constructor() { return constructor<const T&>(); }
-
-        inline self_type& move_constructor() { return constructor<T&&>(); }
-
-        template <typename TB, typename TV>
-        std::enable_if<std::is_base_of_v<TB, T>, self_type>::type&
-        base(const type<TB, TV>& base_type)
-        {
-            set_base(base_type.details());
-            return *this;
-        }
-
-        template <typename F>
-        self_type& field(const std::string& name, F T::*fieldptr)
-        {
-            type<F> field_type;
-            if constexpr (std::is_const_v<F>) {
-                auto getter = [fieldptr](call_context& ctx) {
-                    const T* objptr = static_cast<const T*>(ctx.this_ptr());
-                    result_storer<F>::store(ctx, objptr->*fieldptr);
-                };
-                add_field(name, field_type, getter);
-            } else {
-                auto getter = [fieldptr](call_context& ctx) {
-                    T* objptr = static_cast<T*>(ctx.this_ptr());
-                    result_storer<F>::store(ctx, objptr->*fieldptr);
-                };
-                auto setter = [fieldptr](call_context& ctx) {
-                    T* objptr = static_cast<T*>(ctx.this_ptr());
-                    objptr->*fieldptr = parameter_retriever<F>(ctx, 0).get();
-                };
-                add_field(name, field_type, getter, setter);
-            }
-            return *this;
+            return m_data->directly_exposed();
         }
 
     private:
-        template <typename... MethodArgs> struct method_helper
-        {
-            template <typename R, std::size_t... I>
-            static inline void call(call_context& ctx,
-                                    R (T::*mptr)(MethodArgs...),
-                                    std::index_sequence<I...>)
-            {
-                T* objptr = static_cast<T*>(ctx.this_ptr());
-                if constexpr (std::is_void_v<R>) {
-                    (objptr->*mptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>(ctx, I)
-                            .get()...);
-                } else {
-                    result_storer<R>::store(
-                        ctx,
-                        (objptr->*mptr)(
-                            parameter_retriever<nth_type<I, MethodArgs...>>(ctx,
-                                                                            I)
-                                .get()...));
-                }
-            }
+        type_data_ref m_data;
+    };
 
-            template <typename R, std::size_t... I>
-            static inline void call(call_context& ctx,
-                                    R (T::*mptr)(MethodArgs...) const,
-                                    std::index_sequence<I...>)
-            {
-                T* objptr = static_cast<T*>(ctx.this_ptr());
-                if constexpr (std::is_void_v<R>) {
-                    (objptr->*mptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>::get(
-                            ctx,
-                            I)...);
-                } else {
-                    result_storer<R>::store(
-                        ctx,
-                        (objptr->*mptr)(
-                            parameter_retriever<nth_type<I, MethodArgs...>>(ctx,
-                                                                            I)
-                                .get()...));
-                }
-            }
-
-            template <typename InvokeResult, std::size_t... I>
-            static inline void
-            call_cfunction(InvokeResult (*fptr)(MethodArgs...),
-                           call_context& context,
-                           std::index_sequence<I...>)
-            {
-                if constexpr (std::is_void_v<InvokeResult>) {
-                    (*fptr)(
-                        parameter_retriever<nth_type<I, MethodArgs...>>(context,
-                                                                        I)
-                            .get()...);
-                } else {
-                    result_storer<InvokeResult>::store(
-                        context,
-                        (*fptr)(parameter_retriever<nth_type<I, MethodArgs...>>(
-                                    context,
-                                    I)
-                                    .get()...));
-                }
-            }
-        };
-
+    template <typename T>
+        requires std::is_rvalue_reference_v<T>
+    class type<T>
+    {
     public:
-        using type_base::details;
-        using type_base::module;
-        using type_base::name;
-        using type_base::type_index;
-
-        template <typename R, typename... MethodArgs>
-        self_type& method(const std::string& name, R (T::*mptr)(MethodArgs...))
+        type()
         {
-            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
-                std::type_index(typeid(MethodArgs))...};
-            auto call = [mptr](call_context& ctx) {
-                method_helper<MethodArgs...>::call(
-                    ctx,
-                    mptr,
-                    std::make_index_sequence<sizeof...(MethodArgs)>{});
-            };
-            signature s(arg_types);
-            auto      result_type = std::type_index(typeid(R));
-
-            add_method(name, result_type, s, call);
-            return *this;
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T), id);
+                type<std::remove_cv_t<std::remove_reference_t<T>>>
+                    referencee_type;
+                m_data->rvalue_reference_specific().referencee =
+                    referencee_type.data();
+                m_data->add_dependency(dependency(referencee_type.data()));
+            }
         }
 
-        template <typename R, typename... MethodArgs>
-        self_type& method(const std::string& name,
-                          R (T::*mptr)(MethodArgs...) noexcept)
-        {
-            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
-                std::type_index(typeid(MethodArgs))...};
-            auto call = [mptr](call_context& ctx) {
-                method_helper<MethodArgs...>::call(
-                    ctx,
-                    mptr,
-                    std::make_index_sequence<sizeof...(MethodArgs)>{});
-            };
-            signature s(arg_types);
-            auto      result_type = std::type_index(typeid(R));
+        bool is_void() const noexcept { return false; }
+        bool is_bool() const noexcept { return false; }
+        bool is_enum() const noexcept { return false; }
+        bool is_pod() const noexcept { return false; }
+        bool is_class() const noexcept { return false; }
+        bool is_pointer() const noexcept { return false; }
+        bool is_reference() const noexcept { return true; }
+        bool is_rvalue_reference() const noexcept { return true; }
 
-            add_method(name, result_type, s, call);
-            return *this;
+        const type_data_ref& data() const noexcept { return m_data; }
+
+        bool directly_exposed() const noexcept
+        {
+            return m_data->directly_exposed();
         }
 
-        template <typename R, typename... MethodArgs>
-        self_type& method(const std::string& name,
-                          R (T::*mptr)(MethodArgs...) const)
-        {
-            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
-                std::type_index(typeid(MethodArgs))...};
-            auto call = [mptr](call_context& ctx) {
-                method_helper<MethodArgs...>::call(
-                    ctx,
-                    mptr,
-                    std::make_index_sequence<sizeof...(MethodArgs)>{});
-            };
-            signature s(arg_types);
-            auto      result_type = std::type_index(typeid(R));
-
-            add_method(name, result_type, s, call);
-            return *this;
-        }
-
-        template <typename R, typename... MethodArgs>
-        self_type& method(const std::string& name,
-                          R (T::*mptr)(MethodArgs...) const noexcept)
-        {
-            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
-                std::type_index(typeid(MethodArgs))...};
-            auto call = [mptr](call_context& ctx) {
-                method_helper<MethodArgs...>::call(
-                    ctx,
-                    mptr,
-                    std::make_index_sequence<sizeof...(MethodArgs)>{});
-            };
-            signature s(arg_types);
-            auto      result_type = std::type_index(typeid(R));
-
-            add_method(name, result_type, s, call);
-            return *this;
-        }
-
-        template <typename R, typename... MethodArgs>
-        self_type& method(const std::string& name, R (*fptr)(MethodArgs...))
-        {
-            std::array<std::type_index, sizeof...(MethodArgs)> arg_types = {
-                std::type_index(typeid(MethodArgs))...};
-            auto call = [fptr](call_context& ctx) {
-                method_helper<MethodArgs...>::call_cfunction(
-                    fptr,
-                    ctx,
-                    std::make_index_sequence<sizeof...(MethodArgs)>{});
-            };
-            signature s(arg_types);
-            auto      result_type = std::type_index(typeid(R));
-            add_static_method(name, result_type, s, call);
-            return *this;
-        }
-
-        /**
-         * @brief Add elements to the type
-         *
-         * @tparam SubType        type of first element
-         * @tparam SubArgs     other element types
-         * @param arg0      first element
-         * @param args      other elements
-         *
-         * @return @c *this
-         */
-        template <typename SubType, typename... SubArgs>
-        self_type& operator()(const SubType& arg0, const SubArgs&... args)
-        {
-            add_member(arg0);
-            return operator()(args...);
-        }
-
-        self_type& operator()() { return *this; }
-
-        template <typename SubType, typename SubTypeDetail>
-        void add_member(const type<SubType, typename SubTypeDetail>& t)
-        {
-            type_base::add_member(
-                const_cast<type_base&>(static_cast<const type_base&>(t)));
-        }
+    private:
+        type_data_ref m_data;
     };
 
 } // namespace mge::script

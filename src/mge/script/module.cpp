@@ -2,82 +2,41 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/module.hpp"
-#include "mge/core/stdasserts.hpp"
-#include "mge/script/module_details.hpp"
-
+#include "mge/script/module_data.hpp"
 namespace mge::script {
 
-    module::module()
-        : m_details(module_details::get(""))
-    {
-        if (m_details == nullptr) {
-            MGE_THROW(illegal_state) << "Root module is null";
-        }
-    }
+    module::module() :m_data(module_data::root()) {}
 
-    module::module(const std::string& path)
-        : m_details(module_details::get(path))
-    {
-        if (m_details == nullptr) {
-            MGE_THROW(illegal_state) << "Cannot access module '" << path << "'";
-        }
-    }
-
-    module::module(const module_details_ref& details)
-        : m_details(details)
-    {
-        if (m_details == nullptr) {
-            MGE_THROW(illegal_state) << "Invalid module reference";
-        }
-    }
-
-    module::module(module_details_ref&& details)
-        : m_details(std::move(details))
-    {
-        if (m_details == nullptr) {
-            MGE_THROW(illegal_state) << "Invalid module reference";
-        }
-    }
+    module::module(const std::string& name) :m_data(module_data::get(name)) {}
 
     module::~module() {}
 
-    bool module::is_root() const { return m_details->is_root(); }
+    mge::script::module module::root() { return mge::script::module(); }
+
+    bool module::is_root() const { return m_data->is_root(); }
+
+    const std::string& module::name() const { return m_data->name(); }
 
     mge::script::module module::parent() const
     {
         if (is_root()) {
-            MGE_THROW(mge::illegal_state) << "Root module has no parent";
+            MGE_THROW(illegal_state) << "Root module has no parent";
         }
-        return mge::script::module(m_details->parent());
+        return module(m_data->parent());
     }
 
-    const std::string& module::name() const { return m_details->name(); }
+    void module::add(const function_data_ref& f) { m_data->add(f); }
 
-    std::string module::full_name() const { return m_details->full_name(); }
+    void module::add(const type_data_ref& t) { m_data->add(t); }
 
-    bool module::operator==(const module& m) const
+    const function_data& module::function(const char* name) const
     {
-        if (is_root()) {
-            return m.is_root();
-        }
-        if (m.is_root()) {
-            return false;
-        }
-        if (name() == m.name()) {
-            return parent() == m.parent();
-        } else {
-            return false;
-        }
+        return m_data->function(name);
     }
 
-    bool module::operator!=(const module& m) const { return !(*this == m); }
-
-    void module::apply(visitor& v) const { m_details->apply(v); }
-
-    void module::add_module(module& m) { m_details->add_module(m.m_details); }
-
-    void module::add_type(type_base& t) { m_details->add_type(t); }
-
-    void module::add_function(function_base& f) { m_details->add_function(f); }
+    const type_data& module::type(const char* name) const
+    {
+        return m_data->type(name);
+    }
 
 } // namespace mge::script

@@ -2,305 +2,151 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/callable.hpp"
-#include "mge/core/function_traits.hpp"
-#include "mge/core/nth_type.hpp"
+#include "mge/core/stdexceptions.hpp"
+#include "mge/core/type_name.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
-#include "mge/script/parameter_retriever.hpp"
-#include "mge/script/result_storer.hpp"
+#include "mge/script/function_data.hpp"
 #include "mge/script/script_fwd.hpp"
+#include "mge/script/type.hpp"
+#include "mge/script/type_data.hpp"
+#include "mge/script/type_identifier.hpp"
 
-#include <array>
-#include <functional>
-#include <type_traits>
-#include <vector>
+#include <cstdint>
+#include <iostream>
+#include <tuple>
 
 namespace mge::script {
 
-    class MGESCRIPT_EXPORT function_base
+    namespace {} // namespace
+
+    template <typename R, typename... Args> class function
     {
     public:
-        function_base() = default;
-        virtual ~function_base() = default;
-        function_base(const function_base&) = default;
-        function_base(function_base&&) = default;
+        function() {}
 
-        const std::string&                  name() const;
-        const mge::script::invoke_function& invoke_function() const;
-        const std::type_index&              return_type() const;
-        const std::vector<std::type_index>& argument_types() const;
-        const function_details_ref&         details() const;
-        function_details_ref&               details();
-
-    protected:
-        template <size_t N>
-        function_details_ref
-        create_details(const std::string&                    name,
-                       void*                                 fptr,
-                       const mge::script::invoke_function&   function,
-                       const std::type_index&                return_type,
-                       const std::array<std::type_index, N>& argument_types)
+        function(const function& f)
+            : m_data(f.m_data)
+        {}
+        function(function&& f) noexcept
+            : m_data(std::move(f.m_data))
+        {}
+        function& operator=(const function& f)
         {
-            std::vector<std::type_index> argument_types_v(
-                argument_types.begin(),
-                argument_types.end());
-
-            return create_details(name,
-                                  fptr,
-                                  function,
-                                  return_type,
-                                  std::move(argument_types_v));
+            m_data = f.m_data;
+            return *this;
+        }
+        function& operator=(function&& f) noexcept
+        {
+            m_data = std::move(f.m_data);
+            return *this;
         }
 
-        function_details_ref
-        create_details(const std::string&                  name,
-                       void*                               fptr,
-                       const mge::script::invoke_function& function,
-                       const std::type_index&              return_type);
-
-        function_details_ref
-        create_details(const std::string&                  name,
-                       void*                               fptr,
-                       const mge::script::invoke_function& function,
-                       const std::type_index&              return_type,
-                       std::vector<std::type_index>&&      argument_types);
-
-        function_details_ref m_details;
-    };
-
-    template <typename R, typename... Args>
-    class c_function : public function_base
-    {
-    private:
-        template <typename... InvokeArgs> struct invoke_helper
+        function(const char* name, R (*f)(Args...))
+            : m_data(std::make_shared<function_data>(
+                  name, reinterpret_cast<void*>(f)))
         {
-            template <typename InvokeResult, std::size_t... I>
-            static inline void
-            call_cfunction(InvokeResult (*fptr)(InvokeArgs...),
-                           call_context& context,
-                           std::index_sequence<I...>)
-            {
-                if constexpr (std::is_void_v<InvokeResult>) {
-                    (*fptr)(
-                        parameter_retriever<nth_type<I, InvokeArgs...>>(context,
-                                                                        I)
-                            .get()...);
+            auto return_type = type<R>();
+            m_data->set_return_type(return_type.data()->identifier());
+            type_data::call_signature signature = {
+                make_type_identifier<Args>()...};
+            ((m_data->add_dependency(type<Args>().data())), ...);
+            m_data->add_dependency(return_type.data());
+            m_data->set_signature(signature);
+            if constexpr (sizeof...(Args) == 0) {
+                if constexpr (std::is_same_v<R, void>) {
+                    m_data->set_invoker([f](call_context& ctx) {
+                        try {
+                            f();
+                        } catch (const mge::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (const std::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
+                    });
+                } else if constexpr (call_context::is_simple_result<R>() ||
+                                     std::is_same_v<R, const std::string&>) {
+                    m_data->set_invoker([f](call_context& ctx) {
+                        try {
+                            ctx.result(f());
+                        } catch (const mge::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (const std::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
+                    });
+                } else if constexpr (std::is_reference_v<R> &&
+                                     !std::is_const<
+                                         std::remove_reference_t<R>>::value) {
+                    using base_type = std::remove_reference_t<R>;
+                    MGE_THROW_NOT_IMPLEMENTED
+                        << "Function with reference to "
+                        << type_name<base_type>()
+                        << " return value and no arguments";
                 } else {
-                    result_storer<InvokeResult>::store(
-                        context,
-                        (*fptr)(parameter_retriever<nth_type<I, InvokeArgs...>>(
-                                    context,
-                                    I)
-                                    .get()...));
+                    MGE_THROW_NOT_IMPLEMENTED
+                        << "Function with " << type_name<R>()
+                        << " return value and no arguments";
                 }
-            }
-        };
-
-    public:
-        c_function(const std::string& name, R (*fptr)(Args... args))
-        {
-            if constexpr (sizeof...(Args) >= 1) {
-                auto invoke_function = [fptr](call_context& context) {
-                    invoke_helper<Args...>::call_cfunction(
-                        fptr,
-                        context,
-                        std::make_index_sequence<sizeof...(Args)>{});
-                };
-                std::array<std::type_index, sizeof...(Args)> arg_types = {
-                    std::type_index(typeid(Args))...};
-                auto result_type = std::type_index(typeid(R));
-                m_details = create_details(name,
-                                           fptr,
-                                           invoke_function,
-                                           result_type,
-                                           arg_types);
             } else {
-                auto invoke_function = [fptr](call_context& context) {
-                    invoke_helper<Args...>::call_cfunction(
-                        fptr,
-                        context,
-                        std::make_index_sequence<sizeof...(Args)>{});
-                };
-                auto result_type = std::type_index(typeid(R));
-                m_details =
-                    create_details(name, fptr, invoke_function, result_type);
-            }
-        }
-
-        c_function(const c_function& f) = default;
-        c_function(c_function&& f) = default;
-    };
-
-    template <typename R, typename... Args>
-    inline c_function<R, Args...> function(const std::string& name,
-                                           R (*fptr)(Args...))
-    {
-        return c_function<R, Args...>(name, fptr);
-    }
-
-    template <typename R, typename... Args>
-    class std_function : public function_base
-    {
-    private:
-        template <typename... InvokeArgs> struct invoke_helper
-        {
-            template <typename InvokeResult, std::size_t... I>
-            static inline void call_stdfunction(
-                const std::function<InvokeResult(InvokeArgs...)>& f,
-                call_context&                                     context,
-                std::index_sequence<I...>)
-            {
-                if constexpr (std::is_void_v<InvokeResult>) {
-                    f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
-                        context,
-                        I)...);
-
+                if constexpr (std::is_same_v<R, void>) {
+                    m_data->set_invoker([f](call_context& ctx) {
+                        try {
+                            std::size_t index = 0;
+                            f((ctx.parameter<Args>(index++))...);
+                        } catch (const mge::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (const std::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
+                    });
+                } else if constexpr (call_context::is_simple_result<R>() ||
+                                     std::is_same_v<R, const std::string&>) {
+                    m_data->set_invoker([f](call_context& ctx) {
+                        try {
+                            std::size_t index = 0;
+                            ctx.result(f((ctx.parameter<Args>(index++))...));
+                        } catch (const mge::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (const std::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
+                    });
+                } else if constexpr (std::is_enum_v<R>) {
+                    m_data->set_invoker([f](call_context& ctx) {
+                        try {
+                            std::size_t index = 0;
+                            ctx.result(f((ctx.parameter<Args>(index++))...));
+                        } catch (const mge::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (const std::exception& e) {
+                            ctx.exception_thrown(e);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
+                    });
                 } else {
-                    result_storer<InvokeResult>::store(
-                        context,
-                        f(parameter_retriever<nth_type<I, InvokeArgs...>>(
-                              context,
-                              I)
-                              .get()...));
+                    MGE_THROW_NOT_IMPLEMENTED << "Function with "
+                                              << type_name<R>()
+                                              << " return value and arguments";
                 }
-            }
-        };
-
-    public:
-        std_function(const std::string&               name,
-                     const std::function<R(Args...)>& f)
-        {
-            if constexpr (sizeof...(Args) >= 1) {
-                auto invoke_function = [f](call_context& context) {
-                    invoke_helper<Args...>::call_stdfunction(
-                        f,
-                        context,
-                        std::make_index_sequence<sizeof...(Args)>{});
-                };
-                std::array<std::type_index, sizeof...(Args)> arg_types = {
-                    std::type_index(typeid(Args))...};
-                auto result_type = std::type_index(typeid(R));
-                m_details = create_details(name,
-                                           nullptr,
-                                           invoke_function,
-                                           result_type,
-                                           arg_types);
-            } else {
-                auto invoke_function = [f](call_context& context) {
-                    invoke_helper<Args...>::call_stdfunction(
-                        f,
-                        context,
-                        std::make_index_sequence<sizeof...(Args)>{});
-                };
-                auto result_type = std::type_index(typeid(R));
-                m_details =
-                    create_details(name, nullptr, invoke_function, result_type);
             }
         }
 
-        std_function(const std_function& f) = default;
-        std_function(std_function&& f) = default;
+        ~function() = default;
+
+        const function_data_ref& data() const noexcept { return m_data; }
+
+    private:
+        function_data_ref m_data;
     };
-
-    template <typename R, typename... Args>
-    inline std_function<R, Args...> function(const std::string& name,
-                                             const std::function<R(Args...)>& f)
-    {
-        return std_function<R, Args...>(name, f);
-    }
-
-    template <typename C> class callable_function : public function_base
-    {
-        template <typename T> struct callable_utils
-        {};
-
-        template <typename R, typename... Args>
-        struct callable_utils<R (C::*)(Args...) const>
-        {
-            template <typename... InvokeArgs> struct invoke_helper
-            {
-                template <std::size_t... I>
-                static inline void call_callable(const C&      f,
-                                                 call_context& context,
-                                                 std::index_sequence<I...>)
-                {
-                    if constexpr (std::is_void_v<R>) {
-
-                        f(parameter_retriever<nth_type<I, InvokeArgs...>>::get(
-                            context,
-                            I)...);
-                    } else {
-                        result_storer<R>::store(
-                            context,
-                            f(parameter_retriever<nth_type<I, InvokeArgs...>>(
-                                  context,
-                                  I)
-                                  .get()...));
-                    }
-                }
-            };
-
-            using return_type = R;
-
-            static constexpr auto arity = sizeof...(Args);
-
-            static std::array<std::type_index, sizeof...(Args)> arg_types()
-            {
-                std::array<std::type_index, sizeof...(Args)> types = {
-                    std::type_index(typeid(Args))...};
-                return types;
-            }
-
-            static void invoke(const C& callable_obj, call_context& context)
-            {
-                invoke_helper<Args...>::call_callable(
-                    callable_obj,
-                    context,
-                    std::make_index_sequence<sizeof...(Args)>{});
-            }
-        };
-
-        using concrete_utils = callable_utils<decltype(&C::operator())>;
-
-    public:
-        callable_function(const std::string& name, C&& callable_obj)
-        {
-            if constexpr (concrete_utils::arity >= 1) {
-                auto invoke_function =
-                    [c = std::move(callable_obj)](call_context& context) {
-                        concrete_utils::invoke(c, context);
-                    };
-                auto arg_types = concrete_utils::arg_types();
-                auto result_type =
-                    std::type_index(typeid(concrete_utils::return_type));
-                m_details = create_details(name,
-                                           nullptr,
-                                           invoke_function,
-                                           result_type,
-                                           arg_types);
-            } else {
-                auto result_type =
-                    std::type_index(typeid(concrete_utils::return_type));
-                auto invoke_function =
-                    [c = std::move(callable_obj)](call_context& context) {
-                        concrete_utils::invoke(c, context);
-                    };
-                m_details =
-                    create_details(name, nullptr, invoke_function, result_type);
-            }
-        }
-
-        callable_function(const callable_function& f) = default;
-        callable_function(callable_function&& f) = default;
-    };
-
-    template <typename C>
-    inline std::enable_if<mge::is_callable<C>::value,
-                          callable_function<C>>::type
-    function(const std::string& name, C&& callable)
-    {
-        return callable_function<C>(name, std::move(callable));
-    }
 
 } // namespace mge::script

@@ -2,23 +2,14 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/stdexceptions.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/function.hpp"
 #include "mge/script/script_fwd.hpp"
-#include "mge/script/type.hpp"
 
-#include <functional>
-#include <iostream>
 #include <string>
-#include <unordered_map>
-
 namespace mge::script {
 
-    /**
-     * @brief Module
-     *
-     * A module wraps a namespace or alike compound of objects. Modules, like
-     * namespaces. are hierarchically organized.
-     */
     class MGESCRIPT_EXPORT module
     {
     public:
@@ -26,110 +17,68 @@ namespace mge::script {
          * Root module.
          */
         module();
+
+        module(const std::string& name);
+
+        module(const module& other) :m_data(other.m_data) {}
+
+        module& operator=(const module& other)
+        {
+            m_data = other.m_data;
+            return *this;
+        }
+
+        module(module&& other) :m_data(std::move(other.m_data)) {}
+
+        module(const module_data_ref& data) :m_data(data)
+        {
+            if (!m_data) {
+                MGE_THROW(illegal_argument) << "Module data must not be null";
+            }
+        }
+
+        module& operator=(module&& other)
+        {
+            m_data = std::move(other.m_data);
+            return *this;
+        }
+
         /**
-         * @brief Construct a new module object
-         *
-         * @param path module path
-         */
-        module(const std::string& path);
-        /**
-         * @brief Destroy the module object
+         * Destructor.
          */
         ~module();
-        /**
-         * @brief Copy constructor.
-         */
-        module(const module&) = default;
-        /**
-         * @brief Move constructor.
-         */
-        module(module&&) = default;
 
-        /**
-         * @brief Constructor.
-         * @param details module details
-         */
-        module(const module_details_ref& details);
+        bool                is_root() const;
+        const std::string&  name() const;
+        mge::script::module parent() const;
+        static module       root();
+        module_data_ref     data() const { return m_data; }
 
-        /**
-         * @brief Constructor.
-         * @param details module details
-         */
-        module(module_details_ref&& details);
-
-        /**
-         * @brief Assignment.
-         *
-         * @return @c *this
-         */
-        module& operator=(const module&) = default;
-
-        /**
-         * @brief Move assignment.
-         *
-         * @return @c *this
-         */
-        module& operator=(module&&) = default;
-
-        /**
-         * @brief Add elements to the module.
-         *
-         * @tparam T        type of first element
-         * @tparam Args     other element types
-         * @param arg0      first element
-         * @param args      other elements
-         *
-         * @return @c *this
-         */
         template <typename T, typename... Args>
-        module& operator()(const T& arg0, const Args&... args)
+        inline module& operator()(const T& arg0, const Args&... args)
         {
-            add_member(arg0);
+            add(arg0);
             return operator()(args...);
         }
 
-        module& operator()() { return *this; }
+        inline module& operator()() { return *this; }
 
-        bool                is_root() const;
-        mge::script::module parent() const;
-        const std::string&  name() const;
-        std::string         full_name() const;
+        template <typename R, typename... Args>
+        void add(const mge::script::function<R, Args...> f)
+        {
+            add(f.data());
+        }
 
-        void apply(visitor& v) const;
+        template <typename T> void add(const type<T>& t) { add(t.data()); }
 
-        module_details& details();
-
-        bool operator==(const module& m) const;
-        bool operator!=(const module& m) const;
+        const function_data& function(const char* name) const;
+        const type_data&     type(const char* name) const;
 
     private:
-        void add_member(const module& m) { add_module(const_cast<module&>(m)); }
-        void add_member(const function_base& f)
-        {
-            add_function(const_cast<function_base&>(f));
-        }
+        void add(const function_data_ref& f);
+        void add(const type_data_ref& t);
 
-        template <typename T, typename V> void add_member(const type<T, V>& t)
-        {
-            add_type(const_cast<type_base&>(static_cast<const type_base&>(t)));
-        }
-
-        void add_module(module& m);
-        void add_type(type_base& t);
-        void add_function(function_base& f);
-
-        module_details_ref m_details;
+        module_data_ref m_data;
     };
 
 } // namespace mge::script
-
-namespace std {
-    template <> struct hash<mge::script::module>
-    {
-        size_t operator()(const mge::script::module& m) const
-        {
-            const std::hash<std::string> string_hash;
-            return string_hash(m.name());
-        }
-    };
-} // namespace std

@@ -161,7 +161,7 @@ namespace mge {
             measure_series        series;
             static constexpr auto wanted_duration =
                 std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    std::chrono::milliseconds(2));
+                    std::chrono::milliseconds(200));
             bool stable;
 
             uint64_t initial_iterations() const override { return iterations; }
@@ -233,6 +233,8 @@ namespace mge {
             uint64_t initial_iterations() const override { return iterations; }
             void     set_iterations(uint64_t iterations_)
             {
+                // std::cerr << "Set iterations: " << iterations_ << std::endl;
+
                 iterations = iterations_;
                 int64_t max_deviate = iterations / 10;
                 if (max_deviate == 0) {
@@ -245,10 +247,13 @@ namespace mge {
 
             uint64_t next_iterations()
             {
+
                 int64_t result = iterations + distributor(rng);
                 if (result <= 0) {
                     result = 1;
                 }
+
+                // std::cerr << "Next iterations: " << result << std::endl;
                 return result;
             }
 

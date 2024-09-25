@@ -2,10 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "python_module.hpp"
+#include "gil_lock.hpp"
 #include "mge/core/trace.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
-#include "python_function.hpp"
+
+#include <mutex>
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
@@ -13,81 +15,73 @@ namespace mge {
 
 namespace mge::python {
 
-    python_module::python_module(python_context&            context,
-                                 const mge::script::module& m)
+    python_module::python_module(python_context&                     context,
+                                 const mge::script::module_data_ref& data)
         : m_context(context)
-        , m_py_module(nullptr)
-        , m_py_module_dict(nullptr)
-        , m_module(m)
+        , m_data(data)
+        , m_name(data->full_name())
     {
-        if (m_module.is_root()) {
-            MGE_DEBUG_TRACE(PYTHON) << "Creating __main__ module";
-            m_py_module = PyImport_AddModule("__main__");
-            m_py_module_dict = PyModule_GetDict(m_py_module);
-        } else {
-            MGE_DEBUG_TRACE(PYTHON) << "Creating " << m.name() << " module";
-            m_py_module = PyImport_AddModule(m.name().c_str());
-            m_py_module_dict = PyModule_GetDict(m_py_module);
-        }
-        error::check_error();
+        MGE_DEBUG_TRACE(PYTHON) << "Creating module " << m_name;
+        initialize();
     }
 
-    python_module::python_module(python_context&            context,
-                                 const python_module_ref&   parent,
-                                 const mge::script::module& m)
+    python_module::python_module(python_context&    context,
+                                 const std::string& name)
         : m_context(context)
-        , m_py_module(nullptr)
-        , m_py_module_dict(nullptr)
-        , m_module(m)
+        , m_name(name)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Creating '" << m.name() << "' module";
-        m_py_module = PyImport_AddModule(m.name().c_str());
-        m_py_module_dict = PyModule_GetDict(m_py_module);
-        PyDict_SetItemString(parent->py_module_dict(),
-                             m.name().c_str(),
-                             m_py_module);
-        error::check_error();
-
-        if (m.name() == "mge") {
-            handle_mge_module();
-        }
-    }
-
-    void python_module::interpreter_lost()
-    {
-        m_py_module_dict = nullptr;
-        m_py_module = nullptr;
-        for (const auto& t : m_types) {
-            t->interpreter_lost();
-        }
+        MGE_DEBUG_TRACE(PYTHON) << "Creating module " << name;
+        initialize();
     }
 
     python_module::~python_module()
     {
-        Py_CLEAR(m_py_module_dict);
-        Py_CLEAR(m_py_module);
+        MGE_DEBUG_TRACE(PYTHON) << "Destroying module " << m_name;
     }
 
-    void python_module::add_type(const python_type_ref& type)
+    void python_module::on_interpreter_loss()
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Adding type '" << type->local_name()
-                                << "' to module '" << m_module.name() << "'";
+        MGE_DEBUG_TRACE(PYTHON) << "Module " << m_name << " interpreter loss";
+        m_module.release();
+    }
 
-        PyObject* py_type = type->py_type();
-        if (py_type) {
-            if (!type->is_subtype()) {
-                PyModule_AddObjectRef(m_py_module,
-                                      type->local_name().c_str(),
-                                      py_type);
-                error::check_error();
-            }
-            m_types.push_back(type);
+    void python_module::on_interpreter_restore()
+    {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Module " << m_name << " interpreter restore";
+        initialize();
+    }
+
+    void python_module::initialize()
+    {
+        std::lock_guard<gil_lock> lock(gil_lock::instance());
+        PyObject*                 module = PyImport_AddModule(m_name.c_str());
+        error::check_error();
+        if (!module) {
+            MGE_THROW(python::error) << "Cannot create module " << m_name;
         }
-    }
-
-    void python_module::handle_mge_module()
-    {
-        python_function::init(m_py_module);
+        m_module = pyobject_ref(module, pyobject_ref::incref::yes);
+        std::string parent_name;
+        if (!m_data || m_data->parent()->is_root()) {
+            parent_name = "__main__";
+        } else {
+            parent_name = m_data->parent()->full_name();
+        }
+        pyobject_ref parent_module(PyImport_ImportModule(parent_name.c_str()));
+        error::check_error();
+        if (!parent_module) {
+            MGE_THROW(python::error)
+                << "Cannot import parent module " << parent_name;
+        }
+        PyObject* parent_dict = PyModule_GetDict(parent_module.get());
+        error::check_error();
+        if (!parent_dict) {
+            MGE_THROW(python::error)
+                << "Cannot get dictionary of parent module " << parent_name;
+        }
+        PyDict_SetItemString(parent_dict, m_name.c_str(), module);
+        error::check_error();
+        m_module = pyobject_ref(module, pyobject_ref::incref::yes);
     }
 
 } // namespace mge::python

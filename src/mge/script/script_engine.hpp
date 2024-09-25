@@ -5,18 +5,18 @@
 #include "mge/core/component.hpp"
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
+
 namespace mge {
 
     /**
      * @brief A script engine.
      *
      * A script engine wraps up a language or system that is integrated.
-     *
      */
     class MGESCRIPT_EXPORT script_engine : public component<script_engine>
     {
     protected:
-        script_engine();
+        script_engine() = default;
 
     public:
         /**

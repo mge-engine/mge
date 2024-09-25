@@ -4,12 +4,11 @@
 
 SET(MGESCRIPT_TEST_SOURCES
     test_module.cpp
-    test_traits.cpp
+    test_function.cpp
+    test_enum.cpp
+    test_bool.cpp
+    test_pointer.cpp
     test_type.cpp
-#    test_variable.cpp
-   test_function.cpp
-   test_proxy.cpp
-   test_signature.cpp
 )
 
 MGE_TEST(
@@ -18,4 +17,8 @@ MGE_TEST(
     LIBRARIES   mgecore mgescript
 )
 
-
+MGE_TEST(
+    TARGET      test_script_context
+    SOURCES     test_script_context.cpp
+    LIBRARIES   mgecore mgescript
+)

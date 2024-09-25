@@ -2,80 +2,76 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/script/function.hpp"
-#include "mge/script/function_details.hpp"
 #include "mge/script/module.hpp"
 #include "mock_call_context.hpp"
 #include "test/googletest.hpp"
-#include <iostream>
 
 using namespace testing;
 
-namespace mge {
-    static int voidfunc_value = 0;
+int  test_function_void_called = 0;
+void test_function_void(void) { test_function_void_called = 42; }
+void test_function_void_throw_mge_exception(void)
+{
+    MGE_THROW(mge::exception) << "test";
+}
+void test_function_void_throw_std_exception(void) { throw std::exception(); }
+void test_function_void_throw_int_exception(void) { throw 42; }
 
-    int  intfunc(int x, int y) { return x - y; }
-    int  intfunc_noargs(void) { return 42; }
-    void voidfunc_intarg(int x) { voidfunc_value = x; }
-    void voidfunc() { voidfunc_value = 333; }
+TEST(function, void_c_function)
+{
+    using mge::script::function;
 
-    TEST(test_function, intfunc_noargs)
-    {
-        auto f = mge::script::function("intfunc_noargs", &intfunc_noargs);
+    mge::script::module m;
+    m(function("test_function_void", test_function_void));
+    m(function("test_function_void_throw_mge_exception",
+               test_function_void_throw_mge_exception));
+    m(function("test_function_void_throw_std_exception",
+               test_function_void_throw_std_exception));
+    m(function("test_function_void_throw_int_exception",
+               test_function_void_throw_int_exception));
+    MOCK_call_context ctx;
+    m.function("test_function_void").invoke(ctx);
+    EXPECT_EQ(42, test_function_void_called);
+    EXPECT_CALL(ctx, exception_thrown_mge(_)).Times(1);
+    m.function("test_function_void_throw_mge_exception").invoke(ctx);
+    EXPECT_CALL(ctx, exception_thrown_std(_)).Times(1);
+    m.function("test_function_void_throw_std_exception").invoke(ctx);
+    EXPECT_CALL(ctx, exception_thrown_noargs()).Times(1);
+    m.function("test_function_void_throw_int_exception").invoke(ctx);
+}
 
-        MOCK_call_context ctx;
-        EXPECT_CALL(ctx, store_int32_t_result(42)).Times(1);
-        f.invoke_function()(ctx);
-    }
+int8_t test_function_int8_t() { return 42; }
+int8_t test_function_int8_t_throw_mge_exception(void)
+{
+    MGE_THROW(mge::exception) << "test";
+}
 
-    TEST(test_function, intfunc)
-    {
-        auto f = mge::script::function("intfunc", &intfunc);
+TEST(function, int8_t_c_function)
+{
+    using mge::script::function;
 
-        MOCK_call_context ctx;
-        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
-        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(3));
-        EXPECT_CALL(ctx, store_int32_t_result(7)).Times(1);
-        f.invoke_function()(ctx);
-    }
+    mge::script::module m;
+    m(function("test_function_int8_t", test_function_int8_t));
+    m(function("test_function_int8_t_throw_mge_exception",
+               test_function_int8_t_throw_mge_exception));
+    MOCK_call_context ctx;
+    EXPECT_CALL(ctx, int8_t_result(42)).Times(1);
+    m.function("test_function_int8_t").invoke(ctx);
+    EXPECT_CALL(ctx, exception_thrown_mge(_)).Times(1);
+    m.function("test_function_int8_t_throw_mge_exception").invoke(ctx);
+}
 
-    TEST(test_function, voidfunc)
-    {
-        auto f = mge::script::function("voidfunc", &voidfunc);
+int32_t test_function_sum(int32_t a, int32_t b) { return a + b; }
 
-        MOCK_call_context ctx;
-        f.invoke_function()(ctx);
-        EXPECT_EQ(333, voidfunc_value);
-    }
+TEST(function, test_function_sum)
+{
+    using mge::script::function;
 
-    TEST(test_function, voidfunc_intarg)
-    {
-        auto f = mge::script::function("voidfunc_intarg", &voidfunc_intarg);
-
-        MOCK_call_context ctx;
-        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
-        f.invoke_function()(ctx);
-        EXPECT_EQ(10, voidfunc_value);
-    }
-
-    TEST(test_function, intfunc_stdfu)
-    {
-        std::function<int(int, int)> stdfu = [](int x, int y) -> int {
-            return x - y;
-        };
-        auto f = mge::script::function("intfunc_stdfu", stdfu);
-
-        MOCK_call_context ctx;
-        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(10));
-        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(3));
-        EXPECT_CALL(ctx, store_int32_t_result(7)).Times(1);
-        f.invoke_function()(ctx);
-    }
-
-    TEST(test_function, lambda)
-    {
-        auto f =
-            mge::script::function("intfunc_lambda",
-                                  [](int x, int y) -> int { return x - y; });
-    }
-
-} // namespace mge
+    mge::script::module m;
+    m(function("test_function_sum", test_function_sum));
+    MOCK_call_context ctx;
+    EXPECT_CALL(ctx, int32_t_result(42)).Times(1);
+    EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(20));
+    EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(22));
+    m.function("test_function_sum").invoke(ctx);
+}

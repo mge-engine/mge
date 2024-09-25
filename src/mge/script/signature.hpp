@@ -2,72 +2,26 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "boost/boost_operators.hpp"
-#include "mge/core/small_vector.hpp"
 #include "mge/script/dllexport.hpp"
+#include "mge/script/script_fwd.hpp"
 
-#include <array>
 #include <typeindex>
+#include <vector>
 
 namespace mge::script {
-
-    /**
-     * Signature of a function.
-     */
     class MGESCRIPT_EXPORT signature
-        : public boost::equality_comparable<signature>
     {
     public:
-        signature();
+        signature(const type_data_ref&              return_type,
+                  const std::vector<type_data_ref>& argument_types)
+            : m_return_type(return_type)
+            , m_argument_types(argument_types)
+        {}
 
-        template <typename... T> static signature create()
-        {
-            std::array<std::type_index, sizeof...(T)> arg_types = {
-                std::type_index(typeid(T))...};
-            return signature(arg_types);
-        }
-
-        template <size_t I>
-        signature(const std::array<std::type_index, I>& data)
-        {
-            m_types.resize(data.size());
-            std::copy(data.begin(), data.end(), m_types.begin());
-        }
-
-        signature(const signature&) = default;
-        signature(signature&&) = default;
-
-        signature& operator=(const signature&) = default;
-        signature& operator=(signature&&) = default;
-
-        ~signature();
-
-        bool operator==(const signature& s) const;
-
-        const auto& operator[](size_t i) const { return *m_types[i]; }
-
-        const auto& at(size_t i) const { return *m_types.at(i); }
-
-        bool matches(const signature& other) const;
-
-        bool empty() const;
-
-        auto size() const { return m_types.size(); }
-
-        /**
-         * @brief Returns the empty signature.
-         *
-         * @return signature with no elements
-         */
-        static const signature& empty_signature();
-
-        /**
-         * Provides gist of contained information.
-         * @param context format context
-         */
-        void gist(std::format_context& context) const;
+        ~signature() = default;
 
     private:
-        small_vector<std::optional<std::type_index>, 3> m_types;
+        type_data_ref              m_return_type;
+        std::vector<type_data_ref> m_argument_types;
     };
 } // namespace mge::script

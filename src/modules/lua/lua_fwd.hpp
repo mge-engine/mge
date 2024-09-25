@@ -5,10 +5,8 @@
 #include "mge/core/memory.hpp"
 namespace mge::lua {
 
-    MGE_DECLARE_REF(scope);
-    MGE_DECLARE_REF(type);
-    MGE_DECLARE_REF(module);
-
     class lua_context;
     class lua_engine;
-}
+
+    MGE_DECLARE_REF(scope);
+} // namespace mge::lua

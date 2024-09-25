@@ -1,57 +1,82 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "mge/core/call_debugger.hpp"
-#include "mge/core/component.hpp"
+#include "mge/core/atexit.hpp"
+#include "mge/core/buffer.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/crash.hpp"
+#include "mge/core/debugging.hpp"
+#include "mge/core/parameter.hpp"
 #include "mge/core/semantic_version.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace_level.hpp"
-
 #include "mge/script/function.hpp"
 #include "mge/script/module.hpp"
-#include "mge/script/proxy.hpp"
 #include "mge/script/script_binder.hpp"
 #include "mge/script/type.hpp"
 
+
 namespace mge::script {
-
-    class component_registry_entry_base_proxy
-        : public mge::script::proxy<component_registry_entry_base>
-    {
-    public:
-        MGESCRIPT_PROXY_METHOD(std::string_view, name, (), (const noexcept));
-    };
-
     class core_script_binder : public script_binder
     {
     public:
         core_script_binder() = default;
 
-        void bind()
+        void bind() override
         {
-            module("mge")(
-                function("crash", &mge::crash),
-                function("call_debugger", &mge::call_debugger),
-                type<mge::trace_level>("trace_level")
-                    .enum_value("NONE", mge::trace_level::NONE)
-                    .enum_value("DEBUG", mge::trace_level::DEBUG)
-                    .enum_value("INFO", mge::trace_level::INFO)
-                    .enum_value("WARNING", mge::trace_level::WARNING)
-                    .enum_value("ERROR", mge::trace_level::LEVEL_ERROR)
-                    .enum_value("FATAL", mge::trace_level::FATAL)
-                    .enum_value("ALL", mge::trace_level::ALL),
-                type<mge::semantic_version>("semantic_version")
-                    .constructor()
+            mge::script::module mge("mge");
+            mge(function("crash", &mge::crash),
+                function("breakpoint", &mge::breakpoint),
+                function("breakpoint_if_debugging",
+                         &mge::breakpoint_if_debugging),
+                function("is_debugger_present", &mge::is_debugger_present),
+                type<trace_level>(),
+                type<semantic_version>()
                     .constructor<uint32_t>()
                     .constructor<uint32_t, uint32_t>()
                     .constructor<uint32_t, uint32_t, uint32_t>()
                     .constructor<std::string_view>()
-                    .copy_constructor()
-                    .method("empty", &mge::semantic_version::empty)
-                    .method("major", &mge::semantic_version::major)
-                    .method("minor", &mge::semantic_version::minor)
-                    .method("patch", &mge::semantic_version::patch)
-                // module end
+                    .method("empty", &semantic_version::empty)
+                    .method("major", &semantic_version::major)
+                    .method("minor", &semantic_version::minor)
+                    .method("patch", &semantic_version::patch),
+                type<atexit>()
+                    .function("stop_processing", &atexit::stop_processing)
+                    .function("run", &atexit::run),
+                type<buffer>("buffer"),
+                type<configuration>()
+                    .function("register_parameter",
+                              &configuration::register_parameter)
+                    .function("unregister_parameter",
+                              &configuration::unregister_parameter)
+                    // .function(
+                    //     "find_parameter",
+                    //     static_cast<basic_parameter& (*)(std::string_view,
+                    //                                      std::string_view)>(
+                    //         &configuration::find_parameter))
+                    .function("load", &configuration::load)
+                    .function("evaluate_command_line",
+                              &configuration::evaluate_command_line)
+                    .function("store", &configuration::store)
+                    .function("loaded", &configuration::loaded)
+                    .function("root", &configuration::root),
+
+                type<mge::exception>().base<std::exception>(),
+                type<mge::illegal_state>().base<mge::exception>(),
+                type<mge::illegal_argument>().base<mge::exception>(),
+                type<mge::out_of_range>().base<mge::exception>(),
+                type<mge::duplicate_element>().base<mge::exception>(),
+                type<mge::bad_cast>().base<mge::exception>(),
+                type<no_such_element>().base<mge::exception>(),
+                type<runtime_exception>().base<mge::exception>(),
+                type<not_yet_implemented>().base<mge::exception>(),
+                type<null_pointer>().base<mge::exception>(),
+                type<out_of_memory>().base<mge::exception>(),
+                type<numeric_overflow>().base<mge::exception>(),
+                type<not_implemented>().base<mge::exception>(),
+                type<pure_virtual_method>().base<mge::exception>()
+
+                //
             );
         }
     };
@@ -60,4 +85,5 @@ namespace mge::script {
                                 mge::script_binder,
                                 mgecore,
                                 core);
+
 } // namespace mge::script

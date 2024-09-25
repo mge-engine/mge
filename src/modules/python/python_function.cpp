@@ -1,130 +1,147 @@
-// mge - Modern Game Engine
-// Copyright (c) 2017-2023 by Alexander Schroeder
-// All rights reserved.
 #include "python_function.hpp"
-#include "mge/core/trace.hpp"
+#include "mge/script/function_data.hpp"
+#include "mge/script/module_data.hpp"
+#include "python_context.hpp"
 #include "python_error.hpp"
-#include "python_object_call_context.hpp"
-#include "signature_match.hpp"
-#include "value_classification.hpp"
-
-namespace mge {
-    MGE_USE_TRACE(PYTHON);
-}
+#include "python_module.hpp"
 
 namespace mge::python {
 
-    python_function::python_function(const std::string&            name,
-                                     const std::type_index&        return_type,
-                                     const mge::script::signature& sig,
-                                     const mge::script::invoke_function& invoke)
-        : m_name(name)
+    python_function::python_function(
+        python_context& context, const mge::script::function_data_ref& function)
+        : m_context(context)
+        , m_function(function)
     {
-        m_details.push_back(details{&return_type, &sig, &invoke});
+        m_name = m_function->name();
+        m_module_name = m_function->module().lock()->full_name();
+    }
+
+    void python_function::on_interpreter_loss() { m_object.release(); }
+
+    void python_function::on_interpreter_restore() { initialize(); }
+
+    void python_function::initialize()
+    {
+        PyObject* pymodule = m_context.module(m_module_name)->pymodule().get();
+        PyObject* pyfunc =
+            PyObject_CallObject(reinterpret_cast<PyObject*>(&s_type), nullptr);
+        if (pyfunc == nullptr) {
+            error::check_error();
+        }
+
+        python_function_object* obj =
+            reinterpret_cast<python_function_object*>(pyfunc);
+        new (&obj->function) python_function_ref(this);
+        m_object = pyobject_ref(pyfunc);
+
+        PyModule_AddObject(pymodule, m_name.c_str(), pyfunc);
+        error::check_error();
+    }
+
+    static PyMethodDef python_function_methods[] = {
+        {NULL} /* Sentinel */
+    };
+
+    PyTypeObject python_function::s_type = {
+        // clang-format off
+        PyVarObject_HEAD_INIT(nullptr, 0)
+        // clang-format on
+        "__mge__.__function__",         /* tp_name */
+        sizeof(python_function_object), /* tp_basicsize */
+        0,                              /* tp_itemsize */
+        &python_function::tp_dealloc,   /* tp_dealloc */
+        0,                              /* tp_print */
+        0,                              /* tp_getattr */
+        0,                              /* tp_setattr */
+        0,                              /* tp_reserved */
+        0,                              /* tp_repr */
+        0,                              /* tp_as_number */
+        0,                              /* tp_as_sequence */
+        0,                              /* tp_as_mapping */
+        0,                              /* tp_hash */
+        &python_function::tp_call,      /* tp_call */
+        0,                              /* tp_str */
+        0,                              /* tp_getattro */
+        0,                              /* tp_setattro */
+        0,                              /* tp_as_buffer */
+        Py_TPFLAGS_DEFAULT,             /* tp_flags */
+        "Wrapper for native function",  /* tp_doc */
+        0,                              /* tp_traverse */
+        0,                              /* tp_clear */
+        0,                              /* tp_richcompare */
+        0,                              /* tp_weaklistoffset */
+        0,                              /* tp_iter */
+        0,                              /* tp_iternext */
+        python_function_methods,        /* tp_methods */
+        0,                              /* tp_members */
+        0,                              /* tp_getset */
+        0,                              /* tp_base */
+        0,                              /* tp_dict */
+        0,                              /* tp_descr_get */
+        0,                              /* tp_descr_set */
+        0,                              /* tp_dictoffset */
+        0,                              /* tp_init */
+        0,                              /* tp_alloc */
+        &python_function::tp_new,       /* tp_new */
+        0,                              /* tp_free */
+        0,                              /* tp_is_gc */
+        0,                              /* tp_bases */
+        0,                              /* tp_mro */
+        0,                              /* tp_cache */
+        0,                              /* tp_subclasses */
+        0,                              /* tp_weaklist */
+        0,                              /* tp_del */
+        0,                              /* tp_version_tag */
+        0,                              /* tp_finalize */
+    };
+
+    void python_function::tp_dealloc(PyObject* self)
+    {
+        python_function_object* obj =
+            reinterpret_cast<python_function_object*>(self);
+        obj->function.~python_function_ref();
+        Py_TYPE(self)->tp_free(self);
+    }
+
+    PyObject*
+    python_function::tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
+    {
+        python_function_object*                       self =
+            reinterpret_cast<python_function_object*> PyObject_New(
+                python_function_object,
+                type);
+        if (self != nullptr) {
+            new (&self->function) python_function_ref();
+        }
+        return reinterpret_cast<PyObject*>(self);
+    }
+
+    PyObject*
+    python_function::tp_call(PyObject* self, PyObject* args, PyObject* kwds)
+    {
+        python_function_object* obj =
+            reinterpret_cast<python_function_object*>(self);
+        return obj->function->call(args, kwds);
     }
 
     void
-    python_function::add_signature(const std::type_index&        return_type,
-                                   const mge::script::signature& sig,
-                                   const mge::script::invoke_function& invoke)
+    python_function::register_function_type(const python_module_ref& module)
     {
-        m_details.push_back(details{&return_type, &sig, &invoke});
-    }
-
-    python_function::~python_function() {}
-
-    PyTypeObject python_function::s_type = {
-        PyVarObject_HEAD_INIT(NULL, 0) "mge.__python_function__",
-        sizeof(python_function::python_function_pyobject),
-        0,                                            /* tp_itemsize */
-        0,                                            /* tp_dealloc */
-        0,                                            /* tp_print */
-        0,                                            /* tp_getattr */
-        0,                                            /* tp_setattr */
-        0,                                            /* tp_reserved */
-        0,                                            /* tp_repr */
-        0,                                            /* tp_as_number */
-        0,                                            /* tp_as_sequence */
-        0,                                            /* tp_as_mapping */
-        0,                                            /* tp_hash  */
-        0,                                            /* tp_call */
-        0,                                            /* tp_str */
-        0,                                            /* tp_getattro */
-        0,                                            /* tp_setattro */
-        0,                                            /* tp_as_buffer */
-        Py_TPFLAGS_DEFAULT,                           /* tp_flags */
-        "Internal type for function closure capture", /* tp_doc */
-    };
-
-    PyObject*
-    python_function::call(PyObject* self, PyObject* args, PyObject* kwargs)
-    {
-        if (kwargs) {
-            PyErr_SetString(PyExc_RuntimeError,
-                            "Unsupported use of keyword arguments");
-            return nullptr;
-        }
-
-        auto py_function_self = to_function_object(self)->method;
-        python_object_call_context ctx(nullptr, nullptr, args);
-        size_t                     tuple_size = PyTuple_Size(args);
-        mge::small_vector<value_classification, 3> value_classes;
-        for (size_t i = 0; i < tuple_size; ++i) {
-            value_classes.push_back(
-                value_classification(PyTuple_GET_ITEM(args, i)));
-        }
-        auto match = best_match(py_function_self->m_details.begin(),
-                                py_function_self->m_details.end(),
-                                value_classes);
-
-        if (match != py_function_self->m_details.end()) {
-            (*match->invoke)(ctx);
-            return ctx.result();
-        } else {
-            PyErr_Format(PyExc_RuntimeError,
-                         "Cannot find a match for function '%s'",
-                         py_function_self->m_name.c_str());
-            return nullptr;
-        }
-    }
-
-    void python_function::dealloc(PyObject* self)
-    {
-        PyTypeObject* tp = Py_TYPE(self);
-        auto          m = to_function_object(self);
-        m->method.reset();
-        tp->tp_free(self);
-        Py_DECREF(tp);
-    }
-
-    void python_function::init(PyObject* module)
-    {
-        MGE_DEBUG_TRACE(PYTHON) << "Initialize internal method type";
-        s_type.tp_new = PyType_GenericNew;
-        s_type.tp_call = &call;
-        if (PyType_Ready(&s_type)) {
+        if (PyType_Ready(&s_type) < 0) {
             error::check_error();
         }
         Py_INCREF(&s_type);
-        PyModule_AddObject(module,
-                           "__python_function__",
+
+        PyObject* pymodule = module->pymodule().get();
+        PyModule_AddObject(pymodule,
+                           "__function__",
                            reinterpret_cast<PyObject*>(&s_type));
+        error::check_error();
     }
 
-    PyObject* python_function::py_object() const
+    PyObject* python_function::call(PyObject* args, PyObject* kwds)
     {
-        if (!m_object) {
-            m_object.reset(
-                PyObject_CallNoArgs(reinterpret_cast<PyObject*>(&s_type)));
-            if (!m_object) {
-                error::check_error();
-            }
-            auto mo = to_function_object(m_object.borrow());
-            mo->method = const_cast<python_function*>(this)->shared_from_this();
-        }
-        return m_object.borrow();
+        return Py_None;
     }
-
-    void python_function::interpreter_lost() { m_object.interpreter_lost(); }
 
 } // namespace mge::python

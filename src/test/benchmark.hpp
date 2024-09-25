@@ -15,6 +15,8 @@ namespace mge {
 #    pragma optimize("", off)
     template <typename T> void do_not_optimize_away(T&& data) { data = data; }
 #    pragma optimize("", on)
+#else
+#    error Missing port
 #endif
 
     class benchmark

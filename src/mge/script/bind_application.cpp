@@ -2,64 +2,68 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/application/application.hpp"
-#include "mge/application/loop_context.hpp"
-
+#include "mge/application/loop.hpp"
+#include "mge/application/loop_target.hpp"
 #include "mge/script/function.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/script_binder.hpp"
 #include "mge/script/type.hpp"
 
 namespace mge::script {
-
     class application_script_binder : public script_binder
     {
     public:
         application_script_binder() = default;
 
-        void bind()
+        void bind() override
         {
-            module("mge")(
-                type<mge::application>("application")(
-                    type<application::input_listener>("input_listener"),
-                    type<application::update_listener>("update_listener"),
-                    type<application::redraw_listener>("redraw_listener"),
-                    type<application::quit_listener>("quit_listener"))
-                    .method("argc", &application::argc)
-                    .method("argv", &application::argv)
-                    .method("set_quit", &application::set_quit)
-                    .method("setup", &application::setup)
-                    .method("async_setup", &application::async_setup)
-                    .method("teardown", &application::teardown)
-                    .method("run", &application::run)
-                    .method("set_return_code", &application::set_return_code)
-                    .method("return_code", &application::return_code)
+
+            mge::script::module mge("mge");
+            mge(type<mge::loop_target>()
+                    .method("is_quit", &mge::loop_target::is_quit)
+                    .method("input", &mge::loop_target::input)
+                    .method("update", &mge::loop_target::update)
+                    .method("present", &mge::loop_target::present),
+                type<mge::application>()
+                    .base<mge::loop_target>()
+                    .method("argc", &mge::application::argc)
+                    .method("argv", &mge::application::argv)
+                    .method("is_quit", &mge::application::is_quit)
+                    .method("set_quit", &mge::application::set_quit)
+                    .method("initialize", &mge::application::initialize)
+                    .method("setup", &mge::application::setup)
+                    .method("async_setup", &mge::application::async_setup)
+                    .method("teardown", &mge::application::teardown)
+                    .method("run", &mge::application::run)
+                    .method("set_return_code",
+                            &mge::application::set_return_code)
+                    .method("return_code", &mge::application::return_code)
+                    .function("main",
+                              static_cast<int (*)(int, const char**)>(
+                                  mge::application::main))
+                    .function("main",
+                              static_cast<
+                                  int (*)(std::string_view, int, const char**)>(
+                                  mge::application::main))
                     .method("add_input_listener",
-                            &application::add_input_listener)
+                            &mge::application::add_input_listener)
                     .method("remove_input_listener",
-                            &application::remove_input_listener)
+                            &mge::application::remove_input_listener)
                     .method("add_update_listener",
-                            &application::add_update_listener)
+                            &mge::application::add_update_listener)
                     .method("remove_update_listener",
-                            &application::remove_update_listener)
+                            &mge::application::remove_update_listener)
                     .method("add_redraw_listener",
-                            &application::add_redraw_listener)
+                            &mge::application::add_redraw_listener)
                     .method("remove_redraw_listener",
-                            &application::remove_redraw_listener)
+                            &mge::application::remove_redraw_listener)
                     .method("add_quit_listener",
-                            &application::add_quit_listener)
+                            &mge::application::add_quit_listener)
                     .method("remove_quit_listener",
-                            &application::remove_quit_listener),
-                type<loop_target>("loop_target")
-                    .method("is_quit", &loop_target::is_quit)
-                    .method("input", &loop_target::input)
-                    .method("update", &loop_target::update)
-                    .method("present", &loop_target::present),
-                type<loop_context>("loop_context")
-                    .constructor()
-                    .field("cycle", &loop_context::cycle)
-                    .field("delta", &loop_context::delta)
-                    .field("peek", &loop_context::peek)
-                // module end
+                            &mge::application::remove_quit_listener)
+                    .function("instance", &mge::application::instance),
+                type<mge::loop>().method("run", &mge::loop::run)
+                //
             );
         }
     };

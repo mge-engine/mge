@@ -2,188 +2,68 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/closure.hpp"
 #include "mge/core/memory.hpp"
-#include "mge/script/script_fwd.hpp"
-#include "mge/script/type_details.hpp"
 
-#include "python.hpp"
-#include "python_function.hpp"
-#include "python_object.hpp"
+#include "mge/script/type_data.hpp"
 
-#include <map>
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include "pyobject_ref.hpp"
+#include "python_fwd.hpp"
 
 namespace mge::python {
 
-    MGE_DECLARE_REF(python_type);
-
-    class python_context;
-
-    class python_type : public std::enable_shared_from_this<python_type>
+    class python_type
     {
-    private:
-        struct create_data
-        {
-            create_data() = default;
-            ~create_data() = default;
-
-            PyType_Spec                          spec;
-            std::vector<PyType_Slot>             slots;
-            std::map<std::string, python_object> type_attributes;
-            std::vector<PyGetSetDef>             getset_defs;
-            std::vector<PyMethodDef>             method_defs;
-            std::vector<python_type_ref>         subtypes;
-        };
-
     public:
-        python_type(python_context&                      context,
-                    const mge::script::type_details_ref& type);
+        python_type(python_context&                   context,
+                    const mge::script::type_data_ref& type);
+        virtual ~python_type() = default;
 
-        ~python_type();
-
-        const mge::script::type_details& details() const { return *m_type; }
-
-        void add_enum_value(const std::string& name, int64_t value);
-
-        void add_field(const std::string&                   name,
-                       const mge::script::type_details_ref& type,
-                       const mge::script::invoke_function&  setter,
-                       const mge::script::invoke_function&  getter);
-
-        void add_constructor(const mge::script::signature&       sig,
-                             const mge::script::invoke_function& new_at,
-                             const mge::script::invoke_function& make_shared);
-
-        void add_method(const std::string&                  name,
-                        const std::type_index&              return_type,
-                        const mge::script::signature&       sig,
-                        const mge::script::invoke_function& invoke);
-
-        void add_static_method(const std::string&                  name,
-                               const std::type_index&              return_type,
-                               const mge::script::signature&       sig,
-                               const mge::script::invoke_function& invoke);
-
-        void
-        add_destructor(const mge::script::invoke_function& delete_ptr,
-                       const mge::script::invoke_function& delete_shared_ptr);
-
-        const std::string& local_name() const { return m_type->name(); }
-        std::type_index    type_index() const { return m_type->type_index(); }
-        bool               is_subtype() const { return m_type->is_subtype(); }
-        bool               is_embeddable() const;
-        PyObject*          py_type() const;
-        void               interpreter_lost();
-
-        void* this_ptr(PyObject* self);
-        void* shared_ptr_address(PyObject* self) const;
-
-        static python_type* python_type_of(PyTypeObject* tp);
-
-        void add_type(const python_type_ref& t);
+        void on_interpreter_loss();
+        void on_interpreter_restore();
+        void define_in_interpreter();
 
     private:
-        void assert_create_data() const;
-        void materialize_type() const;
-        void materialize_enum_type() const;
-        void materialize_class_type() const;
-        void materialize_complex_class_type() const;
-        void define_methods() const;
+        void initialize();
 
-        template <size_t I>
-        static PyObject* call_method(PyObject* self, PyObject* args);
+        void init_enum();
+        void init_class();
+        void init_callable_class();
+        void init_regular_class();
+        void define_enum();
+        void define_class();
+        void define_callable_class();
+        void define_regular_class();
 
-        PyObject* call_method(size_t slot, PyObject* self, PyObject* args);
+        int tp_init(PyObject* self, PyObject* args, PyObject* kwds) const;
 
-        static PyCFunction method_call_slot(size_t index);
+        python_context& m_context;
+        std::string     m_name_in_module; // name as it appaers in the module
+        std::string     m_name;           // name for type spec, qualified fully
+        std::string     m_module_name;    // qualified name of the module
+        PyType_Spec     m_spec{};
+        pyobject_ref    m_type_object;
+        std::vector<PyType_Slot>            m_type_slots;
+        std::map<std::string, pyobject_ref> m_attributes;
+        mge::script::type_data_ref          m_type;
 
-        static PyObject* get_field_value(PyObject* self, void* field);
-        static int
-        set_field_value(PyObject* self, PyObject* value, void* field);
-        static int  init(PyObject* self, PyObject* args, PyObject* kwargs);
-        static void dealloc(PyObject* self);
-
-        int  init_object(PyObject* self, PyObject* args, PyObject* kwargs);
-        void clear_object_space(PyObject* self);
-
-        void add_new_method(const std::string&                  name,
-                            const std::type_index&              return_type,
-                            const mge::script::signature&       sig,
-                            const mge::script::invoke_function& invoke);
-
-        void add_overloaded_method(size_t                        index,
-                                   const std::string&            name,
-                                   const std::type_index&        return_type,
-                                   const mge::script::signature& sig,
-                                   const mge::script::invoke_function& invoke);
-
-        struct field
+        struct object
         {
-            const std::string*                   name;
-            const mge::script::type_details_ref* type;
-            const mge::script::invoke_function*  getter;
-            const mge::script::invoke_function*  setter;
-            python_type*                         ptype;
+            // clang-format off
+            PyObject_HEAD 
+            void* shared_ptr_address; // std::shared_ptr<T>* shared_ptr_address
+            // clang-format on
         };
 
-        struct constructor
-        {
-            const mge::script::signature*       signature;
-            const mge::script::invoke_function* new_at;
-            const mge::script::invoke_function* new_shared;
-        };
+        using tp_new_closure =
+            mge::closure<PyObject*, PyTypeObject*, PyObject*, PyObject*>;
+        using tp_dealloc_closure = mge::closure<void, PyObject*>;
+        using tp_init_closure =
+            mge::closure<int, PyObject*, PyObject*, PyObject*>;
 
-        struct destructor
-        {
-            const mge::script::invoke_function* delete_ptr;
-            const mge::script::invoke_function* delete_shared_ptr;
-        };
-
-        const python_type::constructor* select_constructor(PyObject* args);
-
-        struct single_method
-        {
-            const std::string*                  name;
-            const std::type_index*              return_type;
-            const mge::script::signature*       signature;
-            const mge::script::invoke_function* invoke;
-        };
-
-        struct overloaded_method
-        {
-            const std::string* name;
-
-            struct variant
-            {
-                const std::type_index*              return_type;
-                const mge::script::signature*       signature;
-                const mge::script::invoke_function* invoke;
-            };
-
-            std::vector<variant> variants;
-        };
-
-        const python_type::overloaded_method::variant*
-        select_method(const std::vector<overloaded_method::variant>& methods,
-                      PyObject*                                      args);
-
-        using method =
-            std::variant<std::monostate, single_method, overloaded_method>;
-
-        mutable std::unique_ptr<create_data>       m_create_data;
-        mutable PyObject*                          m_python_type;
-        python_context&                            m_context;
-        const mge::script::type_details_ref&       m_type;
-        std::vector<field>                         m_fields;
-        std::map<size_t, std::vector<constructor>> m_constructors;
-        destructor                                 m_destructor;
-
-        std::vector<method>                        m_methods;
-        std::unordered_map<std::string, size_t>    m_method_index;
-        std::map<std::string, python_function_ref> m_static_methods;
-
-        static std::unordered_map<PyTypeObject*, python_type*> s_all_types;
+        std::shared_ptr<tp_new_closure>     m_tp_new_closure;
+        std::shared_ptr<tp_dealloc_closure> m_tp_dealloc_closure;
+        std::shared_ptr<tp_init_closure>    m_tp_init_closure;
     };
+
 } // namespace mge::python
