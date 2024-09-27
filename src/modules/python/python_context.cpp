@@ -114,6 +114,9 @@ namespace mge::python {
     {
         for (const auto& f : data->functions()) {
             MGE_DEBUG_TRACE(PYTHON) << "Binding function " << f->name();
+            python_function_ref pf =
+                std::make_shared<python_function>(*this, f);
+            m_functions.push_back(pf);
         }
         for (const auto& m : data->modules()) {
             bind_module_functions(m);
@@ -152,6 +155,9 @@ namespace mge::python {
         for (auto& t : m_types) {
             t.second->on_interpreter_loss();
         }
+        for (auto& f : m_functions) {
+            f->on_interpreter_loss();
+        }
     }
 
     void python_context::on_interpreter_restore()
@@ -159,9 +165,11 @@ namespace mge::python {
         for (auto& m : m_all_modules) {
             m->on_interpreter_restore();
         }
-        // restore function type
         for (auto& t : m_types) {
             t.second->on_interpreter_restore();
+        }
+        for (auto& f : m_functions) {
+            f->on_interpreter_restore();
         }
     }
 

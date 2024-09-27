@@ -38,6 +38,6 @@ namespace mge::python {
         std::map<mge::script::type_data_ref, python_type_ref> m_types;
         std::map<std::string, python_module_ref>              m_modules;
         std::vector<python_module_ref>                        m_all_modules;
-        ;
+        std::vector<python_function_ref>                      m_functions;
     };
 } // namespace mge::python
