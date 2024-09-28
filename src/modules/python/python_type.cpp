@@ -106,7 +106,7 @@ namespace mge::python {
                     // that holds the object
                     // we need to decrement the reference count
                     // and if it is zero, delete the object
-                    python_call_context ctx(nullptr, obj->shared_ptr_address);
+                    python_call_context ctx(nullptr, &obj->shared_ptr_address);
                     m_type->class_specific().destroy_shared(ctx);
                     // and set shared_ptr_address to nullptr
                     // to avoid double deletion
@@ -146,36 +146,53 @@ namespace mge::python {
     int
     python_type::tp_init(PyObject* self, PyObject* args, PyObject* kwargs) const
     {
-        if (m_type->class_specific().constructors.empty()) {
-            PyErr_SetString(PyExc_RuntimeError, "No constructors available");
-            return -1;
-        }
+        python_type::object* obj = reinterpret_cast<python_type::object*>(self);
 
-        // print arguments
-        PyObject* repr = PyObject_Repr(args);
-        if (repr) {
-            MGE_DEBUG_TRACE(PYTHON) << "Arguments: " << PyUnicode_AsUTF8(repr);
-            Py_DECREF(repr);
-        }
-        PyObject* repr_kw = PyObject_Repr(kwargs);
-        if (repr_kw) {
-            MGE_DEBUG_TRACE(PYTHON)
-                << "Keyword arguments: " << PyUnicode_AsUTF8(repr_kw);
-            Py_DECREF(repr_kw);
+        if (m_type->class_specific().constructors.empty()) {
+            PyErr_SetString(PyExc_TypeError, "No constructors available");
+            return -1;
         }
 
         if (kwargs && PyDict_Check(kwargs) && PyDict_Size(kwargs) > 0) {
-            PyErr_SetString(PyExc_RuntimeError,
-                            "Keyword arguments not supported");
+            PyErr_SetString(PyExc_TypeError, "Keyword arguments not supported");
             return -1;
         }
         if (!PyTuple_Check(args)) {
-            PyErr_SetString(PyExc_RuntimeError, "Arguments must be a tuple");
+            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
             return -1;
         }
 
-        PyErr_SetString(PyExc_RuntimeError, "Not yet implemented: constructor");
+        size_t constructor_index = select_constructor(args);
+
+        if (constructor_index ==
+            m_type->class_specific().make_shared_constructors.size()) {
+            PyErr_SetString(PyExc_TypeError, "No matching constructor found");
+            return -1;
+        }
+
+        python_call_context ctx(nullptr, &obj->shared_ptr_address);
+        m_type->class_specific().constructors[constructor_index].second(ctx);
+
         return -1;
+    }
+
+    size_t python_type::select_constructor(PyObject* args) const
+    {
+        size_t arg_count = mge::checked_cast<size_t>(PyTuple_Size(args));
+        size_t constructor_index = m_type->class_specific().constructors.size();
+
+        for (size_t i = 0; i < m_type->class_specific().constructors.size();
+             ++i) {
+            const auto& signature =
+                m_type->class_specific().constructors[i].first;
+            if (signature.size() == arg_count) {
+                if (arg_count == 0) {
+                    return i;
+                }
+            }
+        }
+
+        return constructor_index;
     }
 
     void python_type::init_callable_class() {}

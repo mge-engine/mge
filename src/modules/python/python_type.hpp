@@ -35,6 +35,8 @@ namespace mge::python {
         void define_callable_class();
         void define_regular_class();
 
+        size_t select_constructor(PyObject* args) const;
+
         int tp_init(PyObject* self, PyObject* args, PyObject* kwds) const;
 
         python_context& m_context;

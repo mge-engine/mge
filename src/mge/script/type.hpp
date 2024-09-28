@@ -248,9 +248,11 @@ namespace mge::script {
             m_data->class_specific().make_shared_constructors.emplace_back(
                 sig,
                 [](call_context& ctx) {
-                    std::shared_ptr<T>* obj =
-                        static_cast<std::shared_ptr<T>*>(ctx.this_ptr());
-                    *obj = std::make_shared<T>(ctx.parameter<Args>(0)...);
+                    std::shared_ptr<T>** obj =
+                        static_cast<std::shared_ptr<T>**>(
+                            ctx.shared_ptr_address());
+                    *obj = new std::shared_ptr<T>();
+                    **obj = std::make_shared<T>(ctx.parameter<Args>(0)...);
                 });
             return *this;
         }
@@ -447,8 +449,6 @@ namespace mge::script {
                 m_data->class_specific().is_wstring = true;
             }
             m_data->class_specific().size = sizeof(T);
-            m_data->class_specific().shared_ptr_size =
-                sizeof(std::shared_ptr<T>);
             if constexpr (std::is_abstract_v<T>) {
                 m_data->class_specific().is_abstract = true;
             }
@@ -464,11 +464,15 @@ namespace mge::script {
                     };
                     m_data->class_specific().destroy_shared =
                         [](call_context& ctx) {
-                            std::shared_ptr<T>* sp =
-                                static_cast<std::shared_ptr<T>*>(
+                            std::shared_ptr<T>** sp =
+                                static_cast<std::shared_ptr<T>**>(
                                     ctx.shared_ptr_address());
-                            if (sp)
-                                sp->~shared_ptr<T>();
+                            if (sp) {
+                                if (*sp) {
+                                    delete *sp;
+                                    *sp = nullptr;
+                                }
+                            }
                         };
                 }
                 if constexpr (std::is_default_constructible_v<T>) {
@@ -483,10 +487,11 @@ namespace mge::script {
                         .make_shared_constructors.emplace_back(
                             sig,
                             [](call_context& ctx) {
-                                std::shared_ptr<T>* obj =
-                                    static_cast<std::shared_ptr<T>*>(
-                                        ctx.this_ptr());
-                                *obj = std::make_shared<T>();
+                                std::shared_ptr<T>** obj =
+                                    static_cast<std::shared_ptr<T>**>(
+                                        ctx.shared_ptr_address());
+                                *obj = new std::shared_ptr<T>();
+                                **obj = std::make_shared<T>();
                             });
                 }
                 if constexpr (std::is_copy_constructible_v<T>) {
@@ -502,10 +507,11 @@ namespace mge::script {
                         .make_shared_constructors.emplace_back(
                             sig,
                             [](call_context& ctx) {
-                                std::shared_ptr<T>* obj =
-                                    static_cast<std::shared_ptr<T>*>(
-                                        ctx.this_ptr());
-                                *obj = std::make_shared<T>(
+                                std::shared_ptr<T>** obj =
+                                    static_cast<std::shared_ptr<T>**>(
+                                        ctx.shared_ptr_address());
+                                *obj = new std::shared_ptr<T>();
+                                **obj = std::make_shared<T>(
                                     ctx.parameter<const T&>(0));
                             });
                 }
