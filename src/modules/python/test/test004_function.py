@@ -6,6 +6,9 @@ import mge
 
 class TestFunction(unittest.TestCase):
     
-    @unittest.skip("Not yet implemented")
     def test_function_exists(self):
         t = mge.is_debugger_present
+
+    def test_function_call_keywords_unsupported(self):
+        with self.assertRaises(TypeError):
+            mge.is_debugger_present(foo=1)

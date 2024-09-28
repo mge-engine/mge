@@ -148,6 +148,11 @@ namespace mge::python {
 
     PyObject* python_function::call(PyObject* args, PyObject* kwds)
     {
+        if (kwds != nullptr) {
+            PyErr_SetString(PyExc_TypeError, "Keyword arguments not supported");
+            return nullptr;
+        }
+
         return Py_None;
     }
 
