@@ -2,10 +2,12 @@
 #include "gil_lock.hpp"
 #include "mge/script/function_data.hpp"
 #include "mge/script/module_data.hpp"
+#include "python_call_context.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_module.hpp"
 
+#include "mge/core/checked_cast.hpp"
 #include <mutex>
 
 namespace mge::python {
@@ -153,7 +155,21 @@ namespace mge::python {
             return nullptr;
         }
 
-        return Py_None;
-    }
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
+            return nullptr;
+        }
 
+        if (m_function->signature().size() !=
+            mge::checked_cast<size_t>(PyTuple_Size(args))) {
+            PyErr_SetString(PyExc_TypeError, "Argument count mismatch");
+            return nullptr;
+        }
+
+        python_call_context context(nullptr, nullptr);
+        context.set_arguments(args);
+        m_function->invoker()(context);
+
+        return context.result();
+    }
 } // namespace mge::python

@@ -1,5 +1,6 @@
 #pragma once
 #include "mge/script/call_context.hpp"
+#include "python.hpp"
 
 namespace mge::python {
 
@@ -16,7 +17,8 @@ namespace mge::python {
         void* this_ptr() override { return m_this_ptr; }
         void* shared_ptr_address() override { return m_shared_ptr_address; }
 
-        void bool_result(bool result) override {}
+        void bool_result(bool result) override;
+
         void int8_t_result(int8_t result) override {}
         void uint8_t_result(uint8_t result) override {}
         void int16_t_result(int16_t result) override {}
@@ -55,8 +57,13 @@ namespace mge::python {
         }
         std::string string_parameter(size_t position) override { return ""; }
 
+        void      set_arguments(PyObject* args) { m_arguments = args; }
+        PyObject* result() { return m_result; }
+
     private:
-        void* m_this_ptr;
-        void* m_shared_ptr_address;
+        void*     m_this_ptr;
+        void*     m_shared_ptr_address;
+        PyObject* m_arguments{nullptr};
+        PyObject* m_result{nullptr};
     };
 } // namespace mge::python

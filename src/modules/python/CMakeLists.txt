@@ -9,6 +9,7 @@ SET(mge_python_module_SOURCES
     python_type.cpp
     python_function.cpp
     python_module.cpp
+    python_call_context.cpp
     gil_lock.cpp
 )
 

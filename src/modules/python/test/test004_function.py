@@ -12,3 +12,7 @@ class TestFunction(unittest.TestCase):
     def test_function_call_keywords_unsupported(self):
         with self.assertRaises(TypeError):
             mge.is_debugger_present(foo=1)
+    
+    def test_function_returns_false(self):
+        x = mge.is_debugger_present()
+        self.assertEqual(False, x)
