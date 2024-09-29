@@ -16,3 +16,7 @@ class TestObject(unittest.TestCase):
     def test_type_error_not_matching_constructor(self):
         with self.assertRaises(TypeError):
             mge.semantic_version(1,2,3,4,5,6,7)
+
+    def test_simple_construct(self):
+        """Simple construct without verification of result"""
+        x = mge.semantic_version(1,2,3)

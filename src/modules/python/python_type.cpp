@@ -172,9 +172,16 @@ namespace mge::python {
         }
 
         python_call_context ctx(nullptr, &obj->shared_ptr_address);
-        m_type->class_specific().constructors[constructor_index].second(ctx);
+        ctx.set_arguments(args);
+        m_type->class_specific()
+            .make_shared_constructors[constructor_index]
+            .second(ctx);
 
-        return -1;
+        if (ctx.has_exception()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     static bool better_match(const std::vector<match_type>& current,

@@ -36,9 +36,9 @@ namespace mge::python {
                            const mge::script::type_data_ref& t) override
         {}
 
-        void exception_thrown(const std::exception& e) override {}
-        void exception_thrown(const mge::exception& e) override {}
-        void exception_thrown() override {}
+        void exception_thrown(const std::exception& e) override;
+        void exception_thrown(const mge::exception& e) override;
+        void exception_thrown() override;
 
         bool        bool_parameter(size_t position) override { return false; }
         int8_t      int8_t_parameter(size_t position) override { return 0; }
@@ -62,11 +62,13 @@ namespace mge::python {
 
         void      set_arguments(PyObject* args) { m_arguments = args; }
         PyObject* result() { return m_result; }
+        bool      has_exception() const { return m_has_exception; }
 
     private:
         void*     m_this_ptr;
         void*     m_shared_ptr_address;
         PyObject* m_arguments{nullptr};
         PyObject* m_result{nullptr};
+        bool      m_has_exception{false};
     };
 } // namespace mge::python

@@ -8,4 +8,16 @@ namespace mge::python {
         Py_INCREF(m_result);
     }
 
+    void python_call_context::exception_thrown(const std::exception& e)
+    {
+        m_has_exception = true;
+    }
+
+    void python_call_context::exception_thrown(const mge::exception& e)
+    {
+        m_has_exception = true;
+    }
+
+    void python_call_context::exception_thrown() { m_has_exception = true; }
+
 } // namespace mge::python
