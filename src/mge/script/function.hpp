@@ -57,26 +57,36 @@ namespace mge::script {
                 if constexpr (std::is_same_v<R, void>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
+                            ctx.before_call();
                             f();
+                            ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (const std::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (...) {
                             ctx.exception_thrown();
+                            ctx.after_call();
                         }
                     });
                 } else if constexpr (call_context::is_simple_result<R>() ||
                                      std::is_same_v<R, const std::string&>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
+                            ctx.before_call();
                             ctx.result(f());
+                            ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (const std::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (...) {
                             ctx.exception_thrown();
+                            ctx.after_call();
                         }
                     });
                 } else if constexpr (std::is_reference_v<R> &&
@@ -97,40 +107,55 @@ namespace mge::script {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
                             std::size_t index = 0;
+                            ctx.before_call();
                             f((ctx.parameter<Args>(index++))...);
+                            ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (const std::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (...) {
                             ctx.exception_thrown();
+                            ctx.after_call();
                         }
                     });
                 } else if constexpr (call_context::is_simple_result<R>() ||
                                      std::is_same_v<R, const std::string&>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
+                            ctx.before_call();
                             std::size_t index = 0;
                             ctx.result(f((ctx.parameter<Args>(index++))...));
+                            ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (const std::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (...) {
                             ctx.exception_thrown();
+                            ctx.after_call();
                         }
                     });
                 } else if constexpr (std::is_enum_v<R>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
                             std::size_t index = 0;
+                            ctx.before_call();
                             ctx.result(f((ctx.parameter<Args>(index++))...));
+                            ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (const std::exception& e) {
                             ctx.exception_thrown(e);
+                            ctx.after_call();
                         } catch (...) {
                             ctx.exception_thrown();
+                            ctx.after_call();
                         }
                     });
                 } else {

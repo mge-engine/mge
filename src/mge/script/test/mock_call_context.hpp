@@ -62,4 +62,7 @@ public:
     MOCK_METHOD(double, double_parameter, (size_t), ());
     MOCK_METHOD(long double, long_double_parameter, (size_t), ());
     MOCK_METHOD(std::string, string_parameter, (size_t), ());
+
+    MOCK_METHOD(void, before_call, (), ());
+    MOCK_METHOD(void, after_call, (), ());
 };

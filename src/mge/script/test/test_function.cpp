@@ -30,12 +30,20 @@ TEST(function, void_c_function)
     m(function("test_function_void_throw_int_exception",
                test_function_void_throw_int_exception));
     MOCK_call_context ctx;
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     m.function("test_function_void").invoke(ctx);
     EXPECT_EQ(42, test_function_void_called);
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, exception_thrown_mge(_)).Times(1);
     m.function("test_function_void_throw_mge_exception").invoke(ctx);
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, exception_thrown_std(_)).Times(1);
     m.function("test_function_void_throw_std_exception").invoke(ctx);
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, exception_thrown_noargs()).Times(1);
     m.function("test_function_void_throw_int_exception").invoke(ctx);
 }
@@ -55,8 +63,12 @@ TEST(function, int8_t_c_function)
     m(function("test_function_int8_t_throw_mge_exception",
                test_function_int8_t_throw_mge_exception));
     MOCK_call_context ctx;
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, int8_t_result(42)).Times(1);
     m.function("test_function_int8_t").invoke(ctx);
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, exception_thrown_mge(_)).Times(1);
     m.function("test_function_int8_t_throw_mge_exception").invoke(ctx);
 }
@@ -70,6 +82,8 @@ TEST(function, test_function_sum)
     mge::script::module m;
     m(function("test_function_sum", test_function_sum));
     MOCK_call_context ctx;
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, int32_t_result(42)).Times(1);
     EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(20));
     EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(Return(22));

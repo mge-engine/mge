@@ -38,11 +38,14 @@ TEST(type, ctor_dtor)
 
     MOCK_call_context ctx;
     void*             data = mge::malloc(1);
-
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, this_ptr()).WillRepeatedly(Return(data));
     t.class_specific().constructors[0].second(ctx);
     EXPECT_TRUE(test_class_ctor_called);
     test_class_ctor_called = false;
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     t.class_specific().destroy(ctx);
     EXPECT_TRUE(test_class_dtor_called);
     test_class_dtor_called = false;
@@ -129,10 +132,14 @@ TEST(type, overloaded_methods)
     EXPECT_EQ(2, methods.size());
     overloaded_methods om;
     MOCK_call_context  ctx;
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, this_ptr()).WillRepeatedly(Return(&om));
     EXPECT_CALL(ctx, int32_t_result(42)).Times(1);
     EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(Return(42));
     std::get<3>(methods[0])(ctx);
+    EXPECT_CALL(ctx, before_call()).Times(1);
+    EXPECT_CALL(ctx, after_call()).Times(1);
     EXPECT_CALL(ctx, int32_t_result(-42)).Times(1);
     EXPECT_CALL(ctx, float_parameter(0)).WillOnce(Return(42.0f));
     std::get<3>(methods[1])(ctx);

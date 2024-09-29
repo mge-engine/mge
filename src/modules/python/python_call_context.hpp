@@ -57,6 +57,9 @@ namespace mge::python {
         }
         std::string string_parameter(size_t position) override { return ""; }
 
+        void before_call() override {}
+        void after_call() override {}
+
         void      set_arguments(PyObject* args) { m_arguments = args; }
         PyObject* result() { return m_result; }
 

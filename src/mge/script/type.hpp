@@ -243,7 +243,9 @@ namespace mge::script {
                 [](call_context& ctx) {
                     T*     obj = static_cast<T*>(ctx.this_ptr());
                     size_t index{0};
+                    ctx.before_call();
                     new (obj) T(ctx.parameter<Args>(index++)...);
+                    ctx.after_call();
                 });
             m_data->class_specific().make_shared_constructors.emplace_back(
                 sig,
@@ -252,7 +254,9 @@ namespace mge::script {
                         static_cast<std::shared_ptr<T>**>(
                             ctx.shared_ptr_address());
                     *obj = new std::shared_ptr<T>();
+                    ctx.before_call();
                     **obj = std::make_shared<T>(ctx.parameter<Args>(0)...);
+                    ctx.after_call();
                 });
             return *this;
         }
@@ -267,7 +271,9 @@ namespace mge::script {
                     field_type.data(),
                     [field](call_context& ctx) {
                         T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.before_call();
                         ctx.result(obj->*field);
+                        ctx.after_call();
                     },
                     nullptr);
             } else {
@@ -276,11 +282,15 @@ namespace mge::script {
                     field_type.data(),
                     [field](call_context& ctx) {
                         T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.before_call();
                         ctx.result(obj->*field);
+                        ctx.after_call();
                     },
                     [field](call_context& ctx) {
                         T* obj = static_cast<T*>(ctx.this_ptr());
+                        ctx.before_call();
                         obj->*field = ctx.parameter<F>(0);
+                        ctx.after_call();
                     });
             }
             return *this;
@@ -304,14 +314,19 @@ namespace mge::script {
                     try {
                         T*     obj = static_cast<T*>(ctx.this_ptr());
                         size_t index{0};
+                        ctx.before_call();
                         ctx.result(
                             (obj->*method)(ctx.parameter<Args>(index++)...));
+                        ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (const std::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (...) {
                         ctx.exception_thrown();
+                        ctx.after_call();
                     }
                 });
             return *this;
@@ -335,14 +350,19 @@ namespace mge::script {
                     try {
                         T*     obj = static_cast<T*>(ctx.this_ptr());
                         size_t index{0};
+                        ctx.before_call();
                         ctx.result(
                             (obj->*method)(ctx.parameter<Args>(index++)...));
+                        ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (const std::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (...) {
                         ctx.exception_thrown();
+                        ctx.after_call();
                     }
                 });
             return *this;
@@ -363,13 +383,18 @@ namespace mge::script {
                     try {
                         T*     obj = static_cast<T*>(ctx.this_ptr());
                         size_t index{0};
+                        ctx.before_call();
                         (obj->*method)(ctx.parameter<Args>(index++)...);
+                        ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (const std::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (...) {
                         ctx.exception_thrown();
+                        ctx.after_call();
                     }
                 });
             return *this;
@@ -389,13 +414,18 @@ namespace mge::script {
                 [func](call_context& ctx) {
                     try {
                         size_t index{0};
+                        ctx.before_call();
                         func(ctx.parameter<Args>(index++)...);
+                        ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (const std::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (...) {
                         ctx.exception_thrown();
+                        ctx.after_call();
                     }
                 });
             return *this;
@@ -417,13 +447,18 @@ namespace mge::script {
                 [func](call_context& ctx) {
                     try {
                         size_t index{0};
+                        ctx.before_call();
                         ctx.result(func(ctx.parameter<Args>(index++)...));
+                        ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (const std::exception& e) {
                         ctx.exception_thrown(e);
+                        ctx.after_call();
                     } catch (...) {
                         ctx.exception_thrown();
+                        ctx.after_call();
                     }
                 });
             return *this;
@@ -459,11 +494,14 @@ namespace mge::script {
                 m_data->class_specific().name = mge::base_type_name<T>();
                 if constexpr (std::is_destructible_v<T>) {
                     m_data->class_specific().destroy = [](call_context& ctx) {
+                        ctx.before_call();
                         T* obj = static_cast<T*>(ctx.this_ptr());
                         obj->~T();
+                        ctx.after_call();
                     };
                     m_data->class_specific().destroy_shared =
                         [](call_context& ctx) {
+                            ctx.before_call();
                             std::shared_ptr<T>** sp =
                                 static_cast<std::shared_ptr<T>**>(
                                     ctx.shared_ptr_address());
@@ -473,6 +511,7 @@ namespace mge::script {
                                     *sp = nullptr;
                                 }
                             }
+                            ctx.after_call();
                         };
                 }
                 if constexpr (std::is_default_constructible_v<T>) {
@@ -480,18 +519,44 @@ namespace mge::script {
                     m_data->class_specific().constructors.emplace_back(
                         sig,
                         [](call_context& ctx) {
-                            T* obj = static_cast<T*>(ctx.this_ptr());
-                            new (obj) T();
+                            try {
+                                ctx.before_call();
+                                T* obj = static_cast<T*>(ctx.this_ptr());
+                                new (obj) T();
+                                ctx.after_call();
+                            } catch (const mge::exception& e) {
+                                ctx.exception_thrown(e);
+                                ctx.after_call();
+                            } catch (const std::exception& e) {
+                                ctx.exception_thrown(e);
+                                ctx.after_call();
+                            } catch (...) {
+                                ctx.exception_thrown();
+                                ctx.after_call();
+                            }
                         });
                     m_data->class_specific()
                         .make_shared_constructors.emplace_back(
                             sig,
                             [](call_context& ctx) {
-                                std::shared_ptr<T>** obj =
-                                    static_cast<std::shared_ptr<T>**>(
-                                        ctx.shared_ptr_address());
-                                *obj = new std::shared_ptr<T>();
-                                **obj = std::make_shared<T>();
+                                try {
+                                    ctx.before_call();
+                                    std::shared_ptr<T>** obj =
+                                        static_cast<std::shared_ptr<T>**>(
+                                            ctx.shared_ptr_address());
+                                    *obj = new std::shared_ptr<T>();
+                                    **obj = std::make_shared<T>();
+                                    ctx.after_call();
+                                } catch (const mge::exception& e) {
+                                    ctx.exception_thrown(e);
+                                    ctx.after_call();
+                                } catch (const std::exception& e) {
+                                    ctx.exception_thrown(e);
+                                    ctx.after_call();
+                                } catch (...) {
+                                    ctx.exception_thrown();
+                                    ctx.after_call();
+                                }
                             });
                 }
                 if constexpr (std::is_copy_constructible_v<T>) {
@@ -500,19 +565,45 @@ namespace mge::script {
                     m_data->class_specific().constructors.emplace_back(
                         sig,
                         [](call_context& ctx) {
-                            T* obj = static_cast<T*>(ctx.this_ptr());
-                            new (obj) T(ctx.parameter<const T&>(0));
+                            try {
+                                ctx.before_call();
+                                T* obj = static_cast<T*>(ctx.this_ptr());
+                                new (obj) T(ctx.parameter<const T&>(0));
+                                ctx.after_call();
+                            } catch (const mge::exception& e) {
+                                ctx.exception_thrown(e);
+                                ctx.after_call();
+                            } catch (const std::exception& e) {
+                                ctx.exception_thrown(e);
+                                ctx.after_call();
+                            } catch (...) {
+                                ctx.exception_thrown();
+                                ctx.after_call();
+                            }
                         });
                     m_data->class_specific()
                         .make_shared_constructors.emplace_back(
                             sig,
                             [](call_context& ctx) {
-                                std::shared_ptr<T>** obj =
-                                    static_cast<std::shared_ptr<T>**>(
-                                        ctx.shared_ptr_address());
-                                *obj = new std::shared_ptr<T>();
-                                **obj = std::make_shared<T>(
-                                    ctx.parameter<const T&>(0));
+                                try {
+                                    ctx.before_call();
+                                    std::shared_ptr<T>** obj =
+                                        static_cast<std::shared_ptr<T>**>(
+                                            ctx.shared_ptr_address());
+                                    *obj = new std::shared_ptr<T>();
+                                    **obj = std::make_shared<T>(
+                                        ctx.parameter<const T&>(0));
+                                    ctx.after_call();
+                                } catch (const mge::exception& e) {
+                                    ctx.exception_thrown(e);
+                                    ctx.after_call();
+                                } catch (const std::exception& e) {
+                                    ctx.exception_thrown(e);
+                                    ctx.after_call();
+                                } catch (...) {
+                                    ctx.exception_thrown();
+                                    ctx.after_call();
+                                }
                             });
                 }
             }

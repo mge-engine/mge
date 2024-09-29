@@ -175,6 +175,9 @@ namespace mge::script {
         virtual double      double_parameter(size_t index) = 0;
         virtual long double long_double_parameter(size_t index) = 0;
         virtual std::string string_parameter(size_t index) = 0;
+
+        virtual void before_call() = 0;
+        virtual void after_call() = 0;
     };
 
 } // namespace mge::script
