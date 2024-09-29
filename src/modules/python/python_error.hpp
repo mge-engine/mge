@@ -72,6 +72,42 @@ namespace mge::python {
         static void check_error();
     };
 
+    class python_exception_occurred : public error
+    {
+    public:
+        python_exception_occurred() = default;
+
+        python_exception_occurred(const python_exception_occurred& e)
+            : error(e)
+        {}
+
+        python_exception_occurred(python_exception_occurred&& e)
+            : error(std::move(e))
+        {}
+
+        ~python_exception_occurred() = default;
+
+        python_exception_occurred& operator=(const python_exception_occurred& e)
+        {
+            error::operator=(e);
+            return *this;
+        }
+
+        template <typename Info>
+        python_exception_occurred& set_info(const Info& info)
+        {
+            mge::exception::set_info(info);
+            return *this;
+        }
+
+        template <typename T>
+        python_exception_occurred& operator<<(const T& value)
+        {
+            mge::exception::operator<<(value);
+            return *this;
+        }
+    };
+
 #define PYTHON_CHECK_STATUS(status) ::mge::python::error::check_status(status)
 
 } // namespace mge::python

@@ -33,11 +33,11 @@ namespace mge::python {
         if (!m_engine->interpreter_initialized()) {
             m_engine->initialize_interpreter();
         }
-        std::lock_guard<gil_lock> lock(gil_lock::instance());
-        PyObject*                 main_module = PyImport_AddModule("__main__");
-        PyObject*                 global_dict = PyModule_GetDict(main_module);
-        pyobject_ref              local_dict(PyDict_New());
-        pyobject_ref              result(PyRun_String(code.c_str(),
+        gil_lock_guard guard;
+        PyObject*      main_module = PyImport_AddModule("__main__");
+        PyObject*      global_dict = PyModule_GetDict(main_module);
+        pyobject_ref   local_dict(PyDict_New());
+        pyobject_ref   result(PyRun_String(code.c_str(),
                                          Py_file_input,
                                          global_dict,
                                          local_dict.get()));

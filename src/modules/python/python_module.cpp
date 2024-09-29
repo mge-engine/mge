@@ -54,8 +54,8 @@ namespace mge::python {
 
     void python_module::initialize()
     {
-        std::lock_guard<gil_lock> lock(gil_lock::instance());
-        PyObject*                 module = PyImport_AddModule(m_name.c_str());
+        gil_lock_guard guard;
+        PyObject*      module = PyImport_AddModule(m_name.c_str());
         error::check_error();
         if (!module) {
             MGE_THROW(python::error) << "Cannot create module " << m_name;

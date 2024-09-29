@@ -10,6 +10,7 @@
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 
+#include "gil_lock.hpp"
 #include "python.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
@@ -138,6 +139,7 @@ namespace mge::python {
             std::lock_guard<decltype(m_mutex)> guard(m_mutex);
             if (m_initialized) {
                 MGE_DEBUG_TRACE(PYTHON) << "Finalizing Python interpreter";
+                gil_lock_guard gil_guard;
                 Py_Finalize();
                 m_initialized = false;
                 for (auto& e : m_engines) {

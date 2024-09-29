@@ -40,13 +40,15 @@ namespace mge::python {
         void exception_thrown(const mge::exception& e) override;
         void exception_thrown() override;
 
-        bool        bool_parameter(size_t position) override { return false; }
-        int8_t      int8_t_parameter(size_t position) override { return 0; }
-        uint8_t     uint8_t_parameter(size_t position) override { return 0; }
-        int16_t     int16_t_parameter(size_t position) override { return 0; }
-        uint16_t    uint16_t_parameter(size_t position) override { return 0; }
-        int32_t     int32_t_parameter(size_t position) override { return 0; }
-        uint32_t    uint32_t_parameter(size_t position) override { return 0; }
+        bool     bool_parameter(size_t position) override { return false; }
+        int8_t   int8_t_parameter(size_t position) override { return 0; }
+        uint8_t  uint8_t_parameter(size_t position) override { return 0; }
+        int16_t  int16_t_parameter(size_t position) override { return 0; }
+        uint16_t uint16_t_parameter(size_t position) override { return 0; }
+        int32_t  int32_t_parameter(size_t position) override { return 0; }
+
+        uint32_t uint32_t_parameter(size_t position) override;
+
         int64_t     int64_t_parameter(size_t position) override { return 0; }
         uint64_t    uint64_t_parameter(size_t position) override { return 0; }
         float       float_parameter(size_t position) override { return 0; }

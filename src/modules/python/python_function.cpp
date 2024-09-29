@@ -30,8 +30,8 @@ namespace mge::python {
     {
         PyObject* pymodule = m_context.module(m_module_name)->pymodule().get();
         {
-            std::lock_guard<gil_lock> lock(gil_lock::instance());
-            PyObject*                 pyfunc =
+            gil_lock_guard guard;
+            PyObject*      pyfunc =
                 PyObject_CallObject(reinterpret_cast<PyObject*>(&s_type),
                                     nullptr);
             if (pyfunc == nullptr) {
@@ -106,6 +106,7 @@ namespace mge::python {
 
     void python_function::tp_dealloc(PyObject* self)
     {
+        gil_lock_guard          guard;
         python_function_object* obj =
             reinterpret_cast<python_function_object*>(self);
         obj->function.~python_function_ref();
@@ -115,6 +116,7 @@ namespace mge::python {
     PyObject*
     python_function::tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
     {
+        gil_lock_guard                                guard;
         python_function_object*                       self =
             reinterpret_cast<python_function_object*> PyObject_New(
                 python_function_object,
@@ -128,6 +130,7 @@ namespace mge::python {
     PyObject*
     python_function::tp_call(PyObject* self, PyObject* args, PyObject* kwds)
     {
+        // no gil here, as no python api is called directly here
         python_function_object* obj =
             reinterpret_cast<python_function_object*>(self);
         return obj->function->call(args, kwds);
@@ -136,6 +139,7 @@ namespace mge::python {
     void
     python_function::register_function_type(const python_module_ref& module)
     {
+        gil_lock_guard guard;
         if (PyType_Ready(&s_type) < 0) {
             error::check_error();
         }
@@ -150,24 +154,29 @@ namespace mge::python {
 
     PyObject* python_function::call(PyObject* args, PyObject* kwds)
     {
-        if (kwds != nullptr) {
-            PyErr_SetString(PyExc_TypeError, "Keyword arguments not supported");
-            return nullptr;
-        }
-
-        if (!PyTuple_Check(args)) {
-            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
-            return nullptr;
-        }
-
-        if (m_function->signature().size() !=
-            mge::checked_cast<size_t>(PyTuple_Size(args))) {
-            PyErr_SetString(PyExc_TypeError, "Argument count mismatch");
-            return nullptr;
-        }
-
         python_call_context context(nullptr, nullptr);
-        context.set_arguments(args);
+        {
+            gil_lock_guard guard;
+            if (kwds != nullptr) {
+                PyErr_SetString(PyExc_TypeError,
+                                "Keyword arguments not supported");
+                return nullptr;
+            }
+
+            if (!PyTuple_Check(args)) {
+                PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
+                return nullptr;
+            }
+
+            if (m_function->signature().size() !=
+                mge::checked_cast<size_t>(PyTuple_Size(args))) {
+                PyErr_SetString(PyExc_TypeError, "Argument count mismatch");
+                return nullptr;
+            }
+            context.set_arguments(args);
+        }
+        // retrieve arguments or result creation will acquire
+        // gil on its own
         m_function->invoker()(context);
 
         return context.result();

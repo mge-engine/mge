@@ -2,12 +2,14 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "python_error.hpp"
+#include "gil_lock.hpp"
 
 namespace mge::python {
     MGE_DEFINE_EXCEPTION_CLASS(error);
 
     void error::check_status(const PyStatus& status)
     {
+        gil_lock_guard guard;
         if (PyStatus_Exception(status)) {
             MGE_THROW(mge::python::error)
                 << "Python error: "
@@ -17,7 +19,8 @@ namespace mge::python {
 
     void error::check_error()
     {
-        PyObject* exc = PyErr_Occurred();
+        gil_lock_guard guard;
+        PyObject*      exc = PyErr_Occurred();
         if (exc) {
             PyObject* ex_type;
             PyObject* ex_value;
@@ -49,4 +52,5 @@ namespace mge::python {
                                           << "): " << ex_value_cstr;
         }
     }
+
 } // namespace mge::python
