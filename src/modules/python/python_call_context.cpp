@@ -6,7 +6,7 @@ namespace mge::python {
 
     void python_call_context::bool_result(bool result)
     {
-        gil_lock_guard guard;
+        gil_lock guard;
         m_result = result ? Py_True : Py_False;
         Py_INCREF(m_result);
     }
@@ -26,9 +26,9 @@ namespace mge::python {
 
     uint32_t python_call_context::uint32_t_parameter(size_t position)
     {
-        gil_lock_guard guard;
-        PyObject*      arg = PyTuple_GetItem(m_arguments, position);
-        uint32_t       value = PyLong_AsUnsignedLong(arg);
+        gil_lock  guard;
+        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        uint32_t  value = PyLong_AsUnsignedLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
         }

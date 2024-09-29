@@ -51,7 +51,7 @@ namespace mge::python {
 
     void python_type::init_enum()
     {
-        gil_lock_guard guard;
+        gil_lock guard;
         if (m_type_slots.empty() || m_type_slots.rbegin()->slot != 0) {
             m_type_slots.push_back({0, nullptr});
         }
@@ -84,8 +84,8 @@ namespace mge::python {
             PyObject*
             execute(PyTypeObject* subtype, PyObject* args, PyObject* kwds)
             {
-                gil_lock_guard guard;
-                object*        self;
+                gil_lock guard;
+                object*  self;
                 self = reinterpret_cast<object*>(subtype->tp_alloc(subtype, 0));
                 if (self != nullptr) {
                     self->shared_ptr_address = nullptr;
@@ -115,7 +115,7 @@ namespace mge::python {
                     obj->shared_ptr_address = nullptr;
                 }
                 {
-                    gil_lock_guard guard;
+                    gil_lock guard;
                     Py_TYPE(self)->tp_free(self);
                 }
             }
@@ -152,7 +152,7 @@ namespace mge::python {
     python_type::tp_init(PyObject* self, PyObject* args, PyObject* kwargs) const
     {
 
-        gil_lock_guard       gil_guard;
+        gil_lock             gil_guard;
         python_type::object* obj = reinterpret_cast<python_type::object*>(self);
 
         if (m_type->class_specific().constructors.empty()) {
@@ -176,6 +176,9 @@ namespace mge::python {
             PyErr_SetString(PyExc_TypeError, "No matching constructor found");
             return -1;
         }
+
+        // no python c api call from here on in this function
+        gil_guard.release();
 
         python_call_context ctx(nullptr, &obj->shared_ptr_address);
         ctx.set_arguments(args);
@@ -212,9 +215,9 @@ namespace mge::python {
 
     size_t python_type::select_constructor(PyObject* args) const
     {
-        gil_lock_guard guard;
-        size_t arg_count = mge::checked_cast<size_t>(PyTuple_Size(args));
-        size_t constructor_index =
+        gil_lock guard;
+        size_t   arg_count = mge::checked_cast<size_t>(PyTuple_Size(args));
+        size_t   constructor_index =
             m_type->class_specific().make_shared_constructors.size();
         std::vector<match_type> best_match;
         for (size_t i = 0;
@@ -266,7 +269,7 @@ namespace mge::python {
 
     void python_type::define_enum()
     {
-        gil_lock_guard guard;
+        gil_lock guard;
 
         python_module_ref module = m_context.module(m_module_name);
         PyObject*         base = reinterpret_cast<PyObject*>(&PyLong_Type);
@@ -307,7 +310,7 @@ namespace mge::python {
 
     void python_type::define_regular_class()
     {
-        gil_lock_guard guard;
+        gil_lock guard;
 
         if (m_type_slots.empty() || m_type_slots.rbegin()->slot != 0) {
             m_type_slots.push_back({0, nullptr});
@@ -318,8 +321,6 @@ namespace mge::python {
                       mge::checked_cast<int>(sizeof(PyObject) + sizeof(void*)),
                   .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE,
                   .slots = m_type_slots.data()};
-
-        std::lock_guard<gil_lock> lock(gil_lock::instance());
 
         python_module_ref module = m_context.module(m_module_name);
         m_type_object = PyType_FromModuleAndSpec(module->pymodule().get(),

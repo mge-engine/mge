@@ -9,7 +9,7 @@ namespace mge::python {
 
     void error::check_status(const PyStatus& status)
     {
-        gil_lock_guard guard;
+        gil_lock guard;
         if (PyStatus_Exception(status)) {
             MGE_THROW(mge::python::error)
                 << "Python error: "
@@ -19,8 +19,8 @@ namespace mge::python {
 
     void error::check_error()
     {
-        gil_lock_guard guard;
-        PyObject*      exc = PyErr_Occurred();
+        gil_lock  guard;
+        PyObject* exc = PyErr_Occurred();
         if (exc) {
             PyObject* ex_type;
             PyObject* ex_value;

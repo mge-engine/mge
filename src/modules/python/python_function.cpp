@@ -30,8 +30,8 @@ namespace mge::python {
     {
         PyObject* pymodule = m_context.module(m_module_name)->pymodule().get();
         {
-            gil_lock_guard guard;
-            PyObject*      pyfunc =
+            gil_lock  guard;
+            PyObject* pyfunc =
                 PyObject_CallObject(reinterpret_cast<PyObject*>(&s_type),
                                     nullptr);
             if (pyfunc == nullptr) {
@@ -106,7 +106,7 @@ namespace mge::python {
 
     void python_function::tp_dealloc(PyObject* self)
     {
-        gil_lock_guard          guard;
+        gil_lock                guard;
         python_function_object* obj =
             reinterpret_cast<python_function_object*>(self);
         obj->function.~python_function_ref();
@@ -116,7 +116,7 @@ namespace mge::python {
     PyObject*
     python_function::tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
     {
-        gil_lock_guard                                guard;
+        gil_lock                                      guard;
         python_function_object*                       self =
             reinterpret_cast<python_function_object*> PyObject_New(
                 python_function_object,
@@ -139,7 +139,7 @@ namespace mge::python {
     void
     python_function::register_function_type(const python_module_ref& module)
     {
-        gil_lock_guard guard;
+        gil_lock guard;
         if (PyType_Ready(&s_type) < 0) {
             error::check_error();
         }
@@ -156,7 +156,7 @@ namespace mge::python {
     {
         python_call_context context(nullptr, nullptr);
         {
-            gil_lock_guard guard;
+            gil_lock guard;
             if (kwds != nullptr) {
                 PyErr_SetString(PyExc_TypeError,
                                 "Keyword arguments not supported");

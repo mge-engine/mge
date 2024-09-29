@@ -139,7 +139,7 @@ namespace mge::python {
             std::lock_guard<decltype(m_mutex)> guard(m_mutex);
             if (m_initialized) {
                 MGE_DEBUG_TRACE(PYTHON) << "Finalizing Python interpreter";
-                gil_lock_guard gil_guard;
+                gil_lock gil_guard;
                 Py_Finalize();
                 m_initialized = false;
                 for (auto& e : m_engines) {
