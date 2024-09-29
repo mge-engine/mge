@@ -7,6 +7,7 @@
 #include "python_context.hpp"
 #include "python_error.hpp"
 #include "python_module.hpp"
+#include "type_matches.hpp"
 
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
@@ -176,18 +177,60 @@ namespace mge::python {
         return -1;
     }
 
+    static bool better_match(const std::vector<match_type>& current,
+                             const std::vector<match_type>& best)
+    {
+        if (current.empty()) {
+            return false;
+        }
+        if (best.empty()) {
+            return true;
+        }
+        for (size_t i = 0; i < current.size(); ++i) {
+            // cast match is smaller than exact match,
+            // so new match must improve
+            if (current[i] < best[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     size_t python_type::select_constructor(PyObject* args) const
     {
         size_t arg_count = mge::checked_cast<size_t>(PyTuple_Size(args));
-        size_t constructor_index = m_type->class_specific().constructors.size();
-
-        for (size_t i = 0; i < m_type->class_specific().constructors.size();
+        size_t constructor_index =
+            m_type->class_specific().make_shared_constructors.size();
+        std::vector<match_type> best_match;
+        for (size_t i = 0;
+             i < m_type->class_specific().make_shared_constructors.size();
              ++i) {
             const auto& signature =
-                m_type->class_specific().constructors[i].first;
+                m_type->class_specific().make_shared_constructors[i].first;
             if (signature.size() == arg_count) {
                 if (arg_count == 0) {
                     return i;
+                }
+                std::vector<match_type> current_match;
+                for (size_t j = 0; j < arg_count; ++j) {
+                    PyObject* arg = PyTuple_GetItem(args, j);
+                    if (arg == nullptr) {
+                        PyErr_SetString(PyExc_TypeError,
+                                        "Cannot get argument from tuple");
+                        return m_type->class_specific()
+                            .make_shared_constructors.size();
+                    }
+                    auto m = type_matches(arg, signature[j]);
+                    if (m == match_type::NO_MATCH) {
+                        current_match.clear();
+                        break;
+                    } else {
+                        current_match.push_back(m);
+                    }
+                }
+                if (better_match(current_match, best_match)) {
+                    best_match = std::move(current_match);
+                    constructor_index = i;
                 }
             }
         }

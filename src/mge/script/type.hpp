@@ -65,6 +65,11 @@ namespace mge::script {
 
         type_data_ref data() const noexcept { return m_data; }
 
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
+        }
+
     private:
         type_data_ref m_data;
     };
@@ -111,6 +116,11 @@ namespace mge::script {
             return m_data->directly_exposed();
         }
 
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
+        }
+
     private:
         type_data_ref m_data;
     };
@@ -146,6 +156,11 @@ namespace mge::script {
             return m_data->directly_exposed();
         }
 
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
+        }
+
     private:
         type_data_ref m_data;
     };
@@ -176,6 +191,11 @@ namespace mge::script {
         bool exposed_directly() const noexcept
         {
             return m_data->exposed_directly();
+        }
+
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
         }
 
     private:
@@ -646,6 +666,11 @@ namespace mge::script {
             return m_data->directly_exposed();
         }
 
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
+        }
+
     private:
         type_data_ref m_data;
     };
@@ -680,6 +705,11 @@ namespace mge::script {
         bool directly_exposed() const noexcept
         {
             return m_data->directly_exposed();
+        }
+
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
         }
 
     private:
@@ -721,6 +751,11 @@ namespace mge::script {
             return m_data->directly_exposed();
         }
 
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
+        }
+
     private:
         type_data_ref m_data;
     };
@@ -758,6 +793,11 @@ namespace mge::script {
         bool directly_exposed() const noexcept
         {
             return m_data->directly_exposed();
+        }
+
+        const type_identifier& identifier() const noexcept
+        {
+            return m_data->identifier();
         }
 
     private:

@@ -79,10 +79,10 @@ namespace mge::script {
             return !(*this == other);
         }
 
-        std::type_index type_index() const { return m_type_index; }
-        kind_type       kind() const { return m_kind; }
-        bool            is_const() const { return m_cv.is_const; }
-        bool            is_volatile() const { return m_cv.is_volatile; }
+        std::type_index type_index() const noexcept { return m_type_index; }
+        kind_type       kind() const noexcept { return m_kind; }
+        bool            is_const() const noexcept { return m_cv.is_const; }
+        bool is_volatile() const noexcept { return m_cv.is_volatile; }
 
         bool operator<(const type_identifier& other) const
         {

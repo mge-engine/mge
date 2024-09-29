@@ -9,6 +9,7 @@ SET(MGESCRIPT_TEST_SOURCES
     test_bool.cpp
     test_pointer.cpp
     test_type.cpp
+    test_type_identifier.cpp
 )
 
 MGE_TEST(
