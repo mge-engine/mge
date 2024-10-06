@@ -156,15 +156,21 @@ namespace mge::python {
     {
         struct get_closure : tp_get_closure
         {
-            get_closure(const mge::script::invoke_function& getter)
+            get_closure(
+                const mge::script::invoke_function& getter,
+                const mge::script::type_data::
+                    extract_this_from_shared_ptr_address& this_from_shared_ptr)
                 : m_getter(getter)
+                , m_this_from_shared_ptr(this_from_shared_ptr)
             {}
 
             PyObject* execute(PyObject* self, void* closure)
             {
-                gil_lock            guard;
-                object*             obj = reinterpret_cast<object*>(self);
-                python_call_context ctx(nullptr, obj->shared_ptr_address);
+                gil_lock guard;
+                object*  obj = reinterpret_cast<object*>(self);
+                void*    this_ptr =
+                    m_this_from_shared_ptr(obj->shared_ptr_address);
+                python_call_context ctx(this_ptr, obj->shared_ptr_address);
                 m_getter(ctx);
                 if (ctx.has_exception()) {
                     return nullptr;
@@ -172,19 +178,28 @@ namespace mge::python {
                 return ctx.result();
             }
             const mge::script::invoke_function& m_getter;
+            const mge::script::type_data::extract_this_from_shared_ptr_address&
+                m_this_from_shared_ptr;
         };
 
         struct set_closure : tp_set_closure
         {
-            set_closure(const mge::script::invoke_function& setter)
+            set_closure(
+                const mge::script::invoke_function& setter,
+                const mge::script::type_data::
+                    extract_this_from_shared_ptr_address& this_from_shared_ptr)
                 : m_setter(setter)
+                , m_this_from_shared_ptr(this_from_shared_ptr)
             {}
 
             int execute(PyObject* self, PyObject* value, void* closure)
             {
-                gil_lock            guard;
-                object*             obj = reinterpret_cast<object*>(self);
-                python_call_context ctx(nullptr, obj->shared_ptr_address);
+                gil_lock guard;
+                object*  obj = reinterpret_cast<object*>(self);
+
+                void* this_ptr =
+                    m_this_from_shared_ptr(obj->shared_ptr_address);
+                python_call_context ctx(this_ptr, obj->shared_ptr_address);
                 ctx.set_arguments(value);
                 m_setter(ctx);
                 if (ctx.has_exception()) {
@@ -193,15 +208,21 @@ namespace mge::python {
                 return 0;
             }
             const mge::script::invoke_function& m_setter;
+            const mge::script::type_data::extract_this_from_shared_ptr_address&
+                m_this_from_shared_ptr;
         };
 
         std::shared_ptr<tp_get_closure> getter_closure =
-            std::make_shared<get_closure>(getter);
+            std::make_shared<get_closure>(
+                getter,
+                m_type->class_specific().this_from_shared_ptr);
         m_tp_get_closures.push_back(getter_closure);
 
         std::shared_ptr<tp_set_closure> setter_closure;
         if (setter) {
-            setter_closure = std::make_shared<set_closure>(setter);
+            setter_closure = std::make_shared<set_closure>(
+                setter,
+                m_type->class_specific().this_from_shared_ptr);
             m_tp_set_closures.push_back(setter_closure);
         }
         m_type_fields.push_back({name.c_str(),
