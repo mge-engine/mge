@@ -34,6 +34,8 @@ namespace mge::script {
         using range_type = std::ranges::subrange<type_data_map_iterator>;
 
         using call_signature = std::vector<type_identifier>;
+        using extract_this_from_shared_ptr_address =
+            std::function<void*(void*)>;
 
         type_data(const std::type_info& ti, const type_identifier& id);
         type_data(const char* alias_name, const type_data_ref& aliased_type);
@@ -120,15 +122,16 @@ namespace mge::script {
 
         struct class_details
         {
-            std::string                  name;
-            std::vector<type_data_ref>   base_classes;
-            bool                         is_string{false};
-            bool                         is_wstring{false};
-            bool                         is_abstract{false};
-            bool                         is_callable{false};
-            size_t                       size{0};
-            mge::script::invoke_function destroy;
-            mge::script::invoke_function destroy_shared;
+            std::string                          name;
+            std::vector<type_data_ref>           base_classes;
+            bool                                 is_string{false};
+            bool                                 is_wstring{false};
+            bool                                 is_abstract{false};
+            bool                                 is_callable{false};
+            size_t                               size{0};
+            mge::script::invoke_function         destroy;
+            mge::script::invoke_function         destroy_shared;
+            extract_this_from_shared_ptr_address this_from_shared_ptr;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
                 constructors;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>

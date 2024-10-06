@@ -153,7 +153,63 @@ namespace mge::python {
     void python_type::add_field(const std::string&                  name,
                                 const mge::script::invoke_function& getter,
                                 const mge::script::invoke_function& setter)
-    {}
+    {
+        struct get_closure : tp_get_closure
+        {
+            get_closure(const mge::script::invoke_function& getter)
+                : m_getter(getter)
+            {}
+
+            PyObject* execute(PyObject* self, void* closure)
+            {
+                gil_lock            guard;
+                object*             obj = reinterpret_cast<object*>(self);
+                python_call_context ctx(nullptr, obj->shared_ptr_address);
+                m_getter(ctx);
+                if (ctx.has_exception()) {
+                    return nullptr;
+                }
+                return ctx.result();
+            }
+            const mge::script::invoke_function& m_getter;
+        };
+
+        struct set_closure : tp_set_closure
+        {
+            set_closure(const mge::script::invoke_function& setter)
+                : m_setter(setter)
+            {}
+
+            int execute(PyObject* self, PyObject* value, void* closure)
+            {
+                gil_lock            guard;
+                object*             obj = reinterpret_cast<object*>(self);
+                python_call_context ctx(nullptr, obj->shared_ptr_address);
+                ctx.set_arguments(value);
+                m_setter(ctx);
+                if (ctx.has_exception()) {
+                    return -1;
+                }
+                return 0;
+            }
+            const mge::script::invoke_function& m_setter;
+        };
+
+        std::shared_ptr<tp_get_closure> getter_closure =
+            std::make_shared<get_closure>(getter);
+        m_tp_get_closures.push_back(getter_closure);
+
+        std::shared_ptr<tp_set_closure> setter_closure;
+        if (setter) {
+            setter_closure = std::make_shared<set_closure>(setter);
+            m_tp_set_closures.push_back(setter_closure);
+        }
+        m_type_fields.push_back({name.c_str(),
+                                 getter_closure->function(),
+                                 setter ? setter_closure->function() : nullptr,
+                                 nullptr,
+                                 nullptr});
+    }
 
     void python_type::init_fields()
     {

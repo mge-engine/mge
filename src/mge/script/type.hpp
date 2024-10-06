@@ -512,6 +512,13 @@ namespace mge::script {
                           !std::is_same_v<T, std::string_view> &&
                           !std::is_same_v<T, std::wstring_view>) {
                 m_data->class_specific().name = mge::base_type_name<T>();
+                m_data->class_specific().this_from_shared_ptr =
+                    [](void* shared_ptr_address) -> void* {
+                    std::shared_ptr<T>* sp =
+                        static_cast<std::shared_ptr<T>*>(shared_ptr_address);
+                    return sp->get();
+                };
+
                 if constexpr (std::is_destructible_v<T>) {
                     m_data->class_specific().destroy = [](call_context& ctx) {
                         ctx.before_call();
