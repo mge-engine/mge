@@ -247,6 +247,23 @@ namespace mge::python {
         }
     }
 
+    void python_type::add_method(
+        const std::string&                            name,
+        const mge::script::type_data_ref&             return_type,
+        const mge::script::type_data::call_signature& signature,
+        const mge::script::invoke_function&           method)
+    {}
+
+    void python_type::init_methods()
+    {
+        for (const auto& m : m_type->class_specific().methods) {
+            add_method(std::get<0>(m),
+                       std::get<1>(m),
+                       std::get<2>(m),
+                       std::get<3>(m));
+        }
+    }
+
     int
     python_type::tp_init(PyObject* self, PyObject* args, PyObject* kwargs) const
     {
