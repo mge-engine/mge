@@ -139,12 +139,26 @@ namespace mge::python {
         m_tp_dealloc_closure = std::make_shared<dealloc_closure>(m_type);
         m_tp_init_closure = std::make_shared<init_closure>(this);
 
+        init_fields();
+
         m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
         if (!m_type->class_specific().constructors.empty()) {
             m_type_slots.emplace_back(Py_tp_dealloc,
                                       m_tp_dealloc_closure->function());
             m_type_slots.emplace_back(Py_tp_init,
                                       m_tp_init_closure->function());
+        }
+    }
+
+    void python_type::add_field(const std::string&                  name,
+                                const mge::script::invoke_function& getter,
+                                const mge::script::invoke_function& setter)
+    {}
+
+    void python_type::init_fields()
+    {
+        for (const auto& f : m_type->class_specific().fields) {
+            add_field(std::get<0>(f), std::get<2>(f), std::get<3>(f));
         }
     }
 

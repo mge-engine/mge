@@ -30,6 +30,11 @@ namespace mge::python {
         void init_class();
         void init_callable_class();
         void init_regular_class();
+        void init_fields();
+        void add_field(const std::string&                  name,
+                       const mge::script::invoke_function& getter,
+                       const mge::script::invoke_function& setter);
+
         void define_enum();
         void define_class();
         void define_callable_class();
@@ -45,7 +50,9 @@ namespace mge::python {
         std::string     m_module_name;    // qualified name of the module
         PyType_Spec     m_spec{};
         pyobject_ref    m_type_object;
-        std::vector<PyType_Slot>            m_type_slots;
+        std::vector<PyType_Slot> m_type_slots;
+        std::vector<PyGetSetDef> m_type_fields;
+
         std::map<std::string, pyobject_ref> m_attributes;
         mge::script::type_data_ref          m_type;
 
@@ -63,9 +70,14 @@ namespace mge::python {
         using tp_init_closure =
             mge::closure<int, PyObject*, PyObject*, PyObject*>;
 
-        std::shared_ptr<tp_new_closure>     m_tp_new_closure;
-        std::shared_ptr<tp_dealloc_closure> m_tp_dealloc_closure;
-        std::shared_ptr<tp_init_closure>    m_tp_init_closure;
+        using tp_get_closure = mge::closure<PyObject*, PyObject*, void*>;
+        using tp_set_closure = mge::closure<int, PyObject*, PyObject*, void*>;
+
+        std::shared_ptr<tp_new_closure>              m_tp_new_closure;
+        std::shared_ptr<tp_dealloc_closure>          m_tp_dealloc_closure;
+        std::shared_ptr<tp_init_closure>             m_tp_init_closure;
+        std::vector<std::shared_ptr<tp_get_closure>> m_tp_get_closures;
+        std::vector<std::shared_ptr<tp_set_closure>> m_tp_set_closures;
     };
 
 } // namespace mge::python
