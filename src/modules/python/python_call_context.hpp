@@ -41,24 +41,22 @@ namespace mge::python {
         void exception_thrown(const mge::exception& e) override;
         void exception_thrown() override;
 
-        bool     bool_parameter(size_t position) override { return false; }
-        int8_t   int8_t_parameter(size_t position) override { return 0; }
-        uint8_t  uint8_t_parameter(size_t position) override { return 0; }
-        int16_t  int16_t_parameter(size_t position) override { return 0; }
-        uint16_t uint16_t_parameter(size_t position) override { return 0; }
-        int32_t  int32_t_parameter(size_t position) override { return 0; }
+        bool     bool_parameter(size_t position) override;
+        int8_t   int8_t_parameter(size_t position) override;
+        uint8_t  uint8_t_parameter(size_t position) override;
+        int16_t  int16_t_parameter(size_t position) override;
+        uint16_t uint16_t_parameter(size_t position) override;
+        int32_t  int32_t_parameter(size_t position) override;
 
         uint32_t uint32_t_parameter(size_t position) override;
 
-        int64_t     int64_t_parameter(size_t position) override { return 0; }
-        uint64_t    uint64_t_parameter(size_t position) override { return 0; }
-        float       float_parameter(size_t position) override { return 0; }
-        double      double_parameter(size_t position) override { return 0; }
-        long double long_double_parameter(size_t position) override
-        {
-            return 0;
-        }
-        std::string string_parameter(size_t position) override { return ""; }
+        int64_t     int64_t_parameter(size_t position) override;
+        uint64_t    uint64_t_parameter(size_t position) override;
+        float       float_parameter(size_t position) override;
+        double      double_parameter(size_t position) override;
+        long double long_double_parameter(size_t position) override;
+
+        std::string string_parameter(size_t position) override;
 
         void before_call() override {}
         void after_call() override {}
