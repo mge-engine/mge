@@ -148,6 +148,11 @@ namespace mge::python {
             m_type_slots.emplace_back(Py_tp_init,
                                       m_tp_init_closure->function());
         }
+        if (!m_type_fields.empty()) {
+            m_type_fields.push_back(
+                {nullptr, nullptr, nullptr, nullptr, nullptr});
+            m_type_slots.emplace_back(Py_tp_getset, m_type_fields.data());
+        }
     }
 
     void python_type::add_field(const std::string&                  name,
@@ -225,6 +230,9 @@ namespace mge::python {
                 m_type->class_specific().this_from_shared_ptr);
             m_tp_set_closures.push_back(setter_closure);
         }
+
+        MGE_DEBUG_TRACE(PYTHON) << "Adding field " << name;
+
         m_type_fields.push_back({name.c_str(),
                                  getter_closure->function(),
                                  setter ? setter_closure->function() : nullptr,
