@@ -261,10 +261,11 @@ namespace mge::script {
             m_data->class_specific().constructors.emplace_back(
                 sig,
                 [](call_context& ctx) {
-                    T*     obj = static_cast<T*>(ctx.this_ptr());
-                    size_t index{0};
+                    T*               obj = static_cast<T*>(ctx.this_ptr());
+                    constexpr size_t nargs = sizeof...(Args);
+                    size_t           index{nargs};
                     ctx.before_call();
-                    new (obj) T(ctx.parameter<Args>(index++)...);
+                    new (obj) T((ctx.parameter<Args>(--index))...);
                     ctx.after_call();
                 });
             m_data->class_specific().make_shared_constructors.emplace_back(
@@ -274,8 +275,11 @@ namespace mge::script {
                         static_cast<std::shared_ptr<T>**>(
                             ctx.shared_ptr_address());
                     *obj = new std::shared_ptr<T>();
+                    constexpr size_t nargs = sizeof...(Args);
+                    size_t           index{nargs};
                     ctx.before_call();
-                    **obj = std::make_shared<T>(ctx.parameter<Args>(0)...);
+                    **obj =
+                        std::make_shared<T>((ctx.parameter<Args>(--index))...);
                     ctx.after_call();
                 });
             return *this;
@@ -332,11 +336,12 @@ namespace mge::script {
                 sig,
                 [method](call_context& ctx) {
                     try {
-                        T*     obj = static_cast<T*>(ctx.this_ptr());
-                        size_t index{0};
+                        T*               obj = static_cast<T*>(ctx.this_ptr());
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
                         ctx.before_call();
                         ctx.result(
-                            (obj->*method)(ctx.parameter<Args>(index++)...));
+                            (obj->*method)((ctx.parameter<Args>(--index))...));
                         ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
@@ -368,11 +373,12 @@ namespace mge::script {
                 sig,
                 [method](call_context& ctx) {
                     try {
-                        T*     obj = static_cast<T*>(ctx.this_ptr());
-                        size_t index{0};
+                        T*               obj = static_cast<T*>(ctx.this_ptr());
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
                         ctx.before_call();
                         ctx.result(
-                            (obj->*method)(ctx.parameter<Args>(index++)...));
+                            (obj->*method)(ctx.parameter<Args>(--index)...));
                         ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
@@ -401,10 +407,11 @@ namespace mge::script {
                 sig,
                 [method](call_context& ctx) {
                     try {
-                        T*     obj = static_cast<T*>(ctx.this_ptr());
-                        size_t index{0};
+                        T*               obj = static_cast<T*>(ctx.this_ptr());
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
                         ctx.before_call();
-                        (obj->*method)(ctx.parameter<Args>(index++)...);
+                        (obj->*method)(ctx.parameter<Args>(--index)...);
                         ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
@@ -433,9 +440,10 @@ namespace mge::script {
                 sig,
                 [func](call_context& ctx) {
                     try {
-                        size_t index{0};
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
                         ctx.before_call();
-                        func(ctx.parameter<Args>(index++)...);
+                        func(ctx.parameter<Args>(--index)...);
                         ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);
@@ -466,9 +474,10 @@ namespace mge::script {
                 sig,
                 [func](call_context& ctx) {
                     try {
-                        size_t index{0};
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
                         ctx.before_call();
-                        ctx.result(func(ctx.parameter<Args>(index++)...));
+                        ctx.result(func(ctx.parameter<Args>(--index)...));
                         ctx.after_call();
                     } catch (const mge::exception& e) {
                         ctx.exception_thrown(e);

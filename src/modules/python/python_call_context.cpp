@@ -5,6 +5,11 @@
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/exception.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
 
 namespace mge::python {
 
@@ -189,6 +194,8 @@ namespace mge::python {
         gil_lock  guard;
         PyObject* arg = PyTuple_GetItem(m_arguments, position);
         uint32_t  value = PyLong_AsUnsignedLong(arg);
+        MGE_DEBUG_TRACE(PYTHON)
+            << "uint32_t_parameter(" << position << "): " << value;
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
         }

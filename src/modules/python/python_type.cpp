@@ -140,6 +140,7 @@ namespace mge::python {
         m_tp_init_closure = std::make_shared<init_closure>(this);
 
         init_fields();
+        init_methods();
 
         m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
         if (!m_type->class_specific().constructors.empty()) {
@@ -152,6 +153,10 @@ namespace mge::python {
             m_type_fields.push_back(
                 {nullptr, nullptr, nullptr, nullptr, nullptr});
             m_type_slots.emplace_back(Py_tp_getset, m_type_fields.data());
+        }
+        if (!m_type_methods.empty()) {
+            m_type_methods.push_back({nullptr, nullptr, 0, nullptr});
+            m_type_slots.emplace_back(Py_tp_methods, m_type_methods.data());
         }
     }
 
@@ -231,7 +236,7 @@ namespace mge::python {
             m_tp_set_closures.push_back(setter_closure);
         }
 
-        MGE_DEBUG_TRACE(PYTHON) << "Adding field " << name;
+        // MGE_DEBUG_TRACE(PYTHON) << "Adding field " << name;
 
         m_type_fields.push_back({name.c_str(),
                                  getter_closure->function(),
@@ -252,7 +257,56 @@ namespace mge::python {
         const mge::script::type_data_ref&             return_type,
         const mge::script::type_data::call_signature& signature,
         const mge::script::invoke_function&           method)
-    {}
+    {
+        struct method_closure : mge::closure<PyObject*, PyObject*, PyObject*>
+        {
+            method_closure(
+                const mge::script::invoke_function&           method,
+                const mge::script::type_data::call_signature& signature,
+                const mge::script::type_data_ref&             return_type,
+                const mge::script::type_data::
+                    extract_this_from_shared_ptr_address& this_from_shared_ptr)
+                : m_method(method)
+                , m_signature(signature)
+                , m_return_type(return_type)
+                , m_this_from_shared_ptr(this_from_shared_ptr)
+            {}
+
+            PyObject* execute(PyObject* self, PyObject* args)
+            {
+                gil_lock guard;
+                object*  obj = reinterpret_cast<object*>(self);
+                void*    this_ptr =
+                    m_this_from_shared_ptr(obj->shared_ptr_address);
+                python_call_context ctx(this_ptr, obj->shared_ptr_address);
+                ctx.set_arguments(args);
+                m_method(ctx);
+                if (ctx.has_exception()) {
+                    return nullptr;
+                }
+                return ctx.result();
+            }
+
+            const mge::script::invoke_function&           m_method;
+            const mge::script::type_data::call_signature& m_signature;
+            const mge::script::type_data_ref&             m_return_type;
+            const mge::script::type_data::extract_this_from_shared_ptr_address&
+                m_this_from_shared_ptr;
+        };
+
+        std::shared_ptr<method_closure> closure =
+            std::make_shared<method_closure>(
+                method,
+                signature,
+                return_type,
+                m_type->class_specific().this_from_shared_ptr);
+
+        m_type_methods.push_back(
+            {name.c_str(), closure->function(), METH_VARARGS, nullptr});
+        m_method_closures.push_back(closure);
+
+        MGE_DEBUG_TRACE(PYTHON) << "Adding method " << name;
+    }
 
     void python_type::init_methods()
     {

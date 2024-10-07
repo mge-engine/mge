@@ -106,9 +106,10 @@ namespace mge::script {
                 if constexpr (std::is_same_v<R, void>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
-                            std::size_t index = 0;
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
                             ctx.before_call();
-                            f((ctx.parameter<Args>(index++))...);
+                            f((ctx.parameter<Args>(--index))...);
                             ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
@@ -143,9 +144,10 @@ namespace mge::script {
                 } else if constexpr (std::is_enum_v<R>) {
                     m_data->set_invoker([f](call_context& ctx) {
                         try {
-                            std::size_t index = 0;
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
                             ctx.before_call();
-                            ctx.result(f((ctx.parameter<Args>(index++))...));
+                            ctx.result(f((ctx.parameter<Args>(--index))...));
                             ctx.after_call();
                         } catch (const mge::exception& e) {
                             ctx.exception_thrown(e);
