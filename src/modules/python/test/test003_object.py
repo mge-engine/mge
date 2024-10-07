@@ -21,7 +21,6 @@ class TestObject(unittest.TestCase):
         """Simple construct without verification of result"""
         x = mge.semantic_version(1,2,3)
 
-    @unittest.skip("Not implemented yet")
     def test_simple_construct_verify(self):
         x = mge.semantic_version(1,2,3)
         self.assertEqual(x.major(), 1)
