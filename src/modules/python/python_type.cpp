@@ -46,6 +46,8 @@ namespace mge::python {
             init_enum();
         } else if (m_type->is_class()) {
             init_class();
+        } else {
+            MGE_DEBUG_TRACE(PYTHON) << "Unsupported type: " << m_type->name();
         }
     }
 

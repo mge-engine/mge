@@ -107,7 +107,15 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Defining type " << t->name();
             pt->define_in_interpreter();
         }
+        for (auto& [n, pm] : m_modules) {
+            MGE_DEBUG_TRACE(PYTHON) << "Defining module local types";
+            bind_module_types(pm->data());
+        }
     }
+
+    void
+    python_context::bind_module_types(const mge::script::module_data_ref& data)
+    {}
 
     void python_context::bind_module_functions(
         const mge::script::module_data_ref& data)

@@ -30,6 +30,7 @@ namespace mge::python {
     private:
         void bind_module(const mge::script::module_data_ref& data);
         void bind_module_functions(const mge::script::module_data_ref& data);
+        void bind_module_types(const mge::script::module_data_ref& data);
         void bind_helper_module();
         void create_function_helper_type(const python_module_ref& mod);
         bool is_builtin(const mge::script::type_data_ref& t) const;
