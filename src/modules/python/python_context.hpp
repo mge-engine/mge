@@ -26,6 +26,7 @@ namespace mge::python {
         void on_interpreter_restore();
 
         const python_module_ref& module(const std::string& name) const;
+        const python_type_ref& type(const mge::script::type_data_ref& t) const;
 
     private:
         void bind_module(const mge::script::module_data_ref& data);

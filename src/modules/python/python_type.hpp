@@ -23,11 +23,14 @@ namespace mge::python {
         void on_interpreter_restore();
         void define_in_interpreter();
 
+        const pyobject_ref& type_object() const { return m_type_object; }
+
     private:
         void initialize();
 
         void init_enum();
         void init_class();
+        void init_alias();
         void init_callable_class();
         void init_regular_class();
         void init_fields();
@@ -44,6 +47,7 @@ namespace mge::python {
         void define_class();
         void define_callable_class();
         void define_regular_class();
+        void define_alias();
 
         size_t select_constructor(PyObject* args) const;
 
