@@ -113,28 +113,9 @@ namespace mge::python {
         for (const auto& m : root.data()->modules()) {
             bind_module_functions(m);
         }
-        for (const auto& m : root.data()->modules()) {
-            MGE_DEBUG_TRACE(PYTHON) << "Defining module local types";
-            bind_module_types(m);
-        }
         for (auto& [t, pt] : m_types) {
             MGE_DEBUG_TRACE(PYTHON) << "Defining type " << t->name();
             pt->define_in_interpreter();
-        }
-    }
-
-    void
-    python_context::bind_module_types(const mge::script::module_data_ref& data)
-    {
-        for (const auto& t : data->types()) {
-            if (m_types.find(t) == m_types.end()) {
-                MGE_DEBUG_TRACE(PYTHON) << "Creating type " << t->name();
-                python_type_ref pt = std::make_shared<python_type>(*this, t);
-                m_types[t] = pt;
-            }
-        }
-        for (const auto& m : data->modules()) {
-            bind_module_types(m);
         }
     }
 

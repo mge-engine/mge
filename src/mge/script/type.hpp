@@ -219,8 +219,19 @@ namespace mge::script {
 
         type(const char* alias_name)
         {
-            type<T> pure_type;
-            m_data = type_data::create(alias_name, pure_type.data());
+            type_identifier id = make_type_identifier<T>();
+            m_data = type_data::get(id);
+            if (!m_data) {
+                m_data = type_data::create(typeid(T), id);
+                initialize();
+                m_data->set_alias_name(alias_name);
+            } else {
+                if (m_data->alias_name() != alias_name) {
+                    MGE_THROW(illegal_state)
+                        << "Type " << m_data->name()
+                        << " already exists with different alias name";
+                }
+            }
         }
 
         bool is_void() const noexcept { return false; }

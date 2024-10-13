@@ -26,3 +26,10 @@ class TestObject(unittest.TestCase):
         self.assertEqual(x.major(), 1)
         self.assertEqual(x.minor(), 2)
         self.assertEqual(x.patch(), 3)
+    
+    def test_field_access(self):
+        v = mge.fvec2
+        v.x = 123
+        v.y = 456
+        self.assertEqual(v.x, 123)
+        self.assertEqual(v.y, 456)

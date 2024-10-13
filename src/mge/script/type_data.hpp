@@ -14,6 +14,7 @@
 #include <ranges>
 #include <set>
 #include <string>
+#include <string_view>
 #include <typeindex>
 #include <typeinfo>
 #include <variant>
@@ -38,7 +39,6 @@ namespace mge::script {
             std::function<void*(void*)>;
 
         type_data(const std::type_info& ti, const type_identifier& id);
-        type_data(const char* alias_name, const type_data_ref& aliased_type);
         type_data(const type_data&) = delete;
         type_data& operator=(const type_data&) = delete;
 
@@ -47,6 +47,7 @@ namespace mge::script {
             , m_identifier(std::move(t.m_identifier))
             , m_module(std::move(t.m_module))
             , m_details(std::move(t.m_details))
+            , m_alias_name(std::move(t.m_alias_name))
         {}
 
         type_data& operator=(type_data&& other)
@@ -55,6 +56,7 @@ namespace mge::script {
             m_identifier = std::move(other.m_identifier);
             m_module = std::move(other.m_module);
             m_details = std::move(other.m_details);
+            m_alias_name = std::move(other.m_alias_name);
             return *this;
         }
 
@@ -63,8 +65,6 @@ namespace mge::script {
         static type_data_ref get(const type_identifier& key);
         static type_data_ref create(const std::type_info&  ti,
                                     const type_identifier& id);
-        static type_data_ref create(const char*          alias_name,
-                                    const type_data_ref& aliased_type);
 
         const type_identifier& identifier() const noexcept
         {
@@ -72,6 +72,7 @@ namespace mge::script {
         }
 
         void set_module(const module_data_ref& m) { m_module = m; }
+        void set_alias_name(const char* name) { m_alias_name = name; }
 
         const module_data_weak_ref& module() const noexcept { return m_module; }
 
@@ -104,7 +105,8 @@ namespace mge::script {
         bool is_const() const;
         bool is_volatile() const;
 
-        bool is_alias() const;
+        bool             has_alias() const;
+        std::string_view alias_name() const;
 
         bool exposed_directly() const;
 
@@ -204,9 +206,8 @@ namespace mge::script {
         const type_data::pointer_details&   pointer_specific() const;
         const type_data::reference_details& reference_specific() const;
         const type_data::rvalue_reference_details&
-                                        rvalue_reference_specific() const;
-        const type_data::void_details&  void_specific() const;
-        const type_data::alias_details& alias_specific() const;
+                                       rvalue_reference_specific() const;
+        const type_data::void_details& void_specific() const;
 
     private:
         friend class module_data;
@@ -218,14 +219,14 @@ namespace mge::script {
                                           type_data::pointer_details,
                                           type_data::reference_details,
                                           type_data::rvalue_reference_details,
-                                          type_data::void_details,
-                                          type_data::alias_details>;
+                                          type_data::void_details>;
 
-        const std::type_info* m_type_info{nullptr};
-        type_identifier       m_identifier;
-        module_data_weak_ref  m_module;
-        dependency_set        m_dependencies;
-        details_type          m_details;
+        const std::type_info*      m_type_info{nullptr};
+        type_identifier            m_identifier;
+        module_data_weak_ref       m_module;
+        dependency_set             m_dependencies;
+        details_type               m_details;
+        std::optional<std::string> m_alias_name;
     };
 
 } // namespace mge::script

@@ -36,15 +36,12 @@ namespace mge::python {
             m_name = "__mge__.";
             m_name += type->exposed_name();
         }
-        MGE_DEBUG_TRACE(PYTHON) << "Full type name: " << m_name;
         initialize();
     }
 
     void python_type::initialize()
     {
-        if (m_type->is_alias()) {
-            init_alias();
-        } else if (m_type->is_enum()) {
+        if (m_type->is_enum()) {
             init_enum();
         } else if (m_type->is_class()) {
             init_class();
@@ -52,8 +49,6 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Unsupported type: " << m_type->name();
         }
     }
-
-    void python_type::init_alias() { m_spec = {}; }
 
     void python_type::init_enum()
     {
@@ -440,8 +435,6 @@ namespace mge::python {
             define_enum();
         } else if (m_type->is_class()) {
             define_class();
-        } else if (m_type->is_alias()) {
-            define_alias();
         }
     }
 
@@ -489,7 +482,7 @@ namespace mge::python {
     void python_type::define_regular_class()
     {
         MGE_DEBUG_TRACE(PYTHON)
-            << "Defining python type " << m_name << "for " << m_type->name();
+            << "Defining python type " << m_name << " for " << m_type->name();
 
         gil_lock guard;
 
@@ -536,27 +529,6 @@ namespace mge::python {
     }
 
     void python_type::define_callable_class() {}
-
-    void python_type::define_alias()
-    {
-
-        gil_lock guard;
-
-        python_module_ref module = m_context.module(m_module_name);
-        m_type_object = m_context.type(m_type->alias_specific().aliased_type)
-                            ->type_object();
-        if (m_type_object) {
-            if (PyModule_AddObject(module->pymodule().get(),
-                                   m_name_in_module.c_str(),
-                                   m_type_object.get())) {
-                error::check_error();
-                MGE_THROW(python::error) << "Cannot add type to module";
-            }
-        } else {
-            MGE_ERROR_TRACE(PYTHON) << "Alias type " << m_type->name()
-                                    << " has no aliased type object";
-        }
-    }
 
     void python_type::on_interpreter_loss()
     {
