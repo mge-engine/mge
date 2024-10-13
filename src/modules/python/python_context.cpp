@@ -101,7 +101,6 @@ namespace mge::python {
             bind_module(m);
         }
         for (const auto& [id, t] : mge::script::type_data::all()) {
-            MGE_DEBUG_TRACE(PYTHON) << "Creating type " << t->name();
             if (is_builtin(t)) {
                 MGE_DEBUG_TRACE(PYTHON)
                     << "Type " << t->name() << " is builtin";

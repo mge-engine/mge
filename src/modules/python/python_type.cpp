@@ -36,6 +36,8 @@ namespace mge::python {
             m_name = "__mge__.";
             m_name += type->exposed_name();
         }
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Creating type " << type->name() << " as " << m_name;
         initialize();
     }
 
@@ -211,7 +213,7 @@ namespace mge::python {
                 void* this_ptr =
                     m_this_from_shared_ptr(obj->shared_ptr_address);
                 python_call_context ctx(this_ptr, obj->shared_ptr_address);
-                ctx.set_arguments(value);
+                ctx.set_single_argument(value);
                 m_setter(ctx);
                 if (ctx.has_exception()) {
                     return -1;
@@ -237,7 +239,7 @@ namespace mge::python {
             m_tp_set_closures.push_back(setter_closure);
         }
 
-        // MGE_DEBUG_TRACE(PYTHON) << "Adding field " << name;
+        MGE_DEBUG_TRACE(PYTHON) << "Adding field " << name;
 
         m_type_fields.push_back({name.c_str(),
                                  getter_closure->function(),
@@ -248,6 +250,8 @@ namespace mge::python {
 
     void python_type::init_fields()
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Initializing fields for " << m_name;
+
         for (const auto& f : m_type->class_specific().fields) {
             add_field(std::get<0>(f), std::get<2>(f), std::get<3>(f));
         }

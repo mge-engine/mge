@@ -119,10 +119,24 @@ namespace mge::python {
 
     void python_call_context::exception_thrown() { m_has_exception = true; }
 
+    PyObject* python_call_context::argument(size_t position)
+    {
+        if (!m_is_single_argument) {
+            return PyTuple_GetItem(m_arguments, position);
+        } else {
+            if (position != 0) {
+                MGE_THROW(mge::illegal_argument)
+                    << "Single argument context, but position is not 0 but "
+                    << position;
+            }
+            return m_arguments;
+        }
+    }
+
     bool python_call_context::bool_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         int       value = PyObject_IsTrue(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -133,7 +147,7 @@ namespace mge::python {
     int8_t python_call_context::int8_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         int       value = PyLong_AsLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -145,7 +159,7 @@ namespace mge::python {
     uint8_t python_call_context::uint8_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         uint32_t  value = PyLong_AsUnsignedLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -157,7 +171,7 @@ namespace mge::python {
     int16_t python_call_context::int16_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         int       value = PyLong_AsLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -169,7 +183,7 @@ namespace mge::python {
     uint16_t python_call_context::uint16_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         uint32_t  value = PyLong_AsUnsignedLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -181,7 +195,7 @@ namespace mge::python {
     int32_t python_call_context::int32_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         int       value = PyLong_AsLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -192,7 +206,7 @@ namespace mge::python {
     uint32_t python_call_context::uint32_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         uint32_t  value = PyLong_AsUnsignedLong(arg);
         MGE_DEBUG_TRACE(PYTHON)
             << "uint32_t_parameter(" << position << "): " << value;
@@ -205,7 +219,7 @@ namespace mge::python {
     int64_t python_call_context::int64_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         int64_t   value = PyLong_AsLongLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -216,7 +230,7 @@ namespace mge::python {
     uint64_t python_call_context::uint64_t_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         uint64_t  value = PyLong_AsUnsignedLongLong(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -226,10 +240,12 @@ namespace mge::python {
 
     float python_call_context::float_parameter(size_t position)
     {
-        gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        gil_lock guard;
+
+        PyObject* arg = argument(position);
         float     value = static_cast<float>(PyFloat_AsDouble(arg));
         if (PyErr_Occurred()) {
+            PyErr_Print();
             MGE_THROW(python::python_exception_occurred);
         }
         return value;
@@ -238,7 +254,7 @@ namespace mge::python {
     double python_call_context::double_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         double    value = PyFloat_AsDouble(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -249,7 +265,7 @@ namespace mge::python {
     long double python_call_context::long_double_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         double    value = PyFloat_AsDouble(arg);
         if (PyErr_Occurred()) {
             MGE_THROW(python::python_exception_occurred);
@@ -260,7 +276,7 @@ namespace mge::python {
     std::string python_call_context::string_parameter(size_t position)
     {
         gil_lock  guard;
-        PyObject* arg = PyTuple_GetItem(m_arguments, position);
+        PyObject* arg = argument(position);
         if (!PyUnicode_Check(arg)) {
             MGE_THROW(mge::bad_cast)
                 << "Argument at position " << position << " is not a string";

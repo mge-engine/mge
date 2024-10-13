@@ -17,7 +17,9 @@ namespace mge::script {
         void bind() override
         {
             mge::script::module mge("mge");
-            mge(type<mge::fvec2>("fvec2"));
+            mge(type<mge::fvec2>("fvec2")
+                    .field("x", &mge::fvec2::x)
+                    .field("y", &mge::fvec2::y));
         }
     };
 

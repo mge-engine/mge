@@ -61,15 +61,29 @@ namespace mge::python {
         void before_call() override {}
         void after_call() override {}
 
-        void      set_arguments(PyObject* args) { m_arguments = args; }
+        void set_arguments(PyObject* args)
+        {
+            m_arguments = args;
+            m_is_single_argument = false;
+        }
+
+        void set_single_argument(PyObject* arg)
+        {
+            m_arguments = arg;
+            m_is_single_argument = true;
+        }
+
         PyObject* result() { return m_result; }
         bool      has_exception() const { return m_has_exception; }
 
     private:
+        PyObject* argument(size_t position);
+
         void*     m_this_ptr;
         void*     m_shared_ptr_address;
         PyObject* m_arguments{nullptr};
         PyObject* m_result{nullptr};
         bool      m_has_exception{false};
+        bool      m_is_single_argument{false};
     };
 } // namespace mge::python
