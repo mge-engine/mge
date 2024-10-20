@@ -4,6 +4,7 @@
 
 #include "lua_context.hpp"
 #include "lua_error.hpp"
+#include "lua_module.hpp"
 
 #include "mge/core/line_editor.hpp"
 #include "mge/script/module.hpp"
@@ -588,7 +589,7 @@ namespace mge::lua {
 
     void lua_context::bind_helper_module()
     {
-        // lua::scope s(*this, "mge");
-        // s.add("version", 1);
+        auto m = std::make_shared<lua::module>(*this, "__mge__");
+        m_modules.push_back(m);
     }
 } // namespace mge::lua

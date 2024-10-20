@@ -7,6 +7,7 @@ SET(mge_lua_module_SOURCES
     lua_datatype.cpp
     lua_scope.cpp
     lua_error.cpp
+    lua_module.cpp
 )
 
 ADD_LIBRARY(mge_module_lua MODULE

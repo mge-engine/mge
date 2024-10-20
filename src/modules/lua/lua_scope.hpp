@@ -13,9 +13,13 @@ namespace mge::lua {
     {
     public:
         scope(lua_context& context, const char* name);
+        scope(lua_context& context, const std::string& name);
         scope(lua_context&          context,
               const lua::scope_ref& parent,
               const char*           name);
+        scope(lua_context&          context,
+              const lua::scope_ref& parent,
+              const std::string&    name);
 
         virtual ~scope();
 
@@ -27,7 +31,7 @@ namespace mge::lua {
 
     protected:
         lua_context&   m_context;
-        const char*    m_name;
+        std::string    m_name;
         lua::scope_ref m_parent;
     };
 

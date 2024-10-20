@@ -9,4 +9,5 @@ namespace mge::lua {
     class lua_engine;
 
     MGE_DECLARE_REF(scope);
+    MGE_DECLARE_REF(module);
 } // namespace mge::lua

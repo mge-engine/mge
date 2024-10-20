@@ -30,6 +30,7 @@ BraceWrapping:
 #    : xxx(0)
 #    , yyy(1)
 BreakConstructorInitializers: BeforeComma
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
 BreakStringLiterals: true
 ColumnLimit: 80
 # case labels on same level as switch

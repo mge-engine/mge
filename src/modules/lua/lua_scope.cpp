@@ -23,7 +23,16 @@ namespace mge::lua {
         , m_name(name)
     {
         auto L = m_context.lua_state();
-        luaL_requiref(L, m_name, &new_module, 1);
+        luaL_requiref(L, m_name.c_str(), &new_module, 1);
+        lua_pop(L, 1);
+    }
+
+    scope::scope(lua_context& context, const std::string& name)
+        : m_context(context)
+        , m_name(name)
+    {
+        auto L = m_context.lua_state();
+        luaL_requiref(L, m_name.c_str(), &new_module, 1);
         lua_pop(L, 1);
     }
 
@@ -37,7 +46,22 @@ namespace mge::lua {
         auto L = m_context.lua_state();
         m_parent->load();
         lua_newtable(L);
-        lua_setfield(L, -2, name);
+        lua_setfield(L, -2, m_name.c_str());
+        CHECK_CURRENT_STATUS(L);
+        lua_pop(L, 1);
+    }
+
+    scope::scope(lua_context&          context,
+                 const lua::scope_ref& parent,
+                 const std::string&    name)
+        : m_context(context)
+        , m_name(name)
+        , m_parent(parent)
+    {
+        auto L = m_context.lua_state();
+        m_parent->load();
+        lua_newtable(L);
+        lua_setfield(L, -2, m_name.c_str());
         CHECK_CURRENT_STATUS(L);
         lua_pop(L, 1);
     }
@@ -46,11 +70,11 @@ namespace mge::lua {
     {
         auto L = m_context.lua_state();
         if (!m_parent) {
-            lua_getglobal(L, m_name);
+            lua_getglobal(L, m_name.c_str());
             CHECK_CURRENT_STATUS(L);
         } else {
             m_parent->load();
-            lua_getfield(L, -1, m_name);
+            lua_getfield(L, -1, m_name.c_str());
             CHECK_CURRENT_STATUS(L);
             lua_remove(L, -2);
         }
