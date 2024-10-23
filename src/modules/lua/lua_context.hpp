@@ -24,6 +24,8 @@ namespace mge::lua {
         lua_State* lua_state() const noexcept { return m_lua_state; }
 
     private:
+        void bind_module(const mge::script::module_data_ref& data);
+
         void                         bind_helper_module();
         lua_State*                   m_lua_state;
         std::vector<lua::module_ref> m_modules;

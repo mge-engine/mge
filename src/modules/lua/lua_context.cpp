@@ -8,6 +8,7 @@
 
 #include "mge/core/line_editor.hpp"
 #include "mge/script/module.hpp"
+#include "mge/script/module_data.hpp"
 
 #include <iostream>
 #include <string>
@@ -585,7 +586,11 @@ namespace mge::lua {
     {
         bind_helper_module();
         mge::script::module root = mge::script::module::root();
+        for (const auto& m : root.data()->modules()) {
+            bind_module(m);
+        }
     }
+    void lua_context::bind_module(const mge::script::module_data_ref& data) {}
 
     void lua_context::bind_helper_module()
     {
