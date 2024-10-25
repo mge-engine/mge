@@ -26,8 +26,12 @@ namespace mge {
             T tmp = static_cast<T>(value);
             S stmp = static_cast<S>(tmp);
             if (value != stmp) {
+                #if 0
                 MGE_THROW(mge::bad_cast) << value << " cannot be casted into "
                                          << mge::type_name<T>() << " type";
+                #else
+                throw std::bad_cast();
+                #endif
             }
             return tmp;
         }

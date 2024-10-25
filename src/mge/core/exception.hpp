@@ -238,7 +238,7 @@ namespace mge {
          * Overrides @c std::exception @c what function.
          * @return exception message
          */
-        const char* what() const override;
+        const char* what() const noexcept override;
 
         /**
          * Get current exception of this thread.
@@ -253,26 +253,7 @@ namespace mge {
          * @param info information stored under the tag
          * @return  @c *this
          */
-        template <typename Info> inline exception& set_info(const Info& info)
-        {
-            m_infos[std::type_index(typeid(typename Info::tag_type))] =
-                info.value();
-            return *this;
-        }
-
-        /**
-         * @brief Set information associated with exception message.
-         *
-         * @tparam  exception::message
-         * @param info info object containing message
-         * @return @c *this
-         */
-        template <>
-        exception& set_info<exception::message>(const exception::message& info)
-        {
-            m_raw_message = info.value();
-            return *this;
-        }
+        template <typename Info> inline exception& set_info(const Info& info);
 
         /**
          * @brief Retrieve information stored under a tag type.
@@ -360,6 +341,21 @@ namespace mge {
         mutable std::unique_ptr<std::stringstream> m_raw_message_stream;
         mutable std::string                        m_raw_message;
     };
+
+    template <typename Info> inline exception& exception::set_info(const Info& info)
+    {
+        m_infos[std::type_index(typeid(typename Info::tag_type))] =
+            info.value();
+        return *this;
+    }
+
+    template <> exception& exception::set_info<exception::message>(const exception::message& info)
+    {
+        m_raw_message = info.value();
+        return *this;
+    }
+
+
 
     /**
      * @brief Exception cause.
