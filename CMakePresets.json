@@ -11,15 +11,23 @@
             }
         },
         {
+            "name": "default-linux",
+            "binaryDir": "${sourceDir}/build",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/w/mge/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
             "name": "ci-build",
             "binaryDir": "${sourceDir}/build",
             "generator": "Ninja",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_TOOLCHAIN_FILE": "$env{HOME}/w/mge/vcpkg/scripts/buildsystems/vcpkg.cmake",
                 "CMAKE_BUILD_TYPE": "RelWithDebInfo",
                 "HEADLESS_ENVIRONMENT": "ON"
             }
         }
-
     ]
 }
