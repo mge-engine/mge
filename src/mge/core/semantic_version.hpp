@@ -8,6 +8,7 @@
 #include <iosfwd>
 #include <string_view>
 #include <tuple>
+#include <cstdint>
 
 namespace mge {
 

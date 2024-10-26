@@ -342,20 +342,21 @@ namespace mge {
         mutable std::string                        m_raw_message;
     };
 
-    template <typename Info> inline exception& exception::set_info(const Info& info)
+    template <typename Info>
+    inline exception& exception::set_info(const Info& info)
     {
         m_infos[std::type_index(typeid(typename Info::tag_type))] =
             info.value();
         return *this;
     }
 
-    template <> exception& exception::set_info<exception::message>(const exception::message& info)
+    template <>
+    inline exception&
+    exception::set_info<exception::message>(const exception::message& info)
     {
         m_raw_message = info.value();
         return *this;
     }
-
-
 
     /**
      * @brief Exception cause.

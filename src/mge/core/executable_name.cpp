@@ -69,7 +69,19 @@ namespace mge {
 #    endif
         return std::string(buffer, basenamestart);
 #elif MGE_OS_LINUX
+        char    buffer[PATH_MAX];
+        ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
+        if (len == -1) {
+            MGE_CHECK_SYSTEM_ERROR(readlink);
+        }
+        buffer[len] = '\0';
 
+        const char* basenamestart = strrchr(buffer, '/');
+        if (basenamestart == nullptr) {
+            MGE_THROW(illegal_state)
+                << "Cannot compute executable name (directory not found).";
+        }
+        return std::string(static_cast<const char*>(buffer), basenamestart);
 #else
 #    error Missing port
 #endif
