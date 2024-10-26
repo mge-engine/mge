@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/string_pool.hpp"
+#include <cstring>
 #include <stdexcept>
 
 namespace mge {

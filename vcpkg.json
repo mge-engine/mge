@@ -13,7 +13,8 @@
     "lua",
     {
       "name": "python3",
-      "default-features": true
+      "default-features": true,
+      "platform": "windows"
     },
     "stb",
     "nlohmann-json",

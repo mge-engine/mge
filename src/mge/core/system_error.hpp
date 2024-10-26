@@ -4,8 +4,10 @@
 #pragma once
 #include "mge/core/exception.hpp"
 
-#ifdef MGE_OS_WINDOWS
+#if MGE_OS_WINDOWS
 #    include <windows.h>
+#elif MGE_OS_LINUX
+#    include <errno.h>
 #endif
 
 namespace mge {
@@ -19,8 +21,10 @@ namespace mge {
     class MGECORE_EXPORT system_error : public exception
     {
     public:
-#ifdef MGE_OS_WINDOWS
+#if MGE_OS_WINDOWS
         using error_code_type = DWORD;
+#elif MGE_OS_LINUX
+        using error_code_type = int;
 #else
 #    error Missing port
 #endif

@@ -2,6 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/window_options.hpp"
+
+#include <cstdint>
+
 namespace mge {
     window_options& window_options::set_option(option o, bool value)
     {

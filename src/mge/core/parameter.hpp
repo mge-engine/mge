@@ -293,7 +293,7 @@ namespace mge {
          *
          * @return stored value
          */
-        typename const T& get() const
+        const T& get() const
         {
             if (has_value()) {
                 return m_value;
@@ -311,7 +311,7 @@ namespace mge {
          * @param default_value default value
          * @return config value or default value if not set
          */
-        typename const T& get(const T& default_value) const
+        const T& get(const T& default_value) const
         {
             if (has_value()) {
                 return get();
@@ -335,7 +335,8 @@ namespace mge {
  * @param DESCRIPTION parameter description
  */
 #define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                 \
-    ::mge::parameter<typename BOOST_PP_REMOVE_PARENS(TYPE)> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
+    ::mge::parameter<typename BOOST_PP_REMOVE_PARENS(TYPE)>                    \
+        p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
 
 /**
  * @def MGE_DEFINE_PARAMETER_WITH_DEFAULT

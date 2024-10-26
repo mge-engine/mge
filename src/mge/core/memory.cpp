@@ -4,6 +4,7 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#define JEMALLOC_NO_RENAME
 #include <jemalloc/jemalloc.h>
 
 #define MALLOC je_malloc
@@ -11,7 +12,11 @@
 #define FREE je_free
 namespace mge {
 
+#if MGE_COMPILER_MSVC
     void* ::mge::malloc(size_t size)
+#else
+    void* malloc(size_t size)
+#endif
     {
         void* ptr = ::MALLOC(size);
         if (ptr == nullptr) {

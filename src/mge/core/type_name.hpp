@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 
+#include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 #include <source_location>
 #include <string>
@@ -46,7 +47,9 @@ namespace mge {
                 if (pos == std::string::npos) {
                     return std::string_view("xxx");
                 }
-
+#if MGE_COMPILER_GCC
+                return std::string_view("<unsupported>");
+#else
                 std::remove_const_t<decltype(pos)> end =
                     pos + prefix.size() + 1;
                 int level = 1;
@@ -73,6 +76,7 @@ namespace mge {
                 else if (n.starts_with("struct "))
                     n = n.substr(7);
                 return n;
+#endif
             }
         };
     } // namespace

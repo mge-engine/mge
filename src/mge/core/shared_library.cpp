@@ -5,7 +5,14 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/system_error.hpp"
 #include <mutex>
-#include <windows.h>
+
+#if MGE_OS_WINDOWS
+#    include <windows.h>
+#elif MGE_OS_LINUX
+#    include <dlfcn.h>
+#else
+#    error Missing port
+#endif
 
 namespace mge {
 
@@ -41,6 +48,8 @@ namespace mge {
             } else {
 #ifdef MGE_OS_WINDOWS
                 FreeLibrary(handle);
+#elif MGE_OS_LINUX
+                dlclose(handle);
 #else
 #    error Missing Port
 #endif
@@ -73,6 +82,7 @@ namespace mge {
 
     void shared_library::load()
     {
+#if MGE_OS_WINDOWS
         HMODULE handle = s_loaded_libraries->get(m_name);
         if (handle == nil_handle) {
             handle = LoadLibraryW(m_name.c_str());
@@ -82,20 +92,47 @@ namespace mge {
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
         }
+#elif MGE_OS_LINUX
+        void* handle = s_loaded_libraries->get(m_name);
+        if (handle == nil_handle) {
+            handle = dlopen(m_name.c_str(), RTLD_LAZY);
+            if (!handle) {
+                MGE_THROW(system_error)
+                    << "Cannot load library '" << m_name << "': " << dlerror();
+            }
+            handle = s_loaded_libraries->try_put(m_name, handle);
+        }
+#else
+#    error Missing port
+#endif
 
         m_handle = handle;
     }
 
     void* shared_library::symbol(const char* name) const
     {
+#if MGE_OS_WINDOWS
         auto address = GetProcAddress(m_handle, name);
         return reinterpret_cast<void*>(address);
+#elif MGE_OS_LINUX
+        auto address = dlsym(m_handle, name);
+        return address;
+#else
+#    error Missing port
+#endif
     }
 
     void* shared_library::symbol(const std::string& name) const
     {
+#if MGE_OS_WINDOWS
         auto address = GetProcAddress(m_handle, name.c_str());
         return reinterpret_cast<void*>(address);
+#elif MGE_OS_LINUX
+        auto address = dlsym(m_handle, name.c_str());
+        return address;
+#else
+#    error Missing port
+#endif
     }
 
 } // namespace mge

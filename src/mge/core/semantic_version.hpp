@@ -5,6 +5,7 @@
 #include "boost/boost_operators.hpp"
 #include "mge/core/dllexport.hpp"
 #include "mge/core/format.hpp"
+#include <cstdint>
 #include <iosfwd>
 #include <string_view>
 #include <tuple>
