@@ -128,7 +128,7 @@ namespace mge {
             prepare(mge::ffi_compute_type<R>::type(),
                     m_arg_types.data(),
                     sizeof...(Args),
-                    &binding_function,
+                    reinterpret_cast<void*>(&binding_function),
                     this);
         }
 

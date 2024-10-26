@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 
+#include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
 #include <source_location>
 #include <string>

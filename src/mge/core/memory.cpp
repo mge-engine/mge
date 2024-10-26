@@ -4,6 +4,7 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#define JEMALLOC_NO_RENAME
 #include <jemalloc/jemalloc.h>
 
 #define MALLOC je_malloc

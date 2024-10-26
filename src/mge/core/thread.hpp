@@ -11,6 +11,10 @@
 #include <functional>
 #include <thread>
 
+#if MGE_OS_LINUX
+#    include <pthread.h>
+#endif
+
 namespace mge {
 
     class thread_group;
@@ -39,8 +43,10 @@ namespace mge {
          */
         using running_thread_type = std::thread;
 
-#ifdef MGE_OS_WINDOWS
+#if MGE_OS_WINDOWS
         using system_id = uint32_t;
+#elif MGE_OS_LINUX
+        using system_id = pthread_t;
 #else
 #    error missing port
 #endif

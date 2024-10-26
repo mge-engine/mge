@@ -72,10 +72,19 @@ namespace mge {
                                    const char* signature,
                                    const char* function)
     {
+#if MGE_OS_WINDOWS
         auto code = GetLastError();
         if (code == NO_ERROR) {
             return;
         }
+#elif MGE_OS_LINUX
+        auto code = errno;
+        if (code == 0) {
+            return;
+        }
+#else
+#    error Missing port
+#endif
 
         throw system_error(code)
             .set_info(mge::exception::source_file(file))
