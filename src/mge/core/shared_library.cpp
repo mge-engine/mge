@@ -5,7 +5,14 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/system_error.hpp"
 #include <mutex>
-#include <windows.h>
+
+#if MGE_OS_WINDOWS
+#    include <windows.h>
+#elif MGE_OS_LINUX
+#    include <dlfcn.h>
+#else
+#    error Missing port
+#endif
 
 namespace mge {
 

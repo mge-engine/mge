@@ -16,19 +16,17 @@
 #    define MGE_COMPILER_GCC 1
 #endif
 
-
 #if defined(__WIN32__) || defined(_WIN32)
 #    define MGE_OS_WINDOWS 1
 #endif
 
 #ifdef __APPLE__
-#    define MGE_OS_MACOSX
+#    define MGE_OS_MACOSX 1
 #endif
 
 #ifdef __linux__
-#    define MGE_OS_LINUX
+#    define MGE_OS_LINUX 1
 #endif
-
 
 namespace mge {
 

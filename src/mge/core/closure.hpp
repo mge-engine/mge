@@ -574,7 +574,7 @@ namespace mge {
             prepare(mge::ffi_compute_type<void>::type(),
                     nullptr,
                     0,
-                    &binding_function,
+                    reinterpret_cast<void*>(&binding_function),
                     this);
         }
 

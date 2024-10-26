@@ -19,6 +19,7 @@ __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 #include <iostream>
 
 namespace mge {
+
 #ifdef MGE_OS_WINDOWS
     static bool                        symbols_initialized = false;
     static bool                        backtrace_possible = true;
@@ -171,7 +172,11 @@ namespace mge {
         fill_stacktrace(current_thread, &context, frames, strings);
         CloseHandle(current_thread);
     }
-
+#elif MGE_OS_LINUX
+    template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
+    {}
+#else
+#    error Missing port
 #endif
     stacktrace::frame::frame(const void*      address,
                              std::string_view module,

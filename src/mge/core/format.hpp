@@ -4,6 +4,7 @@
 #pragma once
 #include <format>
 #include <iostream>
+#include <iterator>
 #include <string_view>
 #include <type_traits>
 
@@ -11,9 +12,7 @@ namespace mge {
 
     template <typename T>
     concept has_format_method = requires(T obj, std::format_context& ctx) {
-        {
-            obj.format(ctx)
-        } -> std::convertible_to<void>;
+        { obj.format(ctx) } -> std::convertible_to<void>;
     };
 
 } // namespace mge

@@ -3,8 +3,21 @@
 // All rights reserved.
 #include "mge/core/system_error.hpp"
 
+#if MGE_OS_LINUX
+#    include <cstring>
+#endif
+
 namespace mge {
-    system_error::system_error() { set_error_code(GetLastError()); }
+    system_error::system_error()
+    {
+#if MGE_OS_WINDOWS
+        set_error_code(GetLastError());
+#elif MGE_OS_LINUX
+        set_error_code(errno);
+#else
+#    error Missing port
+#endif
+    }
 
     void system_error::set_error_code(system_error::error_code_type ec)
     {
@@ -26,6 +39,8 @@ namespace mge {
             throw;
         }
         LocalFree(msgbuf);
+#elif MGE_OS_LINUX
+        (*this) << "(" << ec << "): " << strerror(ec);
 #else
 #    error Missing port
 #endif

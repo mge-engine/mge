@@ -11,7 +11,11 @@
 #define FREE je_free
 namespace mge {
 
+#if MGE_COMPILER_MSVC
     void* ::mge::malloc(size_t size)
+#else
+    void* malloc(size_t size)
+#endif
     {
         void* ptr = ::MALLOC(size);
         if (ptr == nullptr) {
