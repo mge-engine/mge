@@ -582,6 +582,12 @@ namespace mge::lua {
         CHECK_STATUS(rc, m_lua_state);
     }
 
+    bool lua_context::is_builtin(const mge::script::type_data_ref& t) const
+    {
+        return mge::script::dependency::builtin_dependencies().find(t) !=
+               mge::script::dependency::builtin_dependencies().end();
+    }
+
     void lua_context::bind()
     {
         bind_helper_module();
@@ -589,8 +595,26 @@ namespace mge::lua {
         for (const auto& m : root.data()->modules()) {
             bind_module(m);
         }
+#if 0
+        for (const auto& [id, t] : mge::script::type_data::all()) {
+            if (is_builtin(t)) {
+                MGE_DEBUG_TRACE(LUA) << "Type " << t->name() << " is builtin";
+                continue;
+            }
+            lua_type_ref lt = std::make_shared<lua_type>(*this, t);
+            m_types[t] = pt;
+        }
+#endif
     }
-    void lua_context::bind_module(const mge::script::module_data_ref& data) {}
+
+    void lua_context::bind_module(const mge::script::module_data_ref& data)
+    {
+        auto mod = std::make_shared<lua::module>(*this, data);
+        m_modules.push_back(mod);
+        for (const auto& m : data->modules()) {
+            bind_module(m);
+        }
+    }
 
     void lua_context::bind_helper_module()
     {
