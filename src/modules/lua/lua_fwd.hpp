@@ -10,4 +10,5 @@ namespace mge::lua {
 
     MGE_DECLARE_REF(scope);
     MGE_DECLARE_REF(module);
+    MGE_DECLARE_REF(type);
 } // namespace mge::lua
