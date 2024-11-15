@@ -621,4 +621,16 @@ namespace mge::lua {
         auto m = std::make_shared<lua::module>(*this, "__mge__");
         m_modules.push_back(m);
     }
+
+    const lua::module_ref& lua_context::module_from_module_data(
+        const mge::script::module_data_ref& m) const
+    {
+        for (const auto& mod : m_modules) {
+            if (mod->module_data().get() == m.get()) {
+                return mod;
+            }
+        }
+        MGE_THROW(lua::error) << "Module " << m->full_name() << "not found";
+    }
+
 } // namespace mge::lua

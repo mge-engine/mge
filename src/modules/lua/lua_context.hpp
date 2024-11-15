@@ -22,6 +22,8 @@ namespace mge::lua {
         void bind() override;
 
         lua_State* lua_state() const noexcept { return m_lua_state; }
+        const lua::module_ref&
+        module_from_module_data(const mge::script::module_data_ref& m) const;
 
     private:
         void bind_module(const mge::script::module_data_ref& data);

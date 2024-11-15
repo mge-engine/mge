@@ -14,6 +14,11 @@ namespace mge::lua {
                const mge::script::module_data_ref& m);
         virtual ~module() = default;
 
+        const mge::script::module_data_ref& module_data() const noexcept
+        {
+            return m_module;
+        }
+
     private:
         mge::script::module_data_ref m_module;
     };
