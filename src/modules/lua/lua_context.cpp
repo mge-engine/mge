@@ -609,7 +609,7 @@ namespace mge::lua {
     void lua_context::bind_module(const mge::script::module_data_ref& data)
     {
         auto mod = std::make_shared<lua::module>(*this, data);
-        m_modules.push_back(mod);
+        m_modules[data->full_name()] = mod;
         for (const auto& m : data->modules()) {
             bind_module(m);
         }
@@ -618,18 +618,15 @@ namespace mge::lua {
     void lua_context::bind_helper_module()
     {
         auto m = std::make_shared<lua::module>(*this, "__mge__");
-        m_modules.push_back(m);
+        m_modules["__mge__"] = m;
     }
 
-    const lua::module_ref& lua_context::module_from_module_data(
-        const mge::script::module_data_ref& m) const
+    const lua::module_ref& lua_context::module(const std::string& name) const
     {
-        for (const auto& mod : m_modules) {
-            if (mod->module_data().get() == m.get()) {
-                return mod;
-            }
+        auto it = m_modules.find(name);
+        if (it == m_modules.end()) {
+            MGE_THROW(lua::error) << "Module " << name << " not found";
         }
-        MGE_THROW(lua::error) << "Module " << m->full_name() << "not found";
+        return it->second;
     }
-
 } // namespace mge::lua

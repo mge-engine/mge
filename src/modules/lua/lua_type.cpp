@@ -35,15 +35,9 @@ namespace mge::lua {
 
     void type::set_type_in_module()
     {
-        auto m = m_type->module().lock();
-        if (!m) {
-            MGE_THROW(lua::error)
-                << "Module for type " << m_type->name() << " not found";
-        }
-        auto lm = m_context.module_from_module_data(m);
+        auto lm = m_context.module(m_module_name);
         if (!lm) {
-            MGE_THROW(lua::error)
-                << "Module " << m->full_name() << " not found";
+            MGE_THROW(lua::error) << "Module " << m_module_name << " not found";
         }
         lm->load();
         auto L = m_context.lua_state();

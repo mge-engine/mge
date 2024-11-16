@@ -22,8 +22,7 @@ namespace mge::lua {
         void bind() override;
 
         lua_State* lua_state() const noexcept { return m_lua_state; }
-        const lua::module_ref&
-        module_from_module_data(const mge::script::module_data_ref& m) const;
+        const lua::module_ref& module(const std::string& name) const;
 
     private:
         void bind_module(const mge::script::module_data_ref& data);
@@ -31,7 +30,7 @@ namespace mge::lua {
         bool is_builtin(const mge::script::type_data_ref& t) const;
 
         lua_State*                                          m_lua_state;
-        std::vector<lua::module_ref>                        m_modules;
+        std::map<std::string, lua::module_ref>              m_modules;
         std::map<mge::script::type_data_ref, lua::type_ref> m_types;
     };
 } // namespace mge::lua
