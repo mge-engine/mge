@@ -112,7 +112,7 @@ jobs:
         steps:
             - name: Install CMake
               run: |
-                choco install cmake --version 3.29.2
+                choco install cmake 
             - name: Install Ninja
               run: |
                 choco install ninja
