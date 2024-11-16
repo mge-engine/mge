@@ -1,4 +1,7 @@
 #include "lua_type.hpp"
+#include "lua_error.hpp"
+#include "lua_module.hpp"
+
 #include "mge/script/module_data.hpp"
 #include "mge/script/type_data.hpp"
 
@@ -33,6 +36,20 @@ namespace mge::lua {
     void type::set_type_in_module()
     {
         auto m = m_type->module().lock();
+        if (!m) {
+            MGE_THROW(lua::error)
+                << "Module for type " << m_type->name() << " not found";
+        }
         auto lm = m_context.module_from_module_data(m);
+        if (!lm) {
+            MGE_THROW(lua::error)
+                << "Module " << m->full_name() << " not found";
+        }
+        lm->load();
+        auto L = m_context.lua_state();
+        lua_pushstring(L, m_name_in_module.c_str());
+        lua_pushlightuserdata(L, this);
+        lua_settable(L, -3);
+        lua_pop(L, 1);
     }
 } // namespace mge::lua

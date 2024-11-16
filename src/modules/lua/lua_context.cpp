@@ -5,6 +5,7 @@
 #include "lua_context.hpp"
 #include "lua_error.hpp"
 #include "lua_module.hpp"
+#include "lua_type.hpp"
 
 #include "mge/core/line_editor.hpp"
 #include "mge/script/module.hpp"
@@ -595,16 +596,14 @@ namespace mge::lua {
         for (const auto& m : root.data()->modules()) {
             bind_module(m);
         }
-#if 0
         for (const auto& [id, t] : mge::script::type_data::all()) {
             if (is_builtin(t)) {
                 MGE_DEBUG_TRACE(LUA) << "Type " << t->name() << " is builtin";
                 continue;
             }
-            lua_type_ref lt = std::make_shared<lua_type>(*this, t);
-            m_types[t] = pt;
+            lua::type_ref lt = std::make_shared<lua::type>(*this, t);
+            m_types[t] = lt;
         }
-#endif
     }
 
     void lua_context::bind_module(const mge::script::module_data_ref& data)

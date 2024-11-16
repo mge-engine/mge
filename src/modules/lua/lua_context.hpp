@@ -30,7 +30,8 @@ namespace mge::lua {
         void bind_helper_module();
         bool is_builtin(const mge::script::type_data_ref& t) const;
 
-        lua_State*                   m_lua_state;
-        std::vector<lua::module_ref> m_modules;
+        lua_State*                                          m_lua_state;
+        std::vector<lua::module_ref>                        m_modules;
+        std::map<mge::script::type_data_ref, lua::type_ref> m_types;
     };
 } // namespace mge::lua
