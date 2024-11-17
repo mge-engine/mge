@@ -16,7 +16,6 @@ namespace mge {
 
         offset_type position() override;
         offset_type seek(offset_type offset, direction_type dir) override;
-        ;
 
     private:
         streamsize_type on_read(void*           destination,
