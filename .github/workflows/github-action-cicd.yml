@@ -19,7 +19,7 @@ jobs:
                 python --version
             - name: Install CMake
               run: |
-                choco install cmake --version 3.30.2
+                choco install cmake
                 cmake --version
             - name: Install Ninja
               run: |
