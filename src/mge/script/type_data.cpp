@@ -39,7 +39,10 @@ namespace mge::script {
             return std::ranges::subrange(m_types.begin(), m_types.end());
         }
 
-        void put(const type_data_ref& td) { m_types[td->identifier()] = td; }
+        void put(const type_data_ref& td)
+        {
+            m_types[td->identifier()] = td;
+        }
 
         std::map<type_identifier, type_data_ref> m_types;
     };
@@ -51,7 +54,10 @@ namespace mge::script {
         return s_all_types->get(id);
     }
 
-    type_data::range_type type_data::all() { return s_all_types->all(); }
+    type_data::range_type type_data::all()
+    {
+        return s_all_types->all();
+    }
 
     type_data_ref type_data::create(const std::type_info&  ti,
                                     const type_identifier& id)
@@ -138,10 +144,15 @@ namespace mge::script {
                     return class_specific().name;
                 }
             }
-            std::stringstream ss;
-            ss << "type_" << static_cast<const void*>(this);
-            return ss.str();
+            return generic_name();
         }
+    }
+
+    std::string type_data::generic_name() const
+    {
+        std::stringstream ss;
+        ss << "type_" << static_cast<const void*>(this);
+        return ss.str();
     }
 
     type_data::enum_details& type_data::enum_specific()
@@ -257,22 +268,40 @@ namespace mge::script {
         return std::get<void_details>(m_details);
     }
 
-    bool type_data::is_pod() const { return m_details.index() == 3; }
+    bool type_data::is_pod() const
+    {
+        return m_details.index() == 3;
+    }
 
-    bool type_data::is_enum() const { return m_details.index() == 1; }
+    bool type_data::is_enum() const
+    {
+        return m_details.index() == 1;
+    }
 
-    bool type_data::is_class() const { return m_details.index() == 2; }
+    bool type_data::is_class() const
+    {
+        return m_details.index() == 2;
+    }
 
-    bool type_data::is_pointer() const { return m_details.index() == 4; }
+    bool type_data::is_pointer() const
+    {
+        return m_details.index() == 4;
+    }
 
-    bool type_data::is_reference() const { return m_details.index() == 5; }
+    bool type_data::is_reference() const
+    {
+        return m_details.index() == 5;
+    }
 
     bool type_data::is_rvalue_reference() const
     {
         return m_details.index() == 6;
     }
 
-    bool type_data::is_void() const { return m_details.index() == 7; }
+    bool type_data::is_void() const
+    {
+        return m_details.index() == 7;
+    }
 
     bool type_data::is_callable() const
     {
@@ -292,13 +321,25 @@ namespace mge::script {
                std::get<class_details>(m_details).is_wstring;
     }
 
-    bool type_data::is_const() const { return m_identifier.is_const(); }
+    bool type_data::is_const() const
+    {
+        return m_identifier.is_const();
+    }
 
-    bool type_data::is_volatile() const { return m_identifier.is_volatile(); }
+    bool type_data::is_volatile() const
+    {
+        return m_identifier.is_volatile();
+    }
 
-    bool type_data::has_alias() const { return m_alias_name.has_value(); }
+    bool type_data::has_alias() const
+    {
+        return m_alias_name.has_value();
+    }
 
-    bool type_data::exposed_directly() const { return !m_module.expired(); }
+    bool type_data::exposed_directly() const
+    {
+        return !m_module.expired();
+    }
 
     std::string_view type_data::alias_name() const
     {

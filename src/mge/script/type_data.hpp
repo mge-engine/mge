@@ -71,10 +71,19 @@ namespace mge::script {
             return m_identifier;
         }
 
-        void set_module(const module_data_ref& m) { m_module = m; }
-        void set_alias_name(const char* name) { m_alias_name = name; }
+        void set_module(const module_data_ref& m)
+        {
+            m_module = m;
+        }
+        void set_alias_name(const char* name)
+        {
+            m_alias_name = name;
+        }
 
-        const module_data_weak_ref& module() const noexcept { return m_module; }
+        const module_data_weak_ref& module() const noexcept
+        {
+            return m_module;
+        }
 
         void add_dependency(const dependency& dep)
         {
@@ -112,6 +121,7 @@ namespace mge::script {
 
         std::string name() const;
         std::string exposed_name() const;
+        std::string generic_name() const;
 
         static range_type all();
 

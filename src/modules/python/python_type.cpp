@@ -28,14 +28,17 @@ namespace mge::python {
         , m_name_in_module(type->exposed_name())
         , m_type(type)
     {
+        if (m_name_in_module.find("::") != std::string::npos ||
+            m_name_in_module.find("<") != std::string::npos) {
+            m_name_in_module = type->generic_name();
+        }
+
         if (m_type->exposed_directly()) {
             m_module_name = m_type->module().lock()->full_name();
-            m_name = m_module_name + "." + type->exposed_name();
         } else {
             m_module_name = "__mge__";
-            m_name = "__mge__.";
-            m_name += type->exposed_name();
         }
+        m_name = m_module_name + "." + m_name_in_module;
         MGE_DEBUG_TRACE(PYTHON)
             << "Creating type " << type->name() << " as " << m_name;
         initialize();

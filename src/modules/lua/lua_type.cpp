@@ -16,6 +16,11 @@ namespace mge::lua {
         , m_name_in_module(t->exposed_name())
         , m_type(t)
     {
+        if (m_name_in_module.find("::") != std::string::npos ||
+            m_name_in_module.find("<") != std::string::npos) {
+            m_name_in_module = t->generic_name();
+        }
+
         if (m_type->exposed_directly()) {
             m_module_name = m_type->module().lock()->full_name();
         } else {
@@ -39,6 +44,8 @@ namespace mge::lua {
         if (!lm) {
             MGE_THROW(lua::error) << "Module " << m_module_name << " not found";
         }
+        MGE_DEBUG_TRACE(LUA) << "Defining type " << m_name_in_module
+                             << " in module " << m_module_name;
         lm->load();
         auto L = m_context.lua_state();
         lua_pushstring(L, m_name_in_module.c_str());
