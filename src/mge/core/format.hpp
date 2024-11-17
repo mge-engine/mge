@@ -6,29 +6,33 @@
 #include <iostream>
 #include <string_view>
 #include <type_traits>
-
 namespace mge {
 
     template <typename T>
-    concept has_format_method = requires(T obj, std::format_context& ctx) {
-        {
-            obj.format(ctx)
-        } -> std::convertible_to<void>;
-    };
+    concept has_format_method =
+        requires(const T& obj, std::format_context& ctx) {
+            { obj.format(ctx) } -> std::convertible_to<void>;
+        };
 
 } // namespace mge
-
-template <typename T, typename C>
-    requires mge::has_format_method<T>
-struct std::formatter<T, C> : public std::formatter<std::string_view, C>
-{
-    template <typename FormatContext>
-    auto format(const T& t, FormatContext& ctx) const
+namespace std {
+    template <typename T>
+        requires mge::has_format_method<T>
+    struct formatter<T>
     {
-        t.format(ctx);
-        return ctx.out();
-    }
-};
+        constexpr auto parse(std::format_parse_context& ctx)
+        {
+            return ctx.end();
+        }
+
+        template <typename FormatContext>
+        auto format(const T& t, FormatContext& ctx) const
+        {
+            t.format(ctx);
+            return ctx.out();
+        }
+    };
+} // namespace std
 
 namespace mge {
 
