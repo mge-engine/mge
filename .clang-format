@@ -48,3 +48,4 @@ MaxEmptyLinesToKeep: 1
 AllowAllArgumentsOnNextLine: false
 NamespaceIndentation: All
 IndentPPDirectives: AfterHash
+AllowShortFunctionsOnASingleLine: Empty
