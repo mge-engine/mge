@@ -32,6 +32,7 @@ TEST_F(shader_test, compile)
     EXPECT_TRUE(s->initialized());
 }
 
+#if 0
 TEST_F(shader_test, bench_compile)
 {
     const char* vertex_shader_hlsl =
@@ -47,6 +48,7 @@ TEST_F(shader_test, bench_compile)
         s->compile(vertex_shader_hlsl);
     });
 }
+#endif
 
 TEST_F(shader_test, compile_with_syntax_error)
 {

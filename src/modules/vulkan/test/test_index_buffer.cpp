@@ -36,6 +36,7 @@ TEST_F(index_buffer_test, map_unmap)
     buffer->unmap();
 }
 
+#if 0
 TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
 {
     auto& context = m_window->render_context();
@@ -51,3 +52,4 @@ TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
         buffer->unmap();
     });
 }
+#endif

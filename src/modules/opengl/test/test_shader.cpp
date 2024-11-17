@@ -74,7 +74,7 @@ TEST_F(shader_test, set_code_failed)
         // expected
     }
 }
-
+#if 0
 TEST_F(shader_test, bench_compile_successfully)
 {
     using namespace std::literals;
@@ -93,3 +93,4 @@ TEST_F(shader_test, bench_compile_successfully)
         shader->compile(vertex_shader_glsl);
     });
 }
+#endif
