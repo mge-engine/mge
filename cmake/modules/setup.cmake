@@ -36,4 +36,5 @@ INCLUDE(thirdparty/nlohmann)
 INCLUDE(thirdparty/libmagic)
 INCLUDE(thirdparty/jemalloc)
 INCLUDE(thirdparty/libffi)
+INCLUDE(thirdparty/magicenum)
 

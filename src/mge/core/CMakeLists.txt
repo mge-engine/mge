@@ -113,6 +113,7 @@ TARGET_LINK_LIBRARIES(mgecore
     dbghelp 
     nlohmann_json::nlohmann_json
     jemalloc::jemalloc
+    magic_enum::magic_enum
     PkgConfig::LIBFFI
 )
 ADD_SUBDIRECTORY(test)

@@ -4,8 +4,8 @@
 #pragma once
 #include "mge/config.hpp"
 #include "mge/core/format.hpp"
-#include <magic_enum.hpp>
-#include <magic_enum_flags.hpp>
+#include <magic_enum/magic_enum.hpp>
+#include <magic_enum/magic_enum_flags.hpp>
 
 namespace mge {
     using magic_enum::enum_cast;
