@@ -17,9 +17,15 @@ static bool test_class_dtor_called{false};
 
 struct test_class
 {
-    test_class() { test_class_ctor_called = true; }
+    test_class()
+    {
+        test_class_ctor_called = true;
+    }
     test_class(const test_class&) = delete;
-    ~test_class() { test_class_dtor_called = true; }
+    ~test_class()
+    {
+        test_class_dtor_called = true;
+    }
 };
 
 TEST(type, ctor_dtor)
@@ -80,7 +86,10 @@ public:
     base() {}
     base(const base&) = delete;
     virtual ~base() {}
-    virtual int f() { return 42; }
+    virtual int f()
+    {
+        return 42;
+    }
 };
 
 class script_impl : public mge::script::proxy<base>
@@ -90,7 +99,10 @@ public:
 
     virtual ~script_impl() {}
 
-    virtual int f() { return m_context->call<int>("f"); };
+    virtual int f()
+    {
+        return m_context->call<int>("f");
+    };
 };
 
 TEST(type, proxy)
@@ -109,8 +121,14 @@ public:
     overloaded_methods& operator=(const overloaded_methods&) = delete;
     ~overloaded_methods() = default;
 
-    int foobar(int x) { return x; }
-    int foobar(float x) { return static_cast<int>(-x); }
+    int foobar(int x)
+    {
+        return x;
+    }
+    int foobar(float x)
+    {
+        return static_cast<int>(-x);
+    }
 };
 
 TEST(type, overloaded_methods)
@@ -143,4 +161,26 @@ TEST(type, overloaded_methods)
     EXPECT_CALL(ctx, int32_t_result(-42)).Times(1);
     EXPECT_CALL(ctx, float_parameter(0)).WillOnce(Return(42.0f));
     std::get<3>(methods[1])(ctx);
+}
+
+TEST(type, no_alias_on_special)
+{
+    using namespace mge::script;
+
+    try {
+        mge::script::module test_module("test");
+        test_module(type<std::string>("string_alias"));
+        FAIL() << "Expected exception";
+    } catch (const mge::exception& e) {
+        EXPECT_THAT(e.what(),
+                    HasSubstr("is a special type and cannot be aliased"));
+    }
+}
+
+TEST(type, string)
+{
+    using namespace mge::script;
+
+    auto t = type<std::string>();
+    EXPECT_TRUE(t.is_string());
 }

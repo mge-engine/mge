@@ -54,16 +54,43 @@ namespace mge::script {
                 m_data = type_data::create(typeid(void), id);
             }
         }
-        bool is_void() const noexcept { return true; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return true;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        type_data_ref data() const noexcept { return m_data; }
+        type_data_ref data() const noexcept
+        {
+            return m_data;
+        }
 
         const type_identifier& identifier() const noexcept
         {
@@ -100,16 +127,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return true; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return true;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -140,16 +194,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return true; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return true;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -178,15 +259,39 @@ namespace mge::script {
             }
         }
 
-        bool is_bool() const noexcept { return true; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return true; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_bool() const noexcept
+        {
+            return true;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return true;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool exposed_directly() const noexcept
         {
@@ -224,8 +329,18 @@ namespace mge::script {
             if (!m_data) {
                 m_data = type_data::create(typeid(T), id);
                 initialize();
+                if (m_data->is_special_type()) {
+                    MGE_THROW(illegal_state)
+                        << "Type " << m_data->name()
+                        << " is a special type and cannot be aliased";
+                }
                 m_data->set_alias_name(alias_name);
             } else {
+                if (m_data->is_special_type()) {
+                    MGE_THROW(illegal_state)
+                        << "Type " << m_data->name()
+                        << " is a special type and cannot be aliased";
+                }
                 if (m_data->alias_name() != alias_name) {
                     MGE_THROW(illegal_state)
                         << "Type " << m_data->name()
@@ -234,16 +349,48 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return true; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return true;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        bool is_string() const
+        {
+            return m_data->is_string();
+        }
+
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -677,16 +824,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return true; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return true;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -718,16 +892,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return true; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return true;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -762,16 +963,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -806,16 +1034,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return true; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return true;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {

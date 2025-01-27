@@ -100,6 +100,11 @@ namespace mge::script {
             return m_type_info == &typeid(T);
         }
 
+        bool is_special_type() const
+        {
+            return is_pod() || is_string() || is_wstring();
+        }
+
         bool is_pod() const;
         bool is_enum() const;
         bool is_class() const;
