@@ -93,7 +93,7 @@ namespace mge::python {
         using tp_set_closure = mge::closure<int, PyObject*, PyObject*, void*>;
 
         using method_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
-        using function_closure = mge::closure<PyObject*, PyObject*>;
+        using function_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
 
         std::shared_ptr<tp_new_closure>                m_tp_new_closure;
         std::shared_ptr<tp_dealloc_closure>            m_tp_dealloc_closure;

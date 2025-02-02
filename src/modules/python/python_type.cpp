@@ -322,7 +322,7 @@ namespace mge::python {
         const mge::script::type_data::call_signature& signature,
         const mge::script::invoke_function&           function)
     {
-        struct function_closure : mge::closure<PyObject*, PyObject*>
+        struct function_closure : mge::closure<PyObject*, PyObject*, PyObject*>
         {
             function_closure(
                 const mge::script::invoke_function&           function,
@@ -333,7 +333,7 @@ namespace mge::python {
                 , m_return_type(return_type)
             {}
 
-            PyObject* execute(PyObject* args)
+            PyObject* execute(PyObject* self_dummy, PyObject* args)
             {
                 gil_lock            guard;
                 python_call_context ctx(nullptr, nullptr);
@@ -354,7 +354,10 @@ namespace mge::python {
             std::make_shared<function_closure>(function,
                                                signature,
                                                return_type);
-
+        m_type_methods.push_back({name.c_str(),
+                                  closure->function(),
+                                  METH_VARARGS | METH_STATIC,
+                                  nullptr});
         m_function_closures.push_back(closure);
         MGE_DEBUG_TRACE(PYTHON) << "Adding function " << name;
     }
