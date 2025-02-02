@@ -23,7 +23,10 @@ namespace mge::python {
         void on_interpreter_restore();
         void define_in_interpreter();
 
-        const pyobject_ref& type_object() const { return m_type_object; }
+        const pyobject_ref& type_object() const
+        {
+            return m_type_object;
+        }
 
     private:
         void initialize();
@@ -35,6 +38,7 @@ namespace mge::python {
         void init_regular_class();
         void init_fields();
         void init_methods();
+        void init_functions();
         void add_field(const std::string&                  name,
                        const mge::script::invoke_function& getter,
                        const mge::script::invoke_function& setter);
@@ -42,6 +46,12 @@ namespace mge::python {
                         const mge::script::type_data_ref& return_type,
                         const mge::script::type_data::call_signature& signature,
                         const mge::script::invoke_function&           method);
+
+        void
+        add_function(const std::string&                            name,
+                     const mge::script::type_data_ref&             return_type,
+                     const mge::script::type_data::call_signature& signature,
+                     const mge::script::invoke_function&           function);
 
         void define_enum();
         void define_class();
@@ -83,13 +93,15 @@ namespace mge::python {
         using tp_set_closure = mge::closure<int, PyObject*, PyObject*, void*>;
 
         using method_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
+        using function_closure = mge::closure<PyObject*, PyObject*>;
 
-        std::shared_ptr<tp_new_closure>              m_tp_new_closure;
-        std::shared_ptr<tp_dealloc_closure>          m_tp_dealloc_closure;
-        std::shared_ptr<tp_init_closure>             m_tp_init_closure;
-        std::vector<std::shared_ptr<tp_get_closure>> m_tp_get_closures;
-        std::vector<std::shared_ptr<tp_set_closure>> m_tp_set_closures;
-        std::vector<std::shared_ptr<method_closure>> m_method_closures;
+        std::shared_ptr<tp_new_closure>                m_tp_new_closure;
+        std::shared_ptr<tp_dealloc_closure>            m_tp_dealloc_closure;
+        std::shared_ptr<tp_init_closure>               m_tp_init_closure;
+        std::vector<std::shared_ptr<tp_get_closure>>   m_tp_get_closures;
+        std::vector<std::shared_ptr<tp_set_closure>>   m_tp_set_closures;
+        std::vector<std::shared_ptr<method_closure>>   m_method_closures;
+        std::vector<std::shared_ptr<function_closure>> m_function_closures;
     };
 
 } // namespace mge::python

@@ -147,6 +147,7 @@ namespace mge::python {
 
         init_fields();
         init_methods();
+        init_functions();
 
         m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
         if (!m_type->class_specific().constructors.empty()) {
@@ -315,6 +316,48 @@ namespace mge::python {
 
         MGE_DEBUG_TRACE(PYTHON) << "Adding method " << name;
     }
+    void python_type::add_function(
+        const std::string&                            name,
+        const mge::script::type_data_ref&             return_type,
+        const mge::script::type_data::call_signature& signature,
+        const mge::script::invoke_function&           function)
+    {
+        struct function_closure : mge::closure<PyObject*, PyObject*>
+        {
+            function_closure(
+                const mge::script::invoke_function&           function,
+                const mge::script::type_data::call_signature& signature,
+                const mge::script::type_data_ref&             return_type)
+                : m_function(function)
+                , m_signature(signature)
+                , m_return_type(return_type)
+            {}
+
+            PyObject* execute(PyObject* args)
+            {
+                gil_lock            guard;
+                python_call_context ctx(nullptr, nullptr);
+                ctx.set_arguments(args);
+                m_function(ctx);
+                if (ctx.has_exception()) {
+                    return nullptr;
+                }
+                return ctx.result();
+            }
+
+            const mge::script::invoke_function&           m_function;
+            const mge::script::type_data::call_signature& m_signature;
+            const mge::script::type_data_ref&             m_return_type;
+        };
+
+        std::shared_ptr<function_closure> closure =
+            std::make_shared<function_closure>(function,
+                                               signature,
+                                               return_type);
+
+        m_function_closures.push_back(closure);
+        MGE_DEBUG_TRACE(PYTHON) << "Adding function " << name;
+    }
 
     void python_type::init_methods()
     {
@@ -323,6 +366,16 @@ namespace mge::python {
                        std::get<1>(m),
                        std::get<2>(m),
                        std::get<3>(m));
+        }
+    }
+
+    void python_type::init_functions()
+    {
+        for (const auto& f : m_type->class_specific().functions) {
+            add_function(std::get<0>(f),
+                         std::get<1>(f),
+                         std::get<2>(f),
+                         std::get<3>(f));
         }
     }
 
