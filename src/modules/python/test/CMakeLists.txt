@@ -1,8 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
-
-
 SET(PYTHON_TEST_SOURCES
     pythontest.cpp
     test_context.cpp
@@ -12,7 +10,8 @@ SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
     test003_object.py 
-    test004_function.py)
+    test004_function.py
+    test006_render_system.py)
 
 LIST(TRANSFORM
     PYTHON_TESTS
