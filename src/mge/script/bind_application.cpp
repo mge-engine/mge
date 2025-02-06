@@ -26,6 +26,7 @@ namespace mge::script {
                     .method("present", &mge::loop_target::present),
                 type<mge::application>()
                     .base<mge::loop_target>()
+                    .base<mge::component_base>()
                     .method("argc", &mge::application::argc)
                     .method("argv", &mge::application::argv)
                     .method("is_quit", &mge::application::is_quit)

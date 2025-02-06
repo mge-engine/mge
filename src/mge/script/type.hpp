@@ -635,6 +635,7 @@ namespace mge::script {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         ctx.before_call();
+
                         ctx.result(func(ctx.parameter<Args>(--index)...));
                         ctx.after_call();
                     } catch (const mge::exception& e) {
