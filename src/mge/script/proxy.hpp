@@ -49,7 +49,10 @@ namespace mge::script {
         /**
          * Set the invocation context.
          */
-        void set_context(invocation_context* context) { m_context = context; }
+        void set_context(invocation_context* context)
+        {
+            m_context = context;
+        }
 
     protected:
         invocation_context* m_context{nullptr};

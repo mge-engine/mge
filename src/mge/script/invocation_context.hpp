@@ -68,7 +68,7 @@ namespace mge::script {
             return invoke_method<R>(method);
         }
 
-    private:
+    public:
         template <typename T> void store_argument(size_t index, T value)
         {
             using PlainType = std::remove_cv_t<T>;
@@ -109,10 +109,19 @@ namespace mge::script {
             }
         }
 
-        template <typename R> R invoke_method(const char* method)
+        template <typename R>
+            requires(!std::is_same_v<R, void>)
+        R invoke_method(const char* method)
         {
             call_method(method);
             return get_result<R>();
+        }
+
+        template <typename R>
+            requires(std::is_same_v<R, void>)
+        R invoke_method(const char* method)
+        {
+            call_method(method);
         }
 
         template <typename R> R get_result()
@@ -158,7 +167,10 @@ namespace mge::script {
          *
          * @param method method name
          */
-        virtual bool call_implemented(const char* method) { return true; }
+        virtual bool call_implemented(const char* method)
+        {
+            return true;
+        }
 
         virtual void store_bool_argument(size_t index, bool value) = 0;
         virtual void store_int8_t_argument(size_t index, int8_t value) = 0;

@@ -10,6 +10,7 @@ SET(MGESCRIPT_TEST_SOURCES
     test_pointer.cpp
     test_type.cpp
     test_type_identifier.cpp
+    test_proxy.cpp
 )
 
 MGE_TEST(
