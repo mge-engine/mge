@@ -33,6 +33,10 @@ SET(mgescript_sources
     function_data.hpp
 
     dependency.hpp
+
+    call_context.hpp
+    invocation_context.hpp
+    proxy.hpp
  )
 
 MGE_LIBRARY(

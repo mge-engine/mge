@@ -170,7 +170,10 @@ namespace mge::script {
 
         ~function() = default;
 
-        const function_data_ref& data() const noexcept { return m_data; }
+        const function_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
     private:
         function_data_ref m_data;

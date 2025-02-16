@@ -2,18 +2,24 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/identity_type.hpp"
 #include <cstddef>
-/*
+
 namespace mge {
-    constexpr std::size_t count_spaces(const char* str, std::size_t count = 0)
-    {
-        return *str == '\0'
-                   ? count
-                   : count_spaces(str + 1, count + (*str == ' ' ? 1 : 0));
-    }
+    namespace internal {
+        template <typename SIG> struct function_return_type;
+
+        template <typename R, typename... Args>
+        struct function_return_type<R(Args...)>
+        {
+            using type = R;
+        };
+
+        template <typename Signature> struct function_signature
+        {
+            using return_type = typename function_return_type<Signature>::type;
+        };
+    } // namespace internal
 } // namespace mge
-*/
 
 #define MGE_INTERNAL_20TH_ARG(_1,                                              \
                               _2,                                              \
@@ -65,10 +71,12 @@ namespace mge {
     static_assert(MGE_INTERNAL_COUNT_ARGS(__VA_ARGS__) == 1,                   \
                   "Arguments must be enclosed in parenthesis")
 
-#define MGE_INTERNAL_EXTRACT_VARNAME(type_and_name)
+#define MGE_INTERNAL_ARGS(RETURN_TYPE, ARGS) ARGS
 
 #define MGE_IMPLEMENT_METHOD(RETURN_TYPE, METHOD_NAME, ARGS, QUALIFIERS)       \
-    mge::identity_type<RETURN_TYPE> METHOD_NAME ARGS QUALIFIERS                \
+    mge::internal::function_signature<RETURN_TYPE ARGS>::return_type           \
+        METHOD_NAME                                                            \
+        MGE_INTERNAL_ARGS(RETURN_TYPE, ARGS) QUALIFIERS                        \
     {                                                                          \
         MGE_INTERNAL_ASSERT_PARENTHESIS(ARGS);                                 \
                                                                                \
