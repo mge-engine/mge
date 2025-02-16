@@ -11,6 +11,6 @@ public:
     ~MOCK_script_context() = default;
 
     MOCK_METHOD(void, eval, (const std::string&), (override));
-    MOCK_METHOD(int, main, (int, const char**), (override));
+    MOCK_METHOD(int, main, (int a, const char** b), (override));
     MOCK_METHOD(void, bind, (), (override));
 };

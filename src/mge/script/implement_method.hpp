@@ -2,8 +2,8 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/identity_type.hpp"
 #include <cstddef>
-
 /*
 namespace mge {
     constexpr std::size_t count_spaces(const char* str, std::size_t count = 0)
@@ -65,8 +65,10 @@ namespace mge {
     static_assert(MGE_INTERNAL_COUNT_ARGS(__VA_ARGS__) == 1,                   \
                   "Arguments must be enclosed in parenthesis")
 
+#define MGE_INTERNAL_EXTRACT_VARNAME(type_and_name)
+
 #define MGE_IMPLEMENT_METHOD(RETURN_TYPE, METHOD_NAME, ARGS, QUALIFIERS)       \
-    RETURN_TYPE METHOD_NAME ARGS QUALIFIERS                                    \
+    mge::identity_type<RETURN_TYPE> METHOD_NAME ARGS QUALIFIERS                \
     {                                                                          \
         MGE_INTERNAL_ASSERT_PARENTHESIS(ARGS);                                 \
                                                                                \

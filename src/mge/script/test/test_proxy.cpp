@@ -23,3 +23,7 @@ public:
 
     MGE_IMPLEMENT_METHOD(int, test_method, (int, int), override);
 };
+
+// removes from type space name the type and space
+
+TEST(proxy, preproc) {}
