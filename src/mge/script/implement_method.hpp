@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/nth_type.hpp"
 #include <cstddef>
+#include <utility>
 namespace mge {
     namespace internal {
         template <typename Signature> struct function_return_type;
@@ -22,10 +23,6 @@ namespace mge {
             template <size_t N> using type = nth_type<N, Args...>;
         };
 
-        template <typename Signature> struct function_signature
-        {
-            using return_type = typename function_return_type<Signature>::type;
-        };
     } // namespace internal
 } // namespace mge
 
@@ -223,6 +220,7 @@ namespace mge {
          __mge_script_arg8,                                                    \
      mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>               \
          __mge_script_arg9)
+
 #define MGE_INTERNAL_PARAMETER_SIGNATURE_EXPAND_11(RETURN_TYPE, ARGS)          \
     (mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>               \
          __mge_script_arg0,                                                    \
@@ -553,10 +551,33 @@ namespace mge {
      mge::internal::function_argument<RETURN_TYPE ARGS>::type<19>              \
          __mge_script_arg19)
 
+#define MGE_INTERNAL_PARAMETER_FORWARD(RETURN_TYPE, ARGS)                      \
+    MGE_INTERNAL_PARAMETER_FORWARD_1(MGE_INTERNAL_COUNT_ARGS ARGS,             \
+                                     RETURN_TYPE,                              \
+                                     ARGS)
+#define MGE_INTERNAL_PARAMETER_FORWARD_1(N, RETURN_TYPE, ARGS)                 \
+    MGE_INTERNAL_CONCAT(MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_, N)             \
+    (RETURN_TYPE, ARGS)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_0(RETURN_TYPE, ARGS)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_1(RETURN_TYPE, ARGS)             \
+    , std::forward<                                                            \
+          mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(        \
+          __mge_script_arg0)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_2(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1)
+
 #define MGE_IMPLEMENT_METHOD(RETURN_TYPE, METHOD_NAME, ARGS, QUALIFIERS)       \
-    mge::internal::function_signature<RETURN_TYPE ARGS>::return_type           \
-        METHOD_NAME                                                            \
-        MGE_INTERNAL_PARAMETER_SIGNATURE(RETURN_TYPE, ARGS) QUALIFIERS         \
+    mge::internal::function_return_type<RETURN_TYPE ARGS>::type METHOD_NAME    \
+    MGE_INTERNAL_PARAMETER_SIGNATURE(RETURN_TYPE, ARGS) QUALIFIERS             \
     {                                                                          \
         MGE_INTERNAL_ASSERT_PARENTHESIS(ARGS);                                 \
                                                                                \
@@ -565,12 +586,19 @@ namespace mge {
                 << "No context set for call to '" << #METHOD_NAME << "'";      \
         }                                                                      \
                                                                                \
-        if constexpr (std::is_same_v<RETURN_TYPE, void>) {                     \
-            /* void type */                                                    \
-            m_context->invoke_method<void>(#METHOD_NAME);                      \
+        if constexpr (std::is_same_v<mge::internal::function_return_type<      \
+                                         RETURN_TYPE ARGS>::type,              \
+                                     void>) {                                  \
+            mge::script::invocation_context::call_helper<RETURN_TYPE ARGS>::   \
+                call(m_context,                                                \
+                     #METHOD_NAME MGE_INTERNAL_PARAMETER_FORWARD(RETURN_TYPE,  \
+                                                                 ARGS));       \
             return;                                                            \
-        } else {                                                               \
-            /* non void */                                                     \
-            return m_context->invoke_method<RETURN_TYPE>(#METHOD_NAME);        \
+        } else { /* non void */                                                \
+            return mge::script::invocation_context::                           \
+                call_helper<RETURN_TYPE ARGS>::call(                           \
+                    m_context,                                                 \
+                    #METHOD_NAME MGE_INTERNAL_PARAMETER_FORWARD(RETURN_TYPE,   \
+                                                                ARGS));        \
         }                                                                      \
     }

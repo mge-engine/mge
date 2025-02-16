@@ -7,7 +7,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_identifier.hpp"
-
+#include <utility>
 namespace mge::script {
 
     /**
@@ -51,6 +51,17 @@ namespace mge::script {
 
         invocation_context() = default;
         virtual ~invocation_context() = default;
+
+        template <typename Signature> struct call_helper;
+        template <typename R, typename... Args> struct call_helper<R(Args...)>
+        {
+            static R
+            call(invocation_context* ctx, const char* method, Args... args)
+            {
+                return ctx->call<R, Args...>(method,
+                                             std::forward<Args>(args)...);
+            }
+        };
 
         /**
          * @brief Call a method with arguments.
