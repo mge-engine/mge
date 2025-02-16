@@ -24,3 +24,4 @@ MGE_TEST(
     SOURCES     test_script_context.cpp
     LIBRARIES   mgecore mgescript
 )
+
