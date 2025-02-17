@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/nth_type.hpp"
+#include "mge/script/invocation_context.hpp"
 #include <cstddef>
 #include <utility>
 namespace mge {
@@ -574,6 +575,681 @@ namespace mge {
         std::forward<                                                          \
             mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
             __mge_script_arg1)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_3(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_4(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_5(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_6(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_7(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_8(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_9(RETURN_TYPE, ARGS)             \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_10(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_11(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_12(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_13(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_14(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_15(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<14>>(     \
+            __mge_script_arg14)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_16(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<14>>(     \
+            __mge_script_arg14),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<15>>(     \
+            __mge_script_arg15)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_17(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<14>>(     \
+            __mge_script_arg14),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<15>>(     \
+            __mge_script_arg15),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<16>>(     \
+            __mge_script_arg16)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_18(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<14>>(     \
+            __mge_script_arg14),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<15>>(     \
+            __mge_script_arg15),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<16>>(     \
+            __mge_script_arg16),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<17>>(     \
+            __mge_script_arg17)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_19(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<14>>(     \
+            __mge_script_arg14),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<15>>(     \
+            __mge_script_arg15),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<16>>(     \
+            __mge_script_arg16),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<17>>(     \
+            __mge_script_arg17),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<18>>(     \
+            __mge_script_arg18)
+
+#define MGE_INTERNAL_PARAMETER_FORWARD_EXPAND_20(RETURN_TYPE, ARGS)            \
+    ,                                                                          \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<0>>(      \
+            __mge_script_arg0),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<1>>(      \
+            __mge_script_arg1),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<2>>(      \
+            __mge_script_arg2),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<3>>(      \
+            __mge_script_arg3),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<4>>(      \
+            __mge_script_arg4),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<5>>(      \
+            __mge_script_arg5),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<6>>(      \
+            __mge_script_arg6),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<7>>(      \
+            __mge_script_arg7),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<8>>(      \
+            __mge_script_arg8),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<9>>(      \
+            __mge_script_arg9),                                                \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<10>>(     \
+            __mge_script_arg10),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<11>>(     \
+            __mge_script_arg11),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<12>>(     \
+            __mge_script_arg12),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<13>>(     \
+            __mge_script_arg13),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<14>>(     \
+            __mge_script_arg14),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<15>>(     \
+            __mge_script_arg15),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<16>>(     \
+            __mge_script_arg16),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<17>>(     \
+            __mge_script_arg17),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<18>>(     \
+            __mge_script_arg18),                                               \
+        std::forward<                                                          \
+            mge::internal::function_argument<RETURN_TYPE ARGS>::type<19>>(     \
+            __mge_script_arg19)
 
 #define MGE_IMPLEMENT_METHOD(RETURN_TYPE, METHOD_NAME, ARGS, QUALIFIERS)       \
     mge::internal::function_return_type<RETURN_TYPE ARGS>::type METHOD_NAME    \

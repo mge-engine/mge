@@ -43,6 +43,20 @@ TEST(proxy, call_no_args_produces_result)
     EXPECT_EQ(42, p.test_int_method());
 }
 
+TEST(proxy, call_with_args_produces_result)
+{
+    test_proxy              p;
+    MOCK_invocation_context ctx;
+    p.set_context(&ctx);
+    EXPECT_CALL(ctx, call_method("test_method"))
+        .WillOnce(testing::Return(
+            mge::script::invocation_context::call_result_type::CALL_EXECUTED));
+    EXPECT_CALL(ctx, store_int32_t_argument(0, 1));
+    EXPECT_CALL(ctx, store_int32_t_argument(1, 2));
+    EXPECT_CALL(ctx, get_int32_t_result()).WillOnce(testing::Return(42));
+    EXPECT_EQ(42, p.test_method(1, 2));
+}
+
 TEST(proxy, check_MGE_INTERNAL_COUNT)
 {
     EXPECT_EQ(1, MGE_INTERNAL_COUNT_ARGS((int a, int b)));

@@ -5,11 +5,25 @@
 #include "mge/application/loop.hpp"
 #include "mge/application/loop_target.hpp"
 #include "mge/script/function.hpp"
+#include "mge/script/implement_method.hpp"
 #include "mge/script/module.hpp"
+#include "mge/script/proxy.hpp"
 #include "mge/script/script_binder.hpp"
 #include "mge/script/type.hpp"
-
 namespace mge::script {
+
+    class proxy_loop_target : public mge::script::proxy<mge::loop_target>
+    {
+    public:
+        proxy_loop_target() = default;
+        virtual ~proxy_loop_target() = default;
+
+        MGE_IMPLEMENT_METHOD(bool, is_quit, (), const);
+        MGE_IMPLEMENT_METHOD(void, input, (uint64_t), );
+        MGE_IMPLEMENT_METHOD(void, update, (uint64_t, double, double), );
+        MGE_IMPLEMENT_METHOD(void, present, (uint64_t, double), );
+    };
+
     class application_script_binder : public script_binder
     {
     public:
