@@ -19,9 +19,9 @@ namespace mge::script {
         virtual ~proxy_loop_target() = default;
 
         MGE_IMPLEMENT_METHOD(bool, is_quit, (), const);
-        MGE_IMPLEMENT_METHOD(void, input, (uint64_t), );
-        MGE_IMPLEMENT_METHOD(void, update, (uint64_t, double, double), );
-        MGE_IMPLEMENT_METHOD(void, present, (uint64_t, double), );
+        MGE_IMPLEMENT_METHOD(void, input, (uint64_t));
+        MGE_IMPLEMENT_METHOD(void, update, (uint64_t, double, double));
+        MGE_IMPLEMENT_METHOD(void, present, (uint64_t, double));
     };
 
     class application_script_binder : public script_binder

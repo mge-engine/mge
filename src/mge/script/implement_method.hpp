@@ -1251,7 +1251,21 @@ namespace mge {
             mge::internal::function_argument<RETURN_TYPE ARGS>::type<19>>(     \
             __mge_script_arg19)
 
-#define MGE_IMPLEMENT_METHOD(RETURN_TYPE, METHOD_NAME, ARGS, QUALIFIERS)       \
+#define MGE_IMPLEMENT_METHOD_INTERNAL_DISPATCH(N, ...)                         \
+    MGE_INTERNAL_CONCAT(MGE_IMPLEMENT_METHOD_INTERNAL_, N)(__VA_ARGS__)
+
+#define MGE_IMPLEMENT_METHOD(...)                                              \
+    MGE_IMPLEMENT_METHOD_INTERNAL_DISPATCH(                                    \
+        MGE_INTERNAL_COUNT_ARGS(__VA_ARGS__),                                  \
+        __VA_ARGS__)
+
+#define MGE_IMPLEMENT_METHOD_INTERNAL_3(RETURN_TYPE, METHOD_NAME, ARGS)        \
+    MGE_IMPLEMENT_METHOD_INTERNAL_4(RETURN_TYPE, METHOD_NAME, ARGS, )
+
+#define MGE_IMPLEMENT_METHOD_INTERNAL_4(RETURN_TYPE,                           \
+                                        METHOD_NAME,                           \
+                                        ARGS,                                  \
+                                        QUALIFIERS)                            \
     mge::internal::function_return_type<RETURN_TYPE ARGS>::type METHOD_NAME    \
     MGE_INTERNAL_PARAMETER_SIGNATURE(RETURN_TYPE, ARGS) QUALIFIERS             \
     {                                                                          \
