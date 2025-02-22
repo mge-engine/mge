@@ -16,6 +16,8 @@ namespace mge::script {
     {
     public:
         proxy_loop_target() = default;
+        proxy_loop_target(const proxy_loop_target&) = delete;
+        proxy_loop_target& operator=(const proxy_loop_target&) = delete;
         virtual ~proxy_loop_target() = default;
 
         MGE_IMPLEMENT_METHOD(bool, is_quit, (), const);
@@ -37,7 +39,8 @@ namespace mge::script {
                     .method("is_quit", &mge::loop_target::is_quit)
                     .method("input", &mge::loop_target::input)
                     .method("update", &mge::loop_target::update)
-                    .method("present", &mge::loop_target::present),
+                    .method("present", &mge::loop_target::present)
+                    .proxy<proxy_loop_target>(),
                 type<mge::application>()
                     .base<mge::loop_target>()
                     .base<mge::component_base>()
