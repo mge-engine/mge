@@ -308,6 +308,28 @@ namespace mge::script {
         type_data_ref m_data;
     };
 
+    namespace {
+        template <typename T> struct component_helper
+        {
+            static void initialize(type<T>& t) {}
+        };
+
+        template <typename T>
+            requires(std::is_base_of_v<component<T>, T>)
+        struct component_helper<T>
+        {
+            static void initialize(type<T>& t)
+            {
+                t.function(
+                    "create",
+                    std::function<std::shared_ptr<T>(const std::string&)>(
+                        [](const std::string& name) -> std::shared_ptr<T> {
+                            return T::create(name);
+                        }));
+            }
+        };
+    } // namespace
+
     template <typename T>
         requires(std::is_class_v<T> && !mge::is_callable_v<T>)
     class type<T>
@@ -321,6 +343,7 @@ namespace mge::script {
                 m_data = type_data::create(typeid(T), id);
                 initialize();
             }
+            component_helper<T>::initialize(*this);
         }
 
         type(const char* alias_name)
