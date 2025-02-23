@@ -26,6 +26,20 @@ namespace mge::script {
         MGE_IMPLEMENT_METHOD(void, present, (uint64_t, double));
     };
 
+    class proxy_application : public mge::script::proxy<mge::application>
+    {
+    public:
+        proxy_application() = default;
+        proxy_application(const proxy_application&) = delete;
+        proxy_application& operator=(const proxy_application&) = delete;
+        virtual ~proxy_application() = default;
+
+        MGE_IMPLEMENT_METHOD(void, setup, ());
+        MGE_IMPLEMENT_METHOD(void, async_setup, ());
+        MGE_IMPLEMENT_METHOD(void, teardown, ());
+        MGE_IMPLEMENT_METHOD(void, run, ());
+    };
+
     class application_script_binder : public script_binder
     {
     public:
@@ -79,7 +93,8 @@ namespace mge::script {
                             &mge::application::add_quit_listener)
                     .method("remove_quit_listener",
                             &mge::application::remove_quit_listener)
-                    .function("instance", &mge::application::instance),
+                    .function("instance", &mge::application::instance)
+                    .proxy<proxy_application>(),
                 type<mge::loop>().method("run", &mge::loop::run));
         }
     };
