@@ -80,9 +80,7 @@ namespace mge::script {
                     .method("remove_quit_listener",
                             &mge::application::remove_quit_listener)
                     .function("instance", &mge::application::instance),
-                type<mge::loop>().method("run", &mge::loop::run)
-                //
-            );
+                type<mge::loop>().method("run", &mge::loop::run));
         }
     };
 

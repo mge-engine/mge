@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/callable.hpp"
+#include "mge/core/component.hpp"
 #include "mge/core/enum.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
@@ -443,7 +444,7 @@ namespace mge::script {
             return *this;
         }
 
-        template <typename F> type<T>& field(const char* name, F T::*field)
+        template <typename F> type<T>& field(const char* name, F T::* field)
         {
             type<F> field_type;
             m_data->add_dependency(dependency(field_type.data()));
@@ -617,6 +618,38 @@ namespace mge::script {
             return *this;
         }
 
+        template <typename... Args>
+        type<T>& function(const char* name, std::function<void(Args...)> func)
+        {
+            m_data->add_dependency(dependency(type<void>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<void>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        ctx.before_call();
+                        func(ctx.parameter<Args>(--index)...);
+                        ctx.after_call();
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (...) {
+                        ctx.exception_thrown();
+                        ctx.after_call();
+                    }
+                });
+            return *this;
+        }
+
         template <typename R, typename... Args>
             requires !std::is_void_v<R>
                      type<T> &
@@ -636,6 +669,40 @@ namespace mge::script {
                         size_t           index{nargs};
                         ctx.before_call();
 
+                        ctx.result(func(ctx.parameter<Args>(--index)...));
+                        ctx.after_call();
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (...) {
+                        ctx.exception_thrown();
+                        ctx.after_call();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            function(const char* name, std::function<R(Args...)> func)
+        {
+            m_data->add_dependency(dependency(type<R>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<R>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        ctx.before_call();
                         ctx.result(func(ctx.parameter<Args>(--index)...));
                         ctx.after_call();
                     } catch (const mge::exception& e) {
@@ -674,6 +741,9 @@ namespace mge::script {
             m_data->class_specific().size = sizeof(T);
             if constexpr (std::is_abstract_v<T>) {
                 m_data->class_specific().is_abstract = true;
+            }
+            if constexpr (std::is_base_of_v<mge::component<T>, T>) {
+                m_data->class_specific().is_component = true;
             }
             if constexpr (!std::is_same_v<T, std::string> &&
                           !std::is_same_v<T, std::wstring> &&
@@ -803,7 +873,6 @@ namespace mge::script {
                 }
             }
         }
-
         type_data_ref m_data;
     };
 

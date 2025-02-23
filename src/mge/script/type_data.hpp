@@ -105,6 +105,12 @@ namespace mge::script {
             return is_pod() || is_string() || is_wstring();
         }
 
+        bool is_component() const
+        {
+            return m_details.index() == 2 &&
+                   std::get<class_details>(m_details).is_component;
+        }
+
         bool is_pod() const;
         bool is_enum() const;
         bool is_class() const;
@@ -144,6 +150,7 @@ namespace mge::script {
             bool                                 is_string{false};
             bool                                 is_wstring{false};
             bool                                 is_abstract{false};
+            bool                                 is_component{false};
             bool                                 is_callable{false};
             size_t                               size{0};
             mge::script::invoke_function         destroy;
