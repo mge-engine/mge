@@ -77,6 +77,7 @@ namespace mge::python {
 
     void component::register_component_type(const python_module_ref& module)
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Registering component type";
         gil_lock guard;
         if (PyType_Ready(&component_type) < 0) {
             error::check_error();
@@ -87,6 +88,5 @@ namespace mge::python {
                            "__component__",
                            reinterpret_cast<PyObject*>(&component_type));
         error::check_error();
-        MGE_DEBUG_TRACE(PYTHON) << "Registering component type";
     }
 } // namespace mge::python
