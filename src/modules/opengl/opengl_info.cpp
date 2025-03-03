@@ -9,6 +9,7 @@
 #include "opengl.hpp"
 
 #include <iostream>
+#include <sstream>
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
@@ -105,7 +106,43 @@ namespace mge::opengl {
         case GL_DEBUG_SOURCE_OTHER_ARB:
             return "OTHER";
         default:
+            return "UNKNOWN";
+        }
+    }
+
+    static const char* type_name(GLenum type)
+    {
+        switch (type) {
+        case GL_DEBUG_TYPE_ERROR_ARB:
+            return "ERROR";
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
+            return "DEPRECATED";
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
+            return "UNDEFINED";
+        case GL_DEBUG_TYPE_PORTABILITY_ARB:
+            return "PORTABILITY";
+        case GL_DEBUG_TYPE_PERFORMANCE_ARB:
+            return "PERFORMANCE";
+        case GL_DEBUG_TYPE_OTHER_ARB:
             return "OTHER";
+        default:
+            return "UNKNOWN";
+        }
+    }
+
+    static const char* severity_name(GLenum severity)
+    {
+        switch (severity) {
+        case GL_DEBUG_SEVERITY_HIGH_ARB:
+            return "HIGH";
+        case GL_DEBUG_SEVERITY_MEDIUM_ARB:
+            return "MEDIUM";
+        case GL_DEBUG_SEVERITY_LOW_ARB:
+            return "LOW";
+        case GL_DEBUG_SEVERITY_NOTIFICATION:
+            return "NOTIFICATION";
+        default:
+            return "UNKNOWN";
         }
     }
 
@@ -118,7 +155,33 @@ namespace mge::opengl {
                                const void*   user_param)
     {
         const char* srcname = source_name(source);
-        MGE_TRACE(OPENGL, INFO) << "(" << srcname << "): " << (char*)message;
+        const char* typename_str = type_name(type);
+        const char* severity_str = severity_name(severity);
+
+        // Format the message with all available information
+        std::stringstream ss;
+        ss << "OpenGL Debug [" << severity_str << "] "
+           << "(" << srcname << ":" << typename_str << ") "
+           << "ID: " << id << " - " << message;
+
+        // Log based on severity
+        switch (severity) {
+        case GL_DEBUG_SEVERITY_HIGH_ARB:
+            MGE_ERROR_TRACE(OPENGL) << ss.str();
+            break;
+        case GL_DEBUG_SEVERITY_MEDIUM_ARB:
+            MGE_WARNING_TRACE(OPENGL) << ss.str();
+            break;
+        case GL_DEBUG_SEVERITY_LOW_ARB:
+            MGE_INFO_TRACE(OPENGL) << ss.str();
+            break;
+        case GL_DEBUG_SEVERITY_NOTIFICATION:
+            MGE_DEBUG_TRACE(OPENGL) << ss.str();
+            break;
+        default:
+            MGE_INFO_TRACE(OPENGL) << ss.str();
+            break;
+        }
     }
 
     void opengl_info::install_debug_callback()

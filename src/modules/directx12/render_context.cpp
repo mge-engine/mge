@@ -609,36 +609,49 @@ namespace mge::dx12 {
         }
     }
 
+    static const char* message_severity(D3D12_MESSAGE_SEVERITY severity)
+    {
+        switch (severity) {
+        case D3D12_MESSAGE_SEVERITY_CORRUPTION:
+            return "CORRUPTION";
+        case D3D12_MESSAGE_SEVERITY_ERROR:
+            return "ERROR";
+        case D3D12_MESSAGE_SEVERITY_WARNING:
+            return "WARNING";
+        case D3D12_MESSAGE_SEVERITY_INFO:
+            return "INFO";
+        default:
+            return "UNKNOWN";
+        }
+    }
+
     void render_context::message_func(D3D12_MESSAGE_CATEGORY category,
                                       D3D12_MESSAGE_SEVERITY severity,
                                       D3D12_MESSAGE_ID       id,
                                       LPCSTR                 description,
                                       void*                  context)
     {
+        std::stringstream ss;
+        ss << "DirectX12 Debug [" << message_severity(severity) << "] "
+           << "(" << message_category(category) << ") "
+           << "ID: " << id << " - " << description;
+
         switch (severity) {
         case D3D12_MESSAGE_SEVERITY_CORRUPTION:
-            MGE_ERROR_TRACE(DX12)
-                << message_category(category) << ": (" << static_cast<int>(id)
-                << ") " << description;
+            MGE_ERROR_TRACE(DX12) << ss.str();
             break;
         case D3D12_MESSAGE_SEVERITY_ERROR:
-            MGE_ERROR_TRACE(DX12)
-                << message_category(category) << ": (" << static_cast<int>(id)
-                << ") " << description;
+            MGE_ERROR_TRACE(DX12) << ss.str();
             break;
         case D3D12_MESSAGE_SEVERITY_WARNING:
-            MGE_WARNING_TRACE(DX12)
-                << message_category(category) << ": (" << static_cast<int>(id)
-                << ") " << description;
+            MGE_WARNING_TRACE(DX12) << ss.str();
             break;
         case D3D12_MESSAGE_SEVERITY_INFO:
-            MGE_INFO_TRACE(DX12) << message_category(category) << ": ("
-                                 << static_cast<int>(id) << ") " << description;
+            MGE_INFO_TRACE(DX12) << ss.str();
             break;
         default:
-            MGE_DEBUG_TRACE(DX12)
-                << message_category(category) << ": (" << static_cast<int>(id)
-                << ") " << description;
+            MGE_INFO_TRACE(DX12) << ss.str();
+            break;
         }
     }
 

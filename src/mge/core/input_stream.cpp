@@ -181,23 +181,30 @@ namespace mge {
 
     void input_stream::read(buffer& b)
     {
-        // TODO more intelligent size handling
-        const streamsize_type chunk_size = 4096;
+        // Start with a reasonable initial buffer size and grow exponentially up
+        // to a limit
+        const streamsize_type initial_chunk_size = 4096;
+        const streamsize_type max_chunk_size = 1024 * 1024; // 1MB max chunk
+        streamsize_type       current_chunk_size = initial_chunk_size;
         b.clear();
         while (true) {
             auto buffer_start_pos = b.size();
-            b.resize(buffer_start_pos + chunk_size);
-            auto read_bytes = read(b.data() + buffer_start_pos, chunk_size);
+            b.resize(buffer_start_pos + current_chunk_size);
+            auto read_bytes =
+                read(b.data() + buffer_start_pos, current_chunk_size);
             if (read_bytes == -1) {
                 b.resize(buffer_start_pos);
                 return;
             }
             b.resize(buffer_start_pos + read_bytes);
-            if (read_bytes < chunk_size) {
+            if (read_bytes < current_chunk_size) {
                 if (eof() || read_bytes == 0) {
                     return;
                 }
             }
+            // Double the chunk size for next iteration, but don't exceed max
+            current_chunk_size =
+                std::min(current_chunk_size * 2, max_chunk_size);
         }
     }
 
@@ -208,7 +215,10 @@ namespace mge {
         return r == -1;
     }
 
-    input_stream::offset_type input_stream::position() { return -1; }
+    input_stream::offset_type input_stream::position()
+    {
+        return -1;
+    }
 
     input_stream::offset_type input_stream::seek(input_stream::offset_type,
                                                  direction_type)
