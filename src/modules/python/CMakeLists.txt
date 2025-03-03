@@ -9,6 +9,7 @@ SET(mge_python_module_SOURCES
     python_type.cpp
     python_function.cpp
     python_module.cpp
+    python_component.cpp
     python_call_context.cpp
     type_matches.cpp
 )
