@@ -124,27 +124,86 @@ namespace mge::vulkan {
         const VkDebugUtilsMessengerCallbackDataEXT* data,
         void*                                       userdata)
     {
-        // TODO: more detailed debug message reporting
         bool stop_on_error =
             MGE_PARAMETER(vulkan, stop_on_validation_error).get();
         bool is_error = false;
 
+        // Format message with all available information
+        std::stringstream ss;
+        ss << "Vulkan Debug [";
+
+        // Add severity
         switch (severity) {
-        default:
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-            MGE_DEBUG_TRACE(VULKAN) << data->pMessage;
+            ss << "VERBOSE";
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            MGE_INFO_TRACE(VULKAN) << data->pMessage;
+            ss << "INFO";
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            MGE_WARNING_TRACE(VULKAN) << data->pMessage;
+            ss << "WARNING";
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            MGE_ERROR_TRACE(VULKAN) << data->pMessage;
+            ss << "ERROR";
             is_error = true;
             break;
+        default:
+            ss << "UNKNOWN";
+            break;
         }
+        ss << "] ";
+
+        // Add message type
+        ss << "(";
+        bool first = true;
+        if (type & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT) {
+            if (!first)
+                ss << "|";
+            ss << "GENERAL";
+            first = false;
+        }
+        if (type & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT) {
+            if (!first)
+                ss << "|";
+            ss << "VALIDATION";
+            first = false;
+        }
+        if (type & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT) {
+            if (!first)
+                ss << "|";
+            ss << "PERFORMANCE";
+            first = false;
+        }
+        ss << ") ";
+
+        // Add object info if available
+        if (data->objectCount > 0) {
+            ss << "Object: " << data->pObjects[0].objectType << " ("
+               << data->pObjects[0].objectHandle << ") ";
+        }
+
+        // Add message
+        ss << data->pMessage;
+
+        // Log based on severity
+        switch (severity) {
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
+            MGE_DEBUG_TRACE(VULKAN) << ss.str();
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+            MGE_INFO_TRACE(VULKAN) << ss.str();
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+            MGE_WARNING_TRACE(VULKAN) << ss.str();
+            break;
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+            MGE_ERROR_TRACE(VULKAN) << ss.str();
+            break;
+        default:
+            MGE_INFO_TRACE(VULKAN) << ss.str();
+            break;
+        }
+
         if (is_error && stop_on_error) {
             return VK_TRUE;
         } else {
