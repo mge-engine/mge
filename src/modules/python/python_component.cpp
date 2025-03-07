@@ -16,10 +16,15 @@ namespace mge {
 namespace mge::python {
 
     struct python_component_object
-    {};
+    {
+        PyObject_HEAD static python_context* context;
+    };
+
+    python_context* python_component_object::context = nullptr;
 
     PyObject* component::register_component(PyObject* self, PyObject* args)
     {
+
         PyObject* component_class = nullptr;
         if (!PyArg_ParseTuple(args, "O", &component_class)) {
             return nullptr;
@@ -31,6 +36,7 @@ namespace mge::python {
         }
 
         MGE_DEBUG_TRACE(PYTHON) << "Registering component class";
+
         // TODO: Implement actual component registration logic
 
         Py_RETURN_NONE;
@@ -97,7 +103,8 @@ namespace mge::python {
         0,                                    /* tp_finalize */
     };
 
-    void component::register_component_type(const python_module_ref& module)
+    void component::register_component_type(const python_module_ref& module,
+                                            python_context*          context)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Registering component type";
         gil_lock guard;
@@ -110,5 +117,7 @@ namespace mge::python {
                            "__component__",
                            reinterpret_cast<PyObject*>(&component_type));
         error::check_error();
+
+        python_component_object::context = context;
     }
 } // namespace mge::python

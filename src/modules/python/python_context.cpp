@@ -1,19 +1,22 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "python_context.hpp"
+
+#include "mge/core/trace.hpp"
+#include "mge/script/module.hpp"
+#include "mge/script/module_data.hpp"
+#include "mge/script/type_data.hpp"
+
 #include "gil_lock.hpp"
 #include "pyobject_ref.hpp"
+#include "python_component.hpp"
+#include "python_context.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
 #include "python_function.hpp"
 #include "python_module.hpp"
 #include "python_type.hpp"
 
-#include "mge/core/trace.hpp"
-#include "mge/script/module.hpp"
-#include "mge/script/module_data.hpp"
-#include "mge/script/type_data.hpp"
 #include <mutex>
 
 namespace mge {
@@ -148,6 +151,7 @@ namespace mge::python {
         m_modules["__mge__"] = mod;
         m_all_modules.push_back(mod);
         create_function_helper_type(mod);
+        mge::python::component::register_component_type(mod, this);
     }
 
     void
