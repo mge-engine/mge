@@ -18,7 +18,29 @@ namespace mge::python {
     struct python_component_object
     {};
 
+    PyObject* component::register_component(PyObject* self, PyObject* args)
+    {
+        PyObject* component_class = nullptr;
+        if (!PyArg_ParseTuple(args, "O", &component_class)) {
+            return nullptr;
+        }
+
+        if (!PyType_Check(component_class)) {
+            PyErr_SetString(PyExc_TypeError, "Argument must be a class");
+            return nullptr;
+        }
+
+        MGE_DEBUG_TRACE(PYTHON) << "Registering component class";
+        // TODO: Implement actual component registration logic
+
+        Py_RETURN_NONE;
+    }
+
     static PyMethodDef python_component_methods[] = {
+        {"register_component",
+         component::register_component,
+         METH_VARARGS | METH_STATIC,
+         "Register a component"},
         {NULL} /* Sentinel */
     };
 

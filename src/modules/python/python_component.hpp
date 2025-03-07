@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "python_module.hpp"
+#include <memory>
 
 namespace mge::python {
 
@@ -10,6 +11,7 @@ namespace mge::python {
     {
     public:
         static void register_component_type(const python_module_ref& module);
+        static PyObject* register_component(PyObject* self, PyObject* args);
     };
 
 } // namespace mge::python
