@@ -316,6 +316,7 @@ namespace mge::python {
 
         MGE_DEBUG_TRACE(PYTHON) << "Adding method " << name;
     }
+
     void python_type::add_function(
         const std::string&                            name,
         const mge::script::type_data_ref&             return_type,
