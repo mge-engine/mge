@@ -24,22 +24,25 @@ namespace mge::python {
 
     PyObject* component::register_component(PyObject* self, PyObject* args)
     {
-
-        PyObject* component_class = nullptr;
-        if (!PyArg_ParseTuple(args, "O", &component_class)) {
+        const char* component_name = nullptr;
+        PyObject*   component_class = nullptr;
+        if (!PyArg_ParseTuple(args, "sO", &component_name, &component_class)) {
             return nullptr;
         }
 
         if (!PyType_Check(component_class)) {
-            PyErr_SetString(PyExc_TypeError, "Argument must be a class");
+            PyErr_SetString(PyExc_TypeError, "Second argument must be a class");
             return nullptr;
         }
-
-        MGE_DEBUG_TRACE(PYTHON) << "Registering component class";
-
-        // TODO: Implement actual component registration logic
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Registering component class " << component_name;
 
         Py_RETURN_NONE;
+    }
+
+    python_type_ref component::component_base_type(PyObject* component_class)
+    {
+        return python_type_ref();
     }
 
     static PyMethodDef python_component_methods[] = {
