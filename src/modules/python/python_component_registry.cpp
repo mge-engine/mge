@@ -2,7 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 
-#include "python_component.hpp"
+#include "python_component_registry.hpp"
 #include "gil_lock.hpp"
 #include "mge/core/trace.hpp"
 #include "python_context.hpp"

@@ -9,7 +9,7 @@
 
 #include "gil_lock.hpp"
 #include "pyobject_ref.hpp"
-#include "python_component.hpp"
+#include "python_component_registry.hpp"
 #include "python_context.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
