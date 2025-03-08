@@ -106,8 +106,8 @@ namespace mge::python {
         0,                                    /* tp_finalize */
     };
 
-    void component::register_component_type(const python_module_ref& module,
-                                            python_context*          context)
+    void component::create_registry_type(const python_module_ref& module,
+                                         python_context*          context)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Registering component type";
         gil_lock guard;

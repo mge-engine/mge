@@ -151,7 +151,7 @@ namespace mge::python {
         m_modules["__mge__"] = mod;
         m_all_modules.push_back(mod);
         create_function_helper_type(mod);
-        mge::python::component::register_component_type(mod, this);
+        mge::python::component::create_registry_type(mod, this);
     }
 
     void

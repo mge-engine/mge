@@ -11,8 +11,8 @@ namespace mge::python {
     class component
     {
     public:
-        static void register_component_type(const python_module_ref& module,
-                                            python_context*          context);
+        static void      create_registry_type(const python_module_ref& module,
+                                              python_context*          context);
         static PyObject* register_component(PyObject* self, PyObject* args);
         static python_type_ref component_base_type(PyObject* component_class);
     };
