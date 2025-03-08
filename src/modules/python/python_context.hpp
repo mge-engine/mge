@@ -34,6 +34,7 @@ namespace mge::python {
         void bind_helper_module();
         void create_function_helper_type(const python_module_ref& mod);
         bool is_builtin(const mge::script::type_data_ref& t) const;
+        void evaluate_prelude();
 
         python_engine_ref                                     m_engine;
         std::map<mge::script::type_data_ref, python_type_ref> m_types;

@@ -119,6 +119,7 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Defining type " << t->name();
             pt->define_in_interpreter();
         }
+        evaluate_prelude();
     }
 
     void python_context::bind_module_functions(
@@ -184,6 +185,12 @@ namespace mge::python {
         for (auto& f : m_functions) {
             f->on_interpreter_restore();
         }
+    }
+
+    void python_context::evaluate_prelude()
+    {
+        std::string prelude = R"()";
+        eval(prelude);
     }
 
 } // namespace mge::python
