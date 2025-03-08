@@ -10,8 +10,12 @@ SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
     test003_object.py 
-    test004_function.py
-    test006_render_system.py)
+    test004_function.py)
+
+# Only include render system test if not in headless environment
+if(NOT HEADLESS_ENVIRONMENT)
+    list(APPEND PYTHON_TESTS test006_render_system.py)
+endif()
 
 LIST(TRANSFORM
     PYTHON_TESTS
