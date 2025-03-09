@@ -14,9 +14,13 @@ namespace mge {
 }
 
 namespace mge::python {
-#if 0
-    PyObject* component::register_component(PyObject* self, PyObject* args)
+
+    PyObject* python_component_registry::register_component(PyObject* self,
+                                                            PyObject* args)
     {
+        python_component_registry* self_obj =
+            reinterpret_cast<python_component_registry*>(self);
+
         const char* component_name = nullptr;
         PyObject*   component_class = nullptr;
         if (!PyArg_ParseTuple(args, "sO", &component_name, &component_class)) {
@@ -27,21 +31,19 @@ namespace mge::python {
             PyErr_SetString(PyExc_TypeError, "Second argument must be a class");
             return nullptr;
         }
-        MGE_DEBUG_TRACE(PYTHON)
-            << "Registering component class " << component_name;
-
-        Py_RETURN_NONE;
+        return self_obj->register_component(component_name, component_class);
     }
 
-    python_type_ref component::component_base_type(PyObject* component_class)
+    PyObject*
+    python_component_registry::register_component(const char* name,
+                                                  PyObject*   component_class)
     {
-        return python_type_ref();
+        return Py_None;
     }
-#endif
 
-    static PyObject* python_component_registry_new(PyTypeObject* type,
-                                                   PyObject*     args,
-                                                   PyObject*     kwds)
+    PyObject* python_component_registry::tp_new(PyTypeObject* type,
+                                                PyObject*     args,
+                                                PyObject*     kwds)
     {
         python_component_registry* self =
             (python_component_registry*)type->tp_alloc(type, 0);
@@ -51,9 +53,9 @@ namespace mge::python {
         return (PyObject*)self;
     }
 
-    static int python_component_registry_init(PyObject* self,
-                                              PyObject* args,
-                                              PyObject* kwds)
+    int python_component_registry::tp_init(PyObject* self,
+                                           PyObject* args,
+                                           PyObject* kwds)
     {
         return 0;
     }
@@ -70,53 +72,53 @@ namespace mge::python {
         // clang-format off
         PyVarObject_HEAD_INIT(nullptr, 0)
         // clang-format on
-        "__mge__.__component__registry__", /* tp_name */
-        sizeof(python_component_registry), /* tp_basicsize */
-        0,                                 /* tp_itemsize */
-        0,                                 /* tp_dealloc */
-        0,                                 /* tp_print */
-        0,                                 /* tp_getattr */
-        0,                                 /* tp_setattr */
-        0,                                 /* tp_reserved */
-        0,                                 /* tp_repr */
-        0,                                 /* tp_as_number */
-        0,                                 /* tp_as_sequence */
-        0,                                 /* tp_as_mapping */
-        0,                                 /* tp_hash */
-        0,                                 /* tp_call */
-        0,                                 /* tp_str */
-        0,                                 /* tp_getattro */
-        0,                                 /* tp_setattro */
-        0,                                 /* tp_as_buffer */
-        Py_TPFLAGS_DEFAULT,                /* tp_flags */
-        "Component registry",              /* tp_doc */
-        0,                                 /* tp_traverse */
-        0,                                 /* tp_clear */
-        0,                                 /* tp_richcompare */
-        0,                                 /* tp_weaklistoffset */
-        0,                                 /* tp_iter */
-        0,                                 /* tp_iternext */
-        python_component_registry_methods, /* tp_methods */
-        0,                                 /* tp_members */
-        0,                                 /* tp_getset */
-        0,                                 /* tp_base */
-        0,                                 /* tp_dict */
-        0,                                 /* tp_descr_get */
-        0,                                 /* tp_descr_set */
-        0,                                 /* tp_dictoffset */
-        python_component_registry_init,    /* tp_init */
-        0,                                 /* tp_alloc */
-        python_component_registry_new,     /* tp_new */
-        0,                                 /* tp_free */
-        0,                                 /* tp_is_gc */
-        0,                                 /* tp_bases */
-        0,                                 /* tp_mro */
-        0,                                 /* tp_cache */
-        0,                                 /* tp_subclasses */
-        0,                                 /* tp_weaklist */
-        0,                                 /* tp_del */
-        0,                                 /* tp_version_tag */
-        0,                                 /* tp_finalize */
+        "__mge__.__component__registry__",  /* tp_name */
+        sizeof(python_component_registry),  /* tp_basicsize */
+        0,                                  /* tp_itemsize */
+        0,                                  /* tp_dealloc */
+        0,                                  /* tp_print */
+        0,                                  /* tp_getattr */
+        0,                                  /* tp_setattr */
+        0,                                  /* tp_reserved */
+        0,                                  /* tp_repr */
+        0,                                  /* tp_as_number */
+        0,                                  /* tp_as_sequence */
+        0,                                  /* tp_as_mapping */
+        0,                                  /* tp_hash */
+        0,                                  /* tp_call */
+        0,                                  /* tp_str */
+        0,                                  /* tp_getattro */
+        0,                                  /* tp_setattro */
+        0,                                  /* tp_as_buffer */
+        Py_TPFLAGS_DEFAULT,                 /* tp_flags */
+        "Component registry",               /* tp_doc */
+        0,                                  /* tp_traverse */
+        0,                                  /* tp_clear */
+        0,                                  /* tp_richcompare */
+        0,                                  /* tp_weaklistoffset */
+        0,                                  /* tp_iter */
+        0,                                  /* tp_iternext */
+        python_component_registry_methods,  /* tp_methods */
+        0,                                  /* tp_members */
+        0,                                  /* tp_getset */
+        0,                                  /* tp_base */
+        0,                                  /* tp_dict */
+        0,                                  /* tp_descr_get */
+        0,                                  /* tp_descr_set */
+        0,                                  /* tp_dictoffset */
+        python_component_registry::tp_init, /* tp_init */
+        0,                                  /* tp_alloc */
+        python_component_registry::tp_new,  /* tp_new */
+        0,                                  /* tp_free */
+        0,                                  /* tp_is_gc */
+        0,                                  /* tp_bases */
+        0,                                  /* tp_mro */
+        0,                                  /* tp_cache */
+        0,                                  /* tp_subclasses */
+        0,                                  /* tp_weaklist */
+        0,                                  /* tp_del */
+        0,                                  /* tp_version_tag */
+        0,                                  /* tp_finalize */
     };
 
     void python_component_registry::create(const python_module_ref& module,
