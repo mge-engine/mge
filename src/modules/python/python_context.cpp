@@ -109,6 +109,12 @@ namespace mge::python {
                     << "Type " << t->name() << " is builtin";
                 continue;
             }
+            if (t->is_class() &&
+                !t->class_specific().interface_type.expired()) {
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "Type " << t->name() << " is proxy type";
+                continue;
+            }
             python_type_ref pt = std::make_shared<python_type>(*this, t);
             m_types[t] = pt;
         }
