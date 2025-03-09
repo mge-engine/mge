@@ -105,6 +105,20 @@ namespace mge {
             }
         }
 
+        small_vector(std::initializer_list<T> init)
+        {
+            if (init.size() == 0) {
+                // nothing
+            } else if (init.size() <= S) {
+                m_data.emplace<1>(small_data());
+                for (const auto& val : init) {
+                    std::get<1>(m_data).emplace_back(val);
+                }
+            } else {
+                m_data.emplace<2>(init);
+            }
+        }
+
         small_vector(const small_vector& v)
             : m_data(v.m_data)
             , m_allocator(v.m_allocator)

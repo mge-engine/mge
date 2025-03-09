@@ -47,3 +47,28 @@ TEST(small_vector, pop_back)
 
     EXPECT_THROW(v1.pop_back(), std::out_of_range);
 }
+
+TEST(small_vector, initializer_list)
+{
+    // Empty initializer list
+    mge::small_vector<int, 3> v1{};
+    EXPECT_EQ(0u, v1.size());
+
+    // Small storage
+    mge::small_vector<int, 3> v2{1, 2};
+    EXPECT_EQ(2u, v2.size());
+    EXPECT_EQ(1, v2[0]);
+    EXPECT_EQ(2, v2[1]);
+
+    // Vector storage
+    mge::small_vector<int, 3> v3{1, 2, 3, 4, 5};
+    EXPECT_EQ(5u, v3.size());
+    for (size_t i = 0; i < v3.size(); ++i) {
+        EXPECT_EQ(i + 1, v3[i]);
+    }
+
+    // Single element
+    mge::small_vector<int, 3> v4{42};
+    EXPECT_EQ(1u, v4.size());
+    EXPECT_EQ(42, v4[0]);
+}
