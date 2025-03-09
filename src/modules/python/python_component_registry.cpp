@@ -120,6 +120,11 @@ namespace mge::python {
             error::check_error();
         }
 
+        // Set the context in the created instance
+        python_component_registry* reg =
+            reinterpret_cast<python_component_registry*>(registry_instance);
+        reg->context = context;
+
         if (PyModule_AddObject(pymodule,
                                "component_registry",
                                registry_instance) < 0) {
