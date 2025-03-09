@@ -10,7 +10,8 @@ SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
     test003_object.py 
-    test004_function.py)
+    test004_function.py
+    test007_component.py)
 
 # Only include render system test if not in headless environment
 if(NOT HEADLESS_ENVIRONMENT)

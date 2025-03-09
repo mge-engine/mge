@@ -39,6 +39,25 @@ namespace mge::python {
     }
 #endif
 
+    static PyObject* python_component_registry_new(PyTypeObject* type,
+                                                   PyObject*     args,
+                                                   PyObject*     kwds)
+    {
+        python_component_registry* self =
+            (python_component_registry*)type->tp_alloc(type, 0);
+        if (self != NULL) {
+            self->context = nullptr;
+        }
+        return (PyObject*)self;
+    }
+
+    static int python_component_registry_init(PyObject* self,
+                                              PyObject* args,
+                                              PyObject* kwds)
+    {
+        return 0;
+    }
+
     static PyMethodDef python_component_registry_methods[] = {
         /* {"register_component",
          component::register_component,
@@ -85,9 +104,9 @@ namespace mge::python {
         0,                                 /* tp_descr_get */
         0,                                 /* tp_descr_set */
         0,                                 /* tp_dictoffset */
-        0,                                 /* tp_init */
+        python_component_registry_init,    /* tp_init */
         0,                                 /* tp_alloc */
-        0,                                 /* tp_new */
+        python_component_registry_new,     /* tp_new */
         0,                                 /* tp_free */
         0,                                 /* tp_is_gc */
         0,                                 /* tp_bases */
@@ -106,16 +125,31 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Creating component registry type and instance";
         gil_lock guard;
+
+        // First add the type to the module
         if (PyType_Ready(&python_component_registry_type_object) < 0) {
             error::check_error();
         }
-        Py_INCREF(&python_component_registry_type_object);
-        PyObject* pymodule = module->pymodule().get();
 
-        // Create singleton instance of the registry type
-        PyObject* registry_instance = PyObject_CallObject(
-            (PyObject*)&python_component_registry_type_object,
-            NULL);
+        PyObject* pymodule = module->pymodule().get();
+        if (PyModule_AddObject(
+                pymodule,
+                "__component_registry_type__",
+                (PyObject*)&python_component_registry_type_object) < 0) {
+            error::check_error();
+        }
+        Py_INCREF(&python_component_registry_type_object);
+
+        // Now create an instance using the type's constructor
+        PyObject* args = PyTuple_New(0);
+        PyObject* kwargs = PyDict_New();
+        PyObject* registry_instance =
+            PyObject_Call((PyObject*)&python_component_registry_type_object,
+                          args,
+                          kwargs);
+        Py_DECREF(args);
+        Py_DECREF(kwargs);
+
         if (!registry_instance) {
             error::check_error();
         }
@@ -125,6 +159,7 @@ namespace mge::python {
             reinterpret_cast<python_component_registry*>(registry_instance);
         reg->context = context;
 
+        // Add the instance to the module
         if (PyModule_AddObject(pymodule,
                                "component_registry",
                                registry_instance) < 0) {
