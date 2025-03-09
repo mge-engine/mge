@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/script/script_context.hpp"
+#include "python.hpp"
 #include "python_fwd.hpp"
 
 #include <functional>
@@ -27,6 +28,8 @@ namespace mge::python {
 
         const python_module_ref& module(const std::string& name) const;
         const python_type_ref& type(const mge::script::type_data_ref& t) const;
+        python_type_ref
+        find_component_type(const std::vector<PyObject*>& types);
 
     private:
         void bind_module(const mge::script::module_data_ref& data);

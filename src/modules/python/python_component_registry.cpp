@@ -4,6 +4,7 @@
 
 #include "python_component_registry.hpp"
 #include "gil_lock.hpp"
+#include "mge/core/small_vector.hpp"
 #include "mge/core/trace.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
@@ -38,26 +39,34 @@ namespace mge::python {
     python_component_registry::register_component(const char* name,
                                                   PyObject*   component_class)
     {
-        std::vector<PyObject*> base_types;
-        std::vector<PyObject*> stack{component_class};
+        std::vector<PyObject*>          base_types;
+        mge::small_vector<PyObject*, 1> stack{component_class};
 
-        while (!stack.empty()) {
-            PyObject* type = stack.back();
-            stack.pop_back();
-
-            PyObject* bases = ((PyTypeObject*)type)->tp_bases;
-            if (bases && PyTuple_Check(bases)) {
-                Py_ssize_t num_bases = PyTuple_Size(bases);
-                for (Py_ssize_t i = 0; i < num_bases; ++i) {
-                    PyObject* base = PyTuple_GetItem(bases, i);
-                    if (base && PyType_Check(base)) {
-                        base_types.push_back(base);
-                        stack.push_back(base);
-                    }
-                }
+        size_t i = 0;
+        while (i < stack.size()) {
+            PyObject* current = stack[i++];
+            if (!PyType_Check(current)) {
+                continue;
+            }
+            auto bases = ((PyTypeObject*)current)->tp_bases;
+            if (!bases) {
+                continue;
+            }
+            auto base_count = PyTuple_Size(bases);
+            for (Py_ssize_t j = 0; j < base_count; ++j) {
+                auto base = PyTuple_GetItem(bases, j);
+                stack.push_back(base);
             }
         }
 
+        python_type_ref component_type =
+            context->find_component_type(base_types);
+        if (!component_type) {
+            PyErr_Format(PyExc_TypeError,
+                         "No component type found for class '%s'",
+                         ((PyTypeObject*)component_class)->tp_name);
+            return nullptr;
+        }
         return Py_None;
     }
 

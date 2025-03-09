@@ -193,4 +193,29 @@ namespace mge::python {
         eval(prelude);
     }
 
+    python_type_ref
+    python_context::find_component_type(const std::vector<PyObject*>& types)
+    {
+        if (types.empty()) {
+            return nullptr;
+        }
+
+        // Search through all registered types
+        for (const auto& [type_data, python_type] : m_types) {
+            // Skip non-component types
+            if (!type_data->is_component()) {
+                continue;
+            }
+            // For each base type
+            for (PyObject* base_type : types) {
+                // Check if this type's Python type object matches the base type
+                if (python_type->type_object().get() == base_type) {
+                    return python_type;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
 } // namespace mge::python
