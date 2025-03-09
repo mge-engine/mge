@@ -129,7 +129,10 @@ namespace mge {
             return *this;
         }
 
-        const_iterator begin() const { return cbegin(); }
+        const_iterator begin() const
+        {
+            return cbegin();
+        }
 
         const_iterator cbegin() const
         {
@@ -161,7 +164,10 @@ namespace mge {
                 m_data);
         }
 
-        const_iterator end() const { return cend(); }
+        const_iterator end() const
+        {
+            return cend();
+        }
 
         const_iterator cend() const
         {
@@ -195,14 +201,20 @@ namespace mge {
                 m_data);
         }
 
-        const_reverse_iterator rbegin() const { return crbegin(); }
+        const_reverse_iterator rbegin() const
+        {
+            return crbegin();
+        }
 
         const_reverse_iterator crbegin() const
         {
             return std::make_reverse_iterator(end());
         }
 
-        const_reverse_iterator rend() const { return crend(); }
+        const_reverse_iterator rend() const
+        {
+            return crend();
+        }
 
         const_reverse_iterator crend() const
         {
@@ -329,7 +341,10 @@ namespace mge {
             return *(cbegin() + i);
         }
 
-        reference operator[](size_type i) { return *(begin() + i); }
+        reference operator[](size_type i)
+        {
+            return *(begin() + i);
+        }
 
         size_type capacity() const
         {
@@ -371,7 +386,10 @@ namespace mge {
                 m_data);
         }
 
-        bool empty() const { return m_data.index() == 0; }
+        bool empty() const
+        {
+            return m_data.index() == 0;
+        }
 
         pointer data() noexcept
         {
@@ -405,11 +423,20 @@ namespace mge {
 
         // erase
 
-        reference front() { return *begin(); }
+        reference front()
+        {
+            return *begin();
+        }
 
-        const_reference front() const { return *cbegin(); }
+        const_reference front() const
+        {
+            return *cbegin();
+        }
 
-        allocator_type get_allocator() const { return m_allocator; }
+        allocator_type get_allocator() const
+        {
+            return m_allocator;
+        }
 
         template <typename I>
         constexpr iterator insert(const_iterator pos, I first, I last)
@@ -424,43 +451,26 @@ namespace mge {
             }
         }
 
-    private:
-        template <typename I>
-        constexpr iterator
-        insert_small_data(const_iterator pos, I first, I last, size_t n)
-        {
-            auto p = begin() + std::distance(cbegin(), pos);
-            auto e = end();
-            if (p == e) {
-                for (; first != last; ++first) {
-                    emplace_back(*first);
-                }
-            } else {
-                auto i = end();
-                for (; i != p; --i) {
-                    *(i + n) = *i;
-                }
-                for (; first != last; ++first) {
-                    *(i + n) = *first;
-                }
-                std::get<1>(m_data).length += n;
-            }
-            return p;
-        }
-
-        template <typename I>
-        constexpr iterator
-        insert_vector(const_iterator pos, I first, I last, size_t n)
-        {
-            convert_to_vector();
-            auto& v = std::get<2>(m_data);
-            auto  p = v.begin() + std::distance(cbegin(), pos);
-            auto  r = v.insert(p, first, last);
-            return v.data() + std::distance(v.begin(), r);
-        }
-
     public:
         // pop_back
+        void pop_back()
+        {
+            switch (m_data.index()) {
+            case 0:
+                throw std::out_of_range("pop_back on empty vector");
+                break;
+            case 1:
+                if (std::get<1>(m_data).length > 0) {
+                    --std::get<1>(m_data).length;
+                } else {
+                    throw std::out_of_range("pop_back on empty vector");
+                }
+                break;
+            case 2:
+                std::get<2>(m_data).pop_back();
+                break;
+            }
+        }
 
         void push_back(const value_type& val)
         {
@@ -508,7 +518,10 @@ namespace mge {
             }
         }
 
-        void swap(small_vector<T, S, Alloc>& v) { m_data.swap(v.m_data); }
+        void swap(small_vector<T, S, Alloc>& v)
+        {
+            m_data.swap(v.m_data);
+        }
 
         void clear()
         {
@@ -642,6 +655,40 @@ namespace mge {
         {
             std::vector<value_type> v(begin(), end(), m_allocator);
             m_data.emplace<2>(v);
+        }
+
+        template <typename I>
+        constexpr iterator
+        insert_small_data(const_iterator pos, I first, I last, size_t n)
+        {
+            auto p = begin() + std::distance(cbegin(), pos);
+            auto e = end();
+            if (p == e) {
+                for (; first != last; ++first) {
+                    emplace_back(*first);
+                }
+            } else {
+                auto i = end();
+                for (; i != p; --i) {
+                    *(i + n) = *i;
+                }
+                for (; first != last; ++first) {
+                    *(i + n) = *first;
+                }
+                std::get<1>(m_data).length += n;
+            }
+            return p;
+        }
+
+        template <typename I>
+        constexpr iterator
+        insert_vector(const_iterator pos, I first, I last, size_t n)
+        {
+            convert_to_vector();
+            auto& v = std::get<2>(m_data);
+            auto  p = v.begin() + std::distance(cbegin(), pos);
+            auto  r = v.insert(p, first, last);
+            return v.data() + std::distance(v.begin(), r);
         }
 
         using data_type =
