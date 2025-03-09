@@ -38,6 +38,26 @@ namespace mge::python {
     python_component_registry::register_component(const char* name,
                                                   PyObject*   component_class)
     {
+        std::vector<PyObject*> base_types;
+        std::vector<PyObject*> stack{component_class};
+
+        while (!stack.empty()) {
+            PyObject* type = stack.back();
+            stack.pop_back();
+
+            PyObject* bases = ((PyTypeObject*)type)->tp_bases;
+            if (bases && PyTuple_Check(bases)) {
+                Py_ssize_t num_bases = PyTuple_Size(bases);
+                for (Py_ssize_t i = 0; i < num_bases; ++i) {
+                    PyObject* base = PyTuple_GetItem(bases, i);
+                    if (base && PyType_Check(base)) {
+                        base_types.push_back(base);
+                        stack.push_back(base);
+                    }
+                }
+            }
+        }
+
         return Py_None;
     }
 
