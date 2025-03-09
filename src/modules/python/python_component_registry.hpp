@@ -8,13 +8,15 @@
 
 namespace mge::python {
 
-    class component
+    class python_component_registry
     {
     public:
-        static void      create_registry_type(const python_module_ref& module,
-                                              python_context*          context);
-        static PyObject* register_component(PyObject* self, PyObject* args);
-        static python_type_ref component_base_type(PyObject* component_class);
+        static void create(const python_module_ref& module,
+                           python_context*          context);
+        // clang-format off
+        PyObject_HEAD
+        python_context* context;
+        // clang-format on
     };
 
 } // namespace mge::python
