@@ -50,10 +50,18 @@ namespace mge::script {
 
             mge::script::module mge("mge");
             mge(type<mge::loop_target>()
-                    .method("is_quit", &mge::loop_target::is_quit)
-                    .method("input", &mge::loop_target::input)
-                    .method("update", &mge::loop_target::update)
-                    .method("present", &mge::loop_target::present)
+                    .method("is_quit",
+                            &mge::loop_target::is_quit,
+                            mge::script::method_is_pure_virtual)
+                    .method("input",
+                            &mge::loop_target::input,
+                            mge::script::method_is_pure_virtual)
+                    .method("update",
+                            &mge::loop_target::update,
+                            mge::script::method_is_pure_virtual)
+                    .method("present",
+                            &mge::loop_target::present,
+                            mge::script::method_is_pure_virtual)
                     .proxy<proxy_loop_target>(),
                 type<mge::application>()
                     .base<mge::loop_target>()

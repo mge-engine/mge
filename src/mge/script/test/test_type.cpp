@@ -8,8 +8,8 @@
 #include "mock_call_context.hpp"
 #include "test/googletest.hpp"
 
+#include <tuple>
 #include <typeinfo>
-
 using namespace testing;
 
 static bool test_class_ctor_called{false};
@@ -196,6 +196,8 @@ TEST(type, abstract)
 {
     using namespace mge::script;
 
-    auto t = type<abstract_class>();
+    auto t = type<abstract_class>().method("f", &abstract_class::f, true);
     EXPECT_TRUE(t.is_abstract());
+    const auto& m = t.data()->class_specific().methods[0];
+    EXPECT_TRUE(std::get<4>(m));
 }
