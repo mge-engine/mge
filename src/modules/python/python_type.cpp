@@ -39,24 +39,27 @@ namespace mge::python {
             m_module_name = "__mge__";
         }
         m_name = m_module_name + "." + m_name_in_module;
-        MGE_DEBUG_TRACE(PYTHON)
-            << "Creating type " << type->name() << " as " << m_name;
+        MGE_INFO_TRACE(PYTHON) << "Creating Python type '" << m_name
+                               << "' for C++ type '" << type->name() << "'";
         initialize();
     }
 
     void python_type::initialize()
     {
         if (m_type->is_enum()) {
+            MGE_DEBUG_TRACE(PYTHON) << "Initializing enum type " << m_name;
             init_enum();
         } else if (m_type->is_class()) {
+            MGE_DEBUG_TRACE(PYTHON) << "Initializing class type " << m_name;
             init_class();
         } else {
-            MGE_DEBUG_TRACE(PYTHON) << "Unsupported type: " << m_type->name();
+            MGE_INFO_TRACE(PYTHON) << "Unsupported type: " << m_type->name();
         }
     }
 
     void python_type::init_enum()
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Setting up enum type " << m_name;
         gil_lock guard;
         if (m_type_slots.empty() || m_type_slots.rbegin()->slot != 0) {
             m_type_slots.push_back({0, nullptr});
@@ -69,6 +72,8 @@ namespace mge::python {
                   .slots = m_type_slots.data()};
 
         for (const auto& e : m_type->enum_specific().values) {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Adding enum value " << e.second << " = " << e.first;
             // overwrite on purpose for interpreter lost scenario
             m_attributes[e.second] = pyobject_ref(PyLong_FromLongLong(e.first));
         }
@@ -77,14 +82,18 @@ namespace mge::python {
     void python_type::init_class()
     {
         if (m_type->is_callable()) {
+            MGE_DEBUG_TRACE(PYTHON) << "Initializing callable class " << m_name;
             init_callable_class();
         } else {
+            MGE_DEBUG_TRACE(PYTHON) << "Initializing regular class " << m_name;
             init_regular_class();
         }
     }
 
     void python_type::init_regular_class()
     {
+        MGE_INFO_TRACE(PYTHON) << "Setting up regular class " << m_name;
+
         struct new_closure : tp_new_closure
         {
             PyObject*
@@ -96,6 +105,11 @@ namespace mge::python {
                 self = reinterpret_cast<object*>(subtype->tp_alloc(subtype, 0));
                 if (self != nullptr) {
                     self->shared_ptr_address = nullptr;
+                    MGE_DEBUG_TRACE(PYTHON)
+                        << "Allocated new instance of " << subtype->tp_name;
+                } else {
+                    MGE_DEBUG_TRACE(PYTHON) << "Failed to allocate instance of "
+                                            << subtype->tp_name;
                 }
                 return reinterpret_cast<PyObject*>(self);
             }
@@ -110,23 +124,19 @@ namespace mge::python {
             void execute(PyObject* self)
             {
                 MGE_DEBUG_TRACE(PYTHON)
-                    << "tp_dealloc " << self->ob_type->tp_name;
+                    << "Deallocating instance of " << self->ob_type->tp_name;
                 object* obj = reinterpret_cast<object*>(self);
                 if (obj->shared_ptr_address) {
-                    // shared_ptr_address is the address of the shared_ptr
-                    // that holds the object
-                    // we need to decrement the reference count
-                    // and if it is zero, delete the object
+                    MGE_DEBUG_TRACE(PYTHON) << "Destroying shared pointer";
                     python_call_context ctx(nullptr, &obj->shared_ptr_address);
                     m_type->class_specific().destroy_shared(ctx);
-                    // and set shared_ptr_address to nullptr
-                    // to avoid double deletion
                     obj->shared_ptr_address = nullptr;
                 }
                 {
                     gil_lock guard;
                     Py_TYPE(self)->tp_free(self);
                 }
+                MGE_DEBUG_TRACE(PYTHON) << "Instance deallocation complete";
             }
             const mge::script::type_data_ref& m_type;
         };
@@ -153,7 +163,7 @@ namespace mge::python {
         init_functions();
 
         if (!m_type->class_specific().constructors.empty()) {
-            MGE_DEBUG_TRACE(PYTHON)
+            MGE_INFO_TRACE(PYTHON)
                 << "Type " << m_type->name() << " has "
                 << m_type->class_specific().constructors.size()
                 << " constructors";
@@ -178,6 +188,10 @@ namespace mge::python {
                                 const mge::script::invoke_function& getter,
                                 const mge::script::invoke_function& setter)
     {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Adding field " << name << " to " << m_name
+            << " (setter: " << (setter ? "yes" : "no") << ")";
+
         struct get_closure : tp_get_closure
         {
             get_closure(
@@ -261,7 +275,9 @@ namespace mge::python {
 
     void python_type::init_fields()
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Initializing fields for " << m_name;
+        MGE_INFO_TRACE(PYTHON)
+            << "Initializing " << m_type->class_specific().fields.size()
+            << " fields for " << m_name;
 
         for (const auto& f : m_type->class_specific().fields) {
             add_field(std::get<0>(f), std::get<2>(f), std::get<3>(f));
@@ -274,6 +290,10 @@ namespace mge::python {
         const mge::script::type_data::call_signature& signature,
         const mge::script::invoke_function&           method)
     {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Adding method " << name << " to " << m_name
+            << " (signature size: " << signature.size() << ")";
+
         struct method_closure : mge::closure<PyObject*, PyObject*, PyObject*>
         {
             method_closure(
@@ -372,6 +392,10 @@ namespace mge::python {
 
     void python_type::init_methods()
     {
+        MGE_INFO_TRACE(PYTHON)
+            << "Initializing " << m_type->class_specific().methods.size()
+            << " methods for " << m_name;
+
         for (const auto& m : m_type->class_specific().methods) {
             add_method(std::get<0>(m),
                        std::get<1>(m),
@@ -382,6 +406,10 @@ namespace mge::python {
 
     void python_type::init_functions()
     {
+        MGE_INFO_TRACE(PYTHON)
+            << "Initializing " << m_type->class_specific().functions.size()
+            << " static functions for " << m_name;
+
         for (const auto& f : m_type->class_specific().functions) {
             add_function(std::get<0>(f),
                          std::get<1>(f),
@@ -393,11 +421,16 @@ namespace mge::python {
     int
     python_type::tp_init(PyObject* self, PyObject* args, PyObject* kwargs) const
     {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Initializing instance of " << m_name
+            << " (kwargs: " << (kwargs ? "yes" : "no") << ")";
 
         gil_lock             gil_guard;
         python_type::object* obj = reinterpret_cast<python_type::object*>(self);
 
         if (m_type->class_specific().constructors.empty()) {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "No constructors available for " << m_name;
             PyErr_SetString(PyExc_TypeError, "No constructors available");
             return -1;
         }
@@ -604,6 +637,8 @@ namespace mge::python {
                         Py_DECREF(abstract_methods);
                         error::check_error();
                     }
+                    MGE_DEBUG_TRACE(PYTHON)
+                        << "Adding abstract method " << name;
                     Py_DECREF(method_name);
                 }
             }

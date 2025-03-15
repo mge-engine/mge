@@ -39,6 +39,10 @@ namespace mge::python {
     python_component_registry::register_component(const char* name,
                                                   PyObject*   component_class)
     {
+        MGE_INFO_TRACE(PYTHON)
+            << "Registering component '" << name << "' with class "
+            << ((PyTypeObject*)component_class)->tp_name;
+
         std::vector<PyObject*>          base_types;
         mge::small_vector<PyObject*, 1> stack{component_class};
 
@@ -46,15 +50,24 @@ namespace mge::python {
         while (i < stack.size()) {
             PyObject* current = stack[i++];
             if (!PyType_Check(current)) {
+                MGE_DEBUG_TRACE(PYTHON) << "Skipping non-type base "
+                                        << ((PyTypeObject*)current)->tp_name;
                 continue;
             }
             auto bases = ((PyTypeObject*)current)->tp_bases;
             if (!bases) {
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "No bases for " << ((PyTypeObject*)current)->tp_name;
                 continue;
             }
             auto base_count = PyTuple_Size(bases);
+            MGE_DEBUG_TRACE(PYTHON) << "Found " << base_count << " bases for "
+                                    << ((PyTypeObject*)current)->tp_name;
+
             for (Py_ssize_t j = 0; j < base_count; ++j) {
                 auto base = PyTuple_GetItem(bases, j);
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "Adding base " << ((PyTypeObject*)base)->tp_name;
                 stack.push_back(base);
             }
         }
@@ -62,11 +75,17 @@ namespace mge::python {
         python_type_ref component_type =
             context->find_component_type(base_types);
         if (!component_type) {
+            MGE_INFO_TRACE(PYTHON)
+                << "No component type found for class '"
+                << ((PyTypeObject*)component_class)->tp_name << "'";
             PyErr_Format(PyExc_TypeError,
                          "No component type found for class '%s'",
                          ((PyTypeObject*)component_class)->tp_name);
             return nullptr;
         }
+
+        MGE_INFO_TRACE(PYTHON)
+            << "Successfully registered component '" << name << "'";
         return Py_None;
     }
 
@@ -74,10 +93,18 @@ namespace mge::python {
                                                 PyObject*     args,
                                                 PyObject*     kwds)
     {
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Creating new component registry instance of type "
+            << type->tp_name;
+
         python_component_registry* self =
             (python_component_registry*)type->tp_alloc(type, 0);
         if (self != NULL) {
             self->context = nullptr;
+            MGE_DEBUG_TRACE(PYTHON) << "Component registry instance created";
+        } else {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Failed to create component registry instance";
         }
         return (PyObject*)self;
     }
@@ -153,22 +180,27 @@ namespace mge::python {
     void python_component_registry::create(const python_module_ref& module,
                                            python_context*          context)
     {
-        MGE_DEBUG_TRACE(PYTHON)
+        MGE_INFO_TRACE(PYTHON)
             << "Creating component registry type and instance";
         gil_lock guard;
 
         // First add the type to the module
         if (PyType_Ready(&python_component_registry_type_object) < 0) {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Failed to ready component registry type";
             error::check_error();
         }
+        MGE_DEBUG_TRACE(PYTHON) << "Component registry type ready";
 
         PyObject* pymodule = module->pymodule().get();
         if (PyModule_AddObject(
                 pymodule,
                 "__component_registry_type__",
                 (PyObject*)&python_component_registry_type_object) < 0) {
+            MGE_DEBUG_TRACE(PYTHON) << "Failed to add type to module";
             error::check_error();
         }
+        MGE_DEBUG_TRACE(PYTHON) << "Added type to module";
         Py_INCREF(&python_component_registry_type_object);
 
         // Now create an instance using the type's constructor
@@ -182,20 +214,27 @@ namespace mge::python {
         Py_DECREF(kwargs);
 
         if (!registry_instance) {
+            MGE_DEBUG_TRACE(PYTHON) << "Failed to create registry instance";
             error::check_error();
         }
+        MGE_DEBUG_TRACE(PYTHON) << "Created registry instance";
 
         // Set the context in the created instance
         python_component_registry* reg =
             reinterpret_cast<python_component_registry*>(registry_instance);
         reg->context = context;
+        MGE_DEBUG_TRACE(PYTHON) << "Set context in registry instance";
 
         // Add the instance to the module
         if (PyModule_AddObject(pymodule,
                                "component_registry",
                                registry_instance) < 0) {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Failed to add registry instance to module";
             Py_DECREF(registry_instance);
             error::check_error();
         }
+        MGE_INFO_TRACE(PYTHON)
+            << "Successfully created component registry type and instance";
     }
 } // namespace mge::python
