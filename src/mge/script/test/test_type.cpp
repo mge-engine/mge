@@ -184,3 +184,18 @@ TEST(type, string)
     auto t = type<std::string>();
     EXPECT_TRUE(t.is_string());
 }
+
+class abstract_class
+{
+public:
+    virtual ~abstract_class() = default;
+    virtual void f() = 0;
+};
+
+TEST(type, abstract)
+{
+    using namespace mge::script;
+
+    auto t = type<abstract_class>();
+    EXPECT_TRUE(t.is_abstract());
+}

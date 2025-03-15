@@ -316,6 +316,12 @@ namespace mge::script {
                std::get<class_details>(m_details).is_string;
     }
 
+    bool type_data::is_abstract() const
+    {
+        return m_details.index() == 2 &&
+               std::get<class_details>(m_details).is_abstract;
+    }
+
     bool type_data::is_wstring() const
     {
         return m_details.index() == 2 &&

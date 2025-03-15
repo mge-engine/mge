@@ -42,6 +42,8 @@ namespace mge::script {
     // - unique_ptr<T>
     // - containers of classes
 
+    const bool method_is_pure_virtual = true;
+
     template <typename T> class type;
 
     template <> class type<void>
@@ -411,6 +413,11 @@ namespace mge::script {
             return m_data->is_string();
         }
 
+        bool is_abstract() const
+        {
+            return m_data->is_abstract();
+        }
+
         const type_data_ref& data() const noexcept
         {
             return m_data;
@@ -505,7 +512,9 @@ namespace mge::script {
         template <typename R, typename... Args>
             requires !std::is_void_v<R>
                      type<T> &
-            method(const char* name, R (T::*method)(Args...))
+            method(const char* name,
+                   R (T::*method)(Args...),
+                   bool pure_virtual = false)
         {
             type<R> return_type;
             m_data->add_dependency(dependency(return_type.data()));
@@ -535,14 +544,17 @@ namespace mge::script {
                         ctx.exception_thrown();
                         ctx.after_call();
                     }
-                });
+                },
+                pure_virtual);
             return *this;
         }
 
         template <typename R, typename... Args>
             requires !std::is_void_v<R>
                      type<T> &
-            method(const char* name, R (T::*method)(Args...) const)
+            method(const char* name,
+                   R (T::*method)(Args...) const,
+                   bool pure_virtual = false)
         {
             type<R> return_type;
             m_data->add_dependency(dependency(return_type.data()));
@@ -572,12 +584,15 @@ namespace mge::script {
                         ctx.exception_thrown();
                         ctx.after_call();
                     }
-                });
+                },
+                pure_virtual);
             return *this;
         }
 
         template <typename... Args>
-        type<T>& method(const char* name, void (T::*method)(Args...))
+        type<T>& method(const char* name,
+                        void (T::*method)(Args...),
+                        bool pure_virtual = false)
         {
             m_data->add_dependency(dependency(type<void>().data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
@@ -605,7 +620,8 @@ namespace mge::script {
                         ctx.exception_thrown();
                         ctx.after_call();
                     }
-                });
+                },
+                pure_virtual);
             return *this;
         }
 

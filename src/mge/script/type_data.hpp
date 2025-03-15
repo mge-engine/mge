@@ -119,6 +119,7 @@ namespace mge::script {
         bool is_rvalue_reference() const;
         bool is_void() const;
         bool is_callable() const;
+        bool is_abstract() const;
 
         bool is_string() const;
         bool is_wstring() const;
@@ -171,7 +172,8 @@ namespace mge::script {
             std::vector<std::tuple<std::string,
                                    type_data_ref,
                                    call_signature,
-                                   mge::script::invoke_function>>
+                                   mge::script::invoke_function,
+                                   bool>>
                 methods;
 
             std::vector<std::tuple<std::string,

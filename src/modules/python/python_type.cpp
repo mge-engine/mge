@@ -82,17 +82,15 @@ namespace mge::python {
     void python_type::init_class()
     {
         if (m_type->is_callable()) {
-            MGE_DEBUG_TRACE(PYTHON) << "Initializing callable class " << m_name;
             init_callable_class();
         } else {
-            MGE_DEBUG_TRACE(PYTHON) << "Initializing regular class " << m_name;
             init_regular_class();
         }
     }
 
     void python_type::init_regular_class()
     {
-        MGE_INFO_TRACE(PYTHON) << "Setting up regular class " << m_name;
+        MGE_INFO_TRACE(PYTHON) << "Setting up class " << m_name;
 
         struct new_closure : tp_new_closure
         {
@@ -397,10 +395,12 @@ namespace mge::python {
             << " methods for " << m_name;
 
         for (const auto& m : m_type->class_specific().methods) {
-            add_method(std::get<0>(m),
-                       std::get<1>(m),
-                       std::get<2>(m),
-                       std::get<3>(m));
+            if (std::get<3>(m)) {
+                add_method(std::get<0>(m),
+                           std::get<1>(m),
+                           std::get<2>(m),
+                           std::get<3>(m));
+            }
         }
     }
 
@@ -585,15 +585,17 @@ namespace mge::python {
 
     void python_type::define_regular_class()
     {
-        MGE_DEBUG_TRACE(PYTHON)
+        MGE_INFO_TRACE(PYTHON)
             << "Defining python type " << m_name << " for " << m_type->name();
 
         unsigned int extra_flags = 0;
-        if (m_type->class_specific().constructors.empty()) {
+        if (m_type->is_abstract()) {
             extra_flags |= Py_TPFLAGS_IS_ABSTRACT;
+            MGE_DEBUG_TRACE(PYTHON) << "Class " << m_name << " is abstract";
         }
         if (!m_type->class_specific().is_final) {
             extra_flags |= Py_TPFLAGS_BASETYPE;
+            MGE_DEBUG_TRACE(PYTHON) << "Class " << m_name << " is a base type";
         }
 
         gil_lock guard;
@@ -618,15 +620,19 @@ namespace mge::python {
         }
 
         // Set __abstractmethods__ for abstract types
-        if (m_type->class_specific().is_abstract) {
+        if (m_type->is_abstract()) {
             PyObject* abstract_methods = PySet_New(nullptr);
             if (!abstract_methods) {
                 error::check_error();
             }
             // Add all pure virtual methods to the set
             for (const auto& method : m_type->class_specific().methods) {
-                const auto& [name, return_type, signature, func] = method;
-                if (!func) { // Pure virtual method
+                const auto& [name,
+                             return_type,
+                             signature,
+                             func,
+                             is_pure_virtual] = method;
+                if (is_pure_virtual) { // Pure virtual method
                     PyObject* method_name = PyUnicode_FromString(name.c_str());
                     if (!method_name) {
                         Py_DECREF(abstract_methods);
