@@ -33,3 +33,13 @@ class TestObject(unittest.TestCase):
         v.y = 456
         self.assertEqual(v.x, 123)
         self.assertEqual(v.y, 456)
+
+    def test_abstract_type(self):
+        with self.assertRaises(TypeError):
+            mge.loop_target()
+
+    def test_abstract_type_subclass(self):
+        class MyLoopTarget(mge.loop_target):
+            pass
+        x = MyLoopTarget()
+        self.assertIsInstance(x, mge.loop_target)

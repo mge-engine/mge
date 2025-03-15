@@ -152,6 +152,7 @@ namespace mge::script {
             bool                                 is_abstract{false};
             bool                                 is_component{false};
             bool                                 is_callable{false};
+            bool                                 is_final{false};
             size_t                               size{0};
             mge::script::invoke_function         destroy;
             mge::script::invoke_function         destroy_shared;

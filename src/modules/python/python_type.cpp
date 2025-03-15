@@ -90,6 +90,7 @@ namespace mge::python {
             PyObject*
             execute(PyTypeObject* subtype, PyObject* args, PyObject* kwds)
             {
+                MGE_DEBUG_TRACE(PYTHON) << "tp_new " << subtype->tp_name;
                 gil_lock guard;
                 object*  self;
                 self = reinterpret_cast<object*>(subtype->tp_alloc(subtype, 0));
@@ -108,6 +109,8 @@ namespace mge::python {
 
             void execute(PyObject* self)
             {
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "tp_dealloc " << self->ob_type->tp_name;
                 object* obj = reinterpret_cast<object*>(self);
                 if (obj->shared_ptr_address) {
                     // shared_ptr_address is the address of the shared_ptr
@@ -136,11 +139,11 @@ namespace mge::python {
 
             int execute(PyObject* self, PyObject* args, PyObject* kwds)
             {
+                MGE_DEBUG_TRACE(PYTHON) << "tp_init " << self->ob_type->tp_name;
                 return m_python_type->tp_init(self, args, kwds);
             }
             const python_type* m_python_type;
         };
-
         m_tp_new_closure = std::make_shared<new_closure>();
         m_tp_dealloc_closure = std::make_shared<dealloc_closure>(m_type);
         m_tp_init_closure = std::make_shared<init_closure>(this);
@@ -149,8 +152,12 @@ namespace mge::python {
         init_methods();
         init_functions();
 
-        m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
         if (!m_type->class_specific().constructors.empty()) {
+            MGE_DEBUG_TRACE(PYTHON)
+                << "Type " << m_type->name() << " has "
+                << m_type->class_specific().constructors.size()
+                << " constructors";
+            m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
             m_type_slots.emplace_back(Py_tp_dealloc,
                                       m_tp_dealloc_closure->function());
             m_type_slots.emplace_back(Py_tp_init,
@@ -548,6 +555,14 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON)
             << "Defining python type " << m_name << " for " << m_type->name();
 
+        unsigned int extra_flags = 0;
+        if (m_type->class_specific().constructors.empty()) {
+            extra_flags |= Py_TPFLAGS_IS_ABSTRACT;
+        }
+        if (!m_type->class_specific().is_final) {
+            extra_flags |= Py_TPFLAGS_BASETYPE;
+        }
+
         gil_lock guard;
 
         if (m_type_slots.empty() || m_type_slots.rbegin()->slot != 0) {
@@ -557,7 +572,8 @@ namespace mge::python {
         m_spec = {.name = m_name.c_str(),
                   .basicsize =
                       mge::checked_cast<int>(sizeof(PyObject) + sizeof(void*)),
-                  .flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE,
+                  .flags =
+                      Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HEAPTYPE | extra_flags,
                   .slots = m_type_slots.data()};
 
         python_module_ref module = m_context.module(m_module_name);
@@ -567,6 +583,40 @@ namespace mge::python {
         if (!m_type_object) {
             error::check_error();
         }
+
+        // Set __abstractmethods__ for abstract types
+        if (m_type->class_specific().is_abstract) {
+            PyObject* abstract_methods = PySet_New(nullptr);
+            if (!abstract_methods) {
+                error::check_error();
+            }
+            // Add all pure virtual methods to the set
+            for (const auto& method : m_type->class_specific().methods) {
+                const auto& [name, return_type, signature, func] = method;
+                if (!func) { // Pure virtual method
+                    PyObject* method_name = PyUnicode_FromString(name.c_str());
+                    if (!method_name) {
+                        Py_DECREF(abstract_methods);
+                        error::check_error();
+                    }
+                    if (PySet_Add(abstract_methods, method_name) < 0) {
+                        Py_DECREF(method_name);
+                        Py_DECREF(abstract_methods);
+                        error::check_error();
+                    }
+                    Py_DECREF(method_name);
+                }
+            }
+            if (PyDict_SetItemString(
+                    ((PyTypeObject*)m_type_object.get())->tp_dict,
+                    "__abstractmethods__",
+                    abstract_methods) < 0) {
+                Py_DECREF(abstract_methods);
+                error::check_error();
+            }
+            Py_DECREF(abstract_methods);
+        }
+
         PyObject* capsule = PyCapsule_New(this, "python_type", nullptr);
         if (!capsule) {
             error::check_error();
