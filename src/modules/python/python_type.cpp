@@ -491,7 +491,7 @@ namespace mge::python {
             }
             concrete_type = concrete_type->class_specific().proxy_type;
             invocation_context =
-                std::make_unique<python_invocation_context>(*this);
+                std::make_unique<python_invocation_context>(*this, self);
         }
 
         if (concrete_type->class_specific().constructors.empty()) {
@@ -538,7 +538,7 @@ namespace mge::python {
                             obj->shared_ptr_address));
                 if (proxy) {
                     proxy->set_context(invocation_context.get());
-                    invocation_context.reset();
+                    invocation_context.release();
                 }
             }
             return 0;

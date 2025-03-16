@@ -41,6 +41,7 @@ TEST(proxy, call_no_args_produces_result)
             mge::script::invocation_context::call_result_type::CALL_EXECUTED));
     EXPECT_CALL(ctx, get_int32_t_result()).WillOnce(testing::Return(42));
     EXPECT_EQ(42, p.test_int_method());
+    p.clear_context();
 }
 
 TEST(proxy, call_with_args_produces_result)
@@ -55,6 +56,7 @@ TEST(proxy, call_with_args_produces_result)
     EXPECT_CALL(ctx, store_int32_t_argument(1, 2));
     EXPECT_CALL(ctx, get_int32_t_result()).WillOnce(testing::Return(42));
     EXPECT_EQ(42, p.test_method(1, 2));
+    p.clear_context();
 }
 
 TEST(proxy, check_MGE_INTERNAL_COUNT)

@@ -8,7 +8,8 @@ namespace mge::python {
     class python_invocation_context : public mge::script::invocation_context
     {
     public:
-        python_invocation_context(const python_type& type);
+        python_invocation_context(const python_type& type, PyObject* self);
+        virtual ~python_invocation_context();
 
     protected:
         void store_bool_argument(size_t index, bool value) override;
@@ -49,5 +50,6 @@ namespace mge::python {
 
     private:
         const python_type& m_type;
+        PyObject*          m_self;
     };
 } // namespace mge::python

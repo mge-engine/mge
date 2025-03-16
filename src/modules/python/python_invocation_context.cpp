@@ -10,10 +10,18 @@ namespace mge {
 namespace mge::python {
 
     python_invocation_context::python_invocation_context(
-        const python_type& type)
+        const python_type& type, PyObject* self)
         : m_type(type)
+        , m_self(self)
     {
-        MGE_DEBUG_TRACE(PYTHON) << "New invocation context";
+        // MGE_DEBUG_TRACE(PYTHON)
+        //     << "python_invocation_context@" << this << " ctor";
+    }
+
+    python_invocation_context::~python_invocation_context()
+    {
+        // MGE_DEBUG_TRACE(PYTHON)
+        //     << "python_invocation_context@" << this << " dtor";
     }
 
     void python_invocation_context::store_bool_argument(size_t index,

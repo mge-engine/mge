@@ -9,6 +9,7 @@ namespace mge {
 namespace mge::script {
 
     proxy_base::proxy_base()
+        : m_context(nullptr)
     {
         MGE_DEBUG_TRACE(SCRIPT) << "proxy@" << this << " ctor";
     }
