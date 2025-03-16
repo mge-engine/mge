@@ -26,6 +26,20 @@ namespace mge::script {
          */
         void set_context(invocation_context* context);
 
+        /**
+         * Clear the invocation context.
+         */
+        void clear_context();
+
+        /**
+         * Get the invocation context.
+         * @return invocation context
+         */
+        invocation_context* context() const noexcept
+        {
+            return m_context;
+        }
+
     protected:
         invocation_context* m_context{nullptr};
     };

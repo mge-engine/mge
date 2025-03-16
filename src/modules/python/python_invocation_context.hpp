@@ -1,13 +1,14 @@
 #pragma once
 #include "mge/script/invocation_context.hpp"
 #include "python.hpp"
+#include "python_fwd.hpp"
 
 namespace mge::python {
 
     class python_invocation_context : public mge::script::invocation_context
     {
     public:
-        python_invocation_context();
+        python_invocation_context(const python_type& type);
 
     protected:
         void store_bool_argument(size_t index, bool value) override;
@@ -45,5 +46,8 @@ namespace mge::python {
         double      get_double_result() override;
         long double get_long_double_result() override;
         std::string get_string_result() override;
+
+    private:
+        const python_type& m_type;
     };
 } // namespace mge::python

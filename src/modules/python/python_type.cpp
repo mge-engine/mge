@@ -315,6 +315,7 @@ namespace mge::python {
         struct method_closure : mge::closure<PyObject*, PyObject*, PyObject*>
         {
             method_closure(
+                python_type&                                  type,
                 const mge::script::invoke_function&           method,
                 const mge::script::type_data::call_signature& signature,
                 const mge::script::type_data_ref&             return_type,
@@ -323,7 +324,8 @@ namespace mge::python {
                 const mge::script::type_data::
                     extract_proxy_base_from_shared_ptr_address&
                         proxy_base_from_shared_ptr)
-                : m_method(method)
+                : m_type(type)
+                , m_method(method)
                 , m_signature(signature)
                 , m_return_type(return_type)
                 , m_this_from_shared_ptr(this_from_shared_ptr)
@@ -349,12 +351,10 @@ namespace mge::python {
                     object*  obj = reinterpret_cast<object*>(self);
                     void*    this_ptr =
                         m_this_from_shared_ptr(obj->shared_ptr_address);
-                    mge::script::proxy_base* proxy =
+                    /* mge::script::proxy_base* proxy =
                         reinterpret_cast<mge::script::proxy_base*>(
                             m_proxy_base_from_shared_ptr(
-                                obj->shared_ptr_address));
-                    python_invocation_context ictx;
-                    proxy->set_context(&ictx);
+                                obj->shared_ptr_address)); */
                     python_call_context ctx(this_ptr, obj->shared_ptr_address);
                     ctx.set_arguments(args);
                     m_method(ctx);
@@ -365,6 +365,7 @@ namespace mge::python {
                 }
             }
 
+            python_type&                                  m_type;
             const mge::script::invoke_function&           m_method;
             const mge::script::type_data::call_signature& m_signature;
             const mge::script::type_data_ref&             m_return_type;
@@ -377,6 +378,7 @@ namespace mge::python {
 
         std::shared_ptr<method_closure> closure =
             std::make_shared<method_closure>(
+                *this,
                 method,
                 signature,
                 return_type,
@@ -479,7 +481,8 @@ namespace mge::python {
         gil_lock             gil_guard;
         python_type::object* obj = reinterpret_cast<python_type::object*>(self);
 
-        auto concrete_type = m_type;
+        auto                                       concrete_type = m_type;
+        std::unique_ptr<python_invocation_context> invocation_context;
         if (concrete_type->class_specific().proxy_type) {
             if (!is_subclass) {
                 PyErr_SetString(PyExc_TypeError,
@@ -487,6 +490,8 @@ namespace mge::python {
                 return -1;
             }
             concrete_type = concrete_type->class_specific().proxy_type;
+            invocation_context =
+                std::make_unique<python_invocation_context>(*this);
         }
 
         if (concrete_type->class_specific().constructors.empty()) {
@@ -526,6 +531,16 @@ namespace mge::python {
         if (ctx.has_exception()) {
             return -1;
         } else {
+            if (invocation_context) {
+                mge::script::proxy_base* proxy =
+                    reinterpret_cast<mge::script::proxy_base*>(
+                        m_type->class_specific().proxy_base_from_shared_ptr(
+                            obj->shared_ptr_address));
+                if (proxy) {
+                    proxy->set_context(invocation_context.get());
+                    invocation_context.reset();
+                }
+            }
             return 0;
         }
     }

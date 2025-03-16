@@ -9,7 +9,9 @@ namespace mge {
 
 namespace mge::python {
 
-    python_invocation_context::python_invocation_context()
+    python_invocation_context::python_invocation_context(
+        const python_type& type)
+        : m_type(type)
     {
         MGE_DEBUG_TRACE(PYTHON) << "New invocation context";
     }
