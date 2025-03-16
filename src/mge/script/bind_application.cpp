@@ -71,9 +71,15 @@ namespace mge::script {
                     .method("is_quit", &mge::application::is_quit)
                     .method("set_quit", &mge::application::set_quit)
                     .method("initialize", &mge::application::initialize)
-                    .method("setup", &mge::application::setup)
-                    .method("async_setup", &mge::application::async_setup)
-                    .method("teardown", &mge::application::teardown)
+                    .method("setup",
+                            &mge::application::setup,
+                            mge::script::method_is_pure_virtual)
+                    .method("async_setup",
+                            &mge::application::async_setup,
+                            mge::script::method_is_pure_virtual)
+                    .method("teardown",
+                            &mge::application::teardown,
+                            mge::script::method_is_pure_virtual)
                     .method("run", &mge::application::run)
                     .method("set_return_code",
                             &mge::application::set_return_code)
