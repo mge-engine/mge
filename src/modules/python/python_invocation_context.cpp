@@ -1,9 +1,18 @@
 #include "python_invocation_context.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include "mge/core/trace.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(PYTHON);
+}
+
 namespace mge::python {
 
-    python_invocation_context::python_invocation_context() {}
+    python_invocation_context::python_invocation_context()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "New invocation context";
+    }
 
     void python_invocation_context::store_bool_argument(size_t index,
                                                         bool   value)
@@ -94,6 +103,7 @@ namespace mge::python {
     mge::script::invocation_context::call_result_type
     python_invocation_context::call_method(const char* method)
     {
+        MGE_DEBUG_TRACE(PYTHON) << "Invoke method: " << method;
         MGE_THROW_NOT_IMPLEMENTED;
     }
 

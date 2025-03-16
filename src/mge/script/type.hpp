@@ -768,10 +768,9 @@ namespace mge::script {
             proxy_type.data()->class_specific().interface_type = m_data;
             m_data->class_specific().proxy_base_from_shared_ptr =
                 [](void* shared_ptr_address) -> void* {
-                std::shared_ptr<mge::script::proxy_base>* obj =
-                    static_cast<std::shared_ptr<mge::script::proxy_base>*>(
-                        shared_ptr_address);
-                return obj->get();
+                std::shared_ptr<Proxy>* sp =
+                    static_cast<std::shared_ptr<Proxy>*>(shared_ptr_address);
+                return sp->get()->as_proxy_base();
             };
             return *this;
         }

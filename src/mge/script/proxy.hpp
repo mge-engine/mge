@@ -15,18 +15,16 @@ namespace mge::script {
      *
      * Proxy objects need a virtual base to have only one invocation context.
      */
-    class proxy_base
+    class MGESCRIPT_EXPORT proxy_base
     {
     public:
-        virtual ~proxy_base() = default;
+        proxy_base();
+        virtual ~proxy_base();
 
         /**
          * Set the invocation context.
          */
-        void set_context(invocation_context* context)
-        {
-            m_context = context;
-        }
+        void set_context(invocation_context* context);
 
     protected:
         invocation_context* m_context{nullptr};
@@ -67,6 +65,15 @@ namespace mge::script {
          * @brief Destructor.
          */
         virtual ~proxy() = default;
+
+        /**
+         * @brief Cast to proxy base.
+         * @return proxy base
+         */
+        proxy_base* as_proxy_base()
+        {
+            return this;
+        }
     };
 
 } // namespace mge::script

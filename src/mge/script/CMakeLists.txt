@@ -13,7 +13,8 @@ SET(mgescript_sources
     type_data.cpp
     function_data.cpp
 
-    dependency.cpp  
+    dependency.cpp
+    proxy.cpp  
 
     bind_std.cpp
 )
