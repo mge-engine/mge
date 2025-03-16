@@ -90,6 +90,7 @@ namespace mge::python {
 
     void python_type::init_regular_class()
     {
+
         MGE_INFO_TRACE(PYTHON) << "Setting up class " << m_name;
 
         struct new_closure : tp_new_closure
@@ -152,6 +153,7 @@ namespace mge::python {
             }
             const python_type* m_python_type;
         };
+
         m_tp_new_closure = std::make_shared<new_closure>();
         m_tp_dealloc_closure = std::make_shared<dealloc_closure>(m_type);
         m_tp_init_closure = std::make_shared<init_closure>(this);
@@ -160,11 +162,24 @@ namespace mge::python {
         init_methods();
         init_functions();
 
-        if (!m_type->class_specific().constructors.empty()) {
-            MGE_INFO_TRACE(PYTHON)
-                << "Type " << m_type->name() << " has "
-                << m_type->class_specific().constructors.size()
-                << " constructors";
+        if (!m_type->class_specific().constructors.empty() ||
+            m_type->class_specific().proxy_type) {
+            if (m_type->class_specific().constructors.empty()) {
+                MGE_INFO_TRACE(PYTHON)
+                    << "Type " << m_type->name() << " has no constructors";
+                MGE_INFO_TRACE(PYTHON)
+                    << "Type " << m_type->name() << " has proxy type "
+                    << m_type->class_specific().proxy_type->name() << " with "
+                    << m_type->class_specific()
+                           .proxy_type->class_specific()
+                           .constructors.size()
+                    << " constructors";
+            } else {
+                MGE_INFO_TRACE(PYTHON)
+                    << "Type " << m_type->name() << " has "
+                    << m_type->class_specific().constructors.size()
+                    << " constructors";
+            }
             m_type_slots.emplace_back(Py_tp_new, m_tp_new_closure->function());
             m_type_slots.emplace_back(Py_tp_dealloc,
                                       m_tp_dealloc_closure->function());
@@ -428,7 +443,12 @@ namespace mge::python {
         gil_lock             gil_guard;
         python_type::object* obj = reinterpret_cast<python_type::object*>(self);
 
-        if (m_type->class_specific().constructors.empty()) {
+        auto concrete_type = m_type;
+        if (concrete_type->class_specific().proxy_type) {
+            concrete_type = concrete_type->class_specific().proxy_type;
+        }
+
+        if (concrete_type->class_specific().constructors.empty()) {
             MGE_DEBUG_TRACE(PYTHON)
                 << "No constructors available for " << m_name;
             PyErr_SetString(PyExc_TypeError, "No constructors available");
@@ -444,10 +464,10 @@ namespace mge::python {
             return -1;
         }
 
-        size_t constructor_index = select_constructor(args);
+        size_t constructor_index = select_constructor(concrete_type, args);
 
         if (constructor_index ==
-            m_type->class_specific().make_shared_constructors.size()) {
+            concrete_type->class_specific().make_shared_constructors.size()) {
             PyErr_SetString(PyExc_TypeError, "No matching constructor found");
             return -1;
         }
@@ -458,7 +478,7 @@ namespace mge::python {
         python_call_context ctx(nullptr, &obj->shared_ptr_address);
         ctx.set_arguments(args);
 
-        m_type->class_specific()
+        concrete_type->class_specific()
             .make_shared_constructors[constructor_index]
             .second(ctx);
 
@@ -488,18 +508,20 @@ namespace mge::python {
         return true;
     }
 
-    size_t python_type::select_constructor(PyObject* args) const
+    size_t
+    python_type::select_constructor(const mge::script::type_data_ref& type,
+                                    PyObject* args) const
     {
         gil_lock guard;
         size_t   arg_count = mge::checked_cast<size_t>(PyTuple_Size(args));
         size_t   constructor_index =
-            m_type->class_specific().make_shared_constructors.size();
+            type->class_specific().make_shared_constructors.size();
         std::vector<match_type> best_match;
         for (size_t i = 0;
-             i < m_type->class_specific().make_shared_constructors.size();
+             i < type->class_specific().make_shared_constructors.size();
              ++i) {
             const auto& signature =
-                m_type->class_specific().make_shared_constructors[i].first;
+                type->class_specific().make_shared_constructors[i].first;
             if (signature.size() == arg_count) {
                 if (arg_count == 0) {
                     return i;
@@ -510,7 +532,7 @@ namespace mge::python {
                     if (arg == nullptr) {
                         PyErr_SetString(PyExc_TypeError,
                                         "Cannot get argument from tuple");
-                        return m_type->class_specific()
+                        return type->class_specific()
                             .make_shared_constructors.size();
                     }
                     auto m = type_matches(arg, signature[j]);

@@ -59,7 +59,8 @@ namespace mge::python {
         void define_regular_class();
         void define_alias();
 
-        size_t select_constructor(PyObject* args) const;
+        size_t select_constructor(const mge::script::type_data_ref& type,
+                                  PyObject*                         args) const;
 
         int tp_init(PyObject* self, PyObject* args, PyObject* kwds) const;
 
