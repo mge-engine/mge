@@ -147,24 +147,29 @@ namespace mge {
         {
         public:
             calibrate_stage()
-                : loops(10)
-                , max_unstable_loops_add(5)
+                : loops(12)
                 , iterations(10)
                 , current_loop(0)
-                , stable(false)
-            {}
+                , min_measurements(8)
+                , series_window(5)
+            {
+                series.reserve(15);
+            }
 
             uint64_t              loops;
-            uint64_t              max_unstable_loops_add;
             uint64_t              iterations;
             uint64_t              current_loop;
             measure_series        series;
             static constexpr auto wanted_duration =
                 std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    std::chrono::milliseconds(200));
-            bool stable;
+                    std::chrono::milliseconds(50));
+            uint64_t min_measurements;
+            uint64_t series_window;
 
-            uint64_t initial_iterations() const override { return iterations; }
+            uint64_t initial_iterations() const override
+            {
+                return iterations;
+            }
 
             uint64_t update(benchmark&                   b,
                             uint64_t                     performed_iterations,
@@ -172,42 +177,39 @@ namespace mge {
                             benchmark::clock::time_point end) override
             {
                 ++current_loop;
-                if (current_loop == loops) {
-                    if (!stable) {
-                        if (max_unstable_loops_add == 0) {
-                            std::stringstream msg;
-                            msg << "Benchmark '" << b.current()
-                                << "' unstable after " << current_loop
-                                << " iterations";
-                            throw std::runtime_error(msg.str());
-                        }
-                        loops += max_unstable_loops_add;
-                        max_unstable_loops_add = 0;
-                    } else {
-                        return 0;
-                    }
-                }
-
                 measure_point p(performed_iterations, end - start);
                 series.push_back(p);
 
-                if (series.size() >= 5) {
-                    measure_point m = time_per_op_median(series);
-                    double        d = deviation(m.duration, p.duration);
-                    if (d < 0.2) {
-                        stable = true;
-                    }
-                }
+                if (series.size() >= min_measurements) {
+                    measure_series window(
+                        series.end() - std::min(series_window, series.size()),
+                        series.end());
+                    measure_point m = time_per_op_median(window);
 
-                if (p.duration >= wanted_duration) {
-                    if (stable) {
+                    double total_deviation = 0.0;
+                    for (const auto& point : window) {
+                        total_deviation +=
+                            deviation(m.duration, point.duration);
+                    }
+                    double avg_deviation = total_deviation / window.size();
+
+                    if (avg_deviation < 0.5 || current_loop >= loops) {
                         b.set_measure_iterations(performed_iterations);
                         return 0;
                     }
-                } else {
+                }
+
+                if (current_loop >= loops) {
+                    b.set_measure_iterations(performed_iterations);
+                    return 0;
+                }
+
+                auto duration = end - start;
+                if (duration < wanted_duration) {
                     double factor =
-                        static_cast<double>(wanted_duration.count()) /
-                        static_cast<double>(p.duration.count());
+                        std::min(1.5,
+                                 static_cast<double>(wanted_duration.count()) /
+                                     static_cast<double>(duration.count()));
                     iterations = static_cast<uint64_t>(
                         static_cast<double>(iterations) * factor);
                 }
@@ -230,8 +232,11 @@ namespace mge {
             measure_series                         series;
             std::uniform_int_distribution<int64_t> distributor;
 
-            uint64_t initial_iterations() const override { return iterations; }
-            void     set_iterations(uint64_t iterations_)
+            uint64_t initial_iterations() const override
+            {
+                return iterations;
+            }
+            void set_iterations(uint64_t iterations_)
             {
                 // std::cerr << "Set iterations: " << iterations_ << std::endl;
 
@@ -317,7 +322,10 @@ namespace mge {
         };
     }; // namespace mge
 
-    uint64_t benchmark::stage::initial_iterations() const { return 0; }
+    uint64_t benchmark::stage::initial_iterations() const
+    {
+        return 0;
+    }
 
     void benchmark::stage::set_iterations(uint64_t iterations) {}
 
@@ -388,9 +396,15 @@ namespace mge {
         m_stages.emplace_back(std::make_unique<benchmark_stages::done_stage>());
     }
 
-    uint64_t benchmark::next_iterations() const { return m_next_iterations; }
+    uint64_t benchmark::next_iterations() const
+    {
+        return m_next_iterations;
+    }
 
-    void benchmark::start_measuring() { m_measure_start = clock::now(); }
+    void benchmark::start_measuring()
+    {
+        m_measure_start = clock::now();
+    }
 
     void benchmark::stop_measuring()
     {
@@ -425,9 +439,15 @@ namespace mge {
         m_stages.at(MEASURE)->set_iterations(iterations);
     }
 
-    const std::string& benchmark::current() const { return m_current; }
+    const std::string& benchmark::current() const
+    {
+        return m_current;
+    }
 
-    const auto& benchmark::results() const { return m_results; }
+    const auto& benchmark::results() const
+    {
+        return m_results;
+    }
 
     void benchmark::submit(const benchmark::result& r)
     {
