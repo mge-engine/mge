@@ -62,7 +62,10 @@ namespace mge::python {
         size_t select_constructor(const mge::script::type_data_ref& type,
                                   PyObject*                         args) const;
 
-        int tp_init(PyObject* self, PyObject* args, PyObject* kwds) const;
+        int tp_init(PyObject* self,
+                    PyObject* args,
+                    PyObject* kwds,
+                    bool      is_subclass) const;
 
         python_context& m_context;
         std::string     m_name_in_module; // name as it appaers in the module

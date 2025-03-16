@@ -151,7 +151,10 @@ namespace mge::python {
             int execute(PyObject* self, PyObject* args, PyObject* kwds)
             {
                 MGE_DEBUG_TRACE(PYTHON) << "tp_init " << self->ob_type->tp_name;
-                return m_python_type->tp_init(self, args, kwds);
+                bool is_subclass =
+                    static_cast<void*>(self->ob_type) !=
+                    static_cast<void*>(m_python_type->m_type_object.get());
+                return m_python_type->tp_init(self, args, kwds, is_subclass);
             }
             const python_type* m_python_type;
         };
@@ -463,18 +466,26 @@ namespace mge::python {
         }
     }
 
-    int
-    python_type::tp_init(PyObject* self, PyObject* args, PyObject* kwargs) const
+    int python_type::tp_init(PyObject* self,
+                             PyObject* args,
+                             PyObject* kwargs,
+                             bool      is_subclass) const
     {
         MGE_DEBUG_TRACE(PYTHON)
             << "Initializing instance of " << m_name
-            << " (kwargs: " << (kwargs ? "yes" : "no") << ")";
+            << " (kwargs: " << (kwargs ? "yes" : "no")
+            << ", is_subclass: " << (is_subclass ? "yes" : "no") << ")";
 
         gil_lock             gil_guard;
         python_type::object* obj = reinterpret_cast<python_type::object*>(self);
 
         auto concrete_type = m_type;
         if (concrete_type->class_specific().proxy_type) {
+            if (!is_subclass) {
+                PyErr_SetString(PyExc_TypeError,
+                                "Cannot instantiate abstract type");
+                return -1;
+            }
             concrete_type = concrete_type->class_specific().proxy_type;
         }
 
