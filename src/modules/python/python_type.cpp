@@ -6,12 +6,14 @@
 #include "python_call_context.hpp"
 #include "python_context.hpp"
 #include "python_error.hpp"
+#include "python_invocation_context.hpp"
 #include "python_module.hpp"
 #include "type_matches.hpp"
 
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/script/module_data.hpp"
+#include "mge/script/proxy.hpp"
 #include "mge/script/type_data.hpp"
 
 #include <mutex>
@@ -314,26 +316,50 @@ namespace mge::python {
                 const mge::script::type_data::call_signature& signature,
                 const mge::script::type_data_ref&             return_type,
                 const mge::script::type_data::
-                    extract_this_from_shared_ptr_address& this_from_shared_ptr)
+                    extract_this_from_shared_ptr_address& this_from_shared_ptr,
+                const mge::script::type_data::
+                    extract_proxy_base_from_shared_ptr_address&
+                        proxy_base_from_shared_ptr)
                 : m_method(method)
                 , m_signature(signature)
                 , m_return_type(return_type)
                 , m_this_from_shared_ptr(this_from_shared_ptr)
+                , m_proxy_base_from_shared_ptr(proxy_base_from_shared_ptr)
             {}
 
             PyObject* execute(PyObject* self, PyObject* args)
             {
-                gil_lock guard;
-                object*  obj = reinterpret_cast<object*>(self);
-                void*    this_ptr =
-                    m_this_from_shared_ptr(obj->shared_ptr_address);
-                python_call_context ctx(this_ptr, obj->shared_ptr_address);
-                ctx.set_arguments(args);
-                m_method(ctx);
-                if (ctx.has_exception()) {
-                    return nullptr;
+                if (!m_proxy_base_from_shared_ptr) {
+                    gil_lock guard;
+                    object*  obj = reinterpret_cast<object*>(self);
+                    void*    this_ptr =
+                        m_this_from_shared_ptr(obj->shared_ptr_address);
+                    python_call_context ctx(this_ptr, obj->shared_ptr_address);
+                    ctx.set_arguments(args);
+                    m_method(ctx);
+                    if (ctx.has_exception()) {
+                        return nullptr;
+                    }
+                    return ctx.result();
+                } else {
+                    gil_lock guard;
+                    object*  obj = reinterpret_cast<object*>(self);
+                    void*    this_ptr =
+                        m_this_from_shared_ptr(obj->shared_ptr_address);
+                    mge::script::proxy_base* proxy =
+                        reinterpret_cast<mge::script::proxy_base*>(
+                            m_proxy_base_from_shared_ptr(
+                                obj->shared_ptr_address));
+                    python_invocation_context ictx;
+                    proxy->set_context(&ictx);
+                    python_call_context ctx(this_ptr, obj->shared_ptr_address);
+                    ctx.set_arguments(args);
+                    m_method(ctx);
+                    if (ctx.has_exception()) {
+                        return nullptr;
+                    }
+                    return ctx.result();
                 }
-                return ctx.result();
             }
 
             const mge::script::invoke_function&           m_method;
@@ -341,6 +367,9 @@ namespace mge::python {
             const mge::script::type_data_ref&             m_return_type;
             const mge::script::type_data::extract_this_from_shared_ptr_address&
                 m_this_from_shared_ptr;
+            const mge::script::type_data::
+                extract_proxy_base_from_shared_ptr_address&
+                    m_proxy_base_from_shared_ptr;
         };
 
         std::shared_ptr<method_closure> closure =
@@ -348,7 +377,8 @@ namespace mge::python {
                 method,
                 signature,
                 return_type,
-                m_type->class_specific().this_from_shared_ptr);
+                m_type->class_specific().this_from_shared_ptr,
+                m_type->class_specific().proxy_base_from_shared_ptr);
 
         m_type_methods.push_back(
             {name.c_str(), closure->function(), METH_VARARGS, nullptr});

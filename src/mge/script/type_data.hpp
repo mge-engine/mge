@@ -37,6 +37,8 @@ namespace mge::script {
         using call_signature = std::vector<type_identifier>;
         using extract_this_from_shared_ptr_address =
             std::function<void*(void*)>;
+        using extract_proxy_base_from_shared_ptr_address =
+            std::function<void*(void*)>;
 
         type_data(const std::type_info& ti, const type_identifier& id);
         type_data(const type_data&) = delete;
@@ -158,6 +160,8 @@ namespace mge::script {
             mge::script::invoke_function         destroy;
             mge::script::invoke_function         destroy_shared;
             extract_this_from_shared_ptr_address this_from_shared_ptr;
+            extract_proxy_base_from_shared_ptr_address
+                proxy_base_from_shared_ptr;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
                 constructors;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
