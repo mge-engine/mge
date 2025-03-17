@@ -28,6 +28,8 @@ namespace mge::python {
             return m_type_object;
         }
 
+        void* method_function(const char* name) const;
+
     private:
         void initialize();
 

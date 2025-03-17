@@ -51,5 +51,6 @@ namespace mge::python {
     private:
         const python_type& m_type;
         PyObject*          m_self;
+        PyObject*          m_result;
     };
 } // namespace mge::python

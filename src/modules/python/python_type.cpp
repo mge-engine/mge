@@ -777,4 +777,14 @@ namespace mge::python {
         define_in_interpreter();
     }
 
+    void* python_type::method_function(const char* name) const
+    {
+        for (const auto& method : m_type_methods) {
+            if (strcmp(method.ml_name, name) == 0) {
+                return method.ml_meth;
+            }
+        }
+        return nullptr;
+    }
+
 } // namespace mge::python

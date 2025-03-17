@@ -1,8 +1,9 @@
 #include "python_invocation_context.hpp"
+#include "python_error.hpp"
+#include "python_type.hpp"
+
 #include "mge/core/stdexceptions.hpp"
-
 #include "mge/core/trace.hpp"
-
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
@@ -13,6 +14,7 @@ namespace mge::python {
         const python_type& type, PyObject* self)
         : m_type(type)
         , m_self(self)
+        , m_result(nullptr)
     {
         // MGE_DEBUG_TRACE(PYTHON)
         //     << "python_invocation_context@" << this << " ctor";
@@ -114,7 +116,48 @@ namespace mge::python {
     python_invocation_context::call_method(const char* method)
     {
         MGE_DEBUG_TRACE(PYTHON) << "Invoke method: " << method;
-        MGE_THROW_NOT_IMPLEMENTED;
+
+        if (m_result) {
+            Py_DECREF(m_result);
+            m_result = nullptr;
+        }
+
+        // Get the method object from the class
+        PyObject* method_obj = PyObject_GetAttrString(m_self, method);
+        if (!method_obj) {
+            return call_result_type::CALL_FAILED;
+        }
+        if (PyCFunction_Check(method_obj)) {
+            PyCFunctionObject* cfunc = (PyCFunctionObject*)method_obj;
+
+            void* cfunc_ptr = cfunc->m_ml->ml_meth;
+            void* dispatch_ptr = m_type.method_function(method);
+
+            if (cfunc_ptr == dispatch_ptr) {
+                Py_DECREF(method_obj);
+                return call_result_type::CALL_FAILED;
+            }
+        }
+
+        // Create argument tuple with self as first argument
+        PyObject* args = PyTuple_New(1);
+        if (!args) {
+            Py_DECREF(method_obj);
+            return call_result_type::CALL_FAILED;
+        }
+        Py_INCREF(m_self); // Add reference for the tuple
+        PyTuple_SetItem(args, 0, m_self);
+
+        // Call the method with self as first argument
+        m_result = PyObject_CallObject(method_obj, args);
+        Py_DECREF(args);
+        Py_DECREF(method_obj);
+
+        if (!m_result) {
+            return call_result_type::CALL_FAILED;
+        }
+
+        return call_result_type::CALL_EXECUTED;
     }
 
     bool python_invocation_context::get_bool_result()
