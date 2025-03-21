@@ -9,6 +9,7 @@
 #include "mge/graphics/attribute_semantic.hpp"
 #include "mge/graphics/buffer_type.hpp"
 #include "mge/graphics/context_object.hpp"
+#include "mge/graphics/render_system.hpp"
 
 namespace mge::script {
     class graphics_script_binder : public script_binder
@@ -19,11 +20,14 @@ namespace mge::script {
         void bind() override
         {
             mge::script::module mge("mge");
-
+            // clang-format off
             mge(type<mge::attribute_semantic>(),
                 function("parse_attribute_semantic",
                          &mge::parse_attribute_semantic),
-                type<mge::buffer_type>()
+                type<mge::buffer_type>(),
+                type<mge::render_system>()
+                    .function("create",
+                              static_cast<mge::render_system_ref (*)()>(&mge::render_system::create))
 
                 // type<mge::context_object>().method(
                 //     "context",
@@ -32,6 +36,7 @@ namespace mge::script {
 
                 //
             );
+            // clang-format on
         }
     };
 

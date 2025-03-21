@@ -102,22 +102,40 @@ namespace mge::python {
     void python_call_context::object_result(void* result,
                                             const mge::script::type_data_ref& t)
     {
-        MGE_THROW_NOT_IMPLEMENTED << "Python object result for type: "
-                                  << t->name();
+        // MGE_THROW_NOT_IMPLEMENTED << "Python object result for type: "
+        //                           << t->name();
+        m_result = Py_None;
     }
 
     void python_call_context::exception_thrown(const std::exception& e)
     {
+        // check if exception is new, or something already set to python
+        // interpreter
+        if (!PyErr_Occurred()) {
+            PyErr_SetString(PyExc_RuntimeError, e.what());
+        }
         m_has_exception = true;
     }
 
     void python_call_context::exception_thrown(const mge::exception& e)
     {
-
+        // check if exception is new, or something already set to python
+        // interpreter
+        if (!PyErr_Occurred()) {
+            PyErr_SetString(PyExc_RuntimeError, e.what());
+        }
         m_has_exception = true;
     }
 
-    void python_call_context::exception_thrown() { m_has_exception = true; }
+    void python_call_context::exception_thrown()
+    {
+        // check if exception is new, or something already set to python
+        // interpreter
+        if (!PyErr_Occurred()) {
+            PyErr_SetString(PyExc_RuntimeError, "Unknown exception");
+        }
+        m_has_exception = true;
+    }
 
     PyObject* python_call_context::argument(size_t position)
     {

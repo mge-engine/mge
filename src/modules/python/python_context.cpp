@@ -1,19 +1,22 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "python_context.hpp"
+
+#include "mge/core/trace.hpp"
+#include "mge/script/module.hpp"
+#include "mge/script/module_data.hpp"
+#include "mge/script/type_data.hpp"
+
 #include "gil_lock.hpp"
 #include "pyobject_ref.hpp"
+#include "python_component_registry.hpp"
+#include "python_context.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
 #include "python_function.hpp"
 #include "python_module.hpp"
 #include "python_type.hpp"
 
-#include "mge/core/trace.hpp"
-#include "mge/script/module.hpp"
-#include "mge/script/module_data.hpp"
-#include "mge/script/type_data.hpp"
 #include <mutex>
 
 namespace mge {
@@ -106,6 +109,12 @@ namespace mge::python {
                     << "Type " << t->name() << " is builtin";
                 continue;
             }
+            if (t->is_class() &&
+                !t->class_specific().interface_type.expired()) {
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "Type " << t->name() << " is proxy type";
+                continue;
+            }
             python_type_ref pt = std::make_shared<python_type>(*this, t);
             m_types[t] = pt;
         }
@@ -116,6 +125,7 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Defining type " << t->name();
             pt->define_in_interpreter();
         }
+        evaluate_prelude();
     }
 
     void python_context::bind_module_functions(
@@ -148,6 +158,7 @@ namespace mge::python {
         m_modules["__mge__"] = mod;
         m_all_modules.push_back(mod);
         create_function_helper_type(mod);
+        python_component_registry::create(mod, this);
     }
 
     void
@@ -180,6 +191,37 @@ namespace mge::python {
         for (auto& f : m_functions) {
             f->on_interpreter_restore();
         }
+    }
+
+    void python_context::evaluate_prelude()
+    {
+        std::string prelude = R"()";
+        eval(prelude);
+    }
+
+    python_type_ref
+    python_context::find_component_type(const std::vector<PyObject*>& types)
+    {
+        if (types.empty()) {
+            return nullptr;
+        }
+
+        // Search through all registered types
+        for (const auto& [type_data, python_type] : m_types) {
+            // Skip non-component types
+            if (!type_data->is_component()) {
+                continue;
+            }
+            // For each base type
+            for (PyObject* base_type : types) {
+                // Check if this type's Python type object matches the base type
+                if (python_type->type_object().get() == base_type) {
+                    return python_type;
+                }
+            }
+        }
+
+        return nullptr;
     }
 
 } // namespace mge::python
