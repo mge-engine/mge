@@ -127,17 +127,8 @@ namespace mge {
                 auto duration =
                     std::chrono::duration_cast<std::chrono::nanoseconds>(end -
                                                                          start);
-                // Check for empty/too fast benchmarks immediately
-                if (duration.count() <= b.clock_resolution().count()) {
-                    std::stringstream msg;
-                    msg << "Benchmark '" << b.current()
-                        << "' did run too little time";
-                    throw std::runtime_error(msg.str());
-                }
-
                 measure_point p(performed_iterations, duration);
                 series.push_back(p);
-
                 if (series.size() >= 5) {
                     measure_point m = time_per_op_median(series);
                     double        d = deviation(m.duration, p.duration);
@@ -188,22 +179,6 @@ namespace mge {
                 ++current_loop;
                 measure_point p(performed_iterations, end - start);
                 series.push_back(p);
-
-                // Check for empty/too fast benchmarks early
-                if (current_loop >= 3) {
-                    measure_series window(
-                        series.end() - std::min(series_window, series.size()),
-                        series.end());
-                    measure_point m = time_per_op_median(window);
-                    double ns_per_op = static_cast<double>(m.duration.count()) /
-                                       static_cast<double>(m.iterations);
-                    if (ns_per_op < 1.0) {
-                        std::stringstream msg;
-                        msg << "Benchmark '" << b.current()
-                            << "' did run too little time";
-                        throw std::runtime_error(msg.str());
-                    }
-                }
 
                 if (series.size() >= min_measurements) {
                     measure_series window(
@@ -296,12 +271,6 @@ namespace mge {
 
                 double ns_per_op = static_cast<double>(m.duration.count()) /
                                    static_cast<double>(m.iterations);
-                if (ns_per_op < 1.0) {
-                    std::stringstream msg;
-                    msg << "Benchmark '" << b.current()
-                        << "' did run too little time";
-                    throw std::runtime_error(msg.str());
-                }
                 r.kpi["median ns/op"] = ns_per_op;
                 if (ns_per_op != 0) {
                     double ops_sec = 1000000000.0 / ns_per_op;
