@@ -23,6 +23,27 @@ namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
 
+static const char* prelude = R"(
+def init():
+    import mge
+    import __mge__
+    class component:
+        registry = dict()
+        
+        @staticmethod
+        def register(name, cls):
+            component.registry[name] = cls
+
+        @staticmethod
+        def create(sname):
+            return component.registry[name]()
+
+    mge.component = component
+    
+init()
+init = None
+)";
+
 namespace mge::python {
 
     python_context::python_context(const python_engine_ref& engine)
@@ -195,7 +216,6 @@ namespace mge::python {
 
     void python_context::evaluate_prelude()
     {
-        std::string prelude = R"()";
         eval(prelude);
     }
 
