@@ -6,6 +6,7 @@ import mge
 
 class TestApplication(mge.application):
     def __init__(self):
+        super().__init__()
 
     def setup(self):
         pass
