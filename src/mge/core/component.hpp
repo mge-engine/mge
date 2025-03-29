@@ -271,6 +271,7 @@ namespace mge {
     public:
         component_registry();
         virtual ~component_registry();
+        using component<component_registry>::create;
 
         /**
          * @brief Enumerate over all implementations.
