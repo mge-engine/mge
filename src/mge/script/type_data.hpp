@@ -37,6 +37,8 @@ namespace mge::script {
         using call_signature = std::vector<type_identifier>;
         using extract_this_from_shared_ptr_address =
             std::function<void*(void*)>;
+        using extract_proxy_base_from_shared_ptr_address =
+            std::function<void*(void*)>;
 
         type_data(const std::type_info& ti, const type_identifier& id);
         type_data(const type_data&) = delete;
@@ -100,6 +102,17 @@ namespace mge::script {
             return m_type_info == &typeid(T);
         }
 
+        bool is_special_type() const
+        {
+            return is_pod() || is_string() || is_wstring();
+        }
+
+        bool is_component() const
+        {
+            return m_details.index() == 2 &&
+                   std::get<class_details>(m_details).is_component;
+        }
+
         bool is_pod() const;
         bool is_enum() const;
         bool is_class() const;
@@ -108,6 +121,7 @@ namespace mge::script {
         bool is_rvalue_reference() const;
         bool is_void() const;
         bool is_callable() const;
+        bool is_abstract() const;
 
         bool is_string() const;
         bool is_wstring() const;
@@ -139,11 +153,15 @@ namespace mge::script {
             bool                                 is_string{false};
             bool                                 is_wstring{false};
             bool                                 is_abstract{false};
+            bool                                 is_component{false};
             bool                                 is_callable{false};
+            bool                                 is_final{false};
             size_t                               size{0};
             mge::script::invoke_function         destroy;
             mge::script::invoke_function         destroy_shared;
             extract_this_from_shared_ptr_address this_from_shared_ptr;
+            extract_proxy_base_from_shared_ptr_address
+                proxy_base_from_shared_ptr;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
                 constructors;
             std::vector<std::pair<call_signature, mge::script::invoke_function>>
@@ -158,7 +176,8 @@ namespace mge::script {
             std::vector<std::tuple<std::string,
                                    type_data_ref,
                                    call_signature,
-                                   mge::script::invoke_function>>
+                                   mge::script::invoke_function,
+                                   bool>>
                 methods;
 
             std::vector<std::tuple<std::string,

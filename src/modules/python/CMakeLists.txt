@@ -9,8 +9,10 @@ SET(mge_python_module_SOURCES
     python_type.cpp
     python_function.cpp
     python_module.cpp
+    python_component_registry.cpp
     python_call_context.cpp
     type_matches.cpp
+    python_invocation_context.cpp
 )
 
 ADD_LIBRARY(mge_module_python MODULE

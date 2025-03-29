@@ -47,7 +47,10 @@ public:
         exception_thrown_std(e);
     }
 
-    virtual void exception_thrown() override { exception_thrown_noargs(); }
+    virtual void exception_thrown() override
+    {
+        exception_thrown_noargs();
+    }
 
     MOCK_METHOD(bool, bool_parameter, (size_t), ());
     MOCK_METHOD(int8_t, int8_t_parameter, (size_t), ());
