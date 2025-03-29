@@ -17,7 +17,7 @@ namespace mge {
 
     MGE_USE_TRACE(CORE);
 
-    class component_registry
+    class default_component_registry
     {
     public:
         using component_map =
@@ -28,9 +28,9 @@ namespace mge {
         using alias_map =
             std::map<std::string_view, std::map<std::string, std::string_view>>;
 
-        component_registry() = default;
+        default_component_registry() = default;
 
-        ~component_registry() = default;
+        ~default_component_registry() = default;
 
         void register_component(component_registry_entry_base* c)
         {
@@ -174,7 +174,7 @@ namespace mge {
             m_pending_implementations;
     };
 
-    singleton<component_registry> s_component_registry;
+    singleton<default_component_registry> s_component_registry;
 
     void component_registry_entry_base::register_component(
         component_registry_entry_base* c)

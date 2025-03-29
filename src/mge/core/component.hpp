@@ -89,7 +89,7 @@ namespace mge {
         }
 
     private:
-        friend class component_registry;
+        friend class default_component_registry;
 
         implementation_registry_entry_base* m_impl_regentry;
     };
@@ -105,7 +105,10 @@ namespace mge {
             register_component(this);
         }
         virtual ~component_registry_entry() = default;
-        std::string_view name() const noexcept override { return m_name; }
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
 
     private:
         std::string m_name{mge::type_name<Class>()};
@@ -142,7 +145,10 @@ namespace mge {
         {
             return m_component_name;
         }
-        std::string_view name() const noexcept override { return m_name; }
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
         std::string_view alias_names() const noexcept override
         {
             return m_alias_names;
@@ -215,7 +221,10 @@ namespace mge {
          * @brief Get reference of this instance.
          * @return weak reference to this instance
          */
-        const std::weak_ptr<Class>& self() const noexcept { return m_self; }
+        const std::weak_ptr<Class>& self() const noexcept
+        {
+            return m_self;
+        }
 
     private:
         void set_self(const std::shared_ptr<Class>& instance)
@@ -248,4 +257,5 @@ namespace mge {
         __mge_implementation_registry_entry_##clazz =                          \
             ::mge::implementation_registry_entry<component, clazz>(            \
                 MGE_STRINGIFY(__VA_ARGS__))
+
 } // namespace mge
