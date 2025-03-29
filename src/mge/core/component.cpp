@@ -153,9 +153,6 @@ namespace mge {
         {
             auto implementation_name = i->name();
 
-            // std::cout << "Register implementation " << implementation_name <<
-            // std::endl;
-
             std::string alias_names(i->alias_names());
 
             m_implementations[component_name][implementation_name] = i;
@@ -215,4 +212,8 @@ namespace mge {
         return s_component_registry->create(component_name,
                                             implementation_name);
     }
+
+    component_registry::component_registry() {}
+
+    component_registry::~component_registry() {}
 } // namespace mge

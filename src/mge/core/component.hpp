@@ -258,4 +258,40 @@ namespace mge {
             ::mge::implementation_registry_entry<component, clazz>(            \
                 MGE_STRINGIFY(__VA_ARGS__))
 
+    /**
+     * @brief Component registry.
+     *
+     * In addition to the standard component registry, other registries may be
+     * added e.g. to provide access to implementations created in a scripting
+     * language.
+     */
+    class MGECORE_EXPORT component_registry
+        : public component<component_registry>
+    {
+    public:
+        component_registry();
+        virtual ~component_registry();
+
+        /**
+         * @brief Enumerate over all implementations.
+         *
+         * @param component_name component name
+         * @param callback callback function called for each implementation name
+         */
+        virtual void implementations(
+            std::string_view                             component_name,
+            const std::function<void(std::string_view)>& callback) = 0;
+
+        /**
+         * @brief Create an implementation.
+         *
+         * @param component_name component name
+         * @param implementation_name implementation name
+         * @return implementation
+         */
+        virtual std::shared_ptr<component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name) = 0;
+    };
+
 } // namespace mge
