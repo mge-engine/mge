@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/component.hpp"
 #include "mge/script/script_context.hpp"
 #include "python.hpp"
 #include "python_fwd.hpp"
@@ -39,10 +40,22 @@ namespace mge::python {
         bool is_builtin(const mge::script::type_data_ref& t) const;
         void evaluate_prelude();
 
+        void
+        implementations(std::string_view component_name,
+                        const std::function<void(std::string_view)>& callback);
+
+        std::shared_ptr<mge::component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name);
+
         python_engine_ref                                     m_engine;
         std::map<mge::script::type_data_ref, python_type_ref> m_types;
         std::map<std::string, python_module_ref>              m_modules;
         std::vector<python_module_ref>                        m_all_modules;
         std::vector<python_function_ref>                      m_functions;
+
+        static python_context*              s_global_context;
+        static thread_local python_context* s_thread_context;
+        friend class python_component_registry;
     };
 } // namespace mge::python

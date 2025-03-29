@@ -8,8 +8,8 @@
 #include "mge/script/type_data.hpp"
 
 #include "gil_lock.hpp"
+#include "mge/core/component.hpp"
 #include "pyobject_ref.hpp"
-#include "python_component_registry.hpp"
 #include "python_context.hpp"
 #include "python_engine.hpp"
 #include "python_error.hpp"
@@ -36,7 +36,7 @@ def init():
 
         @staticmethod
         def create(sname):
-            return component.registry[name]()
+            return component.registry[sname]()
 
     mge.component = component
     
@@ -46,11 +46,32 @@ init = None
 
 namespace mge::python {
 
+    python_context*              python_context::s_global_context;
+    thread_local python_context* python_context::s_thread_context;
+
     python_context::python_context(const python_engine_ref& engine)
         : m_engine(engine)
-    {}
+    {
+        {
+            gil_lock guard;
+            if (s_global_context == nullptr) {
 
-    python_context::~python_context() {}
+                s_global_context = this;
+            }
+        }
+        s_thread_context = this;
+    }
+
+    python_context::~python_context()
+    {
+        {
+            gil_lock guard;
+            if (s_global_context == this) {
+                s_global_context = nullptr;
+            }
+        }
+        s_thread_context = nullptr;
+    }
 
     void python_context::eval(const std::string& code)
     {
@@ -179,7 +200,6 @@ namespace mge::python {
         m_modules["__mge__"] = mod;
         m_all_modules.push_back(mod);
         create_function_helper_type(mod);
-        python_component_registry::create(mod, this);
     }
 
     void
@@ -244,4 +264,51 @@ namespace mge::python {
         return nullptr;
     }
 
+    void python_context::implementations(
+        std::string_view                             component_name,
+        const std::function<void(std::string_view)>& callback)
+    {}
+
+    std::shared_ptr<mge::component_base>
+    python_context::create(std::string_view component_name,
+                           std::string_view implementation_name)
+    {
+        std::shared_ptr<mge::component_base> result;
+        return result;
+    }
+
+    class python_component_registry : public mge::component_registry
+    {
+    public:
+        void implementations(
+            std::string_view                             component_name,
+            const std::function<void(std::string_view)>& callback) override
+        {
+            python_context* ctx = python_context::s_thread_context;
+            if (!ctx) {
+                ctx = python_context::s_global_context;
+            }
+            if (ctx) {
+                ctx->implementations(component_name, callback);
+            }
+        }
+
+        std::shared_ptr<mge::component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name) override
+        {
+            python_context* ctx = python_context::s_thread_context;
+            if (!ctx) {
+                ctx = python_context::s_global_context;
+            }
+            if (ctx) {
+                return ctx->create(component_name, implementation_name);
+            } else {
+                return std::shared_ptr<mge::component_base>();
+            }
+        }
+    };
+
+    MGE_REGISTER_IMPLEMENTATION(python_component_registry,
+                                mge::component_registry);
 } // namespace mge::python
