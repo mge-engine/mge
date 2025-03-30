@@ -31,11 +31,13 @@ def init():
         
         @staticmethod
         def register(interface, name, cls):
-            __mge__.register_component(interface, name, cls)
+            #__mge__.register_component(interface, name, cls)
+            pass
 
         @staticmethod
         def create(interface, implementation):
-            __mge__.create_component(sname)
+            #__mge__.create_component(sname)
+            pass
 
     mge.component = component
     
@@ -232,18 +234,20 @@ namespace mge::python {
             std::make_shared<register_component_closure>(*this);
         m_create_component = std::make_shared<create_component_closure>(*this);
 
-        PyMethodDef methods[] = {{"register_component",
-                                  m_register_component->function(),
-                                  METH_VARARGS,
-                                  "Register a component implementation"},
-                                 {"create_component",
-                                  m_create_component->function(),
-                                  METH_VARARGS,
-                                  "Create a component implementation"},
-                                 {nullptr, nullptr, 0, nullptr}};
+        m_methods.clear();
+        m_methods.push_back({"register_component",
+                             m_register_component->function(),
+                             METH_VARARGS,
+                             "Register a component implementation"});
+        m_methods.push_back({"create_component",
+                             m_create_component->function(),
+                             METH_VARARGS,
+                             "Create a component implementation"});
+        m_methods.push_back({nullptr, nullptr, 0, nullptr});
 
         PyObject* module = mod->pymodule().get();
-        PyModule_AddFunctions(module, methods);
+        PyModule_AddFunctions(module, m_methods.data());
+        python::error::check_error();
     }
 
     PyObject* python_context::register_component(PyObject* self, PyObject* args)

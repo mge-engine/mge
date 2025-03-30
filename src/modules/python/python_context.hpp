@@ -61,6 +61,7 @@ namespace mge::python {
         std::vector<python_function_ref>                      m_functions;
         std::shared_ptr<function_closure> m_register_component;
         std::shared_ptr<function_closure> m_create_component;
+        std::vector<PyMethodDef>          m_methods;
 
         static python_context*              s_global_context;
         static thread_local python_context* s_thread_context;
