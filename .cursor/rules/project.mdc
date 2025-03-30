@@ -1,3 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
 ## Global Rules
 
 - Do not response with high level explanations, show actual code or a short explanation
@@ -20,15 +26,21 @@
 - Split into multiple responses if one response isn't enough to answer the question.
 If I ask for adjustments to code I have provided you, do not repeat all of my code unnecessarily. Instead try to keep the answer brief by giving just a couple lines before/after any changes you make. Multiple code blocks are ok.
 
+## Building and testing the Project
+
+- Build project always by `cmake -build build` in root directory
+- Never deviate from this e.g. by chosing a sub-target
+- Run tests by running `ctest --test-dir build` in root directory
+
 ## C++ Coding Rules
 
-1. **Component System**
+1. **Component system**
    - Use `MGE_REGISTER_COMPONENT` for interface classes
    - Use `MGE_REGISTER_IMPLEMENTATION` for concrete implementations
    - All components must inherit from `mge::component_base`
    - Interface classes should inherit from `mge::component<Class>`
 
-2. **Memory Management**
+2. **Memory management**
    - Use smart pointers (`std::shared_ptr`, `std::weak_ptr`) for component ownership
    - Use `MGE_DECLARE_REF` to create type definition for smart pointers of new classes
    - Avoid raw pointers except for non-owning references
@@ -47,9 +59,11 @@ If I ask for adjustments to code I have provided you, do not repeat all of my co
    - Prefix member variables with `m_`
    - Prefix static fields with `s_`
    - Use meaningful, descriptive names
+   - Do not prefix getters by `get` or `is` but just use the property name, e.g. instead of `get_x` create a method that is just named `x`.
 
 5. **Error Handling**
    - Use exceptions for exceptional conditions
+   - use appropriate exception type from `stdexceptions.hpp` header
    - Document error conditions in function comments
    - Validate input parameters
 
@@ -84,3 +98,4 @@ If I ask for adjustments to code I have provided you, do not repeat all of my co
 11. **Verification of Changes**
     - Always do a complete build after a change
     - Always run the complete tests after a change
+
