@@ -20,7 +20,7 @@ class TestApplication(mge.application):
     def run(self):
         pass
 
-mge.component.register("test_application", TestApplication)
+mge.component.register("mge::application","test_application", TestApplication)
 
 class TestRenderSystem(unittest.TestCase):
     @unittest.skip("Temporarily disabled, need application instance")

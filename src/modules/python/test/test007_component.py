@@ -7,9 +7,8 @@ import mge
 
 class TestComponent(unittest.TestCase):
 
-    def test_registry(self):
+    def test_register_methods_exist(self):
         import __mge__
         # Verify the component_registry instance exists
-        self.assertTrue(hasattr(__mge__, 'component_registry'), 'component_registry should exist in __mge__ module')
-        registry = __mge__.component_registry
-        self.assertIsNotNone(registry, 'component_registry instance should not be None')
+        self.assertTrue(hasattr(__mge__, 'register_component'))
+        self.assertTrue(hasattr(__mge__, 'create_component'))

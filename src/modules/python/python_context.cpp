@@ -36,7 +36,7 @@ def init():
 
         @staticmethod
         def create(interface, implementation):
-            #__mge__.create_component(sname)
+            #__mge__.create_component(interface, implementation)
             pass
 
     mge.component = component
@@ -49,12 +49,14 @@ namespace mge::python {
 
     python_context*              python_context::s_global_context;
     thread_local python_context* python_context::s_thread_context;
+    static std::mutex            s_global_context_mutex;
 
     python_context::python_context(const python_engine_ref& engine)
         : m_engine(engine)
     {
         {
-            gil_lock guard;
+            std::lock_guard<std::mutex> guard(s_global_context_mutex);
+
             if (s_global_context == nullptr) {
 
                 s_global_context = this;
@@ -66,7 +68,8 @@ namespace mge::python {
     python_context::~python_context()
     {
         {
-            gil_lock guard;
+            std::lock_guard<std::mutex> guard(s_global_context_mutex);
+
             if (s_global_context == this) {
                 s_global_context = nullptr;
             }
