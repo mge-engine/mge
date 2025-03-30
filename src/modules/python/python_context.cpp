@@ -28,15 +28,14 @@ def init():
     import mge
     import __mge__
     class component:
-        registry = dict()
         
         @staticmethod
-        def register(name, cls):
-            component.registry[name] = cls
+        def register(interface, name, cls):
+            __mge__.register_component(interface, name, cls)
 
         @staticmethod
-        def create(sname):
-            return component.registry[sname]()
+        def create(interface, implementation):
+            __mge__.create_component(sname)
 
     mge.component = component
     
@@ -200,6 +199,61 @@ namespace mge::python {
         m_modules["__mge__"] = mod;
         m_all_modules.push_back(mod);
         create_function_helper_type(mod);
+
+        struct register_component_closure : function_closure
+        {
+            register_component_closure(python_context& context)
+                : m_context(context)
+            {}
+
+            PyObject* execute(PyObject* self, PyObject* args)
+            {
+                return m_context.register_component(self, args);
+            }
+
+            python_context& m_context;
+        };
+
+        struct create_component_closure : function_closure
+        {
+            create_component_closure(python_context& context)
+                : m_context(context)
+            {}
+
+            PyObject* execute(PyObject* self, PyObject* args)
+            {
+                return m_context.create_component(self, args);
+            }
+
+            python_context& m_context;
+        };
+
+        m_register_component =
+            std::make_shared<register_component_closure>(*this);
+        m_create_component = std::make_shared<create_component_closure>(*this);
+
+        PyMethodDef methods[] = {{"register_component",
+                                  m_register_component->function(),
+                                  METH_VARARGS,
+                                  "Register a component implementation"},
+                                 {"create_component",
+                                  m_create_component->function(),
+                                  METH_VARARGS,
+                                  "Create a component implementation"},
+                                 {nullptr, nullptr, 0, nullptr}};
+
+        PyObject* module = mod->pymodule().get();
+        PyModule_AddFunctions(module, methods);
+    }
+
+    PyObject* python_context::register_component(PyObject* self, PyObject* args)
+    {
+        return Py_None;
+    }
+
+    PyObject* python_context::create_component(PyObject* self, PyObject* args)
+    {
+        return Py_None;
     }
 
     void

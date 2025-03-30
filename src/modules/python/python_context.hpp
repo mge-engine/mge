@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/closure.hpp"
 #include "mge/core/component.hpp"
 #include "mge/script/script_context.hpp"
 #include "python.hpp"
@@ -40,6 +41,9 @@ namespace mge::python {
         bool is_builtin(const mge::script::type_data_ref& t) const;
         void evaluate_prelude();
 
+        PyObject* register_component(PyObject* self, PyObject* args);
+        PyObject* create_component(PyObject* self, PyObject* args);
+
         void
         implementations(std::string_view component_name,
                         const std::function<void(std::string_view)>& callback);
@@ -48,11 +52,15 @@ namespace mge::python {
         create(std::string_view component_name,
                std::string_view implementation_name);
 
+        using function_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
+
         python_engine_ref                                     m_engine;
         std::map<mge::script::type_data_ref, python_type_ref> m_types;
         std::map<std::string, python_module_ref>              m_modules;
         std::vector<python_module_ref>                        m_all_modules;
         std::vector<python_function_ref>                      m_functions;
+        std::shared_ptr<function_closure> m_register_component;
+        std::shared_ptr<function_closure> m_create_component;
 
         static python_context*              s_global_context;
         static thread_local python_context* s_thread_context;
