@@ -255,6 +255,53 @@ namespace mge::python {
 
     PyObject* python_context::register_component(PyObject* self, PyObject* args)
     {
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
+            return nullptr;
+        }
+
+        if (PyTuple_Size(args) != 3) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Expected 3 arguments (interface, name, type)");
+            return nullptr;
+        }
+
+        PyObject* interface = PyTuple_GetItem(args, 0);
+        PyObject* name = PyTuple_GetItem(args, 1);
+        PyObject* type = PyTuple_GetItem(args, 2);
+
+        if (!PyUnicode_Check(interface)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "First argument (interface) must be a string");
+            return nullptr;
+        }
+
+        if (!PyUnicode_Check(name)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Second argument (name) must be a string");
+            return nullptr;
+        }
+
+        if (!PyType_Check(type)) {
+            PyErr_SetString(PyExc_TypeError, "Third argument must be a type");
+            return nullptr;
+        }
+
+        std::string  interface_name = PyUnicode_AsUTF8(interface);
+        std::string  name_name = PyUnicode_AsUTF8(name);
+        pyobject_ref type_ref(type, pyobject_ref::incref::yes);
+
+        if (m_component_implementations.find(interface_name) !=
+            m_component_implementations.end()) {
+            if (m_component_implementations[interface_name].find(name_name) !=
+                m_component_implementations[interface_name].end()) {
+                PyErr_SetString(PyExc_ValueError,
+                                "Component implementation already exists");
+                return nullptr;
+            }
+        }
+        m_component_implementations[interface_name][name_name] = type_ref;
+        Py_INCREF(Py_None);
         return Py_None;
     }
 
@@ -298,6 +345,7 @@ namespace mge::python {
     void python_context::evaluate_prelude()
     {
         eval(prelude);
+        error::check_error();
     }
 
     python_type_ref

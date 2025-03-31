@@ -5,6 +5,7 @@
 #include "mge/core/closure.hpp"
 #include "mge/core/component.hpp"
 #include "mge/script/script_context.hpp"
+#include "pyobject_ref.hpp"
 #include "python.hpp"
 #include "python_fwd.hpp"
 
@@ -62,6 +63,8 @@ namespace mge::python {
         std::shared_ptr<function_closure> m_register_component;
         std::shared_ptr<function_closure> m_create_component;
         std::vector<PyMethodDef>          m_methods;
+        std::map<std::string, std::map<std::string, pyobject_ref>>
+            m_component_implementations;
 
         static python_context*              s_global_context;
         static thread_local python_context* s_thread_context;
