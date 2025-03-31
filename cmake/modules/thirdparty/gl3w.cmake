@@ -7,13 +7,13 @@ INCLUDE(thirdparty/opengl)
 IF(OpenGL_FOUND)
     FILE(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/external ${CMAKE_BINARY_DIR}/external/gl3w)
     SET(CMAKE_LIST_CONTENT "
-        CMAKE_MINIMUM_REQUIRED(VERSION 3.29.1)
+        cmake_minimum_required(VERSION 4.0)
         PROJECT(GL3W)
         INCLUDE(ExternalProject)
         EXTERNALPROJECT_ADD(gl3w-external
                             PREFIX gl3w
                             GIT_REPOSITORY \"https://github.com/mge-engine/gl3w.git\"
-                            GIT_TAG \"9029660d2d6dc13c6e562dc0153fcee3015fea1b\"
+                            GIT_TAG \"e90a19dc269689b17097fabc9e3eebeb5dc5e42f\"
                             INSTALL_COMMAND \"\"
                             BUILD_IN_SOURCE TRUE
         )
