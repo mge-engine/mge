@@ -270,6 +270,11 @@ namespace mge::python {
         PyObject* name = PyTuple_GetItem(args, 1);
         PyObject* type = PyTuple_GetItem(args, 2);
 
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Registering type " << PyUnicode_AsUTF8(type)
+            << " as implementation of " << PyUnicode_AsUTF8(interface)
+            << " identified by " << PyUnicode_AsUTF8(name);
+
         if (!PyUnicode_Check(interface)) {
             PyErr_SetString(PyExc_TypeError,
                             "First argument (interface) must be a string");
@@ -307,7 +312,60 @@ namespace mge::python {
 
     PyObject* python_context::create_component(PyObject* self, PyObject* args)
     {
-        return Py_None;
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
+            return nullptr;
+        }
+
+        if (PyTuple_Size(args) != 2) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Expected 2 arguments (interface, name)");
+            return nullptr;
+        }
+
+        PyObject* interface = PyTuple_GetItem(args, 0);
+        PyObject* name = PyTuple_GetItem(args, 1);
+
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Creating component instance of " << PyUnicode_AsUTF8(name)
+            << " as implementation of " << PyUnicode_AsUTF8(interface);
+
+        if (!PyUnicode_Check(interface)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "First argument (interface) must be a string");
+            return nullptr;
+        }
+
+        if (!PyUnicode_Check(name)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Second argument (name) must be a string");
+            return nullptr;
+        }
+
+        std::string interface_name = PyUnicode_AsUTF8(interface);
+        std::string name_name = PyUnicode_AsUTF8(name);
+
+        auto it = m_component_implementations.find(interface_name);
+        if (it == m_component_implementations.end()) {
+            PyErr_SetString(PyExc_ValueError, "Interface not found");
+            return nullptr;
+        }
+
+        auto it2 = it->second.find(name_name);
+        if (it2 == it->second.end()) {
+            PyErr_SetString(PyExc_ValueError, "Implementation not found");
+            return nullptr;
+        }
+
+        pyobject_ref type_ref(it2->second);
+        pyobject_ref result(PyObject_CallObject(type_ref.get(), nullptr));
+        if (!result) {
+            error::check_error();
+            return nullptr;
+        }
+
+        Py_INCREF(result.get());
+        return result.get();
     }
 
     void
