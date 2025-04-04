@@ -1,18 +1,23 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
-
-
 SET(PYTHON_TEST_SOURCES
     pythontest.cpp
     test_context.cpp
+    test_component.cpp
 )
 
 SET(PYTHON_TESTS
     test001_basic.py
     test002_enum.py
     test003_object.py 
-    test004_function.py)
+    test004_function.py
+    test007_component.py)
+
+# Only include render system test if not in headless environment
+if(NOT HEADLESS_ENVIRONMENT)
+    list(APPEND PYTHON_TESTS test006_render_system.py)
+endif()
 
 LIST(TRANSFORM
     PYTHON_TESTS

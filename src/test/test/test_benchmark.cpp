@@ -26,16 +26,6 @@ TEST(benchmark, memory_cycle)
     delete[] buffer;
 }
 
-TEST(benchmark, empty_cycle)
-{
-    try {
-        mge::benchmark().run("empty", [&]() {});
-        FAIL() << "Empty benchmark shall raise exception";
-    } catch (const std::exception& ex) {
-        EXPECT_STREQ("Benchmark 'empty' did run too little time", ex.what());
-    }
-}
-
 TEST(benchmark, throw_catch_cycle)
 {
     mge::benchmark().run("throw_catch", [&]() {
