@@ -29,6 +29,6 @@ namespace mge::python {
         void on_interpreter_restore();
 
     private:
-        std::vector<python_context_weak_ref> m_contexts;
+        python_context_ref m_context;
     };
 } // namespace mge::python

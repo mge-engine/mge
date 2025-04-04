@@ -169,10 +169,11 @@ namespace mge::python {
 
     mge::script_context_ref python_engine::create_context()
     {
-        auto result = std::make_shared<python_context>(
-            std::dynamic_pointer_cast<python_engine>(self().lock()));
-        m_contexts.push_back(result);
-        return result;
+        if (!m_context) {
+            m_context = std::make_shared<python_context>(
+                std::dynamic_pointer_cast<python_engine>(self().lock()));
+        }
+        return m_context;
     }
 
     void python_engine::interpreter_lost()
@@ -183,19 +184,15 @@ namespace mge::python {
 
     void python_engine::on_interpreter_loss()
     {
-        for (auto& c : m_contexts) {
-            if (!c.expired()) {
-                c.lock()->on_interpreter_loss();
-            }
+        if (m_context) {
+            m_context->on_interpreter_loss();
         }
     }
 
     void python_engine::on_interpreter_restore()
     {
-        for (auto& c : m_contexts) {
-            if (!c.expired()) {
-                c.lock()->on_interpreter_restore();
-            }
+        if (m_context) {
+            m_context->on_interpreter_restore();
         }
     }
 
