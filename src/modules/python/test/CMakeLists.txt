@@ -4,6 +4,7 @@
 SET(PYTHON_TEST_SOURCES
     pythontest.cpp
     test_context.cpp
+    test_component.cpp
 )
 
 SET(PYTHON_TESTS
