@@ -65,14 +65,16 @@ namespace mge {
 
         template <typename T>
         static inline void
-        implementations(const std::function<void(std::string_view)>& callback)
+        implementations(const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries = true)
         {
-            implementations(type_name<T>(), callback);
+            implementations(type_name<T>(), callback, use_component_registries);
         }
 
         static void
         implementations(std::string_view component_name,
-                        const std::function<void(std::string_view)>& callback);
+                        const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries = true);
 
         static bool component_registered(std::string_view name);
         static bool
@@ -210,11 +212,15 @@ namespace mge {
          * @brief Enumerate over all implementations.
          *
          * @param callback callback function called for each implementation name
+         * @param use_component_registries if true, the additional component
+         * registries are used for lookup
          */
         static inline void
-        implementations(const std::function<void(std::string_view)>& callback)
+        implementations(const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries = true)
         {
-            component_base::implementations<Class>(callback);
+            component_base::implementations<Class>(callback,
+                                                   use_component_registries);
         }
 
         /**

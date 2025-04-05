@@ -69,7 +69,8 @@ namespace mge::python {
 
     void interpreter_lost()
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Py_AtExit handler, intepreter lost";
+        MGE_DEBUG_TRACE(PYTHON) << "Py_AtExit handler, interpreter lost";
+        python_interpreter::instance().interpreter_lost();
     }
 
     int python_context::main(int argc, const char** argv)

@@ -23,19 +23,24 @@ namespace mge::python {
 
         python_context& context() const
         {
+            ensure_context();
             return *m_context;
         }
 
         const python_context_ref& context_ref() const
         {
+            ensure_context();
             return m_context;
         }
-
+        
+        void interpreter_lost();
     private:
-        mge::mutex         m_mutex{"python_interpreter"};
-        std::wstring       m_home;
-        python_context_ref m_context;
-        bool               m_initialized{false};
+        void ensure_context() const;
+
+        mutable mge::mutex         m_mutex{"python_interpreter"};
+        std::wstring               m_home;
+        mutable python_context_ref m_context;
+        bool                       m_initialized{false};
 
         static mge::singleton<python_interpreter> s_interpreter;
     };

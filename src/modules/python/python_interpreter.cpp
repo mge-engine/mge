@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "python_interpreter.hpp"
 #include "gil_lock.hpp"
+#include "python_context.hpp"
 #include "python_error.hpp"
 
 #include "mge/core/system_error.hpp"
@@ -88,13 +89,27 @@ namespace mge::python {
         m_initialized = true;
     }
 
+    void python_interpreter::interpreter_lost()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Python interpreter lost";
+        m_initialized = false;
+    }
+
     python_interpreter::~python_interpreter()
     {
         MGE_DEBUG_TRACE(PYTHON) << "Destroying Python interpreter";
+        m_context.reset();
         if (m_initialized) {
-            gil_lock gil_guard;
+            PyGILState_Ensure();
             Py_Finalize();
             m_initialized = false;
+        }
+    }
+
+    void python_interpreter::ensure_context() const
+    {
+        if (!m_context) {
+            m_context = std::make_shared<python_context>();
         }
     }
 } // namespace mge::python

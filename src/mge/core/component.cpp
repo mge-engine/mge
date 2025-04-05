@@ -108,12 +108,15 @@ namespace mge {
 
         void
         implementations(std::string_view component_name,
-                        const std::function<void(std::string_view)>& callback)
+                        const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries)
         {
             local_implementations(component_name, callback);
-            update_component_registries();
-            for (const auto& registry : m_component_registries) {
-                registry.second->implementations(component_name, callback);
+            if (use_component_registries) {
+                update_component_registries();
+                for (const auto& registry : m_component_registries) {
+                    registry.second->implementations(component_name, callback);
+                }
             }
         }
 
@@ -259,9 +262,12 @@ namespace mge {
 
     void component_base::implementations(
         std::string_view                             component_name,
-        const std::function<void(std::string_view)>& callback)
+        const std::function<void(std::string_view)>& callback,
+        bool                                         use_component_registries)
     {
-        return s_component_registry->implementations(component_name, callback);
+        return s_component_registry->implementations(component_name,
+                                                     callback,
+                                                     use_component_registries);
     }
 
     std::shared_ptr<component_base>
