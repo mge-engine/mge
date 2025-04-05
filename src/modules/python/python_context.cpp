@@ -14,6 +14,7 @@
 #include "python_engine.hpp"
 #include "python_error.hpp"
 #include "python_function.hpp"
+#include "python_interpreter.hpp"
 #include "python_module.hpp"
 #include "python_type.hpp"
 
@@ -47,41 +48,12 @@ init = None
 
 namespace mge::python {
 
-    python_context*              python_context::s_global_context;
-    thread_local python_context* python_context::s_thread_context;
-    static std::mutex            s_global_context_mutex;
+    python_context::python_context() {}
 
-    python_context::python_context(const python_engine_ref& engine)
-        : m_engine(engine)
-    {
-        {
-            std::lock_guard<std::mutex> guard(s_global_context_mutex);
-
-            if (s_global_context == nullptr) {
-
-                s_global_context = this;
-            }
-        }
-        s_thread_context = this;
-    }
-
-    python_context::~python_context()
-    {
-        {
-            std::lock_guard<std::mutex> guard(s_global_context_mutex);
-
-            if (s_global_context == this) {
-                s_global_context = nullptr;
-            }
-        }
-        s_thread_context = nullptr;
-    }
+    python_context::~python_context() {}
 
     void python_context::eval(const std::string& code)
     {
-        if (!m_engine->interpreter_initialized()) {
-            m_engine->initialize_interpreter();
-        }
         gil_lock     guard;
         PyObject*    main_module = PyImport_AddModule("__main__");
         PyObject*    global_dict = PyModule_GetDict(main_module);
@@ -98,7 +70,6 @@ namespace mge::python {
     void interpreter_lost()
     {
         MGE_DEBUG_TRACE(PYTHON) << "Py_AtExit handler, intepreter lost";
-        python_engine::interpreter_lost();
     }
 
     int python_context::main(int argc, const char** argv)
@@ -451,28 +422,18 @@ namespace mge::python {
             std::string_view                             component_name,
             const std::function<void(std::string_view)>& callback) override
         {
-            python_context* ctx = python_context::s_thread_context;
-            if (!ctx) {
-                ctx = python_context::s_global_context;
-            }
-            if (ctx) {
-                ctx->implementations(component_name, callback);
-            }
+            python_interpreter::instance().context().implementations(
+                component_name,
+                callback);
         }
 
         std::shared_ptr<mge::component_base>
         create(std::string_view component_name,
                std::string_view implementation_name) override
         {
-            python_context* ctx = python_context::s_thread_context;
-            if (!ctx) {
-                ctx = python_context::s_global_context;
-            }
-            if (ctx) {
-                return ctx->create(component_name, implementation_name);
-            } else {
-                return std::shared_ptr<mge::component_base>();
-            }
+            return python_interpreter::instance().context().create(
+                component_name,
+                implementation_name);
         }
     };
 

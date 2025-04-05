@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mge_python_module_SOURCES
+    python_interpreter.cpp
     python_engine.cpp
     python_context.cpp
     python_error.cpp

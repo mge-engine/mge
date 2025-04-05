@@ -19,7 +19,7 @@ namespace mge::python {
     public:
         using restore_action = std::function<void()>;
 
-        python_context(const python_engine_ref& engine);
+        python_context();
         ~python_context() override;
 
         void eval(const std::string& code) override;
@@ -34,6 +34,14 @@ namespace mge::python {
         python_type_ref
         find_component_type(const std::vector<PyObject*>& types);
 
+        void
+        implementations(std::string_view component_name,
+                        const std::function<void(std::string_view)>& callback);
+
+        std::shared_ptr<mge::component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name);
+
     private:
         void bind_module(const mge::script::module_data_ref& data);
         void bind_module_functions(const mge::script::module_data_ref& data);
@@ -45,17 +53,8 @@ namespace mge::python {
         PyObject* register_component(PyObject* self, PyObject* args);
         PyObject* create_component(PyObject* self, PyObject* args);
 
-        void
-        implementations(std::string_view component_name,
-                        const std::function<void(std::string_view)>& callback);
-
-        std::shared_ptr<mge::component_base>
-        create(std::string_view component_name,
-               std::string_view implementation_name);
-
         using function_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
 
-        python_engine_ref                                     m_engine;
         std::map<mge::script::type_data_ref, python_type_ref> m_types;
         std::map<std::string, python_module_ref>              m_modules;
         std::vector<python_module_ref>                        m_all_modules;
@@ -65,9 +64,5 @@ namespace mge::python {
         std::vector<PyMethodDef>          m_methods;
         std::map<std::string, std::map<std::string, pyobject_ref>>
             m_component_implementations;
-
-        static python_context*              s_global_context;
-        static thread_local python_context* s_thread_context;
-        friend class python_component_registry;
     };
 } // namespace mge::python

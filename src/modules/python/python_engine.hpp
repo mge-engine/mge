@@ -19,16 +19,5 @@ namespace mge::python {
         ~python_engine() override;
 
         mge::script_context_ref create_context() override;
-
-        static void interpreter_lost();
-
-        bool interpreter_initialized() const;
-        void initialize_interpreter();
-
-        void on_interpreter_loss();
-        void on_interpreter_restore();
-
-    private:
-        python_context_ref m_context;
     };
 } // namespace mge::python
