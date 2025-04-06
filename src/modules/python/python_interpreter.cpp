@@ -100,10 +100,11 @@ namespace mge::python {
         MGE_DEBUG_TRACE(PYTHON) << "Destroying Python interpreter";
 
         if (m_initialized) {
-            m_context.reset();
             PyGILState_Ensure();
             Py_Finalize();
             m_initialized = false;
+            m_context->on_interpreter_loss();
+            m_context.reset();
         } else {
             MGE_DEBUG_TRACE(PYTHON) << "Python interpreter already destroyed";
             if (m_context) {

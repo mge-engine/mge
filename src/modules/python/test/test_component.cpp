@@ -1,3 +1,4 @@
+#include "mge/application/loop_target.hpp"
 #include "pythontest.hpp"
 
 namespace mge::python {
@@ -33,6 +34,12 @@ class LoopTarget1 (mge.loop_target):
 
 mge.component.register("mge::loop_target", "LoopTarget1", LoopTarget1)
     )raw");
+        std::set<std::string, std::less<>> names;
+
+        mge::component<mge::loop_target>::implementations(
+            [&](std::string_view n) { names.insert(std::string(n)); });
+
+        EXPECT_TRUE(names.contains("LoopTarget1"));
     }
 
 } // namespace mge::python

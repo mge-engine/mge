@@ -32,7 +32,7 @@ def init():
         
         @staticmethod
         def register(interface, name, cls):
-            #__mge__.register_component(interface, name, cls)
+            __mge__.register_component(interface, name, cls)
             pass
 
         @staticmethod
@@ -50,7 +50,14 @@ namespace mge::python {
 
     python_context::python_context() {}
 
-    python_context::~python_context() {}
+    python_context::~python_context()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Destroying Python context";
+        m_modules.clear();
+        m_types.clear();
+        m_functions.clear();
+        m_all_modules.clear();
+    }
 
     void python_context::eval(const std::string& code)
     {
@@ -242,11 +249,6 @@ namespace mge::python {
         PyObject* name = PyTuple_GetItem(args, 1);
         PyObject* type = PyTuple_GetItem(args, 2);
 
-        MGE_DEBUG_TRACE(PYTHON)
-            << "Registering type " << PyUnicode_AsUTF8(type)
-            << " as implementation of " << PyUnicode_AsUTF8(interface)
-            << " identified by " << PyUnicode_AsUTF8(name);
-
         if (!PyUnicode_Check(interface)) {
             PyErr_SetString(PyExc_TypeError,
                             "First argument (interface) must be a string");
@@ -263,6 +265,11 @@ namespace mge::python {
             PyErr_SetString(PyExc_TypeError, "Third argument must be a type");
             return nullptr;
         }
+
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Registering type " << ((PyTypeObject*)type)->tp_name
+            << " as implementation of " << PyUnicode_AsUTF8(interface)
+            << " identified by " << PyUnicode_AsUTF8(name);
 
         std::string  interface_name = PyUnicode_AsUTF8(interface);
         std::string  name_name = PyUnicode_AsUTF8(name);
@@ -406,7 +413,15 @@ namespace mge::python {
     void python_context::implementations(
         std::string_view                             component_name,
         const std::function<void(std::string_view)>& callback)
-    {}
+    {
+        auto it = m_component_implementations.find(component_name);
+        if (it == m_component_implementations.end()) {
+            return;
+        }
+        for (const auto& [name, type] : it->second) {
+            callback(name);
+        }
+    }
 
     std::shared_ptr<mge::component_base>
     python_context::create(std::string_view component_name,

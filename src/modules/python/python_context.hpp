@@ -55,14 +55,18 @@ namespace mge::python {
 
         using function_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
 
-        std::map<mge::script::type_data_ref, python_type_ref> m_types;
-        std::map<std::string, python_module_ref>              m_modules;
+        std::map<mge::script::type_data_ref, python_type_ref, std::less<>>
+                                                              m_types;
+        std::map<std::string, python_module_ref, std::less<>> m_modules;
         std::vector<python_module_ref>                        m_all_modules;
         std::vector<python_function_ref>                      m_functions;
+
         std::shared_ptr<function_closure> m_register_component;
         std::shared_ptr<function_closure> m_create_component;
         std::vector<PyMethodDef>          m_methods;
-        std::map<std::string, std::map<std::string, pyobject_ref>>
+        std::map<std::string,
+                 std::map<std::string, pyobject_ref, std::less<>>,
+                 std::less<>>
             m_component_implementations;
     };
 } // namespace mge::python
