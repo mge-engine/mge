@@ -9,4 +9,30 @@ namespace mge::python {
         virtual ~test_component() = default;
     };
 
+    TEST_F(test_component, create_component_class)
+    {
+        context->eval(R"raw(
+import mge
+
+class LoopTarget1 (mge.loop_target):
+    
+    def __init__(self):
+        super().__init__()
+        
+    def is_quit(self):
+        return False
+
+    def update(self, cycle):
+        return
+
+    def update(self, cycle, elapsed, delta):
+        return
+
+    def present(self, cycle, peek):
+        return
+
+mge.component.register("mge::loop_target", "LoopTarget1", LoopTarget1)
+    )raw");
+    }
+
 } // namespace mge::python
