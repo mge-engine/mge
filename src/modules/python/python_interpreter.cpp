@@ -98,11 +98,18 @@ namespace mge::python {
     python_interpreter::~python_interpreter()
     {
         MGE_DEBUG_TRACE(PYTHON) << "Destroying Python interpreter";
-        m_context.reset();
+
         if (m_initialized) {
+            m_context.reset();
             PyGILState_Ensure();
             Py_Finalize();
             m_initialized = false;
+        } else {
+            MGE_DEBUG_TRACE(PYTHON) << "Python interpreter already destroyed";
+            if (m_context) {
+                m_context->on_interpreter_loss();
+                m_context.reset();
+            }
         }
     }
 
