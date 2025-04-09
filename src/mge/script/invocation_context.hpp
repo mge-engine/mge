@@ -110,7 +110,8 @@ namespace mge::script {
             } else if constexpr (std::is_same_v<PlainType, std::string>) {
                 store_string_argument(index, value);
             } else {
-                auto t = type_data::get(typeid(PlainType));
+                auto t = type_data::get(
+                    mge::script::make_type_identifier<PlainType>());
                 if (!t) {
                     MGE_THROW(illegal_argument)
                         << "Type " << type_name<PlainType>()

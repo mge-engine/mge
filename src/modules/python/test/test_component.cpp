@@ -15,60 +15,67 @@ namespace mge::python {
         context->eval(R"raw(
 import mge
 
-class LoopTarget1 (mge.loop_target):
+class App1 (mge.application):
     
     def __init__(self):
         super().__init__()
-        
-    def is_quit(self):
-        return False
+    
+    def setup(self):
+        pass
 
-    def update(self, cycle):
-        return
+    def async_setup(self):
+        pass
 
-    def update(self, cycle, elapsed, delta):
-        return
+    def  teardown(self):
+        pass
 
-    def present(self, cycle, peek):
-        return
+    def run(self):
+        pass
 
-mge.component.register("mge::loop_target", "LoopTarget1", LoopTarget1)
+mge.component.register("mge::application", "App1", App1)
     )raw");
         std::set<std::string, std::less<>> names;
 
-        mge::component<mge::loop_target>::implementations(
+        mge::component<mge::application>::implementations(
             [&](std::string_view n) { names.insert(std::string(n)); });
 
-        EXPECT_TRUE(names.contains("LoopTarget1"));
+        EXPECT_TRUE(names.contains("App1"));
     }
 
-    TEST_F(test_component, create_component)
+    TEST_F(test_component, create_component_fails_due_to_base_check)
     {
         context->eval(R"raw(
 import mge
 
-class LoopTarget2 (mge.loop_target):
+class App2 (mge.application):
     
     def __init__(self):
         super().__init__()
-        
-    def is_quit(self):
-        return False
+    
+    def setup(self):
+        pass
 
-    def update(self, cycle):
-        return
+    def async_setup(self):
+        pass
 
-    def update(self, cycle, elapsed, delta):
-        return
+    def  teardown(self):
+        pass
 
-    def present(self, cycle, peek):
-        return
+    def run(self):
+        pass
 
-mge.component.register("mge::loop_target", "LoopTarget2", LoopTarget2)
+mge.component.register("mge::application", "App2", App2)
     )raw");
-
-        auto target =
-            mge::loop_target::create("mge::loop_target", "LoopTarget2");
+        try {
+            auto target = mge::application::create("App2");
+            EXPECT_TRUE(false) << "Should not be able to create App2 component";
+        } catch (const mge::exception e) {
+            EXPECT_TRUE(std::string(e.what()).find(
+                            "Can only have one application instance") !=
+                        std::string::npos)
+                << "Exception message does not contain expected text: "
+                << e.what();
+        }
     }
 
 } // namespace mge::python

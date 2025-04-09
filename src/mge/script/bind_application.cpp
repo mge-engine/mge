@@ -12,20 +12,6 @@
 #include "mge/script/type.hpp"
 namespace mge::script {
 
-    class proxy_loop_target : public mge::script::proxy<mge::loop_target>
-    {
-    public:
-        proxy_loop_target() = default;
-        proxy_loop_target(const proxy_loop_target&) = delete;
-        proxy_loop_target& operator=(const proxy_loop_target&) = delete;
-        virtual ~proxy_loop_target() = default;
-
-        MGE_IMPLEMENT_METHOD(bool, is_quit, (), const);
-        MGE_IMPLEMENT_METHOD(void, input, (uint64_t));
-        MGE_IMPLEMENT_METHOD(void, update, (uint64_t, double, double));
-        MGE_IMPLEMENT_METHOD(void, present, (uint64_t, double));
-    };
-
     class proxy_application : public mge::script::proxy<mge::application>
     {
     public:
@@ -38,6 +24,17 @@ namespace mge::script {
         MGE_IMPLEMENT_METHOD(void, async_setup, ());
         MGE_IMPLEMENT_METHOD(void, teardown, ());
         MGE_IMPLEMENT_METHOD(void, run, ());
+    };
+
+    class proxy_loop : public mge::script::proxy<mge::loop>
+    {
+    public:
+        proxy_loop() = default;
+        proxy_loop(const proxy_loop&) = delete;
+        proxy_loop& operator=(const proxy_loop&) = delete;
+        virtual ~proxy_loop() = default;
+
+        MGE_IMPLEMENT_METHOD(void, run, (mge::loop_target&));
     };
 
     class application_script_binder : public script_binder
@@ -61,8 +58,7 @@ namespace mge::script {
                             mge::script::method_is_pure_virtual)
                     .method("present",
                             &mge::loop_target::present,
-                            mge::script::method_is_pure_virtual)
-                    .proxy<proxy_loop_target>(),
+                            mge::script::method_is_pure_virtual),
                 type<mge::application>()
                     .base<mge::loop_target>()
                     .base<mge::component_base>()
@@ -109,7 +105,9 @@ namespace mge::script {
                             &mge::application::remove_quit_listener)
                     .function("instance", &mge::application::instance)
                     .proxy<proxy_application>(),
-                type<mge::loop>().method("run", &mge::loop::run));
+                type<mge::loop>()
+                    .method("run", &mge::loop::run)
+                    .proxy<proxy_loop>());
         }
     };
 
