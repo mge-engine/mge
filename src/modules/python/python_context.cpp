@@ -427,8 +427,23 @@ namespace mge::python {
     python_context::create(std::string_view component_name,
                            std::string_view implementation_name)
     {
-        std::shared_ptr<mge::component_base> result;
-        return result;
+        auto it = m_component_implementations.find(component_name);
+        if (it == m_component_implementations.end()) {
+            return std::shared_ptr<mge::component_base>();
+        }
+        auto it2 = it->second.find(implementation_name);
+        if (it2 == it->second.end()) {
+            return std::shared_ptr<mge::component_base>();
+        }
+
+        pyobject_ref type_ref(it2->second);
+        PyObject*    ref = PyObject_CallObject(type_ref.get(), nullptr);
+        if (!ref) {
+            error::check_error();
+            return std::shared_ptr<mge::component_base>();
+        }
+
+        return std::shared_ptr<mge::component_base>();
     }
 
     class python_component_registry : public mge::component_registry
