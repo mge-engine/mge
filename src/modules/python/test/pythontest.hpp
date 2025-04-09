@@ -9,9 +9,6 @@
 
 namespace mge::python {
 
-    class pythontest_application : public mge::test_application
-    {};
-
     class pythontest : public ::testing::Test
     {
     public:
@@ -19,9 +16,16 @@ namespace mge::python {
         virtual ~pythontest() = default;
 
         void SetUp() override;
-        void TearDown() override;
 
-        mge::script_engine_ref engine;
+        static std::once_flag          s_once_flag;
+        static mge::script_engine_ref  engine;
+        static mge::script_context_ref context;
+    };
+
+    class pythontest_application : public mge::test_application
+    {
+    public:
+        void teardown() override;
     };
 
 } // namespace mge::python

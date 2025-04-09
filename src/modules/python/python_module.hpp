@@ -23,8 +23,14 @@ namespace mge::python {
         void on_interpreter_loss();
         void on_interpreter_restore();
 
-        const pyobject_ref& pymodule() const { return m_module; }
-        const auto&         data() const { return m_data; }
+        const pyobject_ref& pymodule() const
+        {
+            return m_module;
+        }
+        const auto& data() const
+        {
+            return m_data;
+        }
 
     private:
         void initialize();

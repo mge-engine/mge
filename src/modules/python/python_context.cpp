@@ -1,38 +1,66 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "python_context.hpp"
-#include "gil_lock.hpp"
-#include "pyobject_ref.hpp"
-#include "python_engine.hpp"
-#include "python_error.hpp"
-#include "python_function.hpp"
-#include "python_module.hpp"
-#include "python_type.hpp"
 
 #include "mge/core/trace.hpp"
 #include "mge/script/module.hpp"
 #include "mge/script/module_data.hpp"
 #include "mge/script/type_data.hpp"
+
+#include "gil_lock.hpp"
+#include "mge/core/component.hpp"
+#include "pyobject_ref.hpp"
+#include "python_context.hpp"
+#include "python_engine.hpp"
+#include "python_error.hpp"
+#include "python_function.hpp"
+#include "python_interpreter.hpp"
+#include "python_module.hpp"
+#include "python_type.hpp"
+
 #include <mutex>
 
 namespace mge {
     MGE_USE_TRACE(PYTHON);
 }
 
+static const char* prelude = R"(
+def init():
+    import mge
+    import __mge__
+    class component:
+        
+        @staticmethod
+        def register(interface, name, cls):
+            __mge__.register_component(interface, name, cls)
+            pass
+
+        @staticmethod
+        def create(interface, implementation):
+            #__mge__.create_component(interface, implementation)
+            pass
+
+    mge.component = component
+    
+init()
+init = None
+)";
+
 namespace mge::python {
 
-    python_context::python_context(const python_engine_ref& engine)
-        : m_engine(engine)
-    {}
+    python_context::python_context() {}
 
-    python_context::~python_context() {}
+    python_context::~python_context()
+    {
+        MGE_DEBUG_TRACE(PYTHON) << "Destroying Python context";
+        m_modules.clear();
+        m_types.clear();
+        m_functions.clear();
+        m_all_modules.clear();
+    }
 
     void python_context::eval(const std::string& code)
     {
-        if (!m_engine->interpreter_initialized()) {
-            m_engine->initialize_interpreter();
-        }
         gil_lock     guard;
         PyObject*    main_module = PyImport_AddModule("__main__");
         PyObject*    global_dict = PyModule_GetDict(main_module);
@@ -48,8 +76,8 @@ namespace mge::python {
 
     void interpreter_lost()
     {
-        MGE_DEBUG_TRACE(PYTHON) << "Py_AtExit handler, intepreter lost";
-        python_engine::interpreter_lost();
+        MGE_DEBUG_TRACE(PYTHON) << "Py_AtExit handler, interpreter lost";
+        python_interpreter::instance().interpreter_lost();
     }
 
     int python_context::main(int argc, const char** argv)
@@ -106,6 +134,12 @@ namespace mge::python {
                     << "Type " << t->name() << " is builtin";
                 continue;
             }
+            if (t->is_class() &&
+                !t->class_specific().interface_type.expired()) {
+                MGE_DEBUG_TRACE(PYTHON)
+                    << "Type " << t->name() << " is proxy type";
+                continue;
+            }
             python_type_ref pt = std::make_shared<python_type>(*this, t);
             m_types[t] = pt;
         }
@@ -116,6 +150,7 @@ namespace mge::python {
             MGE_DEBUG_TRACE(PYTHON) << "Defining type " << t->name();
             pt->define_in_interpreter();
         }
+        evaluate_prelude();
     }
 
     void python_context::bind_module_functions(
@@ -148,6 +183,168 @@ namespace mge::python {
         m_modules["__mge__"] = mod;
         m_all_modules.push_back(mod);
         create_function_helper_type(mod);
+
+        struct register_component_closure : function_closure
+        {
+            register_component_closure(python_context& context)
+                : m_context(context)
+            {}
+
+            PyObject* execute(PyObject* self, PyObject* args)
+            {
+                return m_context.register_component(self, args);
+            }
+
+            python_context& m_context;
+        };
+
+        struct create_component_closure : function_closure
+        {
+            create_component_closure(python_context& context)
+                : m_context(context)
+            {}
+
+            PyObject* execute(PyObject* self, PyObject* args)
+            {
+                return m_context.create_component(self, args);
+            }
+
+            python_context& m_context;
+        };
+
+        m_register_component =
+            std::make_shared<register_component_closure>(*this);
+        m_create_component = std::make_shared<create_component_closure>(*this);
+
+        m_methods.clear();
+        m_methods.push_back({"register_component",
+                             m_register_component->function(),
+                             METH_VARARGS,
+                             "Register a component implementation"});
+        m_methods.push_back({"create_component",
+                             m_create_component->function(),
+                             METH_VARARGS,
+                             "Create a component implementation"});
+        m_methods.push_back({nullptr, nullptr, 0, nullptr});
+
+        PyObject* module = mod->pymodule().get();
+        PyModule_AddFunctions(module, m_methods.data());
+        python::error::check_error();
+    }
+
+    PyObject* python_context::register_component(PyObject* self, PyObject* args)
+    {
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
+            return nullptr;
+        }
+
+        if (PyTuple_Size(args) != 3) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Expected 3 arguments (interface, name, type)");
+            return nullptr;
+        }
+
+        PyObject* interface = PyTuple_GetItem(args, 0);
+        PyObject* name = PyTuple_GetItem(args, 1);
+        PyObject* type = PyTuple_GetItem(args, 2);
+
+        if (!PyUnicode_Check(interface)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "First argument (interface) must be a string");
+            return nullptr;
+        }
+
+        if (!PyUnicode_Check(name)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Second argument (name) must be a string");
+            return nullptr;
+        }
+
+        if (!PyType_Check(type)) {
+            PyErr_SetString(PyExc_TypeError, "Third argument must be a type");
+            return nullptr;
+        }
+
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Registering type " << ((PyTypeObject*)type)->tp_name
+            << " as implementation of " << PyUnicode_AsUTF8(interface)
+            << " identified by " << PyUnicode_AsUTF8(name);
+
+        std::string  interface_name = PyUnicode_AsUTF8(interface);
+        std::string  name_name = PyUnicode_AsUTF8(name);
+        pyobject_ref type_ref(type, pyobject_ref::incref::yes);
+
+        if (m_component_implementations.find(interface_name) !=
+            m_component_implementations.end()) {
+            if (m_component_implementations[interface_name].find(name_name) !=
+                m_component_implementations[interface_name].end()) {
+                PyErr_SetString(PyExc_ValueError,
+                                "Component implementation already exists");
+                return nullptr;
+            }
+        }
+        m_component_implementations[interface_name][name_name] = type_ref;
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+
+    PyObject* python_context::create_component(PyObject* self, PyObject* args)
+    {
+        if (!PyTuple_Check(args)) {
+            PyErr_SetString(PyExc_TypeError, "Arguments must be a tuple");
+            return nullptr;
+        }
+
+        if (PyTuple_Size(args) != 2) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Expected 2 arguments (interface, name)");
+            return nullptr;
+        }
+
+        PyObject* interface = PyTuple_GetItem(args, 0);
+        PyObject* name = PyTuple_GetItem(args, 1);
+
+        MGE_DEBUG_TRACE(PYTHON)
+            << "Creating component instance of " << PyUnicode_AsUTF8(name)
+            << " as implementation of " << PyUnicode_AsUTF8(interface);
+
+        if (!PyUnicode_Check(interface)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "First argument (interface) must be a string");
+            return nullptr;
+        }
+
+        if (!PyUnicode_Check(name)) {
+            PyErr_SetString(PyExc_TypeError,
+                            "Second argument (name) must be a string");
+            return nullptr;
+        }
+
+        std::string interface_name = PyUnicode_AsUTF8(interface);
+        std::string name_name = PyUnicode_AsUTF8(name);
+
+        auto it = m_component_implementations.find(interface_name);
+        if (it == m_component_implementations.end()) {
+            PyErr_SetString(PyExc_ValueError, "Interface not found");
+            return nullptr;
+        }
+
+        auto it2 = it->second.find(name_name);
+        if (it2 == it->second.end()) {
+            PyErr_SetString(PyExc_ValueError, "Implementation not found");
+            return nullptr;
+        }
+
+        pyobject_ref type_ref(it2->second);
+        pyobject_ref result(PyObject_CallObject(type_ref.get(), nullptr));
+        if (!result) {
+            error::check_error();
+            return nullptr;
+        }
+
+        Py_INCREF(result.get());
+        return result.get();
     }
 
     void
@@ -182,4 +379,95 @@ namespace mge::python {
         }
     }
 
+    void python_context::evaluate_prelude()
+    {
+        eval(prelude);
+        error::check_error();
+    }
+
+    python_type_ref
+    python_context::find_component_type(const std::vector<PyObject*>& types)
+    {
+        if (types.empty()) {
+            return nullptr;
+        }
+
+        // Search through all registered types
+        for (const auto& [type_data, python_type] : m_types) {
+            // Skip non-component types
+            if (!type_data->is_component()) {
+                continue;
+            }
+            // For each base type
+            for (PyObject* base_type : types) {
+                // Check if this type's Python type object matches the base type
+                if (python_type->type_object().get() == base_type) {
+                    return python_type;
+                }
+            }
+        }
+
+        return nullptr;
+    }
+
+    void python_context::implementations(
+        std::string_view                             component_name,
+        const std::function<void(std::string_view)>& callback)
+    {
+        auto it = m_component_implementations.find(component_name);
+        if (it == m_component_implementations.end()) {
+            return;
+        }
+        for (const auto& [name, type] : it->second) {
+            callback(name);
+        }
+    }
+
+    std::shared_ptr<mge::component_base>
+    python_context::create(std::string_view component_name,
+                           std::string_view implementation_name)
+    {
+        auto it = m_component_implementations.find(component_name);
+        if (it == m_component_implementations.end()) {
+            return std::shared_ptr<mge::component_base>();
+        }
+        auto it2 = it->second.find(implementation_name);
+        if (it2 == it->second.end()) {
+            return std::shared_ptr<mge::component_base>();
+        }
+
+        pyobject_ref type_ref(it2->second);
+        PyObject*    ref = PyObject_CallObject(type_ref.get(), nullptr);
+        if (!ref) {
+            error::check_error();
+            return std::shared_ptr<mge::component_base>();
+        }
+
+        return std::shared_ptr<mge::component_base>();
+    }
+
+    class python_component_registry : public mge::component_registry
+    {
+    public:
+        void implementations(
+            std::string_view                             component_name,
+            const std::function<void(std::string_view)>& callback) override
+        {
+            python_interpreter::instance().context().implementations(
+                component_name,
+                callback);
+        }
+
+        std::shared_ptr<mge::component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name) override
+        {
+            return python_interpreter::instance().context().create(
+                component_name,
+                implementation_name);
+        }
+    };
+
+    MGE_REGISTER_IMPLEMENTATION(python_component_registry,
+                                mge::component_registry);
 } // namespace mge::python

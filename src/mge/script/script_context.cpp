@@ -16,15 +16,18 @@ namespace mge {
 
         void resolve()
         {
-            script_binder::implementations([&](std::string_view s) {
-                if (m_processed_binders.find(s) == m_processed_binders.end()) {
-                    MGE_DEBUG_TRACE(SCRIPT)
-                        << "Need to resolve bindings with '" << s << "'";
-                    auto binder = script_binder::create(s);
-                    binder->bind();
-                    m_processed_binders.emplace(s, binder);
-                }
-            });
+            script_binder::implementations(
+                [&](std::string_view s) {
+                    if (m_processed_binders.find(s) ==
+                        m_processed_binders.end()) {
+                        MGE_DEBUG_TRACE(SCRIPT)
+                            << "Need to resolve bindings with '" << s << "'";
+                        auto binder = script_binder::create(s);
+                        binder->bind();
+                        m_processed_binders.emplace(s, binder);
+                    }
+                },
+                /* do not use component registries*/ false);
         }
 
     private:
@@ -34,7 +37,13 @@ namespace mge {
 
     static singleton<binder> s_binder;
 
-    script_context::script_context() { s_binder->resolve(); }
+    script_context::script_context()
+    {
+        s_binder->resolve();
+    }
 
-    void script_context::resolve_bindings() { s_binder->resolve(); }
+    void script_context::resolve_bindings()
+    {
+        s_binder->resolve();
+    }
 } // namespace mge

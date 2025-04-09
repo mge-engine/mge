@@ -65,14 +65,16 @@ namespace mge {
 
         template <typename T>
         static inline void
-        implementations(const std::function<void(std::string_view)>& callback)
+        implementations(const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries = true)
         {
-            implementations(type_name<T>(), callback);
+            implementations(type_name<T>(), callback, use_component_registries);
         }
 
         static void
         implementations(std::string_view component_name,
-                        const std::function<void(std::string_view)>& callback);
+                        const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries = true);
 
         static bool component_registered(std::string_view name);
         static bool
@@ -89,7 +91,7 @@ namespace mge {
         }
 
     private:
-        friend class component_registry;
+        friend class default_component_registry;
 
         implementation_registry_entry_base* m_impl_regentry;
     };
@@ -105,7 +107,10 @@ namespace mge {
             register_component(this);
         }
         virtual ~component_registry_entry() = default;
-        std::string_view name() const noexcept override { return m_name; }
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
 
     private:
         std::string m_name{mge::type_name<Class>()};
@@ -142,7 +147,10 @@ namespace mge {
         {
             return m_component_name;
         }
-        std::string_view name() const noexcept override { return m_name; }
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
         std::string_view alias_names() const noexcept override
         {
             return m_alias_names;
@@ -204,18 +212,25 @@ namespace mge {
          * @brief Enumerate over all implementations.
          *
          * @param callback callback function called for each implementation name
+         * @param use_component_registries if true, the additional component
+         * registries are used for lookup
          */
         static inline void
-        implementations(const std::function<void(std::string_view)>& callback)
+        implementations(const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries = true)
         {
-            component_base::implementations<Class>(callback);
+            component_base::implementations<Class>(callback,
+                                                   use_component_registries);
         }
 
         /**
          * @brief Get reference of this instance.
          * @return weak reference to this instance
          */
-        const std::weak_ptr<Class>& self() const noexcept { return m_self; }
+        const std::weak_ptr<Class>& self() const noexcept
+        {
+            return m_self;
+        }
 
     private:
         void set_self(const std::shared_ptr<Class>& instance)
@@ -248,4 +263,42 @@ namespace mge {
         __mge_implementation_registry_entry_##clazz =                          \
             ::mge::implementation_registry_entry<component, clazz>(            \
                 MGE_STRINGIFY(__VA_ARGS__))
+
+    /**
+     * @brief Component registry.
+     *
+     * In addition to the standard component registry, other registries may be
+     * added e.g. to provide access to implementations created in a scripting
+     * language.
+     */
+    class MGECORE_EXPORT component_registry
+        : public component<component_registry>
+    {
+    public:
+        component_registry();
+        virtual ~component_registry();
+        using component<component_registry>::create;
+
+        /**
+         * @brief Enumerate over all implementations.
+         *
+         * @param component_name component name
+         * @param callback callback function called for each implementation name
+         */
+        virtual void implementations(
+            std::string_view                             component_name,
+            const std::function<void(std::string_view)>& callback) = 0;
+
+        /**
+         * @brief Create an implementation.
+         *
+         * @param component_name component name
+         * @param implementation_name implementation name
+         * @return implementation
+         */
+        virtual std::shared_ptr<component_base>
+        create(std::string_view component_name,
+               std::string_view implementation_name) = 0;
+    };
+
 } // namespace mge

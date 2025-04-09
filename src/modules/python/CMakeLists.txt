@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mge_python_module_SOURCES
+    python_interpreter.cpp
     python_engine.cpp
     python_context.cpp
     python_error.cpp
@@ -11,6 +12,7 @@ SET(mge_python_module_SOURCES
     python_module.cpp
     python_call_context.cpp
     type_matches.cpp
+    python_invocation_context.cpp
 )
 
 ADD_LIBRARY(mge_module_python MODULE

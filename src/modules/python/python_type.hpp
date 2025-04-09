@@ -23,7 +23,12 @@ namespace mge::python {
         void on_interpreter_restore();
         void define_in_interpreter();
 
-        const pyobject_ref& type_object() const { return m_type_object; }
+        const pyobject_ref& type_object() const
+        {
+            return m_type_object;
+        }
+
+        void* method_function(const char* name) const;
 
     private:
         void initialize();
@@ -35,6 +40,7 @@ namespace mge::python {
         void init_regular_class();
         void init_fields();
         void init_methods();
+        void init_functions();
         void add_field(const std::string&                  name,
                        const mge::script::invoke_function& getter,
                        const mge::script::invoke_function& setter);
@@ -43,15 +49,25 @@ namespace mge::python {
                         const mge::script::type_data::call_signature& signature,
                         const mge::script::invoke_function&           method);
 
+        void
+        add_function(const std::string&                            name,
+                     const mge::script::type_data_ref&             return_type,
+                     const mge::script::type_data::call_signature& signature,
+                     const mge::script::invoke_function&           function);
+
         void define_enum();
         void define_class();
         void define_callable_class();
         void define_regular_class();
         void define_alias();
 
-        size_t select_constructor(PyObject* args) const;
+        size_t select_constructor(const mge::script::type_data_ref& type,
+                                  PyObject*                         args) const;
 
-        int tp_init(PyObject* self, PyObject* args, PyObject* kwds) const;
+        int tp_init(PyObject* self,
+                    PyObject* args,
+                    PyObject* kwds,
+                    bool      is_subclass) const;
 
         python_context& m_context;
         std::string     m_name_in_module; // name as it appaers in the module
@@ -83,13 +99,15 @@ namespace mge::python {
         using tp_set_closure = mge::closure<int, PyObject*, PyObject*, void*>;
 
         using method_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
+        using function_closure = mge::closure<PyObject*, PyObject*, PyObject*>;
 
-        std::shared_ptr<tp_new_closure>              m_tp_new_closure;
-        std::shared_ptr<tp_dealloc_closure>          m_tp_dealloc_closure;
-        std::shared_ptr<tp_init_closure>             m_tp_init_closure;
-        std::vector<std::shared_ptr<tp_get_closure>> m_tp_get_closures;
-        std::vector<std::shared_ptr<tp_set_closure>> m_tp_set_closures;
-        std::vector<std::shared_ptr<method_closure>> m_method_closures;
+        std::shared_ptr<tp_new_closure>                m_tp_new_closure;
+        std::shared_ptr<tp_dealloc_closure>            m_tp_dealloc_closure;
+        std::shared_ptr<tp_init_closure>               m_tp_init_closure;
+        std::vector<std::shared_ptr<tp_get_closure>>   m_tp_get_closures;
+        std::vector<std::shared_ptr<tp_set_closure>>   m_tp_set_closures;
+        std::vector<std::shared_ptr<method_closure>>   m_method_closures;
+        std::vector<std::shared_ptr<function_closure>> m_function_closures;
     };
 
 } // namespace mge::python

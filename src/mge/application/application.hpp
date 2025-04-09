@@ -107,8 +107,16 @@ namespace mge {
 
         void present(uint64_t cycle, double peek) override;
 
+        /**
+         * Set the return code as it will be returned to the operating system.
+         * @param return_code return code, 0 is no error
+         */
         void set_return_code(int return_code);
 
+        /**
+         * Get currently set return code.
+         * @return return code
+         */
         int return_code() const noexcept;
 
         /**

@@ -13,7 +13,8 @@ SET(mgescript_sources
     type_data.cpp
     function_data.cpp
 
-    dependency.cpp  
+    dependency.cpp
+    proxy.cpp  
 
     bind_std.cpp
 )
@@ -33,6 +34,10 @@ SET(mgescript_sources
     function_data.hpp
 
     dependency.hpp
+
+    call_context.hpp
+    invocation_context.hpp
+    proxy.hpp
  )
 
 MGE_LIBRARY(

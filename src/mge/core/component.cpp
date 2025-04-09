@@ -17,7 +17,7 @@ namespace mge {
 
     MGE_USE_TRACE(CORE);
 
-    class component_registry
+    class default_component_registry
     {
     public:
         using component_map =
@@ -27,10 +27,12 @@ namespace mge {
             std::map<std::string_view, implementation_registry_entry_base*>>;
         using alias_map =
             std::map<std::string_view, std::map<std::string, std::string_view>>;
+        using component_registry_map =
+            std::map<std::string_view, std::shared_ptr<component_registry>>;
 
-        component_registry() = default;
+        default_component_registry() = default;
 
-        ~component_registry() = default;
+        ~default_component_registry() = default;
 
         void register_component(component_registry_entry_base* c)
         {
@@ -63,9 +65,8 @@ namespace mge {
             return contains(m_components, name);
         }
 
-        bool
-        implementation_registered(std::string_view component_name,
-                                  std::string_view implementation_name) const
+        bool implementation_registered(std::string_view component_name,
+                                       std::string_view implementation_name)
         {
             if (m_implementations.find(component_name) ==
                 m_implementations.end()) {
@@ -87,12 +88,41 @@ namespace mge {
                     return true;
                 }
             }
+            update_component_registries();
+
+            for (const auto& registry : m_component_registries) {
+                bool found = false;
+                registry.second->implementations(component_name,
+                                                 [&](std::string_view n) {
+                                                     if (n ==
+                                                         implementation_name) {
+                                                         found = true;
+                                                     }
+                                                 });
+                if (found) {
+                    return true;
+                }
+            }
             return false;
         }
 
         void
         implementations(std::string_view component_name,
-                        const std::function<void(std::string_view)>& callback)
+                        const std::function<void(std::string_view)>& callback,
+                        bool use_component_registries)
+        {
+            local_implementations(component_name, callback);
+            if (use_component_registries) {
+                update_component_registries();
+                for (const auto& registry : m_component_registries) {
+                    registry.second->implementations(component_name, callback);
+                }
+            }
+        }
+
+        void local_implementations(
+            std::string_view                             component_name,
+            const std::function<void(std::string_view)>& callback)
         {
             auto impl_it = m_implementations.find(component_name);
             if (impl_it != m_implementations.end()) {
@@ -100,6 +130,18 @@ namespace mge {
                     callback(e.first);
                 }
             }
+        }
+
+        void update_component_registries()
+        {
+            local_implementations("mge::component_registry",
+                                  [&](std::string_view n) {
+                                      if (m_component_registries.find(n) ==
+                                          m_component_registries.end()) {
+                                          m_component_registries[n] =
+                                              component_registry::create(n);
+                                      }
+                                  });
         }
 
         std::shared_ptr<component_base>
@@ -130,6 +172,25 @@ namespace mge {
                 }
             }
 
+            update_component_registries();
+
+            for (const auto& registry : m_component_registries) {
+                bool found = false;
+                registry.second->implementations(component_name,
+                                                 [&](std::string_view n) {
+                                                     if (n ==
+                                                         implementation_name) {
+                                                         found = true;
+                                                     }
+                                                 });
+                if (found) {
+                    auto result = registry.second->create(component_name,
+                                                          implementation_name);
+                    if (result) {
+                        return result;
+                    }
+                }
+            }
             return std::shared_ptr<component_base>();
         }
 
@@ -153,9 +214,6 @@ namespace mge {
         {
             auto implementation_name = i->name();
 
-            // std::cout << "Register implementation " << implementation_name <<
-            // std::endl;
-
             std::string alias_names(i->alias_names());
 
             m_implementations[component_name][implementation_name] = i;
@@ -171,10 +229,11 @@ namespace mge {
         implementation_map m_implementations;
         alias_map          m_aliases;
         std::vector<implementation_registry_entry_base*>
-            m_pending_implementations;
+                               m_pending_implementations;
+        component_registry_map m_component_registries;
     };
 
-    singleton<component_registry> s_component_registry;
+    singleton<default_component_registry> s_component_registry;
 
     void component_registry_entry_base::register_component(
         component_registry_entry_base* c)
@@ -203,9 +262,12 @@ namespace mge {
 
     void component_base::implementations(
         std::string_view                             component_name,
-        const std::function<void(std::string_view)>& callback)
+        const std::function<void(std::string_view)>& callback,
+        bool                                         use_component_registries)
     {
-        return s_component_registry->implementations(component_name, callback);
+        return s_component_registry->implementations(component_name,
+                                                     callback,
+                                                     use_component_registries);
     }
 
     std::shared_ptr<component_base>
@@ -215,4 +277,10 @@ namespace mge {
         return s_component_registry->create(component_name,
                                             implementation_name);
     }
+
+    component_registry::component_registry() {}
+
+    component_registry::~component_registry() {}
+
+    MGE_REGISTER_COMPONENT(component_registry);
 } // namespace mge

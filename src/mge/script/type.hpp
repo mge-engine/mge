@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/callable.hpp"
+#include "mge/core/component.hpp"
 #include "mge/core/enum.hpp"
 #include "mge/script/call_context.hpp"
 #include "mge/script/dllexport.hpp"
@@ -41,6 +42,8 @@ namespace mge::script {
     // - unique_ptr<T>
     // - containers of classes
 
+    const bool method_is_pure_virtual = true;
+
     template <typename T> class type;
 
     template <> class type<void>
@@ -54,16 +57,43 @@ namespace mge::script {
                 m_data = type_data::create(typeid(void), id);
             }
         }
-        bool is_void() const noexcept { return true; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return true;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        type_data_ref data() const noexcept { return m_data; }
+        type_data_ref data() const noexcept
+        {
+            return m_data;
+        }
 
         const type_identifier& identifier() const noexcept
         {
@@ -100,16 +130,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return true; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return true;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -140,16 +197,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return true; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return true;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -178,15 +262,39 @@ namespace mge::script {
             }
         }
 
-        bool is_bool() const noexcept { return true; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return true; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_bool() const noexcept
+        {
+            return true;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return true;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool exposed_directly() const noexcept
         {
@@ -202,6 +310,28 @@ namespace mge::script {
         type_data_ref m_data;
     };
 
+    namespace {
+        template <typename T> struct component_helper
+        {
+            static void initialize(type<T>& t) {}
+        };
+
+        template <typename T>
+            requires(std::is_base_of_v<component<T>, T>)
+        struct component_helper<T>
+        {
+            static void initialize(type<T>& t)
+            {
+                t.function(
+                    "create",
+                    std::function<std::shared_ptr<T>(const std::string&)>(
+                        [](const std::string& name) -> std::shared_ptr<T> {
+                            return T::create(name);
+                        }));
+            }
+        };
+    } // namespace
+
     template <typename T>
         requires(std::is_class_v<T> && !mge::is_callable_v<T>)
     class type<T>
@@ -215,6 +345,7 @@ namespace mge::script {
                 m_data = type_data::create(typeid(T), id);
                 initialize();
             }
+            component_helper<T>::initialize(*this);
         }
 
         type(const char* alias_name)
@@ -224,8 +355,18 @@ namespace mge::script {
             if (!m_data) {
                 m_data = type_data::create(typeid(T), id);
                 initialize();
+                if (m_data->is_special_type()) {
+                    MGE_THROW(illegal_state)
+                        << "Type " << m_data->name()
+                        << " is a special type and cannot be aliased";
+                }
                 m_data->set_alias_name(alias_name);
             } else {
+                if (m_data->is_special_type()) {
+                    MGE_THROW(illegal_state)
+                        << "Type " << m_data->name()
+                        << " is a special type and cannot be aliased";
+                }
                 if (m_data->alias_name() != alias_name) {
                     MGE_THROW(illegal_state)
                         << "Type " << m_data->name()
@@ -234,16 +375,53 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return true; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return true;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        bool is_string() const
+        {
+            return m_data->is_string();
+        }
+
+        bool is_abstract() const
+        {
+            return m_data->is_abstract();
+        }
+
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -296,7 +474,7 @@ namespace mge::script {
             return *this;
         }
 
-        template <typename F> type<T>& field(const char* name, F T::*field)
+        template <typename F> type<T>& field(const char* name, F T::* field)
         {
             type<F> field_type;
             m_data->add_dependency(dependency(field_type.data()));
@@ -334,7 +512,9 @@ namespace mge::script {
         template <typename R, typename... Args>
             requires !std::is_void_v<R>
                      type<T> &
-            method(const char* name, R (T::*method)(Args...))
+            method(const char* name,
+                   R (T::*method)(Args...),
+                   bool pure_virtual = false)
         {
             type<R> return_type;
             m_data->add_dependency(dependency(return_type.data()));
@@ -364,14 +544,17 @@ namespace mge::script {
                         ctx.exception_thrown();
                         ctx.after_call();
                     }
-                });
+                },
+                pure_virtual);
             return *this;
         }
 
         template <typename R, typename... Args>
             requires !std::is_void_v<R>
                      type<T> &
-            method(const char* name, R (T::*method)(Args...) const)
+            method(const char* name,
+                   R (T::*method)(Args...) const,
+                   bool pure_virtual = false)
         {
             type<R> return_type;
             m_data->add_dependency(dependency(return_type.data()));
@@ -401,12 +584,15 @@ namespace mge::script {
                         ctx.exception_thrown();
                         ctx.after_call();
                     }
-                });
+                },
+                pure_virtual);
             return *this;
         }
 
         template <typename... Args>
-        type<T>& method(const char* name, void (T::*method)(Args...))
+        type<T>& method(const char* name,
+                        void (T::*method)(Args...),
+                        bool pure_virtual = false)
         {
             m_data->add_dependency(dependency(type<void>().data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
@@ -434,12 +620,45 @@ namespace mge::script {
                         ctx.exception_thrown();
                         ctx.after_call();
                     }
-                });
+                },
+                pure_virtual);
             return *this;
         }
 
         template <typename... Args>
         type<T>& function(const char* name, void (*func)(Args...))
+        {
+            m_data->add_dependency(dependency(type<void>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<void>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        ctx.before_call();
+                        func(ctx.parameter<Args>(--index)...);
+                        ctx.after_call();
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (...) {
+                        ctx.exception_thrown();
+                        ctx.after_call();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename... Args>
+        type<T>& function(const char* name, std::function<void(Args...)> func)
         {
             m_data->add_dependency(dependency(type<void>().data()));
             std::vector<type_data_ref> arg_types = {type<Args>().data()...};
@@ -488,6 +707,41 @@ namespace mge::script {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         ctx.before_call();
+
+                        ctx.result(func(ctx.parameter<Args>(--index)...));
+                        ctx.after_call();
+                    } catch (const mge::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (const std::exception& e) {
+                        ctx.exception_thrown(e);
+                        ctx.after_call();
+                    } catch (...) {
+                        ctx.exception_thrown();
+                        ctx.after_call();
+                    }
+                });
+            return *this;
+        }
+
+        template <typename R, typename... Args>
+            requires !std::is_void_v<R>
+                     type<T> &
+            function(const char* name, std::function<R(Args...)> func)
+        {
+            m_data->add_dependency(dependency(type<R>().data()));
+            std::vector<type_data_ref> arg_types = {type<Args>().data()...};
+            type_data::call_signature  sig = {make_type_identifier<Args>()...};
+            (m_data->add_dependency(dependency(type<Args>().data())), ...);
+            m_data->class_specific().functions.emplace_back(
+                name,
+                type<R>().data(),
+                sig,
+                [func](call_context& ctx) {
+                    try {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        ctx.before_call();
                         ctx.result(func(ctx.parameter<Args>(--index)...));
                         ctx.after_call();
                     } catch (const mge::exception& e) {
@@ -512,6 +766,12 @@ namespace mge::script {
             proxy_type.data()->add_dependency(dependency(m_data));
             m_data->class_specific().proxy_type = proxy_type.data();
             proxy_type.data()->class_specific().interface_type = m_data;
+            m_data->class_specific().proxy_base_from_shared_ptr =
+                [](void* shared_ptr_address) -> void* {
+                std::shared_ptr<Proxy>* sp =
+                    static_cast<std::shared_ptr<Proxy>*>(shared_ptr_address);
+                return sp->get()->as_proxy_base();
+            };
             return *this;
         }
 
@@ -526,6 +786,9 @@ namespace mge::script {
             m_data->class_specific().size = sizeof(T);
             if constexpr (std::is_abstract_v<T>) {
                 m_data->class_specific().is_abstract = true;
+            }
+            if constexpr (std::is_base_of_v<mge::component<T>, T>) {
+                m_data->class_specific().is_component = true;
             }
             if constexpr (!std::is_same_v<T, std::string> &&
                           !std::is_same_v<T, std::wstring> &&
@@ -655,7 +918,6 @@ namespace mge::script {
                 }
             }
         }
-
         type_data_ref m_data;
     };
 
@@ -677,16 +939,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return true; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return true;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -718,16 +1007,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return true; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return true;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -762,16 +1078,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return false; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {
@@ -806,16 +1149,43 @@ namespace mge::script {
             }
         }
 
-        bool is_void() const noexcept { return false; }
-        bool is_bool() const noexcept { return false; }
-        bool is_enum() const noexcept { return false; }
-        bool is_pod() const noexcept { return false; }
-        bool is_class() const noexcept { return false; }
-        bool is_pointer() const noexcept { return false; }
-        bool is_reference() const noexcept { return true; }
-        bool is_rvalue_reference() const noexcept { return true; }
+        bool is_void() const noexcept
+        {
+            return false;
+        }
+        bool is_bool() const noexcept
+        {
+            return false;
+        }
+        bool is_enum() const noexcept
+        {
+            return false;
+        }
+        bool is_pod() const noexcept
+        {
+            return false;
+        }
+        bool is_class() const noexcept
+        {
+            return false;
+        }
+        bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        bool is_reference() const noexcept
+        {
+            return true;
+        }
+        bool is_rvalue_reference() const noexcept
+        {
+            return true;
+        }
 
-        const type_data_ref& data() const noexcept { return m_data; }
+        const type_data_ref& data() const noexcept
+        {
+            return m_data;
+        }
 
         bool directly_exposed() const noexcept
         {

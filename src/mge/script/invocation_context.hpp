@@ -7,7 +7,7 @@
 #include "mge/script/dllexport.hpp"
 #include "mge/script/script_fwd.hpp"
 #include "mge/script/type_identifier.hpp"
-
+#include <utility>
 namespace mge::script {
 
     /**
@@ -52,6 +52,17 @@ namespace mge::script {
         invocation_context() = default;
         virtual ~invocation_context() = default;
 
+        template <typename Signature> struct call_helper;
+        template <typename R, typename... Args> struct call_helper<R(Args...)>
+        {
+            static R
+            call(invocation_context* ctx, const char* method, Args... args)
+            {
+                return ctx->call<R, Args...>(method,
+                                             std::forward<Args>(args)...);
+            }
+        };
+
         /**
          * @brief Call a method with arguments.
          * @tparam R return type
@@ -68,7 +79,7 @@ namespace mge::script {
             return invoke_method<R>(method);
         }
 
-    private:
+    public:
         template <typename T> void store_argument(size_t index, T value)
         {
             using PlainType = std::remove_cv_t<T>;
@@ -99,7 +110,8 @@ namespace mge::script {
             } else if constexpr (std::is_same_v<PlainType, std::string>) {
                 store_string_argument(index, value);
             } else {
-                auto t = type_data::get(typeid(PlainType));
+                auto t = type_data::get(
+                    mge::script::make_type_identifier<PlainType>());
                 if (!t) {
                     MGE_THROW(illegal_argument)
                         << "Type " << type_name<PlainType>()
@@ -109,10 +121,19 @@ namespace mge::script {
             }
         }
 
-        template <typename R> R invoke_method(const char* method)
+        template <typename R>
+            requires(!std::is_same_v<R, void>)
+        R invoke_method(const char* method)
         {
             call_method(method);
             return get_result<R>();
+        }
+
+        template <typename R>
+            requires(std::is_same_v<R, void>)
+        R invoke_method(const char* method)
+        {
+            call_method(method);
         }
 
         template <typename R> R get_result()
@@ -158,7 +179,10 @@ namespace mge::script {
          *
          * @param method method name
          */
-        virtual bool call_implemented(const char* method) { return true; }
+        virtual bool call_implemented(const char* method)
+        {
+            return true;
+        }
 
         virtual void store_bool_argument(size_t index, bool value) = 0;
         virtual void store_int8_t_argument(size_t index, int8_t value) = 0;

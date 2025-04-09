@@ -13,13 +13,47 @@ namespace mge::script {
     /**
      * @brief Base class for proxy objects.
      *
+     * Proxy objects need a virtual base to have only one invocation context.
+     */
+    class MGESCRIPT_EXPORT proxy_base
+    {
+    public:
+        proxy_base();
+        virtual ~proxy_base();
+
+        /**
+         * Set the invocation context.
+         */
+        void set_context(invocation_context* context);
+
+        /**
+         * Clear the invocation context.
+         */
+        void clear_context();
+
+        /**
+         * Get the invocation context.
+         * @return invocation context
+         */
+        invocation_context* context() const noexcept
+        {
+            return m_context;
+        }
+
+    protected:
+        invocation_context* m_context{nullptr};
+    };
+
+    /**
+     * @brief Base class for proxy objects.
+     *
      * A proxy object is a wrapper that allows implementing a derived class
      * in the scripting language, combining implementation in C++ and
      * scripting language.
      *
      * @tparam T base class of the proxy object
      */
-    template <typename T> class proxy : public T
+    template <typename T> class proxy : public T, virtual public proxy_base
     {
     public:
         /**
@@ -47,12 +81,13 @@ namespace mge::script {
         virtual ~proxy() = default;
 
         /**
-         * Set the invocation context.
+         * @brief Cast to proxy base.
+         * @return proxy base
          */
-        void set_context(invocation_context* context) { m_context = context; }
-
-    protected:
-        invocation_context* m_context{nullptr};
+        proxy_base* as_proxy_base()
+        {
+            return this;
+        }
     };
 
 } // namespace mge::script
