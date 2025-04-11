@@ -71,6 +71,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list15default_scissorEv"><code class="docutils literal notranslate"><span class="pre">default_scissor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge12command_list6nativeEv"><code class="docutils literal notranslate"><span class="pre">native()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list5clearERK10rgba_color"><code class="docutils literal notranslate"><span class="pre">clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list11clear_depthEf"><code class="docutils literal notranslate"><span class="pre">clear_depth()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list13clear_stencilE7int32_t"><code class="docutils literal notranslate"><span class="pre">clear_stencil()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list4drawERK12draw_command"><code class="docutils literal notranslate"><span class="pre">draw()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list6finishEv"><code class="docutils literal notranslate"><span class="pre">finish()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7executeEv"><code class="docutils literal notranslate"><span class="pre">execute()</span></code></a></li>
@@ -182,6 +184,28 @@ to the GPU on a single thread.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>color</strong> – clear color </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list11clear_depthEf">
+<span id="_CPPv3N3mge12command_list11clear_depthEf"></span><span id="_CPPv2N3mge12command_list11clear_depthEf"></span><span id="mge::command_list::clear_depth__float"></span><span class="target" id="classmge_1_1command__list_1a35d0029b8af9e325ae22708192700eec"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_depth</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">depth</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list11clear_depthEf" title="Link to this definition"></a><br /></dt>
+<dd><p>Clears the depth buffer with the requested value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>depth</strong> – clear depth value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list13clear_stencilE7int32_t">
+<span id="_CPPv3N3mge12command_list13clear_stencilE7int32_t"></span><span id="_CPPv2N3mge12command_list13clear_stencilE7int32_t"></span><span id="mge::command_list::clear_stencil__int32_t"></span><span class="target" id="classmge_1_1command__list_1aaec870184f7d6ec76f6ff91e186423f9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_stencil</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stencil</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list13clear_stencilE7int32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Clears the stencil buffer with the requested value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stencil</strong> – clear stencil value </p>
 </dd>
 </dl>
 </dd></dl>
