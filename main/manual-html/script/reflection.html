@@ -18,9 +18,7 @@
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="MIT License" href="../license.html" />
-    <link rel="prev" title="Scripting Engine" href="engine.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,28 +48,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgescript.html">Scripting Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="engine.html">Scripting Engine</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Reflection Types</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module">Module</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6script6moduleE"><code class="docutils literal notranslate"><span class="pre">mge::script::module</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#type">Type</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN3mge6script4typeE"><code class="docutils literal notranslate"><span class="pre">mge::script::type</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -92,7 +75,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../mgescript.html">Scripting Library</a></li>
       <li class="breadcrumb-item active">Reflection Types</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/script/reflection.rst.txt" rel="nofollow"> View page source</a>
@@ -112,46 +94,26 @@ objects to scripting languages.</p>
 <section id="module">
 <h2>Module<a class="headerlink" href="#module" title="Link to this heading"></a></h2>
 <p>A module encapsulates a namespace.</p>
-<dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge6script6moduleE">
-<span id="_CPPv3N3mge6script6moduleE"></span><span id="_CPPv2N3mge6script6moduleE"></span><span id="mge::script::module"></span><span class="target" id="classmge_1_1script_1_1module"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">module</span></span></span><a class="headerlink" href="#_CPPv4N3mge6script6moduleE" title="Link to this definition"></a><br /></dt>
-<dd><div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge6script6module6moduleEv">
-<span id="_CPPv3N3mge6script6module6moduleEv"></span><span id="_CPPv2N3mge6script6module6moduleEv"></span><span id="mge::script::module::module"></span><span class="target" id="classmge_1_1script_1_1module_1a0741d5550e3dc6ce273da48c4446d8f1"></span><span class="sig-name descname"><span class="n"><span class="pre">module</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6script6module6moduleEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Root module. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge6script6moduleD0Ev">
-<span id="_CPPv3N3mge6script6moduleD0Ev"></span><span id="_CPPv2N3mge6script6moduleD0Ev"></span><span id="mge::script::module::~module"></span><span class="target" id="classmge_1_1script_1_1module_1a7445b64f58b98827a942587a3eae4d8b"></span><span class="sig-name descname"><span class="n"><span class="pre">~module</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6script6moduleD0Ev" title="Link to this definition"></a><br /></dt>
-<dd><p>Destructor. </p>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::script::module” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
 </div>
-</dd></dl>
-
 </section>
 <section id="type">
 <h2>Type<a class="headerlink" href="#type" title="Link to this heading"></a></h2>
 <p>A type captures the properties of a type. It can be a simple type or a complex
 class type.</p>
-<dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge6script4typeE">
-<span id="_CPPv3I0EN3mge6script4typeE"></span><span id="_CPPv2I0EN3mge6script4typeE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1script_1_1type"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge6script4typeE" title="Link to this definition"></a><br /></dt>
-<dd></dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::script::type” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="engine.html" class="btn btn-neutral float-left" title="Scripting Engine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../license.html" class="btn btn-neutral float-right" title="MIT License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
