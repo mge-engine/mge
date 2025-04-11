@@ -129,7 +129,10 @@ namespace mge {
             return *this;
         }
 
-        const_iterator begin() const { return cbegin(); }
+        const_iterator begin() const
+        {
+            return cbegin();
+        }
 
         const_iterator cbegin() const
         {
@@ -161,7 +164,10 @@ namespace mge {
                 m_data);
         }
 
-        const_iterator end() const { return cend(); }
+        const_iterator end() const
+        {
+            return cend();
+        }
 
         const_iterator cend() const
         {
@@ -195,14 +201,20 @@ namespace mge {
                 m_data);
         }
 
-        const_reverse_iterator rbegin() const { return crbegin(); }
+        const_reverse_iterator rbegin() const
+        {
+            return crbegin();
+        }
 
         const_reverse_iterator crbegin() const
         {
             return std::make_reverse_iterator(end());
         }
 
-        const_reverse_iterator rend() const { return crend(); }
+        const_reverse_iterator rend() const
+        {
+            return crend();
+        }
 
         const_reverse_iterator crend() const
         {
@@ -329,7 +341,10 @@ namespace mge {
             return *(cbegin() + i);
         }
 
-        reference operator[](size_type i) { return *(begin() + i); }
+        reference operator[](size_type i)
+        {
+            return *(begin() + i);
+        }
 
         size_type capacity() const
         {
@@ -371,7 +386,10 @@ namespace mge {
                 m_data);
         }
 
-        bool empty() const { return m_data.index() == 0; }
+        bool empty() const
+        {
+            return m_data.index() == 0;
+        }
 
         pointer data() noexcept
         {
@@ -405,11 +423,20 @@ namespace mge {
 
         // erase
 
-        reference front() { return *begin(); }
+        reference front()
+        {
+            return *begin();
+        }
 
-        const_reference front() const { return *cbegin(); }
+        const_reference front() const
+        {
+            return *cbegin();
+        }
 
-        allocator_type get_allocator() const { return m_allocator; }
+        allocator_type get_allocator() const
+        {
+            return m_allocator;
+        }
 
         template <typename I>
         constexpr iterator insert(const_iterator pos, I first, I last)
@@ -422,6 +449,30 @@ namespace mge {
             } else {
                 return insert_vector(pos, first, last, n);
             }
+        }
+
+        void pop_back()
+        {
+            std::visit(
+                overloaded{[](std::monostate&) {
+                               throw std::out_of_range(
+                                   "pop_back called on empty vector");
+                           },
+                           [](small_data& d) {
+                               if (d.length == 0) {
+                                   throw std::out_of_range(
+                                       "pop_back called on empty vector");
+                               }
+                               d.data[--d.length].~T();
+                           },
+                           [](std::vector<T, Alloc>& v) {
+                               if (v.empty()) {
+                                   throw std::out_of_range(
+                                       "pop_back called on empty vector");
+                               }
+                               v.pop_back();
+                           }},
+                m_data);
         }
 
     private:
@@ -508,7 +559,10 @@ namespace mge {
             }
         }
 
-        void swap(small_vector<T, S, Alloc>& v) { m_data.swap(v.m_data); }
+        void swap(small_vector<T, S, Alloc>& v)
+        {
+            m_data.swap(v.m_data);
+        }
 
         void clear()
         {
