@@ -51,6 +51,7 @@ namespace mge::opengl {
         if (!link_status) {
             MGE_THROW(error) << "glLinkProgram failed";
         }
+        collect_attributes();
         collect_uniforms();
     }
 
@@ -122,6 +123,37 @@ namespace mge::opengl {
                                           << " for uniform " << namebuffer;
             } else {
             }
+        }
+    }
+
+    void program::collect_attributes()
+    {
+        GLint active_attribute_max_length = 0;
+        glGetProgramiv(m_program,
+                       GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
+                       &active_attribute_max_length);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTE_MAX_LENGTH));
+        char* namebuffer =
+            static_cast<char*>(alloca(active_attribute_max_length + 1));
+        GLint num_attributes = 0;
+        glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTES, &num_attributes);
+        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTES));
+        MGE_DEBUG_TRACE(OPENGL) << "Found " << num_attributes
+                                << " attributes in program " << m_program;
+        for (GLint i = 0; i < num_attributes; ++i) {
+            GLint   size = 0;
+            GLenum  type = 0;
+            GLsizei length = 0;
+            glGetActiveAttrib(m_program,
+                              i,
+                              active_attribute_max_length + 1,
+                              &length,
+                              &size,
+                              &type,
+                              namebuffer);
+            CHECK_OPENGL_ERROR(glGetActiveAttrib);
+            MGE_DEBUG_TRACE(OPENGL) << "Attribute: " << namebuffer
+                                    << ", type: " << type << ", size: " << size;
         }
     }
 } // namespace mge::opengl

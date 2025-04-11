@@ -19,11 +19,15 @@ namespace mge::opengl {
         void on_link() override;
         void on_set_shader(const shader_ref& shader) override;
 
-        GLuint program_name() const noexcept { return m_program; }
+        GLuint program_name() const noexcept
+        {
+            return m_program;
+        }
 
     private:
         void dump_info_log();
         void collect_uniforms();
+        void collect_attributes();
 
         GLuint m_program;
     };
