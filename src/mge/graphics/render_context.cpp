@@ -47,13 +47,29 @@ namespace mge {
                 m_command_list->clear(c);
             }
 
+            void clear_depth(float depth) override
+            {
+                m_command_list->clear_depth(depth);
+            }
+
+            void clear_stencil(int32_t stencil) override
+            {
+                m_command_list->clear_stencil(stencil);
+            }
+
             void draw(const draw_command& command) override
             {
                 m_command_list->draw(command);
             }
 
-            void execute() override { m_command_list->execute(); }
-            void finish() override { m_command_list->finish(); }
+            void execute() override
+            {
+                m_command_list->execute();
+            }
+            void finish() override
+            {
+                m_command_list->finish();
+            }
 
         private:
             command_list_ref m_command_list;

@@ -12,7 +12,10 @@ namespace mge {
 
     command_list::~command_list() {}
 
-    bool command_list::native() const { return m_native; }
+    bool command_list::native() const
+    {
+        return m_native;
+    }
 
     void command_list::finish() {}
 

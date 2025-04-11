@@ -21,6 +21,8 @@ namespace mge::dx12 {
         void viewport(const mge::viewport& vp) override;
         void default_scissor() override;
         void clear(const rgba_color& c) override;
+        void clear_depth(float depth) override;
+        void clear_stencil(int32_t stencil) override;
         void draw(const mge::draw_command& command) override;
         void finish() override;
         void execute() override;
@@ -29,8 +31,17 @@ namespace mge::dx12 {
         render_context&                          m_dx12_context;
         mge::small_vector<mge::draw_command, 16> m_draw_commands;
         rgba_color                               m_clear_color;
+        float                                    m_clear_depth;
+        int32_t                                  m_clear_stencil;
         mge::rectangle                           m_scissor;
         mge::viewport                            m_viewport;
-        bool                                     m_color_set;
+        struct properties_set
+        {
+            uint32_t clear_color : 1;
+            uint32_t clear_depth : 1;
+            uint32_t clear_stencil : 1;
+        };
+
+        properties_set m_properties_set;
     };
 } // namespace mge::dx12

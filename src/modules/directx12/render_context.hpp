@@ -43,29 +43,46 @@ namespace mge::dx12 {
                          create_current_frame_command_list() override;
         mge::texture_ref create_texture(texture_type type) override;
 
-        const mge::dx12::window& window() const { return m_window; }
+        const mge::dx12::window& window() const
+        {
+            return m_window;
+        }
 
-        const mge::com_ptr<IDXGIFactory4>& factory() const { return m_factory; }
+        const mge::com_ptr<IDXGIFactory4>& factory() const
+        {
+            return m_factory;
+        }
 
         const mge::com_ptr<ID3D12CommandQueue>& command_queue() const
         {
             return m_command_queue;
         }
 
-        ID3D12Device2* device() const { return m_device.Get(); }
-        void           copy_resource_sync(ID3D12Resource*       dst,
-                                          ID3D12Resource*       src,
-                                          D3D12_RESOURCE_STATES state_after);
+        ID3D12Device2* device() const
+        {
+            return m_device.Get();
+        }
+        void copy_resource_sync(ID3D12Resource*       dst,
+                                ID3D12Resource*       src,
+                                D3D12_RESOURCE_STATES state_after);
 
         const mge::com_ptr<ID3D12Resource>& backbuffer(uint32_t index) const
         {
             return m_backbuffers[index];
         }
 
-        const D3D12_VIEWPORT& viewport() const { return m_viewport; }
-        const D3D12_RECT&     scissor_rect() const { return m_scissor_rect; }
-        mge::rectangle        default_scissor() const;
+        const D3D12_VIEWPORT& viewport() const
+        {
+            return m_viewport;
+        }
+        const D3D12_RECT& scissor_rect() const
+        {
+            return m_scissor_rect;
+        }
+
+        mge::rectangle              default_scissor() const;
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
+        D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle(uint32_t index) const;
 
         void wait_for_command_queue();
 
@@ -140,6 +157,7 @@ namespace mge::dx12 {
         uint64_t                                  m_command_queue_fence_value;
         HANDLE                                    m_command_queue_fence_event;
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
+        mge::com_ptr<ID3D12DescriptorHeap>        m_dsv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
 
         mge::com_ptr<ID3D12CommandAllocator>    m_begin_command_allocator;
@@ -154,6 +172,7 @@ namespace mge::dx12 {
         D3D12_VIEWPORT m_viewport;
         D3D12_RECT     m_scissor_rect;
         uint32_t       m_rtv_descriptor_size;
+        uint32_t       m_dsv_descriptor_size;
         DWORD          m_callback_cookie;
 
         std::vector<mge::com_ptr<IUnknown>> m_frame_resources;

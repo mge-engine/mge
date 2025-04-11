@@ -92,6 +92,27 @@ namespace mge::dx12 {
         m_command_list->ClearRenderTargetView(rtv_handle, c.data(), 0, nullptr);
     }
 
+    void frame_command_list::clear_depth(float depth)
+    {
+        auto dsv_handle = m_dx12_context.dsv_handle(backbuffer_index());
+        m_command_list->ClearDepthStencilView(dsv_handle,
+                                              D3D12_CLEAR_FLAG_DEPTH,
+                                              depth,
+                                              0,
+                                              0,
+                                              nullptr);
+    }
+    void frame_command_list::clear_stencil(int32_t stencil)
+    {
+        auto dsv_handle = m_dx12_context.dsv_handle(backbuffer_index());
+        m_command_list->ClearDepthStencilView(dsv_handle,
+                                              D3D12_CLEAR_FLAG_STENCIL,
+                                              0.0f,
+                                              static_cast<UINT8>(stencil),
+                                              0,
+                                              nullptr);
+    }
+
     void frame_command_list::draw(const mge::draw_command& command)
     {
         auto vs_ref = dx12_program(*command.program())
@@ -154,6 +175,9 @@ namespace mge::dx12 {
         m_dx12_context.add_frame_resource(m_command_list);
     }
 
-    void frame_command_list::finish() { m_command_list->Close(); }
+    void frame_command_list::finish()
+    {
+        m_command_list->Close();
+    }
 
 } // namespace mge::dx12

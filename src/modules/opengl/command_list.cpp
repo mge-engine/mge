@@ -22,7 +22,10 @@ namespace mge::opengl {
         , m_opengl_context(ctx)
     {}
 
-    command_list::~command_list() { destroy(); }
+    command_list::~command_list()
+    {
+        destroy();
+    }
 
     void command_list::viewport(const mge::viewport& vp)
     {
@@ -43,6 +46,16 @@ namespace mge::opengl {
     void command_list::clear(const rgba_color& c)
     {
         m_commands.emplace_back(clear_command{c});
+    }
+
+    void command_list::clear_depth(float depth)
+    {
+        m_commands.emplace_back(clear_depth_command{depth});
+    }
+
+    void command_list::clear_stencil(int32_t stencil)
+    {
+        m_commands.emplace_back(clear_stencil_command{stencil});
     }
 
     void command_list::draw(const mge::draw_command& command)
@@ -113,6 +126,19 @@ namespace mge::opengl {
                         CHECK_OPENGL_ERROR(glClearColor);
                         glClear(GL_COLOR_BUFFER_BIT);
                         CHECK_OPENGL_ERROR(glClear(GL_COLOR_BUFFER_BIT));
+                    } else if constexpr (std::is_same_v<T,
+                                                        clear_depth_command>) {
+                        glClearDepth(arg.clear_depth);
+                        CHECK_OPENGL_ERROR(glClearDepth);
+                        glClear(GL_DEPTH_BUFFER_BIT);
+                        CHECK_OPENGL_ERROR(glClear(GL_DEPTH_BUFFER_BIT));
+                    } else if constexpr (std::is_same_v<
+                                             T,
+                                             clear_stencil_command>) {
+                        glClearStencil(arg.clear_stencil);
+                        CHECK_OPENGL_ERROR(glClearStencil);
+                        glClear(GL_STENCIL_BUFFER_BIT);
+                        CHECK_OPENGL_ERROR(glClear(GL_STENCIL_BUFFER_BIT));
                     } else if constexpr (std::is_same_v<T, scissor_command>) {
                         glEnable(GL_SCISSOR_TEST);
                         CHECK_OPENGL_ERROR(glEnable);

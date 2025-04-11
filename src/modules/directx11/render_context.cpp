@@ -97,6 +97,36 @@ namespace mge::dx11 {
         auto swap_chain =
             std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
         m_swap_chain = swap_chain;
+        MGE_DEBUG_TRACE(DX11) << "Create texture for depth/stencil buffer";
+
+        D3D11_TEXTURE2D_DESC depth_stencil_desc = {};
+        depth_stencil_desc.Width = m_window.extent().width;
+        depth_stencil_desc.Height = m_window.extent().height;
+        depth_stencil_desc.MipLevels = 1;
+        depth_stencil_desc.ArraySize = 1;
+        depth_stencil_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+        depth_stencil_desc.SampleDesc.Count = 4; // TODO: #121 multisampling
+        depth_stencil_desc.SampleDesc.Quality = 0;
+        depth_stencil_desc.Usage = D3D11_USAGE_DEFAULT;
+        depth_stencil_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+        depth_stencil_desc.CPUAccessFlags = 0;
+        depth_stencil_desc.MiscFlags = 0;
+
+        ID3D11Texture2D* tmp_depth_stencil = nullptr;
+        rc = m_device->CreateTexture2D(&depth_stencil_desc,
+                                       nullptr,
+                                       &tmp_depth_stencil);
+        CHECK_HRESULT(rc, ID3D11Device, CreateTexture2D);
+
+        MGE_DEBUG_TRACE(DX11) << "Create depth stencil view";
+        ID3D11DepthStencilView* tmp_depth_stencil_view = nullptr;
+        rc = m_device->CreateDepthStencilView(tmp_depth_stencil,
+                                              nullptr,
+                                              &tmp_depth_stencil_view);
+        CHECK_HRESULT(rc, ID3D11Device, CreateDepthStencilView);
+        tmp_depth_stencil->Release();
+        tmp_depth_stencil = nullptr;
+        m_depth_stencil_view.reset(tmp_depth_stencil_view);
 
         MGE_DEBUG_TRACE(DX11) << "Creating render target view";
 
@@ -116,7 +146,8 @@ namespace mge::dx11 {
     void render_context::setup_context(ID3D11DeviceContext& context)
     {
         ID3D11RenderTargetView* rtv = m_render_target_view.get();
-        context.OMSetRenderTargets(1, &rtv, nullptr);
+        ID3D11DepthStencilView* dsv = m_depth_stencil_view.get();
+        context.OMSetRenderTargets(1, &rtv, dsv);
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0;
         viewport.TopLeftY = 0;

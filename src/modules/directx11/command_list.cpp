@@ -83,6 +83,26 @@ namespace mge::dx11 {
             clearcolor);
     }
 
+    void command_list::clear_depth(float depth)
+    {
+        start_recording();
+        m_deferred_context->ClearDepthStencilView(
+            m_dx11_context.depth_stencil_view(),
+            D3D11_CLEAR_DEPTH,
+            depth,
+            0);
+    }
+
+    void command_list::clear_stencil(int32_t stencil)
+    {
+        start_recording();
+        m_deferred_context->ClearDepthStencilView(
+            m_dx11_context.depth_stencil_view(),
+            D3D11_CLEAR_STENCIL,
+            0.0f,
+            static_cast<UINT8>(stencil));
+    }
+
     void command_list::draw(const mge::draw_command& command)
     {
         const dx11::program* dx11_program =

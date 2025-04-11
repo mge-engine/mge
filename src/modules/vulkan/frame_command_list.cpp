@@ -103,6 +103,44 @@ namespace mge::vulkan {
                                                &clear_rect);
     }
 
+    void frame_command_list::clear_depth(float depth)
+    {
+        VkClearValue clear_depth = {};
+        clear_depth.depthStencil = {depth, 0};
+        VkClearAttachment clear_attachment = {};
+        clear_attachment.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+        clear_attachment.clearValue = clear_depth;
+        VkClearRect clear_rect = {};
+        clear_rect.rect.offset = {0, 0};
+        clear_rect.rect.extent = m_vulkan_context.extent();
+        clear_rect.baseArrayLayer = 0;
+        clear_rect.layerCount = 1;
+        m_vulkan_context.vkCmdClearAttachments(m_command_buffer,
+                                               1,
+                                               &clear_attachment,
+                                               1,
+                                               &clear_rect);
+    }
+
+    void frame_command_list::clear_stencil(int32_t stencil)
+    {
+        VkClearValue clear_stencil = {};
+        clear_stencil.depthStencil = {0.0f, static_cast<uint32_t>(stencil)};
+        VkClearAttachment clear_attachment = {};
+        clear_attachment.aspectMask = VK_IMAGE_ASPECT_STENCIL_BIT;
+        clear_attachment.clearValue = clear_stencil;
+        VkClearRect clear_rect = {};
+        clear_rect.rect.offset = {0, 0};
+        clear_rect.rect.extent = m_vulkan_context.extent();
+        clear_rect.baseArrayLayer = 0;
+        clear_rect.layerCount = 1;
+        m_vulkan_context.vkCmdClearAttachments(m_command_buffer,
+                                               1,
+                                               &clear_attachment,
+                                               1,
+                                               &clear_rect);
+    }
+
     void frame_command_list::draw(const mge::draw_command& command)
     {
         mge::vulkan::program* draw_program =

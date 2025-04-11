@@ -18,6 +18,8 @@ namespace mge::dx12 {
         void scissor(const mge::rectangle& r) override;
         void default_scissor() override;
         void clear(const mge::rgba_color& c) override;
+        void clear_depth(float depth) override;
+        void clear_stencil(int32_t stencil) override;
         void draw(const mge::draw_command& command) override;
         void execute() override;
         void finish() override;

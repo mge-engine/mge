@@ -20,6 +20,8 @@ namespace mge::opengl {
         void scissor(const mge::rectangle& rect) override;
         void default_scissor() override;
         void clear(const rgba_color& c) override;
+        void clear_depth(float depth) override;
+        void clear_stencil(int32_t stencil) override;
         void draw(const mge::draw_command& command) override;
 
         void execute() override;
@@ -30,6 +32,16 @@ namespace mge::opengl {
         struct clear_command
         {
             rgba_color clear_color;
+        };
+
+        struct clear_depth_command
+        {
+            float clear_depth;
+        };
+
+        struct clear_stencil_command
+        {
+            int32_t clear_stencil;
         };
 
         struct draw_command
@@ -52,6 +64,8 @@ namespace mge::opengl {
 
         using command = std::variant<std::monostate,
                                      clear_command,
+                                     clear_depth_command,
+                                     clear_stencil_command,
                                      draw_command,
                                      scissor_command,
                                      viewport_command>;

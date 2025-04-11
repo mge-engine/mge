@@ -10,7 +10,6 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/viewport.hpp"
 
-
 namespace mge {
 
     /**
@@ -71,6 +70,20 @@ namespace mge {
          * @param color clear color
          */
         virtual void clear(const rgba_color& color) = 0;
+
+        /**
+         * @brief Clears the depth buffer with the requested value.
+         *
+         * @param depth clear depth value
+         */
+        virtual void clear_depth(float depth) = 0;
+
+        /**
+         * @brief Clears the stencil buffer with the requested value.
+         *
+         * @param stencil clear stencil value
+         */
+        virtual void clear_stencil(int32_t stencil) = 0;
 
         /**
          * @brief Draws a draw command.

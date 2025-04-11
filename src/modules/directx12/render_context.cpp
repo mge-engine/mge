@@ -31,6 +31,8 @@ namespace mge::dx12 {
         , m_window(window_)
         , m_command_queue_fence_value(0)
         , m_command_queue_fence_event(0)
+        , m_rtv_descriptor_size(0)
+        , m_dsv_descriptor_size(0)
         , m_callback_cookie(0)
         , m_data_lock("render_context")
     {
@@ -156,6 +158,19 @@ namespace mge::dx12 {
         m_rtv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
             D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
         m_rtv_heap->SetName(L"mge::dx12::render_context::m_rtv_heap");
+
+        MGE_DEBUG_TRACE(DX12)
+            << "Create descriptor heap for render target views";
+        D3D12_DESCRIPTOR_HEAP_DESC dsv_heap_desc = {};
+        dsv_heap_desc.NumDescriptors = buffer_count;
+        dsv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+        dsv_heap_desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+        rc = m_device->CreateDescriptorHeap(&dsv_heap_desc,
+                                            IID_PPV_ARGS(&m_dsv_heap));
+        CHECK_HRESULT(rc, ID3D12Device, CreateDescriptorHeap);
+        m_dsv_heap->SetName(L"mge::dx12::render_context::m_dsv_heap");
+        m_dsv_descriptor_size = m_device->GetDescriptorHandleIncrementSize(
+            D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
     }
 
     void render_context::update_render_target_views(
@@ -379,6 +394,14 @@ namespace mge::dx12 {
         D3D12_CPU_DESCRIPTOR_HANDLE result =
             m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
         result.ptr += m_rtv_descriptor_size * index;
+        return result;
+    }
+
+    D3D12_CPU_DESCRIPTOR_HANDLE render_context::dsv_handle(uint32_t index) const
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE result =
+            m_dsv_heap->GetCPUDescriptorHandleForHeapStart();
+        result.ptr += m_dsv_descriptor_size * index;
         return result;
     }
 

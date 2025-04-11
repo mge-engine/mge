@@ -33,14 +33,20 @@ namespace mge::dx11 {
         mge::command_list_ref create_command_list() override;
         mge::texture_ref      create_texture(mge::texture_type type) override;
 
-        const ::mge::dx11::window& window() const { return m_window; }
+        const ::mge::dx11::window& window() const
+        {
+            return m_window;
+        }
 
         const ::mge::dx11::render_system& render_system() const
         {
             return m_render_system;
         }
 
-        ID3D11Device* device() const { return m_device.get(); }
+        ID3D11Device* device() const
+        {
+            return m_device.get();
+        }
 
         ID3D11DeviceContext* device_context() const
         {
@@ -50,6 +56,11 @@ namespace mge::dx11 {
         ID3D11RenderTargetView* render_target_view() const
         {
             return m_render_target_view.get();
+        }
+
+        ID3D11DepthStencilView* depth_stencil_view() const
+        {
+            return m_depth_stencil_view.get();
         }
 
         void setup_context(ID3D11DeviceContext& context);
@@ -64,6 +75,7 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11Device>           m_device;
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
+        com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
     };
 
     inline render_context& dx11_context(mge::render_context& context)
