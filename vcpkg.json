@@ -10,7 +10,6 @@
     "boost-locale",
     "boost-bimap",
     "glm",
-    "lua",
     {
       "name": "python3",
       "default-features": true

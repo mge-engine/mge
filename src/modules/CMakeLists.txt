@@ -29,10 +29,4 @@ IF(MSVC)
         MESSAGE("-- DirectX D3D11 not found")
     ENDIF()
 ENDIF()
-
-ADD_SUBDIRECTORY(lua)
-IF(Python3_FOUND)
-    ADD_SUBDIRECTORY(python)
-ENDIF()
-
 ADD_SUBDIRECTORY(stb_image)
