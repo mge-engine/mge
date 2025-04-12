@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "program.hpp"
 #include "error.hpp"
-#include "mge/graphics/uniform_data_type.hpp"
+#include "mge/graphics/data_type.hpp" // Include data_type.hpp
 #include "render_context.hpp"
 #include "shader.hpp"
 
@@ -13,7 +13,95 @@ namespace mge {
 
 static mge::uniform_data_type uniform_type_from_gl(GLenum t)
 {
-    return mge::uniform_data_type::UNKNOWN;
+    switch (t) {
+    case GL_FLOAT:
+        return mge::uniform_data_type::FLOAT;
+    case GL_FLOAT_VEC2:
+        return mge::uniform_data_type::FLOAT_VEC2;
+    case GL_FLOAT_VEC3:
+        return mge::uniform_data_type::FLOAT_VEC3;
+    case GL_FLOAT_VEC4:
+        return mge::uniform_data_type::FLOAT_VEC4;
+    case GL_INT:
+        return mge::uniform_data_type::INT32;
+    case GL_INT_VEC2:
+        return mge::uniform_data_type::INT_VEC2;
+    case GL_INT_VEC3:
+        return mge::uniform_data_type::INT_VEC3;
+    case GL_INT_VEC4:
+        return mge::uniform_data_type::INT_VEC4;
+    case GL_UNSIGNED_INT:
+        return mge::uniform_data_type::UINT32; // Use UINT32
+    case GL_UNSIGNED_INT_VEC2:
+        return mge::uniform_data_type::UINT_VEC2;
+    case GL_UNSIGNED_INT_VEC3:
+        return mge::uniform_data_type::UINT_VEC3;
+    case GL_UNSIGNED_INT_VEC4:
+        return mge::uniform_data_type::UINT_VEC4;
+    case GL_BOOL:
+    case GL_BOOL_VEC2:
+    case GL_BOOL_VEC3:
+    case GL_BOOL_VEC4:
+        return mge::uniform_data_type::UNKNOWN; // No boolean types in data_type
+    case GL_FLOAT_MAT2:
+        return mge::uniform_data_type::FLOAT_MAT2;
+    case GL_FLOAT_MAT3:
+        return mge::uniform_data_type::FLOAT_MAT3;
+    case GL_FLOAT_MAT4:
+        return mge::uniform_data_type::FLOAT_MAT4;
+    case GL_FLOAT_MAT2x3:
+        return mge::uniform_data_type::FLOAT_MAT2x3;
+    case GL_FLOAT_MAT2x4:
+        return mge::uniform_data_type::FLOAT_MAT2x4;
+    case GL_FLOAT_MAT3x2:
+        return mge::uniform_data_type::FLOAT_MAT3x2;
+    case GL_FLOAT_MAT3x4:
+        return mge::uniform_data_type::FLOAT_MAT3x4;
+    case GL_FLOAT_MAT4x2:
+        return mge::uniform_data_type::FLOAT_MAT4x2;
+    case GL_FLOAT_MAT4x3:
+        return mge::uniform_data_type::FLOAT_MAT4x3;
+    // Sampler types are not represented in mge::uniform_data_type
+    case GL_SAMPLER_1D:
+    case GL_SAMPLER_2D:
+    case GL_SAMPLER_3D:
+    case GL_SAMPLER_CUBE:
+    case GL_SAMPLER_1D_SHADOW:
+    case GL_SAMPLER_2D_SHADOW:
+    case GL_SAMPLER_1D_ARRAY:
+    case GL_SAMPLER_2D_ARRAY:
+    case GL_SAMPLER_1D_ARRAY_SHADOW:
+    case GL_SAMPLER_2D_ARRAY_SHADOW:
+    case GL_SAMPLER_2D_MULTISAMPLE:
+    case GL_SAMPLER_2D_MULTISAMPLE_ARRAY:
+    case GL_SAMPLER_CUBE_SHADOW:
+    case GL_SAMPLER_BUFFER:
+    case GL_SAMPLER_2D_RECT:
+    case GL_SAMPLER_2D_RECT_SHADOW:
+    case GL_INT_SAMPLER_1D:
+    case GL_INT_SAMPLER_2D:
+    case GL_INT_SAMPLER_3D:
+    case GL_INT_SAMPLER_CUBE:
+    case GL_INT_SAMPLER_1D_ARRAY:
+    case GL_INT_SAMPLER_2D_ARRAY:
+    case GL_INT_SAMPLER_2D_MULTISAMPLE:
+    case GL_INT_SAMPLER_2D_MULTISAMPLE_ARRAY:
+    case GL_INT_SAMPLER_BUFFER:
+    case GL_INT_SAMPLER_2D_RECT:
+    case GL_UNSIGNED_INT_SAMPLER_1D:
+    case GL_UNSIGNED_INT_SAMPLER_2D:
+    case GL_UNSIGNED_INT_SAMPLER_3D:
+    case GL_UNSIGNED_INT_SAMPLER_CUBE:
+    case GL_UNSIGNED_INT_SAMPLER_1D_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_2D_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE:
+    case GL_UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY:
+    case GL_UNSIGNED_INT_SAMPLER_BUFFER:
+    case GL_UNSIGNED_INT_SAMPLER_2D_RECT:
+        return mge::uniform_data_type::UNKNOWN;
+    default:
+        return mge::uniform_data_type::UNKNOWN;
+    }
 }
 
 static mge::data_type attribute_type_from_gl(GLenum t)
@@ -168,51 +256,111 @@ namespace mge::opengl {
 
     void program::collect_uniforms()
     {
-        GLint active_uniform_max_length = 0;
-        glGetProgramiv(m_program,
-                       GL_ACTIVE_UNIFORM_MAX_LENGTH,
-                       &active_uniform_max_length);
-        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORM_MAX_LENGTH));
-        char* namebuffer =
-            static_cast<char*>(alloca(active_uniform_max_length + 1));
+        m_uniforms.clear(); // Assuming m_uniforms is the member variable
+
         GLint num_uniforms = 0;
-        glGetProgramiv(m_program, GL_ACTIVE_UNIFORMS, &num_uniforms);
-        CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_UNIFORMS));
+        glGetProgramInterfaceiv(m_program,
+                                GL_UNIFORM,
+                                GL_ACTIVE_RESOURCES,
+                                &num_uniforms);
+        CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_ACTIVE_RESOURCES));
+
+        if (num_uniforms == 0) {
+            MGE_DEBUG_TRACE(OPENGL)
+                << "No active uniforms found in program " << m_program;
+            return;
+        }
+
+        GLint max_name_length = 0;
+        glGetProgramInterfaceiv(m_program,
+                                GL_UNIFORM,
+                                GL_MAX_NAME_LENGTH,
+                                &max_name_length);
+        CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_MAX_NAME_LENGTH));
+
+        std::vector<char> name_buffer(max_name_length);
+
         MGE_DEBUG_TRACE(OPENGL)
             << "Found " << num_uniforms << " uniforms in program " << m_program;
+
+        const GLenum properties[] = {GL_NAME_LENGTH,
+                                     GL_TYPE,
+                                     GL_ARRAY_SIZE,
+                                     GL_LOCATION,
+                                     GL_BLOCK_INDEX};
+        const int    num_props = sizeof(properties) / sizeof(properties[0]);
+
         for (GLint i = 0; i < num_uniforms; ++i) {
-            GLint   size = 0;
-            GLenum  type = 0;
-            GLsizei length = 0;
-            glGetActiveUniform(m_program,
-                               i,
-                               active_uniform_max_length + 1,
-                               &length,
-                               &size,
-                               &type,
-                               namebuffer);
-            CHECK_OPENGL_ERROR(glGetActiveUniform);
-            MGE_DEBUG_TRACE(OPENGL) << "Uniform: " << namebuffer
-                                    << ", type: " << type << ", size: " << size;
-            uniform_data_type u_type = uniform_type_from_gl(type);
-            if (u_type == uniform_data_type::UNKNOWN) {
-                MGE_WARNING_TRACE(OPENGL) << "Unsupported uniform type " << type
-                                          << " for uniform " << namebuffer;
-            } else {
+            GLint values[num_props];
+            glGetProgramResourceiv(m_program,
+                                   GL_UNIFORM,
+                                   i,
+                                   num_props,
+                                   properties,
+                                   num_props,
+                                   nullptr,
+                                   values);
+            CHECK_OPENGL_ERROR(glGetProgramResourceiv);
+
+            // Skip uniforms in blocks (handled separately if needed)
+            if (values[4] != -1) {
+                continue;
             }
+
+            GLsizei name_length = 0;
+            glGetProgramResourceName(m_program,
+                                     GL_UNIFORM,
+                                     i,
+                                     static_cast<GLsizei>(name_buffer.size()),
+                                     &name_length,
+                                     name_buffer.data());
+            CHECK_OPENGL_ERROR(glGetProgramResourceName);
+
+            std::string name(name_buffer.data(), name_length);
+            GLenum      gl_type = values[1];
+            GLint       array_size = values[2];
+            GLint       location = values[3];
+            auto uniform_type = static_cast<mge::uniform_data_type>(values[1]);
+            uniform_type = uniform_type_from_gl(gl_type);
+
+            if (uniform_type ==
+                mge::uniform_data_type::UNKNOWN) { // Check against
+                                                   // mge::data_type::UNKNOWN
+                MGE_WARNING_TRACE(OPENGL)
+                    << "Unsupported uniform type " << gl_type
+                    << " for uniform '" << name << "'";
+                continue;
+            }
+
+            // Store the uniform information
+            // mge::program::uniform uses mge::data_type
+            m_uniforms.push_back(
+                {name,
+                 uniform_type, // Pass mge::data_type
+                 static_cast<uint32_t>(
+                     array_size), // Correct order: size then location
+                 static_cast<uint32_t>(
+                     location)}); // Correct order: size then location
+
+            MGE_DEBUG_TRACE(OPENGL)
+                << "Uniform: '" << name << "', type: " << uniform_type
+                << ", location: " << location << ", array_size: " << array_size;
         }
     }
 
     void program::collect_attributes()
     {
+        // Clear previous attributes
+        m_attributes.clear(); // Assuming m_attributes is the member variable
+
         GLint active_attribute_max_length = 0;
         glGetProgramiv(m_program,
                        GL_ACTIVE_ATTRIBUTE_MAX_LENGTH,
                        &active_attribute_max_length);
         CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTE_MAX_LENGTH));
-        char* namebuffer =
-            static_cast<char*>(alloca(active_attribute_max_length + 1));
-        GLint num_attributes = 0;
+        // Use std::vector instead of alloca for safer memory management
+        std::vector<char> namebuffer(active_attribute_max_length + 1);
+        GLint             num_attributes = 0;
         glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTES, &num_attributes);
         CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTES));
         MGE_DEBUG_TRACE(OPENGL) << "Found " << num_attributes
@@ -223,22 +371,25 @@ namespace mge::opengl {
             GLsizei length = 0;
             glGetActiveAttrib(m_program,
                               i,
-                              active_attribute_max_length + 1,
+                              static_cast<GLsizei>(namebuffer.size()),
                               &length,
                               &size,
                               &type,
-                              namebuffer);
+                              namebuffer.data());
             CHECK_OPENGL_ERROR(glGetActiveAttrib);
             auto attr_type = attribute_type_from_gl(type);
             if (attr_type == mge::data_type::UNKNOWN) {
                 MGE_WARNING_TRACE(OPENGL)
                     << "Unsupported attribute type " << type
-                    << " for attribute " << namebuffer;
+                    << " for attribute " << namebuffer.data();
+                continue; // Skip unsupported types
             }
+            // Assuming m_attributes is std::vector<mge::vertex_attribute>
+            // and vertex_attribute has members: name, type, size
             m_attributes.push_back(
-                {namebuffer, attr_type, static_cast<uint8_t>(size)});
+                {namebuffer.data(), attr_type, static_cast<uint8_t>(size)});
             MGE_DEBUG_TRACE(OPENGL)
-                << "Attribute: " << namebuffer << ", type: " << attr_type
+                << "Attribute: " << namebuffer.data() << ", type: " << attr_type
                 << ", size: " << size;
         }
     }

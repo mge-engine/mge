@@ -8,6 +8,7 @@
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/uniform_data_type.hpp"
 
 #include <iosfwd>
 #include <string>
@@ -56,10 +57,10 @@ namespace mge {
         /// Uniform description
         struct uniform
         {
-            std::string name;     //!< uniform name
-            data_type   type;     //!< uniform type
-            uint32_t    size;     //!< uniform size (array size)
-            uint32_t    location; //!< uniform location
+            std::string       name;     //!< uniform name
+            uniform_data_type type;     //!< uniform type
+            uint32_t          size;     //!< uniform size (array size)
+            uint32_t          location; //!< uniform location
         };
 
         using uniform_list = small_vector<uniform, 5>;
@@ -93,7 +94,10 @@ namespace mge {
          *
          * @return @c true if program needs to be linked
          */
-        bool needs_link() const noexcept { return m_needs_link; }
+        bool needs_link() const noexcept
+        {
+            return m_needs_link;
+        }
 
         /**
          * Get meta data of the attributes.

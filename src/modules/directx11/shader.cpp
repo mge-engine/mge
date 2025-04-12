@@ -146,16 +146,16 @@ namespace mge::dx11 {
         }
     }
 
-    static mge::data_type
+    static mge::uniform_data_type
     data_type_of_variable(const D3D11_SHADER_TYPE_DESC& variable_type_desc)
     {
         switch (variable_type_desc.Type) {
         case D3D_SVT_UINT:
-            return mge::data_type::UINT32;
+            return mge::uniform_data_type::UINT32;
         case D3D_SVT_INT:
-            return mge::data_type::INT32;
+            return mge::uniform_data_type::INT32;
         case D3D_SVT_FLOAT:
-            return mge::data_type::FLOAT;
+            return mge::uniform_data_type::FLOAT;
         default:
             MGE_THROW(dx11::error)
                 << "Unsupported variable type " << variable_type_desc.Type;
