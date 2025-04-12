@@ -5,9 +5,9 @@
 
 #include "mge/math/dllexport.hpp"
 #include "mge/math/glm.hpp"
-#include <iostream>
 
 #include <concepts>
+#include <iostream>
 #include <type_traits>
 
 namespace mge {
@@ -26,10 +26,22 @@ namespace mge {
         return v.x * v.x + v.y * v.y;
     }
 
-    template <vec2_type T>
-    inline std::ostream& operator<<(std::ostream& os, const T& v)
+    inline std::ostream& operator<<(std::ostream& os, const fvec2& v)
     {
-        return os << "(" << v.x << ", " << v.y << ")";
+        os << "(" << v.x << ", " << v.y << ")";
+        return os;
+    }
+
+    inline std::ostream& operator<<(std::ostream& os, const ivec2& v)
+    {
+        os << "(" << v.x << ", " << v.y << ")";
+        return os;
+    }
+
+    inline std::ostream& operator<<(std::ostream& os, const uvec2& v)
+    {
+        os << "(" << v.x << ", " << v.y << ")";
+        return os;
     }
 
 } // namespace mge

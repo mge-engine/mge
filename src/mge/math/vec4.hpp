@@ -9,6 +9,7 @@
 #include <concepts>
 #include <iostream>
 #include <type_traits>
+
 namespace mge {
 
     using fvec4 = glm::vec4;
@@ -20,15 +21,29 @@ namespace mge {
         std::same_as<fvec4, fvec4> || std::same_as<ivec4, ivec4> ||
         std::same_as<uvec4, uvec4> || std::same_as<dvec4, dvec4>;
 
-    template <vec4_type T>
-    inline std::ostream& operator<<(std::ostream& os, const T& v)
+    template <vec4_type T> inline auto squared_length(const T& v)
+    {
+        return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
+    }
+
+    inline std::ostream& operator<<(std::ostream& os, const fvec4& v)
     {
         os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
         return os;
     }
-
-    template <vec4_type T> inline auto squared_length(const T& v)
+    inline std::ostream& operator<<(std::ostream& os, const ivec4& v)
     {
-        return v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w;
+        os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
+        return os;
+    }
+    inline std::ostream& operator<<(std::ostream& os, const uvec4& v)
+    {
+        os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
+        return os;
+    }
+    inline std::ostream& operator<<(std::ostream& os, const dvec4& v)
+    {
+        os << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
+        return os;
     }
 } // namespace mge

@@ -21,16 +21,30 @@ namespace mge {
     concept vec3_type = std::same_as<T, fvec3> || std::same_as<T, ivec3> ||
                         std::same_as<T, uvec3> || std::same_as<T, dvec3>;
 
-    template <vec3_type T>
-    inline std::ostream& operator<<(std::ostream& os, const T& v)
+    template <vec3_type T> inline auto squared_length(const T& v)
+    {
+        return v.x * v.x + v.y * v.y + v.z * v.z;
+    }
+
+    inline std::ostream& operator<<(std::ostream& os, const fvec3& v)
     {
         os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
         return os;
     }
-
-    template <vec3_type T> inline auto squared_length(const T& v)
+    inline std::ostream& operator<<(std::ostream& os, const ivec3& v)
     {
-        return v.x * v.x + v.y * v.y + v.z * v.z;
+        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        return os;
+    }
+    inline std::ostream& operator<<(std::ostream& os, const uvec3& v)
+    {
+        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        return os;
+    }
+    inline std::ostream& operator<<(std::ostream& os, const dvec3& v)
+    {
+        os << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+        return os;
     }
 
 } // namespace mge
