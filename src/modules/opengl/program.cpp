@@ -16,6 +16,83 @@ static mge::uniform_data_type uniform_type_from_gl(GLenum t)
     return mge::uniform_data_type::UNKNOWN;
 }
 
+static mge::data_type attribute_type_from_gl(GLenum t)
+{
+    switch (t) {
+    case GL_FLOAT:
+        return mge::data_type::FLOAT;
+    case GL_FLOAT_VEC2:
+        return mge::data_type::FLOAT_VEC2;
+    case GL_FLOAT_VEC3:
+        return mge::data_type::FLOAT_VEC3;
+    case GL_FLOAT_VEC4:
+        return mge::data_type::FLOAT_VEC4;
+    case GL_FLOAT_MAT2:
+        return mge::data_type::FLOAT_MAT2;
+    case GL_FLOAT_MAT3:
+        return mge::data_type::FLOAT_MAT3;
+    case GL_FLOAT_MAT4:
+        return mge::data_type::FLOAT_MAT4;
+    case GL_FLOAT_MAT2x3:
+        return mge::data_type::FLOAT_MAT2x3;
+    case GL_FLOAT_MAT2x4:
+        return mge::data_type::FLOAT_MAT2x4;
+    case GL_FLOAT_MAT3x2:
+        return mge::data_type::FLOAT_MAT3x2;
+    case GL_FLOAT_MAT3x4:
+        return mge::data_type::FLOAT_MAT3x4;
+    case GL_FLOAT_MAT4x2:
+        return mge::data_type::FLOAT_MAT4x2;
+    case GL_FLOAT_MAT4x3:
+        return mge::data_type::FLOAT_MAT4x3;
+    case GL_INT:
+        return mge::data_type::INT32;
+    case GL_INT_VEC2:
+        return mge::data_type::INT_VEC2;
+    case GL_INT_VEC3:
+        return mge::data_type::INT_VEC3;
+    case GL_INT_VEC4:
+        return mge::data_type::INT_VEC4;
+    case GL_UNSIGNED_INT:
+        return mge::data_type::UINT32;
+    case GL_UNSIGNED_INT_VEC2:
+        return mge::data_type::UINT_VEC2;
+    case GL_UNSIGNED_INT_VEC3:
+        return mge::data_type::UINT_VEC3;
+    case GL_UNSIGNED_INT_VEC4:
+        return mge::data_type::UINT_VEC4;
+    case GL_DOUBLE:
+        return mge::data_type::DOUBLE;
+    case GL_DOUBLE_VEC2:
+        return mge::data_type::DOUBLE_VEC2;
+    case GL_DOUBLE_VEC3:
+        return mge::data_type::DOUBLE_VEC3;
+    case GL_DOUBLE_VEC4:
+        return mge::data_type::DOUBLE_VEC4;
+    case GL_DOUBLE_MAT2:
+        return mge::data_type::DOUBLE_MAT2;
+    case GL_DOUBLE_MAT3:
+        return mge::data_type::DOUBLE_MAT3;
+    case GL_DOUBLE_MAT4:
+        return mge::data_type::DOUBLE_MAT4;
+    case GL_DOUBLE_MAT2x3:
+        return mge::data_type::DOUBLE_MAT2x3;
+    case GL_DOUBLE_MAT2x4:
+        return mge::data_type::DOUBLE_MAT2x4;
+    case GL_DOUBLE_MAT3x2:
+        return mge::data_type::DOUBLE_MAT3x2;
+    case GL_DOUBLE_MAT3x4:
+        return mge::data_type::DOUBLE_MAT3x4;
+    case GL_DOUBLE_MAT4x2:
+        return mge::data_type::DOUBLE_MAT4x2;
+    case GL_DOUBLE_MAT4x3:
+        return mge::data_type::DOUBLE_MAT4x3;
+    default:
+        break;
+    }
+    return mge::data_type::UNKNOWN;
+}
+
 namespace mge::opengl {
     program::program(render_context& context)
         : mge::program(context)
@@ -152,8 +229,17 @@ namespace mge::opengl {
                               &type,
                               namebuffer);
             CHECK_OPENGL_ERROR(glGetActiveAttrib);
-            MGE_DEBUG_TRACE(OPENGL) << "Attribute: " << namebuffer
-                                    << ", type: " << type << ", size: " << size;
+            auto attr_type = attribute_type_from_gl(type);
+            if (attr_type == mge::data_type::UNKNOWN) {
+                MGE_WARNING_TRACE(OPENGL)
+                    << "Unsupported attribute type " << type
+                    << " for attribute " << namebuffer;
+            }
+            m_attributes.push_back(
+                {namebuffer, attr_type, static_cast<uint8_t>(size)});
+            MGE_DEBUG_TRACE(OPENGL)
+                << "Attribute: " << namebuffer << ", type: " << attr_type
+                << ", size: " << size;
         }
     }
 } // namespace mge::opengl
