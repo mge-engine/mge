@@ -2,9 +2,7 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 SET(mgemath_sources
-    vec2.cpp
-    vec3.cpp
-    vec3.cpp)
+    dummy.cpp)
 
 SET(mgemath_headers
     glm.hpp

@@ -30,6 +30,12 @@ TEST(vec2, minus)
     EXPECT_EQ(v3, v1);
 }
 
+TEST(vec2, squared_length)
+{
+    fvec2 v(3.0f, 4.0f);
+    EXPECT_EQ(squared_length(v), 25.0f);
+}
+
 TEST(vec2, print)
 {
     fvec2             v(1.0f, 2.0f);

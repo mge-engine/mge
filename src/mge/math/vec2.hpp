@@ -5,21 +5,31 @@
 
 #include "mge/math/dllexport.hpp"
 #include "mge/math/glm.hpp"
-#include <iosfwd>
+#include <iostream>
+
+#include <concepts>
+#include <type_traits>
 
 namespace mge {
 
-    using glm::i32vec2;
-    using glm::vec2;
     using fvec2 = glm::vec2;
     using ivec2 = glm::i32vec2;
+    using uvec2 = glm::u32vec2;
+    using dvec2 = glm::dvec2;
 
-    MGEMATH_EXPORT std::ostream& operator<<(std::ostream& os, const fvec2& v);
+    template <typename T>
+    concept vec2_type = std::same_as<T, fvec2> || std::same_as<T, ivec2> ||
+                        std::same_as<T, uvec2> || std::same_as<T, dvec2>;
 
-    MGEMATH_EXPORT std::ostream& operator<<(std::ostream& os, const ivec2& v);
-
-    inline float squared_length(const fvec2& v)
+    template <vec2_type T> inline auto squared_length(const T& v)
     {
         return v.x * v.x + v.y * v.y;
     }
+
+    template <vec2_type T>
+    inline std::ostream& operator<<(std::ostream& os, const T& v)
+    {
+        return os << "(" << v.x << ", " << v.y << ")";
+    }
+
 } // namespace mge
