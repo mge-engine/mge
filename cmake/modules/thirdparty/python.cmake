@@ -6,7 +6,7 @@
 # multiple includes.
 INCLUDE_GUARD(GLOBAL)
 
-FIND_PACKAGE(Python3 COMPONENTS Interpreter Development)
+FIND_PACKAGE(Python3 COMPONENTS Interpreter)
 IF(NOT Python3_FOUND)
     MESSAGE(FATAL_ERROR "A python interpreter is needed to build mge")
 ELSE()
