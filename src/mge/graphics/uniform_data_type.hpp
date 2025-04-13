@@ -5,6 +5,8 @@
 #include "mge/core/enum.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/math/mat.hpp"
+#include "mge/math/vec.hpp"
 #include <cstdint>
 #include <iosfwd>
 #include <string_view>
@@ -222,16 +224,7 @@ namespace mge {
     {
         static constexpr uniform_data_type value = uniform_data_type::UINT64;
     };
-#if 0    
-    template <> struct uniform_data_type_of<int128_t>
-    {
-        static constexpr uniform_data_type value = uniform_data_type::INT128;
-    };
-    template <> struct uniform_data_type_of<uint128_t>
-    {
-        static constexpr uniform_data_type value = uniform_data_type::UINT128;
-    };
-#endif
+
     template <> struct uniform_data_type_of<float>
     {
         static constexpr uniform_data_type value = uniform_data_type::FLOAT;
@@ -240,10 +233,185 @@ namespace mge {
     {
         static constexpr uniform_data_type value = uniform_data_type::DOUBLE;
     };
+
     template <> struct uniform_data_type_of<long double>
     {
         static constexpr uniform_data_type value =
             uniform_data_type::LONG_DOUBLE;
+    };
+
+    template <> struct uniform_data_type_of<fvec2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_VEC2;
+    };
+
+    template <> struct uniform_data_type_of<fvec3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_VEC3;
+    };
+
+    template <> struct uniform_data_type_of<fvec4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_VEC4;
+    };
+
+    template <> struct uniform_data_type_of<dvec2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_VEC2;
+    };
+
+    template <> struct uniform_data_type_of<dvec3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_VEC3;
+    };
+
+    template <> struct uniform_data_type_of<dvec4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_VEC4;
+    };
+
+    template <> struct uniform_data_type_of<ivec2>
+    {
+        static constexpr uniform_data_type value = uniform_data_type::INT_VEC2;
+    };
+
+    template <> struct uniform_data_type_of<ivec3>
+    {
+        static constexpr uniform_data_type value = uniform_data_type::INT_VEC3;
+    };
+
+    template <> struct uniform_data_type_of<ivec4>
+    {
+        static constexpr uniform_data_type value = uniform_data_type::INT_VEC4;
+    };
+
+    template <> struct uniform_data_type_of<uvec2>
+    {
+        static constexpr uniform_data_type value = uniform_data_type::UINT_VEC2;
+    };
+
+    template <> struct uniform_data_type_of<uvec3>
+    {
+        static constexpr uniform_data_type value = uniform_data_type::UINT_VEC3;
+    };
+
+    template <> struct uniform_data_type_of<uvec4>
+    {
+        static constexpr uniform_data_type value = uniform_data_type::UINT_VEC4;
+    };
+
+    template <> struct uniform_data_type_of<fmat2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT2;
+    };
+
+    template <> struct uniform_data_type_of<fmat3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT3;
+    };
+
+    template <> struct uniform_data_type_of<fmat4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT4;
+    };
+
+    template <> struct uniform_data_type_of<fmat2x3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT2x3;
+    };
+
+    template <> struct uniform_data_type_of<fmat2x4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT2x4;
+    };
+
+    template <> struct uniform_data_type_of<fmat3x2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT3x2;
+    };
+
+    template <> struct uniform_data_type_of<fmat3x4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT3x4;
+    };
+
+    template <> struct uniform_data_type_of<fmat4x2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT4x2;
+    };
+
+    template <> struct uniform_data_type_of<fmat4x3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::FLOAT_MAT4x3;
+    };
+
+    template <> struct uniform_data_type_of<dmat2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT2;
+    };
+
+    template <> struct uniform_data_type_of<dmat3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT3;
+    };
+
+    template <> struct uniform_data_type_of<dmat4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT4;
+    };
+
+    template <> struct uniform_data_type_of<dmat2x3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT2x3;
+    };
+
+    template <> struct uniform_data_type_of<dmat2x4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT2x4;
+    };
+
+    template <> struct uniform_data_type_of<dmat3x2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT3x2;
+    };
+
+    template <> struct uniform_data_type_of<dmat3x4>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT3x4;
+    };
+
+    template <> struct uniform_data_type_of<dmat4x2>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT4x2;
+    };
+
+    template <> struct uniform_data_type_of<dmat4x3>
+    {
+        static constexpr uniform_data_type value =
+            uniform_data_type::DOUBLE_MAT4x3;
     };
 
 } // namespace mge

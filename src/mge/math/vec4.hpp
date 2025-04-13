@@ -17,9 +17,9 @@ namespace mge {
     using uvec4 = glm::u32vec4;
     using dvec4 = glm::dvec4;
 
-    concept vec4_type =
-        std::same_as<fvec4, fvec4> || std::same_as<ivec4, ivec4> ||
-        std::same_as<uvec4, uvec4> || std::same_as<dvec4, dvec4>;
+    template <typename T>
+    concept vec4_type = std::same_as<T, fvec4> || std::same_as<T, ivec4> ||
+                        std::same_as<T, uvec4> || std::same_as<T, dvec4>;
 
     template <vec4_type T> inline auto squared_length(const T& v)
     {

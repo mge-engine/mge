@@ -20,5 +20,12 @@ SET(mge_dx11_module_SOURCES
 ADD_LIBRARY(mge_module_dx11 MODULE
     ${mge_dx11_module_SOURCES})
 
-TARGET_LINK_LIBRARIES(mge_module_dx11 mgecore mgegraphics mge_win32 mgeapplication dx11)
+TARGET_LINK_LIBRARIES(mge_module_dx11 
+    mgecore 
+    mgegraphics 
+    mgeapplication
+    
+    mge_win32 
+    
+    dx11)
 ADD_SUBDIRECTORY(test)
