@@ -37,11 +37,16 @@ TEST_F(program_test, compile_and_link)
                     layout(location = 7) uniform a_struct two_uniform[5];
                     uniform float third_uniform[3];
 
+                    uniform ExtraBlock  {
+                        float extra1;
+                        float extra2;
+                    } extra_uniforms;
+
                     void main() {
                         color = one_uniform + two_uniform[3].first
                         + vec3(two_uniform[2].second.x, 1, 1);
-                        color.x += third_uniform[0];
-                        color.y += third_uniform[1];
+                        color.x += third_uniform[0] + extra_uniforms.extra1;
+                        color.y += third_uniform[1] + extra_uniforms.extra2;
                         color.z += third_uniform[2];
                     }
                 )shader";

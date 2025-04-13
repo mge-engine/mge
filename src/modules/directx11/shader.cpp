@@ -236,7 +236,7 @@ namespace mge::dx11 {
                     D3D11_SHADER_TYPE_DESC variable_type_desc = {};
                     variable_type->GetDesc(&variable_type_desc);
                     u.type = data_type_of_variable(variable_type_desc);
-                    u.size = variable_desc.Size;
+                    u.array_size = variable_desc.Size;
                     uniform_buffer.uniforms.push_back(u);
                 }
                 if (uniform_buffer.name == "$Globals") {

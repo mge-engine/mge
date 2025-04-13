@@ -218,6 +218,7 @@ namespace mge::opengl {
         }
         collect_attributes();
         collect_uniforms();
+        collect_uniform_buffers();
     }
 
     void program::dump_info_log()
@@ -332,11 +333,27 @@ namespace mge::opengl {
                 continue;
             }
 
-            // Store the uniform information
-            // mge::program::uniform uses mge::data_type
+            if (name.ends_with("]")) {
+                // Remove array suffix from name
+                auto pos = name.find_last_of('[');
+                if (pos != std::string::npos) {
+                    name.erase(pos);
+                }
+                if (array_size == 1) {
+                    MGE_WARNING_TRACE(OPENGL)
+                        << "Array size of uniform '" << name
+                        << "' is 1, but array notation is used. "
+                           "Consider removing the array notation.";
+                }
+            }
+
+            if (array_size == 0) {
+                array_size = 1; // Default to 1 if no array size is specified
+            }
+
             m_uniforms.push_back(
                 {name,
-                 uniform_type, // Pass mge::data_type
+                 uniform_type,
                  static_cast<uint32_t>(
                      array_size), // Correct order: size then location
                  static_cast<uint32_t>(
@@ -391,6 +408,70 @@ namespace mge::opengl {
             MGE_DEBUG_TRACE(OPENGL)
                 << "Attribute: " << namebuffer.data() << ", type: " << attr_type
                 << ", size: " << size;
+        }
+    }
+
+    void program::collect_uniform_buffers()
+    {
+        // Clear previous uniform buffers
+        m_uniform_buffers
+            .clear(); // Assuming m_uniform_buffers is the member variable
+
+        GLint num_uniform_blocks = 0;
+        glGetProgramInterfaceiv(m_program,
+                                GL_UNIFORM_BLOCK,
+                                GL_ACTIVE_RESOURCES,
+                                &num_uniform_blocks);
+        CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_ACTIVE_RESOURCES));
+
+        if (num_uniform_blocks == 0) {
+            MGE_DEBUG_TRACE(OPENGL)
+                << "No active uniform blocks found in program " << m_program;
+            return;
+        }
+
+        GLint max_name_length = 0;
+        glGetProgramInterfaceiv(m_program,
+                                GL_UNIFORM_BLOCK,
+                                GL_MAX_NAME_LENGTH,
+                                &max_name_length);
+        CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_MAX_NAME_LENGTH));
+
+        std::vector<char> name_buffer(max_name_length);
+
+        MGE_DEBUG_TRACE(OPENGL) << "Found " << num_uniform_blocks
+                                << " uniform blocks in program " << m_program;
+        const GLenum properties[] = {GL_NAME_LENGTH};
+        const int    num_props = sizeof(properties) / sizeof(properties[0]);
+
+        for (GLint i = 0; i < num_uniform_blocks; ++i) {
+            GLint values[num_props];
+            glGetProgramResourceiv(m_program,
+                                   GL_UNIFORM_BLOCK,
+                                   i,
+                                   num_props,
+                                   properties,
+                                   num_props,
+                                   nullptr,
+                                   values);
+            CHECK_OPENGL_ERROR(glGetProgramResourceiv);
+
+            GLsizei name_length = 0;
+            glGetProgramResourceName(m_program,
+                                     GL_UNIFORM_BLOCK,
+                                     i,
+                                     static_cast<GLsizei>(name_buffer.size()),
+                                     &name_length,
+                                     name_buffer.data());
+            CHECK_OPENGL_ERROR(glGetProgramResourceName);
+
+            std::string name(name_buffer.data(), name_length);
+
+            program::uniform_buffer ub;
+            ub.name = name;
+            m_uniform_buffers.push_back(ub);
+
+            MGE_DEBUG_TRACE(OPENGL) << "Uniform block: '" << name << "'";
         }
     }
 } // namespace mge::opengl
