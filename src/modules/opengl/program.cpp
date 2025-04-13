@@ -441,7 +441,7 @@ namespace mge::opengl {
 
         MGE_DEBUG_TRACE(OPENGL) << "Found " << num_uniform_blocks
                                 << " uniform blocks in program " << m_program;
-        const GLenum properties[] = {GL_NAME_LENGTH};
+        const GLenum properties[] = {GL_NUM_ACTIVE_VARIABLES};
         const int    num_props = sizeof(properties) / sizeof(properties[0]);
 
         for (GLint i = 0; i < num_uniform_blocks; ++i) {
@@ -455,7 +455,7 @@ namespace mge::opengl {
                                    nullptr,
                                    values);
             CHECK_OPENGL_ERROR(glGetProgramResourceiv);
-
+            GLint   num_uniforms = values[0];
             GLsizei name_length = 0;
             glGetProgramResourceName(m_program,
                                      GL_UNIFORM_BLOCK,
@@ -471,7 +471,11 @@ namespace mge::opengl {
             ub.name = name;
             m_uniform_buffers.push_back(ub);
 
-            MGE_DEBUG_TRACE(OPENGL) << "Uniform block: '" << name << "'";
+            MGE_DEBUG_TRACE(OPENGL) << "Uniform block: '" << name << "' has "
+                                    << num_uniforms << " uniforms";
+
+            for (GLint j = 0; j < num_uniforms; ++j) {
+            }
         }
     }
 } // namespace mge::opengl
