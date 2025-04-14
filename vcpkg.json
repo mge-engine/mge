@@ -21,7 +21,6 @@
     "magic-enum",
     "vulkan-memory-allocator",
     "jemalloc",
-    "libffi",
-    "hayai"
+    "libffi"
   ]
 }

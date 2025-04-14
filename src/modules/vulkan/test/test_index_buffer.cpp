@@ -36,7 +36,6 @@ TEST_F(index_buffer_test, map_unmap)
     buffer->unmap();
 }
 
-#if 0
 TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
 {
     auto& context = m_window->render_context();
@@ -44,7 +43,7 @@ TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
     for (int i = 0; i < 100; ++i) {
         data[i] = i;
     }
-    mge::benchmark().show_results().run("index_buffer_creation", [&]() {
+    mge::benchmark().run("index_buffer_creation", [&]() {
         auto buffer =
             context.create_index_buffer(mge::data_type::INT32, 400, nullptr);
         int* buffer_data = static_cast<int*>(buffer->map());
@@ -52,4 +51,3 @@ TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
         buffer->unmap();
     });
 }
-#endif

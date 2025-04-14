@@ -9,7 +9,6 @@
 TEST(benchmark, malloc_free)
 {
     mge::benchmark()
-        .show_results()
         .run("alloc_free_64",
              [&]() {
                  auto ptr = mge::malloc(64);

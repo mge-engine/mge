@@ -13,7 +13,6 @@ TEST(benchmark, memory_cycle)
 {
     char* buffer = new char[10 * 1024];
     mge::benchmark()
-        .show_results()
         .run("memset1",
              [&]() {
                  memset(buffer, 'A', 1 * 1024);

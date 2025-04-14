@@ -32,7 +32,6 @@ TEST_F(shader_test, compile)
     EXPECT_TRUE(s->initialized());
 }
 
-#if 0
 TEST_F(shader_test, bench_compile)
 {
     const char* vertex_shader_hlsl =
@@ -43,12 +42,11 @@ TEST_F(shader_test, bench_compile)
         "inPos.w);\n"
         "}";
     auto& context = m_window->render_context();
-    mge::benchmark().show_results().run("shader_compile", [&]() {
+    mge::benchmark().run("shader_compile", [&]() {
         auto s = context.create_shader(mge::shader_type::VERTEX);
         s->compile(vertex_shader_hlsl);
     });
 }
-#endif
 
 TEST_F(shader_test, compile_with_syntax_error)
 {

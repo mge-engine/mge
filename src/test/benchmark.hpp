@@ -13,7 +13,10 @@ namespace mge {
 
 #ifdef MGE_COMPILER_MSVC
 #    pragma optimize("", off)
-    template <typename T> void do_not_optimize_away(T&& data) { data = data; }
+    template <typename T> void do_not_optimize_away(T&& data)
+    {
+        data = data;
+    }
 #    pragma optimize("", on)
 #else
 #    error Missing port
@@ -21,94 +24,85 @@ namespace mge {
 
     class benchmark
     {
-    protected:
+    public:
+        benchmark();
+        ~benchmark();
+
+        struct result
+        {
+            std::string name;
+            std::string unit;
+            double      value{0.0};
+        };
+
         using clock =
             std::conditional<std::chrono::high_resolution_clock::is_steady,
                              std::chrono::high_resolution_clock,
                              std::chrono::steady_clock>::type;
 
-        class stage
-        {
-        public:
-            virtual ~stage() = default;
-
-            virtual uint64_t initial_iterations() const;
-            virtual void     set_iterations(uint64_t iterations);
-            virtual uint64_t update(benchmark&                   b,
-                                    uint64_t                     iterations,
-                                    benchmark::clock::time_point start,
-                                    benchmark::clock::time_point end) = 0;
-        };
-
-    public:
-        struct result
-        {
-            std::string                   benchmark;
-            std::map<std::string, double> kpi;
-        };
-
-        benchmark();
-
-        ~benchmark();
-
         template <typename O>
         MGE_NO_INLINE benchmark& run(const char* name, O&& op)
         {
-            reset(name);
-            while (auto loops = next_iterations()) {
-                start_measuring();
-                while (loops-- > 0) {
-                    op();
-                }
-                stop_measuring();
+            auto loops = calibrate(std::forward<O>(op));
+            auto start = clock::now();
+            for (uint64_t i = 0; i < loops; ++i) {
+                op();
             }
+            auto stop = clock::now();
+            auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
+                stop - start);
+            auto duration = elapsed.count() / static_cast<double>(loops);
+            if (duration < 9e-17) {
+                std::stringstream msg;
+                msg << "Benchmark '" << name << "' did run too little time";
+                throw std::runtime_error(msg.str());
+            }
+            std::string unit = "ns";
+            if (duration > 1000) {
+                duration /= 1000;
+                unit = "us";
+            }
+            if (duration > 1000) {
+                duration /= 1000;
+                unit = "ms";
+            }
+            m_runs[name].push_back({"elapsed time", unit, duration});
             return *this;
         }
 
-        benchmark& show_results();
+        template <typename O> MGE_NO_INLINE uint64_t calibrate(O&& op)
+        {
+            std::chrono::microseconds jiffies(10000);
+            std::chrono::microseconds elapsed(0);
+            uint64_t                  loops = 1;
+        try_again:
+            while (elapsed < jiffies) {
+                auto start = clock::now();
+                for (uint64_t i = 0; i < loops; ++i) {
+                    op();
+                }
+                auto stop = clock::now();
+                elapsed = std::chrono::duration_cast<std::chrono::microseconds>(
+                    stop - start);
+                if (elapsed < jiffies && loops < 1000000000) {
+                    loops *= 2;
+                } else {
+                    break;
+                }
+            }
+            if (loops == 1 && jiffies < std::chrono::microseconds(2000000)) {
+                jiffies *= 2;
+                elapsed = std::chrono::microseconds(0);
+                goto try_again;
+            }
 
-        /**
-         * @brief Get clock resolution of benchmark clock.
-         *
-         * @return duration of smallest measurement possible
-         */
-        clock::duration clock_resolution() const;
+            return loops;
+        }
 
-        void set_measure_iterations(uint64_t iterations);
-
-        const std::string& current() const;
-
-        const auto& results() const;
-
-        void submit(const benchmark::result& r);
+        static uint64_t bogomips;
 
     private:
-        const uint8_t WARMUP = 0;
-        const uint8_t CALIBRATE = 1;
-        const uint8_t MEASURE = 2;
-        const uint8_t DONE = 3;
-
-        uint64_t next_iterations() const;
-        void     reset(const char* name);
-        void     compute_clock_resolution();
-        void     start_measuring();
-        void     stop_measuring();
-        uint64_t update(uint64_t          iterations,
-                        clock::time_point start,
-                        clock::time_point end);
-        void     print_results();
-
-        using stage_vector = std::vector<std::unique_ptr<stage>>;
-
-        clock::time_point   m_measure_start;
-        uint64_t            m_next_iterations;
-        clock::duration     m_clock_resolution;
-        uint8_t             m_current_stage;
-        bool                m_print_results;
-        stage_vector        m_stages;
-        std::string         m_current;
-        std::vector<result> m_results;
+        std::map<std::string, std::vector<result>> m_runs;
     };
 
-    std::ostream& operator<<(std::ostream& os, const benchmark::result& r);
 } // namespace mge
