@@ -57,6 +57,9 @@ namespace mge {
                 msg << "Benchmark '" << name << "' did run too little time";
                 throw std::runtime_error(msg.str());
             }
+            auto ops_per_second = 1000000000.0 / duration;
+            auto ops_per_frame = ops_per_second / 60.0;
+
             std::string unit = "ns";
             if (duration > 1000) {
                 duration /= 1000;
@@ -67,6 +70,9 @@ namespace mge {
                 unit = "ms";
             }
             m_runs[name].push_back({"elapsed time", unit, duration});
+            m_runs[name].push_back({"ops per second", "", ops_per_second});
+            m_runs[name].push_back({"ops per frame", "", ops_per_frame});
+
             return *this;
         }
 
