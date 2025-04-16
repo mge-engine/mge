@@ -14,6 +14,9 @@ jobs:
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
+            - name: Show Architecture
+              run: |
+                wmic cpu get Name, Manufacturer, NumberOfCores, NumberOfLogicalProcessors
             - name: Show Python version
               run: |
                 python --version
