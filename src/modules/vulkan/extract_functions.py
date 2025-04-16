@@ -56,7 +56,7 @@ writeLines = []
 
 for line in lines:
     # (VKAPI_PTR *PFN_XXXXX)
-    m = re.search("\(VKAPI_PTR \*PFN_(\w+)\)(.*)", line)
+    m = re.search(r"\(VKAPI_PTR \*PFN_(\w+)\)(.*)", line)
     if m:
         functionName = m.group(1)
         remainder = m.group(2)
