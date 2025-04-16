@@ -67,6 +67,7 @@ namespace mge {
     {
         if (!m_runs.empty()) {
             std::cout << "Benchmark results:" << std::endl;
+            std::cout << "Bogomips: " << bogomips << std::endl;
             for (const auto& [run, results] : m_runs) {
                 std::cout << "Run: " << run << ": " << std::endl;
                 for (const auto& result : results) {

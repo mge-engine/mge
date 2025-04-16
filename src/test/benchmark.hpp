@@ -59,6 +59,8 @@ namespace mge {
             }
             auto ops_per_second = 1000000000.0 / duration;
             auto ops_per_frame = ops_per_second / 60.0;
+            auto bogomips_relative =
+                ops_per_second / static_cast<double>(bogomips);
 
             std::string unit = "ns";
             if (duration > 1000) {
@@ -72,6 +74,8 @@ namespace mge {
             m_runs[name].push_back({"elapsed time", unit, duration});
             m_runs[name].push_back({"ops per second", "", ops_per_second});
             m_runs[name].push_back({"ops per frame", "", ops_per_frame});
+            m_runs[name].push_back(
+                {"bogomips relative", "ratio", bogomips_relative});
 
             return *this;
         }
