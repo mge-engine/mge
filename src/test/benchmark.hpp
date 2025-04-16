@@ -52,7 +52,7 @@ namespace mge {
             auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(
                 stop - start);
             auto duration = elapsed.count() / static_cast<double>(loops);
-            if (duration < 9e-17) {
+            if (duration < 1e-6) {
                 std::stringstream msg;
                 msg << "Benchmark '" << name << "' did run too little time";
                 throw std::runtime_error(msg.str());
