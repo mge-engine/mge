@@ -10,6 +10,10 @@
 #include "mge/graphics/image.hpp"
 #include "mge/graphics/memory_image.hpp"
 
+#include <assimp/Importer.hpp>  // C++ importer interface
+#include <assimp/postprocess.h> // Post processing flags
+#include <assimp/scene.h>       // Output data structure
+
 namespace mge {
     class assimp_loader : public asset_loader
     {
