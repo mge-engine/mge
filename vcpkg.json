@@ -23,6 +23,7 @@
     "vulkan-memory-allocator",
     "jemalloc",
     "libffi",
-    "assimp"
+    "assimp",
+    "sqlite3"
   ]
 }

@@ -37,4 +37,5 @@ INCLUDE(thirdparty/jemalloc)
 INCLUDE(thirdparty/libffi)
 INCLUDE(thirdparty/magicenum)
 INCLUDE(thirdparty/assimp)
+INCLUDE(thirdparty/sqlite3)
 
