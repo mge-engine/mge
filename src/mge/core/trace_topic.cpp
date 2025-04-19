@@ -22,6 +22,10 @@ namespace mge {
                          trace,
                          print_to_stdout,
                          "Whether all trace shall be printed to stdout");
+    MGE_DEFINE_PARAMETER(bool,
+                         trace,
+                         globally_enabled,
+                         "Whether all trace shall be enabled");
 
     static volatile bool global_topic_configured;
 
@@ -41,6 +45,10 @@ namespace mge {
 
     static bool global_trace_enabled()
     {
+        if (MGE_PARAMETER(trace, globally_enabled).get(false)) {
+            return true;
+        }
+
         char* val = std::getenv("MGE_TRACE_ENABLED");
         if (val) {
             return true;
@@ -49,7 +57,10 @@ namespace mge {
         }
     }
 
-    trace_topic::~trace_topic() { m_level_config.set_change_handler(nullptr); }
+    trace_topic::~trace_topic()
+    {
+        m_level_config.set_change_handler(nullptr);
+    }
 
     trace_level level_from_string(const std::string& s)
     {
@@ -163,7 +174,10 @@ namespace mge {
         m_enabled_levels = l & l_all;
     }
 
-    std::string_view trace_topic::name() const noexcept { return m_topic; }
+    std::string_view trace_topic::name() const noexcept
+    {
+        return m_topic;
+    }
 
     bool trace_topic::global() const noexcept
     {
