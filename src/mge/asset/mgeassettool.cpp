@@ -2,14 +2,26 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/configuration.hpp"
+#include "mge/core/trace.hpp"
+
 #include <boost/program_options.hpp>
 #include <iostream>
 
 namespace po = boost::program_options;
 
+namespace mge {
+    MGE_DEFINE_TRACE(ASSSETTOOL);
+}
+
+using namespace mge;
+
 int main(int argc, const char** argv)
 {
     try {
+        if (!mge::configuration::loaded()) {
+            mge::configuration::load();
+        }
+
         po::options_description generic("Generic options");
         generic.add_options()("help,h", "Show help message")(
             "version,v",
@@ -41,8 +53,15 @@ int main(int argc, const char** argv)
             return 0;
         }
         if (vm.count("verbose")) {
-            const auto& enable_trace_parameter =
+            auto& enable_trace_parameter =
                 mge::configuration::find_parameter("trace", "globally_enabled");
+            enable_trace_parameter.set_value(true);
+            auto& enable_print_to_stdout_parameter =
+                mge::configuration::find_parameter("trace", "print_to_stdout");
+            enable_print_to_stdout_parameter.set_value(true);
+            MGE_INFO_TRACE(ASSSETTOOL)
+                << "Verbose output enabled, all trace will be printed to "
+                   "stdout";
         }
 
         return 0;
