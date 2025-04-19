@@ -19,16 +19,29 @@ TEST(parameter, simple_access)
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
 }
 
-#if 0
-TEST(parameter, from_string_get)
+TEST(parameter, set_value)
 {
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
-    MGE_PARAMETER(test, test_parameter1).from_string("1");
+    MGE_PARAMETER(test, test_parameter1).set_value(true);
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).has_value());
     EXPECT_TRUE(MGE_PARAMETER(test, test_parameter1).get());
     MGE_PARAMETER(test, test_parameter1).reset();
+    EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
 }
 
+TEST(parameter, set_value_wrong_type)
+{
+    EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
+    try {
+        MGE_PARAMETER(test, test_parameter1).set_value(std::string("hurz"));
+        FAIL() << "set_value should throw an exception";
+    } catch (const mge::exception& ex) {
+        EXPECT_TRUE(std::string(ex.what()).find("Invalid type for parameter") !=
+                    std::string::npos);
+    }
+}
+
+#if 0
 TEST(parameter, from_string_to_string)
 {
     EXPECT_FALSE(MGE_PARAMETER(test, test_parameter1).has_value());
