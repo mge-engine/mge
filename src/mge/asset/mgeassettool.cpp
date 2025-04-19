@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-
+#include "mge/core/configuration.hpp"
 #include <boost/program_options.hpp>
 #include <iostream>
 
@@ -11,9 +11,9 @@ int main(int argc, const char** argv)
 {
     try {
         po::options_description generic("Generic options");
-        generic.add_options()("help,h",
-                              "Show help message")("version,v",
-                                                   "Show version information");
+        generic.add_options()("help,h", "Show help message")(
+            "version,v",
+            "Show version information")("verbose,V", "Enable verbose output");
 
         std::vector<std::string> args(argv + 1, argv + argc);
         po::variables_map        vm;
@@ -40,6 +40,11 @@ int main(int argc, const char** argv)
             std::cout << generic << std::endl;
             return 0;
         }
+        if (vm.count("verbose")) {
+            const auto& enable_trace_parameter =
+                mge::configuration::find_parameter("trace", "globally_enabled");
+        }
+
         return 0;
     } catch (const std::exception& ex) {
         std::cerr << "Error: " << ex.what() << std::endl;
