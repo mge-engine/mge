@@ -18,6 +18,7 @@ using namespace mge;
 
 int main(int argc, const char** argv)
 {
+    bool is_verbose = false;
     try {
         if (!mge::configuration::loaded()) {
             mge::configuration::load();
@@ -56,6 +57,7 @@ int main(int argc, const char** argv)
             return 0;
         }
         if (vm.count("verbose")) {
+            is_verbose = true;
             auto& enable_trace_parameter =
                 mge::configuration::find_parameter("trace", "globally_enabled");
             enable_trace_parameter.set_value(true);
@@ -68,11 +70,26 @@ int main(int argc, const char** argv)
         }
 
         return 0;
+    } catch (const mge::exception& ex) {
+        if (!is_verbose) {
+            std::cerr << "Error: " << ex.what() << std::endl;
+        } else {
+            MGE_ERROR_TRACE(ASSSETTOOL) << "Error: " << ex;
+        }
+        return 1;
     } catch (const std::exception& ex) {
-        std::cerr << "Error: " << ex.what() << std::endl;
+        if (!is_verbose) {
+            std::cerr << "Error: " << ex.what() << std::endl;
+        } else {
+            MGE_ERROR_TRACE(ASSSETTOOL) << "Error: " << ex.what();
+        }
         return 1;
     } catch (...) {
-        std::cerr << "Unknown error" << std::endl;
+        if (!is_verbose) {
+            std::cerr << "Unknown error" << std::endl;
+        } else {
+            MGE_ERROR_TRACE(ASSSETTOOL) << "Unknown error";
+        }
         return 1;
     }
     return 0;
