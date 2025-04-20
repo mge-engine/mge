@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Versions &mdash; MGE 0.1 documentation</title>
+  <title>Version and Component Tracking &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -63,9 +63,13 @@
 <li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Versions</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Version and Component Tracking</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#semantic-version">Semantic Version</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE"><code class="docutils literal notranslate"><span class="pre">mge::semantic_version</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#software-component">Software Component</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge18software_componentE"><code class="docutils literal notranslate"><span class="pre">mge::software_component</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -98,7 +102,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
-      <li class="breadcrumb-item active">Versions</li>
+      <li class="breadcrumb-item active">Version and Component Tracking</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/core/version.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -108,9 +112,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="versions">
-<h1>Versions<a class="headerlink" href="#versions" title="Link to this heading"></a></h1>
-<p>A few utilities are defined to handle versions, and comparisons on versions.</p>
+  <section id="version-and-component-tracking">
+<h1>Version and Component Tracking<a class="headerlink" href="#version-and-component-tracking" title="Link to this heading"></a></h1>
+<p>These tools provide utilities for semantic versioning and component tracking.
+They help developers manage version information and track components throughout
+the application lifecycle.</p>
 <section id="semantic-version">
 <h2>Semantic Version<a class="headerlink" href="#semantic-version" title="Link to this heading"></a></h2>
 <dl class="cpp class">
@@ -275,6 +281,67 @@
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>patch component </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="software-component">
+<h2>Software Component<a class="headerlink" href="#software-component" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge18software_componentE">
+<span id="_CPPv3N3mge18software_componentE"></span><span id="_CPPv2N3mge18software_componentE"></span><span id="mge::software_component"></span><span class="target" id="classmge_1_1software__component"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">software_component</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge18software_component3mgeEv" title="mge::software_component::mge"><span class="n"><span class="pre">mge</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge18software_componentE" title="mge::software_component"><span class="n"><span class="pre">software_component</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge18software_componentE" title="Link to this definition"></a><br /></dt>
+<dd><p>Software component interface. </p>
+<p>This interface is used to identify a software component. It provides the version and build information of the component. </p>
+<p>Subclassed by mge::mge_software_component</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge18software_component4nameEv">
+<span id="_CPPv3NK3mge18software_component4nameEv"></span><span id="_CPPv2NK3mge18software_component4nameEv"></span><span id="mge::software_component::nameC"></span><span class="target" id="classmge_1_1software__component_1ac7dec69c598743aacd0dc7a2c333cd62"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge18software_component4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the name of the software component. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of the software component </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge18software_component7versionEv">
+<span id="_CPPv3NK3mge18software_component7versionEv"></span><span id="_CPPv2NK3mge18software_component7versionEv"></span><span id="mge::software_component::versionC"></span><span class="target" id="classmge_1_1software__component_1a5c165160ae9d7f62e720cee78a0592f4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge18software_component7versionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the version of the software component. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>version of the software component </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge18software_component5buildEv">
+<span id="_CPPv3NK3mge18software_component5buildEv"></span><span id="_CPPv2NK3mge18software_component5buildEv"></span><span id="mge::software_component::buildC"></span><span class="target" id="classmge_1_1software__component_1abe45acbf7b8e77b2cee72d7f34e5cbf8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge18software_component5buildEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the build information of the software component. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>build information of the software component, like git hash </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge18software_component3mgeEv">
+<span id="_CPPv3N3mge18software_component3mgeEv"></span><span id="_CPPv2N3mge18software_component3mgeEv"></span><span id="mge::software_component::mge"></span><span class="target" id="classmge_1_1software__component_1a6b8f0d22f5a6bdfbf54363b248c7e515"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">software_component_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mge</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge18software_component3mgeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a reference to the software component of the mge itself. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>mge software component </p>
 </dd>
 </dl>
 </dd></dl>
