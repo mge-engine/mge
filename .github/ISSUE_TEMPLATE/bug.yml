@@ -1,5 +1,5 @@
-name: 🐞 Bug
-description: Report a bug or unexpected behavior
+name: "🐞 Bug"
+description: "Report a bug or unexpected behavior"
 title: "[BUG]"
 labels: bug
 body:
