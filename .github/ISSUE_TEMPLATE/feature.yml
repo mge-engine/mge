@@ -1,5 +1,5 @@
-name: 🚀 Feature
-description: Request a new feature or enhancement
+name: "🚀 Feature"
+description: "Request a new feature or enhancement"
 title: "[FEATURE]"
 labels: feature
 body:
@@ -9,5 +9,5 @@ body:
       label: Description
       description: Describe your feature in detail
       placeholder: A description of the feature or enhancement you would like to see.
-      validations:
+    validations:
         required: true
