@@ -17,7 +17,7 @@ body:
       label: Steps to Reproduce
       description: Steps to reproduce the behavior.
       placeholder: A clear and concise description of the steps to reproduce the bug.
-- type: textarea
+  - type: textarea
     id: traces
     attributes:
       label: Relevant trace output
