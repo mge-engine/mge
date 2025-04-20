@@ -8,30 +8,39 @@
  * @brief Version definitions
  */
 
+// clang-format off
+
 /**
  * @brief MGE major version.
  */
-#define MGE_VERSION_MAJOR @MGE_VERSION_MAJOR @
+#define MGE_VERSION_MAJOR @MGE_VERSION_MAJOR@
 
 /**
  * @brief MGE minor version
  */
-#define MGE_VERSION_MINOR @MGE_VERSION_MINOR @
+#define MGE_VERSION_MINOR @MGE_VERSION_MINOR@
 
 /**
  * @brief MGE patch level.
  */
-#define MGE_PATCHLEVEL @MGE_PATCHLEVEL @
+#define MGE_PATCHLEVEL @MGE_PATCHLEVEL@
 
 /**
  * @brief Build number.
  */
-#define MGE_BUILD_NUMBER "@MGE_BUILD_NUMBER@"
+#define MGE_BUILD "@MGE_BUILD@"
+
+/**
+ * @brief Whether the build is clean (has no local changes) or not.
+ */
+#define MGE_CLEAN_BUILD @MGE_CLEAN_BUILD@
 
 /**
  * @brief Complete MGE version, in the form
- * "<major>.<minor>.<patchlevel>-<build-number>".
+ * "<major>.<minor>.<patchlevel>-<build>".
  */
-#define MGE_VERSION_STRING                                                     \
-    "@MGE_VERSION_MAJOR@.@MGE_VERSION_MINOR@.@MGE_PATCHLEVEL@"                 \
-    "-@MGE_BUILD_NUMBER@"
+#define MGE_VERSION_STRING                                     \
+    "@MGE_VERSION_MAJOR@.@MGE_VERSION_MINOR@.@MGE_PATCHLEVEL@" \
+    "-@MGE_BUILD@"
+
+// clang-format on

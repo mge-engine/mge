@@ -1,8 +1,11 @@
-*****************
-Versions
-*****************
+******************************
+Version and Component Tracking
+******************************
 
-A few utilities are defined to handle versions, and comparisons on versions.
+These tools provide utilities for semantic versioning and component tracking. 
+They help developers manage version information and track components throughout
+the application lifecycle.
+
 
 Semantic Version
 ================
@@ -11,3 +14,8 @@ Semantic Version
     :members:
 
 
+Software Component
+===================
+
+.. doxygenclass:: mge::software_component
+    :members:
