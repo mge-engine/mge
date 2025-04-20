@@ -1,0 +1,13 @@
+name: "🚀 Feature"
+description: "Request a new feature or enhancement"
+title: "[FEATURE]"
+labels: feature
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe your feature in detail
+      placeholder: A description of the feature or enhancement you would like to see.
+    validations:
+        required: true

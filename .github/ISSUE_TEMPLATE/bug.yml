@@ -1,0 +1,25 @@
+name: "🐞 Bug"
+description: "Report a bug or unexpected behavior"
+title: "[BUG]"
+labels: bug
+body:
+  - type: textarea
+    id: symptom
+    attributes:
+      label: Symptom
+      description: Describe the symptom you experience
+      placeholder: A description of the symptom or unexpected behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: A clear and concise description of the steps to reproduce the bug.
+  - type: textarea
+    id: traces
+    attributes:
+      label: Relevant trace output
+      description: Paste any relevant trace output here.
+      render: shell
