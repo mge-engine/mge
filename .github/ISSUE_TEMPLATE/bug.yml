@@ -9,8 +9,8 @@ body:
       label: Symptom
       description: Describe the symptom you experience
       placeholder: A description of the symptom or unexpected behavior.
-      validation:
-        required: true
+    validations:
+      required: true
   - type: textarea
     id: steps-to-reproduce
     attributes:
