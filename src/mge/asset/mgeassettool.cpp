@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/configuration.hpp"
+#include "mge/core/software_component.hpp"
 #include "mge/core/trace.hpp"
 
 #include <boost/program_options.hpp>
@@ -42,7 +43,9 @@ int main(int argc, const char** argv)
             po::collect_unrecognized(parsed.options, po::include_positional);
 
         if (vm.count("version")) {
-            std::cout << "mgeassettool version <<unknown>>" << std::endl;
+            auto mge = mge::software_component::mge();
+            std::cout << "mgeassettool version " << mge->version() << " build "
+                      << mge->build() << std::endl;
             return 0;
         } else if (vm.count("help") || argc == 1 || remaining.empty()) {
             std::cout << "usage: mgeassettool [options] [<command> [command "
