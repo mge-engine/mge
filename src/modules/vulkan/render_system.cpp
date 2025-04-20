@@ -11,6 +11,7 @@
 #include "mge/core/executable_name.hpp"
 #include "mge/core/iterator_index.hpp"
 #include "mge/core/parameter.hpp"
+#include "mge/core/software_component.hpp"
 #include "mge/core/trace.hpp"
 
 #ifdef MGE_OS_WINDOWS
@@ -220,8 +221,11 @@ namespace mge::vulkan {
         // TODO: manage application version
         // app_info.applicationVersion = ...
         application_info.pEngineName = "mge";
-        // TODO: manage engine (library version)
-        // app_info.engineVersion = ...
+        const auto mge = mge::software_component::mge();
+        application_info.engineVersion =
+            VK_MAKE_VERSION(mge->version().major(),
+                            mge->version().minor(),
+                            mge->version().patch());
         application_info.apiVersion = VK_API_VERSION_1_3;
 
         // TODO: manage instance layers and extensions externally
