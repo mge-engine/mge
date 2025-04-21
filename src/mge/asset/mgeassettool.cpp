@@ -16,6 +16,27 @@ namespace mge {
 
 using namespace mge;
 
+MGE_DECLARE_REF(tool_command);
+
+class tool_command
+{
+public:
+    tool_command(bool verbose)
+        : m_verbose(verbose)
+    {}
+
+    static tool_command_ref create(const std::string& command, bool verbose);
+
+protected:
+    bool m_verbose;
+};
+
+tool_command_ref tool_command::create(const std::string& command, bool verbose)
+{
+    tool_command_ref cmd;
+    return cmd;
+}
+
 int main(int argc, const char** argv)
 {
     bool is_verbose = false;
@@ -67,6 +88,14 @@ int main(int argc, const char** argv)
             MGE_INFO_TRACE(ASSSETTOOL)
                 << "Verbose output enabled, all trace will be printed to "
                    "stdout";
+        }
+
+        auto command = tool_command::create(remaining[0], is_verbose);
+        if (!command) {
+            std::cerr << "mgeassettool: '" << remaining[0]
+                      << "' is not a valid command. See 'mgeassettool --help'."
+                      << std::endl;
+            return 1;
         }
 
         return 0;
