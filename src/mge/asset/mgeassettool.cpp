@@ -2,9 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/configuration.hpp"
+#include "mge/core/module.hpp"
 #include "mge/core/software_component.hpp"
 #include "mge/core/trace.hpp"
-
 #include <boost/program_options.hpp>
 #include <iostream>
 
@@ -41,10 +41,6 @@ int main(int argc, const char** argv)
 {
     bool is_verbose = false;
     try {
-        if (!mge::configuration::loaded()) {
-            mge::configuration::load();
-        }
-
         po::options_description generic("Generic options");
         generic.add_options()("help,h", "Show help message")(
             "version,v",
@@ -85,9 +81,18 @@ int main(int argc, const char** argv)
             auto& enable_print_to_stdout_parameter =
                 mge::configuration::find_parameter("trace", "print_to_stdout");
             enable_print_to_stdout_parameter.set_value(true);
+            if (!mge::configuration::loaded()) {
+                mge::configuration::load();
+            }
             MGE_INFO_TRACE(ASSSETTOOL)
                 << "Verbose output enabled, all trace will be printed to "
                    "stdout";
+            module::load_all();
+        } else {
+            if (!mge::configuration::loaded()) {
+                mge::configuration::load();
+            }
+            module::load_all();
         }
 
         auto command = tool_command::create(remaining[0], is_verbose);
