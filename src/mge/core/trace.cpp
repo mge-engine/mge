@@ -40,9 +40,6 @@ namespace mge {
     void trace::flush()
     {
         trace_record r;
-
-        std::string msg = m_stream->str();
-
         r.level = m_entry->level;
         r.sequence = m_entry->sequence;
         r.time = m_entry->time;
@@ -51,7 +48,7 @@ namespace mge {
         r.file = m_entry->file;
         r.line = m_entry->line;
         r.function = m_entry->function;
-        r.message = std::string_view(msg.begin(), msg.end());
+        r.message = m_stream->view();
         m_topic.publish(r);
     }
 

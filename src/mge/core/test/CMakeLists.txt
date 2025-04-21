@@ -45,7 +45,8 @@ SET(MGECORE_TEST_SOURCES
 )
 
 SET(MGECORE_BENCH_SOURCES
-    bench_memory.cpp)
+    bench_memory.cpp
+    bench_trace.cpp)
 
 MGE_TEST(
     TARGET      test_core
