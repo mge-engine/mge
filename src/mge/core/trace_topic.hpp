@@ -176,7 +176,10 @@ namespace mge {
 #define MGE_NS_TRACE_TOPIC(NS, TOPIC) NS::__trace_topic_##TOPIC()
 
 /**
- *
+ * @def MGE_USING_NS_TRACE_TOPIC
+ * @brief Use a trace topic defined in another namespace.
+ * @param NS namespace
+ * @param TOPIC name of trace topic
  */
 #define MGE_USING_NS_TRACE_TOPIC(NS, TOPIC) using NS::__trace_topic_##TOPIC
 

@@ -63,7 +63,8 @@ Defining a Trace Topic
 ----------------------
 
 In a source file, a trace topic must be defined. This is best done using
-the predefined macro :any:`MGE_DEFINE_TRACE`.
+the predefined macro :any:`MGE_DEFINE_TRACE`. This macro can be used within 
+a namespace. 
 
 .. doxygendefine:: MGE_DEFINE_TRACE
 
@@ -72,11 +73,17 @@ Using a Trace Topic
 
 If you just want to use a trace topic for tracing, a forward declaration
 must be done. This is done using :any:`MGE_USE_TRACE`, or :any:`MGE_USE_IMPORTED_TRACE`
-in case the topic is defined in another dynamic library.
+in case the topic is defined in another dynamic library. These macros need to be
+used in the same namespace as the trace topic was defined.
 
 .. doxygendefine:: MGE_USE_TRACE
 
 .. doxygendefine:: MGE_USE_IMPORTED_TRACE
+
+To use a trace topic in a different namespace, the following macro can be used 
+to have a ``using`` declaration for the trace topic.
+
+.. doxygendefine:: MGE_USING_NS_TRACE_TOPIC(NS, TOPIC)
 
 If you need to inspect a trace topic directly, the following macros can be used:
 
