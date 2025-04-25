@@ -11,31 +11,10 @@
 namespace po = boost::program_options;
 
 namespace mge {
-    MGE_DEFINE_TRACE(ASSSETTOOL);
+    MGE_DEFINE_TRACE(ASSETTOOL);
 }
 
-using namespace mge;
-
-MGE_DECLARE_REF(tool_command);
-
-class tool_command
-{
-public:
-    tool_command(bool verbose)
-        : m_verbose(verbose)
-    {}
-
-    static tool_command_ref create(const std::string& command, bool verbose);
-
-protected:
-    bool m_verbose;
-};
-
-tool_command_ref tool_command::create(const std::string& command, bool verbose)
-{
-    tool_command_ref cmd;
-    return cmd;
-}
+MGE_USING_NS_TRACE_TOPIC(mge, ASSETTOOL);
 
 int main(int argc, const char** argv)
 {
@@ -57,7 +36,7 @@ int main(int argc, const char** argv)
         po::store(parsed, vm);
         po::notify(vm);
 
-        std::vector<std::string> remaining =
+        std::vector<std::string> command_args =
             po::collect_unrecognized(parsed.options, po::include_positional);
 
         if (vm.count("version")) {
@@ -65,7 +44,7 @@ int main(int argc, const char** argv)
             std::cout << "mgeassettool version " << mge->version() << " build "
                       << mge->build() << std::endl;
             return 0;
-        } else if (vm.count("help") || argc == 1 || remaining.empty()) {
+        } else if (vm.count("help") || argc == 1 || command_args.empty()) {
             std::cout << "usage: mgeassettool [options] [<command> [command "
                          "options] [command arguments]]"
                       << std::endl
@@ -84,23 +63,27 @@ int main(int argc, const char** argv)
             if (!mge::configuration::loaded()) {
                 mge::configuration::load();
             }
-            MGE_INFO_TRACE(ASSSETTOOL)
+            MGE_INFO_TRACE(ASSETTOOL)
                 << "Verbose output enabled, all trace will be printed to "
                    "stdout";
-            module::load_all();
+            mge::module::load_all();
         } else {
             if (!mge::configuration::loaded()) {
                 mge::configuration::load();
             }
-            module::load_all();
+            mge::module::load_all();
         }
 
-        auto command = tool_command::create(remaining[0], is_verbose);
-        if (!command) {
-            std::cerr << "mgeassettool: '" << remaining[0]
+        std::string command = command_args[0];
+        command_args.erase(command_args.begin());
+        if (!command.empty()) {
+            std::cerr << "mgeassettool: '" << command
                       << "' is not a valid command. See 'mgeassettool --help'."
                       << std::endl;
             return 1;
+        }
+        if (is_verbose) {
+            MGE_DEBUG_TRACE(ASSETTOOL) << "Command: " << command;
         }
 
         return 0;
@@ -108,21 +91,21 @@ int main(int argc, const char** argv)
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSSETTOOL) << "Error: " << ex;
+            MGE_ERROR_TRACE(ASSETTOOL) << "Error: " << ex;
         }
         return 1;
     } catch (const std::exception& ex) {
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSSETTOOL) << "Error: " << ex.what();
+            MGE_ERROR_TRACE(ASSETTOOL) << "Error: " << ex.what();
         }
         return 1;
     } catch (...) {
         if (!is_verbose) {
             std::cerr << "Unknown error" << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSSETTOOL) << "Unknown error";
+            MGE_ERROR_TRACE(ASSETTOOL) << "Unknown error";
         }
         return 1;
     }

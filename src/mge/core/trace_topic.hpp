@@ -175,4 +175,9 @@ namespace mge {
  */
 #define MGE_NS_TRACE_TOPIC(NS, TOPIC) NS::__trace_topic_##TOPIC()
 
+/**
+ *
+ */
+#define MGE_USING_NS_TRACE_TOPIC(NS, TOPIC) using NS::__trace_topic_##TOPIC
+
 } // namespace mge
