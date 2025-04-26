@@ -11,3 +11,28 @@ TEST(program_options, empty)
     program_options po;
     EXPECT_EQ(0, po.size());
 }
+
+TEST(program_options, add_option)
+{
+    program_options po;
+    po.option("test", "test option");
+    EXPECT_EQ(1, po.size());
+}
+
+TEST(program_options, add_2_options)
+{
+    program_options po;
+    po.option("t,test", "test option").option("v,verbose", "verbose option");
+    EXPECT_EQ(2, po.size());
+}
+
+TEST(program_options, option_output)
+{
+    program_options po;
+    po.option("t,test", "test option").option("v,verbose", "verbose option");
+    std::stringstream ss;
+    ss << po;
+    EXPECT_STREQ("  -t [ --test ]     test option\n"
+                 "  -v [ --verbose ]  verbose option\n",
+                 ss.str().c_str());
+}

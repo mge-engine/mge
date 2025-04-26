@@ -6,6 +6,7 @@
 
 #include <any>
 #include <functional>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -56,6 +57,8 @@ namespace mge {
             return m_options.size();
         }
 
+        void print(std::ostream& os) const;
+
     private:
         struct option_description
         {
@@ -66,5 +69,11 @@ namespace mge {
 
         std::vector<option_description> m_options;
     };
+
+    inline std::ostream& operator<<(std::ostream& os, const program_options& po)
+    {
+        po.print(os);
+        return os;
+    }
 
 } // namespace mge
