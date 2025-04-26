@@ -48,9 +48,14 @@ class info_command : public command
 public:
     info_command()
     {
+        // clang-format off
         m_name = "info";
         m_description = "Show information about the asset";
-        m_options.add_options()("help,h", "Show help message");
+        m_options.add_options()
+            ("help,h", "Show help message")
+            ("mount-point,m", po::value<std::vector<std::string>>()->composing(),  "mount asset collections, can be used multople times")
+            ("asset", po::value<std::vector<std::string>>(), "asset to show information about");
+        // clang-format on
     }
     virtual ~info_command() = default;
 
