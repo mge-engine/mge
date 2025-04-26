@@ -10,7 +10,7 @@ Usage
 
 .. code-block:: bash
 
-    mgeassettool [OPTIONS] COMMAND [COMMAND OPTIONS] [ARGS]
+    mgeassettool [options] [<command> [command options] [command arguments]]
 
 
 Common Options
@@ -21,6 +21,9 @@ Common Options
 
 ``-v, --version``
     Show version information and exit.
+
+``-V, --verbose``
+    Enable verbose output.
 
 Commands
 ========
@@ -40,7 +43,7 @@ Commands
             Show help message and exit.
 
         ``-m mount-point=expression``
-            Configure a mount point with an expression.
+            Configure a mount point with an expression. This option can be used multiple times to configure multiple mount points.
 
         ``asset-path``
             The path to the asset to show information about. 
