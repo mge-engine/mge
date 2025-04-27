@@ -48,6 +48,11 @@ namespace mge {
                 return m_positional_options[name];
             }
 
+            std::any& option(const std::string& name)
+            {
+                return m_options[name];
+            }
+
         private:
             std::map<std::string, std::any, std::less<>> m_options;
             std::map<std::string, std::any, std::less<>> m_positional_options;

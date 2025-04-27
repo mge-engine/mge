@@ -99,9 +99,47 @@ namespace mge {
         for (int i = 1; i < argc; ++i) {
             std::string arg(argv[i]);
             if (arg.starts_with("--")) {
-                arg = arg.substr(2);
+                auto it =
+                    std::find_if(m_options.begin(),
+                                 m_options.end(),
+                                 [&arg](const option_description& opt) {
+                                     return opt.long_name == arg.substr(2);
+                                 });
+                if (it == m_options.end()) {
+                    MGE_THROW(unknown_option) << "Unknown option: " << arg;
+                }
+                if (it->on_option_found) {
+                    if (i + 1 >= argc) {
+                        MGE_THROW(unknown_option)
+                            << "Missing argument for option: " << arg;
+                    }
+                    auto& value = o.option(it->name());
+                    it->on_option_found(value, argv[++i]);
+                } else {
+                    auto& value = o.option(it->name());
+                    value = true;
+                }
             } else if (arg.starts_with("-")) {
-                arg = arg.substr(1);
+                auto it =
+                    std::find_if(m_options.begin(),
+                                 m_options.end(),
+                                 [&arg](const option_description& opt) {
+                                     return opt.short_name == arg.substr(1);
+                                 });
+                if (it == m_options.end()) {
+                    MGE_THROW(unknown_option) << "Unknown option: " << arg;
+                }
+                if (it->on_option_found) {
+                    if (i + 1 >= argc) {
+                        MGE_THROW(unknown_option)
+                            << "Missing argument for option: " << arg;
+                    }
+                    auto& value = o.option(it->name());
+                    it->on_option_found(value, argv[++i]);
+                } else {
+                    auto& value = o.option(it->name());
+                    value = true;
+                }
             } else {
                 if (current_positional == m_positional_options.end()) {
                     MGE_THROW(unknown_option)
