@@ -43,8 +43,14 @@ namespace mge {
             options& operator=(options&&) = default;
             ~options() = default;
 
+            std::any& positional(const std::string& name)
+            {
+                return m_positional_options[name];
+            }
+
         private:
             std::map<std::string, std::any, std::less<>> m_options;
+            std::map<std::string, std::any, std::less<>> m_positional_options;
         };
 
         template <typename T> struct value
@@ -121,6 +127,7 @@ namespace mge {
             option(name, description);
             auto& opt = m_options.back();
             opt.on_option_found = value.option_found();
+            opt.composing = value.m_composing;
             return *this;
         }
 
@@ -132,6 +139,7 @@ namespace mge {
             option(name, description, m_positional_options);
             auto& opt = m_positional_options.back();
             opt.on_option_found = value.option_found();
+            opt.composing = value.m_composing;
             return *this;
         }
 
@@ -157,6 +165,12 @@ namespace mge {
             std::string           long_name;
             std::string           description;
             option_found_callback on_option_found;
+            bool                  composing{false};
+
+            const std::string& name() const
+            {
+                return long_name.empty() ? short_name : long_name;
+            }
         };
 
         void option(const char*                      name,

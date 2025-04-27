@@ -93,5 +93,30 @@ namespace mge {
 
     void
     program_options::parse(int argc, char* argv[], program_options::options& o)
-    {}
+    {
+        auto current_positional = m_positional_options.begin();
+
+        for (int i = 1; i < argc; ++i) {
+            std::string arg(argv[i]);
+            if (arg.starts_with("--")) {
+                arg = arg.substr(2);
+            } else if (arg.starts_with("-")) {
+                arg = arg.substr(1);
+            } else {
+                if (current_positional == m_positional_options.end()) {
+                    MGE_THROW(unknown_option)
+                        << "Unexpected positional option: " << arg;
+                }
+                auto& opt = *current_positional;
+                auto& value = o.positional(opt.name());
+                if (opt.on_option_found) {
+                    opt.on_option_found(value, arg);
+                }
+                if (!opt.composing) {
+                    ++current_positional;
+                }
+                continue;
+            }
+        }
+    }
 } // namespace mge
