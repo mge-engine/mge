@@ -8,6 +8,8 @@
 
 namespace mge {
 
+    MGE_DEFINE_EXCEPTION_CLASS(unknown_option);
+
     void program_options::option(
         const char*                                       name,
         const char*                                       description,

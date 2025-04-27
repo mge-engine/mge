@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 #include <any>
 #include <functional>
@@ -15,6 +16,11 @@
 #include "boost/boost_lexical_cast.hpp"
 
 namespace mge {
+
+    /**
+     * @brief Exception thrown when an option is specified that is unknown.
+     */
+    MGECORE_DECLARE_EXCEPTION_CLASS(unknown_option);
 
     /**
      * @brief Program options.
@@ -129,6 +135,12 @@ namespace mge {
             return *this;
         }
 
+        program_options& stored_unrecognized()
+        {
+            store_unrecognized = true;
+            return *this;
+        }
+
         size_t size() const noexcept
         {
             return m_options.size();
@@ -153,6 +165,7 @@ namespace mge {
 
         std::vector<option_description> m_options;
         std::vector<option_description> m_positional_options;
+        bool                            store_unrecognized{false};
     };
 
     inline std::ostream& operator<<(std::ostream& os, const program_options& po)
