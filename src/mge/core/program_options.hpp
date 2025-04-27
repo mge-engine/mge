@@ -33,6 +33,9 @@ namespace mge {
         using option_found_callback =
             std::function<void(std::any&, const std::string&)>;
 
+        /**
+         * @brief Storage of option values.
+         */
         class options
         {
         public:
@@ -42,6 +45,65 @@ namespace mge {
             options& operator=(const options&) = default;
             options& operator=(options&&) = default;
             ~options() = default;
+
+            /**
+             * @brief Return true if the option with the given name is present.
+             * @param name option name
+             */
+            bool has_option(const std::string& name) const
+            {
+                return m_options.find(name) != m_options.end() ||
+                       m_positional_options.find(name) !=
+                           m_positional_options.end();
+            }
+
+            /**
+             * @brief Return true if the positional option with the given name
+             * is present.
+             * @param name option name
+             */
+            bool has_positional(const std::string& name) const
+            {
+                return m_positional_options.find(name) !=
+                       m_positional_options.end();
+            }
+
+            /**
+             * @brief Return true if amy unrecognized option is present.
+             */
+            bool has_any_unrecognized() const
+            {
+                return !m_unrecognized_options.empty();
+            }
+
+            /**
+             * @brief Access value of positional option.
+             * @param name option name
+             * @return option value
+             */
+            const std::any& positional(const std::string& name) const
+            {
+                auto it = m_positional_options.find(name);
+                if (it == m_positional_options.end()) {
+                    MGE_THROW(no_such_element)
+                        << "Unknown positional option: " << name;
+                }
+                return it->second;
+            }
+
+            /**
+             * @brief Access value of option.
+             * @param name option name
+             * @return option value
+             */
+            const std::any& option(const std::string& name) const
+            {
+                auto it = m_options.find(name);
+                if (it == m_options.end()) {
+                    MGE_THROW(no_such_element) << "Unknown option: " << name;
+                }
+                return it->second;
+            }
 
             std::any& positional(const std::string& name)
             {
@@ -54,6 +116,15 @@ namespace mge {
             }
 
             std::vector<std::string>& unrecognized()
+            {
+                return m_unrecognized_options;
+            }
+
+            /**
+             * @brief Access unrecognized options.
+             * @return unrecognized options
+             */
+            const std::vector<std::string>& unrecognized() const
             {
                 return m_unrecognized_options;
             }
