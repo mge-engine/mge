@@ -53,9 +53,15 @@ namespace mge {
                 return m_options[name];
             }
 
+            std::vector<std::string>& unrecognized()
+            {
+                return m_unrecognized_options;
+            }
+
         private:
             std::map<std::string, std::any, std::less<>> m_options;
             std::map<std::string, std::any, std::less<>> m_positional_options;
+            std::vector<std::string>                     m_unrecognized_options;
         };
 
         template <typename T> struct value
@@ -159,7 +165,7 @@ namespace mge {
 
         program_options& stored_unrecognized()
         {
-            store_unrecognized = true;
+            m_store_unrecognized = true;
             return *this;
         }
 
@@ -193,7 +199,7 @@ namespace mge {
 
         std::vector<option_description> m_options;
         std::vector<option_description> m_positional_options;
-        bool                            store_unrecognized{false};
+        bool                            m_store_unrecognized{false};
     };
 
     inline std::ostream& operator<<(std::ostream& os, const program_options& po)

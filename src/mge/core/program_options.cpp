@@ -106,7 +106,12 @@ namespace mge {
                                      return opt.long_name == arg.substr(2);
                                  });
                 if (it == m_options.end()) {
-                    MGE_THROW(unknown_option) << "Unknown option: " << arg;
+                    if (m_store_unrecognized) {
+                        o.unrecognized().push_back(arg);
+                        continue;
+                    } else {
+                        MGE_THROW(unknown_option) << "Unknown option: " << arg;
+                    }
                 }
                 if (it->on_option_found) {
                     if (i + 1 >= argc) {
@@ -127,7 +132,12 @@ namespace mge {
                                      return opt.short_name == arg.substr(1);
                                  });
                 if (it == m_options.end()) {
-                    MGE_THROW(unknown_option) << "Unknown option: " << arg;
+                    if (m_store_unrecognized) {
+                        o.unrecognized().push_back(arg);
+                        continue;
+                    } else {
+                        MGE_THROW(unknown_option) << "Unknown option: " << arg;
+                    }
                 }
                 if (it->on_option_found) {
                     if (i + 1 >= argc) {
@@ -142,8 +152,13 @@ namespace mge {
                 }
             } else {
                 if (current_positional == m_positional_options.end()) {
-                    MGE_THROW(unknown_option)
-                        << "Unexpected positional option: " << arg;
+                    if (m_store_unrecognized) {
+                        o.unrecognized().push_back(arg);
+                        continue;
+                    } else {
+                        MGE_THROW(unknown_option)
+                            << "Unexpected positional option: " << arg;
+                    }
                 }
                 auto& opt = *current_positional;
                 auto& value = o.positional(opt.name());
