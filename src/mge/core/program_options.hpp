@@ -78,18 +78,27 @@ namespace mge {
                 if (m_composing) {
                     if constexpr (std::is_same_v<T, bool>) {
                         return [](std::any& v, const std::string&) {
+                            if (!v.has_value()) {
+                                v = std::vector<bool>();
+                            }
                             std::vector<bool>& values =
                                 std::any_cast<std::vector<bool>&>(v);
                             values.push_back(true);
                         };
                     } else if constexpr (std::is_same_v<T, std::string>) {
                         return [](std::any& v, const std::string& s) {
+                            if (!v.has_value()) {
+                                v = std::vector<std::string>();
+                            }
                             std::vector<std::string>& values =
                                 std::any_cast<std::vector<std::string>&>(v);
                             values.push_back(s);
                         };
                     }
                     return [](std::any& v, const std::string& s) {
+                        if (!v.has_value()) {
+                            v = std::vector<T>();
+                        }
                         std::vector<T>& values =
                             std::any_cast<std::vector<T>&>(v);
                         values.push_back(boost::lexical_cast<T>(s));
