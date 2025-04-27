@@ -7,6 +7,7 @@
 #include <any>
 #include <functional>
 #include <iostream>
+#include <map>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -25,6 +26,20 @@ namespace mge {
     public:
         using option_found_callback =
             std::function<void(std::any&, const std::string&)>;
+
+        class options
+        {
+        public:
+            options() = default;
+            options(const options&) = default;
+            options(options&&) = default;
+            options& operator=(const options&) = default;
+            options& operator=(options&&) = default;
+            ~options() = default;
+
+        private:
+            std::map<std::string, std::any, std::less<>> m_options;
+        };
 
         template <typename T> struct value
         {
@@ -85,6 +100,8 @@ namespace mge {
         }
 
         void print(std::ostream& os) const;
+
+        void parse(int argc, char* argv[], program_options::options& o);
 
     private:
         struct option_description

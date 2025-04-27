@@ -86,4 +86,8 @@ namespace mge {
             }
         }
     }
+
+    void
+    program_options::parse(int argc, char* argv[], program_options::options& o)
+    {}
 } // namespace mge
