@@ -4,6 +4,7 @@
 #include "mge/core/program_options.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#include <cstring>
 #include <iomanip>
 
 namespace mge {
