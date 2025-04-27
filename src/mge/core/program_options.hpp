@@ -63,25 +63,49 @@ namespace mge {
                 static_assert(!std::is_same_v<T, std::string_view>,
                               "option_found() is not available for "
                               "std::string_view type.");
-
-                if constexpr (std::is_same_v<T, bool>) {
-                    return nullptr;
-                } else if constexpr (std::is_same_v<T, std::string>) {
-                    return [](std::any& v, const std::string& s) { v = s; };
+                if (m_composing) {
+                    if constexpr (std::is_same_v<T, bool>) {
+                        return [](std::any& v, const std::string&) {
+                            std::vector<bool>& values =
+                                std::any_cast<std::vector<bool>&>(v);
+                            values.push_back(true);
+                        };
+                    } else if constexpr (std::is_same_v<T, std::string>) {
+                        return [](std::any& v, const std::string& s) {
+                            std::vector<std::string>& values =
+                                std::any_cast<std::vector<std::string>&>(v);
+                            values.push_back(s);
+                        };
+                    }
+                    return [](std::any& v, const std::string& s) {
+                        std::vector<T>& values =
+                            std::any_cast<std::vector<T>&>(v);
+                        values.push_back(boost::lexical_cast<T>(s));
+                    };
+                } else {
+                    if constexpr (std::is_same_v<T, bool>) {
+                        return nullptr;
+                    } else if constexpr (std::is_same_v<T, std::string>) {
+                        return [](std::any& v, const std::string& s) { v = s; };
+                    }
+                    return [](std::any& v, const std::string& s) {
+                        v = boost::lexical_cast<T>(s);
+                    };
                 }
-
-                return [](std::any& v, const std::string& s) {
-                    v = boost::lexical_cast<T>(s);
-                };
             }
 
-            bool m_composing = false;
+            bool m_composing{false};
         };
 
         program_options() = default;
         ~program_options() = default;
 
-        program_options& option(const char* name, const char* description);
+        inline program_options& option(const char* name,
+                                       const char* description)
+        {
+            option(name, description, m_options);
+            return *this;
+        }
 
         template <typename T>
         program_options& option(const char*                      name,
@@ -90,6 +114,17 @@ namespace mge {
         {
             option(name, description);
             auto& opt = m_options.back();
+            opt.on_option_found = value.option_found();
+            return *this;
+        }
+
+        template <typename T>
+        program_options& positional(const char* name,
+                                    const char* description,
+                                    const program_options::value<T>& value)
+        {
+            option(name, description, m_positional_options);
+            auto& opt = m_positional_options.back();
             opt.on_option_found = value.option_found();
             return *this;
         }
@@ -112,7 +147,12 @@ namespace mge {
             option_found_callback on_option_found;
         };
 
+        void option(const char*                      name,
+                    const char*                      description,
+                    std::vector<option_description>& options);
+
         std::vector<option_description> m_options;
+        std::vector<option_description> m_positional_options;
     };
 
     inline std::ostream& operator<<(std::ostream& os, const program_options& po)

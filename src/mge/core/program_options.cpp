@@ -8,8 +8,10 @@
 
 namespace mge {
 
-    program_options& program_options::option(const char* name,
-                                             const char* description)
+    void program_options::option(
+        const char*                                       name,
+        const char*                                       description,
+        std::vector<program_options::option_description>& options)
     {
         const char* commapos = strchr(name, ',');
 
@@ -18,9 +20,9 @@ namespace mge {
             if (namelen == 0) {
                 MGE_THROW(illegal_argument) << "Empty option name";
             } else if (namelen == 1) {
-                m_options.emplace_back(name, "", description);
+                options.emplace_back(name, "", description);
             } else {
-                m_options.emplace_back("", name, description);
+                options.emplace_back("", name, description);
             }
         } else {
             std::string name1(name, commapos);
@@ -29,15 +31,15 @@ namespace mge {
                 MGE_THROW(illegal_argument) << "Invalid option name: " << name;
             }
             if (name1.length() == 1 && name2.length() > 1) {
-                m_options.emplace_back(name1, name2, description);
+                options.emplace_back(name1, name2, description);
             } else if (name2.length() == 1 && name1.length() > 1) {
-                m_options.emplace_back(name2, name1, description);
+                options.emplace_back(name2, name1, description);
             } else {
                 MGE_THROW(illegal_argument) << "Invalid option name: " << name;
             }
         }
 
-        return *this;
+        return;
     }
 
     void program_options::print(std::ostream& os) const
