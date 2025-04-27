@@ -45,3 +45,12 @@ TEST(program_options, option_with_arg)
     ss << po;
     EXPECT_STREQ("  --test <arg>  test option\n", ss.str().c_str());
 }
+
+TEST(program_options, positional_option)
+{
+    program_options po;
+    po.positional("file1", "first file", program_options::value<std::string>())
+        .positional("file2",
+                    "second file",
+                    program_options::value<std::string>());
+}
