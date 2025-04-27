@@ -36,3 +36,12 @@ TEST(program_options, option_output)
                  "  -v [ --verbose ]  verbose option\n",
                  ss.str().c_str());
 }
+
+TEST(program_options, option_with_arg)
+{
+    program_options po;
+    po.option("test", "test option", program_options::value<int>());
+    std::stringstream ss;
+    ss << po;
+    EXPECT_STREQ("  --test <arg>  test option\n", ss.str().c_str());
+}

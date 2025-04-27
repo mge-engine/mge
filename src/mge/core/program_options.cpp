@@ -53,24 +53,34 @@ namespace mge {
                 thislen = 2 + 1 + opt.short_name.length() + 5 +
                           opt.long_name.length() + 2;
             }
+            if (opt.on_option_found) {
+                thislen += 6; // "<arg> "
+            }
             len = std::max(len, thislen);
         }
         for (const auto& opt : m_options) {
             if (opt.short_name.length() == 0) {
-                os << "  --" << opt.long_name << std::left
-                   << std::setw(len - (opt.long_name.length() + 4) + 2) << ""
-                   << opt.description << std::endl;
+                os << "  --" << opt.long_name
+                   << (opt.on_option_found ? " <arg>" : "") << std::left
+                   << std::setw(len -
+                                (opt.long_name.length() + 4 +
+                                 (opt.on_option_found ? 6 : 0)) +
+                                2)
+                   << "" << opt.description << std::endl;
             } else if (opt.long_name.length() == 0) {
-                os << "  -" << opt.short_name << std::left
-                   << std::setw(len - (opt.short_name.length() + 3) + 2) << ""
-                   << opt.description << std::endl;
+                os << "  -" << opt.short_name
+                   << (opt.on_option_found ? " <arg>" : "") << std::left
+                   << std::setw(len - (opt.short_name.length() + 3) + 2 +
+                                (opt.on_option_found ? 6 : 0))
+                   << "" << opt.description << std::endl;
 
             } else {
                 os << "  -" << opt.short_name << " [ --" << opt.long_name
-                   << " ]" << std::left
+                   << " ]" << (opt.on_option_found ? " <arg>" : "") << std::left
                    << std::setw(len -
                                 (3 + opt.short_name.length() + 5 +
-                                 opt.long_name.length() + 2) +
+                                 opt.long_name.length() + 2 +
+                                 (opt.on_option_found ? 6 : 0)) +
                                 2)
                    << "" << opt.description << std::endl;
             }
