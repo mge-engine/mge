@@ -139,7 +139,7 @@ namespace mge {
         {
             using type = T;
 
-            value() {}
+            value() = default;
 
             value<T>& composing()
             {
