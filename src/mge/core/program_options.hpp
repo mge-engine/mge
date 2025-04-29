@@ -247,7 +247,7 @@ namespace mge {
 
         void print(std::ostream& os) const;
 
-        void parse(int argc, char* argv[], program_options::options& o);
+        void parse(int argc, const char** argv, program_options::options& o);
 
     private:
         struct option_description

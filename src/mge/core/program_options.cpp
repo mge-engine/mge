@@ -92,8 +92,9 @@ namespace mge {
         }
     }
 
-    void
-    program_options::parse(int argc, char* argv[], program_options::options& o)
+    void program_options::parse(int                       argc,
+                                const char**              argv,
+                                program_options::options& o)
     {
         auto current_positional = m_positional_options.begin();
 
