@@ -42,6 +42,7 @@ SET(MGECORE_TEST_SOURCES
     test_memory_resource.cpp
     test_closure.cpp
     test_software_component.cpp
+    test_program_options.cpp
 )
 
 SET(MGECORE_BENCH_SOURCES

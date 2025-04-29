@@ -42,6 +42,7 @@ SET(mgecore_sources
     memory_resource.cpp
     closure.cpp
     software_component.cpp
+    program_options.cpp
 )
 
 SET(mgecore_headers
@@ -99,6 +100,7 @@ SET(mgecore_headers
     memory_resource.hpp
     closure.hpp
     software_component.hpp
+    program_options.hpp
 )
 
 MGE_LIBRARY(
