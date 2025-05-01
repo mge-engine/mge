@@ -9,7 +9,6 @@
     "boost-spirit",
     "boost-locale",
     "boost-bimap",
-    "boost-program-options",
     "glm",
     {
       "name": "python3",

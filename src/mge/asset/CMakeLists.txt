@@ -48,9 +48,6 @@ TARGET_LINK_LIBRARIES(mgeassettool
     mgeasset 
     mgecore 
     mgegraphics
-
-    boost-all
-    Boost::program_options
 )
 
 

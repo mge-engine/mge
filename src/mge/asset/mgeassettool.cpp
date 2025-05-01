@@ -3,12 +3,10 @@
 // All rights reserved.
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
+#include "mge/core/program_options.hpp"
 #include "mge/core/software_component.hpp"
 #include "mge/core/trace.hpp"
-#include <boost/program_options.hpp>
 #include <iostream>
-
-namespace po = boost::program_options;
 
 namespace mge {
     MGE_DEFINE_TRACE(ASSETTOOL);
@@ -22,25 +20,27 @@ public:
     command() = default;
     virtual ~command() = default;
 
-    virtual int execute(const po::variables_map& vm) = 0;
+    virtual int execute(const mge::program_options::options& opts) = 0;
 
     const std::string& name() const
     {
         return m_name;
     }
+
     const std::string& description() const
     {
         return m_description;
     }
-    const po::options_description& options() const
+
+    const mge::program_options& options() const
     {
         return m_options;
     }
 
 protected:
-    std::string             m_name;
-    std::string             m_description;
-    po::options_description m_options;
+    std::string          m_name;
+    std::string          m_description;
+    mge::program_options m_options;
 };
 
 class info_command : public command
@@ -48,20 +48,21 @@ class info_command : public command
 public:
     info_command()
     {
-        // clang-format off
         m_name = "info";
         m_description = "Show information about the asset";
-        m_options.add_options()
-            ("help,h", "Show help message")
-            ("mount-point,m", po::value<std::vector<std::string>>()->composing(),  "mount asset collections, can be used multople times")
-            ("asset", po::value<std::vector<std::string>>(), "asset to show information about");
-        // clang-format on
+        m_options.option("h,help", "Show help message")
+            .option("m,mount-point",
+                    "Mount asset collections, can be used multiple times",
+                    mge::program_options::value<std::string>().composing())
+            .positional("asset",
+                        "asset to show information about",
+                        mge::program_options::value<std::string>().composing());
     }
     virtual ~info_command() = default;
 
-    int execute(const po::variables_map& vm) override
+    int execute(const mge::program_options::options& opts) override
     {
-        if (vm.count("help")) {
+        if (opts.has_option("help")) {
             std::cout << "usage: mgeassettool info [options] <asset>"
                       << std::endl
                       << std::endl;
@@ -79,39 +80,41 @@ int main(int argc, const char** argv)
 {
     bool is_verbose = false;
     try {
-        po::options_description generic("Generic options");
-        generic.add_options()("help,h", "Show help message")(
-            "version,v",
-            "Show version information")("verbose,V", "Enable verbose output");
+        mge::program_options generic;
+        generic.option("h,help", "Show help message")
+            .option("v,version", "Show version information")
+            .option("V,verbose", "Enable verbose output");
 
-        std::vector<std::string> command_args;
-        std::vector<std::string> args;
-        std::string              command_name;
-        bool                     found_command = false;
+        mge::program_options::options generic_options;
+        std::vector<std::string>      generic_args;
+        std::string                   command_name;
+        std::vector<std::string>      command_args;
         for (int i = 1; i < argc; ++i) {
-            std::string arg(argv[i]);
-            if (found_command) {
-                command_args.push_back(arg);
-            } else if (!arg.empty() && arg[0] == '-') {
-                args.push_back(arg);
+            if (command_name.empty()) {
+                if (std::find_if(
+                        commands.begin(),
+                        commands.end(),
+                        [&argv, i](const std::shared_ptr<command>& cmd) {
+                            return cmd->name() == argv[i];
+                        }) != commands.end()) {
+                    command_name = argv[i];
+                } else {
+                    generic_args.push_back(argv[i]);
+                }
             } else {
-                found_command = true;
-                command_name = arg;
+                command_args.push_back(argv[i]);
             }
         }
 
-        po::variables_map  vm;
-        po::parsed_options parsed =
-            po::command_line_parser(args).options(generic).run();
-        po::store(parsed, vm);
-        po::notify(vm);
+        generic.parse(generic_args, generic_options);
 
-        if (vm.count("version")) {
+        if (generic_options.has_option("version")) {
             auto mge = mge::software_component::mge();
             std::cout << "mgeassettool version " << mge->version() << " build "
                       << mge->build() << std::endl;
             return 0;
-        } else if (vm.count("help") || argc == 1 || command_args.empty()) {
+        } else if (generic_options.has_option("help") || argc == 1 ||
+                   command_args.empty()) {
             std::cout << "usage: mgeassettool [options] [<command> [command "
                          "options] [command arguments]]"
                       << std::endl
@@ -124,7 +127,7 @@ int main(int argc, const char** argv)
             }
             return 0;
         }
-        if (vm.count("verbose")) {
+        if (generic_options.has_option("verbose")) {
             is_verbose = true;
             auto& enable_trace_parameter =
                 mge::configuration::find_parameter("trace", "globally_enabled");
@@ -164,16 +167,11 @@ int main(int argc, const char** argv)
         if (is_verbose) {
             MGE_DEBUG_TRACE(ASSETTOOL) << "Command: " << cmd->name();
         }
+        mge::program_options::options command_options;
+        const mge::program_options& command_option_description = cmd->options();
+        command_option_description.parse(command_args, command_options);
+        return cmd->execute(command_options);
 
-        {
-            po::options_description options = cmd->options();
-            po::variables_map       vm_command;
-            po::store(
-                po::command_line_parser(command_args).options(options).run(),
-                vm_command);
-            po::notify(vm_command);
-            return cmd->execute(vm_command);
-        }
     } catch (const mge::exception& ex) {
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
