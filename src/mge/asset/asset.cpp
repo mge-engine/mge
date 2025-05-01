@@ -246,7 +246,7 @@ namespace mge {
     void loader_table::instantiate_loaders()
     {
         asset_loader::implementations([&](std::string_view name) {
-            MGE_DEBUG_TRACE(ASSET) << "Inistantiating asset loader: " << name;
+            MGE_DEBUG_TRACE(ASSET) << "Instantiating asset loader: " << name;
             asset_loader_ref loader = asset_loader::create(name);
             add_loader(loader);
             m_loader_names.insert(std::string(name));
