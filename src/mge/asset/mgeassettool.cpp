@@ -1,9 +1,11 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/asset/asset.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
 #include "mge/core/program_options.hpp"
+#include "mge/core/properties.hpp"
 #include "mge/core/software_component.hpp"
 #include "mge/core/trace.hpp"
 #include <iostream>
@@ -54,7 +56,7 @@ public:
             .option("m,mount-point",
                     "Mount asset collections, can be used multiple times",
                     mge::program_options::value<std::string>().composing())
-            .option("-r", "Mount current directory as root of asset collection")
+            .option("r", "Mount current directory as root of asset collection")
             .positional("asset",
                         "asset to show information about",
                         mge::program_options::value<std::string>().composing());
@@ -63,12 +65,19 @@ public:
 
     int execute(const mge::program_options::options& opts) override
     {
-        if (opts.has_option("help")) {
+        if (opts.has_option("help") || !opts.has_positional("asset")) {
             std::cout << "usage: mgeassettool info [options] <asset>"
                       << std::endl
                       << std::endl;
             std::cout << m_options << std::endl;
             return 0;
+        }
+
+        if (opts.has_option("r")) {
+            MGE_DEBUG_TRACE(ASSETTOOL) << "Mounting current directory as root";
+            mge::properties p;
+            p.set("directory", ".");
+            mge::asset::mount("/", "file", p);
         }
 
         if (opts.has_option("mount-point")) {
@@ -78,6 +87,25 @@ public:
             for (const auto& mount_point : mount_points) {
                 MGE_DEBUG_TRACE(ASSETTOOL)
                     << "Processing mount point: " << mount_point;
+            }
+        }
+
+        const auto& asset_name = std::any_cast<const std::vector<std::string>&>(
+            opts.positional("asset"));
+        for (const auto& name : asset_name) {
+            try {
+                MGE_DEBUG_TRACE(ASSETTOOL) << "Processing asset: " << name;
+                mge::asset_ref asset = std::make_shared<mge::asset>(name);
+
+                if (asset) {
+                    std::cout << "Asset: " << name << std::endl;
+                    std::cout << "  Type: " << asset->type() << std::endl;
+                    std::cout << "  Size: " << asset->size() << std::endl;
+                }
+
+            } catch (const mge::exception& ex) {
+                MGE_ERROR_TRACE(ASSETTOOL)
+                    << "Error loading asset '" << name << "': " << ex.what();
             }
         }
 

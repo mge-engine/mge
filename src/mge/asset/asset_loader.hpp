@@ -43,6 +43,32 @@ namespace mge {
          */
         virtual std::span<asset_type> handled_types() const = 0;
 
+        /**
+         * @brief Return whether this loader can improve the asset type.
+         *
+         * @param asset asset to be checked, type stored in asset is unreliable
+         * @param type prelimary type of the asset, usually a common type
+         *
+         * @return @c true if this loader can improve the asset type, @c false
+         * otherwise
+         */
+        virtual bool can_improve(const asset&      asset,
+                                 const asset_type& type) const;
+
+        /**
+         * @brief Improve the asset type.
+         *
+         * This can be called if @c can_improve returns @c true.
+         *
+         * @param asset asset to be checked, type stored in asset is unreliable
+         * @param type prelimary type of the asset, usually a common type
+         *
+         * @return improved asset type, or @c asset_type::UNKNOWN if no
+         * improvement
+         */
+        virtual asset_type improve(const asset&      asset,
+                                   const asset_type& type) const;
+
         using component<asset_loader>::create;
         using component<asset_loader>::implementations;
     };

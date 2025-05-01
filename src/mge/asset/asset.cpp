@@ -12,6 +12,7 @@
 #include "mge/core/trace.hpp"
 
 #include <map>
+#include <set>
 #include <string>
 
 #include <magic.h>
@@ -185,7 +186,10 @@ namespace mge {
     class loader_table
     {
     public:
-        loader_table() { instantiate_loaders(); }
+        loader_table()
+        {
+            instantiate_loaders();
+        }
         ~loader_table() = default;
 
         asset_loader_ref resolve(const asset_type& t) const
@@ -198,9 +202,23 @@ namespace mge {
             }
         }
 
+        asset_type improve_type(const asset& a, const asset_type& type) const
+        {
+            for (const auto& l : m_all_loaders) {
+                if (l->can_improve(a, type)) {
+                    auto t = l->improve(a, type);
+                    if (t != asset_type::UNKNOWN) {
+                        return t;
+                    }
+                }
+            }
+            return type;
+        }
+
         void add_loader(const asset_loader_ref& loader)
         {
             if (loader) {
+                m_all_loaders.insert(loader);
                 for (const auto& t : loader->handled_types()) {
                     m_loaders[t] = loader;
                 }
@@ -210,6 +228,7 @@ namespace mge {
     private:
         void instantiate_loaders();
 
+        std::set<asset_loader_ref>             m_all_loaders;
         std::map<asset_type, asset_loader_ref> m_loaders;
     };
 
@@ -223,7 +242,10 @@ namespace mge {
 
     static ::mge::singleton<loader_table> loaders;
 
-    bool asset::exists() const { return m_access || resolve(); }
+    bool asset::exists() const
+    {
+        return m_access || resolve();
+    }
 
     bool asset::exists(const mge::path& p)
     {
@@ -275,6 +297,13 @@ namespace mge {
         if (m_type.value() == asset_type::UNKNOWN) {
             m_type = magic();
         }
+
+        // somewhat hacky: try to specifialize the type
+        // based on the file extension
+        if (m_type.value() == asset_type::UNKNOWN ||
+            m_type.value() == asset_type("text", "plain")) {
+        }
+
         return m_type.value();
     }
 
@@ -364,6 +393,9 @@ namespace mge {
         mtab->mount(mount_point, type, options);
     }
 
-    void asset::umount(const mge::path& path) { mtab->umount(path); }
+    void asset::umount(const mge::path& path)
+    {
+        mtab->umount(path);
+    }
 
 } // namespace mge

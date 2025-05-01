@@ -24,6 +24,27 @@ namespace mge {
         std::any load(const mge::asset& a) override;
 
         std::span<mge::asset_type> handled_types() const override;
+
+        bool can_improve(const mge::asset&      asset,
+                         const mge::asset_type& type) const override
+        {
+            if (type == mge::asset_type("text", "plain")) {
+                return true;
+            }
+            return false;
+        }
+
+        mge::asset_type improve(const mge::asset&      asset,
+                                const mge::asset_type& type) const override
+        {
+            if (type == mge::asset_type("text", "plain")) {
+                if (asset.path().extension() == ".obj") {
+                    return mge::asset_type("model", "obj");
+                }
+            }
+
+            return asset_type::UNKNOWN;
+        }
     };
 
     std::any assimp_loader::load(const mge::asset& a)
