@@ -54,6 +54,7 @@ public:
             .option("m,mount-point",
                     "Mount asset collections, can be used multiple times",
                     mge::program_options::value<std::string>().composing())
+            .option("-r", "Mount current directory as root of asset collection")
             .positional("asset",
                         "asset to show information about",
                         mge::program_options::value<std::string>().composing());
@@ -69,7 +70,18 @@ public:
             std::cout << m_options << std::endl;
             return 0;
         }
-        return 1;
+
+        if (opts.has_option("mount-point")) {
+            const auto& mount_points =
+                std::any_cast<const std::vector<std::string>&>(
+                    opts.option("mount-point"));
+            for (const auto& mount_point : mount_points) {
+                MGE_DEBUG_TRACE(ASSETTOOL)
+                    << "Processing mount point: " << mount_point;
+            }
+        }
+
+        return 0;
     }
 };
 
