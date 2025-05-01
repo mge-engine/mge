@@ -196,6 +196,10 @@ namespace mge {
         {
             auto it = m_loaders.find(t);
             if (it == m_loaders.end()) {
+                refresh_loaders();
+                it = m_loaders.find(t);
+            }
+            if (it == m_loaders.end()) {
                 return asset_loader_ref();
             } else {
                 return it->second;
@@ -212,14 +216,19 @@ namespace mge {
                     }
                 }
             }
+            if (refresh_loaders()) {
+                return improve_type(a, type);
+            }
             return type;
         }
 
-        void add_loader(const asset_loader_ref& loader)
+        void add_loader(const asset_loader_ref& loader) const
         {
             if (loader) {
                 m_all_loaders.insert(loader);
                 for (const auto& t : loader->handled_types()) {
+                    MGE_DEBUG_TRACE(ASSET)
+                        << "Adding loader for asset type: " << t;
                     m_loaders[t] = loader;
                 }
             }
@@ -227,17 +236,38 @@ namespace mge {
 
     private:
         void instantiate_loaders();
+        bool refresh_loaders() const;
 
-        std::set<asset_loader_ref>             m_all_loaders;
-        std::map<asset_type, asset_loader_ref> m_loaders;
+        mutable std::set<std::string, std::less<>>     m_loader_names;
+        mutable std::set<asset_loader_ref>             m_all_loaders;
+        mutable std::map<asset_type, asset_loader_ref> m_loaders;
     };
 
     void loader_table::instantiate_loaders()
     {
         asset_loader::implementations([&](std::string_view name) {
+            MGE_DEBUG_TRACE(ASSET) << "Inistantiating asset loader: " << name;
             asset_loader_ref loader = asset_loader::create(name);
             add_loader(loader);
+            m_loader_names.insert(std::string(name));
         });
+    }
+
+    bool loader_table::refresh_loaders() const
+    {
+        bool loader_changed = false;
+        asset_loader::implementations([&](std::string_view name) {
+            auto it = m_loader_names.find(name);
+            if (it == m_loader_names.end()) {
+                MGE_DEBUG_TRACE(ASSET)
+                    << "Instantiating asset loader: " << name;
+                asset_loader_ref loader = asset_loader::create(name);
+                add_loader(loader);
+                m_loader_names.insert(std::string(name));
+                loader_changed = true;
+            }
+        });
+        return loader_changed;
     }
 
     static ::mge::singleton<loader_table> loaders;
@@ -302,6 +332,7 @@ namespace mge {
         // based on the file extension
         if (m_type.value() == asset_type::UNKNOWN ||
             m_type.value() == asset_type("text", "plain")) {
+            m_type = loaders->improve_type(*this, m_type.value());
         }
 
         return m_type.value();
