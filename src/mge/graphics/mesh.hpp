@@ -6,6 +6,8 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
+#include <span>
+
 namespace mge {
 
     /**
@@ -54,6 +56,20 @@ namespace mge {
          * @return index data
          */
         virtual void* index_data() const = 0;
+
+        /**
+         * @brief Vertex data of the mesh.
+         *
+         * @return vertex data of the mesh
+         */
+        virtual std::span<uint8_t> vertex_data_span() const = 0;
+
+        /**
+         * @brief Index data of the mesh.
+         *
+         * @return index data of the mesh
+         */
+        virtual std::span<uint8_t> index_data_span() const = 0;
 
     private:
         vertex_layout m_vertex_layout;
