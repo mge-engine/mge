@@ -44,14 +44,20 @@ namespace mge {
          *
          * @return image_format
          */
-        image_format format() const noexcept { return m_format; }
+        image_format format() const noexcept
+        {
+            return m_format;
+        }
 
         /**
          * @brief Get the extent of the image.
          *
          * @return extent
          */
-        const mge::extent& extent() const noexcept { return m_extent; }
+        const mge::extent& extent() const noexcept
+        {
+            return m_extent;
+        }
 
         virtual void* data() const = 0;
 
