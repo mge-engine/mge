@@ -12,6 +12,10 @@
 #    define MGE_COMPILER_MSVC 1
 #endif
 
+#ifdef __clang__
+#    define MGE_COMPILER_CLANG 1
+#endif
+
 #if defined(__WIN32__) || defined(_WIN32)
 #    define MGE_OS_WINDOWS 1
 #endif
@@ -36,6 +40,8 @@ namespace mge {
 
 #if defined(MGE_COMPILER_MSVC)
 #    define MGE_FUNCTION_SIGNATURE __FUNCSIG__
+#elif defined(__clang__)
+#    define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
 #else
 #    error Missing port
 #endif
@@ -43,6 +49,8 @@ namespace mge {
 #define MGE_NO_RETURN [[noreturn]]
 #if defined(MGE_COMPILER_MSVC)
 #    define MGE_NO_INLINE __declspec(noinline)
+#elif defined(__clang__)
+#    define MGE_NO_INLINE __attribute__((noinline))
 #else
 #    error Missing port
 #endif

@@ -15,6 +15,12 @@ __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 #    include <unordered_set>
 #endif
 
+#ifdef MGE_OS_MACOSX
+#    include <dlfcn.h>
+#    include <execinfo.h>
+#    include <mach-o/dyld.h>
+#endif
+
 #include "mge/core/stacktrace.hpp"
 #include <iostream>
 
@@ -171,7 +177,59 @@ namespace mge {
         fill_stacktrace(current_thread, &context, frames, strings);
         CloseHandle(current_thread);
     }
-
+#elif defined(MGE_OS_MACOSX)
+    static void fill_stacktrace(std::vector<stacktrace::frame>& frames,
+                                string_pool&                    strings)
+    {
+        void*  callstack[128];
+        int    frames_count = backtrace(callstack, 128);
+        char** symbols = backtrace_symbols(callstack, frames_count);
+        for (int i = 0; i < frames_count; ++i) {
+            Dl_info info;
+            if (dladdr(callstack[i], &info)) {
+                frames.emplace_back(callstack[i],
+                                    strings.get(info.dli_fname),
+                                    strings.get(info.dli_sname),
+                                    strings.get(""),
+                                    0);
+            } else {
+                frames.emplace_back(callstack[i],
+                                    strings.get(""),
+                                    strings.get(""),
+                                    strings.get(""),
+                                    0);
+            }
+        }
+        free(symbols);
+    }
+#elif defined(MGE_OS_MACOSX)
+#    include <execinfo.h>
+    static void fill_stacktrace(std::vector<stacktrace::frame>& frames,
+                                string_pool&                    strings)
+    {
+        void*  callstack[128];
+        int    frames_count = backtrace(callstack, 128);
+        char** symbols = backtrace_symbols(callstack, frames_count);
+        for (int i = 0; i < frames_count; ++i) {
+            Dl_info info;
+            if (dladdr(callstack[i], &info)) {
+                frames.emplace_back(callstack[i],
+                                    strings.get(info.dli_fname),
+                                    strings.get(info.dli_sname),
+                                    strings.get(""),
+                                    0);
+            } else {
+                frames.emplace_back(callstack[i],
+                                    strings.get(""),
+                                    strings.get(""),
+                                    strings.get(""),
+                                    0);
+            }
+        }
+        free(symbols);
+    }
+#else
+#    error Missing port
 #endif
     stacktrace::frame::frame(const void*      address,
                              std::string_view module,
@@ -185,7 +243,10 @@ namespace mge {
         , m_source_line(line)
     {}
 
-    stacktrace::stacktrace() { fill_stacktrace(m_frames, m_strings); }
+    stacktrace::stacktrace()
+    {
+        fill_stacktrace(m_frames, m_strings);
+    }
 
     stacktrace::stacktrace(const stacktrace& src)
     {
@@ -240,7 +301,10 @@ namespace mge {
         return true;
     }
 
-    stacktrace::size_type stacktrace::size() const { return m_frames.size(); }
+    stacktrace::size_type stacktrace::size() const
+    {
+        return m_frames.size();
+    }
 
     void stacktrace::format(std::format_context& ctx) const
     {
