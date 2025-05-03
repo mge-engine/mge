@@ -25,6 +25,9 @@ namespace mge {
 #if defined MGE_OS_WINDOWS
     namespace win32 {}
     namespace platform = win32;
+#elif defined MGE_OS_MACOSX
+    namespace macosx {}
+    namespace platform = macosx;
 #else
 #    error Missing port.
 #endif
