@@ -6,6 +6,10 @@
 #include <iostream>
 #include <string_view>
 #include <type_traits>
+
+#define FMT_UNICODE 0
+#include <fmt/format.h>
+
 namespace mge {
 
     template <typename T>
