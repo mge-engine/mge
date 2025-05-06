@@ -8,9 +8,15 @@
 
 using namespace testing;
 
-TEST(exception, rethrow) { EXPECT_DEATH(mge::rethrow(), ""); }
+TEST(exception, rethrow)
+{
+    EXPECT_DEATH(mge::rethrow(), "");
+}
 
-TEST(exception, construct_simple) { mge::exception ex; }
+TEST(exception, construct_simple)
+{
+    mge::exception ex;
+}
 
 TEST(exception, set_info)
 {

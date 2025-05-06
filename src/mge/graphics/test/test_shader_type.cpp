@@ -13,8 +13,7 @@ TEST(shader_type, format)
         {mge::shader_type::GEOMETRY, "GEOMETRY"},
         {mge::shader_type::TESSELATION_CONTROL, "TESSELATION_CONTROL"},
         {mge::shader_type::TESSELATION_EVALUATION, "TESSELATION_EVALUATION"},
-        {mge::shader_type::COMPUTE, "COMPUTE"}
-    };
+        {mge::shader_type::COMPUTE, "COMPUTE"}};
 
     for (const auto& test_case : test_cases) {
         std::ostringstream oss;
@@ -31,11 +30,11 @@ TEST(shader_type, formatter)
         {mge::shader_type::GEOMETRY, "GEOMETRY"},
         {mge::shader_type::TESSELATION_CONTROL, "TESSELATION_CONTROL"},
         {mge::shader_type::TESSELATION_EVALUATION, "TESSELATION_EVALUATION"},
-        {mge::shader_type::COMPUTE, "COMPUTE"}
-    };
+        {mge::shader_type::COMPUTE, "COMPUTE"}};
 
     for (const auto& test_case : test_cases) {
-        auto str = std::format("{}", test_case.first);
+
+        auto               str = fmt::format("{}", test_case.first);
         std::ostringstream oss;
         oss << str;
         EXPECT_EQ(test_case.second, oss.str());

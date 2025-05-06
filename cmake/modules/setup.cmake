@@ -36,4 +36,5 @@ INCLUDE(thirdparty/libmagic)
 INCLUDE(thirdparty/jemalloc)
 INCLUDE(thirdparty/libffi)
 INCLUDE(thirdparty/magicenum)
+INCLUDE(thirdparty/fmt)
 

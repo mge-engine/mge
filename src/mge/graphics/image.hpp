@@ -44,14 +44,20 @@ namespace mge {
          *
          * @return image_format
          */
-        image_format format() const noexcept { return m_format; }
+        image_format format() const noexcept
+        {
+            return m_format;
+        }
 
         /**
          * @brief Get the extent of the image.
          *
          * @return extent
          */
-        const mge::extent& extent() const noexcept { return m_extent; }
+        const mge::extent& extent() const noexcept
+        {
+            return m_extent;
+        }
 
         virtual void* data() const = 0;
 
@@ -59,17 +65,23 @@ namespace mge {
 
         virtual size_t binary_size() const = 0;
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(),
-                           "image{{format={}, extent={}}}",
-                           m_format,
-                           m_extent);
-        }
-
     private:
         image_format m_format;
         mge::extent  m_extent;
     };
 
 } // namespace mge
+
+template <>
+struct fmt::formatter<mge::image> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::image& i, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "image{{format={}, extent={}}}",
+                       i.format(),
+                       i.extent());
+        return ctx.out();
+    }
+};

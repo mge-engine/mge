@@ -120,23 +120,39 @@ namespace mge {
          */
         uint32_t patch() const noexcept;
 
-        inline void format(std::format_context& ctx) const
-        {
-            if (patch() == 0) {
-                if (minor() == 0) {
-                    std::format_to(ctx.out(), "{}", major());
-                } else {
-                    std::format_to(ctx.out(), "{}.{}", major(), minor());
-                }
-            } else
-                std::format_to(ctx.out(),
-                               "{}.{}.{}",
-                               major(),
-                               minor(),
-                               patch());
-        }
-
     private:
         std::tuple<uint32_t, uint32_t, uint32_t> m_data;
     };
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::semantic_version>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::semantic_version& v, FormatContext& ctx) const
+    {
+        if (v.patch() == 0) {
+            if (v.minor() == 0) {
+                fmt::format_to(ctx.out(), "{}", v.major());
+            } else {
+                fmt::format_to(ctx.out(), "{}.{}", v.major(), v.minor());
+            }
+        } else
+            fmt::format_to(ctx.out(),
+                           "{}.{}.{}",
+                           v.major(),
+                           v.minor(),
+                           v.patch());
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream&                os,
+                                    const mge::semantic_version& v)
+    {
+        fmt::print(os, "{}", v);
+        return os;
+    }
 } // namespace mge
