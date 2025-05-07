@@ -40,8 +40,15 @@ namespace mge {
          */
         using size_type = record_buffer::size_type;
 
-        memory_trace_sink();
-        ~memory_trace_sink();
+        memory_trace_sink() = default;
+
+        /**
+         * @brief Constructor.
+         * @param c capacity of this sink
+         */
+        memory_trace_sink(capacity_type c);
+
+        ~memory_trace_sink() = default;
 
         void publish(const trace_record& r) override;
 

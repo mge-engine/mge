@@ -20,7 +20,10 @@ namespace mge {
         configuration::unregister_parameter(*this);
     }
 
-    const mge::path& basic_parameter::path() const { return m_path; }
+    const mge::path& basic_parameter::path() const
+    {
+        return m_path;
+    }
 
     std::string_view basic_parameter::description() const noexcept
     {
@@ -60,6 +63,13 @@ namespace mge {
     {
         if (m_write_function) {
             m_write_function(doc);
+        }
+    }
+
+    void basic_parameter::set_value(const std::any& value)
+    {
+        if (m_set_function) {
+            m_set_function(value);
         }
     }
 

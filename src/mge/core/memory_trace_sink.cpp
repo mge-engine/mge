@@ -5,9 +5,10 @@
 #include "mge/core/dllexport.hpp"
 
 namespace mge {
-    memory_trace_sink::memory_trace_sink() {}
-
-    memory_trace_sink::~memory_trace_sink() {}
+    memory_trace_sink::memory_trace_sink(memory_trace_sink::capacity_type c)
+    {
+        set_capacity(c);
+    }
 
     void memory_trace_sink::publish(const trace_record& r)
     {
@@ -29,7 +30,10 @@ namespace mge {
         return m_records.size();
     }
 
-    void memory_trace_sink::clear() { m_records.clear(); }
+    void memory_trace_sink::clear()
+    {
+        m_records.clear();
+    }
 
     void memory_trace_sink::forward(trace_sink& s)
     {

@@ -37,6 +37,18 @@ TARGET_LINK_LIBRARIES(mgeasset PRIVATE
     mgecore
 
     unofficial::libmagic::libmagic
-    boost-all)
+    boost-all
+)
+
+ADD_EXECUTABLE(mgeassettool
+    mgeassettool.cpp)
+
+TARGET_LINK_LIBRARIES(mgeassettool
+    PRIVATE 
+    mgeasset 
+    mgecore 
+    mgegraphics
+)
+
 
 ADD_SUBDIRECTORY(test)

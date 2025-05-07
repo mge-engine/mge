@@ -94,12 +94,36 @@ namespace mge {
 
     void program_options::parse(int                       argc,
                                 const char**              argv,
-                                program_options::options& o)
+                                program_options::options& o) const
+    {
+        if (argc < 1) {
+            MGE_THROW(illegal_argument) << "Invalid argument count: " << argc;
+        }
+        if (argc == 1) {
+            return;
+        }
+        parse_internal(argv + 1, argv + argc, o);
+    }
+
+    void program_options::parse(const std::vector<std::string>& args,
+                                program_options::options&       o) const
+    {
+        if (args.empty()) {
+            return;
+        }
+        parse_internal(args.begin(), args.end(), o);
+    }
+
+    template <typename Iterator>
+    void program_options::parse_internal(Iterator                  args_begin,
+                                         Iterator                  args_end,
+                                         program_options::options& o) const
+
     {
         auto current_positional = m_positional_options.begin();
 
-        for (int i = 1; i < argc; ++i) {
-            std::string arg(argv[i]);
+        for (auto args_it = args_begin; args_it != args_end; ++args_it) {
+            std::string arg(*args_it);
             if (arg.starts_with("--")) {
                 auto it =
                     std::find_if(m_options.begin(),
@@ -116,12 +140,13 @@ namespace mge {
                     }
                 }
                 if (it->on_option_found) {
-                    if (i + 1 >= argc) {
+                    if (args_it + 1 >= args_end) {
                         MGE_THROW(unknown_option)
                             << "Missing argument for option: " << arg;
                     }
                     auto& value = o.option(it->name());
-                    it->on_option_found(value, argv[++i]);
+                    ++args_it;
+                    it->on_option_found(value, *args_it);
                 } else {
                     auto& value = o.option(it->name());
                     value = true;
@@ -142,12 +167,13 @@ namespace mge {
                     }
                 }
                 if (it->on_option_found) {
-                    if (i + 1 >= argc) {
+                    if (args_it + 1 >= args_end) {
                         MGE_THROW(unknown_option)
                             << "Missing argument for option: " << arg;
                     }
                     auto& value = o.option(it->name());
-                    it->on_option_found(value, argv[++i]);
+                    ++args_it;
+                    it->on_option_found(value, *args_it);
                 } else {
                     auto& value = o.option(it->name());
                     value = true;
