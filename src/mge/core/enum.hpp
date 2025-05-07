@@ -43,7 +43,8 @@ struct fmt::formatter<E> : fmt::formatter<std::string_view>
         auto name = magic_enum::enum_name(e);
         if (name.empty()) {
             return fmt::format_to(ctx.out(),
-                                  "{}",
+                                  "({})0x{:x}",
+                                  mge::enum_type_name<E>(),
                                   static_cast<std::underlying_type_t<E>>(e));
         } else {
             return fmt::format_to(ctx.out(), "{}", name);

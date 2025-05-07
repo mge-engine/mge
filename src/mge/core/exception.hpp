@@ -31,9 +31,15 @@ namespace mge {
         struct exception_details
         {
         public:
-            exception_details(const mge::exception* ex) noexcept
+            explicit exception_details(const mge::exception* ex) noexcept
                 : m_ex(ex)
             {}
+
+            exception_details(const exception_details&) = default;
+            exception_details(exception_details&&) = default;
+            exception_details& operator=(const exception_details&) = default;
+            exception_details& operator=(exception_details&&) = default;
+
             inline const mge::exception* ex() const noexcept
             {
                 return m_ex;
@@ -431,60 +437,73 @@ namespace mge {
 } // namespace mge
 
 template <>
-struct std::formatter<mge::exception::exception_details>
-    : public std::formatter<std::string_view>
+struct fmt::formatter<mge::exception::exception_details>
+    : public fmt::formatter<std::string_view>
 {
     template <typename FormatContext>
     auto format(const mge::exception::exception_details& ed,
                 FormatContext&                           ctx) const
     {
-        if (ed.ex()) {
-            fmt.format_to(ctx.out(), "Exception details:\n");
-            auto type = ed.ex()->get<mge::exception::type_name>();
-            if (type) {
-                fmt.format_to(ctx.out(), "Exception type: {}\n", type.value());
+        mge::exception::exception_details current_ed = ed;
+
+        if (current_ed.ex() == nullptr) {
+            fmt::format_to(ctx.out(), "No exception details available\n");
+            return ctx.out();
+        }
+
+        while (current_ed.ex()) {
+            if (current_ed.ex() != ed.ex()) {
+                fmt::format_to(ctx.out(), "Caused by:");
             } else {
-                fmt.format_to(ctx.out(),
-                              "Exception type: unknown mge::exception\n");
+                fmt::format_to(ctx.out(), "Exception details:\n");
             }
-            auto file = ed.ex()->get<mge::exception::source_file>();
-            auto line = ed.ex()->get<mge::exception::source_line>();
+
+            auto type = current_ed.ex()->get<mge::exception::type_name>();
+            if (type) {
+                fmt::format_to(ctx.out(), "Exception type: {}\n", type.value());
+            } else {
+                fmt::format_to(ctx.out(),
+                               "Exception type: unknown mge::exception\n");
+            }
+
+            auto file = current_ed.ex()->get<mge::exception::source_file>();
+            auto line = current_ed.ex()->get<mge::exception::source_line>();
             if (file && line) {
-                fmt.format_to(ctx.out(),
-                              "Exception location: {}:{}\n",
-                              file.value(),
-                              line.value());
+                fmt::format_to(ctx.out(),
+                               "Exception location: {}:{}\n",
+                               file.value(),
+                               line.value());
             }
-            auto function = ed.ex()->get<mge::exception::function>();
+
+            auto function = current_ed.ex()->get<mge::exception::function>();
             if (function) {
-                fmt.format_to(ctx.out(),
-                              "Exception raising function: {}\n",
-                              function.value());
+                fmt::format_to(ctx.out(),
+                               "Exception raising function: {}\n",
+                               function.value());
             }
             auto called_function =
-                ed.ex()->get<mge::exception::called_function>();
+                current_ed.ex()->get<mge::exception::called_function>();
             if (called_function) {
-                fmt.format_to(ctx.out(),
-                              "Calling library/system function: {}\n",
-                              called_function.value());
+                fmt::format_to(ctx.out(),
+                               "Calling library/system function: {}\n",
+                               called_function.value());
             }
-            auto stack = ed.ex()->get<mge::exception::stack>();
+            auto stack = current_ed.ex()->get<mge::exception::stack>();
             if (stack) {
-                fmt.format_to(ctx.out(),
-                              "Exception stack: {}\n",
-                              stack.value());
+                fmt::format_to(ctx.out(),
+                               "Exception stack: {}\n",
+                               stack.value());
             }
-            fmt.format_to(ctx.out(),
-                          "Exception message: {}\n",
-                          ed.ex()->what());
+            fmt::format_to(ctx.out(),
+                           "Exception message: {}\n",
+                           current_ed.ex()->what());
+
             auto cause = ed.ex()->get<mge::exception::cause>();
             if (cause) {
-                fmt.format_to(ctx.out(),
-                              "Exception caused by:\n{}",
-                              cause.value().details());
+                current_ed = cause->details();
+            } else {
+                current_ed = mge::exception::exception_details(nullptr);
             }
-        } else {
-            fmt.format_to(ctx.out(), "Invalid exception details\n");
         }
         return ctx.out();
     }
@@ -492,12 +511,8 @@ struct std::formatter<mge::exception::exception_details>
 
 namespace mge {
 
-    inline std::ostream& operator<<(std::ostream&                            os,
-                                    const mge::exception::exception_details& ed)
-    {
-        // fmt::print(os, "{}", ed);
-        return os;
-    }
+    MGECORE_EXPORT std::ostream&
+    operator<<(std::ostream& os, const mge::exception::exception_details& ed);
 
 /**
  * Throw exception instance.

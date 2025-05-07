@@ -89,8 +89,7 @@ struct fmt::formatter<mge::image_format>
     template <typename FormatContext>
     auto format(const mge::image_format& f, FormatContext& ctx) const
     {
-        fmt::format_to(ctx.out(), "{} {}", f.format(), f.type());
-        // fmt::format_to(ctx.out(), "horst");
+        fmt::format_to(ctx.out(), "{}_{}", f.format(), f.type());
         return ctx.out();
     }
 };
