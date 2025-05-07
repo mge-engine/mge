@@ -498,7 +498,7 @@ struct fmt::formatter<mge::exception::exception_details>
                            "Exception message: {}\n",
                            current_ed.ex()->what());
 
-            auto cause = ed.ex()->get<mge::exception::cause>();
+            auto cause = current_ed.ex()->get<mge::exception::cause>();
             if (cause) {
                 current_ed = cause->details();
             } else {
