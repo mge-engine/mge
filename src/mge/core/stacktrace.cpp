@@ -185,7 +185,10 @@ namespace mge {
         , m_source_line(line)
     {}
 
-    stacktrace::stacktrace() { fill_stacktrace(m_frames, m_strings); }
+    stacktrace::stacktrace()
+    {
+        fill_stacktrace(m_frames, m_strings);
+    }
 
     stacktrace::stacktrace(const stacktrace& src)
     {
@@ -240,30 +243,9 @@ namespace mge {
         return true;
     }
 
-    stacktrace::size_type stacktrace::size() const { return m_frames.size(); }
-
-    void stacktrace::format(std::format_context& ctx) const
+    stacktrace::size_type stacktrace::size() const
     {
-        uint32_t fno = 0;
-        for (const auto& f : *this) {
-            std::format_to(ctx.out(), "#{} {} in ", fno, f.address());
-            if (f.name().empty()) {
-                std::format_to(ctx.out(), "??");
-            } else {
-                std::format_to(ctx.out(), "{}", f.name());
-            }
-            if (!f.source_file().empty()) {
-                std::format_to(ctx.out(),
-                               " at {}:{}",
-                               f.source_file(),
-                               f.source_line());
-            }
-            if (!f.module().empty()) {
-                std::format_to(ctx.out(), " of {}", f.module());
-            }
-            std::format_to(ctx.out(), "\n");
-            ++fno;
-        }
+        return m_frames.size();
     }
 
 #if 0

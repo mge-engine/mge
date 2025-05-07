@@ -80,14 +80,21 @@ namespace mge {
          */
         bool compatible(const shader_language& other) const;
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(), "{} {}", m_name, m_version);
-        }
-
     private:
         std::string      m_name;
         semantic_version m_version;
     };
 
 } // namespace mge
+
+template <>
+struct fmt::formatter<mge::shader_language>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::shader_language& lang, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "{} {}", lang.name(), lang.version());
+        return ctx.out();
+    }
+};

@@ -66,16 +66,32 @@ namespace mge {
         {
             return this->extent != m.extent || !is_refresh_rate(m.refresh_rate);
         }
-
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(), "{}x{}", extent.width, extent.height);
-            if (refresh_rate == ANY_REFRESH_RATE) {
-                std::format_to(ctx.out(), "@ANY");
-            } else {
-                std::format_to(ctx.out(), "@{}", refresh_rate);
-            }
-        }
     };
+
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::video_mode> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::video_mode& m, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "{}x{}", m.extent.width, m.extent.height);
+        if (m.refresh_rate == mge::video_mode::ANY_REFRESH_RATE) {
+            fmt::format_to(ctx.out(), "@ANY");
+        } else {
+            fmt::format_to(ctx.out(), "@{}", m.refresh_rate);
+        }
+        return ctx.out();
+    }
+};
+
+namespace mge {
+
+    inline std::ostream& operator<<(std::ostream& os, const video_mode& m)
+    {
+        fmt::print(os, "{}", m);
+        return os;
+    }
 
 } // namespace mge

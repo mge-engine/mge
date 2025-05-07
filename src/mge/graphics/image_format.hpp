@@ -6,8 +6,8 @@
 #include "mge/core/format.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
+
 #include <cstdint>
-#include <format>
 #include <iosfwd>
 
 namespace mge {
@@ -39,8 +39,14 @@ namespace mge {
             , m_type(t)
         {}
 
-        data_format format() const { return m_format; }
-        data_type   type() const { return m_type; }
+        data_format format() const
+        {
+            return m_format;
+        }
+        data_type type() const
+        {
+            return m_type;
+        }
 
         inline constexpr size_t components() const noexcept
         {
@@ -69,11 +75,29 @@ namespace mge {
             return m_format != other.m_format || m_type != other.m_type;
         }
 
-        void format(std::format_context& ctx) const;
-
     private:
         data_format m_format;
         data_type   m_type;
     };
 
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::image_format>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::image_format& f, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "{}_{}", f.format(), f.type());
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const image_format& f)
+    {
+        os << fmt::format("{}", f);
+        return os;
+    }
 } // namespace mge

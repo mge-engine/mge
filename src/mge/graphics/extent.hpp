@@ -44,16 +44,30 @@ namespace mge {
             return static_cast<size_t>(width) * static_cast<size_t>(height);
         }
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(),
-                           "extent{{width={}, height={}}}",
-                           width,
-                           height);
-        }
-
         uint32_t width;
         uint32_t height;
     };
 
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::extent> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::extent& e, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "extent{{width={}, height={}}}",
+                       e.width,
+                       e.height);
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const mge::extent& e)
+    {
+        fmt::print(os, "{}", e);
+        return os;
+    }
 } // namespace mge

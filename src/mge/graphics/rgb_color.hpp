@@ -89,31 +89,46 @@ namespace mge {
          * Set green component.
          * @param g_ green component
          */
-        void set_green(const float g_) { g = g_; }
+        void set_green(const float g_)
+        {
+            g = g_;
+        }
 
         /**
          * Set blue component.
          * @param b_ blue component
          */
-        void set_blue(const float b_) { b = b_; }
+        void set_blue(const float b_)
+        {
+            b = b_;
+        }
 
         /**
          * Get red component.
          * @return red component
          */
-        float get_red() const { return r; }
+        float get_red() const
+        {
+            return r;
+        }
 
         /**
          * Get green component.
          * @return green component
          */
-        float get_green() const { return g; }
+        float get_green() const
+        {
+            return g;
+        }
 
         /**
          * Get blue component.
          * @return blue component
          */
-        float get_blue() const { return b; }
+        float get_blue() const
+        {
+            return b;
+        }
 
         /**
          * Comparison operator.
@@ -129,11 +144,6 @@ namespace mge {
          */
         bool operator!=(const rgb_color& c) const;
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(), "rgb_color{{r={}, g={}, b={}}}", r, g, b);
-        }
-
         float r{0.0f}; //!< red
         float g{0.0f}; //!< green
         float b{0.0f}; //!< blue
@@ -145,4 +155,27 @@ namespace mge {
      */
     MGEGRAPHICS_EXPORT rgb_color operator"" _rgb(const char*, size_t);
 
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::rgb_color> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::rgb_color& c, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "rgb_color{{r={}, g={}, b={}}}",
+                       c.r,
+                       c.g,
+                       c.b);
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const rgb_color& c)
+    {
+        fmt::print(os, "{}", c);
+        return os;
+    }
 } // namespace mge
