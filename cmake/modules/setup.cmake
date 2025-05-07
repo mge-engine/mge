@@ -38,4 +38,5 @@ INCLUDE(thirdparty/libffi)
 INCLUDE(thirdparty/magicenum)
 INCLUDE(thirdparty/assimp)
 INCLUDE(thirdparty/sqlite3)
+INCLUDE(thirdparty/fmt)
 

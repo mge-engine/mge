@@ -46,7 +46,7 @@ namespace mge {
          * @param value value to write
          * @return @c *this
          */
-        template <typename T> trace& operator<<(const T& value)
+        template <typename T> trace& operator<<(T&& value)
         {
             if (m_enabled) {
                 (*m_stream) << value;
