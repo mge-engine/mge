@@ -24,15 +24,6 @@ namespace mge {
         return data_type_size(m_type) * m_size;
     }
 
-    void vertex_format::format(std::format_context& context) const
-    {
-        if (m_size == 1) {
-            std::format_to(context.out(), "{}", m_type);
-        } else {
-            std::format_to(context.out(), "{}[{}]", m_type, m_size);
-        }
-    }
-
     vertex_format parse_vertex_format(std::string_view sv)
     {
         auto bpos = sv.find('[');

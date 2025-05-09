@@ -59,13 +59,19 @@ namespace mge {
              *
              * @return frame address
              */
-            const void* address() const noexcept { return m_address; }
+            const void* address() const noexcept
+            {
+                return m_address;
+            }
             /**
              * @brief Frame name (method or function name)
              *
              * @return method or function name
              */
-            std::string_view name() const noexcept { return m_name; }
+            std::string_view name() const noexcept
+            {
+                return m_name;
+            }
 
             /**
              * @brief Source file name.
@@ -82,14 +88,20 @@ namespace mge {
              *
              * @return source line number
              */
-            uint32_t source_line() const noexcept { return m_source_line; }
+            uint32_t source_line() const noexcept
+            {
+                return m_source_line;
+            }
 
             /**
              * @brief Module name (executable or library)
              *
              * @return module name
              */
-            std::string_view module() const noexcept { return m_module; }
+            std::string_view module() const noexcept
+            {
+                return m_module;
+            }
 
         private:
             const void*      m_address;
@@ -145,26 +157,38 @@ namespace mge {
          *
          * @return begin of frames
          */
-        const_iterator begin() const { return m_frames.begin(); }
+        const_iterator begin() const
+        {
+            return m_frames.begin();
+        }
         /**
          * @brief Reverse begin of frames.
          *
          * @return reverse begin of frames
          */
-        const_reverse_iterator rbegin() const { return m_frames.rbegin(); }
+        const_reverse_iterator rbegin() const
+        {
+            return m_frames.rbegin();
+        }
         /**
          * @brief End of frames.
          *
          * @return end of frames
          */
-        const_iterator end() const { return m_frames.end(); }
+        const_iterator end() const
+        {
+            return m_frames.end();
+        }
 
         /**
          * @brief Reverse end  of frames.
          *
          * @return reverse end of frames
          */
-        const_iterator rend() const { return m_frames.end(); }
+        const_iterator rend() const
+        {
+            return m_frames.end();
+        }
 
         /**
          * @brief Comparison.
@@ -181,16 +205,45 @@ namespace mge {
          */
         bool operator!=(const stacktrace& s) const;
 
-        /**
-         * @brief Format stack trace.
-         *
-         * @param ctx format context
-         */
-        void format(std::format_context& ctx) const;
-
     private:
         frame_vector m_frames;
         string_pool  m_strings;
     };
+} // namespace mge
 
+template <>
+struct fmt::formatter<mge::stacktrace> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::stacktrace& stack, FormatContext& ctx) const
+    {
+        uint32_t fno = 0;
+        for (const auto& frame : stack) {
+            fmt::format_to(ctx.out(), "#{} {} in ", fno, frame.address());
+            if (frame.name().empty()) {
+                fmt::format_to(ctx.out(), "??");
+            } else {
+                fmt::format_to(ctx.out(), " {}", frame.name());
+            }
+            if (!frame.source_file().empty()) {
+                fmt::format_to(ctx.out(),
+                               " at {}:{}",
+                               frame.source_file(),
+                               frame.source_line());
+            }
+            if (!frame.module().empty()) {
+                fmt::format_to(ctx.out(), " of {}", frame.module());
+            }
+            fmt::format_to(ctx.out(), "\n");
+        }
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const stacktrace& stack)
+    {
+        fmt::print(os, "{}", stack);
+        return os;
+    }
 } // namespace mge

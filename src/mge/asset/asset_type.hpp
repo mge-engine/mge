@@ -67,11 +67,6 @@ namespace mge {
          */
         std::string_view subtype() const;
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(), "{}/{}", type(), subtype());
-        }
-
         bool operator==(const asset_type& t) const;
         bool operator<(const asset_type& t) const;
 
@@ -87,3 +82,22 @@ namespace mge {
     }
 
 } // namespace mge
+
+template <>
+struct fmt::formatter<mge::asset_type> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::asset_type& t, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "{}/{}", t.type(), t.subtype());
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const asset_type& t)
+    {
+        fmt::print(os, "{}", t);
+        return os;
+    }
+}

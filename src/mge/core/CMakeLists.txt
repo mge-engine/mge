@@ -118,6 +118,7 @@ TARGET_LINK_LIBRARIES(mgecore
     nlohmann_json::nlohmann_json
     jemalloc::jemalloc
     magic_enum::magic_enum
+    fmt::fmt
     PkgConfig::LIBFFI
 )
 ADD_SUBDIRECTORY(test)

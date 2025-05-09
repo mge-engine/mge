@@ -11,7 +11,6 @@
 #include <iosfwd>
 #include <string_view>
 
-
 namespace mge {
 
     /**
@@ -206,7 +205,10 @@ namespace mge {
          *
          * @return stride
          */
-        inline size_t stride() const { return binary_size(); }
+        inline size_t stride() const
+        {
+            return binary_size();
+        }
 
         /**
          * @brief Append a format.
@@ -220,23 +222,41 @@ namespace mge {
          *
          * @return formats
          */
-        const auto& formats() const noexcept { return m_formats; }
+        const auto& formats() const noexcept
+        {
+            return m_formats;
+        }
 
         /**
          * @brief Semantics of vertex layout.
          *
          * @return semantics
          */
-        const auto& semantics() const noexcept { return m_semantics; }
+        const auto& semantics() const noexcept
+        {
+            return m_semantics;
+        }
 
-        iterator       begin() { return iterator(*this, 0); }
-        iterator       end() { return iterator(*this, m_formats.size()); }
-        const_iterator begin() const { return const_iterator(*this, 0); }
+        iterator begin()
+        {
+            return iterator(*this, 0);
+        }
+        iterator end()
+        {
+            return iterator(*this, m_formats.size());
+        }
+        const_iterator begin() const
+        {
+            return const_iterator(*this, 0);
+        }
         const_iterator end() const
         {
             return const_iterator(*this, m_formats.size());
         }
-        const_iterator cbegin() const { return const_iterator(*this, 0); }
+        const_iterator cbegin() const
+        {
+            return const_iterator(*this, 0);
+        }
         const_iterator cend() const
         {
             return const_iterator(*this, m_formats.size());
@@ -262,7 +282,10 @@ namespace mge {
             return const_entry{m_formats.at(index), m_semantics.at(index)};
         }
 
-        auto size() const noexcept { return m_formats.size(); }
+        auto size() const noexcept
+        {
+            return m_formats.size();
+        }
 
         inline bool operator==(const vertex_layout& l) const noexcept
         {
@@ -273,8 +296,6 @@ namespace mge {
         {
             return !(*this == l);
         }
-
-        void format(std::format_context& context) const;
 
     private:
         mge::small_vector<vertex_format, 3>      m_formats;
@@ -297,5 +318,25 @@ template <> struct std::hash<mge::vertex_layout>
             h = h * 31 + std::hash<mge::attribute_semantic>{}(entry.semantic);
         }
         return h;
+    }
+};
+
+template <>
+struct fmt::formatter<mge::vertex_layout>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::vertex_layout& l, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "[");
+        auto it = l.cbegin();
+        while (it != l.cend()) {
+            fmt::format_to(ctx.out(),
+                           "{{format={}, semantic={}}}",
+                           it->format,
+                           it->semantic);
+            ++it;
+        }
+        return fmt::format_to(ctx.out(), "]");
     }
 };

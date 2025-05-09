@@ -5,11 +5,13 @@
 #include "mge/core/stacktrace.hpp"
 
 #include <cstdlib>
-#include <iostream>
 #include <stdarg.h>
 
 namespace mge {
-    void crash() { crash("Crash!!!"); }
+    void crash()
+    {
+        crash("Crash!!!");
+    }
 
     void crash(const char* fmt, ...)
     {
@@ -22,7 +24,7 @@ namespace mge {
         va_end(args);
         vsnprintf(buf, needed, fmt, args2);
         stacktrace st;
-        std::cerr << buf << std::endl << st << std::endl;
+        fmt::print(stderr, "{}\n{}", buf, st);
         va_end(args);
         abort();
     }

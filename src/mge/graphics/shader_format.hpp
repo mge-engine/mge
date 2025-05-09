@@ -50,14 +50,6 @@ namespace mge {
          */
         ~shader_format() = default;
 
-        void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(),
-                           "shader_format{{name={}, version={}}}",
-                           m_name,
-                           m_version);
-        }
-
         /**
          * Comparison operator.
          * @param other compared shader format
@@ -76,16 +68,37 @@ namespace mge {
          * @brief Get shader format name.
          * @return shader format name
          */
-        const std::string& name() const { return m_name; }
+        const std::string& name() const
+        {
+            return m_name;
+        }
 
         /**
          * @brief Get shader format version.
          * @return shader format version
          */
-        const semantic_version& version() const { return m_version; }
+        const semantic_version& version() const
+        {
+            return m_version;
+        }
 
     private:
         std::string      m_name;
         semantic_version m_version;
     };
 } // namespace mge
+
+template <>
+struct fmt::formatter<mge::shader_format>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::shader_format& f, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "shader_format{{name={}, version={}}}",
+                       f.name(),
+                       f.version());
+        return ctx.out();
+    }
+};

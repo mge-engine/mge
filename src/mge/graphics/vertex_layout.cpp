@@ -39,28 +39,6 @@ namespace mge {
         m_semantics.push_back(mge::attribute_semantic::ANY);
     }
 
-    void vertex_layout::format(std::format_context& context) const
-    {
-        std::format_to(context.out(), "[");
-        auto it = m_formats.cbegin();
-        auto sem_it = m_semantics.cbegin();
-        std::format_to(context.out(),
-                       "{{format={}, semantic={}}}",
-                       *it,
-                       *sem_it);
-        ++it;
-        ++sem_it;
-        while (it != m_formats.cend()) {
-            std::format_to(context.out(),
-                           ", {{format={}, semantic={}}}",
-                           *it,
-                           *sem_it);
-            ++it;
-            ++sem_it;
-        }
-        format_to(context.out(), "]");
-    }
-
     vertex_layout parse_vertex_layout(std::string_view sv)
     {
         if (sv.size() < 2) {

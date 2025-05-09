@@ -20,6 +20,6 @@ TEST(image_format, name)
 {
     mge::image_format f(mge::image_format::data_format::RGB,
                         mge::data_type::FLOAT);
-    auto              s = std::format("{}", f);
+    auto              s = fmt::format("{}", f);
     EXPECT_STREQ("RGB_FLOAT", s.c_str());
 }

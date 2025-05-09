@@ -85,21 +85,45 @@ namespace mge {
          */
         inline rgba_color& operator=(const rgba_color& c) = default;
 
-        void set_red(const float r_) { r = r_; }
+        void set_red(const float r_)
+        {
+            r = r_;
+        }
 
-        void set_green(const float g_) { g = g_; }
+        void set_green(const float g_)
+        {
+            g = g_;
+        }
 
-        void set_blue(const float b_) { b = b_; }
+        void set_blue(const float b_)
+        {
+            b = b_;
+        }
 
-        void set_alpha(const float a_) { a = a_; }
+        void set_alpha(const float a_)
+        {
+            a = a_;
+        }
 
-        float red() const { return r; }
+        float red() const
+        {
+            return r;
+        }
 
-        float green() const { return g; }
+        float green() const
+        {
+            return g;
+        }
 
-        float blue() const { return b; }
+        float blue() const
+        {
+            return b;
+        }
 
-        float alpha() const { return a; }
+        float alpha() const
+        {
+            return a;
+        }
 
         /**
          * Compare with other color.
@@ -119,16 +143,9 @@ namespace mge {
          * Access color as array of floats.
          * @return color values
          */
-        const float* data() const noexcept { return &r; }
-
-        inline void format(std::format_context& ctx) const
+        const float* data() const noexcept
         {
-            std::format_to(ctx.out(),
-                           "rgba_color{{r={}, g={}, b={}, a={}}}",
-                           r,
-                           g,
-                           b,
-                           a);
+            return &r;
         }
 
         float r{0.0f}; //!< red
@@ -137,4 +154,28 @@ namespace mge {
         float a{0.0f}; //!< alpha
     };
 
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::rgba_color> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::rgba_color& c, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "rgba_color{{r={}, g={}, b={}, a={}}}",
+                       c.r,
+                       c.g,
+                       c.b,
+                       c.a);
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const mge::rgba_color& c)
+    {
+        fmt::print(os, "{}", c);
+        return os;
+    }
 } // namespace mge

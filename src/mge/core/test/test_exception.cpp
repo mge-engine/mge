@@ -8,9 +8,15 @@
 
 using namespace testing;
 
-TEST(exception, rethrow) { EXPECT_DEATH(mge::rethrow(), ""); }
+TEST(exception, rethrow)
+{
+    EXPECT_DEATH(mge::rethrow(), "");
+}
 
-TEST(exception, construct_simple) { mge::exception ex; }
+TEST(exception, construct_simple)
+{
+    mge::exception ex;
+}
 
 TEST(exception, set_info)
 {
@@ -27,7 +33,7 @@ TEST(exception, set_info)
             "Exception details:\nException type: "
             "mge::exception\nException location: "
             ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception.cpp:"
-            "19\nException raising function: void __cdecl "
+            "\\d\\d\nException raising function: void __cdecl "
             "exception_set_info_Test::TestBody\\(void\\)\nException "
             "message: Unknown exception\n"));
 }
@@ -53,7 +59,7 @@ TEST(exception, set_info_using_operator)
             "Exception type: unknown mge::exception\n"
             "Exception location: "
             ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception."
-            "cpp:44\n"
+            "cpp:\\d\\d\n"
             "Exception raising function: void __cdecl "
             "exception_set_info_using_operator_Test::TestBody\\(void\\)\n"
             "Calling library/system function: FOOBAR\n"

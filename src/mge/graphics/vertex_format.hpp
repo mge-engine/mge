@@ -65,14 +65,20 @@ namespace mge {
          *
          * @return data type
          */
-        data_type type() const noexcept { return m_type; }
+        data_type type() const noexcept
+        {
+            return m_type;
+        }
 
         /**
          * @brief Number of elements in vertex.
          *
          * @return number of elements
          */
-        uint8_t size() const noexcept { return m_size; }
+        uint8_t size() const noexcept
+        {
+            return m_size;
+        }
 
         /**
          * @brief Binary size of vertex (number of bytes)
@@ -105,12 +111,6 @@ namespace mge {
             return m_type == f.m_type && m_size == f.m_size;
         }
 
-        /**
-         * @brief Format value for output.
-         * @param ctx format context
-         */
-        void format(std::format_context& context) const;
-
     private:
         data_type m_type;
         uint8_t   m_size;
@@ -134,3 +134,27 @@ template <> struct std::hash<mge::vertex_format>
                static_cast<size_t>(fmt.size());
     }
 };
+
+template <>
+struct fmt::formatter<mge::vertex_format>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::vertex_format& f, FormatContext& ctx) const
+    {
+        if (f.size() == 1) {
+            fmt::format_to(ctx.out(), "{}", f.type());
+        } else {
+            fmt::format_to(ctx.out(), "{}[{}]", f.type(), f.size());
+        }
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const vertex_format& f)
+    {
+        fmt::print(os, "{}", f);
+        return os;
+    }
+} // namespace mge

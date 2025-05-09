@@ -18,11 +18,11 @@ enum class test_enum : uint8_t
 TEST(enum_test, simple_enum)
 {
     test_enum e = test_enum::FOO;
-    auto      s = std::format("{}", e);
+    auto      s = fmt::format("{}", e);
     EXPECT_STREQ("FOO", s.c_str());
 
     test_enum bad = static_cast<test_enum>(0xff);
-    auto      sbad = std::format("{}", bad);
+    auto      sbad = fmt::format("{}", bad);
     EXPECT_STREQ("(test_enum)0xff", sbad.c_str());
     auto i = mge::enum_index(bad);
     std::cout << i.has_value() << std::endl;
@@ -43,6 +43,6 @@ template <> struct mge::enum_range<custom>
 TEST(enum_test, customize)
 {
     custom c = custom::A;
-    auto   s = std::format("{}", c);
+    auto   s = fmt::format("{}", c);
     EXPECT_STREQ("A", s.c_str());
 }

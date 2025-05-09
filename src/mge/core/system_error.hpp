@@ -38,7 +38,10 @@ namespace mge {
                 : m_value(value_)
             {}
 
-            error_code_type value() const noexcept { return m_value; }
+            error_code_type value() const noexcept
+            {
+                return m_value;
+            }
 
             error_code_type m_value;
         };
@@ -101,3 +104,7 @@ namespace mge {
                                      #function)
 
 } // namespace mge
+
+template <>
+struct fmt::formatter<mge::system_error> : public fmt::formatter<mge::exception>
+{};

@@ -88,4 +88,11 @@ namespace mge {
         return std::exception::what();
     }
 
+    std::ostream& operator<<(std::ostream&                            os,
+                             const mge::exception::exception_details& ed)
+    {
+        fmt::print(os, "{}", ed);
+        return os;
+    }
+
 } // namespace mge

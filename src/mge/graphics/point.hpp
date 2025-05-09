@@ -40,13 +40,27 @@ namespace mge {
         point& operator=(const point&) = default;
         point& operator=(point&&) = default;
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(), "point{{x={}, y={}}}", x, y);
-        }
-
         uint32_t x{0}; //!< x coordinate
         uint32_t y{0}; //!< y coordinate
     };
 
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::point> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::point& p, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(), "point{{x={}, y={}}}", p.x, p.y);
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const point& p)
+    {
+        fmt::print(os, "{}", p);
+        return os;
+    }
 } // namespace mge

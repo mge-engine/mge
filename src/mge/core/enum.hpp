@@ -31,47 +31,33 @@ namespace mge {
     using magic_enum::enum_flags_name;
 
     namespace bitwise_enum_operators = magic_enum::bitwise_operators;
-
-    template <typename E> using provide_formatter = std::true_type;
 } // namespace mge
 
 template <typename E>
-    requires mge::provide_formatter<E>::value &&
-             (mge::is_scoped_enum_v<E> || mge::is_unscoped_enum_v<E>)
-struct std::formatter<E> : public std::formatter<std::string_view>
+    requires std::is_enum_v<E>
+struct fmt::formatter<E> : fmt::formatter<std::string_view>
 {
-    constexpr auto format_if_valid(E e, std::format_context& ctx) const
+    template <typename FormatContext>
+    auto format(const E& e, FormatContext& ctx) const
     {
-        if (mge::enum_contains(e)) {
-            std::format_to(ctx.out(), "{}", mge::enum_name(e));
-            return true;
+        auto name = magic_enum::enum_name(e);
+        if (name.empty()) {
+            return fmt::format_to(ctx.out(),
+                                  "({})0x{:x}",
+                                  mge::enum_type_name<E>(),
+                                  static_cast<std::underlying_type_t<E>>(e));
         } else {
-            return false;
+            return fmt::format_to(ctx.out(), "{}", name);
         }
-    }
-
-    template <typename FormatContext> auto format(E e, FormatContext& ctx) const
-    {
-        if (!format_if_valid(e, ctx)) {
-            using ut = std::underlying_type<E>::type;
-            ut tmp = static_cast<ut>(e);
-            std::format_to(ctx.out(),
-                           "({})0x{:x}",
-                           mge::enum_type_name<E>(),
-                           tmp);
-        }
-        return ctx.out();
     }
 };
 
 namespace mge {
     template <typename E>
-        requires mge::provide_formatter<E>::value &&
-                 (mge::is_scoped_enum_v<E> || mge::is_unscoped_enum_v<E>)
+        requires std::is_enum_v<E>
     inline std::ostream& operator<<(std::ostream& os, const E& e)
     {
-        std::ostream_iterator<char> out(os);
-        std::format_to(out, "{}", e);
+        fmt::print(os, "{}", e);
         return os;
     }
 } // namespace mge
