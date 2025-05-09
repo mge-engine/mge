@@ -7,51 +7,42 @@
 #    include <windows.h>
 #endif
 
-#ifdef MGE_OS_MACOSX
-#    include <mach-o/dyld.h>
-#endif
-
 namespace mge {
     std::string executable_name()
     {
-#ifdef MGE_OS_WINDOWS
         char buffer[2048];
         GetModuleFileName(0, buffer, sizeof(buffer));
 
-        char*       dot = strrchr(buffer, '.');
-        const char* basenamestart = strrchr(buffer, '\\');
-        return std::string((const char*)basenamestart + 1, (const char*)dot);
-#elif defined(MGE_OS_MACOSX)
-        char     buffer[2048];
-        uint32_t size = sizeof(buffer);
-        _NSGetExecutablePath(buffer, &size);
-
-        char*       dot = strrchr(buffer, '.');
-        const char* basenamestart = strrchr(buffer, '/');
-        return std::string((const char*)basenamestart + 1, (const char*)dot);
-#else
-#    error Missing port
+        char* dot = strrchr(buffer, '.');
+#if 0
+        if (dot == nullptr) {
+            throw MGE_EXCEPTION(illegal_state)
+                << "Cannot compute executable name (suffix not found).";
+        }
 #endif
+        const char* basenamestart = strrchr(buffer, '\\');
+#if 0
+            if(basenamestart == nullptr) {
+                throw MGE_EXCEPTION(illegal_state)
+                   << "Cannot compute executable name (directory not found).";
+            }
+#endif
+        return std::string((const char*)basenamestart + 1, (const char*)dot);
     }
 
     std::string executable_path()
     {
-#ifdef MGE_OS_WINDOWS
         char buffer[2048];
         GetModuleFileName(0, buffer, sizeof(buffer));
 
         char* basenamestart = strrchr(buffer, '\\');
-        return std::string(buffer, basenamestart);
-#elif defined(MGE_OS_MACOSX)
-        char     buffer[2048];
-        uint32_t size = sizeof(buffer);
-        _NSGetExecutablePath(buffer, &size);
-
-        char* basenamestart = strrchr(buffer, '/');
-        return std::string(buffer, basenamestart);
-#else
-#    error Missing port
+#if 0
+        if (basenamestart == nullptr) {
+            throw MGE_EXCEPTION(illegal_state)
+                << "Cannot compute executable path (directory not found).";
+        }
 #endif
+        return std::string(buffer, basenamestart);
     }
 
 } // namespace mge

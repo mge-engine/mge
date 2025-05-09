@@ -46,8 +46,6 @@ namespace mge {
         remove_string(raw_name, "__ptr64");
         remove_space_around_special_chars(raw_name);
         return raw_name;
-#elif defined(MGE_COMPILER_CLANG)
-        return raw_name;
 #else
 #    error Missing port
 #endif

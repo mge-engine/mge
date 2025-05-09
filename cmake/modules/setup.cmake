@@ -3,7 +3,6 @@
 # All rights reserved.
 
 INCLUDE(compiler/msvc)
-INCLUDE(compiler/clang)
 
 INCLUDE(settings/debugrelease)
 INCLUDE(settings/headless)
@@ -37,5 +36,4 @@ INCLUDE(thirdparty/libmagic)
 INCLUDE(thirdparty/jemalloc)
 INCLUDE(thirdparty/libffi)
 INCLUDE(thirdparty/magicenum)
-INCLUDE(thirdparty/fmt)
 

@@ -78,17 +78,14 @@ namespace mge {
         }
     }
 
-    const char* exception::what() const noexcept
+    const char* exception::what() const
     {
-        try {
-            materialize_message();
+        materialize_message();
 
-            if (!m_raw_message.empty()) {
-                return m_raw_message.c_str();
-            }
-        } catch (...) {
-            // no good option here
+        if (!m_raw_message.empty()) {
+            return m_raw_message.c_str();
         }
-
         return std::exception::what();
-    } // namespace mge
+    }
+
+} // namespace mge

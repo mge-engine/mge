@@ -34,10 +34,7 @@ namespace mge {
             exception_details(const mge::exception* ex) noexcept
                 : m_ex(ex)
             {}
-            inline const mge::exception* ex() const noexcept
-            {
-                return m_ex;
-            }
+            inline const mge::exception* ex() const noexcept { return m_ex; }
 
             inline void format(std::format_context& ctx) const;
 
@@ -88,10 +85,7 @@ namespace mge {
                 : m_value(value_)
             {}
 
-            std::string_view value() const noexcept
-            {
-                return m_value;
-            }
+            std::string_view value() const noexcept { return m_value; }
 
             std::string_view m_value;
         };
@@ -109,10 +103,7 @@ namespace mge {
                 : m_value(value_)
             {}
 
-            std::string_view value() const noexcept
-            {
-                return m_value;
-            }
+            std::string_view value() const noexcept { return m_value; }
 
             std::string_view m_value;
         };
@@ -130,10 +121,7 @@ namespace mge {
                 : m_value(value_)
             {}
 
-            uint32_t value() const noexcept
-            {
-                return m_value;
-            }
+            uint32_t value() const noexcept { return m_value; }
 
             uint32_t m_value;
         };
@@ -152,10 +140,7 @@ namespace mge {
                 : m_value(std::move(s))
             {}
 
-            const mge::stacktrace& value() const noexcept
-            {
-                return m_value;
-            }
+            const mge::stacktrace& value() const noexcept { return m_value; }
 
             mge::stacktrace m_value;
         };
@@ -167,10 +152,7 @@ namespace mge {
         {
             message() {}
 
-            std::string_view value() const noexcept
-            {
-                return m_value;
-            }
+            std::string_view value() const noexcept { return m_value; }
 
             std::string m_value;
         };
@@ -189,10 +171,7 @@ namespace mge {
                 : m_value(name)
             {}
 
-            const std::string& value() const noexcept
-            {
-                return m_value;
-            }
+            const std::string& value() const noexcept { return m_value; }
 
             std::string m_value;
         };
@@ -211,10 +190,7 @@ namespace mge {
                 : m_value(name)
             {}
 
-            std::string_view value() const noexcept
-            {
-                return m_value;
-            }
+            std::string_view value() const noexcept { return m_value; }
 
             std::string_view m_value;
         };
@@ -262,7 +238,7 @@ namespace mge {
          * Overrides @c std::exception @c what function.
          * @return exception message
          */
-        const char* what() const noexcept override;
+        const char* what() const override;
 
         /**
          * Get current exception of this thread.
@@ -408,10 +384,7 @@ namespace mge {
             : m_value(std::move(ex))
         {}
 
-        const mge::exception& value() const noexcept
-        {
-            return m_value;
-        }
+        const mge::exception& value() const noexcept { return m_value; }
 
         mge::exception m_value;
     };
@@ -506,9 +479,6 @@ namespace mge {
      *
      * This function does not return.
      */
-    [[noreturn]] inline void rethrow()
-    {
-        throw;
-    }
+    [[noreturn]] inline void rethrow() { throw; }
 
 } // namespace mge

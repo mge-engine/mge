@@ -115,7 +115,6 @@ TARGET_LINK_LIBRARIES(mgecore
     boost-all 
     linenoise 
     dbghelp 
-    fmt::fmt
     nlohmann_json::nlohmann_json
     jemalloc::jemalloc
     magic_enum::magic_enum

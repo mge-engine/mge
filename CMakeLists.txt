@@ -5,6 +5,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.29.2)
 PROJECT(MGE)
 
+
 IF("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
     FILE(REMOVE_RECURSE "${CMAKE_SOURCE_DIR}/CMakeFiles")
     MESSAGE(FATAL_ERROR "In-source builds are not supported")
@@ -15,6 +16,7 @@ ENDIF()
 # - enable exporting compile_commands.json (for editors etc.)
 ENABLE_TESTING()
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 
 SET(MGE_VERSION_MAJOR 0)
 SET(MGE_VERSION_MINOR 1)
