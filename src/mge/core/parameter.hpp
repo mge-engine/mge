@@ -14,6 +14,7 @@
 
 #include "boost/preprocessor.hpp"
 
+#include <any>
 #include <functional>
 #include <mutex>
 #include <optional>
@@ -33,6 +34,7 @@ namespace mge {
     public:
         using read_function = std::function<void(const mge::json::json&)>;
         using write_function = std::function<void(mge::json::json&)>;
+        using set_function = std::function<void(const std::any&)>;
 
         using change_callback = std::function<void()>;
 
@@ -118,9 +120,17 @@ namespace mge {
          */
         void write_value(mge::json::json& document) const;
 
+        /**
+         * @brief Set value from string.
+         *
+         * @param value new parameter value
+         */
+        void set_value(const std::any& value);
+
     protected:
         read_function  m_read_function;
         write_function m_write_function;
+        set_function   m_set_function;
 
     private:
         mge::path        m_path;
@@ -169,6 +179,18 @@ namespace mge {
             m_write_function = [&](mge::json::json& j) {
                 if (has_value()) {
                     to_json(j, m_value);
+                }
+            };
+
+            m_set_function = [&](const std::any& value) {
+                if (value.type() == typeid(T)) {
+                    m_value = std::any_cast<T>(value);
+                    m_has_value = true;
+                } else {
+                    MGE_THROW(illegal_argument)
+                        << "Invalid type for parameter " << path()
+                        << ", expected " << typeid(T).name() << ", got "
+                        << value.type().name();
                 }
             };
         }
@@ -274,7 +296,10 @@ namespace mge {
 
         virtual ~parameter() = default;
 
-        bool has_value() const override { return m_has_value; }
+        bool has_value() const override
+        {
+            return m_has_value;
+        }
 
         void reset() override
         {
@@ -335,7 +360,8 @@ namespace mge {
  * @param DESCRIPTION parameter description
  */
 #define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                 \
-    ::mge::parameter<typename BOOST_PP_REMOVE_PARENS(TYPE)> p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
+    ::mge::parameter<typename BOOST_PP_REMOVE_PARENS(TYPE)>                    \
+        p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
 
 /**
  * @def MGE_DEFINE_PARAMETER_WITH_DEFAULT

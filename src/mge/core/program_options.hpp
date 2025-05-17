@@ -247,9 +247,18 @@ namespace mge {
 
         void print(std::ostream& os) const;
 
-        void parse(int argc, const char** argv, program_options::options& o);
+        void
+        parse(int argc, const char** argv, program_options::options& o) const;
+
+        void parse(const std::vector<std::string>& args,
+                   program_options::options&       o) const ;
 
     private:
+        template <typename Iterator>
+        void parse_internal(Iterator                  begin,
+                            Iterator                  end,
+                            program_options::options& o) const;
+
         struct option_description
         {
             std::string           short_name;

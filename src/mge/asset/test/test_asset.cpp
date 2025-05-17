@@ -16,7 +16,10 @@ protected:
         mge::asset::mount("/", "file", p);
     }
 
-    void TearDown() override { mge::asset::unmount("/"); }
+    void TearDown() override
+    {
+        mge::asset::unmount("/");
+    }
 };
 
 TEST_F(test_asset, mount_unmount) {}
@@ -51,4 +54,13 @@ TEST_F(test_asset, triangle_frag_spv)
     auto load_result = a->load();
     EXPECT_STREQ(typeid(std::shared_ptr<mge::buffer>).name(),
                  load_result.type().name());
+}
+
+TEST_F(test_asset, teapot_obj)
+{
+    using namespace mge::literals;
+    mge::asset_ref a = std::make_shared<mge::asset>("/models/teapot.obj");
+    EXPECT_EQ("model/obj"_at, a->type());
+    auto          load_result = a->load();
+    mge::mesh_ref mesh = std::any_cast<mge::mesh_ref>(load_result);
 }

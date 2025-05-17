@@ -49,6 +49,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd5262") # implicit fallthrough
     ADD_DEFINITIONS("-wd5264") # variable not used
     ADD_DEFINITIONS("-wd4883") # function size supresses optimizations
+    ADD_DEFINITIONS("-wd4189") # local variable is initialized but never referenced
     ADD_DEFINITIONS("-showIncludes")
     IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ADD_DEFINITIONS("-wd4548")
