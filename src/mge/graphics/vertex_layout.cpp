@@ -39,6 +39,12 @@ namespace mge {
         m_semantics.push_back(mge::attribute_semantic::ANY);
     }
 
+    void vertex_layout::push_back(const vertex_format& f, attribute_semantic s)
+    {
+        m_formats.push_back(f);
+        m_semantics.push_back(s);
+    }
+
     vertex_layout parse_vertex_layout(std::string_view sv)
     {
         if (sv.size() < 2) {

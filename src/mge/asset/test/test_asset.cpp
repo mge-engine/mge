@@ -61,5 +61,6 @@ TEST_F(test_asset, teapot_obj)
     using namespace mge::literals;
     mge::asset_ref a = std::make_shared<mge::asset>("/models/teapot.obj");
     EXPECT_EQ("model/obj"_at, a->type());
-    auto load_result = a->load();
+    auto          load_result = a->load();
+    mge::mesh_ref mesh = std::any_cast<mge::mesh_ref>(load_result);
 }
