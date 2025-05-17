@@ -7,6 +7,7 @@
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/image.hpp"
 #include "mge/graphics/memory_image.hpp"
@@ -18,6 +19,9 @@
 #include <assimp/scene.h>       // Output data structure
 
 namespace mge {
+
+    MGE_DEFINE_TRACE(ASSIMP);
+
     class assimp_loader : public asset_loader
     {
     public:
@@ -100,7 +104,17 @@ namespace mge {
 
         size_t FileSize() const override
         {
-            return 0;
+            auto pos = m_stream->position();
+            if (pos == -1) {
+                return 0; // Unable to determine size
+            }
+            auto offset = m_stream->seek(0, mge::input_stream::POS_END);
+            if (offset == -1) {
+                return 0; // Unable to determine size
+            }
+            // Restore the original position
+            m_stream->seek(pos, mge::input_stream::POS_BEG);
+            return offset;
         }
 
         void Flush() override {}
@@ -147,6 +161,8 @@ namespace mge {
 
     std::any assimp_loader::load(const mge::asset& a)
     {
+        MGE_DEBUG_TRACE(ASSIMP) << "Loading asset: " << a.path();
+
         Assimp::Importer      importer;
         mge::input_stream_ref stream = a.data();
         assimp_iosystem       iosystem(stream);
