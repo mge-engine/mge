@@ -43,6 +43,7 @@ SET(MGECORE_TEST_SOURCES
     test_closure.cpp
     test_software_component.cpp
     test_program_options.cpp
+    test_input_stream.cpp
 )
 
 SET(MGECORE_BENCH_SOURCES

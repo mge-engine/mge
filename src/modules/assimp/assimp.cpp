@@ -95,7 +95,7 @@ namespace mge {
 
         size_t Tell() const override
         {
-            return 0;
+            return m_stream->tell();
         }
 
         size_t FileSize() const override

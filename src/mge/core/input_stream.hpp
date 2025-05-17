@@ -84,6 +84,15 @@ namespace mge {
          */
         virtual offset_type position();
 
+        /** Get current position.
+         * This is a convenience method that calls <tt>position()</tt>.
+         * @return current position, -1 if not known
+         */
+        inline offset_type tell()
+        {
+            return position();
+        }
+
         /**
          * Seek relative to a specific position.
          * @param offset seek offset
@@ -98,7 +107,10 @@ namespace mge {
          *
          * @return true if rewind succeded, false if rewinding isn't supported
          */
-        inline bool rewind() { return seek(0, POS_BEG) != -1; }
+        inline bool rewind()
+        {
+            return seek(0, POS_BEG) != -1;
+        }
 
         /**
          * Access the stream as an @c std::istream
