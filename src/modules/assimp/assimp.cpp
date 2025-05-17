@@ -221,116 +221,129 @@ namespace mge {
     std::any assimp_loader::load(const mge::asset& a)
     {
         MGE_DEBUG_TRACE(ASSIMP) << "Loading asset: " << a.path();
+
         assimp_logger         logger;
         mge::input_stream_ref stream = a.data();
         assimp_iosystem       iosystem(stream);
         Assimp::Importer      importer;
         importer.SetIOHandler(&iosystem);
+        try {
+            importer.ReadFile(
+                a.path().string(),
+                aiProcess_Triangulate // Ensure all faces are triangles
+                    | aiProcess_GenSmoothNormals      // Generate smooth normals
+                    | aiProcess_JoinIdenticalVertices // Optimize vertex data
+                    | aiProcess_ImproveCacheLocality  // Improve cache locality
+            );
 
-        importer.ReadFile(a.path().string(), 0);
-
-        auto scene = importer.GetScene();
-        if (!scene) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Failed to load asset: " << a.path()
-                << ", error: " << importer.GetErrorString();
-        }
-
-        if (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Asset is incomplete: " << a.path()
-                << ", error: " << importer.GetErrorString();
-        }
-
-        if (scene->mFlags & AI_SCENE_FLAGS_VALIDATION_WARNING) {
-            MGE_WARNING_TRACE(ASSIMP)
-                << "Asset has validation warnings: " << a.path()
-                << ", warning: " << importer.GetErrorString();
-        }
-
-        if (scene->mNumMeshes == 0) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Asset has no meshes: " << a.path()
-                << ", error: " << importer.GetErrorString();
-        }
-
-        if (scene->mNumMeshes > 1) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Asset has multiple meshes: " << a.path();
-        }
-
-        auto mesh = scene->mMeshes[0];
-        if (!mesh) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Failed to retrieve mesh from asset: " << a.path()
-                << ", error: " << importer.GetErrorString();
-        }
-
-        if (mesh->mPrimitiveTypes != aiPrimitiveType_TRIANGLE) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Asset mesh is not a triangle mesh: " << a.path();
-        }
-        if (mesh->HasPositions() == false) {
-            MGE_THROW(mge::asset_corrupted)
-                << "Asset mesh has no positions: " << a.path();
-        }
-
-        if (mesh->HasNormals()) {
-            MGE_THROW_NOT_IMPLEMENTED << "Normals in mesh asset";
-        }
-        if (mesh->HasTangentsAndBitangents()) {
-            MGE_THROW_NOT_IMPLEMENTED
-                << "Tangents and bitangents in mesh asset";
-        }
-        if (mesh->HasTextureCoords(0)) {
-            MGE_THROW_NOT_IMPLEMENTED << "Texture coordinates in mesh asset";
-        }
-        if (mesh->HasVertexColors(0)) {
-            MGE_THROW_NOT_IMPLEMENTED << "Vertex colors in mesh asset";
-        }
-
-        auto num_vertices = mesh->mNumVertices;
-        MGE_DEBUG_TRACE(ASSIMP)
-            << "Mesh " << a.path() << " has " << mesh->mNumVertices
-            << " vertices and " << mesh->mNumFaces << " faces";
-
-        mge::vertex_layout layout;
-        layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
-                         mge::attribute_semantic::POSITION);
-
-        MGE_DEBUG_TRACE(ASSIMP)
-            << "Mesh " << a.path() << " has layout: " << layout;
-
-        auto result = std::make_shared<mge::memory_mesh>(
-            layout,
-            mge::data_type::UINT32,
-            layout.binary_size() * mesh->mNumVertices,
-            mesh->mNumFaces * 3 * sizeof(uint32_t));
-
-        memcpy(result->vertex_data(),
-               mesh->mVertices,
-               mesh->mNumVertices * sizeof(aiVector3D));
-
-        MGE_DEBUG_TRACE(ASSIMP) << "Mesh " << a.path() << " has "
-                                << mesh->mNumFaces << " faces, each with "
-                                << mesh->mFaces[0].mNumIndices << " indices";
-
-        for (uint32_t i = 0; i < mesh->mNumFaces; ++i) {
-            const aiFace& face = mesh->mFaces[i];
-            if (face.mNumIndices != 3) {
+            auto scene = importer.GetScene();
+            if (!scene) {
                 MGE_THROW(mge::asset_corrupted)
-                    << "Asset mesh has non-triangle face: " << a.path()
-                    << " at face " << i;
+                    << "Failed to load asset: " << a.path()
+                    << ", error: " << importer.GetErrorString();
             }
-            memcpy(static_cast<uint8_t*>(result->index_data()) +
-                       i * 3 * sizeof(uint32_t),
-                   face.mIndices,
-                   3 * sizeof(uint32_t));
-        }
 
-        importer.SetIOHandler(nullptr);
-        mge::mesh_ref mr = result;
-        return std::any(mr);
+            if (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) {
+                MGE_THROW(mge::asset_corrupted)
+                    << "Asset is incomplete: " << a.path()
+                    << ", error: " << importer.GetErrorString();
+            }
+
+            if (scene->mFlags & AI_SCENE_FLAGS_VALIDATION_WARNING) {
+                MGE_WARNING_TRACE(ASSIMP)
+                    << "Asset has validation warnings: " << a.path()
+                    << ", warning: " << importer.GetErrorString();
+            }
+
+            if (scene->mNumMeshes == 0) {
+                MGE_THROW(mge::asset_corrupted)
+                    << "Asset has no meshes: " << a.path()
+                    << ", error: " << importer.GetErrorString();
+            }
+
+            if (scene->mNumMeshes > 1) {
+                MGE_THROW(mge::asset_corrupted)
+                    << "Asset has multiple meshes: " << a.path();
+            }
+
+            auto mesh = scene->mMeshes[0];
+            if (!mesh) {
+                MGE_THROW(mge::asset_corrupted)
+                    << "Failed to retrieve mesh from asset: " << a.path()
+                    << ", error: " << importer.GetErrorString();
+            }
+
+            if (mesh->mPrimitiveTypes != aiPrimitiveType_TRIANGLE) {
+                MGE_THROW(mge::asset_corrupted)
+                    << "Asset mesh is not a triangle mesh: " << a.path();
+            }
+            if (mesh->HasPositions() == false) {
+                MGE_THROW(mge::asset_corrupted)
+                    << "Asset mesh has no positions: " << a.path();
+            }
+
+            if (mesh->HasNormals()) {
+                MGE_THROW_NOT_IMPLEMENTED << "Normals in mesh asset";
+            }
+            if (mesh->HasTangentsAndBitangents()) {
+                MGE_THROW_NOT_IMPLEMENTED
+                    << "Tangents and bitangents in mesh asset";
+            }
+            if (mesh->HasTextureCoords(0)) {
+                MGE_THROW_NOT_IMPLEMENTED
+                    << "Texture coordinates in mesh asset";
+            }
+            if (mesh->HasVertexColors(0)) {
+                MGE_THROW_NOT_IMPLEMENTED << "Vertex colors in mesh asset";
+            }
+
+            auto num_vertices = mesh->mNumVertices;
+            MGE_DEBUG_TRACE(ASSIMP)
+                << "Mesh " << a.path() << " has " << mesh->mNumVertices
+                << " vertices and " << mesh->mNumFaces << " faces";
+
+            mge::vertex_layout layout;
+            layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
+                             mge::attribute_semantic::POSITION);
+
+            MGE_DEBUG_TRACE(ASSIMP)
+                << "Mesh " << a.path() << " has layout: " << layout;
+
+            auto result = std::make_shared<mge::memory_mesh>(
+                layout,
+                mge::data_type::UINT32,
+                layout.binary_size() * mesh->mNumVertices,
+                mesh->mNumFaces * 3 * sizeof(uint32_t));
+
+            memcpy(result->vertex_data(),
+                   mesh->mVertices,
+                   mesh->mNumVertices * sizeof(aiVector3D));
+
+            MGE_DEBUG_TRACE(ASSIMP)
+                << "Mesh " << a.path() << " has " << mesh->mNumFaces
+                << " faces, each with " << mesh->mFaces[0].mNumIndices
+                << " indices";
+
+            for (uint32_t i = 0; i < mesh->mNumFaces; ++i) {
+                const aiFace& face = mesh->mFaces[i];
+                if (face.mNumIndices != 3) {
+                    MGE_THROW(mge::asset_corrupted)
+                        << "Asset mesh has non-triangle face: " << a.path()
+                        << " at face " << i;
+                }
+                memcpy(static_cast<uint8_t*>(result->index_data()) +
+                           i * 3 * sizeof(uint32_t),
+                       face.mIndices,
+                       3 * sizeof(uint32_t));
+            }
+
+            importer.SetIOHandler(nullptr);
+            mge::mesh_ref mr = result;
+            return std::any(mr);
+        } catch (...) {
+            importer.SetIOHandler(nullptr);
+            throw;
+        }
     }
 
     std::span<mge::asset_type> assimp_loader::handled_types() const
