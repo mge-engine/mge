@@ -75,6 +75,17 @@ namespace mge {
         {
             MGE_DEBUG_TRACE(TEAPOT) << "Initializing objects";
 
+            mge::asset_ref mesh_asset =
+                std::make_shared<mge::asset>("/models/teapot.obj");
+            mge::mesh_ref mesh;
+            try {
+                mesh = std::any_cast<mge::mesh_ref>(mesh_asset->load());
+            } catch (const std::bad_any_cast& e) {
+                MGE_ERROR_TRACE(TEAPOT)
+                    << "Cannot load teapot mesh: " << e.what();
+                MGE_THROW(mge::illegal_state) << "Cannot load teapot mesh";
+            }
+
             auto pixel_shader =
                 m_window->render_context().create_shader(shader_type::FRAGMENT);
             auto vertex_shader =
@@ -210,7 +221,7 @@ namespace mge {
         index_buffer_ref  m_indices;
     };
 
-    MGE_REGISTER_IMPLEMENTATION(teapot, mge::application, TEAPOT);
+    MGE_REGISTER_IMPLEMENTATION(teapot, mge::application, teapot);
 } // namespace mge
 
 MGE_MAINFUNCTION
