@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/asset/asset.hpp"
+#include "mge/asset/asset_corrupted.hpp"
 #include "mge/asset/asset_loader.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/checked_cast.hpp"
@@ -12,21 +13,76 @@
 #include "mge/graphics/image.hpp"
 #include "mge/graphics/memory_image.hpp"
 
-#include <assimp/IOStream.hpp>  // C++ stream interface
-#include <assimp/IOSystem.hpp>  // C++ IOSystem interface
-#include <assimp/Importer.hpp>  // C++ importer interface
-#include <assimp/postprocess.h> // Post processing flags
-#include <assimp/scene.h>       // Output data structure
-
+#include <assimp/DefaultLogger.hpp> // Default logger for Assimp
+#include <assimp/IOStream.hpp>      // C++ stream interface
+#include <assimp/IOSystem.hpp>      // C++ IOSystem interface
+#include <assimp/Importer.hpp>      // C++ importer interface
+#include <assimp/logger.hpp>        // Logger interface
+#include <assimp/postprocess.h>     // Post processing flags
+#include <assimp/scene.h>           // Output data structure
 namespace mge {
 
     MGE_DEFINE_TRACE(ASSIMP);
 
+    class assimp_logger : public Assimp::Logger
+    {
+    public:
+        assimp_logger() = default;
+        ~assimp_logger() = default;
+
+    protected:
+        void OnDebug(const char* message) override
+        {
+            MGE_DEBUG_TRACE(ASSIMP) << message;
+        }
+
+        void OnVerboseDebug(const char* message) override
+        {
+            MGE_DEBUG_TRACE(ASSIMP) << message;
+        }
+
+        void OnInfo(const char* message) override
+        {
+            MGE_INFO_TRACE(ASSIMP) << message;
+        }
+
+        void OnWarn(const char* message) override
+        {
+            MGE_WARNING_TRACE(ASSIMP) << message;
+        }
+
+        void OnError(const char* message) override
+        {
+            MGE_ERROR_TRACE(ASSIMP) << message;
+        }
+
+        bool attachStream(Assimp::LogStream* /*stream*/,
+                          unsigned int /*level*/) override
+        {
+            // No-op, we do not support attaching streams
+            return true;
+        }
+
+        bool detachStream(Assimp::LogStream* /*stream*/,
+                          unsigned int /*level*/) override
+        {
+            // No-op, we do not support detaching streams
+            return true;
+        }
+    };
+
     class assimp_loader : public asset_loader
     {
     public:
-        assimp_loader() = default;
-        ~assimp_loader() = default;
+        assimp_loader()
+        {
+            Assimp::DefaultLogger::set(&m_logger);
+        }
+
+        ~assimp_loader()
+        {
+            Assimp::DefaultLogger::set(nullptr);
+        }
 
         std::any load(const mge::asset& a) override;
 
@@ -52,6 +108,9 @@ namespace mge {
 
             return asset_type::UNKNOWN;
         }
+
+    private:
+        assimp_logger m_logger;
     };
 
     class assimp_iostream : public Assimp::IOStream
@@ -151,7 +210,8 @@ namespace mge {
 
         void Close(Assimp::IOStream* pFile) override
         {
-            // No need to close the stream, it is managed by the asset system
+            // No need to close the stream, it is managed by the asset
+            // system
         }
 
     private:
@@ -162,12 +222,21 @@ namespace mge {
     std::any assimp_loader::load(const mge::asset& a)
     {
         MGE_DEBUG_TRACE(ASSIMP) << "Loading asset: " << a.path();
-
-        Assimp::Importer      importer;
+        assimp_logger         logger;
         mge::input_stream_ref stream = a.data();
         assimp_iosystem       iosystem(stream);
-
+        Assimp::Importer      importer;
         importer.SetIOHandler(&iosystem);
+
+        importer.ReadFile(a.path().string(), 0);
+
+        auto scene = importer.GetScene();
+        if (!scene) {
+            MGE_THROW(mge::asset_corrupted)
+                << "Failed to load asset: " << a.path()
+                << ", error: " << importer.GetErrorString();
+        }
+        importer.SetIOHandler(nullptr);
         return std::any();
     }
 
