@@ -211,6 +211,14 @@ namespace mge {
         }
 
         /**
+         * Get the offset of a specific index in the layout.
+         *
+         * @param index index of format
+         * @return offset in bytes
+         */
+        size_t offset(size_t index) const;
+
+        /**
          * @brief Append a format.
          *
          * @param f format

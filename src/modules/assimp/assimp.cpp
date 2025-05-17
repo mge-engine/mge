@@ -281,9 +281,12 @@ namespace mge {
                 MGE_THROW(mge::asset_corrupted)
                     << "Asset mesh has no positions: " << a.path();
             }
-
+            mge::vertex_layout layout;
+            layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
+                             mge::attribute_semantic::POSITION);
             if (mesh->HasNormals()) {
-                MGE_THROW_NOT_IMPLEMENTED << "Normals in mesh asset";
+                layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
+                                 mge::attribute_semantic::NORMAL);
             }
             if (mesh->HasTangentsAndBitangents()) {
                 MGE_THROW_NOT_IMPLEMENTED
@@ -302,10 +305,6 @@ namespace mge {
                 << "Mesh " << a.path() << " has " << mesh->mNumVertices
                 << " vertices and " << mesh->mNumFaces << " faces";
 
-            mge::vertex_layout layout;
-            layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3),
-                             mge::attribute_semantic::POSITION);
-
             MGE_DEBUG_TRACE(ASSIMP)
                 << "Mesh " << a.path() << " has layout: " << layout;
 
@@ -314,6 +313,28 @@ namespace mge {
                 mge::data_type::UINT32,
                 layout.binary_size() * mesh->mNumVertices,
                 mesh->mNumFaces * 3 * sizeof(uint32_t));
+
+            auto   stride = layout.stride();
+            size_t pos = 0;
+            for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
+                aiVector3D* v = mesh->mVertices + i;
+                memcpy(static_cast<uint8_t*>(result->vertex_data()) + pos,
+                       v,
+                       sizeof(aiVector3D));
+                pos += stride;
+            }
+            if (mesh->HasNormals()) {
+                auto normal_offset = layout.offset(1);
+                pos = 0;
+                for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
+                    aiVector3D* n = mesh->mNormals + i;
+                    memcpy(static_cast<uint8_t*>(result->vertex_data()) + pos +
+                               normal_offset,
+                           n,
+                           sizeof(aiVector3D));
+                    pos += stride;
+                }
+            }
 
             memcpy(result->vertex_data(),
                    mesh->mVertices,
