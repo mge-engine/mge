@@ -19,5 +19,6 @@ abstraction.
     graphics/buffers.rst
     graphics/texture.rst
     graphics/image.rst
+    graphics/mesh.rst
     graphics/command_list.rst
 
