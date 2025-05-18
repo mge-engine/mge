@@ -206,8 +206,16 @@ namespace mge {
             }
         }
 
-        asset_type improve_type(const asset& a, const asset_type& type) const
+        asset_type improve_type(const asset&      a,
+                                const asset_type& type,
+                                int               recursion_depth = 0) const
         {
+            if (recursion_depth > 10) {
+                MGE_THROW(illegal_state) << "Recursion depth exceeded while "
+                                            "improving asset type for "
+                                         << a.path().string();
+            }
+
             for (const auto& l : m_all_loaders) {
                 if (l->can_improve(a, type)) {
                     auto t = l->improve(a, type);
@@ -217,7 +225,7 @@ namespace mge {
                 }
             }
             if (refresh_loaders()) {
-                return improve_type(a, type);
+                return improve_type(a, type, recursion_depth + 1);
             }
             return type;
         }

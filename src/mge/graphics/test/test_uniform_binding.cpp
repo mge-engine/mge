@@ -39,5 +39,4 @@ TEST(uniform_binding, create_from_program_ref_with_no_link)
     } catch (const mge::illegal_state&) {
         // Expected exception since the program is not linked
     }
-    \
 }
