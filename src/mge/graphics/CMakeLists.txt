@@ -33,6 +33,7 @@ SET(mgegraphics_sources
     memory_image.cpp
     mesh.cpp
     memory_mesh.cpp
+    uniform_binding.cpp
 )
 
 SET(mgegraphics_headers
@@ -73,6 +74,7 @@ SET(mgegraphics_headers
     memory_image.hpp
     mesh.hpp
     memory_mesh.hpp
+    uniform_binding.hpp
 )
 
 MGE_LIBRARY(
