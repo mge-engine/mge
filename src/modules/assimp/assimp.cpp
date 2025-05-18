@@ -234,6 +234,9 @@ namespace mge {
                     | aiProcess_GenSmoothNormals      // Generate smooth normals
                     | aiProcess_JoinIdenticalVertices // Optimize vertex data
                     | aiProcess_ImproveCacheLocality  // Improve cache locality
+                    | aiProcess_ValidateDataStructure // Validate data structure
+                    | aiProcess_FixInfacingNormals    // Fix infacing normals
+                    | aiProcess_FindInvalidData       // Find invalid data
             );
 
             auto scene = importer.GetScene();
