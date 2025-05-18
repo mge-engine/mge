@@ -8,6 +8,7 @@
 #include "mge/core/simple_trace_formatter.hpp"
 #include "mge/core/stream_trace_sink.hpp"
 
+#include <atomic>
 #include <iostream>
 
 using namespace std::string_literals;
@@ -27,7 +28,8 @@ namespace mge {
                          globally_enabled,
                          "Whether all trace shall be enabled");
 
-    static volatile bool global_topic_configured;
+    static std::atomic<bool> global_topic_configured;
+    static bool              global_topic_initially_configured = false;
 
     static bool global_print_to_stdout()
     {
@@ -45,6 +47,16 @@ namespace mge {
 
     static bool global_trace_enabled()
     {
+        if (!global_topic_initially_configured) {
+            MGE_PARAMETER(trace, globally_enabled).set_change_handler([]() {
+                global_topic_configured = false;
+            });
+            MGE_PARAMETER(trace, print_to_stdout).set_change_handler([]() {
+                global_topic_configured = false;
+            });
+            global_topic_initially_configured = true;
+        }
+
         if (MGE_PARAMETER(trace, globally_enabled).get(false)) {
             return true;
         }
@@ -129,7 +141,9 @@ namespace mge {
                     if (old) {
                         memory_trace_sink* s =
                             dynamic_cast<memory_trace_sink*>(old.get());
-                        s->forward(*sink);
+                        if (s) {
+                            s->forward(*sink);
+                        }
                     }
                 }
                 global_topic_configured = true;
@@ -144,6 +158,9 @@ namespace mge {
             return true;
         } else {
             if (this != &__trace_topic_MGE()) {
+                if (!global_topic_configured) {
+                    __trace_topic_MGE().configure();
+                }
                 return __trace_topic_MGE().enabled(l);
             } else {
                 return false;

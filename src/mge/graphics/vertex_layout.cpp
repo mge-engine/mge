@@ -33,10 +33,31 @@ namespace mge {
                                zero);
     }
 
+    size_t vertex_layout::offset(size_t index) const
+    {
+        if (index >= m_formats.size()) {
+            MGE_THROW(illegal_argument)
+                << "Invalid index: " << index << " in vertex layout with "
+                << m_formats.size() << " formats.";
+        }
+        return std::accumulate(m_formats.begin(),
+                               m_formats.begin() + index,
+                               size_t(0u),
+                               [](size_t sum, const vertex_format& f) {
+                                   return sum + f.binary_size();
+                               });
+    }
+
     void vertex_layout::push_back(const vertex_format& f)
     {
         m_formats.push_back(f);
         m_semantics.push_back(mge::attribute_semantic::ANY);
+    }
+
+    void vertex_layout::push_back(const vertex_format& f, attribute_semantic s)
+    {
+        m_formats.push_back(f);
+        m_semantics.push_back(s);
     }
 
     vertex_layout parse_vertex_layout(std::string_view sv)

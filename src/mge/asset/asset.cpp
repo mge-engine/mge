@@ -12,6 +12,7 @@
 #include "mge/core/trace.hpp"
 
 #include <map>
+#include <set>
 #include <string>
 
 #include <magic.h>
@@ -185,12 +186,19 @@ namespace mge {
     class loader_table
     {
     public:
-        loader_table() { instantiate_loaders(); }
+        loader_table()
+        {
+            instantiate_loaders();
+        }
         ~loader_table() = default;
 
         asset_loader_ref resolve(const asset_type& t) const
         {
             auto it = m_loaders.find(t);
+            if (it == m_loaders.end()) {
+                refresh_loaders();
+                it = m_loaders.find(t);
+            }
             if (it == m_loaders.end()) {
                 return asset_loader_ref();
             } else {
@@ -198,10 +206,37 @@ namespace mge {
             }
         }
 
-        void add_loader(const asset_loader_ref& loader)
+        asset_type improve_type(const asset&      a,
+                                const asset_type& type,
+                                int               recursion_depth = 0) const
+        {
+            if (recursion_depth > 10) {
+                MGE_THROW(illegal_state) << "Recursion depth exceeded while "
+                                            "improving asset type for "
+                                         << a.path().string();
+            }
+
+            for (const auto& l : m_all_loaders) {
+                if (l->can_improve(a, type)) {
+                    auto t = l->improve(a, type);
+                    if (t != asset_type::UNKNOWN) {
+                        return t;
+                    }
+                }
+            }
+            if (refresh_loaders()) {
+                return improve_type(a, type, recursion_depth + 1);
+            }
+            return type;
+        }
+
+        void add_loader(const asset_loader_ref& loader) const
         {
             if (loader) {
+                m_all_loaders.insert(loader);
                 for (const auto& t : loader->handled_types()) {
+                    MGE_DEBUG_TRACE(ASSET)
+                        << "Adding loader for asset type: " << t;
                     m_loaders[t] = loader;
                 }
             }
@@ -209,21 +244,46 @@ namespace mge {
 
     private:
         void instantiate_loaders();
+        bool refresh_loaders() const;
 
-        std::map<asset_type, asset_loader_ref> m_loaders;
+        mutable std::set<std::string, std::less<>>     m_loader_names;
+        mutable std::set<asset_loader_ref>             m_all_loaders;
+        mutable std::map<asset_type, asset_loader_ref> m_loaders;
     };
 
     void loader_table::instantiate_loaders()
     {
         asset_loader::implementations([&](std::string_view name) {
+            MGE_DEBUG_TRACE(ASSET) << "Instantiating asset loader: " << name;
             asset_loader_ref loader = asset_loader::create(name);
             add_loader(loader);
+            m_loader_names.insert(std::string(name));
         });
+    }
+
+    bool loader_table::refresh_loaders() const
+    {
+        bool loader_changed = false;
+        asset_loader::implementations([&](std::string_view name) {
+            auto it = m_loader_names.find(name);
+            if (it == m_loader_names.end()) {
+                MGE_DEBUG_TRACE(ASSET)
+                    << "Instantiating asset loader: " << name;
+                asset_loader_ref loader = asset_loader::create(name);
+                add_loader(loader);
+                m_loader_names.insert(std::string(name));
+                loader_changed = true;
+            }
+        });
+        return loader_changed;
     }
 
     static ::mge::singleton<loader_table> loaders;
 
-    bool asset::exists() const { return m_access || resolve(); }
+    bool asset::exists() const
+    {
+        return m_access || resolve();
+    }
 
     bool asset::exists(const mge::path& p)
     {
@@ -275,6 +335,14 @@ namespace mge {
         if (m_type.value() == asset_type::UNKNOWN) {
             m_type = magic();
         }
+
+        // somewhat hacky: try to specifialize the type
+        // based on the file extension
+        if (m_type.value() == asset_type::UNKNOWN ||
+            m_type.value() == asset_type("text", "plain")) {
+            m_type = loaders->improve_type(*this, m_type.value());
+        }
+
         return m_type.value();
     }
 
@@ -364,6 +432,9 @@ namespace mge {
         mtab->mount(mount_point, type, options);
     }
 
-    void asset::umount(const mge::path& path) { mtab->umount(path); }
+    void asset::umount(const mge::path& path)
+    {
+        mtab->umount(path);
+    }
 
 } // namespace mge

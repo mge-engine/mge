@@ -11,6 +11,7 @@ SET(mgeasset_sources
     file_asset_access.cpp
     file_asset_source.cpp
     application_octet_stream_loader.cpp
+    asset_corrupted.cpp
 )
 
 SET(mgeasset_headers
@@ -23,7 +24,9 @@ SET(mgeasset_headers
     asset_loader.hpp
     file_asset_access.hpp
     file_asset_source.hpp
+    asset_corrupted.hpp
 )
+
 
 MGE_LIBRARY(
     TARGET  mgeasset
@@ -37,6 +40,18 @@ TARGET_LINK_LIBRARIES(mgeasset PRIVATE
     mgecore
 
     unofficial::libmagic::libmagic
-    boost-all)
+    boost-all
+)
+
+ADD_EXECUTABLE(mgeassettool
+    mgeassettool.cpp)
+
+TARGET_LINK_LIBRARIES(mgeassettool
+    PRIVATE 
+    mgeasset 
+    mgecore 
+    mgegraphics
+)
+
 
 ADD_SUBDIRECTORY(test)

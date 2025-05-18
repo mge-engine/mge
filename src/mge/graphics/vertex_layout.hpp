@@ -138,7 +138,7 @@ namespace mge {
                 return e;
             }
 
-            const_entry operator->()
+            const_entry operator->() const
             {
                 const_entry e{m_layout.m_formats[m_index],
                               m_layout.m_semantics[m_index]};
@@ -211,11 +211,27 @@ namespace mge {
         }
 
         /**
+         * Get the offset of a specific index in the layout.
+         *
+         * @param index index of format
+         * @return offset in bytes
+         */
+        size_t offset(size_t index) const;
+
+        /**
          * @brief Append a format.
          *
          * @param f format
          */
         void push_back(const vertex_format& f);
+
+        /**
+         * @brief Append a format with a semantic.
+         *
+         * @param f format
+         * @param s semantic
+         */
+        void push_back(const vertex_format& f, attribute_semantic s);
 
         /**
          * @brief Formats of vertex layout.
@@ -329,14 +345,23 @@ struct fmt::formatter<mge::vertex_layout>
     auto format(const mge::vertex_layout& l, FormatContext& ctx) const
     {
         fmt::format_to(ctx.out(), "[");
-        auto it = l.cbegin();
+        mge::vertex_layout::const_iterator it = l.cbegin();
         while (it != l.cend()) {
+            const auto entry = *it;
             fmt::format_to(ctx.out(),
                            "{{format={}, semantic={}}}",
-                           it->format,
-                           it->semantic);
+                           entry.format,
+                           entry.semantic);
             ++it;
         }
         return fmt::format_to(ctx.out(), "]");
     }
 };
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const vertex_layout& l)
+    {
+        fmt::print(os, "{}", l);
+        return os;
+    }
+} // namespace mge
