@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="MIT License" href="../license.html" />
+    <link rel="next" title="Asset Tool" href="assettool.html" />
     <link rel="prev" title="Asset Management" href="asset.html" /> 
 </head>
 
@@ -70,8 +70,13 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_accessE"><code class="docutils literal notranslate"><span class="pre">mge::asset_access</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#asset-loaders">Asset Loaders</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_loaderE"><code class="docutils literal notranslate"><span class="pre">mge::asset_loader</span></code></a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="assettool.html">Asset Tool</a></li>
 </ul>
 </li>
 </ul>
@@ -336,6 +341,89 @@ asset.</p>
 </dd></dl>
 
 </section>
+<section id="asset-loaders">
+<h2>Asset Loaders<a class="headerlink" href="#asset-loaders" title="Link to this heading"></a></h2>
+<p>Asset loaders are responsible for loading assets from their respective sources.
+They are implemented as classes that inherit from the <cite>asset_loader</cite> interface.</p>
+<p>One asset loader handles a number of types of assets, such as images, meshes,
+shaders, etc. The asset loader is responsible for loading the asset data into
+memory and providing an interface to access the loaded asset.</p>
+<p>In addition, an asset loader can be used also to improve a generic asset type
+like e.g. ‘text/plain’ by providing a more specific type, such as ‘model/obj’
+by further inspection of the asset data.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_loaderE">
+<span id="_CPPv3N3mge12asset_loaderE"></span><span id="_CPPv2N3mge12asset_loaderE"></span><span id="mge::asset_loader"></span><span class="target" id="classmge_1_1asset__loader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_loader</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge12asset_loaderE" title="mge::asset_loader"><span class="n"><span class="pre">asset_loader</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_loaderE" title="Link to this definition"></a><br /></dt>
+<dd><p>Interface for asset loaders. </p>
+<p>An asset loader is responsible for loading an asset. Assets can be loaded as raw streams, but usually one wants to load an asset in a structured way, e.g. as a image, a mesh, a shader etc. </p>
+<p>Subclassed by mge::application_octet_stream_loader</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_loader4loadERK5asset">
+<span id="_CPPv3N3mge12asset_loader4loadERK5asset"></span><span id="_CPPv2N3mge12asset_loader4loadERK5asset"></span><span id="mge::asset_loader::load__assetCR"></span><span class="target" id="classmge_1_1asset__loader_1ac96d7ba5cce9ca2d2e244cbeeb7c053f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12asset_loader4loadERK5asset" title="mge::asset_loader::load::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_loader4loadERK5asset" title="Link to this definition"></a><br /></dt>
+<dd><p>Loads the asset. </p>
+<p>This constructs the loaded asset from the input stream and properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>asset</strong> – asset that is loaded </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>std::any loaded asset </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_loader13handled_typesEv">
+<span id="_CPPv3NK3mge12asset_loader13handled_typesEv"></span><span id="_CPPv2NK3mge12asset_loader13handled_typesEv"></span><span id="mge::asset_loader::handled_typesC"></span><span class="target" id="classmge_1_1asset__loader_1add2bddda2338fcfb6998d74a90739b7f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handled_types</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_loader13handled_typesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return asset types handled by this loader. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>asset types handled by this loader </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type">
+<span id="_CPPv3NK3mge12asset_loader11can_improveERK5assetRK10asset_type"></span><span id="_CPPv2NK3mge12asset_loader11can_improveERK5assetRK10asset_type"></span><span id="mge::asset_loader::can_improve__assetCR.asset_typeCRC"></span><span class="target" id="classmge_1_1asset__loader_1aebc7c8e279d67a09ad81906bb53f8231"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_improve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type" title="mge::asset_loader::can_improve::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this loader can improve the asset type. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – asset to be checked, type stored in asset is unreliable </p></li>
+<li><p><strong>type</strong> – prelimary type of the asset, usually a common type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this loader can improve the asset type, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type">
+<span id="_CPPv3NK3mge12asset_loader7improveERK5assetRK10asset_type"></span><span id="_CPPv2NK3mge12asset_loader7improveERK5assetRK10asset_type"></span><span id="mge::asset_loader::improve__assetCR.asset_typeCRC"></span><span class="target" id="classmge_1_1asset__loader_1afa39609ff635f086af4514b1edc439d8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">improve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type" title="mge::asset_loader::improve::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Improve the asset type. </p>
+<p>This can be called if <code class="docutils literal notranslate"><span class="pre">can_improve</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – asset to be checked, type stored in asset is unreliable </p></li>
+<li><p><strong>type</strong> – prelimary type of the asset, usually a common type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>improved asset type, or <code class="docutils literal notranslate"><span class="pre">asset_type::UNKNOWN</span></code> if no improvement </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
 </section>
 
 
@@ -343,7 +431,7 @@ asset.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="asset.html" class="btn btn-neutral float-left" title="Asset Management" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../license.html" class="btn btn-neutral float-right" title="MIT License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="assettool.html" class="btn btn-neutral float-right" title="Asset Tool" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

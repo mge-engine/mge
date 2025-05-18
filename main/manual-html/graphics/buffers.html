@@ -87,6 +87,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh.html">Mesh</a></li>
 <li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
 </ul>
 </li>
@@ -815,12 +816,40 @@ is a list of vertex formats, and an added attribute semantic.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13vertex_layout6offsetE6size_t">
+<span id="_CPPv3NK3mge13vertex_layout6offsetE6size_t"></span><span id="_CPPv2NK3mge13vertex_layout6offsetE6size_t"></span><span id="mge::vertex_layout::offset__sC"></span><span class="target" id="classmge_1_1vertex__layout_1a5b802607eadfdb0a02e64d711fcb57f4"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">offset</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13vertex_layout6offsetE6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the offset of a specific index in the layout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – index of format </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>offset in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout9push_backERK13vertex_format">
 <span id="_CPPv3N3mge13vertex_layout9push_backERK13vertex_format"></span><span id="_CPPv2N3mge13vertex_layout9push_backERK13vertex_format"></span><span id="mge::vertex_layout::push_back__vertex_formatCR"></span><span class="target" id="classmge_1_1vertex__layout_1a0c3e4df2b4a7e2b0d77d32e6c6f8c7da"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">push_back</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout9push_backERK13vertex_format" title="Link to this definition"></a><br /></dt>
 <dd><p>Append a format. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>f</strong> – format </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_layout9push_backERK13vertex_format18attribute_semantic">
+<span id="_CPPv3N3mge13vertex_layout9push_backERK13vertex_format18attribute_semantic"></span><span id="_CPPv2N3mge13vertex_layout9push_backERK13vertex_format18attribute_semantic"></span><span id="mge::vertex_layout::push_back__vertex_formatCR.attribute_semantic"></span><span class="target" id="classmge_1_1vertex__layout_1aa869edaed243470aa2ba80b8bcd8d4ed"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">push_back</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE" title="mge::vertex_format"><span class="n"><span class="pre">vertex_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">f</span></span>, <a class="reference internal" href="#_CPPv4N3mge18attribute_semanticE" title="mge::attribute_semantic"><span class="n"><span class="pre">attribute_semantic</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">s</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_layout9push_backERK13vertex_format18attribute_semantic" title="Link to this definition"></a><br /></dt>
+<dd><p>Append a format with a semantic. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> – format </p></li>
+<li><p><strong>s</strong> – semantic </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

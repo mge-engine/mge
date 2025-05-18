@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mesh &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Command Lists" href="command_list.html" />
+    <link rel="prev" title="Image" href="image.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mesh</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge4meshE"><code class="docutils literal notranslate"><span class="pre">mge::mesh</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
+      <li class="breadcrumb-item active">Mesh</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/graphics/mesh.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="mesh">
+<h1>Mesh<a class="headerlink" href="#mesh" title="Link to this heading"></a></h1>
+<p>A mesh provides an interface to vertex data and defined faces. Note that a mesh
+only encapsulates vertex data and the indices of the faces, but does not
+include textures, bones, or any hierarchy information.</p>
+<p>A ‘memory_mesh’ is a mesh that owns its own memory.</p>
+<section id="types-and-definitions">
+<h2>Types and Definitions<a class="headerlink" href="#types-and-definitions" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4meshE">
+<span id="_CPPv3N3mge4meshE"></span><span id="_CPPv2N3mge4meshE"></span><span id="mge::mesh"></span><span class="target" id="classmge_1_1mesh"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mesh</span></span></span><a class="headerlink" href="#_CPPv4N3mge4meshE" title="Link to this definition"></a><br /></dt>
+<dd><p>A mesh is a collection of vertices and indices. </p>
+<p>Note that a mesh is not a vertex or index buffer, but the representation vertices and indices in memory (or accessible). A mesh can be used to create vertex and index buffers, but is not necessarily a buffer itself. </p>
+<p>Subclassed by mge::memory_mesh</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh6layoutEv">
+<span id="_CPPv3NK3mge4mesh6layoutEv"></span><span id="_CPPv2NK3mge4mesh6layoutEv"></span><span id="mge::mesh::layoutC"></span><span class="target" id="classmge_1_1mesh_1aa7b5cc8bf08d1800d118d1d5b15fec10"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="buffers.html#_CPPv4N3mge13vertex_layoutE" title="mge::vertex_layout"><span class="n"><span class="pre">vertex_layout</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">layout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh6layoutEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the vertex layout of the mesh. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>vertex layout of the mesh </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh16vertex_data_sizeEv">
+<span id="_CPPv3NK3mge4mesh16vertex_data_sizeEv"></span><span id="_CPPv2NK3mge4mesh16vertex_data_sizeEv"></span><span id="mge::mesh::vertex_data_sizeC"></span><span class="target" id="classmge_1_1mesh_1aec10276d9c0050bf185e85a0a8fff1c0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_data_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh16vertex_data_sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the vertex data in bytes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>size of the vertex data in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh15index_data_sizeEv">
+<span id="_CPPv3NK3mge4mesh15index_data_sizeEv"></span><span id="_CPPv2NK3mge4mesh15index_data_sizeEv"></span><span id="mge::mesh::index_data_sizeC"></span><span class="target" id="classmge_1_1mesh_1a977f79dd494602645bd338a7676c0222"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">index_data_size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh15index_data_sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Size of the index data in bytes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>size of the index data in bytes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh11vertex_dataEv">
+<span id="_CPPv3NK3mge4mesh11vertex_dataEv"></span><span id="_CPPv2NK3mge4mesh11vertex_dataEv"></span><span id="mge::mesh::vertex_dataC"></span><span class="target" id="classmge_1_1mesh_1abd7b593bf57015556c0e5bbb8ff99077"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">vertex_data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh11vertex_dataEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Raw vertex data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>vertex data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh10index_dataEv">
+<span id="_CPPv3NK3mge4mesh10index_dataEv"></span><span id="_CPPv2NK3mge4mesh10index_dataEv"></span><span id="mge::mesh::index_dataC"></span><span class="target" id="classmge_1_1mesh_1ad8ec89de2bf5210d11209bc01d23a99a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">index_data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh10index_dataEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Raw index data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>index data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh16vertex_data_spanEv">
+<span id="_CPPv3NK3mge4mesh16vertex_data_spanEv"></span><span id="_CPPv2NK3mge4mesh16vertex_data_spanEv"></span><span id="mge::mesh::vertex_data_spanC"></span><span class="target" id="classmge_1_1mesh_1af9930f91ebcaa2a016028c221547e279"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex_data_span</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh16vertex_data_spanEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Vertex data of the mesh. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>vertex data of the mesh </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge4mesh15index_data_spanEv">
+<span id="_CPPv3NK3mge4mesh15index_data_spanEv"></span><span id="_CPPv2NK3mge4mesh15index_data_spanEv"></span><span id="mge::mesh::index_data_spanC"></span><span class="target" id="classmge_1_1mesh_1a590f983ea421b2a00a502ed62c74ac0d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">uint8_t</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">index_data_span</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge4mesh15index_data_spanEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Index data of the mesh. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>index data of the mesh </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="simple">
+<dt>..doxygenclass:: mge::memory_mesh</dt><dd><dl class="field-list simple">
+<dt class="field-odd">members<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="image.html" class="btn btn-neutral float-left" title="Image" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="command_list.html" class="btn btn-neutral float-right" title="Command Lists" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

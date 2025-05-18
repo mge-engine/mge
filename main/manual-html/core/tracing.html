@@ -257,7 +257,8 @@ and disabling trace at a global level.</p>
 <section id="defining-a-trace-topic">
 <h3>Defining a Trace Topic<a class="headerlink" href="#defining-a-trace-topic" title="Link to this heading"></a></h3>
 <p>In a source file, a trace topic must be defined. This is best done using
-the predefined macro <a class="reference internal" href="#c.MGE_DEFINE_TRACE" title="MGE_DEFINE_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_DEFINE_TRACE</span></code></a>.</p>
+the predefined macro <a class="reference internal" href="#c.MGE_DEFINE_TRACE" title="MGE_DEFINE_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_DEFINE_TRACE</span></code></a>. This macro can be used within
+a namespace.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DEFINE_TRACE">
 <span class="target" id="trace__topic_8hpp_1a1f3a0834fa663ae04adf3286e6aa9ad4"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEFINE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEFINE_TRACE" title="Link to this definition"></a><br /></dt>
@@ -276,7 +277,8 @@ the predefined macro <a class="reference internal" href="#c.MGE_DEFINE_TRACE" ti
 <h3>Using a Trace Topic<a class="headerlink" href="#using-a-trace-topic" title="Link to this heading"></a></h3>
 <p>If you just want to use a trace topic for tracing, a forward declaration
 must be done. This is done using <a class="reference internal" href="#c.MGE_USE_TRACE" title="MGE_USE_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_USE_TRACE</span></code></a>, or <a class="reference internal" href="#c.MGE_USE_IMPORTED_TRACE" title="MGE_USE_IMPORTED_TRACE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_USE_IMPORTED_TRACE</span></code></a>
-in case the topic is defined in another dynamic library.</p>
+in case the topic is defined in another dynamic library. These macros need to be
+used in the same namespace as the trace topic was defined.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_USE_TRACE">
 <span class="target" id="trace__topic_8hpp_1a256a16752f484fbb622dbf05430e06ac"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_USE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_USE_TRACE" title="Link to this definition"></a><br /></dt>
@@ -303,6 +305,12 @@ in case the topic is defined in another dynamic library.</p>
 </dl>
 </dd></dl>
 
+<p>To use a trace topic in a different namespace, the following macro can be used
+to have a <code class="docutils literal notranslate"><span class="pre">using</span></code> declaration for the trace topic.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygendefine: Cannot find define “MGE_USING_NS_TRACE_TOPIC(NS,” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
 <p>If you need to inspect a trace topic directly, the following macros can be used:</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_TRACE_TOPIC">
@@ -832,6 +840,17 @@ writes trace records to a stream.</p>
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink17memory_trace_sinkE13capacity_type">
+<span id="_CPPv3N3mge17memory_trace_sink17memory_trace_sinkE13capacity_type"></span><span id="_CPPv2N3mge17memory_trace_sink17memory_trace_sinkE13capacity_type"></span><span id="mge::memory_trace_sink::memory_trace_sink__capacity_type"></span><span class="target" id="classmge_1_1memory__trace__sink_1a44ebc6e9af7db4dfb0329dc0662fe7e3"></span><span class="sig-name descname"><span class="n"><span class="pre">memory_trace_sink</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17memory_trace_sink13capacity_typeE" title="mge::memory_trace_sink::capacity_type"><span class="n"><span class="pre">capacity_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">c</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink17memory_trace_sinkE13capacity_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>c</strong> – capacity of this sink </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge17memory_trace_sink7publishERK12trace_record">
 <span id="_CPPv3N3mge17memory_trace_sink7publishERK12trace_record"></span><span id="_CPPv2N3mge17memory_trace_sink7publishERK12trace_record"></span><span id="mge::memory_trace_sink::publish__trace_recordCR"></span><span class="target" id="classmge_1_1memory__trace__sink_1a61eedc128184a4c1e93b89e3b8ddf801"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">publish</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12trace_recordE" title="mge::trace_record"><span class="n"><span class="pre">trace_record</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N3mge17memory_trace_sink7publishERK12trace_record" title="Link to this definition"></a><br /></dt>
