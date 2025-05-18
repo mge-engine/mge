@@ -34,6 +34,16 @@ namespace mge {
         virtual ~mesh() = default;
 
         /**
+         * @brief Get the vertex layout of the mesh.
+         *
+         * @return vertex layout of the mesh
+         */
+        const vertex_layout& layout() const
+        {
+            return m_vertex_layout;
+        }
+
+        /**
          * @brief Size of the vertex data in bytes.
          * @return size of the vertex data in bytes
          */

@@ -7,6 +7,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/graphics/mesh.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
@@ -174,30 +175,16 @@ namespace mge {
             m_program->link();
             MGE_DEBUG_TRACE(TEAPOT) << "Program linked";
 
-            float triangle_coords[] = {
-                0.0f,
-                0.5f,
-                0.0f,
-                0.45f,
-                -0.5,
-                0.0f,
-                -0.45f,
-                -0.5f,
-                0.0f,
-            };
-            int                triangle_indices[] = {0, 1, 2};
-            mge::vertex_layout layout;
-            layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
             MGE_DEBUG_TRACE(TEAPOT) << "Create vertex buffer";
             m_vertices = m_window->render_context().create_vertex_buffer(
-                layout,
-                sizeof(triangle_coords),
-                triangle_coords);
+                mesh->layout(),
+                mesh->vertex_data_size(),
+                mesh->vertex_data());
             MGE_DEBUG_TRACE(TEAPOT) << "Create index buffer";
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
-                sizeof(triangle_indices),
-                triangle_indices);
+                mesh->index_data_size(),
+                mesh->index_data());
             m_draw_commands = m_window->render_context().create_command_list();
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
             m_draw_commands->draw(mge::draw_command(m_program,
