@@ -3,4 +3,3 @@
 // All rights reserved.
 #pragma once
 #include <flecs.h>
-#include <flecs/addons/metrics.h>

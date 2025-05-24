@@ -3,9 +3,9 @@
 // All rights reserved.
 #include "test/googletest.hpp"
 
-#include "mge/entity/world.hpp"
+#include "mge/entity/registry.hpp"
 
-TEST(world, create)
+TEST(system, create)
 {
-    mge::entity::world w;
+    mge::entity::registry s;
 }

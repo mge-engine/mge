@@ -3,12 +3,13 @@
 # All rights reserved.
 
 SET(mgeentity_sources
-    world.cpp
+    registry.cpp
+    entity.cpp
 )
 
 SET(mgeentity_headers
     dllexport.hpp
-    world.hpp
+    registry.hpp
 )
 
 MGE_LIBRARY(

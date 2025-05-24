@@ -3,7 +3,7 @@
 # All rights reserved.
 
 SET(MGEENTITY_TEST_SOURCES
-    test_world.cpp
+    test_registry.cpp
 )
 
 MGE_TEST(

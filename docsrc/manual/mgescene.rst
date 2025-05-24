@@ -4,5 +4,5 @@
 Scene Library
 ****************
 
-The scene library provides a framework for managing and rendering scenes in a
+The scene library provides a framework for managing and rendering worlds in a
 game or application.
