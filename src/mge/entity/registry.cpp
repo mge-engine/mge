@@ -26,6 +26,11 @@ namespace mge::entity {
             return m_registries[index].load();
         }
 
+        void clear(size_t index)
+        {
+            m_registries[index].store(nullptr);
+        }
+
         uint32_t add_registry(registry* reg)
         {
             bool anything_tried = true;
@@ -54,15 +59,20 @@ namespace mge::entity {
     registry::registry()
         : m_world(ecs_init())
         , m_index(s_registry_list->add_registry(this))
+        , m_initial_entity_count(0)
     {
         if (m_world == nullptr) {
             MGE_THROW(mge::runtime_exception)
                 << "Failed to initialize flecs world";
         }
+        m_initial_entity_count = entity_count();
     }
 
     registry::~registry()
     {
+        // Remove this registry from the registry list
+        s_registry_list->clear(m_index);
+        // Finalize the flecs world
         if (m_world != nullptr) {
             if (ecs_fini(m_world)) {
                 MGE_ERROR_TRACE(ENTITY) << "Failed to finalize flecs world";
@@ -74,7 +84,17 @@ namespace mge::entity {
     uint32_t registry::entity_count() const
     {
         auto entities = ecs_get_entities(m_world);
-        return entities.count;
+        return entities.count - m_initial_entity_count;
+    }
+
+    registry& registry::get(uint32_t index)
+    {
+        auto reg = s_registry_list->get(index);
+        if (reg == nullptr) {
+            MGE_THROW(mge::runtime_exception)
+                << "No registry found for index " << index;
+        }
+        return *reg;
     }
 
 } // namespace mge::entity

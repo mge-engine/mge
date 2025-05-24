@@ -38,9 +38,19 @@ namespace mge::entity {
          */
         uint32_t entity_count() const;
 
+        /**
+         * @brief Get entity registry instance by index.
+         *
+         * @return registry instance for the given index
+         */
+        static registry& get(uint32_t index);
+
     private:
-        ecs_world_t* m_world; //!< Flecs world instance
-        uint32_t     m_index; //!< Index in the registry list
+        ecs_world_t* m_world;                    //!< Flecs world instance
+        uint32_t     m_index;                    //!< Index in the registry list
+        uint32_t     m_initial_entity_count = 0; //!< Initial entity count
+
+        friend class entity; //!< Allow entity to access private members
     };
 
 } // namespace mge::entity
