@@ -7,5 +7,6 @@ namespace mge::scene {
 
     MGE_DECLARE_REF(world)
     class scene;
+    class camera;
 
 } // namespace mge::scene
