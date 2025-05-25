@@ -4,6 +4,7 @@
 
 SET(MGEENTITY_TEST_SOURCES
     test_registry.cpp
+    test_entity.cpp
 )
 
 MGE_TEST(

@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(mgescene_sources
+    world.cpp
     scene.cpp
 )
 

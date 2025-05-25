@@ -8,49 +8,11 @@
 
 namespace mge::entity {
 
-    /**
-     * @brief Entity component system.
-     *
-     * A system - sometimes called *world* - is a container for entities and
-     * components. It is the main entry point for creating and managing
-     * entities.
-     *
-     * Different systems can be used to manage different sets of entities and
-     * components, which do not interfere with each other.
-     */
-    class MGEENTITY_EXPORT registry : public mge::noncopyable
+    class MGEENTITY_EXPORT registry : public flecs::world
     {
     public:
-        /**
-         * @brief Create a new empty registry.
-         */
-        registry();
-
-        /**
-         * @brief Destroy the registry.
-         */
-        ~registry();
-
-        /**
-         * @brief Get numnber of entities in the registry.
-         *
-         * @return number of entities in the registry
-         */
-        uint32_t entity_count() const;
-
-        /**
-         * @brief Get entity registry instance by index.
-         *
-         * @return registry instance for the given index
-         */
-        static registry& get(uint32_t index);
-
-    private:
-        ecs_world_t* m_world;                    //!< Flecs world instance
-        uint32_t     m_index;                    //!< Index in the registry list
-        uint32_t     m_initial_entity_count = 0; //!< Initial entity count
-
-        friend class entity; //!< Allow entity to access private members
+        registry() = default;
+        ~registry() = default;
     };
 
 } // namespace mge::entity
