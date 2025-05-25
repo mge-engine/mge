@@ -9,6 +9,10 @@ namespace mge::entity {
         : flecs::entity(registry)
     {}
 
+    entity::entity(mge::entity::registry& registry, const char* name)
+        : flecs::entity(registry, name)
+    {}
+
     entity::entity(const entity& other)
         : flecs::entity(other)
     {}
@@ -24,15 +28,20 @@ namespace mge::entity {
     entity::entity(entity&& other) noexcept
         : flecs::entity(std::move(other))
     {
-        other = entity();
+        other.world_ = nullptr;
+        other.id_ = 0;
     }
 
     entity& entity::operator=(entity&& other) noexcept
     {
         if (this != &other) {
             flecs::entity::operator=(std::move(other));
-            other = entity();
+            other.world_ = nullptr;
+            other.id_ = 0;
         }
         return *this;
     }
+
+    decltype(flecs::ChildOf) entity::child_of = flecs::ChildOf;
+    decltype(flecs::IsA)     entity::is_a = flecs::IsA;
 } // namespace mge::entity

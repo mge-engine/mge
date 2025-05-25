@@ -10,16 +10,38 @@ namespace mge {
 }
 
 namespace mge::scene {
+
     scene::scene(world& w)
-        : m_scene_entity(w.m_registry)
+        : m_scene_entity(w.world_registry())
     {
-        m_scene_entity.add(flecs::ChildOf, w.m_world_entity);
+        using mge::entity::entity;
+        m_scene_entity.add(entity::child_of, w.world_entity());
+        m_scene_entity.add(entity::is_a, w.scene_type());
     }
 
-    scene::~scene()
+    scene::scene(world& w, const char* name)
+        : m_scene_entity(w.world_registry(), name)
+    {
+        using mge::entity::entity;
+        m_scene_entity.add(entity::child_of, w.world_entity());
+        m_scene_entity.add(entity::is_a, w.scene_type());
+    }
+
+    scene::scene(const mge::entity::entity& e) noexcept
+        : m_scene_entity(e)
+    {}
+
+    scene::~scene() {}
+
+    void scene::destroy()
     {
         if (m_scene_entity.is_valid()) {
             m_scene_entity.destroy();
         }
+    }
+
+    const char* scene::name() const
+    {
+        return m_scene_entity.name();
     }
 } // namespace mge::scene

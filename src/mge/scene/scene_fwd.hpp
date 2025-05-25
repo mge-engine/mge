@@ -2,9 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/memory.hpp"
 namespace mge::scene {
 
-    class world;
+    MGE_DECLARE_REF(world)
     class scene;
 
 } // namespace mge::scene

@@ -5,4 +5,10 @@
 
 #include "mge/scene/scene.hpp"
 
-TEST(scene, create) {}
+TEST(scene, create)
+{
+
+    mge::scene::world w;
+    mge::scene::scene s(w);
+    EXPECT_TRUE(s.scene_entity().is_valid());
+}

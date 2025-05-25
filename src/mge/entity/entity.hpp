@@ -12,8 +12,14 @@ namespace mge::entity {
     class MGEENTITY_EXPORT entity : public flecs::entity
     {
     public:
+        static decltype(flecs::ChildOf) child_of;
+        static decltype(flecs::IsA)     is_a;
+
         entity() = default;
         explicit entity(mge::entity::registry& registry);
+
+        entity(mge::entity::registry& registry, const char* name);
+
         ~entity() = default;
 
         entity(const entity&);
