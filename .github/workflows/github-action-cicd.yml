@@ -89,6 +89,7 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
+                $env:VCPKG_VERBOSE="1" 
                 $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --preset=ci-build 
