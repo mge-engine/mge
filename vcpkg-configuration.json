@@ -1,7 +1,7 @@
 {
   "default-registry": {
     "kind": "git",
-    "baseline": "f26ec398c25c4980f33a50391f00a75f7ad62ef7",
+    "baseline": "43819d3734f73ef27055ac80b44f1e75be2f00a8",
     "repository": "https://github.com/mge-engine/vcpkg.git"
   },
   "registries": [
