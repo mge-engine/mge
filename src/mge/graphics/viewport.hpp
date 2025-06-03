@@ -60,23 +60,13 @@ namespace mge {
         viewport& operator=(const viewport&) = default;
         viewport& operator=(viewport&&) = default;
 
-        inline void format(std::format_context& ctx) const
-        {
-            std::format_to(ctx.out(),
-                           "viewport{{x={}, y={}, width={}, height={}, "
-                           "min_depth={}, max_depth={}}}",
-                           x,
-                           y,
-                           width,
-                           height,
-                           min_depth,
-                           max_depth);
-        }
-
         /**
          * Pointer to beginning of data.
          */
-        inline const float* data() const { return (float*)&x; }
+        inline const float* data() const
+        {
+            return (float*)&x;
+        }
 
         /**
          * Lower left corner as point.
@@ -97,4 +87,32 @@ namespace mge {
         float min_depth{0.0f};
         float max_depth{0.0f};
     };
+} // namespace mge
+
+template <>
+struct fmt::formatter<mge::viewport> : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::viewport& vp, FormatContext& ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "viewport{{x={}, y={}, width={}, height={}, "
+                       "min_depth={}, max_depth={}}}",
+                       vp.x,
+                       vp.y,
+                       vp.width,
+                       vp.height,
+                       vp.min_depth,
+                       vp.max_depth);
+
+        return ctx.out();
+    }
+};
+
+namespace mge {
+    inline std::ostream& operator<<(std::ostream& os, const viewport& vp)
+    {
+        fmt::print(os, "{}", vp);
+        return os;
+    }
 } // namespace mge

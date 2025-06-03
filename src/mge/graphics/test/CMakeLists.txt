@@ -17,6 +17,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_image_format.cpp
     test_attribute_semantic.cpp
     test_uniform_binding.cpp
+    test_viewport.cpp
 )
 
 MGE_TEST(
