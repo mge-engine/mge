@@ -6,12 +6,16 @@ SET(mgescene_sources
     world.cpp
     scene.cpp
     renderer.cpp
+    camera.cpp
+    spatial.cpp
 )
 
 SET(mgeentity_headers
     dllexport.hpp
     scene.hpp
     renderer.hpp
+    camera.hpp
+    spatial.hpp
 )
 
 MGE_LIBRARY(

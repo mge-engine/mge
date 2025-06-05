@@ -7,6 +7,8 @@
 #include "mge/entity/registry.hpp"
 #include "mge/scene/dllexport.hpp"
 
+#include <functional>
+
 namespace mge::scene {
 
     /**
@@ -53,6 +55,46 @@ namespace mge::scene {
             return m_scene_type;
         }
 
+        inline mge::entity::entity& actor_type() noexcept
+        {
+            return m_actor_type;
+        }
+
+        inline mge::entity::entity& camera_type() noexcept
+        {
+            return m_camera_type;
+        }
+
+        inline mge::entity::entity& light_type() noexcept
+        {
+            return m_light_type;
+        }
+
+        inline mge::entity::entity& geometry_type() noexcept
+        {
+            return m_geometry_type;
+        }
+
+        inline mge::entity::entity& spatial_type() noexcept
+        {
+            return m_spatial_type;
+        }
+
+        class component_registrar
+        {
+        public:
+            component_registrar(
+                std::function<void(mge::entity::registry&)>&& f);
+
+            void execute(mge::entity::registry& r) const
+            {
+                m_function(r);
+            }
+
+        private:
+            std::function<void(mge::entity::registry&)> m_function;
+        };
+
     private:
         mge::entity::registry m_registry;
         mge::entity::entity   m_world_entity;  //!< world entity
@@ -61,6 +103,7 @@ namespace mge::scene {
         mge::entity::entity   m_camera_type;   //!< camera type entity
         mge::entity::entity   m_light_type;    //!< light type entity
         mge::entity::entity   m_geometry_type; //!< geometry type entity
+        mge::entity::entity   m_spatial_type;  //!< spatial type entity
     };
 
 } // namespace mge::scene

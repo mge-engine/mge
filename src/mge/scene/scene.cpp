@@ -5,10 +5,6 @@
 #include "mge/core/trace.hpp"
 #include "mge/scene/world.hpp"
 
-namespace mge {
-    MGE_DEFINE_TRACE(SCENE);
-}
-
 namespace mge::scene {
 
     scene::scene(world& w)
