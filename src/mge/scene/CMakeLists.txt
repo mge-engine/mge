@@ -5,11 +5,13 @@
 SET(mgescene_sources
     world.cpp
     scene.cpp
+    renderer.cpp
 )
 
 SET(mgeentity_headers
     dllexport.hpp
     scene.hpp
+    renderer.hpp
 )
 
 MGE_LIBRARY(

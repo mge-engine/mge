@@ -5,7 +5,7 @@
 #include "mge/core/memory.hpp"
 namespace mge::scene {
 
-    MGE_DECLARE_REF(world)
+    MGE_DECLARE_REF(world);
     class scene;
     class camera;
 

@@ -46,5 +46,6 @@ TEST(entity, sizeof)
 {
     EXPECT_EQ(sizeof(mge::entity::entity), sizeof(flecs::entity));
     EXPECT_EQ(sizeof(mge::entity::registry), sizeof(flecs::world));
-    EXPECT_EQ(128u, sizeof(mge::entity::entity));
+    EXPECT_EQ(16u,
+              sizeof(mge::entity::entity)); // 2 * 8 bytes for world_ and id_
 }
