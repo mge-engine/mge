@@ -92,7 +92,27 @@ jobs:
                 $env:VCPKG_VERBOSE="1" 
                 $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
-                cmake --preset=ci-build 
+                $maxAttempts = 3
+                $attempt = 0
+                $success = $false
+                
+                while (-not $success -and $attempt -lt $maxAttempts) {
+                  $attempt++
+                  Write-Output "CMake configure attempt $attempt of $maxAttempts"
+                  
+                  try {
+                  cmake --preset=ci-build
+                  $success = $true
+                  Write-Output "CMake configuration succeeded on attempt $attempt"
+                  } catch {
+                  if ($attempt -eq $maxAttempts) {
+                    Write-Output "CMake configuration failed after $maxAttempts attempts"
+                    throw
+                  }
+                  Write-Output "CMake configuration failed on attempt $attempt. Retrying..."
+                  Start-Sleep -Seconds 5
+                  }
+                }
             - name: Build project
               run: |
                 $env:CC = "cl.exe"
