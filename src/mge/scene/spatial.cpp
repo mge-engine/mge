@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/scene/spatial.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/math/vec.hpp"
 #include "mge/scene/world.hpp"
@@ -52,6 +53,21 @@ namespace mge::scene {
     {
         mge::fvec3 value; //!< The position value
     };
+
+    void spatial::set_position(const mge::fvec3& p)
+    {
+        m_entity.set<::mge::scene::position>({p});
+    }
+
+    const mge::fvec3& spatial::position() const
+    {
+        auto pos = m_entity.get<::mge::scene::position>();
+        if (!pos) {
+            MGE_THROW(mge::illegal_state)
+                << "spatial does not have a position component";
+        }
+        return pos->value;
+    }
 
     static mge::scene::world::component_registrar
         position_registrar([](mge::entity::registry& r) {

@@ -27,6 +27,9 @@ namespace mge::scene {
         {
             return m_entity;
         }
+
+        void              set_look_at(const mge::fvec3& look_at);
+        const mge::fvec3& look_at() const;
     };
 
 } // namespace mge::scene

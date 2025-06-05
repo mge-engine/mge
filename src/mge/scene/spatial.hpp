@@ -37,6 +37,8 @@ namespace mge::scene {
 
         void set_position(const mge::fvec3& position);
 
+        const mge::fvec3& position() const;
+
     protected:
         mge::entity::entity m_entity; //!< The entity
     };
