@@ -7,6 +7,7 @@
 #include "mge/scene/dllexport.hpp"
 #include "mge/scene/scene_fwd.hpp"
 
+#include "mge/math/quaternion.hpp"
 #include "mge/math/vec.hpp"
 
 #include <string_view>
@@ -35,9 +36,14 @@ namespace mge::scene {
             return m_entity;
         }
 
-        void set_position(const mge::fvec3& position);
-
+        void              set_position(const mge::fvec3& p);
         const mge::fvec3& position() const;
+
+        void              set_rotation(const mge::fquat& r);
+        const mge::fquat& rotation() const;
+
+        void              set_scale(const mge::fvec3& s);
+        const mge::fvec3& scale() const;
 
     protected:
         mge::entity::entity m_entity; //!< The entity

@@ -4,6 +4,7 @@
 
 SET(MGESCENE_TEST_SOURCES
     test_scene.cpp
+    test_camera.cpp
 )
 
 MGE_TEST(

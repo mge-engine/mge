@@ -8,7 +8,8 @@ SET(mgemath_headers
     glm.hpp
     vec2.hpp
     vec3.hpp
-    vec4.hpp)
+    vec4.hpp
+    quaternion.hpp)
 
 MGE_LIBRARY(
     TARGET mgemath
