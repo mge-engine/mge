@@ -45,6 +45,10 @@ namespace mge::scene {
         void              set_scale(const mge::fvec3& s);
         const mge::fvec3& scale() const;
 
+        void pitch(float angle);
+        void yaw(float angle);
+        void roll(float angle);
+
     protected:
         mge::entity::entity m_entity; //!< The entity
     };

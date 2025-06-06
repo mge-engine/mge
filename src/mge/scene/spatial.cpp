@@ -127,4 +127,25 @@ namespace mge::scene {
         return scl->value;
     }
 
+    void spatial::pitch(float angle)
+    {
+        auto rot = m_entity.get<::mge::scene::rotation>()->value;
+        rot = mge::quat(mge::fvec3(angle, 0.0f, 0.0f)) * rot;
+        m_entity.set<::mge::scene::rotation>({rot});
+    }
+
+    void spatial::yaw(float angle)
+    {
+        auto rot = m_entity.get<::mge::scene::rotation>()->value;
+        rot = mge::quat(mge::fvec3(0.0f, angle, 0.0f)) * rot;
+        m_entity.set<::mge::scene::rotation>({rot});
+    }
+
+    void spatial::roll(float angle)
+    {
+        auto rot = m_entity.get<::mge::scene::rotation>()->value;
+        rot = mge::quat(mge::fvec3(0.0f, 0.0f, angle)) * rot;
+        m_entity.set<::mge::scene::rotation>({rot});
+    }
+
 } // namespace mge::scene
