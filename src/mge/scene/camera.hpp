@@ -30,6 +30,15 @@ namespace mge::scene {
 
         void              set_look_at(const mge::fvec3& look_at);
         const mge::fvec3& look_at() const;
+
+        void              set_up(const mge::fvec3& u);
+        const mge::fvec3& up() const;
+
+        void  set_fov(float f);
+        float fov() const;
+
+        void  set_aspect(float a);
+        float aspect() const;
     };
 
 } // namespace mge::scene
