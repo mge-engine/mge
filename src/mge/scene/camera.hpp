@@ -39,6 +39,12 @@ namespace mge::scene {
 
         void  set_aspect(float a);
         float aspect() const;
+
+        void  set_near(float n);
+        float near() const;
+
+        void  set_far(float f);
+        float far() const;
     };
 
 } // namespace mge::scene

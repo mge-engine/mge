@@ -137,4 +137,57 @@ namespace mge::scene {
         return a->value;
     }
 
+    struct near_plane
+    {
+        float value; //!< The near plane value
+    };
+
+    struct far_plane
+    {
+        float value; //!< The far plane value
+    };
+
+    static mge::scene::world::component_registrar
+        near_plane_registrar([](mge::entity::registry& r) {
+            MGE_DEBUG_TRACE(SCENE) << "Registering camera near plane component";
+            near_plane near_plane_default{0.1f};
+            r.component<mge::scene::near_plane>().set(near_plane_default);
+        });
+
+    static mge::scene::world::component_registrar
+        far_plane_registrar([](mge::entity::registry& r) {
+            MGE_DEBUG_TRACE(SCENE) << "Registering camera far plane component";
+            far_plane far_plane_default{1000.0f};
+            r.component<mge::scene::far_plane>().set(far_plane_default);
+        });
+
+    void camera::set_near(float n)
+    {
+        m_entity.set<mge::scene::near_plane>({n});
+    }
+
+    float camera::near() const
+    {
+        auto n = m_entity.get<mge::scene::near_plane>();
+        if (!n) {
+            MGE_THROW(mge::illegal_state)
+                << "camera does not have a near plane component";
+        }
+        return n->value;
+    }
+
+    void camera::set_far(float f)
+    {
+        m_entity.set<mge::scene::far_plane>({f});
+    }
+
+    float camera::far() const
+    {
+        auto f = m_entity.get<mge::scene::far_plane>();
+        if (!f) {
+            MGE_THROW(mge::illegal_state)
+                << "camera does not have a far plane component";
+        }
+        return f->value;
+    }
 } // namespace mge::scene
