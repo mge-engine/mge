@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
 #include <span>
