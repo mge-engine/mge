@@ -8,6 +8,7 @@ SET(mgescene_sources
     renderer.cpp
     camera.cpp
     spatial.cpp
+    geometry.cpp
 )
 
 SET(mgeentity_headers
@@ -16,6 +17,7 @@ SET(mgeentity_headers
     renderer.hpp
     camera.hpp
     spatial.hpp
+    geometry.hpp
 )
 
 MGE_LIBRARY(
