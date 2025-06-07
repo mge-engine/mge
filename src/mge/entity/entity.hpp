@@ -9,6 +9,15 @@
 
 namespace mge::entity {
 
+    /**
+     * @brief Concept that checks if a type has an entity() method returning
+     * <tt>mge::entity::entity&</tt>
+     */
+    template <typename T>
+    concept has_entity = requires(T& x) {
+        { x.entity() } -> std::same_as<mge::entity::entity&>;
+    };
+
     class MGEENTITY_EXPORT entity : public flecs::entity
     {
     public:

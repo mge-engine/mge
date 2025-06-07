@@ -5,11 +5,14 @@
 SET(mgeentity_sources
     registry.cpp
     entity.cpp
+    container.cpp
 )
 
 SET(mgeentity_headers
     dllexport.hpp
     registry.hpp
+    entity.hpp
+    container.hpp
 )
 
 MGE_LIBRARY(
