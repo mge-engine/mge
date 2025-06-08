@@ -25,6 +25,7 @@
     "assimp",
     "sqlite3",
     "fmt",
-    "flecs"
+    "flecs",
+    "nuklear"
   ]
 }
