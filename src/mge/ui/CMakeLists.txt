@@ -3,10 +3,12 @@
 # All rights reserved.
 
 SET(mgeui_sources
-    dummy.cpp
+    nuklear.cpp
 )
 
 SET(mgeui_headers
+    dllexport.hpp
+    nuklear.hpp
 )
 
 MGE_LIBRARY(
@@ -16,5 +18,5 @@ MGE_LIBRARY(
     ${mgeui_sources}
     ${mgeui_headers}
 )
-TARGET_LINK_LIBRARIES(mgeui mgecore mgegraphics boost-all)
+TARGET_LINK_LIBRARIES(mgeui mgecore mgegraphics boost-all nuklear)
 #ADD_SUBDIRECTORY(test)
