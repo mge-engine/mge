@@ -7,6 +7,14 @@
 
 namespace mge::entity {
 
+    /**
+     * @brief A container view on entities.
+     *
+     * This class provides a container using the parent-child relationship
+     * of entities. As entities can have only one parent, they can only
+     * be part of one container at a time.
+     *
+     */
     class MGEENTITY_EXPORT container : public entity
     {
     public:
