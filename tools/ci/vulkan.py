@@ -32,7 +32,7 @@ def download_vulkan():
     os.mkdir('vulkan-installer')
     print("Downloading vulkan installer", flush=True)
     run_process(["curl", "--show-error", "--output",
-                 '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/VulkanSDK-%s-Installer.exe?Human=true&u=" % (vulkan_version, vulkan_version)], )
+                 '%s\VulkanSDK-%s-Installer.exe' % (vulkan_installer_cache_dir, vulkan_version), "https://sdk.lunarg.com/sdk/download/%s/windows/vulkansdk-windows-X64-%s.exe?Human=true&u=" % (vulkan_version, vulkan_version)], )
 
 
 def install_vulkan():
