@@ -21,5 +21,6 @@ namespace mge {
     MGE_DECLARE_REF(texture);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);
+    MGE_DECLARE_REF(canvas);
 
 } // namespace mge

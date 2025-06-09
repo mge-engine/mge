@@ -42,6 +42,7 @@ namespace mge::dx12 {
         mge::frame_command_list_ref
                          create_current_frame_command_list() override;
         mge::texture_ref create_texture(texture_type type) override;
+        mge::canvas_ref  create_canvas() override;
 
         const mge::dx12::window& window() const
         {

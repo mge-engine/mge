@@ -89,6 +89,13 @@ namespace mge {
         virtual texture_ref create_texture(texture_type type) = 0;
 
         /**
+         * @brief Create a canvas.
+         *
+         * @return created canvas
+         */
+        virtual canvas_ref create_canvas() = 0;
+
+        /**
          * @brief Get swap chain of context.
          *
          * @return swap chain

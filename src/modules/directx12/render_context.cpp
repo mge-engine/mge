@@ -540,6 +540,12 @@ namespace mge::dx12 {
         return result;
     }
 
+    mge::canvas_ref render_context::create_canvas()
+    {
+        mge::canvas_ref result; //  = std::make_shared<dx12::canvas>(*this);
+        return result;
+    }
+
     mge::rectangle render_context::default_scissor() const
     {
         return mge::rectangle(m_scissor_rect.left,

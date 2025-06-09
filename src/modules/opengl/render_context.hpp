@@ -29,17 +29,25 @@ namespace mge {
                                  size_t                    data_size,
                                  void*                     data) override;
 
-            opengl_info& gl_info() { return *s_glinfo; }
+            opengl_info& gl_info()
+            {
+                return *s_glinfo;
+            }
 
             mge::shader_ref       create_shader(shader_type t) override;
             mge::program_ref      create_program() override;
             mge::command_list_ref create_command_list() override;
             mge::texture_ref      create_texture(texture_type type) override;
-            mge::rectangle        default_scissor() const;
-            uint32_t              window_height() const;
+            mge::canvas_ref       create_canvas() override;
+
+            mge::rectangle default_scissor() const;
+            uint32_t       window_height() const;
 #ifdef MGE_OS_WINDOWS
 
-            HDC dc() const { return m_hdc; }
+            HDC dc() const
+            {
+                return m_hdc;
+            }
 
             void create_swap_chain(); // needed for two-step initialization
         private:

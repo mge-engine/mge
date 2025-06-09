@@ -32,6 +32,7 @@ namespace mge::dx11 {
         mge::program_ref      create_program() override;
         mge::command_list_ref create_command_list() override;
         mge::texture_ref      create_texture(mge::texture_type type) override;
+        mge::canvas_ref       create_canvas() override;
 
         const ::mge::dx11::window& window() const
         {

@@ -60,7 +60,10 @@ namespace mge::vulkan {
         }
     }
 
-    render_context::~render_context() { teardown(); }
+    render_context::~render_context()
+    {
+        teardown();
+    }
 
     mge::index_buffer_ref render_context::create_index_buffer(data_type dt,
                                                               size_t data_size,
@@ -122,6 +125,12 @@ namespace mge::vulkan {
     mge::texture_ref render_context::create_texture(texture_type type)
     {
         mge::texture_ref result;
+        return result;
+    }
+
+    mge::canvas_ref render_context::create_canvas()
+    {
+        mge::canvas_ref result; // = std::make_shared<canvas>(*this);
         return result;
     }
 
