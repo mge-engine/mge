@@ -32,6 +32,7 @@ namespace mge {
             if (*it == e) {
                 return true;
             }
+            ++it;
         }
         return false;
     }
@@ -45,6 +46,7 @@ namespace mge {
             if (*it == e) {
                 return true;
             }
+            ++it;
         }
         return false;
     }
@@ -57,6 +59,7 @@ namespace mge {
             if (*it == e) {
                 return true;
             }
+            ++it;
         }
         return false;
     }
