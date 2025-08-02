@@ -36,11 +36,20 @@ namespace mge {
             return std::string_view(m_name.begin(), m_name.end());
         }
 
-        bool monitor::primary() const { return m_primary; }
+        bool monitor::primary() const
+        {
+            return m_primary;
+        }
 
-        mge::extent monitor::physical_size() const { return m_physical_size; }
+        mge::extent monitor::physical_size() const
+        {
+            return m_physical_size;
+        }
 
-        video_mode monitor::current_mode() const { return m_current_mode; }
+        video_mode monitor::current_mode() const
+        {
+            return m_current_mode;
+        }
 
         monitor::video_mode_collection monitor::supported_modes() const
         {
@@ -108,7 +117,7 @@ namespace mge {
                                              0)) {
                         break;
                     }
-                    MGE_DEBUG_TRACE(WIN32)
+                    MGE_DEBUG_TRACE_STREAM(WIN32)
                         << "Found adapter: "
                         << mge::to_utf8(adapter_device.DeviceName) << " - "
                         << mge::to_utf8(adapter_device.DeviceString);

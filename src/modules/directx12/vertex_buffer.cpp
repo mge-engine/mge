@@ -98,7 +98,7 @@ namespace mge::dx12 {
             m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size());
             m_buffer_view.StrideInBytes =
                 mge::checked_cast<UINT>(layout().stride());
-            MGE_DEBUG_TRACE(DX12)
+            MGE_DEBUG_TRACE_STREAM(DX12)
                 << "Vertex buffer view: " << m_buffer_view.BufferLocation << " "
                 << m_buffer_view.SizeInBytes << " "
                 << m_buffer_view.StrideInBytes;

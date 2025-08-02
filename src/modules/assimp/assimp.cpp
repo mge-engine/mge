@@ -32,12 +32,12 @@ namespace mge {
     protected:
         void OnDebug(const char* message) override
         {
-            MGE_DEBUG_TRACE(ASSIMP) << message;
+            MGE_DEBUG_TRACE_STREAM(ASSIMP) << message;
         }
 
         void OnVerboseDebug(const char* message) override
         {
-            MGE_DEBUG_TRACE(ASSIMP) << message;
+            MGE_DEBUG_TRACE_STREAM(ASSIMP) << message;
         }
 
         void OnInfo(const char* message) override
@@ -220,7 +220,7 @@ namespace mge {
 
     std::any assimp_loader::load(const mge::asset& a)
     {
-        MGE_DEBUG_TRACE(ASSIMP) << "Loading asset: " << a.path();
+        MGE_DEBUG_TRACE_STREAM(ASSIMP) << "Loading asset: " << a.path();
 
         assimp_logger         logger;
         mge::input_stream_ref stream = a.data();
@@ -304,11 +304,11 @@ namespace mge {
             }
 
             auto num_vertices = mesh->mNumVertices;
-            MGE_DEBUG_TRACE(ASSIMP)
+            MGE_DEBUG_TRACE_STREAM(ASSIMP)
                 << "Mesh " << a.path() << " has " << mesh->mNumVertices
                 << " vertices and " << mesh->mNumFaces << " faces";
 
-            MGE_DEBUG_TRACE(ASSIMP)
+            MGE_DEBUG_TRACE_STREAM(ASSIMP)
                 << "Mesh " << a.path() << " has layout: " << layout;
 
             auto result = std::make_shared<mge::memory_mesh>(
@@ -343,7 +343,7 @@ namespace mge {
                    mesh->mVertices,
                    mesh->mNumVertices * sizeof(aiVector3D));
 
-            MGE_DEBUG_TRACE(ASSIMP)
+            MGE_DEBUG_TRACE_STREAM(ASSIMP)
                 << "Mesh " << a.path() << " has " << mesh->mNumFaces
                 << " faces, each with " << mesh->mFaces[0].mNumIndices
                 << " indices";

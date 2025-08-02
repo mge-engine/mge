@@ -114,11 +114,11 @@ namespace mge {
     MGE_TRACE_TOPIC(TOPIC).enabled(::mge::trace_level::LEVEL)
 
 /**
- * @def MGE_DEBUG_TRACE
+ * @def MGE_DEBUG_TRACE_STREAM
  * @brief Invoke debug trace.
  * @param TOPIC trace topic
  */
-#define MGE_DEBUG_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, DEBUG)
+#define MGE_DEBUG_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, DEBUG)
 
 /**
  * @def MGE_DEBUG_TRACE_ENABLED
@@ -192,6 +192,6 @@ namespace mge {
  *
  * @param TOPIC trace topic
  */
-#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE(TOPIC) << "XDEBUG: "
+#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE_STREAM(TOPIC) << "XDEBUG: "
 
 } // namespace mge

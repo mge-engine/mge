@@ -74,7 +74,8 @@ public:
         }
 
         if (opts.has_option("r")) {
-            MGE_DEBUG_TRACE(ASSETTOOL) << "Mounting current directory as root";
+            MGE_DEBUG_TRACE_STREAM(ASSETTOOL)
+                << "Mounting current directory as root";
             mge::properties p;
             p.set("directory", ".");
             mge::asset::mount("/", "file", p);
@@ -85,7 +86,7 @@ public:
                 std::any_cast<const std::vector<std::string>&>(
                     opts.option("mount-point"));
             for (const auto& mount_point : mount_points) {
-                MGE_DEBUG_TRACE(ASSETTOOL)
+                MGE_DEBUG_TRACE_STREAM(ASSETTOOL)
                     << "Processing mount point: " << mount_point;
             }
         }
@@ -94,7 +95,8 @@ public:
             opts.positional("asset"));
         for (const auto& name : asset_name) {
             try {
-                MGE_DEBUG_TRACE(ASSETTOOL) << "Processing asset: " << name;
+                MGE_DEBUG_TRACE_STREAM(ASSETTOOL)
+                    << "Processing asset: " << name;
                 mge::asset_ref asset = std::make_shared<mge::asset>(name);
 
                 if (asset) {
@@ -205,7 +207,7 @@ int main(int argc, const char** argv)
         auto& cmd = *it;
 
         if (is_verbose) {
-            MGE_DEBUG_TRACE(ASSETTOOL) << "Command: " << cmd->name();
+            MGE_DEBUG_TRACE_STREAM(ASSETTOOL) << "Command: " << cmd->name();
         }
         mge::program_options::options command_options;
         const mge::program_options& command_option_description = cmd->options();

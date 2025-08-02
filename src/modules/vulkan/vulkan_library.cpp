@@ -17,7 +17,7 @@ namespace mge::vulkan {
 #else
 #    error Unsupported Platform
 #endif
-        MGE_DEBUG_TRACE(VULKAN)
+        MGE_DEBUG_TRACE_STREAM(VULKAN)
             << "Loading vulkan library " << vulkan_library_name;
         m_library = std::make_shared<mge::shared_library>(
             vulkan_library_name,

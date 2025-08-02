@@ -84,7 +84,7 @@ namespace mge {
                    const std::string&       type,
                    const ::mge::properties& options)
         {
-            MGE_DEBUG_TRACE(ASSET)
+            MGE_DEBUG_TRACE_STREAM(ASSET)
                 << "Mounting " << type << " asset source at " << mount_point;
             mount_info mi;
             mi.mount_point = mount_point;
@@ -104,7 +104,7 @@ namespace mge {
 
         void umount(const mge::path& mount_point)
         {
-            MGE_DEBUG_TRACE(ASSET) << "Unmounting " << mount_point;
+            MGE_DEBUG_TRACE_STREAM(ASSET) << "Unmounting " << mount_point;
             auto it = m_mounts.find(mount_point);
             if (it != m_mounts.end()) {
                 m_mounts.erase(it);
@@ -127,7 +127,7 @@ namespace mge {
 
     void mount_table::configure()
     {
-        MGE_DEBUG_TRACE(ASSET) << "Configuring mounted assets";
+        MGE_DEBUG_TRACE_STREAM(ASSET) << "Configuring mounted assets";
         std::map<path, std::string> mount_types;
         std::map<path, properties>  mount_properties;
 
@@ -151,7 +151,7 @@ namespace mge {
         }
         std::map<mge::path, mount_info> new_mounts;
         for (const auto& [mount_point, type] : mount_types) {
-            MGE_DEBUG_TRACE(ASSET)
+            MGE_DEBUG_TRACE_STREAM(ASSET)
                 << "Mounting " << type << " asset source at " << mount_point;
             auto it = m_mounts.find(mount_point);
             if (it != m_mounts.end()) {
@@ -235,7 +235,7 @@ namespace mge {
             if (loader) {
                 m_all_loaders.insert(loader);
                 for (const auto& t : loader->handled_types()) {
-                    MGE_DEBUG_TRACE(ASSET)
+                    MGE_DEBUG_TRACE_STREAM(ASSET)
                         << "Adding loader for asset type: " << t;
                     m_loaders[t] = loader;
                 }
@@ -254,7 +254,8 @@ namespace mge {
     void loader_table::instantiate_loaders()
     {
         asset_loader::implementations([&](std::string_view name) {
-            MGE_DEBUG_TRACE(ASSET) << "Instantiating asset loader: " << name;
+            MGE_DEBUG_TRACE_STREAM(ASSET)
+                << "Instantiating asset loader: " << name;
             asset_loader_ref loader = asset_loader::create(name);
             add_loader(loader);
             m_loader_names.insert(std::string(name));
@@ -267,7 +268,7 @@ namespace mge {
         asset_loader::implementations([&](std::string_view name) {
             auto it = m_loader_names.find(name);
             if (it == m_loader_names.end()) {
-                MGE_DEBUG_TRACE(ASSET)
+                MGE_DEBUG_TRACE_STREAM(ASSET)
                     << "Instantiating asset loader: " << name;
                 asset_loader_ref loader = asset_loader::create(name);
                 add_loader(loader);
@@ -413,7 +414,7 @@ namespace mge {
 
     asset_type asset::magic() const
     {
-        MGE_DEBUG_TRACE(ASSET) << "Determining asset type using magic";
+        MGE_DEBUG_TRACE_STREAM(ASSET) << "Determining asset type using magic";
         char buffer[1024];
 
         mge::input_stream::streamsize_type buffersize =

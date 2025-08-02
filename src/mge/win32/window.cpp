@@ -52,7 +52,7 @@ namespace mge {
                 return;
             }
 
-            MGE_DEBUG_TRACE(WIN32) << "Create window class";
+            MGE_DEBUG_TRACE_STREAM(WIN32) << "Create window class";
 
             WNDCLASSEXW window_class = {};
             HINSTANCE   module_handle;
@@ -82,7 +82,7 @@ namespace mge {
 
         void window::create_window()
         {
-            MGE_DEBUG_TRACE(WIN32) << "Create window";
+            MGE_DEBUG_TRACE_STREAM(WIN32) << "Create window";
 
             RECT window_rect = {0,
                                 0,
@@ -110,7 +110,7 @@ namespace mge {
                                      GetModuleHandle(NULL),
                                      this);
 
-            MGE_DEBUG_TRACE(WIN32) << "Window " << m_hwnd << " created";
+            MGE_DEBUG_TRACE_STREAM(WIN32) << "Window " << m_hwnd << " created";
 
             m_process_input_listener =
                 application::instance()->add_input_listener(
@@ -131,7 +131,8 @@ namespace mge {
         void window::on_show()
         {
             if (m_hwnd) {
-                MGE_DEBUG_TRACE(WIN32) << "ShowWindow(SW_SHOW) " << m_hwnd;
+                MGE_DEBUG_TRACE_STREAM(WIN32)
+                    << "ShowWindow(SW_SHOW) " << m_hwnd;
                 ShowWindow(m_hwnd, SW_SHOW);
                 BringWindowToTop(m_hwnd);
                 SetForegroundWindow(m_hwnd);
@@ -142,7 +143,8 @@ namespace mge {
         void window::on_hide()
         {
             if (m_hwnd) {
-                MGE_DEBUG_TRACE(WIN32) << "ShowWindow(SW_HIDE) " << m_hwnd;
+                MGE_DEBUG_TRACE_STREAM(WIN32)
+                    << "ShowWindow(SW_HIDE) " << m_hwnd;
                 ShowWindow(m_hwnd, SW_HIDE);
             }
         }
@@ -257,7 +259,7 @@ namespace mge {
                 return mge::key::ENTER;
             }
 
-            MGE_DEBUG_TRACE(WIN32) << "Bad key: " << wparam;
+            MGE_DEBUG_TRACE_STREAM(WIN32) << "Bad key: " << wparam;
 
             return mge::key::INVALID;
         }
@@ -285,7 +287,7 @@ namespace mge {
                     w->on_close();
                     break;
                 case WM_WANT_DESTROY:
-                    MGE_DEBUG_TRACE(WIN32)
+                    MGE_DEBUG_TRACE_STREAM(WIN32)
                         << "Destroy of window " << hwnd << "requested";
                     w->m_hwnd = 0;
                     DestroyWindow(hwnd);

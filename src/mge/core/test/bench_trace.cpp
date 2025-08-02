@@ -29,13 +29,13 @@ namespace mge {
         MGE_TRACE_TOPIC(TRACEBENCHMARK).add_sink(sink);
 
         mge::benchmark().run("trace_disabled", [&]() {
-            MGE_DEBUG_TRACE(TRACEBENCHMARK) << "Hello";
+            MGE_DEBUG_TRACE_STREAM(TRACEBENCHMARK) << "Hello";
         });
 
         MGE_TRACE_TOPIC(TRACEBENCHMARK).set_level(trace_level::ALL);
 
         mge::benchmark().run("trace_enabled", [&]() {
-            MGE_DEBUG_TRACE(TRACEBENCHMARK) << "Hello";
+            MGE_DEBUG_TRACE_STREAM(TRACEBENCHMARK) << "Hello";
         });
         EXPECT_NE(0u, sink->size());
     }

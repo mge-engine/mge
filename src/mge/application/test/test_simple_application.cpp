@@ -14,17 +14,17 @@ namespace mge {
 
         void setup() override
         {
-            MGE_DEBUG_TRACE(SIMPLEAPP) << "Setup simpleapp";
+            MGE_DEBUG_TRACE_STREAM(SIMPLEAPP) << "Setup simpleapp";
         }
 
         void teardown() override
         {
-            MGE_DEBUG_TRACE(SIMPLEAPP) << "Teardown simpleapp";
+            MGE_DEBUG_TRACE_STREAM(SIMPLEAPP) << "Teardown simpleapp";
         }
 
         void run() override
         {
-            MGE_DEBUG_TRACE(SIMPLEAPP) << "Run simpleapp";
+            MGE_DEBUG_TRACE_STREAM(SIMPLEAPP) << "Run simpleapp";
             set_quit();
             application::run();
         }

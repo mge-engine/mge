@@ -125,9 +125,9 @@ namespace mge::dx11 {
 
     static void dump_shader_desc(const D3D11_SHADER_DESC& d)
     {
-        MGE_DEBUG_TRACE(DX11) << "Version: " << d.Version;
-        MGE_DEBUG_TRACE(DX11) << "Creator: " << d.Creator;
-        MGE_DEBUG_TRACE(DX11) << "Flags  : " << d.Flags;
+        MGE_DEBUG_TRACE_STREAM(DX11) << "Version: " << d.Version;
+        MGE_DEBUG_TRACE_STREAM(DX11) << "Creator: " << d.Creator;
+        MGE_DEBUG_TRACE_STREAM(DX11) << "Flags  : " << d.Flags;
     }
 
     static mge::data_type
@@ -212,7 +212,7 @@ namespace mge::dx11 {
                     parameter_desc.SemanticName,
                     data_type_of_parameter(parameter_desc),
                     size_of_parameter(parameter_desc)});
-                MGE_DEBUG_TRACE(DX11)
+                MGE_DEBUG_TRACE_STREAM(DX11)
                     << "attribute[" << i << "]=" << attributes.back();
             }
 
@@ -244,12 +244,12 @@ namespace mge::dx11 {
                                     uniform_buffer.uniforms.begin(),
                                     uniform_buffer.uniforms.end());
                     for (size_t k = 0; k < uniforms.size(); ++k) {
-                        MGE_DEBUG_TRACE(DX11)
+                        MGE_DEBUG_TRACE_STREAM(DX11)
                             << "uniform[" << i << "]=" << uniforms[k];
                     }
                 } else {
                     uniform_buffers.push_back(uniform_buffer);
-                    MGE_DEBUG_TRACE(DX11)
+                    MGE_DEBUG_TRACE_STREAM(DX11)
                         << "uniform_buffer[" << uniform_buffers.size() - 1
                         << "]=" << uniform_buffer;
                 }
