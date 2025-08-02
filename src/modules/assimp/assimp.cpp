@@ -52,7 +52,7 @@ namespace mge {
 
         void OnError(const char* message) override
         {
-            MGE_ERROR_TRACE_STREAM(ASSIMP) << message;
+            MGE_ERROR_TRACE(ASSIMP, "{}", message);
         }
 
         bool attachStream(Assimp::LogStream* /*stream*/,

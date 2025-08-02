@@ -165,7 +165,7 @@ namespace mge {
  * @brief Access a trace topic.
  * @param TOPIC name of trace topic
  */
-#define MGE_TRACE_TOPIC(TOPIC) __trace_topic_##TOPIC()
+#define MGE_TRACE_TOPIC(TOPIC) ::mge::__trace_topic_##TOPIC()
 
 /**
  * @def MGE_NS_TRACE_TOPIC

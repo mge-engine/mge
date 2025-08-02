@@ -11,8 +11,9 @@
 #include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/window.hpp"
 
-MGE_DEFINE_TRACE(BLACKSCREEN);
-
+namespace mge {
+    MGE_DEFINE_TRACE(BLACKSCREEN);
+}
 namespace mge {
     class blackscreen : public application
     {

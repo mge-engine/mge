@@ -55,14 +55,16 @@ namespace mge {
                         break;
                     }
                 } catch (const mge::exception& e) {
-                    MGE_ERROR_TRACE_STREAM(CORE)
-                        << "Exception in atexit callback: " << e.what();
+                    MGE_ERROR_TRACE(CORE,
+                                    "Exception in atexit callback: {}",
+                                    e.what());
                 } catch (const std::exception& e) {
-                    MGE_ERROR_TRACE_STREAM(CORE)
-                        << "Exception in atexit callback: " << e.what();
+                    MGE_ERROR_TRACE(CORE,
+                                    "Exception in atexit callback: {}",
+                                    e.what());
                 } catch (...) {
-                    MGE_ERROR_TRACE_STREAM(CORE)
-                        << "Unknown exception in atexit callback";
+                    MGE_ERROR_TRACE(CORE,
+                                    "Unknown exception in atexit callback");
                 }
             }
         }

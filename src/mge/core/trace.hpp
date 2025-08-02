@@ -165,13 +165,6 @@ namespace mge {
 #define MGE_WARNING_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, WARNING)
 
 /**
- * @def MGE_ERROR_TRACE
- * @brief Invoke error trace.
- * @param TOPIC trace topic
- */
-#define MGE_ERROR_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, LEVEL_ERROR)
-
-/**
  * @def MGE_ERROR_TRACE_ENABLED
  * @brief Check whether ERROR trace is enabled.
  * @param TOPIC trace topic
@@ -179,11 +172,19 @@ namespace mge {
 #define MGE_ERROR_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, ERROR)
 
 /**
- * @def MGE_FATAL_TRACE
+ * @def MGE_ERROR_TRACE
  * @brief Invoke fatal trace.
  * @param TOPIC trace topic
+ * @param ... format string and arguments
  */
-#define MGE_FATAL_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, FATAL)
+#define MGE_ERROR_TRACE(TOPIC, ...)                                            \
+    do {                                                                       \
+        if (!(MGE_ERROR_TRACE_ENABLED(TOPIC))) {                               \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, ERROR);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_FATAL_TRACE_ENABLED
@@ -191,6 +192,21 @@ namespace mge {
  * @param TOPIC trace topic
  */
 #define MGE_FATAL_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, FATAL)
+
+/**
+ * @def MGE_FATAL_TRACE
+ * @brief Invoke fatal trace.
+ * @param TOPIC trace topic
+ * @param ... format string and arguments
+ */
+#define MGE_FATAL_TRACE(TOPIC, ...)                                            \
+    do {                                                                       \
+        if (!(MGE_FATAL_TRACE_ENABLED(TOPIC))) {                               \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, FATAL);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_XDEBUG

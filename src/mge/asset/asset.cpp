@@ -134,11 +134,9 @@ namespace mge {
         const auto& entries = MGE_PARAMETER(asset, repositories).get();
         for (const auto& e : entries) {
             if (e.find("mount_point") == e.end()) {
-                MGE_ERROR_TRACE_STREAM(ASSET)
-                    << "Repository entry without mount point";
+                MGE_ERROR_TRACE(ASSET, "Repository entry without mount point");
             } else if (e.find("type") == e.end()) {
-                MGE_ERROR_TRACE_STREAM(ASSET)
-                    << "Repository entry without type";
+                MGE_ERROR_TRACE(ASSET, "Repository entry without type");
             } else {
                 path mount_point(e.find("mount_point")->second);
                 mount_types[mount_point] = e.find("type")->second;

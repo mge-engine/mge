@@ -4,9 +4,9 @@
 #include "mge/application/application.hpp"
 #include "mge/core/trace.hpp"
 
-MGE_DEFINE_TRACE(SIMPLEAPP);
-
 namespace mge {
+    MGE_DEFINE_TRACE(SIMPLEAPP);
+
     class simpleapp : public application
     {
     public:

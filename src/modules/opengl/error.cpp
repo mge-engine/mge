@@ -74,7 +74,7 @@ namespace mge::opengl {
         try {
             check_error(file, line, signature, glFunction);
         } catch (const mge::exception& ex) {
-            MGE_ERROR_TRACE_STREAM(OPENGL) << ex;
+            MGE_ERROR_TRACE(OPENGL, "{}", ex);
         }
     }
 

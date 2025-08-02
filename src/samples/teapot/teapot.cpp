@@ -16,9 +16,9 @@
 #include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
-
-MGE_DEFINE_TRACE(TEAPOT);
-
+namespace mge {
+    MGE_DEFINE_TRACE(TEAPOT);
+}
 namespace mge {
     class teapot : public application
     {
@@ -82,8 +82,9 @@ namespace mge {
             try {
                 mesh = std::any_cast<mge::mesh_ref>(mesh_asset->load());
             } catch (const std::bad_any_cast& e) {
-                MGE_ERROR_TRACE_STREAM(TEAPOT)
-                    << "Cannot load teapot mesh: " << e.what();
+                MGE_ERROR_TRACE(TEAPOT,
+                                "Cannot load teapot mesh: {}",
+                                e.what());
                 MGE_THROW(mge::illegal_state) << "Cannot load teapot mesh";
             }
 
@@ -165,10 +166,9 @@ namespace mge {
                 vertex_shader->compile(vertex_shader_hlsl);
                 MGE_DEBUG_TRACE_STREAM(TEAPOT) << "Shaders compiled";
             } else {
-                MGE_ERROR_TRACE_STREAM(TEAPOT)
-                    << "Cannot create shaders for "
-                    << m_render_system->implementation_name()
-                    << " render system";
+                MGE_ERROR_TRACE(TEAPOT,
+                                "Cannot create shaders for {} render system",
+                                m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
             m_program->set_shader(pixel_shader);

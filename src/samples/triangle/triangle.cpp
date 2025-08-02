@@ -15,9 +15,9 @@
 #include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
-
-MGE_DEFINE_TRACE(TRIANGLE);
-
+namespace mge {
+    MGE_DEFINE_TRACE(TRIANGLE);
+}
 namespace mge {
     class triangle : public application
     {
@@ -154,10 +154,9 @@ namespace mge {
                 vertex_shader->compile(vertex_shader_hlsl);
                 MGE_DEBUG_TRACE_STREAM(TRIANGLE) << "Shaders compiled";
             } else {
-                MGE_ERROR_TRACE_STREAM(TRIANGLE)
-                    << "Cannot create shaders for "
-                    << m_render_system->implementation_name()
-                    << " render system";
+                MGE_ERROR_TRACE(TRIANGLE,
+                                "Cannot create shaders for {} render system",
+                                m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
             m_program->set_shader(pixel_shader);

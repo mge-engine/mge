@@ -108,8 +108,7 @@ namespace mge::vulkan {
         try {
             teardown();
         } catch (const std::exception& e) {
-            MGE_ERROR_TRACE_STREAM(VULKAN)
-                << "Error in Vulkan teardown: " << e.what();
+            MGE_ERROR_TRACE(VULKAN, "Error in Vulkan teardown: {}", e.what());
         }
     }
 #ifdef MGE_OS_WINDOWS
@@ -198,7 +197,7 @@ namespace mge::vulkan {
             MGE_WARNING_TRACE_STREAM(VULKAN) << ss.str();
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            MGE_ERROR_TRACE_STREAM(VULKAN) << ss.str();
+            MGE_ERROR_TRACE(VULKAN, "{}", ss.str());
             break;
         default:
             MGE_INFO_TRACE_STREAM(VULKAN) << ss.str();

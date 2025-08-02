@@ -661,10 +661,20 @@ namespace mge::dx12 {
 
         switch (severity) {
         case D3D12_MESSAGE_SEVERITY_CORRUPTION:
-            MGE_ERROR_TRACE_STREAM(DX12) << ss.str();
+            MGE_ERROR_TRACE(DX12,
+                            "DirectX12 Debug [{}] ({}) ID: {} - {}",
+                            message_severity(severity),
+                            message_category(category),
+                            id,
+                            description);
             break;
         case D3D12_MESSAGE_SEVERITY_ERROR:
-            MGE_ERROR_TRACE_STREAM(DX12) << ss.str();
+            MGE_ERROR_TRACE(DX12,
+                            "DirectX12 Debug [{}] ({}) ID: {} - {}",
+                            message_severity(severity),
+                            message_category(category),
+                            id,
+                            description);
             break;
         case D3D12_MESSAGE_SEVERITY_WARNING:
             MGE_WARNING_TRACE_STREAM(DX12) << ss.str();
