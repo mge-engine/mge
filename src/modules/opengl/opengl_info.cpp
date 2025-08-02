@@ -177,7 +177,12 @@ namespace mge::opengl {
                             message);
             break;
         case GL_DEBUG_SEVERITY_MEDIUM_ARB:
-            MGE_WARNING_TRACE_STREAM(OPENGL) << ss.str();
+            MGE_WARNING_TRACE(OPENGL,
+                              "OpenGL Debug [{}] ({}) ID: {} - {}",
+                              severity_str,
+                              srcname,
+                              id,
+                              message);
             break;
         case GL_DEBUG_SEVERITY_LOW_ARB:
             MGE_INFO_TRACE_STREAM(OPENGL) << ss.str();

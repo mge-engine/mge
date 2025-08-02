@@ -324,9 +324,11 @@ namespace mge::opengl {
             if (uniform_type ==
                 mge::uniform_data_type::UNKNOWN) { // Check against
                                                    // mge::data_type::UNKNOWN
-                MGE_WARNING_TRACE_STREAM(OPENGL)
-                    << "Unsupported uniform type " << gl_type
-                    << " for uniform '" << name << "'";
+                MGE_WARNING_TRACE(
+                    OPENGL,
+                    "Unsupported uniform type {} for uniform '{}'",
+                    gl_type,
+                    name);
                 continue;
             }
 
@@ -337,10 +339,11 @@ namespace mge::opengl {
                     name.erase(pos);
                 }
                 if (array_size == 1) {
-                    MGE_WARNING_TRACE_STREAM(OPENGL)
-                        << "Array size of uniform '" << name
-                        << "' is 1, but array notation is used. "
-                           "Consider removing the array notation.";
+                    MGE_WARNING_TRACE(OPENGL,
+                                      "Array size of uniform '{}' is 1, but "
+                                      "array notation is used. "
+                                      "Consider removing the array notation.",
+                                      name);
                 }
             }
 
@@ -392,9 +395,11 @@ namespace mge::opengl {
             CHECK_OPENGL_ERROR(glGetActiveAttrib);
             auto attr_type = attribute_type_from_gl(type);
             if (attr_type == mge::data_type::UNKNOWN) {
-                MGE_WARNING_TRACE_STREAM(OPENGL)
-                    << "Unsupported attribute type " << type
-                    << " for attribute " << namebuffer.data();
+                MGE_WARNING_TRACE(
+                    OPENGL,
+                    "Unsupported attribute type {} for attribute {}",
+                    type,
+                    namebuffer.data());
                 continue; // Skip unsupported types
             }
             // Assuming m_attributes is std::vector<mge::vertex_attribute>

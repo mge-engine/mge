@@ -47,7 +47,7 @@ namespace mge {
 
         void OnWarn(const char* message) override
         {
-            MGE_WARNING_TRACE_STREAM(ASSIMP) << message;
+            MGE_WARNING_TRACE(ASSIMP, "{}", message);
         }
 
         void OnError(const char* message) override
@@ -253,9 +253,11 @@ namespace mge {
             }
 
             if (scene->mFlags & AI_SCENE_FLAGS_VALIDATION_WARNING) {
-                MGE_WARNING_TRACE_STREAM(ASSIMP)
-                    << "Asset has validation warnings: " << a.path()
-                    << ", warning: " << importer.GetErrorString();
+                MGE_WARNING_TRACE(
+                    ASSIMP,
+                    "Asset has validation warnings: {}, warning: {}",
+                    a.path().generic_string(),
+                    importer.GetErrorString());
             }
 
             if (scene->mNumMeshes == 0) {

@@ -194,7 +194,7 @@ namespace mge::vulkan {
             MGE_INFO_TRACE_STREAM(VULKAN) << ss.str();
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            MGE_WARNING_TRACE_STREAM(VULKAN) << ss.str();
+            MGE_WARNING_TRACE(VULKAN, "{}", ss.str());
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
             MGE_ERROR_TRACE(VULKAN, "{}", ss.str());
