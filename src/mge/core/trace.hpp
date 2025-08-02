@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/clock.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/thread.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_topic.hpp"
@@ -38,6 +39,17 @@ namespace mge {
          * if trace is enabled.
          */
         ~trace();
+
+        /**
+         * @brief Get the stream to write into.
+         */
+        std::ostream& stream() noexcept
+        {
+            if (!m_stream) {
+                m_stream.emplace();
+            }
+            return *m_stream;
+        }
 
         /**
          * @brief Write into trace. No-op if trace level is disabled.
@@ -84,12 +96,12 @@ namespace mge {
     };
 
 /**
- * @def MGE_TRACE
+ * @def MGE_TRACE_OBJECT
  * @brief Invoke trace.
  * @param TOPIC trace topic
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
-#define MGE_TRACE(TOPIC, LEVEL)                                                \
+#define MGE_TRACE_OBJECT(TOPIC, LEVEL)                                         \
     ::mge::trace(MGE_TRACE_TOPIC(TOPIC), ::mge::trace_level::LEVEL)
 
 /**
@@ -106,7 +118,7 @@ namespace mge {
  * @brief Invoke debug trace.
  * @param TOPIC trace topic
  */
-#define MGE_DEBUG_TRACE(TOPIC) MGE_TRACE(TOPIC, DEBUG)
+#define MGE_DEBUG_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, DEBUG)
 
 /**
  * @def MGE_DEBUG_TRACE_ENABLED
@@ -120,7 +132,7 @@ namespace mge {
  * @brief Invoke info trace.
  * @param TOPIC trace topic
  */
-#define MGE_INFO_TRACE(TOPIC) MGE_TRACE(TOPIC, INFO)
+#define MGE_INFO_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, INFO)
 
 /**
  * @def MGE_INFO_TRACE_ENABLED
@@ -134,7 +146,7 @@ namespace mge {
  * @brief Invoke warning trace.
  * @param TOPIC trace topic
  */
-#define MGE_WARNING_TRACE(TOPIC) MGE_TRACE(TOPIC, WARNING)
+#define MGE_WARNING_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, WARNING)
 
 /**
  * @def MGE_WARNING_TRACE_ENABLED
@@ -148,7 +160,7 @@ namespace mge {
  * @brief Invoke error trace.
  * @param TOPIC trace topic
  */
-#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE(TOPIC, LEVEL_ERROR)
+#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, LEVEL_ERROR)
 
 /**
  * @def MGE_ERROR_TRACE_ENABLED
@@ -162,7 +174,7 @@ namespace mge {
  * @brief Invoke fatal trace.
  * @param TOPIC trace topic
  */
-#define MGE_FATAL_TRACE(TOPIC) MGE_TRACE(TOPIC, FATAL)
+#define MGE_FATAL_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, FATAL)
 
 /**
  * @def MGE_FATAL_TRACE_ENABLED

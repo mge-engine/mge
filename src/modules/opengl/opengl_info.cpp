@@ -27,7 +27,7 @@ namespace mge::opengl {
         glGetIntegerv(GL_MAJOR_VERSION, &major_version);
         glGetIntegerv(GL_MINOR_VERSION, &minor_version);
 
-        MGE_TRACE(OPENGL, INFO)
+        MGE_TRACE_OBJECT(OPENGL, INFO)
             << "OpenGL version " << major_version << "." << minor_version;
 
         glsl_version_str =
@@ -44,12 +44,13 @@ namespace mge::opengl {
             mge::shader_language("glsl",
                                  mge::semantic_version(plain_glsl_version));
 
-        MGE_TRACE(OPENGL, INFO) << "GLSL version " << glsl_version_str;
+        MGE_TRACE_OBJECT(OPENGL, INFO) << "GLSL version " << glsl_version_str;
 
         int num_shader_formats = 0;
         glGetIntegerv(GL_NUM_SHADER_BINARY_FORMATS, &num_shader_formats);
-        MGE_TRACE(OPENGL, INFO) << "System supports " << num_shader_formats
-                                << " binary shader formats";
+        MGE_TRACE_OBJECT(OPENGL, INFO)
+            << "System supports " << num_shader_formats
+            << " binary shader formats";
         if (num_shader_formats) {
             std::vector<int> formats;
             formats.resize(num_shader_formats);
@@ -58,10 +59,11 @@ namespace mge::opengl {
                 switch (format) {
                 case GL_SHADER_BINARY_FORMAT_SPIR_V:
                     shader_formats.emplace_back(shader_format("SPIRV"));
-                    MGE_TRACE(OPENGL, INFO) << "Binary shader format SPIRV";
+                    MGE_TRACE_OBJECT(OPENGL, INFO)
+                        << "Binary shader format SPIRV";
                     break;
                 default:
-                    MGE_TRACE(OPENGL, WARNING)
+                    MGE_TRACE_OBJECT(OPENGL, WARNING)
                         << "Binary shader format 0x" << std::hex << format
                         << std::dec << " is not supported";
                 }
@@ -75,10 +77,10 @@ namespace mge::opengl {
             boost::make_split_iterator(extension_string,
                                        boost::token_finder(boost::is_space()));
 
-        MGE_TRACE(OPENGL, INFO) << "OpenGL extensions:";
+        MGE_TRACE_OBJECT(OPENGL, INFO) << "OpenGL extensions:";
         while (!it.eof()) {
             if (!it->empty()) {
-                MGE_TRACE(OPENGL, INFO) << *it;
+                MGE_TRACE_OBJECT(OPENGL, INFO) << *it;
                 extensions.insert(std::string(it->begin(), it->end()));
             }
             ++it;
@@ -186,7 +188,7 @@ namespace mge::opengl {
 
     void opengl_info::install_debug_callback()
     {
-        MGE_TRACE(OPENGL, INFO) << "Install debug callback";
+        MGE_TRACE_OBJECT(OPENGL, INFO) << "Install debug callback";
         glEnable(GL_DEBUG_OUTPUT);
         TRACE_OPENGL_ERROR(glEnable(GL_DEBUG_OUTPUT));
         glDebugMessageCallback(&debug_callback, this);

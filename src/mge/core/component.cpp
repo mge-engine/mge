@@ -35,7 +35,7 @@ namespace mge {
         void register_component(component_registry_entry_base* c)
         {
             auto component_name = c->name();
-            MGE_TRACE(CORE, DEBUG)
+            MGE_TRACE_OBJECT(CORE, DEBUG)
                 << "Registering component " << component_name;
             if (contains(m_components, component_name)) {
                 MGE_THROW(mge::duplicate_element)
@@ -49,8 +49,9 @@ namespace mge {
         void register_implementation(implementation_registry_entry_base* i)
         {
             auto component_name = i->component_name();
-            MGE_TRACE(CORE, DEBUG) << "Registering implementation " << i->name()
-                                   << " of component " << component_name;
+            MGE_TRACE_OBJECT(CORE, DEBUG)
+                << "Registering implementation " << i->name()
+                << " of component " << component_name;
             if (!component_registered(component_name)) {
                 m_pending_implementations.emplace_back(i);
             }
@@ -106,7 +107,7 @@ namespace mge {
         create(std::string_view component_name,
                std::string_view implementation_name)
         {
-            MGE_TRACE(CORE, DEBUG)
+            MGE_TRACE_OBJECT(CORE, DEBUG)
                 << "Create instance of " << component_name
                 << " using implementation " << implementation_name;
 
