@@ -146,7 +146,7 @@ namespace mge {
  * @brief Invoke warning trace.
  * @param TOPIC trace topic
  */
-#define MGE_WARNING_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, WARNING)
+#define MGE_WARNING_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, WARNING)
 
 /**
  * @def MGE_WARNING_TRACE_ENABLED
@@ -160,7 +160,7 @@ namespace mge {
  * @brief Invoke error trace.
  * @param TOPIC trace topic
  */
-#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, LEVEL_ERROR)
+#define MGE_ERROR_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, LEVEL_ERROR)
 
 /**
  * @def MGE_ERROR_TRACE_ENABLED
@@ -174,7 +174,7 @@ namespace mge {
  * @brief Invoke fatal trace.
  * @param TOPIC trace topic
  */
-#define MGE_FATAL_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, FATAL)
+#define MGE_FATAL_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, FATAL)
 
 /**
  * @def MGE_FATAL_TRACE_ENABLED

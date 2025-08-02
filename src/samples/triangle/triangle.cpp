@@ -154,7 +154,7 @@ namespace mge {
                 vertex_shader->compile(vertex_shader_hlsl);
                 MGE_DEBUG_TRACE_STREAM(TRIANGLE) << "Shaders compiled";
             } else {
-                MGE_ERROR_TRACE(TRIANGLE)
+                MGE_ERROR_TRACE_STREAM(TRIANGLE)
                     << "Cannot create shaders for "
                     << m_render_system->implementation_name()
                     << " render system";

@@ -169,10 +169,10 @@ namespace mge::opengl {
         // Log based on severity
         switch (severity) {
         case GL_DEBUG_SEVERITY_HIGH_ARB:
-            MGE_ERROR_TRACE(OPENGL) << ss.str();
+            MGE_ERROR_TRACE_STREAM(OPENGL) << ss.str();
             break;
         case GL_DEBUG_SEVERITY_MEDIUM_ARB:
-            MGE_WARNING_TRACE(OPENGL) << ss.str();
+            MGE_WARNING_TRACE_STREAM(OPENGL) << ss.str();
             break;
         case GL_DEBUG_SEVERITY_LOW_ARB:
             MGE_INFO_TRACE_STREAM(OPENGL) << ss.str();

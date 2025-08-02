@@ -171,17 +171,17 @@ namespace mge {
             }
             return rc;
         } catch (const mge::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
+            MGE_ERROR_TRACE_STREAM(APPLICATION) << "Exception in application '"
                                          << used_application_name << "':";
-            MGE_ERROR_TRACE(APPLICATION) << ex.details();
+            MGE_ERROR_TRACE_STREAM(APPLICATION) << ex.details();
             return 1;
         } catch (const std::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
+            MGE_ERROR_TRACE_STREAM(APPLICATION) << "Exception in application '"
                                          << used_application_name << "':";
-            MGE_ERROR_TRACE(APPLICATION) << ex.what();
+            MGE_ERROR_TRACE_STREAM(APPLICATION) << ex.what();
             return 1;
         } catch (...) {
-            MGE_ERROR_TRACE(APPLICATION) << "Unknown exception in application '"
+            MGE_ERROR_TRACE_STREAM(APPLICATION) << "Unknown exception in application '"
                                          << used_application_name << "'";
             return 1;
         }

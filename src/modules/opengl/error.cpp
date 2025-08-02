@@ -40,7 +40,7 @@ namespace mge::opengl {
     {
         auto err = glGetError();
         if (err != GL_NO_ERROR) {
-            MGE_WARNING_TRACE(OPENGL)
+            MGE_WARNING_TRACE_STREAM(OPENGL)
                 << "Ignoring OpenGL error: (" << (unsigned int)err << ") "
                 << gl_error_text(err);
         }
@@ -74,7 +74,7 @@ namespace mge::opengl {
         try {
             check_error(file, line, signature, glFunction);
         } catch (const mge::exception& ex) {
-            MGE_ERROR_TRACE(OPENGL) << ex;
+            MGE_ERROR_TRACE_STREAM(OPENGL) << ex;
         }
     }
 

@@ -106,7 +106,7 @@ public:
                 }
 
             } catch (const mge::exception& ex) {
-                MGE_ERROR_TRACE(ASSETTOOL)
+                MGE_ERROR_TRACE_STREAM(ASSETTOOL)
                     << "Error loading asset '" << name << "': " << ex.what();
             }
         }
@@ -218,21 +218,21 @@ int main(int argc, const char** argv)
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSETTOOL) << "Error: " << ex;
+            MGE_ERROR_TRACE_STREAM(ASSETTOOL) << "Error: " << ex;
         }
         return 1;
     } catch (const std::exception& ex) {
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSETTOOL) << "Error: " << ex.what();
+            MGE_ERROR_TRACE_STREAM(ASSETTOOL) << "Error: " << ex.what();
         }
         return 1;
     } catch (...) {
         if (!is_verbose) {
             std::cerr << "Unknown error" << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSETTOOL) << "Unknown error";
+            MGE_ERROR_TRACE_STREAM(ASSETTOOL) << "Unknown error";
         }
         return 1;
     }

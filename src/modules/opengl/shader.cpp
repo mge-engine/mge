@@ -57,7 +57,7 @@ namespace mge::opengl {
 
         std::vector<GLchar> log((size_t)log_length + 1);
         glGetShaderInfoLog(m_shader, log_length, &log_length, &log[0]);
-        MGE_ERROR_TRACE(OPENGL) << "Shader compilation failed: " << &(log[0]);
+    MGE_ERROR_TRACE_STREAM(OPENGL) << "Shader compilation failed: " << &(log[0]);
         MGE_THROW(opengl::error) << "Shader compilation failed: " << &(log[0]);
     }
 

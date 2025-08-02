@@ -82,7 +82,7 @@ namespace mge {
             try {
                 mesh = std::any_cast<mge::mesh_ref>(mesh_asset->load());
             } catch (const std::bad_any_cast& e) {
-                MGE_ERROR_TRACE(TEAPOT)
+                MGE_ERROR_TRACE_STREAM(TEAPOT)
                     << "Cannot load teapot mesh: " << e.what();
                 MGE_THROW(mge::illegal_state) << "Cannot load teapot mesh";
             }
@@ -165,7 +165,7 @@ namespace mge {
                 vertex_shader->compile(vertex_shader_hlsl);
                 MGE_DEBUG_TRACE_STREAM(TEAPOT) << "Shaders compiled";
             } else {
-                MGE_ERROR_TRACE(TEAPOT)
+                MGE_ERROR_TRACE_STREAM(TEAPOT)
                     << "Cannot create shaders for "
                     << m_render_system->implementation_name()
                     << " render system";

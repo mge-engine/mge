@@ -101,13 +101,13 @@ namespace mge::vulkan {
         if (rc == VK_SUCCESS) {
             return rc;
         } else if (rc == VK_SUBOPTIMAL_KHR) {
-            MGE_WARNING_TRACE(VULKAN)
+            MGE_WARNING_TRACE_STREAM(VULKAN)
                 << file << ":" << line << ": "
                 << "Call to " << function << " returned: (" << (int)rc << ") "
                 << vkresult_message(rc);
             return rc;
         } else {
-            MGE_ERROR_TRACE(VULKAN) << file << ":" << line << ": "
+            MGE_ERROR_TRACE_STREAM(VULKAN) << file << ":" << line << ": "
                                     << "Call to " << function << " failed: ("
                                     << (int)rc << ") " << vkresult_message(rc);
             vulkan::error err;

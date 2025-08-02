@@ -74,7 +74,7 @@ namespace mge {
 
             if (!s_window_class) {
                 mge::system_error err;
-                MGE_ERROR_TRACE(WIN32)
+                MGE_ERROR_TRACE_STREAM(WIN32)
                     << "Registering window class failed: " << err;
             }
             s_window_class_created = true;

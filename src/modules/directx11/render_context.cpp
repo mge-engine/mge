@@ -90,7 +90,7 @@ namespace mge::dx11 {
                 }
                 d3d_debug->Release();
             } else {
-                MGE_WARNING_TRACE(DX11) << "Cannot enable debug breaks";
+                MGE_WARNING_TRACE_STREAM(DX11) << "Cannot enable debug breaks";
             }
         }
 

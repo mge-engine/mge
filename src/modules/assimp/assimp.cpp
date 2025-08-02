@@ -47,12 +47,12 @@ namespace mge {
 
         void OnWarn(const char* message) override
         {
-            MGE_WARNING_TRACE(ASSIMP) << message;
+            MGE_WARNING_TRACE_STREAM(ASSIMP) << message;
         }
 
         void OnError(const char* message) override
         {
-            MGE_ERROR_TRACE(ASSIMP) << message;
+            MGE_ERROR_TRACE_STREAM(ASSIMP) << message;
         }
 
         bool attachStream(Assimp::LogStream* /*stream*/,
@@ -253,7 +253,7 @@ namespace mge {
             }
 
             if (scene->mFlags & AI_SCENE_FLAGS_VALIDATION_WARNING) {
-                MGE_WARNING_TRACE(ASSIMP)
+                MGE_WARNING_TRACE_STREAM(ASSIMP)
                     << "Asset has validation warnings: " << a.path()
                     << ", warning: " << importer.GetErrorString();
             }
