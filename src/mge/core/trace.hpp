@@ -132,7 +132,7 @@ namespace mge {
  * @brief Invoke info trace.
  * @param TOPIC trace topic
  */
-#define MGE_INFO_TRACE(TOPIC) MGE_TRACE_OBJECT(TOPIC, INFO)
+#define MGE_INFO_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, INFO)
 
 /**
  * @def MGE_INFO_TRACE_ENABLED

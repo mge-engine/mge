@@ -42,7 +42,7 @@ namespace mge {
 
         void OnInfo(const char* message) override
         {
-            MGE_INFO_TRACE(ASSIMP) << message;
+            MGE_INFO_TRACE_STREAM(ASSIMP) << message;
         }
 
         void OnWarn(const char* message) override

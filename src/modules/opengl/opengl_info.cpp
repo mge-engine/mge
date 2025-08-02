@@ -175,13 +175,13 @@ namespace mge::opengl {
             MGE_WARNING_TRACE(OPENGL) << ss.str();
             break;
         case GL_DEBUG_SEVERITY_LOW_ARB:
-            MGE_INFO_TRACE(OPENGL) << ss.str();
+            MGE_INFO_TRACE_STREAM(OPENGL) << ss.str();
             break;
         case GL_DEBUG_SEVERITY_NOTIFICATION:
             MGE_DEBUG_TRACE_STREAM(OPENGL) << ss.str();
             break;
         default:
-            MGE_INFO_TRACE(OPENGL) << ss.str();
+            MGE_INFO_TRACE_STREAM(OPENGL) << ss.str();
             break;
         }
     }

@@ -670,10 +670,10 @@ namespace mge::dx12 {
             MGE_WARNING_TRACE(DX12) << ss.str();
             break;
         case D3D12_MESSAGE_SEVERITY_INFO:
-            MGE_INFO_TRACE(DX12) << ss.str();
+            MGE_INFO_TRACE_STREAM(DX12) << ss.str();
             break;
         default:
-            MGE_INFO_TRACE(DX12) << ss.str();
+            MGE_INFO_TRACE_STREAM(DX12) << ss.str();
             break;
         }
     }
