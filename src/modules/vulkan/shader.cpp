@@ -88,7 +88,8 @@ namespace mge::vulkan {
             << "Compile shader: glslang_shader_preprocess";
         if (!glslang_shader_preprocess(glsl_shader, &input)) {
             const char* info_log = glslang_shader_get_info_log(glsl_shader);
-            MGE_ERROR_TRACE_STREAM(VULKAN) << "Fail to preprocess shader:" << info_log;
+            MGE_ERROR_TRACE_STREAM(VULKAN)
+                << "Fail to preprocess shader:" << info_log;
 
             MGE_THROW(mge::vulkan::error)
                 << "Failed to preprocess shader: " << info_log;
@@ -97,7 +98,8 @@ namespace mge::vulkan {
             << "Compile shader: glslang_shader_parse";
         if (!glslang_shader_parse(glsl_shader, &input)) {
             const char* info_log = glslang_shader_get_info_log(glsl_shader);
-            MGE_ERROR_TRACE_STREAM(VULKAN) << "Fail to parse shader:" << info_log;
+            MGE_ERROR_TRACE_STREAM(VULKAN)
+                << "Fail to parse shader:" << info_log;
 
             MGE_THROW(mge::vulkan::error)
                 << "Failed to parse shader: " << info_log;
@@ -124,7 +126,8 @@ namespace mge::vulkan {
             const char* info_log = glslang_program_get_info_log(glsl_program);
             const char* debug_log =
                 glslang_program_get_info_debug_log(glsl_program);
-            MGE_ERROR_TRACE_STREAM(VULKAN) << "Failed to link program: " << info_log;
+            MGE_ERROR_TRACE_STREAM(VULKAN)
+                << "Failed to link program: " << info_log;
             MGE_DEBUG_TRACE_STREAM(VULKAN)
                 << "Program link message: " << debug_log;
             MGE_THROW(mge::vulkan::error)

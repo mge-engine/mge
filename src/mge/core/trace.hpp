@@ -113,6 +113,15 @@ namespace mge {
 #define MGE_TRACE_ENABLED(TOPIC, LEVEL)                                        \
     MGE_TRACE_TOPIC(TOPIC).enabled(::mge::trace_level::LEVEL)
 
+#define MGE_TRACE(TOPIC, LEVEL, ...)                                           \
+    do {                                                                       \
+        if (!(MGE_TRACE_ENABLED(TOPIC, LEVEL))) {                              \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, LEVEL);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
+
 /**
  * @def MGE_DEBUG_TRACE_STREAM
  * @brief Invoke debug trace.

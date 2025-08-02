@@ -108,7 +108,8 @@ namespace mge::vulkan {
         try {
             teardown();
         } catch (const std::exception& e) {
-            MGE_ERROR_TRACE_STREAM(VULKAN) << "Error in Vulkan teardown: " << e.what();
+            MGE_ERROR_TRACE_STREAM(VULKAN)
+                << "Error in Vulkan teardown: " << e.what();
         }
     }
 #ifdef MGE_OS_WINDOWS

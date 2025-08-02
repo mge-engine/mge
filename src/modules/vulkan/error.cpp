@@ -107,9 +107,10 @@ namespace mge::vulkan {
                 << vkresult_message(rc);
             return rc;
         } else {
-            MGE_ERROR_TRACE_STREAM(VULKAN) << file << ":" << line << ": "
-                                    << "Call to " << function << " failed: ("
-                                    << (int)rc << ") " << vkresult_message(rc);
+            MGE_ERROR_TRACE_STREAM(VULKAN)
+                << file << ":" << line << ": "
+                << "Call to " << function << " failed: (" << (int)rc << ") "
+                << vkresult_message(rc);
             vulkan::error err;
             throw err.set_info_from_vkresult(rc, file, line, function);
         }
