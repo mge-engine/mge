@@ -61,7 +61,7 @@ namespace mge {
 
     package_ref package::get(std::string_view name)
     {
-        return s_package_list->get(name);
+        return s_package_list->get(name, true);
     }
 
 } // namespace mge
