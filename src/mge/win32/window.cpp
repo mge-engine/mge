@@ -357,6 +357,11 @@ namespace mge {
                     w->on_mouse_move(GET_X_LPARAM(lparam),
                                      GET_Y_LPARAM(lparam));
                     break;
+                case WM_MOUSEWHEEL: {
+                    int32_t delta = GET_WHEEL_DELTA_WPARAM(wparam);
+                    w->on_mouse_wheel(0, delta);
+                    break;
+                }
                 case WM_CHAR:
                     if (wparam == 0x0D || wparam == 0x09 || wparam == 0x08) {
                         switch (wparam) {
