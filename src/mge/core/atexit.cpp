@@ -41,7 +41,7 @@ namespace mge {
     atexit_callback_runner::~atexit_callback_runner()
     {
         if (g_atexit_processing_stopped) {
-            MGE_DEBUG_TRACE_STREAM(CORE) << "Atexit processing stopped";
+            MGE_DEBUG_TRACE(CORE, "Atexit processing stopped");
         } else {
             MGE_TRACE_OBJECT(CORE, DEBUG) << "Running atexit callbacks";
             for (auto rit = m_callbacks.begin(); rit != m_callbacks.end();
@@ -50,8 +50,7 @@ namespace mge {
                 try {
                     cb();
                     if (g_atexit_processing_stopped) {
-                        MGE_DEBUG_TRACE_STREAM(CORE)
-                            << "Atexit processing stopped";
+                        MGE_DEBUG_TRACE(CORE, "Atexit processing stopped");
                         break;
                     }
                 } catch (const mge::exception& e) {

@@ -29,7 +29,7 @@ namespace mge::dx11 {
         depth_buffer_desc.CPUAccessFlags = 0;
         depth_buffer_desc.MiscFlags = 0;
 
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Creating depth/stencil buffer texture";
+        MGE_DEBUG_TRACE(DX11, "Creating depth/stencil buffer texture");
         ID3D11Texture2D* tmp_depth_stencil_buffer;
 
         auto rc = context.device()->CreateTexture2D(&depth_buffer_desc,
@@ -40,7 +40,7 @@ namespace mge::dx11 {
                       CreateTexture2D(D3D11_BIND_DEPTH_STENCIL));
         m_depth_stencil_buffer.reset(tmp_depth_stencil_buffer);
 
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Creating depth/stencil state";
+        MGE_DEBUG_TRACE(DX11, "Creating depth/stencil state");
         D3D11_DEPTH_STENCIL_DESC depth_stencil_state_desc = {};
         depth_stencil_state_desc.DepthEnable = true;
         depth_stencil_state_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;

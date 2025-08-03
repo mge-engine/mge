@@ -228,14 +228,15 @@ namespace mge::opengl {
             glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &length);
             CHECK_OPENGL_ERROR(glGetProgramiv(GL_INFO_LOG_LENGTH));
             if (length == 0) {
-                MGE_DEBUG_TRACE_STREAM(OPENGL) << "No program info log";
+                MGE_DEBUG_TRACE(OPENGL, "No program info log");
                 return;
             }
             std::vector<char> infolog(length);
             glGetProgramInfoLog(m_program, length, nullptr, infolog.data());
             CHECK_OPENGL_ERROR(glGetProgramInfoLog);
-            MGE_DEBUG_TRACE_STREAM(OPENGL)
-                << std::string(infolog.data(), infolog.size());
+            MGE_DEBUG_TRACE(OPENGL,
+                            "{}",
+                            std::string(infolog.data(), infolog.size()));
         }
     }
 
@@ -264,8 +265,9 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_ACTIVE_RESOURCES));
 
         if (num_uniforms == 0) {
-            MGE_DEBUG_TRACE_STREAM(OPENGL)
-                << "No active uniforms found in program " << m_program;
+            MGE_DEBUG_TRACE(OPENGL,
+                            "No active uniforms found in program {}",
+                            m_program);
             return;
         }
 
@@ -278,8 +280,10 @@ namespace mge::opengl {
 
         std::vector<char> name_buffer(max_name_length);
 
-        MGE_DEBUG_TRACE_STREAM(OPENGL)
-            << "Found " << num_uniforms << " uniforms in program " << m_program;
+        MGE_DEBUG_TRACE(OPENGL,
+                        "Found {} uniforms in program {}",
+                        num_uniforms,
+                        m_program);
 
         const GLenum properties[] = {GL_NAME_LENGTH,
                                      GL_TYPE,
@@ -355,11 +359,13 @@ namespace mge::opengl {
                                   uniform_type,
                                   static_cast<uint32_t>(location),
                                   static_cast<uint32_t>(array_size)});
-            MGE_DEBUG_TRACE_STREAM(OPENGL)
-                << "Uniform: '" << m_uniforms.back().name
-                << "', type: " << m_uniforms.back().type
-                << ", location: " << m_uniforms.back().location
-                << ", array_size: " << m_uniforms.back().array_size;
+            MGE_DEBUG_TRACE(
+                OPENGL,
+                "Uniform: '{}', type: {}, location: {}, array_size: {}",
+                m_uniforms.back().name,
+                m_uniforms.back().type,
+                m_uniforms.back().location,
+                m_uniforms.back().array_size);
         }
     }
 
@@ -378,9 +384,10 @@ namespace mge::opengl {
         GLint             num_attributes = 0;
         glGetProgramiv(m_program, GL_ACTIVE_ATTRIBUTES, &num_attributes);
         CHECK_OPENGL_ERROR(glGetProgramiv(GL_ACTIVE_ATTRIBUTES));
-        MGE_DEBUG_TRACE_STREAM(OPENGL)
-            << "Found " << num_attributes << " attributes in program "
-            << m_program;
+        MGE_DEBUG_TRACE(OPENGL,
+                        "Found {} attributes in program {}",
+                        num_attributes,
+                        m_program);
         for (GLint i = 0; i < num_attributes; ++i) {
             GLint   size = 0;
             GLenum  type = 0;
@@ -406,9 +413,11 @@ namespace mge::opengl {
             // and vertex_attribute has members: name, type, size
             m_attributes.push_back(
                 {namebuffer.data(), attr_type, static_cast<uint8_t>(size)});
-            MGE_DEBUG_TRACE_STREAM(OPENGL)
-                << "Attribute: " << namebuffer.data() << ", type: " << attr_type
-                << ", size: " << size;
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Attribute: '{}', type: {}, size: {}",
+                            namebuffer.data(),
+                            attr_type,
+                            size);
         }
     }
 
@@ -426,8 +435,9 @@ namespace mge::opengl {
         CHECK_OPENGL_ERROR(glGetProgramInterfaceiv(GL_ACTIVE_RESOURCES));
 
         if (num_uniform_blocks == 0) {
-            MGE_DEBUG_TRACE_STREAM(OPENGL)
-                << "No active uniform blocks found in program " << m_program;
+            MGE_DEBUG_TRACE(OPENGL,
+                            "No active uniform blocks found in program {}",
+                            m_program);
             return;
         }
 
@@ -440,9 +450,10 @@ namespace mge::opengl {
 
         std::vector<char> name_buffer(max_name_length);
 
-        MGE_DEBUG_TRACE_STREAM(OPENGL)
-            << "Found " << num_uniform_blocks << " uniform blocks in program "
-            << m_program;
+        MGE_DEBUG_TRACE(OPENGL,
+                        "Found {} uniform blocks in program {}",
+                        num_uniform_blocks,
+                        m_program);
         const GLenum properties[] = {GL_NUM_ACTIVE_VARIABLES};
         const int    num_props = sizeof(properties) / sizeof(properties[0]);
 
@@ -473,9 +484,10 @@ namespace mge::opengl {
             ub.name = name;
             m_uniform_buffers.push_back(ub);
 
-            MGE_DEBUG_TRACE_STREAM(OPENGL)
-                << "Uniform block: '" << name << "' has " << num_uniforms
-                << " uniforms";
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Uniform block: '{}' has {} uniforms",
+                            name,
+                            num_uniforms);
 
             for (GLint j = 0; j < num_uniforms; ++j) {
             }

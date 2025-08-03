@@ -131,7 +131,7 @@ namespace mge::vulkan {
     void render_context::create_surface()
     {
 #ifdef MGE_OS_WINDOWS
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create Vulkan surface (Win32)";
+        MGE_DEBUG_TRACE(VULKAN, "Create Vulkan surface (Win32)");
         if (!m_render_system->vkCreateWin32SurfaceKHR) {
             MGE_THROW(error)
                 << "Cannot create surface: vkCreateWin32SurfaceKHR function "
@@ -156,7 +156,7 @@ namespace mge::vulkan {
 
     void render_context::create_device()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create logical device";
+        MGE_DEBUG_TRACE(VULKAN, "Create logical device");
         VkDeviceQueueCreateInfo queue_create_info{};
         queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
         queue_create_info.queueFamilyIndex =
@@ -192,8 +192,9 @@ namespace mge::vulkan {
                                             &device_create_info,
                                             nullptr,
                                             &m_device));
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Created logical device: " << m_device;
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Created logical device: {}",
+                        static_cast<void*>(m_device));
     }
 
     void render_context::teardown()
@@ -308,7 +309,7 @@ namespace mge::vulkan {
 
     void render_context::resolve_device_functions()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Resolve device functions";
+        MGE_DEBUG_TRACE(VULKAN, "Resolve device functions");
 #ifdef MGE_COMPILER_MSVC
 #    pragma warning(push)
 #    pragma warning(disable : 4191)
@@ -340,7 +341,7 @@ namespace mge::vulkan {
 
     void render_context::clear_functions()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Clear device functions";
+        MGE_DEBUG_TRACE(VULKAN, "Clear device functions");
 #ifdef MGE_COMPILER_MSVC
 #    pragma warning(push)
 #    pragma warning(disable : 4191)
@@ -367,7 +368,7 @@ namespace mge::vulkan {
 
     void render_context::get_device_queue()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Get device queue";
+        MGE_DEBUG_TRACE(VULKAN, "Get device queue");
         vkGetDeviceQueue(m_device,
                          m_render_system->graphics_queue_index(),
                          0,
@@ -376,7 +377,7 @@ namespace mge::vulkan {
 
     void render_context::fetch_surface_capabilities()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Fetch surface capabilities";
+        MGE_DEBUG_TRACE(VULKAN, "Fetch surface capabilities");
         CHECK_VK_CALL(
             m_render_system->vkGetPhysicalDeviceSurfaceCapabilitiesKHR(
                 m_render_system->physical_device(),
@@ -392,12 +393,15 @@ namespace mge::vulkan {
                         data));
             },
             m_surface_formats);
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Found " << m_surface_formats.size() << " surface formats";
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Found {} surface formats",
+                        m_surface_formats.size());
         size_t format_index = m_surface_formats.size();
         for (const auto& format : m_surface_formats) {
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    " << format.format << "/" << format.colorSpace;
+            MGE_DEBUG_TRACE(VULKAN,
+                            "    {} / {}",
+                            format.format,
+                            format.colorSpace);
             if (format.format == VK_FORMAT_B8G8R8A8_SRGB &&
                 format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
                 format_index = &format - m_surface_formats.data();
@@ -410,9 +414,10 @@ namespace mge::vulkan {
             m_used_surface_format = m_surface_formats[0];
         }
 
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Using surface format " << m_used_surface_format.format << "/"
-            << m_used_surface_format.colorSpace;
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Using surface format {} / {}",
+                        m_used_surface_format.format,
+                        m_used_surface_format.colorSpace);
 
         enumerate(
             [this](uint32_t* count, VkPresentModeKHR* data) {
@@ -425,10 +430,11 @@ namespace mge::vulkan {
             },
             m_surface_present_modes);
 
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Found " << m_surface_present_modes.size() << " present modes";
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Found {} present modes",
+                        m_surface_present_modes.size());
         for (const auto& f : m_surface_present_modes) {
-            MGE_DEBUG_TRACE_STREAM(VULKAN) << "    " << f;
+            MGE_DEBUG_TRACE(VULKAN, "    {}", f);
         }
 
         m_used_present_mode = VK_PRESENT_MODE_FIFO_KHR;
@@ -439,13 +445,12 @@ namespace mge::vulkan {
             }
         }
 
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Using present mode " << m_used_present_mode;
+        MGE_DEBUG_TRACE(VULKAN, "Using present mode {}", m_used_present_mode);
     }
 
     void render_context::choose_extent()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Choose extent";
+        MGE_DEBUG_TRACE(VULKAN, "Choose extent");
         if (m_surface_capabilities.currentExtent.width != UINT32_MAX) {
             m_extent = m_surface_capabilities.currentExtent;
         } else {
@@ -458,19 +463,21 @@ namespace mge::vulkan {
                          std::min(m_surface_capabilities.maxImageExtent.height,
                                   m_window.extent().height));
         }
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Using extent " << m_extent.width << "x" << m_extent.height;
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Using extent {}x{}",
+                        m_extent.width,
+                        m_extent.height);
     }
 
     void render_context::create_swap_chain()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create swap chain";
+        MGE_DEBUG_TRACE(VULKAN, "Create swap chain");
         uint32_t image_count = m_surface_capabilities.minImageCount + 1;
         if (m_surface_capabilities.maxImageCount > 0 &&
             image_count > m_surface_capabilities.maxImageCount) {
             image_count = m_surface_capabilities.maxImageCount;
         }
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Using " << image_count << " images";
+        MGE_DEBUG_TRACE(VULKAN, "Using {} images", image_count);
 
         VkSwapchainCreateInfoKHR create_info = {};
         create_info.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -511,14 +518,14 @@ namespace mge::vulkan {
                                                       data));
             },
             m_swap_chain_images);
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Created swap chain with " << m_swap_chain_images.size()
-            << " images";
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Created swap chain with {} images",
+                        m_swap_chain_images.size());
     }
 
     void render_context::create_image_views()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create image views";
+        MGE_DEBUG_TRACE(VULKAN, "Create image views");
         m_swap_chain_image_views.resize(m_swap_chain_images.size());
         for (size_t i = 0; i < m_swap_chain_images.size(); ++i) {
             VkImageViewCreateInfo create_info = {};
@@ -544,7 +551,7 @@ namespace mge::vulkan {
 
     void render_context::create_allocator()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create allocator";
+        MGE_DEBUG_TRACE(VULKAN, "Create allocator");
         VmaVulkanFunctions vk_functions = {};
         vk_functions.vkGetInstanceProcAddr =
             m_render_system->library().vkGetInstanceProcAddr;
@@ -562,7 +569,7 @@ namespace mge::vulkan {
 
     void render_context::create_render_pass()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create render pass";
+        MGE_DEBUG_TRACE(VULKAN, "Create render pass");
         VkAttachmentDescription color_attachment = {};
         // single color buffer used for presentation
         color_attachment.format = m_used_surface_format.format;
@@ -613,7 +620,7 @@ namespace mge::vulkan {
 
     void render_context::create_graphics_command_pool()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create graphics command pool";
+        MGE_DEBUG_TRACE(VULKAN, "Create graphics command pool");
         VkCommandPoolCreateInfo pool_info = {};
         pool_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
         pool_info.queueFamilyIndex = m_render_system->graphics_queue_index();
@@ -628,9 +635,9 @@ namespace mge::vulkan {
 
     void render_context::create_primary_command_buffers()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Create " << m_swap_chain_images.size()
-            << " primary command buffers";
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Create {} primary command buffers",
+                        m_swap_chain_images.size());
         VkCommandBufferAllocateInfo alloc_info = {};
         alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
         alloc_info.commandPool = m_graphics_command_pool;
@@ -649,7 +656,7 @@ namespace mge::vulkan {
 
     void render_context::create_framebuffers()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create framebuffers";
+        MGE_DEBUG_TRACE(VULKAN, "Create framebuffers");
         m_swap_chain_framebuffers.resize(m_swap_chain_image_views.size());
         for (size_t i = 0; i < m_swap_chain_image_views.size(); ++i) {
             VkImageView attachments[] = {m_swap_chain_image_views[i]};
@@ -672,7 +679,7 @@ namespace mge::vulkan {
 
     void render_context::create_fence()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create fence";
+        MGE_DEBUG_TRACE(VULKAN, "Create fence");
         VkFenceCreateInfo fence_info = {};
         fence_info.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
         // enable first draw begin to pass through
@@ -685,7 +692,7 @@ namespace mge::vulkan {
 
     void render_context::create_semaphores()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Create semaphores";
+        MGE_DEBUG_TRACE(VULKAN, "Create semaphores");
         VkSemaphoreCreateInfo semaphore_info = {};
         semaphore_info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
         CHECK_VK_CALL(vkCreateSemaphore(m_device,

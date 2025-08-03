@@ -24,14 +24,14 @@ namespace mge::dx11 {
         : m_render_system(render_system_)
         , m_window(window_)
     {
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Create render context";
+        MGE_DEBUG_TRACE(DX11, "Create render context");
     }
 
     render_context::~render_context() {}
 
     void render_context::initialize()
     {
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Initialize render context";
+        MGE_DEBUG_TRACE(DX11, "Initialize render context");
         DXGI_SWAP_CHAIN_DESC swap_chain_desc = {};
         UINT flags = (m_render_system.debug() ? D3D11_CREATE_DEVICE_DEBUG : 0);
         D3D_DRIVER_TYPE driver_type =
@@ -72,7 +72,7 @@ namespace mge::dx11 {
         m_device_context.reset(tmp_device_context);
 
         if (m_render_system.debug()) {
-            MGE_DEBUG_TRACE_STREAM(DX11) << "Enable debug breaks";
+            MGE_DEBUG_TRACE(DX11, "Enable debug breaks");
             ID3D11Debug* d3d_debug = nullptr;
             m_device->QueryInterface(__uuidof(ID3D11Debug), (void**)&d3d_debug);
             if (d3d_debug) {
@@ -97,8 +97,7 @@ namespace mge::dx11 {
         auto swap_chain =
             std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
         m_swap_chain = swap_chain;
-        MGE_DEBUG_TRACE_STREAM(DX11)
-            << "Create texture for depth/stencil buffer";
+        MGE_DEBUG_TRACE(DX11, "Create texture for depth/stencil buffer");
 
         D3D11_TEXTURE2D_DESC depth_stencil_desc = {};
         depth_stencil_desc.Width = m_window.extent().width;
@@ -119,7 +118,7 @@ namespace mge::dx11 {
                                        &tmp_depth_stencil);
         CHECK_HRESULT(rc, ID3D11Device, CreateTexture2D);
 
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Create depth stencil view";
+        MGE_DEBUG_TRACE(DX11, "Create depth stencil view");
         ID3D11DepthStencilView* tmp_depth_stencil_view = nullptr;
         rc = m_device->CreateDepthStencilView(tmp_depth_stencil,
                                               nullptr,
@@ -129,7 +128,7 @@ namespace mge::dx11 {
         tmp_depth_stencil = nullptr;
         m_depth_stencil_view.reset(tmp_depth_stencil_view);
 
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Creating render target view";
+        MGE_DEBUG_TRACE(DX11, "Creating render target view");
 
         ID3D11RenderTargetView* tmp_render_target_view;
 
@@ -139,7 +138,7 @@ namespace mge::dx11 {
                                               &tmp_render_target_view);
         CHECK_HRESULT(rc, ID3D11Device, CreateRenderTargetView);
         back_buffer.reset();
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Set render target";
+        MGE_DEBUG_TRACE(DX11, "Set render target");
         m_render_target_view.reset(tmp_render_target_view);
         setup_context(*m_device_context);
     }

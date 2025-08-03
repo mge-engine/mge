@@ -53,14 +53,14 @@ namespace mge::vulkan {
     void render_system::init_glslang()
     {
         std::call_once(s_glslang_initialized, []() {
-            MGE_DEBUG_TRACE_STREAM(VULKAN) << "Initializing shader compiler";
+            MGE_DEBUG_TRACE(VULKAN, "Initializing shader compiler");
             auto rc = glslang_initialize_process();
             if (!rc) {
                 MGE_THROW(vulkan::error)
                     << "Failed to initialize shader compiler: " << rc;
             }
             mge::atexit::run([]() {
-                MGE_DEBUG_TRACE_STREAM(VULKAN) << "Finalizing shader compiler";
+                MGE_DEBUG_TRACE(VULKAN, "Finalizing shader compiler");
                 glslang_finalize_process();
             });
         });
@@ -188,7 +188,7 @@ namespace mge::vulkan {
         // Log based on severity
         switch (severity) {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-            MGE_DEBUG_TRACE_STREAM(VULKAN) << ss.str();
+            MGE_DEBUG_TRACE(VULKAN, "{}", ss.str());
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
             MGE_INFO_TRACE(VULKAN, "{}", ss.str());
@@ -232,8 +232,8 @@ namespace mge::vulkan {
         }
 
         if (debug()) {
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "Enabling Vulkan instance debug extensions";
+            MGE_DEBUG_TRACE(VULKAN,
+                            "Enabling Vulkan instance debug extensions");
             extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
             layers.push_back("VK_LAYER_KHRONOS_validation");
         }
@@ -251,8 +251,7 @@ namespace mge::vulkan {
         // need to create always as it has to be in scope
         VkDebugUtilsMessengerCreateInfoEXT debug_create_info = {};
         if (debug()) {
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "Attaching debug message callback";
+            MGE_DEBUG_TRACE(VULKAN, "Attaching debug message callback");
             debug_create_info.sType =
                 VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
             debug_create_info.messageSeverity =
@@ -289,10 +288,12 @@ namespace mge::vulkan {
             vkEnumerateInstanceLayerProperties(&count,
                                                m_layer_properties.data()));
 
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Found " << count << " layers:";
+        MGE_DEBUG_TRACE(VULKAN, "Found {} layers:", count);
         for (const auto& layer : m_layer_properties) {
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "  " << layer.layerName << ": " << layer.description;
+            MGE_DEBUG_TRACE(VULKAN,
+                            "  {}: {}",
+                            layer.layerName,
+                            layer.description);
             uint32_t extension_count = 0;
             CHECK_VK_CALL(
                 vkEnumerateInstanceExtensionProperties(layer.layerName,
@@ -304,10 +305,9 @@ namespace mge::vulkan {
                     vkEnumerateInstanceExtensionProperties(layer.layerName,
                                                            &extension_count,
                                                            properties.data()));
-                MGE_DEBUG_TRACE_STREAM(VULKAN) << "    Extensions:";
+                MGE_DEBUG_TRACE(VULKAN, "    Extensions:");
                 for (const auto& prop : properties) {
-                    MGE_DEBUG_TRACE_STREAM(VULKAN)
-                        << "      " << prop.extensionName;
+                    MGE_DEBUG_TRACE(VULKAN, "      {}", prop.extensionName);
                 }
                 m_instance_extensions[layer.layerName] = std::move(properties);
             }
@@ -370,7 +370,7 @@ namespace mge::vulkan {
 
     void render_system::resolve_instance_functions()
     {
-        MGE_DEBUG_TRACE_STREAM(VULKAN) << "Resolve instance functions";
+        MGE_DEBUG_TRACE(VULKAN, "Resolve instance functions");
 #ifdef MGE_COMPILER_MSVC
 #    pragma warning(push)
 #    pragma warning(disable : 4191)
@@ -463,11 +463,11 @@ namespace mge::vulkan {
             m_all_physical_devices);
 
         if (m_all_physical_devices.size() == 1) {
-            MGE_DEBUG_TRACE_STREAM(VULKAN) << "Found 1 physical device";
+            MGE_DEBUG_TRACE(VULKAN, "Found 1 physical device");
         } else {
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "Found " << m_all_physical_devices.size()
-                << " physical devices";
+            MGE_DEBUG_TRACE(VULKAN,
+                            "Found {} physical devices",
+                            m_all_physical_devices.size());
         }
         if (m_all_physical_devices.empty()) {
             MGE_THROW(error) << "No physical devices found";
@@ -478,11 +478,15 @@ namespace mge::vulkan {
             VkPhysicalDeviceFeatures   features;
             vkGetPhysicalDeviceProperties(device, &properties);
             vkGetPhysicalDeviceFeatures(device, &features);
-            MGE_DEBUG_TRACE_STREAM(VULKAN) << "Physical device: " << device;
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    Device name: " << properties.deviceName;
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    Device type: " << properties.deviceType;
+            MGE_DEBUG_TRACE(VULKAN,
+                            "Physical device: {}",
+                            static_cast<void*>(device));
+            MGE_DEBUG_TRACE(VULKAN,
+                            "    Device name: {}",
+                            properties.deviceName);
+            MGE_DEBUG_TRACE(VULKAN,
+                            "    Device type: {}",
+                            properties.deviceType);
 
             m_physical_device_properties[device] = properties;
             m_physical_device_features[device] = features;
@@ -508,9 +512,9 @@ namespace mge::vulkan {
                                                          data);
             },
             m_queue_family_properties);
-        MGE_DEBUG_TRACE_STREAM(VULKAN)
-            << "Found " << m_queue_family_properties.size()
-            << " queue families";
+        MGE_DEBUG_TRACE(VULKAN,
+                        "Found {} queue families",
+                        m_queue_family_properties.size());
 
         if (m_queue_family_properties.empty()) {
             MGE_THROW(error) << "No queue families found";
@@ -519,21 +523,30 @@ namespace mge::vulkan {
         for (size_t index = 0; index < m_queue_family_properties.size();
              ++index) {
             const auto& qf = m_queue_family_properties[index];
-            MGE_DEBUG_TRACE_STREAM(VULKAN) << "Queue family " << index << ": "
-                                           << qf.queueCount << " queues";
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    Graphics: "
-                << ((qf.queueFlags & VK_QUEUE_GRAPHICS_BIT) ? "yes" : "no");
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    Compute: "
-                << ((qf.queueFlags & VK_QUEUE_COMPUTE_BIT) ? "yes" : "no");
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    Transfer: "
-                << ((qf.queueFlags & VK_QUEUE_TRANSFER_BIT) ? "yes" : "no");
-            MGE_DEBUG_TRACE_STREAM(VULKAN)
-                << "    Sparse binding: "
-                << ((qf.queueFlags & VK_QUEUE_SPARSE_BINDING_BIT) ? "yes"
-                                                                  : "no");
+            MGE_DEBUG_TRACE(VULKAN,
+                            "Queue family {}: {} queues",
+                            index,
+                            qf.queueCount);
+            MGE_DEBUG_TRACE(VULKAN,
+                            "    Graphics: {}",
+                            (qf.queueFlags & VK_QUEUE_GRAPHICS_BIT) ? "yes"
+                                                                    : "no");
+            MGE_DEBUG_TRACE(VULKAN,
+                            "    Compute: {}",
+                            (qf.queueFlags & VK_QUEUE_COMPUTE_BIT) ? "yes"
+                                                                   : "no");
+            MGE_DEBUG_TRACE(VULKAN,
+                            "    Transfer: {}",
+                            (qf.queueFlags & VK_QUEUE_TRANSFER_BIT) ? "yes"
+                                                                    : "no");
+            MGE_DEBUG_TRACE(
+                VULKAN,
+                "    Sparse binding: {}",
+                (qf.queueFlags & VK_QUEUE_SPARSE_BINDING_BIT) ? "yes" : "no");
+            if (qf.queueFlags & VK_QUEUE_GRAPHICS_BIT &&
+                m_graphics_queue_index == m_queue_family_properties.size()) {
+                m_graphics_queue_index = index;
+            }
             if (qf.queueFlags & VK_QUEUE_GRAPHICS_BIT &&
                 m_graphics_queue_index == m_queue_family_properties.size()) {
                 m_graphics_queue_index = index;

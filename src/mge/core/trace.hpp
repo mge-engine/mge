@@ -97,7 +97,7 @@ namespace mge {
 
 /**
  * @def MGE_TRACE_OBJECT
- * @brief Invoke trace.
+ * @brief Create a trace object.
  * @param TOPIC trace topic
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
@@ -123,18 +123,26 @@ namespace mge {
     } while (false)
 
 /**
- * @def MGE_DEBUG_TRACE_STREAM
- * @brief Invoke debug trace.
- * @param TOPIC trace topic
- */
-#define MGE_DEBUG_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, DEBUG)
-
-/**
  * @def MGE_DEBUG_TRACE_ENABLED
  * @brief Check whether DEBUG trace is enabled.
  * @param TOPIC trace topic
  */
 #define MGE_DEBUG_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, DEBUG)
+
+/**
+ * @def MGE_DEBUG_TRACE
+ * @brief Invoke debug trace.
+ * @param TOPIC trace topic
+ * @param ... format string and arguments
+ */
+#define MGE_DEBUG_TRACE(TOPIC, ...)                                            \
+    do {                                                                       \
+        if (!(MGE_DEBUG_TRACE_ENABLED(TOPIC))) {                               \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, DEBUG);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_INFO_TRACE_ENABLED
@@ -232,7 +240,10 @@ namespace mge {
  * should never have a MGE_XDEBUG trace statement.
  *
  * @param TOPIC trace topic
+ * @param FMT format string
+ * @param ... format string arguments
  */
-#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE_STREAM(TOPIC) << "XDEBUG: "
+#define MGE_XDEBUG(TOPIC, FMT, ...)                                            \
+    MGE_DEBUG_TRACE(TOPIC, "XDEBUG: " FMT, __VA_ARGS__)
 
 } // namespace mge

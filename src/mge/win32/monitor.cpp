@@ -117,10 +117,10 @@ namespace mge {
                                              0)) {
                         break;
                     }
-                    MGE_DEBUG_TRACE_STREAM(WIN32)
-                        << "Found adapter: "
-                        << mge::to_utf8(adapter_device.DeviceName) << " - "
-                        << mge::to_utf8(adapter_device.DeviceString);
+                    MGE_DEBUG_TRACE(WIN32,
+                                    "Found adapter: {} - {}",
+                                    mge::to_utf8(adapter_device.DeviceName),
+                                    mge::to_utf8(adapter_device.DeviceString));
                     DISPLAY_DEVICEW display_device;
                     for (DWORD display_index = 0;; ++display_index) {
                         mge::zero_memory(display_device);

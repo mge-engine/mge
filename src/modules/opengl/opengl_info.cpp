@@ -160,12 +160,6 @@ namespace mge::opengl {
         const char* typename_str = type_name(type);
         const char* severity_str = severity_name(severity);
 
-        // Format the message with all available information
-        std::stringstream ss;
-        ss << "OpenGL Debug [" << severity_str << "] "
-           << "(" << srcname << ":" << typename_str << ") "
-           << "ID: " << id << " - " << message;
-
         // Log based on severity
         switch (severity) {
         case GL_DEBUG_SEVERITY_HIGH_ARB:
@@ -185,7 +179,12 @@ namespace mge::opengl {
                               message);
             break;
         case GL_DEBUG_SEVERITY_NOTIFICATION:
-            MGE_DEBUG_TRACE_STREAM(OPENGL) << ss.str();
+            MGE_DEBUG_TRACE(OPENGL,
+                            "OpenGL Debug [{}] ({}) ID: {} - {}",
+                            severity_str,
+                            srcname,
+                            id,
+                            message);
             break;
         case GL_DEBUG_SEVERITY_LOW_ARB:
         default:

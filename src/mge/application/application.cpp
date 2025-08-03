@@ -104,11 +104,12 @@ namespace mge {
         if (MGE_PARAMETER(application, loop).has_value()) {
             loop_implementation = MGE_PARAMETER(application, loop).get();
         }
-        MGE_DEBUG_TRACE_STREAM(APPLICATION)
-            << "Using loop implementation: " << loop_implementation;
+        MGE_DEBUG_TRACE(APPLICATION,
+                        "Using loop implementation: {}",
+                        loop_implementation);
         auto loop_instance = mge::loop::create(loop_implementation);
         loop_instance->run(*this);
-        MGE_DEBUG_TRACE_STREAM(APPLICATION) << "Main loop finished";
+        MGE_DEBUG_TRACE(APPLICATION, "Main loop finished");
     }
 
     int application::main(std::string_view application_name,
@@ -130,41 +131,35 @@ namespace mge {
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {
-                    MGE_DEBUG_TRACE_STREAM(APPLICATION)
-                        << "Application name parameter found";
+                    MGE_DEBUG_TRACE(APPLICATION, "Application name parameter found");
                     application_name_parameter_value =
                         MGE_PARAMETER(application, name).get();
                     used_application_name = application_name_parameter_value;
                 }
                 if (used_application_name.empty()) {
-                    MGE_DEBUG_TRACE_STREAM(APPLICATION)
-                        << "No application name parameter found, falling back "
-                           "to executable name";
+                    MGE_DEBUG_TRACE(APPLICATION, "No application name parameter found, falling back to executable name");
                     application_name_parameter_value = mge::executable_name();
                     used_application_name = application_name_parameter_value;
                 }
             }
 
-            MGE_DEBUG_TRACE_STREAM(APPLICATION)
-                << "Create application '" << used_application_name << "'";
+            MGE_DEBUG_TRACE(APPLICATION, "Create application '{}'", used_application_name);
             auto app = application::create(used_application_name);
             if (!app) {
                 return 1;
             }
-            MGE_DEBUG_TRACE_STREAM(APPLICATION) << "Application initialize";
+            MGE_DEBUG_TRACE(APPLICATION, "Application initialize");
             app->initialize(argc, argv);
-            MGE_DEBUG_TRACE_STREAM(APPLICATION) << "Application setup";
+            MGE_DEBUG_TRACE(APPLICATION, "Application setup");
             app->setup();
-            MGE_DEBUG_TRACE_STREAM(APPLICATION) << "Application run";
+            MGE_DEBUG_TRACE(APPLICATION, "Application run");
             app->run();
-            MGE_DEBUG_TRACE_STREAM(APPLICATION) << "Remove all listeners";
+            MGE_DEBUG_TRACE(APPLICATION, "Remove all listeners");
             app->clear_listeners();
-            MGE_DEBUG_TRACE_STREAM(APPLICATION) << "Application teardown";
+            MGE_DEBUG_TRACE(APPLICATION, "Application teardown");
             app->teardown();
             auto rc = app->return_code();
-            MGE_DEBUG_TRACE_STREAM(APPLICATION)
-                << "Application '" << used_application_name
-                << "' has finished with return code " << rc;
+            MGE_DEBUG_TRACE(APPLICATION, "Application '{}' has finished with return code {}", used_application_name, rc)    ;
             // store config if all is well
             if (!rc) {
                 configuration::store();

@@ -56,7 +56,7 @@ namespace mge::dx12 {
 
     void render_context::create_command_queue()
     {
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create command queue";
+        MGE_DEBUG_TRACE(DX12, "Create command queue");
         D3D12_COMMAND_QUEUE_DESC desc = {};
         desc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
         desc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
@@ -67,7 +67,7 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandQueue);
 
         // m_command_queue->SetName(L"mge::dx12::render_context::m_command_queue");
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create command queue fence";
+        MGE_DEBUG_TRACE(DX12, "Create command queue fence");
         rc = m_device->CreateFence(0,
                                    D3D12_FENCE_FLAG_NONE,
                                    IID_PPV_ARGS(&m_command_queue_fence));
@@ -83,7 +83,7 @@ namespace mge::dx12 {
 
     void render_context::create_device()
     {
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create D3D12Device";
+        MGE_DEBUG_TRACE(DX12, "Create D3D12Device");
         auto rc = D3D12CreateDevice(m_adapter.Get(),
                                     D3D_FEATURE_LEVEL_11_0,
                                     IID_PPV_ARGS(&m_device));
@@ -96,14 +96,14 @@ namespace mge::dx12 {
         if (m_render_system.debug()) {
             factory_flags |= DXGI_CREATE_FACTORY_DEBUG;
         }
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create DXGI Factory";
+        MGE_DEBUG_TRACE(DX12, "Create DXGI Factory");
         auto rc = CreateDXGIFactory2(factory_flags, IID_PPV_ARGS(&m_factory));
         CHECK_HRESULT(rc, , CreateDXGIFactory2);
     }
 
     void render_context::create_adapter()
     {
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create DXGI Adapter";
+        MGE_DEBUG_TRACE(DX12, "Create DXGI Adapter");
         HRESULT rc = S_OK;
         if (m_render_system.warp()) {
             mge::com_ptr<IDXGIAdapter1> adapter1;
@@ -159,8 +159,8 @@ namespace mge::dx12 {
             D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
         m_rtv_heap->SetName(L"mge::dx12::render_context::m_rtv_heap");
 
-        MGE_DEBUG_TRACE_STREAM(DX12)
-            << "Create descriptor heap for render target views";
+        MGE_DEBUG_TRACE(DX12, "Create descriptor heap for render target views");
+
         D3D12_DESCRIPTOR_HEAP_DESC dsv_heap_desc = {};
         dsv_heap_desc.NumDescriptors = buffer_count;
         dsv_heap_desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
@@ -180,9 +180,10 @@ namespace mge::dx12 {
             m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
 
         for (int i = 0; i < buffer_count; ++i) {
-            MGE_DEBUG_TRACE_STREAM(DX12)
-                << "Create render target view for back buffer #" << i
-                << " of swap chain";
+            MGE_DEBUG_TRACE(
+                DX12,
+                "Create render target view for back buffer #{} of swap chain",
+                i);
             mge::com_ptr<ID3D12Resource> backbuffer;
             auto rc = swap_chain->dxgi_swap_chain()->GetBuffer(
                 i,
@@ -203,10 +204,9 @@ namespace mge::dx12 {
     render_context::create_command_allocator(D3D12_COMMAND_LIST_TYPE type,
                                              const char*             purpose)
     {
-        // if (purpose) {
-        //     MGE_DEBUG_TRACE(DX12) << "Create command allocator for " <<
-        //     purpose;
-        // }
+        if (purpose) {
+            MGE_DEBUG_TRACE(DX12, "Create command allocator for {}", purpose);
+        }
         mge::com_ptr<ID3D12CommandAllocator> result;
         auto rc = m_device->CreateCommandAllocator(type, IID_PPV_ARGS(&result));
         CHECK_HRESULT(rc, ID3D12Device, CreateCommandAllocator);
@@ -223,9 +223,9 @@ namespace mge::dx12 {
                                              D3D12_COMMAND_LIST_TYPE type,
                                              const char*             purpose)
     {
-        // if (purpose) {
-        //     MGE_DEBUG_TRACE(DX12) << "Create command list for " << purpose;
-        // }
+        if (purpose) {
+            MGE_DEBUG_TRACE(DX12, "Create command list for {}", purpose);
+        }
         mge::com_ptr<ID3D12GraphicsCommandList> result;
         auto rc = m_device->CreateCommandList(0,
                                               D3D12_COMMAND_LIST_TYPE_DIRECT,
@@ -275,15 +275,15 @@ namespace mge::dx12 {
 
     void render_context::initialize()
     {
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create swap chain";
+        MGE_DEBUG_TRACE(DX12, "Create swap chain");
         auto swap_chain =
             std::make_shared<mge::dx12::swap_chain>(m_render_system, *this);
         m_swap_chain = swap_chain;
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create descriptor heap";
+        MGE_DEBUG_TRACE(DX12, "Create descriptor heap");
         create_descriptor_heap();
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Update render target views";
+        MGE_DEBUG_TRACE(DX12, "Update render target views");
         update_render_target_views(swap_chain);
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create direct command lists";
+        MGE_DEBUG_TRACE(DX12, "Create direct command lists");
         create_command_lists();
     }
 
@@ -551,7 +551,7 @@ namespace mge::dx12 {
     void render_context::enable_debug_layer()
     {
         if (m_render_system.debug()) {
-            MGE_DEBUG_TRACE_STREAM(DX12) << "Enable debug layer";
+            MGE_DEBUG_TRACE(DX12, "Enable debug layer");
             auto hr = D3D12GetDebugInterface(IID_PPV_ARGS(&m_debug));
             CHECK_HRESULT(hr, , D3D12GetDebugInterface);
             m_debug->EnableDebugLayer();
@@ -561,7 +561,7 @@ namespace mge::dx12 {
     void render_context::enable_debug_messages()
     {
         if (m_render_system.debug()) {
-            MGE_DEBUG_TRACE_STREAM(DX12) << "Enabling debug messages";
+            MGE_DEBUG_TRACE(DX12, "Enabling debug messages");
             if (SUCCEEDED(m_device.As(&m_info_queue))) {
                 HRESULT rc = S_OK;
 #if 0

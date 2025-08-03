@@ -22,11 +22,11 @@ namespace mge {
 
         void setup() override
         {
-            MGE_DEBUG_TRACE_STREAM(BLACKSCREEN) << "Setup blackscreen";
+            MGE_DEBUG_TRACE(BLACKSCREEN, "Setup blackscreen");
             m_render_system = render_system::create();
             m_window = m_render_system->create_window();
             m_window->set_close_listener([&] {
-                MGE_DEBUG_TRACE_STREAM(BLACKSCREEN) << "Close listener invoked";
+                MGE_DEBUG_TRACE(BLACKSCREEN, "Close listener invoked");
                 set_quit();
             });
             m_window->set_key_action_handler(

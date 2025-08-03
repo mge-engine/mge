@@ -21,9 +21,9 @@ namespace mge {
     {
         if (p.exists("directory")) {
             m_directory = p.get<std::string>("directory");
-            MGE_DEBUG_TRACE_STREAM(FILE_ASSET)
-                << "Configured file asset source with directory "
-                << m_directory;
+            MGE_DEBUG_TRACE(FILE_ASSET,
+                            "Configured file asset source with directory {}",
+                            m_directory.string());
         } else {
             MGE_THROW(bad_configuration)
                 << "File asset access factory requires 'directory' property";

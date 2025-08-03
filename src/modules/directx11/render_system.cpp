@@ -25,7 +25,7 @@ namespace mge {
 namespace mge::dx11 {
     render_system::render_system()
     {
-        MGE_DEBUG_TRACE_STREAM(DX11) << "Creating DirectX 11 render system";
+        MGE_DEBUG_TRACE(DX11, "Creating DirectX 11 render system");
         init_capabilities();
     }
 

@@ -18,7 +18,7 @@ namespace mge::dx12 {
         : platform::window(extent, options)
         , m_render_system(system)
     {
-        MGE_DEBUG_TRACE_STREAM(DX12) << "Create window";
+        MGE_DEBUG_TRACE(DX12, "Create window");
         create_render_context();
     }
 

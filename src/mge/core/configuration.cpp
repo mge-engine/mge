@@ -72,7 +72,9 @@ namespace mge {
 
     void configuration_instance::register_parameter(basic_parameter& p)
     {
-        MGE_DEBUG_TRACE_STREAM(CORE) << "Register parameter " << p.path();
+        MGE_DEBUG_TRACE(CORE,
+                        "Register parameter {}",
+                        p.path().generic_string());
         m_parameters[p.path()] = &p;
         m_update_needed = true;
     }
@@ -202,9 +204,11 @@ namespace mge {
                                          std::string_view name,
                                          std::string_view value)
     {
-        MGE_DEBUG_TRACE_STREAM(CORE) << "Set parameter value " << section << "/"
-                                     << name << " to '" << value << "'";
-
+        MGE_DEBUG_TRACE(CORE,
+                        "Set parameter value {} to '{}'",
+                        section,
+                        name,
+                        value);
         mge::json::json_pointer<mge::json::json::string_t> parameter_path;
         parameter_path /= std::string(section.begin(), section.end());
         parameter_path /= std::string(name.begin(), name.end());

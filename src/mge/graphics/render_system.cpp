@@ -23,8 +23,9 @@ namespace mge {
         if (env_value == nullptr) {
             implementation_name = MGE_PARAMETER(graphics, render_system).get();
         } else {
-            MGE_DEBUG_TRACE_STREAM(GRAPHICS)
-                << "Use render system from MGE_RENDER_SYSTEM: " << env_value;
+            MGE_DEBUG_TRACE(GRAPHICS,
+                            "Use render system from MGE_RENDER_SYSTEM: {}",
+                            env_value);
             implementation_name = env_value;
         }
         return component<render_system>::create(implementation_name);
