@@ -654,11 +654,6 @@ namespace mge::dx12 {
                                       LPCSTR                 description,
                                       void*                  context)
     {
-        std::stringstream ss;
-        ss << "DirectX12 Debug [" << message_severity(severity) << "] "
-           << "(" << message_category(category) << ") "
-           << "ID: " << id << " - " << description;
-
         switch (severity) {
         case D3D12_MESSAGE_SEVERITY_CORRUPTION:
             MGE_ERROR_TRACE(DX12,
@@ -685,10 +680,13 @@ namespace mge::dx12 {
                               description);
             break;
         case D3D12_MESSAGE_SEVERITY_INFO:
-            MGE_INFO_TRACE_STREAM(DX12) << ss.str();
-            break;
         default:
-            MGE_INFO_TRACE_STREAM(DX12) << ss.str();
+            MGE_INFO_TRACE(DX12,
+                           "DirectX12 Debug [{}] ({}) ID: {} - {}",
+                           message_severity(severity),
+                           message_category(category),
+                           id,
+                           description);
             break;
         }
     }

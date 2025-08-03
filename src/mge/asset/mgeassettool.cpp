@@ -182,9 +182,9 @@ int main(int argc, const char** argv)
             if (!mge::configuration::loaded()) {
                 mge::configuration::load();
             }
-            MGE_INFO_TRACE_STREAM(ASSETTOOL)
-                << "Verbose output enabled, all trace will be printed to "
-                   "stdout";
+            MGE_INFO_TRACE(
+                ASSETTOOL,
+                "Verbose output enabled, all trace will be printed to stdout");
             mge::module::load_all();
         } else {
             if (!mge::configuration::loaded()) {

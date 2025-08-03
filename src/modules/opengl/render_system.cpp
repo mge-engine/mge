@@ -22,8 +22,7 @@ namespace mge {
 
             render_system()
             {
-                MGE_INFO_TRACE_STREAM(OPENGL)
-                    << "Creating opengl render system";
+                MGE_INFO_TRACE(OPENGL, "Creating opengl render system");
                 init_capabilities();
             }
             ~render_system() = default;

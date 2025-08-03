@@ -35,7 +35,7 @@ namespace mge::vulkan {
     render_system::render_system()
     {
         try {
-            MGE_INFO_TRACE_STREAM(VULKAN) << "Creating Vulkan render system";
+            MGE_INFO_TRACE(VULKAN, "Creating Vulkan render system");
             init_capabilities();
             m_library = std::make_shared<vulkan_library>();
             resolve_basic_instance_functions();
@@ -191,7 +191,7 @@ namespace mge::vulkan {
             MGE_DEBUG_TRACE_STREAM(VULKAN) << ss.str();
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            MGE_INFO_TRACE_STREAM(VULKAN) << ss.str();
+            MGE_INFO_TRACE(VULKAN, "{}", ss.str());
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
             MGE_WARNING_TRACE(VULKAN, "{}", ss.str());
@@ -200,7 +200,7 @@ namespace mge::vulkan {
             MGE_ERROR_TRACE(VULKAN, "{}", ss.str());
             break;
         default:
-            MGE_INFO_TRACE_STREAM(VULKAN) << ss.str();
+            MGE_INFO_TRACE(VULKAN, "{}", ss.str());
             break;
         }
 

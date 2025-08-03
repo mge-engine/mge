@@ -137,18 +137,26 @@ namespace mge {
 #define MGE_DEBUG_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, DEBUG)
 
 /**
- * @def MGE_INFO_TRACE
- * @brief Invoke info trace.
- * @param TOPIC trace topic
- */
-#define MGE_INFO_TRACE_STREAM(TOPIC) MGE_TRACE_OBJECT(TOPIC, INFO)
-
-/**
  * @def MGE_INFO_TRACE_ENABLED
  * @brief Check whether INFO trace is enabled.
  * @param TOPIC trace topic
  */
 #define MGE_INFO_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, INFO)
+
+/**
+ * @def MGE_INFO_TRACE
+ * @brief Invoke info trace.
+ * @param TOPIC trace topic
+ * @param ... format string and arguments
+ */
+#define MGE_INFO_TRACE(TOPIC, ...)                                             \
+    do {                                                                       \
+        if (!(MGE_INFO_TRACE_ENABLED(TOPIC))) {                                \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, INFO);                          \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_WARNING_TRACE_ENABLED
@@ -159,7 +167,7 @@ namespace mge {
 
 /**
  * @def MGE_WARNING_TRACE
- * @brief Invoke warnin trace.
+ * @brief Invoke warning trace.
  * @param TOPIC trace topic
  * @param ... format string and arguments
  */

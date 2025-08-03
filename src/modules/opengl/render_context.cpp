@@ -82,7 +82,7 @@ namespace mge::opengl {
     void render_context::init_gl3w()
     {
         if (!s_gl3w_initialized) {
-            MGE_INFO_TRACE_STREAM(OPENGL) << "Initializing gl3w";
+            MGE_INFO_TRACE(OPENGL, "Initializing gl3w");
             auto rc = gl3wInit();
             if (rc) {
                 MGE_THROW(runtime_exception)
@@ -100,7 +100,7 @@ namespace mge::opengl {
 
     void render_context::collect_opengl_info()
     {
-        MGE_INFO_TRACE_STREAM(OPENGL) << "Collecting OpenGL information";
+        MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
         s_glinfo.ptr();
     }
 
