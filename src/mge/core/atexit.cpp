@@ -33,32 +33,37 @@ namespace mge {
         g_atexit_callback_runner.add(std::move(cb));
     }
 
-    void atexit::stop_processing() { g_atexit_processing_stopped = true; }
+    void atexit::stop_processing()
+    {
+        g_atexit_processing_stopped = true;
+    }
 
     atexit_callback_runner::~atexit_callback_runner()
     {
         if (g_atexit_processing_stopped) {
-            MGE_DEBUG_TRACE(CORE) << "Atexit processing stopped";
+            MGE_DEBUG_TRACE(CORE, "Atexit processing stopped");
         } else {
-            MGE_TRACE(CORE, DEBUG) << "Running atexit callbacks";
+            MGE_TRACE_OBJECT(CORE, DEBUG) << "Running atexit callbacks";
             for (auto rit = m_callbacks.begin(); rit != m_callbacks.end();
                  ++rit) {
                 auto& cb = *rit;
                 try {
                     cb();
                     if (g_atexit_processing_stopped) {
-                        MGE_DEBUG_TRACE(CORE) << "Atexit processing stopped";
+                        MGE_DEBUG_TRACE(CORE, "Atexit processing stopped");
                         break;
                     }
                 } catch (const mge::exception& e) {
-                    MGE_ERROR_TRACE(CORE)
-                        << "Exception in atexit callback: " << e.what();
+                    MGE_ERROR_TRACE(CORE,
+                                    "Exception in atexit callback: {}",
+                                    e.what());
                 } catch (const std::exception& e) {
-                    MGE_ERROR_TRACE(CORE)
-                        << "Exception in atexit callback: " << e.what();
+                    MGE_ERROR_TRACE(CORE,
+                                    "Exception in atexit callback: {}",
+                                    e.what());
                 } catch (...) {
-                    MGE_ERROR_TRACE(CORE)
-                        << "Unknown exception in atexit callback";
+                    MGE_ERROR_TRACE(CORE,
+                                    "Unknown exception in atexit callback");
                 }
             }
         }

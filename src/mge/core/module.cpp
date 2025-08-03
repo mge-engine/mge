@@ -24,7 +24,7 @@ namespace mge {
         auto stem_str = stem.string();
         m_name = std::string(stem_str.begin() + 11, stem_str.end());
 
-        MGE_TRACE(CORE, DEBUG)
+        MGE_TRACE_OBJECT(CORE, DEBUG)
             << "Loading module '" << m_name << "' from shared library " << path;
 
         m_library = std::make_shared<shared_library>(path);
@@ -32,9 +32,15 @@ namespace mge {
 
     module::~module() {}
 
-    std::string_view module::name() const { return m_name; }
+    std::string_view module::name() const
+    {
+        return m_name;
+    }
 
-    const shared_library_ref& module::library() const { return m_library; }
+    const shared_library_ref& module::library() const
+    {
+        return m_library;
+    }
 
     class module_dictionary
     {
@@ -58,13 +64,14 @@ namespace mge {
         std::vector<fs::path> load_paths;
 
         for (const auto& p : paths) {
-            MGE_TRACE(CORE, DEBUG) << "Searching for modules in " << p;
+            MGE_TRACE_OBJECT(CORE, DEBUG) << "Searching for modules in " << p;
             try {
                 fs::path current_path(p);
                 load_paths.push_back(fs::canonical(current_path));
             } catch (const std::exception& e) {
-                MGE_TRACE(CORE, WARNING) << "Exception inspecting module path "
-                                         << p << ": " << e.what();
+                MGE_TRACE_OBJECT(CORE, WARNING)
+                    << "Exception inspecting module path " << p << ": "
+                    << e.what();
             }
         }
 
@@ -99,7 +106,7 @@ namespace mge {
                     }
                 }
             } catch (std::exception& e) {
-                MGE_TRACE(CORE, WARNING)
+                MGE_TRACE_OBJECT(CORE, WARNING)
                     << "Exception enumerating modules in path " << module_path
                     << ": " << e.what();
             }

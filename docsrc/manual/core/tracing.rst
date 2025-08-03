@@ -80,11 +80,6 @@ used in the same namespace as the trace topic was defined.
 
 .. doxygendefine:: MGE_USE_IMPORTED_TRACE
 
-To use a trace topic in a different namespace, the following macro can be used 
-to have a ``using`` declaration for the trace topic.
-
-.. doxygendefine:: MGE_USING_NS_TRACE_TOPIC(NS, TOPIC)
-
 If you need to inspect a trace topic directly, the following macros can be used:
 
 .. doxygendefine:: MGE_TRACE_TOPIC
@@ -123,9 +118,10 @@ As an example, writing trace into a trace topic `TEST` looks like this:
 
 .. code-block:: c++
 
-    MGE_ERROR_TRACE(TEST) << "This is a test of error trace";
+    MGE_ERROR_TRACE(TEST, "An error occurred: {}", error_message);
 
-Note that a line break isn't needed at the end.
+Note that a line break isn't needed at the end, each invocation of the trace 
+macro will automatically add one.
 
 Sometimes creating traces may involve heavier processing one wants to avoid if
 a particular trace is disabled. A number of check macros is available for this

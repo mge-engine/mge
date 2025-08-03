@@ -12,6 +12,8 @@ mge.creator*
 mge.creator.user
 CMakeLists.txt.user
 CMakeLists.txt.user.*
+# Visual C++ files
+*.pdb
 # - can accidentally be created if in-source build is tried
 CMakeFiles
 CMakeCache.txt

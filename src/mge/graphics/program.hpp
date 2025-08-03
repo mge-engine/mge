@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/core/property_object.hpp"
 #include "mge/core/small_vector.hpp"
 #include "mge/graphics/context_object.hpp"
@@ -139,3 +140,61 @@ namespace mge {
     MGEGRAPHICS_EXPORT               std::ostream&
     operator<<(std::ostream& os, const program::uniform_buffer& ub);
 } // namespace mge
+
+template <> struct fmt::formatter<mge::program::attribute>
+{
+    constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin())
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const mge::program::attribute& attr, FormatContext& ctx) const
+        -> decltype(ctx.out())
+    {
+        return fmt::format_to(ctx.out(),
+                              "attribute{{ name: '{}', type: {}, size: {} }}",
+                              attr.name,
+                              attr.type,
+                              attr.size);
+    }
+};
+
+template <> struct fmt::formatter<mge::program::uniform>
+{
+    constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin())
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const mge::program::uniform& uniform, FormatContext& ctx) const
+        -> decltype(ctx.out())
+    {
+        return fmt::format_to(
+            ctx.out(),
+            "uniform{{ name: '{}', type: {}, array_size: {}, location: {} }}",
+            uniform.name,
+            uniform.type,
+            uniform.array_size,
+            uniform.location);
+    }
+};
+
+template <> struct fmt::formatter<mge::program::uniform_buffer>
+{
+    constexpr auto parse(format_parse_context& ctx) -> decltype(ctx.begin())
+    {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const mge::program::uniform_buffer& uniform_buffer,
+                FormatContext&                      ctx) const
+    {
+        return fmt::format_to(ctx.out(),
+                              "uniform_buffer{{ name: '{}', size: {} }}",
+                              uniform_buffer.name,
+                              uniform_buffer.uniforms.size());
+    }
+};

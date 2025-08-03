@@ -39,9 +39,6 @@ the domain of game programming:
   supporting concepts like single-threaded or multi-threaded simulation and
   render loop.
 
-- The scripting library encapsulates the integration of scripting languages.
-  Integrations for Python and Lua are included.
-
 The general design philosphy in MGE is that everything should stand
 for itself, and *manager* or other *uber-objects* are to be avoided.
 

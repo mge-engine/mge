@@ -26,7 +26,7 @@ namespace mge::dx12 {
     render_system::render_system()
         : m_tearing_support(false)
     {
-        MGE_DEBUG_TRACE(DX12) << "Creating DirectX 12 render system";
+        MGE_DEBUG_TRACE(DX12, "Creating DirectX 12 render system");
         enable_debug_layer();
         check_tearing_support();
         init_capabilities();
@@ -94,12 +94,15 @@ namespace mge::dx12 {
         return MGE_PARAMETER(directx12, warp).get();
     }
 
-    bool render_system::tearing_support() const { return m_tearing_support; }
+    bool render_system::tearing_support() const
+    {
+        return m_tearing_support;
+    }
 
     void render_system::enable_debug_layer()
     {
         if (debug()) {
-            MGE_DEBUG_TRACE(DX12) << "Enable debug layer";
+            MGE_DEBUG_TRACE(DX12, "Enable debug layer");
             mge::com_ptr<ID3D12Debug1> debug_interface;
             auto rc = D3D12GetDebugInterface(IID_PPV_ARGS(&debug_interface));
             CHECK_HRESULT(rc, , D3D12GetDebugInterface);

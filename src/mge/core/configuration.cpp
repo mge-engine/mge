@@ -42,12 +42,18 @@ namespace mge {
                                      std::string_view name);
         void load();
         void store();
-        bool loaded() const { return m_loaded; }
+        bool loaded() const
+        {
+            return m_loaded;
+        }
         void set_raw(std::string_view section,
                      std::string_view name,
                      std::string_view value);
 
-        const mge::json::json& root() { return m_raw_settings; }
+        const mge::json::json& root()
+        {
+            return m_raw_settings;
+        }
 
     private:
         fs::path find_config_file();
@@ -66,7 +72,9 @@ namespace mge {
 
     void configuration_instance::register_parameter(basic_parameter& p)
     {
-        MGE_DEBUG_TRACE(CORE) << "Register parameter " << p.path();
+        MGE_DEBUG_TRACE(CORE,
+                        "Register parameter {}",
+                        p.path().generic_string());
         m_parameters[p.path()] = &p;
         m_update_needed = true;
     }
@@ -196,9 +204,11 @@ namespace mge {
                                          std::string_view name,
                                          std::string_view value)
     {
-        MGE_DEBUG_TRACE(CORE) << "Set parameter value " << section << "/"
-                              << name << " to '" << value << "'";
-
+        MGE_DEBUG_TRACE(CORE,
+                        "Set parameter value {} to '{}'",
+                        section,
+                        name,
+                        value);
         mge::json::json_pointer<mge::json::json::string_t> parameter_path;
         parameter_path /= std::string(section.begin(), section.end());
         parameter_path /= std::string(name.begin(), name.end());
@@ -282,7 +292,10 @@ namespace mge {
         return s_configuration_instance->find_parameter(section, name);
     }
 
-    void configuration::load() { s_configuration_instance->load(); }
+    void configuration::load()
+    {
+        s_configuration_instance->load();
+    }
 
     void configuration::evaluate_command_line(
         const std::vector<const char*>& cmdline)
@@ -334,9 +347,15 @@ namespace mge {
         }
     }
 
-    void configuration::store() { s_configuration_instance->store(); }
+    void configuration::store()
+    {
+        s_configuration_instance->store();
+    }
 
-    bool configuration::loaded() { return s_configuration_instance->loaded(); }
+    bool configuration::loaded()
+    {
+        return s_configuration_instance->loaded();
+    }
 
     const mge::json::json& configuration::root()
     {

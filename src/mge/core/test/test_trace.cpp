@@ -30,7 +30,7 @@ namespace mge {
                 std::string trace_str(r.message.begin(), r.message.end());
                 EXPECT_STREQ("Hello", trace_str.c_str());
             });
-        MGE_TRACE(CORE, DEBUG) << "Hello";
+        MGE_TRACE(CORE, DEBUG, "{}", "Hello");
 
         MGE_NS_TRACE_TOPIC(mge, CORE).remove_sink(sink_1);
     }
@@ -47,7 +47,7 @@ namespace mge {
                 std::string trace_str(r.message.begin(), r.message.end());
                 EXPECT_STREQ("Hello", trace_str.c_str());
             });
-        MGE_TRACE(CORE, DEBUG) << "Hello";
+        MGE_TRACE(CORE, DEBUG, "{}", "Hello");
 
         MGE_NS_TRACE_TOPIC(mge, MGE).remove_sink(sink_1);
     }

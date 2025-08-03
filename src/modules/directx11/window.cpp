@@ -18,7 +18,7 @@ namespace mge::dx11 {
         : platform::window(extent, options)
         , m_render_system(system)
     {
-        MGE_DEBUG_TRACE(DX11) << "Create window";
+        MGE_DEBUG_TRACE(DX11, "Create window");
         create_render_context();
     }
 

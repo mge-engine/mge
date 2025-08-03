@@ -15,9 +15,9 @@
 #include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
-
-MGE_DEFINE_TRACE(TRIANGLE);
-
+namespace mge {
+    MGE_DEFINE_TRACE(TRIANGLE);
+}
 namespace mge {
     class triangle : public application
     {
@@ -26,7 +26,7 @@ namespace mge {
 
         void setup() override
         {
-            MGE_DEBUG_TRACE(TRIANGLE) << "Setup triangle";
+            MGE_DEBUG_TRACE(TRIANGLE, "Setup triangle");
 
             mge::properties p;
             p.set("directory", "./assets");
@@ -73,15 +73,16 @@ namespace mge {
 
         void initialize()
         {
-            MGE_DEBUG_TRACE(TRIANGLE) << "Initializing objects";
+            MGE_DEBUG_TRACE(TRIANGLE, "Initializing objects");
 
             auto pixel_shader =
                 m_window->render_context().create_shader(shader_type::FRAGMENT);
             auto vertex_shader =
                 m_window->render_context().create_shader(shader_type::VERTEX);
             m_program = m_window->render_context().create_program();
-            MGE_DEBUG_TRACE(TRIANGLE) << "render system is "
-                                      << m_render_system->implementation_name();
+            MGE_DEBUG_TRACE(TRIANGLE,
+                            "render system is {}",
+                            m_render_system->implementation_name());
 
             if (m_render_system->implementation_name() ==
                     "mge::opengl::render_system" ||
@@ -105,11 +106,11 @@ namespace mge {
                         color = vec3(1,1,1);
                     }
                 )shader";
-                MGE_DEBUG_TRACE(TRIANGLE) << "Compile fragment shader";
+                MGE_DEBUG_TRACE(TRIANGLE, "Compile fragment shader");
                 pixel_shader->compile(fragment_shader_glsl);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Compile vertex shader";
+                MGE_DEBUG_TRACE(TRIANGLE, "Compile vertex shader");
                 vertex_shader->compile(vertex_shader_glsl);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
+                MGE_DEBUG_TRACE(TRIANGLE, "Shaders compiled");
             } else if (m_render_system->implementation_name() ==
                        "mge::vulkan::render_system") {
                 auto pixel_shader_code_any =
@@ -122,11 +123,11 @@ namespace mge {
                 auto vertex_shader_code =
                     std::any_cast<std::shared_ptr<mge::buffer>>(
                         vertex_shader_code_any);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Set code for fragment shader";
+                MGE_DEBUG_TRACE(TRIANGLE, "Set code for fragment shader");
                 pixel_shader->set_code(*pixel_shader_code);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Set code for vertex shader";
+                MGE_DEBUG_TRACE(TRIANGLE, "Set code for vertex shader");
                 vertex_shader->set_code(*vertex_shader_code);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Shaders created";
+                MGE_DEBUG_TRACE(TRIANGLE, "Shaders created");
             } else if (m_render_system->implementation_name() ==
                            "mge::dx11::render_system" ||
                        m_render_system->implementation_name() ==
@@ -145,23 +146,22 @@ namespace mge {
                         return float4(1.0f, 1.0f, 1.0f, 1.0f);
                     }
                 )shader";
-                MGE_DEBUG_TRACE(TRIANGLE) << "Compile fragment shader";
+                MGE_DEBUG_TRACE(TRIANGLE, "Compile fragment shader");
                 pixel_shader->compile(fragment_shader_hlsl);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Compile vertex shader";
+                MGE_DEBUG_TRACE(TRIANGLE, "Compile vertex shader");
                 vertex_shader->compile(vertex_shader_hlsl);
-                MGE_DEBUG_TRACE(TRIANGLE) << "Shaders compiled";
+                MGE_DEBUG_TRACE(TRIANGLE, "Shaders compiled");
             } else {
-                MGE_ERROR_TRACE(TRIANGLE)
-                    << "Cannot create shaders for "
-                    << m_render_system->implementation_name()
-                    << " render system";
+                MGE_ERROR_TRACE(TRIANGLE,
+                                "Cannot create shaders for {} render system",
+                                m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
             m_program->set_shader(pixel_shader);
             m_program->set_shader(vertex_shader);
-            MGE_DEBUG_TRACE(TRIANGLE) << "Linking program";
+            MGE_DEBUG_TRACE(TRIANGLE, "Linking program");
             m_program->link();
-            MGE_DEBUG_TRACE(TRIANGLE) << "Program linked";
+            MGE_DEBUG_TRACE(TRIANGLE, "Program linked");
 
             float triangle_coords[] = {
                 0.0f,
@@ -177,12 +177,12 @@ namespace mge {
             int                triangle_indices[] = {0, 1, 2};
             mge::vertex_layout layout;
             layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
-            MGE_DEBUG_TRACE(TRIANGLE) << "Create vertex buffer";
+            MGE_DEBUG_TRACE(TRIANGLE, "Create vertex buffer");
             m_vertices = m_window->render_context().create_vertex_buffer(
                 layout,
                 sizeof(triangle_coords),
                 triangle_coords);
-            MGE_DEBUG_TRACE(TRIANGLE) << "Create index buffer";
+            MGE_DEBUG_TRACE(TRIANGLE, "Create index buffer");
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
@@ -194,7 +194,7 @@ namespace mge {
                                                     m_indices,
                                                     mge::topology::TRIANGLES));
             m_draw_commands->finish();
-            MGE_DEBUG_TRACE(TRIANGLE) << "Initializing objects done";
+            MGE_DEBUG_TRACE(TRIANGLE, "Initializing objects done");
 
             m_initialized = true;
         }

@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/clock.hpp"
 #include "mge/core/dllexport.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/thread.hpp"
 #include "mge/core/trace_level.hpp"
 #include "mge/core/trace_topic.hpp"
@@ -38,6 +39,17 @@ namespace mge {
          * if trace is enabled.
          */
         ~trace();
+
+        /**
+         * @brief Get the stream to write into.
+         */
+        std::ostream& stream() noexcept
+        {
+            if (!m_stream) {
+                m_stream.emplace();
+            }
+            return *m_stream;
+        }
 
         /**
          * @brief Write into trace. No-op if trace level is disabled.
@@ -84,12 +96,12 @@ namespace mge {
     };
 
 /**
- * @def MGE_TRACE
- * @brief Invoke trace.
+ * @def MGE_TRACE_OBJECT
+ * @brief Create a trace object.
  * @param TOPIC trace topic
  * @param LEVEL trace level (only identifier within @c mge::trace_level scope)
  */
-#define MGE_TRACE(TOPIC, LEVEL)                                                \
+#define MGE_TRACE_OBJECT(TOPIC, LEVEL)                                         \
     ::mge::trace(MGE_TRACE_TOPIC(TOPIC), ::mge::trace_level::LEVEL)
 
 /**
@@ -101,12 +113,14 @@ namespace mge {
 #define MGE_TRACE_ENABLED(TOPIC, LEVEL)                                        \
     MGE_TRACE_TOPIC(TOPIC).enabled(::mge::trace_level::LEVEL)
 
-/**
- * @def MGE_DEBUG_TRACE
- * @brief Invoke debug trace.
- * @param TOPIC trace topic
- */
-#define MGE_DEBUG_TRACE(TOPIC) MGE_TRACE(TOPIC, DEBUG)
+#define MGE_TRACE(TOPIC, LEVEL, ...)                                           \
+    do {                                                                       \
+        if (!(MGE_TRACE_ENABLED(TOPIC, LEVEL))) {                              \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, LEVEL);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_DEBUG_TRACE_ENABLED
@@ -116,11 +130,19 @@ namespace mge {
 #define MGE_DEBUG_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, DEBUG)
 
 /**
- * @def MGE_INFO_TRACE
- * @brief Invoke info trace.
+ * @def MGE_DEBUG_TRACE
+ * @brief Invoke debug trace.
  * @param TOPIC trace topic
+ * @param ... format string and arguments
  */
-#define MGE_INFO_TRACE(TOPIC) MGE_TRACE(TOPIC, INFO)
+#define MGE_DEBUG_TRACE(TOPIC, ...)                                            \
+    do {                                                                       \
+        if (!(MGE_DEBUG_TRACE_ENABLED(TOPIC))) {                               \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, DEBUG);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_INFO_TRACE_ENABLED
@@ -130,11 +152,19 @@ namespace mge {
 #define MGE_INFO_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, INFO)
 
 /**
- * @def MGE_WARNING_TRACE
- * @brief Invoke warning trace.
+ * @def MGE_INFO_TRACE
+ * @brief Invoke info trace.
  * @param TOPIC trace topic
+ * @param ... format string and arguments
  */
-#define MGE_WARNING_TRACE(TOPIC) MGE_TRACE(TOPIC, WARNING)
+#define MGE_INFO_TRACE(TOPIC, ...)                                             \
+    do {                                                                       \
+        if (!(MGE_INFO_TRACE_ENABLED(TOPIC))) {                                \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, INFO);                          \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_WARNING_TRACE_ENABLED
@@ -144,11 +174,19 @@ namespace mge {
 #define MGE_WARNING_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, WARNING)
 
 /**
- * @def MGE_ERROR_TRACE
- * @brief Invoke error trace.
+ * @def MGE_WARNING_TRACE
+ * @brief Invoke warning trace.
  * @param TOPIC trace topic
+ * @param ... format string and arguments
  */
-#define MGE_ERROR_TRACE(TOPIC) MGE_TRACE(TOPIC, LEVEL_ERROR)
+#define MGE_WARNING_TRACE(TOPIC, ...)                                          \
+    do {                                                                       \
+        if (!(MGE_WARNING_TRACE_ENABLED(TOPIC))) {                             \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, WARNING);                       \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_ERROR_TRACE_ENABLED
@@ -158,11 +196,19 @@ namespace mge {
 #define MGE_ERROR_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, ERROR)
 
 /**
- * @def MGE_FATAL_TRACE
- * @brief Invoke fatal trace.
+ * @def MGE_ERROR_TRACE
+ * @brief Invoke error trace.
  * @param TOPIC trace topic
+ * @param ... format string and arguments
  */
-#define MGE_FATAL_TRACE(TOPIC) MGE_TRACE(TOPIC, FATAL)
+#define MGE_ERROR_TRACE(TOPIC, ...)                                            \
+    do {                                                                       \
+        if (!(MGE_ERROR_TRACE_ENABLED(TOPIC))) {                               \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, ERROR);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
 
 /**
  * @def MGE_FATAL_TRACE_ENABLED
@@ -172,6 +218,21 @@ namespace mge {
 #define MGE_FATAL_TRACE_ENABLED(TOPIC) MGE_TRACE_ENABLED(TOPIC, FATAL)
 
 /**
+ * @def MGE_FATAL_TRACE
+ * @brief Invoke fatal trace.
+ * @param TOPIC trace topic
+ * @param ... format string and arguments
+ */
+#define MGE_FATAL_TRACE(TOPIC, ...)                                            \
+    do {                                                                       \
+        if (!(MGE_FATAL_TRACE_ENABLED(TOPIC))) {                               \
+        } else {                                                               \
+            auto trc = MGE_TRACE_OBJECT(TOPIC, FATAL);                         \
+            fmt::print(trc.stream(), __VA_ARGS__);                             \
+        }                                                                      \
+    } while (false)
+
+/**
  * @def MGE_XDEBUG
  * @brief Invoke debug trace.
  *
@@ -179,7 +240,10 @@ namespace mge {
  * should never have a MGE_XDEBUG trace statement.
  *
  * @param TOPIC trace topic
+ * @param FMT format string
+ * @param ... format string arguments
  */
-#define MGE_XDEBUG(TOPIC) MGE_DEBUG_TRACE(TOPIC) << "XDEBUG: "
+#define MGE_XDEBUG(TOPIC, FMT, ...)                                            \
+    MGE_DEBUG_TRACE(TOPIC, "XDEBUG: " FMT, __VA_ARGS__)
 
 } // namespace mge

@@ -39,7 +39,7 @@ namespace mge::dx11 {
     command_list::~command_list()
     {
         if (is_recording()) {
-            MGE_WARNING_TRACE(DX11) << "Command list destroyed while recording";
+            MGE_WARNING_TRACE(DX11, "Command list destroyed while recording");
         }
     }
 

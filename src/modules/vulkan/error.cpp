@@ -101,15 +101,18 @@ namespace mge::vulkan {
         if (rc == VK_SUCCESS) {
             return rc;
         } else if (rc == VK_SUBOPTIMAL_KHR) {
-            MGE_WARNING_TRACE(VULKAN)
-                << file << ":" << line << ": "
-                << "Call to " << function << " returned: (" << (int)rc << ") "
-                << vkresult_message(rc);
+            MGE_WARNING_TRACE(VULKAN,
+                              "Call to {} returned: ({}) {}",
+                              function,
+                              (int)rc,
+                              vkresult_message(rc));
             return rc;
         } else {
-            MGE_ERROR_TRACE(VULKAN) << file << ":" << line << ": "
-                                    << "Call to " << function << " failed: ("
-                                    << (int)rc << ") " << vkresult_message(rc);
+            MGE_ERROR_TRACE(VULKAN,
+                            "Call to {} failed: ({}) {}",
+                            function,
+                            (int)rc,
+                            vkresult_message(rc));
             vulkan::error err;
             throw err.set_info_from_vkresult(rc, file, line, function);
         }

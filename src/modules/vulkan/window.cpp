@@ -15,7 +15,7 @@ namespace mge::vulkan {
         : platform::window(extent, options)
         , m_render_system(render_system_)
     {
-        MGE_DEBUG_TRACE(VULKAN) << "Create window";
+        MGE_DEBUG_TRACE(VULKAN, "Create window");
         create_render_context();
     }
 
@@ -23,7 +23,7 @@ namespace mge::vulkan {
 
     void window::create_render_context()
     {
-        MGE_DEBUG_TRACE(VULKAN) << "Create render context";
+        MGE_DEBUG_TRACE(VULKAN, "Create render context");
         auto context =
             std::make_shared<::mge::vulkan::render_context>(m_render_system,
                                                             *this);

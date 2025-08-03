@@ -74,7 +74,7 @@ public:
         }
 
         if (opts.has_option("r")) {
-            MGE_DEBUG_TRACE(ASSETTOOL) << "Mounting current directory as root";
+            MGE_DEBUG_TRACE(ASSETTOOL, "Mounting current directory as root");
             mge::properties p;
             p.set("directory", ".");
             mge::asset::mount("/", "file", p);
@@ -85,8 +85,9 @@ public:
                 std::any_cast<const std::vector<std::string>&>(
                     opts.option("mount-point"));
             for (const auto& mount_point : mount_points) {
-                MGE_DEBUG_TRACE(ASSETTOOL)
-                    << "Processing mount point: " << mount_point;
+                MGE_DEBUG_TRACE(ASSETTOOL,
+                                "Processing mount point: {}",
+                                mount_point);
             }
         }
 
@@ -94,7 +95,7 @@ public:
             opts.positional("asset"));
         for (const auto& name : asset_name) {
             try {
-                MGE_DEBUG_TRACE(ASSETTOOL) << "Processing asset: " << name;
+                MGE_DEBUG_TRACE(ASSETTOOL, "Processing asset: {}", name);
                 mge::asset_ref asset = std::make_shared<mge::asset>(name);
 
                 if (asset) {
@@ -104,8 +105,10 @@ public:
                 }
 
             } catch (const mge::exception& ex) {
-                MGE_ERROR_TRACE(ASSETTOOL)
-                    << "Error loading asset '" << name << "': " << ex.what();
+                MGE_ERROR_TRACE(ASSETTOOL,
+                                "Error loading asset '{}': {}",
+                                name,
+                                ex.what());
             }
         }
 
@@ -178,9 +181,9 @@ int main(int argc, const char** argv)
             if (!mge::configuration::loaded()) {
                 mge::configuration::load();
             }
-            MGE_INFO_TRACE(ASSETTOOL)
-                << "Verbose output enabled, all trace will be printed to "
-                   "stdout";
+            MGE_INFO_TRACE(
+                ASSETTOOL,
+                "Verbose output enabled, all trace will be printed to stdout");
             mge::module::load_all();
         } else {
             if (!mge::configuration::loaded()) {
@@ -205,7 +208,7 @@ int main(int argc, const char** argv)
         auto& cmd = *it;
 
         if (is_verbose) {
-            MGE_DEBUG_TRACE(ASSETTOOL) << "Command: " << cmd->name();
+            MGE_DEBUG_TRACE(ASSETTOOL, "Command: {}", cmd->name());
         }
         mge::program_options::options command_options;
         const mge::program_options& command_option_description = cmd->options();
@@ -216,21 +219,21 @@ int main(int argc, const char** argv)
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSETTOOL) << "Error: " << ex;
+            MGE_ERROR_TRACE(ASSETTOOL, "Error: {}", ex.details());
         }
         return 1;
     } catch (const std::exception& ex) {
         if (!is_verbose) {
             std::cerr << "Error: " << ex.what() << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSETTOOL) << "Error: " << ex.what();
+            MGE_ERROR_TRACE(ASSETTOOL, "Error: {}", ex.what());
         }
         return 1;
     } catch (...) {
         if (!is_verbose) {
             std::cerr << "Unknown error" << std::endl;
         } else {
-            MGE_ERROR_TRACE(ASSETTOOL) << "Unknown error";
+            MGE_ERROR_TRACE(ASSETTOOL, "Unknown error");
         }
         return 1;
     }

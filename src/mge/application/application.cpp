@@ -64,7 +64,10 @@ namespace mge {
         }
     }
 
-    application::~application() { s_instance = nullptr; }
+    application::~application()
+    {
+        s_instance = nullptr;
+    }
 
     application* application::instance()
     {
@@ -101,11 +104,12 @@ namespace mge {
         if (MGE_PARAMETER(application, loop).has_value()) {
             loop_implementation = MGE_PARAMETER(application, loop).get();
         }
-        MGE_DEBUG_TRACE(APPLICATION)
-            << "Using loop implementation: " << loop_implementation;
+        MGE_DEBUG_TRACE(APPLICATION,
+                        "Using loop implementation: {}",
+                        loop_implementation);
         auto loop_instance = mge::loop::create(loop_implementation);
         loop_instance->run(*this);
-        MGE_DEBUG_TRACE(APPLICATION) << "Main loop finished";
+        MGE_DEBUG_TRACE(APPLICATION, "Main loop finished");
     }
 
     int application::main(std::string_view application_name,
@@ -127,59 +131,64 @@ namespace mge {
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {
-                    MGE_DEBUG_TRACE(APPLICATION)
-                        << "Application name parameter found";
+                    MGE_DEBUG_TRACE(APPLICATION,
+                                    "Application name parameter found");
                     application_name_parameter_value =
                         MGE_PARAMETER(application, name).get();
                     used_application_name = application_name_parameter_value;
                 }
                 if (used_application_name.empty()) {
-                    MGE_DEBUG_TRACE(APPLICATION)
-                        << "No application name parameter found, falling back "
-                           "to executable name";
+                    MGE_DEBUG_TRACE(APPLICATION,
+                                    "No application name parameter found, "
+                                    "falling back to executable name");
                     application_name_parameter_value = mge::executable_name();
                     used_application_name = application_name_parameter_value;
                 }
             }
 
-            MGE_DEBUG_TRACE(APPLICATION)
-                << "Create application '" << used_application_name << "'";
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Create application '{}'",
+                            used_application_name);
             auto app = application::create(used_application_name);
             if (!app) {
                 return 1;
             }
-            MGE_DEBUG_TRACE(APPLICATION) << "Application initialize";
+            MGE_DEBUG_TRACE(APPLICATION, "Application initialize");
             app->initialize(argc, argv);
-            MGE_DEBUG_TRACE(APPLICATION) << "Application setup";
+            MGE_DEBUG_TRACE(APPLICATION, "Application setup");
             app->setup();
-            MGE_DEBUG_TRACE(APPLICATION) << "Application run";
+            MGE_DEBUG_TRACE(APPLICATION, "Application run");
             app->run();
-            MGE_DEBUG_TRACE(APPLICATION) << "Remove all listeners";
+            MGE_DEBUG_TRACE(APPLICATION, "Remove all listeners");
             app->clear_listeners();
-            MGE_DEBUG_TRACE(APPLICATION) << "Application teardown";
+            MGE_DEBUG_TRACE(APPLICATION, "Application teardown");
             app->teardown();
             auto rc = app->return_code();
-            MGE_DEBUG_TRACE(APPLICATION)
-                << "Application '" << used_application_name
-                << "' has finished with return code " << rc;
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Application '{}' has finished with return code {}",
+                            used_application_name,
+                            rc);
             // store config if all is well
             if (!rc) {
                 configuration::store();
             }
             return rc;
         } catch (const mge::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
-                                         << used_application_name << "':";
-            MGE_ERROR_TRACE(APPLICATION) << ex.details();
+            MGE_ERROR_TRACE(APPLICATION,
+                            "Exception in application '{}': {}",
+                            used_application_name,
+                            ex.details());
             return 1;
         } catch (const std::exception& ex) {
-            MGE_ERROR_TRACE(APPLICATION) << "Exception in application '"
-                                         << used_application_name << "':";
-            MGE_ERROR_TRACE(APPLICATION) << ex.what();
+            MGE_ERROR_TRACE(APPLICATION,
+                            "Exception in application '{}': {}",
+                            used_application_name,
+                            ex.what());
             return 1;
         } catch (...) {
-            MGE_ERROR_TRACE(APPLICATION) << "Unknown exception in application '"
-                                         << used_application_name << "'";
+            MGE_ERROR_TRACE(APPLICATION,
+                            "Unknown exception in application '{}'",
+                            used_application_name);
             return 1;
         }
     }
@@ -228,11 +237,20 @@ namespace mge {
         m_quit_listeners.erase(k);
     }
 
-    bool application::is_quit() const { return m_quit; }
+    bool application::is_quit() const
+    {
+        return m_quit;
+    }
 
-    void application::set_quit() { m_quit = true; }
+    void application::set_quit()
+    {
+        m_quit = true;
+    }
 
-    void application::input(uint64_t cycle) { m_input_listeners(); }
+    void application::input(uint64_t cycle)
+    {
+        m_input_listeners();
+    }
 
     void application::update(uint64_t cycle, double elapsed, double delta)
     {
@@ -249,7 +267,10 @@ namespace mge {
         m_return_code = return_code;
     }
 
-    int application::return_code() const noexcept { return m_return_code; }
+    int application::return_code() const noexcept
+    {
+        return m_return_code;
+    }
 
     const std::vector<std::string>& application::arguments() const
     {
