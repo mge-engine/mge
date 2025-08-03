@@ -4,9 +4,9 @@
 #include "mge/asset/asset.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/module.hpp"
+#include "mge/core/package.hpp"
 #include "mge/core/program_options.hpp"
 #include "mge/core/properties.hpp"
-#include "mge/core/software_component.hpp"
 #include "mge/core/trace.hpp"
 #include <iostream>
 
@@ -152,7 +152,7 @@ int main(int argc, const char** argv)
         generic.parse(generic_args, generic_options);
 
         if (generic_options.has_option("version")) {
-            auto mge = mge::software_component::mge();
+            auto mge = mge::package::get("mge"sv);
             std::cout << "mgeassettool version " << mge->version() << " build "
                       << mge->build() << std::endl;
             return 0;
