@@ -41,7 +41,7 @@ SET(mgecore_sources
     atexit.cpp
     memory_resource.cpp
     closure.cpp
-    software_component.cpp
+    package.cpp
     program_options.cpp
 )
 
@@ -99,7 +99,7 @@ SET(mgecore_headers
     atexit.hpp
     memory_resource.hpp
     closure.hpp
-    software_component.hpp
+    package.hpp
     program_options.hpp
 )
 

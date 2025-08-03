@@ -41,7 +41,7 @@ SET(MGECORE_TEST_SOURCES
     test_atexit.cpp
     test_memory_resource.cpp
     test_closure.cpp
-    test_software_component.cpp
+    test_package.cpp
     test_program_options.cpp
     test_input_stream.cpp
 )
