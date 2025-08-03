@@ -305,12 +305,6 @@ used in the same namespace as the trace topic was defined.</p>
 </dl>
 </dd></dl>
 
-<p>To use a trace topic in a different namespace, the following macro can be used
-to have a <code class="docutils literal notranslate"><span class="pre">using</span></code> declaration for the trace topic.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygendefine: Cannot find define “MGE_USING_NS_TRACE_TOPIC(NS,” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
-</div>
 <p>If you need to inspect a trace topic directly, the following macros can be used:</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_TRACE_TOPIC">
@@ -515,6 +509,12 @@ to have a <code class="docutils literal notranslate"><span class="pre">using</sp
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5trace6streamEv">
+<span id="_CPPv3N3mge5trace6streamEv"></span><span id="_CPPv2N3mge5trace6streamEv"></span><span id="mge::trace::stream"></span><span class="target" id="classmge_1_1trace_1a594b6c5d393e535ddd397a060380f1d8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4N3mge5trace6streamEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the stream to write into. </p>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I0EN3mge5tracelsER5traceRR1T">
 <span id="_CPPv3I0EN3mge5tracelsERR1T"></span><span id="_CPPv2I0EN3mge5tracelsERR1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1trace_1a83fdbedeaa3f53440e2682f30fd088b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge5traceE" title="mge::trace"><span class="n"><span class="pre">trace</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">&lt;&lt;</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN3mge5tracelsER5traceRR1T" title="mge::trace::operator&lt;&lt;::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge5tracelsER5traceRR1T" title="Link to this definition"></a><br /></dt>
 <dd><p>Write into trace. No-op if trace level is disabled. </p>
@@ -551,26 +551,18 @@ to have a <code class="docutils literal notranslate"><span class="pre">using</sp
 <p>For composing trace, various macros can be used:</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_TRACE">
-<span class="target" id="trace_8hpp_1a999adb332c5fb3b3a786593cc701fcd7"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="n"><span class="pre">LEVEL</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_TRACE" title="Link to this definition"></a><br /></dt>
-<dd><p>Invoke trace. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>TOPIC</strong> – trace topic </p></li>
-<li><p><strong>LEVEL</strong> – trace level (only identifier within <code class="docutils literal notranslate"><a class="reference internal" href="#namespacemge_1a918bcc53e986d84fc0fd6c022490f61e"><span class="std std-ref"><span class="pre">mge::trace_level</span></span></a></code> scope) </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
+<span class="target" id="trace_8hpp_1a677c118971740dc5f3c550a5875915cd"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="n"><span class="pre">LEVEL</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_TRACE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_DEBUG_TRACE">
-<span class="target" id="trace_8hpp_1a355856746263c08e286d7c56703c05cf"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE" title="Link to this definition"></a><br /></dt>
+<span class="target" id="trace_8hpp_1a8627000290c039d65b5e0a33b8016dd3"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEBUG_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEBUG_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke debug trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TOPIC</strong> – trace topic </p></li>
+<li><p><strong>...</strong> – format string and arguments </p></li>
 </ul>
 </dd>
 </dl>
@@ -578,12 +570,13 @@ to have a <code class="docutils literal notranslate"><span class="pre">using</sp
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_INFO_TRACE">
-<span class="target" id="trace_8hpp_1ab7e5fb8665388615484d1f381263f487"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE" title="Link to this definition"></a><br /></dt>
+<span class="target" id="trace_8hpp_1a62a9cae4278f45086979c9602e51a1f7"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_INFO_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_INFO_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke info trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TOPIC</strong> – trace topic </p></li>
+<li><p><strong>...</strong> – format string and arguments </p></li>
 </ul>
 </dd>
 </dl>
@@ -591,12 +584,13 @@ to have a <code class="docutils literal notranslate"><span class="pre">using</sp
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_WARNING_TRACE">
-<span class="target" id="trace_8hpp_1ae2a9c2d85eea564952380232041b9ad0"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE" title="Link to this definition"></a><br /></dt>
+<span class="target" id="trace_8hpp_1afa91e8e634dbdfbbf602bccd2526d502"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_WARNING_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_WARNING_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke warning trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TOPIC</strong> – trace topic </p></li>
+<li><p><strong>...</strong> – format string and arguments </p></li>
 </ul>
 </dd>
 </dl>
@@ -604,12 +598,13 @@ to have a <code class="docutils literal notranslate"><span class="pre">using</sp
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_ERROR_TRACE">
-<span class="target" id="trace_8hpp_1ad85504fecd4628d87038e68a52e363ab"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE" title="Link to this definition"></a><br /></dt>
+<span class="target" id="trace_8hpp_1a4550ff2384daebd7fbf66ece8182da72"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_ERROR_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_ERROR_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke error trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TOPIC</strong> – trace topic </p></li>
+<li><p><strong>...</strong> – format string and arguments </p></li>
 </ul>
 </dd>
 </dl>
@@ -617,22 +612,24 @@ to have a <code class="docutils literal notranslate"><span class="pre">using</sp
 
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_FATAL_TRACE">
-<span class="target" id="trace_8hpp_1af7b6fe736d1bc5fe547c0da108f055da"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE" title="Link to this definition"></a><br /></dt>
+<span class="target" id="trace_8hpp_1a57cd80f6d0b01377c64ceb4e70c6be51"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_FATAL_TRACE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_FATAL_TRACE" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke fatal trace. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TOPIC</strong> – trace topic </p></li>
+<li><p><strong>...</strong> – format string and arguments </p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <p>As an example, writing trace into a trace topic <cite>TEST</cite> looks like this:</p>
-<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">MGE_ERROR_TRACE</span><span class="p">(</span><span class="n">TEST</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;This is a test of error trace&quot;</span><span class="p">;</span>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">MGE_ERROR_TRACE</span><span class="p">(</span><span class="n">TEST</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;An error occurred: {}&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error_message</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Note that a line break isn’t needed at the end.</p>
+<p>Note that a line break isn’t needed at the end, each invocation of the trace
+macro will automatically add one.</p>
 <p>Sometimes creating traces may involve heavier processing one wants to avoid if
 a particular trace is disabled. A number of check macros is available for this
 purpose:</p>
@@ -709,13 +706,15 @@ grep for. Note that the released code of MGE does not contain any ‘XDEBUG’
 trace.</p>
 <dl class="cpp macro">
 <dt class="sig sig-object cpp" id="c.MGE_XDEBUG">
-<span class="target" id="trace_8hpp_1a564831de8199dee796260f1ddc789315"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_XDEBUG</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_XDEBUG" title="Link to this definition"></a><br /></dt>
+<span class="target" id="trace_8hpp_1a8fe14370fbc507a84a557471edb6c52a"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_XDEBUG</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">TOPIC</span></span>, <span class="n"><span class="pre">FMT</span></span>, <span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_XDEBUG" title="Link to this definition"></a><br /></dt>
 <dd><p>Invoke debug trace. </p>
 <p>Used for temporary tracing when hunting bugs or alike. Submitted changes should never have a MGE_XDEBUG trace statement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TOPIC</strong> – trace topic </p></li>
+<li><p><strong>FMT</strong> – format string </p></li>
+<li><p><strong>...</strong> – format string arguments </p></li>
 </ul>
 </dd>
 </dl>
