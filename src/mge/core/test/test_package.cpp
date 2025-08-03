@@ -9,5 +9,6 @@ TEST(package, mge)
 {
     using namespace std::literals::string_view_literals;
     auto mge = mge::package::get("mge"sv);
+    ASSERT_NE(mge, nullptr);
     EXPECT_EQ("mge", mge->name());
 }
