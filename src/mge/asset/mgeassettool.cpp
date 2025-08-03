@@ -153,6 +153,10 @@ int main(int argc, const char** argv)
 
         if (generic_options.has_option("version")) {
             auto mge = mge::package::get("mge"sv);
+            if (!mge) {
+                std::cerr << "Error: 'mge' package not found." << std::endl;
+                return 1;
+            }
             std::cout << "mgeassettool version " << mge->version() << " build "
                       << mge->build() << std::endl;
             return 0;
