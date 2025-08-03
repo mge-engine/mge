@@ -4,7 +4,10 @@
 #include "mge/core/system_error.hpp"
 
 namespace mge {
-    system_error::system_error() { set_error_code(GetLastError()); }
+    system_error::system_error()
+    {
+        set_error_code(GetLastError());
+    }
 
     void system_error::set_error_code(system_error::error_code_type ec)
     {
@@ -12,10 +15,11 @@ namespace mge {
 #ifdef MGE_OS_WINDOWS
         char* msgbuf;
         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                          FORMAT_MESSAGE_FROM_SYSTEM,
+                          FORMAT_MESSAGE_FROM_SYSTEM |
+                          FORMAT_MESSAGE_IGNORE_INSERTS,
                       nullptr,
                       ec,
-                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                      MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
                       (LPTSTR)&msgbuf,
                       0,
                       nullptr);
