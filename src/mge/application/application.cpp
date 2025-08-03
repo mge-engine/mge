@@ -131,19 +131,24 @@ namespace mge {
 
             if (used_application_name.empty()) {
                 if (MGE_PARAMETER(application, name).has_value()) {
-                    MGE_DEBUG_TRACE(APPLICATION, "Application name parameter found");
+                    MGE_DEBUG_TRACE(APPLICATION,
+                                    "Application name parameter found");
                     application_name_parameter_value =
                         MGE_PARAMETER(application, name).get();
                     used_application_name = application_name_parameter_value;
                 }
                 if (used_application_name.empty()) {
-                    MGE_DEBUG_TRACE(APPLICATION, "No application name parameter found, falling back to executable name");
+                    MGE_DEBUG_TRACE(APPLICATION,
+                                    "No application name parameter found, "
+                                    "falling back to executable name");
                     application_name_parameter_value = mge::executable_name();
                     used_application_name = application_name_parameter_value;
                 }
             }
 
-            MGE_DEBUG_TRACE(APPLICATION, "Create application '{}'", used_application_name);
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Create application '{}'",
+                            used_application_name);
             auto app = application::create(used_application_name);
             if (!app) {
                 return 1;
@@ -159,7 +164,10 @@ namespace mge {
             MGE_DEBUG_TRACE(APPLICATION, "Application teardown");
             app->teardown();
             auto rc = app->return_code();
-            MGE_DEBUG_TRACE(APPLICATION, "Application '{}' has finished with return code {}", used_application_name, rc)    ;
+            MGE_DEBUG_TRACE(APPLICATION,
+                            "Application '{}' has finished with return code {}",
+                            used_application_name,
+                            rc);
             // store config if all is well
             if (!rc) {
                 configuration::store();
@@ -167,13 +175,13 @@ namespace mge {
             return rc;
         } catch (const mge::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION,
-                            "Exception in application '{}: {}",
+                            "Exception in application '{}': {}",
                             used_application_name,
                             ex.details());
             return 1;
         } catch (const std::exception& ex) {
             MGE_ERROR_TRACE(APPLICATION,
-                            "Exception in application '{}: {}",
+                            "Exception in application '{}': {}",
                             used_application_name,
                             ex.what());
             return 1;
