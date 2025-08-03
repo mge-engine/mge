@@ -47,6 +47,13 @@ namespace mge {
          */
         using character_handler = std::function<void(uint32_t character)>;
 
+        /**
+         * Handler function for mouse wheel input.
+         * @param x horizontal wheel movement
+         * @param y vertical wheel movement
+         */
+        using mouse_wheel_handler = std::function<void(int32_t x, int32_t y)>;
+
     protected:
         /**
          * Constructor.
@@ -74,6 +81,12 @@ namespace mge {
         void set_mouse_move_handler(const mouse_move_handler& handler);
 
         /**
+         * Sets the handler used to dispatch mouse wheel input.
+         * @param handler mouse wheel handler
+         */
+        void set_mouse_wheel_handler(const mouse_wheel_handler& handler);
+
+        /**
          * Sets the handler used to dispatch key actions.
          * @param handler key action handler
          */
@@ -93,6 +106,10 @@ namespace mge {
          * @brief Clears the mouse move handler.
          */
         void clear_mouse_move_handler();
+        /**
+         * @brief Clears the mouse wheel handler.
+         */
+        void clear_mouse_wheel_handler();
         /**
          * @brief Clears the key action handler.
          */
@@ -143,6 +160,15 @@ namespace mge {
          * @param y new mouse y position
          */
         void on_mouse_move(uint32_t x, uint32_t y);
+
+        /**
+         * @brief Method to be called on mouse wheel movement.
+         *
+         * @param x horizontal wheel movement
+         * @param y vertical wheel movement
+         */
+        void on_mouse_wheel(int32_t x, int32_t y);
+        
         /**
          * @brief Method to be called when a character is input.
          *
@@ -155,6 +181,7 @@ namespace mge {
 
         mouse_action_handler m_mouse_action_handler;
         mouse_move_handler   m_mouse_move_handler;
+        mouse_wheel_handler  m_mouse_wheel_handler;
         key_action_handler   m_key_action_handler;
         character_handler    m_character_handler;
 

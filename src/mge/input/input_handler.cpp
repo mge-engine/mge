@@ -21,6 +21,12 @@ namespace mge {
     }
 
     void
+    input_handler::set_mouse_wheel_handler(const mouse_wheel_handler& handler)
+    {
+        m_mouse_wheel_handler = handler;
+    }
+
+    void
     input_handler::set_key_action_handler(const key_action_handler& handler)
     {
         m_key_action_handler = handler;
@@ -39,6 +45,11 @@ namespace mge {
     void input_handler::clear_mouse_move_handler()
     {
         m_mouse_move_handler = nullptr;
+    }
+
+    void input_handler::clear_mouse_wheel_handler()
+    {
+        m_mouse_wheel_handler = nullptr;
     }
 
     void input_handler::clear_key_action_handler()
@@ -72,6 +83,14 @@ namespace mge {
         m_input_state.mouse().move(x, y);
         if (m_mouse_move_handler) {
             m_mouse_move_handler(x, y);
+        }
+    }
+
+    void input_handler::on_mouse_wheel(int32_t x, int32_t y)
+    {
+        m_input_state.mouse().wheel(x, y);
+        if (m_mouse_wheel_handler) {
+            m_mouse_wheel_handler(x, y);
         }
     }
 
