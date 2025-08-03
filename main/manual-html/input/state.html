@@ -86,7 +86,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11mouse_state4moveE8uint32_t8uint32_t"><code class="docutils literal notranslate"><span class="pre">move()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11mouse_state1xEv"><code class="docutils literal notranslate"><span class="pre">x()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11mouse_state1yEv"><code class="docutils literal notranslate"><span class="pre">y()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11mouse_state7wheel_xEv"><code class="docutils literal notranslate"><span class="pre">wheel_x()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11mouse_state7wheel_yEv"><code class="docutils literal notranslate"><span class="pre">wheel_y()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11mouse_state7pressedE8uint32_t"><code class="docutils literal notranslate"><span class="pre">pressed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11mouse_state5wheelE7int32_t7int32_t"><code class="docutils literal notranslate"><span class="pre">wheel()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -397,6 +400,28 @@ pressed keys, position of mouse cursor and alike</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge11mouse_state7wheel_xEv">
+<span id="_CPPv3NK3mge11mouse_state7wheel_xEv"></span><span id="_CPPv2NK3mge11mouse_state7wheel_xEv"></span><span id="mge::mouse_state::wheel_xC"></span><span class="target" id="classmge_1_1mouse__state_1a1ad50482f86a7681165dc881cf700229"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wheel_x</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11mouse_state7wheel_xEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Mouse wheel x position. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current x position of the mouse wheel </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge11mouse_state7wheel_yEv">
+<span id="_CPPv3NK3mge11mouse_state7wheel_yEv"></span><span id="_CPPv2NK3mge11mouse_state7wheel_yEv"></span><span id="mge::mouse_state::wheel_yC"></span><span class="target" id="classmge_1_1mouse__state_1a61c12cb9a43d76b268d301d6c209963d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wheel_y</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11mouse_state7wheel_yEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Mouse wheel y position. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current y position of the mouse wheel </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge11mouse_state7pressedE8uint32_t">
 <span id="_CPPv3NK3mge11mouse_state7pressedE8uint32_t"></span><span id="_CPPv2NK3mge11mouse_state7pressedE8uint32_t"></span><span id="mge::mouse_state::pressed__uint32_tC"></span><span class="target" id="classmge_1_1mouse__state_1a0742799cfbc3a10b1795712f32386dda"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pressed</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">button</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11mouse_state7pressedE8uint32_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Returns whether a button is pressed. </p>
@@ -406,6 +431,20 @@ pressed keys, position of mouse cursor and alike</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if currently pressed </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11mouse_state5wheelE7int32_t7int32_t">
+<span id="_CPPv3N3mge11mouse_state5wheelE7int32_t7int32_t"></span><span id="_CPPv2N3mge11mouse_state5wheelE7int32_t7int32_t"></span><span id="mge::mouse_state::wheel__int32_t.int32_t"></span><span class="target" id="classmge_1_1mouse__state_1a159891248f255e5b914889e19e266d66"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">wheel</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">xdelta</span></span>, <span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">ydelta</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11mouse_state5wheelE7int32_t7int32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Signal mouse wheel movement. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xdelta</strong> – horizontal wheel movement </p></li>
+<li><p><strong>ydelta</strong> – vertical wheel movement </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
