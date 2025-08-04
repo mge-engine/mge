@@ -17,6 +17,35 @@
 #    include "mge/win32/monitor.hpp"
 #endif
 
+template <> struct fmt::formatter<VkDebugUtilsMessageTypeFlagBitsEXT>
+{
+    constexpr auto parse(format_parse_context& ctx)
+    {
+        return ctx.begin();
+    }
+    template <typename FormatContext>
+    auto format(VkDebugUtilsMessageTypeFlagBitsEXT flags, FormatContext& ctx)
+    {
+        bool first = true;
+        if (flags & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT) {
+            fmt::format_to(ctx.out(), "GENERAL");
+            first = false;
+        }
+        if (flags & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT) {
+            if (!first)
+                fmt::format_to(ctx.out(), "|");
+            fmt::format_to(ctx.out(), "VALIDATION");
+            first = false;
+        }
+        if (flags & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT) {
+            if (!first)
+                fmt::format_to(ctx.out(), "|");
+            fmt::format_to(ctx.out(), "PERFORMANCE");
+        }
+        return ctx.out();
+    }
+};
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
@@ -132,75 +161,83 @@ namespace mge::vulkan {
         std::stringstream ss;
         ss << "Vulkan Debug [";
 
+        const char* severity_str = "UNKNOWN";
         // Add severity
         switch (severity) {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-            ss << "VERBOSE";
+            severity_str = "VERBOSE";
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            ss << "INFO";
+            severity_str = "INFO";
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            ss << "WARNING";
+            severity_str = "WARNING";
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            ss << "ERROR";
+            severity_str = "ERROR";
             is_error = true;
             break;
         default:
-            ss << "UNKNOWN";
+            severity_str = "UNKNOWN";
             break;
         }
-        ss << "] ";
-
-        // Add message type
-        ss << "(";
-        bool first = true;
-        if (type & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT) {
-            if (!first)
-                ss << "|";
-            ss << "GENERAL";
-            first = false;
-        }
-        if (type & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT) {
-            if (!first)
-                ss << "|";
-            ss << "VALIDATION";
-            first = false;
-        }
-        if (type & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT) {
-            if (!first)
-                ss << "|";
-            ss << "PERFORMANCE";
-            first = false;
-        }
-        ss << ") ";
-
-        // Add object info if available
-        if (data->objectCount > 0) {
-            ss << "Object: " << data->pObjects[0].objectType << " ("
-               << data->pObjects[0].objectHandle << ") ";
-        }
-
-        // Add message
-        ss << data->pMessage;
 
         // Log based on severity
         switch (severity) {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-            MGE_DEBUG_TRACE(VULKAN, "{}", ss.str());
+            MGE_DEBUG_TRACE(VULKAN,
+                            "Vulkan Debug [{}] ({}) Object: {} ({}): {}",
+                            severity_str,
+                            type,
+                            data->objectCount ? data->pObjects[0].objectType
+                                              : VK_OBJECT_TYPE_UNKNOWN,
+                            data->objectCount ? data->pObjects[0].objectHandle
+                                              : 0,
+                            data->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-            MGE_INFO_TRACE(VULKAN, "{}", ss.str());
+            MGE_INFO_TRACE(VULKAN,
+                           "Vulkan Debug [{}] ({}) Object: {} ({}): {}",
+                           severity_str,
+                           type,
+                           data->objectCount ? data->pObjects[0].objectType
+                                             : VK_OBJECT_TYPE_UNKNOWN,
+                           data->objectCount ? data->pObjects[0].objectHandle
+                                             : 0,
+                           data->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            MGE_WARNING_TRACE(VULKAN, "{}", ss.str());
+            MGE_WARNING_TRACE(VULKAN,
+                              "Vulkan Debug [{}] ({}) Object: {} ({}): {}",
+                              severity_str,
+                              type,
+                              data->objectCount ? data->pObjects[0].objectType
+                                                : VK_OBJECT_TYPE_UNKNOWN,
+                              data->objectCount ? data->pObjects[0].objectHandle
+                                                : 0,
+                              data->pMessage);
             break;
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            MGE_ERROR_TRACE(VULKAN, "{}", ss.str());
+            MGE_ERROR_TRACE(VULKAN,
+                            "Vulkan Debug [{}] ({}) Object: {} ({}): {}",
+                            severity_str,
+                            type,
+                            data->objectCount ? data->pObjects[0].objectType
+                                              : VK_OBJECT_TYPE_UNKNOWN,
+                            data->objectCount ? data->pObjects[0].objectHandle
+                                              : 0,
+                            data->pMessage);
             break;
         default:
-            MGE_INFO_TRACE(VULKAN, "{}", ss.str());
+            MGE_INFO_TRACE(VULKAN,
+                           "Vulkan Debug [{}] ({}) Object: {} ({}): {}",
+                           severity_str,
+                           type,
+                           data->objectCount ? data->pObjects[0].objectType
+                                             : VK_OBJECT_TYPE_UNKNOWN,
+                           data->objectCount ? data->pObjects[0].objectHandle
+                                             : 0,
+                           data->pMessage);
             break;
         }
 
