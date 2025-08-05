@@ -7,5 +7,6 @@
 
 namespace mge::reflection {
     MGE_DECLARE_REF(module_details);
+    MGE_DECLARE_WEAK_REF(module_details);
     MGE_DECLARE_REF(type_details);
 } // namespace mge::reflection

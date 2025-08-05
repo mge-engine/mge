@@ -4,10 +4,14 @@
 
 SET(mgereflection_sources
     module.cpp
+
+    module_details.cpp
 )
 
 SET(mgereflection_headers
     module.hpp
+
+    module_details.hpp
 )
 
 MGE_LIBRARY(

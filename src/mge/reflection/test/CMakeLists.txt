@@ -1,7 +1,13 @@
-# Tests for mgereflection
-# Add test sources as needed
+# mge - Modern Game Engine
+# Copyright (c) 2017-2023 by Alexander Schroeder
+# All rights reserved.
 
-# Example (uncomment and adjust when you add tests):
-# add_executable(test_reflection test_reflection.cpp)
-# target_link_libraries(test_reflection PRIVATE mgereflection)
-# add_test(NAME test_reflection COMMAND test_reflection)
+SET(MGEREFLECTION_TEST_SOURCES
+    test_module.cpp
+)
+
+MGE_TEST(
+    TARGET test_reflection
+    SOURCES ${MGEREFLECTION_TEST_SOURCES}
+    LIBRARIES mgereflection mgecore
+)
