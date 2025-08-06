@@ -18,6 +18,7 @@ namespace mge::reflection {
         ~module_details() = default;
 
         static module_details_ref root();
+        static module_details_ref get(std::string_view name);
 
         const auto& name() const noexcept
         {
@@ -29,6 +30,7 @@ namespace mge::reflection {
         }
 
         std::string full_name() const;
+        bool        is_root() const noexcept;
 
     private:
         module_details_weak_ref         m_parent;
