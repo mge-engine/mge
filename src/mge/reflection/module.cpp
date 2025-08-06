@@ -16,4 +16,19 @@ namespace mge::reflection {
         return m_details->is_root();
     }
 
+    std::string_view module::name() const
+    {
+        return m_details->name();
+    }
+
+    std::string module::full_name() const
+    {
+        return m_details->full_name();
+    }
+
+    mge::reflection::module module::parent() const
+    {
+        return mge::reflection::module(m_details->parent());
+    }
+
 } // namespace mge::reflection

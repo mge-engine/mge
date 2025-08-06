@@ -23,6 +23,21 @@ namespace mge::reflection {
         EXPECT_TRUE(mod.is_root());
         mge::reflection::module mod2("::");
         EXPECT_TRUE(mod2.is_root());
+
+        mge::reflection::module mod3("::test");
+        EXPECT_EQ(mod3.name(), "test");
+        EXPECT_EQ(mod3.full_name(), "::test");
+        EXPECT_FALSE(mod3.is_root());
+
+        mge::reflection::module mod4("::test::submodule");
+        EXPECT_EQ(mod4.name(), "submodule");
+        EXPECT_EQ(mod4.full_name(), "::test::submodule");
+        EXPECT_FALSE(mod4.is_root());
+
+        auto mod4parent = mod4.parent();
+        EXPECT_EQ(mod4parent.name(), "test");
+        EXPECT_EQ(mod4parent.full_name(), "::test");
+        EXPECT_FALSE(mod4parent.is_root());
     }
 
 } // namespace mge::reflection

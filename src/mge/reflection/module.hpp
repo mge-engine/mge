@@ -5,6 +5,7 @@
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
+#include <string>
 #include <string_view>
 
 namespace mge::reflection {
@@ -20,8 +21,13 @@ namespace mge::reflection {
         module(module&&) = default;
         module& operator=(module&&) = default;
 
-        bool is_root() const;
+        bool                    is_root() const;
+        std::string_view        name() const;
+        std::string             full_name() const;
+        mge::reflection::module parent() const;
+
     private:
+        module(const module_details_ref& details) :m_details(details) {}
         module_details_ref m_details;
     };
 
