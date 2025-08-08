@@ -31,11 +31,13 @@ namespace mge::reflection {
 
         std::string        full_name() const;
         bool               is_root() const noexcept;
-        
+
         module_details_ref parent() const noexcept
         {
             return m_parent.lock();
         }
+
+        void add(const type_details_ref& details);
 
     private:
         module_details_weak_ref         m_parent;

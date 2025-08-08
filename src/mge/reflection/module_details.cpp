@@ -72,4 +72,6 @@ namespace mge::reflection {
         return m_name.empty();
     }
 
+    void module_details::add(const type_details_ref& details) {}
+
 } // namespace mge::reflection
