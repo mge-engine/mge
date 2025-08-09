@@ -104,3 +104,18 @@ struct fmt::formatter<mge::reflection::type_identifier>
         return ctx.out();
     }
 };
+
+namespace std {
+    template <> struct hash<mge::reflection::type_identifier>
+    {
+        std::size_t
+        operator()(const mge::reflection::type_identifier& value) const noexcept
+        {
+            std::size_t hash = 0;
+            hash ^= std::hash<std::type_index>()(value.type_index());
+            hash ^= std::hash<bool>()(value.is_const());
+            hash ^= std::hash<bool>()(value.is_volatile());
+            return hash;
+        }
+    };
+} // namespace std

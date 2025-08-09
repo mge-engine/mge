@@ -35,4 +35,16 @@ namespace mge::reflection {
         EXPECT_EQ(typeid(int), typeid(volatile int));
         EXPECT_EQ(typeid(int), typeid(const volatile int));
     }
+
+
+    TEST(type_identifier, hash) {
+        type_identifier id1(typeid(int), false, false);
+        type_identifier id2(typeid(int), true, false);
+        type_identifier id3(typeid(int), false, true);
+        type_identifier id4(typeid(int), true, true);
+        EXPECT_EQ(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id1));
+        EXPECT_NE(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id2));
+        EXPECT_NE(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id3));
+        EXPECT_NE(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id4));
+    }
 } // namespace mge::reflection
