@@ -2,8 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/format.hpp"
 #include "mge/reflection/dllexport.hpp"
 
+#include <tuple>
 #include <typeindex>
 #include <typeinfo>
 
@@ -41,9 +43,64 @@ namespace mge::reflection {
             return m_is_volatile;
         }
 
+        bool operator==(const type_identifier& other) const noexcept
+        {
+            return m_type_index == other.m_type_index &&
+                   m_is_const == other.m_is_const &&
+                   m_is_volatile == other.m_is_volatile;
+        }
+
+        bool operator!=(const type_identifier& other) const noexcept
+        {
+            return !(*this == other);
+        }
+
+        bool operator<(const type_identifier& other) const noexcept
+        {
+            return std::tie(m_type_index, m_is_const, m_is_volatile) <
+                   std::tie(other.m_type_index,
+                            other.m_is_const,
+                            other.m_is_volatile);
+        }
+
+        bool operator>(const type_identifier& other) const noexcept
+        {
+            return std::tie(m_type_index, m_is_const, m_is_volatile) >
+                   std::tie(other.m_type_index,
+                            other.m_is_const,
+                            other.m_is_volatile);
+        }
+
+        bool operator<=(const type_identifier& other) const noexcept
+        {
+            return !(*this > other);
+        }
+
+        bool operator>=(const type_identifier& other) const noexcept
+        {
+            return !(*this < other);
+        }
+
     private:
         std::type_index m_type_index;
         bool            m_is_const;
         bool            m_is_volatile;
     };
 } // namespace mge::reflection
+
+template <>
+struct fmt::formatter<mge::reflection::type_identifier>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::reflection::type_identifier& id,
+                FormatContext&                          ctx) const
+    {
+        fmt::format_to(ctx.out(),
+                       "{}{}{}",
+                       id.is_const() ? "const " : "",
+                       id.is_volatile() ? "volatile " : "",
+                       id.type_index().name());
+        return ctx.out();
+    }
+};

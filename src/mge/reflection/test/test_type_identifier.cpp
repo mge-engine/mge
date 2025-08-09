@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "mge/reflection/type_identifier.hpp"
 #include "test/googletest.hpp"
-
+#include "test/test_format.hpp"
 namespace mge::reflection {
 
     TEST(type_identifier, basic)
@@ -12,6 +12,21 @@ namespace mge::reflection {
         EXPECT_EQ(id.type_index(), typeid(int));
         EXPECT_FALSE(id.is_const());
         EXPECT_FALSE(id.is_volatile());
+    }
+
+    TEST(type_identifier, format)
+    {
+        type_identifier id(typeid(int), false, false);
+        type_identifier id_const(typeid(int), true, false);
+        type_identifier id_volatile(typeid(int), false, true);
+        type_identifier id_const_volatile(typeid(int), true, true);
+        mge::test_format(id, "int");
+        mge::test_format(id_const, "const int");
+        mge::test_format(id_volatile, "volatile int");
+        mge::test_format(id_const_volatile, "const volatile int");
+
+        // type_identifier idptr(typeid(int* const*), false, false);
+        // mge::test_format(idptr, "int**");
     }
 
     TEST(type_identifier, type_erasure)
