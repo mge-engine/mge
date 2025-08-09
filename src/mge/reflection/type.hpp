@@ -7,7 +7,25 @@
 
 namespace mge::reflection {
 
-    template <typename T> class type
+    namespace {
+        template <typename T> struct type_base
+        {
+            static constexpr bool is_void()
+            {
+                return std::is_void_v<T>;
+            }
+            static constexpr bool is_integral()
+            {
+                return std::is_integral_v<T>;
+            }
+            static constexpr size_t size()
+            {
+                return sizeof(T);
+            }
+        };
+    } // namespace
+
+    template <typename T> class type : public type_base<T>
     {
     public:
         type() = default;
@@ -15,12 +33,39 @@ namespace mge::reflection {
 
         constexpr bool is_void() const noexcept
         {
-            return std::is_void_v<T>;
+            return type_base<T>::is_void();
         }
 
         constexpr bool is_integral() const noexcept
         {
-            return std::is_integral_v<T>;
+            return type_base<T>::is_integral();
+        }
+
+        constexpr size_t size() const noexcept
+        {
+            return type_base<T>::size();
+        }
+
+        // const type_details_ref& details() const noexcept;
+    };
+
+    template <> class type<void>
+    {
+    public:
+        type() = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return true;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return 0;
         }
     };
 

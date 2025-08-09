@@ -7,14 +7,16 @@ SET(mgereflection_sources
 
     module_details.cpp
     type_details.cpp
+    type_identifier.cpp
 )
 
 SET(mgereflection_headers
     module.hpp
     type.hpp
-    
+
     module_details.hpp
     type_details.hpp
+    type_identifier.hpp
 )
 
 MGE_LIBRARY(

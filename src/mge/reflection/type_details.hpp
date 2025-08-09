@@ -17,6 +17,10 @@ namespace mge::reflection {
         type_details& operator=(const type_details&) = delete;
         type_details(type_details&&) = delete;
         type_details& operator=(type_details&&) = delete;
+
+        bool   is_void = false;
+        bool   is_integral = false;
+        size_t size = 0;
     };
 
 } // namespace mge::reflection
