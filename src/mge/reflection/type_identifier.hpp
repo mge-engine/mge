@@ -113,8 +113,8 @@ namespace std {
         {
             std::size_t hash = 0;
             hash ^= std::hash<std::type_index>()(value.type_index());
-            hash ^= std::hash<bool>()(value.is_const());
-            hash ^= std::hash<bool>()(value.is_volatile());
+            hash ^= value.is_const() ? 7 : 13;
+            hash ^= value.is_volatile() ? 17 : 19;
             return hash;
         }
     };

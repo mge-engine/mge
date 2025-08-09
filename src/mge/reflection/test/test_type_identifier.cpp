@@ -36,15 +36,58 @@ namespace mge::reflection {
         EXPECT_EQ(typeid(int), typeid(const volatile int));
     }
 
-
-    TEST(type_identifier, hash) {
+    TEST(type_identifier, hash)
+    {
         type_identifier id1(typeid(int), false, false);
         type_identifier id2(typeid(int), true, false);
         type_identifier id3(typeid(int), false, true);
         type_identifier id4(typeid(int), true, true);
-        EXPECT_EQ(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id1));
-        EXPECT_NE(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id2));
-        EXPECT_NE(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id3));
-        EXPECT_NE(std::hash<type_identifier>()(id1), std::hash<type_identifier>()(id4));
+        EXPECT_EQ(std::hash<type_identifier>()(id1),
+                  std::hash<type_identifier>()(id1));
+        EXPECT_NE(std::hash<type_identifier>()(id1),
+                  std::hash<type_identifier>()(id2));
+        EXPECT_NE(std::hash<type_identifier>()(id1),
+                  std::hash<type_identifier>()(id3));
+        EXPECT_NE(std::hash<type_identifier>()(id1),
+                  std::hash<type_identifier>()(id4));
     }
+
+    TEST(type_identifier, comparison)
+    {
+        type_identifier id1(typeid(int), false, false);
+        type_identifier id2(typeid(int), true, false);
+        type_identifier id3(typeid(int), false, true);
+        type_identifier id4(typeid(int), true, true);
+        EXPECT_EQ(id1, id1);
+        EXPECT_NE(id1, id2);
+        EXPECT_NE(id1, id3);
+        EXPECT_NE(id1, id4);
+    }
+
+    TEST(type_identifier, less_than)
+    {
+        type_identifier id1(typeid(int), false, false);
+        type_identifier id2(typeid(int), true, false);
+        type_identifier id3(typeid(int), false, true);
+        type_identifier id4(typeid(int), true, true);
+        EXPECT_LT(id1, id2);
+        EXPECT_LT(id1, id3);
+        EXPECT_LT(id1, id4);
+        EXPECT_LT(id2, id4);
+        EXPECT_LT(id3, id4);
+    }
+
+    TEST(type_identifier, greater_than)
+    {
+        type_identifier id1(typeid(int), false, false);
+        type_identifier id2(typeid(int), true, false);
+        type_identifier id3(typeid(int), false, true);
+        type_identifier id4(typeid(int), true, true);
+        EXPECT_GT(id2, id1);
+        EXPECT_GT(id3, id1);
+        EXPECT_GT(id4, id1);
+        EXPECT_GT(id4, id2);
+        EXPECT_GT(id4, id3);
+    }
+
 } // namespace mge::reflection
