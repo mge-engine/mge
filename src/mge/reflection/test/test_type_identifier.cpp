@@ -13,4 +13,11 @@ namespace mge::reflection {
         EXPECT_FALSE(id.is_const());
         EXPECT_FALSE(id.is_volatile());
     }
+
+    TEST(type_identifier, type_erasure)
+    {
+        EXPECT_EQ(typeid(int), typeid(const int));
+        EXPECT_EQ(typeid(int), typeid(volatile int));
+        EXPECT_EQ(typeid(int), typeid(const volatile int));
+    }
 } // namespace mge::reflection
