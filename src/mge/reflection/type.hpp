@@ -5,48 +5,24 @@
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
+#include "mge/reflection/type_details.hpp"
+
 namespace mge::reflection {
 
-    namespace {
-        template <typename T> struct type_base
-        {
-            static constexpr bool is_void()
-            {
-                return std::is_void_v<T>;
-            }
-            static constexpr bool is_integral()
-            {
-                return std::is_integral_v<T>;
-            }
-            static constexpr size_t size()
-            {
-                return sizeof(T);
-            }
-        };
-    } // namespace
+    template <typename T>
+    inline const type_details_ref& get_or_create_type_details();
 
-    template <typename T> class type : public type_base<T>
+    template <typename T> class type
     {
     public:
         type() = default;
         ~type() = default;
 
-        constexpr bool is_void() const noexcept
-        {
-            return type_base<T>::is_void();
-        }
+        constexpr bool   is_void() const noexcept;
+        constexpr bool   is_integral() const noexcept;
+        constexpr size_t size() const noexcept;
 
-        constexpr bool is_integral() const noexcept
-        {
-            return type_base<T>::is_integral();
-        }
-
-        constexpr size_t size() const noexcept
-        {
-            return type_base<T>::size();
-        }
-
-        // const type_details_ref& details() const noexcept;
+        const type_details_ref& details() const noexcept;
     };
 
     template <> class type<void>
@@ -67,6 +43,30 @@ namespace mge::reflection {
         {
             return 0;
         }
+
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<void>();
+        }
     };
+
+    template <typename T>
+    inline const type_details_ref& get_or_create_type_details()
+    {
+        const auto  id = make_type_identifier<T>();
+        const auto& get_result = type_details::get(id);
+        if (get_result) {
+            return get_result;
+        }
+        auto details = std::make_shared<type_details>();
+        details->is_void = std::is_void_v<T>;
+        details->is_integral = std::is_integral_v<T>;
+        if constexpr (std::is_void_v<T>) {
+            details->size = 0;
+        } else {
+            details->size = sizeof(T);
+        }
+        return type_details::put(id, details);
+    }
 
 } // namespace mge::reflection
