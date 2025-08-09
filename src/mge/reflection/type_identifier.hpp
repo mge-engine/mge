@@ -86,6 +86,14 @@ namespace mge::reflection {
         bool            m_is_const;
         bool            m_is_volatile;
     };
+
+    template <typename T>
+    constexpr type_identifier make_type_identifier() noexcept
+    {
+        return type_identifier(typeid(T),
+                               std::is_const_v<T>,
+                               std::is_volatile_v<T>);
+    }
 } // namespace mge::reflection
 
 template <>

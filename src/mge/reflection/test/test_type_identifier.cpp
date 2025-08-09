@@ -90,4 +90,17 @@ namespace mge::reflection {
         EXPECT_GT(id4, id3);
     }
 
+    TEST(type_identifier, make_type_identifier)
+    {
+        EXPECT_EQ(make_type_identifier<int>(), make_type_identifier<int>());
+        EXPECT_NE(make_type_identifier<int>(),
+                  make_type_identifier<const int>());
+        EXPECT_NE(make_type_identifier<int>(),
+                  make_type_identifier<volatile int>());
+        EXPECT_NE(make_type_identifier<int>(),
+                  make_type_identifier<const volatile int>());
+        EXPECT_EQ(make_type_identifier<const int>(),
+                  make_type_identifier<const int>());
+    }
+
 } // namespace mge::reflection
