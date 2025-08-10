@@ -6,7 +6,10 @@
 #include "mge/core/memory.hpp"
 
 namespace mge::reflection {
+
     MGE_DECLARE_REF(module_details);
     MGE_DECLARE_WEAK_REF(module_details);
     MGE_DECLARE_REF(type_details);
+    MGE_DECLARE_REF(function_details);
+
 } // namespace mge::reflection
