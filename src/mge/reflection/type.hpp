@@ -6,6 +6,7 @@
 #include "mge/reflection/reflection_fwd.hpp"
 
 #include "mge/reflection/type_details.hpp"
+#include <string_view>
 
 namespace mge::reflection {
 
@@ -25,7 +26,10 @@ namespace mge::reflection {
         constexpr bool   is_void() const noexcept;
         constexpr bool   is_bool() const noexcept;
         constexpr bool   is_integral() const noexcept;
+        constexpr bool   is_floating_point() const noexcept;
         constexpr size_t size() const noexcept;
+
+        std::string_view name() const;
 
         const type_details_ref& details() const noexcept;
     };
@@ -48,6 +52,10 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return 0;
@@ -56,6 +64,11 @@ namespace mge::reflection {
         const type_details_ref& details() const noexcept
         {
             return get_or_create_type_details<void>();
+        }
+
+        std::string_view name() const noexcept
+        {
+            return "void";
         }
     };
 
@@ -77,6 +90,10 @@ namespace mge::reflection {
         {
             return true;
         }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(bool);
@@ -85,6 +102,87 @@ namespace mge::reflection {
         const type_details_ref& details() const noexcept
         {
             return get_or_create_type_details<bool>();
+        }
+
+        std::string_view name() const noexcept
+        {
+            return "bool";
+        }
+    };
+
+    template <> class type<float>
+    {
+    public:
+        type() = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return true;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(float);
+        }
+
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<float>();
+        }
+
+        std::string_view name() const noexcept
+        {
+            return "float";
+        }
+    };
+
+    template <> class type<double>
+    {
+    public:
+        type() = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return true;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(double);
+        }
+
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<double>();
+        }
+
+        std::string_view name() const noexcept
+        {
+            return "double";
         }
     };
 
@@ -100,6 +198,7 @@ namespace mge::reflection {
         details->is_void = std::is_void_v<T>;
         details->is_bool = std::is_same_v<T, bool>;
         details->is_integral = std::is_integral_v<T>;
+        details->is_floating_point = std::is_floating_point_v<T>;
         if constexpr (std::is_void_v<T>) {
             details->size = 0;
         } else {

@@ -31,6 +31,7 @@ namespace mge::reflection {
         bool   is_void = false;
         bool   is_bool = false;
         bool   is_integral = false;
+        bool   is_floating_point = false;
         size_t size = 0;
     };
 
