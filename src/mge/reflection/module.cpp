@@ -31,7 +31,12 @@ namespace mge::reflection {
         return mge::reflection::module(m_details->parent());
     }
 
-    void module::add(const type_details_ref& details)
+    void module::add_details(const type_details_ref& details)
+    {
+        m_details->add(details);
+    }
+
+    void module::add_details(const function_details_ref& details)
     {
         m_details->add(details);
     }

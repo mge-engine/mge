@@ -19,6 +19,12 @@ namespace mge::reflection {
             construct(name, reinterpret_cast<void*>(func));
         }
 
+        template <typename Ret, typename... Args>
+        function_details(const char* name, Ret (*func)(Args...) noexcept)
+        {
+            construct(name, reinterpret_cast<void*>(func));
+        }
+
         function_details(const function_details&) = delete;
         function_details& operator=(const function_details&) = delete;
         function_details(function_details&&) = delete;

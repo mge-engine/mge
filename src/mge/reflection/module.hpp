@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/reflection/dllexport.hpp"
+#include "mge/reflection/function.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/type.hpp"
 
@@ -28,7 +29,7 @@ namespace mge::reflection {
         mge::reflection::module parent() const;
 
         template <typename T, typename... Args>
-        inline module& operator()(T&& t, Args&&... args)
+        inline module& operator()(const T& t, const Args&... args)
         {
             add(t);
             return operator()(std::forward<Args>(args)...);
@@ -40,12 +41,18 @@ namespace mge::reflection {
         }
 
     private:
-        template <typename T> void add(type<T>&& t)
+        void add_details(const type_details_ref& details);
+        void add_details(const function_details_ref& details);
+
+        template <typename T> void add(const type<T>& t)
         {
-            // Implementation for adding the type information to the module
+            add_details(t.details());
         }
 
-        void add(const type_details_ref& details);
+        inline void add(const function& f)
+        {
+            add_details(f.details());
+        }
 
         module(const module_details_ref& details) :m_details(details) {}
         module_details_ref m_details;

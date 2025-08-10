@@ -8,11 +8,9 @@
 
 namespace mge::reflection {
 
-    template <typename Result, typename... Args> class function
+    class MGEREFLECTION_EXPORT function
     {
     public:
-        using function_type = Result(Args...);
-
         function() = default;
         ~function() = default;
         function(function&&) = default;
@@ -20,7 +18,14 @@ namespace mge::reflection {
         function(const function&) = default;
         function& operator=(const function&) = default;
 
+        template <typename Result, typename... Args>
         function(const char* name, Result (*func)(Args...))
+        {
+            m_details = std::make_shared<function_details>(name, func);
+        }
+
+        template <typename Result, typename... Args>
+        function(const char* name, Result (*func)(Args...) noexcept)
         {
             m_details = std::make_shared<function_details>(name, func);
         }
