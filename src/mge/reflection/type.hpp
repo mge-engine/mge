@@ -23,6 +23,7 @@ namespace mge::reflection {
         ~type() = default;
 
         constexpr bool   is_void() const noexcept;
+        constexpr bool   is_bool() const noexcept;
         constexpr bool   is_integral() const noexcept;
         constexpr size_t size() const noexcept;
 
@@ -39,6 +40,10 @@ namespace mge::reflection {
         {
             return true;
         }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
         constexpr bool is_integral() const noexcept
         {
             return false;
@@ -54,6 +59,35 @@ namespace mge::reflection {
         }
     };
 
+    template <> class type<bool>
+    {
+    public:
+        type() = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return true;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(bool);
+        }
+
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<bool>();
+        }
+    };
+
     template <typename T>
     inline const type_details_ref& get_or_create_type_details()
     {
@@ -64,6 +98,7 @@ namespace mge::reflection {
         }
         auto details = std::make_shared<type_details>();
         details->is_void = std::is_void_v<T>;
+        details->is_bool = std::is_same_v<T, bool>;
         details->is_integral = std::is_integral_v<T>;
         if constexpr (std::is_void_v<T>) {
             details->size = 0;

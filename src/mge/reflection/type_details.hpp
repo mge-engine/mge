@@ -29,6 +29,7 @@ namespace mge::reflection {
                                            const type_details_ref& details);
 
         bool   is_void = false;
+        bool   is_bool = false;
         bool   is_integral = false;
         size_t size = 0;
     };

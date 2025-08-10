@@ -7,11 +7,21 @@
 
 namespace mge::reflection {
 
-    TEST(type, is_void)
+    TEST(type, void_type)
     {
         auto type_void = type<void>();
         EXPECT_TRUE(type_void.is_void());
+        EXPECT_FALSE(type_void.is_bool());
         EXPECT_FALSE(type_void.is_integral());
         EXPECT_EQ(type_void.size(), 0);
+    }
+
+    TEST(type, bool_type)
+    {
+        auto type_bool = type<bool>();
+        EXPECT_FALSE(type_bool.is_void());
+        EXPECT_TRUE(type_bool.is_bool());
+        EXPECT_FALSE(type_bool.is_integral());
+        EXPECT_EQ(type_bool.size(), sizeof(bool));
     }
 } // namespace mge::reflection
