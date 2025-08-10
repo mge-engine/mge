@@ -15,7 +15,11 @@ namespace mge::reflection {
     template <typename T> class type
     {
     public:
-        type() = default;
+        type()
+        {
+            static_assert(false, "Unsupported type");
+        }
+
         ~type() = default;
 
         constexpr bool   is_void() const noexcept;
