@@ -27,16 +27,14 @@ namespace mge::reflection {
         EXPECT_EQ(type_bool.name(), "bool");
     }
 
-    /*
-        TEST(type, integral_type)
-        {
-            auto type_int = type<int>();
-            EXPECT_FALSE(type_int.is_void());
-            EXPECT_FALSE(type_int.is_bool());
-            EXPECT_TRUE(type_int.is_integral());
-            EXPECT_EQ(type_int.size(), sizeof(int));
-        }
-    */
+    TEST(type, integral_type)
+    {
+        auto type_int = type<int>();
+        EXPECT_FALSE(type_int.is_void());
+        EXPECT_FALSE(type_int.is_bool());
+        EXPECT_TRUE(type_int.is_integral());
+        EXPECT_EQ(type_int.size(), sizeof(int));
+    }
 
     TEST(type, float_type)
     {

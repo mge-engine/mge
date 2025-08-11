@@ -5,6 +5,7 @@
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
+#include "mge/core/enum.hpp"
 #include "mge/reflection/type_details.hpp"
 #include <string_view>
 
