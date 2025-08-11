@@ -186,6 +186,56 @@ namespace mge::reflection {
         }
     };
 
+#define MGE_DEFINE_INTEGER_TYPE(T)                                             \
+    template <> class type<T>                                                  \
+    {                                                                          \
+    public:                                                                    \
+        type() = default;                                                      \
+        ~type() = default;                                                     \
+                                                                               \
+        constexpr bool is_void() const noexcept                                \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr bool is_integral() const noexcept                            \
+        {                                                                      \
+            return true;                                                       \
+        }                                                                      \
+        constexpr bool is_bool() const noexcept                                \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr bool is_floating_point() const noexcept                      \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr size_t size() const noexcept                                 \
+        {                                                                      \
+            return sizeof(T);                                                  \
+        }                                                                      \
+                                                                               \
+        const type_details_ref& details() const noexcept                       \
+        {                                                                      \
+            return get_or_create_type_details<T>();                            \
+        }                                                                      \
+                                                                               \
+        std::string_view name() const noexcept                                 \
+        {                                                                      \
+            return #T;                                                         \
+        }                                                                      \
+    }
+
+    MGE_DEFINE_INTEGER_TYPE(char);
+    MGE_DEFINE_INTEGER_TYPE(unsigned char);
+    MGE_DEFINE_INTEGER_TYPE(short);
+    MGE_DEFINE_INTEGER_TYPE(unsigned short);
+    MGE_DEFINE_INTEGER_TYPE(int);
+    MGE_DEFINE_INTEGER_TYPE(unsigned int);
+    MGE_DEFINE_INTEGER_TYPE(long);
+    MGE_DEFINE_INTEGER_TYPE(unsigned long);
+    MGE_DEFINE_INTEGER_TYPE(int64_t);
+    MGE_DEFINE_INTEGER_TYPE(uint64_t);
+
     template <typename T>
     inline const type_details_ref& get_or_create_type_details()
     {

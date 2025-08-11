@@ -28,11 +28,13 @@ namespace mge::reflection {
         static const type_details_ref& put(const type_identifier&  id,
                                            const type_details_ref& details);
 
-        bool   is_void = false;
-        bool   is_bool = false;
-        bool   is_integral = false;
-        bool   is_floating_point = false;
-        size_t size = 0;
+        bool                    is_void = false;
+        bool                    is_bool = false;
+        bool                    is_integral = false;
+        bool                    is_floating_point = false;
+        size_t                  size = 0;
+        std::string_view        name;
+        module_details_weak_ref module;
     };
 
 } // namespace mge::reflection
