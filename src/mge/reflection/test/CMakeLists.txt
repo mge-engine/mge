@@ -6,6 +6,8 @@ SET(MGEREFLECTION_TEST_SOURCES
     test_module.cpp
     test_type.cpp
     test_type_identifier.cpp
+
+    test_type_name.cpp
 )
 
 MGE_TEST(
