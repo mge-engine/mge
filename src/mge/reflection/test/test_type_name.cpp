@@ -17,21 +17,28 @@ template <typename V> inline constexpr auto v() noexcept
 #endif
 }
 
+inline constexpr auto last_sep(const sview& sv) noexcept
+{
+    for (std::size_t i = sv.sz_; i > 0; --i) {
+        if (sv.str_[i - 1] == ':') {
+            if (i >= 2 && sv.str_[i - 2] == ':') {
+                return i - 2;
+            }
+        }
+    }
+    return std::string::npos;
+}
+namespace x {
+    namespace y {
+        struct z
+        {};
+    } // namespace y
+} // namespace x
+
 TEST(typename, test_int)
 {
     //"auto __cdecl v<int>(void) noexcept";
-    auto n = v<int>();
-    std::cout << std::string_view(n.str_, n.sz_) << std::endl;
-    auto n2 = v<const int>();
-    std::cout << std::string_view(n2.str_, n2.sz_) << std::endl;
-    auto n3 = v<int&>();
-    std::cout << std::string_view(n3.str_, n3.sz_) << std::endl;
-    auto n4 = v<const int&>();
-    std::cout << std::string_view(n4.str_, n4.sz_) << std::endl;
-    auto n5 = v<int&&>();
-    std::cout << std::string_view(n5.str_, n5.sz_) << std::endl;
-    auto n6 = v<int*>();
-    std::cout << std::string_view(n6.str_, n6.sz_) << std::endl;
-    auto n7 = v<std::string_view>();
-    std::cout << std::string_view(n7.str_, n7.sz_) << std::endl;
+    constexpr auto n = v<x::y::z>();
+    constexpr auto l = last_sep(n);
+    std::cout << std::string_view(n.str_, l) << std::endl;
 }
