@@ -28,6 +28,29 @@ inline constexpr auto last_sep(const sview& sv) noexcept
     }
     return std::string::npos;
 }
+
+inline constexpr auto struct_ofs(const sview& sv) noexcept
+{
+    constexpr std::string_view struct_str = "struct ";
+    constexpr std::string_view class_str = "class ";
+
+    for (std::size_t i = 0; i < sv.sz_; ++i) {
+        if (i + struct_str.size() <= sv.sz_) {
+            if (std::string_view(sv.str_ + i, struct_str.size()) ==
+                struct_str) {
+                return i + struct_str.size();
+            }
+        }
+        if (i + class_str.size() <= sv.sz_) {
+            if (std::string_view(sv.str_ + i, class_str.size()) == class_str) {
+                return i + class_str.size();
+            }
+        }
+    }
+    constexpr size_t result{0u};
+    return result;
+}
+
 namespace x {
     namespace y {
         struct z
@@ -40,5 +63,6 @@ TEST(typename, test_int)
     //"auto __cdecl v<int>(void) noexcept";
     constexpr auto n = v<x::y::z>();
     constexpr auto l = last_sep(n);
-    std::cout << std::string_view(n.str_, l) << std::endl;
+    constexpr auto ofs = struct_ofs(n);
+    std::cout << std::string_view(n.str_ + ofs, l - ofs) << std::endl;
 }

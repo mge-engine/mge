@@ -27,15 +27,112 @@ namespace mge::reflection {
         EXPECT_EQ(type_bool.name(), "bool");
     }
 
-    TEST(type, integral_type)
+    TEST(type, char_type)
+    {
+        auto type_char = type<char>();
+        EXPECT_FALSE(type_char.is_void());
+        EXPECT_FALSE(type_char.is_bool());
+        EXPECT_TRUE(type_char.is_integral());
+        EXPECT_EQ(type_char.size(), sizeof(char));
+        EXPECT_EQ(type_char.name(), "char");
+    }
+    TEST(type, unsigned_char_type)
+    {
+        auto type_unsigned_char = type<unsigned char>();
+        EXPECT_FALSE(type_unsigned_char.is_void());
+        EXPECT_FALSE(type_unsigned_char.is_bool());
+        EXPECT_TRUE(type_unsigned_char.is_integral());
+        EXPECT_EQ(type_unsigned_char.size(), sizeof(unsigned char));
+        EXPECT_EQ(type_unsigned_char.name(), "unsigned char");
+    }
+
+    TEST(type, signed_char_type)
+    {
+        auto type_signed_char = type<signed char>();
+        EXPECT_FALSE(type_signed_char.is_void());
+        EXPECT_FALSE(type_signed_char.is_bool());
+        EXPECT_TRUE(type_signed_char.is_integral());
+        EXPECT_EQ(type_signed_char.size(), sizeof(signed char));
+        EXPECT_EQ(type_signed_char.name(), "signed char");
+    }
+    TEST(type, short_type)
+    {
+        auto type_short = type<short>();
+        EXPECT_FALSE(type_short.is_void());
+        EXPECT_FALSE(type_short.is_bool());
+        EXPECT_TRUE(type_short.is_integral());
+        EXPECT_EQ(type_short.size(), sizeof(short));
+        EXPECT_EQ(type_short.name(), "short");
+    }
+
+    TEST(type, unsigned_short_type)
+    {
+        auto type_unsigned_short = type<unsigned short>();
+        EXPECT_FALSE(type_unsigned_short.is_void());
+        EXPECT_FALSE(type_unsigned_short.is_bool());
+        EXPECT_TRUE(type_unsigned_short.is_integral());
+        EXPECT_EQ(type_unsigned_short.size(), sizeof(unsigned short));
+        EXPECT_EQ(type_unsigned_short.name(), "unsigned short");
+    }
+
+    TEST(type, int_type)
     {
         auto type_int = type<int>();
         EXPECT_FALSE(type_int.is_void());
         EXPECT_FALSE(type_int.is_bool());
         EXPECT_TRUE(type_int.is_integral());
         EXPECT_EQ(type_int.size(), sizeof(int));
+        EXPECT_EQ(type_int.name(), "int");
     }
 
+    TEST(type, unsigned_int_type)
+    {
+        auto type_unsigned_int = type<unsigned int>();
+        EXPECT_FALSE(type_unsigned_int.is_void());
+        EXPECT_FALSE(type_unsigned_int.is_bool());
+        EXPECT_TRUE(type_unsigned_int.is_integral());
+        EXPECT_EQ(type_unsigned_int.size(), sizeof(unsigned int));
+        EXPECT_EQ(type_unsigned_int.name(), "unsigned int");
+    }
+    TEST(type, long_type)
+    {
+        auto type_long = type<long>();
+        EXPECT_FALSE(type_long.is_void());
+        EXPECT_FALSE(type_long.is_bool());
+        EXPECT_TRUE(type_long.is_integral());
+        EXPECT_EQ(type_long.size(), sizeof(long));
+        EXPECT_EQ(type_long.name(), "long");
+    }
+
+    TEST(type, unsigned_long_type)
+    {
+        auto type_unsigned_long = type<unsigned long>();
+        EXPECT_FALSE(type_unsigned_long.is_void());
+        EXPECT_FALSE(type_unsigned_long.is_bool());
+        EXPECT_TRUE(type_unsigned_long.is_integral());
+        EXPECT_EQ(type_unsigned_long.size(), sizeof(unsigned long));
+        EXPECT_EQ(type_unsigned_long.name(), "unsigned long");
+    }
+
+    TEST(type, long_long_type)
+    {
+        auto type_long_long = type<long long>();
+        EXPECT_FALSE(type_long_long.is_void());
+        EXPECT_FALSE(type_long_long.is_bool());
+        EXPECT_TRUE(type_long_long.is_integral());
+        EXPECT_EQ(type_long_long.size(), sizeof(long long));
+        EXPECT_EQ(type_long_long.name(), "int64_t");
+    }
+
+    TEST(type, unsigned_long_long_type)
+    {
+        auto type_unsigned_long_long = type<unsigned long long>();
+        EXPECT_FALSE(type_unsigned_long_long.is_void());
+        EXPECT_FALSE(type_unsigned_long_long.is_bool());
+        EXPECT_TRUE(type_unsigned_long_long.is_integral());
+        EXPECT_EQ(type_unsigned_long_long.size(), sizeof(unsigned long long));
+        EXPECT_EQ(type_unsigned_long_long.name(), "uint64_t");
+    }
     TEST(type, float_type)
     {
         auto type_float = type<float>();

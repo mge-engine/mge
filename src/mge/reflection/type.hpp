@@ -227,6 +227,7 @@ namespace mge::reflection {
     }
 
     MGE_DEFINE_INTEGER_TYPE(char);
+    MGE_DEFINE_INTEGER_TYPE(signed char);
     MGE_DEFINE_INTEGER_TYPE(unsigned char);
     MGE_DEFINE_INTEGER_TYPE(short);
     MGE_DEFINE_INTEGER_TYPE(unsigned short);
