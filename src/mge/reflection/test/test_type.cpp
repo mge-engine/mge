@@ -13,6 +13,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_void.is_void());
         EXPECT_FALSE(type_void.is_bool());
         EXPECT_FALSE(type_void.is_integral());
+        EXPECT_FALSE(type_void.is_enum());
         EXPECT_EQ(type_void.size(), 0);
         EXPECT_EQ(type_void.name(), "void");
     }
@@ -23,6 +24,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_bool.is_void());
         EXPECT_TRUE(type_bool.is_bool());
         EXPECT_FALSE(type_bool.is_integral());
+        EXPECT_FALSE(type_bool.is_enum());
         EXPECT_EQ(type_bool.size(), sizeof(bool));
         EXPECT_EQ(type_bool.name(), "bool");
     }
@@ -33,6 +35,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_char.is_void());
         EXPECT_FALSE(type_char.is_bool());
         EXPECT_TRUE(type_char.is_integral());
+        EXPECT_FALSE(type_char.is_enum());
         EXPECT_EQ(type_char.size(), sizeof(char));
         EXPECT_EQ(type_char.name(), "char");
     }
@@ -42,6 +45,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_unsigned_char.is_void());
         EXPECT_FALSE(type_unsigned_char.is_bool());
         EXPECT_TRUE(type_unsigned_char.is_integral());
+        EXPECT_FALSE(type_unsigned_char.is_enum());
         EXPECT_EQ(type_unsigned_char.size(), sizeof(unsigned char));
         EXPECT_EQ(type_unsigned_char.name(), "unsigned char");
     }
@@ -52,6 +56,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_signed_char.is_void());
         EXPECT_FALSE(type_signed_char.is_bool());
         EXPECT_TRUE(type_signed_char.is_integral());
+        EXPECT_FALSE(type_signed_char.is_enum());
         EXPECT_EQ(type_signed_char.size(), sizeof(signed char));
         EXPECT_EQ(type_signed_char.name(), "signed char");
     }
@@ -61,6 +66,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_short.is_void());
         EXPECT_FALSE(type_short.is_bool());
         EXPECT_TRUE(type_short.is_integral());
+        EXPECT_FALSE(type_short.is_enum());
         EXPECT_EQ(type_short.size(), sizeof(short));
         EXPECT_EQ(type_short.name(), "short");
     }
@@ -71,6 +77,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_unsigned_short.is_void());
         EXPECT_FALSE(type_unsigned_short.is_bool());
         EXPECT_TRUE(type_unsigned_short.is_integral());
+        EXPECT_FALSE(type_unsigned_short.is_enum());
         EXPECT_EQ(type_unsigned_short.size(), sizeof(unsigned short));
         EXPECT_EQ(type_unsigned_short.name(), "unsigned short");
     }
@@ -81,6 +88,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_int.is_void());
         EXPECT_FALSE(type_int.is_bool());
         EXPECT_TRUE(type_int.is_integral());
+        EXPECT_FALSE(type_int.is_enum());
         EXPECT_EQ(type_int.size(), sizeof(int));
         EXPECT_EQ(type_int.name(), "int");
     }
@@ -91,6 +99,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_unsigned_int.is_void());
         EXPECT_FALSE(type_unsigned_int.is_bool());
         EXPECT_TRUE(type_unsigned_int.is_integral());
+        EXPECT_FALSE(type_unsigned_int.is_enum());
         EXPECT_EQ(type_unsigned_int.size(), sizeof(unsigned int));
         EXPECT_EQ(type_unsigned_int.name(), "unsigned int");
     }
@@ -100,6 +109,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_long.is_void());
         EXPECT_FALSE(type_long.is_bool());
         EXPECT_TRUE(type_long.is_integral());
+        EXPECT_FALSE(type_long.is_enum());
         EXPECT_EQ(type_long.size(), sizeof(long));
         EXPECT_EQ(type_long.name(), "long");
     }
@@ -110,6 +120,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_unsigned_long.is_void());
         EXPECT_FALSE(type_unsigned_long.is_bool());
         EXPECT_TRUE(type_unsigned_long.is_integral());
+        EXPECT_FALSE(type_unsigned_long.is_enum());
         EXPECT_EQ(type_unsigned_long.size(), sizeof(unsigned long));
         EXPECT_EQ(type_unsigned_long.name(), "unsigned long");
     }
@@ -120,6 +131,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_long_long.is_void());
         EXPECT_FALSE(type_long_long.is_bool());
         EXPECT_TRUE(type_long_long.is_integral());
+        EXPECT_FALSE(type_long_long.is_enum());
         EXPECT_EQ(type_long_long.size(), sizeof(long long));
         EXPECT_EQ(type_long_long.name(), "int64_t");
     }
@@ -130,6 +142,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_unsigned_long_long.is_void());
         EXPECT_FALSE(type_unsigned_long_long.is_bool());
         EXPECT_TRUE(type_unsigned_long_long.is_integral());
+        EXPECT_FALSE(type_unsigned_long_long.is_enum());
         EXPECT_EQ(type_unsigned_long_long.size(), sizeof(unsigned long long));
         EXPECT_EQ(type_unsigned_long_long.name(), "uint64_t");
     }
@@ -140,6 +153,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_float.is_bool());
         EXPECT_FALSE(type_float.is_integral());
         EXPECT_TRUE(type_float.is_floating_point());
+        EXPECT_FALSE(type_float.is_enum());
         EXPECT_EQ(type_float.size(), sizeof(float));
         EXPECT_EQ(type_float.name(), "float");
     }
@@ -151,6 +165,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_double.is_bool());
         EXPECT_FALSE(type_double.is_integral());
         EXPECT_TRUE(type_double.is_floating_point());
+        EXPECT_FALSE(type_double.is_enum());
         EXPECT_EQ(type_double.size(), sizeof(double));
         EXPECT_EQ(type_double.name(), "double");
     }
@@ -169,6 +184,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_enum1.is_bool());
         EXPECT_FALSE(type_enum1.is_integral());
         EXPECT_FALSE(type_enum1.is_floating_point());
+        EXPECT_TRUE(type_enum1.is_enum());
         EXPECT_EQ(type_enum1.size(), sizeof(enum1));
         EXPECT_EQ(type_enum1.name(), "enum1");
     }

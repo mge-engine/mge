@@ -28,6 +28,7 @@ namespace mge::reflection {
         constexpr bool   is_bool() const noexcept;
         constexpr bool   is_integral() const noexcept;
         constexpr bool   is_floating_point() const noexcept;
+        constexpr bool   is_enum() const noexcept;
         constexpr size_t size() const noexcept;
 
         std::string_view name() const;
@@ -54,6 +55,10 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_floating_point() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_enum() const noexcept
         {
             return false;
         }
@@ -95,6 +100,10 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_enum() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(bool);
@@ -132,6 +141,10 @@ namespace mge::reflection {
         constexpr bool is_floating_point() const noexcept
         {
             return true;
+        }
+        constexpr bool is_enum() const noexcept
+        {
+            return false;
         }
         constexpr size_t size() const noexcept
         {
@@ -171,6 +184,10 @@ namespace mge::reflection {
         {
             return true;
         }
+        constexpr bool is_enum() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(double);
@@ -207,6 +224,10 @@ namespace mge::reflection {
             return false;                                                      \
         }                                                                      \
         constexpr bool is_floating_point() const noexcept                      \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr bool is_enum() const noexcept                                \
         {                                                                      \
             return false;                                                      \
         }                                                                      \
@@ -264,6 +285,10 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_enum() const noexcept
+        {
+            return true;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
@@ -293,6 +318,7 @@ namespace mge::reflection {
         details->is_bool = std::is_same_v<T, bool>;
         details->is_integral = std::is_integral_v<T>;
         details->is_floating_point = std::is_floating_point_v<T>;
+        details->is_enum = std::is_enum_v<T>;
         if constexpr (std::is_void_v<T>) {
             details->size = 0;
         } else {
