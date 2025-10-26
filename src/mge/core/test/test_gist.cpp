@@ -22,7 +22,7 @@ TEST(gist, pointer)
     int*                 pi = &i;
     mge::gist_type<int*> gpi = mge::gist(pi);
     auto                 s = std::format("{}", gpi);
-    EXPECT_STREQ("int * -> 2", s.c_str());
+    EXPECT_STREQ("int* -> 2", s.c_str());
 }
 
 TEST(gist, shared_pointer)

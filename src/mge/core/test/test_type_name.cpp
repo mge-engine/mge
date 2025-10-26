@@ -31,7 +31,7 @@ TEST(type_name, simple_struct_name)
 TEST(type_name, pointer_name)
 {
     auto tn = std::string(mge::type_name<bar**>());
-    EXPECT_STREQ("bar * *", tn.c_str());
+    EXPECT_STREQ("bar**", tn.c_str());
 }
 
 TEST(type_name, complex_name)

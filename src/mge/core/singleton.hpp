@@ -98,25 +98,37 @@ namespace mge {
          * Access the contained object.
          * @return contained object
          */
-        inline pointer operator->() { return ptr(); }
+        inline pointer operator->()
+        {
+            return ptr();
+        }
 
         /**
          * Access the contained object.
          * @return contained object
          */
-        inline const_pointer operator->() const { return ptr(); }
+        inline const_pointer operator->() const
+        {
+            return ptr();
+        }
 
         /**
          * Access the contained object.
          * @return contained object
          */
-        inline reference operator*() { return *ptr(); }
+        inline reference operator*()
+        {
+            return *ptr();
+        }
 
         /**
          * Access the contained object.
          * @return contained object
          */
-        inline const_reference operator*() const { return *ptr(); }
+        inline const_reference operator*() const
+        {
+            return *ptr();
+        }
 
     private:
         std::atomic<T*> m_instance;
