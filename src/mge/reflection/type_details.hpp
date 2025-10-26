@@ -42,7 +42,8 @@ namespace mge::reflection {
 
         struct enum_specific_details
         {
-            type_details_ref underlying_type;
+            type_details_ref                                  underlying_type;
+            std::vector<std::pair<std::string_view, int64_t>> values;
         };
 
         std::variant<std::monostate, enum_specific_details> specific_details;

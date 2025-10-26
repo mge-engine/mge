@@ -187,6 +187,17 @@ namespace mge::reflection {
         EXPECT_TRUE(type_enum1.is_enum());
         EXPECT_EQ(type_enum1.size(), sizeof(enum1));
         EXPECT_EQ(type<enum1>::name(), "enum1");
+
+        const auto& details = type_enum1.details();
+        EXPECT_TRUE(details->is_enum);
+        EXPECT_EQ(details->enum_specific().underlying_type,
+                  get_or_create_type_details<int>());
+        EXPECT_EQ(details->enum_specific().values.size(), 3);
+        EXPECT_EQ(details->enum_specific().values[0], std::make_pair("RED", 0));
+        EXPECT_EQ(details->enum_specific().values[1],
+                  std::make_pair("GREEN", 1));
+        EXPECT_EQ(details->enum_specific().values[2],
+                  std::make_pair("BLUE", 2));
     }
 
 } // namespace mge::reflection

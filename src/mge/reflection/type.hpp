@@ -325,6 +325,16 @@ namespace mge::reflection {
         } else {
             details->size = sizeof(T);
         }
+        if constexpr (std::is_enum_v<T>) {
+            using UT = typename std::underlying_type<T>::type;
+            details->enum_specific().underlying_type =
+                get_or_create_type_details<UT>();
+            for (const auto& value : mge::enum_values<T>()) {
+                details->enum_specific().values.emplace_back(
+                    mge::enum_name(value),
+                    static_cast<int64_t>(value));
+            }
+        }
         return type_details::put(id, details);
     }
 
