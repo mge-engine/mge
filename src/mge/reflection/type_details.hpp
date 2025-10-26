@@ -2,9 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/type_identifier.hpp"
+
+#include <variant>
 
 namespace mge::reflection {
 
@@ -32,9 +35,31 @@ namespace mge::reflection {
         bool                    is_bool = false;
         bool                    is_integral = false;
         bool                    is_floating_point = false;
+        bool                    is_enum = false;
         size_t                  size = 0;
         std::string_view        name;
         module_details_weak_ref module;
+
+        struct enum_specific_details
+        {
+            type_details_ref underlying_type;
+        };
+
+        std::variant<std::monostate, enum_specific_details> specific_details;
+
+        enum_specific_details& enum_specific()
+        {
+            if (!is_enum) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " is not an enum";
+            }
+
+            if (!std::holds_alternative<enum_specific_details>(
+                    specific_details)) {
+                specific_details = enum_specific_details{};
+            }
+            return std::get<enum_specific_details>(specific_details);
+        }
     };
 
 } // namespace mge::reflection

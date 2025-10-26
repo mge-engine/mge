@@ -31,7 +31,7 @@ namespace mge::reflection {
         constexpr bool   is_enum() const noexcept;
         constexpr size_t size() const noexcept;
 
-        std::string_view name() const;
+        static std::string_view name();
 
         const type_details_ref& details() const noexcept;
     };
@@ -72,7 +72,7 @@ namespace mge::reflection {
             return get_or_create_type_details<void>();
         }
 
-        std::string_view name() const noexcept
+        static std::string_view name() noexcept
         {
             return "void";
         }
@@ -114,7 +114,7 @@ namespace mge::reflection {
             return get_or_create_type_details<bool>();
         }
 
-        std::string_view name() const noexcept
+        static std::string_view name() noexcept
         {
             return "bool";
         }
@@ -156,7 +156,7 @@ namespace mge::reflection {
             return get_or_create_type_details<float>();
         }
 
-        std::string_view name() const noexcept
+        static std::string_view name() noexcept
         {
             return "float";
         }
@@ -198,7 +198,7 @@ namespace mge::reflection {
             return get_or_create_type_details<double>();
         }
 
-        std::string_view name() const noexcept
+        static std::string_view name() noexcept
         {
             return "double";
         }
@@ -241,7 +241,7 @@ namespace mge::reflection {
             return get_or_create_type_details<T>();                            \
         }                                                                      \
                                                                                \
-        std::string_view name() const noexcept                                 \
+        static std::string_view name() noexcept                                \
         {                                                                      \
             return #T;                                                         \
         }                                                                      \
@@ -299,7 +299,7 @@ namespace mge::reflection {
             return get_or_create_type_details<T>();
         }
 
-        std::string_view name() const noexcept
+        static std::string_view name() noexcept
         {
             return mge::enum_type_name<T>();
         }
@@ -319,6 +319,7 @@ namespace mge::reflection {
         details->is_integral = std::is_integral_v<T>;
         details->is_floating_point = std::is_floating_point_v<T>;
         details->is_enum = std::is_enum_v<T>;
+        details->name = type<T>::name();
         if constexpr (std::is_void_v<T>) {
             details->size = 0;
         } else {

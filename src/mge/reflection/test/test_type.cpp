@@ -15,7 +15,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_void.is_integral());
         EXPECT_FALSE(type_void.is_enum());
         EXPECT_EQ(type_void.size(), 0);
-        EXPECT_EQ(type_void.name(), "void");
+        EXPECT_EQ(type<void>::name(), "void");
     }
 
     TEST(type, bool_type)
@@ -26,7 +26,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_bool.is_integral());
         EXPECT_FALSE(type_bool.is_enum());
         EXPECT_EQ(type_bool.size(), sizeof(bool));
-        EXPECT_EQ(type_bool.name(), "bool");
+        EXPECT_EQ(type<bool>::name(), "bool");
     }
 
     TEST(type, char_type)
@@ -37,7 +37,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_char.is_integral());
         EXPECT_FALSE(type_char.is_enum());
         EXPECT_EQ(type_char.size(), sizeof(char));
-        EXPECT_EQ(type_char.name(), "char");
+        EXPECT_EQ(type<char>::name(), "char");
     }
     TEST(type, unsigned_char_type)
     {
@@ -47,7 +47,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_char.is_integral());
         EXPECT_FALSE(type_unsigned_char.is_enum());
         EXPECT_EQ(type_unsigned_char.size(), sizeof(unsigned char));
-        EXPECT_EQ(type_unsigned_char.name(), "unsigned char");
+        EXPECT_EQ(type<unsigned char>::name(), "unsigned char");
     }
 
     TEST(type, signed_char_type)
@@ -58,7 +58,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_signed_char.is_integral());
         EXPECT_FALSE(type_signed_char.is_enum());
         EXPECT_EQ(type_signed_char.size(), sizeof(signed char));
-        EXPECT_EQ(type_signed_char.name(), "signed char");
+        EXPECT_EQ(type<signed char>::name(), "signed char");
     }
     TEST(type, short_type)
     {
@@ -68,7 +68,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_short.is_integral());
         EXPECT_FALSE(type_short.is_enum());
         EXPECT_EQ(type_short.size(), sizeof(short));
-        EXPECT_EQ(type_short.name(), "short");
+        EXPECT_EQ(type<short>::name(), "short");
     }
 
     TEST(type, unsigned_short_type)
@@ -79,7 +79,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_short.is_integral());
         EXPECT_FALSE(type_unsigned_short.is_enum());
         EXPECT_EQ(type_unsigned_short.size(), sizeof(unsigned short));
-        EXPECT_EQ(type_unsigned_short.name(), "unsigned short");
+        EXPECT_EQ(type<unsigned short>::name(), "unsigned short");
     }
 
     TEST(type, int_type)
@@ -90,7 +90,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_int.is_integral());
         EXPECT_FALSE(type_int.is_enum());
         EXPECT_EQ(type_int.size(), sizeof(int));
-        EXPECT_EQ(type_int.name(), "int");
+        EXPECT_EQ(type<int>::name(), "int");
     }
 
     TEST(type, unsigned_int_type)
@@ -101,7 +101,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_int.is_integral());
         EXPECT_FALSE(type_unsigned_int.is_enum());
         EXPECT_EQ(type_unsigned_int.size(), sizeof(unsigned int));
-        EXPECT_EQ(type_unsigned_int.name(), "unsigned int");
+        EXPECT_EQ(type<unsigned int>::name(), "unsigned int");
     }
     TEST(type, long_type)
     {
@@ -111,7 +111,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_long.is_integral());
         EXPECT_FALSE(type_long.is_enum());
         EXPECT_EQ(type_long.size(), sizeof(long));
-        EXPECT_EQ(type_long.name(), "long");
+        EXPECT_EQ(type<long>::name(), "long");
     }
 
     TEST(type, unsigned_long_type)
@@ -122,7 +122,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_long.is_integral());
         EXPECT_FALSE(type_unsigned_long.is_enum());
         EXPECT_EQ(type_unsigned_long.size(), sizeof(unsigned long));
-        EXPECT_EQ(type_unsigned_long.name(), "unsigned long");
+        EXPECT_EQ(type<unsigned long>::name(), "unsigned long");
     }
 
     TEST(type, long_long_type)
@@ -133,7 +133,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_long_long.is_integral());
         EXPECT_FALSE(type_long_long.is_enum());
         EXPECT_EQ(type_long_long.size(), sizeof(long long));
-        EXPECT_EQ(type_long_long.name(), "int64_t");
+        EXPECT_EQ(type<long long>::name(), "int64_t");
     }
 
     TEST(type, unsigned_long_long_type)
@@ -144,7 +144,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_long_long.is_integral());
         EXPECT_FALSE(type_unsigned_long_long.is_enum());
         EXPECT_EQ(type_unsigned_long_long.size(), sizeof(unsigned long long));
-        EXPECT_EQ(type_unsigned_long_long.name(), "uint64_t");
+        EXPECT_EQ(type<unsigned long long>::name(), "uint64_t");
     }
     TEST(type, float_type)
     {
@@ -155,7 +155,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_float.is_floating_point());
         EXPECT_FALSE(type_float.is_enum());
         EXPECT_EQ(type_float.size(), sizeof(float));
-        EXPECT_EQ(type_float.name(), "float");
+        EXPECT_EQ(type<float>::name(), "float");
     }
 
     TEST(type, double_type)
@@ -167,7 +167,7 @@ namespace mge::reflection {
         EXPECT_TRUE(type_double.is_floating_point());
         EXPECT_FALSE(type_double.is_enum());
         EXPECT_EQ(type_double.size(), sizeof(double));
-        EXPECT_EQ(type_double.name(), "double");
+        EXPECT_EQ(type<double>::name(), "double");
     }
 
     enum class enum1
@@ -186,7 +186,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_enum1.is_floating_point());
         EXPECT_TRUE(type_enum1.is_enum());
         EXPECT_EQ(type_enum1.size(), sizeof(enum1));
-        EXPECT_EQ(type_enum1.name(), "enum1");
+        EXPECT_EQ(type<enum1>::name(), "enum1");
     }
 
 } // namespace mge::reflection
