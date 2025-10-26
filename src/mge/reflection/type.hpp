@@ -238,6 +238,48 @@ namespace mge::reflection {
     MGE_DEFINE_INTEGER_TYPE(int64_t);
     MGE_DEFINE_INTEGER_TYPE(uint64_t);
 
+#undef MGE_DEFINE_INTEGER_TYPE
+
+    template <typename T>
+        requires std::is_enum_v<T>
+    class type<T>
+    {
+    public:
+        type() = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return false;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(T);
+        }
+
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<T>();
+        }
+
+        std::string_view name() const noexcept
+        {
+            return mge::enum_type_name<T>();
+        }
+    };
+
     template <typename T>
     inline const type_details_ref& get_or_create_type_details()
     {

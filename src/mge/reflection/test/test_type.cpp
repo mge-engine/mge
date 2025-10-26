@@ -155,4 +155,22 @@ namespace mge::reflection {
         EXPECT_EQ(type_double.name(), "double");
     }
 
+    enum class enum1
+    {
+        RED,
+        GREEN,
+        BLUE
+    };
+
+    TEST(type, enum_type)
+    {
+        auto type_enum1 = type<enum1>();
+        EXPECT_FALSE(type_enum1.is_void());
+        EXPECT_FALSE(type_enum1.is_bool());
+        EXPECT_FALSE(type_enum1.is_integral());
+        EXPECT_FALSE(type_enum1.is_floating_point());
+        EXPECT_EQ(type_enum1.size(), sizeof(enum1));
+        EXPECT_EQ(type_enum1.name(), "enum1");
+    }
+
 } // namespace mge::reflection
