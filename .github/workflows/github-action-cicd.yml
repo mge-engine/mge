@@ -16,7 +16,7 @@ jobs:
         steps:
             - name: Show Architecture
               run: |
-                wmic cpu get Name, Manufacturer, NumberOfCores, NumberOfLogicalProcessors
+                Get-CimInstance Win32_Processor | Select-Object Name, Manufacturer, NumberOfCores, NumberOfLogicalProcessors
             - name: Show Python version
               run: |
                 python --version
