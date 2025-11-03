@@ -205,7 +205,7 @@ namespace mge {
                                          std::string_view value)
     {
         MGE_DEBUG_TRACE(CORE,
-                        "Set parameter value {}.{} to '{}'",
+                        "Set parameter value {}/{} to '{}'",
                         section,
                         name,
                         value);
