@@ -17,6 +17,9 @@ jobs:
           - name: Show Architecture
             run: |
               lscpu
+          - name: Show OS Version
+            run: |
+              cat /etc/os-release
           - name: Show Python version
             run: |
               python3 --version  
