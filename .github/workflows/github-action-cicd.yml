@@ -30,6 +30,9 @@ jobs:
           - name: Install Ninja
             run: |
               sudo apt-get install -y ninja-build
+          - name: Install automake and autoconf
+            run: |
+              sudo apt-get install -y automake autoconf autoconf-archive libtool
           - name: Checkout source code
             uses: actions/checkout@v4
             with:
