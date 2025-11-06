@@ -7,6 +7,19 @@ on:
   pull_request:
 
 jobs:
+# -- linux ubuntu latest runner
+    build-linux-ubuntu-latest:
+      name : Build x64-linux-gcc
+      runs-on: ubuntu-latest
+      env: 
+          VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+      steps:
+          - name: Show Architecture
+            run: |
+              lscpu
+          - name: Show Python version
+            run: |
+              python3 --version  
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
         name: Build x64-windows-msvc
