@@ -23,6 +23,10 @@ jobs:
           - name: Show Python version
             run: |
               python3 --version  
+          - name: Install CMake
+            run: |
+              sudo snap install cmake --classic
+              cmake --version
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
         name: Build x64-windows-msvc
