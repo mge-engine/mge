@@ -7,6 +7,8 @@
 
 #if defined(MGE_OS_WINDOWS)
 #    include <windows.h>
+#elif defined(MGE_OS_LINUX)
+#    include <signal.h>
 #else
 #    error Missing port
 #endif
@@ -20,6 +22,8 @@ namespace mge {
         } else {
             crash("Calling debugger with no debugger attached");
         }
+#elif defined(MGE_OS_LINUX)
+        raise(SIGTRAP); 
 #else
 #    error Missing port
 #endif
@@ -33,6 +37,9 @@ namespace mge {
         } catch (...) {
             return false;
         }
+#elif defined(MGE_OS_LINUX)
+        // TODO: Implement is_debugger_present for Linux
+        return false;
 #else
 #    error Missing port
 #endif
