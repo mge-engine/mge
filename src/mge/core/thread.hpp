@@ -41,6 +41,8 @@ namespace mge {
 
 #ifdef MGE_OS_WINDOWS
         using system_id = uint32_t;
+#elif defined(MGE_OS_LINUX)
+        using system_id = pid_t;
 #else
 #    error missing port
 #endif
