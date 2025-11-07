@@ -12,6 +12,10 @@
 
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
+#elif defined(MGE_OS_LINUX)
+#    include <dlfcn.h>
+#else
+#    error Missing port
 #endif
 
 namespace mge {
@@ -28,6 +32,10 @@ namespace mge {
         using handle_type = HMODULE;
 
         static constexpr handle_type nil_handle = 0;
+#elif defined(MGE_OS_LINUX)
+        using handle_type = void*;
+
+        static constexpr handle_type nil_handle = nullptr;
 #else
 #    error Missing port
 #endif

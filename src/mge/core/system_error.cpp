@@ -6,7 +6,13 @@
 namespace mge {
     system_error::system_error()
     {
+#ifdef MGE_OS_WINDOWS
         set_error_code(GetLastError());
+#elif defined(MGE_OS_LINUX)
+        set_error_code(errno);
+#else
+#    error Missing port
+#endif
     }
 
     void system_error::set_error_code(system_error::error_code_type ec)
@@ -30,7 +36,9 @@ namespace mge {
             throw;
         }
         LocalFree(msgbuf);
-#else
+#elif defined(MGE_OS_LINUX)
+        (*this) << "(" << ec << "): " << strerror(ec);
+#else   
 #    error Missing port
 #endif
     }

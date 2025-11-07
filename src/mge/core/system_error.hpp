@@ -21,6 +21,8 @@ namespace mge {
     public:
 #ifdef MGE_OS_WINDOWS
         using error_code_type = DWORD;
+#elif defined(MGE_OS_LINUX)
+        using error_code_type = int;
 #else
 #    error Missing port
 #endif
