@@ -53,6 +53,16 @@ jobs:
               key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
               restore-keys: |
                 vcpkg-binary-cache-${{ runner.os }}-
+          - name: Check whether vcpkg exists
+            id: check-vcpkg
+            run: |
+              if [ -f "${{ github.workspace }}/vcpkg/vcpkg" ]; then
+                echo "vcpkg exists"
+                echo "vcpkg_found=true" >> $GITHUB_OUTPUT
+              else
+                echo "vcpkg does not exist, need to build"
+                echo "vcpkg_found=false" >> $GITHUB_OUTPUT
+              fi
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
         name: Build x64-windows-msvc
