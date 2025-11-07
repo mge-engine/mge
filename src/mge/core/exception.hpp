@@ -499,7 +499,7 @@ struct fmt::formatter<mge::exception::exception_details>
 namespace mge {
 
     template <>
-    exception& exception::set_info<exception::message>(const exception::message& info)
+    inline exception& exception::set_info<exception::message>(const exception::message& info)
     {
         m_raw_message = info.value();
         return *this;
