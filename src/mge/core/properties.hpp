@@ -151,7 +151,7 @@ namespace mge {
         {
             std::stringstream ss;
             ss << value;
-            m_data[key] = ss.str();
+            m_data[std::string(key)] = ss.str();
         }
 
         template <typename T>

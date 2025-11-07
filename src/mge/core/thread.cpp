@@ -8,6 +8,12 @@
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
 #endif
+
+#ifdef MGE_OS_LINUX
+#    include <sys/syscall.h>
+#    include <unistd.h>
+#endif
+
 namespace mge {
 
     static thread_local thread*  t_this_thread;
@@ -72,6 +78,15 @@ namespace mge {
     }
 
     namespace this_thread {
-        mge::thread::system_id system_id() { return GetCurrentThreadId(); }
+        mge::thread::system_id system_id()
+        {
+#ifdef MGE_OS_WINDOWS
+            return GetCurrentThreadId();
+#elif defined(MGE_OS_LINUX)
+            return static_cast<mge::thread::system_id>(syscall(SYS_gettid));
+#else
+#    error Missing port
+#endif
+        }
     } // namespace this_thread
 } // namespace mge

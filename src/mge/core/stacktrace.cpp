@@ -172,6 +172,13 @@ namespace mge {
         CloseHandle(current_thread);
     }
 
+#else
+    // Linux/Unix implementation (stub for now)
+    template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
+    {
+        // TODO: Implement Linux stacktrace using backtrace() or similar
+        // For now, just leave frames empty
+    }
 #endif
     stacktrace::frame::frame(const void*      address,
                              std::string_view module,

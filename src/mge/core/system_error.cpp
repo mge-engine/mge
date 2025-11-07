@@ -69,6 +69,7 @@ namespace mge {
                                    const char* signature,
                                    const char* function)
     {
+#ifdef MGE_OS_WINDOWS
         auto code = GetLastError();
         if (code == NO_ERROR) {
             return;
@@ -80,6 +81,20 @@ namespace mge {
             .set_info(mge::exception::function(signature))
             .set_info(mge::exception::stack(mge::stacktrace()))
             .set_info(mge::exception::called_function(function));
+#elif defined(MGE_OS_LINUX)
+        if (errno == 0) {
+            return;
+        }
+
+        throw system_error(errno)
+            .set_info(mge::exception::source_file(file))
+            .set_info(mge::exception::source_line(line))
+            .set_info(mge::exception::function(signature))
+            .set_info(mge::exception::stack(mge::stacktrace()))
+            .set_info(mge::exception::called_function(function));
+#else
+#    error Missing port
+#endif
     }
 
 } // namespace mge
