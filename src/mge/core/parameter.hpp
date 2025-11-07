@@ -318,7 +318,7 @@ namespace mge {
          *
          * @return stored value
          */
-        typename const T& get() const
+        const T& get() const
         {
             if (has_value()) {
                 return m_value;
