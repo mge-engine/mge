@@ -336,7 +336,7 @@ namespace mge {
          * @param default_value default value
          * @return config value or default value if not set
          */
-        typename const T& get(const T& default_value) const
+        const T& get(const T& default_value) const
         {
             if (has_value()) {
                 return get();
