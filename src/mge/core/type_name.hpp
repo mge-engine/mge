@@ -51,18 +51,18 @@ namespace mge {
                     pos + prefix.size() + 1;
                 int level = 1;
                 while (level > 0) {
-                    ++end;
+                    if (end >= func_name.size()) {
+                        return std::string_view("???");
+                    }
                     if (func_name[end] == '<') {
                         ++level;
                     } else if (func_name[end] == '>') {
                         --level;
                     }
-                    if (end >= func_name.size()) {
-                        return std::string_view("???");
-                    }
+                    ++end;
                 }
 
-                while (func_name[end - 1] == ' ') {
+                while (end > 0 && func_name[end - 1] == ' ') {
                     --end;
                 }
 
