@@ -99,9 +99,9 @@ namespace mge {
             if (size == 0) {
                 // nothing
             } else if (size <= S) {
-                m_data.emplace<1>(size, val);
+                m_data.template emplace<1>(size, val);
             } else {
-                m_data.emplace<2>(size, val);
+                m_data.template emplace<2>(size, val);
             }
         }
 
@@ -110,12 +110,12 @@ namespace mge {
             if (init.size() == 0) {
                 // nothing
             } else if (init.size() <= S) {
-                m_data.emplace<1>(small_data());
+                m_data.template emplace<1>(small_data());
                 for (const auto& val : init) {
                     std::get<1>(m_data).emplace_back(val);
                 }
             } else {
-                m_data.emplace<2>(init);
+                m_data.template emplace<2>(init);
             }
         }
 
@@ -531,7 +531,7 @@ namespace mge {
         {
             switch (m_data.index()) {
             case 0:
-                m_data.emplace<1>(1, val);
+                m_data.template emplace<1>(1, val);
                 break;
             case 1:
                 push_back_small_data(val);
@@ -546,7 +546,7 @@ namespace mge {
         {
             switch (m_data.index()) {
             case 0:
-                m_data.emplace<1>(small_data());
+                m_data.template emplace<1>(small_data());
                 std::get<1>(m_data).data[0] = std::move(val);
                 std::get<1>(m_data).length = 1;
                 break;
@@ -627,9 +627,9 @@ namespace mge {
             if (n == 0) {
                 return;
             } else if (n < S) {
-                m_data.emplace<1>(n, value_type());
+                m_data.template emplace<1>(n, value_type());
             } else {
-                m_data.emplace<2>(n, value_type());
+                m_data.template emplace<2>(n, value_type());
             }
         }
 
@@ -638,16 +638,16 @@ namespace mge {
             if (n == 0) {
                 return;
             } else if (n < S) {
-                m_data.emplace<1>(n, fill);
+                m_data.template emplace<1>(n, fill);
             } else {
-                m_data.emplace<2>(n, fill);
+                m_data.template emplace<2>(n, fill);
             }
         }
 
         void resize_from_small_data(size_t n)
         {
             if (n == 0) {
-                m_data.emplace<0>(std::monostate());
+                m_data.template emplace<0>(std::monostate());
             } else if (n < std::get<1>(m_data).length) {
                 for (size_t i = n; i < std::get<1>(m_data).length; ++i) {
                     std::get<1>(m_data).data[i] = value_type();
@@ -667,7 +667,7 @@ namespace mge {
         void resize_from_small_data(size_t n, const value_type& fill)
         {
             if (n == 0) {
-                m_data.emplace<0>(std::monostate());
+                m_data.template emplace<0>(std::monostate());
             } else if (n < std::get<1>(m_data).length) {
                 for (size_t i = n; i < std::get<1>(m_data).length; ++i) {
                     std::get<1>(m_data).data[i] = fill;
@@ -687,29 +687,29 @@ namespace mge {
         void resize_from_vector(size_t n)
         {
             if (n == 0) {
-                m_data.emplace<0>(std::monostate());
+                m_data.template emplace<0>(std::monostate());
             } else if (n > S) {
                 std::get<2>(m_data).resize(n);
             } else {
-                m_data.emplace<1>(small_data(begin(), begin() + n));
+                m_data.template emplace<1>(small_data(begin(), begin() + n));
             }
         }
 
         void resize_from_vector(size_t n, const value_type& fill)
         {
             if (n == 0) {
-                m_data.emplace<0>(std::monostate());
+                m_data.template emplace<0>(std::monostate());
             } else if (n > S) {
                 std::get<2>(m_data).resize(n, fill);
             } else {
-                m_data.emplace<1>(small_data(begin(), begin() + n));
+                m_data.template emplace<1>(small_data(begin(), begin() + n));
             }
         }
 
         void convert_to_vector()
         {
             std::vector<value_type> v(begin(), end(), m_allocator);
-            m_data.emplace<2>(v);
+            m_data.template emplace<2>(v);
         }
 
         using data_type =
