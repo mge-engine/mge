@@ -307,7 +307,7 @@ namespace mge {
                 MGE_THROW_NOT_IMPLEMENTED << "Vertex colors in mesh asset";
             }
 
-            auto num_vertices = mesh->mNumVertices;
+            [[maybe_unused]] auto num_vertices = mesh->mNumVertices;
             MGE_DEBUG_TRACE(ASSIMP,
                             "Mesh {} has {} vertices and {} faces",
                             a.path().string(),
