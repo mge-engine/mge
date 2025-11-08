@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "test/benchmark.hpp"
+#include "mge/config.hpp"
 #include <algorithm>
 #include <chrono>
 #include <mutex>
@@ -13,7 +14,11 @@ namespace mge {
     void delay_loop(uint64_t count)
     {
         for (uint64_t i = 0; i < count; ++i) {
+#ifdef MGE_OS_WINDOWS
             _ReadWriteBarrier(); // Prevent compiler from optimizing
+#else
+            asm volatile("" ::: "memory"); // Compiler barrier on GCC/Clang
+#endif
         }
     }
 

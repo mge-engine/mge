@@ -143,7 +143,7 @@ namespace mge {
                 path mount_point(e.find("mount_point")->second);
                 mount_types[mount_point] = e.find("type")->second;
                 properties& mp = mount_properties[mount_point];
-                for (const auto [key, value] : e) {
+                for (const auto& [key, value] : e) {
                     if (key != "mount_point" && key != "type") {
                         mp.put(key, value);
                     }

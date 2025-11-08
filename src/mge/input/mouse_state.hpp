@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/input/dllexport.hpp"
 #include <bitset>
+#include <cstdint>
 namespace mge {
 
     // TODO: Mouse wheel support

@@ -16,7 +16,7 @@
 #include <assimp/IOStream.hpp>      // C++ stream interface
 #include <assimp/IOSystem.hpp>      // C++ IOSystem interface
 #include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/logger.hpp>        // Logger interface
+#include <assimp/Logger.hpp>        // Logger interface
 #include <assimp/postprocess.h>     // Post processing flags
 #include <assimp/scene.h>           // Output data structure
 namespace mge {
