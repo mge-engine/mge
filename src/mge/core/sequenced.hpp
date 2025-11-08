@@ -89,7 +89,7 @@ namespace mge {
     };
 } // namespace mge
 namespace std {
-    template <typename T> struct std::hash<mge::sequenced<T>>
+    template <typename T> struct hash<mge::sequenced<T>>
     {
         std::size_t operator()(const mge::sequenced<T>& s) const noexcept
         {
