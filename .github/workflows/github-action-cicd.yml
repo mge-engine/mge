@@ -133,7 +133,7 @@ jobs:
           - name: Upload test results
             uses: actions/upload-artifact@v4
             with:
-              name: test-results
+              name: test-results-ubuntu-latest
               path: ${{ github.workspace }}/build/test_*.xml
           - name: Publish Test Results
             uses: mikepenz/action-junit-report@v3
@@ -263,7 +263,7 @@ jobs:
             - name: Upload test results
               uses: actions/upload-artifact@v4
               with:
-                name: test-results
+                name: test-results-windows-latest
                 path: ${{ github.workspace }}/build/test_*.xml
             - name: Publish Test Results
               uses: mikepenz/action-junit-report@v3
