@@ -20,6 +20,10 @@ jobs:
           - name: Show OS Version
             run: |
               cat /etc/os-release
+          - name: Update and upgrade apt packages
+            run: |
+              sudo apt-get update
+              sudo apt-get upgrade -y
           - name: Show Python version
             run: |
               python3 --version  
