@@ -44,7 +44,7 @@ namespace mge {
 
                 const auto pos = func_name.find(prefix);
                 if (pos == std::string::npos) {
-                    return std::string_view("xxx");
+                    return std::string_view("???");
                 }
 
                 std::remove_const_t<decltype(pos)> end =
@@ -59,7 +59,9 @@ namespace mge {
                     } else if (func_name[end] == '>') {
                         --level;
                     }
-                    ++end;
+                    if (level > 0) {
+                        ++end;
+                    }
                 }
 
                 while (end > 0 && func_name[end - 1] == ' ') {
