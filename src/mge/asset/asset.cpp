@@ -381,7 +381,11 @@ namespace mge {
         }
 
         std::string magic_file = mge::executable_path();
+#ifdef MGE_OS_WINDOWS        
         magic_file += "\\mge_magic.mgc";
+#else
+        magic_file += "/mge_magic.mgc";
+#endif
 
         if (magic_load(m_magic, magic_file.c_str()) != 0) {
             std::string err = magic_error(m_magic);
