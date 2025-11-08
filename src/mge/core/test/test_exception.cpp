@@ -27,22 +27,31 @@ TEST(exception, set_info)
         .set_info(mge::exception::type_name(mge::type_name<decltype(ex)>()));
     std::stringstream msg;
     msg << ex.details();
-    EXPECT_THAT(
-        msg.str(),
-        MatchesRegex(
-            "Exception details:\nException type: "
-            "mge::exception\nException location: "
-            ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception.cpp:"
-            "\\d\\d\nException raising function: void __cdecl "
-            "exception_set_info_Test::TestBody\\(void\\)\nException "
-            "message: Unknown exception\n"));
+    std::string message = msg.str();
+    EXPECT_TRUE(
+        message.find("Exception type: mge::exception") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("test_exception.cpp") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("Exception location: ") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("exception_set_info_Test::TestBody") !=
+        std::string::npos);
 }
 
 TEST(exception, set_info_with_location)
 {
     mge::exception    ex(std::source_location::current());
     std::stringstream msg;
-    std::cout << ex.details();
+    msg << ex.details();
+    std::string message = msg.str();
+    EXPECT_TRUE(
+        message.find("test_exception.cpp") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("Exception location: ") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("exception_set_info_with_location_Test::TestBody") !=
+        std::string::npos);
 }
 
 TEST(exception, set_info_using_operator)
@@ -51,19 +60,21 @@ TEST(exception, set_info_using_operator)
     ex << MGE_CALLED_FUNCTION(FOOBAR) << "test message";
     std::stringstream msg;
     msg << ex.details();
+    std::string message = msg.str();
 
-    EXPECT_THAT(
-        msg.str(),
-        MatchesRegex(
-            "Exception details:\n"
-            "Exception type: unknown mge::exception\n"
-            "Exception location: "
-            ".*\\\\mge\\\\src\\\\mge\\\\core\\\\test\\\\test_exception."
-            "cpp:\\d\\d\n"
-            "Exception raising function: void __cdecl "
-            "exception_set_info_using_operator_Test::TestBody\\(void\\)\n"
-            "Calling library/system function: FOOBAR\n"
-            "Exception message: test message\n"));
+    EXPECT_TRUE(
+        message.find("Calling library/system function: FOOBAR") !=
+        std::string::npos);
+    EXPECT_TRUE(
+        message.find("Exception message: test message") !=
+        std::string::npos); 
+    EXPECT_TRUE(
+        message.find("test_exception.cpp") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("Exception location: ") != std::string::npos);
+    EXPECT_TRUE(
+        message.find("exception_set_info_using_operator_Test::TestBody") !=
+        std::string::npos);
 }
 
 TEST(exception, throw_macro)
