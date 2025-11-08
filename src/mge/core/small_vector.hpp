@@ -48,7 +48,8 @@ namespace mge {
         struct small_data
         {
             small_data(size_t l, const value_type& val)
-                : length(l)
+                : data{}
+                , length(l)
             {
                 for (size_t i = 0; i < l; ++i) {
                     data[i] = val;
@@ -68,7 +69,8 @@ namespace mge {
             }
 
             small_data(const_iterator b, const_iterator e)
-                : length(0)
+                : data{}
+                , length(0)
             {
                 for (size_t i = 0; b < e; ++i, ++b) {
                     data[i] = *b;
@@ -77,7 +79,8 @@ namespace mge {
             }
 
             explicit small_data()
-                : length(0)
+                : data{}
+                , length(0)
             {}
 
             template <class... Args> T& emplace_back(Args&&... args)
