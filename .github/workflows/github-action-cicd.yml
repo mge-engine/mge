@@ -129,7 +129,6 @@ jobs:
               export CXX=g++-14
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               ctest --verbose
-            continue-on-error: true
           - name: Upload test results
             uses: actions/upload-artifact@v4
             with:
