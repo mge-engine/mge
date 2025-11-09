@@ -4,6 +4,7 @@
 #include "mge/core/memory.hpp"
 #include "mge/core/stdexceptions.hpp"
 
+#define JEMALLOC_NO_RENAME
 #include <jemalloc/jemalloc.h>
 
 #define MALLOC je_malloc
@@ -11,9 +12,9 @@
 #define FREE je_free
 namespace mge {
 
-    void* ::mge::malloc(size_t size)
+    void* malloc(size_t size)
     {
-        void* ptr = ::MALLOC(size);
+        void* ptr = MALLOC(size);
         if (ptr == nullptr) {
             MGE_THROW(out_of_memory) << "Cannot allocate " << size << " bytes";
         }

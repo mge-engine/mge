@@ -127,3 +127,4 @@
 
 #define MGE_IS_EMPTY_2(_0, _1, _2, _3)                                         \
     MGE_HAS_COMMA(MGE_IS_EMPTY_PASTE5(MGE_IS_EMPTY_CASE_, _0, _1, _2, _3))
+

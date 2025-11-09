@@ -9,7 +9,7 @@ TEST(stacktrace, basic)
     auto stack = mge::stacktrace();
     bool line_in_stack_found = false;
     for (const auto& f : stack) {
-        if (f.name() == "mge::stacktrace::stacktrace") {
+        if (f.name().find("mge::stacktrace::stacktrace") != std::string::npos) {
             line_in_stack_found = true;
             break;
         }

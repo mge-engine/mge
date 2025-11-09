@@ -37,6 +37,7 @@ ADD_LIBRARY(linenoise
             STATIC
             ${linenoise_SOURCES})
 TARGET_INCLUDE_DIRECTORIES(linenoise PUBLIC ${CMAKE_BINARY_DIR}/external/linenoise-ng/linenoise/src/linenoise-ng-external/include)
+SET_TARGET_PROPERTIES(linenoise PROPERTIES POSITION_INDEPENDENT_CODE ON)
 IF(MSVC)
     TARGET_COMPILE_OPTIONS(linenoise PRIVATE -wd4477 -wd5052 -wd4244 -wd4242 -wd4245 -wd4505 -wd4701)
 ENDIF()

@@ -18,6 +18,11 @@ namespace mge {
         data = data;
     }
 #    pragma optimize("", on)
+#elif defined(MGE_COMPILER_GCC)
+    template <typename T> void do_not_optimize_away(T&& data)
+    {
+        asm volatile("" : "+r"(data) : : "memory");
+    }
 #else
 #    error Missing port
 #endif

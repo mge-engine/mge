@@ -6,6 +6,7 @@
 #include "mge/core/trace.hpp"
 #include <atomic>
 #include <vector>
+#include <cstdio>
 
 namespace mge {
 
@@ -49,6 +50,8 @@ namespace mge {
                 auto& cb = *rit;
                 try {
                     cb();
+                    fflush(stdout);
+                    fflush(stderr);
                     if (g_atexit_processing_stopped) {
                         MGE_DEBUG_TRACE(CORE, "Atexit processing stopped");
                         break;

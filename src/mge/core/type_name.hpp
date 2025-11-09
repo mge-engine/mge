@@ -4,6 +4,7 @@
 #pragma once
 
 #include "mge/core/dllexport.hpp"
+#include "mge/config.hpp"
 #include <source_location>
 #include <string>
 #include <typeinfo>
@@ -38,31 +39,34 @@ namespace mge {
         {
             static consteval auto name()
             {
+#if defined(MGE_COMPILER_MSVC)
                 std::string_view prefix("::$h$type_name$<");
                 std::string_view func_name(
                     std::source_location::current().function_name());
 
                 const auto pos = func_name.find(prefix);
                 if (pos == std::string::npos) {
-                    return std::string_view("xxx");
+                    return std::string_view("???");
                 }
 
                 std::remove_const_t<decltype(pos)> end =
                     pos + prefix.size() + 1;
                 int level = 1;
                 while (level > 0) {
-                    ++end;
+                    if (end >= func_name.size()) {
+                        return std::string_view("???");
+                    }
                     if (func_name[end] == '<') {
                         ++level;
                     } else if (func_name[end] == '>') {
                         --level;
                     }
-                    if (end >= func_name.size()) {
-                        return std::string_view("???");
+                    if (level > 0) {
+                        ++end;
                     }
                 }
 
-                while (func_name[end - 1] == ' ') {
+                while (end > 0 && func_name[end - 1] == ' ') {
                     --end;
                 }
 
@@ -73,10 +77,28 @@ namespace mge {
                 else if (n.starts_with("struct "))
                     n = n.substr(7);
                 return n;
+#elif defined(MGE_COMPILER_GCC)
+                std::string_view func_name(
+                    std::source_location::current().function_name());
+                std::string_view prefix("[with T = ");
+                const auto        pos = func_name.find(prefix);
+                if (pos == std::string::npos) {
+                    return std::string_view("???");
+                }
+                auto end = func_name.find(']', pos + prefix.size());
+                if (end == std::string::npos) {
+                    return std::string_view("???");
+                }
+                auto n = func_name.substr(pos + prefix.size(),
+                                          end - pos - prefix.size());
+                return n;
+#else                                           
+#    error Missing port
+#endif
             }
         };
     } // namespace
-
+    
     /**
      * @brief Get type name of type.
      *

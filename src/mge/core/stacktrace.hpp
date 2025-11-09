@@ -235,6 +235,7 @@ struct fmt::formatter<mge::stacktrace> : public fmt::formatter<std::string_view>
                 fmt::format_to(ctx.out(), " of {}", frame.module());
             }
             fmt::format_to(ctx.out(), "\n");
+            fno++;
         }
         return ctx.out();
     }

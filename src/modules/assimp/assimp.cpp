@@ -16,7 +16,7 @@
 #include <assimp/IOStream.hpp>      // C++ stream interface
 #include <assimp/IOSystem.hpp>      // C++ IOSystem interface
 #include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/logger.hpp>        // Logger interface
+#include <assimp/Logger.hpp>        // Logger interface
 #include <assimp/postprocess.h>     // Post processing flags
 #include <assimp/scene.h>           // Output data structure
 namespace mge {
@@ -307,7 +307,7 @@ namespace mge {
                 MGE_THROW_NOT_IMPLEMENTED << "Vertex colors in mesh asset";
             }
 
-            auto num_vertices = mesh->mNumVertices;
+            [[maybe_unused]] auto num_vertices = mesh->mNumVertices;
             MGE_DEBUG_TRACE(ASSIMP,
                             "Mesh {} has {} vertices and {} faces",
                             a.path().string(),
