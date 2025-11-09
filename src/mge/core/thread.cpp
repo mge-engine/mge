@@ -38,14 +38,20 @@ namespace mge {
 
     thread::~thread() {}
 
-    thread::id thread::get_id() const { return m_running_thread.get_id(); }
+    thread::id thread::get_id() const
+    {
+        return m_running_thread.get_id();
+    }
 
     uint32_t thread::hardware_concurrency()
     {
         return running_thread_type::hardware_concurrency();
     }
 
-    void thread::on_start() { t_this_thread = this; }
+    void thread::on_start()
+    {
+        t_this_thread = this;
+    }
 
     void thread::on_finish()
     {
@@ -68,9 +74,15 @@ namespace mge {
         }
     }
 
-    void thread::detach() { m_running_thread.detach(); }
+    void thread::detach()
+    {
+        m_running_thread.detach();
+    }
 
-    void thread::join() { m_running_thread.join(); }
+    void thread::join()
+    {
+        m_running_thread.join();
+    }
 
     bool thread::joinable() const noexcept
     {

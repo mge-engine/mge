@@ -17,7 +17,10 @@ namespace mge::opengl {
                       void*                     data);
         virtual ~vertex_buffer();
 
-        GLuint buffer_name() const noexcept { return m_buffer; }
+        GLuint buffer_name() const noexcept
+        {
+            return m_buffer;
+        }
 
     protected:
         void* on_map() override;

@@ -19,7 +19,10 @@ namespace mge::dx11 {
                      void*           data);
         virtual ~index_buffer();
 
-        ID3D11Buffer* buffer() const { return m_buffer.get(); }
+        ID3D11Buffer* buffer() const
+        {
+            return m_buffer.get();
+        }
 
     protected:
         void* on_map() override;

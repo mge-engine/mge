@@ -103,11 +103,20 @@ namespace mge {
         }
     }
 
-    statistics& statistics::root() { return s_root; }
+    statistics& statistics::root()
+    {
+        return s_root;
+    }
 
-    void statistics::release() { m_owned = false; }
+    void statistics::release()
+    {
+        m_owned = false;
+    }
 
-    void statistics::add_child(statistics* s) { m_children.emplace_back(s); }
+    void statistics::add_child(statistics* s)
+    {
+        m_children.emplace_back(s);
+    }
 
     const statistics::description& statistics::describe() const
     {

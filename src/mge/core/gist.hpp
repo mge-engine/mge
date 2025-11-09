@@ -24,9 +24,7 @@ namespace mge {
 
     template <typename T>
     concept has_gist_method = requires(T obj, std::format_context& ctx) {
-        {
-            obj.gist(ctx)
-        } -> std::convertible_to<void>;
+        { obj.gist(ctx) } -> std::convertible_to<void>;
     };
 
 } // namespace mge
@@ -108,10 +106,10 @@ struct std::formatter<mge::gist_type<T>, C>
 };
 
 template <typename T, typename C>
-    requires (!mge::has_gist_method<T>) && ((!std::is_pointer_v<T>) &&
-             (!mge::is_shared_ptr_v<T>) &&
+    requires(!mge::has_gist_method<T>) &&
+            ((!std::is_pointer_v<T>) && (!mge::is_shared_ptr_v<T>) &&
              (!std::is_arithmetic_v<T>))
-             struct std::formatter<mge::gist_type<T>, C>
+struct std::formatter<mge::gist_type<T>, C>
     : public std::formatter<std::string_view, C>
 {
     template <typename FormatContext>

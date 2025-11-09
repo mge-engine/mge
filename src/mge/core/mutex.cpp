@@ -11,10 +11,19 @@ namespace mge {
 
     mutex::~mutex() {}
 
-    void mutex::lock() { m_mutex.lock(); }
+    void mutex::lock()
+    {
+        m_mutex.lock();
+    }
 
-    void mutex::unlock() { m_mutex.unlock(); }
+    void mutex::unlock()
+    {
+        m_mutex.unlock();
+    }
 
-    bool mutex::try_lock() { return m_mutex.try_lock(); }
+    bool mutex::try_lock()
+    {
+        return m_mutex.try_lock();
+    }
 
 } // namespace mge

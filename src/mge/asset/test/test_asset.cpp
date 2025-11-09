@@ -39,7 +39,7 @@ TEST_F(test_asset, red_jpg_load)
     mge::asset_ref a = std::make_shared<mge::asset>("/images/red.jpg");
     auto           load_result = a->load();
 #ifdef MGE_COMPILER_MSVC
-     EXPECT_STREQ("class std::shared_ptr<class mge::image>",
+    EXPECT_STREQ("class std::shared_ptr<class mge::image>",
                  load_result.type().name());
 #endif
     mge::image_ref image = std::any_cast<mge::image_ref>(load_result);

@@ -12,4 +12,4 @@ namespace mge {
      */
     template <std::size_t N, typename... Ts>
     using nth_type = typename std::tuple_element<N, std::tuple<Ts...>>::type;
-}
+} // namespace mge

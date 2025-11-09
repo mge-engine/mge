@@ -13,7 +13,10 @@ namespace mge {
         , m_visible(false)
     {}
 
-    window::~window() { m_render_context.reset(); }
+    window::~window()
+    {
+        m_render_context.reset();
+    }
 
     void window::show()
     {
@@ -31,13 +34,25 @@ namespace mge {
         }
     }
 
-    bool window::visible() const { return m_visible; }
+    bool window::visible() const
+    {
+        return m_visible;
+    }
 
-    point window::position() const { return m_position; }
+    point window::position() const
+    {
+        return m_position;
+    }
 
-    mge::extent window::extent() const { return m_extent; }
+    mge::extent window::extent() const
+    {
+        return m_extent;
+    }
 
-    mge::render_context& window::render_context() { return *m_render_context; }
+    mge::render_context& window::render_context()
+    {
+        return *m_render_context;
+    }
 
     const mge::render_context& window::render_context() const
     {
@@ -49,7 +64,10 @@ namespace mge {
         m_close_listener = listener;
     }
 
-    void window::clear_close_listener() { m_close_listener = void_function(); }
+    void window::clear_close_listener()
+    {
+        m_close_listener = void_function();
+    }
 
     void window::set_closing_listener(const window::closing_listener& listener)
     {

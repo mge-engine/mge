@@ -39,6 +39,9 @@ namespace mge {
         return get(str_sv);
     }
 
-    string_pool::size_type string_pool::size() const { return m_values.size(); }
+    string_pool::size_type string_pool::size() const
+    {
+        return m_values.size();
+    }
 
 } // namespace mge

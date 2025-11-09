@@ -251,7 +251,7 @@ namespace mge {
         parse(int argc, const char** argv, program_options::options& o) const;
 
         void parse(const std::vector<std::string>& args,
-                   program_options::options&       o) const ;
+                   program_options::options&       o) const;
 
     private:
         template <typename Iterator>

@@ -59,18 +59,30 @@ namespace mge {
                            bottom);
         }
 
-        inline uint32_t width() const { return right - left; }
+        inline uint32_t width() const
+        {
+            return right - left;
+        }
 
-        inline uint32_t height() const { return bottom - top; }
+        inline uint32_t height() const
+        {
+            return bottom - top;
+        }
 
         inline mge::extent extent() const
         {
             return mge::extent(width(), height());
         }
 
-        inline mge::point top_left() const { return mge::point(left, top); }
+        inline mge::point top_left() const
+        {
+            return mge::point(left, top);
+        }
 
-        inline mge::point top_right() const { return mge::point(right, top); }
+        inline mge::point top_right() const
+        {
+            return mge::point(right, top);
+        }
 
         inline mge::point bottom_left() const
         {

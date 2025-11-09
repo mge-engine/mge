@@ -23,8 +23,14 @@ namespace mge {
         m_initialized = true;
     }
 
-    shader_type shader::type() const { return m_type; }
+    shader_type shader::type() const
+    {
+        return m_type;
+    }
 
-    bool shader::initialized() const { return m_initialized; }
+    bool shader::initialized() const
+    {
+        return m_initialized;
+    }
 
 } // namespace mge

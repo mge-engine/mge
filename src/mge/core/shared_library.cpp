@@ -7,9 +7,9 @@
 #include <mutex>
 
 #ifdef MGE_OS_WINDOWS
-#include <windows.h>
+#    include <windows.h>
 #elif defined(MGE_OS_LINUX)
-#include <dlfcn.h>
+#    include <dlfcn.h>
 #else
 #    error Missing port
 #endif
@@ -48,7 +48,7 @@ namespace mge {
             } else {
 #ifdef MGE_OS_WINDOWS
                 FreeLibrary(handle);
-# elif defined(MGE_OS_LINUX)
+#elif defined(MGE_OS_LINUX)
                 // TODO: return value of dlclose?
                 dlclose(handle);
 #else
@@ -101,10 +101,10 @@ namespace mge {
             handle = dlopen(m_name.c_str(), RTLD_LAZY);
             if (!handle) {
                 MGE_THROW(system_error)
-                    << "Cannot load library '" << m_name << "': "<< dlerror();
+                    << "Cannot load library '" << m_name << "': " << dlerror();
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
-    }
+        }
 
         m_handle = handle;
 #else

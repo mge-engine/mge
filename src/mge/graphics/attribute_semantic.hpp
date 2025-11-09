@@ -7,7 +7,6 @@
 #include <iosfwd>
 #include <string_view>
 
-
 namespace mge {
 
     /**

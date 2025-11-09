@@ -63,25 +63,37 @@ namespace mge {
          * @brief Access stored program.
          * @return program
          */
-        const program_ref& program() const { return m_program; }
+        const program_ref& program() const
+        {
+            return m_program;
+        }
         /**
          * @brief Access stored vertex buffer.
          * @return vertex buffer
          */
-        const vertex_buffer_ref& vertices() const { return m_vertices; }
+        const vertex_buffer_ref& vertices() const
+        {
+            return m_vertices;
+        }
         /**
          * @brief Access stored index buffer.
          *
          * @return const index buffer
          */
-        const index_buffer_ref& indices() const { return m_indices; }
+        const index_buffer_ref& indices() const
+        {
+            return m_indices;
+        }
 
         /**
          * @brief Access stored topology.
          *
          * @return mge::topology
          */
-        mge::topology topology() const { return m_topology; }
+        mge::topology topology() const
+        {
+            return m_topology;
+        }
 
     private:
         program_ref       m_program;

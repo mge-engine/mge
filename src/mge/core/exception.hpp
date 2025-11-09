@@ -288,7 +288,6 @@ namespace mge {
             return *this;
         }
 
-
         /**
          * @brief Retrieve information stored under a tag type.
          *
@@ -499,12 +498,12 @@ struct fmt::formatter<mge::exception::exception_details>
 namespace mge {
 
     template <>
-    inline exception& exception::set_info<exception::message>(const exception::message& info)
+    inline exception&
+    exception::set_info<exception::message>(const exception::message& info)
     {
         m_raw_message = info.value();
         return *this;
     }
-
 
     MGECORE_EXPORT std::ostream&
     operator<<(std::ostream& os, const mge::exception::exception_details& ed);

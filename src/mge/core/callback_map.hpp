@@ -95,7 +95,10 @@ namespace mge {
             }
         }
 
-        void clear() { m_data.clear(); }
+        void clear()
+        {
+            m_data.clear();
+        }
 
     private:
         key_type                   m_sequence{0};
@@ -179,7 +182,10 @@ namespace mge {
             }
         }
 
-        void clear() { m_data.clear(); }
+        void clear()
+        {
+            m_data.clear();
+        }
 
     private:
         key_type                   m_sequence{0};

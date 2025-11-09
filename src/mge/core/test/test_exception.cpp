@@ -28,15 +28,12 @@ TEST(exception, set_info)
     std::stringstream msg;
     msg << ex.details();
     std::string message = msg.str();
-    EXPECT_TRUE(
-        message.find("Exception type: mge::exception") != std::string::npos);
-    EXPECT_TRUE(
-        message.find("test_exception.cpp") != std::string::npos);
-    EXPECT_TRUE(
-        message.find("Exception location: ") != std::string::npos);
-    EXPECT_TRUE(
-        message.find("exception_set_info_Test::TestBody") !=
-        std::string::npos);
+    EXPECT_TRUE(message.find("Exception type: mge::exception") !=
+                std::string::npos);
+    EXPECT_TRUE(message.find("test_exception.cpp") != std::string::npos);
+    EXPECT_TRUE(message.find("Exception location: ") != std::string::npos);
+    EXPECT_TRUE(message.find("exception_set_info_Test::TestBody") !=
+                std::string::npos);
 }
 
 TEST(exception, set_info_with_location)
@@ -45,10 +42,8 @@ TEST(exception, set_info_with_location)
     std::stringstream msg;
     msg << ex.details();
     std::string message = msg.str();
-    EXPECT_TRUE(
-        message.find("test_exception.cpp") != std::string::npos);
-    EXPECT_TRUE(
-        message.find("Exception location: ") != std::string::npos);
+    EXPECT_TRUE(message.find("test_exception.cpp") != std::string::npos);
+    EXPECT_TRUE(message.find("Exception location: ") != std::string::npos);
     EXPECT_TRUE(
         message.find("exception_set_info_with_location_Test::TestBody") !=
         std::string::npos);
@@ -62,16 +57,12 @@ TEST(exception, set_info_using_operator)
     msg << ex.details();
     std::string message = msg.str();
 
-    EXPECT_TRUE(
-        message.find("Calling library/system function: FOOBAR") !=
-        std::string::npos);
-    EXPECT_TRUE(
-        message.find("Exception message: test message") !=
-        std::string::npos); 
-    EXPECT_TRUE(
-        message.find("test_exception.cpp") != std::string::npos);
-    EXPECT_TRUE(
-        message.find("Exception location: ") != std::string::npos);
+    EXPECT_TRUE(message.find("Calling library/system function: FOOBAR") !=
+                std::string::npos);
+    EXPECT_TRUE(message.find("Exception message: test message") !=
+                std::string::npos);
+    EXPECT_TRUE(message.find("test_exception.cpp") != std::string::npos);
+    EXPECT_TRUE(message.find("Exception location: ") != std::string::npos);
     EXPECT_TRUE(
         message.find("exception_set_info_using_operator_Test::TestBody") !=
         std::string::npos);

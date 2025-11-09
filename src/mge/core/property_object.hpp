@@ -92,7 +92,10 @@ namespace mge {
          *
          * @return properties
          */
-        const ::mge::properties& properties() const { return m_properties; }
+        const ::mge::properties& properties() const
+        {
+            return m_properties;
+        }
 
     private:
         ::mge::properties m_properties;

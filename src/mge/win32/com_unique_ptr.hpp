@@ -10,7 +10,10 @@ namespace mge {
     {
         using pointer = T*;
         com_deleter() = default;
-        inline void operator()(T* ptr) const { ptr->Release(); }
+        inline void operator()(T* ptr) const
+        {
+            ptr->Release();
+        }
     };
 
     template <typename T>

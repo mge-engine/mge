@@ -360,8 +360,10 @@ namespace mge {
  * @param DESCRIPTION parameter description
  */
 #define MGE_DEFINE_PARAMETER(TYPE, SECTION, NAME, DESCRIPTION)                 \
-    ::mge::parameter<BOOST_PP_REMOVE_PARENS(TYPE)>                             \
-        p_##SECTION##_##NAME(#SECTION, #NAME, DESCRIPTION);
+    ::mge::parameter<BOOST_PP_REMOVE_PARENS(TYPE)> p_##SECTION##_##NAME(       \
+        #SECTION,                                                              \
+        #NAME,                                                                 \
+        DESCRIPTION);
 
 /**
  * @def MGE_DEFINE_PARAMETER_WITH_DEFAULT

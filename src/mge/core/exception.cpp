@@ -86,7 +86,7 @@ namespace mge {
                 return m_raw_message.c_str();
             }
         } catch (...) {
-            // Handle any exceptions thrown during message materialization      
+            // Handle any exceptions thrown during message materialization
         }
         return std::exception::what();
     }

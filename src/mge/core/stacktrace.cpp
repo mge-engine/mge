@@ -177,34 +177,34 @@ namespace mge {
         CloseHandle(current_thread);
     }
 
-#elif defined (MGE_OS_LINUX)
+#elif defined(MGE_OS_LINUX)
     // Linux/Unix implementation using dladdr to get module information
     template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
     {
         auto st = std::stacktrace::current();
-        auto it = st.cbegin(); 
+        auto it = st.cbegin();
         ++it;
         while (it != st.cend()) {
             const auto& frame = *it;
             ++it;
-            const void *address = reinterpret_cast<const void*>(frame.native_handle());
+            const void* address =
+                reinterpret_cast<const void*>(frame.native_handle());
 
             // Use dladdr to find which module the address belongs to
-            Dl_info dl_info;
+            Dl_info     dl_info;
             const char* module_name = "";
             if (dladdr(address, &dl_info) && dl_info.dli_fname) {
                 module_name = dl_info.dli_fname;
             }
 
-            frames.emplace_back(
-                address,
-                strings.get(module_name),
-                strings.get(frame.description()),
-                strings.get(frame.source_file()),
-                frame.source_line());
+            frames.emplace_back(address,
+                                strings.get(module_name),
+                                strings.get(frame.description()),
+                                strings.get(frame.source_file()),
+                                frame.source_line());
         }
     }
-#else 
+#else
 
 #endif
     stacktrace::frame::frame(const void*      address,

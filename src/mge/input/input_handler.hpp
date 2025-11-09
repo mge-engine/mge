@@ -168,7 +168,7 @@ namespace mge {
          * @param y vertical wheel movement
          */
         void on_mouse_wheel(int32_t x, int32_t y);
-        
+
         /**
          * @brief Method to be called when a character is input.
          *

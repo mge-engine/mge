@@ -3,8 +3,8 @@
 // All rights reserved.
 #pragma once
 
-#include "mge/core/dllexport.hpp"
 #include "mge/config.hpp"
+#include "mge/core/dllexport.hpp"
 #include <source_location>
 #include <string>
 #include <typeinfo>
@@ -81,7 +81,7 @@ namespace mge {
                 std::string_view func_name(
                     std::source_location::current().function_name());
                 std::string_view prefix("[with T = ");
-                const auto        pos = func_name.find(prefix);
+                const auto       pos = func_name.find(prefix);
                 if (pos == std::string::npos) {
                     return std::string_view("???");
                 }
@@ -92,13 +92,13 @@ namespace mge {
                 auto n = func_name.substr(pos + prefix.size(),
                                           end - pos - prefix.size());
                 return n;
-#else                                           
+#else
 #    error Missing port
 #endif
             }
         };
     } // namespace
-    
+
     /**
      * @brief Get type name of type.
      *

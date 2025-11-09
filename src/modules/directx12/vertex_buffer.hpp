@@ -18,8 +18,14 @@ namespace mge::dx12 {
                       void*                initial_data);
         ~vertex_buffer();
 
-        ID3D12Resource* buffer() const { return m_buffer.get(); }
-        const D3D12_VERTEX_BUFFER_VIEW& view() const { return m_buffer_view; }
+        ID3D12Resource* buffer() const
+        {
+            return m_buffer.get();
+        }
+        const D3D12_VERTEX_BUFFER_VIEW& view() const
+        {
+            return m_buffer_view;
+        }
 
     protected:
         void* on_map() override;

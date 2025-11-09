@@ -17,7 +17,10 @@ namespace mge {
             : m_callable(std::move(c))
         {}
 
-        ~on_leave() { m_callable(); }
+        ~on_leave()
+        {
+            m_callable();
+        }
 
         Callable m_callable;
     };

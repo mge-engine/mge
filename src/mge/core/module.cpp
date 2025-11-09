@@ -85,7 +85,7 @@ namespace mge {
 
     static bool is_module(const fs::path& name)
     {
-#ifdef MGE_OS_WINDOWS            
+#ifdef MGE_OS_WINDOWS
         auto stem = name.stem();
         if (stem.string().starts_with("mge_module_")) {
             auto suffix = name.extension();

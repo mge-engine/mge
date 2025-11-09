@@ -12,7 +12,10 @@
 #include <unordered_map>
 #include <vector>
 
-template <typename T> bool is_container() { return mge::is_container<T>; }
+template <typename T> bool is_container()
+{
+    return mge::is_container<T>;
+}
 template <typename T> bool is_sequence_container()
 {
     return mge::is_sequence_container<T>;

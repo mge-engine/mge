@@ -22,7 +22,10 @@ namespace mge::dx12 {
                      void*           data);
         virtual ~index_buffer();
 
-        const D3D12_INDEX_BUFFER_VIEW& view() const { return m_buffer_view; }
+        const D3D12_INDEX_BUFFER_VIEW& view() const
+        {
+            return m_buffer_view;
+        }
 
     protected:
         void* on_map() override;

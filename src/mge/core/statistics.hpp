@@ -118,7 +118,10 @@ namespace mge {
                  *
                  * @return name
                  */
-                std::string_view name() const { return m_name; }
+                std::string_view name() const
+                {
+                    return m_name;
+                }
 
                 /**
                  * @brief Get value.
@@ -173,13 +176,19 @@ namespace mge {
              *
              * @return name
              */
-            std::string_view name() const noexcept { return m_name; }
+            std::string_view name() const noexcept
+            {
+                return m_name;
+            }
             /**
              * @brief Statistics comment.
              *
              * @return comment
              */
-            std::string_view comment() const noexcept { return m_comment; }
+            std::string_view comment() const noexcept
+            {
+                return m_comment;
+            }
 
             /**
              * @brief Create field descriptor for counter.
@@ -218,7 +227,10 @@ namespace mge {
              *
              * @return number of fields
              */
-            size_type size() const { return m_fields.size(); }
+            size_type size() const
+            {
+                return m_fields.size();
+            }
 
         private:
             std::string_view               m_name;

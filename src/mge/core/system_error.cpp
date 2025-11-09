@@ -38,7 +38,7 @@ namespace mge {
         LocalFree(msgbuf);
 #elif defined(MGE_OS_LINUX)
         (*this) << "(" << ec << "): " << strerror(ec);
-#else   
+#else
 #    error Missing port
 #endif
     }

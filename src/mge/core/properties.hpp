@@ -169,12 +169,30 @@ namespace mge {
 
         void load(std::istream& s);
 
-        iterator       begin() { return m_data.begin(); }
-        iterator       end() { return m_data.end(); }
-        const_iterator cbegin() const { return m_data.cbegin(); }
-        const_iterator cend() const { return m_data.cend(); }
-        const_iterator begin() const { return cbegin(); }
-        const_iterator end() const { return cend(); }
+        iterator begin()
+        {
+            return m_data.begin();
+        }
+        iterator end()
+        {
+            return m_data.end();
+        }
+        const_iterator cbegin() const
+        {
+            return m_data.cbegin();
+        }
+        const_iterator cend() const
+        {
+            return m_data.cend();
+        }
+        const_iterator begin() const
+        {
+            return cbegin();
+        }
+        const_iterator end() const
+        {
+            return cend();
+        }
 
         inline bool operator==(const properties& p) const
         {

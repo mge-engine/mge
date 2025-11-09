@@ -81,7 +81,10 @@ namespace mge {
         output_stream_buffer m_buffer;
     };
 
-    void output_stream::write(uint8_t byte) { write(&byte, 1); }
+    void output_stream::write(uint8_t byte)
+    {
+        write(&byte, 1);
+    }
 
     void output_stream::write(const void*                    buffer,
                               output_stream::streamsize_type size)
@@ -97,7 +100,10 @@ namespace mge {
         notify_write(size);
     }
 
-    void output_stream::flush() { on_flush(); }
+    void output_stream::flush()
+    {
+        on_flush();
+    }
 
     std::ostream& output_stream::ostream()
     {

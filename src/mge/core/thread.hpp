@@ -141,7 +141,10 @@ namespace mge {
          *
          * @return thread name
          */
-        const std::string& name() const noexcept { return m_name; }
+        const std::string& name() const noexcept
+        {
+            return m_name;
+        }
 
     private:
         void on_start();
@@ -162,7 +165,10 @@ namespace mge {
 
         MGECORE_EXPORT mge::thread::system_id system_id();
 
-        inline mge::thread::id get_id() { return ::std::this_thread::get_id(); }
+        inline mge::thread::id get_id()
+        {
+            return ::std::this_thread::get_id();
+        }
 
         /**
          * @brief Sleep for a given time period.
@@ -198,7 +204,10 @@ namespace mge {
          * The exact behavior may depend on the thread implementation, current
          * thread may be suspended.
          */
-        inline void yield() noexcept { std::this_thread::yield(); }
+        inline void yield() noexcept
+        {
+            std::this_thread::yield();
+        }
 
     } // namespace this_thread
 

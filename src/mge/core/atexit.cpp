@@ -5,8 +5,8 @@
 #include "mge/core/exception.hpp"
 #include "mge/core/trace.hpp"
 #include <atomic>
-#include <vector>
 #include <cstdio>
+#include <vector>
 
 namespace mge {
 

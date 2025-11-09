@@ -4,7 +4,10 @@
 #include "mge/core/crash.hpp"
 #include "test/googletest.hpp"
 
-TEST(crash, crashes) { EXPECT_DEATH(mge::crash(), "Crash!!!"); }
+TEST(crash, crashes)
+{
+    EXPECT_DEATH(mge::crash(), "Crash!!!");
+}
 
 TEST(crash, crashes_with_message)
 {

@@ -26,7 +26,10 @@ namespace mge {
         m_prompt = prompt;
     }
 
-    line_editor::~line_editor() { --s_instances; }
+    line_editor::~line_editor()
+    {
+        --s_instances;
+    }
 
     std::optional<std::string> line_editor::line()
     {
@@ -43,7 +46,10 @@ namespace mge {
         return result;
     }
 
-    const std::string& line_editor::prompt() const { return m_prompt; }
+    const std::string& line_editor::prompt() const
+    {
+        return m_prompt;
+    }
 
     void line_editor::set_prompt(const std::string& prompt)
     {

@@ -42,9 +42,18 @@ namespace mge::dx11 {
             return std::get<pixel_shader_t>(m_shader).get();
         }
 
-        const shader_t&    directx_shader() const { return m_shader; }
-        ID3DBlob*          code() const { return m_code.get(); }
-        ID3D11InputLayout* input_layout() const { return m_input_layout.get(); }
+        const shader_t& directx_shader() const
+        {
+            return m_shader;
+        }
+        ID3DBlob* code() const
+        {
+            return m_code.get();
+        }
+        ID3D11InputLayout* input_layout() const
+        {
+            return m_input_layout.get();
+        }
 
         void reflect(mge::program::attribute_list&      attributes,
                      mge::program::uniform_list&        uniforms,

@@ -62,7 +62,10 @@ namespace mge {
          *
          * @return file name of loaded library
          */
-        const std::filesystem::path& name() const { return m_name; }
+        const std::filesystem::path& name() const
+        {
+            return m_name;
+        }
 
         /**
          * @brief Resolve a symbol in a shared library.

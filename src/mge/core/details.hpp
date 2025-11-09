@@ -21,9 +21,7 @@ namespace mge {
 
     template <typename T>
     concept has_details_method = requires(T obj, std::format_context& ctx) {
-        {
-            obj.details(ctx)
-        } -> std::convertible_to<void>;
+        { obj.details(ctx) } -> std::convertible_to<void>;
     };
 
 } // namespace mge

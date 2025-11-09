@@ -18,7 +18,10 @@ namespace mge::dx12 {
         ~swap_chain() = default;
         void present() override;
 
-        IDXGISwapChain4* dxgi_swap_chain() const { return m_swap_chain.Get(); }
+        IDXGISwapChain4* dxgi_swap_chain() const
+        {
+            return m_swap_chain.Get();
+        }
 
         uint32_t current_back_buffer_index() const override;
 

@@ -37,7 +37,10 @@ namespace mge {
             return *this;
         }
 
-        sequence_type sequence() const noexcept { return m_sequence; }
+        sequence_type sequence() const noexcept
+        {
+            return m_sequence;
+        }
 
         bool operator<(const sequenced& other) const noexcept
         {
@@ -76,7 +79,10 @@ namespace mge {
             return m_sequence != 0;
         }
 
-        constexpr bool has_value() const noexcept { return m_sequence != 0; }
+        constexpr bool has_value() const noexcept
+        {
+            return m_sequence != 0;
+        }
 
     private:
         sequence_type m_sequence;

@@ -35,73 +35,118 @@ namespace mge {
 
     template <> struct ffi_compute_type<uint8_t>
     {
-        static ffi_type* type() { return &ffi_type_uint8; }
+        static ffi_type* type()
+        {
+            return &ffi_type_uint8;
+        }
     };
     template <> struct ffi_compute_type<int8_t>
     {
-        static ffi_type* type() { return &ffi_type_sint8; }
+        static ffi_type* type()
+        {
+            return &ffi_type_sint8;
+        }
     };
 
     template <> struct ffi_compute_type<uint16_t>
     {
-        static ffi_type* type() { return &ffi_type_uint16; }
+        static ffi_type* type()
+        {
+            return &ffi_type_uint16;
+        }
     };
 
     template <> struct ffi_compute_type<int16_t>
     {
-        static ffi_type* type() { return &ffi_type_sint16; }
+        static ffi_type* type()
+        {
+            return &ffi_type_sint16;
+        }
     };
     template <> struct ffi_compute_type<uint32_t>
     {
-        static ffi_type* type() { return &ffi_type_uint32; }
+        static ffi_type* type()
+        {
+            return &ffi_type_uint32;
+        }
     };
     template <> struct ffi_compute_type<int32_t>
     {
-        static ffi_type* type() { return &ffi_type_sint32; }
+        static ffi_type* type()
+        {
+            return &ffi_type_sint32;
+        }
     };
 
     template <> struct ffi_compute_type<uint64_t>
     {
-        static ffi_type* type() { return &ffi_type_uint64; }
+        static ffi_type* type()
+        {
+            return &ffi_type_uint64;
+        }
     };
 
     template <> struct ffi_compute_type<int64_t>
     {
-        static ffi_type* type() { return &ffi_type_sint64; }
+        static ffi_type* type()
+        {
+            return &ffi_type_sint64;
+        }
     };
 
     template <> struct ffi_compute_type<float>
     {
-        static ffi_type* type() { return &ffi_type_float; }
+        static ffi_type* type()
+        {
+            return &ffi_type_float;
+        }
     };
 
     template <> struct ffi_compute_type<double>
     {
-        static ffi_type* type() { return &ffi_type_double; }
+        static ffi_type* type()
+        {
+            return &ffi_type_double;
+        }
     };
 
     template <> struct ffi_compute_type<long double>
     {
-        static ffi_type* type() { return &ffi_type_longdouble; }
+        static ffi_type* type()
+        {
+            return &ffi_type_longdouble;
+        }
     };
 
     template <> struct ffi_compute_type<void>
     {
-        static ffi_type* type() { return &ffi_type_void; }
+        static ffi_type* type()
+        {
+            return &ffi_type_void;
+        }
     };
 
     template <> struct ffi_compute_type<bool>
     {
-        static ffi_type* type() { return &ffi_type_uint8; }
+        static ffi_type* type()
+        {
+            return &ffi_type_uint8;
+        }
     };
 
     template <typename T> struct ffi_compute_type<T*>
     {
-        static ffi_type* type() { return &ffi_type_pointer; }
+        static ffi_type* type()
+        {
+            return &ffi_type_pointer;
+        }
     };
     template <typename T> struct ffi_compute_type<const T*>
     {
-        static ffi_type* type() { return &ffi_type_pointer; }
+        static ffi_type* type()
+        {
+            return &ffi_type_pointer;
+        }
     };
 
     /**

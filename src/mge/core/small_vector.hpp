@@ -48,8 +48,8 @@ namespace mge {
         struct small_data
         {
 #if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
             small_data(size_t l, const value_type& val)
                 : length(l)
@@ -84,7 +84,7 @@ namespace mge {
                 : length(0)
             {}
 #if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
 
             template <class... Args> T& emplace_back(Args&&... args)
@@ -94,14 +94,14 @@ namespace mge {
             }
 
 #if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
             std::array<T, S> data;
 #if defined(__GNUC__) && !defined(__clang__)
-#pragma GCC diagnostic pop
+#    pragma GCC diagnostic pop
 #endif
-            size_t           length;
+            size_t length;
         };
 
     public:

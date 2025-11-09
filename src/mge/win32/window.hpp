@@ -17,7 +17,10 @@ namespace mge {
             window(const mge::extent& extent, const window_options& options);
             ~window();
 
-            HWND hwnd() const noexcept { return m_hwnd; }
+            HWND hwnd() const noexcept
+            {
+                return m_hwnd;
+            }
 
         protected:
             void on_show() override;

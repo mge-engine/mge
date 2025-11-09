@@ -15,4 +15,7 @@ TEST(debugging, is_debugger_present)
     EXPECT_FALSE(mge::is_debugger_present());
 }
 
-TEST(debugging, breakpoint_if_debugging) { mge::breakpoint_if_debugging(); }
+TEST(debugging, breakpoint_if_debugging)
+{
+    mge::breakpoint_if_debugging();
+}
