@@ -122,6 +122,8 @@ TARGET_LINK_LIBRARIES(mgecore
 
 IF(WIN32)
     TARGET_LINK_LIBRARIES(mgecore dbghelp)
+ELSEIF(LINUX)
+    TARGET_LINK_LIBRARIES(mgecore stdc++exp dl)
 ENDIF()
 
 ADD_SUBDIRECTORY(test)
