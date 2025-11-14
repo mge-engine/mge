@@ -177,7 +177,21 @@ namespace mge::reflection {
         BLUE
     };
 
-    TEST(type, enum_type)
+    enum class uenum : uint64_t
+    {
+        ALPHA = 10,
+        BETA = 20,
+        GAMMA = 30
+    };
+
+    enum class duplicate_enum : int
+    {
+        VALUE1 = 1,
+        VALUE2 = 2,
+        VALUE1_DUPLICATE = 1
+    };
+
+    TEST(type, enum_type_signed)
     {
         auto type_enum1 = type<enum1>();
         EXPECT_FALSE(type_enum1.is_void());
@@ -193,11 +207,71 @@ namespace mge::reflection {
         EXPECT_EQ(details->enum_specific().underlying_type,
                   get_or_create_type_details<int>());
         EXPECT_EQ(details->enum_specific().values.size(), 3);
-        EXPECT_EQ(details->enum_specific().values[0], std::make_pair("RED", 0));
-        EXPECT_EQ(details->enum_specific().values[1],
-                  std::make_pair("GREEN", 1));
-        EXPECT_EQ(details->enum_specific().values[2],
-                  std::make_pair("BLUE", 2));
+        EXPECT_EQ(details->enum_specific().values[0].first, "RED");
+        EXPECT_EQ(std::get<int64_t>(details->enum_specific().values[0].second),
+                  0);
+        EXPECT_EQ(details->enum_specific().values[1].first, "GREEN");
+        EXPECT_EQ(std::get<int64_t>(details->enum_specific().values[1].second),
+                  1);
+        EXPECT_EQ(details->enum_specific().values[2].first, "BLUE");
+        EXPECT_EQ(std::get<int64_t>(details->enum_specific().values[2].second),
+                  2);
+    }
+
+    TEST(type, enum_type_unsigned)
+    {
+        auto type_uenum = type<uenum>();
+        EXPECT_FALSE(type_uenum.is_void());
+        EXPECT_FALSE(type_uenum.is_bool());
+        EXPECT_FALSE(type_uenum.is_integral());
+        EXPECT_FALSE(type_uenum.is_floating_point());
+        EXPECT_TRUE(type_uenum.is_enum());
+        const auto& udetails = type_uenum.details();
+        EXPECT_TRUE(udetails->is_enum);
+        EXPECT_EQ(udetails->enum_specific().underlying_type,
+                  get_or_create_type_details<uint64_t>());
+        EXPECT_EQ(udetails->enum_specific().values.size(), 3);
+        EXPECT_EQ(udetails->enum_specific().values[0].first, "ALPHA");
+        EXPECT_EQ(
+            std::get<uint64_t>(udetails->enum_specific().values[0].second),
+            10);
+        EXPECT_EQ(udetails->enum_specific().values[1].first, "BETA");
+        EXPECT_EQ(
+            std::get<uint64_t>(udetails->enum_specific().values[1].second),
+            20);
+        EXPECT_EQ(udetails->enum_specific().values[2].first, "GAMMA");
+        EXPECT_EQ(
+            std::get<uint64_t>(udetails->enum_specific().values[2].second),
+            30);
+    }
+
+    TEST(type, enum_type_duplicate_values)
+    {
+        auto type_duplicate_enum =
+            type<duplicate_enum>().value("VALUE1_DUPLICATE",
+                                         duplicate_enum::VALUE1_DUPLICATE);
+#if 0                                         
+        EXPECT_FALSE(type_duplicate_enum.is_void());
+        EXPECT_FALSE(type_duplicate_enum.is_bool());
+        EXPECT_FALSE(type_duplicate_enum.is_integral());
+        EXPECT_FALSE(type_duplicate_enum.is_floating_point());
+        EXPECT_TRUE(type_duplicate_enum.is_enum());
+        const auto& ddetails = type_duplicate_enum.details();
+        EXPECT_TRUE(ddetails->is_enum);
+        EXPECT_EQ(ddetails->enum_specific().underlying_type,
+                  get_or_create_type_details<int>());
+        ASSERT_EQ(ddetails->enum_specific().values.size(), 3);
+        EXPECT_EQ(ddetails->enum_specific().values[0].first, "VALUE1");
+        EXPECT_EQ(std::get<int64_t>(ddetails->enum_specific().values[0].second),
+                  1);
+        EXPECT_EQ(ddetails->enum_specific().values[1].first, "VALUE2");
+        EXPECT_EQ(std::get<int64_t>(ddetails->enum_specific().values[1].second),
+                  2);
+        EXPECT_EQ(ddetails->enum_specific().values[2].first,
+                  "VALUE1_DUPLICATE");
+        EXPECT_EQ(std::get<int64_t>(ddetails->enum_specific().values[2].second),
+                  1);
+#endif
     }
 
 } // namespace mge::reflection

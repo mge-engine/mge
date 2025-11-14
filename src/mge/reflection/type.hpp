@@ -40,6 +40,11 @@ namespace mge::reflection {
     {
     public:
         type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+
         ~type() = default;
 
         constexpr bool is_void() const noexcept
@@ -82,6 +87,11 @@ namespace mge::reflection {
     {
     public:
         type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+
         ~type() = default;
 
         constexpr bool is_void() const noexcept
@@ -124,6 +134,11 @@ namespace mge::reflection {
     {
     public:
         type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+
         ~type() = default;
 
         constexpr bool is_void() const noexcept
@@ -166,6 +181,11 @@ namespace mge::reflection {
     {
     public:
         type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+
         ~type() = default;
 
         constexpr bool is_void() const noexcept
@@ -209,6 +229,11 @@ namespace mge::reflection {
     {                                                                          \
     public:                                                                    \
         type() = default;                                                      \
+        type(const type&) = default;                                           \
+        type(type&&) noexcept = default;                                       \
+        type& operator=(const type&) = default;                                \
+        type& operator=(type&&) noexcept = default;                            \
+                                                                               \
         ~type() = default;                                                     \
                                                                                \
         constexpr bool is_void() const noexcept                                \
@@ -267,6 +292,11 @@ namespace mge::reflection {
     {
     public:
         type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+
         ~type() = default;
 
         constexpr bool is_void() const noexcept
@@ -303,6 +333,31 @@ namespace mge::reflection {
         {
             return mge::enum_type_name<T>();
         }
+
+        auto& value(const std::string_view& name, T value)
+        {
+            auto& specific_values =
+                get_or_create_type_details<T>()->enum_specific().values;
+            using UT = std::underlying_type_t<T>;
+            auto it = std::find_if(
+                specific_values.begin(),
+                specific_values.end(),
+                [&name](const auto& element) { return element.first == name; });
+            if (it != specific_values.end()) {
+                it->second = std::is_signed_v<UT>
+                                 ? static_cast<int64_t>(value)
+                                 : static_cast<uint64_t>(value);
+            } else {
+                if constexpr (std::is_signed_v<UT>) {
+                    specific_values.emplace_back(name,
+                                                 static_cast<int64_t>(value));
+                } else {
+                    specific_values.emplace_back(name,
+                                                 static_cast<uint64_t>(value));
+                }
+            }
+            return *this;
+        }
     };
 
     template <typename T>
@@ -329,10 +384,18 @@ namespace mge::reflection {
             using UT = std::underlying_type_t<T>;
             details->enum_specific().underlying_type =
                 get_or_create_type_details<UT>();
-            for (const auto& value : mge::enum_values<T>()) {
-                details->enum_specific().values.emplace_back(
-                    mge::enum_name(value),
-                    static_cast<int64_t>(value));
+            if constexpr (std::is_signed_v<UT>) {
+                for (const auto& value : mge::enum_values<T>()) {
+                    details->enum_specific().values.emplace_back(
+                        mge::enum_name(value),
+                        static_cast<int64_t>(value));
+                }
+            } else {
+                for (const auto& value : mge::enum_values<T>()) {
+                    details->enum_specific().values.emplace_back(
+                        mge::enum_name(value),
+                        static_cast<uint64_t>(value));
+                }
             }
         }
         return type_details::put(id, details);
