@@ -36,6 +36,7 @@ namespace mge::reflection {
         bool                    is_integral = false;
         bool                    is_floating_point = false;
         bool                    is_enum = false;
+        bool                    is_class = false;
         size_t                  size = 0;
         std::string_view        name;
         module_details_weak_ref module;
@@ -47,7 +48,13 @@ namespace mge::reflection {
             std::vector<std::pair<std::string_view, value_type>> values;
         };
 
-        std::variant<std::monostate, enum_specific_details> specific_details;
+        struct class_specific_details
+        {};
+
+        std::variant<std::monostate,
+                     enum_specific_details,
+                     class_specific_details>
+            specific_details;
 
         enum_specific_details& enum_specific()
         {
@@ -61,6 +68,20 @@ namespace mge::reflection {
                 specific_details = enum_specific_details{};
             }
             return std::get<enum_specific_details>(specific_details);
+        }
+
+        class_specific_details& class_specific()
+        {
+            if (!is_class) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " is not a class";
+            }
+
+            if (!std::holds_alternative<class_specific_details>(
+                    specific_details)) {
+                specific_details = class_specific_details{};
+            }
+            return std::get<class_specific_details>(specific_details);
         }
     };
 

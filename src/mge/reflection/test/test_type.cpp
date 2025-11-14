@@ -250,7 +250,6 @@ namespace mge::reflection {
         auto type_duplicate_enum =
             type<duplicate_enum>().value("VALUE1_DUPLICATE",
                                          duplicate_enum::VALUE1_DUPLICATE);
-#if 0                                         
         EXPECT_FALSE(type_duplicate_enum.is_void());
         EXPECT_FALSE(type_duplicate_enum.is_bool());
         EXPECT_FALSE(type_duplicate_enum.is_integral());
@@ -271,7 +270,22 @@ namespace mge::reflection {
                   "VALUE1_DUPLICATE");
         EXPECT_EQ(std::get<int64_t>(ddetails->enum_specific().values[2].second),
                   1);
-#endif
+    }
+
+    class A
+    {};
+
+    TEST(type, class_type)
+    {
+        auto type_A = type<A>();
+        EXPECT_FALSE(type_A.is_void());
+        EXPECT_FALSE(type_A.is_bool());
+        EXPECT_FALSE(type_A.is_integral());
+        EXPECT_FALSE(type_A.is_floating_point());
+        EXPECT_FALSE(type_A.is_enum());
+        EXPECT_TRUE(type_A.is_class());
+        EXPECT_EQ(type_A.size(), sizeof(A));
+        EXPECT_EQ(type<A>::name(), "mge::reflection::A");
     }
 
 } // namespace mge::reflection
