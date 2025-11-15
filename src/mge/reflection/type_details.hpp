@@ -49,7 +49,18 @@ namespace mge::reflection {
         };
 
         struct class_specific_details
-        {};
+        {
+            std::vector<type_details_ref> bases;
+
+            void add_base(const type_details_ref& base)
+            {
+                auto it = std::find(bases.begin(), bases.end(), base);
+                if (it != bases.end()) {
+                    return;
+                }
+                bases.push_back(base);
+            }
+        };
 
         std::variant<std::monostate,
                      enum_specific_details,

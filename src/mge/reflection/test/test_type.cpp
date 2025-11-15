@@ -288,4 +288,26 @@ namespace mge::reflection {
         EXPECT_EQ(type<A>::name(), "mge::reflection::A");
     }
 
+    class Derived : public A
+    {};
+
+    TEST(type, class_type_with_base)
+    {
+        auto type_Derived = type<Derived>().base<A>();
+        EXPECT_FALSE(type_Derived.is_void());
+        EXPECT_FALSE(type_Derived.is_bool());
+        EXPECT_FALSE(type_Derived.is_integral());
+        EXPECT_FALSE(type_Derived.is_floating_point());
+        EXPECT_FALSE(type_Derived.is_enum());
+        EXPECT_TRUE(type_Derived.is_class());
+        EXPECT_EQ(type_Derived.size(), sizeof(Derived));
+        EXPECT_EQ(type<Derived>::name(), "mge::reflection::Derived");
+
+        const auto& details = type_Derived.details();
+        EXPECT_TRUE(details->is_class);
+        const auto& class_details = details->class_specific();
+        ASSERT_EQ(class_details.bases.size(), 1);
+        EXPECT_EQ(class_details.bases[0], get_or_create_type_details<A>());
+    }
+
 } // namespace mge::reflection

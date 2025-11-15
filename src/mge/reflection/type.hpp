@@ -5,6 +5,7 @@
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
+#include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
 #include "mge/reflection/type_details.hpp"
 #include <string_view>
@@ -385,11 +386,18 @@ namespace mge::reflection {
         }
     };
 
+    namespace {
+        template <typename T>
+        concept is_basic_class_v = (std::is_class_v<T> && !(mge::callable<T>));
+    }
+
     template <typename T>
-        requires std::is_class_v<T>
+        requires is_basic_class_v<T>
     class type<T>
     {
     public:
+        using self_type = type<T>;
+
         type() = default;
         type(const type&) = default;
         type(type&&) noexcept = default;
@@ -434,6 +442,15 @@ namespace mge::reflection {
         {
             return mge::type_name<T>();
         }
+
+        template <typename B>
+            requires std::is_base_of_v<B, T>
+        self_type& base()
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            specific.add_base(get_or_create_type_details<B>());
+            return *this;
+        }
     };
 
     template <typename T>
@@ -475,7 +492,7 @@ namespace mge::reflection {
                 }
             }
         }
-        if constexpr (std::is_class_v<T>) {
+        if constexpr (is_basic_class_v<T>) {
             details->class_specific();
         }
         return type_details::put(id, details);
