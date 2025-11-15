@@ -13,7 +13,11 @@ namespace mge::reflection {
         EXPECT_TRUE(type_void.is_void());
         EXPECT_FALSE(type_void.is_bool());
         EXPECT_FALSE(type_void.is_integral());
+        EXPECT_FALSE(type_void.is_floating_point());
         EXPECT_FALSE(type_void.is_enum());
+        EXPECT_FALSE(type_void.is_class());
+        EXPECT_FALSE(type_void.is_pointer());
+        EXPECT_FALSE(type_void.is_array());
         EXPECT_EQ(type_void.size(), 0);
         EXPECT_EQ(type<void>::name(), "void");
     }
@@ -24,7 +28,11 @@ namespace mge::reflection {
         EXPECT_FALSE(type_bool.is_void());
         EXPECT_TRUE(type_bool.is_bool());
         EXPECT_FALSE(type_bool.is_integral());
+        EXPECT_FALSE(type_bool.is_floating_point());
         EXPECT_FALSE(type_bool.is_enum());
+        EXPECT_FALSE(type_bool.is_class());
+        EXPECT_FALSE(type_bool.is_pointer());
+        EXPECT_FALSE(type_bool.is_array());
         EXPECT_EQ(type_bool.size(), sizeof(bool));
         EXPECT_EQ(type<bool>::name(), "bool");
     }
@@ -327,6 +335,28 @@ namespace mge::reflection {
         EXPECT_TRUE(details->is_pointer);
         EXPECT_EQ(details->pointer_specific().element_type,
                   get_or_create_type_details<int>());
+    }
+
+    TEST(type, array_type)
+    {
+        auto type_int_array = type<int[10]>();
+        EXPECT_FALSE(type_int_array.is_void());
+        EXPECT_FALSE(type_int_array.is_bool());
+        EXPECT_FALSE(type_int_array.is_integral());
+        EXPECT_FALSE(type_int_array.is_floating_point());
+        EXPECT_FALSE(type_int_array.is_enum());
+        EXPECT_FALSE(type_int_array.is_class());
+        EXPECT_FALSE(type_int_array.is_pointer());
+        EXPECT_TRUE(type_int_array.is_array());
+        EXPECT_EQ(type_int_array.size(), sizeof(int[10]));
+        EXPECT_EQ(type<int[10]>::name(), "int[10]");
+
+        const auto& details = type_int_array.details();
+        EXPECT_TRUE(details->is_array);
+        const auto& array_details = details->array_specific();
+        EXPECT_EQ(array_details.element_type,
+                  get_or_create_type_details<int>());
+        EXPECT_EQ(array_details.size, 10);
     }
 
 } // namespace mge::reflection

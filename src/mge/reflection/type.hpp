@@ -32,6 +32,7 @@ namespace mge::reflection {
         constexpr bool   is_enum() const noexcept;
         constexpr bool   is_class() const noexcept;
         constexpr bool   is_pointer() const noexcept;
+        constexpr bool   is_array() const noexcept;
         constexpr size_t size() const noexcept;
 
         static constexpr std::string_view name();
@@ -75,6 +76,10 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
         {
             return false;
         }
@@ -133,6 +138,10 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(bool);
@@ -185,6 +194,10 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
         {
             return false;
         }
@@ -243,6 +256,10 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(double);
@@ -296,6 +313,10 @@ namespace mge::reflection {
             return false;                                                      \
         }                                                                      \
         constexpr bool is_pointer() const noexcept                             \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr bool is_array() const noexcept                               \
         {                                                                      \
             return false;                                                      \
         }                                                                      \
@@ -367,6 +388,10 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
         {
             return false;
         }
@@ -459,6 +484,10 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
@@ -525,6 +554,68 @@ namespace mge::reflection {
         {
             return true;
         }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(T);
+        }
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<T>();
+        }
+        static constexpr std::string_view name() noexcept
+        {
+            return mge::type_name<T>();
+        }
+    };
+
+    template <typename T>
+        requires std::is_array_v<T>
+    class type<T>
+    {
+    public:
+        using self_type = type<T>;
+        type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+        ~type() = default;
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_enum() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_class() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
+        {
+            return true;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
@@ -555,6 +646,7 @@ namespace mge::reflection {
         details->is_enum = std::is_enum_v<T>;
         details->is_class = std::is_class_v<T>;
         details->is_pointer = std::is_pointer_v<T>;
+        details->is_array = std::is_array_v<T>;
         details->name = type<T>::name();
         if constexpr (std::is_void_v<T>) {
             details->size = 0;
@@ -585,6 +677,12 @@ namespace mge::reflection {
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =
                 get_or_create_type_details<std::remove_pointer_t<T>>();
+        }
+        if constexpr (std::is_array_v<T>) {
+            auto& specific = details->array_specific();
+            specific.element_type =
+                get_or_create_type_details<std::remove_extent_t<T>>();
+            specific.size = std::extent_v<T>;
         }
         return type_details::put(id, details);
     }

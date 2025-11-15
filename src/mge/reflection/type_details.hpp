@@ -38,6 +38,7 @@ namespace mge::reflection {
         bool                    is_enum = false;
         bool                    is_class = false;
         bool                    is_pointer = false;
+        bool                    is_array = false;
         size_t                  size = 0;
         std::string_view        name;
         module_details_weak_ref module;
@@ -68,10 +69,17 @@ namespace mge::reflection {
             type_details_ref element_type;
         };
 
+        struct array_specific_details
+        {
+            type_details_ref element_type;
+            size_t           size = 0; // 0 means unknown size
+        };
+
         std::variant<std::monostate,
                      enum_specific_details,
                      class_specific_details,
-                     pointer_specific_details>
+                     pointer_specific_details,
+                     array_specific_details>
             specific_details;
 
         enum_specific_details& enum_specific()
@@ -109,6 +117,20 @@ namespace mge::reflection {
                 specific_details = pointer_specific_details{};
             }
             return std::get<pointer_specific_details>(specific_details);
+        }
+
+        array_specific_details& array_specific()
+        {
+            if (!is_array) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " is not an array";
+            }
+
+            if (!std::holds_alternative<array_specific_details>(
+                    specific_details)) {
+                specific_details = array_specific_details{};
+            }
+            return std::get<array_specific_details>(specific_details);
         }
     };
 
