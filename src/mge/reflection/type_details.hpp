@@ -37,6 +37,7 @@ namespace mge::reflection {
         bool                    is_floating_point = false;
         bool                    is_enum = false;
         bool                    is_class = false;
+        bool                    is_pointer = false;
         size_t                  size = 0;
         std::string_view        name;
         module_details_weak_ref module;
@@ -62,9 +63,15 @@ namespace mge::reflection {
             }
         };
 
+        struct pointer_specific_details
+        {
+            type_details_ref element_type;
+        };
+
         std::variant<std::monostate,
                      enum_specific_details,
-                     class_specific_details>
+                     class_specific_details,
+                     pointer_specific_details>
             specific_details;
 
         enum_specific_details& enum_specific()
@@ -93,6 +100,15 @@ namespace mge::reflection {
                 specific_details = class_specific_details{};
             }
             return std::get<class_specific_details>(specific_details);
+        }
+
+        pointer_specific_details& pointer_specific()
+        {
+            if (!std::holds_alternative<pointer_specific_details>(
+                    specific_details)) {
+                specific_details = pointer_specific_details{};
+            }
+            return std::get<pointer_specific_details>(specific_details);
         }
     };
 

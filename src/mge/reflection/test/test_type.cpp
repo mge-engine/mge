@@ -310,4 +310,23 @@ namespace mge::reflection {
         EXPECT_EQ(class_details.bases[0], get_or_create_type_details<A>());
     }
 
+    TEST(type, pointer_type)
+    {
+        auto type_int_ptr = type<int*>();
+        EXPECT_FALSE(type_int_ptr.is_void());
+        EXPECT_FALSE(type_int_ptr.is_bool());
+        EXPECT_FALSE(type_int_ptr.is_integral());
+        EXPECT_FALSE(type_int_ptr.is_floating_point());
+        EXPECT_FALSE(type_int_ptr.is_enum());
+        EXPECT_FALSE(type_int_ptr.is_class());
+        EXPECT_TRUE(type_int_ptr.is_pointer());
+        EXPECT_EQ(type_int_ptr.size(), sizeof(int*));
+        EXPECT_EQ(type<int*>::name(), "int*");
+
+        const auto& details = type_int_ptr.details();
+        EXPECT_TRUE(details->is_pointer);
+        EXPECT_EQ(details->pointer_specific().element_type,
+                  get_or_create_type_details<int>());
+    }
+
 } // namespace mge::reflection
