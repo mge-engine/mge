@@ -18,6 +18,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_void.is_class());
         EXPECT_FALSE(type_void.is_pointer());
         EXPECT_FALSE(type_void.is_array());
+        EXPECT_FALSE(type_void.is_reference());
         EXPECT_EQ(type_void.size(), 0);
         EXPECT_EQ(type<void>::name(), "void");
     }
@@ -33,6 +34,7 @@ namespace mge::reflection {
         EXPECT_FALSE(type_bool.is_class());
         EXPECT_FALSE(type_bool.is_pointer());
         EXPECT_FALSE(type_bool.is_array());
+        EXPECT_FALSE(type_bool.is_reference());
         EXPECT_EQ(type_bool.size(), sizeof(bool));
         EXPECT_EQ(type<bool>::name(), "bool");
     }
@@ -357,6 +359,37 @@ namespace mge::reflection {
         EXPECT_EQ(array_details.element_type,
                   get_or_create_type_details<int>());
         EXPECT_EQ(array_details.size, 10);
+    }
+
+    TEST(type, reference_type)
+    {
+        // Test that the right specialization is being used
+        static_assert(std::is_reference_v<int&>);
+        static_assert(!std::is_reference_v<int>);
+
+        auto type_int_ref = type<int&>();
+
+        // Debug: check which specialization is being used
+        std::cout << "is_reference() returns: " << type_int_ref.is_reference()
+                  << std::endl;
+        std::cout << "name() returns: " << type<int&>::name() << std::endl;
+
+        // These should work since they don't depend on details
+        EXPECT_TRUE(type_int_ref.is_reference());
+
+        // Try to figure out what's happening with the details
+        try {
+            const auto& details = type_int_ref.details();
+            // Print debug info
+            std::cout << "details->is_reference: " << details->is_reference
+                      << std::endl;
+            std::cout << "details->name: " << details->name << std::endl;
+            EXPECT_TRUE(details->is_reference);
+        } catch (const std::exception& e) {
+            std::cout << "Exception in details(): " << e.what() << std::endl;
+            // Re-throw to fail the test
+            throw;
+        }
     }
 
 } // namespace mge::reflection

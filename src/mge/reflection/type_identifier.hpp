@@ -20,7 +20,8 @@ namespace mge::reflection {
     public:
         type_identifier(const std::type_info& type_info,
                         bool                  is_const,
-                        bool                  is_volatile) noexcept;
+                        bool                  is_volatile,
+                        bool                  is_reference) noexcept;
         ~type_identifier() = default;
 
         type_identifier(const type_identifier&) = default;
@@ -43,11 +44,17 @@ namespace mge::reflection {
             return m_is_volatile;
         }
 
+        bool is_reference() const noexcept
+        {
+            return m_is_reference;
+        }
+
         bool operator==(const type_identifier& other) const noexcept
         {
             return m_type_index == other.m_type_index &&
                    m_is_const == other.m_is_const &&
-                   m_is_volatile == other.m_is_volatile;
+                   m_is_volatile == other.m_is_volatile &&
+                   m_is_reference == other.m_is_reference;
         }
 
         bool operator!=(const type_identifier& other) const noexcept
@@ -57,18 +64,24 @@ namespace mge::reflection {
 
         bool operator<(const type_identifier& other) const noexcept
         {
-            return std::tie(m_type_index, m_is_const, m_is_volatile) <
-                   std::tie(other.m_type_index,
-                            other.m_is_const,
-                            other.m_is_volatile);
+            return std::tie(m_type_index,
+                            m_is_const,
+                            m_is_volatile,
+                            m_is_reference) < std::tie(other.m_type_index,
+                                                       other.m_is_const,
+                                                       other.m_is_volatile,
+                                                       other.m_is_reference);
         }
 
         bool operator>(const type_identifier& other) const noexcept
         {
-            return std::tie(m_type_index, m_is_const, m_is_volatile) >
-                   std::tie(other.m_type_index,
-                            other.m_is_const,
-                            other.m_is_volatile);
+            return std::tie(m_type_index,
+                            m_is_const,
+                            m_is_volatile,
+                            m_is_reference) > std::tie(other.m_type_index,
+                                                       other.m_is_const,
+                                                       other.m_is_volatile,
+                                                       other.m_is_reference);
         }
 
         bool operator<=(const type_identifier& other) const noexcept
@@ -85,6 +98,7 @@ namespace mge::reflection {
         std::type_index m_type_index;
         bool            m_is_const;
         bool            m_is_volatile;
+        bool            m_is_reference;
     };
 
     template <typename T>
@@ -92,7 +106,8 @@ namespace mge::reflection {
     {
         return type_identifier(typeid(T),
                                std::is_const_v<T>,
-                               std::is_volatile_v<T>);
+                               std::is_volatile_v<T>,
+                               std::is_reference_v<T>);
     }
 } // namespace mge::reflection
 

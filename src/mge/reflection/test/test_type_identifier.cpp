@@ -8,25 +8,35 @@ namespace mge::reflection {
 
     TEST(type_identifier, basic)
     {
-        type_identifier id(typeid(int), false, false);
+        type_identifier id(typeid(int), false, false, false);
         EXPECT_EQ(id.type_index(), typeid(int));
         EXPECT_FALSE(id.is_const());
         EXPECT_FALSE(id.is_volatile());
+        EXPECT_FALSE(id.is_reference());
     }
 
     TEST(type_identifier, format)
     {
-        type_identifier id(typeid(int), false, false);
-        type_identifier id_const(typeid(int), true, false);
-        type_identifier id_volatile(typeid(int), false, true);
-        type_identifier id_const_volatile(typeid(int), true, true);
+        type_identifier id(typeid(int), false, false, false);
+        type_identifier id_const(typeid(int), true, false, false);
+        type_identifier id_volatile(typeid(int), false, true, false);
+        type_identifier id_const_volatile(typeid(int), true, true, false);
+        type_identifier id_reference(typeid(int), false, false, true);
+        type_identifier id_const_reference(typeid(int), true, false, true);
+        type_identifier id_volatile_reference(typeid(int), false, true, true);
+        type_identifier id_const_volatile_reference(typeid(int),
+                                                    true,
+                                                    true,
+                                                    true);
+
         mge::test_format(id, "int");
         mge::test_format(id_const, "const int");
         mge::test_format(id_volatile, "volatile int");
         mge::test_format(id_const_volatile, "const volatile int");
-
-        // type_identifier idptr(typeid(int* const*), false, false);
-        // mge::test_format(idptr, "int**");
+        mge::test_format(id_reference, "int&");
+        mge::test_format(id_const_reference, "const int&");
+        mge::test_format(id_volatile_reference, "volatile int&");
+        mge::test_format(id_const_volatile_reference, "const volatile int&");
     }
 
     TEST(type_identifier, type_erasure)
@@ -34,14 +44,15 @@ namespace mge::reflection {
         EXPECT_EQ(typeid(int), typeid(const int));
         EXPECT_EQ(typeid(int), typeid(volatile int));
         EXPECT_EQ(typeid(int), typeid(const volatile int));
+        EXPECT_EQ(typeid(int), typeid(int&));
     }
 
     TEST(type_identifier, hash)
     {
-        type_identifier id1(typeid(int), false, false);
-        type_identifier id2(typeid(int), true, false);
-        type_identifier id3(typeid(int), false, true);
-        type_identifier id4(typeid(int), true, true);
+        type_identifier id1(typeid(int), false, false, false);
+        type_identifier id2(typeid(int), true, false, false);
+        type_identifier id3(typeid(int), false, true, false);
+        type_identifier id4(typeid(int), true, true, false);
         EXPECT_EQ(std::hash<type_identifier>()(id1),
                   std::hash<type_identifier>()(id1));
         EXPECT_NE(std::hash<type_identifier>()(id1),
@@ -54,10 +65,10 @@ namespace mge::reflection {
 
     TEST(type_identifier, comparison)
     {
-        type_identifier id1(typeid(int), false, false);
-        type_identifier id2(typeid(int), true, false);
-        type_identifier id3(typeid(int), false, true);
-        type_identifier id4(typeid(int), true, true);
+        type_identifier id1(typeid(int), false, false, false);
+        type_identifier id2(typeid(int), true, false, false);
+        type_identifier id3(typeid(int), false, true, false);
+        type_identifier id4(typeid(int), true, true, false);
         EXPECT_EQ(id1, id1);
         EXPECT_NE(id1, id2);
         EXPECT_NE(id1, id3);
@@ -66,10 +77,10 @@ namespace mge::reflection {
 
     TEST(type_identifier, less_than)
     {
-        type_identifier id1(typeid(int), false, false);
-        type_identifier id2(typeid(int), true, false);
-        type_identifier id3(typeid(int), false, true);
-        type_identifier id4(typeid(int), true, true);
+        type_identifier id1(typeid(int), false, false, false);
+        type_identifier id2(typeid(int), true, false, false);
+        type_identifier id3(typeid(int), false, true, false);
+        type_identifier id4(typeid(int), true, true, false);
         EXPECT_LT(id1, id2);
         EXPECT_LT(id1, id3);
         EXPECT_LT(id1, id4);
@@ -79,10 +90,10 @@ namespace mge::reflection {
 
     TEST(type_identifier, greater_than)
     {
-        type_identifier id1(typeid(int), false, false);
-        type_identifier id2(typeid(int), true, false);
-        type_identifier id3(typeid(int), false, true);
-        type_identifier id4(typeid(int), true, true);
+        type_identifier id1(typeid(int), false, false, false);
+        type_identifier id2(typeid(int), true, false, false);
+        type_identifier id3(typeid(int), false, true, false);
+        type_identifier id4(typeid(int), true, true, false);
         EXPECT_GT(id2, id1);
         EXPECT_GT(id3, id1);
         EXPECT_GT(id4, id1);
@@ -101,6 +112,19 @@ namespace mge::reflection {
                   make_type_identifier<const volatile int>());
         EXPECT_EQ(make_type_identifier<const int>(),
                   make_type_identifier<const int>());
+        EXPECT_EQ(make_type_identifier<volatile int>(),
+                  make_type_identifier<volatile int>());
+        EXPECT_EQ(make_type_identifier<const volatile int>(),
+                  make_type_identifier<const volatile int>());
+        EXPECT_NE(make_type_identifier<int>(), make_type_identifier<int&>());
+        EXPECT_NE(make_type_identifier<int&>(),
+                  make_type_identifier<const int&>());
+        EXPECT_NE(make_type_identifier<int&>(),
+                  make_type_identifier<volatile int&>());
+        EXPECT_NE(make_type_identifier<int&>(),
+                  make_type_identifier<const volatile int&>());
+        EXPECT_EQ(make_type_identifier<const int&>(),
+                  make_type_identifier<const int&>());
     }
 
 } // namespace mge::reflection
