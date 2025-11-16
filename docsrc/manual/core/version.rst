@@ -1,6 +1,6 @@
-******************************
-Version and Component Tracking
-******************************
+****************
+Version Tracking
+****************
 
 These tools provide utilities for semantic versioning and component tracking. 
 They help developers manage version information and track components throughout
@@ -14,8 +14,3 @@ Semantic Version
     :members:
 
 
-Software Component
-===================
-
-.. doxygenclass:: mge::software_component
-    :members:

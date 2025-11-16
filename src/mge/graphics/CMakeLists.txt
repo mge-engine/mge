@@ -75,6 +75,8 @@ SET(mgegraphics_headers
     mesh.hpp
     memory_mesh.hpp
     uniform_binding.hpp
+    rectangle.hpp
+    viewport.hpp
 )
 
 MGE_LIBRARY(

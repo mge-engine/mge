@@ -51,6 +51,14 @@ It is useful if there is more than one occurence of a string in a context.
 .. doxygenclass:: mge::string_pool
     :members:
 
+Property Map
+------------
+
+A property map allows to manage key-value pairs of strings. 
+
+.. doxygenclass:: mge::properties
+    :members:
+
 Programming Helpers
 ===================
 
