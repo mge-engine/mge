@@ -800,8 +800,6 @@ namespace mge::reflection {
     template <typename T>
     inline const type_details_ref& get_or_create_type_details()
     {
-        std::cerr << "get_or_create_type_details<" << mge::type_name<T>()
-                  << ">() called.\n";
         const auto  id = make_type_identifier<T>();
         const auto& get_result = type_details::get(id);
         if (get_result) {

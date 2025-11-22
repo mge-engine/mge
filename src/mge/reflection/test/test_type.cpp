@@ -383,10 +383,23 @@ namespace mge::reflection {
         static_assert(!std::is_reference_v<int>);
 
         auto type_int_ref = type<int&>();
-
+        EXPECT_FALSE(type_int_ref.is_void());
+        EXPECT_FALSE(type_int_ref.is_bool());
+        EXPECT_FALSE(type_int_ref.is_integral());
+        EXPECT_FALSE(type_int_ref.is_floating_point());
+        EXPECT_FALSE(type_int_ref.is_enum());
+        EXPECT_FALSE(type_int_ref.is_class());
+        EXPECT_FALSE(type_int_ref.is_pointer());
+        EXPECT_FALSE(type_int_ref.is_array());
         EXPECT_TRUE(type_int_ref.is_reference());
+        EXPECT_EQ(type_int_ref.size(), sizeof(int&));
+        EXPECT_EQ(type<int&>::name(), "int&");
+
         const auto& details = type_int_ref.details();
         EXPECT_TRUE(details->is_reference);
+        const auto& reference_details = details->reference_specific();
+        EXPECT_EQ(reference_details.referenced_type,
+                  get_or_create_type_details<int>());
     }
 
 } // namespace mge::reflection
