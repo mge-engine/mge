@@ -70,6 +70,7 @@ namespace mge::reflection {
             bool is_abstract = false;
             bool has_virtual_destructor = false;
             bool is_destructible = false;
+            bool is_empty = false;
 
             void add_base(const type_details_ref& base)
             {

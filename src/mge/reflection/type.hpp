@@ -912,6 +912,7 @@ namespace mge::reflection {
             class_details.has_virtual_destructor =
                 std::has_virtual_destructor_v<T>;
             class_details.is_destructible = std::is_destructible_v<T>;
+            class_details.is_empty = std::is_empty_v<T>;
         }
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =

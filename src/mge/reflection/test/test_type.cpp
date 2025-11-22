@@ -389,6 +389,12 @@ namespace mge::reflection {
         ~non_destructible_class() = delete;
     };
 
+    class non_empty_class
+    {
+    public:
+        int value;
+    };
+
     TEST(type, class_type)
     {
         auto type_a = type<a>();
@@ -537,6 +543,14 @@ namespace mge::reflection {
         EXPECT_TRUE(type_non_destructible_class.is_class());
         const auto& details = type_non_destructible_class.details();
         EXPECT_FALSE(details->class_specific().is_destructible);
+    }
+
+    TEST(type, class_type_non_empty)
+    {
+        auto type_non_empty = type<non_empty_class>();
+        EXPECT_TRUE(type_non_empty.is_class());
+        const auto& details = type_non_empty.details();
+        EXPECT_FALSE(details->class_specific().is_empty);
     }
 
     class derived : public a
