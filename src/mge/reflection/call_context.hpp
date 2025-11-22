@@ -21,17 +21,17 @@ namespace mge::reflection {
     public:
         virtual ~call_context();
 
-        virtual bool bool_parameter(size_t index) = 0;
-        virtual int8_t int8_t_parameter(size_t index) = 0;
-        virtual uint8_t uint8_t_parameter(size_t index) = 0;
-        virtual int16_t int16_t_parameter(size_t index) = 0;
+        virtual bool     bool_parameter(size_t index) = 0;
+        virtual int8_t   int8_t_parameter(size_t index) = 0;
+        virtual uint8_t  uint8_t_parameter(size_t index) = 0;
+        virtual int16_t  int16_t_parameter(size_t index) = 0;
         virtual uint16_t uint16_t_parameter(size_t index) = 0;
-        virtual int32_t int32_t_parameter(size_t index) = 0;
+        virtual int32_t  int32_t_parameter(size_t index) = 0;
         virtual uint32_t uint32_t_parameter(size_t index) = 0;
-        virtual int64_t int64_t_parameter(size_t index) = 0;
+        virtual int64_t  int64_t_parameter(size_t index) = 0;
         virtual uint64_t uint64_t_parameter(size_t index) = 0;
-        virtual float float_parameter(size_t index) = 0;
-        virtual double double_parameter(size_t index) = 0;
+        virtual float    float_parameter(size_t index) = 0;
+        virtual double   double_parameter(size_t index) = 0;
 
         template <typename T> T parameter(size_t index)
         {

@@ -37,6 +37,17 @@ namespace mge::reflection {
             return m_parameter_types;
         }
 
+        bool operator==(const signature& other) const
+        {
+            return m_return_type == other.m_return_type &&
+                   m_parameter_types == other.m_parameter_types;
+        }
+
+        bool operator!=(const signature& other) const
+        {
+            return !(*this == other);
+        }
+
     private:
         type_identifier              m_return_type;
         std::vector<type_identifier> m_parameter_types;
