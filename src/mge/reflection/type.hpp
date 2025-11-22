@@ -637,6 +637,30 @@ namespace mge::reflection {
             specific.add_base(get_or_create_type_details<B>());
             return *this;
         }
+
+        template <typename... Args> self_type& constructor()
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            signature sig(make_type_identifier<void>(),
+                          {make_type_identifier<Args>()...});
+            auto      invoke_fn = [](call_context& ctx) {
+                void* ptr = ctx.this_ptr();
+                if (ptr) {
+                    try {
+                        size_t index = 0;
+                        new (ptr) T(ctx.parameter<Args>(index++)...);
+                    } catch (const mge::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (const std::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                }
+            };
+            specific.constructors.emplace_back(sig, invoke_fn);
+            return *this;
+        }
     };
 
     template <typename T>
