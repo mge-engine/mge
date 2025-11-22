@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Version and Component Tracking &mdash; MGE 0.1 documentation</title>
+  <title>Version Tracking &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -63,12 +63,16 @@
 <li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Version and Component Tracking</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Version Tracking</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#semantic-version">Semantic Version</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE"><code class="docutils literal notranslate"><span class="pre">mge::semantic_version</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#software-component">Software Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#package">Package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge7packageE"><code class="docutils literal notranslate"><span class="pre">mge::package</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#c.MGE_DEFINE_PACKAGE"><code class="docutils literal notranslate"><span class="pre">MGE_DEFINE_PACKAGE</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -99,7 +103,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
-      <li class="breadcrumb-item active">Version and Component Tracking</li>
+      <li class="breadcrumb-item active">Version Tracking</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/core/version.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -109,8 +113,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="version-and-component-tracking">
-<h1>Version and Component Tracking<a class="headerlink" href="#version-and-component-tracking" title="Link to this heading"></a></h1>
+  <section id="version-tracking">
+<h1>Version Tracking<a class="headerlink" href="#version-tracking" title="Link to this heading"></a></h1>
 <p>These tools provide utilities for semantic versioning and component tracking.
 They help developers manage version information and track components throughout
 the application lifecycle.</p>
@@ -286,12 +290,85 @@ the application lifecycle.</p>
 </dd></dl>
 
 </section>
-<section id="software-component">
-<h2>Software Component<a class="headerlink" href="#software-component" title="Link to this heading"></a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenclass: Cannot find class “mge::software_component” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+<section id="package">
+<h2>Package<a class="headerlink" href="#package" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7packageE">
+<span id="_CPPv3N3mge7packageE"></span><span id="_CPPv2N3mge7packageE"></span><span id="mge::package"></span><span class="target" id="classmge_1_1package"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">package</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge7packageE" title="mge::package"><span class="n"><span class="pre">package</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge7packageE" title="Link to this definition"></a><br /></dt>
+<dd><p>Software package interface. </p>
+<p>This interface is used to identify a software package. It provides the version and build information of the package. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7package4nameEv">
+<span id="_CPPv3NK3mge7package4nameEv"></span><span id="_CPPv2NK3mge7package4nameEv"></span><span id="mge::package::nameC"></span><span class="target" id="classmge_1_1package_1aef022e53dba14eda9e992ca88dc60209"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7package4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the name of the package. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of the package </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7package7versionEv">
+<span id="_CPPv3NK3mge7package7versionEv"></span><span id="_CPPv2NK3mge7package7versionEv"></span><span id="mge::package::versionC"></span><span class="target" id="classmge_1_1package_1a93fe799a5e0334d123c6cb0b2ee11420"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7package7versionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the version of the package. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>version of the package </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7package5buildEv">
+<span id="_CPPv3NK3mge7package5buildEv"></span><span id="_CPPv2NK3mge7package5buildEv"></span><span id="mge::package::buildC"></span><span class="target" id="classmge_1_1package_1a17ac43526f54c3163200555f97928753"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">build</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge7package5buildEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the build information of the package. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>build information of the package, like git hash </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7package3getENSt11string_viewE">
+<span id="_CPPv3N3mge7package3getENSt11string_viewE"></span><span id="_CPPv2N3mge7package3getENSt11string_viewE"></span><span id="mge::package::get__std::string_view"></span><span class="target" id="classmge_1_1package_1a147075fc2dc33955470de0936bb4a418"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="n"><span class="pre">package_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7package3getENSt11string_viewE" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a reference to a package by name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – Name of the package </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Reference to the package </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<p>A package can be defined by using the <a class="reference internal" href="#c.MGE_DEFINE_PACKAGE" title="MGE_DEFINE_PACKAGE"><code class="xref any c c-macro docutils literal notranslate"><span class="pre">MGE_DEFINE_PACKAGE</span></code></a> macro:</p>
+<dl class="cpp macro">
+<dt class="sig sig-object cpp" id="c.MGE_DEFINE_PACKAGE">
+<span class="target" id="package_8hpp_1aa8d056f325571d05f814f12b3075ddb0"></span><span class="sig-name descname"><span class="n"><span class="pre">MGE_DEFINE_PACKAGE</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">NAME</span></span>, <span class="n"><span class="pre">VERSION</span></span>, <span class="n"><span class="pre">BUILD</span></span><span class="sig-paren">)</span><a class="headerlink" href="#c.MGE_DEFINE_PACKAGE" title="Link to this definition"></a><br /></dt>
+<dd><p>Define a package. </p>
+<p>This macro simplifies the creation of a package implementation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>NAME</strong> – Name of the package class. </p></li>
+<li><p><strong>VERSION</strong> – Version of the package (string). </p></li>
+<li><p><strong>BUILD</strong> – Build information of the package. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 

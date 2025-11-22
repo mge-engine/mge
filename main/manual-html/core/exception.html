@@ -79,7 +79,7 @@
 <li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Version and Component Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">Version Tracking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
@@ -197,7 +197,7 @@ informations to the exception, such as location information and stack traces.</p
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9exception4whatEv">
-<span id="_CPPv3NK3mge9exception4whatEv"></span><span id="_CPPv2NK3mge9exception4whatEv"></span><span id="mge::exception::whatC"></span><span class="target" id="classmge_1_1exception_1a5f7743028929f6fb058b85f0cb3674cf"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">what</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge9exception4whatEv" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3NK3mge9exception4whatEv"></span><span id="_CPPv2NK3mge9exception4whatEv"></span><span id="mge::exception::whatC"></span><span class="target" id="classmge_1_1exception_1a615d15a88484d60445e837f8b5f5a846"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">what</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK3mge9exception4whatEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Overrides <code class="docutils literal notranslate"><span class="pre">std::exception</span></code> <code class="docutils literal notranslate"><span class="pre">what</span></code> function. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -216,23 +216,6 @@ informations to the exception, such as location information and stack traces.</p
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>info</strong> – information stored under the tag </p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4IEN3mge9exception8set_infoER9exceptionRKN9exception7messageE">
-<span id="_CPPv3IEN3mge9exception8set_infoERKN9exception7messageE"></span><span id="_CPPv2IEN3mge9exception8set_infoERKN9exception7messageE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1exception_1a4bfabab5a5558340250cb003724f9a6b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">set_info</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exception7messageE" title="mge::exception::message"><span class="n"><span class="pre">message</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">info</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN3mge9exception8set_infoER9exceptionRKN9exception7messageE" title="Link to this definition"></a><br /></dt>
-<dd><p>Set information associated with exception message. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>exception::message</strong> – </p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>info</strong> – info object containing message </p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">*this</span></code></p>

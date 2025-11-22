@@ -62,6 +62,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#geometry">Geometry</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6extentE"><code class="docutils literal notranslate"><span class="pre">mge::extent</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge5pointE"><code class="docutils literal notranslate"><span class="pre">mge::point</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge9rectangleE"><code class="docutils literal notranslate"><span class="pre">mge::rectangle</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge8viewportE"><code class="docutils literal notranslate"><span class="pre">mge::viewport</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#color">Color</a><ul>
@@ -165,14 +167,66 @@ structures to interact with windows and rendering are defined.</p>
 </div>
 </dd></dl>
 
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenclass: Cannot find class “mge::rectangle” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge9rectangleE">
+<span id="_CPPv3N3mge9rectangleE"></span><span id="_CPPv2N3mge9rectangleE"></span><span id="mge::rectangle"></span><span class="target" id="classmge_1_1rectangle"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">rectangle</span></span></span><a class="headerlink" href="#_CPPv4N3mge9rectangleE" title="Link to this definition"></a><br /></dt>
+<dd><p>A rectangle. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge8viewportE">
+<span id="_CPPv3N3mge8viewportE"></span><span id="_CPPv2N3mge8viewportE"></span><span id="mge::viewport"></span><span class="target" id="classmge_1_1viewport"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">viewport</span></span></span><a class="headerlink" href="#_CPPv4N3mge8viewportE" title="Link to this definition"></a><br /></dt>
+<dd><p>A viewport defines the transformation to the frame buffer.</p>
+<p>The viewport is defined by the top left corner and the width and height, as well as the depth range. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge8viewport8viewportEv">
+<span id="_CPPv3N3mge8viewport8viewportEv"></span><span id="_CPPv2N3mge8viewport8viewportEv"></span><span id="mge::viewport::viewport"></span><span class="target" id="classmge_1_1viewport_1a713fe2a82f1c4745e73cce356159cd03"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">viewport</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge8viewport8viewportEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct an empty viewport. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge8viewport8viewportEffffff">
+<span id="_CPPv3N3mge8viewport8viewportEffffff"></span><span id="_CPPv2N3mge8viewport8viewportEffffff"></span><span id="mge::viewport::viewport__float.float.float.float.float.float"></span><span class="target" id="classmge_1_1viewport_1adecfc60fd52e6e8d3e78a5cd9a5d32cd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">viewport</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">width_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">height_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">min_depth_</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">max_depth_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge8viewport8viewportEffffff" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a viewport. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_</strong> – x coordinate of top left corner </p></li>
+<li><p><strong>y_</strong> – y coordinate of top left corner </p></li>
+<li><p><strong>width_</strong> – width of viewport </p></li>
+<li><p><strong>height_</strong> – height of viewport </p></li>
+<li><p><strong>min_depth_</strong> – minimum depth value </p></li>
+<li><p><strong>max_depth_</strong> – maximum depth value </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge8viewport4dataEv">
+<span id="_CPPv3NK3mge8viewport4dataEv"></span><span id="_CPPv2NK3mge8viewport4dataEv"></span><span id="mge::viewport::dataC"></span><span class="target" id="classmge_1_1viewport_1ae2979720e8cae9a22ab03c5c82fc040c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">data</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge8viewport4dataEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Pointer to beginning of data. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge8viewport10lower_leftE8uint32_t">
+<span id="_CPPv3NK3mge8viewport10lower_leftE8uint32_t"></span><span id="_CPPv2NK3mge8viewport10lower_leftE8uint32_t"></span><span id="mge::viewport::lower_left__uint32_tC"></span><span class="target" id="classmge_1_1viewport_1ab4cb5276b5b3a3ee36a8d04e9cab1bbd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge5pointE" title="mge::point"><span class="n"><span class="pre">point</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lower_left</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">window_height</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge8viewport10lower_leftE8uint32_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Lower left corner as point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>window_height</strong> – height of window of viewport </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>lower left corner </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>doxygenclass: Cannot find class “mge::viewport” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
-</div>
+</dd></dl>
+
 </section>
 <section id="color">
 <h2>Color<a class="headerlink" href="#color" title="Link to this heading"></a></h2>

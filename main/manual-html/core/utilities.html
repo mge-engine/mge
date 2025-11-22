@@ -70,6 +70,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#data-structures">Data structures</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#string-pool">String Pool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#property-map">Property Map</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#programming-helpers">Programming Helpers</a><ul>
@@ -91,7 +92,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Version and Component Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">Version Tracking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
@@ -584,6 +585,39 @@ It is useful if there is more than one occurence of a string in a context.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>pool size </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="property-map">
+<h3>Property Map<a class="headerlink" href="#property-map" title="Link to this heading"></a></h3>
+<p>A property map allows to manage key-value pairs of strings.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10propertiesE">
+<span id="_CPPv3N3mge10propertiesE"></span><span id="_CPPv2N3mge10propertiesE"></span><span id="mge::properties"></span><span class="target" id="classmge_1_1properties"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">properties</span></span></span><a class="headerlink" href="#_CPPv4N3mge10propertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Properties represent a map of key-value pairs. Both key and value are strings, but utility methods to cast values into other types exist. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I00EN3mge10properties3setEvRR1KRR1T">
+<span id="_CPPv3I00EN3mge10properties3setERR1KRR1T"></span><span id="_CPPv2I00EN3mge10properties3setERR1KRR1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1properties_1a93edf90d51b480e96326983f7e2c33c6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00EN3mge10properties3setEvRR1KRR1T" title="mge::properties::set::K"><span class="n"><span class="pre">K</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">k</span></span>, <a class="reference internal" href="#_CPPv4I00EN3mge10properties3setEvRR1KRR1T" title="mge::properties::set::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00EN3mge10properties3setEvRR1KRR1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Set a value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>K</strong> – key type </p></li>
+<li><p><strong>T</strong> – value type </p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>k</strong> – key </p></li>
+<li><p><strong>value</strong> – value </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
