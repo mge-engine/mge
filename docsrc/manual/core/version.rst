@@ -14,3 +14,12 @@ Semantic Version
     :members:
 
 
+Package
+=======
+
+.. doxygenclass:: mge::package
+    :members:
+
+A package can be defined by using the :any:`MGE_DEFINE_PACKAGE` macro:
+
+.. doxygendefine:: MGE_DEFINE_PACKAGE

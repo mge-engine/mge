@@ -57,6 +57,14 @@ namespace mge {
         static package_ref get(std::string_view name);
     };
 
+/**
+ * @brief Define a package.
+ *
+ * This macro simplifies the creation of a package implementation.
+ * @param NAME Name of the package class.
+ * @param VERSION Version of the package (string).
+ * @param BUILD Build information of the package.
+ */
 #define MGE_DEFINE_PACKAGE(NAME, VERSION, BUILD)                               \
     class NAME##_package : public package                                      \
     {                                                                          \
