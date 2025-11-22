@@ -298,42 +298,95 @@ namespace mge::reflection {
                   1);
     }
 
-    class A
+    class a
     {};
+
+    class non_default_constructible
+    {
+    public:
+        non_default_constructible(int x)
+            : value(x)
+        {}
+        int value;
+    };
+
+    class default_constructible_throws
+    {
+    public:
+        default_constructible_throws() noexcept(false) {}
+    };
+
+    class default_constructible_noexcept
+    {
+    public:
+        default_constructible_noexcept() noexcept {}
+    };
 
     TEST(type, class_type)
     {
-        auto type_A = type<A>();
-        EXPECT_FALSE(type_A.is_void());
-        EXPECT_FALSE(type_A.is_bool());
-        EXPECT_FALSE(type_A.is_integral());
-        EXPECT_FALSE(type_A.is_floating_point());
-        EXPECT_FALSE(type_A.is_enum());
-        EXPECT_TRUE(type_A.is_class());
-        EXPECT_EQ(type_A.size(), sizeof(A));
-        EXPECT_EQ(type<A>::name(), "mge::reflection::A");
+        auto type_a = type<a>();
+        EXPECT_FALSE(type_a.is_void());
+        EXPECT_FALSE(type_a.is_bool());
+        EXPECT_FALSE(type_a.is_integral());
+        EXPECT_FALSE(type_a.is_floating_point());
+        EXPECT_FALSE(type_a.is_enum());
+        EXPECT_TRUE(type_a.is_class());
+        EXPECT_EQ(type_a.size(), sizeof(a));
+        EXPECT_EQ(type<a>::name(), "mge::reflection::a");
+        const auto& details = type_a.details();
+        EXPECT_TRUE(details->class_specific().is_default_constructible);
+        EXPECT_TRUE(details->class_specific().is_default_constructor_noexcept);
     }
 
-    class Derived : public A
+    TEST(type, class_type_not_default_constructible)
+    {
+        auto type_non_default_constructible = type<non_default_constructible>();
+        EXPECT_TRUE(type_non_default_constructible.is_class());
+        const auto& details = type_non_default_constructible.details();
+        EXPECT_FALSE(details->class_specific().is_default_constructible);
+        EXPECT_FALSE(details->class_specific().is_default_constructor_noexcept);
+    }
+
+    TEST(type, class_type_default_constructor_throws)
+    {
+        auto type_default_constructible_throws =
+            type<default_constructible_throws>();
+        EXPECT_TRUE(type_default_constructible_throws.is_class());
+        const auto& details = type_default_constructible_throws.details();
+        EXPECT_TRUE(details->class_specific().is_default_constructible);
+        EXPECT_FALSE(details->class_specific().is_default_constructor_noexcept);
+    }
+
+    TEST(type, class_type_default_constructor_noexcept)
+    {
+        auto type_default_constructible_noexcept =
+            type<default_constructible_noexcept>();
+        EXPECT_TRUE(type_default_constructible_noexcept.is_class());
+        const auto& details = type_default_constructible_noexcept.details();
+        EXPECT_TRUE(details->class_specific().is_default_constructible);
+        EXPECT_TRUE(details->class_specific().is_default_constructor_noexcept);
+    }
+
+    class derived : public a
     {};
 
     TEST(type, class_type_with_base)
     {
-        auto type_Derived = type<Derived>().base<A>();
-        EXPECT_FALSE(type_Derived.is_void());
-        EXPECT_FALSE(type_Derived.is_bool());
-        EXPECT_FALSE(type_Derived.is_integral());
-        EXPECT_FALSE(type_Derived.is_floating_point());
-        EXPECT_FALSE(type_Derived.is_enum());
-        EXPECT_TRUE(type_Derived.is_class());
-        EXPECT_EQ(type_Derived.size(), sizeof(Derived));
-        EXPECT_EQ(type<Derived>::name(), "mge::reflection::Derived");
+        auto type_derived = type<derived>().base<a>();
+        EXPECT_FALSE(type_derived.is_void());
+        EXPECT_FALSE(type_derived.is_bool());
+        EXPECT_FALSE(type_derived.is_integral());
+        EXPECT_FALSE(type_derived.is_floating_point());
+        EXPECT_FALSE(type_derived.is_enum());
+        EXPECT_TRUE(type_derived.is_class());
+        EXPECT_EQ(type_derived.size(), sizeof(derived));
+        EXPECT_EQ(type<derived>::name(), "mge::reflection::derived");
 
-        const auto& details = type_Derived.details();
+        const auto& details = type_derived.details();
         EXPECT_TRUE(details->is_class);
         const auto& class_details = details->class_specific();
         ASSERT_EQ(class_details.bases.size(), 1);
-        EXPECT_EQ(class_details.bases[0], get_or_create_type_details<A>());
+        EXPECT_EQ(class_details.bases[0], get_or_create_type_details<a>());
     }
 
     TEST(type, pointer_type)

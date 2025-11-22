@@ -851,7 +851,11 @@ namespace mge::reflection {
             }
         }
         if constexpr (is_basic_class_v<T>) {
-            details->class_specific();
+            auto& class_details = details->class_specific();
+            class_details.is_default_constructible =
+                std::is_default_constructible_v<T>;
+            class_details.is_default_constructor_noexcept =
+                std::is_nothrow_default_constructible_v<T>;
         }
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =

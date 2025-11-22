@@ -54,6 +54,8 @@ namespace mge::reflection {
         struct class_specific_details
         {
             std::vector<type_details_ref> bases;
+            bool                          is_default_constructible = false;
+            bool is_default_constructor_noexcept = false;
 
             void add_base(const type_details_ref& base)
             {
