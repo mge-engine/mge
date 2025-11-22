@@ -56,21 +56,21 @@ namespace mge::reflection {
         {
             std::vector<type_details_ref> bases;
 
-            bool is_constructible = false;
-            bool is_default_constructible = false;
-            bool is_default_constructor_noexcept = false;
-            bool is_copy_constructible = false;
-            bool is_copy_constructor_noexcept = false;
-            bool is_move_constructible = false;
-            bool is_move_constructor_noexcept = false;
-            bool is_copy_assignable = false;
-            bool is_copy_assignment_noexcept = false;
-            bool is_move_assignable = false;
-            bool is_move_assignment_noexcept = false;
-            bool is_abstract = false;
-            bool has_virtual_destructor = false;
-            bool is_destructible = false;
-            bool is_empty = false;
+            unsigned int is_constructible : 1;
+            unsigned int is_default_constructible : 1;
+            unsigned int is_default_constructor_noexcept : 1;
+            unsigned int is_copy_constructible : 1;
+            unsigned int is_copy_constructor_noexcept : 1;
+            unsigned int is_move_constructible : 1;
+            unsigned int is_move_constructor_noexcept : 1;
+            unsigned int is_copy_assignable : 1;
+            unsigned int is_copy_assignment_noexcept : 1;
+            unsigned int is_move_assignable : 1;
+            unsigned int is_move_assignment_noexcept : 1;
+            unsigned int is_abstract : 1;
+            unsigned int has_virtual_destructor : 1;
+            unsigned int is_destructible : 1;
+            unsigned int is_empty : 1;
 
             void add_base(const type_details_ref& base)
             {
