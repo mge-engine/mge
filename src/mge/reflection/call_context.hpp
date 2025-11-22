@@ -15,24 +15,16 @@ namespace mge::reflection {
     class MGEREFLECTION_EXPORT call_context
     {
     protected:
-        call_context() = default;
+        call_context();
 
     public:
-        ~call_context() = default;
+        virtual ~call_context();
 
         /**
          * Pointer to current object.
-         * @return pointer to current object, nullptr for static methods or
-         * object construction
+         * @return pointer to current object, nullptr for static methods
          */
         virtual void* this_ptr() = 0;
-
-        /**
-         * Address of current object.
-         * @return address of current object, nullptr for static methods or
-         * object construction
-         */
-        virtual void* object_address() = 0;
 
         virtual void bool_result(bool value) = 0;
         virtual void int8_t_result(int8_t value) = 0;

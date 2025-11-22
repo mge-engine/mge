@@ -9,7 +9,8 @@ SET(mgereflection_sources
     type_details.cpp
     function_details.cpp
     type_identifier.cpp
-
+    call_context.cpp
+    
     reflector.cpp
     std_reflector.cpp
 )
@@ -23,8 +24,11 @@ SET(mgereflection_headers
     type_details.hpp
     function_details.hpp
     type_identifier.hpp
-
+    call_context.hpp
+    signature.hpp
+    
     reflector.hpp
+    
 )
 
 MGE_LIBRARY(

@@ -65,7 +65,8 @@ namespace fmt {
         : public formatter<std::string_view>
     {
         template <typename FormatContext>
-        auto format(const mge::reflection::signature& sig, FormatContext& ctx) const
+        auto format(const mge::reflection::signature& sig,
+                    FormatContext&                    ctx) const
         {
             std::string result;
             result += fmt::format("{}", sig.return_type());

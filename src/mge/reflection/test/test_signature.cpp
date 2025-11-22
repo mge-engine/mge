@@ -24,10 +24,10 @@ namespace mge::reflection {
 
     TEST(signature, full_constructor)
     {
-        auto return_type = make_type_identifier<int>();
+        auto                         return_type = make_type_identifier<int>();
         std::vector<type_identifier> params = {make_type_identifier<float>(),
                                                make_type_identifier<double>()};
-        signature sig(return_type, params);
+        signature                    sig(return_type, params);
         EXPECT_EQ(sig.return_type(), return_type);
         EXPECT_EQ(sig.parameter_types().size(), 2);
         EXPECT_EQ(sig.parameter_types()[0], make_type_identifier<float>());
@@ -51,26 +51,22 @@ namespace mge::reflection {
 
     TEST(signature, hash_different_parameters)
     {
-        auto return_type = make_type_identifier<int>();
-        std::vector<type_identifier> params1 = {
-            make_type_identifier<float>()};
-        std::vector<type_identifier> params2 = {
-            make_type_identifier<double>()};
-        signature sig1(return_type, params1);
-        signature sig2(return_type, params2);
+        auto                         return_type = make_type_identifier<int>();
+        std::vector<type_identifier> params1 = {make_type_identifier<float>()};
+        std::vector<type_identifier> params2 = {make_type_identifier<double>()};
+        signature                    sig1(return_type, params1);
+        signature                    sig2(return_type, params2);
         EXPECT_NE(std::hash<signature>()(sig1), std::hash<signature>()(sig2));
     }
 
     TEST(signature, hash_different_parameter_count)
     {
-        auto return_type = make_type_identifier<int>();
-        std::vector<type_identifier> params1 = {
-            make_type_identifier<float>()};
-        std::vector<type_identifier> params2 = {
-            make_type_identifier<float>(),
-            make_type_identifier<double>()};
-        signature sig1(return_type, params1);
-        signature sig2(return_type, params2);
+        auto                         return_type = make_type_identifier<int>();
+        std::vector<type_identifier> params1 = {make_type_identifier<float>()};
+        std::vector<type_identifier> params2 = {make_type_identifier<float>(),
+                                                make_type_identifier<double>()};
+        signature                    sig1(return_type, params1);
+        signature                    sig2(return_type, params2);
         EXPECT_NE(std::hash<signature>()(sig1), std::hash<signature>()(sig2));
     }
 
@@ -88,9 +84,8 @@ namespace mge::reflection {
 
     TEST(signature, format_int_one_param)
     {
-        std::vector<type_identifier> params = {
-            make_type_identifier<float>()};
-        signature sig(make_type_identifier<int>(), params);
+        std::vector<type_identifier> params = {make_type_identifier<float>()};
+        signature                    sig(make_type_identifier<int>(), params);
         mge::test_format(sig, "int(float)");
     }
 
@@ -98,7 +93,7 @@ namespace mge::reflection {
     {
         std::vector<type_identifier> params = {make_type_identifier<float>(),
                                                make_type_identifier<double>()};
-        signature sig(make_type_identifier<int>(), params);
+        signature                    sig(make_type_identifier<int>(), params);
         mge::test_format(sig, "int(float, double)");
     }
 
