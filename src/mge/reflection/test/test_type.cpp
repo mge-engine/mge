@@ -655,13 +655,12 @@ namespace mge::reflection {
 
     TEST(type, default_constructor_in_constructors_vector)
     {
-        auto type_test = type<test_default_constructor>().default_constructor();
-
-        const auto& details = type_test.details();
+        // Constructor is automatically registered during type creation
+        const auto& details = type<test_default_constructor>().details();
         const auto& class_details = details->class_specific();
-        
+
         ASSERT_EQ(class_details.constructors.size(), 1);
-        
+
         const auto& [sig, invoke_fn] = class_details.constructors[0];
         EXPECT_EQ(sig.return_type(), make_type_identifier<void>());
         EXPECT_TRUE(sig.parameter_types().empty());

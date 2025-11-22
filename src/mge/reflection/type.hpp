@@ -637,21 +637,6 @@ namespace mge::reflection {
             specific.add_base(get_or_create_type_details<B>());
             return *this;
         }
-
-        self_type& default_constructor()
-            requires std::is_default_constructible_v<T>
-        {
-            auto& specific = get_or_create_type_details<T>()->class_specific();
-            signature sig(make_type_identifier<void>());
-            auto invoke_fn = [](call_context& ctx) {
-                void* ptr = ctx.this_ptr();
-                if (ptr) {
-                    new (ptr) T();
-                }
-            };
-            specific.constructors.emplace_back(sig, invoke_fn);
-            return *this;
-        }
     };
 
     template <typename T>
@@ -930,6 +915,18 @@ namespace mge::reflection {
                 std::has_virtual_destructor_v<T>;
             class_details.is_destructible = std::is_destructible_v<T>;
             class_details.is_empty = std::is_empty_v<T>;
+            
+            // Register default constructor if available
+            if constexpr (std::is_default_constructible_v<T>) {
+                signature sig(make_type_identifier<void>());
+                auto      invoke_fn = [](call_context& ctx) {
+                    void* ptr = ctx.this_ptr();
+                    if (ptr) {
+                        new (ptr) T();
+                    }
+                };
+                class_details.constructors.emplace_back(sig, invoke_fn);
+            }
         }
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =
