@@ -700,7 +700,7 @@ namespace mge::reflection {
         ASSERT_TRUE(class_details.destructor);
 
         alignas(test_destructor) char buffer[sizeof(test_destructor)];
-        auto* obj = new (buffer) test_destructor();
+        auto*                         obj = new (buffer) test_destructor();
         EXPECT_EQ(obj->value, 99);
         EXPECT_EQ(test_destructor::destruction_count, 0);
 

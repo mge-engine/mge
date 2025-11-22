@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/exception.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
@@ -37,6 +38,10 @@ namespace mge::reflection {
         virtual void uint64_t_result(uint64_t value) = 0;
         virtual void float_result(float value) = 0;
         virtual void double_result(double value) = 0;
+
+        virtual void exception_thrown(const mge::exception& ex) = 0;
+        virtual void exception_thrown(const std::exception& ex) = 0;
+        virtual void exception_thrown() = 0;
     };
 
 } // namespace mge::reflection
