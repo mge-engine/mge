@@ -643,6 +643,14 @@ namespace mge::reflection {
             auto& specific = get_or_create_type_details<T>()->class_specific();
             signature sig(make_type_identifier<void>(),
                           {make_type_identifier<Args>()...});
+            
+            // Check if constructor with this signature already exists
+            for (const auto& [existing_sig, _] : specific.constructors) {
+                if (existing_sig == sig) {
+                    return *this;
+                }
+            }
+            
             auto      invoke_fn = [](call_context& ctx) {
                 void* ptr = ctx.this_ptr();
                 if (ptr) {

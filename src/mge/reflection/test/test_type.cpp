@@ -769,4 +769,57 @@ namespace mge::reflection {
         class_details.destructor(ctx);
     }
 
+    struct test_parameterized_constructor
+    {
+        int   a = 0;
+        float b = 0.0f;
+
+        test_parameterized_constructor() = default;
+
+        test_parameterized_constructor(int x, float y)
+            : a(x)
+            , b(y)
+        {}
+    };
+
+    TEST(type, parameterized_constructor_registration)
+    {
+        auto type_test =
+            type<test_parameterized_constructor>()
+                .constructor<int, float>();
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        // Should have 2 constructors: default (auto-registered) + parameterized
+        ASSERT_EQ(class_details.constructors.size(), 2);
+
+        // Find the parameterized constructor
+        const signature expected_sig(
+            make_type_identifier<void>(),
+            {make_type_identifier<int>(), make_type_identifier<float>()});
+
+        bool found = false;
+        for (const auto& [sig, invoke_fn] : class_details.constructors) {
+            if (sig == expected_sig) {
+                found = true;
+                break;
+            }
+        }
+        EXPECT_TRUE(found);
+    }
+
+    TEST(type, duplicate_constructor_registration_ignored)
+    {
+        auto type_test = type<test_parameterized_constructor>()
+                             .constructor<int, float>()
+                             .constructor<int, float>();
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        // Should still have only 2 constructors (not 3)
+        EXPECT_EQ(class_details.constructors.size(), 2);
+    }
+
 } // namespace mge::reflection
