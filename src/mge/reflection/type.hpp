@@ -294,6 +294,69 @@ namespace mge::reflection {
         }
     };
 
+    template <> class type<long double>
+    {
+    public:
+        type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return true;
+        }
+        constexpr bool is_enum() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_class() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(long double);
+        }
+
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<long double>();
+        }
+
+        static constexpr std::string_view name() noexcept
+        {
+            return "long double";
+        }
+    };
+
 #define MGE_DEFINE_INTEGER_TYPE(T)                                             \
     template <> class type<T>                                                  \
     {                                                                          \

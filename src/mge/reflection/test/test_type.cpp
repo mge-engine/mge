@@ -180,6 +180,22 @@ namespace mge::reflection {
         EXPECT_EQ(type<double>::name(), "double");
     }
 
+    TEST(type, long_double_type)
+    {
+        auto type_long_double = type<long double>();
+        EXPECT_FALSE(type_long_double.is_void());
+        EXPECT_FALSE(type_long_double.is_bool());
+        EXPECT_FALSE(type_long_double.is_integral());
+        EXPECT_TRUE(type_long_double.is_floating_point());
+        EXPECT_FALSE(type_long_double.is_enum());
+        EXPECT_FALSE(type_long_double.is_class());
+        EXPECT_FALSE(type_long_double.is_pointer());
+        EXPECT_FALSE(type_long_double.is_array());
+        EXPECT_FALSE(type_long_double.is_reference());
+        EXPECT_EQ(type_long_double.size(), sizeof(long double));
+        EXPECT_EQ(type<long double>::name(), "long double");
+    }
+
     enum class enum1
     {
         RED,
