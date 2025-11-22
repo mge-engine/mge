@@ -643,20 +643,29 @@ namespace mge::reflection {
             auto& specific = get_or_create_type_details<T>()->class_specific();
             signature sig(make_type_identifier<void>(),
                           {make_type_identifier<Args>()...});
-            
+
             // Check if constructor with this signature already exists
             for (const auto& [existing_sig, _] : specific.constructors) {
                 if (existing_sig == sig) {
                     return *this;
                 }
             }
-            
-            auto      invoke_fn = [](call_context& ctx) {
+
+            auto invoke_fn = [](call_context& ctx) {
                 void* ptr = ctx.this_ptr();
                 if (ptr) {
                     try {
+                        // Use std::tuple to force left-to-right evaluation
+                        // order
                         size_t index = 0;
-                        new (ptr) T(ctx.parameter<Args>(index++)...);
+                        auto   params = std::tuple<Args...>{
+                            ctx.parameter<Args>(index++)...};
+                        std::apply(
+                            [ptr](auto&&... args) {
+                                new (ptr)
+                                    T(std::forward<decltype(args)>(args)...);
+                            },
+                            params);
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
                     } catch (const std::exception& ex) {

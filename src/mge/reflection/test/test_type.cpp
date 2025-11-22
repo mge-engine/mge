@@ -785,8 +785,7 @@ namespace mge::reflection {
     TEST(type, parameterized_constructor_registration)
     {
         auto type_test =
-            type<test_parameterized_constructor>()
-                .constructor<int, float>();
+            type<test_parameterized_constructor>().constructor<int, float>();
 
         const auto& details = type_test.details();
         const auto& class_details = details->class_specific();
@@ -820,6 +819,47 @@ namespace mge::reflection {
 
         // Should still have only 2 constructors (not 3)
         EXPECT_EQ(class_details.constructors.size(), 2);
+    }
+
+    TEST(type, parameterized_constructor_invocation)
+    {
+        auto type_test =
+            type<test_parameterized_constructor>().constructor<int, float>();
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        // Find the parameterized constructor
+        const signature expected_sig(
+            make_type_identifier<void>(),
+            {make_type_identifier<int>(), make_type_identifier<float>()});
+
+        invoke_function_type invoke_fn;
+        bool                 found = false;
+        for (const auto& [sig, fn] : class_details.constructors) {
+            if (sig == expected_sig) {
+                invoke_fn = fn;
+                found = true;
+                break;
+            }
+        }
+        ASSERT_TRUE(found);
+
+        // Create buffer and invoke constructor
+        alignas(test_parameterized_constructor) char
+                          buffer[sizeof(test_parameterized_constructor)];
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(testing::Return(123));
+        EXPECT_CALL(ctx, float_parameter(1)).WillOnce(testing::Return(45.6f));
+
+        invoke_fn(ctx);
+
+        auto* obj = reinterpret_cast<test_parameterized_constructor*>(buffer);
+        EXPECT_EQ(obj->a, 123);
+        EXPECT_FLOAT_EQ(obj->b, 45.6f);
+
+        obj->~test_parameterized_constructor();
     }
 
 } // namespace mge::reflection
