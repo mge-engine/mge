@@ -371,6 +371,24 @@ namespace mge::reflection {
         virtual void pure_virtual_method() = 0;
     };
 
+    class polymorphic_class
+    {
+    public:
+        virtual ~polymorphic_class() {}
+    };
+
+    class non_polymorphic_class
+    {
+    public:
+        ~non_polymorphic_class() {}
+    };
+
+    class non_destructible_class
+    {
+    public:
+        ~non_destructible_class() = delete;
+    };
+
     TEST(type, class_type)
     {
         auto type_a = type<a>();
@@ -395,6 +413,8 @@ namespace mge::reflection {
         EXPECT_TRUE(details->class_specific().is_move_assignable);
         EXPECT_TRUE(details->class_specific().is_move_assignment_noexcept);
         EXPECT_FALSE(details->class_specific().is_abstract);
+        EXPECT_FALSE(details->class_specific().has_virtual_destructor);
+        EXPECT_TRUE(details->class_specific().is_destructible);
     }
 
     TEST(type, class_type_not_default_constructible)
@@ -486,6 +506,34 @@ namespace mge::reflection {
         EXPECT_TRUE(details->class_specific().is_abstract);
         EXPECT_FALSE(details->class_specific().is_constructible);
         EXPECT_FALSE(details->class_specific().is_default_constructible);
+        EXPECT_TRUE(details->class_specific().has_virtual_destructor);
+    }
+
+    TEST(type, class_type_polymorphic)
+    {
+        auto type_polymorphic_class = type<polymorphic_class>();
+        EXPECT_TRUE(type_polymorphic_class.is_class());
+        const auto& details = type_polymorphic_class.details();
+        EXPECT_FALSE(details->class_specific().is_abstract);
+        EXPECT_TRUE(details->class_specific().has_virtual_destructor);
+    }
+
+    TEST(type, class_type_non_polymorphic)
+    {
+        auto type_non_polymorphic_class = type<non_polymorphic_class>();
+        EXPECT_TRUE(type_non_polymorphic_class.is_class());
+        const auto& details = type_non_polymorphic_class.details();
+        EXPECT_FALSE(details->class_specific().is_abstract);
+        EXPECT_FALSE(details->class_specific().has_virtual_destructor);
+        EXPECT_TRUE(details->class_specific().is_destructible);
+    }
+
+    TEST(type, class_type_non_destructible)
+    {
+        auto type_non_destructible_class = type<non_destructible_class>();
+        EXPECT_TRUE(type_non_destructible_class.is_class());
+        const auto& details = type_non_destructible_class.details();
+        EXPECT_FALSE(details->class_specific().is_destructible);
     }
 
     class derived : public a

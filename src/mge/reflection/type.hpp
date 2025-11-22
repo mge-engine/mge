@@ -872,6 +872,9 @@ namespace mge::reflection {
             class_details.is_move_assignment_noexcept =
                 std::is_nothrow_move_assignable_v<T>;
             class_details.is_abstract = std::is_abstract_v<T>;
+            class_details.has_virtual_destructor =
+                std::has_virtual_destructor_v<T>;
+            class_details.is_destructible = std::is_destructible_v<T>;
         }
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =
