@@ -41,6 +41,7 @@ namespace mge::reflection {
         bool                    is_array = false;
         bool                    is_reference = false;
         size_t                  size = 0;
+        size_t                  alignment_of = 0;
         std::string_view        name;
         module_details_weak_ref module;
 

@@ -36,6 +36,7 @@ namespace mge::reflection {
         constexpr bool   is_array() const noexcept;
         constexpr bool   is_reference() const noexcept;
         constexpr size_t size() const noexcept;
+        constexpr size_t alignment_of() const noexcept;
 
         static constexpr std::string_view name();
 
@@ -90,6 +91,10 @@ namespace mge::reflection {
             return false;
         }
         constexpr size_t size() const noexcept
+        {
+            return 0;
+        }
+        constexpr size_t alignment_of() const noexcept
         {
             return 0;
         }
@@ -156,6 +161,10 @@ namespace mge::reflection {
         {
             return sizeof(bool);
         }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(bool);
+        }
 
         const type_details_ref& details() const noexcept
         {
@@ -218,6 +227,10 @@ namespace mge::reflection {
         constexpr size_t size() const noexcept
         {
             return sizeof(float);
+        }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(float);
         }
 
         const type_details_ref& details() const noexcept
@@ -282,6 +295,10 @@ namespace mge::reflection {
         {
             return sizeof(double);
         }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(double);
+        }
 
         const type_details_ref& details() const noexcept
         {
@@ -344,6 +361,10 @@ namespace mge::reflection {
         constexpr size_t size() const noexcept
         {
             return sizeof(long double);
+        }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(long double);
         }
 
         const type_details_ref& details() const noexcept
@@ -408,6 +429,10 @@ namespace mge::reflection {
         constexpr size_t size() const noexcept                                 \
         {                                                                      \
             return sizeof(T);                                                  \
+        }                                                                      \
+        constexpr size_t alignment_of() const noexcept                         \
+        {                                                                      \
+            return alignof(T);                                                 \
         }                                                                      \
                                                                                \
         const type_details_ref& details() const noexcept                       \
@@ -487,6 +512,10 @@ namespace mge::reflection {
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
+        }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
         }
 
         const type_details_ref& details() const noexcept
@@ -585,6 +614,10 @@ namespace mge::reflection {
         {
             return sizeof(T);
         }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
+        }
         const type_details_ref& details() const noexcept
         {
             return get_or_create_type_details<T>();
@@ -659,6 +692,10 @@ namespace mge::reflection {
         {
             return sizeof(T);
         }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
+        }
         const type_details_ref& details() const noexcept
         {
             return get_or_create_type_details<T>();
@@ -720,6 +757,10 @@ namespace mge::reflection {
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
+        }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
         }
         const type_details_ref& details() const noexcept
         {
@@ -787,6 +828,10 @@ namespace mge::reflection {
         {
             return sizeof(T);
         }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
+        }
         const type_details_ref& details() const noexcept
         {
             return get_or_create_type_details<T>();
@@ -816,21 +861,13 @@ namespace mge::reflection {
         details->is_array = std::is_array_v<T>;
         details->is_reference = std::is_reference_v<T>;
 
-        // Debug output for reference types
-        if constexpr (std::is_same_v<T, int&>) {
-            // This should only trigger for int&
-            static bool debug_printed = false;
-            if (!debug_printed) {
-                debug_printed = true;
-                // We're in the right function for int&
-            }
-        }
-
         details->name = type<T>::name();
         if constexpr (std::is_void_v<T>) {
             details->size = 0;
+            details->alignment_of = 0;
         } else {
             details->size = sizeof(T);
+            details->alignment_of = alignof(T);
         }
         if constexpr (std::is_enum_v<T>) {
             using UT = std::underlying_type_t<T>;

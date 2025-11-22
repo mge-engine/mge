@@ -399,8 +399,11 @@ namespace mge::reflection {
         EXPECT_FALSE(type_a.is_enum());
         EXPECT_TRUE(type_a.is_class());
         EXPECT_EQ(type_a.size(), sizeof(a));
+        EXPECT_EQ(type_a.alignment_of(), alignof(a));
         EXPECT_EQ(type<a>::name(), "mge::reflection::a");
         const auto& details = type_a.details();
+        EXPECT_EQ(details->size, sizeof(a));
+        EXPECT_EQ(details->alignment_of, alignof(a));
         EXPECT_TRUE(details->class_specific().is_constructible);
         EXPECT_TRUE(details->class_specific().is_default_constructible);
         EXPECT_TRUE(details->class_specific().is_default_constructor_noexcept);
