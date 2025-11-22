@@ -856,6 +856,22 @@ namespace mge::reflection {
                 std::is_default_constructible_v<T>;
             class_details.is_default_constructor_noexcept =
                 std::is_nothrow_default_constructible_v<T>;
+            class_details.is_copy_constructible =
+                std::is_copy_constructible_v<T>;
+            class_details.is_copy_constructor_noexcept =
+                std::is_nothrow_copy_constructible_v<T>;
+            class_details.is_move_constructible =
+                std::is_move_constructible_v<T>;
+            class_details.is_move_constructor_noexcept =
+                std::is_nothrow_move_constructible_v<T>;
+            class_details.is_copy_assignable =
+                std::is_copy_assignable_v<T>;
+            class_details.is_copy_assignment_noexcept =
+                std::is_nothrow_copy_assignable_v<T>;
+            class_details.is_move_assignable =
+                std::is_move_assignable_v<T>;
+            class_details.is_move_assignment_noexcept =
+                std::is_nothrow_move_assignable_v<T>;
         }
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =

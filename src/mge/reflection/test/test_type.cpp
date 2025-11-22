@@ -322,6 +322,48 @@ namespace mge::reflection {
         default_constructible_noexcept() noexcept {}
     };
 
+    class non_copyable
+    {
+    public:
+        non_copyable() = default;
+        non_copyable(const non_copyable&) = delete;
+        non_copyable& operator=(const non_copyable&) = delete;
+        non_copyable(non_copyable&&) = default;
+        non_copyable& operator=(non_copyable&&) = default;
+    };
+
+    class non_movable
+    {
+    public:
+        non_movable() = default;
+        non_movable(const non_movable&) = default;
+        non_movable& operator=(const non_movable&) = default;
+        non_movable(non_movable&&) = delete;
+        non_movable& operator=(non_movable&&) = delete;
+    };
+
+    class copy_throws
+    {
+    public:
+        copy_throws() = default;
+        copy_throws(const copy_throws&) noexcept(false) {}
+        copy_throws& operator=(const copy_throws&) noexcept(false)
+        {
+            return *this;
+        }
+    };
+
+    class move_throws
+    {
+    public:
+        move_throws() = default;
+        move_throws(move_throws&&) noexcept(false) {}
+        move_throws& operator=(move_throws&&) noexcept(false)
+        {
+            return *this;
+        }
+    };
+
     TEST(type, class_type)
     {
         auto type_a = type<a>();
@@ -336,6 +378,14 @@ namespace mge::reflection {
         const auto& details = type_a.details();
         EXPECT_TRUE(details->class_specific().is_default_constructible);
         EXPECT_TRUE(details->class_specific().is_default_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_copy_constructible);
+        EXPECT_TRUE(details->class_specific().is_copy_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_move_constructible);
+        EXPECT_TRUE(details->class_specific().is_move_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_copy_assignable);
+        EXPECT_TRUE(details->class_specific().is_copy_assignment_noexcept);
+        EXPECT_TRUE(details->class_specific().is_move_assignable);
+        EXPECT_TRUE(details->class_specific().is_move_assignment_noexcept);
     }
 
     TEST(type, class_type_not_default_constructible)
@@ -365,6 +415,58 @@ namespace mge::reflection {
         const auto& details = type_default_constructible_noexcept.details();
         EXPECT_TRUE(details->class_specific().is_default_constructible);
         EXPECT_TRUE(details->class_specific().is_default_constructor_noexcept);
+    }
+
+    TEST(type, class_type_non_copyable)
+    {
+        auto type_non_copyable = type<non_copyable>();
+        EXPECT_TRUE(type_non_copyable.is_class());
+        const auto& details = type_non_copyable.details();
+        EXPECT_FALSE(details->class_specific().is_copy_constructible);
+        EXPECT_FALSE(details->class_specific().is_copy_constructor_noexcept);
+        EXPECT_FALSE(details->class_specific().is_copy_assignable);
+        EXPECT_FALSE(details->class_specific().is_copy_assignment_noexcept);
+        EXPECT_TRUE(details->class_specific().is_move_constructible);
+        EXPECT_TRUE(details->class_specific().is_move_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_move_assignable);
+        EXPECT_TRUE(details->class_specific().is_move_assignment_noexcept);
+    }
+
+    TEST(type, class_type_non_movable)
+    {
+        auto type_non_movable = type<non_movable>();
+        EXPECT_TRUE(type_non_movable.is_class());
+        const auto& details = type_non_movable.details();
+        EXPECT_TRUE(details->class_specific().is_copy_constructible);
+        EXPECT_TRUE(details->class_specific().is_copy_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_copy_assignable);
+        EXPECT_TRUE(details->class_specific().is_copy_assignment_noexcept);
+        EXPECT_FALSE(details->class_specific().is_move_constructible);
+        EXPECT_FALSE(details->class_specific().is_move_constructor_noexcept);
+        EXPECT_FALSE(details->class_specific().is_move_assignable);
+        EXPECT_FALSE(details->class_specific().is_move_assignment_noexcept);
+    }
+
+    TEST(type, class_type_copy_throws)
+    {
+        auto type_copy_throws = type<copy_throws>();
+        EXPECT_TRUE(type_copy_throws.is_class());
+        const auto& details = type_copy_throws.details();
+        EXPECT_TRUE(details->class_specific().is_copy_constructible);
+        EXPECT_FALSE(details->class_specific().is_copy_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_copy_assignable);
+        EXPECT_FALSE(details->class_specific().is_copy_assignment_noexcept);
+    }
+
+    TEST(type, class_type_move_throws)
+    {
+        auto type_move_throws = type<move_throws>();
+        EXPECT_TRUE(type_move_throws.is_class());
+        const auto& details = type_move_throws.details();
+        EXPECT_TRUE(details->class_specific().is_move_constructible);
+        EXPECT_FALSE(details->class_specific().is_move_constructor_noexcept);
+        EXPECT_TRUE(details->class_specific().is_move_assignable);
+        EXPECT_FALSE(details->class_specific().is_move_assignment_noexcept);
     }
 
     class derived : public a

@@ -55,8 +55,14 @@ namespace mge::reflection {
         {
             std::vector<type_details_ref> bases;
             bool                          is_default_constructible = false;
-            bool is_default_constructor_noexcept = false;
-
+            bool is_default_constructor_noexcept = false;            bool                          is_copy_constructible = false;
+            bool                          is_copy_constructor_noexcept = false;
+            bool                          is_move_constructible = false;
+            bool                          is_move_constructor_noexcept = false;
+            bool                          is_copy_assignable = false;
+            bool                          is_copy_assignment_noexcept = false;
+            bool                          is_move_assignable = false;
+            bool                          is_move_assignment_noexcept = false;
             void add_base(const type_details_ref& base)
             {
                 auto it = std::find(bases.begin(), bases.end(), base);
