@@ -915,25 +915,41 @@ namespace mge::reflection {
                 std::has_virtual_destructor_v<T>;
             class_details.is_destructible = std::is_destructible_v<T>;
             class_details.is_empty = std::is_empty_v<T>;
-            
+
             // Register default constructor if available
             if constexpr (std::is_default_constructible_v<T>) {
                 signature sig(make_type_identifier<void>());
                 auto      invoke_fn = [](call_context& ctx) {
                     void* ptr = ctx.this_ptr();
                     if (ptr) {
-                        new (ptr) T();
+                        try {
+                            new (ptr) T();
+                        } catch (const mge::exception& ex) {
+                            ctx.exception_thrown(ex);
+                        } catch (const std::exception& ex) {
+                            ctx.exception_thrown(ex);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
                     }
                 };
                 class_details.constructors.emplace_back(sig, invoke_fn);
             }
-            
+
             // Register destructor if available
             if constexpr (std::is_destructible_v<T>) {
                 class_details.destructor = [](call_context& ctx) {
                     void* ptr = ctx.this_ptr();
                     if (ptr) {
-                        static_cast<T*>(ptr)->~T();
+                        try {
+                            static_cast<T*>(ptr)->~T();
+                        } catch (const mge::exception& ex) {
+                            ctx.exception_thrown(ex);
+                        } catch (const std::exception& ex) {
+                            ctx.exception_thrown(ex);
+                        } catch (...) {
+                            ctx.exception_thrown();
+                        }
                     }
                 };
             }

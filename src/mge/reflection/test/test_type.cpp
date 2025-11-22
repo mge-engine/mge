@@ -712,4 +712,61 @@ namespace mge::reflection {
         EXPECT_EQ(test_destructor::destruction_count, 1);
     }
 
+    struct throwing_constructor
+    {
+        throwing_constructor()
+        {
+            throw std::runtime_error("Constructor failed");
+        }
+    };
+
+    TEST(type, constructor_exception_handling)
+    {
+        const auto& details = type<throwing_constructor>().details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_EQ(class_details.constructors.size(), 1);
+
+        const auto& [sig, invoke_fn] = class_details.constructors[0];
+
+        alignas(throwing_constructor) char buffer[sizeof(throwing_constructor)];
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
+        EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
+            .Times(1);
+
+        invoke_fn(ctx);
+    }
+
+    struct throwing_destructor
+    {
+        bool should_throw = true;
+
+        ~throwing_destructor() noexcept(false)
+        {
+            if (should_throw) {
+                throw std::runtime_error("Destructor failed");
+            }
+        }
+    };
+
+    TEST(type, destructor_exception_handling)
+    {
+        const auto& details = type<throwing_destructor>().details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_TRUE(class_details.destructor);
+
+        alignas(throwing_destructor) char buffer[sizeof(throwing_destructor)];
+        auto* obj = new (buffer) throwing_destructor();
+        obj->should_throw = true;
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
+        EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
+            .Times(1);
+
+        class_details.destructor(ctx);
+    }
+
 } // namespace mge::reflection

@@ -23,8 +23,14 @@ namespace mge::reflection {
         MOCK_METHOD(void, uint64_t_result, (uint64_t value), (override));
         MOCK_METHOD(void, float_result, (float value), (override));
         MOCK_METHOD(void, double_result, (double value), (override));
-        MOCK_METHOD(void, exception_thrown, (const mge::exception& ex), (override));
-        MOCK_METHOD(void, exception_thrown, (const std::exception& ex), (override));
+        MOCK_METHOD(void,
+                    exception_thrown,
+                    (const mge::exception& ex),
+                    (override));
+        MOCK_METHOD(void,
+                    exception_thrown,
+                    (const std::exception& ex),
+                    (override));
         MOCK_METHOD(void, exception_thrown, (), (override));
     };
 } // namespace mge::reflection
