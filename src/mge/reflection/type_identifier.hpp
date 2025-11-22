@@ -5,6 +5,7 @@
 #include "mge/core/format.hpp"
 #include "mge/reflection/dllexport.hpp"
 
+#include <iostream>
 #include <tuple>
 #include <typeindex>
 #include <typeinfo>
@@ -101,13 +102,46 @@ namespace mge::reflection {
         bool            m_is_reference;
     };
 
+    namespace {
+        template <typename T> struct has_const
+        {
+            static constexpr bool value = std::is_const_v<T>;
+        };
+        template <typename T> struct has_const<const T>
+        {
+            static constexpr bool value = true;
+        };
+        template <typename T> struct has_const<const T&>
+        {
+            static constexpr bool value = true;
+        };
+
+        template <typename T> struct has_volatile
+        {
+            static constexpr bool value = std::is_volatile_v<T>;
+        };
+        template <typename T> struct has_volatile<volatile T>
+        {
+            static constexpr bool value = true;
+        };
+        template <typename T> struct has_volatile<volatile T&>
+        {
+            static constexpr bool value = true;
+        };
+
+        template <typename T> struct has_reference
+        {
+            static constexpr bool value = std::is_reference_v<T>;
+        };
+    } // namespace
+
     template <typename T>
     constexpr type_identifier make_type_identifier() noexcept
     {
         return type_identifier(typeid(T),
-                               std::is_const_v<T>,
-                               std::is_volatile_v<T>,
-                               std::is_reference_v<T>);
+                               has_const<T>::value,
+                               has_volatile<T>::value,
+                               has_reference<T>::value);
     }
 } // namespace mge::reflection
 
@@ -120,10 +154,11 @@ struct fmt::formatter<mge::reflection::type_identifier>
                 FormatContext&                          ctx) const
     {
         fmt::format_to(ctx.out(),
-                       "{}{}{}",
+                       "{}{}{}{}",
                        id.is_const() ? "const " : "",
                        id.is_volatile() ? "volatile " : "",
-                       id.type_index().name());
+                       id.type_index().name(),
+                       id.is_reference() ? "&" : "");
         return ctx.out();
     }
 };
@@ -138,6 +173,7 @@ namespace std {
             hash ^= std::hash<std::type_index>()(value.type_index());
             hash ^= value.is_const() ? 7 : 13;
             hash ^= value.is_volatile() ? 17 : 19;
+            hash ^= value.is_reference() ? 23 : 29;
             return hash;
         }
     };
