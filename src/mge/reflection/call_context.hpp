@@ -28,17 +28,16 @@ namespace mge::reflection {
         virtual void* this_ptr() = 0;
 
         virtual void bool_result(bool value) = 0;
-        virtual void int8_result(int8_t value) = 0;
-        virtual void uint8_result(uint8_t value) = 0;
-        virtual void int16_result(int16_t value) = 0;
-        virtual void uint16_result(uint16_t value) = 0;
-        virtual void int32_result(int32_t value) = 0;
-        virtual void uint32_result(uint32_t value) = 0;
-        virtual void int64_result(int64_t value) = 0;
-        virtual void uint64_result(uint64_t value) = 0;
+        virtual void int8_t_result(int8_t value) = 0;
+        virtual void uint8_t_result(uint8_t value) = 0;
+        virtual void int16_t_result(int16_t value) = 0;
+        virtual void uint16_t_result(uint16_t value) = 0;
+        virtual void int32_t_result(int32_t value) = 0;
+        virtual void uint32_t_result(uint32_t value) = 0;
+        virtual void int64_t_result(int64_t value) = 0;
+        virtual void uint64_t_result(uint64_t value) = 0;
         virtual void float_result(float value) = 0;
         virtual void double_result(double value) = 0;
-    
     };
 
 } // namespace mge::reflection
