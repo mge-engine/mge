@@ -363,33 +363,14 @@ namespace mge::reflection {
 
     TEST(type, reference_type)
     {
-        // Test that the right specialization is being used
         static_assert(std::is_reference_v<int&>);
         static_assert(!std::is_reference_v<int>);
 
         auto type_int_ref = type<int&>();
 
-        // Debug: check which specialization is being used
-        std::cout << "is_reference() returns: " << type_int_ref.is_reference()
-                  << std::endl;
-        std::cout << "name() returns: " << type<int&>::name() << std::endl;
-
-        // These should work since they don't depend on details
         EXPECT_TRUE(type_int_ref.is_reference());
-
-        // Try to figure out what's happening with the details
-        try {
-            const auto& details = type_int_ref.details();
-            // Print debug info
-            std::cout << "details->is_reference: " << details->is_reference
-                      << std::endl;
-            std::cout << "details->name: " << details->name << std::endl;
-            EXPECT_TRUE(details->is_reference);
-        } catch (const std::exception& e) {
-            std::cout << "Exception in details(): " << e.what() << std::endl;
-            // Re-throw to fail the test
-            throw;
-        }
+        const auto& details = type_int_ref.details();
+        EXPECT_TRUE(details->is_reference);
     }
 
 } // namespace mge::reflection
