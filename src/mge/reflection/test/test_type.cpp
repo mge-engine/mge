@@ -730,7 +730,7 @@ namespace mge::reflection {
         const auto& [sig, invoke_fn] = class_details.constructors[0];
 
         alignas(throwing_constructor) char buffer[sizeof(throwing_constructor)];
-        MOCK_call_context ctx;
+        MOCK_call_context                  ctx;
         EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
         EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
             .Times(1);
