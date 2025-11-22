@@ -7,6 +7,7 @@
 
 #include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
+#include "mge/reflection/call_context.hpp"
 #include "mge/reflection/type_details.hpp"
 #include <iostream>
 #include <string_view>
@@ -634,6 +635,15 @@ namespace mge::reflection {
             auto& specific = get_or_create_type_details<T>()->class_specific();
             specific.add_base(get_or_create_type_details<B>());
             return *this;
+        }
+
+        void invoke_default_constructor(call_context& ctx) const
+            requires std::is_default_constructible_v<T>
+        {
+            void* ptr = ctx.this_ptr();
+            if (ptr) {
+                new (ptr) T();
+            }
         }
     };
 

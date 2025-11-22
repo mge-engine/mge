@@ -5,6 +5,7 @@
 #include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
+#include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_identifier.hpp"
 
 #include <variant>
@@ -55,6 +56,8 @@ namespace mge::reflection {
         struct class_specific_details
         {
             std::vector<type_details_ref> bases;
+            std::vector<std::tuple<signature, invoke_function_type>>
+                constructors;
 
             unsigned int is_constructible : 1;
             unsigned int is_default_constructible : 1;

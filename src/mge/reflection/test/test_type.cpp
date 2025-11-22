@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/reflection/type.hpp"
 #include "mge/reflection/type_details.hpp"
+#include "mock_call_context.hpp"
 #include "test/googletest.hpp"
 
 namespace mge::reflection {
@@ -639,6 +640,34 @@ namespace mge::reflection {
         const auto& reference_details = details->reference_specific();
         EXPECT_EQ(reference_details.referenced_type,
                   get_or_create_type_details<int>());
+    }
+
+    struct test_default_constructor
+    {
+        int value = 42;
+        bool constructed = false;
+        
+        test_default_constructor()
+        {
+            constructed = true;
+        }
+    };
+
+    TEST(type, invoke_default_constructor)
+    {
+        auto type_test = type<test_default_constructor>();
+        
+        alignas(test_default_constructor) char buffer[sizeof(test_default_constructor)];
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
+        
+        type_test.invoke_default_constructor(ctx);
+        
+        auto* obj = reinterpret_cast<test_default_constructor*>(buffer);
+        EXPECT_EQ(obj->value, 42);
+        EXPECT_TRUE(obj->constructed);
+        
+        obj->~test_default_constructor();
     }
 
 } // namespace mge::reflection
