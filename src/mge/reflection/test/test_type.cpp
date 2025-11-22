@@ -644,29 +644,39 @@ namespace mge::reflection {
 
     struct test_default_constructor
     {
-        int value = 42;
+        int  value = 42;
         bool constructed = false;
-        
+
         test_default_constructor()
         {
             constructed = true;
         }
     };
 
-    TEST(type, invoke_default_constructor)
+    TEST(type, default_constructor_in_constructors_vector)
     {
-        auto type_test = type<test_default_constructor>();
+        auto type_test = type<test_default_constructor>().default_constructor();
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
         
-        alignas(test_default_constructor) char buffer[sizeof(test_default_constructor)];
+        ASSERT_EQ(class_details.constructors.size(), 1);
+        
+        const auto& [sig, invoke_fn] = class_details.constructors[0];
+        EXPECT_EQ(sig.return_type(), make_type_identifier<void>());
+        EXPECT_TRUE(sig.parameter_types().empty());
+
+        alignas(test_default_constructor) char
+                          buffer[sizeof(test_default_constructor)];
         MOCK_call_context ctx;
         EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
-        
-        type_test.invoke_default_constructor(ctx);
-        
+
+        invoke_fn(ctx);
+
         auto* obj = reinterpret_cast<test_default_constructor*>(buffer);
         EXPECT_EQ(obj->value, 42);
         EXPECT_TRUE(obj->constructed);
-        
+
         obj->~test_default_constructor();
     }
 
