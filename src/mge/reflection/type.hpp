@@ -927,6 +927,16 @@ namespace mge::reflection {
                 };
                 class_details.constructors.emplace_back(sig, invoke_fn);
             }
+            
+            // Register destructor if available
+            if constexpr (std::is_destructible_v<T>) {
+                class_details.destructor = [](call_context& ctx) {
+                    void* ptr = ctx.this_ptr();
+                    if (ptr) {
+                        static_cast<T*>(ptr)->~T();
+                    }
+                };
+            }
         }
         if constexpr (std::is_pointer_v<T>) {
             details->pointer_specific().element_type =

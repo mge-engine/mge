@@ -58,6 +58,7 @@ namespace mge::reflection {
             std::vector<type_details_ref> bases;
             std::vector<std::tuple<signature, invoke_function_type>>
                 constructors;
+            invoke_function_type destructor;
 
             unsigned int is_constructible : 1;
             unsigned int is_default_constructible : 1;

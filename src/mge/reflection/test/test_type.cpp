@@ -679,4 +679,37 @@ namespace mge::reflection {
         obj->~test_default_constructor();
     }
 
+    struct test_destructor
+    {
+        static inline int destruction_count = 0;
+        int               value = 99;
+
+        ~test_destructor()
+        {
+            ++destruction_count;
+        }
+    };
+
+    TEST(type, destructor_invocation)
+    {
+        test_destructor::destruction_count = 0;
+
+        const auto& details = type<test_destructor>().details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_TRUE(class_details.destructor);
+
+        alignas(test_destructor) char buffer[sizeof(test_destructor)];
+        auto* obj = new (buffer) test_destructor();
+        EXPECT_EQ(obj->value, 99);
+        EXPECT_EQ(test_destructor::destruction_count, 0);
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
+
+        class_details.destructor(ctx);
+
+        EXPECT_EQ(test_destructor::destruction_count, 1);
+    }
+
 } // namespace mge::reflection
