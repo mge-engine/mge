@@ -862,4 +862,47 @@ namespace mge::reflection {
         obj->~test_parameterized_constructor();
     }
 
+    struct test_reference_constructor
+    {
+        int value;
+
+        test_reference_constructor(const int& ref)
+            : value(ref)
+        {}
+    };
+
+    TEST(type, reference_parameter_constructor_throws_not_implemented)
+    {
+        auto type_test =
+            type<test_reference_constructor>().constructor<const int&>();
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        // Find the reference constructor
+        const signature expected_sig(make_type_identifier<void>(),
+                                     {make_type_identifier<const int&>()});
+
+        invoke_function_type invoke_fn;
+        bool                 found = false;
+        for (const auto& [sig, fn] : class_details.constructors) {
+            if (sig == expected_sig) {
+                invoke_fn = fn;
+                found = true;
+                break;
+            }
+        }
+        ASSERT_TRUE(found);
+
+        // Create buffer and try to invoke constructor
+        alignas(test_reference_constructor) char
+                          buffer[sizeof(test_reference_constructor)];
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
+        EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
+            .Times(1);
+
+        invoke_fn(ctx);
+    }
+
 } // namespace mge::reflection

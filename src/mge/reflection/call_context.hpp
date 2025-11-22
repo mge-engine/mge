@@ -2,7 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/core/exception.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
@@ -21,14 +21,14 @@ namespace mge::reflection {
     public:
         virtual ~call_context();
 
-        virtual bool     bool_parameter(size_t index) = 0;
-        virtual int8_t   int8_t_parameter(size_t index) = 0;
-        virtual uint8_t  uint8_t_parameter(size_t index) = 0;
-        virtual int16_t  int16_t_parameter(size_t index) = 0;
-        virtual uint16_t uint16_t_parameter(size_t index) = 0;
-        virtual int32_t  int32_t_parameter(size_t index) = 0;
-        virtual uint32_t uint32_t_parameter(size_t index) = 0;
-        virtual int64_t  int64_t_parameter(size_t index) = 0;
+        virtual bool        bool_parameter(size_t index) = 0;
+        virtual int8_t      int8_t_parameter(size_t index) = 0;
+        virtual uint8_t     uint8_t_parameter(size_t index) = 0;
+        virtual int16_t     int16_t_parameter(size_t index) = 0;
+        virtual uint16_t    uint16_t_parameter(size_t index) = 0;
+        virtual int32_t     int32_t_parameter(size_t index) = 0;
+        virtual uint32_t    uint32_t_parameter(size_t index) = 0;
+        virtual int64_t     int64_t_parameter(size_t index) = 0;
         virtual uint64_t    uint64_t_parameter(size_t index) = 0;
         virtual float       float_parameter(size_t index) = 0;
         virtual double      double_parameter(size_t index) = 0;
@@ -36,7 +36,9 @@ namespace mge::reflection {
 
         template <typename T> T parameter(size_t index)
         {
-            if constexpr (std::is_same_v<T, bool>) {
+            if constexpr (std::is_reference_v<T>) {
+                MGE_THROW_NOT_IMPLEMENTED << "Reference type not supported yet";
+            } else if constexpr (std::is_same_v<T, bool>) {
                 return bool_parameter(index);
             } else if constexpr (std::is_same_v<T, int8_t>) {
                 return int8_t_parameter(index);
