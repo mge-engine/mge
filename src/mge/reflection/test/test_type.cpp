@@ -364,6 +364,13 @@ namespace mge::reflection {
         }
     };
 
+    class abstract_class
+    {
+    public:
+        virtual ~abstract_class() = default;
+        virtual void pure_virtual_method() = 0;
+    };
+
     TEST(type, class_type)
     {
         auto type_a = type<a>();
@@ -376,6 +383,7 @@ namespace mge::reflection {
         EXPECT_EQ(type_a.size(), sizeof(a));
         EXPECT_EQ(type<a>::name(), "mge::reflection::a");
         const auto& details = type_a.details();
+        EXPECT_TRUE(details->class_specific().is_constructible);
         EXPECT_TRUE(details->class_specific().is_default_constructible);
         EXPECT_TRUE(details->class_specific().is_default_constructor_noexcept);
         EXPECT_TRUE(details->class_specific().is_copy_constructible);
@@ -386,6 +394,7 @@ namespace mge::reflection {
         EXPECT_TRUE(details->class_specific().is_copy_assignment_noexcept);
         EXPECT_TRUE(details->class_specific().is_move_assignable);
         EXPECT_TRUE(details->class_specific().is_move_assignment_noexcept);
+        EXPECT_FALSE(details->class_specific().is_abstract);
     }
 
     TEST(type, class_type_not_default_constructible)
@@ -467,6 +476,16 @@ namespace mge::reflection {
         EXPECT_FALSE(details->class_specific().is_move_constructor_noexcept);
         EXPECT_TRUE(details->class_specific().is_move_assignable);
         EXPECT_FALSE(details->class_specific().is_move_assignment_noexcept);
+    }
+
+    TEST(type, class_type_abstract)
+    {
+        auto type_abstract_class = type<abstract_class>();
+        EXPECT_TRUE(type_abstract_class.is_class());
+        const auto& details = type_abstract_class.details();
+        EXPECT_TRUE(details->class_specific().is_abstract);
+        EXPECT_FALSE(details->class_specific().is_constructible);
+        EXPECT_FALSE(details->class_specific().is_default_constructible);
     }
 
     class derived : public a
