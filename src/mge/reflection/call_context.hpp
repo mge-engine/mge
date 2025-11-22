@@ -27,6 +27,13 @@ namespace mge::reflection {
          */
         virtual void* this_ptr() = 0;
 
+        /**
+         * Address of current object.
+         * @return address of current object, nullptr for static methods or
+         * object construction
+         */
+        virtual void* object_address() = 0;
+
         virtual void bool_result(bool value) = 0;
         virtual void int8_t_result(int8_t value) = 0;
         virtual void uint8_t_result(uint8_t value) = 0;

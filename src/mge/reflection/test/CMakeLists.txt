@@ -4,6 +4,7 @@
 
 SET(MGEREFLECTION_TEST_SOURCES
     test_module.cpp
+    test_signature.cpp
     test_type.cpp
     test_type_identifier.cpp
 
