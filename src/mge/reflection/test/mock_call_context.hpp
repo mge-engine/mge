@@ -22,6 +22,7 @@ namespace mge::reflection {
         MOCK_METHOD(uint64_t, uint64_t_parameter, (size_t index), (override));
         MOCK_METHOD(float, float_parameter, (size_t index), (override));
         MOCK_METHOD(double, double_parameter, (size_t index), (override));
+        MOCK_METHOD(long double, long_double_parameter, (size_t index), (override));
         MOCK_METHOD(void*, this_ptr, (), (override));
         MOCK_METHOD(void, bool_result, (bool value), (override));
         MOCK_METHOD(void, int8_t_result, (int8_t value), (override));
@@ -34,6 +35,7 @@ namespace mge::reflection {
         MOCK_METHOD(void, uint64_t_result, (uint64_t value), (override));
         MOCK_METHOD(void, float_result, (float value), (override));
         MOCK_METHOD(void, double_result, (double value), (override));
+        MOCK_METHOD(void, long_double_result, (long double value), (override));
         MOCK_METHOD(void,
                     exception_thrown,
                     (const mge::exception& ex),

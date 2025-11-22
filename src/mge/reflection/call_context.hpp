@@ -29,9 +29,10 @@ namespace mge::reflection {
         virtual int32_t  int32_t_parameter(size_t index) = 0;
         virtual uint32_t uint32_t_parameter(size_t index) = 0;
         virtual int64_t  int64_t_parameter(size_t index) = 0;
-        virtual uint64_t uint64_t_parameter(size_t index) = 0;
-        virtual float    float_parameter(size_t index) = 0;
-        virtual double   double_parameter(size_t index) = 0;
+        virtual uint64_t    uint64_t_parameter(size_t index) = 0;
+        virtual float       float_parameter(size_t index) = 0;
+        virtual double      double_parameter(size_t index) = 0;
+        virtual long double long_double_parameter(size_t index) = 0;
 
         template <typename T> T parameter(size_t index)
         {
@@ -57,6 +58,8 @@ namespace mge::reflection {
                 return float_parameter(index);
             } else if constexpr (std::is_same_v<T, double>) {
                 return double_parameter(index);
+            } else if constexpr (std::is_same_v<T, long double>) {
+                return long_double_parameter(index);
             }
         }
 
@@ -77,6 +80,7 @@ namespace mge::reflection {
         virtual void uint64_t_result(uint64_t value) = 0;
         virtual void float_result(float value) = 0;
         virtual void double_result(double value) = 0;
+        virtual void long_double_result(long double value) = 0;
 
         virtual void exception_thrown(const mge::exception& ex) = 0;
         virtual void exception_thrown(const std::exception& ex) = 0;
