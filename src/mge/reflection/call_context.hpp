@@ -21,6 +21,45 @@ namespace mge::reflection {
     public:
         virtual ~call_context();
 
+        virtual bool bool_parameter(size_t index) = 0;
+        virtual int8_t int8_t_parameter(size_t index) = 0;
+        virtual uint8_t uint8_t_parameter(size_t index) = 0;
+        virtual int16_t int16_t_parameter(size_t index) = 0;
+        virtual uint16_t uint16_t_parameter(size_t index) = 0;
+        virtual int32_t int32_t_parameter(size_t index) = 0;
+        virtual uint32_t uint32_t_parameter(size_t index) = 0;
+        virtual int64_t int64_t_parameter(size_t index) = 0;
+        virtual uint64_t uint64_t_parameter(size_t index) = 0;
+        virtual float float_parameter(size_t index) = 0;
+        virtual double double_parameter(size_t index) = 0;
+
+        template <typename T> T parameter(size_t index)
+        {
+            if constexpr (std::is_same_v<T, bool>) {
+                return bool_parameter(index);
+            } else if constexpr (std::is_same_v<T, int8_t>) {
+                return int8_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, uint8_t>) {
+                return uint8_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, int16_t>) {
+                return int16_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, uint16_t>) {
+                return uint16_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, int32_t>) {
+                return int32_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, uint32_t>) {
+                return uint32_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, int64_t>) {
+                return int64_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, uint64_t>) {
+                return uint64_t_parameter(index);
+            } else if constexpr (std::is_same_v<T, float>) {
+                return float_parameter(index);
+            } else if constexpr (std::is_same_v<T, double>) {
+                return double_parameter(index);
+            }
+        }
+
         /**
          * Pointer to current object.
          * @return pointer to current object, nullptr for static methods
