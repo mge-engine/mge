@@ -5,14 +5,10 @@
 
 namespace mge::reflection {
 
-    function_details::function_details() {}
+    function_details::function_details()
+        : m_noexcept(false)
+    {}
 
     function_details::~function_details() {}
-
-    void function_details::construct(const char* name, void* func)
-    {
-
-        // find which module we are in
-    }
 
 } // namespace mge::reflection
