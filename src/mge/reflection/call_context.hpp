@@ -21,18 +21,19 @@ namespace mge::reflection {
     public:
         virtual ~call_context();
 
-        virtual bool        bool_parameter(size_t index) = 0;
-        virtual int8_t      int8_t_parameter(size_t index) = 0;
-        virtual uint8_t     uint8_t_parameter(size_t index) = 0;
-        virtual int16_t     int16_t_parameter(size_t index) = 0;
-        virtual uint16_t    uint16_t_parameter(size_t index) = 0;
-        virtual int32_t     int32_t_parameter(size_t index) = 0;
-        virtual uint32_t    uint32_t_parameter(size_t index) = 0;
-        virtual int64_t     int64_t_parameter(size_t index) = 0;
-        virtual uint64_t    uint64_t_parameter(size_t index) = 0;
-        virtual float       float_parameter(size_t index) = 0;
-        virtual double      double_parameter(size_t index) = 0;
-        virtual long double long_double_parameter(size_t index) = 0;
+        virtual bool             bool_parameter(size_t index) = 0;
+        virtual int8_t           int8_t_parameter(size_t index) = 0;
+        virtual uint8_t          uint8_t_parameter(size_t index) = 0;
+        virtual int16_t          int16_t_parameter(size_t index) = 0;
+        virtual uint16_t         uint16_t_parameter(size_t index) = 0;
+        virtual int32_t          int32_t_parameter(size_t index) = 0;
+        virtual uint32_t         uint32_t_parameter(size_t index) = 0;
+        virtual int64_t          int64_t_parameter(size_t index) = 0;
+        virtual uint64_t         uint64_t_parameter(size_t index) = 0;
+        virtual float            float_parameter(size_t index) = 0;
+        virtual double           double_parameter(size_t index) = 0;
+        virtual long double      long_double_parameter(size_t index) = 0;
+        virtual std::string_view string_view_parameter(size_t index) = 0;
 
         template <typename T> T parameter(size_t index)
         {
@@ -62,6 +63,8 @@ namespace mge::reflection {
                 return double_parameter(index);
             } else if constexpr (std::is_same_v<T, long double>) {
                 return long_double_parameter(index);
+            } else if constexpr (std::is_same_v<T, std::string_view>) {
+                return string_view_parameter(index);
             }
         }
 
@@ -74,7 +77,7 @@ namespace mge::reflection {
         /**
          * Reference to current object.
          * @return reference to current object
-         * @throws std::runtime_error if this_ptr() is nullptr
+         * @throws mge::null_pointer if there is no object
          */
         template <typename T> T& this_reference()
         {

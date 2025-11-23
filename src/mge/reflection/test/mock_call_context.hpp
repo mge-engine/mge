@@ -26,6 +26,10 @@ namespace mge::reflection {
                     long_double_parameter,
                     (size_t index),
                     (override));
+        MOCK_METHOD(std::string_view,
+                    string_view_parameter,
+                    (size_t index),
+                    (override));
         MOCK_METHOD(void*, this_ptr, (), (override));
         MOCK_METHOD(void, bool_result, (bool value), (override));
         MOCK_METHOD(void, int8_t_result, (int8_t value), (override));
