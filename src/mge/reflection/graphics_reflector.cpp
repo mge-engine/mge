@@ -20,6 +20,13 @@ namespace mge::reflection {
             auto mge = module("mge");
             mge(type<mge::topology>());
         }
+
+        std::span<std::string_view> dependencies() const override
+        {
+            static std::array<std::string_view, 3> deps{
+                {"core", "std", "math"}};
+            return deps;
+        }
     };
 
     MGE_REGISTER_IMPLEMENTATION(graphics_reflector,

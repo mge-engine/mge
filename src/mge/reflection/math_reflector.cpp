@@ -35,6 +35,12 @@ namespace mge::reflection {
                     .field("z", &mge::fvec4::z)
                     .field("w", &mge::fvec4::w));
         }
+
+        std::span<std::string_view> dependencies() const override
+        {
+            static std::array<std::string_view, 2> deps{{"core", "std"}};
+            return deps;
+        }
     };
 
     MGE_REGISTER_IMPLEMENTATION(math_reflector,

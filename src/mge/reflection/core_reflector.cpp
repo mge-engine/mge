@@ -22,6 +22,12 @@ namespace mge::reflection {
             mge(function("breakpoint_if_debugging",
                          &mge::breakpoint_if_debugging));
         }
+
+        std::span<std::string_view> dependencies() const override
+        {
+            static std::array<std::string_view, 1> deps{{"std"}};
+            return deps;
+        }
     };
 
     MGE_REGISTER_IMPLEMENTATION(core_reflector,
