@@ -81,6 +81,48 @@ namespace mge::reflection {
             }
         }
 
+        template <typename Ret, typename... Args>
+        function_details(const char*                        name,
+                         const std::function<Ret(Args...)>& func)
+            : m_signature(make_type_identifier<Ret>(),
+                          {make_type_identifier<Args>()...})
+            , m_name(name)
+            , m_noexcept(false)
+        {
+            if constexpr (sizeof...(Args) == 0 && std::is_same_v<Ret, void>) {
+                m_invoke_function = [func](call_context& ctx) {
+                    try {
+                        func();
+                    } catch (const mge::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (const std::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                };
+            } else {
+                m_invoke_function = [func](call_context& ctx) {
+                    try {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        if constexpr (std::is_same_v<Ret, void>) {
+                            func(ctx.template parameter<Args>(--index)...);
+                        } else {
+                            ctx.template result<Ret>(
+                                func(ctx.template parameter<Args>(--index)...));
+                        }
+                    } catch (const mge::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (const std::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                };
+            }
+        }
+
         function_details(const function_details&) = delete;
         function_details& operator=(const function_details&) = delete;
         function_details(function_details&&) = delete;

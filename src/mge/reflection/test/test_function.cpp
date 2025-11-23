@@ -140,4 +140,77 @@ namespace mge::reflection {
         f.details()->invoke(ctx);
     }
 
+    TEST(function, constructor_std_function_with_return_and_parameters)
+    {
+        std::function<int(int, int)> func = [](int a, int b) { return a + b; };
+        function f("std_add", func);
+
+        const auto& details = f.details();
+        ASSERT_TRUE(details);
+        EXPECT_EQ(details->name(), "std_add");
+        EXPECT_FALSE(details->is_noexcept());
+
+        const auto& sig = details->signature();
+        EXPECT_EQ(sig.return_type(), make_type_identifier<int>());
+        ASSERT_EQ(sig.parameter_types().size(), 2);
+        EXPECT_EQ(sig.parameter_types()[0], make_type_identifier<int>());
+        EXPECT_EQ(sig.parameter_types()[1], make_type_identifier<int>());
+    }
+
+    TEST(function, constructor_std_function_void_no_params)
+    {
+        std::function<void()> func = []() {};
+        function f("std_void", func);
+
+        const auto& details = f.details();
+        ASSERT_TRUE(details);
+        EXPECT_EQ(details->name(), "std_void");
+        EXPECT_FALSE(details->is_noexcept());
+
+        const auto& sig = details->signature();
+        EXPECT_EQ(sig.return_type(), make_type_identifier<void>());
+        EXPECT_TRUE(sig.parameter_types().empty());
+    }
+
+    TEST(function, invoke_std_function_with_return_value)
+    {
+        std::function<int(int, int)> func = [](int a, int b) { return a * b; };
+        function f("std_multiply", func);
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(testing::Return(4));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(testing::Return(5));
+        EXPECT_CALL(ctx, int32_t_result(20)).Times(1);
+
+        f.details()->invoke(ctx);
+    }
+
+    TEST(function, invoke_std_function_void_no_params)
+    {
+        static bool called = false;
+        called = false;
+
+        std::function<void()> func = []() { called = true; };
+        function f("std_call", func);
+
+        MOCK_call_context ctx;
+        f.details()->invoke(ctx);
+
+        EXPECT_TRUE(called);
+    }
+
+    TEST(function, invoke_std_function_with_exception_handling)
+    {
+        std::function<void()> func = []() {
+            throw std::runtime_error("Test exception from std::function");
+        };
+        function f("std_throwing", func);
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
+            .Times(1);
+
+        f.details()->invoke(ctx);
+    }
+
 } // namespace mge::reflection

@@ -30,6 +30,12 @@ namespace mge::reflection {
             m_details = std::make_shared<function_details>(name, func);
         }
 
+        template <typename Result, typename... Args>
+        function(const char* name, const std::function<Result(Args...)>& func)
+        {
+            m_details = std::make_shared<function_details>(name, func);
+        }
+
         const function_details_ref& details() const noexcept
         {
             return m_details;
