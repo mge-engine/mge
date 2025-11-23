@@ -65,5 +65,15 @@ SET(mge_module_reflection_math_SOURCES
 ADD_LIBRARY(mge_module_reflection_math MODULE ${mge_module_reflection_math_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_reflection_math mgereflection mgecore mgemath)
 
+SET(mge_module_reflection_application_SOURCES
+    application_reflector.cpp)
+ADD_LIBRARY(mge_module_reflection_application MODULE ${mge_module_reflection_application_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_reflection_application mgereflection mgecore mgeapplication)
+
+SET(mge_module_reflection_input_SOURCES
+    input_reflector.cpp)
+ADD_LIBRARY(mge_module_reflection_input MODULE ${mge_module_reflection_input_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_reflection_input mgereflection mgecore mgeinput)
+
 
 ADD_SUBDIRECTORY(test)
