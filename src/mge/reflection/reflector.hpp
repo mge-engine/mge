@@ -5,6 +5,8 @@
 #include "mge/core/component.hpp"
 #include "mge/reflection/dllexport.hpp"
 
+#include <span>
+
 namespace mge::reflection {
 
     /**
@@ -20,6 +22,20 @@ namespace mge::reflection {
          * Expose the types to reflection.
          */
         virtual void reflect() const = 0;
+
+        /**
+         * @brief Get the dependencies of this reflector.
+         *
+         * This method returns a span of reflector implementation names that
+         * this reflector depends on. The reflection system will ensure that
+         * the dependent reflectors are executed before this reflector.
+         *
+         * @return span of reflector implementation names
+         */
+        virtual std::span<std::string_view> dependencies() const
+        {
+            return {};
+        }
     };
 
 } // namespace mge::reflection
