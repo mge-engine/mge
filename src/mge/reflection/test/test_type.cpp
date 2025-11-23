@@ -834,8 +834,8 @@ namespace mge::reflection {
             make_type_identifier<void>(),
             {make_type_identifier<int>(), make_type_identifier<float>()});
 
-        invoke_function_type invoke_fn;
-        bool                 found = false;
+        invoke_function invoke_fn;
+        bool            found = false;
         for (const auto& [sig, fn] : class_details.constructors) {
             if (sig == expected_sig) {
                 invoke_fn = fn;
@@ -883,8 +883,8 @@ namespace mge::reflection {
         const signature expected_sig(make_type_identifier<void>(),
                                      {make_type_identifier<const int&>()});
 
-        invoke_function_type invoke_fn;
-        bool                 found = false;
+        invoke_function invoke_fn;
+        bool            found = false;
         for (const auto& [sig, fn] : class_details.constructors) {
             if (sig == expected_sig) {
                 invoke_fn = fn;

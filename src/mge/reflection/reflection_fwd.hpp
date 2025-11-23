@@ -14,6 +14,6 @@ namespace mge::reflection {
     MGE_DECLARE_REF(function_details);
 
     class call_context;
-    using invoke_function_type = std::function<void(call_context&)>;
+    using invoke_function = std::function<void(call_context&)>;
 
 } // namespace mge::reflection
