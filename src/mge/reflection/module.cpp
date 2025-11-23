@@ -2,7 +2,13 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/reflection/module.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/reflection/module_details.hpp"
+
+namespace mge {
+    MGE_DEFINE_TRACE(REFLECTION);
+}
+
 namespace mge::reflection {
 
     module::module() :m_details(module_details::root()) {}

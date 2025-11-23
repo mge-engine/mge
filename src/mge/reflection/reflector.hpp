@@ -36,6 +36,8 @@ namespace mge::reflection {
         {
             return {};
         }
+
+        static void reflect_all();
     };
 
 } // namespace mge::reflection
