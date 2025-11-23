@@ -23,7 +23,40 @@ namespace mge::reflection {
                           {make_type_identifier<Args>()...})
             , m_name(name)
             , m_noexcept(false)
-        {}
+        {
+            if constexpr (sizeof...(Args) == 0 && std::is_same_v<Ret, void>) {
+                m_invoke_function = [func](call_context& ctx) {
+                    try {
+                        func();
+                    } catch (const mge::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (const std::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                };
+            } else {
+                m_invoke_function = [func](call_context& ctx) {
+                    try {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        if constexpr (std::is_same_v<Ret, void>) {
+                            func(ctx.template parameter<Args>(--index)...);
+                        } else {
+                            ctx.template result<Ret>(
+                                func(ctx.template parameter<Args>(--index)...));
+                        }
+                    } catch (const mge::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (const std::exception& ex) {
+                        ctx.exception_thrown(ex);
+                    } catch (...) {
+                        ctx.exception_thrown();
+                    }
+                };
+            }
+        }
 
         template <typename Ret, typename... Args>
         function_details(const char* name, Ret (*func)(Args...) noexcept)
@@ -66,6 +99,11 @@ namespace mge::reflection {
         bool is_noexcept() const noexcept
         {
             return m_noexcept;
+        }
+
+        void invoke(call_context& ctx) const
+        {
+            m_invoke_function(ctx);
         }
 
     private:

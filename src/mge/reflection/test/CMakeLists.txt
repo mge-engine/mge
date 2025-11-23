@@ -3,6 +3,7 @@
 # All rights reserved.
 
 SET(MGEREFLECTION_TEST_SOURCES
+    test_function.cpp
     test_module.cpp
     test_signature.cpp
     test_type.cpp
