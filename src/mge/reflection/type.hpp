@@ -638,6 +638,36 @@ namespace mge::reflection {
             return *this;
         }
 
+        template <typename F>
+        self_type& field(const char* name, F T::* field_ptr)
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            auto  get_field = [field_ptr](call_context& ctx) {
+                void*        obj_ptr = ctx.this_ptr();
+                const size_t index = 0;
+                if (obj_ptr) {
+                    T* obj = static_cast<T*>(obj_ptr);
+                    F& field_ref = obj->*field_ptr;
+                    ctx.template result<F&>(field_ref);
+                }
+            };
+            invoke_function set_field;
+            if constexpr (!std::is_const_v<F>) {
+                set_field = [field_ptr](call_context& ctx) {
+                    void*        obj_ptr = ctx.this_ptr();
+                    const size_t index = 0;
+                    if (obj_ptr) {
+                        T* obj = static_cast<T*>(obj_ptr);
+                        F  field_value = ctx.template parameter<F>(index);
+                        obj->*field_ptr = field_value;
+                    }
+                };
+            }
+            auto type_id = make_type_identifier<F>();
+            specific.fields.emplace_back(name, type_id, get_field, set_field);
+            return *this;
+        }
+
         template <typename... Args> self_type& constructor()
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();

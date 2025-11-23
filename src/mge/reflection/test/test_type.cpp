@@ -905,4 +905,105 @@ namespace mge::reflection {
         invoke_fn(ctx);
     }
 
+    struct test_field
+    {
+        int       int_value = 10;
+        float     float_value = 20.5f;
+        bool      bool_value = true;
+        const int const_value = 42;
+    };
+
+    TEST(type, field_registration)
+    {
+        auto type_test = type<test_field>()
+                             .field("int_value", &test_field::int_value)
+                             .field("float_value", &test_field::float_value)
+                             .field("bool_value", &test_field::bool_value)
+                             .field("const_value", &test_field::const_value);
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_EQ(class_details.fields.size(), 4);
+
+        const auto& [name1, type_id1, get1, set1] = class_details.fields[0];
+        EXPECT_EQ(name1, "int_value");
+        EXPECT_EQ(type_id1, make_type_identifier<int>());
+        EXPECT_TRUE(get1);
+        EXPECT_TRUE(set1);
+
+        const auto& [name2, type_id2, get2, set2] = class_details.fields[1];
+        EXPECT_EQ(name2, "float_value");
+        EXPECT_EQ(type_id2, make_type_identifier<float>());
+
+        const auto& [name3, type_id3, get3, set3] = class_details.fields[2];
+        EXPECT_EQ(name3, "bool_value");
+        EXPECT_EQ(type_id3, make_type_identifier<bool>());
+
+        const auto& [name4, type_id4, get4, set4] = class_details.fields[3];
+        EXPECT_EQ(name4, "const_value");
+        EXPECT_EQ(type_id4, make_type_identifier<const int>());
+        EXPECT_TRUE(get4);
+        EXPECT_FALSE(set4); // const field should not have setter
+    }
+
+    TEST(type, field_getter)
+    {
+        struct test_field_getter
+        {
+            int int_value = 10;
+        };
+
+        auto type_test =
+            type<test_field_getter>().field("int_value",
+                                            &test_field_getter::int_value);
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_EQ(class_details.fields.size(), 1);
+
+        const auto& [name, type_id, get_fn, set_fn] = class_details.fields[0];
+
+        test_field_getter obj;
+        obj.int_value = 123;
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(&obj));
+        EXPECT_CALL(ctx, int32_t_result(123)).Times(1);
+
+        get_fn(ctx);
+    }
+
+    TEST(type, field_setter)
+    {
+        struct test_field_setter
+        {
+            int int_value = 10;
+        };
+
+        auto type_test =
+            type<test_field_setter>().field("int_value",
+                                            &test_field_setter::int_value);
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_EQ(class_details.fields.size(), 1);
+
+        const auto& [name, type_id, get_fn, set_fn] = class_details.fields[0];
+        ASSERT_TRUE(set_fn);
+
+        test_field_setter obj;
+        obj.int_value = 10;
+
+        MOCK_call_context ctx;
+        EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(&obj));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(testing::Return(456));
+
+        set_fn(ctx);
+
+        EXPECT_EQ(obj.int_value, 456);
+    }
+
 } // namespace mge::reflection
