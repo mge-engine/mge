@@ -771,6 +771,49 @@ namespace mge::reflection {
             specific.constructors.emplace_back(sig, invoke_fn);
             return *this;
         }
+
+        template <typename R, typename... Args>
+        self_type& static_method(const char* name, R (*method_ptr)(Args...))
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            signature sig(make_type_identifier<R>(),
+                          {make_type_identifier<Args>()...});
+
+            auto invoke_fn = [method_ptr](call_context& ctx) {
+                try {
+                    if constexpr (std::is_void_v<R>) {
+                        if constexpr (sizeof...(Args) == 0) {
+                            method_ptr();
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            method_ptr(
+                                ctx.template parameter<Args>(--index)...);
+                        }
+                    } else {
+                        if constexpr (sizeof...(Args) == 0) {
+                            R result = method_ptr();
+                            ctx.template result<R>(result);
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            R                result = method_ptr(
+                                ctx.template parameter<Args>(--index)...);
+                            ctx.template result<R>(result);
+                        }
+                    }
+                } catch (const mge::exception& ex) {
+                    ctx.exception_thrown(ex);
+                } catch (const std::exception& ex) {
+                    ctx.exception_thrown(ex);
+                } catch (...) {
+                    ctx.exception_thrown();
+                }
+            };
+
+            specific.static_methods.emplace_back(name, sig, invoke_fn);
+            return *this;
+        }
     };
 
     template <typename T>

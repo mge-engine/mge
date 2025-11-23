@@ -1036,4 +1036,77 @@ namespace mge::reflection {
         EXPECT_EQ(obj.int_value, 456);
     }
 
+    struct test_static_methods
+    {
+        static int add(int a, int b)
+        {
+            return a + b;
+        }
+
+        static void set_global_value(int value)
+        {
+            global_value = value;
+        }
+
+        static int get_global_value()
+        {
+            return global_value;
+        }
+
+        static inline int global_value = 0;
+    };
+
+    TEST(type, static_method)
+    {
+        auto type_test =
+            type<test_static_methods>()
+                .static_method("add", &test_static_methods::add)
+                .static_method("set_global_value",
+                               &test_static_methods::set_global_value)
+                .static_method("get_global_value",
+                               &test_static_methods::get_global_value);
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_EQ(class_details.static_methods.size(), 3);
+
+        // Test add method
+        const auto& [name1, sig1, invoke1] = class_details.static_methods[0];
+        EXPECT_EQ(name1, "add");
+        EXPECT_EQ(sig1.return_type(), make_type_identifier<int>());
+        EXPECT_EQ(sig1.parameter_types().size(), 2);
+
+        MOCK_call_context ctx1;
+        EXPECT_CALL(ctx1, int32_t_parameter(1)).WillOnce(testing::Return(10));
+        EXPECT_CALL(ctx1, int32_t_parameter(0)).WillOnce(testing::Return(20));
+        EXPECT_CALL(ctx1, int32_t_result(30)).Times(1);
+
+        invoke1(ctx1);
+
+        // Test set_global_value method (void return)
+        const auto& [name2, sig2, invoke2] = class_details.static_methods[1];
+        EXPECT_EQ(name2, "set_global_value");
+        EXPECT_EQ(sig2.return_type(), make_type_identifier<void>());
+        EXPECT_EQ(sig2.parameter_types().size(), 1);
+
+        test_static_methods::global_value = 0;
+        MOCK_call_context ctx2;
+        EXPECT_CALL(ctx2, int32_t_parameter(0)).WillOnce(testing::Return(42));
+
+        invoke2(ctx2);
+        EXPECT_EQ(test_static_methods::global_value, 42);
+
+        // Test get_global_value method (no parameters)
+        const auto& [name3, sig3, invoke3] = class_details.static_methods[2];
+        EXPECT_EQ(name3, "get_global_value");
+        EXPECT_EQ(sig3.return_type(), make_type_identifier<int>());
+        EXPECT_EQ(sig3.parameter_types().size(), 0);
+
+        MOCK_call_context ctx3;
+        EXPECT_CALL(ctx3, int32_t_result(42)).Times(1);
+
+        invoke3(ctx3);
+    }
+
 } // namespace mge::reflection
