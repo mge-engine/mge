@@ -617,7 +617,19 @@ namespace mge::reflection {
     namespace {
         template <typename T>
         concept is_basic_class_v = (std::is_class_v<T> && !(mge::callable<T>));
-    }
+
+        template <typename T>
+        inline T parameter_helper(call_context& ctx, size_t index)
+        {
+            if constexpr (std::is_pointer_v<T>) {
+                return static_cast<T>(
+                    ctx.pointer_parameter(index,
+                                          *get_or_create_type_details<T>()));
+            } else {
+                return ctx.template parameter<T>(index);
+            }
+        }
+    } // namespace
 
     template <typename T>
         requires is_basic_class_v<T>
@@ -724,15 +736,7 @@ namespace mge::reflection {
                     const size_t index = 0;
                     if (obj_ptr) {
                         T* obj = static_cast<T*>(obj_ptr);
-                        if constexpr (!std::is_pointer_v<F>) {
-                            F field_value = ctx.template parameter<F>(index);
-                            obj->*field_ptr = field_value;
-                        } else {
-                            F field_value = ctx.template pointer_parameter<F>(
-                                index,
-                                *get_or_create_type_details<F>());
-                            obj->*field_ptr = field_value;
-                        }
+                        obj->*field_ptr = parameter_helper<F>(ctx, index);
                     }
                 };
             }
@@ -764,7 +768,7 @@ namespace mge::reflection {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
                             new (ptr)
-                                T(ctx.template parameter<Args>(--index)...);
+                                T(parameter_helper<Args>(ctx, --index)...);
                         }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
@@ -794,8 +798,7 @@ namespace mge::reflection {
                         } else {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
-                            method_ptr(
-                                ctx.template parameter<Args>(--index)...);
+                            method_ptr(parameter_helper<Args>(ctx, --index)...);
                         }
                     } else {
                         if constexpr (sizeof...(Args) == 0) {
@@ -805,7 +808,7 @@ namespace mge::reflection {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
                             R                result = method_ptr(
-                                ctx.template parameter<Args>(--index)...);
+                                parameter_helper<Args>(ctx, --index)...);
                             ctx.template result<R>(result);
                         }
                     }
@@ -840,7 +843,7 @@ namespace mge::reflection {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
                             (obj.*method_ptr)(
-                                ctx.template parameter<Args>(--index)...);
+                                parameter_helper<Args>(ctx, --index)...);
                         }
                     } else {
                         if constexpr (sizeof...(Args) == 0) {
@@ -850,7 +853,7 @@ namespace mge::reflection {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
                             R                result = (obj.*method_ptr)(
-                                ctx.template parameter<Args>(--index)...);
+                                parameter_helper<Args>(ctx, --index)...);
                             ctx.template result<R>(result);
                         }
                     }
@@ -885,7 +888,7 @@ namespace mge::reflection {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
                             (obj.*method_ptr)(
-                                ctx.template parameter<Args>(--index)...);
+                                parameter_helper<Args>(ctx, --index)...);
                         }
                     } else {
                         if constexpr (sizeof...(Args) == 0) {
@@ -895,7 +898,7 @@ namespace mge::reflection {
                             constexpr size_t nargs = sizeof...(Args);
                             size_t           index{nargs};
                             R                result = (obj.*method_ptr)(
-                                ctx.template parameter<Args>(--index)...);
+                                parameter_helper<Args>(ctx, --index)...);
                             ctx.template result<R>(result);
                         }
                     }
@@ -930,7 +933,7 @@ namespace mge::reflection {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         (obj.*
-                         method_ptr)(ctx.template parameter<Args>(--index)...);
+                         method_ptr)(parameter_helper<Args>(ctx, --index)...);
                     }
                 } else {
                     if constexpr (sizeof...(Args) == 0) {
@@ -940,7 +943,7 @@ namespace mge::reflection {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         R                result = (obj.*method_ptr)(
-                            ctx.template parameter<Args>(--index)...);
+                            parameter_helper<Args>(ctx, --index)...);
                         ctx.template result<R>(result);
                     }
                 }
@@ -968,7 +971,7 @@ namespace mge::reflection {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         (obj.*
-                         method_ptr)(ctx.template parameter<Args>(--index)...);
+                         method_ptr)(parameter_helper<Args>(ctx, --index)...);
                     }
                 } else {
                     if constexpr (sizeof...(Args) == 0) {
@@ -978,7 +981,7 @@ namespace mge::reflection {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         R                result = (obj.*method_ptr)(
-                            ctx.template parameter<Args>(--index)...);
+                            parameter_helper<Args>(ctx, --index)...);
                         ctx.template result<R>(result);
                     }
                 }

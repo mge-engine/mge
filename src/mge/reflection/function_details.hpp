@@ -6,10 +6,26 @@
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/signature.hpp"
+#include "mge/reflection/type.hpp"
 
 #include <tuple>
 
 namespace mge::reflection {
+
+    namespace {
+        template <typename T>
+        inline T function_parameter_helper(call_context& ctx, size_t index)
+        {
+            if constexpr (std::is_pointer_v<T>) {
+                return static_cast<T>(
+                    ctx.pointer_parameter(index,
+                                          *get_or_create_type_details<T>()));
+            } else {
+                return ctx.template parameter<T>(index);
+            }
+        }
+
+    } // namespace
 
     class MGEREFLECTION_EXPORT function_details
     {
@@ -42,10 +58,12 @@ namespace mge::reflection {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         if constexpr (std::is_same_v<Ret, void>) {
-                            func(ctx.template parameter<Args>(--index)...);
+                            func(function_parameter_helper<Args>(ctx,
+                                                                 --index)...);
                         } else {
-                            ctx.template result<Ret>(
-                                func(ctx.template parameter<Args>(--index)...));
+                            ctx.template result<Ret>(func(
+                                function_parameter_helper<Args>(ctx,
+                                                                --index)...));
                         }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
@@ -72,10 +90,10 @@ namespace mge::reflection {
                     constexpr size_t nargs = sizeof...(Args);
                     size_t           index{nargs};
                     if constexpr (std::is_same_v<Ret, void>) {
-                        func(ctx.template parameter<Args>(--index)...);
+                        func(function_parameter_helper<Args>(ctx, --index)...);
                     } else {
-                        ctx.template result<Ret>(
-                            func(ctx.template parameter<Args>(--index)...));
+                        ctx.template result<Ret>(func(
+                            function_parameter_helper<Args>(ctx, --index)...));
                     }
                 };
             }
@@ -107,10 +125,12 @@ namespace mge::reflection {
                         constexpr size_t nargs = sizeof...(Args);
                         size_t           index{nargs};
                         if constexpr (std::is_same_v<Ret, void>) {
-                            func(ctx.template parameter<Args>(--index)...);
+                            func(function_parameter_helper<Args>(ctx,
+                                                                 --index)...);
                         } else {
-                            ctx.template result<Ret>(
-                                func(ctx.template parameter<Args>(--index)...));
+                            ctx.template result<Ret>(func(
+                                function_parameter_helper<Args>(ctx,
+                                                                --index)...));
                         }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
