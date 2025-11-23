@@ -655,17 +655,14 @@ namespace mge::reflection {
                 void* ptr = ctx.this_ptr();
                 if (ptr) {
                     try {
-                        // Use std::tuple to force left-to-right evaluation
-                        // order
-                        size_t index = 0;
-                        auto   params = std::tuple<Args...>{
-                            ctx.parameter<Args>(index++)...};
-                        std::apply(
-                            [ptr](auto&&... args) {
-                                new (ptr)
-                                    T(std::forward<decltype(args)>(args)...);
-                            },
-                            params);
+                        if constexpr (sizeof...(Args) == 0) {
+                            new (ptr) T();
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            new (ptr)
+                                T(ctx.template parameter<Args>(--index)...);
+                        }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
                     } catch (const std::exception& ex) {
