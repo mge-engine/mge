@@ -84,6 +84,35 @@ namespace mge::reflection {
         virtual void double_result(double value) = 0;
         virtual void long_double_result(long double value) = 0;
 
+        template <typename T> void result(T value)
+        {
+            if constexpr (std::is_same_v<T, bool>) {
+                bool_result(value);
+            } else if constexpr (std::is_same_v<T, int8_t>) {
+                int8_t_result(value);
+            } else if constexpr (std::is_same_v<T, uint8_t>) {
+                uint8_t_result(value);
+            } else if constexpr (std::is_same_v<T, int16_t>) {
+                int16_t_result(value);
+            } else if constexpr (std::is_same_v<T, uint16_t>) {
+                uint16_t_result(value);
+            } else if constexpr (std::is_same_v<T, int32_t>) {
+                int32_t_result(value);
+            } else if constexpr (std::is_same_v<T, uint32_t>) {
+                uint32_t_result(value);
+            } else if constexpr (std::is_same_v<T, int64_t>) {
+                int64_t_result(value);
+            } else if constexpr (std::is_same_v<T, uint64_t>) {
+                uint64_t_result(value);
+            } else if constexpr (std::is_same_v<T, float>) {
+                float_result(value);
+            } else if constexpr (std::is_same_v<T, double>) {
+                double_result(value);
+            } else if constexpr (std::is_same_v<T, long double>) {
+                long_double_result(value);
+            }
+        }
+
         virtual void exception_thrown(const mge::exception& ex) = 0;
         virtual void exception_thrown(const std::exception& ex) = 0;
         virtual void exception_thrown() = 0;

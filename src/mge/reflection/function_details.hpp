@@ -2,9 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/reflection/call_context.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/signature.hpp"
+
+#include <tuple>
 
 namespace mge::reflection {
 
@@ -28,7 +31,22 @@ namespace mge::reflection {
                           {make_type_identifier<Args>()...})
             , m_name(name)
             , m_noexcept(true)
-        {}
+        {
+            if constexpr (sizeof...(Args) == 0 && std::is_same_v<Ret, void>) {
+                m_invoke_function = [func](call_context& ctx) { func(); };
+            } else {
+                m_invoke_function = [func](call_context& ctx) {
+                    constexpr size_t nargs = sizeof...(Args);
+                    size_t           index{nargs};
+                    if constexpr (std::is_same_v<Ret, void>) {
+                        func(ctx.template parameter<Args>(--index)...);
+                    } else {
+                        ctx.template result<Ret>(
+                            func(ctx.template parameter<Args>(--index)...));
+                    }
+                };
+            }
+        }
 
         function_details(const function_details&) = delete;
         function_details& operator=(const function_details&) = delete;
