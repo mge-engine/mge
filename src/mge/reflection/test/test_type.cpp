@@ -632,10 +632,40 @@ namespace mge::reflection {
         EXPECT_FALSE(type_int_ref.is_pointer());
         EXPECT_FALSE(type_int_ref.is_array());
         EXPECT_TRUE(type_int_ref.is_reference());
+        EXPECT_TRUE(type_int_ref.is_lvalue_reference());
+        EXPECT_FALSE(type_int_ref.is_rvalue_reference());
         EXPECT_EQ(type_int_ref.size(), sizeof(int&));
         EXPECT_EQ(type<int&>::name(), "int&");
 
         const auto& details = type_int_ref.details();
+        EXPECT_TRUE(details->is_reference);
+        const auto& reference_details = details->reference_specific();
+        EXPECT_EQ(reference_details.referenced_type,
+                  get_or_create_type_details<int>());
+    }
+
+    TEST(type, rvalue_reference_type)
+    {
+        static_assert(std::is_reference_v<int&&>);
+        static_assert(std::is_rvalue_reference_v<int&&>);
+        static_assert(!std::is_lvalue_reference_v<int&&>);
+
+        auto type_int_rref = type<int&&>();
+        EXPECT_FALSE(type_int_rref.is_void());
+        EXPECT_FALSE(type_int_rref.is_bool());
+        EXPECT_FALSE(type_int_rref.is_integral());
+        EXPECT_FALSE(type_int_rref.is_floating_point());
+        EXPECT_FALSE(type_int_rref.is_enum());
+        EXPECT_FALSE(type_int_rref.is_class());
+        EXPECT_FALSE(type_int_rref.is_pointer());
+        EXPECT_FALSE(type_int_rref.is_array());
+        EXPECT_TRUE(type_int_rref.is_reference());
+        EXPECT_FALSE(type_int_rref.is_lvalue_reference());
+        EXPECT_TRUE(type_int_rref.is_rvalue_reference());
+        EXPECT_EQ(type_int_rref.size(), sizeof(int&&));
+        EXPECT_EQ(type<int&&>::name(), "int&&");
+
+        const auto& details = type_int_rref.details();
         EXPECT_TRUE(details->is_reference);
         const auto& reference_details = details->reference_specific();
         EXPECT_EQ(reference_details.referenced_type,

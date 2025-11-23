@@ -37,6 +37,8 @@ namespace mge::reflection {
         constexpr bool   is_pointer() const noexcept;
         constexpr bool   is_array() const noexcept;
         constexpr bool   is_reference() const noexcept;
+        constexpr bool   is_lvalue_reference() const noexcept;
+        constexpr bool   is_rvalue_reference() const noexcept;
         constexpr size_t size() const noexcept;
         constexpr size_t alignment_of() const noexcept;
 
@@ -89,6 +91,14 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
         {
             return false;
         }
@@ -159,6 +169,14 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(bool);
@@ -223,6 +241,14 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
         {
             return false;
         }
@@ -293,6 +319,14 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(double);
@@ -357,6 +391,14 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
         {
             return false;
         }
@@ -425,6 +467,14 @@ namespace mge::reflection {
             return false;                                                      \
         }                                                                      \
         constexpr bool is_reference() const noexcept                           \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr bool is_lvalue_reference() const noexcept                    \
+        {                                                                      \
+            return false;                                                      \
+        }                                                                      \
+        constexpr bool is_rvalue_reference() const noexcept                    \
         {                                                                      \
             return false;                                                      \
         }                                                                      \
@@ -508,6 +558,14 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
         {
             return false;
         }
@@ -609,6 +667,14 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
         {
             return false;
         }
@@ -758,6 +824,14 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
@@ -824,6 +898,14 @@ namespace mge::reflection {
         {
             return false;
         }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
         constexpr size_t size() const noexcept
         {
             return sizeof(T);
@@ -843,11 +925,11 @@ namespace mge::reflection {
     };
 
     template <typename T>
-        requires std::is_reference_v<T>
+        requires std::is_lvalue_reference_v<T>
     class type<T>
     {
-        static_assert(std::is_reference_v<T>,
-                      "This should be a reference type");
+        static_assert(std::is_lvalue_reference_v<T>,
+                      "This should be an lvalue reference type");
 
     public:
         using self_type = type<T>;
@@ -891,6 +973,92 @@ namespace mge::reflection {
             return false;
         }
         constexpr bool is_reference() const noexcept
+        {
+            return true;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return true;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(T);
+        }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
+        }
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<T>();
+        }
+        static constexpr std::string_view name() noexcept
+        {
+            return mge::type_name<T>();
+        }
+    };
+
+    template <typename T>
+        requires std::is_rvalue_reference_v<T>
+    class type<T>
+    {
+        static_assert(std::is_rvalue_reference_v<T>,
+                      "This should be an rvalue reference type");
+
+    public:
+        using self_type = type<T>;
+        type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_enum() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_class() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_reference() const noexcept
+        {
+            return true;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
         {
             return true;
         }
