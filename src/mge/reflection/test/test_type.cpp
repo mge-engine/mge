@@ -1146,11 +1146,11 @@ namespace mge::reflection {
         const auto& details = type_test.details();
         const auto& class_details = details->class_specific();
 
-        ASSERT_EQ(class_details.member_methods.size(), 4);
+        ASSERT_EQ(class_details.methods.size(), 4);
 
         // Test add method (non-const, non-noexcept)
         const auto& [name1, sig1, invoke1, is_const1, is_noexcept1] =
-            class_details.member_methods[0];
+            class_details.methods[0];
         EXPECT_EQ(name1, "add");
         EXPECT_EQ(sig1.return_type(), make_type_identifier<int>());
         EXPECT_EQ(sig1.parameter_types().size(), 2);
@@ -1170,7 +1170,7 @@ namespace mge::reflection {
 
         // Test get_value method (const, non-noexcept)
         const auto& [name2, sig2, invoke2, is_const2, is_noexcept2] =
-            class_details.member_methods[1];
+            class_details.methods[1];
         EXPECT_EQ(name2, "get_value");
         EXPECT_EQ(sig2.return_type(), make_type_identifier<int>());
         EXPECT_EQ(sig2.parameter_types().size(), 0);
@@ -1188,7 +1188,7 @@ namespace mge::reflection {
 
         // Test set_value method (non-const, noexcept)
         const auto& [name3, sig3, invoke3, is_const3, is_noexcept3] =
-            class_details.member_methods[2];
+            class_details.methods[2];
         EXPECT_EQ(name3, "set_value");
         EXPECT_EQ(sig3.return_type(), make_type_identifier<void>());
         EXPECT_EQ(sig3.parameter_types().size(), 1);
@@ -1207,7 +1207,7 @@ namespace mge::reflection {
 
         // Test multiply method (const, noexcept)
         const auto& [name4, sig4, invoke4, is_const4, is_noexcept4] =
-            class_details.member_methods[3];
+            class_details.methods[3];
         EXPECT_EQ(name4, "multiply");
         EXPECT_EQ(sig4.return_type(), make_type_identifier<int>());
         EXPECT_EQ(sig4.parameter_types().size(), 2);

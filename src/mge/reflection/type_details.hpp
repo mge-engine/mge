@@ -71,8 +71,7 @@ namespace mge::reflection {
                                    invoke_function,
                                    bool,
                                    bool>>
-                member_methods; // name, signature, invoke, is_const,
-                                // is_noexcept
+                methods; // name, signature, invoke, is_const, is_noexcept
 
             unsigned int is_constructible : 1;
             unsigned int is_default_constructible : 1;
