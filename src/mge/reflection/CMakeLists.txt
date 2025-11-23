@@ -26,7 +26,7 @@ SET(mgereflection_headers
     type_identifier.hpp
     call_context.hpp
     signature.hpp
-    
+
     reflector.hpp
     
 )
@@ -44,5 +44,16 @@ TARGET_LINK_LIBRARIES(
     mgecore
     boost-all
 )
+
+SET(mge_module_reflection_std_SOURCES
+    std_reflector.cpp)
+ADD_LIBRARY(mge_module_reflection_std MODULE ${mge_module_reflection_std_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_reflection_std mgereflection mgecore)
+
+SET(mge_module_reflection_core_SOURCES
+    core_reflector.cpp)
+ADD_LIBRARY(mge_module_reflection_core MODULE ${mge_module_reflection_core_SOURCES})
+TARGET_LINK_LIBRARIES(mge_module_reflection_core mgereflection mgecore)
+
 
 ADD_SUBDIRECTORY(test)
