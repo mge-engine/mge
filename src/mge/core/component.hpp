@@ -88,6 +88,15 @@ namespace mge {
             }
         }
 
+        inline std::string_view alias_names() const noexcept
+        {
+            if (m_impl_regentry) {
+                return m_impl_regentry->alias_names();
+            } else {
+                return ""sv;
+            }
+        }
+
     private:
         friend class component_registry;
 
@@ -105,7 +114,10 @@ namespace mge {
             register_component(this);
         }
         virtual ~component_registry_entry() = default;
-        std::string_view name() const noexcept override { return m_name; }
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
 
     private:
         std::string m_name{mge::type_name<Class>()};
@@ -142,7 +154,10 @@ namespace mge {
         {
             return m_component_name;
         }
-        std::string_view name() const noexcept override { return m_name; }
+        std::string_view name() const noexcept override
+        {
+            return m_name;
+        }
         std::string_view alias_names() const noexcept override
         {
             return m_alias_names;
@@ -215,7 +230,10 @@ namespace mge {
          * @brief Get reference of this instance.
          * @return weak reference to this instance
          */
-        const std::weak_ptr<Class>& self() const noexcept { return m_self; }
+        const std::weak_ptr<Class>& self() const noexcept
+        {
+            return m_self;
+        }
 
     private:
         void set_self(const std::shared_ptr<Class>& instance)
