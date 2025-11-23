@@ -13,7 +13,7 @@ This is a C++ project using cmake and vcpkg for dependency management.
 
 # Checking Changes
 
-* Always execute 'cmake --build -j 1 build' to build the project, do a build always to verify a change
+* Use 'cmake --build build' to build the project, do a build always to verify a change. If a build fails, repeat the check with 'cmake --build -j 1 build' find the error more easily.
 * After building, run the tests using 'ctest --output-on-failure --test-dir build' to ensure everything is working correctly in build subdirectory.
 * Execute these commands from the root of the repository.
 

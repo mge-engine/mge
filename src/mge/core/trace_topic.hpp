@@ -43,6 +43,13 @@ namespace mge {
             configure();
         }
 
+        /**
+         * @brief Constructor from string_view.
+         *
+         * @param name trace topic name
+         */
+        trace_topic(std::string_view name);
+
         ~trace_topic();
 
         /**

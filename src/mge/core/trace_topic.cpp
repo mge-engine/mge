@@ -69,6 +69,18 @@ namespace mge {
         }
     }
 
+    trace_topic::trace_topic(std::string_view name)
+        : m_topic(name)
+        , m_enabled_levels(0)
+        , m_level_config(
+              "trace"sv, m_topic == "MGE"sv ? "global"sv : m_topic, ""sv)
+    {
+        initialize();
+        m_level_config.set_change_handler(
+            [&] { this->update_configuration(); });
+        configure();
+    }
+
     trace_topic::~trace_topic()
     {
         m_level_config.set_change_handler(nullptr);

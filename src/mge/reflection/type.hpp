@@ -856,11 +856,7 @@ namespace mge::reflection {
                 }
             };
 
-            specific.methods.emplace_back(name,
-                                                 sig,
-                                                 invoke_fn,
-                                                 false,
-                                                 false);
+            specific.methods.emplace_back(name, sig, invoke_fn, false, false);
             return *this;
         }
 
@@ -905,11 +901,7 @@ namespace mge::reflection {
                 }
             };
 
-            specific.methods.emplace_back(name,
-                                                 sig,
-                                                 invoke_fn,
-                                                 true,
-                                                 false);
+            specific.methods.emplace_back(name, sig, invoke_fn, true, false);
             return *this;
         }
 
@@ -947,11 +939,7 @@ namespace mge::reflection {
                 }
             };
 
-            specific.methods.emplace_back(name,
-                                                 sig,
-                                                 invoke_fn,
-                                                 false,
-                                                 true);
+            specific.methods.emplace_back(name, sig, invoke_fn, false, true);
             return *this;
         }
 
@@ -989,11 +977,7 @@ namespace mge::reflection {
                 }
             };
 
-            specific.methods.emplace_back(name,
-                                                 sig,
-                                                 invoke_fn,
-                                                 true,
-                                                 true);
+            specific.methods.emplace_back(name, sig, invoke_fn, true, true);
             return *this;
         }
     };
