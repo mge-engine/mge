@@ -34,14 +34,22 @@ namespace mge::reflection {
         virtual double           double_parameter(size_t index) = 0;
         virtual long double      long_double_parameter(size_t index) = 0;
         virtual std::string_view string_view_parameter(size_t index) = 0;
-        virtual void*            pointer_parameter(size_t index) = 0;
+        virtual void*            pointer_parameter(size_t              index,
+                                                   const type_details& details) = 0;
 
-        template <typename T> T parameter(size_t index)
+        template <typename T>
+            requires std::is_pointer_v<T>
+        T pointer_parameter(size_t index, const type_details& details)
+        {
+            return static_cast<T>(pointer_parameter(index, details));
+        }
+
+        template <typename T>
+            requires(!std::is_pointer_v<T>)
+        T parameter(size_t index)
         {
             if constexpr (std::is_reference_v<T>) {
                 MGE_THROW_NOT_IMPLEMENTED << "Reference type not supported yet";
-            } else if constexpr (std::is_pointer_v<T>) {
-                return static_cast<T>(pointer_parameter(index));
             } else if constexpr (std::is_enum_v<T>) {
                 using UT = std::underlying_type_t<T>;
                 return static_cast<T>(parameter<UT>(index));

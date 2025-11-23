@@ -724,8 +724,15 @@ namespace mge::reflection {
                     const size_t index = 0;
                     if (obj_ptr) {
                         T* obj = static_cast<T*>(obj_ptr);
-                        F  field_value = ctx.template parameter<F>(index);
-                        obj->*field_ptr = field_value;
+                        if constexpr (!std::is_pointer_v<F>) {
+                            F field_value = ctx.template parameter<F>(index);
+                            obj->*field_ptr = field_value;
+                        } else {
+                            F field_value = ctx.template pointer_parameter<F>(
+                                index,
+                                *get_or_create_type_details<F>());
+                            obj->*field_ptr = field_value;
+                        }
                     }
                 };
             }
@@ -1270,6 +1277,87 @@ namespace mge::reflection {
         constexpr bool is_rvalue_reference() const noexcept
         {
             return true;
+        }
+        constexpr size_t size() const noexcept
+        {
+            return sizeof(T);
+        }
+        constexpr size_t alignment_of() const noexcept
+        {
+            return alignof(T);
+        }
+        const type_details_ref& details() const noexcept
+        {
+            return get_or_create_type_details<T>();
+        }
+        static constexpr std::string_view name() noexcept
+        {
+            return mge::type_name<T>();
+        }
+    };
+
+    template <typename T>
+        requires std::is_const_v<T> &&
+                 (!std::is_pointer_v<T> && !std::is_array_v<T> &&
+                  !std::is_reference_v<T> && !is_basic_class_v<T>)
+    class type<T>
+    {
+        static_assert(std::is_const_v<T>, "This should be a const type");
+
+    public:
+        using self_type = type<T>;
+        using non_const_type = std::remove_const_t<T>;
+
+        type() = default;
+        type(const type&) = default;
+        type(type&&) noexcept = default;
+        type& operator=(const type&) = default;
+        type& operator=(type&&) noexcept = default;
+        ~type() = default;
+
+        constexpr bool is_void() const noexcept
+        {
+            return std::is_void_v<non_const_type>;
+        }
+        constexpr bool is_integral() const noexcept
+        {
+            return std::is_integral_v<non_const_type>;
+        }
+        constexpr bool is_bool() const noexcept
+        {
+            return std::is_same_v<non_const_type, bool>;
+        }
+        constexpr bool is_floating_point() const noexcept
+        {
+            return std::is_floating_point_v<non_const_type>;
+        }
+        constexpr bool is_enum() const noexcept
+        {
+            return std::is_enum_v<non_const_type>;
+        }
+        constexpr bool is_class() const noexcept
+        {
+            return std::is_class_v<non_const_type>;
+        }
+        constexpr bool is_pointer() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_array() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_lvalue_reference() const noexcept
+        {
+            return false;
+        }
+        constexpr bool is_rvalue_reference() const noexcept
+        {
+            return false;
         }
         constexpr size_t size() const noexcept
         {
