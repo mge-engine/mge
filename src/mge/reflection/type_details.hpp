@@ -66,6 +66,13 @@ namespace mge::reflection {
             std::vector<
                 std::tuple<std::string_view, signature, invoke_function>>
                 static_methods;
+            std::vector<std::tuple<std::string_view,
+                                   signature,
+                                   invoke_function,
+                                   bool,
+                                   bool>>
+                member_methods; // name, signature, invoke, is_const,
+                                // is_noexcept
 
             unsigned int is_constructible : 1;
             unsigned int is_default_constructible : 1;

@@ -814,6 +814,188 @@ namespace mge::reflection {
             specific.static_methods.emplace_back(name, sig, invoke_fn);
             return *this;
         }
+
+        // Member function: non-const, non-noexcept
+        template <typename R, typename... Args>
+        self_type& method(const char* name, R (T::*method_ptr)(Args...))
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            signature sig(make_type_identifier<R>(),
+                          {make_type_identifier<Args>()...});
+
+            auto invoke_fn = [method_ptr](call_context& ctx) {
+                try {
+                    T& obj = ctx.template this_reference<T>();
+                    if constexpr (std::is_void_v<R>) {
+                        if constexpr (sizeof...(Args) == 0) {
+                            (obj.*method_ptr)();
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            (obj.*method_ptr)(
+                                ctx.template parameter<Args>(--index)...);
+                        }
+                    } else {
+                        if constexpr (sizeof...(Args) == 0) {
+                            R result = (obj.*method_ptr)();
+                            ctx.template result<R>(result);
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            R                result = (obj.*method_ptr)(
+                                ctx.template parameter<Args>(--index)...);
+                            ctx.template result<R>(result);
+                        }
+                    }
+                } catch (const mge::exception& ex) {
+                    ctx.exception_thrown(ex);
+                } catch (const std::exception& ex) {
+                    ctx.exception_thrown(ex);
+                } catch (...) {
+                    ctx.exception_thrown();
+                }
+            };
+
+            specific.member_methods.emplace_back(name,
+                                                 sig,
+                                                 invoke_fn,
+                                                 false,
+                                                 false);
+            return *this;
+        }
+
+        // Member function: const, non-noexcept
+        template <typename R, typename... Args>
+        self_type& method(const char* name, R (T::*method_ptr)(Args...) const)
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            signature sig(make_type_identifier<R>(),
+                          {make_type_identifier<Args>()...});
+
+            auto invoke_fn = [method_ptr](call_context& ctx) {
+                try {
+                    const T& obj = ctx.template this_reference<T>();
+                    if constexpr (std::is_void_v<R>) {
+                        if constexpr (sizeof...(Args) == 0) {
+                            (obj.*method_ptr)();
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            (obj.*method_ptr)(
+                                ctx.template parameter<Args>(--index)...);
+                        }
+                    } else {
+                        if constexpr (sizeof...(Args) == 0) {
+                            R result = (obj.*method_ptr)();
+                            ctx.template result<R>(result);
+                        } else {
+                            constexpr size_t nargs = sizeof...(Args);
+                            size_t           index{nargs};
+                            R                result = (obj.*method_ptr)(
+                                ctx.template parameter<Args>(--index)...);
+                            ctx.template result<R>(result);
+                        }
+                    }
+                } catch (const mge::exception& ex) {
+                    ctx.exception_thrown(ex);
+                } catch (const std::exception& ex) {
+                    ctx.exception_thrown(ex);
+                } catch (...) {
+                    ctx.exception_thrown();
+                }
+            };
+
+            specific.member_methods.emplace_back(name,
+                                                 sig,
+                                                 invoke_fn,
+                                                 true,
+                                                 false);
+            return *this;
+        }
+
+        // Member function: non-const, noexcept
+        template <typename R, typename... Args>
+        self_type& method(const char* name,
+                          R (T::*method_ptr)(Args...) noexcept)
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            signature sig(make_type_identifier<R>(),
+                          {make_type_identifier<Args>()...});
+
+            auto invoke_fn = [method_ptr](call_context& ctx) {
+                T& obj = ctx.template this_reference<T>();
+                if constexpr (std::is_void_v<R>) {
+                    if constexpr (sizeof...(Args) == 0) {
+                        (obj.*method_ptr)();
+                    } else {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        (obj.*
+                         method_ptr)(ctx.template parameter<Args>(--index)...);
+                    }
+                } else {
+                    if constexpr (sizeof...(Args) == 0) {
+                        R result = (obj.*method_ptr)();
+                        ctx.template result<R>(result);
+                    } else {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        R                result = (obj.*method_ptr)(
+                            ctx.template parameter<Args>(--index)...);
+                        ctx.template result<R>(result);
+                    }
+                }
+            };
+
+            specific.member_methods.emplace_back(name,
+                                                 sig,
+                                                 invoke_fn,
+                                                 false,
+                                                 true);
+            return *this;
+        }
+
+        // Member function: const, noexcept
+        template <typename R, typename... Args>
+        self_type& method(const char* name,
+                          R (T::*method_ptr)(Args...) const noexcept)
+        {
+            auto& specific = get_or_create_type_details<T>()->class_specific();
+            signature sig(make_type_identifier<R>(),
+                          {make_type_identifier<Args>()...});
+
+            auto invoke_fn = [method_ptr](call_context& ctx) {
+                const T& obj = ctx.template this_reference<T>();
+                if constexpr (std::is_void_v<R>) {
+                    if constexpr (sizeof...(Args) == 0) {
+                        (obj.*method_ptr)();
+                    } else {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        (obj.*
+                         method_ptr)(ctx.template parameter<Args>(--index)...);
+                    }
+                } else {
+                    if constexpr (sizeof...(Args) == 0) {
+                        R result = (obj.*method_ptr)();
+                        ctx.template result<R>(result);
+                    } else {
+                        constexpr size_t nargs = sizeof...(Args);
+                        size_t           index{nargs};
+                        R                result = (obj.*method_ptr)(
+                            ctx.template parameter<Args>(--index)...);
+                        ctx.template result<R>(result);
+                    }
+                }
+            };
+
+            specific.member_methods.emplace_back(name,
+                                                 sig,
+                                                 invoke_fn,
+                                                 true,
+                                                 true);
+            return *this;
+        }
     };
 
     template <typename T>

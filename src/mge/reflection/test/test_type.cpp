@@ -1109,4 +1109,120 @@ namespace mge::reflection {
         invoke3(ctx3);
     }
 
+    struct test_member_methods
+    {
+        int value = 0;
+
+        int add(int a, int b)
+        {
+            return value + a + b;
+        }
+
+        int get_value() const
+        {
+            return value;
+        }
+
+        void set_value(int v) noexcept
+        {
+            value = v;
+        }
+
+        int multiply(int a, int b) const noexcept
+        {
+            return a * b;
+        }
+    };
+
+    TEST(type, member_method)
+    {
+        auto type_test =
+            type<test_member_methods>()
+                .method("add", &test_member_methods::add)
+                .method("get_value", &test_member_methods::get_value)
+                .method("set_value", &test_member_methods::set_value)
+                .method("multiply", &test_member_methods::multiply);
+
+        const auto& details = type_test.details();
+        const auto& class_details = details->class_specific();
+
+        ASSERT_EQ(class_details.member_methods.size(), 4);
+
+        // Test add method (non-const, non-noexcept)
+        const auto& [name1, sig1, invoke1, is_const1, is_noexcept1] =
+            class_details.member_methods[0];
+        EXPECT_EQ(name1, "add");
+        EXPECT_EQ(sig1.return_type(), make_type_identifier<int>());
+        EXPECT_EQ(sig1.parameter_types().size(), 2);
+        EXPECT_FALSE(is_const1);
+        EXPECT_FALSE(is_noexcept1);
+
+        test_member_methods obj1;
+        obj1.value = 5;
+
+        MOCK_call_context ctx1;
+        EXPECT_CALL(ctx1, this_ptr()).WillOnce(testing::Return(&obj1));
+        EXPECT_CALL(ctx1, int32_t_parameter(1)).WillOnce(testing::Return(10));
+        EXPECT_CALL(ctx1, int32_t_parameter(0)).WillOnce(testing::Return(20));
+        EXPECT_CALL(ctx1, int32_t_result(35)).Times(1);
+
+        invoke1(ctx1);
+
+        // Test get_value method (const, non-noexcept)
+        const auto& [name2, sig2, invoke2, is_const2, is_noexcept2] =
+            class_details.member_methods[1];
+        EXPECT_EQ(name2, "get_value");
+        EXPECT_EQ(sig2.return_type(), make_type_identifier<int>());
+        EXPECT_EQ(sig2.parameter_types().size(), 0);
+        EXPECT_TRUE(is_const2);
+        EXPECT_FALSE(is_noexcept2);
+
+        test_member_methods obj2;
+        obj2.value = 42;
+
+        MOCK_call_context ctx2;
+        EXPECT_CALL(ctx2, this_ptr()).WillOnce(testing::Return(&obj2));
+        EXPECT_CALL(ctx2, int32_t_result(42)).Times(1);
+
+        invoke2(ctx2);
+
+        // Test set_value method (non-const, noexcept)
+        const auto& [name3, sig3, invoke3, is_const3, is_noexcept3] =
+            class_details.member_methods[2];
+        EXPECT_EQ(name3, "set_value");
+        EXPECT_EQ(sig3.return_type(), make_type_identifier<void>());
+        EXPECT_EQ(sig3.parameter_types().size(), 1);
+        EXPECT_FALSE(is_const3);
+        EXPECT_TRUE(is_noexcept3);
+
+        test_member_methods obj3;
+        obj3.value = 0;
+
+        MOCK_call_context ctx3;
+        EXPECT_CALL(ctx3, this_ptr()).WillOnce(testing::Return(&obj3));
+        EXPECT_CALL(ctx3, int32_t_parameter(0)).WillOnce(testing::Return(99));
+
+        invoke3(ctx3);
+        EXPECT_EQ(obj3.value, 99);
+
+        // Test multiply method (const, noexcept)
+        const auto& [name4, sig4, invoke4, is_const4, is_noexcept4] =
+            class_details.member_methods[3];
+        EXPECT_EQ(name4, "multiply");
+        EXPECT_EQ(sig4.return_type(), make_type_identifier<int>());
+        EXPECT_EQ(sig4.parameter_types().size(), 2);
+        EXPECT_TRUE(is_const4);
+        EXPECT_TRUE(is_noexcept4);
+
+        test_member_methods obj4;
+
+        MOCK_call_context ctx4;
+        EXPECT_CALL(ctx4, this_ptr()).WillOnce(testing::Return(&obj4));
+        EXPECT_CALL(ctx4, int32_t_parameter(1)).WillOnce(testing::Return(6));
+        EXPECT_CALL(ctx4, int32_t_parameter(0)).WillOnce(testing::Return(7));
+        EXPECT_CALL(ctx4, int32_t_result(42)).Times(1);
+
+        invoke4(ctx4);
+    }
+
 } // namespace mge::reflection

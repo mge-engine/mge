@@ -71,6 +71,20 @@ namespace mge::reflection {
          */
         virtual void* this_ptr() = 0;
 
+        /**
+         * Reference to current object.
+         * @return reference to current object
+         * @throws std::runtime_error if this_ptr() is nullptr
+         */
+        template <typename T> T& this_reference()
+        {
+            void* ptr = this_ptr();
+            if (ptr == nullptr) {
+                MGE_THROW(null_pointer) << "this_ptr() is nullptr";
+            }
+            return *static_cast<T*>(ptr);
+        }
+
         virtual void bool_result(bool value) = 0;
         virtual void int8_t_result(int8_t value) = 0;
         virtual void uint8_t_result(uint8_t value) = 0;
