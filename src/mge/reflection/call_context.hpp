@@ -120,7 +120,11 @@ namespace mge::reflection {
         template <typename T> void result(T value)
         {
             if constexpr (std::is_pointer_v<T>) {
-                pointer_result(static_cast<void*>(value));
+                if constexpr (std::is_const_v<std::remove_pointer_t<T>>) {
+                    pointer_result(const_cast<void*>(static_cast<const void*>(value)));
+                } else {
+                    pointer_result(static_cast<void*>(value));
+                }
             } else if constexpr (std::is_enum_v<T>) {
                 using UT = std::underlying_type_t<T>;
                 result(static_cast<UT>(value));

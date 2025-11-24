@@ -637,6 +637,24 @@ namespace mge::reflection {
         }
     } // namespace
 
+    namespace {
+        template <typename T>
+        concept by_value_result_v =  (  std::is_pointer_v<T> ||
+                                        std::is_same_v<T, std::string_view> ||
+                                        std::is_same_v<T, bool> ||
+                                        std::is_same_v<T, int8_t> ||
+                                        std::is_same_v<T, uint8_t> ||
+                                        std::is_same_v<T, int16_t> ||
+                                        std::is_same_v<T, uint16_t> ||
+                                        std::is_same_v<T, int32_t> ||
+                                        std::is_same_v<T, uint32_t> ||
+                                        std::is_same_v<T, int64_t> ||
+                                        std::is_same_v<T, uint64_t> ||
+                                        std::is_same_v<T, float> ||
+                                        std::is_same_v<T, double> ||
+                                        std::is_same_v<T, long double>);
+    }
+
     template <typename T>
         requires is_basic_class_v<T>
     class type<T>
@@ -731,7 +749,11 @@ namespace mge::reflection {
                 if (obj_ptr) {
                     T* obj = static_cast<T*>(obj_ptr);
                     F& field_ref = obj->*field_ptr;
-                    ctx.template result<F&>(field_ref);
+                    if constexpr (by_value_result_v<F>) {
+                        ctx.template result<std::remove_cv_t<F>>(field_ref);
+                    } else {
+                        ctx.template result<F&>(field_ref);
+                    }
                 }
             };
             invoke_function set_field;
