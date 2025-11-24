@@ -2,7 +2,7 @@
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
 
-IF(OpenGL_FOUND)
+IF(OpenGL_FOUND AND NOT LINUX)
     ADD_SUBDIRECTORY(opengl)
 ELSE()
     MESSAGE("-- OpenGL not found, not building opengl render system")

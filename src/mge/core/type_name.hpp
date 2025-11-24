@@ -33,12 +33,10 @@ namespace mge {
      */
     MGECORE_EXPORT std::string namespace_name(const std::type_info& ti);
 
-    namespace details {
-        struct sview
-        {
-            const char* str_;
-            std::size_t sz_;
+    namespace {
 
+        template <typename T> struct $h$type_name$
+        {
             static consteval auto name()
             {
 #if defined(MGE_COMPILER_MSVC)
@@ -100,27 +98,7 @@ namespace mge {
             }
         };
 
-        template <typename T> inline constexpr auto name() noexcept
-        {
-#ifdef MGE_COMPILER_MSVC
-            if constexpr (sizeof(__FUNCSIG__) >= 55 && __FUNCSIG__[32] == 'c' &&
-                          __FUNCSIG__[33] == 'l' && __FUNCSIG__[34] == 'a' &&
-                          __FUNCSIG__[35] == 's' && __FUNCSIG__[36] == 's' &&
-                          __FUNCSIG__[37] == ' ') {
-                return sview{__FUNCSIG__ + 38, sizeof(__FUNCSIG__) - 55};
-            }
-            if constexpr (sizeof(__FUNCSIG__) >= 56 && __FUNCSIG__[32] == 's' &&
-                          __FUNCSIG__[33] == 't' && __FUNCSIG__[34] == 'r' &&
-                          __FUNCSIG__[35] == 'u' && __FUNCSIG__[36] == 'c' &&
-                          __FUNCSIG__[37] == 't' && __FUNCSIG__[38] == ' ') {
-                return sview{__FUNCSIG__ + 39, sizeof(__FUNCSIG__) - 56};
-            }
-            return sview{__FUNCSIG__ + 32, sizeof(__FUNCSIG__) - 49};
-#else
-#    error Not implemented
-#endif
-        }
-    } // namespace details
+    } // namespace 
 
     /**
      * @brief Get type name of type.
@@ -130,8 +108,7 @@ namespace mge {
      */
     template <typename T> consteval std::string_view type_name()
     {
-        auto n = details::name<T>();
-        return std::string_view(n.str_, n.sz_);
+        return $h$type_name$<T>::name();
     }
 
     /**

@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/config.hpp"
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
 
@@ -507,8 +508,13 @@ namespace mge::reflection {
     MGE_DEFINE_INTEGER_TYPE(unsigned int);
     MGE_DEFINE_INTEGER_TYPE(long);
     MGE_DEFINE_INTEGER_TYPE(unsigned long);
+#if defined(MGE_COMPILER_MSVC)    
     MGE_DEFINE_INTEGER_TYPE(int64_t);
     MGE_DEFINE_INTEGER_TYPE(uint64_t);
+#elif defined(MGE_COMPILER_GCC) 
+    MGE_DEFINE_INTEGER_TYPE(long long);
+    MGE_DEFINE_INTEGER_TYPE(unsigned long long);
+#endif
 
 #undef MGE_DEFINE_INTEGER_TYPE
 
@@ -722,7 +728,6 @@ namespace mge::reflection {
             auto& specific = get_or_create_type_details<T>()->class_specific();
             auto  get_field = [field_ptr](call_context& ctx) {
                 void*        obj_ptr = ctx.this_ptr();
-                const size_t index = 0;
                 if (obj_ptr) {
                     T* obj = static_cast<T*>(obj_ptr);
                     F& field_ref = obj->*field_ptr;

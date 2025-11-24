@@ -56,14 +56,14 @@ namespace mge::reflection {
                 m_invoke_function = [func](call_context& ctx) {
                     try {
                         constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs};
+                        size_t           index{nargs - 1};
                         if constexpr (std::is_same_v<Ret, void>) {
                             func(function_parameter_helper<Args>(ctx,
-                                                                 --index)...);
+                                                                 index--)...);
                         } else {
                             ctx.template result<Ret>(func(
                                 function_parameter_helper<Args>(ctx,
-                                                                --index)...));
+                                                                index--)...));
                         }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
@@ -88,12 +88,12 @@ namespace mge::reflection {
             } else {
                 m_invoke_function = [func](call_context& ctx) {
                     constexpr size_t nargs = sizeof...(Args);
-                    size_t           index{nargs};
+                    size_t           index{nargs - 1};
                     if constexpr (std::is_same_v<Ret, void>) {
-                        func(function_parameter_helper<Args>(ctx, --index)...);
+                        func(function_parameter_helper<Args>(ctx, index--)...);
                     } else {
                         ctx.template result<Ret>(func(
-                            function_parameter_helper<Args>(ctx, --index)...));
+                            function_parameter_helper<Args>(ctx, index--)...));
                     }
                 };
             }
@@ -123,14 +123,14 @@ namespace mge::reflection {
                 m_invoke_function = [func](call_context& ctx) {
                     try {
                         constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs};
+                        size_t           index{nargs - 1};
                         if constexpr (std::is_same_v<Ret, void>) {
                             func(function_parameter_helper<Args>(ctx,
-                                                                 --index)...);
+                                                                 index--)...);
                         } else {
                             ctx.template result<Ret>(func(
                                 function_parameter_helper<Args>(ctx,
-                                                                --index)...));
+                                                                index--)...));
                         }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
