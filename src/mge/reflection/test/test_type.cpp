@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/config.hpp"
 #include "mge/reflection/type.hpp"
 #include "mge/reflection/type_details.hpp"
 #include "mock_call_context.hpp"
@@ -144,7 +145,11 @@ namespace mge::reflection {
         EXPECT_TRUE(type_long_long.is_integral());
         EXPECT_FALSE(type_long_long.is_enum());
         EXPECT_EQ(type_long_long.size(), sizeof(long long));
+#ifdef MGE_COMPILER_MSVC        
         EXPECT_EQ(type<long long>::name(), "int64_t");
+#elif defined(MGE_COMPILER_GCC) 
+        EXPECT_EQ(type<long long>::name(), "long long");
+#endif
     }
 
     TEST(type, unsigned_long_long_type)
@@ -155,8 +160,13 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_long_long.is_integral());
         EXPECT_FALSE(type_unsigned_long_long.is_enum());
         EXPECT_EQ(type_unsigned_long_long.size(), sizeof(unsigned long long));
+#ifdef MGE_COMPILER_MSVC        
         EXPECT_EQ(type<unsigned long long>::name(), "uint64_t");
-    }
+#elif defined(MGE_COMPILER_GCC) 
+        EXPECT_EQ(type<unsigned long long>::name(), "unsigned long long");
+#endif
+
+}
     TEST(type, float_type)
     {
         auto type_float = type<float>();
@@ -929,7 +939,7 @@ namespace mge::reflection {
                           buffer[sizeof(test_reference_constructor)];
         MOCK_call_context ctx;
         EXPECT_CALL(ctx, this_ptr()).WillOnce(testing::Return(buffer));
-        EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
+        EXPECT_CALL(ctx, exception_thrown(testing::A<const mge::exception&>()))
             .Times(1);
 
         invoke_fn(ctx);
