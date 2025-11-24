@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/format.hpp"
+#include "mge/core/type_name.hpp"
 #include "mge/reflection/dllexport.hpp"
 
 #include <iostream>
@@ -20,6 +21,7 @@ namespace mge::reflection {
     {
     public:
         type_identifier(const std::type_info& type_info,
+                        std::string_view      name,
                         bool                  is_const,
                         bool                  is_volatile,
                         bool                  is_reference) noexcept;
@@ -48,6 +50,11 @@ namespace mge::reflection {
         bool is_reference() const noexcept
         {
             return m_is_reference;
+        }
+
+        std::string_view name() const noexcept
+        {
+            return m_name;
         }
 
         bool operator==(const type_identifier& other) const noexcept
@@ -96,10 +103,11 @@ namespace mge::reflection {
         }
 
     private:
-        std::type_index m_type_index;
-        bool            m_is_const;
-        bool            m_is_volatile;
-        bool            m_is_reference;
+        std::type_index  m_type_index;
+        std::string_view m_name;
+        bool             m_is_const;
+        bool             m_is_volatile;
+        bool             m_is_reference;
     };
 
     namespace {
@@ -138,7 +146,9 @@ namespace mge::reflection {
     template <typename T>
     constexpr type_identifier make_type_identifier() noexcept
     {
-        return type_identifier(typeid(T),
+        using base_type = std::remove_cv_t<std::remove_reference_t<T>>;
+        return type_identifier(typeid(base_type),
+                               mge::type_name<base_type>(),
                                has_const<T>::value,
                                has_volatile<T>::value,
                                has_reference<T>::value);
@@ -157,7 +167,7 @@ struct fmt::formatter<mge::reflection::type_identifier>
                        "{}{}{}{}",
                        id.is_const() ? "const " : "",
                        id.is_volatile() ? "volatile " : "",
-                       id.type_index().name(),
+                       id.name(),
                        id.is_reference() ? "&" : "");
         return ctx.out();
     }

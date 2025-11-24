@@ -6,10 +6,12 @@
 namespace mge::reflection {
 
     type_identifier::type_identifier(const std::type_info& type_info,
+                                     std::string_view      name,
                                      bool                  is_const,
                                      bool                  is_volatile,
                                      bool is_reference) noexcept
         : m_type_index(type_info)
+        , m_name(name)
         , m_is_const(is_const)
         , m_is_volatile(is_volatile)
         , m_is_reference(is_reference)
