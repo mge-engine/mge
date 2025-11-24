@@ -24,7 +24,7 @@ TEST(gist, pointer)
     mge::gist_type<int*> gpi = mge::gist(pi);
     auto                 s = std::format("{}", gpi);
 #if defined(MGE_COMPILER_MSVC)
-    EXPECT_STREQ("int* -> 2", s.c_str());
+    EXPECT_STREQ("int * -> 2", s.c_str());
 #elif defined(MGE_COMPILER_GCC)
     EXPECT_STREQ("int* -> 2", s.c_str());
 #endif

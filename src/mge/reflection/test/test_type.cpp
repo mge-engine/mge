@@ -145,9 +145,9 @@ namespace mge::reflection {
         EXPECT_TRUE(type_long_long.is_integral());
         EXPECT_FALSE(type_long_long.is_enum());
         EXPECT_EQ(type_long_long.size(), sizeof(long long));
-#ifdef MGE_COMPILER_MSVC        
+#ifdef MGE_COMPILER_MSVC
         EXPECT_EQ(type<long long>::name(), "int64_t");
-#elif defined(MGE_COMPILER_GCC) 
+#elif defined(MGE_COMPILER_GCC)
         EXPECT_EQ(type<long long>::name(), "long long");
 #endif
     }
@@ -160,13 +160,12 @@ namespace mge::reflection {
         EXPECT_TRUE(type_unsigned_long_long.is_integral());
         EXPECT_FALSE(type_unsigned_long_long.is_enum());
         EXPECT_EQ(type_unsigned_long_long.size(), sizeof(unsigned long long));
-#ifdef MGE_COMPILER_MSVC        
+#ifdef MGE_COMPILER_MSVC
         EXPECT_EQ(type<unsigned long long>::name(), "uint64_t");
-#elif defined(MGE_COMPILER_GCC) 
+#elif defined(MGE_COMPILER_GCC)
         EXPECT_EQ(type<unsigned long long>::name(), "unsigned long long");
 #endif
-
-}
+    }
     TEST(type, float_type)
     {
         auto type_float = type<float>();
@@ -597,8 +596,11 @@ namespace mge::reflection {
         EXPECT_FALSE(type_int_ptr.is_class());
         EXPECT_TRUE(type_int_ptr.is_pointer());
         EXPECT_EQ(type_int_ptr.size(), sizeof(int*));
+#ifdef MGE_COMPILER_MSVC
+        EXPECT_EQ(type<int*>::name(), "int *");
+#elif defined(MGE_COMPILER_GCC)
         EXPECT_EQ(type<int*>::name(), "int*");
-
+#endif
         const auto& details = type_int_ptr.details();
         EXPECT_TRUE(details->is_pointer);
         EXPECT_EQ(details->pointer_specific().element_type,
@@ -617,11 +619,8 @@ namespace mge::reflection {
         EXPECT_FALSE(type_int_array.is_pointer());
         EXPECT_TRUE(type_int_array.is_array());
         EXPECT_EQ(type_int_array.size(), sizeof(int[10]));
-#ifdef MGE_COMPILER_MSVC        
-        EXPECT_EQ(type<int[10]>::name(), "int[10]");
-#elif defined(MGE_COMPILER_GCC)
         EXPECT_EQ(type<int[10]>::name(), "int [10]");
-#endif
+
         const auto& details = type_int_array.details();
         EXPECT_TRUE(details->is_array);
         const auto& array_details = details->array_specific();
@@ -648,8 +647,11 @@ namespace mge::reflection {
         EXPECT_TRUE(type_int_ref.is_lvalue_reference());
         EXPECT_FALSE(type_int_ref.is_rvalue_reference());
         EXPECT_EQ(type_int_ref.size(), sizeof(int&));
+#ifdef MGE_COMPILER_MSVC
+        EXPECT_EQ(type<int&>::name(), "int &");
+#elif defined(MGE_COMPILER_GCC)
         EXPECT_EQ(type<int&>::name(), "int&");
-
+#endif
         const auto& details = type_int_ref.details();
         EXPECT_TRUE(details->is_reference);
         const auto& reference_details = details->reference_specific();
@@ -676,8 +678,11 @@ namespace mge::reflection {
         EXPECT_FALSE(type_int_rref.is_lvalue_reference());
         EXPECT_TRUE(type_int_rref.is_rvalue_reference());
         EXPECT_EQ(type_int_rref.size(), sizeof(int&&));
+#ifdef MGE_COMPILER_MSVC
+        EXPECT_EQ(type<int&&>::name(), "int &&");
+#elif defined(MGE_COMPILER_GCC)
         EXPECT_EQ(type<int&&>::name(), "int&&");
-
+#endif
         const auto& details = type_int_rref.details();
         EXPECT_TRUE(details->is_reference);
         const auto& reference_details = details->reference_specific();
