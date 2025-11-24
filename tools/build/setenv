@@ -1,0 +1,5 @@
+SCRIPT_DIR="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+export VCPKG_ROOT="$(realpath "$SCRIPT_DIR/../../../vcpkg")"
+export PATH="$VCPKG_ROOT:$PATH"
+export CC=gcc-14
+export CXX=g++-14
