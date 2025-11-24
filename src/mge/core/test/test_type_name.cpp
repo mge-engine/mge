@@ -33,7 +33,7 @@ TEST(type_name, pointer_name)
 {
     auto tn = std::string(mge::type_name<bar**>());
 #if defined(MGE_COMPILER_MSVC)
-    EXPECT_STREQ("bar * *", tn.c_str());
+    EXPECT_STREQ("bar**", tn.c_str());
 #elif defined(MGE_COMPILER_GCC)
     EXPECT_STREQ("bar**", tn.c_str());
 #endif
