@@ -105,8 +105,7 @@ namespace mge::reflection {
         parent1.details()->add(child_details);
 
         // Attempting to add to a different parent should throw
-        EXPECT_THROW(parent2.details()->add(child_details),
-                     mge::illegal_state);
+        EXPECT_THROW(parent2.details()->add(child_details), mge::illegal_state);
 
         // Child should still be under parent1
         EXPECT_EQ(child_details->parent(), parent1.details());
