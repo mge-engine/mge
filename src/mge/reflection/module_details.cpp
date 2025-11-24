@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/reflection/module_details.hpp"
+#include "mge/reflection/function_details.hpp"
 #include "mge/reflection/type_details.hpp"
 
 #include "mge/core/stdexceptions.hpp"
@@ -89,7 +90,19 @@ namespace mge::reflection {
         details->module = weak_from_this();
     }
 
-    void module_details::add(const function_details_ref& details) {}
+    void module_details::add(const function_details_ref& details)
+    {
+        if (auto m = details->m_module.lock()) {
+            if (m->full_name() != full_name()) {
+                MGE_THROW(illegal_state)
+                    << "Module of function " << details->name() << " set to "
+                    << m->full_name() << ", only possible to set to "
+                    << full_name();
+            }
+            return; // don't add to same module
+        }
+        details->m_module = weak_from_this();
+    }
 
     void module_details::add(const module_details_ref& details)
     {

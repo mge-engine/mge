@@ -168,11 +168,19 @@ namespace mge::reflection {
             m_invoke_function(ctx);
         }
 
+        module_details_weak_ref module() const noexcept
+        {
+            return m_module;
+        }
+
     private:
         mge::reflection::signature m_signature;
         std::string                m_name;
         invoke_function            m_invoke_function;
         bool                       m_noexcept;
+        module_details_weak_ref    m_module;
+
+        friend class module_details;
     };
 
 } // namespace mge::reflection
