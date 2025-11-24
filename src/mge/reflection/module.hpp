@@ -40,9 +40,15 @@ namespace mge::reflection {
             return *this;
         }
 
+        const module_details_ref& details() const noexcept
+        {
+            return m_details;
+        }
+
     private:
         void add_details(const type_details_ref& details);
         void add_details(const function_details_ref& details);
+        void add_details(const module_details_ref& details);
 
         template <typename T> void add(const type<T>& t)
         {
@@ -52,6 +58,11 @@ namespace mge::reflection {
         inline void add(const function& f)
         {
             add_details(f.details());
+        }
+
+        inline void add(const module& m)
+        {
+            add_details(m.details());
         }
 
         module(const module_details_ref& details) :m_details(details) {}

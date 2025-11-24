@@ -91,4 +91,21 @@ namespace mge::reflection {
 
     void module_details::add(const function_details_ref& details) {}
 
+    void module_details::add(const module_details_ref& details)
+    {
+        if (details->is_root()) {
+            MGE_THROW(illegal_state)
+                << "Cannot add root module as child module";
+        }
+        if (details->m_parent.lock().get() == this) {
+            return; // already added
+        } else if (auto p = details->m_parent.lock()) {
+            MGE_THROW(illegal_state)
+                << "Module " << details->full_name()
+                << " already has parent module " << p->full_name();
+        }
+        details->m_parent = weak_from_this();
+        m_children.push_back(details);
+    }
+
 } // namespace mge::reflection

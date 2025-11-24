@@ -39,6 +39,7 @@ namespace mge::reflection {
 
         void add(const type_details_ref& details);
         void add(const function_details_ref& details);
+        void add(const module_details_ref& details);
 
     private:
         module_details_weak_ref         m_parent;

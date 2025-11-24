@@ -40,4 +40,76 @@ namespace mge::reflection {
         EXPECT_FALSE(mod4parent.is_root());
     }
 
+    TEST(module, add_child_module)
+    {
+        mge::reflection::module parent("::add_test_parent");
+
+        // Create a standalone child module details manually
+        auto child_details =
+            std::make_shared<module_details>(nullptr, "add_test_child");
+
+        EXPECT_EQ(parent.full_name(), "::add_test_parent");
+        EXPECT_FALSE(child_details->parent());
+
+        // Add child to parent through module_details
+        parent.details()->add(child_details);
+
+        // Verify child is now under parent
+        EXPECT_EQ(child_details->parent(), parent.details());
+        EXPECT_EQ(child_details->full_name(),
+                  "::add_test_parent::add_test_child");
+
+        // Verify parent's children list
+        const auto& children = parent.details()->children();
+        bool        found = false;
+        for (const auto& ch : children) {
+            if (ch->name() == "add_test_child") {
+                found = true;
+                break;
+            }
+        }
+        EXPECT_TRUE(found);
+    }
+
+    TEST(module, cannot_add_root_module_as_child)
+    {
+        mge::reflection::module parent("::neg_test_parent1");
+        auto                    root = module_details::root();
+
+        EXPECT_THROW(parent.details()->add(root), mge::illegal_state);
+    }
+
+    TEST(module, add_same_child_twice_is_idempotent)
+    {
+        mge::reflection::module parent("::neg_test_parent2");
+        auto                    child_details =
+            std::make_shared<module_details>(nullptr, "neg_test_child2");
+
+        parent.details()->add(child_details);
+        size_t initial_child_count = parent.details()->children().size();
+
+        // Adding the same child again should not add it twice
+        parent.details()->add(child_details);
+
+        EXPECT_EQ(parent.details()->children().size(), initial_child_count);
+        EXPECT_EQ(child_details->parent(), parent.details());
+    }
+
+    TEST(module, cannot_add_child_with_existing_parent)
+    {
+        mge::reflection::module parent1("::neg_test_parent3");
+        mge::reflection::module parent2("::neg_test_parent4");
+        auto                    child_details =
+            std::make_shared<module_details>(nullptr, "neg_test_child3");
+
+        parent1.details()->add(child_details);
+
+        // Attempting to add to a different parent should throw
+        EXPECT_THROW(parent2.details()->add(child_details),
+                     mge::illegal_state);
+
+        // Child should still be under parent1
+        EXPECT_EQ(child_details->parent(), parent1.details());
+    }
+
 } // namespace mge::reflection
