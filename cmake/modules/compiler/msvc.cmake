@@ -50,6 +50,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-wd5264") # variable not used
     ADD_DEFINITIONS("-wd4883") # function size supresses optimizations
     ADD_DEFINITIONS("-wd4189") # local variable is initialized but never referenced
+    ADD_DEFINITIONS("-wd4866") # compiler cannot enforce left-to-right evaluation order in braced initializer list
     ADD_DEFINITIONS("-showIncludes")
     IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
         ADD_DEFINITIONS("-wd4548")

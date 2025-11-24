@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/string_pool.hpp"
+#include <cstring>
 #include <stdexcept>
 
 namespace mge {
@@ -38,6 +39,9 @@ namespace mge {
         return get(str_sv);
     }
 
-    string_pool::size_type string_pool::size() const { return m_values.size(); }
+    string_pool::size_type string_pool::size() const
+    {
+        return m_values.size();
+    }
 
 } // namespace mge

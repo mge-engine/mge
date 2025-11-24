@@ -35,9 +35,12 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
-        bool                    debug() const;
-        bool                    stop_on_validation_errors() const;
-        inline VkInstance       instance() const noexcept { return m_instance; }
+        bool              debug() const;
+        bool              stop_on_validation_errors() const;
+        inline VkInstance instance() const noexcept
+        {
+            return m_instance;
+        }
         inline VkPhysicalDevice physical_device() const noexcept
         {
             return m_physical_device;
@@ -53,7 +56,10 @@ namespace mge::vulkan {
             return static_cast<uint32_t>(m_graphics_queue_index);
         }
 
-        inline vulkan_library& library() noexcept { return *m_library; }
+        inline vulkan_library& library() noexcept
+        {
+            return *m_library;
+        }
 
     private:
         void init_capabilities();

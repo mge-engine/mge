@@ -6,4 +6,4 @@
 namespace mge {
     void MGEMATH_EXPORT dummy() {}
 
-}
+} // namespace mge

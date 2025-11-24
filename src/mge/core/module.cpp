@@ -22,8 +22,13 @@ namespace mge {
     {
         auto stem = path.stem();
         auto stem_str = stem.string();
+#ifdef MGE_OS_WINDOWS
         m_name = std::string(stem_str.begin() + 11, stem_str.end());
-
+#elif defined(MGE_OS_LINUX)
+        m_name = std::string(stem_str.begin() + 14, stem_str.end());
+#else
+#    error Missing port
+#endif
         MGE_TRACE_OBJECT(CORE, DEBUG)
             << "Loading module '" << m_name << "' from shared library " << path;
 
@@ -80,6 +85,7 @@ namespace mge {
 
     static bool is_module(const fs::path& name)
     {
+#ifdef MGE_OS_WINDOWS
         auto stem = name.stem();
         if (stem.string().starts_with("mge_module_")) {
             auto suffix = name.extension();
@@ -87,6 +93,18 @@ namespace mge {
                 return true;
             }
         }
+#elif defined(MGE_OS_LINUX)
+        auto stem = name.stem();
+        if (stem.string().starts_with("libmge_module_")) {
+            auto suffix = name.extension();
+            if (suffix.string() == ".so"sv) {
+                return true;
+            }
+        }
+#else
+#    error Missing port
+#endif
+
         return false;
     }
 

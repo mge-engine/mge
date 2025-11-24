@@ -18,7 +18,10 @@ namespace mge::opengl {
                      void*           initial_data);
         virtual ~index_buffer();
 
-        inline GLuint buffer_name() const noexcept { return m_buffer; }
+        inline GLuint buffer_name() const noexcept
+        {
+            return m_buffer;
+        }
 
     protected:
         void* on_map() override;

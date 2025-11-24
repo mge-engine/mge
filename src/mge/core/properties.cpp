@@ -20,7 +20,10 @@ namespace mge {
         load(input->istream());
     }
 
-    properties::properties(std::istream& s) { load(s); }
+    properties::properties(std::istream& s)
+    {
+        load(s);
+    }
 
     properties& properties::operator=(const properties& p)
     {
@@ -34,14 +37,20 @@ namespace mge {
         return *this;
     }
 
-    void properties::clear() { m_data.clear(); }
+    void properties::clear()
+    {
+        m_data.clear();
+    }
 
     void properties::erase(std::string_view key)
     {
         m_data.erase(std::string(key.begin(), key.end()));
     }
 
-    void properties::erase(const std::string& key) { m_data.erase(key); }
+    void properties::erase(const std::string& key)
+    {
+        m_data.erase(key);
+    }
 
     void properties::load(std::istream& s)
     {

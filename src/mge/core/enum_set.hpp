@@ -23,7 +23,10 @@ namespace mge {
     private:
         using base_type = typename std::underlying_type<E>::type;
 
-        static constexpr size_t bitset_size() { return (size_t)M; }
+        static constexpr size_t bitset_size()
+        {
+            return (size_t)M;
+        }
 
     public:
         /**
@@ -66,7 +69,10 @@ namespace mge {
          *
          * @param value enum value
          */
-        inline void set(E value) { m_bits.set(static_cast<base_type>(value)); }
+        inline void set(E value)
+        {
+            m_bits.set(static_cast<base_type>(value));
+        }
 
         /**
          * @brief Resets value of an enum value.
@@ -104,7 +110,10 @@ namespace mge {
          *
          * @return @c true if no value set
          */
-        bool empty() const { return m_bits.none(); }
+        bool empty() const
+        {
+            return m_bits.none();
+        }
 
         /**
          * @brief Resets values set in argument
@@ -132,21 +141,30 @@ namespace mge {
         /**
          * @brief Clears the whole set.
          */
-        void reset() { m_bits.reset(); }
+        void reset()
+        {
+            m_bits.reset();
+        }
 
         /**
          * @brief Conversion to base bitset.
          *
          * @return underlying bitseta
          */
-        operator const std::bitset<bitset_size()>&() const { return m_bits; }
+        operator const std::bitset<bitset_size()>&() const
+        {
+            return m_bits;
+        }
 
         /**
          * @brief Conversion to base bitset.
          *
          * @return underlying bitset
          */
-        operator std::bitset<bitset_size()>&() { return m_bits; }
+        operator std::bitset<bitset_size()>&()
+        {
+            return m_bits;
+        }
 
         /**
          * @brief Combine this enum set with another.

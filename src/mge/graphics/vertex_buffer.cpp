@@ -14,7 +14,10 @@ namespace mge {
 
     vertex_buffer::~vertex_buffer() {}
 
-    const vertex_layout& vertex_buffer::layout() const { return m_layout; }
+    const vertex_layout& vertex_buffer::layout() const
+    {
+        return m_layout;
+    }
 
     size_t vertex_buffer::element_count() const
     {

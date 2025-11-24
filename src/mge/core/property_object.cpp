@@ -26,6 +26,9 @@ namespace mge {
         m_properties.erase(key);
     }
 
-    void property_object::clear_properties() { m_properties.clear(); }
+    void property_object::clear_properties()
+    {
+        m_properties.clear();
+    }
 
 } // namespace mge

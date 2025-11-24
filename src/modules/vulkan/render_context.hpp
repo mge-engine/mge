@@ -41,10 +41,19 @@ namespace mge::vulkan {
 #undef INSTANCE_FUNCTION
 #undef DEVICE_FUNCTION
 
-        VkQueue graphics_queue() const noexcept { return m_queue; }
+        VkQueue graphics_queue() const noexcept
+        {
+            return m_queue;
+        }
         // TODO: support different present queue
-        VkQueue  present_queue() const noexcept { return m_queue; }
-        VkDevice device() const noexcept { return m_device; }
+        VkQueue present_queue() const noexcept
+        {
+            return m_queue;
+        }
+        VkDevice device() const noexcept
+        {
+            return m_device;
+        }
         const VkSurfaceFormatKHR& surface_format() const noexcept
         {
             return m_used_surface_format;
@@ -69,16 +78,25 @@ namespace mge::vulkan {
             return m_graphics_command_pool;
         }
 
-        VkRenderPass render_pass() const noexcept { return m_render_pass; }
+        VkRenderPass render_pass() const noexcept
+        {
+            return m_render_pass;
+        }
 
         VkFramebuffer framebuffer(uint32_t index) const
         {
             return m_swap_chain_framebuffers[index];
         }
 
-        VkExtent2D extent() const noexcept { return m_extent; }
+        VkExtent2D extent() const noexcept
+        {
+            return m_extent;
+        }
 
-        VmaAllocator allocator() const noexcept { return m_allocator; }
+        VmaAllocator allocator() const noexcept
+        {
+            return m_allocator;
+        }
 
         void execute_frame_command_buffer(VkCommandBuffer command_buffer);
         void discard_command_buffer(uint64_t        frame,

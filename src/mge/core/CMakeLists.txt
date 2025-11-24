@@ -114,11 +114,16 @@ MGE_LIBRARY(
 TARGET_LINK_LIBRARIES(mgecore 
     boost-all 
     linenoise 
-    dbghelp 
     nlohmann_json::nlohmann_json
     jemalloc::jemalloc
-    magic_enum::magic_enum
     fmt::fmt
     PkgConfig::LIBFFI
 )
+
+IF(WIN32)
+    TARGET_LINK_LIBRARIES(mgecore dbghelp)
+ELSEIF(LINUX)
+    TARGET_LINK_LIBRARIES(mgecore stdc++exp dl)
+ENDIF()
+
 ADD_SUBDIRECTORY(test)

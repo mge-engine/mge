@@ -149,8 +149,8 @@ template <> struct fmt::formatter<mge::program::attribute>
     }
 
     template <typename FormatContext>
-    auto format(const mge::program::attribute& attr, FormatContext& ctx) const
-        -> decltype(ctx.out())
+    auto format(const mge::program::attribute& attr,
+                FormatContext&                 ctx) const -> decltype(ctx.out())
     {
         return fmt::format_to(ctx.out(),
                               "attribute{{ name: '{}', type: {}, size: {} }}",
@@ -168,8 +168,8 @@ template <> struct fmt::formatter<mge::program::uniform>
     }
 
     template <typename FormatContext>
-    auto format(const mge::program::uniform& uniform, FormatContext& ctx) const
-        -> decltype(ctx.out())
+    auto format(const mge::program::uniform& uniform,
+                FormatContext&               ctx) const -> decltype(ctx.out())
     {
         return fmt::format_to(
             ctx.out(),

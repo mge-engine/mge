@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/file_input_stream.hpp"
+#include "mge/config.hpp"
 #include "mge/core/io_exception.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/system_error.hpp"
@@ -11,7 +12,11 @@ namespace mge {
     file_input_stream::file_input_stream(const path& path)
         : m_path(path)
     {
+#ifdef MGE_OS_WINDOWS
         m_file = ::_wfopen(path.native().c_str(), L"rb");
+#else
+        m_file = ::fopen(path.string().c_str(), "rb");
+#endif
         if (!m_file) {
             MGE_CHECK_SYSTEM_ERROR(fopen);
         }
@@ -76,7 +81,11 @@ namespace mge {
                 MGE_THROW(illegal_argument)
                     << "Invalid direction type: " << dir;
             }
+#ifdef MGE_OS_WINDOWS
             if (::_fseeki64(m_file, offset, origin) != 0) {
+#else
+            if (::fseeko64(m_file, offset, origin) != 0) {
+#endif
                 MGE_CHECK_SYSTEM_ERROR(fseek);
             }
         } catch (const mge::exception& ex) {

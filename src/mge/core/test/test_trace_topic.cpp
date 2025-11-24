@@ -17,7 +17,10 @@ public:
     trace_topic_test() = default;
     virtual ~trace_topic_test() = default;
 
-    static void SetUpTestCase() { mge::configuration::load(); }
+    static void SetUpTestCase()
+    {
+        mge::configuration::load();
+    }
     static bool env_modified()
     {
         return ::getenv("MGE_TRACE_ENABLED") || ::getenv("MGE_TRACE_TO_STDOUT");

@@ -37,7 +37,10 @@ namespace mge {
             return *this;
         }
 
-        sequence_type sequence() const noexcept { return m_sequence; }
+        sequence_type sequence() const noexcept
+        {
+            return m_sequence;
+        }
 
         bool operator<(const sequenced& other) const noexcept
         {
@@ -76,7 +79,10 @@ namespace mge {
             return m_sequence != 0;
         }
 
-        constexpr bool has_value() const noexcept { return m_sequence != 0; }
+        constexpr bool has_value() const noexcept
+        {
+            return m_sequence != 0;
+        }
 
     private:
         sequence_type m_sequence;
@@ -89,7 +95,7 @@ namespace mge {
     };
 } // namespace mge
 namespace std {
-    template <typename T> struct std::hash<mge::sequenced<T>>
+    template <typename T> struct hash<mge::sequenced<T>>
     {
         std::size_t operator()(const mge::sequenced<T>& s) const noexcept
         {

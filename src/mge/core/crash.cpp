@@ -25,6 +25,8 @@ namespace mge {
         vsnprintf(buf, needed, fmt, args2);
         stacktrace st;
         fmt::print(stderr, "{}\n{}", buf, st);
+        fflush(stdout);
+        fflush(stderr);
         va_end(args);
         abort();
     }

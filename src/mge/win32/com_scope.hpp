@@ -20,6 +20,9 @@ namespace mge {
                 m_ptr->Release();
         }
 
-        void reset() { m_ptr = nullptr; }
+        void reset()
+        {
+            m_ptr = nullptr;
+        }
     };
 } // namespace mge

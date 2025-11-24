@@ -10,7 +10,10 @@ TEST(closure, simple)
 {
     struct void_closure : public mge::closure<void, void>
     {
-        void execute() override { simple_closure_executed = true; }
+        void execute() override
+        {
+            simple_closure_executed = true;
+        }
     };
 
     void_closure c;
@@ -22,7 +25,10 @@ TEST(closure, simple_int)
 {
     struct int_closure : public mge::closure<int, int>
     {
-        int execute(int x) override { return x + 1; }
+        int execute(int x) override
+        {
+            return x + 1;
+        }
     };
 
     int_closure c;

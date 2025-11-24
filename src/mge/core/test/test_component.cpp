@@ -26,7 +26,10 @@ class a_implementation : public a_component
 public:
     virtual ~a_implementation() = default;
 
-    int foo() { return 42; }
+    int foo()
+    {
+        return 42;
+    }
 };
 
 MGE_REGISTER_IMPLEMENTATION(a_implementation, a_component, adummy, bdummy);

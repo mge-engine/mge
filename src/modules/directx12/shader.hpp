@@ -30,7 +30,10 @@ namespace mge::dx12 {
         virtual void on_set_code(const mge::buffer& code) override;
 
     public:
-        ID3DBlob* code() const { return m_code.get(); }
+        ID3DBlob* code() const
+        {
+            return m_code.get();
+        }
 
         void reflect(mge::program::attribute_list&      attributes,
                      mge::program::uniform_list&        uniforms,

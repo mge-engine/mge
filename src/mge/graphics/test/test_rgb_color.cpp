@@ -14,7 +14,10 @@ TEST(rgb_color, default_construct)
     EXPECT_EQ(0.0f, c.b);
 }
 
-TEST(rgb_color, from_string) { rgb_color c("orange"); }
+TEST(rgb_color, from_string)
+{
+    rgb_color c("orange");
+}
 
 TEST(rgb_color, stream_output)
 {

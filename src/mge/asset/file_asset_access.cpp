@@ -31,7 +31,10 @@ namespace mge {
         return std::make_shared<file_input_stream>(m_file_path);
     }
 
-    asset_type file_asset_access::type() const { return asset_type::UNKNOWN; }
+    asset_type file_asset_access::type() const
+    {
+        return asset_type::UNKNOWN;
+    }
 
     bool file_asset_access::has_properties() const
     {

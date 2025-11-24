@@ -10,7 +10,10 @@ namespace mge {
         , m_type(type)
     {}
 
-    texture_type texture::type() const { return m_type; }
+    texture_type texture::type() const
+    {
+        return m_type;
+    }
 
     void texture::set_data(const image& img)
     {

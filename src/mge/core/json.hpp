@@ -45,10 +45,10 @@ namespace mge {
     }
 
     template <typename T>
-        requires mge::is_container<T> && !std::is_same_v<T, std::string> &&
-                 !std::is_same_v<T, std::wstring> &&
-                 !is_associative_container<T>
-                 inline void from_json(const json::json& j, T& v)
+        requires mge::is_container<T> && ((!std::is_same_v<T, std::string>) &&
+                                          (!std::is_same_v<T, std::wstring>) &&
+                                          (!is_associative_container<T>))
+    inline void from_json(const json::json& j, T& v)
     {
         if (j.is_array()) {
             v.clear();
@@ -99,10 +99,10 @@ namespace mge {
     }
 
     template <typename T>
-        requires mge::is_container<T> && !std::is_same_v<T, std::string> &&
-                 !std::is_same_v<T, std::wstring> &&
-                 !is_associative_container<T>
-                 inline void to_json(json::json & j, const T& v)
+        requires mge::is_container<T> && ((!std::is_same_v<T, std::string>) &&
+                                          (!std::is_same_v<T, std::wstring>) &&
+                                          (!is_associative_container<T>))
+    inline void to_json(json::json& j, const T& v)
     {
         for (const auto& e : v) {
             to_json(j.emplace_back(), e);
@@ -111,7 +111,7 @@ namespace mge {
 
     template <typename T>
         requires mge::is_associative_container<T> &&
-                 std::is_same_v<T::key_type, std::string>
+                 std::is_same_v<typename T::key_type, std::string>
     inline void to_json(json::json& j, const T& v)
     {
         for (const auto& [key, value] : v) {
@@ -119,6 +119,9 @@ namespace mge {
         }
     }
 
-    inline void to_json(json::json& j, const char* v) { j = std::string(v); }
+    inline void to_json(json::json& j, const char* v)
+    {
+        j = std::string(v);
+    }
 
 } // namespace mge

@@ -266,7 +266,7 @@ namespace mge {
          * Overrides @c std::exception @c what function.
          * @return exception message
          */
-        const char* what() const override;
+        const char* what() const noexcept override;
 
         /**
          * Get current exception of this thread.
@@ -285,20 +285,6 @@ namespace mge {
         {
             m_infos[std::type_index(typeid(typename Info::tag_type))] =
                 info.value();
-            return *this;
-        }
-
-        /**
-         * @brief Set information associated with exception message.
-         *
-         * @tparam  exception::message
-         * @param info info object containing message
-         * @return @c *this
-         */
-        template <>
-        exception& set_info<exception::message>(const exception::message& info)
-        {
-            m_raw_message = info.value();
             return *this;
         }
 
@@ -510,6 +496,14 @@ struct fmt::formatter<mge::exception::exception_details>
 };
 
 namespace mge {
+
+    template <>
+    inline exception&
+    exception::set_info<exception::message>(const exception::message& info)
+    {
+        m_raw_message = info.value();
+        return *this;
+    }
 
     MGECORE_EXPORT std::ostream&
     operator<<(std::ostream& os, const mge::exception::exception_details& ed);

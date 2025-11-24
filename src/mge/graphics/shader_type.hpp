@@ -8,7 +8,6 @@
 #include <format>
 #include <iosfwd>
 
-
 namespace mge {
 
     /**

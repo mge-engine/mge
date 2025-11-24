@@ -36,10 +36,19 @@ namespace mge {
         --m_map_count;
     }
 
-    bool hardware_buffer::mapped() const noexcept { return m_map_count != 0; }
+    bool hardware_buffer::mapped() const noexcept
+    {
+        return m_map_count != 0;
+    }
 
-    buffer_type hardware_buffer::type() const noexcept { return m_type; }
+    buffer_type hardware_buffer::type() const noexcept
+    {
+        return m_type;
+    }
 
-    size_t hardware_buffer::size() const noexcept { return m_size; }
+    size_t hardware_buffer::size() const noexcept
+    {
+        return m_size;
+    }
 
 } // namespace mge

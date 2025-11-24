@@ -7,7 +7,6 @@
 #include <cstdint>
 #include <iosfwd>
 
-
 namespace mge {
 
     /**

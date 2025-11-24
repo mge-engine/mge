@@ -8,6 +8,12 @@
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
 #endif
+
+#ifdef MGE_OS_LINUX
+#    include <sys/syscall.h>
+#    include <unistd.h>
+#endif
+
 namespace mge {
 
     static thread_local thread*  t_this_thread;
@@ -32,14 +38,20 @@ namespace mge {
 
     thread::~thread() {}
 
-    thread::id thread::get_id() const { return m_running_thread.get_id(); }
+    thread::id thread::get_id() const
+    {
+        return m_running_thread.get_id();
+    }
 
     uint32_t thread::hardware_concurrency()
     {
         return running_thread_type::hardware_concurrency();
     }
 
-    void thread::on_start() { t_this_thread = this; }
+    void thread::on_start()
+    {
+        t_this_thread = this;
+    }
 
     void thread::on_finish()
     {
@@ -62,9 +74,15 @@ namespace mge {
         }
     }
 
-    void thread::detach() { m_running_thread.detach(); }
+    void thread::detach()
+    {
+        m_running_thread.detach();
+    }
 
-    void thread::join() { m_running_thread.join(); }
+    void thread::join()
+    {
+        m_running_thread.join();
+    }
 
     bool thread::joinable() const noexcept
     {
@@ -72,6 +90,15 @@ namespace mge {
     }
 
     namespace this_thread {
-        mge::thread::system_id system_id() { return GetCurrentThreadId(); }
+        mge::thread::system_id system_id()
+        {
+#ifdef MGE_OS_WINDOWS
+            return GetCurrentThreadId();
+#elif defined(MGE_OS_LINUX)
+            return static_cast<mge::thread::system_id>(syscall(SYS_gettid));
+#else
+#    error Missing port
+#endif
+        }
     } // namespace this_thread
 } // namespace mge

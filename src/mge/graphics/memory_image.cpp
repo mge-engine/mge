@@ -47,15 +47,24 @@ namespace mge {
         m_data_size = size;
     }
 
-    memory_image::~memory_image() { mge::free(m_data); }
+    memory_image::~memory_image()
+    {
+        mge::free(m_data);
+    }
 
-    void* memory_image::data() const { return m_data; }
+    void* memory_image::data() const
+    {
+        return m_data;
+    }
 
     std::span<uint8_t> memory_image::data_span() const
     {
         return std::span<uint8_t>(static_cast<uint8_t*>(m_data), m_data_size);
     }
 
-    size_t memory_image::binary_size() const { return m_data_size; }
+    size_t memory_image::binary_size() const
+    {
+        return m_data_size;
+    }
 
 } // namespace mge

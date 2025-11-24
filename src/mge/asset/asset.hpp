@@ -87,7 +87,10 @@ namespace mge {
          *
          * @return asset path
          */
-        const mge::path& path() const { return m_path; }
+        const mge::path& path() const
+        {
+            return m_path;
+        }
 
         /**
          * Get whether this asset exists.

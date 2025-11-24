@@ -100,4 +100,4 @@ namespace mge {
         fmt::print(os, "{}", t);
         return os;
     }
-}
+} // namespace mge

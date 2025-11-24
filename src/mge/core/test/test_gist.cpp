@@ -1,6 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/config.hpp"
 #include "mge/core/gist.hpp"
 #include "test/googletest.hpp"
 
@@ -22,7 +23,11 @@ TEST(gist, pointer)
     int*                 pi = &i;
     mge::gist_type<int*> gpi = mge::gist(pi);
     auto                 s = std::format("{}", gpi);
+#if defined(MGE_COMPILER_MSVC)
+    EXPECT_STREQ("int * -> 2", s.c_str());
+#elif defined(MGE_COMPILER_GCC)
     EXPECT_STREQ("int* -> 2", s.c_str());
+#endif
 }
 
 TEST(gist, shared_pointer)

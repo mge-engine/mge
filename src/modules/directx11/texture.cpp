@@ -7,7 +7,6 @@
 #include "mge/core/zero_memory.hpp"
 #include "render_context.hpp"
 
-
 namespace mge::dx11 {
 
     texture::texture(render_context& context, mge::texture_type type)

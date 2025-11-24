@@ -6,7 +6,6 @@
 #include "mge/input/dllexport.hpp"
 #include <iosfwd>
 
-
 namespace mge {
 
     /**

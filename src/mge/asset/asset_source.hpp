@@ -73,7 +73,10 @@ namespace mge {
          *
          * @return mount point
          */
-        const mge::path& mount_point() const noexcept { return m_mount_point; }
+        const mge::path& mount_point() const noexcept
+        {
+            return m_mount_point;
+        }
 
     protected:
         virtual void on_set_mount_point(const mge::path& mount_point);
