@@ -6,11 +6,11 @@
 
 namespace mge::reflection {
 
-    class MOCK_call_context : public call_context
+    class MOCK_call_context_base : public call_context
     {
     public:
-        MOCK_call_context() = default;
-        virtual ~MOCK_call_context() = default;
+        MOCK_call_context_base() = default;
+        virtual ~MOCK_call_context_base() = default;
         MOCK_METHOD(bool, bool_parameter, (size_t index), (override));
         MOCK_METHOD(int8_t, int8_t_parameter, (size_t index), (override));
         MOCK_METHOD(uint8_t, uint8_t_parameter, (size_t index), (override));
@@ -62,4 +62,6 @@ namespace mge::reflection {
                     (override));
         MOCK_METHOD(void, exception_thrown, (), (override));
     };
+
+    using MOCK_call_context = testing::StrictMock<MOCK_call_context_base>;
 } // namespace mge::reflection

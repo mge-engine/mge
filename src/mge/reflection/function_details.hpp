@@ -25,6 +25,29 @@ namespace mge::reflection {
             }
         }
 
+        template <typename F, typename... Args, size_t... Is>
+        inline void function_caller_impl(call_context& ctx,
+                                         F             func,
+                                         std::index_sequence<Is...>)
+        {
+            if constexpr (std::is_same_v<void,
+                                         std::invoke_result_t<F, Args...>>) {
+                func(function_parameter_helper<Args>(ctx, Is)...);
+            } else {
+                ctx.template result<std::invoke_result_t<F, Args...>>(
+                    func(function_parameter_helper<Args>(ctx, Is)...));
+            }
+        }
+
+        template <typename F, typename... Args>
+        inline void function_caller(call_context& ctx, F func)
+        {
+            function_caller_impl<F, Args...>(
+                ctx,
+                func,
+                std::make_index_sequence<sizeof...(Args)>{});
+        }
+
     } // namespace
 
     class MGEREFLECTION_EXPORT function_details
@@ -55,16 +78,7 @@ namespace mge::reflection {
             } else {
                 m_invoke_function = [func](call_context& ctx) {
                     try {
-                        constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs - 1};
-                        if constexpr (std::is_same_v<Ret, void>) {
-                            func(function_parameter_helper<Args>(ctx,
-                                                                 index--)...);
-                        } else {
-                            ctx.template result<Ret>(func(
-                                function_parameter_helper<Args>(ctx,
-                                                                index--)...));
-                        }
+                        function_caller<Ret (*)(Args...), Args...>(ctx, func);
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
                     } catch (const std::exception& ex) {
@@ -87,14 +101,8 @@ namespace mge::reflection {
                 m_invoke_function = [func](call_context& ctx) { func(); };
             } else {
                 m_invoke_function = [func](call_context& ctx) {
-                    constexpr size_t nargs = sizeof...(Args);
-                    size_t           index{nargs - 1};
-                    if constexpr (std::is_same_v<Ret, void>) {
-                        func(function_parameter_helper<Args>(ctx, index--)...);
-                    } else {
-                        ctx.template result<Ret>(func(
-                            function_parameter_helper<Args>(ctx, index--)...));
-                    }
+                    function_caller<Ret (*)(Args...) noexcept, Args...>(ctx,
+                                                                        func);
                 };
             }
         }
@@ -122,16 +130,7 @@ namespace mge::reflection {
             } else {
                 m_invoke_function = [func](call_context& ctx) {
                     try {
-                        constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs - 1};
-                        if constexpr (std::is_same_v<Ret, void>) {
-                            func(function_parameter_helper<Args>(ctx,
-                                                                 index--)...);
-                        } else {
-                            ctx.template result<Ret>(func(
-                                function_parameter_helper<Args>(ctx,
-                                                                index--)...));
-                        }
+                        function_caller<decltype(func), Args...>(ctx, func);
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
                     } catch (const std::exception& ex) {

@@ -24,6 +24,16 @@ namespace mge::reflection {
         {
             // Does nothing in test
         }
+
+        int subtract(int a, int b)
+        {
+            return a - b;
+        }
+
+        int divide(int a, int b) noexcept
+        {
+            return a / b;
+        }
     } // namespace
 
     TEST(function, constructor_with_return_and_parameters)
@@ -143,7 +153,7 @@ namespace mge::reflection {
     TEST(function, constructor_std_function_with_return_and_parameters)
     {
         std::function<int(int, int)> func = [](int a, int b) { return a + b; };
-        function f("std_add", func);
+        function                     f("std_add", func);
 
         const auto& details = f.details();
         ASSERT_TRUE(details);
@@ -160,7 +170,7 @@ namespace mge::reflection {
     TEST(function, constructor_std_function_void_no_params)
     {
         std::function<void()> func = []() {};
-        function f("std_void", func);
+        function              f("std_void", func);
 
         const auto& details = f.details();
         ASSERT_TRUE(details);
@@ -175,7 +185,7 @@ namespace mge::reflection {
     TEST(function, invoke_std_function_with_return_value)
     {
         std::function<int(int, int)> func = [](int a, int b) { return a * b; };
-        function f("std_multiply", func);
+        function                     f("std_multiply", func);
 
         MOCK_call_context ctx;
         EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(testing::Return(4));
@@ -191,7 +201,7 @@ namespace mge::reflection {
         called = false;
 
         std::function<void()> func = []() { called = true; };
-        function f("std_call", func);
+        function              f("std_call", func);
 
         MOCK_call_context ctx;
         f.details()->invoke(ctx);
@@ -209,6 +219,49 @@ namespace mge::reflection {
         MOCK_call_context ctx;
         EXPECT_CALL(ctx, exception_thrown(testing::A<const std::exception&>()))
             .Times(1);
+
+        f.details()->invoke(ctx);
+    }
+
+    TEST(function, invoke_parameter_order_matters)
+    {
+        function f("subtract", subtract);
+
+        MOCK_call_context ctx;
+        // Parameters should be retrieved in reverse order (index 1, then 0)
+        // subtract(10, 3) should return 7, not -7
+        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(testing::Return(3));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(testing::Return(10));
+        EXPECT_CALL(ctx, int32_t_result(7)).Times(1);
+
+        f.details()->invoke(ctx);
+    }
+
+    TEST(function, invoke_noexcept_parameter_order_matters)
+    {
+        function f("divide", divide);
+
+        MOCK_call_context ctx;
+        // Parameters should be retrieved in reverse order (index 1, then 0)
+        // divide(20, 4) should return 5, not 0
+        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(testing::Return(4));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(testing::Return(20));
+        EXPECT_CALL(ctx, int32_t_result(5)).Times(1);
+
+        f.details()->invoke(ctx);
+    }
+
+    TEST(function, invoke_std_function_parameter_order_matters)
+    {
+        std::function<int(int, int)> func = [](int a, int b) { return a - b; };
+        function                     f("std_subtract", func);
+
+        MOCK_call_context ctx;
+        // Parameters should be retrieved in reverse order (index 1, then 0)
+        // subtract(15, 5) should return 10, not -10
+        EXPECT_CALL(ctx, int32_t_parameter(1)).WillOnce(testing::Return(5));
+        EXPECT_CALL(ctx, int32_t_parameter(0)).WillOnce(testing::Return(15));
+        EXPECT_CALL(ctx, int32_t_result(10)).Times(1);
 
         f.details()->invoke(ctx);
     }
