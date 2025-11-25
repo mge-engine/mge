@@ -24,6 +24,7 @@
     "libffi",
     "assimp",
     "sqlite3",
-    "fmt"
+    "fmt",
+    "luajit"
   ]
 }

@@ -40,4 +40,5 @@ INCLUDE(thirdparty/magicenum)
 INCLUDE(thirdparty/assimp)
 INCLUDE(thirdparty/sqlite3)
 INCLUDE(thirdparty/fmt)
+INCLUDE(thirdparty/luajit)
 
