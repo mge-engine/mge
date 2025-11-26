@@ -9,6 +9,7 @@
 #include "mge/core/callable.hpp"
 #include "mge/core/enum.hpp"
 #include "mge/reflection/call_context.hpp"
+#include "mge/reflection/function_parameter_helper.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_details.hpp"
 #include <iostream>
@@ -508,10 +509,10 @@ namespace mge::reflection {
     MGE_DEFINE_INTEGER_TYPE(unsigned int);
     MGE_DEFINE_INTEGER_TYPE(long);
     MGE_DEFINE_INTEGER_TYPE(unsigned long);
-#if defined(MGE_COMPILER_MSVC)    
+#if defined(MGE_COMPILER_MSVC)
     MGE_DEFINE_INTEGER_TYPE(int64_t);
     MGE_DEFINE_INTEGER_TYPE(uint64_t);
-#elif defined(MGE_COMPILER_GCC) 
+#elif defined(MGE_COMPILER_GCC)
     MGE_DEFINE_INTEGER_TYPE(long long);
     MGE_DEFINE_INTEGER_TYPE(unsigned long long);
 #endif
@@ -639,21 +640,47 @@ namespace mge::reflection {
 
     namespace {
         template <typename T>
-        concept by_value_result_v =  (  std::is_pointer_v<T> ||
-                                        std::is_same_v<T, std::string_view> ||
-                                        std::is_same_v<T, bool> ||
-                                        std::is_same_v<T, int8_t> ||
-                                        std::is_same_v<T, uint8_t> ||
-                                        std::is_same_v<T, int16_t> ||
-                                        std::is_same_v<T, uint16_t> ||
-                                        std::is_same_v<T, int32_t> ||
-                                        std::is_same_v<T, uint32_t> ||
-                                        std::is_same_v<T, int64_t> ||
-                                        std::is_same_v<T, uint64_t> ||
-                                        std::is_same_v<T, float> ||
-                                        std::is_same_v<T, double> ||
-                                        std::is_same_v<T, long double>);
+        concept by_value_result_v =
+            (std::is_pointer_v<T> || std::is_same_v<T, std::string_view> ||
+             std::is_same_v<T, bool> || std::is_same_v<T, int8_t> ||
+             std::is_same_v<T, uint8_t> || std::is_same_v<T, int16_t> ||
+             std::is_same_v<T, uint16_t> || std::is_same_v<T, int32_t> ||
+             std::is_same_v<T, uint32_t> || std::is_same_v<T, int64_t> ||
+             std::is_same_v<T, uint64_t> || std::is_same_v<T, float> ||
+             std::is_same_v<T, double> || std::is_same_v<T, long double>);
     }
+
+    namespace {
+        template <typename T>
+        inline T new_parameter_helper(call_context& ctx, size_t index)
+        {
+            if constexpr (std::is_pointer_v<T>) {
+                return static_cast<T>(
+                    ctx.pointer_parameter(index,
+                                          *get_or_create_type_details<T>()));
+            } else {
+                return ctx.template parameter<T>(index);
+            }
+        }
+
+        template <typename T, typename... Args, size_t... Is>
+        inline void new_object_impl(call_context& ctx,
+                                    void*         ptr,
+                                    std::index_sequence<Is...>)
+        {
+            new (ptr) T(new_parameter_helper<Args>(ctx, Is)...);
+        }
+
+        template <typename T, typename... Args>
+        inline void new_object(call_context& ctx, void* ptr)
+        {
+            new_object_impl<T, Args...>(
+                ctx,
+                ptr,
+                std::make_index_sequence<sizeof...(Args)>{});
+        }
+
+    } // namespace
 
     template <typename T>
         requires is_basic_class_v<T>
@@ -745,7 +772,7 @@ namespace mge::reflection {
         {
             auto& specific = get_or_create_type_details<T>()->class_specific();
             auto  get_field = [field_ptr](call_context& ctx) {
-                void*        obj_ptr = ctx.this_ptr();
+                void* obj_ptr = ctx.this_ptr();
                 if (obj_ptr) {
                     T* obj = static_cast<T*>(obj_ptr);
                     F& field_ref = obj->*field_ptr;
@@ -792,10 +819,7 @@ namespace mge::reflection {
                         if constexpr (sizeof...(Args) == 0) {
                             new (ptr) T();
                         } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            new (ptr)
-                                T(parameter_helper<Args>(ctx, --index)...);
+                            new_object<T, Args...>(ctx, ptr);
                         }
                     } catch (const mge::exception& ex) {
                         ctx.exception_thrown(ex);
@@ -819,26 +843,7 @@ namespace mge::reflection {
 
             auto invoke_fn = [method_ptr](call_context& ctx) {
                 try {
-                    if constexpr (std::is_void_v<R>) {
-                        if constexpr (sizeof...(Args) == 0) {
-                            method_ptr();
-                        } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            method_ptr(parameter_helper<Args>(ctx, --index)...);
-                        }
-                    } else {
-                        if constexpr (sizeof...(Args) == 0) {
-                            R result = method_ptr();
-                            ctx.template result<R>(result);
-                        } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            R                result = method_ptr(
-                                parameter_helper<Args>(ctx, --index)...);
-                            ctx.template result<R>(result);
-                        }
-                    }
+                    function_caller<R (*)(Args...), Args...>(ctx, method_ptr);
                 } catch (const mge::exception& ex) {
                     ctx.exception_thrown(ex);
                 } catch (const std::exception& ex) {

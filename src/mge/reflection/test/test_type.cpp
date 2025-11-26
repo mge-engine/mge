@@ -704,7 +704,7 @@ namespace mge::reflection {
     TEST(type, default_constructor_in_constructors_vector)
     {
         // Constructor is automatically registered during type creation
-        auto type_obj = type<test_default_constructor>();
+        auto        type_obj = type<test_default_constructor>();
         const auto& details = type_obj.details();
         const auto& class_details = details->class_specific();
 
@@ -743,7 +743,7 @@ namespace mge::reflection {
     {
         test_destructor::destruction_count = 0;
 
-        auto type_obj = type<test_destructor>();
+        auto        type_obj = type<test_destructor>();
         const auto& details = type_obj.details();
         const auto& class_details = details->class_specific();
 
