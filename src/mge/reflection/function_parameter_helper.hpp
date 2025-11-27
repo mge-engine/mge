@@ -41,4 +41,29 @@ namespace mge::reflection {
             std::make_index_sequence<sizeof...(Args)>{});
     }
 
+    template <typename T, typename F, typename... Args, size_t... Is>
+    inline void method_caller_impl(call_context& ctx,
+                                   T&            obj,
+                                   F             method_ptr,
+                                   std::index_sequence<Is...>)
+    {
+        if constexpr (std::is_same_v<void,
+                                     std::invoke_result_t<F, T&, Args...>>) {
+            (obj.*method_ptr)(function_parameter_helper<Args>(ctx, Is)...);
+        } else {
+            ctx.template result<std::invoke_result_t<F, T&, Args...>>(
+                (obj.*method_ptr)(function_parameter_helper<Args>(ctx, Is)...));
+        }
+    }
+
+    template <typename T, typename F, typename... Args>
+    inline void method_caller(call_context& ctx, T& obj, F method_ptr)
+    {
+        method_caller_impl<T, F, Args...>(
+            ctx,
+            obj,
+            method_ptr,
+            std::make_index_sequence<sizeof...(Args)>{});
+    }
+
 } // namespace mge::reflection

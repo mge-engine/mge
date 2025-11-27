@@ -868,27 +868,9 @@ namespace mge::reflection {
             auto invoke_fn = [method_ptr](call_context& ctx) {
                 try {
                     T& obj = ctx.template this_reference<T>();
-                    if constexpr (std::is_void_v<R>) {
-                        if constexpr (sizeof...(Args) == 0) {
-                            (obj.*method_ptr)();
-                        } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            (obj.*method_ptr)(
-                                parameter_helper<Args>(ctx, --index)...);
-                        }
-                    } else {
-                        if constexpr (sizeof...(Args) == 0) {
-                            R result = (obj.*method_ptr)();
-                            ctx.template result<R>(result);
-                        } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            R                result = (obj.*method_ptr)(
-                                parameter_helper<Args>(ctx, --index)...);
-                            ctx.template result<R>(result);
-                        }
-                    }
+                    method_caller<T, R (T::*)(Args...), Args...>(ctx,
+                                                                 obj,
+                                                                 method_ptr);
                 } catch (const mge::exception& ex) {
                     ctx.exception_thrown(ex);
                 } catch (const std::exception& ex) {
@@ -913,27 +895,10 @@ namespace mge::reflection {
             auto invoke_fn = [method_ptr](call_context& ctx) {
                 try {
                     const T& obj = ctx.template this_reference<T>();
-                    if constexpr (std::is_void_v<R>) {
-                        if constexpr (sizeof...(Args) == 0) {
-                            (obj.*method_ptr)();
-                        } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            (obj.*method_ptr)(
-                                parameter_helper<Args>(ctx, --index)...);
-                        }
-                    } else {
-                        if constexpr (sizeof...(Args) == 0) {
-                            R result = (obj.*method_ptr)();
-                            ctx.template result<R>(result);
-                        } else {
-                            constexpr size_t nargs = sizeof...(Args);
-                            size_t           index{nargs};
-                            R                result = (obj.*method_ptr)(
-                                parameter_helper<Args>(ctx, --index)...);
-                            ctx.template result<R>(result);
-                        }
-                    }
+                    method_caller<const T, R (T::*)(Args...) const, Args...>(
+                        ctx,
+                        obj,
+                        method_ptr);
                 } catch (const mge::exception& ex) {
                     ctx.exception_thrown(ex);
                 } catch (const std::exception& ex) {
@@ -958,27 +923,10 @@ namespace mge::reflection {
 
             auto invoke_fn = [method_ptr](call_context& ctx) {
                 T& obj = ctx.template this_reference<T>();
-                if constexpr (std::is_void_v<R>) {
-                    if constexpr (sizeof...(Args) == 0) {
-                        (obj.*method_ptr)();
-                    } else {
-                        constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs};
-                        (obj.*
-                         method_ptr)(parameter_helper<Args>(ctx, --index)...);
-                    }
-                } else {
-                    if constexpr (sizeof...(Args) == 0) {
-                        R result = (obj.*method_ptr)();
-                        ctx.template result<R>(result);
-                    } else {
-                        constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs};
-                        R                result = (obj.*method_ptr)(
-                            parameter_helper<Args>(ctx, --index)...);
-                        ctx.template result<R>(result);
-                    }
-                }
+                method_caller<T, R (T::*)(Args...) noexcept, Args...>(
+                    ctx,
+                    obj,
+                    method_ptr);
             };
 
             specific.methods.emplace_back(name, sig, invoke_fn, false, true);
@@ -996,27 +944,9 @@ namespace mge::reflection {
 
             auto invoke_fn = [method_ptr](call_context& ctx) {
                 const T& obj = ctx.template this_reference<T>();
-                if constexpr (std::is_void_v<R>) {
-                    if constexpr (sizeof...(Args) == 0) {
-                        (obj.*method_ptr)();
-                    } else {
-                        constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs};
-                        (obj.*
-                         method_ptr)(parameter_helper<Args>(ctx, --index)...);
-                    }
-                } else {
-                    if constexpr (sizeof...(Args) == 0) {
-                        R result = (obj.*method_ptr)();
-                        ctx.template result<R>(result);
-                    } else {
-                        constexpr size_t nargs = sizeof...(Args);
-                        size_t           index{nargs};
-                        R                result = (obj.*method_ptr)(
-                            parameter_helper<Args>(ctx, --index)...);
-                        ctx.template result<R>(result);
-                    }
-                }
+                method_caller<const T,
+                              R (T::*)(Args...) const noexcept,
+                              Args...>(ctx, obj, method_ptr);
             };
 
             specific.methods.emplace_back(name, sig, invoke_fn, true, true);
