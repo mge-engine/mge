@@ -16,4 +16,7 @@ namespace mge::reflection {
     class call_context;
     using invoke_function = std::function<void(call_context&)>;
 
+    template <typename T>
+    inline const type_details_ref& get_or_create_type_details();
+
 } // namespace mge::reflection
