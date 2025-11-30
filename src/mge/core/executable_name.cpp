@@ -8,6 +8,8 @@
 #elif defined(MGE_OS_LINUX)
 #    include <cstring>
 #    include <unistd.h>
+#elif defined(MGE_OS_MACOSX)
+#    include <mach-o/dyld.h>
 #else
 #    error Missing port
 #endif
@@ -48,6 +50,18 @@ namespace mge {
         } else {
             return std::string(slash + 1);
         }
+#elif defined(MGE_OS_MACOSX)
+        char     buffer[2048];
+        uint32_t size = sizeof(buffer);
+        if (_NSGetExecutablePath(buffer, &size) != 0) {
+            return "";
+        }
+        char* slash = strrchr(buffer, '/');
+        if (slash == nullptr) {
+            return std::string(buffer);
+        } else {
+            return std::string(slash + 1);
+        }
 #else
 #    error Missing port
 #endif
@@ -74,6 +88,18 @@ namespace mge {
         if (len == -1) {
             len = 0;
             buffer[0] = '\0';
+        }
+        char* slash = strrchr(buffer, '/');
+        if (slash == nullptr) {
+            return "";
+        } else {
+            return std::string(buffer, slash);
+        }
+#elif defined(MGE_OS_MACOSX)
+        char     buffer[2048];
+        uint32_t size = sizeof(buffer);
+        if (_NSGetExecutablePath(buffer, &size) != 0) {
+            return "";
         }
         char* slash = strrchr(buffer, '/');
         if (slash == nullptr) {
