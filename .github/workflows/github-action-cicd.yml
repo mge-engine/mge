@@ -81,6 +81,33 @@ jobs:
               script: |
                   core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
                   core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');    
+          - name: Configure project
+            run: |
+              export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+              max_attempts=3
+              attempt=0
+              success=false
+
+              while [ $success = false ] && [ $attempt -lt $max_attempts ]; do
+                attempt=$((attempt + 1))
+                echo "CMake configure attempt $attempt of $max_attempts"
+
+                if cmake --preset=ci-build; then
+                  success=true
+                  echo "CMake configuration succeeded on attempt $attempt"
+                else
+                  if [ $attempt -eq $max_attempts ]; then
+                    echo "CMake configuration failed after $max_attempts attempts"
+                    exit 1
+                  fi
+                  echo "CMake configuration failed on attempt $attempt. Retrying..."
+                  sleep 5
+                fi
+              done
+          - name: Build project
+            run: |
+              export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+              cmake --build build --parallel 4 --target all
 #  -- linux ubuntu latest runner
     build-linux-ubuntu-latest:
       name : Build x64-linux-gcc
