@@ -13,11 +13,11 @@ extern "C" {
 __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 }
 #    include <unordered_set>
-#endif
-
-#ifdef MGE_OS_LINUX
+#elif defined(MGE_OS_LINUX)
 #    include <dlfcn.h>
 #    include <stacktrace>
+#elif defined(MGE_OS_MACOSX)
+#    include <execinfo.h>
 #endif
 
 #include "mge/core/stacktrace.hpp"
@@ -204,8 +204,29 @@ namespace mge {
                                 frame.source_line());
         }
     }
-#else
+#elif defined(MGE_OS_MACOSX)
+    // macOS implementation using execinfo to get backtrace
+    template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
+    {
+        const size_t max_frames = 100;
+        void*        addrlist[max_frames + 1];
 
+        // retrieve current stack addresses
+        size_t addrlen = backtrace(addrlist, max_frames + 1);
+        char** symbols = backtrace_symbols(addrlist, addrlen);
+        // skip the first stack frame (points here)
+        for (int i = 1; i < addrlen; i++) {
+            const void* address = addrlist[i];
+            const char* symbol_line = symbols[i];
+            frames.emplace_back(address,
+                                strings.get(""),
+                                strings.get(symbol_line),
+                                strings.get(""),
+                                0);
+        }
+    }
+#else
+#    error Missing port
 #endif
     stacktrace::frame::frame(const void*      address,
                              std::string_view module,
