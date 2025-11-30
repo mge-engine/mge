@@ -23,6 +23,8 @@ namespace mge {
         using error_code_type = DWORD;
 #elif defined(MGE_OS_LINUX)
         using error_code_type = int;
+#elif defined(MGE_OS_MACOSX)
+        using error_code_type = int;
 #else
 #    error Missing port
 #endif

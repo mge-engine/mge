@@ -14,6 +14,8 @@
 #    include <windows.h>
 #elif defined(MGE_OS_LINUX)
 #    include <dlfcn.h>
+#elif defined(MGE_OS_MACOSX)
+#    include <dlfcn.h>
 #else
 #    error Missing port
 #endif
@@ -33,6 +35,10 @@ namespace mge {
 
         static constexpr handle_type nil_handle = 0;
 #elif defined(MGE_OS_LINUX)
+        using handle_type = void*;
+
+        static constexpr handle_type nil_handle = nullptr;
+#elif defined(MGE_OS_MACOSX)
         using handle_type = void*;
 
         static constexpr handle_type nil_handle = nullptr;
