@@ -77,7 +77,7 @@ namespace mge {
                 else if (n.starts_with("struct "))
                     n = n.substr(7);
                 return n;
-#elif defined(MGE_COMPILER_GCC)
+#elif defined(MGE_COMPILER_GCC) || defined(MGE_COMPILER_APPLECLANG)
                 std::string_view func_name(
                     std::source_location::current().function_name());
                 std::string_view prefix("[with T = ");
