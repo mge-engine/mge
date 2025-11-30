@@ -84,7 +84,7 @@ namespace mge {
 #ifdef MGE_OS_WINDOWS
             if (::_fseeki64(m_file, offset, origin) != 0) {
 #else
-            if (::fseeko64(m_file, offset, origin) != 0) {
+            if (::fseeko(m_file, offset, origin) != 0) {
 #endif
                 MGE_CHECK_SYSTEM_ERROR(fseek);
             }
