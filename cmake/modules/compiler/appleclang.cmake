@@ -5,5 +5,5 @@
 IF(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     MESSAGE(STATUS "-- Configuring for Apple Clang")
     ADD_DEFINITIONS("-Wall")
-    ADD_DEFINITIONS("-std=c++23")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++23")
 ENDIF()
