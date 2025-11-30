@@ -223,7 +223,7 @@ namespace mge {
     void configuration_instance::fetch_parameter(basic_parameter& p)
     {
         mge::json::json_pointer<mge::json::json::string_t> parameter_path;
-        for (auto& c : p.path()) {
+        for (const auto& c : p.path()) {
             parameter_path /= c.string();
         }
         if (m_raw_settings.contains(parameter_path)) {
@@ -253,7 +253,7 @@ namespace mge {
     void configuration_instance::erase_parameter(basic_parameter& p)
     {
         mge::json::json_pointer<mge::json::json::string_t> parameter_path;
-        for (auto& c : p.path()) {
+        for (const auto& c : p.path()) {
             parameter_path /= c.string();
         }
         if (m_raw_settings.contains(parameter_path)) {
@@ -265,7 +265,7 @@ namespace mge {
     {
         if (p.has_value()) {
             mge::json::json_pointer<mge::json::json::string_t> parameter_path;
-            for (auto& c : p.path()) {
+            for (const auto& c : p.path()) {
                 parameter_path /= c.string();
             }
             p.write_value(m_raw_settings[parameter_path]);
