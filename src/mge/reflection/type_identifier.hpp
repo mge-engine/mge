@@ -143,8 +143,7 @@ namespace mge::reflection {
         };
     } // namespace
 
-    template <typename T>
-    constexpr type_identifier make_type_identifier() noexcept
+    template <typename T> inline type_identifier make_type_identifier() noexcept
     {
         using base_type = std::remove_cv_t<std::remove_reference_t<T>>;
         return type_identifier(typeid(base_type),
