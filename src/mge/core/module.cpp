@@ -26,6 +26,8 @@ namespace mge {
         m_name = std::string(stem_str.begin() + 11, stem_str.end());
 #elif defined(MGE_OS_LINUX)
         m_name = std::string(stem_str.begin() + 14, stem_str.end());
+#elif defined(MGE_OS_MACOSX)
+        m_name = std::string(stem_str.begin() + 14, stem_str.end());
 #else
 #    error Missing port
 #endif
@@ -98,6 +100,14 @@ namespace mge {
         if (stem.string().starts_with("libmge_module_")) {
             auto suffix = name.extension();
             if (suffix.string() == ".so"sv) {
+                return true;
+            }
+        }
+#elif defined(MGE_OS_MACOSX)
+        auto stem = name.stem();
+        if (stem.string().starts_with("libmge_module_")) {
+            auto suffix = name.extension();
+            if (suffix.string() == ".dylib"sv) {
                 return true;
             }
         }
