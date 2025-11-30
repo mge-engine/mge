@@ -34,7 +34,7 @@ jobs:
             uses: actions/checkout@v4
             with:
               clean: false
-  -- linux ubuntu latest runner
+#  -- linux ubuntu latest runner
     build-linux-ubuntu-latest:
       name : Build x64-linux-gcc
       runs-on: ubuntu-latest
