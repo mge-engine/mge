@@ -51,3 +51,12 @@ TEST(type_name, signed_char)
     auto tn = std::string(mge::type_name<signed char>());
     EXPECT_STREQ("signed char", tn.c_str());
 }
+
+TEST(type_name, array_type)
+{
+    auto tn = std::string(mge::type_name<int[10]>());
+    EXPECT_STREQ("int [10]", tn.c_str());
+
+    auto tn2 = std::string(mge::type_name<int[17][5]>());
+    EXPECT_STREQ("int [17][5]", tn2.c_str());
+}
