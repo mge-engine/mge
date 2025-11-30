@@ -7,7 +7,34 @@ on:
   pull_request:
 
 jobs:
-# -- linux ubuntu latest runner
+# -- macos latest runner
+    build-macos-latest:
+      name : Build x64-macos-clang
+      runs-on: macos-latest
+      env: 
+          VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+      steps:
+          - name: Show Architecture
+            run: |
+              sysctl -n machdep.cpu.brand_string
+          - name: Show OS Version
+            run: |
+              sw_vers
+          - name: Show Python version
+            run: |
+              python3 --version  
+          - name: Install CMake
+            run: |
+              brew install cmake
+              cmake --version
+          - name: Install Ninja
+            run: |
+              brew install ninja
+          - name: Checkout source code
+            uses: actions/checkout@v4
+            with:
+              clean: false
+  -- linux ubuntu latest runner
     build-linux-ubuntu-latest:
       name : Build x64-linux-gcc
       runs-on: ubuntu-latest
