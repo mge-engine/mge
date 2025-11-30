@@ -80,7 +80,7 @@ namespace mge {
         }
         template <typename T> T get(std::string_view key) const
         {
-            if (key == nullptr) {
+            if (key.data() == nullptr) {
                 MGE_THROW(null_pointer) << "Argument 'key' must not be null";
             }
 
@@ -94,7 +94,7 @@ namespace mge {
         template <typename T, typename D>
         T get(std::string_view key, const D& default_value) const
         {
-            if (key == nullptr) {
+            if (key.data() == nullptr) {
                 return default_value;
             }
 
