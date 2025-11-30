@@ -18,7 +18,7 @@ namespace mge {
         data = data;
     }
 #    pragma optimize("", on)
-#elif defined(MGE_COMPILER_GCC)
+#elif defined(MGE_COMPILER_GCC) || defined(MGE_COMPILER_APPLECLANG)
     template <typename T> void do_not_optimize_away(T&& data)
     {
         asm volatile("" : "+r"(data) : : "memory");

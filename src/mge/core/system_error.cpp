@@ -10,6 +10,8 @@ namespace mge {
         set_error_code(GetLastError());
 #elif defined(MGE_OS_LINUX)
         set_error_code(errno);
+#elif defined(MGE_OS_MACOSX)
+        set_error_code(errno);
 #else
 #    error Missing port
 #endif
@@ -37,6 +39,8 @@ namespace mge {
         }
         LocalFree(msgbuf);
 #elif defined(MGE_OS_LINUX)
+        (*this) << "(" << ec << "): " << strerror(ec);
+#elif defined(MGE_OS_MACOSX)
         (*this) << "(" << ec << "): " << strerror(ec);
 #else
 #    error Missing port
@@ -82,6 +86,17 @@ namespace mge {
             .set_info(mge::exception::stack(mge::stacktrace()))
             .set_info(mge::exception::called_function(function));
 #elif defined(MGE_OS_LINUX)
+        if (errno == 0) {
+            return;
+        }
+
+        throw system_error(errno)
+            .set_info(mge::exception::source_file(file))
+            .set_info(mge::exception::source_line(line))
+            .set_info(mge::exception::function(signature))
+            .set_info(mge::exception::stack(mge::stacktrace()))
+            .set_info(mge::exception::called_function(function));
+#elif defined(MGE_OS_MACOSX)
         if (errno == 0) {
             return;
         }

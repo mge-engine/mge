@@ -7,7 +7,111 @@ on:
   pull_request:
 
 jobs:
-# -- linux ubuntu latest runner
+# -- macos latest runner
+    build-macos-latest:
+      name : Build x64-macos-clang
+      runs-on: macos-latest
+      env: 
+          VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+      steps:
+          - name: Show Architecture
+            run: |
+              sysctl -n machdep.cpu.brand_string
+          - name: Show OS Version
+            run: |
+              sw_vers
+          - name: Show Python version
+            run: |
+              python3 --version  
+          - name: Install CMake
+            run: |
+              brew install cmake
+              cmake --version
+          - name: Install Automake and related tools
+            run: |
+              brew install automake autoconf autoconf-archive libtool
+          - name: Install Ninja
+            run: |
+              brew install ninja
+          - name: Checkout source code
+            uses: actions/checkout@v4
+            with:
+              clean: false
+          - name: Cache vcpkg
+            id: cache-vcpkg
+            uses: actions/cache@v4
+            with:
+              path: ${{ github.workspace }}/vcpkg
+              key: vcpkg-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+              restore-keys: |
+                vcpkg-${{ runner.os }}-
+          - name: Cache vcpkg binary cache
+            id: cache-vcpkg-binary
+            uses: actions/cache@v4
+            with:
+              path: ${{ github.workspace }}/vcpkg_binary_cache
+              key: vcpkg-binary-cache-${{ runner.os }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-configuration.json') }}
+              restore-keys: |
+                vcpkg-binary-cache-${{ runner.os }}-
+          - name: Check whether vcpkg exists
+            id: check-vcpkg
+            run: |
+              if [ -f "${{ github.workspace }}/vcpkg/vcpkg" ]; then
+                echo "vcpkg exists"
+                echo "vcpkg_found=true" >> $GITHUB_OUTPUT
+              else
+                echo "vcpkg does not exist, need to build"
+                echo "vcpkg_found=false" >> $GITHUB_OUTPUT
+              fi
+          - name: Create vcpkg cache directory
+            run: |
+                mkdir -p "${{ github.workspace }}/vcpkg_binary_cache"
+          - name: Checkout vcpkg
+            if: steps.check-vcpkg.outputs.vcpkg_found == 'false'
+            uses: actions/checkout@v4
+            with:
+              repository: mge-engine/vcpkg
+              path: ${{ github.workspace }}/vcpkg
+              clean: false
+          - name: Update vcpkg
+            if: steps.check-vcpkg.outputs.vcpkg_found == 'true'
+            working-directory: ${{ github.workspace }}/vcpkg
+            run: |
+              git pull origin master
+          - name: Export GitHub Actions cache environment variables
+            uses: actions/github-script@v7
+            with:
+              script: |
+                  core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+                  core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');    
+          - name: Configure project
+            run: |
+              export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+              max_attempts=3
+              attempt=0
+              success=false
+
+              while [ $success = false ] && [ $attempt -lt $max_attempts ]; do
+                attempt=$((attempt + 1))
+                echo "CMake configure attempt $attempt of $max_attempts"
+
+                if cmake --preset=ci-build; then
+                  success=true
+                  echo "CMake configuration succeeded on attempt $attempt"
+                else
+                  if [ $attempt -eq $max_attempts ]; then
+                    echo "CMake configuration failed after $max_attempts attempts"
+                    exit 1
+                  fi
+                  echo "CMake configuration failed on attempt $attempt. Retrying..."
+                  sleep 5
+                fi
+              done
+          - name: Build project
+            run: |
+              export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+              cmake --build build --parallel 4 --target all
+#  -- linux ubuntu latest runner
     build-linux-ubuntu-latest:
       name : Build x64-linux-gcc
       runs-on: ubuntu-latest

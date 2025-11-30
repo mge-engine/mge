@@ -4,6 +4,7 @@
 
 INCLUDE(compiler/msvc)
 INCLUDE(compiler/gcc)
+INCLUDE(compiler/appleclang)
 
 INCLUDE(settings/debugrelease)
 INCLUDE(settings/headless)
