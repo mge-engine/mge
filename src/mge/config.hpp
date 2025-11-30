@@ -12,8 +12,12 @@
 #    define MGE_COMPILER_MSVC 1
 #endif
 
-#if defined(__GNUC__) || defined(__GNUG__)
+#if (defined(__GNUC__) || defined(__GNUG__)) && !defined(__clang__)
 #    define MGE_COMPILER_GCC 1
+#endif
+
+#if defined(__APPLE__) && defined(__clang__)
+#    define MGE_COMPILER_APPLECLANG 1
 #endif
 
 #if defined(__WIN32__) || defined(_WIN32)
@@ -36,6 +40,9 @@ namespace mge {
 #elif defined MGE_OS_LINUX
     namespace linux {}
     namespace platform = linux;
+#elif defined MGE_OS_MACOSX
+    namespace macosx {}
+    namespace platform = macosx;
 #else
 #    error Missing port.
 #endif
@@ -46,6 +53,8 @@ namespace mge {
 #    define MGE_FUNCTION_SIGNATURE __FUNCSIG__
 #elif defined(MGE_COMPILER_GCC)
 #    define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+#elif defined(MGE_COMPILER_APPLECLANG)
+#    define MGE_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
 #else
 #    error Missing port
 #endif
@@ -54,6 +63,8 @@ namespace mge {
 #if defined(MGE_COMPILER_MSVC)
 #    define MGE_NO_INLINE __declspec(noinline)
 #elif defined(MGE_COMPILER_GCC)
+#    define MGE_NO_INLINE __attribute__((noinline))
+#elif defined(MGE_COMPILER_APPLECLANG)
 #    define MGE_NO_INLINE __attribute__((noinline))
 #else
 #    error Missing port
