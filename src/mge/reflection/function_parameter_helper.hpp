@@ -10,6 +10,9 @@
 namespace mge::reflection {
 
     template <typename T>
+    inline const type_details_ref& get_or_create_type_details();
+
+    template <typename T>
     inline T function_parameter_helper(call_context& ctx, size_t index)
     {
         if constexpr (std::is_pointer_v<T>) {
