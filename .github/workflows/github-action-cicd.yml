@@ -27,9 +27,9 @@ jobs:
             run: |
               brew install cmake
               cmake --version
-          - name: Install Automake and Autoconf
+          - name: Install Automake and related tools
             run: |
-              brew install automake autoconf autoconf-archive 
+              brew install automake autoconf autoconf-archive libtool
           - name: Install Ninja
             run: |
               brew install ninja
