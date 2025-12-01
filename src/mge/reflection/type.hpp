@@ -512,7 +512,7 @@ namespace mge::reflection {
 #if defined(MGE_COMPILER_MSVC)
     MGE_DEFINE_INTEGER_TYPE(int64_t);
     MGE_DEFINE_INTEGER_TYPE(uint64_t);
-#elif defined(MGE_COMPILER_GCC)
+#elif defined(MGE_COMPILER_GCC) || defined(MGE_COMPILER_APPLECLANG)
     MGE_DEFINE_INTEGER_TYPE(long long);
     MGE_DEFINE_INTEGER_TYPE(unsigned long long);
 #endif

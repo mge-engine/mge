@@ -10,6 +10,8 @@
 #    include <windows.h>
 #elif defined(MGE_OS_LINUX)
 #    include <dlfcn.h>
+#elif defined(MGE_OS_MACOSX)
+#    include <dlfcn.h>
 #else
 #    error Missing port
 #endif
@@ -49,6 +51,9 @@ namespace mge {
 #ifdef MGE_OS_WINDOWS
                 FreeLibrary(handle);
 #elif defined(MGE_OS_LINUX)
+                // TODO: return value of dlclose?
+                dlclose(handle);
+#elif defined(MGE_OS_MACOSX)
                 // TODO: return value of dlclose?
                 dlclose(handle);
 #else
@@ -107,6 +112,18 @@ namespace mge {
         }
 
         m_handle = handle;
+#elif defined(MGE_OS_MACOSX)
+        void* handle = s_loaded_libraries->get(m_name);
+        if (handle == nil_handle) {
+            handle = dlopen(m_name.c_str(), RTLD_LAZY);
+            if (!handle) {
+                MGE_THROW(system_error)
+                    << "Cannot load library '" << m_name << "': " << dlerror();
+            }
+            handle = s_loaded_libraries->try_put(m_name, handle);
+        }
+
+        m_handle = handle;
 #else
 #    error Missing port
 #endif
@@ -120,6 +137,9 @@ namespace mge {
 #elif defined(MGE_OS_LINUX)
         auto address = dlsym(m_handle, name);
         return reinterpret_cast<void*>(address);
+#elif defined(MGE_OS_MACOSX)
+        auto address = dlsym(m_handle, name);
+        return reinterpret_cast<void*>(address);
 #else
 #    error Missing port
 #endif
@@ -131,6 +151,9 @@ namespace mge {
         auto address = GetProcAddress(m_handle, name.c_str());
         return reinterpret_cast<void*>(address);
 #elif defined(MGE_OS_LINUX)
+        auto address = dlsym(m_handle, name.c_str());
+        return reinterpret_cast<void*>(address);
+#elif defined(MGE_OS_MACOSX)
         auto address = dlsym(m_handle, name.c_str());
         return reinterpret_cast<void*>(address);
 #else

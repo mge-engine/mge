@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+# Get the directory of this script
+SCRIPT_DIR="${0:A:h}"
+
+# vcpkg expected at repo_root/vcpkg
+VCPKG_ROOT="${SCRIPT_DIR:h:h:h}/vcpkg"
+export VCPKG_ROOT
+
+# update PATH only if vcpkg exists
+if [[ -d "$VCPKG_ROOT" ]]; then
+    export PATH="$VCPKG_ROOT:$PATH"
+else
+    echo "warning: VCPKG_ROOT not found at $VCPKG_ROOT" >&2
+fi
+
+export CC=clang
+export CXX=clang++
+

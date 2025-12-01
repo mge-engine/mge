@@ -11,6 +11,9 @@
 #    include <fstream>
 #    include <signal.h>
 #    include <string>
+#elif defined(MGE_OS_MACOSX)
+#    include <sys/sysctl.h>
+#    include <unistd.h>
 #else
 #    error Missing port
 #endif
@@ -27,6 +30,12 @@ namespace mge {
 #elif defined(MGE_OS_LINUX)
         if (is_debugger_present()) {
             raise(SIGTRAP);
+        } else {
+            crash("Calling debugger with no debugger attached");
+        }
+#elif defined(MGE_OS_MACOSX)
+        if (is_debugger_present()) {
+            __builtin_trap();
         } else {
             crash("Calling debugger with no debugger attached");
         }
@@ -63,6 +72,26 @@ namespace mge {
             // If anything goes wrong, assume no debugger
         }
         return false;
+#elif defined(MGE_OS_MACOSX)
+        // On macOS, use sysctl to check for debugger presence
+        try {
+            int               mib[4];
+            struct kinfo_proc info;
+            size_t            size = sizeof(info);
+
+            mib[0] = CTL_KERN;
+            mib[1] = KERN_PROC;
+            mib[2] = KERN_PROC_PID;
+            mib[3] = getpid();
+
+            if (sysctl(mib, 4, &info, &size, NULL, 0) == -1) {
+                return false;
+            }
+
+            return (info.kp_proc.p_flag & P_TRACED) != 0;
+        } catch (...) {
+            return false;
+        }
 #else
 #    error Missing port
 #endif

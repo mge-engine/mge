@@ -43,6 +43,8 @@ namespace mge {
         using system_id = uint32_t;
 #elif defined(MGE_OS_LINUX)
         using system_id = pid_t;
+#elif defined(MGE_OS_MACOSX)
+        using system_id = uint32_t;
 #else
 #    error missing port
 #endif

@@ -7,11 +7,13 @@
 
 #ifdef MGE_OS_WINDOWS
 #    include <windows.h>
-#endif
-
-#ifdef MGE_OS_LINUX
+#elif defined(MGE_OS_LINUX)
 #    include <sys/syscall.h>
 #    include <unistd.h>
+#elif defined(MGE_OS_MACOSX)
+// nothing needed
+#else
+#    error Missing port
 #endif
 
 namespace mge {
@@ -96,6 +98,10 @@ namespace mge {
             return GetCurrentThreadId();
 #elif defined(MGE_OS_LINUX)
             return static_cast<mge::thread::system_id>(syscall(SYS_gettid));
+#elif defined(MGE_OS_MACOSX)
+            uint64_t tid;
+            pthread_threadid_np(NULL, &tid);
+            return static_cast<mge::thread::system_id>(tid);
 #else
 #    error Missing port
 #endif
