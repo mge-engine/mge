@@ -124,20 +124,32 @@ namespace mge {
                 if (pos == std::string::npos) {
                     return std::string_view("???");
                 }
-                auto end = func_name.find(']', pos + prefix.size());
-                if (end == std::string::npos) {
-                    return std::string_view("???");
-                }
-                while (func_name.find('[', end) != std::string::npos) {
-                    end = func_name.find(']', end);
+                const size_t arank = std::rank_v<T>;
+                if constexpr (arank > 0) {
+                    // handle array types
+                    // For arrays, we need to find all the closing brackets
+                    // The function signature looks like: [T = int[10]]
+                    // We need to find the array brackets, not the outer ]
+                    auto end = pos + prefix.size();
+                    for (size_t i = 0; i < arank; ++i) {
+                        end = func_name.find(']', end);
+                        if (end == std::string::npos) {
+                            return std::string_view("???");
+                        }
+                        ++end;
+                    }
+                    auto n = func_name.substr(pos + prefix.size(),
+                                              end - pos - prefix.size());
+                    return n;
+                } else {
+                    auto end = func_name.find(']', pos + prefix.size());
                     if (end == std::string::npos) {
                         return std::string_view("???");
                     }
-                    ++end;
+                    auto n = func_name.substr(pos + prefix.size(),
+                                              end - pos - prefix.size());
+                    return n;
                 }
-                auto n = func_name.substr(pos + prefix.size(),
-                                          end - pos - prefix.size());
-                return n;
 #else
 #    error Missing port
 #endif

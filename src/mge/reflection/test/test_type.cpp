@@ -619,8 +619,11 @@ namespace mge::reflection {
         EXPECT_FALSE(type_int_array.is_pointer());
         EXPECT_TRUE(type_int_array.is_array());
         EXPECT_EQ(type_int_array.size(), sizeof(int[10]));
+#ifdef MGE_COMPILER_APPLECLANG
+        EXPECT_EQ(type<int[10]>::name(), "int[10]");
+#else
         EXPECT_EQ(type<int[10]>::name(), "int [10]");
-
+#endif
         const auto& details = type_int_array.details();
         EXPECT_TRUE(details->is_array);
         const auto& array_details = details->array_specific();
