@@ -9,6 +9,7 @@
     "boost-spirit",
     "boost-locale",
     "boost-bimap",
+    "boost-stacktrace",
     "glm",
     {
       "name": "python3",
