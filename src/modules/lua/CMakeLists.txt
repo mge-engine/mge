@@ -17,7 +17,7 @@ TARGET_LINK_LIBRARIES(mge_module_lua
 
     PkgConfig::LUAJIT)
 
-#ADD_EXECUTABLE(mgelua mgelua.cpp)
-#TARGET_LINK_LIBRARIES(mgelua mgecore mgescript luajit)
+ADD_EXECUTABLE(mgelua mgelua.cpp)
+TARGET_LINK_LIBRARIES(mgelua mgecore mgereflection mgescript)
     
 ADD_SUBDIRECTORY(test)

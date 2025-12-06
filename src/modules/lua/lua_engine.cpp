@@ -27,4 +27,6 @@ namespace mge::lua {
             return result;
         }
     };
+
+    MGE_REGISTER_IMPLEMENTATION(lua_engine, mge::script_engine, lua);
 } // namespace mge::lua

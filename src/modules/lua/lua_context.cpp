@@ -3,14 +3,24 @@
 // All rights reserved.
 #include "lua_context.hpp"
 #include "lua_error.hpp"
+#include "mge/core/trace.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(LUA);
+}
 
 namespace mge::lua {
 
     lua_context::lua_context(lua_engine* engine)
         : m_engine(engine)
-        , m_lua_state(luaL_newstate())
+        , m_lua_state(nullptr)
     {
+        MGE_DEBUG_TRACE(LUA, "Creating new Lua state");
+        m_lua_state = luaL_newstate();
+        CHECK_STATUS(m_lua_state ? LUA_OK : LUA_ERRMEM, m_lua_state);
+        MGE_DEBUG_TRACE(LUA, "Lua state created successfully");
         luaL_openlibs(m_lua_state);
+        MGE_DEBUG_TRACE(LUA, "Lua libs opened successfully");
     }
 
     lua_context::~lua_context()
