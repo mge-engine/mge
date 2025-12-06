@@ -55,8 +55,16 @@ TEST(type_name, signed_char)
 TEST(type_name, array_type)
 {
     auto tn = std::string(mge::type_name<int[10]>());
+#if defined(MGE_COMPILER_APPLECLANG)
+    EXPECT_STREQ("int[10]", tn.c_str());
+#else
     EXPECT_STREQ("int [10]", tn.c_str());
+#endif
 
     auto tn2 = std::string(mge::type_name<int[17][5]>());
+#if defined(MGE_COMPILER_APPLECLANG)
+    EXPECT_STREQ("int[17][5]", tn2.c_str());
+#else
     EXPECT_STREQ("int [17][5]", tn2.c_str());
+#endif
 }

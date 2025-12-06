@@ -128,6 +128,13 @@ namespace mge {
                 if (end == std::string::npos) {
                     return std::string_view("???");
                 }
+                while (func_name.find('[', end) != std::string::npos) {
+                    end = func_name.find(']', end);
+                    if (end == std::string::npos) {
+                        return std::string_view("???");
+                    }
+                    ++end;
+                }
                 auto n = func_name.substr(pos + prefix.size(),
                                           end - pos - prefix.size());
                 return n;
