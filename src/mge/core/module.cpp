@@ -107,7 +107,7 @@ namespace mge {
         auto stem = name.stem();
         if (stem.string().starts_with("libmge_module_")) {
             auto suffix = name.extension();
-            if (suffix.string() == ".dylib"sv) {
+            if (suffix.string() == ".so"sv) {
                 return true;
             }
         }
