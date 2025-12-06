@@ -20,4 +20,4 @@ TARGET_LINK_LIBRARIES(mge_module_lua
 #ADD_EXECUTABLE(mgelua mgelua.cpp)
 #TARGET_LINK_LIBRARIES(mgelua mgecore mgescript luajit)
     
-#ADD_SUBDIRECTORY(test)
+ADD_SUBDIRECTORY(test)
