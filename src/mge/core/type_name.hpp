@@ -5,10 +5,10 @@
 
 #include "mge/config.hpp"
 #include "mge/core/dllexport.hpp"
+#include <iostream>
 #include <source_location>
 #include <string>
 #include <typeinfo>
-
 namespace mge {
 
     /**
@@ -77,7 +77,7 @@ namespace mge {
                 else if (n.starts_with("struct "))
                     n = n.substr(7);
                 return n;
-#elif defined(MGE_COMPILER_GCC) || defined(MGE_COMPILER_APPLECLANG)
+#elif defined(MGE_COMPILER_GCC)
                 std::string_view func_name(
                     std::source_location::current().function_name());
                 std::string_view prefix("[with T = ");
@@ -105,7 +105,7 @@ namespace mge {
                         return std::string_view("???");
                     }
                     auto n = func_name.substr(pos + prefix.size(),
-                                            end - pos - prefix.size());
+                                              end - pos - prefix.size());
                     return n;
                 } else {
                     auto end = func_name.find(']', pos + prefix.size());
@@ -113,16 +113,34 @@ namespace mge {
                         return std::string_view("???");
                     }
                     auto n = func_name.substr(pos + prefix.size(),
-                                            end - pos - prefix.size());
+                                              end - pos - prefix.size());
                     return n;
                 }
+                auto n = func_name.substr(pos + prefix.size(),
+                                          end - pos - prefix.size());
+                return n;
+#elif defined(MGE_COMPILER_APPLECLANG)
+                std::string_view func_name(
+                    std::source_location::current().function_name());
+                std::string_view prefix("[T = ");
+                const auto       pos = func_name.find(prefix);
+                if (pos == std::string::npos) {
+                    return std::string_view("???");
+                }
+                auto end = func_name.find(']', pos + prefix.size());
+                if (end == std::string::npos) {
+                    return std::string_view("???");
+                }
+                auto n = func_name.substr(pos + prefix.size(),
+                                          end - pos - prefix.size());
+                return n;
 #else
 #    error Missing port
 #endif
             }
         };
 
-    } // namespace 
+    } // namespace
 
     /**
      * @brief Get type name of type.

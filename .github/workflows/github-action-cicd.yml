@@ -9,6 +9,7 @@ on:
 jobs:
 # -- macos latest runner
     build-macos-latest:
+      if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
       name : Build x64-macos-clang
       runs-on: macos-latest
       env: 
@@ -25,14 +26,13 @@ jobs:
               python3 --version  
           - name: Install CMake
             run: |
-              brew install cmake
               cmake --version
           - name: Install Automake and related tools
             run: |
               brew install automake autoconf autoconf-archive libtool
           - name: Install Ninja
             run: |
-              brew install ninja
+              ninja --version
           - name: Checkout source code
             uses: actions/checkout@v4
             with:
@@ -111,8 +111,23 @@ jobs:
             run: |
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               cmake --build build --parallel 4 --target all
+          - name: Run Tests
+            working-directory: ${{ github.workspace }}/build
+            run: |
+              export VCPKG_ROOT=${{ github.workspace }}/vcpkg
+              ctest --verbose
+          - name: Upload test results
+            uses: actions/upload-artifact@v4
+            with:
+              name: test-results-macos-latest
+              path: ${{ github.workspace }}/build/test_*.xml
+          - name: Publish Test Results
+            uses: mikepenz/action-junit-report@v3
+            with:
+              report_paths: '${{ github.workspace }}/build/test_*.xml'
 #  -- linux ubuntu latest runner
     build-linux-ubuntu-latest:
+      if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
       name : Build x64-linux-gcc
       runs-on: ubuntu-latest
       env: 
@@ -244,6 +259,7 @@ jobs:
               report_paths: '${{ github.workspace }}/build/test_*.xml'
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build x64-windows-msvc
         runs-on: windows-latest
         env: 
@@ -373,6 +389,7 @@ jobs:
               with:
                 report_paths: '${{ github.workspace }}/build/test_*.xml'
     build-documentation-windows-latest:
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build documentation
         runs-on: windows-latest
         env: 

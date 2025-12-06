@@ -17,7 +17,7 @@ __declspec(dllimport) void RtlCaptureContext(CONTEXT*);
 #    include <dlfcn.h>
 #    include <stacktrace>
 #elif defined(MGE_OS_MACOSX)
-#    include <execinfo.h>
+#    include "boost/boost_stacktrace.hpp"
 #endif
 
 #include "mge/core/stacktrace.hpp"
@@ -205,24 +205,23 @@ namespace mge {
         }
     }
 #elif defined(MGE_OS_MACOSX)
-    // macOS implementation using execinfo to get backtrace
     template <typename T> void fill_stacktrace(T& frames, string_pool& strings)
     {
-        const size_t max_frames = 100;
-        void*        addrlist[max_frames + 1];
-
-        // retrieve current stack addresses
-        size_t addrlen = backtrace(addrlist, max_frames + 1);
-        char** symbols = backtrace_symbols(addrlist, addrlen);
-        // skip the first stack frame (points here)
-        for (int i = 1; i < addrlen; i++) {
-            const void* address = addrlist[i];
-            const char* symbol_line = symbols[i];
+        auto st = boost::stacktrace::stacktrace();
+        for (std::size_t i = 1; i < st.size(); ++i) {
+            const auto& frame = st[i];
+            const void* address =
+                reinterpret_cast<const void*>(frame.address());
+            Dl_info     dl_info;
+            const char* module_name = "";
+            if (dladdr(address, &dl_info) && dl_info.dli_fname) {
+                module_name = dl_info.dli_fname;
+            }
             frames.emplace_back(address,
-                                strings.get(""),
-                                strings.get(symbol_line),
-                                strings.get(""),
-                                0);
+                                strings.get(module_name),
+                                strings.get(frame.name()),
+                                strings.get(frame.source_file()),
+                                static_cast<uint32_t>(frame.source_line()));
         }
     }
 #else
