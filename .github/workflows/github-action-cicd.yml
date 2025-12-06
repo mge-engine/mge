@@ -9,6 +9,7 @@ on:
 jobs:
 # -- macos latest runner
     build-macos-latest:
+      if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
       name : Build x64-macos-clang
       runs-on: macos-latest
       env: 
@@ -126,6 +127,7 @@ jobs:
               report_paths: '${{ github.workspace }}/build/test_*.xml'
 #  -- linux ubuntu latest runner
     build-linux-ubuntu-latest:
+      if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
       name : Build x64-linux-gcc
       runs-on: ubuntu-latest
       env: 
@@ -257,6 +259,7 @@ jobs:
               report_paths: '${{ github.workspace }}/build/test_*.xml'
 # -- windows latest runner - msvc
     build-msvc-windows-latest:
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build x64-windows-msvc
         runs-on: windows-latest
         env: 
@@ -386,6 +389,7 @@ jobs:
               with:
                 report_paths: '${{ github.workspace }}/build/test_*.xml'
     build-documentation-windows-latest:
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository
         name: Build documentation
         runs-on: windows-latest
         env: 
