@@ -3,7 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/reflection/call_context.hpp"
-#include "mge/reflection/type.hpp"
+#include "mge/reflection/reflection_fwd.hpp"
 
 #include <utility>
 

@@ -4,5 +4,5 @@
 SET(mge_module_assimp_SOURCES
     assimp.cpp
 )
-ADD_LIBRARY(mge_module_assimp SHARED ${mge_module_assimp_SOURCES})
+ADD_LIBRARY(mge_module_assimp MODULE ${mge_module_assimp_SOURCES})
 TARGET_LINK_LIBRARIES(mge_module_assimp mgecore mgeasset mgegraphics assimp::assimp)
