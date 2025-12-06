@@ -305,7 +305,7 @@ namespace mge::lua {
             "  -l g=mod  require library 'mod' into global 'g'\n"
             "  -v        show version information\n"
             "  -E        ignore environment variables\n"
-            "  -W        turn warnings on\n"
+            //            "  -W        turn warnings on\n"
             "  --        stop handling options\n"
             "  -         stop handling options and execute stdin\n",
             progname);
