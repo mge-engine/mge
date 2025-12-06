@@ -116,9 +116,6 @@ namespace mge {
                                               end - pos - prefix.size());
                     return n;
                 }
-                auto n = func_name.substr(pos + prefix.size(),
-                                          end - pos - prefix.size());
-                return n;
 #elif defined(MGE_COMPILER_APPLECLANG)
                 std::string_view func_name(
                     std::source_location::current().function_name());
