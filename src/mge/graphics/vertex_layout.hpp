@@ -67,31 +67,33 @@ namespace mge {
 
             bool operator==(const iterator& i) const
             {
-                return (&m_layout == &i.m_layout) && (m_index == i.m_index);
+                return (&m_layout.get() == &i.m_layout.get()) &&
+                       (m_index == i.m_index);
             }
 
             bool operator!=(const iterator& i) const
             {
-                return (&m_layout != &i.m_layout) || m_index != i.m_index;
+                return (&m_layout.get() != &i.m_layout.get()) ||
+                       m_index != i.m_index;
             }
 
             entry operator*()
             {
-                entry e{m_layout.m_formats[m_index],
-                        m_layout.m_semantics[m_index]};
+                entry e{m_layout.get().m_formats[m_index],
+                        m_layout.get().m_semantics[m_index]};
                 return e;
             }
 
             entry operator->()
             {
-                entry e{m_layout.m_formats[m_index],
-                        m_layout.m_semantics[m_index]};
+                entry e{m_layout.get().m_formats[m_index],
+                        m_layout.get().m_semantics[m_index]};
                 return e;
             }
 
         private:
-            vertex_layout& m_layout;
-            size_t         m_index;
+            std::reference_wrapper<vertex_layout> m_layout;
+            size_t                                m_index;
         };
 
         class const_iterator
@@ -123,31 +125,33 @@ namespace mge {
 
             bool operator==(const const_iterator& i) const
             {
-                return (&m_layout == &i.m_layout) && (m_index == i.m_index);
+                return (&m_layout.get() == &i.m_layout.get()) &&
+                       (m_index == i.m_index);
             }
 
             bool operator!=(const const_iterator& i) const
             {
-                return (&m_layout != &i.m_layout) || m_index != i.m_index;
+                return (&m_layout.get() != &i.m_layout.get()) ||
+                       m_index != i.m_index;
             }
 
             const_entry operator*() const
             {
-                const_entry e{m_layout.m_formats[m_index],
-                              m_layout.m_semantics[m_index]};
+                const_entry e{m_layout.get().m_formats[m_index],
+                              m_layout.get().m_semantics[m_index]};
                 return e;
             }
 
             const_entry operator->() const
             {
-                const_entry e{m_layout.m_formats[m_index],
-                              m_layout.m_semantics[m_index]};
+                const_entry e{m_layout.get().m_formats[m_index],
+                              m_layout.get().m_semantics[m_index]};
                 return e;
             }
 
         private:
-            const vertex_layout& m_layout;
-            size_t               m_index;
+            std::reference_wrapper<const vertex_layout> m_layout;
+            size_t                                      m_index;
         };
 
         /**
