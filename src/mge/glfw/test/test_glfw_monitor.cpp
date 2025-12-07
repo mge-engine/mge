@@ -39,3 +39,11 @@ TEST(glfw_monitor, current_mode_in_supported)
     auto modes = mon->supported_modes();
     EXPECT_TRUE(mge::contains(modes, mode));
 }
+
+TEST(glfw_monitor, monitor_has_name)
+{
+    auto mon = *(mge::glfw::monitor::all_monitors().begin());
+    auto name = mon->name();
+    std::cout << "Monitor name: " << name << std::endl;
+    EXPECT_FALSE(name.empty());
+}
