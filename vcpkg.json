@@ -25,6 +25,10 @@
     "libffi",
     "assimp",
     "sqlite3",
-    "fmt"
+    "fmt",
+    {
+      "name": "glfw3",
+      "platform": "osx"
+    }
   ]
 }
