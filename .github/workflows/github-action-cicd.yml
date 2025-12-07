@@ -119,6 +119,8 @@ jobs:
             run: |
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               cmake --build build --parallel 4 --target all
+          - name: Show ccache stats
+            run: ccache -s
           - name: Run Tests
             working-directory: ${{ github.workspace }}/build
             run: |
@@ -259,6 +261,8 @@ jobs:
               export CMAKE_CXX_COMPILER_LAUNCHER=ccache
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               cmake --build build --parallel 8 --target all
+          - name: Show ccache stats
+            run: ccache -s
           - name: Run Tests
             working-directory: ${{ github.workspace }}/build
             run: |
@@ -298,6 +302,8 @@ jobs:
             - name: Install Ninja
               run: |
                 choco install ninja
+            - name: Setup sccache
+              uses: mozilla-actions/sccache-action@v0.0.6
             - name: Checkout source code
               uses: actions/checkout@v4
               with:
@@ -360,6 +366,8 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
+                $env:CMAKE_C_COMPILER_LAUNCHER = "sccache"
+                $env:CMAKE_CXX_COMPILER_LAUNCHER = "sccache"
                 $env:VCPKG_VERBOSE="1" 
                 $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
@@ -388,9 +396,13 @@ jobs:
               run: |
                 $env:CC = "cl.exe"
                 $env:CXX = "cl.exe"
+                $env:CMAKE_C_COMPILER_LAUNCHER = "sccache"
+                $env:CMAKE_CXX_COMPILER_LAUNCHER = "sccache"
                 $env:VULKAN_SDK = "C:\VulkanSDK\1.4.309.0"
                 $env:VCPKG_ROOT = "${{ github.workspace }}\vcpkg"
                 cmake --build build --parallel 8 --target all
+            - name: Show sccache stats
+              run: sccache --show-stats
             - name: Run Tests
               working-directory: ${{ github.workspace }}/build
               run: |
