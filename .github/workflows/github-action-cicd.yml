@@ -149,6 +149,15 @@ jobs:
           - name: Show OS Version
             run: |
               cat /etc/os-release
+          - name: Cache apt packages
+            uses: actions/cache@v4
+            with:
+              path: |
+                /var/cache/apt/archives
+                /var/lib/apt/lists
+              key: ${{ runner.os }}-apt-${{ hashFiles('.github/workflows/github-action-cicd.yml') }}
+              restore-keys: |
+                ${{ runner.os }}-apt-
           - name: Update and upgrade apt packages
             run: |
               sudo apt-get update
@@ -156,9 +165,18 @@ jobs:
           - name: Show Python version
             run: |
               python3 --version  
+          - name: Cache CMake snap
+            id: cache-cmake-snap
+            uses: actions/cache@v4
+            with:
+              path: /snap/cmake
+              key: ${{ runner.os }}-cmake-snap
           - name: Install CMake
+            if: steps.cache-cmake-snap.outputs.cache-hit != 'true'
             run: |
               sudo snap install cmake --classic
+          - name: Verify CMake
+            run: |
               cmake --version
           - name: Install Ninja
             run: |
