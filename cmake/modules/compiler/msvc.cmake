@@ -10,6 +10,7 @@ IF(MSVC)
     ADD_DEFINITIONS("-WX")
     ADD_DEFINITIONS("-Qpar")
     ADD_DEFINITIONS("-Zc:preprocessor")
+    ADD_DEFINITIONS("-FS")  # Force synchronous PDB writes for parallel builds
     ADD_DEFINITIONS("-DNOMINMAX") # avoid window.h defined min/max
     ADD_DEFINITIONS("-wd4702") # unreachable code (happens in template expansion)
     ADD_DEFINITIONS("-wd4710") # cannot inline function marked as inline
