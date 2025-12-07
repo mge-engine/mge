@@ -92,7 +92,7 @@ jobs:
           - name: Configure project
             run: |
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
-              export VCPKG_BINARY_SOURCES="clear;x-gha,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+              export VCPKG_BINARY_SOURCES="clear;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
               export CMAKE_C_COMPILER_LAUNCHER=ccache
               export CMAKE_CXX_COMPILER_LAUNCHER=ccache
               max_attempts=3
@@ -248,7 +248,7 @@ jobs:
               export CC=gcc-14
               export CXX=g++-14
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
-              export VCPKG_BINARY_SOURCES="clear;x-gha,readwrite;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
+              export VCPKG_BINARY_SOURCES="clear;files,${{ github.workspace }}/vcpkg_binary_cache,readwrite"
               export CMAKE_C_COMPILER_LAUNCHER=ccache
               export CMAKE_CXX_COMPILER_LAUNCHER=ccache
               max_attempts=3
