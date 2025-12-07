@@ -313,6 +313,15 @@ jobs:
             - name: Show Python version
               run: |
                 python --version
+            - name: Cache Chocolatey packages
+              uses: actions/cache@v4
+              with:
+                path: |
+                  C:\ProgramData\chocolatey\lib
+                  C:\ProgramData\chocolatey\bin
+                key: ${{ runner.os }}-choco-${{ hashFiles('.github/workflows/github-action-cicd.yml') }}
+                restore-keys: |
+                  ${{ runner.os }}-choco-
             - name: Install CMake
               run: |
                 choco install cmake
@@ -445,6 +454,15 @@ jobs:
         env: 
             VCPKG_BINARY_SOURCES: "clear;default,readwrite;files,${{ github.workspace }}\\vcpkg_binary_cache,readwrite"
         steps:
+            - name: Cache Chocolatey packages
+              uses: actions/cache@v4
+              with:
+                path: |
+                  C:\ProgramData\chocolatey\lib
+                  C:\ProgramData\chocolatey\bin
+                key: ${{ runner.os }}-choco-${{ hashFiles('.github/workflows/github-action-cicd.yml') }}
+                restore-keys: |
+                  ${{ runner.os }}-choco-
             - name: Install CMake
               run: |
                 choco install cmake 
