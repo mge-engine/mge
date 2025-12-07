@@ -255,6 +255,8 @@ jobs:
             run: |
               export CC=gcc-14
               export CXX=g++-14
+              export CMAKE_C_COMPILER_LAUNCHER=ccache
+              export CMAKE_CXX_COMPILER_LAUNCHER=ccache
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               cmake --build build --parallel 8 --target all
           - name: Run Tests
@@ -262,6 +264,8 @@ jobs:
             run: |
               export CC=gcc-14
               export CXX=g++-14
+              export CMAKE_C_COMPILER_LAUNCHER=ccache
+              export CMAKE_CXX_COMPILER_LAUNCHER=ccache
               export VCPKG_ROOT=${{ github.workspace }}/vcpkg
               ctest --verbose
           - name: Upload test results
