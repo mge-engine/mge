@@ -59,6 +59,7 @@ namespace mge {
                 auto draw_commands = m_window->render_context()
                                          .create_current_frame_command_list();
                 draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                draw_commands->clear_depth(1.0f);
                 draw_commands->default_scissor();
                 draw_commands->draw(
                     mge::draw_command(m_program,
