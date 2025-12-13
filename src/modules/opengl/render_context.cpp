@@ -214,7 +214,10 @@ namespace mge::opengl {
 
     mge::frame_command_list* render_context::create_current_frame_command_list()
     {
-        return mge::render_context::create_current_frame_command_list();
+        auto* result = mge::render_context::create_current_frame_command_list();
+        m_frame_command_lists[result] =
+            std::unique_ptr<mge::frame_command_list>(result);
+        return result;
     }
 
     void

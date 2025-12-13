@@ -82,9 +82,7 @@ namespace mge {
 
         auto ptr = std::make_unique<delegating_frame_command_list>(
             create_command_list());
-        auto* result = ptr.get();
-        // Need to store in a map, but we don't have access to it here
-        // This will be handled by derived classes
+        auto* result = ptr.release();
         return result;
     }
 

@@ -67,6 +67,7 @@ namespace mge {
                                       mge::topology::TRIANGLES));
                 draw_commands->finish();
                 draw_commands->execute();
+                draw_commands->destroy();
             }
             m_window->render_context().swap_chain()->present();
         }
