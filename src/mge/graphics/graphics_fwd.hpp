@@ -11,7 +11,7 @@ namespace mge {
     MGE_DECLARE_REF(monitor);
     MGE_DECLARE_REF(render_context);
     MGE_DECLARE_REF(swap_chain);
-    MGE_DECLARE_REF(index_buffer);
+    class index_buffer;
     MGE_DECLARE_REF(vertex_buffer);
     MGE_DECLARE_REF(shader);
     MGE_DECLARE_REF(program);
