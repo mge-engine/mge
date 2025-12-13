@@ -67,14 +67,24 @@ namespace mge {
          * @param t             shader type
          * @return created shader
          */
-        virtual shader_ref create_shader(shader_type t) = 0;
+        virtual shader* create_shader(shader_type t) = 0;
+        /**
+         * @brief Destroy a shader.
+         * @param s shader to destroy
+         */
+        virtual void destroy_shader(shader* s) = 0;
 
         /**
          * @brief Create a program object.
          *
          * @return created program
          */
-        virtual program_ref create_program() = 0;
+        virtual program* create_program() = 0;
+        /**
+         * @brief Destroy a program.
+         * @param p program to destroy
+         */
+        virtual void destroy_program(program* p) = 0;
 
         /**
          * @brief Create a command list object.

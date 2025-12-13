@@ -240,15 +240,15 @@ namespace mge::opengl {
         }
     }
 
-    void program::on_set_shader(const shader_ref& shader)
+    void program::on_set_shader(mge::shader* s)
     {
-        assert_same_context(shader);
-        if (!shader->initialized()) {
+        assert_same_context(*s);
+        if (!s->initialized()) {
             MGE_THROW(mge::illegal_state)
                 << "Cannot apply uninitialized shader to program";
         }
         const mge::opengl::shader* opengl_shader =
-            static_cast<const mge::opengl::shader*>(shader.get());
+            static_cast<const mge::opengl::shader*>(s);
         glAttachShader(m_program, opengl_shader->gl_shader());
         CHECK_OPENGL_ERROR(glAttachShader);
     }

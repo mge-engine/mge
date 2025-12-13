@@ -26,10 +26,10 @@ namespace mge {
          * @param indices  indices
          * @param t        vertices topology
          */
-        draw_command(const program_ref& program,
-                     vertex_buffer*     vertices,
-                     index_buffer*      indices,
-                     topology           t);
+        draw_command(mge::program*  program,
+                     vertex_buffer* vertices,
+                     index_buffer*  indices,
+                     topology       t);
 
         /**
          * @brief Copy constructor.
@@ -63,7 +63,7 @@ namespace mge {
          * @brief Access stored program.
          * @return program
          */
-        const program_ref& program() const
+        mge::program* program() const
         {
             return m_program;
         }
@@ -96,7 +96,7 @@ namespace mge {
         }
 
     private:
-        program_ref    m_program;
+        mge::program*  m_program;
         vertex_buffer* m_vertices;
         index_buffer*  m_indices;
         mge::topology  m_topology;

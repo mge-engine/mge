@@ -23,10 +23,11 @@ namespace mge::dx11 {
         collect_information();
     }
 
-    void program::on_set_shader(const shader_ref& shader)
+    void program::on_set_shader(mge::shader* s)
     {
-        auto index = mge::to_underlying(shader->type());
-        m_shaders[index] = shader;
+        auto* dx11_shader = static_cast<shader*>(s);
+        auto index = mge::to_underlying(s->type());
+        m_shaders[index] = dx11_shader;
     }
 
     void program::collect_information()
@@ -34,7 +35,7 @@ namespace mge::dx11 {
         for (const auto& s : m_shaders) {
             if (s) {
                 const dx11::shader* dx11_s =
-                    static_cast<const dx11::shader*>(s.get());
+                    static_cast<const dx11::shader*>(s);
                 dx11_s->reflect(m_attributes, m_uniforms, m_uniform_buffers);
             }
         }

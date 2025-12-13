@@ -14,7 +14,7 @@ TEST_F(shader_test, create)
 {
     auto& context = m_window->render_context();
     auto  s = context.create_shader(mge::shader_type::VERTEX);
-    EXPECT_TRUE(s.get() != nullptr);
+    EXPECT_TRUE(s != nullptr);
 }
 
 TEST_F(shader_test, compile)

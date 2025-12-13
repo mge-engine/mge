@@ -17,10 +17,9 @@ namespace mge {
     class MGEGRAPHICS_EXPORT uniform_binding
     {
     public:
-        uniform_binding(const program_ref& program);
-        ~uniform_binding() = default;
+        uniform_binding(program* program);
 
     private:
-        program_ref m_program; //!< The shader program this binding is for.
+        program* m_program; //!< The shader program this binding is for.
     };
 } // namespace mge

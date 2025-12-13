@@ -144,7 +144,7 @@ namespace mge::vulkan {
     void frame_command_list::draw(const mge::draw_command& command)
     {
         mge::vulkan::program* draw_program =
-            static_cast<mge::vulkan::program*>(command.program().get());
+            static_cast<mge::vulkan::program*>(command.program());
         mge::vulkan::vertex_buffer* vertex_buffer =
             static_cast<mge::vulkan::vertex_buffer*>(command.vertices());
         mge::vulkan::index_buffer* index_buffer =

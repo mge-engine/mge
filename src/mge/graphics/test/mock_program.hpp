@@ -15,5 +15,5 @@ public:
     ~MOCK_program() {}
 
     MOCK_METHOD(void, on_link, (), ());
-    MOCK_METHOD(void, on_set_shader, (const mge::shader_ref&), ());
+    MOCK_METHOD(void, on_set_shader, (mge::shader*), ());
 };

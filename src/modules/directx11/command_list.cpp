@@ -106,11 +106,11 @@ namespace mge::dx11 {
     void command_list::draw(const mge::draw_command& command)
     {
         const dx11::program* dx11_program =
-            static_cast<const dx11 ::program*>(command.program().get());
+            static_cast<const dx11::program*>(command.program());
 
         const dx11::shader* dx11_vertex_shader =
             static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::VERTEX).get());
+                dx11_program->program_shader(mge::shader_type::VERTEX));
 
         ID3D11InputLayout* input_layout = dx11_vertex_shader->input_layout();
         if (input_layout == nullptr) {
@@ -145,7 +145,7 @@ namespace mge::dx11 {
 
         const dx11::shader* dx11_pixel_shader =
             static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::FRAGMENT).get());
+                dx11_program->program_shader(mge::shader_type::FRAGMENT));
         m_deferred_context->PSSetShader(
             dx11_pixel_shader->directx_pixel_shader(),
             nullptr,

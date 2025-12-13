@@ -13,8 +13,8 @@ namespace mge {
     MGE_DECLARE_REF(swap_chain);
     class index_buffer;
     class vertex_buffer;
-    MGE_DECLARE_REF(shader);
-    MGE_DECLARE_REF(program);
+    class shader;
+    class program;
     MGE_DECLARE_REF(command_list);
     MGE_DECLARE_REF(frame_command_list);
     MGE_DECLARE_REF(texture);

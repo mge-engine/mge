@@ -21,8 +21,10 @@ public:
                 (const mge::vertex_layout&, size_t, void*),
                 ());
     MOCK_METHOD(void, destroy_vertex_buffer, (mge::vertex_buffer * vb), ());
-    MOCK_METHOD(mge::shader_ref, create_shader, (mge::shader_type), ());
-    MOCK_METHOD(mge::program_ref, create_program, (), ());
+    MOCK_METHOD(mge::shader*, create_shader, (mge::shader_type), ());
+    MOCK_METHOD(void, destroy_shader, (mge::shader * s), ());
+    MOCK_METHOD(mge::program*, create_program, (), ());
+    MOCK_METHOD(void, destroy_program, (mge::program * p), ());
     MOCK_METHOD(mge::command_list_ref, create_command_list, (), ());
     MOCK_METHOD(mge::texture_ref, create_texture, (mge::texture_type), ());
 };

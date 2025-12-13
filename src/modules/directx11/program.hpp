@@ -18,21 +18,21 @@ namespace mge::dx11 {
         program(render_context& context);
         virtual ~program();
 
-        inline const shader_ref& program_shader(mge::shader_type t) const
+        inline shader* program_shader(mge::shader_type t) const
         {
             return m_shaders[mge::to_underlying(t)];
         }
 
     protected:
         void on_link() override;
-        void on_set_shader(const shader_ref& shader) override;
+        void on_set_shader(mge::shader* shader) override;
 
     private:
         void collect_information();
 
-        std::array<shader_ref,
+        std::array<shader*,
                    mge::to_underlying(mge::shader_type::MAX_SHADER_TYPE) + 1>
-            m_shaders;
+            m_shaders{};
     };
 
 } // namespace mge::dx11

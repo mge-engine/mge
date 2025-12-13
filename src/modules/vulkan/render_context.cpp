@@ -62,6 +62,8 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
+        m_programs.clear();
+        m_shaders.clear();
         m_vertex_buffers.clear();
         m_index_buffers.clear();
         teardown();
@@ -110,16 +112,40 @@ namespace mge::vulkan {
         }
     }
 
-    mge::shader_ref render_context::create_shader(shader_type t)
+    mge::shader* render_context::create_shader(shader_type t)
     {
-        mge::shader_ref result = std::make_shared<shader>(*this, t);
-        return result;
+        auto result = std::make_unique<shader>(*this, t);
+        auto ptr = result.get();
+        m_shaders[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::program_ref render_context::create_program()
+    void render_context::destroy_shader(mge::shader* s)
     {
-        mge::program_ref result = std::make_shared<program>(*this);
-        return result;
+        auto it = m_shaders.find(s);
+        if (it != m_shaders.end()) {
+            m_shaders.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
+        }
+    }
+
+    mge::program* render_context::create_program()
+    {
+        auto result = std::make_unique<program>(*this);
+        auto ptr = result.get();
+        m_programs[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_program(mge::program* p)
+    {
+        auto it = m_programs.find(p);
+        if (it != m_programs.end()) {
+            m_programs.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
+        }
     }
 
     mge::command_list_ref render_context::create_command_list()

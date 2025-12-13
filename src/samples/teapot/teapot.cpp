@@ -204,7 +204,7 @@ namespace mge {
         std::atomic<bool> m_initialized;
         command_list_ref  m_clear_commands;
         command_list_ref  m_draw_commands;
-        program_ref       m_program;
+        program*          m_program;
         vertex_buffer*    m_vertices;
         index_buffer*     m_indices;
     };

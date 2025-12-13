@@ -26,10 +26,11 @@ namespace mge::dx12 {
         create_root_signature();
     }
 
-    void program::on_set_shader(const shader_ref& shader)
+    void program::on_set_shader(mge::shader* s)
     {
-        auto index = mge::to_underlying(shader->type());
-        m_shaders[index] = shader;
+        auto* dx12_shader = static_cast<shader*>(s);
+        auto index = mge::to_underlying(s->type());
+        m_shaders[index] = dx12_shader;
     }
 
     void program::collect_information()
@@ -37,7 +38,7 @@ namespace mge::dx12 {
         for (const auto& s : m_shaders) {
             if (s) {
                 const dx12::shader* dx12_s =
-                    static_cast<const dx12::shader*>(s.get());
+                    static_cast<const dx12::shader*>(s);
                 dx12_s->reflect(m_attributes, m_uniforms, m_uniform_buffers);
             }
         }

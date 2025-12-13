@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/graphics/program.hpp"
 #include "mge/core/stdexceptions.hpp"
+#include "mge/graphics/render_context.hpp"
 
 namespace mge {
 
@@ -13,7 +14,12 @@ namespace mge {
 
     program::~program() {}
 
-    void program::set_shader(const shader_ref& s)
+    void program::destroy()
+    {
+        context().destroy_program(this);
+    }
+
+    void program::set_shader(shader* s)
     {
         if (!s) {
             MGE_THROW_ARGUMENT_NOT_NULL(shader);
