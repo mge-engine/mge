@@ -22,7 +22,6 @@ namespace mge {
      * of the rendered frames.
      */
     class MGEGRAPHICS_EXPORT render_context
-        : public std::enable_shared_from_this<render_context>
     {
     public:
         virtual ~render_context() = default;
