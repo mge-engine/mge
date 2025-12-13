@@ -102,6 +102,15 @@ namespace mge {
          */
         virtual void execute() = 0;
 
+        /**
+         * @brief Destroy the command list.
+         *
+         * The command list is removed from the context and
+         * its resources are freed. Afterwards, the pointer to the
+         * command list is invalid.
+         */
+        void destroy();
+
     private:
         bool m_native;
     };

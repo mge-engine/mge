@@ -62,47 +62,108 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
+        m_frame_command_lists.clear();
+        m_command_lists.clear();
+        m_programs.clear();
+        m_shaders.clear();
+        m_vertex_buffers.clear();
+        m_index_buffers.clear();
         teardown();
     }
 
-    mge::index_buffer_ref render_context::create_index_buffer(data_type dt,
-                                                              size_t data_size,
-                                                              void*  data)
+    mge::index_buffer* render_context::create_index_buffer(data_type dt,
+                                                           size_t    data_size,
+                                                           void*     data)
     {
-        mge::index_buffer_ref result =
-            std::make_shared<index_buffer>(*this, dt, data_size, data);
-        return result;
+        auto result =
+            std::make_unique<index_buffer>(*this, dt, data_size, data);
+        auto ptr = result.get();
+        m_index_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::vertex_buffer_ref render_context::create_vertex_buffer(
+    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    {
+        auto it = m_index_buffers.find(ib);
+        if (it != m_index_buffers.end()) {
+            m_index_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown index buffer";
+        }
+    }
+
+    mge::vertex_buffer* render_context::create_vertex_buffer(
         const vertex_layout& layout, size_t data_size, void* data)
     {
-        mge::vertex_buffer_ref result =
-            std::make_shared<vertex_buffer>(*this, layout, data_size, data);
-        return result;
+        auto result =
+            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
+        auto ptr = result.get();
+        m_vertex_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::shader_ref render_context::create_shader(shader_type t)
+    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
     {
-        mge::shader_ref result = std::make_shared<shader>(*this, t);
-        return result;
+        auto it = m_vertex_buffers.find(vb);
+        if (it != m_vertex_buffers.end()) {
+            m_vertex_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown vertex buffer";
+        }
     }
 
-    mge::program_ref render_context::create_program()
+    mge::shader* render_context::create_shader(shader_type t)
     {
-        mge::program_ref result = std::make_shared<program>(*this);
-        return result;
+        auto result = std::make_unique<shader>(*this, t);
+        auto ptr = result.get();
+        m_shaders[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::command_list_ref render_context::create_command_list()
+    void render_context::destroy_shader(mge::shader* s)
     {
-        mge::command_list_ref result =
-            std::make_shared<mge::vulkan::command_list>(*this);
+        auto it = m_shaders.find(s);
+        if (it != m_shaders.end()) {
+            m_shaders.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
+        }
+    }
+
+    mge::program* render_context::create_program()
+    {
+        auto result = std::make_unique<program>(*this);
+        auto ptr = result.get();
+        m_programs[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_program(mge::program* p)
+    {
+        auto it = m_programs.find(p);
+        if (it != m_programs.end()) {
+            m_programs.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
+        }
+    }
+
+    mge::command_list* render_context::create_command_list()
+    {
+        auto  ptr = std::make_unique<mge::vulkan::command_list>(*this);
+        auto* result = ptr.get();
+        m_command_lists[result] = std::move(ptr);
         return result;
     }
 
-    mge::frame_command_list_ref
-    render_context::create_current_frame_command_list()
+    void render_context::destroy_command_list(mge::command_list* cl)
+    {
+        m_command_lists.erase(cl);
+    }
+
+    mge::frame_command_list* render_context::create_current_frame_command_list()
     {
         if (!m_drawing_initialized) {
             initialize_drawing();
@@ -115,11 +176,18 @@ namespace mge::vulkan {
                 << "Invalid frame state for frame command list creation: "
                 << m_current_frame_state;
         }
-        auto result =
-            std::make_shared<frame_command_list>(*this,
-                                                 m_frame,
-                                                 m_current_image_index);
+        auto  ptr = std::make_unique<frame_command_list>(*this,
+                                                        m_frame,
+                                                        m_current_image_index);
+        auto* result = ptr.get();
+        m_frame_command_lists[result] = std::move(ptr);
         return result;
+    }
+
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    {
+        m_frame_command_lists.erase(fcl);
     }
 
     mge::texture_ref render_context::create_texture(texture_type type)

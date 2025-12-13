@@ -8,10 +8,10 @@ namespace mge {
         : m_topology(mge::topology::TRIANGLES)
     {}
 
-    draw_command::draw_command(const program_ref&       program,
-                               const vertex_buffer_ref& vertices,
-                               const index_buffer_ref&  indices,
-                               mge::topology            t)
+    draw_command::draw_command(mge::program*  program,
+                               vertex_buffer* vertices,
+                               index_buffer*  indices,
+                               mge::topology  t)
         : m_program(program)
         , m_vertices(vertices)
         , m_indices(indices)

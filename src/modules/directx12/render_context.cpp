@@ -289,52 +289,114 @@ namespace mge::dx12 {
 
     render_context::~render_context()
     {
+        m_managed_frame_command_lists.clear();
+        m_command_lists.clear();
+        m_programs.clear();
+        m_shaders.clear();
+        m_vertex_buffers.clear();
+        m_index_buffers.clear();
         if (m_info_queue && m_callback_cookie != 0) {
             m_info_queue->UnregisterMessageCallback(m_callback_cookie);
         }
     }
 
-    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
-                                                              size_t data_size,
-                                                              void*  data)
+    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
+                                                           size_t data_size,
+                                                           void*  data)
     {
-        mge::index_buffer_ref ref =
-            std::make_shared<dx12::index_buffer>(*this, dt, data_size, data);
-        return ref;
+        auto result = std::make_unique<mge::dx12::index_buffer>(*this,
+                                                                dt,
+                                                                data_size,
+                                                                data);
+        auto ptr = result.get();
+        m_index_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::vertex_buffer_ref render_context::create_vertex_buffer(
+    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    {
+        auto it = m_index_buffers.find(ib);
+        if (it != m_index_buffers.end()) {
+            m_index_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown index buffer";
+        }
+    }
+
+    mge::vertex_buffer* render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        mge::vertex_buffer_ref ref =
-            std::make_shared<dx12::vertex_buffer>(*this,
-                                                  layout,
-                                                  data_size,
-                                                  data);
-        return ref;
+        auto result = std::make_unique<dx12::vertex_buffer>(*this,
+                                                            layout,
+                                                            data_size,
+                                                            data);
+        auto ptr = result.get();
+        m_vertex_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::shader_ref render_context::create_shader(shader_type t)
+    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
     {
-        mge::shader_ref ref = std::make_shared<dx12::shader>(*this, t);
-        return ref;
+        auto it = m_vertex_buffers.find(vb);
+        if (it != m_vertex_buffers.end()) {
+            m_vertex_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown vertex buffer";
+        }
     }
 
-    mge::program_ref render_context::create_program()
+    mge::shader* render_context::create_shader(shader_type t)
     {
-        mge::program_ref result = std::make_shared<dx12::program>(*this);
+        auto result = std::make_unique<dx12::shader>(*this, t);
+        auto ptr = result.get();
+        m_shaders[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_shader(mge::shader* s)
+    {
+        auto it = m_shaders.find(s);
+        if (it != m_shaders.end()) {
+            m_shaders.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
+        }
+    }
+
+    mge::program* render_context::create_program()
+    {
+        auto result = std::make_unique<dx12::program>(*this);
+        auto ptr = result.get();
+        m_programs[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_program(mge::program* p)
+    {
+        auto it = m_programs.find(p);
+        if (it != m_programs.end()) {
+            m_programs.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
+        }
+    }
+
+    mge::command_list* render_context::create_command_list()
+    {
+        auto  ptr = std::make_unique<dx12::command_list>(*this);
+        auto* result = ptr.get();
+        m_command_lists[result] = std::move(ptr);
         return result;
     }
 
-    mge::command_list_ref render_context::create_command_list()
+    void render_context::destroy_command_list(mge::command_list* cl)
     {
-        mge::command_list_ref result =
-            std::make_shared<dx12::command_list>(*this);
-        return result;
+        m_command_lists.erase(cl);
     }
 
-    mge::frame_command_list_ref
-    render_context::create_current_frame_command_list()
+    mge::frame_command_list* render_context::create_current_frame_command_list()
     {
         switch (m_draw_state) {
         case draw_state::NONE:
@@ -349,11 +411,18 @@ namespace mge::dx12 {
                              << m_draw_state;
         }
 
-        mge::frame_command_list_ref result =
-            std::make_shared<dx12::frame_command_list>(
-                *this,
-                current_back_buffer_index());
+        auto ptr = std::make_unique<dx12::frame_command_list>(
+            *this,
+            current_back_buffer_index());
+        auto* result = ptr.get();
+        m_managed_frame_command_lists[result] = std::move(ptr);
         return result;
+    }
+
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    {
+        m_managed_frame_command_lists.erase(fcl);
     }
 
     void render_context::copy_resource_sync(ID3D12Resource*       dst,

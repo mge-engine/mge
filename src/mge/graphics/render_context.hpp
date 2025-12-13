@@ -35,9 +35,14 @@ namespace mge {
          * @param data          initial data
          * @return created index buffer
          */
-        virtual index_buffer_ref create_index_buffer(data_type dt,
-                                                     size_t    data_size,
-                                                     void* data = nullptr) = 0;
+        virtual index_buffer* create_index_buffer(data_type dt,
+                                                  size_t    data_size,
+                                                  void*     data = nullptr) = 0;
+        /**
+         * @brief Destroy an index buffer.
+         * @param ib index buffer to destroy
+         */
+        virtual void destroy_index_buffer(index_buffer* ib) = 0;
 
         /**
          * @brief Create a vertex buffer object.
@@ -47,10 +52,14 @@ namespace mge {
          * @param data      initial data
          * @return created vertex buffer
          */
-        virtual vertex_buffer_ref
-        create_vertex_buffer(const vertex_layout& layout,
-                             size_t               data_size,
-                             void*                data = nullptr) = 0;
+        virtual vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
+                                                    size_t data_size,
+                                                    void*  data = nullptr) = 0;
+        /**
+         * @brief Destroy a vertex buffer.
+         * @param vb vertex buffer to destroy
+         */
+        virtual void destroy_vertex_buffer(vertex_buffer* vb) = 0;
 
         /**
          * @brief Create a shader object.
@@ -58,27 +67,47 @@ namespace mge {
          * @param t             shader type
          * @return created shader
          */
-        virtual shader_ref create_shader(shader_type t) = 0;
+        virtual shader* create_shader(shader_type t) = 0;
+        /**
+         * @brief Destroy a shader.
+         * @param s shader to destroy
+         */
+        virtual void destroy_shader(shader* s) = 0;
 
         /**
          * @brief Create a program object.
          *
          * @return created program
          */
-        virtual program_ref create_program() = 0;
+        virtual program* create_program() = 0;
+        /**
+         * @brief Destroy a program.
+         * @param p program to destroy
+         */
+        virtual void destroy_program(program* p) = 0;
 
         /**
          * @brief Create a command list object.
          *
          * @return command list
          */
-        virtual command_list_ref create_command_list() = 0;
+        virtual command_list* create_command_list() = 0;
+        /**
+         * @brief Destroy a command list.
+         * @param cl command list to destroy
+         */
+        virtual void destroy_command_list(command_list* cl) = 0;
 
         /**
          * @brief Create a command list object for the current frame.
          * @return command list
          */
-        virtual frame_command_list_ref create_current_frame_command_list();
+        virtual frame_command_list* create_current_frame_command_list();
+        /**
+         * @brief Destroy a frame command list.
+         * @param fcl frame command list to destroy
+         */
+        virtual void destroy_frame_command_list(frame_command_list* fcl) = 0;
 
         /**
          * @brief Create a texture object.

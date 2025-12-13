@@ -203,11 +203,11 @@ namespace mge {
         render_system_ref m_render_system;
         window_ref        m_window;
         std::atomic<bool> m_initialized;
-        command_list_ref  m_clear_commands;
-        command_list_ref  m_draw_commands;
-        program_ref       m_program;
-        vertex_buffer_ref m_vertices;
-        index_buffer_ref  m_indices;
+        command_list*     m_clear_commands;
+        command_list*     m_draw_commands;
+        program*          m_program;
+        vertex_buffer*    m_vertices;
+        index_buffer*     m_indices;
     };
 
     MGE_REGISTER_IMPLEMENTATION(triangle, mge::application, triangle);

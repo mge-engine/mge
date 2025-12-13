@@ -108,43 +108,119 @@ namespace mge::opengl {
 #    error Missing port
 #endif
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        m_frame_command_lists.clear();
+        m_command_lists.clear();
+        m_programs.clear();
+        m_shaders.clear();
+        m_vertex_buffers.clear();
+        m_index_buffers.clear();
+    }
 
     singleton<opengl_info> render_context::s_glinfo;
 
-    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
-                                                              size_t data_size,
-                                                              void*  data)
+    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
+                                                           size_t data_size,
+                                                           void*  data)
     {
-        mge::index_buffer_ref result =
-            std::make_shared<index_buffer>(*this, dt, data_size, data);
-        return result;
+        auto result =
+            std::make_unique<index_buffer>(*this, dt, data_size, data);
+        auto ptr = result.get();
+        m_index_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::vertex_buffer_ref render_context::create_vertex_buffer(
+    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    {
+        auto it = m_index_buffers.find(ib);
+        if (it != m_index_buffers.end()) {
+            m_index_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown index buffer";
+        }
+    }
+
+    mge::vertex_buffer* render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        mge::vertex_buffer_ref result =
-            std::make_shared<vertex_buffer>(*this, layout, data_size, data);
+        auto result =
+            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
+        auto ptr = result.get();
+        m_vertex_buffers[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
+    {
+        auto it = m_vertex_buffers.find(vb);
+        if (it != m_vertex_buffers.end()) {
+            m_vertex_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown vertex buffer";
+        }
+    }
+
+    mge::shader* render_context::create_shader(mge::shader_type t)
+    {
+        auto result = std::make_unique<shader>(*this, t);
+        auto ptr = result.get();
+        m_shaders[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_shader(mge::shader* s)
+    {
+        auto it = m_shaders.find(s);
+        if (it != m_shaders.end()) {
+            m_shaders.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
+        }
+    }
+
+    mge::program* render_context::create_program()
+    {
+        auto result = std::make_unique<program>(*this);
+        auto ptr = result.get();
+        m_programs[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_program(mge::program* p)
+    {
+        auto it = m_programs.find(p);
+        if (it != m_programs.end()) {
+            m_programs.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
+        }
+    }
+
+    mge::command_list* render_context::create_command_list()
+    {
+        auto  ptr = std::make_unique<command_list>(*this);
+        auto* result = ptr.get();
+        m_command_lists[result] = std::move(ptr);
         return result;
     }
 
-    mge::shader_ref render_context::create_shader(mge::shader_type t)
+    void render_context::destroy_command_list(mge::command_list* cl)
     {
-        mge::shader_ref result = std::make_shared<shader>(*this, t);
-        return result;
+        m_command_lists.erase(cl);
     }
 
-    mge::program_ref render_context::create_program()
+    mge::frame_command_list* render_context::create_current_frame_command_list()
     {
-        mge::program_ref result = std::make_shared<program>(*this);
-        return result;
+        return mge::render_context::create_current_frame_command_list();
     }
 
-    mge::command_list_ref render_context::create_command_list()
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
     {
-        mge::command_list_ref result = std::make_shared<command_list>(*this);
-        return result;
+        m_frame_command_lists.erase(fcl);
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)

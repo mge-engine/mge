@@ -21,10 +21,9 @@ namespace mge::vulkan {
         }
     }
 
-    void program::on_set_shader(const shader_ref& shader)
+    void program::on_set_shader(mge::shader* s)
     {
-        auto vulkan_shader =
-            std::dynamic_pointer_cast<mge::vulkan::shader>(shader);
+        auto vulkan_shader = static_cast<mge::vulkan::shader*>(s);
         m_shaders.push_back(vulkan_shader);
     }
 } // namespace mge::vulkan

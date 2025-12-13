@@ -38,7 +38,7 @@ namespace mge::opengl {
         return ogl_buf.buffer_name();
     }
 
-    inline GLuint gl_index_buffer(const mge::index_buffer_ref& buf)
+    inline GLuint gl_index_buffer(const mge::index_buffer* buf)
     {
         if (buf) {
             return gl_index_buffer(*buf);

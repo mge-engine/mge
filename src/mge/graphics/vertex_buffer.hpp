@@ -45,6 +45,15 @@ namespace mge {
          */
         size_t element_count() const;
 
+        /**
+         * @brief Destroy the vertex buffer.
+         *
+         * The vertex buffer is removed from the context and
+         * its resources are freed. Afterwards, the pointer to the
+         * vertex buffer is invalid.
+         */
+        void destroy();
+
     private:
         vertex_layout m_layout;
     };
