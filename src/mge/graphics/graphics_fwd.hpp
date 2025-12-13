@@ -15,8 +15,8 @@ namespace mge {
     class vertex_buffer;
     class shader;
     class program;
-    MGE_DECLARE_REF(command_list);
-    MGE_DECLARE_REF(frame_command_list);
+    class command_list;
+    class frame_command_list;
     MGE_DECLARE_REF(texture);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);

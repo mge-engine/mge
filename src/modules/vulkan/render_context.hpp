@@ -2,6 +2,8 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/command_list.hpp"
+#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "vulkan.hpp"
 
@@ -23,14 +25,15 @@ namespace mge::vulkan {
                                                  size_t               data_size,
                                                  void* data) override;
         void          destroy_vertex_buffer(mge::vertex_buffer* vb) override;
-        mge::shader*  create_shader(shader_type t) override;
-        void          destroy_shader(mge::shader* s) override;
-        mge::program* create_program() override;
-        void          destroy_program(mge::program* p) override;
-        mge::frame_command_list_ref
-                              create_current_frame_command_list() override;
-        mge::command_list_ref create_command_list() override;
-        mge::texture_ref      create_texture(texture_type type) override;
+        mge::shader*             create_shader(shader_type t) override;
+        void                     destroy_shader(mge::shader* s) override;
+        mge::program*            create_program() override;
+        void                     destroy_program(mge::program* p) override;
+        mge::frame_command_list* create_current_frame_command_list() override;
+        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
+        mge::command_list*       create_command_list() override;
+        void                     destroy_command_list(mge::command_list* cl) override;
+        mge::texture_ref         create_texture(texture_type type) override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -197,5 +200,11 @@ namespace mge::vulkan {
             m_shaders;
         std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
             m_programs;
+        std::unordered_map<mge::command_list*,
+                           std::unique_ptr<mge::command_list>>
+            m_command_lists;
+        std::unordered_map<mge::frame_command_list*,
+                           std::unique_ptr<mge::frame_command_list>>
+            m_frame_command_lists;
     };
 } // namespace mge::vulkan

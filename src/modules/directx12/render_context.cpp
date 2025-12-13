@@ -289,6 +289,8 @@ namespace mge::dx12 {
 
     render_context::~render_context()
     {
+        m_managed_frame_command_lists.clear();
+        m_command_lists.clear();
         m_programs.clear();
         m_shaders.clear();
         m_vertex_buffers.clear();
@@ -381,14 +383,20 @@ namespace mge::dx12 {
         }
     }
 
-    mge::command_list_ref render_context::create_command_list()
+    mge::command_list* render_context::create_command_list()
     {
-        mge::command_list_ref result =
-            std::make_shared<dx12::command_list>(*this);
+        auto ptr = std::make_unique<dx12::command_list>(*this);
+        auto* result = ptr.get();
+        m_command_lists[result] = std::move(ptr);
         return result;
     }
 
-    mge::frame_command_list_ref
+    void render_context::destroy_command_list(mge::command_list* cl)
+    {
+        m_command_lists.erase(cl);
+    }
+
+    mge::frame_command_list*
     render_context::create_current_frame_command_list()
     {
         switch (m_draw_state) {
@@ -404,11 +412,17 @@ namespace mge::dx12 {
                              << m_draw_state;
         }
 
-        mge::frame_command_list_ref result =
-            std::make_shared<dx12::frame_command_list>(
+        auto ptr = std::make_unique<dx12::frame_command_list>(
                 *this,
                 current_back_buffer_index());
+        auto* result = ptr.get();
+        m_managed_frame_command_lists[result] = std::move(ptr);
         return result;
+    }
+
+    void render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    {
+        m_managed_frame_command_lists.erase(fcl);
     }
 
     void render_context::copy_resource_sync(ID3D12Resource*       dst,

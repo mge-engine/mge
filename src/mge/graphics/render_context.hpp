@@ -91,13 +91,23 @@ namespace mge {
          *
          * @return command list
          */
-        virtual command_list_ref create_command_list() = 0;
+        virtual command_list* create_command_list() = 0;
+        /**
+         * @brief Destroy a command list.
+         * @param cl command list to destroy
+         */
+        virtual void destroy_command_list(command_list* cl) = 0;
 
         /**
          * @brief Create a command list object for the current frame.
          * @return command list
          */
-        virtual frame_command_list_ref create_current_frame_command_list();
+        virtual frame_command_list* create_current_frame_command_list();
+        /**
+         * @brief Destroy a frame command list.
+         * @param fcl frame command list to destroy
+         */
+        virtual void destroy_frame_command_list(frame_command_list* fcl) = 0;
 
         /**
          * @brief Create a texture object.

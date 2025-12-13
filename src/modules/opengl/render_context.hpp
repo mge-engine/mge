@@ -5,6 +5,8 @@
 #include "mge/core/mutex.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/thread.hpp"
+#include "mge/graphics/command_list.hpp"
+#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "opengl.hpp"
@@ -38,12 +40,15 @@ namespace mge {
                 return *s_glinfo;
             }
 
-            mge::shader*          create_shader(shader_type t) override;
-            void                  destroy_shader(mge::shader* s) override;
-            mge::program*         create_program() override;
-            void                  destroy_program(mge::program* p) override;
-            mge::command_list_ref create_command_list() override;
-            mge::texture_ref      create_texture(texture_type type) override;
+            mge::shader*       create_shader(shader_type t) override;
+            void               destroy_shader(mge::shader* s) override;
+            mge::program*      create_program() override;
+            void               destroy_program(mge::program* p) override;
+            mge::command_list* create_command_list() override;
+            void               destroy_command_list(mge::command_list* cl) override;
+            mge::frame_command_list* create_current_frame_command_list() override;
+            void destroy_frame_command_list(mge::frame_command_list* fcl) override;
+            mge::texture_ref   create_texture(texture_type type) override;
             mge::rectangle        default_scissor() const;
             uint32_t              window_height() const;
 #ifdef MGE_OS_WINDOWS
@@ -80,6 +85,12 @@ namespace mge {
                 m_shaders;
             std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
                 m_programs;
+            std::unordered_map<mge::command_list*,
+                               std::unique_ptr<mge::command_list>>
+                m_command_lists;
+            std::unordered_map<mge::frame_command_list*,
+                               std::unique_ptr<mge::frame_command_list>>
+                m_frame_command_lists;
         };
     } // namespace opengl
 } // namespace mge

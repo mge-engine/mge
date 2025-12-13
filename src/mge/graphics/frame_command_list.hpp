@@ -31,6 +31,15 @@ namespace mge {
          */
         uint32_t backbuffer_index() const noexcept;
 
+        /**
+         * @brief Destroy the frame command list.
+         *
+         * The frame command list is removed from the context and
+         * its resources are freed. Afterwards, the pointer to the
+         * frame command list is invalid.
+         */
+        void destroy();
+
     private:
         uint32_t m_backbuffer_index;
     };

@@ -29,6 +29,8 @@ namespace mge::dx11 {
 
     render_context::~render_context()
     {
+        m_frame_command_lists.clear();
+        m_command_lists.clear();
         m_programs.clear();
         m_shaders.clear();
         m_vertex_buffers.clear();
@@ -244,10 +246,27 @@ namespace mge::dx11 {
         }
     }
 
-    mge::command_list_ref render_context::create_command_list()
+    mge::command_list* render_context::create_command_list()
     {
-        auto result = std::make_shared<mge::dx11::command_list>(*this);
+        auto ptr = std::make_unique<mge::dx11::command_list>(*this);
+        auto* result = ptr.get();
+        m_command_lists[result] = std::move(ptr);
         return result;
+    }
+
+    void render_context::destroy_command_list(mge::command_list* cl)
+    {
+        m_command_lists.erase(cl);
+    }
+
+    mge::frame_command_list* render_context::create_current_frame_command_list()
+    {
+        return mge::render_context::create_current_frame_command_list();
+    }
+
+    void render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    {
+        m_frame_command_lists.erase(fcl);
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)
