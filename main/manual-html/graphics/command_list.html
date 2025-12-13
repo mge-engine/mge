@@ -77,6 +77,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list4drawERK12draw_command"><code class="docutils literal notranslate"><span class="pre">draw()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list6finishEv"><code class="docutils literal notranslate"><span class="pre">finish()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7executeEv"><code class="docutils literal notranslate"><span class="pre">execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7destroyEv"><code class="docutils literal notranslate"><span class="pre">destroy()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge18frame_command_listE"><code class="docutils literal notranslate"><span class="pre">mge::frame_command_list</span></code></a></li>
@@ -232,6 +233,13 @@ to the GPU on a single thread.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list7executeEv">
 <span id="_CPPv3N3mge12command_list7executeEv"></span><span id="_CPPv2N3mge12command_list7executeEv"></span><span id="mge::command_list::execute"></span><span class="target" id="classmge_1_1command__list_1abeff64edccf89796e95f09bd486019df"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">execute</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list7executeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Executes this command list. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list7destroyEv">
+<span id="_CPPv3N3mge12command_list7destroyEv"></span><span id="_CPPv2N3mge12command_list7destroyEv"></span><span id="mge::command_list::destroy"></span><span class="target" id="classmge_1_1command__list_1a95fbe6b69ad4345b6ea3d221ae426a72"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_list7destroyEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Destroy the command list. </p>
+<p>The command list is removed from the context and its resources are freed. Afterwards, the pointer to the command list is invalid. </p>
 </dd></dl>
 
 </div>
