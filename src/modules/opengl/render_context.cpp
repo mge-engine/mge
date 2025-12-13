@@ -108,7 +108,10 @@ namespace mge::opengl {
 #    error Missing port
 #endif
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        m_index_buffers.clear();
+    }
 
     singleton<opengl_info> render_context::s_glinfo;
 

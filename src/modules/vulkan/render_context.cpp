@@ -62,6 +62,7 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
+        m_index_buffers.clear();
         teardown();
     }
 

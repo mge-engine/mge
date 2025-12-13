@@ -289,6 +289,7 @@ namespace mge::dx12 {
 
     render_context::~render_context()
     {
+        m_index_buffers.clear();
         if (m_info_queue && m_callback_cookie != 0) {
             m_info_queue->UnregisterMessageCallback(m_callback_cookie);
         }

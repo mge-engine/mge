@@ -27,7 +27,10 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11, "Create render context");
     }
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        m_index_buffers.clear();
+    }
 
     void render_context::initialize()
     {
