@@ -15,6 +15,7 @@ public:
                 create_index_buffer,
                 (mge::data_type, size_t, void*),
                 ());
+    MOCK_METHOD(void, destroy_index_buffer, (mge::index_buffer * ib), ());
     MOCK_METHOD(mge::vertex_buffer_ref,
                 create_vertex_buffer,
                 (const mge::vertex_layout&, size_t, void*),

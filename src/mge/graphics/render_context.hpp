@@ -38,6 +38,11 @@ namespace mge {
         virtual index_buffer* create_index_buffer(data_type dt,
                                                   size_t    data_size,
                                                   void*     data = nullptr) = 0;
+        /**
+         * @brief Destroy an index buffer.
+         * @param ib index buffer to destroy
+         */
+        virtual void destroy_index_buffer(index_buffer* ib) = 0;
 
         /**
          * @brief Create a vertex buffer object.

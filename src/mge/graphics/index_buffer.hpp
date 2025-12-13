@@ -44,6 +44,15 @@ namespace mge {
          */
         size_t element_count() const;
 
+        /**
+         * @brief Destroy the index buffer.
+         *
+         * The index buffer is removed from the context and
+         * its resources are freed. Afterwards, the pointer to the
+         * index buffer is invalid.
+         */
+        void destroy();
+
     private:
         data_type m_data_type;
     };

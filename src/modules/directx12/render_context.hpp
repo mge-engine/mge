@@ -31,6 +31,8 @@ namespace mge::dx12 {
                                                size_t         data_size,
                                                void*          data) override;
 
+        void destroy_index_buffer(mge::index_buffer* ib) override;
+
         mge::vertex_buffer_ref
         create_vertex_buffer(const mge::vertex_layout& layout,
                              size_t                    data_size,

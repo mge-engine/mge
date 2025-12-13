@@ -29,3 +29,4 @@ TARGET_LINK_LIBRARIES(mge_module_dx11
     
     dx11)
 ADD_SUBDIRECTORY(test)
+  

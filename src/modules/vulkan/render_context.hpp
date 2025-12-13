@@ -15,9 +15,10 @@ namespace mge::vulkan {
         render_context(render_system& render_system_, window& window_);
         ~render_context();
 
-        mge::index_buffer*     create_index_buffer(data_type dt,
-                                                   size_t    data_size,
-                                                   void*     data) override;
+        mge::index_buffer* create_index_buffer(data_type dt,
+                                               size_t    data_size,
+                                               void*     data) override;
+        void               destroy_index_buffer(mge::index_buffer* ib) override;
         mge::vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
                                                     size_t data_size,
                                                     void*  data) override;

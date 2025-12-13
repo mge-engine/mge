@@ -307,6 +307,22 @@ namespace mge::dx12 {
         return ptr;
     }
 
+    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    {
+        auto it =
+            std::find_if(m_index_buffers.begin(),
+                         m_index_buffers.end(),
+                         [ib](const std::unique_ptr<mge::index_buffer>& ptr) {
+                             return ptr.get() == ib;
+                         });
+        if (it != m_index_buffers.end()) {
+            m_index_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown index buffer";
+        }
+    }
+
     mge::vertex_buffer_ref render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
