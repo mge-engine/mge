@@ -28,7 +28,7 @@ namespace mge {
          */
         draw_command(const program_ref&       program,
                      const vertex_buffer_ref& vertices,
-                     const index_buffer_ref&  indices,
+                     index_buffer*            indices,
                      topology                 t);
 
         /**
@@ -80,7 +80,7 @@ namespace mge {
          *
          * @return const index buffer
          */
-        const index_buffer_ref& indices() const
+        index_buffer* indices() const
         {
             return m_indices;
         }
@@ -98,7 +98,7 @@ namespace mge {
     private:
         program_ref       m_program;
         vertex_buffer_ref m_vertices;
-        index_buffer_ref  m_indices;
+        index_buffer*     m_indices;
         mge::topology     m_topology;
     };
 

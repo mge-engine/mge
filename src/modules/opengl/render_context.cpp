@@ -112,13 +112,15 @@ namespace mge::opengl {
 
     singleton<opengl_info> render_context::s_glinfo;
 
-    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
-                                                              size_t data_size,
-                                                              void*  data)
+    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
+                                                           size_t data_size,
+                                                           void*  data)
     {
-        mge::index_buffer_ref result =
-            std::make_shared<index_buffer>(*this, dt, data_size, data);
-        return result;
+        auto result =
+            std::make_unique<index_buffer>(*this, dt, data_size, data);
+        auto ptr = result.get();
+        m_index_buffers.push_back(std::move(result));
+        return ptr;
     }
 
     mge::vertex_buffer_ref render_context::create_vertex_buffer(

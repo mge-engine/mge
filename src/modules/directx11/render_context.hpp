@@ -19,9 +19,9 @@ namespace mge::dx11 {
         virtual ~render_context();
         void initialize();
 
-        mge::index_buffer_ref create_index_buffer(mge::data_type dt,
-                                                  size_t         data_size,
-                                                  void*          data) override;
+        mge::index_buffer* create_index_buffer(mge::data_type dt,
+                                               size_t         data_size,
+                                               void*          data) override;
 
         mge::vertex_buffer_ref
         create_vertex_buffer(const mge::vertex_layout& layout,
@@ -70,12 +70,13 @@ namespace mge::dx11 {
     private:
         void create_swap_chain();
 
-        mge::dx11::render_system&              m_render_system;
-        mge::dx11::window&                     m_window;
-        com_unique_ptr<ID3D11Device>           m_device;
-        com_unique_ptr<ID3D11DeviceContext>    m_device_context;
-        com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
-        com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
+        mge::dx11::render_system&                       m_render_system;
+        mge::dx11::window&                              m_window;
+        com_unique_ptr<ID3D11Device>                    m_device;
+        com_unique_ptr<ID3D11DeviceContext>             m_device_context;
+        com_unique_ptr<ID3D11RenderTargetView>          m_render_target_view;
+        com_unique_ptr<ID3D11DepthStencilView>          m_depth_stencil_view;
+        std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

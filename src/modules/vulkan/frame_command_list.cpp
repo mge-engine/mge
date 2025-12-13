@@ -148,7 +148,7 @@ namespace mge::vulkan {
         mge::vulkan::vertex_buffer* vertex_buffer =
             static_cast<mge::vulkan::vertex_buffer*>(command.vertices().get());
         mge::vulkan::index_buffer* index_buffer =
-            static_cast<mge::vulkan::index_buffer*>(command.indices().get());
+            static_cast<mge::vulkan::index_buffer*>(command.indices());
 
         VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
                                            VK_DYNAMIC_STATE_SCISSOR};

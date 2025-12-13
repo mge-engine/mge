@@ -20,9 +20,9 @@ namespace mge {
             render_context(mge::opengl::window* context_window);
             virtual ~render_context();
 
-            mge::index_buffer_ref create_index_buffer(mge::data_type dt,
-                                                      size_t         data_size,
-                                                      void* data) override;
+            mge::index_buffer* create_index_buffer(mge::data_type dt,
+                                                   size_t         data_size,
+                                                   void* data) override;
 
             mge::vertex_buffer_ref
             create_vertex_buffer(const mge::vertex_layout& layout,
@@ -63,7 +63,8 @@ namespace mge {
 #else
 #    error Missing port
 #endif
-            static singleton<opengl_info> s_glinfo;
+            static singleton<opengl_info>                   s_glinfo;
+            std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
         };
     } // namespace opengl
 } // namespace mge

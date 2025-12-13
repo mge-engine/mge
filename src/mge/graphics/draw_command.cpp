@@ -10,7 +10,7 @@ namespace mge {
 
     draw_command::draw_command(const program_ref&       program,
                                const vertex_buffer_ref& vertices,
-                               const index_buffer_ref&  indices,
+                               index_buffer*            indices,
                                mge::topology            t)
         : m_program(program)
         , m_vertices(vertices)

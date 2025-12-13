@@ -35,9 +35,9 @@ namespace mge {
          * @param data          initial data
          * @return created index buffer
          */
-        virtual index_buffer_ref create_index_buffer(data_type dt,
-                                                     size_t    data_size,
-                                                     void* data = nullptr) = 0;
+        virtual index_buffer* create_index_buffer(data_type dt,
+                                                  size_t    data_size,
+                                                  void*     data = nullptr) = 0;
 
         /**
          * @brief Create a vertex buffer object.

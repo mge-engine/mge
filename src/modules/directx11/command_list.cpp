@@ -132,7 +132,7 @@ namespace mge::dx11 {
                                                &stride);
 
         const dx11::index_buffer* dx11_index_buffer =
-            static_cast<const dx11::index_buffer*>(command.indices().get());
+            static_cast<const dx11::index_buffer*>(command.indices());
         ID3D11Buffer* index_buffer = dx11_index_buffer->buffer();
         m_deferred_context->IASetIndexBuffer(index_buffer,
                                              DXGI_FORMAT_R32_UINT,

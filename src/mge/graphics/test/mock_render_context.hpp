@@ -11,7 +11,7 @@ public:
     MOCK_render_context() {}
     ~MOCK_render_context() {}
 
-    MOCK_METHOD(mge::index_buffer_ref,
+    MOCK_METHOD(mge::index_buffer*,
                 create_index_buffer,
                 (mge::data_type, size_t, void*),
                 ());

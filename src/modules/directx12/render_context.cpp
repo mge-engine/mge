@@ -294,13 +294,17 @@ namespace mge::dx12 {
         }
     }
 
-    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
-                                                              size_t data_size,
-                                                              void*  data)
+    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
+                                                           size_t data_size,
+                                                           void*  data)
     {
-        mge::index_buffer_ref ref =
-            std::make_shared<dx12::index_buffer>(*this, dt, data_size, data);
-        return ref;
+        auto result = std::make_unique<mge::dx12::index_buffer>(*this,
+                                                                dt,
+                                                                data_size,
+                                                                data);
+        auto ptr = result.get();
+        m_index_buffers.push_back(std::move(result));
+        return ptr;
     }
 
     mge::vertex_buffer_ref render_context::create_vertex_buffer(

@@ -15,7 +15,7 @@ namespace mge::vulkan {
         render_context(render_system& render_system_, window& window_);
         ~render_context();
 
-        mge::index_buffer_ref  create_index_buffer(data_type dt,
+        mge::index_buffer*     create_index_buffer(data_type dt,
                                                    size_t    data_size,
                                                    void*     data) override;
         mge::vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
@@ -183,5 +183,6 @@ namespace mge::vulkan {
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
+        std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
     };
 } // namespace mge::vulkan
