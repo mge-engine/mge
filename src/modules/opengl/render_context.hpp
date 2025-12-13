@@ -65,8 +65,10 @@ namespace mge {
 #else
 #    error Missing port
 #endif
-            static singleton<opengl_info>                   s_glinfo;
-            std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
+            static singleton<opengl_info> s_glinfo;
+            std::unordered_map<mge::index_buffer*,
+                               std::unique_ptr<mge::index_buffer>>
+                m_index_buffers;
         };
     } // namespace opengl
 } // namespace mge

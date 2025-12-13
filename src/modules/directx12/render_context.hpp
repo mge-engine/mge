@@ -189,7 +189,9 @@ namespace mge::dx12 {
 
         draw_state m_draw_state{draw_state::NONE};
         mge::mutex m_data_lock;
-        std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
+        std::unordered_map<mge::index_buffer*,
+                           std::unique_ptr<mge::index_buffer>>
+            m_index_buffers;
     };
 
     inline render_context& dx12_context(mge::render_context& context)

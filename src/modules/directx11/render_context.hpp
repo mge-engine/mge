@@ -72,13 +72,15 @@ namespace mge::dx11 {
     private:
         void create_swap_chain();
 
-        mge::dx11::render_system&                       m_render_system;
-        mge::dx11::window&                              m_window;
-        com_unique_ptr<ID3D11Device>                    m_device;
-        com_unique_ptr<ID3D11DeviceContext>             m_device_context;
-        com_unique_ptr<ID3D11RenderTargetView>          m_render_target_view;
-        com_unique_ptr<ID3D11DepthStencilView>          m_depth_stencil_view;
-        std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
+        mge::dx11::render_system&              m_render_system;
+        mge::dx11::window&                     m_window;
+        com_unique_ptr<ID3D11Device>           m_device;
+        com_unique_ptr<ID3D11DeviceContext>    m_device_context;
+        com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
+        com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
+        std::unordered_map<mge::index_buffer*,
+                           std::unique_ptr<mge::index_buffer>>
+            m_index_buffers;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

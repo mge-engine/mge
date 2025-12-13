@@ -119,18 +119,13 @@ namespace mge::opengl {
         auto result =
             std::make_unique<index_buffer>(*this, dt, data_size, data);
         auto ptr = result.get();
-        m_index_buffers.push_back(std::move(result));
+        m_index_buffers[ptr] = std::move(result);
         return ptr;
     }
 
     void render_context::destroy_index_buffer(mge::index_buffer* ib)
     {
-        auto it =
-            std::find_if(m_index_buffers.begin(),
-                         m_index_buffers.end(),
-                         [ib](const std::unique_ptr<mge::index_buffer>& ptr) {
-                             return ptr.get() == ib;
-                         });
+        auto it = m_index_buffers.find(ib);
         if (it != m_index_buffers.end()) {
             m_index_buffers.erase(it);
         } else {

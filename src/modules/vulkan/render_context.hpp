@@ -184,6 +184,8 @@ namespace mge::vulkan {
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
-        std::vector<std::unique_ptr<mge::index_buffer>> m_index_buffers;
+        std::unordered_map<mge::index_buffer*,
+                           std::unique_ptr<mge::index_buffer>>
+            m_index_buffers;
     };
 } // namespace mge::vulkan
