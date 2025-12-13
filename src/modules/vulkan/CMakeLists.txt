@@ -61,7 +61,9 @@ TARGET_LINK_LIBRARIES(mge_module_vulkan
     glslang::glslang
     glslang::glslang-default-resource-limits
     glslang::SPIRV
-    glslang::SPVRemapper
+#    glslang::SPVRemapper
 )
 
 ADD_SUBDIRECTORY(test)
+
+
