@@ -116,9 +116,9 @@ namespace mge::dx12 {
     void frame_command_list::draw(const mge::draw_command& command)
     {
         auto* vs_ptr = dx12_program(*command.program())
-                          .program_shader(shader_type::VERTEX);
+                           .program_shader(shader_type::VERTEX);
         auto* ps_ptr = dx12_program(*command.program())
-                          .program_shader(shader_type::FRAGMENT);
+                           .program_shader(shader_type::FRAGMENT);
         auto& vs = dx12_shader(*vs_ptr);
         auto& ps = dx12_shader(*ps_ptr);
 

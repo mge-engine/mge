@@ -29,7 +29,7 @@ namespace mge::dx12 {
     void program::on_set_shader(mge::shader* s)
     {
         auto* dx12_shader = static_cast<shader*>(s);
-        auto index = mge::to_underlying(s->type());
+        auto  index = mge::to_underlying(s->type());
         m_shaders[index] = dx12_shader;
     }
 

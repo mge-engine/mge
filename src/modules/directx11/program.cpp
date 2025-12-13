@@ -26,7 +26,7 @@ namespace mge::dx11 {
     void program::on_set_shader(mge::shader* s)
     {
         auto* dx11_shader = static_cast<shader*>(s);
-        auto index = mge::to_underlying(s->type());
+        auto  index = mge::to_underlying(s->type());
         m_shaders[index] = dx11_shader;
     }
 
