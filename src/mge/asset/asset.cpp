@@ -361,6 +361,8 @@ namespace mge {
         return l->load(*this);
     }
 
+    void asset::store(const asset_type& type, const std::any& asset) const {}
+
     class magican
     {
     public:

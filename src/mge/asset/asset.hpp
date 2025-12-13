@@ -107,6 +107,14 @@ namespace mge {
         std::any load() const;
 
         /**
+         * @brief Store an asset.
+         *
+         * @param type  asset type
+         * @param asset asset to be stored
+         */
+        void store(const asset_type& type, const std::any& asset) const;
+
+        /**
          * @brief Adds an asset loader.
          *
          * @param loader loader that is added.
