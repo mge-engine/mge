@@ -26,10 +26,12 @@ namespace mge {
 
             void destroy_index_buffer(mge::index_buffer* ib) override;
 
-            mge::vertex_buffer_ref
+            mge::vertex_buffer*
             create_vertex_buffer(const mge::vertex_layout& layout,
                                  size_t                    data_size,
                                  void*                     data) override;
+
+            void destroy_vertex_buffer(mge::vertex_buffer* vb) override;
 
             opengl_info& gl_info()
             {
@@ -69,6 +71,9 @@ namespace mge {
             std::unordered_map<mge::index_buffer*,
                                std::unique_ptr<mge::index_buffer>>
                 m_index_buffers;
+            std::unordered_map<mge::vertex_buffer*,
+                               std::unique_ptr<mge::vertex_buffer>>
+                m_vertex_buffers;
         };
     } // namespace opengl
 } // namespace mge

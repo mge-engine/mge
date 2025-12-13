@@ -205,7 +205,7 @@ namespace mge {
         command_list_ref  m_clear_commands;
         command_list_ref  m_draw_commands;
         program_ref       m_program;
-        vertex_buffer_ref m_vertices;
+        vertex_buffer*    m_vertices;
         index_buffer*     m_indices;
     };
 

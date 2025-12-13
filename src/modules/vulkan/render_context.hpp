@@ -19,11 +19,12 @@ namespace mge::vulkan {
                                                size_t    data_size,
                                                void*     data) override;
         void               destroy_index_buffer(mge::index_buffer* ib) override;
-        mge::vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
-                                                    size_t data_size,
-                                                    void*  data) override;
-        mge::shader_ref        create_shader(shader_type t) override;
-        mge::program_ref       create_program() override;
+        mge::vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
+                                                 size_t               data_size,
+                                                 void* data) override;
+        void             destroy_vertex_buffer(mge::vertex_buffer* vb) override;
+        mge::shader_ref  create_shader(shader_type t) override;
+        mge::program_ref create_program() override;
         mge::frame_command_list_ref
                               create_current_frame_command_list() override;
         mge::command_list_ref create_command_list() override;
@@ -187,5 +188,8 @@ namespace mge::vulkan {
         std::unordered_map<mge::index_buffer*,
                            std::unique_ptr<mge::index_buffer>>
             m_index_buffers;
+        std::unordered_map<mge::vertex_buffer*,
+                           std::unique_ptr<mge::vertex_buffer>>
+            m_vertex_buffers;
     };
 } // namespace mge::vulkan

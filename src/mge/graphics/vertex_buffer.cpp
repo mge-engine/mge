@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/vertex_buffer.hpp"
+#include "mge/graphics/render_context.hpp"
 
 namespace mge {
     vertex_buffer::vertex_buffer(render_context&      context,
@@ -22,6 +23,11 @@ namespace mge {
     size_t vertex_buffer::element_count() const
     {
         return size() / m_layout.binary_size();
+    }
+
+    void vertex_buffer::destroy()
+    {
+        context().destroy_vertex_buffer(this);
     }
 
 } // namespace mge

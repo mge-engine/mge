@@ -146,7 +146,7 @@ namespace mge::vulkan {
         mge::vulkan::program* draw_program =
             static_cast<mge::vulkan::program*>(command.program().get());
         mge::vulkan::vertex_buffer* vertex_buffer =
-            static_cast<mge::vulkan::vertex_buffer*>(command.vertices().get());
+            static_cast<mge::vulkan::vertex_buffer*>(command.vertices());
         mge::vulkan::index_buffer* index_buffer =
             static_cast<mge::vulkan::index_buffer*>(command.indices());
 

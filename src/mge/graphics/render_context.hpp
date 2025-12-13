@@ -52,10 +52,14 @@ namespace mge {
          * @param data      initial data
          * @return created vertex buffer
          */
-        virtual vertex_buffer_ref
-        create_vertex_buffer(const vertex_layout& layout,
-                             size_t               data_size,
-                             void*                data = nullptr) = 0;
+        virtual vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
+                                                    size_t data_size,
+                                                    void*  data = nullptr) = 0;
+        /**
+         * @brief Destroy a vertex buffer.
+         * @param vb vertex buffer to destroy
+         */
+        virtual void destroy_vertex_buffer(vertex_buffer* vb) = 0;
 
         /**
          * @brief Create a shader object.

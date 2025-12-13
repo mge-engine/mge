@@ -33,10 +33,12 @@ namespace mge::dx12 {
 
         void destroy_index_buffer(mge::index_buffer* ib) override;
 
-        mge::vertex_buffer_ref
+        mge::vertex_buffer*
         create_vertex_buffer(const mge::vertex_layout& layout,
                              size_t                    data_size,
                              void*                     data) override;
+
+        void destroy_vertex_buffer(mge::vertex_buffer* vb) override;
 
         mge::shader_ref       create_shader(shader_type t) override;
         mge::program_ref      create_program() override;
@@ -192,6 +194,9 @@ namespace mge::dx12 {
         std::unordered_map<mge::index_buffer*,
                            std::unique_ptr<mge::index_buffer>>
             m_index_buffers;
+        std::unordered_map<mge::vertex_buffer*,
+                           std::unique_ptr<mge::vertex_buffer>>
+            m_vertex_buffers;
     };
 
     inline render_context& dx12_context(mge::render_context& context)

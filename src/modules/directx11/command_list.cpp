@@ -120,7 +120,7 @@ namespace mge::dx11 {
         m_deferred_context->IASetInputLayout(input_layout);
 
         const dx11::vertex_buffer* dx11_vertex_buffer =
-            static_cast<const dx11::vertex_buffer*>(command.vertices().get());
+            static_cast<const dx11::vertex_buffer*>(command.vertices());
         UINT element_size =
             static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
         UINT          stride = 0;
