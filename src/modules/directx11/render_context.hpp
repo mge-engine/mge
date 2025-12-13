@@ -42,7 +42,7 @@ namespace mge::dx11 {
         void               destroy_command_list(mge::command_list* cl) override;
         mge::frame_command_list* create_current_frame_command_list() override;
         void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-        mge::texture_ref   create_texture(mge::texture_type type) override;
+        mge::texture_ref create_texture(mge::texture_type type) override;
 
         const ::mge::dx11::window& window() const
         {

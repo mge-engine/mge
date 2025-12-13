@@ -248,7 +248,7 @@ namespace mge::dx11 {
 
     mge::command_list* render_context::create_command_list()
     {
-        auto ptr = std::make_unique<mge::dx11::command_list>(*this);
+        auto  ptr = std::make_unique<mge::dx11::command_list>(*this);
         auto* result = ptr.get();
         m_command_lists[result] = std::move(ptr);
         return result;
@@ -264,7 +264,8 @@ namespace mge::dx11 {
         return mge::render_context::create_current_frame_command_list();
     }
 
-    void render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
     {
         m_frame_command_lists.erase(fcl);
     }

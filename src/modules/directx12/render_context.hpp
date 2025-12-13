@@ -42,15 +42,15 @@ namespace mge::dx12 {
 
         void destroy_vertex_buffer(mge::vertex_buffer* vb) override;
 
-        mge::shader*             create_shader(shader_type t) override;
-        void                     destroy_shader(mge::shader* s) override;
-        mge::program*            create_program() override;
-        void                     destroy_program(mge::program* p) override;
-        mge::command_list*       create_command_list() override;
-        void                     destroy_command_list(mge::command_list* cl) override;
+        mge::shader*       create_shader(shader_type t) override;
+        void               destroy_shader(mge::shader* s) override;
+        mge::program*      create_program() override;
+        void               destroy_program(mge::program* p) override;
+        mge::command_list* create_command_list() override;
+        void               destroy_command_list(mge::command_list* cl) override;
         mge::frame_command_list* create_current_frame_command_list() override;
         void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-        mge::texture_ref         create_texture(texture_type type) override;
+        mge::texture_ref create_texture(texture_type type) override;
 
         const mge::dx12::window& window() const
         {

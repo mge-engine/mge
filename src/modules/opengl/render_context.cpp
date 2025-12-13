@@ -201,7 +201,7 @@ namespace mge::opengl {
 
     mge::command_list* render_context::create_command_list()
     {
-        auto ptr = std::make_unique<command_list>(*this);
+        auto  ptr = std::make_unique<command_list>(*this);
         auto* result = ptr.get();
         m_command_lists[result] = std::move(ptr);
         return result;
@@ -217,7 +217,8 @@ namespace mge::opengl {
         return mge::render_context::create_current_frame_command_list();
     }
 
-    void render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
     {
         m_frame_command_lists.erase(fcl);
     }

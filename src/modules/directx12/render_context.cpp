@@ -385,7 +385,7 @@ namespace mge::dx12 {
 
     mge::command_list* render_context::create_command_list()
     {
-        auto ptr = std::make_unique<dx12::command_list>(*this);
+        auto  ptr = std::make_unique<dx12::command_list>(*this);
         auto* result = ptr.get();
         m_command_lists[result] = std::move(ptr);
         return result;
@@ -396,8 +396,7 @@ namespace mge::dx12 {
         m_command_lists.erase(cl);
     }
 
-    mge::frame_command_list*
-    render_context::create_current_frame_command_list()
+    mge::frame_command_list* render_context::create_current_frame_command_list()
     {
         switch (m_draw_state) {
         case draw_state::NONE:
@@ -413,14 +412,15 @@ namespace mge::dx12 {
         }
 
         auto ptr = std::make_unique<dx12::frame_command_list>(
-                *this,
-                current_back_buffer_index());
+            *this,
+            current_back_buffer_index());
         auto* result = ptr.get();
         m_managed_frame_command_lists[result] = std::move(ptr);
         return result;
     }
 
-    void render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
     {
         m_managed_frame_command_lists.erase(fcl);
     }

@@ -45,12 +45,14 @@ namespace mge {
             mge::program*      create_program() override;
             void               destroy_program(mge::program* p) override;
             mge::command_list* create_command_list() override;
-            void               destroy_command_list(mge::command_list* cl) override;
-            mge::frame_command_list* create_current_frame_command_list() override;
-            void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-            mge::texture_ref   create_texture(texture_type type) override;
-            mge::rectangle        default_scissor() const;
-            uint32_t              window_height() const;
+            void destroy_command_list(mge::command_list* cl) override;
+            mge::frame_command_list*
+            create_current_frame_command_list() override;
+            void
+            destroy_frame_command_list(mge::frame_command_list* fcl) override;
+            mge::texture_ref create_texture(texture_type type) override;
+            mge::rectangle   default_scissor() const;
+            uint32_t         window_height() const;
 #ifdef MGE_OS_WINDOWS
 
             HDC dc() const

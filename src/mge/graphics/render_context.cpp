@@ -25,7 +25,7 @@ namespace mge {
                 , m_command_list(l)
             {}
 
-            ~delegating_frame_command_list() 
+            ~delegating_frame_command_list()
             {
                 if (m_command_list) {
                     m_command_list->destroy();

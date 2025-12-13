@@ -25,15 +25,15 @@ namespace mge::vulkan {
                                                  size_t               data_size,
                                                  void* data) override;
         void          destroy_vertex_buffer(mge::vertex_buffer* vb) override;
-        mge::shader*             create_shader(shader_type t) override;
-        void                     destroy_shader(mge::shader* s) override;
-        mge::program*            create_program() override;
-        void                     destroy_program(mge::program* p) override;
+        mge::shader*  create_shader(shader_type t) override;
+        void          destroy_shader(mge::shader* s) override;
+        mge::program* create_program() override;
+        void          destroy_program(mge::program* p) override;
         mge::frame_command_list* create_current_frame_command_list() override;
         void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-        mge::command_list*       create_command_list() override;
-        void                     destroy_command_list(mge::command_list* cl) override;
-        mge::texture_ref         create_texture(texture_type type) override;
+        mge::command_list* create_command_list() override;
+        void               destroy_command_list(mge::command_list* cl) override;
+        mge::texture_ref   create_texture(texture_type type) override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
