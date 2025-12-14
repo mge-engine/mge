@@ -22,6 +22,12 @@ namespace mge {
     class MGEASSET_EXPORT asset_handler : public component<asset_handler>
     {
     public:
+        enum class operation_type
+        {
+            LOAD,
+            STORE
+        };
+
         asset_handler() = default;
         virtual ~asset_handler() = default;
 
@@ -39,9 +45,10 @@ namespace mge {
         /**
          * @brief Return asset types handled by this handler.
          *
+         * @param t operation type (load or store)
          * @return asset types handled by this handler
          */
-        virtual std::span<asset_type> handled_types() const = 0;
+        virtual std::span<asset_type> handled_types(operation_type t) const = 0;
 
         /**
          * @brief Return whether this handler can improve the asset type.

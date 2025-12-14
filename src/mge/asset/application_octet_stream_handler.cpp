@@ -20,7 +20,8 @@ namespace mge {
             return buffer;
         }
 
-        std::span<mge::asset_type> handled_types() const override
+        std::span<mge::asset_type>
+        handled_types(asset_handler::operation_type t) const override
         {
             using namespace mge::literals;
             static asset_type supported[] = {"application/octet-stream"_at};

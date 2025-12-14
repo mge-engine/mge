@@ -237,7 +237,8 @@ namespace mge {
         {
             if (handler) {
                 m_all_handlers.insert(handler);
-                for (const auto& t : handler->handled_types()) {
+                for (const auto& t : handler->handled_types(
+                         asset_handler::operation_type::LOAD)) {
                     MGE_DEBUG_TRACE(ASSET,
                                     "Adding handler for asset type: {}",
                                     t);

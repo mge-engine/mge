@@ -29,7 +29,8 @@ namespace mge {
 
         std::any load(const mge::asset& a) override;
 
-        std::span<mge::asset_type> handled_types() const override;
+        std::span<mge::asset_type>
+            handled_types(asset_handler::operation_type) const override;
 
         static int read_callback(void* context, char* data, int size)
         {
@@ -93,15 +94,20 @@ namespace mge {
         }
     }
 
-    std::span<mge::asset_type> stb_image_handler::handled_types() const
+    std::span<mge::asset_type>
+    stb_image_handler::handled_types(asset_handler::operation_type t) const
     {
         using namespace mge::literals;
-        static asset_type supported[] = {"image/jpeg"_at,
-                                         "image/bmp"_at,
-                                         "image/tga"_at,
-                                         "image/png"_at,
-                                         "image/gif"_at};
-        return supported;
+        static asset_type supported_load[] = {"image/jpeg"_at,
+                                              "image/bmp"_at,
+                                              "image/tga"_at,
+                                              "image/png"_at,
+                                              "image/gif"_at};
+        if (t == asset_handler::operation_type::LOAD) {
+            return supported_load;
+        } else {
+            return {};
+        }
     }
 
     MGE_REGISTER_IMPLEMENTATION(

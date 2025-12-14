@@ -85,7 +85,8 @@ namespace mge {
 
         std::any load(const mge::asset& a) override;
 
-        std::span<mge::asset_type> handled_types() const override;
+        std::span<mge::asset_type>
+            handled_types(asset_handler::operation_type) const override;
 
         bool can_improve(const mge::asset&      asset,
                          const mge::asset_type& type) const override
@@ -379,11 +380,16 @@ namespace mge {
         }
     }
 
-    std::span<mge::asset_type> assimp_handler::handled_types() const
+    std::span<mge::asset_type>
+    assimp_handler::handled_types(asset_handler::operation_type t) const
     {
-        using namespace mge::literals;
-        static asset_type supported[] = {"model/obj"_at};
-        return supported;
+        if (t == asset_handler::operation_type::STORE) {
+            return {};
+        } else {
+            using namespace mge::literals;
+            static asset_type supported[] = {"model/obj"_at};
+            return supported;
+        }
     }
 
     MGE_REGISTER_IMPLEMENTATION(assimp_handler, mge::asset_handler, obj);
