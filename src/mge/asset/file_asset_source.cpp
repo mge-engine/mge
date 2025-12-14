@@ -42,7 +42,7 @@ namespace mge {
             MGE_THROW(illegal_state)
                 << "File asset access factory is not configured";
         }
-        auto      rel_path = p.lexically_relative(m_mount_point);
+        auto      rel_path = p.lexically_relative(mount_point());
         mge::path file_path = m_directory / rel_path;
         return std::make_shared<file_asset_access>(p, file_path);
     }
@@ -53,7 +53,7 @@ namespace mge {
             MGE_THROW(illegal_state)
                 << "File asset access factory is not configured";
         }
-        auto      rel_path = p.lexically_relative(m_mount_point);
+        auto      rel_path = p.lexically_relative(mount_point());
         mge::path file_path = m_directory / rel_path;
         return std::filesystem::exists(file_path);
     }
@@ -62,7 +62,7 @@ namespace mge {
     {
         std::format_to(context.out(),
                        "{{type: file, mount_point: {}, directory: {}}}",
-                       m_mount_point.string(),
+                       mount_point().string(),
                        m_directory.string());
     }
 

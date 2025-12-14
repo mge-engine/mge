@@ -3,6 +3,8 @@
 // All rights reserved.
 #pragma once
 #include "mge/asset/asset_fwd.hpp"
+#include "mge/asset/asset_handler.hpp"
+#include "mge/asset/asset_source.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/asset/dllexport.hpp"
 #include "mge/core/gist.hpp"
@@ -107,11 +109,19 @@ namespace mge {
         std::any load() const;
 
         /**
-         * @brief Adds an asset loader.
+         * @brief Store an asset.
          *
-         * @param loader loader that is added.
+         * @param type  asset type
+         * @param asset asset to be stored
          */
-        static void add_loader(const asset_loader_ref& loader);
+        void store(const asset_type& type, const std::any& asset) const;
+
+        /**
+         * @brief Adds an asset handler.
+         *
+         * @param handler handler that is added.
+         */
+        static void add_handler(const asset_handler_ref& handler);
 
         /**
          * Get whether path can be found as asset.
@@ -134,6 +144,13 @@ namespace mge {
          * @return input data
          */
         mge::input_stream_ref data() const;
+
+        /**
+         * Get a stream to write the output data.
+         *
+         * @return output stream
+         */
+        mge::output_stream_ref output_stream() const;
 
         /**
          * Get the asset type.
@@ -183,6 +200,19 @@ namespace mge {
                           const ::mge::properties& options);
 
         /**
+         * @brief mount a specific asset factory at a mount point.
+         *
+         * @param mount_point mount point
+         * @param type        asset access type
+         * @param mode        access mode
+         * @param options     mount options
+         */
+        static void mount(const mge::path&          mount_point,
+                          const std::string&        type,
+                          asset_source::access_mode mode,
+                          const ::mge::properties&  options);
+
+        /**
          * @brief Unmount a mount point.
          *
          * @param mount_point mount point
@@ -200,7 +230,8 @@ namespace mge {
         }
 
     private:
-        bool       resolve() const;
+        bool       resolve(asset_handler::operation_type op =
+                               asset_handler::operation_type::LOAD) const;
         asset_type magic() const;
 
         mge::path                         m_path;

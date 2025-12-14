@@ -118,15 +118,16 @@ namespace mge::dx11 {
         back_buffer.reset();
         MGE_DEBUG_TRACE(DX11, "Set render target");
         m_render_target_view.reset(tmp_render_target_view);
-        
+
         MGE_DEBUG_TRACE(DX11, "Creating depth stencil view");
         ID3D11DepthStencilView* tmp_depth_stencil_view = nullptr;
-        rc = m_device->CreateDepthStencilView(swap_chain->depth_stencil_buffer(),
-                                              nullptr,
-                                              &tmp_depth_stencil_view);
+        rc =
+            m_device->CreateDepthStencilView(swap_chain->depth_stencil_buffer(),
+                                             nullptr,
+                                             &tmp_depth_stencil_view);
         CHECK_HRESULT(rc, ID3D11Device, CreateDepthStencilView);
         m_depth_stencil_view.reset(tmp_depth_stencil_view);
-        
+
         setup_context(*m_device_context);
     }
 
@@ -135,12 +136,12 @@ namespace mge::dx11 {
         ID3D11RenderTargetView* rtv = m_render_target_view.get();
         ID3D11DepthStencilView* dsv = m_depth_stencil_view.get();
         context.OMSetRenderTargets(1, &rtv, dsv);
-        
+
         auto* sc = dynamic_cast<dx11::swap_chain*>(m_swap_chain.get());
         if (sc && sc->depth_stencil_state()) {
             context.OMSetDepthStencilState(sc->depth_stencil_state(), 1);
         }
-        
+
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0;
         viewport.TopLeftY = 0;

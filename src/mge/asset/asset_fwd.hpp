@@ -8,7 +8,7 @@
 namespace mge {
     MGE_DECLARE_REF(asset);
     MGE_DECLARE_REF(asset_access);
-    MGE_DECLARE_REF(asset_loader);
+    MGE_DECLARE_REF(asset_handler);
 
     class asset_type;
 } // namespace mge

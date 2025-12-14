@@ -1,6 +1,6 @@
-*************
-Asset Loading
-*************
+*************************
+Asset Loading and Storing
+*************************
 
 Configuration
 =============
@@ -84,19 +84,22 @@ asset.
 .. doxygenclass:: mge::asset_access
     :members:
 
-Asset Loaders
-=============
+Asset Handlers
+==============
 
-Asset loaders are responsible for loading assets from their respective sources.
-They are implemented as classes that inherit from the `asset_loader` interface.
+Asset handlers are responsible for loading and storing assets from and to their 
+respective sources. They are implemented as classes that inherit from 
+the `asset_handler` interface. Different asset handlers that handle the same
+type for load and store can be registered independently.
 
-One asset loader handles a number of types of assets, such as images, meshes,
-shaders, etc. The asset loader is responsible for loading the asset data into
-memory and providing an interface to access the loaded asset.
+One asset handler handles a number of types of assets, such as images, meshes,
+shaders, etc. The asset handler is responsible for loading the asset data into
+memory and providing an interface to access the loaded asset, and to store an 
+object in a a specific format back to the asset.
 
-In addition, an asset loader can be used also to improve a generic asset type
+In addition, an asset handler can be used also to improve a generic asset type
 like e.g. 'text/plain' by providing a more specific type, such as 'model/obj'
 by further inspection of the asset data.
 
-.. doxygenclass:: mge::asset_loader
+.. doxygenclass:: mge::asset_handler
     :members:

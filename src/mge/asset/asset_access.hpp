@@ -6,6 +6,7 @@
 #include "mge/asset/dllexport.hpp"
 #include "mge/core/input_stream.hpp"
 #include "mge/core/memory.hpp"
+#include "mge/core/output_stream.hpp"
 #include "mge/core/properties.hpp"
 
 namespace mge {
@@ -53,5 +54,19 @@ namespace mge {
          * @return properties
          */
         virtual properties_ref properties() const = 0;
+
+        /**
+         * @brief Output stream to write asset data.
+         *
+         * @return output stream
+         */
+        virtual output_stream_ref output_stream() = 0;
+
+        /**
+         * @brief Store properties.
+         *
+         * @param props properties to store
+         */
+        virtual void store_properties(const mge::properties& props) = 0;
     };
 } // namespace mge
