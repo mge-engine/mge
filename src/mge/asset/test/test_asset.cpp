@@ -5,6 +5,7 @@
 #include "mge/asset/asset.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/image.hpp"
+#include <filesystem>
 
 class test_asset : public mge::asset_test
 {
@@ -14,10 +15,19 @@ protected:
         mge::properties p;
         p.set("directory", "./assets");
         mge::asset::mount("/", "file", p);
+
+        mge::properties p_temp;
+        p_temp.set("directory",
+                   std::filesystem::temp_directory_path().string());
+        mge::asset::mount("/temp",
+                          "file",
+                          mge::asset_source::access_mode::READ_WRITE,
+                          p_temp);
     }
 
     void TearDown() override
     {
+        mge::asset::unmount("/temp");
         mge::asset::unmount("/");
     }
 };
@@ -29,7 +39,6 @@ TEST_F(test_asset, red_jpg)
     using namespace mge::literals;
     mge::asset_ref a = std::make_shared<mge::asset>("/images/red.jpg");
     EXPECT_EQ(382u, a->size());
-    EXPECT_EQ("image/jpeg"_at, a->type());
     EXPECT_EQ("image/jpeg"_at, a->type());
 }
 
