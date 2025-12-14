@@ -40,28 +40,43 @@ namespace mge {
                    const std::any&        data) override
         {
             using namespace mge::literals;
-            if (type != "image/png"_at) {
+            if (type != "image/png"_at && type != "image/jpeg"_at) {
                 MGE_THROW(mge::illegal_argument)
-                    << "Only PNG format is supported for storing, got: "
+                    << "Only PNG and JPEG formats are supported for storing, "
+                       "got: "
                     << type;
             }
 
             auto img = std::any_cast<mge::image_ref>(data);
             auto fmt = img->format();
 
-            if (fmt.format() != mge::image_format::data_format::RGBA ||
-                fmt.type() != mge::data_type::UINT8) {
+            if (fmt.type() != mge::data_type::UINT8) {
                 MGE_THROW(mge::illegal_argument)
-                    << "Only RGBA/UINT8 images can be stored as PNG";
+                    << "Only UINT8 images can be stored";
+            }
+
+            // Validate format based on image type
+            if (type == "image/png"_at) {
+                if (fmt.format() != mge::image_format::data_format::RGBA) {
+                    MGE_THROW(mge::illegal_argument)
+                        << "Only RGBA images can be stored as PNG";
+                }
+            } else if (type == "image/jpeg"_at) {
+                if (fmt.format() != mge::image_format::data_format::RGB) {
+                    MGE_THROW(mge::illegal_argument)
+                        << "Only RGB images can be stored as JPEG";
+                }
             }
 
             auto ext = img->extent();
             int  width = static_cast<int>(ext.width);
             int  height = static_cast<int>(ext.height);
-            int  stride = width * 4;
+            int  components =
+                (fmt.format() == mge::image_format::data_format::RGBA) ? 4 : 3;
+            int stride = width * components;
 
-            // Create buffer to hold PNG data
-            std::vector<unsigned char> png_buffer;
+            // Create buffer to hold encoded data
+            std::vector<unsigned char> image_buffer;
 
             auto write_func = [](void* context, void* data, int size) {
                 auto* buf = static_cast<std::vector<unsigned char>*>(context);
@@ -69,21 +84,32 @@ namespace mge {
                 buf->insert(buf->end(), bytes, bytes + size);
             };
 
-            int result = stbi_write_png_to_func(write_func,
-                                                &png_buffer,
+            int result = 0;
+            if (type == "image/png"_at) {
+                result = stbi_write_png_to_func(write_func,
+                                                &image_buffer,
                                                 width,
                                                 height,
-                                                4,
+                                                components,
                                                 img->data(),
                                                 stride);
+            } else if (type == "image/jpeg"_at) {
+                result = stbi_write_jpg_to_func(write_func,
+                                                &image_buffer,
+                                                width,
+                                                height,
+                                                components,
+                                                img->data(),
+                                                90); // quality
+            }
 
             if (result == 0) {
                 MGE_THROW(mge::runtime_exception)
-                    << "Failed to encode PNG image";
+                    << "Failed to encode image as " << type;
             }
 
             auto stream = a.output_stream();
-            stream->write(png_buffer.data(), png_buffer.size());
+            stream->write(image_buffer.data(), image_buffer.size());
             stream->flush();
         }
 
@@ -161,7 +187,7 @@ namespace mge {
                                               "image/tga"_at,
                                               "image/png"_at,
                                               "image/gif"_at};
-        static asset_type supported_store[] = {"image/png"_at};
+        static asset_type supported_store[] = {"image/png"_at, "image/jpeg"_at};
         if (t == asset_handler::operation_type::LOAD) {
             return supported_load;
         } else {

@@ -75,3 +75,40 @@ TEST_F(test_asset, teapot_obj)
     auto          load_result = a->load();
     mge::mesh_ref mesh = std::any_cast<mge::mesh_ref>(load_result);
 }
+
+TEST_F(test_asset, store_and_load_image)
+{
+    using namespace mge::literals;
+
+    // Load original image
+    mge::asset_ref original = std::make_shared<mge::asset>("/images/red.jpg");
+    auto           load_result = original->load();
+    mge::image_ref original_image = std::any_cast<mge::image_ref>(load_result);
+    EXPECT_TRUE(original_image);
+    EXPECT_EQ(100, original_image->extent().width);
+    EXPECT_EQ(100, original_image->extent().height);
+
+    // Store image as PNG (loaded JPEGs are RGBA format)
+    mge::asset_ref stored = std::make_shared<mge::asset>("/temp/test_red.png");
+    stored->store("image/png"_at, original_image);
+
+    // Load stored image
+    mge::asset_ref reloaded =
+        std::make_shared<mge::asset>("/temp/test_red.png");
+    EXPECT_TRUE(reloaded->exists());
+    EXPECT_EQ("image/png"_at, reloaded->type());
+
+    auto           reload_result = reloaded->load();
+    mge::image_ref reloaded_image =
+        std::any_cast<mge::image_ref>(reload_result);
+    EXPECT_TRUE(reloaded_image);
+    EXPECT_EQ(100, reloaded_image->extent().width);
+    EXPECT_EQ(100, reloaded_image->extent().height);
+    EXPECT_EQ(original_image->format().format(),
+              reloaded_image->format().format());
+    EXPECT_EQ(original_image->format().type(), reloaded_image->format().type());
+
+    // Clean up
+    std::filesystem::remove(std::filesystem::temp_directory_path() /
+                            "test_red.png");
+}
