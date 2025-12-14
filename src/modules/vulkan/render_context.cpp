@@ -268,6 +268,18 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
+        // Clean up any deleted pipelines before destroying device
+        for (auto& pipeline : m_deleted_pipelines) {
+            destroy_pipeline(pipeline.second);
+        }
+        m_deleted_pipelines.clear();
+        
+        // Clean up any deleted command buffers before destroying device
+        for (auto& cb : m_deleted_command_buffers) {
+            destroy_command_buffer(cb.second);
+        }
+        m_deleted_command_buffers.clear();
+        
         if (vkDestroySemaphore) {
             if (m_image_available_semaphore) {
                 vkDestroySemaphore(m_device,
