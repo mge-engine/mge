@@ -29,5 +29,12 @@ namespace mge {
          * @return index of current back buffer
          */
         virtual uint32_t current_back_buffer_index() const = 0;
+
+        /**
+         * @brief Take a screenshot of the current frame buffer.
+         *
+         * @return image containing the screenshot
+         */
+        virtual image_ref screenshot() = 0;
     };
 } // namespace mge

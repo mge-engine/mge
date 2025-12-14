@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "swap_chain.hpp"
 #include "error.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "window.hpp"
 
@@ -95,5 +96,10 @@ namespace mge::dx11 {
     {
         auto hr = m_swap_chain->Present(0, 0);
         CHECK_HRESULT(hr, IDXGISwapChain, Present);
+    }
+
+    image_ref swap_chain::screenshot()
+    {
+        MGE_THROW(not_implemented) << "Screenshot not yet implemented";
     }
 } // namespace mge::dx11
