@@ -197,12 +197,12 @@ namespace mge {
 
         asset_handler_ref resolve(const asset_type& t) const
         {
-            auto it = m_handlers.find(t);
-            if (it == m_handlers.end()) {
+            auto it = m_load_handlers.find(t);
+            if (it == m_load_handlers.end()) {
                 refresh_handlers();
-                it = m_handlers.find(t);
+                it = m_load_handlers.find(t);
             }
-            if (it == m_handlers.end()) {
+            if (it == m_load_handlers.end()) {
                 return asset_handler_ref();
             } else {
                 return it->second;
@@ -240,9 +240,16 @@ namespace mge {
                 for (const auto& t : handler->handled_types(
                          asset_handler::operation_type::LOAD)) {
                     MGE_DEBUG_TRACE(ASSET,
-                                    "Adding handler for asset type: {}",
+                                    "Adding load handler for asset type: {}",
                                     t);
-                    m_handlers[t] = handler;
+                    m_load_handlers[t] = handler;
+                }
+                for (const auto& t : handler->handled_types(
+                         asset_handler::operation_type::STORE)) {
+                    MGE_DEBUG_TRACE(ASSET,
+                                    "Adding store handler for asset type: {}",
+                                    t);
+                    m_store_handlers[t] = handler;
                 }
             }
         }
@@ -253,7 +260,8 @@ namespace mge {
 
         mutable std::set<std::string, std::less<>>      m_handler_names;
         mutable std::set<asset_handler_ref>             m_all_handlers;
-        mutable std::map<asset_type, asset_handler_ref> m_handlers;
+        mutable std::map<asset_type, asset_handler_ref> m_load_handlers;
+        mutable std::map<asset_type, asset_handler_ref> m_store_handlers;
     };
 
     void handler_table::instantiate_handlers()
