@@ -159,16 +159,18 @@ namespace mge {
         for (const auto& e : entries) {
             if (e.find("mount_point") == e.end()) {
                 MGE_ERROR_TRACE(ASSET, "Repository entry without mount point");
-            } else if (e.find("type") == e.end()) {
+                continue;
+            }
+            if (e.find("type") == e.end()) {
                 MGE_ERROR_TRACE(ASSET, "Repository entry without type");
-            } else {
-                path mount_point(e.find("mount_point")->second);
-                mount_types[mount_point] = e.find("type")->second;
-                properties& mp = mount_properties[mount_point];
-                for (const auto& [key, value] : e) {
-                    if (key != "mount_point" && key != "type") {
-                        mp.put(key, value);
-                    }
+                continue;
+            }
+            path mount_point(e.find("mount_point")->second);
+            mount_types[mount_point] = e.find("type")->second;
+            properties& mp = mount_properties[mount_point];
+            for (const auto& [key, value] : e) {
+                if (key != "mount_point" && key != "type") {
+                    mp.put(key, value);
                 }
             }
         }
@@ -179,14 +181,10 @@ namespace mge {
                             type,
                             mount_point.string());
             auto it = m_mounts.find(mount_point);
-            if (it != m_mounts.end()) {
-                if (it->second.type == type) {
-                    if (it->second.properties ==
-                        mount_properties[mount_point]) {
-                        new_mounts[mount_point] = it->second;
-                        continue;
-                    }
-                }
+            if (it != m_mounts.end() && it->second.type == type &&
+                it->second.properties == mount_properties[mount_point]) {
+                new_mounts[mount_point] = it->second;
+                continue;
             }
             mount_info mi;
             mi.mount_point = mge::path(mount_point);
@@ -197,11 +195,10 @@ namespace mge {
                 MGE_THROW(illegal_state)
                     << "Invalid mount point type for mount point '"
                     << mount_point.string() << "' : " << type;
-            } else {
-                mi.factory->configure(mi.properties);
-                mi.factory->set_mount_point(mount_point);
-                new_mounts[mount_point] = mi;
             }
+            mi.factory->configure(mi.properties);
+            mi.factory->set_mount_point(mount_point);
+            new_mounts[mount_point] = mi;
         }
         m_mounts.swap(new_mounts);
     }
