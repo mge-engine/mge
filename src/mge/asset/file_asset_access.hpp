@@ -22,7 +22,7 @@ namespace mge {
         bool              has_properties() const override;
         properties_ref    properties() const override;
         output_stream_ref output_stream() override;
-        void              store_properties(const mge::properties& props) override;
+        void store_properties(const mge::properties& props) override;
 
     private:
         path                   m_asset_path;
