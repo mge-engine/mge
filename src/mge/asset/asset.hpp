@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/asset/asset_fwd.hpp"
+#include "mge/asset/asset_source.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/asset/dllexport.hpp"
 #include "mge/core/gist.hpp"
@@ -189,6 +190,19 @@ namespace mge {
         static void mount(const mge::path&         mount_point,
                           const std::string&       type,
                           const ::mge::properties& options);
+
+        /**
+         * @brief mount a specific asset factory at a mount point.
+         *
+         * @param mount_point mount point
+         * @param type        asset access type
+         * @param mode        access mode
+         * @param options     mount options
+         */
+        static void mount(const mge::path&          mount_point,
+                          const std::string&        type,
+                          asset_source::access_mode mode,
+                          const ::mge::properties&  options);
 
         /**
          * @brief Unmount a mount point.
