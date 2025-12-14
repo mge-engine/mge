@@ -142,8 +142,10 @@ namespace mge {
     void mount_table::configure()
     {
         MGE_DEBUG_TRACE(ASSET, "Configuring mounted assets");
-        std::map<path, std::string> mount_types;
-        std::map<path, properties>  mount_properties;
+        std::map<path, std::string>          mount_types;
+        std::unordered_map<path, properties> mount_properties;
+
+        std::unordered_map<path, asset_source::access_mode> mount_modes;
 
         const auto& entries = MGE_PARAMETER(asset, repositories).get();
         for (const auto& e : entries) {
@@ -157,9 +159,30 @@ namespace mge {
             }
             path mount_point(e.find("mount_point")->second);
             mount_types[mount_point] = e.find("type")->second;
+
+            // Parse access mode from configuration (default to READ)
+            auto mode = asset_source::access_mode::READ;
+            auto mode_it = e.find("mode");
+            if (mode_it != e.end()) {
+                const auto& mode_str = mode_it->second;
+                if (mode_str == "r") {
+                    mode = asset_source::access_mode::READ;
+                } else if (mode_str == "w") {
+                    mode = asset_source::access_mode::WRITE;
+                } else if (mode_str == "rw") {
+                    mode = asset_source::access_mode::READ_WRITE;
+                } else {
+                    MGE_THROW(illegal_argument)
+                        << "Invalid access mode '" << mode_str
+                        << "' for mount point '" << mount_point.string()
+                        << "', expected 'r', 'w', or 'rw'";
+                }
+            }
+            mount_modes[mount_point] = mode;
+
             properties& mp = mount_properties[mount_point];
             for (const auto& [key, value] : e) {
-                if (key != "mount_point" && key != "type") {
+                if (key != "mount_point" && key != "type" && key != "mode") {
                     mp.put(key, value);
                 }
             }
@@ -184,9 +207,10 @@ namespace mge {
             }
             factory->configure(mount_properties[mount_point]);
             factory->set_mount_point(mount_point);
+
             new_mounts[mount_point] = {.factory = factory,
                                        .type = type,
-                                       .mode = asset_source::access_mode::READ,
+                                       .mode = mount_modes[mount_point],
                                        .mount_point = mount_point,
                                        .properties =
                                            mount_properties[mount_point]};
