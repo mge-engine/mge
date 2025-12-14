@@ -85,6 +85,14 @@ namespace mge {
 
         std::any load(const mge::asset& a) override;
 
+        void store(const mge::asset&      a,
+                   const mge::asset_type& type,
+                   const std::any&        data) override
+        {
+            MGE_THROW(mge::not_implemented)
+                << "Storing models not yet implemented";
+        }
+
         std::span<mge::asset_type>
             handled_types(asset_handler::operation_type) const override;
 

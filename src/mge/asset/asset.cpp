@@ -213,10 +213,11 @@ namespace mge {
                                  ? m_store_handlers
                                  : m_load_handlers;
             auto  it = handlers.find(t);
-            if (it == handlers.end()) {
-                refresh_handlers();
-                it = handlers.find(t);
+            if (it != handlers.end()) {
+                return it->second;
             }
+            refresh_handlers();
+            it = handlers.find(t);
             return (it != handlers.end()) ? it->second : asset_handler_ref{};
         }
 
@@ -376,13 +377,22 @@ namespace mge {
         auto t = type();
         auto h = handlers->resolve(t);
         if (!h) {
-            MGE_THROW(illegal_state) << "No handler for asset type '" << t
+            MGE_THROW(illegal_state) << "No load handler for asset type '" << t
                                      << "' for asset: " << m_path.string();
         }
         return h->load(*this);
     }
 
-    void asset::store(const asset_type& type, const std::any& asset) const {}
+    void asset::store(const asset_type& type, const std::any& asset) const
+    {
+        auto h = handlers->resolve(type, asset_handler::operation_type::STORE);
+        if (!h) {
+            MGE_THROW(illegal_state)
+                << "No store handler for asset type '" << type
+                << "' for asset: " << m_path.string();
+        }
+        h->store(*this, type, asset);
+    }
 
     class magican
     {

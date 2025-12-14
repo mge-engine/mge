@@ -43,6 +43,19 @@ namespace mge {
         virtual std::any load(const asset& asset) = 0;
 
         /**
+         * @brief Stores the asset.
+         *
+         * This writes the asset to the output stream.
+         *
+         * @param asset asset that is stored
+         * @param type asset type
+         * @param data asset data to store
+         */
+        virtual void store(const asset&      asset,
+                           const asset_type& type,
+                           const std::any&   data) = 0;
+
+        /**
          * @brief Return asset types handled by this handler.
          *
          * @param t operation type (load or store)

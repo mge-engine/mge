@@ -5,6 +5,7 @@
 #include "mge/asset/asset_handler.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/buffer.hpp"
+#include "mge/core/stdexceptions.hpp"
 
 namespace mge {
     class application_octet_stream_handler : public asset_handler
@@ -18,6 +19,14 @@ namespace mge {
             auto buffer = std::make_shared<mge::buffer>();
             a.data()->read(*buffer);
             return buffer;
+        }
+
+        void store(const mge::asset&      a,
+                   const mge::asset_type& type,
+                   const std::any&        data) override
+        {
+            MGE_THROW(mge::not_implemented)
+                << "Storing assets not yet implemented";
         }
 
         std::span<mge::asset_type>
