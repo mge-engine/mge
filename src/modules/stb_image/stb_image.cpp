@@ -20,6 +20,12 @@
 
 #include <stb_image.h>
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#define STBIW_MALLOC(sz) ::mge::malloc(sz)
+#define STBIW_REALLOC(p, sz) ::mge::realloc(p, sz)
+#define STBIW_FREE(p) ::mge::free(p)
+#include <stb_image_write.h>
+
 namespace mge {
     class stb_image_handler : public asset_handler
     {
@@ -33,8 +39,52 @@ namespace mge {
                    const mge::asset_type& type,
                    const std::any&        data) override
         {
-            MGE_THROW(mge::not_implemented)
-                << "Storing images not yet implemented";
+            using namespace mge::literals;
+            if (type != "image/png"_at) {
+                MGE_THROW(mge::illegal_argument)
+                    << "Only PNG format is supported for storing, got: "
+                    << type;
+            }
+
+            auto img = std::any_cast<mge::image_ref>(data);
+            auto fmt = img->format();
+
+            if (fmt.format() != mge::image_format::data_format::RGBA ||
+                fmt.type() != mge::data_type::UINT8) {
+                MGE_THROW(mge::illegal_argument)
+                    << "Only RGBA/UINT8 images can be stored as PNG";
+            }
+
+            auto ext = img->extent();
+            int  width = static_cast<int>(ext.width);
+            int  height = static_cast<int>(ext.height);
+            int  stride = width * 4;
+
+            // Create buffer to hold PNG data
+            std::vector<unsigned char> png_buffer;
+
+            auto write_func = [](void* context, void* data, int size) {
+                auto* buf = static_cast<std::vector<unsigned char>*>(context);
+                auto* bytes = static_cast<unsigned char*>(data);
+                buf->insert(buf->end(), bytes, bytes + size);
+            };
+
+            int result = stbi_write_png_to_func(write_func,
+                                                &png_buffer,
+                                                width,
+                                                height,
+                                                4,
+                                                img->data(),
+                                                stride);
+
+            if (result == 0) {
+                MGE_THROW(mge::runtime_exception)
+                    << "Failed to encode PNG image";
+            }
+
+            auto stream = a.output_stream();
+            stream->write(png_buffer.data(), png_buffer.size());
+            stream->flush();
         }
 
         std::span<mge::asset_type>
@@ -111,10 +161,11 @@ namespace mge {
                                               "image/tga"_at,
                                               "image/png"_at,
                                               "image/gif"_at};
+        static asset_type supported_store[] = {"image/png"_at};
         if (t == asset_handler::operation_type::LOAD) {
             return supported_load;
         } else {
-            return {};
+            return supported_store;
         }
     }
 

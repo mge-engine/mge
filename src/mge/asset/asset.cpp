@@ -365,9 +365,7 @@ namespace mge {
     mge::output_stream_ref asset::output_stream() const
     {
         if (!m_access) {
-            m_access =
-                mtab->resolve(m_path, asset_handler::operation_type::STORE);
-            if (!m_access) {
+            if (!resolve(asset_handler::operation_type::STORE)) {
                 MGE_THROW(asset_not_found)
                     << "Asset cannot be stored: " << m_path.string();
             }
@@ -375,9 +373,9 @@ namespace mge {
         return m_access->output_stream();
     }
 
-    bool asset::resolve() const
+    bool asset::resolve(asset_handler::operation_type op) const
     {
-        m_access = mtab->resolve(m_path, asset_handler::operation_type::LOAD);
+        m_access = mtab->resolve(m_path, op);
         return m_access.operator bool();
     }
 

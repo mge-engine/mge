@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/asset/asset_fwd.hpp"
+#include "mge/asset/asset_handler.hpp"
 #include "mge/asset/asset_source.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/asset/dllexport.hpp"
@@ -229,7 +230,8 @@ namespace mge {
         }
 
     private:
-        bool       resolve() const;
+        bool       resolve(asset_handler::operation_type op =
+                               asset_handler::operation_type::LOAD) const;
         asset_type magic() const;
 
         mge::path                         m_path;
