@@ -145,6 +145,13 @@ namespace mge {
         mge::input_stream_ref data() const;
 
         /**
+         * Get a stream to write the output data.
+         *
+         * @return output stream
+         */
+        mge::output_stream_ref output_stream() const;
+
+        /**
          * Get the asset type.
          *
          * @return asset type

@@ -25,8 +25,9 @@ namespace mge {
                    const mge::asset_type& type,
                    const std::any&        data) override
         {
-            MGE_THROW(mge::not_implemented)
-                << "Storing assets not yet implemented";
+            auto buffer = std::any_cast<std::shared_ptr<mge::buffer>>(data);
+            auto stream = a.output_stream();
+            stream->write(buffer->data(), buffer->size());
         }
 
         std::span<mge::asset_type>

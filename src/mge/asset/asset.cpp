@@ -362,6 +362,16 @@ namespace mge {
         return m_access->data();
     }
 
+    mge::output_stream_ref asset::output_stream() const
+    {
+        auto access = mtab->resolve(m_path, asset_handler::operation_type::STORE);
+        if (!access) {
+            MGE_THROW(asset_not_found)
+                << "Asset cannot be stored: " << m_path.string();
+        }
+        return access->output_stream();
+    }
+
     bool asset::resolve() const
     {
         m_access = mtab->resolve(m_path, asset_handler::operation_type::LOAD);
