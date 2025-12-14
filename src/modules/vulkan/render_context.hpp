@@ -95,6 +95,11 @@ namespace mge::vulkan {
             return m_swap_chain_framebuffers[index];
         }
 
+        VkImage swap_chain_image(uint32_t index) const
+        {
+            return m_swap_chain_images[index];
+        }
+
         VkExtent2D extent() const noexcept
         {
             return m_extent;
