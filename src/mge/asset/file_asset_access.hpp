@@ -16,11 +16,13 @@ namespace mge {
                           const mge::path& file_path);
         virtual ~file_asset_access();
 
-        size_t           size() const override;
-        input_stream_ref data() const override;
-        asset_type       type() const override;
-        bool             has_properties() const override;
-        properties_ref   properties() const override;
+        size_t            size() const override;
+        input_stream_ref  data() const override;
+        asset_type        type() const override;
+        bool              has_properties() const override;
+        properties_ref    properties() const override;
+        output_stream_ref output_stream() override;
+        void              store_properties(const mge::properties& props) override;
 
     private:
         path                   m_asset_path;

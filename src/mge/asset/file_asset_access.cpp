@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/asset/file_asset_access.hpp"
 #include "mge/asset/asset_type.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include <filesystem>
 #include <fstream>
 
@@ -54,6 +55,18 @@ namespace mge {
             m_properties = std::make_shared<mge::properties>(pinput);
         }
         return m_properties;
+    }
+
+    output_stream_ref file_asset_access::output_stream()
+    {
+        MGE_THROW(mge::not_implemented)
+            << "Writing assets to files not yet implemented";
+    }
+
+    void file_asset_access::store_properties(const mge::properties& props)
+    {
+        MGE_THROW(mge::not_implemented)
+            << "Storing asset properties not yet implemented";
     }
 
 } // namespace mge
