@@ -5,6 +5,7 @@
 #include "error.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/memory_image.hpp"
 #include "window.hpp"
 
 namespace mge {
@@ -100,6 +101,85 @@ namespace mge::dx11 {
 
     image_ref swap_chain::screenshot()
     {
-        MGE_THROW(not_implemented) << "Screenshot not yet implemented";
+        auto& rc = static_cast<render_context&>(context());
+        auto  extent = rc.extent();
+
+        // Get the back buffer
+        auto back_buffer_texture = back_buffer();
+
+        // Get the description of the back buffer
+        D3D11_TEXTURE2D_DESC back_buffer_desc;
+        back_buffer_texture->GetDesc(&back_buffer_desc);
+
+        // Create a staging texture for CPU access
+        D3D11_TEXTURE2D_DESC staging_desc = back_buffer_desc;
+        staging_desc.Usage = D3D11_USAGE_STAGING;
+        staging_desc.BindFlags = 0;
+        staging_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+        staging_desc.MiscFlags = 0;
+
+        ID3D11Texture2D* tmp_staging_texture = nullptr;
+        auto             hr = rc.device()->CreateTexture2D(&staging_desc,
+                                               nullptr,
+                                               &tmp_staging_texture);
+        CHECK_HRESULT(hr, ID3D11Device, CreateTexture2D(staging));
+
+        com_unique_ptr<ID3D11Texture2D> staging_texture;
+        staging_texture.reset(tmp_staging_texture);
+
+        // Copy the back buffer to the staging texture
+        rc.device_context()->CopyResource(staging_texture.get(),
+                                          back_buffer_texture.get());
+
+        // Map the staging texture to read pixel data
+        D3D11_MAPPED_SUBRESOURCE mapped_resource;
+        hr = rc.device_context()->Map(staging_texture.get(),
+                                      0,
+                                      D3D11_MAP_READ,
+                                      0,
+                                      &mapped_resource);
+        CHECK_HRESULT(hr, ID3D11DeviceContext, Map);
+
+        // Create the image with RGBA format
+        image_format format(image_format::data_format::RGBA, data_type::UINT8);
+        auto         img =
+            std::make_shared<memory_image>(format,
+                                           extent,
+                                           extent.width * extent.height * 4);
+
+        // Copy pixel data - check if we need to swap channels based on format
+        auto* dest = static_cast<uint8_t*>(img->data());
+        auto* src = static_cast<uint8_t*>(mapped_resource.pData);
+
+        // DirectX 11 typically uses BGRA format, but let's check
+        bool need_swap =
+            (back_buffer_desc.Format == DXGI_FORMAT_B8G8R8A8_UNORM ||
+             back_buffer_desc.Format == DXGI_FORMAT_B8G8R8A8_UNORM_SRGB);
+
+        for (uint32_t y = 0; y < extent.height; ++y) {
+            for (uint32_t x = 0; x < extent.width; ++x) {
+                size_t src_offset = y * mapped_resource.RowPitch + x * 4;
+                size_t dest_offset = (y * extent.width + x) * 4;
+
+                if (need_swap) {
+                    // Convert BGRA to RGBA
+                    dest[dest_offset + 0] = src[src_offset + 2]; // R from B
+                    dest[dest_offset + 1] = src[src_offset + 1]; // G
+                    dest[dest_offset + 2] = src[src_offset + 0]; // B from R
+                    dest[dest_offset + 3] = src[src_offset + 3]; // A
+                } else {
+                    // Already RGBA, just copy
+                    dest[dest_offset + 0] = src[src_offset + 0]; // R
+                    dest[dest_offset + 1] = src[src_offset + 1]; // G
+                    dest[dest_offset + 2] = src[src_offset + 2]; // B
+                    dest[dest_offset + 3] = src[src_offset + 3]; // A
+                }
+            }
+        }
+
+        // Unmap the staging texture
+        rc.device_context()->Unmap(staging_texture.get(), 0);
+
+        return img;
     }
 } // namespace mge::dx11
