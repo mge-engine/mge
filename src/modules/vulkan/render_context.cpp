@@ -23,7 +23,8 @@ namespace mge::vulkan {
 
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
-        : m_render_system(render_system_.shared_from_this())
+        : mge::render_context(window_.extent())
+        , m_render_system(render_system_.shared_from_this())
         , m_window(window_)
     {
         try {

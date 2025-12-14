@@ -8,7 +8,9 @@
 class MOCK_render_context : public mge::render_context
 {
 public:
-    MOCK_render_context() {}
+    MOCK_render_context()
+        : mge::render_context(mge::extent(800, 600))
+    {}
     ~MOCK_render_context() {}
 
     MOCK_METHOD(mge::index_buffer*,
