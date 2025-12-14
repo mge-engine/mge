@@ -115,11 +115,11 @@ namespace mge {
         void store(const asset_type& type, const std::any& asset) const;
 
         /**
-         * @brief Adds an asset loader.
+         * @brief Adds an asset handler.
          *
-         * @param loader loader that is added.
+         * @param handler handler that is added.
          */
-        static void add_loader(const asset_loader_ref& loader);
+        static void add_handler(const asset_handler_ref& handler);
 
         /**
          * Get whether path can be found as asset.

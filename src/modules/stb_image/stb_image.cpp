@@ -2,7 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/asset/asset.hpp"
-#include "mge/asset/asset_loader.hpp"
+#include "mge/asset/asset_handler.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/memory.hpp"
@@ -21,11 +21,11 @@
 #include <stb_image.h>
 
 namespace mge {
-    class stb_image_loader : public asset_loader
+    class stb_image_handler : public asset_handler
     {
     public:
-        stb_image_loader() = default;
-        ~stb_image_loader() = default;
+        stb_image_handler() = default;
+        ~stb_image_handler() = default;
 
         std::any load(const mge::asset& a) override;
 
@@ -67,7 +67,7 @@ namespace mge {
             .read = read_callback, .skip = skip_callback, .eof = eof_callback};
     };
 
-    std::any stb_image_loader::load(const mge::asset& a)
+    std::any stb_image_handler::load(const mge::asset& a)
     {
         int  x = 0;
         int  y = 0;
@@ -93,7 +93,7 @@ namespace mge {
         }
     }
 
-    std::span<mge::asset_type> stb_image_loader::handled_types() const
+    std::span<mge::asset_type> stb_image_handler::handled_types() const
     {
         using namespace mge::literals;
         static asset_type supported[] = {"image/jpeg"_at,
@@ -105,5 +105,5 @@ namespace mge {
     }
 
     MGE_REGISTER_IMPLEMENTATION(
-        stb_image_loader, mge::asset_loader, jpeg, bmp, tga, png, gif);
+        stb_image_handler, mge::asset_handler, jpeg, bmp, tga, png, gif);
 } // namespace mge

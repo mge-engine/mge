@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_access.hpp"
-#include "mge/asset/asset_loader.hpp"
+#include "mge/asset/asset_handler.hpp"
 #include "mge/asset/asset_not_found.hpp"
 #include "mge/asset/asset_source.hpp"
 #include "mge/core/configuration.hpp"
@@ -186,24 +186,24 @@ namespace mge {
 
     static ::mge::singleton<mount_table> mtab;
 
-    class loader_table
+    class handler_table
     {
     public:
-        loader_table()
+        handler_table()
         {
-            instantiate_loaders();
+            instantiate_handlers();
         }
-        ~loader_table() = default;
+        ~handler_table() = default;
 
-        asset_loader_ref resolve(const asset_type& t) const
+        asset_handler_ref resolve(const asset_type& t) const
         {
-            auto it = m_loaders.find(t);
-            if (it == m_loaders.end()) {
-                refresh_loaders();
-                it = m_loaders.find(t);
+            auto it = m_handlers.find(t);
+            if (it == m_handlers.end()) {
+                refresh_handlers();
+                it = m_handlers.find(t);
             }
-            if (it == m_loaders.end()) {
-                return asset_loader_ref();
+            if (it == m_handlers.end()) {
+                return asset_handler_ref();
             } else {
                 return it->second;
             }
@@ -219,69 +219,69 @@ namespace mge {
                                          << a.path().string();
             }
 
-            for (const auto& l : m_all_loaders) {
-                if (l->can_improve(a, type)) {
-                    auto t = l->improve(a, type);
+            for (const auto& h : m_all_handlers) {
+                if (h->can_improve(a, type)) {
+                    auto t = h->improve(a, type);
                     if (t != asset_type::UNKNOWN) {
                         return t;
                     }
                 }
             }
-            if (refresh_loaders()) {
+            if (refresh_handlers()) {
                 return improve_type(a, type, recursion_depth + 1);
             }
             return type;
         }
 
-        void add_loader(const asset_loader_ref& loader) const
+        void add_handler(const asset_handler_ref& handler) const
         {
-            if (loader) {
-                m_all_loaders.insert(loader);
-                for (const auto& t : loader->handled_types()) {
+            if (handler) {
+                m_all_handlers.insert(handler);
+                for (const auto& t : handler->handled_types()) {
                     MGE_DEBUG_TRACE(ASSET,
-                                    "Adding loader for asset type: {}",
+                                    "Adding handler for asset type: {}",
                                     t);
-                    m_loaders[t] = loader;
+                    m_handlers[t] = handler;
                 }
             }
         }
 
     private:
-        void instantiate_loaders();
-        bool refresh_loaders() const;
+        void instantiate_handlers();
+        bool refresh_handlers() const;
 
-        mutable std::set<std::string, std::less<>>     m_loader_names;
-        mutable std::set<asset_loader_ref>             m_all_loaders;
-        mutable std::map<asset_type, asset_loader_ref> m_loaders;
+        mutable std::set<std::string, std::less<>>      m_handler_names;
+        mutable std::set<asset_handler_ref>             m_all_handlers;
+        mutable std::map<asset_type, asset_handler_ref> m_handlers;
     };
 
-    void loader_table::instantiate_loaders()
+    void handler_table::instantiate_handlers()
     {
-        asset_loader::implementations([&](std::string_view name) {
-            MGE_DEBUG_TRACE(ASSET, "Instantiating asset loader: {}", name);
-            asset_loader_ref loader = asset_loader::create(name);
-            add_loader(loader);
-            m_loader_names.insert(std::string(name));
+        asset_handler::implementations([&](std::string_view name) {
+            MGE_DEBUG_TRACE(ASSET, "Instantiating asset handler: {}", name);
+            asset_handler_ref handler = asset_handler::create(name);
+            add_handler(handler);
+            m_handler_names.insert(std::string(name));
         });
     }
 
-    bool loader_table::refresh_loaders() const
+    bool handler_table::refresh_handlers() const
     {
-        bool loader_changed = false;
-        asset_loader::implementations([&](std::string_view name) {
-            auto it = m_loader_names.find(name);
-            if (it == m_loader_names.end()) {
-                MGE_DEBUG_TRACE(ASSET, "Instantiating asset loader: {}", name);
-                asset_loader_ref loader = asset_loader::create(name);
-                add_loader(loader);
-                m_loader_names.insert(std::string(name));
-                loader_changed = true;
+        bool handler_changed = false;
+        asset_handler::implementations([&](std::string_view name) {
+            auto it = m_handler_names.find(name);
+            if (it == m_handler_names.end()) {
+                MGE_DEBUG_TRACE(ASSET, "Instantiating asset handler: {}", name);
+                asset_handler_ref handler = asset_handler::create(name);
+                add_handler(handler);
+                m_handler_names.insert(std::string(name));
+                handler_changed = true;
             }
         });
-        return loader_changed;
+        return handler_changed;
     }
 
-    static ::mge::singleton<loader_table> loaders;
+    static ::mge::singleton<handler_table> handlers;
 
     bool asset::exists() const
     {
@@ -343,7 +343,7 @@ namespace mge {
         // based on the file extension
         if (m_type.value() == asset_type::UNKNOWN ||
             m_type.value() == asset_type("text", "plain")) {
-            m_type = loaders->improve_type(*this, m_type.value());
+            m_type = handlers->improve_type(*this, m_type.value());
         }
 
         return m_type.value();
@@ -353,12 +353,12 @@ namespace mge {
     {
         // will resolve (and throw if asset not found)
         auto t = type();
-        auto l = loaders->resolve(t);
-        if (!l) {
-            MGE_THROW(illegal_state) << "No loader for asset type '" << t
+        auto h = handlers->resolve(t);
+        if (!h) {
+            MGE_THROW(illegal_state) << "No handler for asset type '" << t
                                      << "' for asset: " << m_path.string();
         }
-        return l->load(*this);
+        return h->load(*this);
     }
 
     void asset::store(const asset_type& type, const std::any& asset) const {}

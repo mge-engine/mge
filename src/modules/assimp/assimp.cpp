@@ -3,7 +3,7 @@
 // All rights reserved.
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_corrupted.hpp"
-#include "mge/asset/asset_loader.hpp"
+#include "mge/asset/asset_handler.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/memory.hpp"
@@ -70,15 +70,15 @@ namespace mge {
         }
     };
 
-    class assimp_loader : public asset_loader
+    class assimp_handler : public asset_handler
     {
     public:
-        assimp_loader()
+        assimp_handler()
         {
             Assimp::DefaultLogger::set(&m_logger);
         }
 
-        ~assimp_loader()
+        ~assimp_handler()
         {
             Assimp::DefaultLogger::set(nullptr);
         }
@@ -218,7 +218,7 @@ namespace mge {
         std::shared_ptr<assimp_iostream> m_assimp_stream;
     };
 
-    std::any assimp_loader::load(const mge::asset& a)
+    std::any assimp_handler::load(const mge::asset& a)
     {
         MGE_DEBUG_TRACE(ASSIMP, "Loading asset: {}", a.path().string());
 
@@ -379,12 +379,12 @@ namespace mge {
         }
     }
 
-    std::span<mge::asset_type> assimp_loader::handled_types() const
+    std::span<mge::asset_type> assimp_handler::handled_types() const
     {
         using namespace mge::literals;
         static asset_type supported[] = {"model/obj"_at};
         return supported;
     }
 
-    MGE_REGISTER_IMPLEMENTATION(assimp_loader, mge::asset_loader, obj);
+    MGE_REGISTER_IMPLEMENTATION(assimp_handler, mge::asset_handler, obj);
 } // namespace mge

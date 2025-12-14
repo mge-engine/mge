@@ -2,16 +2,16 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/asset/asset.hpp"
-#include "mge/asset/asset_loader.hpp"
+#include "mge/asset/asset_handler.hpp"
 #include "mge/asset/asset_type.hpp"
 #include "mge/core/buffer.hpp"
 
 namespace mge {
-    class application_octet_stream_loader : public asset_loader
+    class application_octet_stream_handler : public asset_handler
     {
     public:
-        application_octet_stream_loader() = default;
-        ~application_octet_stream_loader() = default;
+        application_octet_stream_handler() = default;
+        ~application_octet_stream_handler() = default;
 
         std::any load(const mge::asset& a) override
         {
@@ -28,7 +28,7 @@ namespace mge {
         }
     };
 
-    MGE_REGISTER_IMPLEMENTATION(application_octet_stream_loader,
-                                mge::asset_loader,
+    MGE_REGISTER_IMPLEMENTATION(application_octet_stream_handler,
+                                mge::asset_handler,
                                 octet_stream);
 } // namespace mge
