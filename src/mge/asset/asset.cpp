@@ -69,33 +69,25 @@ namespace mge {
                                  asset_handler::operation_type op) const
         {
             if (m_mounts.empty()) {
-                return asset_access_ref();
-            } else {
-                auto it = m_mounts.lower_bound(p);
-                if (it == m_mounts.begin()) {
-                    return asset_access_ref();
-                } else {
-                    --it;
-                    switch (op) {
-                    case asset_handler::operation_type::LOAD:
-                        if (it->second.mode ==
-                            asset_source::access_mode::WRITE) {
-                            return asset_access_ref();
-                        }
-                        break;
-                    case asset_handler::operation_type::STORE:
-                        if (it->second.mode ==
-                            asset_source::access_mode::READ) {
-                            return asset_access_ref();
-                        }
-                    default:
-                        break;
-                    }
-                    return it->second.factory->access(p);
-                }
+                return {};
+            }
+            auto it = m_mounts.lower_bound(p);
+            if (it == m_mounts.begin()) {
+                return {};
+            }
+            --it;
+
+            // Check mode compatibility
+            if (op == asset_handler::operation_type::LOAD &&
+                it->second.mode == asset_source::access_mode::WRITE) {
+                return {};
+            }
+            if (op == asset_handler::operation_type::STORE &&
+                it->second.mode == asset_source::access_mode::READ) {
+                return {};
             }
 
-            return asset_access_ref();
+            return it->second.factory->access(p);
         }
 
         void mount(const mge::path&          mount_point,
@@ -107,22 +99,20 @@ namespace mge {
                             "Mounting {} asset source at {}",
                             type,
                             mount_point.string());
-            mount_info mi;
-            mi.mount_point = mount_point;
-            mi.type = type;
-            mi.mode = mode;
-            mi.properties = properties;
-            mi.factory = component<asset_source>::create(type);
-            if (!mi.factory) {
+            auto factory = component<asset_source>::create(type);
+            if (!factory) {
                 MGE_THROW(illegal_state)
                     << "Invalid mount point type for mount point '"
                     << mount_point << "' : " << type;
-            } else {
-                mi.factory->configure(mi.properties);
-                mi.factory->set_mount_point(mount_point);
-                mi.factory->set_mode(mode);
-                m_mounts[mount_point] = mi;
             }
+            factory->configure(properties);
+            factory->set_mount_point(mount_point);
+            factory->set_mode(mode);
+            m_mounts[mount_point] = {.factory = factory,
+                                     .type = type,
+                                     .mode = mode,
+                                     .mount_point = mount_point,
+                                     .properties = properties};
         }
 
         void umount(const mge::path& mount_point)
@@ -186,19 +176,20 @@ namespace mge {
                 new_mounts[mount_point] = it->second;
                 continue;
             }
-            mount_info mi;
-            mi.mount_point = mge::path(mount_point);
-            mi.type = type;
-            mi.properties = mount_properties[mount_point];
-            mi.factory = component<asset_source>::create(type);
-            if (!mi.factory) {
+            auto factory = component<asset_source>::create(type);
+            if (!factory) {
                 MGE_THROW(illegal_state)
                     << "Invalid mount point type for mount point '"
                     << mount_point.string() << "' : " << type;
             }
-            mi.factory->configure(mi.properties);
-            mi.factory->set_mount_point(mount_point);
-            new_mounts[mount_point] = mi;
+            factory->configure(mount_properties[mount_point]);
+            factory->set_mount_point(mount_point);
+            new_mounts[mount_point] = {.factory = factory,
+                                       .type = type,
+                                       .mode = asset_source::access_mode::READ,
+                                       .mount_point = mount_point,
+                                       .properties =
+                                           mount_properties[mount_point]};
         }
         m_mounts.swap(new_mounts);
     }
