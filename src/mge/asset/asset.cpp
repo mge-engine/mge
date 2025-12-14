@@ -53,13 +53,6 @@ namespace mge {
                          repositories,
                          "Asset configuration");
 
-    enum class access_mode
-    {
-        READ,
-        WRITE,
-        READ_WRITE
-    };
-
     class mount_table
     {
     public:
@@ -83,6 +76,21 @@ namespace mge {
                     return asset_access_ref();
                 } else {
                     --it;
+                    switch (op) {
+                    case asset_handler::operation_type::LOAD:
+                        if (it->second.mode ==
+                            asset_source::access_mode::WRITE) {
+                            return asset_access_ref();
+                        }
+                        break;
+                    case asset_handler::operation_type::STORE:
+                        if (it->second.mode ==
+                            asset_source::access_mode::READ) {
+                            return asset_access_ref();
+                        }
+                    default:
+                        break;
+                    }
                     return it->second.factory->access(p);
                 }
             }
@@ -102,6 +110,7 @@ namespace mge {
             mount_info mi;
             mi.mount_point = mount_point;
             mi.type = type;
+            mi.mode = mode;
             mi.properties = properties;
             mi.factory = component<asset_source>::create(type);
             if (!mi.factory) {
@@ -130,10 +139,11 @@ namespace mge {
 
         struct mount_info
         {
-            asset_source_ref  factory;
-            std::string       type;
-            mge::path         mount_point;
-            ::mge::properties properties;
+            asset_source_ref          factory;
+            std::string               type;
+            asset_source::access_mode mode;
+            mge::path                 mount_point;
+            ::mge::properties         properties;
         };
 
         std::map<mge::path, mount_info> m_mounts;
@@ -211,29 +221,15 @@ namespace mge {
                                   asset_handler::operation_type op =
                                       asset_handler::operation_type::LOAD) const
         {
-            if (op == asset_handler::operation_type::STORE) {
-                auto it = m_store_handlers.find(t);
-                if (it == m_store_handlers.end()) {
-                    refresh_handlers();
-                    it = m_store_handlers.find(t);
-                }
-                if (it == m_store_handlers.end()) {
-                    return asset_handler_ref();
-                } else {
-                    return it->second;
-                }
-            } else {
-                auto it = m_load_handlers.find(t);
-                if (it == m_load_handlers.end()) {
-                    refresh_handlers();
-                    it = m_load_handlers.find(t);
-                }
-                if (it == m_load_handlers.end()) {
-                    return asset_handler_ref();
-                } else {
-                    return it->second;
-                }
+            auto& handlers = (op == asset_handler::operation_type::STORE)
+                                 ? m_store_handlers
+                                 : m_load_handlers;
+            auto  it = handlers.find(t);
+            if (it == handlers.end()) {
+                refresh_handlers();
+                it = handlers.find(t);
             }
+            return (it != handlers.end()) ? it->second : asset_handler_ref{};
         }
 
         asset_type improve_type(const asset&      a,
@@ -262,22 +258,23 @@ namespace mge {
 
         void add_handler(const asset_handler_ref& handler) const
         {
-            if (handler) {
-                m_all_handlers.insert(handler);
-                for (const auto& t : handler->handled_types(
-                         asset_handler::operation_type::LOAD)) {
-                    MGE_DEBUG_TRACE(ASSET,
-                                    "Adding load handler for asset type: {}",
-                                    t);
-                    m_load_handlers[t] = handler;
-                }
-                for (const auto& t : handler->handled_types(
-                         asset_handler::operation_type::STORE)) {
-                    MGE_DEBUG_TRACE(ASSET,
-                                    "Adding store handler for asset type: {}",
-                                    t);
-                    m_store_handlers[t] = handler;
-                }
+            if (!handler) {
+                return;
+            }
+            m_all_handlers.insert(handler);
+            for (const auto& t :
+                 handler->handled_types(asset_handler::operation_type::LOAD)) {
+                MGE_DEBUG_TRACE(ASSET,
+                                "Adding load handler for asset type: {}",
+                                t);
+                m_load_handlers[t] = handler;
+            }
+            for (const auto& t :
+                 handler->handled_types(asset_handler::operation_type::STORE)) {
+                MGE_DEBUG_TRACE(ASSET,
+                                "Adding store handler for asset type: {}",
+                                t);
+                m_store_handlers[t] = handler;
             }
         }
 
