@@ -157,7 +157,7 @@
 </li>
       <li><a href="asset/asset.html#_CPPv4N3mge5assetE">mge::asset (C++ class)</a>
 </li>
-      <li><a href="asset/asset.html#_CPPv4N3mge5asset10add_loaderERK16asset_loader_ref">mge::asset::add_loader (C++ function)</a>
+      <li><a href="asset/asset.html#_CPPv4N3mge5asset11add_handlerERK17asset_handler_ref">mge::asset::add_handler (C++ function)</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4N3mge5asset5assetEPKc">mge::asset::asset (C++ function)</a>, <a href="asset/asset.html#_CPPv4N3mge5asset5assetERK4path">[1]</a>, <a href="asset/asset.html#_CPPv4N3mge5asset5assetERK5asset">[2]</a>, <a href="asset/asset.html#_CPPv4N3mge5asset5assetERKNSt6stringE">[3]</a>, <a href="asset/asset.html#_CPPv4N3mge5asset5assetERR5asset">[4]</a>
 </li>
@@ -173,15 +173,19 @@
 </li>
       <li><a href="asset/asset.html#_CPPv4N3mge5asset6locateENSt11string_viewERK10asset_type">mge::asset::locate (C++ function)</a>
 </li>
-      <li><a href="asset/asset.html#_CPPv4N3mge5asset5mountERKN3mge4pathERKNSt6stringERKN3mge10propertiesE">mge::asset::mount (C++ function)</a>
+      <li><a href="asset/asset.html#_CPPv4N3mge5asset5mountERKN3mge4pathERKNSt6stringEN12asset_source11access_modeERKN3mge10propertiesE">mge::asset::mount (C++ function)</a>, <a href="asset/asset.html#_CPPv4N3mge5asset5mountERKN3mge4pathERKNSt6stringERKN3mge10propertiesE">[1]</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4N3mge5assetaSERK5asset">mge::asset::operator= (C++ function)</a>, <a href="asset/asset.html#_CPPv4N3mge5assetaSERR5asset">[1]</a>
+</li>
+      <li><a href="asset/asset.html#_CPPv4NK3mge5asset13output_streamEv">mge::asset::output_stream (C++ function)</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4NK3mge5asset4pathEv">mge::asset::path (C++ function)</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4NK3mge5asset10propertiesEv">mge::asset::properties (C++ function)</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4NK3mge5asset4sizeEv">mge::asset::size (C++ function)</a>
+</li>
+      <li><a href="asset/asset.html#_CPPv4NK3mge5asset5storeERK10asset_typeRKNSt3anyE">mge::asset::store (C++ function)</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4NK3mge5asset4typeEv">mge::asset::type (C++ function)</a>
 </li>
@@ -191,43 +195,61 @@
 </li>
       <li><a href="asset/asset.html#_CPPv4N3mge5assetD0Ev">mge::asset::~asset (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_accessE">mge::asset_access (C++ class)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_accessE">mge::asset_access (C++ class)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_access4dataEv">mge::asset_access::data (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_access4dataEv">mge::asset_access::data (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_access14has_propertiesEv">mge::asset_access::has_properties (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_access14has_propertiesEv">mge::asset_access::has_properties (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_access10propertiesEv">mge::asset_access::properties (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_access13output_streamEv">mge::asset_access::output_stream (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_access4sizeEv">mge::asset_access::size (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_access10propertiesEv">mge::asset_access::properties (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_access4typeEv">mge::asset_access::type (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_access4sizeEv">mge::asset_access::size (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_loaderE">mge::asset_loader (C++ class)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_access16store_propertiesERKN3mge10propertiesE">mge::asset_access::store_properties (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type">mge::asset_loader::can_improve (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_access4typeEv">mge::asset_access::type (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_loader13handled_typesEv">mge::asset_loader::handled_types (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge13asset_handlerE">mge::asset_handler (C++ class)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type">mge::asset_loader::improve (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge13asset_handler11can_improveERK5assetRK10asset_type">mge::asset_handler::can_improve (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_loader4loadERK5asset">mge::asset_loader::load (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge13asset_handler13handled_typesE14operation_type">mge::asset_handler::handled_types (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_sourceE">mge::asset_source (C++ class)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge13asset_handler7improveERK5assetRK10asset_type">mge::asset_handler::improve (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_source6accessERKN3mge4pathE">mge::asset_source::access (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge13asset_handler4loadERK5asset">mge::asset_handler::load (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_source12asset_existsERKN3mge4pathE">mge::asset_source::asset_exists (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge13asset_handler5storeERK5assetRK10asset_typeRKNSt3anyE">mge::asset_handler::store (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_source9configureERKN3mge10propertiesE">mge::asset_source::configure (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_sourceE">mge::asset_source (C++ class)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_source4gistERNSt14format_contextE">mge::asset_source::gist (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source6accessERKN3mge4pathE">mge::asset_source::access (C++ function)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_source13is_configuredEv">mge::asset_source::is_configured (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source11access_modeE">mge::asset_source::access_mode (C++ enum)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4NK3mge12asset_source11mount_pointEv">mge::asset_source::mount_point (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source11access_mode4READE">mge::asset_source::access_mode::READ (C++ enumerator)</a>
 </li>
-      <li><a href="asset/loading.html#_CPPv4N3mge12asset_source15set_mount_pointERKN3mge4pathE">mge::asset_source::set_mount_point (C++ function)</a>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source11access_mode10READ_WRITEE">mge::asset_source::access_mode::READ_WRITE (C++ enumerator)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source11access_mode5WRITEE">mge::asset_source::access_mode::WRITE (C++ enumerator)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source12asset_existsERKN3mge4pathE">mge::asset_source::asset_exists (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source9configureERKN3mge10propertiesE">mge::asset_source::configure (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_source4gistERNSt14format_contextE">mge::asset_source::gist (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_source13is_configuredEv">mge::asset_source::is_configured (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_source4modeEv">mge::asset_source::mode (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4NK3mge12asset_source11mount_pointEv">mge::asset_source::mount_point (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source8set_modeE11access_mode">mge::asset_source::set_mode (C++ function)</a>
+</li>
+      <li><a href="asset/loadingstoring.html#_CPPv4N3mge12asset_source15set_mount_pointERKN3mge4pathE">mge::asset_source::set_mount_point (C++ function)</a>
 </li>
       <li><a href="asset/asset.html#_CPPv4N3mge10asset_typeE">mge::asset_type (C++ class)</a>
 </li>
@@ -779,6 +801,8 @@
 </li>
       <li><a href="input/state.html#_CPPv4NK3mge11mouse_state7wheel_yEv">mge::mouse_state::wheel_y (C++ function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="input/state.html#_CPPv4NK3mge11mouse_state1xEv">mge::mouse_state::x (C++ function)</a>
 </li>
       <li><a href="input/state.html#_CPPv4NK3mge11mouse_state1yEv">mge::mouse_state::y (C++ function)</a>
@@ -789,8 +813,6 @@
 </li>
       <li><a href="core/concurrency.html#_CPPv4N3mge5mutex4lockEv">mge::mutex::lock (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core/concurrency.html#_CPPv4N3mge5mutex5mutexEPKc">mge::mutex::mutex (C++ function)</a>
 </li>
       <li><a href="core/concurrency.html#_CPPv4N3mge5mutex8try_lockEv">mge::mutex::try_lock (C++ function)</a>

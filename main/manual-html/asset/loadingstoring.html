@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Asset Loading &mdash; MGE 0.1 documentation</title>
+  <title>Asset Loading and Storing &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
@@ -58,7 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../mgeasset.html">Asset Library</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="asset.html">Asset Management</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Asset Loading</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Asset Loading and Storing</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#supported-asset-sources">Supported Asset Sources</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#file-asset-source">File Asset Source</a></li>
@@ -70,8 +70,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_accessE"><code class="docutils literal notranslate"><span class="pre">mge::asset_access</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#asset-loaders">Asset Loaders</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_loaderE"><code class="docutils literal notranslate"><span class="pre">mge::asset_loader</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#asset-handlers">Asset Handlers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13asset_handlerE"><code class="docutils literal notranslate"><span class="pre">mge::asset_handler</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -100,9 +100,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../mgeasset.html">Asset Library</a></li>
-      <li class="breadcrumb-item active">Asset Loading</li>
+      <li class="breadcrumb-item active">Asset Loading and Storing</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/asset/loading.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/asset/loadingstoring.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -110,8 +110,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="asset-loading">
-<h1>Asset Loading<a class="headerlink" href="#asset-loading" title="Link to this heading"></a></h1>
+  <section id="asset-loading-and-storing">
+<h1>Asset Loading and Storing<a class="headerlink" href="#asset-loading-and-storing" title="Link to this heading"></a></h1>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
 <p>Assets are identified by a path, which is used to look up the asset in a
@@ -183,6 +183,31 @@ the <cite>asset_source</cite> interface and register it as a component.</p>
 <dd><p>An asset access factory. </p>
 <p>An asset access factory is ‘mounted’ below a specific path, and serves all assets that are looked for beneath this path. </p>
 <p>Subclassed by mge::file_asset_source</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source11access_modeE">
+<span id="_CPPv3N3mge12asset_source11access_modeE"></span><span id="_CPPv2N3mge12asset_source11access_modeE"></span><span class="target" id="classmge_1_1asset__source_1a72f32ef5ef250e1190996eb92d566096"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">access_mode</span></span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source11access_modeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Access mode for the asset source. An asset source may be opened in read, write or read-write mode, or the nature of the asset source may restrict access to read-only. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source11access_mode4READE">
+<span id="_CPPv3N3mge12asset_source11access_mode4READE"></span><span id="_CPPv2N3mge12asset_source11access_mode4READE"></span><span class="target" id="classmge_1_1asset__source_1a72f32ef5ef250e1190996eb92d566096a3466fab4975481651940ed328aa990e4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">READ</span></span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source11access_mode4READE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source11access_mode5WRITEE">
+<span id="_CPPv3N3mge12asset_source11access_mode5WRITEE"></span><span id="_CPPv2N3mge12asset_source11access_mode5WRITEE"></span><span class="target" id="classmge_1_1asset__source_1a72f32ef5ef250e1190996eb92d566096ad4b9e47f65b6e79b010582f15785867e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WRITE</span></span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source11access_mode5WRITEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source11access_mode10READ_WRITEE">
+<span id="_CPPv3N3mge12asset_source11access_mode10READ_WRITEE"></span><span id="_CPPv2N3mge12asset_source11access_mode10READ_WRITEE"></span><span class="target" id="classmge_1_1asset__source_1a72f32ef5ef250e1190996eb92d566096aa7b843fb734e3b3fea8e5f902d3f4144"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">READ_WRITE</span></span></span><a class="headerlink" href="#_CPPv4N3mge12asset_source11access_mode10READ_WRITEE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -269,6 +294,28 @@ the <cite>asset_source</cite> interface and register it as a component.</p>
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_source8set_modeE11access_mode">
+<span id="_CPPv3N3mge12asset_source8set_modeE11access_mode"></span><span id="_CPPv2N3mge12asset_source8set_modeE11access_mode"></span><span id="mge::asset_source::set_mode__access_mode"></span><span class="target" id="classmge_1_1asset__source_1acf7acfc3ac10921b551f3a9afa9a7ac4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_mode</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge12asset_source11access_modeE" title="mge::asset_source::access_mode"><span class="n"><span class="pre">access_mode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12asset_source8set_modeE11access_mode" title="Link to this definition"></a><br /></dt>
+<dd><p>Set access mode for this asset source. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mode</strong> – access mode </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_source4modeEv">
+<span id="_CPPv3NK3mge12asset_source4modeEv"></span><span id="_CPPv2NK3mge12asset_source4modeEv"></span><span id="mge::asset_source::modeC"></span><span class="target" id="classmge_1_1asset__source_1a0e0d2531875b9047e390a3214c7ded4c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12asset_source11access_modeE" title="mge::asset_source::access_mode"><span class="n"><span class="pre">access_mode</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mode</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_source4modeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get current access mode. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>access mode </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
@@ -337,31 +384,56 @@ asset.</p>
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_access13output_streamEv">
+<span id="_CPPv3N3mge12asset_access13output_streamEv"></span><span id="_CPPv2N3mge12asset_access13output_streamEv"></span><span id="mge::asset_access::output_stream"></span><span class="target" id="classmge_1_1asset__access_1a06e993770fc14f1961c49ecda082493a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">output_stream_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">output_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_access13output_streamEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Output stream to write asset data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>output stream </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_access16store_propertiesERKN3mge10propertiesE">
+<span id="_CPPv3N3mge12asset_access16store_propertiesERKN3mge10propertiesE"></span><span id="_CPPv2N3mge12asset_access16store_propertiesERKN3mge10propertiesE"></span><span id="mge::asset_access::store_properties__mge::propertiesCR"></span><span class="target" id="classmge_1_1asset__access_1adb37bebb8cafd99b2415d31eb7eb5011"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">store_properties</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge10propertiesE" title="mge::properties"><span class="n"><span class="pre">properties</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">props</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_access16store_propertiesERKN3mge10propertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Store properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>props</strong> – properties to store </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
 </section>
-<section id="asset-loaders">
-<h2>Asset Loaders<a class="headerlink" href="#asset-loaders" title="Link to this heading"></a></h2>
-<p>Asset loaders are responsible for loading assets from their respective sources.
-They are implemented as classes that inherit from the <cite>asset_loader</cite> interface.</p>
-<p>One asset loader handles a number of types of assets, such as images, meshes,
-shaders, etc. The asset loader is responsible for loading the asset data into
-memory and providing an interface to access the loaded asset.</p>
-<p>In addition, an asset loader can be used also to improve a generic asset type
+<section id="asset-handlers">
+<h2>Asset Handlers<a class="headerlink" href="#asset-handlers" title="Link to this heading"></a></h2>
+<p>Asset handlers are responsible for loading and storing assets from and to their
+respective sources. They are implemented as classes that inherit from
+the <cite>asset_handler</cite> interface. Different asset handlers that handle the same
+type for load and store can be registered independently.</p>
+<p>One asset handler handles a number of types of assets, such as images, meshes,
+shaders, etc. The asset handler is responsible for loading the asset data into
+memory and providing an interface to access the loaded asset, and to store an
+object in a a specific format back to the asset.</p>
+<p>In addition, an asset handler can be used also to improve a generic asset type
 like e.g. ‘text/plain’ by providing a more specific type, such as ‘model/obj’
 by further inspection of the asset data.</p>
 <dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_loaderE">
-<span id="_CPPv3N3mge12asset_loaderE"></span><span id="_CPPv2N3mge12asset_loaderE"></span><span id="mge::asset_loader"></span><span class="target" id="classmge_1_1asset__loader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_loader</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge12asset_loaderE" title="mge::asset_loader"><span class="n"><span class="pre">asset_loader</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_loaderE" title="Link to this definition"></a><br /></dt>
-<dd><p>Interface for asset loaders. </p>
-<p>An asset loader is responsible for loading an asset. Assets can be loaded as raw streams, but usually one wants to load an asset in a structured way, e.g. as a image, a mesh, a shader etc. </p>
-<p>Subclassed by mge::application_octet_stream_loader</p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13asset_handlerE">
+<span id="_CPPv3N3mge13asset_handlerE"></span><span id="_CPPv2N3mge13asset_handlerE"></span><span id="mge::asset_handler"></span><span class="target" id="classmge_1_1asset__handler"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13asset_handlerE" title="mge::asset_handler"><span class="n"><span class="pre">asset_handler</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13asset_handlerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Interface for asset handlers. </p>
+<p>An asset handler is responsible for loading an asset. Assets can be loaded as raw streams, but usually one wants to load an asset in a structured way, e.g. as a image, a mesh, a shader etc. </p>
+<p>Subclassed by mge::application_octet_stream_handler</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_loader4loadERK5asset">
-<span id="_CPPv3N3mge12asset_loader4loadERK5asset"></span><span id="_CPPv2N3mge12asset_loader4loadERK5asset"></span><span id="mge::asset_loader::load__assetCR"></span><span class="target" id="classmge_1_1asset__loader_1ac96d7ba5cce9ca2d2e244cbeeb7c053f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge12asset_loader4loadERK5asset" title="mge::asset_loader::load::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_loader4loadERK5asset" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13asset_handler4loadERK5asset">
+<span id="_CPPv3N3mge13asset_handler4loadERK5asset"></span><span id="_CPPv2N3mge13asset_handler4loadERK5asset"></span><span id="mge::asset_handler::load__assetCR"></span><span class="target" id="classmge_1_1asset__handler_1aec2944c8d4ddbb5f09ee4f3e52fb80eb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">load</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13asset_handler4loadERK5asset" title="mge::asset_handler::load::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13asset_handler4loadERK5asset" title="Link to this definition"></a><br /></dt>
 <dd><p>Loads the asset. </p>
 <p>This constructs the loaded asset from the input stream and properties.</p>
 <dl class="field-list simple">
@@ -375,20 +447,39 @@ by further inspection of the asset data.</p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_loader13handled_typesEv">
-<span id="_CPPv3NK3mge12asset_loader13handled_typesEv"></span><span id="_CPPv2NK3mge12asset_loader13handled_typesEv"></span><span id="mge::asset_loader::handled_typesC"></span><span class="target" id="classmge_1_1asset__loader_1add2bddda2338fcfb6998d74a90739b7f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handled_types</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_loader13handled_typesEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Return asset types handled by this loader. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13asset_handler5storeERK5assetRK10asset_typeRKNSt3anyE">
+<span id="_CPPv3N3mge13asset_handler5storeERK5assetRK10asset_typeRKNSt3anyE"></span><span id="_CPPv2N3mge13asset_handler5storeERK5assetRK10asset_typeRKNSt3anyE"></span><span id="mge::asset_handler::store__assetCR.asset_typeCR.std::anyCR"></span><span class="target" id="classmge_1_1asset__handler_1ae5544e59314a011a58d6abadf44d8a00"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">store</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13asset_handler5storeERK5assetRK10asset_typeRKNSt3anyE" title="mge::asset_handler::store::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">data</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge13asset_handler5storeERK5assetRK10asset_typeRKNSt3anyE" title="Link to this definition"></a><br /></dt>
+<dd><p>Stores the asset. </p>
+<p>This writes the asset to the output stream.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>asset types handled by this loader </p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asset</strong> – asset that is stored </p></li>
+<li><p><strong>type</strong> – asset type </p></li>
+<li><p><strong>data</strong> – asset data to store </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type">
-<span id="_CPPv3NK3mge12asset_loader11can_improveERK5assetRK10asset_type"></span><span id="_CPPv2NK3mge12asset_loader11can_improveERK5assetRK10asset_type"></span><span id="mge::asset_loader::can_improve__assetCR.asset_typeCRC"></span><span class="target" id="classmge_1_1asset__loader_1aebc7c8e279d67a09ad81906bb53f8231"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_improve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type" title="mge::asset_loader::can_improve::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_loader11can_improveERK5assetRK10asset_type" title="Link to this definition"></a><br /></dt>
-<dd><p>Return whether this loader can improve the asset type. </p>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13asset_handler13handled_typesE14operation_type">
+<span id="_CPPv3NK3mge13asset_handler13handled_typesE14operation_type"></span><span id="_CPPv2NK3mge13asset_handler13handled_typesE14operation_type"></span><span id="mge::asset_handler::handled_types__operation_typeC"></span><span class="target" id="classmge_1_1asset__handler_1aeea91d736d3714320c46abf6f45a6ee5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">span</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">handled_types</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">operation_type</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK3mge13asset_handler13handled_typesE14operation_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Return asset types handled by this handler. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – operation type (load or store) </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>asset types handled by this handler </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13asset_handler11can_improveERK5assetRK10asset_type">
+<span id="_CPPv3NK3mge13asset_handler11can_improveERK5assetRK10asset_type"></span><span id="_CPPv2NK3mge13asset_handler11can_improveERK5assetRK10asset_type"></span><span id="mge::asset_handler::can_improve__assetCR.asset_typeCRC"></span><span class="target" id="classmge_1_1asset__handler_1ac2e0daab8d35c3a1bfc8647af2e04df7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">can_improve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK3mge13asset_handler11can_improveERK5assetRK10asset_type" title="mge::asset_handler::can_improve::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13asset_handler11can_improveERK5assetRK10asset_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this handler can improve the asset type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -397,14 +488,14 @@ by further inspection of the asset data.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this loader can improve the asset type, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise </p>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if this handler can improve the asset type, <code class="docutils literal notranslate"><span class="pre">false</span></code> otherwise </p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type">
-<span id="_CPPv3NK3mge12asset_loader7improveERK5assetRK10asset_type"></span><span id="_CPPv2NK3mge12asset_loader7improveERK5assetRK10asset_type"></span><span id="mge::asset_loader::improve__assetCR.asset_typeCRC"></span><span class="target" id="classmge_1_1asset__loader_1afa39609ff635f086af4514b1edc439d8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">improve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type" title="mge::asset_loader::improve::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12asset_loader7improveERK5assetRK10asset_type" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13asset_handler7improveERK5assetRK10asset_type">
+<span id="_CPPv3NK3mge13asset_handler7improveERK5assetRK10asset_type"></span><span id="_CPPv2NK3mge13asset_handler7improveERK5assetRK10asset_type"></span><span id="mge::asset_handler::improve__assetCR.asset_typeCRC"></span><span class="target" id="classmge_1_1asset__handler_1a43ebf75a83bd3060fad789e41f867ffe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">improve</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK3mge13asset_handler7improveERK5assetRK10asset_type" title="mge::asset_handler::improve::asset"><span class="n"><span class="pre">asset</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="asset.html#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13asset_handler7improveERK5assetRK10asset_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Improve the asset type. </p>
 <p>This can be called if <code class="docutils literal notranslate"><span class="pre">can_improve</span></code> returns <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
 <dl class="field-list simple">

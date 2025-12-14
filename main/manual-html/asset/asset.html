@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Asset Loading" href="loading.html" />
+    <link rel="next" title="Asset Loading and Storing" href="loadingstoring.html" />
     <link rel="prev" title="Asset Library" href="../mgeasset.html" /> 
 </head>
 
@@ -68,7 +68,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="loading.html">Asset Loading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loadingstoring.html">Asset Loading and Storing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="assettool.html">Asset Tool</a></li>
 </ul>
 </li>
@@ -318,6 +318,20 @@ Assets are identified by a unique path.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge5asset5storeERK10asset_typeRKNSt3anyE">
+<span id="_CPPv3NK3mge5asset5storeERK10asset_typeRKNSt3anyE"></span><span id="_CPPv2NK3mge5asset5storeERK10asset_typeRKNSt3anyE"></span><span id="mge::asset::store__asset_typeCR.std::anyCRC"></span><span class="target" id="classmge_1_1asset_1ab25a2f4417171efc9c6aa971ff807eb6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">store</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge10asset_typeE" title="mge::asset_type"><span class="n"><span class="pre">asset_type</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">asset</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge5asset5storeERK10asset_typeRKNSt3anyE" title="Link to this definition"></a><br /></dt>
+<dd><p>Store an asset. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> – asset type </p></li>
+<li><p><strong>asset</strong> – asset to be stored </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge5asset4sizeEv">
 <span id="_CPPv3NK3mge5asset4sizeEv"></span><span id="_CPPv2NK3mge5asset4sizeEv"></span><span id="mge::asset::sizeC"></span><span class="target" id="classmge_1_1asset_1ae5eb5b14bcb1bba137667b0d72176a16"></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge5asset4sizeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Get asset size in bytes.</p>
@@ -335,6 +349,17 @@ Assets are identified by a unique path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>input data </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge5asset13output_streamEv">
+<span id="_CPPv3NK3mge5asset13output_streamEv"></span><span id="_CPPv2NK3mge5asset13output_streamEv"></span><span id="mge::asset::output_streamC"></span><span class="target" id="classmge_1_1asset_1a27667dffb9ff608ce2814dee83fbaccf"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">output_stream_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">output_stream</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge5asset13output_streamEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get a stream to write the output data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>output stream </p>
 </dd>
 </dl>
 </dd></dl>
@@ -387,12 +412,12 @@ Assets are identified by a unique path.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge5asset10add_loaderERK16asset_loader_ref">
-<span id="_CPPv3N3mge5asset10add_loaderERK16asset_loader_ref"></span><span id="_CPPv2N3mge5asset10add_loaderERK16asset_loader_ref"></span><span id="mge::asset::add_loader__asset_loader_refCR"></span><span class="target" id="classmge_1_1asset_1a7c8f1319f56e89109b53075251d885f9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_loader</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">asset_loader_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">loader</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5asset10add_loaderERK16asset_loader_ref" title="Link to this definition"></a><br /></dt>
-<dd><p>Adds an asset loader. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5asset11add_handlerERK17asset_handler_ref">
+<span id="_CPPv3N3mge5asset11add_handlerERK17asset_handler_ref"></span><span id="_CPPv2N3mge5asset11add_handlerERK17asset_handler_ref"></span><span id="mge::asset::add_handler__asset_handler_refCR"></span><span class="target" id="classmge_1_1asset_1a97fabc6ef02a9dddbdd9f6ec1c25033a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">add_handler</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">asset_handler_ref</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">handler</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5asset11add_handlerERK17asset_handler_ref" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds an asset handler. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>loader</strong> – loader that is added. </p>
+<dd class="field-odd"><p><strong>handler</strong> – handler that is added. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -448,6 +473,22 @@ Assets are identified by a unique path.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge5asset5mountERKN3mge4pathERKNSt6stringEN12asset_source11access_modeERKN3mge10propertiesE">
+<span id="_CPPv3N3mge5asset5mountERKN3mge4pathERKNSt6stringEN12asset_source11access_modeERKN3mge10propertiesE"></span><span id="_CPPv2N3mge5asset5mountERKN3mge4pathERKNSt6stringEN12asset_source11access_modeERKN3mge10propertiesE"></span><span id="mge::asset::mount__mge::pathCR.ssCR.asset_source::access_mode.mge::propertiesCR"></span><span class="target" id="classmge_1_1asset_1a4f7790d7f0a2a8f0040ee056fc2e9da9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mount_point</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">type</span></span>, <a class="reference internal" href="loadingstoring.html#_CPPv4N3mge12asset_sourceE" title="mge::asset_source"><span class="n"><span class="pre">asset_source</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="loadingstoring.html#_CPPv4N3mge12asset_source11access_modeE" title="mge::asset_source::access_mode"><span class="n"><span class="pre">access_mode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge10propertiesE" title="mge::properties"><span class="n"><span class="pre">properties</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5asset5mountERKN3mge4pathERKNSt6stringEN12asset_source11access_modeERKN3mge10propertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>mount a specific asset factory at a mount point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mount_point</strong> – mount point </p></li>
+<li><p><strong>type</strong> – asset access type </p></li>
+<li><p><strong>mode</strong> – access mode </p></li>
+<li><p><strong>options</strong> – mount options </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge5asset6umountERKN3mge4pathE">
 <span id="_CPPv3N3mge5asset6umountERKN3mge4pathE"></span><span id="_CPPv2N3mge5asset6umountERKN3mge4pathE"></span><span id="mge::asset::umount__mge::pathCR"></span><span class="target" id="classmge_1_1asset_1a8d1abe682e5ef749542f30e9884f754a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">umount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">path</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">mount_point</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge5asset6umountERKN3mge4pathE" title="Link to this definition"></a><br /></dt>
 <dd><p>Unmount a mount point. </p>
@@ -480,7 +521,7 @@ Assets are identified by a unique path.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../mgeasset.html" class="btn btn-neutral float-left" title="Asset Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="loading.html" class="btn btn-neutral float-right" title="Asset Loading" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="loadingstoring.html" class="btn btn-neutral float-right" title="Asset Loading and Storing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
