@@ -5,6 +5,7 @@
 #include "lua_error.hpp"
 #include "mge/core/line_editor.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/reflection/module.hpp"
 
 #if !defined(lua_writestringerror)
 #    define lua_writestringerror(s, p)                                         \
@@ -70,7 +71,10 @@ namespace mge::lua {
         CHECK_STATUS(rc, m_lua_state);
     }
 
-    void lua_context::bind() {}
+    void lua_context::bind()
+    {
+        reflection::module root_module = reflection::module::root();
+    }
 
 /* bits of various argument indicators in 'args' */
 #define has_error 1 /* bad option */
