@@ -73,12 +73,14 @@
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context26destroy_frame_command_listEP18frame_command_list"><code class="docutils literal notranslate"><span class="pre">destroy_frame_command_list()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context14create_textureE12texture_type"><code class="docutils literal notranslate"><span class="pre">create_texture()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context10swap_chainEv"><code class="docutils literal notranslate"><span class="pre">swap_chain()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context6extentEv"><code class="docutils literal notranslate"><span class="pre">extent()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14context_objectE"><code class="docutils literal notranslate"><span class="pre">mge::context_object</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge10swap_chainE"><code class="docutils literal notranslate"><span class="pre">mge::swap_chain</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10swap_chain7presentEv"><code class="docutils literal notranslate"><span class="pre">present()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv"><code class="docutils literal notranslate"><span class="pre">current_back_buffer_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10swap_chain10screenshotEv"><code class="docutils literal notranslate"><span class="pre">screenshot()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -312,6 +314,17 @@ has a 1:1 relationship with the window.</p>
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge14render_context6extentEv">
+<span id="_CPPv3NK3mge14render_context6extentEv"></span><span id="_CPPv2NK3mge14render_context6extentEv"></span><span id="mge::render_context::extentC"></span><span class="target" id="classmge_1_1render__context_1a99b7639ad8efcd4c7253cc4eaa4997b0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge6extentE" title="mge::extent"><span class="n"><span class="pre">extent</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">extent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge14render_context6extentEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the extent of the render context. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>extent </p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </dd></dl>
 
@@ -347,6 +360,17 @@ rates and enable presenting frames.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>index of current back buffer </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10swap_chain10screenshotEv">
+<span id="_CPPv3N3mge10swap_chain10screenshotEv"></span><span id="_CPPv2N3mge10swap_chain10screenshotEv"></span><span id="mge::swap_chain::screenshot"></span><span class="target" id="classmge_1_1swap__chain_1a70847d44b769cb41cde64074526e6561"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">image_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">screenshot</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge10swap_chain10screenshotEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Take a screenshot of the current frame buffer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>image containing the screenshot </p>
 </dd>
 </dl>
 </dd></dl>
