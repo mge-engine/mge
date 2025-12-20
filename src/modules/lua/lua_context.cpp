@@ -30,7 +30,7 @@ static inline bool lua_stdin_is_tty()
 {
     return _isatty(_fileno(stdin)) != 0;
 }
-#elif defined(MGE_OS_LINUX) || defined(MGE_OS_MACOS)
+#elif defined(MGE_OS_LINUX) || defined(MGE_OS_MACOSX)
 #    include <unistd.h>
 static inline bool lua_stdin_is_tty()
 {
