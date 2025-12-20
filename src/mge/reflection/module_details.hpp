@@ -42,9 +42,11 @@ namespace mge::reflection {
         void add(const module_details_ref& details);
 
     private:
-        module_details_weak_ref         m_parent;
-        std::string                     m_name;
-        std::vector<module_details_ref> m_children;
+        module_details_weak_ref           m_parent;
+        std::string                       m_name;
+        std::vector<type_details_ref>     m_types;
+        std::vector<function_details_ref> m_functions;
+        std::vector<module_details_ref>   m_children;
 
         static module_details_ref s_root;
     };

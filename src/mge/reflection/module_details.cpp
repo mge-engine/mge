@@ -88,6 +88,7 @@ namespace mge::reflection {
             return; // don't add to same module
         }
         details->module = weak_from_this();
+        m_types.push_back(details);
     }
 
     void module_details::add(const function_details_ref& details)
@@ -102,6 +103,7 @@ namespace mge::reflection {
             return; // don't add to same module
         }
         details->m_module = weak_from_this();
+        m_functions.push_back(details);
     }
 
     void module_details::add(const module_details_ref& details)
