@@ -3,10 +3,13 @@
 // All rights reserved.
 #include "mge/graphics/render_context.hpp"
 #include "mge/core/parameter.hpp"
+#include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
 
 namespace mge {
-    render_context::render_context() {}
+    render_context::render_context(const mge::extent& ext)
+        : m_extent(ext)
+    {}
 
     const swap_chain_ref& render_context::swap_chain() const
     {

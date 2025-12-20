@@ -27,7 +27,8 @@ namespace mge::dx12 {
 
     render_context::render_context(mge::dx12::render_system& render_system_,
                                    mge::dx12::window&        window_)
-        : m_render_system(render_system_)
+        : mge::render_context(window_.extent())
+        , m_render_system(render_system_)
         , m_window(window_)
         , m_command_queue_fence_value(0)
         , m_command_queue_fence_event(0)

@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "swap_chain.hpp"
 #include "error.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
 #include "render_system.hpp"
@@ -61,6 +62,11 @@ namespace mge::dx12 {
         dx12_context(context()).before_present();
         m_swap_chain->Present(0, 0);
         dx12_context(context()).after_present();
+    }
+
+    image_ref swap_chain::screenshot()
+    {
+        MGE_THROW(not_implemented) << "Screenshot not yet implemented";
     }
 
 } // namespace mge::dx12

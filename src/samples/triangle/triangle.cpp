@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
+#include "mge/asset/asset_source.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
@@ -31,6 +32,11 @@ namespace mge {
             mge::properties p;
             p.set("directory", "./assets");
             mge::asset::mount("/", "file", p);
+            p.set("directory", "./temp");
+            mge::asset::mount("/temp",
+                              "file",
+                              mge::asset_source::access_mode::READ_WRITE,
+                              p);
 
             m_render_system = render_system::create();
             m_window = m_render_system->create_window();
@@ -39,6 +45,9 @@ namespace mge {
                 [&](mge::key k, mge::key_action a, mge::modifier m) {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
                         set_quit();
+                    }
+                    if (a == mge::key_action::PRESS && k == mge::key::P) {
+                        screenshot();
                     }
                 });
 
@@ -51,6 +60,16 @@ namespace mge {
             });
             m_window->show();
             initialize();
+        }
+
+        void screenshot()
+        {
+            MGE_DEBUG_TRACE(TRIANGLE, "Taking screenshot");
+            auto img = m_window->render_context().swap_chain()->screenshot();
+            mge::asset img_asset("/temp/screenshot.png");
+            img_asset.store(mge::asset_type("image", "png"), img);
+            MGE_DEBUG_TRACE(TRIANGLE,
+                            "Screenshot saved to /temp/screenshot.png");
         }
 
         void draw(uint64_t cycle, double delta)

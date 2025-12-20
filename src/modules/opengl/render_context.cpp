@@ -20,7 +20,8 @@ namespace mge {
 namespace mge::opengl {
 #ifdef MGE_OS_WINDOWS
     render_context::render_context(mge::opengl::window* context_window)
-        : m_window(context_window)
+        : mge::render_context(context_window->extent())
+        , m_window(context_window)
         , m_hwnd(context_window->hwnd())
         , m_hdc(0)
         , m_primary_hglrc(0)

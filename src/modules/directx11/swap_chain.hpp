@@ -15,7 +15,8 @@ namespace mge::dx11 {
         swap_chain(render_context& context, IDXGISwapChain* swap_chain);
         ~swap_chain();
 
-        void present() override;
+        void      present() override;
+        image_ref screenshot() override;
 
         com_unique_ptr<ID3D11Texture2D> back_buffer() const;
 

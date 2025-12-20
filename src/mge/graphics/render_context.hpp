@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/texture_type.hpp"
@@ -23,6 +24,9 @@ namespace mge {
      */
     class MGEGRAPHICS_EXPORT render_context
     {
+    protected:
+        render_context(const mge::extent& ext);
+
     public:
         virtual ~render_context() = default;
 
@@ -123,9 +127,18 @@ namespace mge {
          */
         const swap_chain_ref& swap_chain() const;
 
-    protected:
-        render_context();
+        /**
+         * @brief Get the extent of the render context.
+         *
+         * @return extent
+         */
+        const mge::extent& extent() const noexcept
+        {
+            return m_extent;
+        }
 
+    protected:
+        mge::extent    m_extent;
         swap_chain_ref m_swap_chain; //!< swap chain of this context
     };
 } // namespace mge
