@@ -3,29 +3,37 @@
 // All rights reserved.
 #include "mge/graphics/render_context.hpp"
 #include "mge/core/parameter.hpp"
+#include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
 
 namespace mge {
-    render_context::render_context() {}
+    render_context::render_context(const mge::extent& ext)
+        : m_extent(ext)
+    {}
 
     const swap_chain_ref& render_context::swap_chain() const
     {
         return m_swap_chain;
     }
 
-    frame_command_list_ref render_context::create_current_frame_command_list()
+    frame_command_list* render_context::create_current_frame_command_list()
     {
         class delegating_frame_command_list : public frame_command_list
         {
         public:
-            delegating_frame_command_list(const command_list_ref& l)
+            delegating_frame_command_list(command_list* l)
                 : frame_command_list(l->context(),
                                      frame_command_list::NO_BACKBUFFER,
                                      l->native())
                 , m_command_list(l)
             {}
 
-            ~delegating_frame_command_list() {}
+            ~delegating_frame_command_list()
+            {
+                if (m_command_list) {
+                    m_command_list->destroy();
+                }
+            }
 
             void viewport(const mge::viewport& vp) override
             {
@@ -72,11 +80,13 @@ namespace mge {
             }
 
         private:
-            command_list_ref m_command_list;
+            command_list* m_command_list;
         };
 
-        return std::make_shared<delegating_frame_command_list>(
+        auto ptr = std::make_unique<delegating_frame_command_list>(
             create_command_list());
+        auto* result = ptr.release();
+        return result;
     }
 
 } // namespace mge

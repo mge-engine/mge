@@ -15,9 +15,21 @@ namespace mge::dx11 {
         swap_chain(render_context& context, IDXGISwapChain* swap_chain);
         ~swap_chain();
 
-        void present() override;
+        void      present() override;
+        image_ref screenshot() override;
 
         com_unique_ptr<ID3D11Texture2D> back_buffer() const;
+
+        ID3D11Texture2D* depth_stencil_buffer() const
+        {
+            return m_depth_stencil_buffer.get();
+        }
+
+        ID3D11DepthStencilState* depth_stencil_state() const
+        {
+            return m_depth_stencil_state.get();
+        }
+
         uint32_t current_back_buffer_index() const override
         {
             return 0;

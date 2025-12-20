@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/index_buffer.hpp"
+#include "mge/graphics/render_context.hpp"
 
 namespace mge {
 
@@ -23,6 +24,11 @@ namespace mge {
     size_t index_buffer::element_count() const
     {
         return size() / data_type_size(m_data_type);
+    }
+
+    void index_buffer::destroy()
+    {
+        context().destroy_index_buffer(this);
     }
 
 } // namespace mge

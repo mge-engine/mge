@@ -17,7 +17,7 @@ namespace mge::opengl {
         virtual ~program();
 
         void on_link() override;
-        void on_set_shader(const shader_ref& shader) override;
+        void on_set_shader(shader* shader) override;
 
         GLuint program_name() const noexcept
         {
@@ -39,7 +39,7 @@ namespace mge::opengl {
         return ogl_p.program_name();
     }
 
-    inline GLuint gl_program(const mge::program_ref& p)
+    inline GLuint gl_program(mge::program* p)
     {
         if (p) {
             return gl_program(*p);

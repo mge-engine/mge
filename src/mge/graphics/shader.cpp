@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/render_context.hpp"
 
 namespace mge {
 
@@ -31,6 +32,11 @@ namespace mge {
     bool shader::initialized() const
     {
         return m_initialized;
+    }
+
+    void shader::destroy()
+    {
+        context().destroy_shader(this);
     }
 
 } // namespace mge

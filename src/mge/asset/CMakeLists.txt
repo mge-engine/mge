@@ -7,10 +7,10 @@ SET(mgeasset_sources
     asset.cpp
     asset_source.cpp
     asset_access.cpp
-    asset_loader.cpp
+    asset_handler.cpp
     file_asset_access.cpp
     file_asset_source.cpp
-    application_octet_stream_loader.cpp
+    application_octet_stream_handler.cpp
     asset_corrupted.cpp
 )
 
@@ -21,7 +21,7 @@ SET(mgeasset_headers
     asset.hpp
     asset_source.hpp
     asset_access.hpp
-    asset_loader.hpp
+    asset_handler.hpp
     file_asset_access.hpp
     file_asset_source.hpp
     asset_corrupted.hpp

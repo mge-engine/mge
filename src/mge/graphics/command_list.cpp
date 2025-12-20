@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/command_list.hpp"
+#include "mge/graphics/render_context.hpp"
 
 namespace mge {
 
@@ -18,5 +19,10 @@ namespace mge {
     }
 
     void command_list::finish() {}
+
+    void command_list::destroy()
+    {
+        context().destroy_command_list(this);
+    }
 
 } // namespace mge

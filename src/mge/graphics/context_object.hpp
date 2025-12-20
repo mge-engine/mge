@@ -27,7 +27,7 @@ namespace mge {
         assert_same_context(const std::shared_ptr<context_object>& cobj) const;
 
     protected:
-        render_context_ref m_context;
+        render_context& m_context;
     };
 
 } // namespace mge

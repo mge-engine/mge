@@ -88,4 +88,11 @@ namespace mge {
         return;
     }
 
+    void properties::store(std::ostream& s) const
+    {
+        for (const auto& [key, value] : m_data) {
+            s << key << '=' << value << '\n';
+        }
+    }
+
 } // namespace mge

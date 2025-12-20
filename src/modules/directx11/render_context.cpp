@@ -21,13 +21,22 @@ namespace mge {
 namespace mge::dx11 {
     render_context::render_context(mge::dx11::render_system& render_system_,
                                    mge::dx11::window&        window_)
-        : m_render_system(render_system_)
+        : mge::render_context(window_.extent())
+        , m_render_system(render_system_)
         , m_window(window_)
     {
         MGE_DEBUG_TRACE(DX11, "Create render context");
     }
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        m_frame_command_lists.clear();
+        m_command_lists.clear();
+        m_programs.clear();
+        m_shaders.clear();
+        m_vertex_buffers.clear();
+        m_index_buffers.clear();
+    }
 
     void render_context::initialize()
     {
@@ -44,7 +53,7 @@ namespace mge::dx11 {
         swap_chain_desc.BufferDesc.Height = m_window.extent().height;
         swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swap_chain_desc.SampleDesc.Count =
-            4; // TODO: #121 multisampling configurable
+            1; // TODO: #121 multisampling configurable
         swap_chain_desc.Windowed = TRUE; // TODO: #122 fullscreen
 
         swap_chain_desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
@@ -97,36 +106,6 @@ namespace mge::dx11 {
         auto swap_chain =
             std::make_shared<mge::dx11::swap_chain>(*this, tmp_swap_chain);
         m_swap_chain = swap_chain;
-        MGE_DEBUG_TRACE(DX11, "Create texture for depth/stencil buffer");
-
-        D3D11_TEXTURE2D_DESC depth_stencil_desc = {};
-        depth_stencil_desc.Width = m_window.extent().width;
-        depth_stencil_desc.Height = m_window.extent().height;
-        depth_stencil_desc.MipLevels = 1;
-        depth_stencil_desc.ArraySize = 1;
-        depth_stencil_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-        depth_stencil_desc.SampleDesc.Count = 4; // TODO: #121 multisampling
-        depth_stencil_desc.SampleDesc.Quality = 0;
-        depth_stencil_desc.Usage = D3D11_USAGE_DEFAULT;
-        depth_stencil_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-        depth_stencil_desc.CPUAccessFlags = 0;
-        depth_stencil_desc.MiscFlags = 0;
-
-        ID3D11Texture2D* tmp_depth_stencil = nullptr;
-        rc = m_device->CreateTexture2D(&depth_stencil_desc,
-                                       nullptr,
-                                       &tmp_depth_stencil);
-        CHECK_HRESULT(rc, ID3D11Device, CreateTexture2D);
-
-        MGE_DEBUG_TRACE(DX11, "Create depth stencil view");
-        ID3D11DepthStencilView* tmp_depth_stencil_view = nullptr;
-        rc = m_device->CreateDepthStencilView(tmp_depth_stencil,
-                                              nullptr,
-                                              &tmp_depth_stencil_view);
-        CHECK_HRESULT(rc, ID3D11Device, CreateDepthStencilView);
-        tmp_depth_stencil->Release();
-        tmp_depth_stencil = nullptr;
-        m_depth_stencil_view.reset(tmp_depth_stencil_view);
 
         MGE_DEBUG_TRACE(DX11, "Creating render target view");
 
@@ -140,6 +119,16 @@ namespace mge::dx11 {
         back_buffer.reset();
         MGE_DEBUG_TRACE(DX11, "Set render target");
         m_render_target_view.reset(tmp_render_target_view);
+
+        MGE_DEBUG_TRACE(DX11, "Creating depth stencil view");
+        ID3D11DepthStencilView* tmp_depth_stencil_view = nullptr;
+        rc =
+            m_device->CreateDepthStencilView(swap_chain->depth_stencil_buffer(),
+                                             nullptr,
+                                             &tmp_depth_stencil_view);
+        CHECK_HRESULT(rc, ID3D11Device, CreateDepthStencilView);
+        m_depth_stencil_view.reset(tmp_depth_stencil_view);
+
         setup_context(*m_device_context);
     }
 
@@ -148,47 +137,127 @@ namespace mge::dx11 {
         ID3D11RenderTargetView* rtv = m_render_target_view.get();
         ID3D11DepthStencilView* dsv = m_depth_stencil_view.get();
         context.OMSetRenderTargets(1, &rtv, dsv);
+
+        auto* sc = dynamic_cast<dx11::swap_chain*>(m_swap_chain.get());
+        if (sc && sc->depth_stencil_state()) {
+            context.OMSetDepthStencilState(sc->depth_stencil_state(), 1);
+        }
+
         D3D11_VIEWPORT viewport = {};
         viewport.TopLeftX = 0;
         viewport.TopLeftY = 0;
         viewport.Width = static_cast<float>(window().extent().width);
         viewport.Height = static_cast<float>(window().extent().height);
         viewport.MinDepth = 0.0;
-        viewport.MaxDepth = 0.0;
+        viewport.MaxDepth = 1.0;
         context.RSSetViewports(1, &viewport);
     }
 
-    mge::index_buffer_ref render_context::create_index_buffer(mge::data_type dt,
-                                                              size_t data_size,
-                                                              void*  data)
+    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
+                                                           size_t data_size,
+                                                           void*  data)
     {
         // MGE_DEBUG_TRACE(DX11) << "Create index buffer";
-        mge::index_buffer_ref result =
-            std::make_shared<index_buffer>(*this, dt, data_size, data);
-        return result;
+        auto result =
+            std::make_unique<index_buffer>(*this, dt, data_size, data);
+        auto ptr = result.get();
+        m_index_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::vertex_buffer_ref render_context::create_vertex_buffer(
+    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    {
+        auto it = m_index_buffers.find(ib);
+        if (it != m_index_buffers.end()) {
+            m_index_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown index buffer";
+        }
+    }
+
+    mge::vertex_buffer* render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        return std::make_shared<vertex_buffer>(*this, layout, data_size, data);
+        auto result =
+            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
+        auto ptr = result.get();
+        m_vertex_buffers[ptr] = std::move(result);
+        return ptr;
     }
 
-    mge::shader_ref render_context::create_shader(mge::shader_type t)
+    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
     {
-        return std::make_shared<shader>(*this, t);
+        auto it = m_vertex_buffers.find(vb);
+        if (it != m_vertex_buffers.end()) {
+            m_vertex_buffers.erase(it);
+        } else {
+            MGE_THROW(illegal_state)
+                << "Attempt to destroy unknown vertex buffer";
+        }
     }
 
-    mge::program_ref render_context::create_program()
+    mge::shader* render_context::create_shader(mge::shader_type t)
     {
-        mge::program_ref result = std::make_shared<program>(*this);
+        auto result = std::make_unique<shader>(*this, t);
+        auto ptr = result.get();
+        m_shaders[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_shader(mge::shader* s)
+    {
+        auto it = m_shaders.find(s);
+        if (it != m_shaders.end()) {
+            m_shaders.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
+        }
+    }
+
+    mge::program* render_context::create_program()
+    {
+        auto result = std::make_unique<program>(*this);
+        auto ptr = result.get();
+        m_programs[ptr] = std::move(result);
+        return ptr;
+    }
+
+    void render_context::destroy_program(mge::program* p)
+    {
+        auto it = m_programs.find(p);
+        if (it != m_programs.end()) {
+            m_programs.erase(it);
+        } else {
+            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
+        }
+    }
+
+    mge::command_list* render_context::create_command_list()
+    {
+        auto  ptr = std::make_unique<mge::dx11::command_list>(*this);
+        auto* result = ptr.get();
+        m_command_lists[result] = std::move(ptr);
         return result;
     }
 
-    mge::command_list_ref render_context::create_command_list()
+    void render_context::destroy_command_list(mge::command_list* cl)
     {
-        auto result = std::make_shared<mge::dx11::command_list>(*this);
+        m_command_lists.erase(cl);
+    }
+
+    mge::frame_command_list* render_context::create_current_frame_command_list()
+    {
+        auto result = mge::render_context::create_current_frame_command_list();
+        m_frame_command_lists[result] =
+            std::unique_ptr<mge::frame_command_list>(result);
         return result;
+    }
+
+    void
+    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
+    {
+        m_frame_command_lists.erase(fcl);
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)

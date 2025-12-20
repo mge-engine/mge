@@ -5,6 +5,7 @@
 SET(DX12_TEST_SOURCES
     dx12_test.cpp
     test_render_system.cpp
+    test_render_context.cpp
     test_index_buffer.cpp
     test_vertex_buffer.cpp
     )

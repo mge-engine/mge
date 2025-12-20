@@ -115,12 +115,12 @@ namespace mge::dx12 {
 
     void frame_command_list::draw(const mge::draw_command& command)
     {
-        auto vs_ref = dx12_program(*command.program())
-                          .program_shader(shader_type::VERTEX);
-        auto ps_ref = dx12_program(*command.program())
-                          .program_shader(shader_type::FRAGMENT);
-        auto& vs = dx12_shader(*vs_ref);
-        auto& ps = dx12_shader(*ps_ref);
+        auto* vs_ptr = dx12_program(*command.program())
+                           .program_shader(shader_type::VERTEX);
+        auto* ps_ptr = dx12_program(*command.program())
+                           .program_shader(shader_type::FRAGMENT);
+        auto& vs = dx12_shader(*vs_ptr);
+        auto& ps = dx12_shader(*ps_ptr);
 
         D3D12_GRAPHICS_PIPELINE_STATE_DESC pso_desc = {};
         pso_desc.InputLayout = {vs.input_layout(), vs.input_layout_count()};

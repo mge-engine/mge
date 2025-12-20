@@ -5,7 +5,7 @@
 #include "mge/core/stdexceptions.hpp"
 
 namespace mge {
-    uniform_binding::uniform_binding(const program_ref& program)
+    uniform_binding::uniform_binding(program* program)
         : m_program(program)
     {
         if (!m_program) {

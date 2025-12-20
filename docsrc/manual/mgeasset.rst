@@ -13,5 +13,5 @@ A tool for asset management, ``mgeassettool``, is provided to manage assets.
     :maxdepth: 1
 
     asset/asset.rst
-    asset/loading.rst
+    asset/loadingstoring.rst
     asset/assettool.rst
