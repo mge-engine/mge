@@ -56,6 +56,15 @@ namespace mge {
         bool initialized() const;
 
         /**
+         * @brief Destroy the shader.
+         *
+         * The shader is removed from the context and
+         * its resources are freed. Afterwards, the pointer to the
+         * shader is invalid.
+         */
+        void destroy();
+
+        /**
          * @brief Destructor.
          */
         virtual ~shader() = default;

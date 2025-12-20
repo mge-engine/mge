@@ -3,6 +3,9 @@
 // All rights reserved.
 #include "mge/asset/file_asset_access.hpp"
 #include "mge/asset/asset_type.hpp"
+#include "mge/core/file_output_stream.hpp"
+#include "mge/core/io_exception.hpp"
+#include "mge/core/stdexceptions.hpp"
 #include <filesystem>
 #include <fstream>
 
@@ -54,6 +57,23 @@ namespace mge {
             m_properties = std::make_shared<mge::properties>(pinput);
         }
         return m_properties;
+    }
+
+    output_stream_ref file_asset_access::output_stream()
+    {
+        return std::make_shared<file_output_stream>(m_file_path);
+    }
+
+    void file_asset_access::store_properties(const mge::properties& props)
+    {
+        mge::path     p = m_file_path / ".properties";
+        std::ofstream poutput(p.string());
+        if (!poutput) {
+            MGE_THROW(io_exception)
+                << "Cannot write properties file: " << p.string();
+        }
+        props.store(poutput);
+        m_properties = std::make_shared<mge::properties>(props);
     }
 
 } // namespace mge

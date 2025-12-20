@@ -14,11 +14,12 @@ namespace mge::opengl {
     public:
         swap_chain(render_context& context);
         ~swap_chain() = default;
-        void     present() override;
-        uint32_t current_back_buffer_index() const override
+        void       present() override;
+        uint32_t   current_back_buffer_index() const override
         {
             return 0;
         }
+        image_ref screenshot() override;
 
 #ifdef MGE_OS_WINDOWS
     private:

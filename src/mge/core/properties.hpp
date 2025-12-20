@@ -168,6 +168,7 @@ namespace mge {
         void clear();
 
         void load(std::istream& s);
+        void store(std::ostream& s) const;
 
         iterator begin()
         {

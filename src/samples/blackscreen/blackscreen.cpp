@@ -42,6 +42,7 @@ namespace mge {
                 clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
                 clear_commands->finish();
                 clear_commands->execute();
+                clear_commands->destroy();
                 m_window->render_context().swap_chain()->present();
             });
 

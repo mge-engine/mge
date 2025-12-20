@@ -44,6 +44,8 @@ SET(MGECORE_TEST_SOURCES
     test_package.cpp
     test_program_options.cpp
     test_input_stream.cpp
+    test_properties.cpp
+    test_file_streams.cpp
 )
 
 SET(MGECORE_BENCH_SOURCES

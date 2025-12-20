@@ -77,12 +77,21 @@ namespace mge {
         virtual ~program();
 
         /**
+         * @brief Destroy the program.
+         *
+         * The program is removed from the context and
+         * its resources are freed. Afterwards, the pointer to the
+         * program is invalid.
+         */
+        void destroy();
+
+        /**
          * Set a shader object. The shader object must be a shader designated
          * for the graphics program (not a compute shader).
          *
          * @param shader shader object that is set
          */
-        void set_shader(const shader_ref& shader);
+        void set_shader(shader* shader);
 
         /**
          * Links the program. A program must be linked after setting all
@@ -130,7 +139,7 @@ namespace mge {
         void assert_linked() const;
 
         virtual void on_link() = 0;
-        virtual void on_set_shader(const shader_ref& shader) = 0;
+        virtual void on_set_shader(shader* shader) = 0;
     };
 
     MGEGRAPHICS_EXPORT std::ostream& operator<<(std::ostream&             os,
@@ -149,8 +158,8 @@ template <> struct fmt::formatter<mge::program::attribute>
     }
 
     template <typename FormatContext>
-    auto format(const mge::program::attribute& attr,
-                FormatContext&                 ctx) const -> decltype(ctx.out())
+    auto format(const mge::program::attribute& attr, FormatContext& ctx) const
+        -> decltype(ctx.out())
     {
         return fmt::format_to(ctx.out(),
                               "attribute{{ name: '{}', type: {}, size: {} }}",
@@ -168,8 +177,8 @@ template <> struct fmt::formatter<mge::program::uniform>
     }
 
     template <typename FormatContext>
-    auto format(const mge::program::uniform& uniform,
-                FormatContext&               ctx) const -> decltype(ctx.out())
+    auto format(const mge::program::uniform& uniform, FormatContext& ctx) const
+        -> decltype(ctx.out())
     {
         return fmt::format_to(
             ctx.out(),

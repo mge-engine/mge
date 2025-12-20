@@ -2,6 +2,8 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/graphics/command_list.hpp"
+#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "vulkan.hpp"
 
@@ -15,18 +17,23 @@ namespace mge::vulkan {
         render_context(render_system& render_system_, window& window_);
         ~render_context();
 
-        mge::index_buffer_ref  create_index_buffer(data_type dt,
-                                                   size_t    data_size,
-                                                   void*     data) override;
-        mge::vertex_buffer_ref create_vertex_buffer(const vertex_layout& layout,
-                                                    size_t data_size,
-                                                    void*  data) override;
-        mge::shader_ref        create_shader(shader_type t) override;
-        mge::program_ref       create_program() override;
-        mge::frame_command_list_ref
-                              create_current_frame_command_list() override;
-        mge::command_list_ref create_command_list() override;
-        mge::texture_ref      create_texture(texture_type type) override;
+        mge::index_buffer* create_index_buffer(data_type dt,
+                                               size_t    data_size,
+                                               void*     data) override;
+        void               destroy_index_buffer(mge::index_buffer* ib) override;
+        mge::vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
+                                                 size_t               data_size,
+                                                 void* data) override;
+        void          destroy_vertex_buffer(mge::vertex_buffer* vb) override;
+        mge::shader*  create_shader(shader_type t) override;
+        void          destroy_shader(mge::shader* s) override;
+        mge::program* create_program() override;
+        void          destroy_program(mge::program* p) override;
+        mge::frame_command_list* create_current_frame_command_list() override;
+        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
+        mge::command_list* create_command_list() override;
+        void               destroy_command_list(mge::command_list* cl) override;
+        mge::texture_ref   create_texture(texture_type type) override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -86,6 +93,11 @@ namespace mge::vulkan {
         VkFramebuffer framebuffer(uint32_t index) const
         {
             return m_swap_chain_framebuffers[index];
+        }
+
+        VkImage swap_chain_image(uint32_t index) const
+        {
+            return m_swap_chain_images[index];
         }
 
         VkExtent2D extent() const noexcept
@@ -183,5 +195,21 @@ namespace mge::vulkan {
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
+        std::unordered_map<mge::index_buffer*,
+                           std::unique_ptr<mge::index_buffer>>
+            m_index_buffers;
+        std::unordered_map<mge::vertex_buffer*,
+                           std::unique_ptr<mge::vertex_buffer>>
+            m_vertex_buffers;
+        std::unordered_map<mge::shader*, std::unique_ptr<mge::shader>>
+            m_shaders;
+        std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
+            m_programs;
+        std::unordered_map<mge::command_list*,
+                           std::unique_ptr<mge::command_list>>
+            m_command_lists;
+        std::unordered_map<mge::frame_command_list*,
+                           std::unique_ptr<mge::frame_command_list>>
+            m_frame_command_lists;
     };
 } // namespace mge::vulkan

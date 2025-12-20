@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
+#include "mge/asset/asset_source.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/command_list.hpp"
@@ -31,6 +32,11 @@ namespace mge {
             mge::properties p;
             p.set("directory", "./assets");
             mge::asset::mount("/", "file", p);
+            p.set("directory", "./temp");
+            mge::asset::mount("/temp",
+                              "file",
+                              mge::asset_source::access_mode::READ_WRITE,
+                              p);
 
             m_render_system = render_system::create();
             m_window = m_render_system->create_window();
@@ -39,6 +45,9 @@ namespace mge {
                 [&](mge::key k, mge::key_action a, mge::modifier m) {
                     if (a == mge::key_action::PRESS && k == mge::key::ESCAPE) {
                         set_quit();
+                    }
+                    if (a == mge::key_action::PRESS && k == mge::key::P) {
+                        screenshot();
                     }
                 });
 
@@ -53,12 +62,23 @@ namespace mge {
             initialize();
         }
 
+        void screenshot()
+        {
+            MGE_DEBUG_TRACE(TRIANGLE, "Taking screenshot");
+            auto img = m_window->render_context().swap_chain()->screenshot();
+            mge::asset img_asset("/temp/screenshot.png");
+            img_asset.store(mge::asset_type("image", "png"), img);
+            MGE_DEBUG_TRACE(TRIANGLE,
+                            "Screenshot saved to /temp/screenshot.png");
+        }
+
         void draw(uint64_t cycle, double delta)
         {
             if (m_initialized) {
                 auto draw_commands = m_window->render_context()
                                          .create_current_frame_command_list();
                 draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                draw_commands->clear_depth(1.0f);
                 draw_commands->default_scissor();
                 draw_commands->draw(
                     mge::draw_command(m_program,
@@ -67,6 +87,7 @@ namespace mge {
                                       mge::topology::TRIANGLES));
                 draw_commands->finish();
                 draw_commands->execute();
+                draw_commands->destroy();
             }
             m_window->render_context().swap_chain()->present();
         }
@@ -203,11 +224,11 @@ namespace mge {
         render_system_ref m_render_system;
         window_ref        m_window;
         std::atomic<bool> m_initialized;
-        command_list_ref  m_clear_commands;
-        command_list_ref  m_draw_commands;
-        program_ref       m_program;
-        vertex_buffer_ref m_vertices;
-        index_buffer_ref  m_indices;
+        command_list*     m_clear_commands;
+        command_list*     m_draw_commands;
+        program*          m_program;
+        vertex_buffer*    m_vertices;
+        index_buffer*     m_indices;
     };
 
     MGE_REGISTER_IMPLEMENTATION(triangle, mge::application, triangle);

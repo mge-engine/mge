@@ -19,6 +19,18 @@ namespace mge {
     class MGEASSET_EXPORT asset_source : public component<asset_source>
     {
     public:
+        /**
+         * @brief Access mode for the asset source.
+         * An asset source may be opened in read, write or read-write mode, or
+         * the nature of the asset source may restrict access to read-only.
+         */
+        enum class access_mode
+        {
+            READ,
+            WRITE,
+            READ_WRITE
+        };
+
         asset_source() = default;
         virtual ~asset_source() = default;
 
@@ -78,9 +90,46 @@ namespace mge {
             return m_mount_point;
         }
 
+        /**
+         * @brief Set access mode for this asset source.
+         * @param mode access mode
+         */
+        void set_mode(access_mode mode);
+
+        /**
+         * @brief Get current access mode.
+         * @return access mode
+         */
+        access_mode mode() const noexcept
+        {
+            return m_mode;
+        }
+
     protected:
+        /**
+         * @brief Callback for setting the mount point.
+         *
+         * Subclasses may implement additional behavior when the mount point
+         * is set.
+         *
+         * @param mount_point new mount point
+         */
         virtual void on_set_mount_point(const mge::path& mount_point);
 
-        mge::path m_mount_point;
+        /**
+         * @brief Callback for setting the access mode.
+         *
+         * Subclasses may implement additional behavior when the access mode
+         * is set. The callback may return a different access mode than the
+         * requested one, e.g. to restrict access.
+         *
+         * @param mode requested access mode
+         * @return actual access mode
+         */
+        virtual access_mode on_set_access_mode(access_mode mode);
+
+    private:
+        access_mode m_mode{access_mode::READ}; //!< access mode
+        mge::path   m_mount_point;
     };
 } // namespace mge

@@ -106,11 +106,11 @@ namespace mge::dx11 {
     void command_list::draw(const mge::draw_command& command)
     {
         const dx11::program* dx11_program =
-            static_cast<const dx11 ::program*>(command.program().get());
+            static_cast<const dx11::program*>(command.program());
 
         const dx11::shader* dx11_vertex_shader =
             static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::VERTEX).get());
+                dx11_program->program_shader(mge::shader_type::VERTEX));
 
         ID3D11InputLayout* input_layout = dx11_vertex_shader->input_layout();
         if (input_layout == nullptr) {
@@ -120,7 +120,7 @@ namespace mge::dx11 {
         m_deferred_context->IASetInputLayout(input_layout);
 
         const dx11::vertex_buffer* dx11_vertex_buffer =
-            static_cast<const dx11::vertex_buffer*>(command.vertices().get());
+            static_cast<const dx11::vertex_buffer*>(command.vertices());
         UINT element_size =
             static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
         UINT          stride = 0;
@@ -132,7 +132,7 @@ namespace mge::dx11 {
                                                &stride);
 
         const dx11::index_buffer* dx11_index_buffer =
-            static_cast<const dx11::index_buffer*>(command.indices().get());
+            static_cast<const dx11::index_buffer*>(command.indices());
         ID3D11Buffer* index_buffer = dx11_index_buffer->buffer();
         m_deferred_context->IASetIndexBuffer(index_buffer,
                                              DXGI_FORMAT_R32_UINT,
@@ -145,7 +145,7 @@ namespace mge::dx11 {
 
         const dx11::shader* dx11_pixel_shader =
             static_cast<const dx11::shader*>(
-                dx11_program->program_shader(mge::shader_type::FRAGMENT).get());
+                dx11_program->program_shader(mge::shader_type::FRAGMENT));
         m_deferred_context->PSSetShader(
             dx11_pixel_shader->directx_pixel_shader(),
             nullptr,

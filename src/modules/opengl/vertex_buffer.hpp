@@ -37,7 +37,7 @@ namespace mge::opengl {
         return ogl_buf.buffer_name();
     }
 
-    inline GLuint gl_vertex_buffer(const mge::vertex_buffer_ref& buf)
+    inline GLuint gl_vertex_buffer(mge::vertex_buffer* buf)
     {
         if (buf) {
             return gl_vertex_buffer(*buf);
