@@ -208,6 +208,7 @@ namespace mge {
         std::vector<std::string> m_arguments;
         int                      m_return_code;
         volatile bool            m_quit;
+        uint64_t                 m_stop_at_cycle{0};
         mge::thread::id          m_main_thread_id;
 
         static application* s_instance;

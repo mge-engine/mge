@@ -213,7 +213,11 @@ namespace mge {
         parameter_path /= std::string(section.begin(), section.end());
         parameter_path /= std::string(name.begin(), name.end());
 
-        to_json(m_raw_settings[parameter_path], value);
+        try {
+            m_raw_settings[parameter_path] = json::json::parse(value);
+        } catch (json::json::parse_error&) {
+            to_json(m_raw_settings[parameter_path], value);
+        }
         auto param = find_optional_parameter(section, name);
         if (param) {
             fetch_parameter(param.value().get());
