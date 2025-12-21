@@ -2,10 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "lua_context.hpp"
+#include "lua_binder.hpp"
 #include "lua_error.hpp"
 #include "mge/core/line_editor.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/reflection/module.hpp"
+#include "mge/reflection/module_details.hpp"
 
 #if !defined(lua_writestringerror)
 #    define lua_writestringerror(s, p)                                         \
@@ -74,6 +76,9 @@ namespace mge::lua {
     void lua_context::bind()
     {
         reflection::module root_module = reflection::module::root();
+        lua_binder         b(this);
+
+        root_module.details()->apply(b);
     }
 
 /* bits of various argument indicators in 'args' */

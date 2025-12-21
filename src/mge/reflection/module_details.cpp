@@ -123,4 +123,20 @@ namespace mge::reflection {
         m_children.push_back(details);
     }
 
+    void module_details::apply(visitor& v) const
+    {
+        v.before(*this);
+        v.on(*this);
+        for (const auto& type : m_types) {
+            type->apply(v);
+        }
+        for (const auto& function : m_functions) {
+            function->apply(v);
+        }
+        for (const auto& child : m_children) {
+            child->apply(v);
+        }
+        v.after(*this);
+    }
+
 } // namespace mge::reflection

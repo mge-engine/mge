@@ -54,4 +54,11 @@ namespace mge::reflection {
         return s_type_details_dictionary->put(id, details);
     }
 
+    void type_details::apply(visitor& v) const
+    {
+        v.before(*this);
+        v.on(*this);
+        v.after(*this);
+    }
+
 } // namespace mge::reflection

@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/reflection/dllexport.hpp"
 #include "mge/reflection/reflection_fwd.hpp"
+#include "mge/reflection/visitor.hpp"
 
 #include <string>
 #include <vector>
@@ -36,6 +37,8 @@ namespace mge::reflection {
         {
             return m_parent.lock();
         }
+
+        void apply(visitor& v) const;
 
         void add(const type_details_ref& details);
         void add(const function_details_ref& details);
