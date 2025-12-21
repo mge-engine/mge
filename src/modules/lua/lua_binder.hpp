@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "lua.hpp"
+#include "mge/reflection/type_details.hpp"
 #include "mge/reflection/visitor.hpp"
 #include "mge/script/script_context.hpp"
 
@@ -32,6 +33,10 @@ namespace mge::lua {
         void after(const mge::reflection::function_details& details) override;
 
     private:
+        void
+        bind_enum(const mge::reflection::type_details::enum_specific_details&
+                      details);
+
         lua_context* m_context;
     };
 

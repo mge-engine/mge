@@ -140,6 +140,20 @@ namespace mge::reflection {
             return std::get<enum_specific_details>(specific_details);
         }
 
+        const enum_specific_details& enum_specific() const
+        {
+            if (!is_enum) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " is not an enum";
+            }
+            if (!std::holds_alternative<enum_specific_details>(
+                    specific_details)) {
+                MGE_THROW(illegal_state)
+                    << "Type " << name << " has no enum specific details";
+            }
+            return std::get<enum_specific_details>(specific_details);
+        }
+
         class_specific_details& class_specific()
         {
             if (!is_class) {

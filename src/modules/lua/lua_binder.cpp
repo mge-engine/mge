@@ -3,10 +3,15 @@
 // All rights reserved.
 #include "lua_binder.hpp"
 #include "lua_context.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/reflection/function_details.hpp"
 #include "mge/reflection/module_details.hpp"
 #include "mge/reflection/type_details.hpp"
 #include "stack_check_scope.hpp"
+
+namespace mge {
+    MGE_USE_TRACE(LUA);
+}
 
 namespace mge::lua {
 
@@ -36,10 +41,10 @@ namespace mge::lua {
             // create a table for the module
             load_parent_table(L, details);
             lua_newtable(L);
-            // add pointer to details as __details__ userdata field
-            auto** ud = static_cast<mge::reflection::module_details**>(
-                lua_newuserdata(L, sizeof(mge::reflection::module_details*)));
-            *ud = const_cast<mge::reflection::module_details*>(&details);
+            // add pointer to details as __details__ light user data field
+            lua_pushlightuserdata(
+                L,
+                const_cast<mge::reflection::module_details*>(&details));
             lua_setfield(L, -2, "__details__");
 
             // if parent is root, also add to package.loaded
@@ -53,13 +58,55 @@ namespace mge::lua {
 
             lua_setfield(L, -2, details.name().data());
             lua_pop(L, 1); // pop parent table
+            MGE_DEBUG_TRACE(LUA,
+                            "Registered module to Lua: {}",
+                            details.full_name().c_str());
         }
     }
 
-    void lua_binder::on(const mge::reflection::module_details& details) {}
-    void lua_binder::after(const mge::reflection::module_details& details) {}
+    void lua_binder::on(const mge::reflection::module_details& details)
+    {
+        auto L = m_context->lua_state();
+
+        if (!details.is_root()) {
+            // load the module table onto the stack
+            load_parent_table(L, details);
+            lua_getfield(L, -1, details.name().data());
+            lua_remove(L, -2); // remove parent table
+            MGE_DEBUG_TRACE(LUA,
+                            "Loaded module table for: {}",
+                            details.full_name().c_str());
+        }
+    }
+
+    void lua_binder::after(const mge::reflection::module_details& details)
+    {
+        auto L = m_context->lua_state();
+
+        if (!details.is_root()) {
+            // pop the module table
+            lua_pop(L, 1);
+        }
+    }
+
     void lua_binder::before(const mge::reflection::type_details& details) {}
-    void lua_binder::on(const mge::reflection::type_details& details) {}
+
+    void lua_binder::on(const mge::reflection::type_details& details)
+    {
+        MGE_DEBUG_TRACE(LUA,
+                        "Binding type: {}",
+                        std::string(details.name).c_str());
+        if (details.is_enum) {
+            bind_enum(details.enum_specific());
+        }
+    }
+
+    void lua_binder::bind_enum(
+        const mge::reflection::type_details::enum_specific_details& details)
+    {
+        auto L = m_context->lua_state();
+    }
+
     void lua_binder::after(const mge::reflection::type_details& details) {}
     void lua_binder::before(const mge::reflection::function_details& details) {}
     void lua_binder::on(const mge::reflection::function_details& details) {}
