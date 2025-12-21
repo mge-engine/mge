@@ -94,7 +94,7 @@ namespace mge::lua {
         lua_getfield(L, -1, "loaded");
         lua_pushvalue(L, -3);           // push the table again
         lua_setfield(L, -2, "__mge__"); // package.loaded["__mge__"] = table
-        lua_pop(L, 2);                  // pop package.loaded and package
+        lua_pop(L, 3); // pop package.loaded, package, and table
     }
 
 /* bits of various argument indicators in 'args' */

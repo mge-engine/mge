@@ -5,11 +5,11 @@ function test_builtin_module()
     require("__mge__") -- should not raise error
 end
 
--- function test_mge_module_exists()
---   local mod = package.loaded["mge"]
---   assert(type(mod) == "table", "mge module seems not be loaded")
---   assert(type(mge) == "table", "mge module not accessible by global var")
--- end
+function test_mge_module_exists()
+  local mod = package.loaded["mge"]
+  assert(type(mod) == "table", "mge module seems not be loaded")
+  assert(type(mge) == "table", "mge module not accessible by global var")
+end
 
 -- function test_mge_data_type_exists()
 --     assert(type(mge.data_type) == "table")
