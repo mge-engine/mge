@@ -7,6 +7,7 @@
 #include "mge/reflection/reflection_fwd.hpp"
 #include "mge/reflection/signature.hpp"
 #include "mge/reflection/type_identifier.hpp"
+#include "mge/reflection/visitor.hpp"
 
 #include <variant>
 
@@ -31,6 +32,8 @@ namespace mge::reflection {
         static const type_details_ref& get(const type_identifier& id);
         static const type_details_ref& put(const type_identifier&  id,
                                            const type_details_ref& details);
+
+        void apply(visitor& v) const;
 
         bool                    is_void = false;
         bool                    is_bool = false;

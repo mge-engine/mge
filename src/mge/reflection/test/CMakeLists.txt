@@ -17,3 +17,9 @@ MGE_TEST(
     SOURCES ${MGEREFLECTION_TEST_SOURCES}
     LIBRARIES mgereflection mgecore
 )
+
+MGE_TEST(
+    TARGET test_reflector
+    SOURCES test_reflector.cpp
+    LIBRARIES mgereflection mgecore
+)
