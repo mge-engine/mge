@@ -24,7 +24,14 @@ namespace mge::lua {
         int  main(int argc, const char** argv) override;
         void bind() override;
 
+        lua_State* lua_state() const
+        {
+            return m_lua_state;
+        }
+
     private:
+        void create_helper_module();
+
         lua_engine* m_engine;
         lua_State*  m_lua_state;
     };

@@ -76,9 +76,25 @@ namespace mge::lua {
     void lua_context::bind()
     {
         reflection::module root_module = reflection::module::root();
-        lua_binder         b(this);
+        MGE_DEBUG_TRACE(LUA, "Compute binding information");
+        create_helper_module();
 
+        lua_binder b(this);
         root_module.details()->apply(b);
+    }
+
+    void lua_context::create_helper_module()
+    {
+        auto L = lua_state();
+        // create global table named '__mge__'
+        lua_newtable(L);
+        lua_pushvalue(L, -1);        // duplicate the table
+        lua_setglobal(L, "__mge__"); // set as global variable
+        lua_getglobal(L, "package");
+        lua_getfield(L, -1, "loaded");
+        lua_pushvalue(L, -3);           // push the table again
+        lua_setfield(L, -2, "__mge__"); // package.loaded["__mge__"] = table
+        lua_pop(L, 2);                  // pop package.loaded and package
     }
 
 /* bits of various argument indicators in 'args' */
