@@ -6,6 +6,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/pass.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/vertex_layout.hpp"
@@ -136,6 +137,11 @@ namespace mge {
         {
             return m_extent;
         }
+
+        ///////////////////////////////////////////////////////////////////
+        mge::pass pass(uint32_t index);
+
+        void frame();
 
     protected:
         mge::extent    m_extent;

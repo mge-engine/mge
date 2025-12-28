@@ -26,15 +26,12 @@ namespace mge {
             DEPTH_DESCENDING
         };
 
-        /**
-         * @brief Default constructor.
-         */
-        pass() = default;
+        friend class render_context;
 
         /**
          * @brief Default destructor.
          */
-        ~pass() = default;
+        ~pass();
 
         pass(const pass&) = delete;
         pass& operator=(const pass&) = delete;
@@ -48,6 +45,13 @@ namespace mge {
         void set_draw_mode(mge::pass::draw_mode mode);
         // void set_frame_buffer(mge::frame_buffer* fb);
         void reset();
+        void touch();
+
+    private:
+        pass(mge::render_context* context, uint32_t index);
+
+        mge::render_context* m_context{nullptr};
+        uint32_t             m_index{0};
     };
 
 } // namespace mge
