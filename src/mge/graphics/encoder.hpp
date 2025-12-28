@@ -1,0 +1,26 @@
+// mge - Modern Game Engine
+// Copyright (c) 2017-2023 by Alexander Schroeder
+// All rights reserved.
+#pragma once
+#include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/program.hpp"
+
+namespace mge {
+
+    class MGEGRAPHICS_EXPORT encoder
+    {
+    public:
+        friend class pass;
+
+        /**
+         * @brief Default destructor.
+         */
+        ~encoder();
+
+        void submit(mge::program* program);
+
+    private:
+        mge::pass* m_pass;
+    };
+} // namespace mge
