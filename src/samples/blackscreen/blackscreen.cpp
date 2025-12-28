@@ -51,7 +51,7 @@ namespace mge {
                 clear_commands->finish();
                 clear_commands->execute();
                 clear_commands->destroy();
-                m_window->render_context().swap_chain()->present();
+                m_window->render_context().frame();
 #endif
             });
 

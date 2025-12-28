@@ -5,16 +5,12 @@
 #include "mge/core/parameter.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/graphics/swap_chain.hpp"
 
 namespace mge {
     render_context::render_context(const mge::extent& ext)
         : m_extent(ext)
     {}
-
-    const swap_chain_ref& render_context::swap_chain() const
-    {
-        return m_swap_chain;
-    }
 
     frame_command_list* render_context::create_current_frame_command_list()
     {
@@ -87,6 +83,21 @@ namespace mge {
             create_command_list());
         auto* result = ptr.release();
         return result;
+    }
+
+    void render_context::frame()
+    {
+        if (m_swap_chain) {
+            m_swap_chain->present();
+        }
+    }
+
+    image_ref render_context::screenshot()
+    {
+        if (m_swap_chain) {
+            return m_swap_chain->screenshot();
+        }
+        return image_ref();
     }
 
 } // namespace mge

@@ -70,7 +70,7 @@ namespace mge {
                 draw_commands->execute();
                 draw_commands->destroy();
             }
-            m_window->render_context().swap_chain()->present();
+            m_window->render_context().frame();
         }
 
         void initialize()

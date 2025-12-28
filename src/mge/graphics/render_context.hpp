@@ -122,13 +122,6 @@ namespace mge {
         virtual texture_ref create_texture(texture_type type) = 0;
 
         /**
-         * @brief Get swap chain of context.
-         *
-         * @return swap chain
-         */
-        const swap_chain_ref& swap_chain() const;
-
-        /**
          * @brief Get the extent of the render context.
          *
          * @return extent
@@ -141,7 +134,8 @@ namespace mge {
         ///////////////////////////////////////////////////////////////////
         mge::pass pass(uint32_t index);
 
-        void frame();
+        void      frame();
+        image_ref screenshot();
 
     protected:
         mge::extent    m_extent;

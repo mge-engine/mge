@@ -13,12 +13,13 @@
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/shader.hpp"
-#include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/topology.hpp"
 #include "mge/graphics/window.hpp"
+
 namespace mge {
     MGE_DEFINE_TRACE(TRIANGLE);
 }
+
 namespace mge {
     class triangle : public application
     {
@@ -65,7 +66,7 @@ namespace mge {
         void screenshot()
         {
             MGE_DEBUG_TRACE(TRIANGLE, "Taking screenshot");
-            auto img = m_window->render_context().swap_chain()->screenshot();
+            auto       img = m_window->render_context().screenshot();
             mge::asset img_asset("/temp/screenshot.png");
             img_asset.store(mge::asset_type("image", "png"), img);
             MGE_DEBUG_TRACE(TRIANGLE,
@@ -89,7 +90,7 @@ namespace mge {
                 draw_commands->execute();
                 draw_commands->destroy();
             }
-            m_window->render_context().swap_chain()->present();
+            m_window->render_context().frame();
         }
 
         void initialize()
