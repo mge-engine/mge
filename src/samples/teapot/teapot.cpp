@@ -171,8 +171,8 @@ namespace mge {
                                 m_render_system->implementation_name());
                 MGE_THROW(mge::illegal_state) << "Cannot create shaders";
             }
-            m_program->set_shader(pixel_shader);
-            m_program->set_shader(vertex_shader);
+            m_program->set_shader(pixel_shader.get());
+            m_program->set_shader(vertex_shader.get());
             MGE_DEBUG_TRACE(TEAPOT, "Linking program");
             m_program->link();
             MGE_DEBUG_TRACE(TEAPOT, "Program linked");

@@ -115,7 +115,7 @@ namespace mge::vulkan {
         }
     }
 
-    mge::shader* render_context::create_shader(shader_type t)
+    mge::shader* render_context::on_create_shader(shader_type t)
     {
         auto result = std::make_unique<shader>(*this, t);
         auto ptr = result.get();
@@ -273,13 +273,13 @@ namespace mge::vulkan {
             destroy_pipeline(pipeline.second);
         }
         m_deleted_pipelines.clear();
-        
+
         // Clean up any deleted command buffers before destroying device
         for (auto& cb : m_deleted_command_buffers) {
             destroy_command_buffer(cb.second);
         }
         m_deleted_command_buffers.clear();
-        
+
         if (vkDestroySemaphore) {
             if (m_image_available_semaphore) {
                 vkDestroySemaphore(m_device,

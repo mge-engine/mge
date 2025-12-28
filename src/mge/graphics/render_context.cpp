@@ -8,6 +8,7 @@
 #include "mge/core/singleton.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
 
 namespace mge {
@@ -20,11 +21,17 @@ namespace mge {
             m_contexts.reserve(8);
         }
 
-        uint32_t register_context(render_context* rc)
+        uint16_t register_context(render_context* rc)
         {
             std::lock_guard<mge::mutex> lock(m_mutex);
+            if (m_contexts.size() >= std::numeric_limits<uint16_t>::max()) {
+                gc();
+            }
+            if (m_contexts.size() >= std::numeric_limits<uint16_t>::max()) {
+                mge::crash("Too many render contexts registered");
+            }
             m_contexts.push_back(rc);
-            return static_cast<uint32_t>(m_contexts.size() - 1);
+            return static_cast<uint16_t>(m_contexts.size() - 1);
         }
 
         void unregister_context(uint32_t index, render_context* rc) noexcept
@@ -37,12 +44,30 @@ namespace mge {
                 }
                 if (index == size - 1) {
                     m_contexts.resize(size - 1);
+                    gc();
                 } else {
                     m_contexts[index] = nullptr;
                 }
             } else {
                 mge::crash("Invalid render context index unregistering");
             }
+        }
+
+        render_context* get(uint16_t index) noexcept
+        {
+            if (index < m_contexts.size()) {
+                return m_contexts[index];
+            }
+            return nullptr;
+        }
+
+        void gc() noexcept
+        {
+            size_t sz = m_contexts.size();
+            while (sz > 0 && m_contexts[sz - 1] == nullptr) {
+                --sz;
+            }
+            m_contexts.resize(sz);
         }
 
         static mge::singleton<render_context_registry> instance;
@@ -151,6 +176,25 @@ namespace mge {
             return m_swap_chain->screenshot();
         }
         return image_ref();
+    }
+
+    render_context* render_context::get(uint16_t index)
+    {
+        return render_context_registry::instance->get(index);
+    }
+
+    shader_handle render_context::create_shader(shader_type t)
+    {
+        std::unique_ptr<shader> ptr{on_create_shader(t)};
+        if (ptr) {
+            shader_handle handle{index(),
+                                 0,
+                                 static_cast<uint32_t>(m_shaders.size())};
+            m_shaders.push_back(ptr.get());
+            ptr.release();
+            return handle;
+        }
+        return shader_handle();
     }
 
 } // namespace mge

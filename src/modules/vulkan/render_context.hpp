@@ -25,7 +25,7 @@ namespace mge::vulkan {
                                                  size_t               data_size,
                                                  void* data) override;
         void          destroy_vertex_buffer(mge::vertex_buffer* vb) override;
-        mge::shader*  create_shader(shader_type t) override;
+        mge::shader*  on_create_shader(shader_type t) override;
         void          destroy_shader(mge::shader* s) override;
         mge::program* create_program() override;
         void          destroy_program(mge::program* p) override;

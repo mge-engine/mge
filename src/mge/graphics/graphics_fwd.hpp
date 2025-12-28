@@ -11,6 +11,7 @@ namespace mge {
     MGE_DECLARE_REF(monitor);
     MGE_DECLARE_REF(render_context);
     MGE_DECLARE_REF(swap_chain);
+    class hardware_buffer;
     class index_buffer;
     class vertex_buffer;
     class shader;
@@ -21,6 +22,7 @@ namespace mge {
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);
 
-    class shader_handle;
+    // shader_handle is a type alias, not a class; include its header where
+    // needed
 
 } // namespace mge

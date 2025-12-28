@@ -86,23 +86,25 @@ namespace mge {
 
         Object* get() const noexcept
         {
-            Context* = Context::get(m_context_index);
+            Context* ctx = Context::get(m_context_index);
             if (!ctx) {
                 return nullptr;
             }
-            return ctx->object<Object>(m_context_index,
-                                       m_flags,
-                                       m_object_index);
+            return ctx->template object<Object>(m_context_index,
+                                                m_flags,
+                                                m_object_index);
         }
 
-        Object& operator*() const noexcept
+        Object& operator*() const
         {
             auto* ptr = get();
-            if (!ptr) {
-                MGE_THROW(illegal_state) << "Dereferencing invalid handle to "
-                                         << mge::type_name<Object>();
-            }
             return *ptr;
+        }
+
+        Object* operator->() const noexcept
+        {
+            auto* ptr = get();
+            return ptr;
         }
 
         operator bool() const noexcept
@@ -121,9 +123,9 @@ namespace mge {
                     << "Destroying object from invalid context "
                     << mge::type_name<Context>();
             }
-            ctx->destroy_object<Object>(m_context_index,
-                                        m_flags,
-                                        m_object_index);
+            ctx->template destroy_object<Object>(m_context_index,
+                                                 m_flags,
+                                                 m_object_index);
             m_context_index = 0xFFFF;
             m_flags = 0;
             m_object_index = 0xFFFFFFFF;

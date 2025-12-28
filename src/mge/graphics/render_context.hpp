@@ -7,6 +7,7 @@
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/pass.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/vertex_layout.hpp"
@@ -65,16 +66,17 @@ namespace mge {
          */
         virtual void destroy_vertex_buffer(vertex_buffer* vb) = 0;
 
+    protected:
         /**
          * @brief Create a shader object.
          *
          * @param t             shader type
          * @return created shader
          */
-        virtual shader* create_shader(shader_type t) = 0;
+        virtual shader* on_create_shader(shader_type t) = 0;
 
-        
-        shader_handle xcreate_shader(shader_type t);
+    public:
+        shader_handle create_shader(shader_type t);
 
         /**
          * @brief Destroy a shader.
@@ -141,10 +143,59 @@ namespace mge {
         void      frame();
         image_ref screenshot();
 
+        /**
+         * @brief Get the index of this render context.
+         * @return context index
+         */
+        uint16_t index() const noexcept
+        {
+            return m_index;
+        }
+
+        /**
+         * @brief Get render context by index.
+         * @param index context index
+         * @return render context or nullptr if not found
+         */
+        static render_context* get(uint16_t index);
+
+        /**
+         * @brief Get an object by its handle.
+         *
+         * @tparam T object type
+         * @param index context index
+         * @param flags object flags
+         * @param object_index object index
+         * @return object pointer or nullptr if not found
+         */
+        template <typename T>
+        T* object(uint16_t index, uint16_t flags, uint32_t object_index)
+        {
+            if constexpr (std::is_same_v<T, shader>) {
+                if (index < m_shaders.size()) {
+                    return m_shaders[index];
+                }
+            } else if constexpr (std::is_same_v<T, program>) {
+                if (index < m_programs.size()) {
+                    return m_programs[index];
+                }
+            } else if constexpr ((std::is_same_v<T, hardware_buffer>) ||
+                                 (std::is_base_of_v<hardware_buffer, T>)) {
+                if (index < m_buffers.size()) {
+                    return m_buffers[index];
+                }
+            }
+            return nullptr;
+        }
+
     protected:
         mge::extent    m_extent;
-        swap_chain_ref m_swap_chain;        //!< swap chain of this context
-        uint32_t       m_index{0xFFFFFFFF}; //!< index in registry
+        swap_chain_ref m_swap_chain;    //!< swap chain of this context
+        uint16_t       m_index{0xFFFF}; //!< index in registry
+
+        std::vector<shader*>          m_shaders;
+        std::vector<program*>         m_programs;
+        std::vector<hardware_buffer*> m_buffers;
     };
 
 } // namespace mge

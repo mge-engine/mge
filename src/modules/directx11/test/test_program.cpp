@@ -40,7 +40,7 @@ TEST_F(program_test, link_program)
     )shader";
     fs->compile(fragment_shader_hlsl);
 
-    program->set_shader(vs);
-    program->set_shader(fs);
+    program->set_shader(vs.get());
+    program->set_shader(fs.get());
     program->link();
 }

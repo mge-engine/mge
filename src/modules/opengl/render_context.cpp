@@ -164,7 +164,7 @@ namespace mge::opengl {
         }
     }
 
-    mge::shader* render_context::create_shader(mge::shader_type t)
+    mge::shader* render_context::on_create_shader(mge::shader_type t)
     {
         auto result = std::make_unique<shader>(*this, t);
         auto ptr = result.get();

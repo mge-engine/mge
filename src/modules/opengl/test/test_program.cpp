@@ -58,8 +58,8 @@ TEST_F(program_test, compile_and_link)
         m_window->render_context().create_shader(mge::shader_type::VERTEX);
     vertex_shader->compile(vertex_shader_glsl);
     auto program = m_window->render_context().create_program();
-    program->set_shader(pixel_shader);
-    program->set_shader(vertex_shader);
+    program->set_shader(pixel_shader.get());
+    program->set_shader(vertex_shader.get());
     program->link();
 
     ASSERT_EQ(1u, program->attributes().size());
