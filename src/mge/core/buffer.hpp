@@ -5,8 +5,10 @@
 #include "mge/core/dllexport.hpp"
 #include <cstddef>
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 namespace mge {
     using buffer = std::vector<uint8_t>;
+    using buffer_ref = std::shared_ptr<buffer>;
 } // namespace mge
