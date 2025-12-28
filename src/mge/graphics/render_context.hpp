@@ -72,6 +72,10 @@ namespace mge {
          * @return created shader
          */
         virtual shader* create_shader(shader_type t) = 0;
+
+        
+        shader_handle xcreate_shader(shader_type t);
+
         /**
          * @brief Destroy a shader.
          * @param s shader to destroy

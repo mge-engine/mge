@@ -21,4 +21,6 @@ namespace mge {
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);
 
+    class shader_handle;
+
 } // namespace mge
