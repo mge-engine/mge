@@ -30,11 +30,18 @@ namespace mge {
         void unregister_context(uint32_t index, render_context* rc) noexcept
         {
             std::lock_guard<mge::mutex> lock(m_mutex);
-            if (index < m_contexts.size()) {
+            auto size = static_cast<uint32_t>(m_contexts.size());
+            if (index < size) {
                 if (m_contexts[index] != rc) {
                     mge::crash("Inconsistent render context unregistering");
                 }
-                m_contexts[index] = nullptr;
+                if (index == size - 1) {
+                    m_contexts.resize(size - 1);
+                } else {
+                    m_contexts[index] = nullptr;
+                }
+            } else {
+                mge::crash("Invalid render context index unregistering");
             }
         }
 
