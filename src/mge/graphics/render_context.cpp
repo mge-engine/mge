@@ -2,15 +2,61 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/render_context.hpp"
+#include "mge/core/crash.hpp"
+#include "mge/core/mutex.hpp"
 #include "mge/core/parameter.hpp"
+#include "mge/core/singleton.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/swap_chain.hpp"
 
 namespace mge {
+    class render_context_registry
+    {
+    public:
+        render_context_registry()
+            : m_mutex("render_context_registry")
+        {
+            m_contexts.reserve(8);
+        }
+
+        uint32_t register_context(render_context* rc)
+        {
+            std::lock_guard<mge::mutex> lock(m_mutex);
+            m_contexts.push_back(rc);
+            return static_cast<uint32_t>(m_contexts.size() - 1);
+        }
+
+        void unregister_context(uint32_t index, render_context* rc) noexcept
+        {
+            std::lock_guard<mge::mutex> lock(m_mutex);
+            if (index < m_contexts.size()) {
+                if (m_contexts[index] != rc) {
+                    mge::crash("Inconsistent render context unregistering");
+                }
+                m_contexts[index] = nullptr;
+            }
+        }
+
+        static mge::singleton<render_context_registry> instance;
+
+    private:
+        std::vector<render_context*> m_contexts;
+        mge::mutex                   m_mutex;
+    };
+
+    mge::singleton<render_context_registry> render_context_registry::instance;
+
     render_context::render_context(const mge::extent& ext)
         : m_extent(ext)
-    {}
+    {
+        m_index = render_context_registry::instance->register_context(this);
+    }
+
+    render_context::~render_context()
+    {
+        render_context_registry::instance->unregister_context(m_index, this);
+    }
 
     frame_command_list* render_context::create_current_frame_command_list()
     {

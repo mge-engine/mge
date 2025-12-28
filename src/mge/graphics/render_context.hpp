@@ -20,8 +20,8 @@ namespace mge {
      * of the render pipeline are created - such as shader programs,
      * textures and buffers.
      *
-     * A render context has a swap chain to facilitate presentation
-     * of the rendered frames.
+     * A render context also manages the submission of rendering commands
+     * of the rendered frames by using the @c frame() method.
      */
     class MGEGRAPHICS_EXPORT render_context
     {
@@ -29,7 +29,7 @@ namespace mge {
         render_context(const mge::extent& ext);
 
     public:
-        virtual ~render_context() = default;
+        virtual ~render_context();
 
         /**
          * @brief Create a index buffer.
@@ -139,6 +139,8 @@ namespace mge {
 
     protected:
         mge::extent    m_extent;
-        swap_chain_ref m_swap_chain; //!< swap chain of this context
+        swap_chain_ref m_swap_chain;        //!< swap chain of this context
+        uint32_t       m_index{0xFFFFFFFF}; //!< index in registry
     };
+
 } // namespace mge
