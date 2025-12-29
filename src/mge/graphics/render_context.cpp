@@ -6,12 +6,16 @@
 #include "mge/core/mutex.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/singleton.hpp"
+#include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
 
 namespace mge {
+
+    // MGE_USE_TRACE(GRAPHICS);
+
     class render_context_registry
     {
     public:
@@ -204,11 +208,11 @@ namespace mge {
             shader_handle handle{index(),
                                  0,
                                  static_cast<uint32_t>(m_shaders.size())};
-            m_shaders.emplace_back(ptr.get());
-            ptr.release();
+            m_shaders.emplace_back(ptr.release());
             return handle;
+        } else {
+            return shader_handle();
         }
-        return shader_handle();
     }
 
 } // namespace mge

@@ -85,7 +85,6 @@ namespace mge {
 
     public:
         shader_handle create_shader(shader_type t);
-
         /**
          * @brief Create a program object.
          *
@@ -174,17 +173,17 @@ namespace mge {
         T* object(uint16_t index, uint16_t flags, uint32_t object_index)
         {
             if constexpr (std::is_same_v<T, shader>) {
-                if (index < m_shaders.size()) {
-                    return m_shaders[index];
+                if (object_index < m_shaders.size()) {
+                    return m_shaders[object_index];
                 }
             } else if constexpr (std::is_same_v<T, program>) {
-                if (index < m_programs.size()) {
-                    return m_programs[index];
+                if (object_index < m_programs.size()) {
+                    return m_programs[object_index];
                 }
             } else if constexpr ((std::is_same_v<T, hardware_buffer>) ||
                                  (std::is_base_of_v<hardware_buffer, T>)) {
-                if (index < m_buffers.size()) {
-                    return m_buffers[index];
+                if (object_index < m_buffers.size()) {
+                    return m_buffers[object_index];
                 }
             }
             return nullptr;
@@ -195,9 +194,9 @@ namespace mge {
         destroy_object(uint16_t index, uint16_t flags, uint32_t object_index)
         {
             if constexpr (std::is_same_v<T, shader>) {
-                if (index < m_shaders.size()) {
-                    on_destroy_shader(m_shaders[index]);
-                    m_shaders[index] = nullptr;
+                if (object_index < m_shaders.size()) {
+                    on_destroy_shader(m_shaders[object_index]);
+                    m_shaders[object_index] = nullptr;
                 }
             }
         }
