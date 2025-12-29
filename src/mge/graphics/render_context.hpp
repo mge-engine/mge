@@ -188,6 +188,18 @@ namespace mge {
             return nullptr;
         }
 
+        template <typename T>
+        void
+        destroy_object(uint16_t index, uint16_t flags, uint32_t object_index)
+        {
+            if constexpr (std::is_same_v<T, shader>) {
+                if (index < m_shaders.size()) {
+                    destroy_shader(m_shaders[index]);
+                    m_shaders[index] = nullptr;
+                }
+            }
+        }
+
     protected:
         mge::extent    m_extent;
         swap_chain_ref m_swap_chain;    //!< swap chain of this context
