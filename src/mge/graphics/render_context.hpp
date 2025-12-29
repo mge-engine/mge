@@ -75,14 +75,14 @@ namespace mge {
          */
         virtual shader* on_create_shader(shader_type t) = 0;
 
-    public:
-        shader_handle create_shader(shader_type t);
-
         /**
          * @brief Destroy a shader.
          * @param s shader to destroy
          */
-        virtual void destroy_shader(shader* s) = 0;
+        virtual void on_destroy_shader(shader* s) = 0;
+
+    public:
+        shader_handle create_shader(shader_type t);
 
         /**
          * @brief Create a program object.
@@ -194,7 +194,7 @@ namespace mge {
         {
             if constexpr (std::is_same_v<T, shader>) {
                 if (index < m_shaders.size()) {
-                    destroy_shader(m_shaders[index]);
+                    on_destroy_shader(m_shaders[index]);
                     m_shaders[index] = nullptr;
                 }
             }

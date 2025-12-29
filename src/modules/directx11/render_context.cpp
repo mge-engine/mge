@@ -202,7 +202,7 @@ namespace mge::dx11 {
         return result;
     }
 
-    void render_context::destroy_shader(mge::shader* s)
+    void render_context::on_destroy_shader(mge::shader* s)
     {
         delete s;
     }
