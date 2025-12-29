@@ -293,7 +293,6 @@ namespace mge::dx12 {
         m_managed_frame_command_lists.clear();
         m_command_lists.clear();
         m_programs.clear();
-        m_shaders.clear();
         m_vertex_buffers.clear();
         m_index_buffers.clear();
         if (m_info_queue && m_callback_cookie != 0) {
@@ -350,20 +349,13 @@ namespace mge::dx12 {
 
     mge::shader* render_context::on_create_shader(shader_type t)
     {
-        auto result = std::make_unique<dx12::shader>(*this, t);
-        auto ptr = result.get();
-        m_shaders[ptr] = std::move(result);
-        return ptr;
+        auto result = new dx12::shader(*this, t);
+        return result;
     }
 
     void render_context::destroy_shader(mge::shader* s)
     {
-        auto it = m_shaders.find(s);
-        if (it != m_shaders.end()) {
-            m_shaders.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
-        }
+        delete s;
     }
 
     mge::program* render_context::create_program()

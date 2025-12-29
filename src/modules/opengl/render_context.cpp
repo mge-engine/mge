@@ -166,20 +166,13 @@ namespace mge::opengl {
 
     mge::shader* render_context::on_create_shader(mge::shader_type t)
     {
-        auto result = std::make_unique<shader>(*this, t);
-        auto ptr = result.get();
-        m_shaders[ptr] = std::move(result);
-        return ptr;
+        auto result = new shader(*this, t);
+        return result;
     }
 
     void render_context::destroy_shader(mge::shader* s)
     {
-        auto it = m_shaders.find(s);
-        if (it != m_shaders.end()) {
-            m_shaders.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
-        }
+        delete s;
     }
 
     mge::program* render_context::create_program()

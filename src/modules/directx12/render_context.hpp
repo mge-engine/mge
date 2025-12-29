@@ -202,8 +202,6 @@ namespace mge::dx12 {
         std::unordered_map<mge::vertex_buffer*,
                            std::unique_ptr<mge::vertex_buffer>>
             m_vertex_buffers;
-        std::unordered_map<mge::shader*, std::unique_ptr<mge::shader>>
-            m_shaders;
         std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
             m_programs;
         std::unordered_map<mge::command_list*,

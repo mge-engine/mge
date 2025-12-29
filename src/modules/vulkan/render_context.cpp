@@ -66,7 +66,6 @@ namespace mge::vulkan {
         m_frame_command_lists.clear();
         m_command_lists.clear();
         m_programs.clear();
-        m_shaders.clear();
         m_vertex_buffers.clear();
         m_index_buffers.clear();
         teardown();
@@ -117,20 +116,13 @@ namespace mge::vulkan {
 
     mge::shader* render_context::on_create_shader(shader_type t)
     {
-        auto result = std::make_unique<shader>(*this, t);
-        auto ptr = result.get();
-        m_shaders[ptr] = std::move(result);
-        return ptr;
+        auto result = new shader(*this, t);
+        return result;
     }
 
     void render_context::destroy_shader(mge::shader* s)
     {
-        auto it = m_shaders.find(s);
-        if (it != m_shaders.end()) {
-            m_shaders.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
-        }
+        delete s;
     }
 
     mge::program* render_context::create_program()
