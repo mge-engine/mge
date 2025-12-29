@@ -34,9 +34,4 @@ namespace mge {
         return m_initialized;
     }
 
-    void shader::destroy()
-    {
-        context().destroy_shader(this);
-    }
-
 } // namespace mge
