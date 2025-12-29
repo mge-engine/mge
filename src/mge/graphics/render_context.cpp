@@ -165,8 +165,22 @@ namespace mge {
 
     void render_context::frame()
     {
-        if (m_swap_chain) {
-            m_swap_chain->present();
+        if (!m_prepare_frame_actions.empty()) {
+            try {
+                for (const auto& [action, on_success] :
+                     m_prepare_frame_actions) {
+                    action();
+                    on_success();
+                }
+            } catch (...) {
+                m_prepare_frame_actions.clear();
+                throw;
+            }
+            m_prepare_frame_actions.clear();
+        } else {
+            if (m_swap_chain) {
+                m_swap_chain->present();
+            }
         }
     }
 
@@ -190,7 +204,7 @@ namespace mge {
             shader_handle handle{index(),
                                  0,
                                  static_cast<uint32_t>(m_shaders.size())};
-            m_shaders.push_back(ptr.get());
+            m_shaders.emplace_back(ptr.get());
             ptr.release();
             return handle;
         }

@@ -33,6 +33,8 @@ TEST_F(shader_test, compile_successfully)
                               "}"sv;
 
     shader->compile(vertex_shader_glsl);
+    context.frame();
+    EXPECT_TRUE(shader->initialized());
 }
 
 TEST_F(shader_test, compile_failed)
@@ -52,6 +54,7 @@ TEST_F(shader_test, compile_failed)
 
     try {
         shader->compile(vertex_shader_glsl);
+        context.frame();
         FAIL() << "Expected exception";
     } catch (const mge::exception&) {
         // expected
@@ -69,6 +72,7 @@ TEST_F(shader_test, set_code_failed)
     mge::buffer code(bogus.begin(), bogus.end());
     try {
         shader->set_code(code);
+        context.frame();
         FAIL() << "Expected set_code to fail";
     } catch (const mge::exception&) {
         // expected

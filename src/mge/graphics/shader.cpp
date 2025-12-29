@@ -14,14 +14,18 @@ namespace mge {
 
     void shader::compile(std::string_view source)
     {
-        on_compile(source);
-        m_initialized = true;
+        m_initialized = false;
+        auto src = std::make_shared<std::string>(source);
+        context().prepare_frame([this, src]() { this->on_compile(*src); },
+                                [this]() { this->m_initialized = true; });
     }
 
     void shader::set_code(const mge::buffer& code)
     {
-        on_set_code(code);
-        m_initialized = true;
+        m_initialized = false;
+        auto c = std::make_shared<mge::buffer>(code);
+        context().prepare_frame([this, c]() { this->on_set_code(*c); },
+                                [this]() { this->m_initialized = true; });
     }
 
     shader_type shader::type() const

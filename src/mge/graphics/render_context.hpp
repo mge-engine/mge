@@ -2,11 +2,13 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/callable.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/pass.hpp"
+#include "mge/graphics/program_handle.hpp"
 #include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/texture_type.hpp"
@@ -200,6 +202,14 @@ namespace mge {
             }
         }
 
+        template <mge::callable ActionType, mge::callable OnSuccessType>
+        void prepare_frame(ActionType&& action, OnSuccessType&& on_success)
+        {
+            m_prepare_frame_actions.emplace_back(
+                std::forward<ActionType>(action),
+                std::forward<OnSuccessType>(on_success));
+        }
+
     protected:
         mge::extent    m_extent;
         swap_chain_ref m_swap_chain;    //!< swap chain of this context
@@ -208,6 +218,10 @@ namespace mge {
         std::vector<shader*>          m_shaders;
         std::vector<program*>         m_programs;
         std::vector<hardware_buffer*> m_buffers;
+
+        using prepare_frame_action =
+            std::tuple<std::function<void()>, std::function<void()>>;
+        std::vector<prepare_frame_action> m_prepare_frame_actions;
     };
 
 } // namespace mge

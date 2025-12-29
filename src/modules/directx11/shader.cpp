@@ -38,11 +38,15 @@ namespace mge::dx11 {
                              &compiled_code,
                              &errors);
         if (FAILED(rc)) {
-            std::string errormessage(
-                static_cast<const char*>(errors->GetBufferPointer()),
-                static_cast<const char*>(errors->GetBufferPointer()) +
-                    errors->GetBufferSize());
-            errors->Release();
+            std::string errormessage("Unknown shader compile error");
+            if (errors) {
+                errormessage.assign(
+                    static_cast<const char*>(errors->GetBufferPointer()),
+                    static_cast<const char*>(errors->GetBufferPointer()) +
+                        errors->GetBufferSize());
+                errors->Release();
+                errors = nullptr;
+            }
             throw dx11::error().set_info_from_hresult(rc,
                                                       __FILE__,
                                                       __LINE__,

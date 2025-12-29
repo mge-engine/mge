@@ -3,6 +3,7 @@
 // All rights reserved.
 #pragma once
 #include "mge/core/dllexport.hpp"
+#include "mge/core/format.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/type_name.hpp"
 
@@ -138,3 +139,19 @@ namespace mge {
     };
 
 } // namespace mge
+
+template <typename Object, typename Context>
+struct fmt::formatter<mge::handle<Object, Context>>
+    : public fmt::formatter<std::string_view>
+{
+    template <typename FormatContext>
+    auto format(const mge::handle<Object, Context>& h, FormatContext& ctx) const
+    {
+        if (!h) {
+            fmt::format_to(ctx.out(), "Invalid handle");
+            return ctx.out();
+        }
+        fmt::format_to(ctx.out(), "handle<{}>", mge::type_name<Object>());
+        return ctx.out();
+    }
+};
