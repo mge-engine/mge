@@ -201,12 +201,11 @@ namespace mge {
             }
         }
 
-        template <mge::callable ActionType, mge::callable OnSuccessType>
-        void prepare_frame(ActionType&& action, OnSuccessType&& on_success)
+        template <mge::callable ActionType>
+        void prepare_frame(ActionType&& action)
         {
             m_prepare_frame_actions.emplace_back(
-                std::forward<ActionType>(action),
-                std::forward<OnSuccessType>(on_success));
+                std::forward<ActionType>(action));
         }
 
     protected:
@@ -218,8 +217,7 @@ namespace mge {
         std::vector<program*>         m_programs;
         std::vector<hardware_buffer*> m_buffers;
 
-        using prepare_frame_action =
-            std::tuple<std::function<void()>, std::function<void()>>;
+        using prepare_frame_action = std::function<void()>;
         std::vector<prepare_frame_action> m_prepare_frame_actions;
     };
 

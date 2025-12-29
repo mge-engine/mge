@@ -16,16 +16,20 @@ namespace mge {
     {
         m_initialized = false;
         auto src = std::make_shared<std::string>(source);
-        context().prepare_frame([this, src]() { this->on_compile(*src); },
-                                [this]() { this->m_initialized = true; });
+        context().prepare_frame([this, src]() {
+            this->on_compile(*src);
+            this->m_initialized = true;
+        });
     }
 
     void shader::set_code(const mge::buffer& code)
     {
         m_initialized = false;
         auto c = std::make_shared<mge::buffer>(code);
-        context().prepare_frame([this, c]() { this->on_set_code(*c); },
-                                [this]() { this->m_initialized = true; });
+        context().prepare_frame([this, c]() {
+            this->on_set_code(*c);
+            this->m_initialized = true;
+        });
     }
 
     shader_type shader::type() const

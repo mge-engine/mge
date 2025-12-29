@@ -171,10 +171,8 @@ namespace mge {
     {
         if (!m_prepare_frame_actions.empty()) {
             try {
-                for (const auto& [action, on_success] :
-                     m_prepare_frame_actions) {
+                for (const auto& action : m_prepare_frame_actions) {
                     action();
-                    on_success();
                 }
             } catch (...) {
                 m_prepare_frame_actions.clear();

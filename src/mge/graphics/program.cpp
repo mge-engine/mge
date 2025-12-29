@@ -27,23 +27,24 @@ namespace mge {
                 << "Shader type must not be shader_type::COMPUTE";
         }
 
-        context().prepare_frame(
-            [this, s]() {
-                if (!s->initialized()) {
-                    MGE_THROW(mge::illegal_argument)
-                        << "Shader must be initialized before attaching to "
-                           "program";
-                }
-                this->on_set_shader(s);
-            },
-            [this]() { this->m_needs_link = true; });
+        context().prepare_frame([this, s]() {
+            if (!s->initialized()) {
+                MGE_THROW(mge::illegal_argument)
+                    << "Shader must be initialized before attaching to "
+                       "program";
+            }
+            this->on_set_shader(s);
+            this->m_needs_link = true;
+        });
     }
 
     void program::link()
     {
         if (m_needs_link) {
-            context().prepare_frame([this]() { this->on_link(); },
-                                    [this]() { this->m_needs_link = false; });
+            context().prepare_frame([this]() {
+                this->on_link();
+                this->m_needs_link = false;
+            });
         }
     }
 
