@@ -82,7 +82,7 @@ namespace mge {
                 draw_commands->clear_depth(1.0f);
                 draw_commands->default_scissor();
                 draw_commands->draw(
-                    mge::draw_command(m_program,
+                    mge::draw_command(m_program.get(),
                                       m_vertices,
                                       m_indices,
                                       mge::topology::TRIANGLES));
@@ -211,7 +211,7 @@ namespace mge {
                 triangle_indices);
             m_draw_commands = m_window->render_context().create_command_list();
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-            m_draw_commands->draw(mge::draw_command(m_program,
+            m_draw_commands->draw(mge::draw_command(m_program.get(),
                                                     m_vertices,
                                                     m_indices,
                                                     mge::topology::TRIANGLES));
@@ -227,7 +227,7 @@ namespace mge {
         std::atomic<bool> m_initialized;
         command_list*     m_clear_commands;
         command_list*     m_draw_commands;
-        program*          m_program;
+        program_handle    m_program;
         vertex_buffer*    m_vertices;
         index_buffer*     m_indices;
     };

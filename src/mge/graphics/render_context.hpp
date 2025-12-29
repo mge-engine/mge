@@ -83,19 +83,29 @@ namespace mge {
          */
         virtual void on_destroy_shader(shader* s) = 0;
 
-    public:
-        shader_handle create_shader(shader_type t);
         /**
          * @brief Create a program object.
          *
          * @return created program
          */
-        virtual program* create_program() = 0;
+        virtual program* on_create_program() = 0;
         /**
          * @brief Destroy a program.
          * @param p program to destroy
          */
-        virtual void destroy_program(program* p) = 0;
+        virtual void on_destroy_program(program* p) = 0;
+
+    public:
+        /**
+         * @brief Create a shader object.
+         * @param t             shader type
+         */
+        shader_handle create_shader(shader_type t);
+
+        /**
+         * @brief Create a program object.
+         */
+        program_handle create_program();
 
         /**
          * @brief Create a command list object.

@@ -207,22 +207,14 @@ namespace mge::dx11 {
         delete s;
     }
 
-    mge::program* render_context::create_program()
+    mge::program* render_context::on_create_program()
     {
-        auto result = std::make_unique<program>(*this);
-        auto ptr = result.get();
-        m_programs[ptr] = std::move(result);
-        return ptr;
+        return new program(*this);
     }
 
-    void render_context::destroy_program(mge::program* p)
+    void render_context::on_destroy_program(mge::program* p)
     {
-        auto it = m_programs.find(p);
-        if (it != m_programs.end()) {
-            m_programs.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
-        }
+        delete p;
     }
 
     mge::command_list* render_context::create_command_list()

@@ -9,6 +9,7 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/graphics/program.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
 
@@ -210,6 +211,20 @@ namespace mge {
             return handle;
         } else {
             return shader_handle();
+        }
+    }
+
+    program_handle render_context::create_program()
+    {
+        std::unique_ptr<program> ptr{on_create_program()};
+        if (ptr) {
+            program_handle handle{index(),
+                                  0,
+                                  static_cast<uint32_t>(m_programs.size())};
+            m_programs.emplace_back(ptr.release());
+            return handle;
+        } else {
+            return program_handle();
         }
     }
 

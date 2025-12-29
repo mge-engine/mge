@@ -25,8 +25,9 @@ public:
     MOCK_METHOD(void, destroy_vertex_buffer, (mge::vertex_buffer * vb), ());
     MOCK_METHOD(mge::shader*, on_create_shader, (mge::shader_type), ());
     MOCK_METHOD(void, on_destroy_shader, (mge::shader * s), ());
-    MOCK_METHOD(mge::program*, create_program, (), ());
-    MOCK_METHOD(void, destroy_program, (mge::program * p), ());
+    MOCK_METHOD(mge::program*, on_create_program, (), ());
+    MOCK_METHOD(void, on_destroy_program, (mge::program * p), ());
+
     MOCK_METHOD(mge::command_list*, create_command_list, (), ());
     MOCK_METHOD(void, destroy_command_list, (mge::command_list * cl), ());
     MOCK_METHOD(mge::frame_command_list*,
