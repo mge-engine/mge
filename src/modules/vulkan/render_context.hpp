@@ -17,12 +17,12 @@ namespace mge::vulkan {
         render_context(render_system& render_system_, window& window_);
         ~render_context();
 
-        mge::index_buffer* on_create_index_buffer(data_type dt,
-                                                  size_t    data_size) override;
+        mge::index_buffer*  on_create_index_buffer(data_type dt,
+                                                   size_t    data_size) override;
         mge::vertex_buffer* on_create_vertex_buffer(const vertex_layout& layout,
                                                     size_t data_size) override;
-        mge::shader*  on_create_shader(shader_type t) override;
-        mge::program* on_create_program() override;
+        mge::shader*        on_create_shader(shader_type t) override;
+        mge::program*       on_create_program() override;
         mge::frame_command_list* create_current_frame_command_list() override;
         void destroy_frame_command_list(mge::frame_command_list* fcl) override;
         mge::command_list* create_command_list() override;

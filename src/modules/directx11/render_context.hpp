@@ -25,8 +25,8 @@ namespace mge::dx11 {
                                                   size_t data_size) override;
 
         mge::vertex_buffer*
-             on_create_vertex_buffer(const mge::vertex_layout& layout,
-                                     size_t                    data_size) override;
+        on_create_vertex_buffer(const mge::vertex_layout& layout,
+                                size_t                    data_size) override;
 
         mge::shader*       on_create_shader(mge::shader_type t) override;
         mge::program*      on_create_program() override;

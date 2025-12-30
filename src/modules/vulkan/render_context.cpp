@@ -86,8 +86,7 @@ namespace mge::vulkan {
 
     mge::shader* render_context::on_create_shader(shader_type t)
     {
-        auto result = new shader(*this, t);
-        return result;
+        return new shader(*this, t);
     }
 
     mge::program* render_context::on_create_program()
