@@ -29,10 +29,9 @@ namespace mge::dx12 {
         void on_set_data(void* data, size_t size) override;
 
     private:
-        void create_buffer(void* data);
+        void create_buffer();
 
         mge::com_unique_ptr<ID3D12Resource> m_buffer;
-        void*                               m_mapped_memory;
         D3D12_VERTEX_BUFFER_VIEW            m_buffer_view;
     };
 
