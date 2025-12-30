@@ -19,10 +19,10 @@ public:
                 ());
     MOCK_METHOD(void, on_destroy_index_buffer, (mge::index_buffer * ib), ());
     MOCK_METHOD(mge::vertex_buffer*,
-                create_vertex_buffer,
-                (const mge::vertex_layout&, size_t, void*),
+                on_create_vertex_buffer,
+                (const mge::vertex_layout&, size_t),
                 ());
-    MOCK_METHOD(void, destroy_vertex_buffer, (mge::vertex_buffer * vb), ());
+    MOCK_METHOD(void, on_destroy_vertex_buffer, (mge::vertex_buffer * vb), ());
     MOCK_METHOD(mge::shader*, on_create_shader, (mge::shader_type), ());
     MOCK_METHOD(void, on_destroy_shader, (mge::shader * s), ());
     MOCK_METHOD(mge::program*, on_create_program, (), ());

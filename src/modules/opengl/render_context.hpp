@@ -29,11 +29,10 @@ namespace mge {
             void on_destroy_index_buffer(mge::index_buffer* ib) override;
 
             mge::vertex_buffer*
-            create_vertex_buffer(const mge::vertex_layout& layout,
-                                 size_t                    data_size,
-                                 void*                     data) override;
+            on_create_vertex_buffer(const mge::vertex_layout& layout,
+                                    size_t data_size) override;
 
-            void destroy_vertex_buffer(mge::vertex_buffer* vb) override;
+            void on_destroy_vertex_buffer(mge::vertex_buffer* vb) override;
 
             opengl_info& gl_info()
             {

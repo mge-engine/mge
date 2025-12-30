@@ -13,6 +13,7 @@
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
+#include "mge/graphics/vertex_buffer.hpp"
 
 namespace mge {
 
@@ -204,6 +205,11 @@ namespace mge {
         delete ib;
     }
 
+    void render_context::on_destroy_vertex_buffer(vertex_buffer* vb)
+    {
+        delete vb;
+    }
+
     shader_handle render_context::create_shader(shader_type t)
     {
         std::unique_ptr<shader> ptr{on_create_shader(t)};
@@ -260,4 +266,30 @@ namespace mge {
         }
     }
 
+    vertex_buffer_handle render_context::create_vertex_buffer(
+        const vertex_layout& layout, size_t data_size, void* data)
+    {
+        std::unique_ptr<vertex_buffer> ptr{
+            on_create_vertex_buffer(layout, data_size)};
+        if (ptr) {
+            vertex_buffer_handle handle{
+                index(),
+                0,
+                static_cast<uint32_t>(m_vertex_buffers.size())};
+            if (data) {
+                const uint8_t* buffer_start = static_cast<const uint8_t*>(data);
+                const uint8_t* buffer_end = buffer_start + data_size;
+                buffer_ref     data_buffer =
+                    std::make_shared<buffer>(buffer_start, buffer_end);
+                vertex_buffer* vb = ptr.get();
+                prepare_frame_action([vb, data_buffer]() {
+                    vb->on_set_data(data_buffer->data(), data_buffer->size());
+                });
+            }
+            m_vertex_buffers.emplace_back(ptr.release());
+            return handle;
+        } else {
+            return vertex_buffer_handle();
+        }
+    }
 } // namespace mge

@@ -34,11 +34,10 @@ namespace mge::dx12 {
 
         void on_destroy_index_buffer(mge::index_buffer* ib) override;
         mge::vertex_buffer*
-        create_vertex_buffer(const mge::vertex_layout& layout,
-                             size_t                    data_size,
-                             void*                     data) override;
+        on_create_vertex_buffer(const mge::vertex_layout& layout,
+                                size_t                    data_size) override;
 
-        void destroy_vertex_buffer(mge::vertex_buffer* vb) override;
+        void on_destroy_vertex_buffer(mge::vertex_buffer* vb) override;
 
         mge::shader*       on_create_shader(shader_type t) override;
         void               on_destroy_shader(mge::shader* s) override;
@@ -194,9 +193,6 @@ namespace mge::dx12 {
 
         draw_state m_draw_state{draw_state::NONE};
         mge::mutex m_data_lock;
-        std::unordered_map<mge::vertex_buffer*,
-                           std::unique_ptr<mge::vertex_buffer>>
-            m_vertex_buffers;
         std::unordered_map<mge::command_list*,
                            std::unique_ptr<mge::command_list>>
             m_command_lists;

@@ -13,6 +13,7 @@
 #include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/texture_type.hpp"
+#include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
 #include <memory>
@@ -57,22 +58,35 @@ namespace mge {
                                                 size_t    data_size,
                                                 void*     data = nullptr);
 
+    protected:
         /**
          * @brief Create a vertex buffer object.
          *
          * @param layout    vertex buffer layout
          * @param data_size size in bytes
-         * @param data      initial data
          * @return created vertex buffer
          */
-        virtual vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
-                                                    size_t data_size,
-                                                    void*  data = nullptr) = 0;
+        virtual vertex_buffer*
+        on_create_vertex_buffer(const vertex_layout& layout,
+                                size_t               data_size) = 0;
+
         /**
          * @brief Destroy a vertex buffer.
          * @param vb vertex buffer to destroy
          */
-        virtual void destroy_vertex_buffer(vertex_buffer* vb) = 0;
+        virtual void on_destroy_vertex_buffer(vertex_buffer* vb) = 0;
+
+    public:
+        /**
+         * @brief Create a vertex buffer object.
+         * @param layout    vertex buffer layout
+         * @param data_size size in bytes
+         * @param data      initial data
+         * @return created vertex buffer
+         */
+        vertex_buffer_handle create_vertex_buffer(const vertex_layout& layout,
+                                                  size_t data_size,
+                                                  void*  data = nullptr);
 
     protected:
         /**
@@ -230,7 +244,7 @@ namespace mge {
                 }
             } else if constexpr (std::is_same_v<T, vertex_buffer>) {
                 if (object_index < m_vertex_buffers.size()) {
-                    destroy_vertex_buffer(static_cast<vertex_buffer*>(
+                    on_destroy_vertex_buffer(static_cast<vertex_buffer*>(
                         m_vertex_buffers[object_index]));
                     m_vertex_buffers[object_index] = nullptr;
                 }

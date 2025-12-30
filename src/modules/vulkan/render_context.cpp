@@ -82,24 +82,16 @@ namespace mge::vulkan {
         delete ib;
     }
 
-    mge::vertex_buffer* render_context::create_vertex_buffer(
-        const vertex_layout& layout, size_t data_size, void* data)
+    mge::vertex_buffer*
+    render_context::on_create_vertex_buffer(const vertex_layout& layout,
+                                            size_t               data_size)
     {
-        auto result = std::make_unique<vertex_buffer>(*this, layout, data_size);
-        auto ptr = result.get();
-        m_vertex_buffers[ptr] = std::move(result);
-        return ptr;
+        return new mge::vulkan::vertex_buffer(*this, layout, data_size);
     }
 
-    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
+    void render_context::on_destroy_vertex_buffer(mge::vertex_buffer* vb)
     {
-        auto it = m_vertex_buffers.find(vb);
-        if (it != m_vertex_buffers.end()) {
-            m_vertex_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown vertex buffer";
-        }
+        delete vb;
     }
 
     mge::shader* render_context::on_create_shader(shader_type t)
