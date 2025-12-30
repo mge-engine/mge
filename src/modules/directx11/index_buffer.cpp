@@ -21,12 +21,12 @@ namespace mge::dx11 {
         : mge::index_buffer(context, type, data_size)
         , m_format(dx11_format(type))
     {
-        create_buffer(nullptr);
+        context.prepare_frame([this]() { create_buffer(); });
     }
 
     index_buffer::~index_buffer() {}
 
-    void index_buffer::create_buffer(void* data)
+    void index_buffer::create_buffer()
     {
         D3D11_BUFFER_DESC buffer_desc = {};
         // TODO: #113 DirectX11 buffer usage support
@@ -37,13 +37,12 @@ namespace mge::dx11 {
         buffer_desc.MiscFlags = 0;
 
         D3D11_SUBRESOURCE_DATA initial_data = {};
-        initial_data.pSysMem = data;
+        initial_data.pSysMem = nullptr;
 
         ID3D11Buffer* buffer = nullptr;
-        auto          hr = dx11_context(context()).device()->CreateBuffer(
-            &buffer_desc,
-            data ? &initial_data : nullptr,
-            &buffer);
+        auto hr = dx11_context(context()).device()->CreateBuffer(&buffer_desc,
+                                                                 nullptr,
+                                                                 &buffer);
         CHECK_HRESULT(hr, ID3D11Device, CreateBuffer);
         mge::com_unique_ptr<ID3D11Buffer> buffer_ptr(buffer);
         m_buffer.swap(buffer_ptr);
@@ -56,12 +55,5 @@ namespace mge::dx11 {
         // check size vs data size
         // create_buffer(data);
     }
-
-    void* index_buffer::on_map()
-    {
-        return nullptr;
-    }
-
-    void index_buffer::on_unmap() {}
 
 } // namespace mge::dx11

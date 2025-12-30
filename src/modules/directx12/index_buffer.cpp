@@ -29,7 +29,7 @@ namespace mge::dx12 {
                "implemented yet";
         // create_buffer(data);
     }
-
+#if 0
     void* index_buffer::on_map()
     {
         m_mapped_memory = mge::malloc(size());
@@ -42,6 +42,7 @@ namespace mge::dx12 {
         mge::free(m_mapped_memory);
         m_mapped_memory = nullptr;
     }
+#endif
 
     void index_buffer::create_buffer(void* data)
     {

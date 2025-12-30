@@ -26,10 +26,7 @@ namespace mge::dx12 {
             return m_buffer_view;
         }
 
-    protected:
-        void* on_map() override;
-        void  on_unmap() override;
-        void  on_set_data(void* data, size_t size) override;
+        void on_set_data(void* data, size_t size) override;
 
     private:
         void create_buffer(void* data);

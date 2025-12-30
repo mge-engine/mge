@@ -50,7 +50,7 @@ namespace mge {
          * @brief Destroy an index buffer.
          * @param ib index buffer to destroy
          */
-        virtual void on_destroy_index_buffer(index_buffer* ib) = 0;
+        virtual void on_destroy_index_buffer(index_buffer* ib);
 
     public:
         index_buffer_handle create_index_buffer(data_type dt,

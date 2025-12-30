@@ -31,7 +31,7 @@ namespace mge::opengl {
             TRACE_OPENGL_ERROR(glDeleteBuffers);
         }
     }
-
+#if 0
     void* index_buffer::on_map()
     {
         void* result = glMapNamedBuffer(m_buffer, GL_READ_WRITE);
@@ -44,6 +44,7 @@ namespace mge::opengl {
         glUnmapNamedBuffer(m_buffer);
         CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
     }
+#endif
 
     void index_buffer::on_set_data(void* data, size_t size)
     {

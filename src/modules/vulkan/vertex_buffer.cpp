@@ -94,7 +94,7 @@ namespace mge::vulkan {
             m_allocation = VK_NULL_HANDLE;
         }
     }
-
+#if 0
     void* vertex_buffer::on_map()
     {
         void* data = nullptr;
@@ -111,7 +111,7 @@ namespace mge::vulkan {
                                          VK_WHOLE_SIZE));
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
-
+#endif
     void vertex_buffer::on_set_data(void* data, size_t data_size)
     {
         MGE_THROW_NOT_IMPLEMENTED

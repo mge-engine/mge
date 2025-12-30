@@ -21,10 +21,7 @@ namespace mge::opengl {
             return m_buffer;
         }
 
-    protected:
-        void* on_map() override;
-        void  on_unmap() override;
-        void  on_set_data(void* data, size_t data_size) override;
+        void on_set_data(void* data, size_t data_size) override;
 
     private:
         GLuint m_buffer;

@@ -199,6 +199,11 @@ namespace mge {
         return render_context_registry::instance->get(index);
     }
 
+    void render_context::on_destroy_index_buffer(index_buffer* ib)
+    {
+        delete ib;
+    }
+
     shader_handle render_context::create_shader(shader_type t)
     {
         std::unique_ptr<shader> ptr{on_create_shader(t)};
@@ -238,7 +243,6 @@ namespace mge {
                 index(),
                 0,
                 static_cast<uint32_t>(m_index_buffers.size())};
-
             if (data) {
                 const uint8_t* buffer_start = static_cast<const uint8_t*>(data);
                 const uint8_t* buffer_end = buffer_start + data_size;

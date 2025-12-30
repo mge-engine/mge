@@ -22,6 +22,7 @@ namespace mge::dx12 {
 
     vertex_buffer::~vertex_buffer() {}
 
+#if 0
     void* vertex_buffer::on_map()
     {
         // only dynamic resources actually support mapping,
@@ -38,6 +39,7 @@ namespace mge::dx12 {
         mge::free(m_mapped_memory);
         m_mapped_memory = nullptr;
     }
+#endif
 
     void vertex_buffer::on_set_data(void* data, size_t size)
     {

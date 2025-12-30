@@ -24,13 +24,10 @@ namespace mge::dx11 {
             return m_buffer.get();
         }
 
-    protected:
-        void* on_map() override;
-        void  on_unmap() override;
-        void  on_set_data(void* data, size_t data_size) override;
+        void on_set_data(void* data, size_t data_size) override;
 
     private:
-        void create_buffer(void* data);
+        void create_buffer();
 
         mge::com_unique_ptr<ID3D11Buffer> m_buffer;
         DXGI_FORMAT                       m_format;

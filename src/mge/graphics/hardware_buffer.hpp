@@ -66,9 +66,6 @@ namespace mge {
         virtual void on_set_data(void* data, size_t data_size) = 0;
 
     protected:
-        virtual void* on_map() = 0;
-        virtual void  on_unmap() = 0;
-
         buffer_type m_type;
         size_t      m_size;
     };

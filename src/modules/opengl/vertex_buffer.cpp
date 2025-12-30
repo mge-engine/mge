@@ -35,6 +35,7 @@ namespace mge::opengl {
         }
     }
 
+#if 0
     void* vertex_buffer::on_map()
     {
         void* result = glMapNamedBuffer(m_buffer, GL_READ_WRITE);
@@ -47,6 +48,7 @@ namespace mge::opengl {
         glUnmapNamedBuffer(m_buffer);
         CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
     }
+#endif
 
     void vertex_buffer::on_set_data(void* data, size_t data_size)
     {
