@@ -11,45 +11,38 @@ namespace mge::dx11 {
                                  const vertex_layout& layout,
                                  size_t               data_size)
         : mge::vertex_buffer(context, layout, data_size)
-        , m_mapped_memory(nullptr)
     {
-        create_buffer(nullptr);
+        context.prepare_frame([this]() { create_buffer(); });
     }
 
-    vertex_buffer::~vertex_buffer()
-    {
-        mge::free(m_mapped_memory);
-        m_mapped_memory = nullptr;
-    }
-
-#if 0
-    void* vertex_buffer::on_map()
-    {
-        // only dynamic resources actually support mapping,
-        // so far now we do not map here
-        // TODO: #115 Support DirectX11 mapping of resources
-        // MGE_DEBUG_TRACE(DX11) << "Mapping DirectX11 buffer of size " <<
-        // size();
-        m_mapped_memory = mge::malloc(size());
-        return m_mapped_memory;
-    }
-
-    void vertex_buffer::on_unmap()
-    {
-        create_buffer(m_mapped_memory);
-        mge::free(m_mapped_memory);
-        m_mapped_memory = nullptr;
-    }
-#endif
+    vertex_buffer::~vertex_buffer() {}
 
     void vertex_buffer::on_set_data(void* data, size_t data_size)
     {
-        MGE_THROW_NOT_IMPLEMENTED
-            << "DirectX11 vertex_buffer::on_set_data not implemented";
-        // create_buffer(data);
+        if (!data || data_size == 0) {
+            return;
+        }
+
+        if (data_size > size()) {
+            MGE_THROW(mge::illegal_argument)
+                << "Data size " << data_size << " exceeds buffer size "
+                << size();
+        }
+
+        D3D11_BOX dest_box;
+        dest_box.left = 0;
+        dest_box.right = mge::checked_cast<UINT>(data_size);
+        dest_box.top = 0;
+        dest_box.bottom = 1;
+        dest_box.front = 0;
+        dest_box.back = 1;
+
+        dx11_context(context())
+            .device_context()
+            ->UpdateSubresource(m_buffer.get(), 0, &dest_box, data, 0, 0);
     }
 
-    void vertex_buffer::create_buffer(void* data)
+    void vertex_buffer::create_buffer()
     {
         D3D11_BUFFER_DESC buffer_desc = {};
         // TODO: #113 DirectX11 buffer usage support
@@ -59,14 +52,10 @@ namespace mge::dx11 {
         buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
         buffer_desc.MiscFlags = 0;
 
-        D3D11_SUBRESOURCE_DATA initial_data = {};
-        initial_data.pSysMem = data;
-
         ID3D11Buffer* buffer = nullptr;
-        auto          hr = dx11_context(context()).device()->CreateBuffer(
-            &buffer_desc,
-            data ? &initial_data : nullptr,
-            &buffer);
+        auto hr = dx11_context(context()).device()->CreateBuffer(&buffer_desc,
+                                                                 nullptr,
+                                                                 &buffer);
         CHECK_HRESULT(hr, ID3D11Device, CreateBuffer);
         mge::com_unique_ptr<ID3D11Buffer> buffer_ptr(buffer);
         m_buffer.swap(buffer_ptr);

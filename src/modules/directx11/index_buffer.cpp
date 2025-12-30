@@ -36,9 +36,6 @@ namespace mge::dx11 {
         buffer_desc.CPUAccessFlags = 0;
         buffer_desc.MiscFlags = 0;
 
-        D3D11_SUBRESOURCE_DATA initial_data = {};
-        initial_data.pSysMem = nullptr;
-
         ID3D11Buffer* buffer = nullptr;
         auto hr = dx11_context(context()).device()->CreateBuffer(&buffer_desc,
                                                                  nullptr,

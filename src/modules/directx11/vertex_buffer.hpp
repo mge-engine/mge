@@ -25,10 +25,9 @@ namespace mge::dx11 {
         void on_set_data(void* data, size_t data_size) override;
 
     private:
-        void create_buffer(void* data);
+        void create_buffer();
 
         mge::com_unique_ptr<ID3D11Buffer> m_buffer;
-        void*                             m_mapped_memory;
     };
 
 } // namespace mge::dx11
