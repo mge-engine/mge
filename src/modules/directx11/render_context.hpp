@@ -21,11 +21,10 @@ namespace mge::dx11 {
         virtual ~render_context();
         void initialize();
 
-        mge::index_buffer* create_index_buffer(mge::data_type dt,
-                                               size_t         data_size,
-                                               void*          data) override;
+        mge::index_buffer* on_create_index_buffer(mge::data_type dt,
+                                                  size_t data_size) override;
 
-        void destroy_index_buffer(mge::index_buffer* ib) override;
+        void on_destroy_index_buffer(mge::index_buffer* ib) override;
 
         mge::vertex_buffer*
         create_vertex_buffer(const mge::vertex_layout& layout,
@@ -87,9 +86,6 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
         com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
-        std::unordered_map<mge::index_buffer*,
-                           std::unique_ptr<mge::index_buffer>>
-            m_index_buffers;
         std::unordered_map<mge::vertex_buffer*,
                            std::unique_ptr<mge::vertex_buffer>>
             m_vertex_buffers;

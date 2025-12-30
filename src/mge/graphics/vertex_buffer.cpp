@@ -7,9 +7,8 @@
 namespace mge {
     vertex_buffer::vertex_buffer(render_context&      context,
                                  const vertex_layout& layout,
-                                 size_t               data_size,
-                                 void*                initial_data)
-        : hardware_buffer(context, buffer_type::VERTEX, data_size, initial_data)
+                                 size_t               data_size)
+        : hardware_buffer(context, buffer_type::VERTEX, data_size)
         , m_layout(layout)
     {}
 
@@ -23,11 +22,6 @@ namespace mge {
     size_t vertex_buffer::element_count() const
     {
         return size() / m_layout.binary_size();
-    }
-
-    void vertex_buffer::destroy()
-    {
-        context().destroy_vertex_buffer(this);
     }
 
 } // namespace mge

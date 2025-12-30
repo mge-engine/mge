@@ -14,8 +14,7 @@ namespace mge::dx11 {
     public:
         vertex_buffer(render_context&      context,
                       const vertex_layout& layout,
-                      size_t               data_size,
-                      void*                initial_data);
+                      size_t               data_size);
         ~vertex_buffer();
 
         ID3D11Buffer* buffer() const

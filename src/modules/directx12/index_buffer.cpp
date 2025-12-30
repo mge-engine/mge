@@ -8,19 +8,26 @@
 namespace mge::dx12 {
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  type,
-                               size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, type, data_size, data)
+                               size_t          data_size)
+        : mge::index_buffer(context, type, data_size)
         , m_buffer(nullptr)
         , m_mapped_memory(nullptr)
     {
-        create_buffer(data);
+        create_buffer(nullptr);
     }
 
     index_buffer::~index_buffer()
     {
         mge::free(m_mapped_memory);
         m_mapped_memory = nullptr;
+    }
+
+    void index_buffer::on_set_data(void* data, size_t size)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "Setting data on DirectX12 index buffer not "
+               "implemented yet";
+        // create_buffer(data);
     }
 
     void* index_buffer::on_map()

@@ -9,12 +9,11 @@
 namespace mge::dx11 {
     vertex_buffer::vertex_buffer(render_context&      context,
                                  const vertex_layout& layout,
-                                 size_t               data_size,
-                                 void*                initial_data)
-        : mge::vertex_buffer(context, layout, data_size, initial_data)
+                                 size_t               data_size)
+        : mge::vertex_buffer(context, layout, data_size)
         , m_mapped_memory(nullptr)
     {
-        create_buffer(initial_data);
+        create_buffer(nullptr);
     }
 
     vertex_buffer::~vertex_buffer()

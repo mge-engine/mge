@@ -37,12 +37,8 @@ TEST_F(vertex_buffer_test, map_unmap)
     };
     mge::vertex_layout layout;
     layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
-    auto buffer =
-        context.create_vertex_buffer(layout, sizeof(triangle_coords), nullptr);
-
-    int* data = static_cast<int*>(buffer->map());
-    memcpy(data, triangle_coords, sizeof(triangle_coords));
-    buffer->unmap();
+    auto buffer = context.create_vertex_buffer(layout, sizeof(triangle_coords));
+    FAIL() << "Setting data on DirectX12 vertex buffer not implemented yet";
 }
 
 TEST_F(vertex_buffer_test, multiple_vertex_buffers)

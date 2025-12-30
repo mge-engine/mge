@@ -18,8 +18,7 @@ namespace mge::dx12 {
     public:
         index_buffer(render_context& context,
                      mge::data_type  type,
-                     size_t          data_size,
-                     void*           data);
+                     size_t          data_size);
         virtual ~index_buffer();
 
         const D3D12_INDEX_BUFFER_VIEW& view() const
@@ -30,6 +29,7 @@ namespace mge::dx12 {
     protected:
         void* on_map() override;
         void  on_unmap() override;
+        void  on_set_data(void* data, size_t size) override;
 
     private:
         void create_buffer(void* data);

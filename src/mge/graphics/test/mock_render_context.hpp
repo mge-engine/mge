@@ -14,10 +14,10 @@ public:
     ~MOCK_render_context() {}
 
     MOCK_METHOD(mge::index_buffer*,
-                create_index_buffer,
-                (mge::data_type, size_t, void*),
+                on_create_index_buffer,
+                (mge::data_type, size_t),
                 ());
-    MOCK_METHOD(void, destroy_index_buffer, (mge::index_buffer * ib), ());
+    MOCK_METHOD(void, on_destroy_index_buffer, (mge::index_buffer * ib), ());
     MOCK_METHOD(mge::vertex_buffer*,
                 create_vertex_buffer,
                 (const mge::vertex_layout&, size_t, void*),

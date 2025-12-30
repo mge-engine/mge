@@ -7,6 +7,7 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pass.hpp"
 #include "mge/graphics/program_handle.hpp"
 #include "mge/graphics/shader_handle.hpp"
@@ -34,6 +35,7 @@ namespace mge {
     public:
         virtual ~render_context();
 
+    protected:
         /**
          * @brief Create a index buffer.
          *
@@ -42,14 +44,18 @@ namespace mge {
          * @param data          initial data
          * @return created index buffer
          */
-        virtual index_buffer* create_index_buffer(data_type dt,
-                                                  size_t    data_size,
-                                                  void*     data = nullptr) = 0;
+        virtual index_buffer* on_create_index_buffer(data_type dt,
+                                                     size_t    data_size);
         /**
          * @brief Destroy an index buffer.
          * @param ib index buffer to destroy
          */
-        virtual void destroy_index_buffer(index_buffer* ib) = 0;
+        virtual void on_destroy_index_buffer(index_buffer* ib) = 0;
+
+    public:
+        index_buffer_handle create_index_buffer(data_type dt,
+                                                size_t    data_size,
+                                                void*     data = nullptr);
 
         /**
          * @brief Create a vertex buffer object.
@@ -190,10 +196,14 @@ namespace mge {
                 if (object_index < m_programs.size()) {
                     return m_programs[object_index];
                 }
-            } else if constexpr ((std::is_same_v<T, hardware_buffer>) ||
-                                 (std::is_base_of_v<hardware_buffer, T>)) {
-                if (object_index < m_buffers.size()) {
-                    return m_buffers[object_index];
+            } else if constexpr (std::is_same_v<T, index_buffer>) {
+                if (object_index < m_index_buffers.size()) {
+                    return m_index_buffers[object_index];
+                }
+            } else if constexpr (std::is_same_v<T, vertex_buffer>) {
+                if (object_index < m_vertex_buffers.size()) {
+                    return static_cast<vertex_buffer*>(
+                        m_vertex_buffers[object_index]);
                 }
             }
             return nullptr;
@@ -207,6 +217,22 @@ namespace mge {
                 if (object_index < m_shaders.size()) {
                     on_destroy_shader(m_shaders[object_index]);
                     m_shaders[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, program>) {
+                if (object_index < m_programs.size()) {
+                    on_destroy_program(m_programs[object_index]);
+                    m_programs[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, index_buffer>) {
+                if (object_index < m_index_buffers.size()) {
+                    on_destroy_index_buffer(m_index_buffers[object_index]);
+                    m_index_buffers[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, vertex_buffer>) {
+                if (object_index < m_vertex_buffers.size()) {
+                    destroy_vertex_buffer(static_cast<vertex_buffer*>(
+                        m_vertex_buffers[object_index]));
+                    m_vertex_buffers[object_index] = nullptr;
                 }
             }
         }
@@ -223,9 +249,10 @@ namespace mge {
         swap_chain_ref m_swap_chain;    //!< swap chain of this context
         uint16_t       m_index{0xFFFF}; //!< index in registry
 
-        std::vector<shader*>          m_shaders;
-        std::vector<program*>         m_programs;
-        std::vector<hardware_buffer*> m_buffers;
+        std::vector<shader*>        m_shaders;
+        std::vector<program*>       m_programs;
+        std::vector<index_buffer*>  m_index_buffers;
+        std::vector<vertex_buffer*> m_vertex_buffers;
 
         using prepare_frame_action = std::function<void()>;
         std::vector<prepare_frame_action> m_prepare_frame_actions;

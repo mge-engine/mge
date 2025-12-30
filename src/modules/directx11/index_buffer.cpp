@@ -17,14 +17,14 @@ namespace mge::dx11 {
 
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  type,
-                               size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, type, data_size, data)
+                               size_t          data_size)
+        : mge::index_buffer(context, type, data_size)
         , m_format(dx11_format(type))
-        , m_mapped_memory(nullptr)
     {
-        create_buffer(data);
+        create_buffer(nullptr);
     }
+
+    index_buffer::~index_buffer() {}
 
     void index_buffer::create_buffer(void* data)
     {
@@ -49,30 +49,19 @@ namespace mge::dx11 {
         m_buffer.swap(buffer_ptr);
     }
 
+    void index_buffer::on_set_data(void* data, size_t data_size)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "Setting data on DirectX11 index buffer not implemented yet";
+        // check size vs data size
+        // create_buffer(data);
+    }
+
     void* index_buffer::on_map()
     {
-        // only dynamic resources actually support mapping,
-        // so far now we do not map here
-        // TODO: #115 Support DirectX11 mapping of resources
-        // MGE_DEBUG_TRACE(DX11) << "Mapping DirectX11 buffer of size " <<
-        // size();
-        m_mapped_memory = mge::malloc(size());
-        return m_mapped_memory;
+        return nullptr;
     }
 
-    void index_buffer::on_unmap()
-    {
-        // MGE_DEBUG_TRACE(DX11) << "Unmapping memory";
-        create_buffer(m_mapped_memory);
-        // MGE_DEBUG_TRACE(DX11) << "Free unmapped memory";
-        mge::free(m_mapped_memory);
-        m_mapped_memory = nullptr;
-    }
-
-    index_buffer::~index_buffer()
-    {
-        mge::free(m_mapped_memory);
-        m_mapped_memory = nullptr;
-    }
+    void index_buffer::on_unmap() {}
 
 } // namespace mge::dx11

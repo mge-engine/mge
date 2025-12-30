@@ -9,18 +9,19 @@ namespace mge::opengl {
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  dt,
                                size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, dt, data_size, data)
+        : mge::index_buffer(context, dt, data_size)
         , m_buffer(0)
     {
         glCreateBuffers(1, &m_buffer);
         CHECK_OPENGL_ERROR(glCreateBuffers);
         // TODO #112 Support different index buffer usage
+        /*
         glNamedBufferData(m_buffer,
                           mge::checked_cast<GLsizeiptr>(size()),
                           data,
                           GL_STATIC_DRAW);
         CHECK_OPENGL_ERROR(glNamedBufferData);
+        */
     }
 
     index_buffer::~index_buffer()
