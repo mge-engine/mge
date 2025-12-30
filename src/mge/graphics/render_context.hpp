@@ -74,7 +74,7 @@ namespace mge {
          * @brief Destroy a vertex buffer.
          * @param vb vertex buffer to destroy
          */
-        virtual void on_destroy_vertex_buffer(vertex_buffer* vb) = 0;
+        virtual void on_destroy_vertex_buffer(vertex_buffer* vb);
 
     public:
         /**
@@ -101,7 +101,7 @@ namespace mge {
          * @brief Destroy a shader.
          * @param s shader to destroy
          */
-        virtual void on_destroy_shader(shader* s) = 0;
+        virtual void on_destroy_shader(shader* s);
 
         /**
          * @brief Create a program object.
@@ -113,7 +113,7 @@ namespace mge {
          * @brief Destroy a program.
          * @param p program to destroy
          */
-        virtual void on_destroy_program(program* p) = 0;
+        virtual void on_destroy_program(program* p);
 
     public:
         /**

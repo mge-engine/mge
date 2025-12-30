@@ -126,11 +126,6 @@ namespace mge::opengl {
         return new index_buffer(*this, dt, data_size);
     }
 
-    void render_context::on_destroy_index_buffer(mge::index_buffer* ib)
-    {
-        delete ib;
-    }
-
     mge::vertex_buffer*
     render_context::on_create_vertex_buffer(const mge::vertex_layout& layout,
                                             size_t                    data_size)
@@ -138,29 +133,14 @@ namespace mge::opengl {
         return new mge::opengl::vertex_buffer(*this, layout, data_size);
     }
 
-    void render_context::on_destroy_vertex_buffer(mge::vertex_buffer* vb)
-    {
-        delete vb;
-    }
-
     mge::shader* render_context::on_create_shader(mge::shader_type t)
     {
         return new shader(*this, t);
     }
 
-    void render_context::on_destroy_shader(mge::shader* s)
-    {
-        delete s;
-    }
-
     mge::program* render_context::on_create_program()
     {
         return new mge::opengl::program(*this);
-    }
-
-    void render_context::on_destroy_program(mge::program* p)
-    {
-        delete p;
     }
 
     mge::command_list* render_context::create_command_list()

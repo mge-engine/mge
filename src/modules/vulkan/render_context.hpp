@@ -19,14 +19,10 @@ namespace mge::vulkan {
 
         mge::index_buffer* on_create_index_buffer(data_type dt,
                                                   size_t    data_size) override;
-        void on_destroy_index_buffer(mge::index_buffer* ib) override;
         mge::vertex_buffer* on_create_vertex_buffer(const vertex_layout& layout,
                                                     size_t data_size) override;
-        void          on_destroy_vertex_buffer(mge::vertex_buffer* vb) override;
         mge::shader*  on_create_shader(shader_type t) override;
-        void          on_destroy_shader(mge::shader* s) override;
         mge::program* on_create_program() override;
-        void          on_destroy_program(mge::program* p) override;
         mge::frame_command_list* create_current_frame_command_list() override;
         void destroy_frame_command_list(mge::frame_command_list* fcl) override;
         mge::command_list* create_command_list() override;

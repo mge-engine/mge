@@ -210,6 +210,16 @@ namespace mge {
         delete vb;
     }
 
+    void render_context::on_destroy_shader(shader* s)
+    {
+        delete s;
+    }
+
+    void render_context::on_destroy_program(program* p)
+    {
+        delete p;
+    }
+
     shader_handle render_context::create_shader(shader_type t)
     {
         std::unique_ptr<shader> ptr{on_create_shader(t)};
