@@ -26,18 +26,19 @@ namespace mge {
             DEPTH_DESCENDING
         };
 
-        friend class render_context;
+        pass(const pass&) = default;
+        pass(pass&&) = default;
+        pass& operator=(const pass&) = default;
+        pass& operator=(pass&&) = default;
 
         /**
          * @brief Default destructor.
          */
         ~pass();
 
-        pass(const pass&) = delete;
-        pass& operator=(const pass&) = delete;
-
         void set_rect(const mge::rectangle& r);
         void set_scissor(const mge::rectangle& r);
+
         void clear_color(const rgba_color& color);
         void clear_depth(float depth);
         void clear_stencil(int32_t stencil);
@@ -45,13 +46,21 @@ namespace mge {
         void set_draw_mode(mge::pass::draw_mode mode);
         // void set_frame_buffer(mge::frame_buffer* fb);
         void reset();
+
         void touch();
 
+        bool active() const noexcept
+        {
+            return m_active;
+        }
+
     private:
+        friend class render_context;
         pass(mge::render_context* context, uint32_t index);
 
         mge::render_context* m_context{nullptr};
         uint32_t             m_index{0};
+        bool                 m_active{false};
     };
 
 } // namespace mge

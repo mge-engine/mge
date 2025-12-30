@@ -15,7 +15,6 @@
 #include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
-
 #include <memory>
 
 namespace mge {
@@ -168,7 +167,12 @@ namespace mge {
             return m_extent;
         }
 
-        ///////////////////////////////////////////////////////////////////
+        /**
+         * @brief Get a pass by its index. If the pass does not exist, it is
+         * created.
+         * @param index pass index
+         * @return pass
+         */
         mge::pass pass(uint32_t index);
 
         void      frame();
@@ -270,6 +274,8 @@ namespace mge {
 
         using prepare_frame_action = std::function<void()>;
         std::vector<prepare_frame_action> m_prepare_frame_actions;
+
+        std::vector<mge::pass*> m_passes;
     };
 
 } // namespace mge

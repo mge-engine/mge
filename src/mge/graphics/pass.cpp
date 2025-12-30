@@ -13,4 +13,9 @@ namespace mge {
 
     pass::~pass() {}
 
+    void pass::touch()
+    {
+        m_active = true;
+    }
+
 } // namespace mge

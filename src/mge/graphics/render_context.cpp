@@ -180,7 +180,13 @@ namespace mge {
                 throw;
             }
             m_prepare_frame_actions.clear();
-        } else {
+        }
+        if (m_passes.size() > 0) {
+            for (const auto& p : m_passes) {
+                if (p && p->active()) {
+                    // render the pass}
+                }
+            }
             if (m_swap_chain) {
                 m_swap_chain->present();
             }
@@ -302,4 +308,16 @@ namespace mge {
             return vertex_buffer_handle();
         }
     }
+
+    mge::pass render_context::pass(uint32_t index)
+    {
+        if (index >= m_passes.size()) {
+            m_passes.resize(index + 1, nullptr);
+        }
+        if (!m_passes[index]) {
+            m_passes[index] = new mge::pass(this, index);
+        }
+        return *(m_passes[index]);
+    }
+
 } // namespace mge
