@@ -17,10 +17,9 @@ namespace mge::vulkan {
         render_context(render_system& render_system_, window& window_);
         ~render_context();
 
-        mge::index_buffer* create_index_buffer(data_type dt,
-                                               size_t    data_size,
-                                               void*     data) override;
-        void               destroy_index_buffer(mge::index_buffer* ib) override;
+        mge::index_buffer* on_create_index_buffer(data_type dt,
+                                                  size_t    data_size) override;
+        void on_destroy_index_buffer(mge::index_buffer* ib) override;
         mge::vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
                                                  size_t               data_size,
                                                  void* data) override;
@@ -195,16 +194,9 @@ namespace mge::vulkan {
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
-        std::unordered_map<mge::index_buffer*,
-                           std::unique_ptr<mge::index_buffer>>
-            m_index_buffers;
         std::unordered_map<mge::vertex_buffer*,
                            std::unique_ptr<mge::vertex_buffer>>
             m_vertex_buffers;
-        std::unordered_map<mge::shader*, std::unique_ptr<mge::shader>>
-            m_shaders;
-        std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
-            m_programs;
         std::unordered_map<mge::command_list*,
                            std::unique_ptr<mge::command_list>>
             m_command_lists;

@@ -9,13 +9,12 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
 
 namespace mge {
-
-    // MGE_USE_TRACE(GRAPHICS);
 
     class render_context_registry
     {
@@ -225,6 +224,35 @@ namespace mge {
             return handle;
         } else {
             return program_handle();
+        }
+    }
+
+    index_buffer_handle render_context::create_index_buffer(data_type dt,
+                                                            size_t    data_size,
+                                                            void*     data)
+    {
+        std::unique_ptr<index_buffer> ptr{
+            on_create_index_buffer(dt, data_size)};
+        if (ptr) {
+            index_buffer_handle handle{
+                index(),
+                0,
+                static_cast<uint32_t>(m_index_buffers.size())};
+
+            if (data) {
+                const uint8_t* buffer_start = static_cast<const uint8_t*>(data);
+                const uint8_t* buffer_end = buffer_start + data_size;
+                buffer_ref     data_buffer =
+                    std::make_shared<buffer>(buffer_start, buffer_end);
+                index_buffer* ib = ptr.get();
+                prepare_frame_action([ib, data_buffer]() {
+                    ib->on_set_data(data_buffer->data(), data_buffer->size());
+                });
+            }
+            m_index_buffers.emplace_back(ptr.release());
+            return handle;
+        } else {
+            return index_buffer_handle();
         }
     }
 

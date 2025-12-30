@@ -84,7 +84,7 @@ namespace mge {
                 draw_commands->draw(
                     mge::draw_command(m_program.get(),
                                       m_vertices,
-                                      m_indices,
+                                      m_indices.get(),
                                       mge::topology::TRIANGLES));
                 draw_commands->finish();
                 draw_commands->execute();
@@ -213,7 +213,7 @@ namespace mge {
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
             m_draw_commands->draw(mge::draw_command(m_program.get(),
                                                     m_vertices,
-                                                    m_indices,
+                                                    m_indices.get(),
                                                     mge::topology::TRIANGLES));
             m_draw_commands->finish();
             MGE_DEBUG_TRACE(TRIANGLE, "Initializing objects done");
@@ -222,14 +222,14 @@ namespace mge {
         }
 
     private:
-        render_system_ref m_render_system;
-        window_ref        m_window;
-        std::atomic<bool> m_initialized;
-        command_list*     m_clear_commands;
-        command_list*     m_draw_commands;
-        program_handle    m_program;
-        vertex_buffer*    m_vertices;
-        index_buffer*     m_indices;
+        render_system_ref   m_render_system;
+        window_ref          m_window;
+        std::atomic<bool>   m_initialized;
+        command_list*       m_clear_commands;
+        command_list*       m_draw_commands;
+        program_handle      m_program;
+        vertex_buffer*      m_vertices;
+        index_buffer_handle m_indices;
     };
 
     MGE_REGISTER_IMPLEMENTATION(triangle, mge::application, triangle);

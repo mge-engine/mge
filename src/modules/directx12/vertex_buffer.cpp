@@ -13,12 +13,11 @@ namespace mge {
 namespace mge::dx12 {
     vertex_buffer::vertex_buffer(render_context&      context,
                                  const vertex_layout& layout,
-                                 size_t               data_size,
-                                 void*                initial_data)
-        : mge::vertex_buffer(context, layout, data_size, initial_data)
+                                 size_t               data_size)
+        : mge::vertex_buffer(context, layout, data_size)
         , m_mapped_memory(nullptr)
     {
-        create_buffer(initial_data);
+        create_buffer(nullptr);
     }
 
     vertex_buffer::~vertex_buffer() {}
@@ -38,6 +37,14 @@ namespace mge::dx12 {
     {
         mge::free(m_mapped_memory);
         m_mapped_memory = nullptr;
+    }
+
+    void vertex_buffer::on_set_data(void* data, size_t size)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "Setting data on DirectX12 vertex buffer not "
+               "implemented yet";
+        // create_buffer(data);
     }
 
     void vertex_buffer::create_buffer(void* data)

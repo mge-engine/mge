@@ -314,10 +314,8 @@ namespace mge::dx12 {
     mge::vertex_buffer* render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        auto result = std::make_unique<dx12::vertex_buffer>(*this,
-                                                            layout,
-                                                            data_size,
-                                                            data);
+        auto result =
+            std::make_unique<dx12::vertex_buffer>(*this, layout, data_size);
         auto ptr = result.get();
         m_vertex_buffers[ptr] = std::move(result);
         return ptr;

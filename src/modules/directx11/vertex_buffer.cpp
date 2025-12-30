@@ -40,6 +40,13 @@ namespace mge::dx11 {
         m_mapped_memory = nullptr;
     }
 
+    void vertex_buffer::on_set_data(void* data, size_t data_size)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "DirectX11 vertex_buffer::on_set_data not implemented";
+        // create_buffer(data);
+    }
+
     void vertex_buffer::create_buffer(void* data)
     {
         D3D11_BUFFER_DESC buffer_desc = {};

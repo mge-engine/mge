@@ -14,8 +14,7 @@ namespace mge::vulkan {
     public:
         vertex_buffer(render_context&           context,
                       const mge::vertex_layout& layout,
-                      size_t                    data_size,
-                      void*                     initial_data = nullptr);
+                      size_t                    data_size);
 
         ~vertex_buffer();
 
@@ -33,10 +32,11 @@ namespace mge::vulkan {
         {
             return m_attribute_descriptions;
         }
-
+        
+        void on_set_data(void* data, size_t data_size) override;
     protected:
-        virtual void* on_map() override;
-        virtual void  on_unmap() override;
+        void* on_map() override;
+        void  on_unmap() override;
 
     private:
         void create_buffer();

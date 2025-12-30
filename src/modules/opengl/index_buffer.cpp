@@ -8,7 +8,7 @@
 namespace mge::opengl {
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  dt,
-                               size_t          data_size,
+                               size_t          data_size)
         : mge::index_buffer(context, dt, data_size)
         , m_buffer(0)
     {
@@ -43,6 +43,19 @@ namespace mge::opengl {
     {
         glUnmapNamedBuffer(m_buffer);
         CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
+    }
+
+    void index_buffer::on_set_data(void* data, size_t size)
+    {
+        /*
+        glNamedBufferSubData(m_buffer,
+                             0,
+                             mge::checked_cast<GLsizeiptr>(size),
+                             data);
+        CHECK_OPENGL_ERROR(glNamedBufferSubData);
+        */
+        MGE_THROW_NOT_IMPLEMENTED
+            << "Setting data on OpenGL index buffer not implemented yet";
     }
 
 } // namespace mge::opengl

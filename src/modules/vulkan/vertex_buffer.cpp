@@ -9,9 +9,8 @@ namespace mge::vulkan {
 
     vertex_buffer::vertex_buffer(render_context&           context,
                                  const mge::vertex_layout& layout,
-                                 size_t                    data_size,
-                                 void*                     initial_data)
-        : mge::vertex_buffer(context, layout, data_size, initial_data)
+                                 size_t                    data_size)
+        : mge::vertex_buffer(context, layout, data_size)
         , m_vulkan_context(context)
     {
         create_buffer();
@@ -19,13 +18,16 @@ namespace mge::vulkan {
         m_binding_description.stride = static_cast<uint32_t>(layout.stride());
         m_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
         fill_attribute_descriptions();
-
+        /*
         // TODO: allocate mapped
         if (initial_data) {
             void* data = map();
             memcpy(data, initial_data, data_size);
             unmap();
         }
+        */
+        MGE_THROW_NOT_IMPLEMENTED
+            << "vertex_buffer constructor not fully implemented";
     }
 
     static inline VkFormat vk_format(const mge::vertex_format& fmt)
@@ -108,6 +110,12 @@ namespace mge::vulkan {
                                          0,
                                          VK_WHOLE_SIZE));
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
+    }
+
+    void vertex_buffer::on_set_data(void* data, size_t data_size)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "vertex_buffer::on_set_data not implemented";
     }
 
 } // namespace mge::vulkan

@@ -45,7 +45,7 @@ namespace mge {
          * @return created index buffer
          */
         virtual index_buffer* on_create_index_buffer(data_type dt,
-                                                     size_t    data_size);
+                                                     size_t    data_size) = 0;
         /**
          * @brief Destroy an index buffer.
          * @param ib index buffer to destroy

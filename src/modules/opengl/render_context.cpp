@@ -116,38 +116,25 @@ namespace mge::opengl {
         m_programs.clear();
         m_shaders.clear();
         m_vertex_buffers.clear();
-        m_index_buffers.clear();
     }
 
     singleton<opengl_info> render_context::s_glinfo;
 
-    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
-                                                           size_t data_size,
-                                                           void*  data)
+    mge::index_buffer* render_context::on_create_index_buffer(mge::data_type dt,
+                                                              size_t data_size)
     {
-        auto result =
-            std::make_unique<index_buffer>(*this, dt, data_size, data);
-        auto ptr = result.get();
-        m_index_buffers[ptr] = std::move(result);
-        return ptr;
+        return new index_buffer(*this, dt, data_size);
     }
 
-    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    void render_context::on_destroy_index_buffer(mge::index_buffer* ib)
     {
-        auto it = m_index_buffers.find(ib);
-        if (it != m_index_buffers.end()) {
-            m_index_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown index buffer";
-        }
+        delete ib;
     }
 
     mge::vertex_buffer* render_context::create_vertex_buffer(
         const mge::vertex_layout& layout, size_t data_size, void* data)
     {
-        auto result =
-            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
+        auto result = std::make_unique<vertex_buffer>(*this, layout, data_size);
         auto ptr = result.get();
         m_vertex_buffers[ptr] = std::move(result);
         return ptr;

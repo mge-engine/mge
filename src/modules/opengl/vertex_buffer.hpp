@@ -13,8 +13,7 @@ namespace mge::opengl {
     public:
         vertex_buffer(render_context&           context,
                       const mge::vertex_layout& layout,
-                      size_t                    data_size,
-                      void*                     data);
+                      size_t                    data_size);
         virtual ~vertex_buffer();
 
         GLuint buffer_name() const noexcept
@@ -25,6 +24,7 @@ namespace mge::opengl {
     protected:
         void* on_map() override;
         void  on_unmap() override;
+        void  on_set_data(void* data, size_t data_size) override;
 
     private:
         GLuint m_buffer;

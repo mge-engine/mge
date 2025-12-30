@@ -14,8 +14,7 @@ namespace mge::dx12 {
     public:
         vertex_buffer(render_context&      context,
                       const vertex_layout& layout,
-                      size_t               data_size,
-                      void*                initial_data);
+                      size_t               data_size);
         ~vertex_buffer();
 
         ID3D12Resource* buffer() const
@@ -30,6 +29,7 @@ namespace mge::dx12 {
     protected:
         void* on_map() override;
         void  on_unmap() override;
+        void  on_set_data(void* data, size_t size) override;
 
     private:
         void create_buffer(void* data);

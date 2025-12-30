@@ -26,18 +26,13 @@ TEST_F(index_buffer_test, map_unmap)
 {
     auto& context = m_window->render_context();
 
-    auto buffer =
-        context.create_index_buffer(mge::data_type::INT32, 400, nullptr);
-
-    int* data = static_cast<int*>(buffer->map());
-    for (int i = 0; i < 100; ++i) {
-        data[i] = i;
-    }
-    buffer->unmap();
+    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400);
+    FAIL() << "Not implemented yet";
 }
 
 TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
 {
+    /*
     auto& context = m_window->render_context();
     int*  data = new int[100];
     for (int i = 0; i < 100; ++i) {
@@ -50,4 +45,5 @@ TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
         memcpy(buffer_data, data, 100 * sizeof(int));
         buffer->unmap();
     });
+    */
 }

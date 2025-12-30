@@ -56,10 +56,18 @@ namespace mge {
          */
         buffer_type type() const noexcept;
 
+        /**
+         * @brief Set the data of the hardware buffer. The data must be set
+         * synchronously and available when this method returns.
+         *
+         * @param data Pointer to the data to set
+         * @param data_size Size of the data in bytes
+         */
+        virtual void on_set_data(void* data, size_t data_size) = 0;
+
     protected:
         virtual void* on_map() = 0;
         virtual void  on_unmap() = 0;
-        virtual void  on_set_data(void* data, size_t data_size) = 0;
 
         buffer_type m_type;
         size_t      m_size;

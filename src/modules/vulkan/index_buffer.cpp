@@ -9,18 +9,21 @@ namespace mge::vulkan {
 
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  type,
-                               size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, type, data_size, data)
+                               size_t          data_size)
+        : mge::index_buffer(context, type, data_size)
         , m_vulkan_context(context)
     {
         create_buffer();
-        // TODO: maybe use staging buffer
+        MGE_THROW_NOT_IMPLEMENTED
+            << "index_buffer constructor not fully implemented";
+        /*
+            // TODO: maybe use staging buffer
         if (data) {
             void* mapped_data = map();
             memcpy(mapped_data, data, size());
             unmap();
         }
+            */
     }
 
     void index_buffer::create_buffer()
@@ -70,6 +73,12 @@ namespace mge::vulkan {
                                          0,
                                          VK_WHOLE_SIZE));
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
+    }
+
+    void index_buffer::on_set_data(void* data, size_t data_size)
+    {
+        MGE_THROW_NOT_IMPLEMENTED
+            << "index_buffer::on_set_data not implemented";
     }
 
     VkIndexType index_buffer::vk_index_type() const
