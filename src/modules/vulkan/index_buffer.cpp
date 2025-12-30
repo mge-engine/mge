@@ -13,17 +13,8 @@ namespace mge::vulkan {
         : mge::index_buffer(context, type, data_size)
         , m_vulkan_context(context)
     {
+        // can directly create buffer from any thread
         create_buffer();
-        MGE_THROW_NOT_IMPLEMENTED
-            << "index_buffer constructor not fully implemented";
-        /*
-            // TODO: maybe use staging buffer
-        if (data) {
-            void* mapped_data = map();
-            memcpy(mapped_data, data, size());
-            unmap();
-        }
-            */
     }
 
     void index_buffer::create_buffer()
@@ -57,29 +48,31 @@ namespace mge::vulkan {
             m_allocation = VK_NULL_HANDLE;
         }
     }
-#if 0
-    void* index_buffer::on_map()
-    {
-        void* data = nullptr;
-        CHECK_VK_CALL(
-            vmaMapMemory(m_vulkan_context.allocator(), m_allocation, &data));
-        return data;
-    }
-
-    void index_buffer::on_unmap()
-    {
-        CHECK_VK_CALL(vmaFlushAllocation(m_vulkan_context.allocator(),
-                                         m_allocation,
-                                         0,
-                                         VK_WHOLE_SIZE));
-        vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
-    }
-#endif
 
     void index_buffer::on_set_data(void* data, size_t data_size)
     {
-        MGE_THROW_NOT_IMPLEMENTED
-            << "index_buffer::on_set_data not implemented";
+        if (!data || data_size == 0) {
+            return;
+        }
+
+        if (data_size > size()) {
+            MGE_THROW(vulkan::error) << "Data size " << data_size
+                                     << " exceeds buffer size " << size();
+        }
+
+        void* mapped_data = nullptr;
+        CHECK_VK_CALL(vmaMapMemory(m_vulkan_context.allocator(),
+                                   m_allocation,
+                                   &mapped_data));
+
+        memcpy(mapped_data, data, data_size);
+
+        CHECK_VK_CALL(vmaFlushAllocation(m_vulkan_context.allocator(),
+                                         m_allocation,
+                                         0,
+                                         data_size));
+
+        vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
 
     VkIndexType index_buffer::vk_index_type() const

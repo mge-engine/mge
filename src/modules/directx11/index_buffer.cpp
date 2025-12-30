@@ -21,7 +21,7 @@ namespace mge::dx11 {
         : mge::index_buffer(context, type, data_size)
         , m_format(dx11_format(type))
     {
-        context.prepare_frame([this]() { create_buffer(); });
+        context.prepare_frame([this]() { this->create_buffer(); });
     }
 
     index_buffer::~index_buffer() {}
@@ -50,10 +50,27 @@ namespace mge::dx11 {
 
     void index_buffer::on_set_data(void* data, size_t data_size)
     {
-        MGE_THROW_NOT_IMPLEMENTED
-            << "Setting data on DirectX11 index buffer not implemented yet";
-        // check size vs data size
-        // create_buffer(data);
+        if (!data || data_size == 0) {
+            return;
+        }
+
+        if (data_size > size()) {
+            MGE_THROW(mge::illegal_argument)
+                << "Data size " << data_size << " exceeds buffer size "
+                << size();
+        }
+
+        D3D11_BOX dest_box;
+        dest_box.left = 0;
+        dest_box.right = mge::checked_cast<UINT>(data_size);
+        dest_box.top = 0;
+        dest_box.bottom = 1;
+        dest_box.front = 0;
+        dest_box.back = 1;
+
+        dx11_context(context())
+            .device_context()
+            ->UpdateSubresource(m_buffer.get(), 0, &dest_box, data, 0, 0);
     }
 
 } // namespace mge::dx11

@@ -6,6 +6,7 @@
 #include "mge/core/checked_cast.hpp"
 #include "render_context.hpp"
 namespace mge::opengl {
+
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  dt,
                                size_t          data_size)
