@@ -188,6 +188,14 @@ namespace mge {
          */
         void frame();
 
+    protected:
+        /**
+         * @brief Render a pass.
+         * @param p pass to render
+         */
+        virtual void render(const mge::pass& p);
+
+    public:
         image_ref screenshot();
 
         /**

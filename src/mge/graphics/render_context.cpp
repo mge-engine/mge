@@ -188,9 +188,9 @@ namespace mge {
         }
         if (m_passes.size() > 0) {
             bool rendered = false;
-            for (const auto& p : m_passes) {
-                if (p.active()) {
-                    // render the pass}
+            for (auto it = m_passes.rbegin(); it != m_passes.rend(); ++it) {
+                if (it->active()) {
+                    render(*it);
                     rendered = true;
                 }
             }
@@ -198,6 +198,11 @@ namespace mge {
                 m_swap_chain->present();
             }
         }
+    }
+
+    void render_context::render(const mge::pass& p)
+    {
+        // to be implemented by subclasses
     }
 
     image_ref render_context::screenshot()

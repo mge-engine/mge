@@ -18,4 +18,63 @@ namespace mge {
         m_active = true;
     }
 
+    void pass::set_rect(const mge::rectangle& r)
+    {
+        m_rect = r;
+    }
+
+    void pass::set_scissor(const mge::rectangle& r)
+    {
+        m_scissor = r;
+    }
+
+    void pass::reset()
+    {
+        m_active = false;
+        m_rect = mge::rectangle{0, 0, 1, 1};
+        m_scissor = mge::rectangle{0, 0, 1, 1};
+        m_clear_color = rgba_color{0.0f, 0.0f, 0.0f, 1.0f};
+        m_clear_depth = 1.0f;
+        m_clear_stencil = 0;
+        m_clear_color_enabled = false;
+        m_clear_depth_enabled = false;
+        m_clear_stencil_enabled = false;
+    }
+
+    void pass::clear_color(const rgba_color& color)
+    {
+        m_clear_color = color;
+        m_clear_color_enabled = true;
+        m_active = true;
+    }
+
+    void pass::disable_clear_color()
+    {
+        m_clear_color_enabled = false;
+    }
+
+    void pass::clear_depth(float depth)
+    {
+        m_clear_depth = depth;
+        m_clear_depth_enabled = true;
+        m_active = true;
+    }
+
+    void pass::disable_clear_depth()
+    {
+        m_clear_depth_enabled = false;
+    }
+
+    void pass::clear_stencil(int32_t stencil)
+    {
+        m_clear_stencil = stencil;
+        m_clear_stencil_enabled = true;
+        m_active = true;
+    }
+
+    void pass::disable_clear_stencil()
+    {
+        m_clear_stencil_enabled = false;
+    }
+
 } // namespace mge

@@ -14,18 +14,20 @@ namespace mge {
      * @brief A pass is a bucket for draw, resource and compute
      * commands.
      *
+     * A pass also contains some state information that is set when
+     * it is executed:
+     * - the rectangle to render to
+     * - the scissor rectangle
+     * - clear color, depth and stencil values
+     * - whether to clear color, depth and stencil buffers
+     *
+     * A pass is created by a render context and can be used to
+     * organize rendering into multiple passes, each with their own
+     * clear settings and scissor/viewport rectangles.
      */
     class MGEGRAPHICS_EXPORT pass
     {
     public:
-        enum class draw_mode
-        {
-            DEFAULT,
-            SEQUENTIAL,
-            DEPTH_ASCENDING,
-            DEPTH_DESCENDING
-        };
-
         pass(const pass&) = delete;
         pass(pass&&) noexcept = default;
         pass& operator=(const pass&) = delete;
@@ -41,11 +43,14 @@ namespace mge {
         void set_scissor(const mge::rectangle& r);
 
         void clear_color(const rgba_color& color);
-        void clear_depth(float depth);
-        void clear_stencil(int32_t stencil);
+        void disable_clear_color();
 
-        void set_draw_mode(mge::pass::draw_mode mode);
-        // void set_frame_buffer(mge::frame_buffer* fb);
+        void clear_depth(float depth);
+        void disable_clear_depth();
+
+        void clear_stencil(int32_t stencil);
+        void disable_clear_stencil();
+
         void reset();
 
         void touch();
@@ -55,13 +60,61 @@ namespace mge {
             return m_active;
         }
 
+        const rectangle& rect() const noexcept
+        {
+            return m_rect;
+        }
+
+        const rectangle& scissor() const noexcept
+        {
+            return m_scissor;
+        }
+
+        const rgba_color& clear_color_value() const noexcept
+        {
+            return m_clear_color;
+        }
+
+        float clear_depth_value() const noexcept
+        {
+            return m_clear_depth;
+        }
+
+        int32_t clear_stencil_value() const noexcept
+        {
+            return m_clear_stencil;
+        }
+
+        bool clear_color_enabled() const noexcept
+        {
+            return m_clear_color_enabled;
+        }
+
+        bool clear_depth_enabled() const noexcept
+        {
+            return m_clear_depth_enabled;
+        }
+
+        bool clear_stencil_enabled() const noexcept
+        {
+            return m_clear_stencil_enabled;
+        }
+
     private:
         friend class render_context;
         pass(mge::render_context* context, uint32_t index) noexcept;
 
         mge::render_context* m_context{nullptr};
+        mge::rectangle       m_rect{};
+        mge::rectangle       m_scissor{};
+        rgba_color           m_clear_color{0.0f, 0.0f, 0.0f, 1.0f};
+        float                m_clear_depth{1.0f};
+        int32_t              m_clear_stencil{0};
         uint32_t             m_index{0};
         bool                 m_active{false};
+        bool                 m_clear_color_enabled{false};
+        bool                 m_clear_depth_enabled{false};
+        bool                 m_clear_stencil_enabled{false};
     };
 
 } // namespace mge
