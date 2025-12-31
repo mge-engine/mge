@@ -12,7 +12,10 @@ namespace mge::dx12 {
         : mge::index_buffer(context, type, data_size)
         , m_buffer(nullptr)
     {
-        context.prepare_frame([this]() { this->create_buffer(); });
+        context.prepare_frame([this]() {
+            this->create_buffer();
+            set_ready(true);
+        });
     }
 
     index_buffer::~index_buffer() {}
@@ -72,6 +75,7 @@ namespace mge::dx12 {
         m_buffer_view.BufferLocation = m_buffer->GetGPUVirtualAddress();
         m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size);
         m_buffer_view.Format = dx12_format(element_type());
+        set_ready(true);
     }
 
     void index_buffer::create_buffer()

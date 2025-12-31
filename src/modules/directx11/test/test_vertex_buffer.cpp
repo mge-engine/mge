@@ -41,9 +41,9 @@ TEST_F(vertex_buffer_test, construct)
     };
     mge::vertex_layout layout;
     layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
-    auto buffer = context.create_vertex_buffer(layout,
-                                               sizeof(triangle_coords),
-                                               triangle_coords);
+    mge::buffer_ref coords = mge::make_buffer(triangle_coords);
+    auto            buffer =
+        context.create_vertex_buffer(layout, sizeof(triangle_coords), coords);
     EXPECT_TRUE(buffer);
     EXPECT_FALSE(buffer->ready());
     m_window->render_context().frame();

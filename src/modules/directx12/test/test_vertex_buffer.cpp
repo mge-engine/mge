@@ -9,7 +9,7 @@
 class vertex_buffer_test : public mge::dx12::dx12test
 {};
 
-TEST_F(vertex_buffer_test, create)
+TEST_F(vertex_buffer_test, create_no_frame)
 {
     auto& context = m_window->render_context();
 
@@ -21,7 +21,7 @@ TEST_F(vertex_buffer_test, create)
     EXPECT_TRUE(buffer);
 }
 
-TEST_F(vertex_buffer_test, map_unmap)
+TEST_F(vertex_buffer_test, create)
 {
     auto& context = m_window->render_context();
     float triangle_coords[] = {
@@ -37,8 +37,14 @@ TEST_F(vertex_buffer_test, map_unmap)
     };
     mge::vertex_layout layout;
     layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
-    auto buffer = context.create_vertex_buffer(layout, sizeof(triangle_coords));
-    FAIL() << "Setting data on DirectX12 vertex buffer not implemented yet";
+    mge::buffer_ref coords = mge::make_buffer(triangle_coords);
+    auto            buffer =
+        context.create_vertex_buffer(layout, sizeof(triangle_coords), coords);
+    EXPECT_TRUE(buffer);
+    EXPECT_FALSE(buffer->ready());
+    m_window->render_context().frame();
+    EXPECT_TRUE(buffer->ready());
+    buffer.destroy();
 }
 
 TEST_F(vertex_buffer_test, multiple_vertex_buffers)
@@ -55,12 +61,13 @@ TEST_F(vertex_buffer_test, multiple_vertex_buffers)
         -0.5f,
         0.0f,
     };
+    mge::buffer_ref    coords = mge::make_buffer(triangle_coords);
     mge::vertex_layout layout;
     layout.push_back(mge::vertex_format(mge::data_type::FLOAT, 3));
     for (int i = 0; i < 3; ++i) {
         auto buffer = context.create_vertex_buffer(layout,
                                                    sizeof(triangle_coords),
-                                                   triangle_coords);
+                                                   coords);
         EXPECT_EQ(3, buffer->element_count());
     }
 }

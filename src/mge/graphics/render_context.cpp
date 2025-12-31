@@ -86,6 +86,8 @@ namespace mge {
 
     render_context::render_context(const mge::extent& ext)
         : m_extent(ext)
+        , m_frame_resource(m_frame_buffer.data(), m_frame_buffer.size())
+        , m_prepare_frame_actions(&m_frame_resource)
     {
         m_index = render_context_registry::instance->register_context(this);
     }
@@ -177,9 +179,11 @@ namespace mge {
                 }
             } catch (...) {
                 m_prepare_frame_actions.clear();
+                m_frame_resource.release();
                 throw;
             }
             m_prepare_frame_actions.clear();
+            m_frame_resource.release();
         }
         if (m_passes.size() > 0) {
             bool rendered = false;
@@ -256,9 +260,8 @@ namespace mge {
         }
     }
 
-    index_buffer_handle render_context::create_index_buffer(data_type dt,
-                                                            size_t    data_size,
-                                                            void*     data)
+    index_buffer_handle render_context::create_index_buffer(
+        data_type dt, size_t data_size, const buffer_ref& data)
     {
         std::unique_ptr<index_buffer> ptr{
             on_create_index_buffer(dt, data_size)};
@@ -268,13 +271,9 @@ namespace mge {
                 0,
                 static_cast<uint32_t>(m_index_buffers.size())};
             if (data) {
-                const uint8_t* buffer_start = static_cast<const uint8_t*>(data);
-                const uint8_t* buffer_end = buffer_start + data_size;
-                buffer_ref     data_buffer =
-                    std::make_shared<buffer>(buffer_start, buffer_end);
                 index_buffer* ib = ptr.get();
-                prepare_frame_action([ib, data_buffer]() {
-                    ib->on_set_data(data_buffer->data(), data_buffer->size());
+                prepare_frame_action([ib, data]() {
+                    ib->on_set_data(data->data(), data->size());
                 });
             }
             m_index_buffers.emplace_back(ptr.release());
@@ -285,7 +284,7 @@ namespace mge {
     }
 
     vertex_buffer_handle render_context::create_vertex_buffer(
-        const vertex_layout& layout, size_t data_size, void* data)
+        const vertex_layout& layout, size_t data_size, const buffer_ref& data)
     {
         std::unique_ptr<vertex_buffer> ptr{
             on_create_vertex_buffer(layout, data_size)};
@@ -295,13 +294,9 @@ namespace mge {
                 0,
                 static_cast<uint32_t>(m_vertex_buffers.size())};
             if (data) {
-                const uint8_t* buffer_start = static_cast<const uint8_t*>(data);
-                const uint8_t* buffer_end = buffer_start + data_size;
-                buffer_ref     data_buffer =
-                    std::make_shared<buffer>(buffer_start, buffer_end);
                 vertex_buffer* vb = ptr.get();
-                prepare_frame_action([vb, data_buffer]() {
-                    vb->on_set_data(data_buffer->data(), data_buffer->size());
+                prepare_frame_action([vb, data]() {
+                    vb->on_set_data(data->data(), data->size());
                 });
             }
             m_vertex_buffers.emplace_back(ptr.release());

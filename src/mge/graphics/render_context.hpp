@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/buffer.hpp"
 #include "mge/core/callable.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
@@ -16,6 +17,7 @@
 #include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 #include <memory>
+#include <memory_resource>
 
 namespace mge {
 
@@ -53,9 +55,9 @@ namespace mge {
         virtual void on_destroy_index_buffer(index_buffer* ib);
 
     public:
-        index_buffer_handle create_index_buffer(data_type dt,
-                                                size_t    data_size,
-                                                void*     data = nullptr);
+        index_buffer_handle create_index_buffer(data_type         dt,
+                                                size_t            data_size,
+                                                const buffer_ref& data);
 
     protected:
         /**
@@ -84,8 +86,8 @@ namespace mge {
          * @return created vertex buffer
          */
         vertex_buffer_handle create_vertex_buffer(const vertex_layout& layout,
-                                                  size_t data_size,
-                                                  void*  data = nullptr);
+                                                  size_t            data_size,
+                                                  const buffer_ref& data);
 
     protected:
         /**
@@ -273,7 +275,9 @@ namespace mge {
         std::vector<vertex_buffer*> m_vertex_buffers;
 
         using prepare_frame_action = std::function<void()>;
-        std::vector<prepare_frame_action> m_prepare_frame_actions;
+        std::array<std::byte, 64 * 1024>    m_frame_buffer; // 64KB frame buffer
+        std::pmr::monotonic_buffer_resource m_frame_resource;
+        std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
 
         std::vector<mge::pass*> m_passes;
     };

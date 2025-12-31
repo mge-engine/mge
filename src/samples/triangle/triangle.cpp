@@ -203,12 +203,13 @@ namespace mge {
             m_vertices = m_window->render_context().create_vertex_buffer(
                 layout,
                 sizeof(triangle_coords),
-                triangle_coords);
+                mge::make_buffer(triangle_coords));
+
             MGE_DEBUG_TRACE(TRIANGLE, "Create index buffer");
             m_indices = m_window->render_context().create_index_buffer(
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
-                triangle_indices);
+                mge::make_buffer(triangle_indices));
             m_draw_commands = m_window->render_context().create_command_list();
             m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
             m_draw_commands->draw(mge::draw_command(m_program.get(),

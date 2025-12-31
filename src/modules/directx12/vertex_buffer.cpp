@@ -16,7 +16,10 @@ namespace mge::dx12 {
                                  size_t               data_size)
         : mge::vertex_buffer(context, layout, data_size)
     {
-        context.prepare_frame([this]() { create_buffer(); });
+        context.prepare_frame([this]() {
+            create_buffer();
+            set_ready(true);
+        });
     }
 
     vertex_buffer::~vertex_buffer() {}
@@ -76,6 +79,7 @@ namespace mge::dx12 {
         m_buffer_view.SizeInBytes = mge::checked_cast<UINT>(size);
         m_buffer_view.StrideInBytes =
             mge::checked_cast<UINT>(layout().stride());
+        set_ready(true);
     }
 
     void vertex_buffer::create_buffer()

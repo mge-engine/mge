@@ -26,7 +26,7 @@ TEST_F(index_buffer_test, map_unmap)
 {
     auto& context = m_window->render_context();
 
-    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400);
+    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400, {});
     FAIL() << "Not implemented yet";
 }
 

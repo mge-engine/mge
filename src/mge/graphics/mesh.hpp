@@ -2,10 +2,10 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/buffer.hpp"
 #include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_layout.hpp"
-
 #include <span>
 
 namespace mge {
@@ -80,6 +80,22 @@ namespace mge {
          * @return index data of the mesh
          */
         virtual std::span<uint8_t> index_data_span() const = 0;
+
+        /**
+         * @brief Get the vertex buffer as buffer reference.
+         * Depending on the implementation of the mesh, this may return a copy.
+         *
+         * @return vertex buffer reference
+         */
+        virtual buffer_ref vertices() const = 0;
+
+        /**
+         * @brief Get the index buffer reference.
+         * Depending on the implementation of the mesh, this may return a copy.
+         *
+         * @return index buffer reference
+         */
+        virtual buffer_ref indices() const = 0;
 
     private:
         vertex_layout m_vertex_layout;
