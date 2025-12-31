@@ -182,12 +182,14 @@ namespace mge {
             m_prepare_frame_actions.clear();
         }
         if (m_passes.size() > 0) {
+            bool rendered = false;
             for (const auto& p : m_passes) {
                 if (p && p->active()) {
                     // render the pass}
+                    rendered = true;
                 }
             }
-            if (m_swap_chain) {
+            if (rendered && m_swap_chain) {
                 m_swap_chain->present();
             }
         }

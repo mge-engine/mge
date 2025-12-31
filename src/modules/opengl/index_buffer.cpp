@@ -16,12 +16,14 @@ namespace mge::opengl {
         context.prepare_frame([this]() {
             glCreateBuffers(1, &this->m_buffer);
             CHECK_OPENGL_ERROR(glCreateBuffers);
+            set_ready(true);
         });
     }
 
     index_buffer::~index_buffer()
     {
         if (m_buffer) {
+            set_ready(false);
             GLuint buffer_to_del = m_buffer;
             context().prepare_frame([buffer_to_del]() {
                 glDeleteBuffers(1, &buffer_to_del);
@@ -36,6 +38,7 @@ namespace mge::opengl {
                           data,
                           GL_STATIC_DRAW);
         CHECK_OPENGL_ERROR(glNamedBufferData);
+        set_ready(true);
     }
 
 } // namespace mge::opengl
