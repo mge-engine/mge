@@ -22,7 +22,7 @@ TEST_F(index_buffer_test, create)
     EXPECT_TRUE(buffer);
 }
 
-TEST_F(index_buffer_test, map_unmap)
+TEST_F(index_buffer_test, construct)
 {
     auto& context = m_window->render_context();
     auto  buffer_data = mge::make_buffer(sizeof(int) * 100);
