@@ -53,7 +53,7 @@ namespace mge::dx11 {
         buffer_desc.Usage = D3D11_USAGE_DEFAULT;
         buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         buffer_desc.ByteWidth = mge::checked_cast<UINT>(size());
-        buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        buffer_desc.CPUAccessFlags = 0;
         buffer_desc.MiscFlags = 0;
 
         ID3D11Buffer* buffer = nullptr;

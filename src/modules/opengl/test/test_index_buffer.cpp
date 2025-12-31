@@ -54,4 +54,5 @@ TEST_F(index_buffer_test, bench_index_buffer_create_and_upload)
         m_window->render_context().frame();
         buffer.destroy();
     });
+    delete[] data;
 }
