@@ -18,6 +18,7 @@ namespace mge::vulkan {
         m_binding_description.stride = static_cast<uint32_t>(layout.stride());
         m_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
         fill_attribute_descriptions();
+        set_ready(true);
     }
 
     static inline VkFormat vk_format(const mge::vertex_format& fmt)
@@ -96,6 +97,7 @@ namespace mge::vulkan {
                                          m_allocation,
                                          0,
                                          VK_WHOLE_SIZE));
+        set_ready(true);
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
 

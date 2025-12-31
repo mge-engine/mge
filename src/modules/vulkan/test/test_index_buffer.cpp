@@ -25,25 +25,33 @@ TEST_F(index_buffer_test, create)
 TEST_F(index_buffer_test, map_unmap)
 {
     auto& context = m_window->render_context();
-
-    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400, {});
-    FAIL() << "Not implemented yet";
+    auto  buffer_data = mge::make_buffer(sizeof(int) * 100);
+    int*  data_ptr = reinterpret_cast<int*>(buffer_data->data());
+    for (int i = 0; i < 100; ++i) {
+        data_ptr[i] = i;
+    }
+    auto buffer =
+        context.create_index_buffer(mge::data_type::INT32, 400, buffer_data);
+    EXPECT_TRUE(buffer);
+    EXPECT_TRUE(buffer->ready()); // Vulkan index buffer is ready immediately
+    m_window->render_context().frame();
+    EXPECT_TRUE(buffer->ready());
+    buffer.destroy();
 }
 
 TEST_F(index_buffer_test, bench_index_buffer_create_map_unmap)
 {
-    /*
     auto& context = m_window->render_context();
-    int*  data = new int[100];
+    auto  buffer_data = mge::make_buffer(sizeof(int) * 100);
+    int*  data = reinterpret_cast<int*>(buffer_data->data());
     for (int i = 0; i < 100; ++i) {
         data[i] = i;
     }
     mge::benchmark().run("index_buffer_creation", [&]() {
-        auto buffer =
-            context.create_index_buffer(mge::data_type::INT32, 400, nullptr);
-        int* buffer_data = static_cast<int*>(buffer->map());
-        memcpy(buffer_data, data, 100 * sizeof(int));
-        buffer->unmap();
+        auto buffer = context.create_index_buffer(mge::data_type::INT32,
+                                                  400,
+                                                  buffer_data);
+        m_window->render_context().frame();
+        buffer.destroy();
     });
-    */
 }

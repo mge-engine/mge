@@ -15,6 +15,7 @@ namespace mge::vulkan {
     {
         // can directly create buffer from any thread
         create_buffer();
+        set_ready(true);
     }
 
     void index_buffer::create_buffer()
@@ -71,7 +72,7 @@ namespace mge::vulkan {
                                          m_allocation,
                                          0,
                                          data_size));
-
+        set_ready(true);
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
 
