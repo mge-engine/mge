@@ -173,11 +173,21 @@ namespace mge {
          * @brief Get a pass by its index. If the pass does not exist, it is
          * created.
          * @param index pass index
-         * @return pass
+         * @return reference to pass
          */
-        mge::pass pass(uint32_t index);
+        mge::pass& pass(uint32_t index);
 
-        void      frame();
+        /**
+         * @brief Render a frame.
+         *
+         * This method does the following to process a frame:
+         * - Calls all registered prepare frame actions.
+         * - Draws all active passes in order.
+         * - If any pass was active, presents the swap chain.
+         *
+         */
+        void frame();
+
         image_ref screenshot();
 
         /**
@@ -257,6 +267,12 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Prepare the frame by registering an action to be called
+         * before rendering the frame.
+         *
+         * @param action action to be called
+         */
         template <mge::callable ActionType>
         void prepare_frame(ActionType&& action)
         {
@@ -275,11 +291,12 @@ namespace mge {
         std::vector<vertex_buffer*> m_vertex_buffers;
 
         using prepare_frame_action = std::function<void()>;
-        std::array<std::byte, 64 * 1024>    m_frame_buffer; // 64KB frame buffer
-        std::pmr::monotonic_buffer_resource m_frame_resource;
+
+        std::array<std::byte, 65536>           m_prepare_frame_memory;
+        std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;
         std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
 
-        std::vector<mge::pass*> m_passes;
+        std::vector<mge::pass> m_passes;
     };
 
 } // namespace mge

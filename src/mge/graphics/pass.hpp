@@ -26,9 +26,9 @@ namespace mge {
             DEPTH_DESCENDING
         };
 
-        pass(const pass&) = default;
-        pass(pass&&) = default;
-        pass& operator=(const pass&) = default;
+        pass(const pass&) = delete;
+        pass(pass&&) noexcept = default;
+        pass& operator=(const pass&) = delete;
         pass& operator=(pass&&) = default;
 
         /**
@@ -37,6 +37,7 @@ namespace mge {
         ~pass();
 
         void set_rect(const mge::rectangle& r);
+
         void set_scissor(const mge::rectangle& r);
 
         void clear_color(const rgba_color& color);
@@ -56,7 +57,7 @@ namespace mge {
 
     private:
         friend class render_context;
-        pass(mge::render_context* context, uint32_t index);
+        pass(mge::render_context* context, uint32_t index) noexcept;
 
         mge::render_context* m_context{nullptr};
         uint32_t             m_index{0};

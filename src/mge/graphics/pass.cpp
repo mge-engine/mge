@@ -6,7 +6,7 @@
 
 namespace mge {
 
-    pass::pass(mge::render_context* context, uint32_t index)
+    pass::pass(mge::render_context* context, uint32_t index) noexcept
         : m_context(context)
         , m_index(index)
     {}

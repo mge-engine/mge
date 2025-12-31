@@ -86,8 +86,9 @@ namespace mge {
 
     render_context::render_context(const mge::extent& ext)
         : m_extent(ext)
-        , m_frame_resource(m_frame_buffer.data(), m_frame_buffer.size())
-        , m_prepare_frame_actions(&m_frame_resource)
+        , m_prepare_frame_resource(m_prepare_frame_memory.data(),
+                                   m_prepare_frame_memory.size())
+        , m_prepare_frame_actions(&m_prepare_frame_resource)
     {
         m_index = render_context_registry::instance->register_context(this);
     }
@@ -179,16 +180,16 @@ namespace mge {
                 }
             } catch (...) {
                 m_prepare_frame_actions.clear();
-                m_frame_resource.release();
+                m_prepare_frame_resource.release();
                 throw;
             }
             m_prepare_frame_actions.clear();
-            m_frame_resource.release();
+            m_prepare_frame_resource.release();
         }
         if (m_passes.size() > 0) {
             bool rendered = false;
             for (const auto& p : m_passes) {
-                if (p && p->active()) {
+                if (p.active()) {
                     // render the pass}
                     rendered = true;
                 }
@@ -306,15 +307,13 @@ namespace mge {
         }
     }
 
-    mge::pass render_context::pass(uint32_t index)
+    mge::pass& render_context::pass(uint32_t index)
     {
-        if (index >= m_passes.size()) {
-            m_passes.resize(index + 1, nullptr);
+        while (index >= m_passes.size()) {
+            m_passes.emplace_back(
+                mge::pass(this, static_cast<uint32_t>(m_passes.size())));
         }
-        if (!m_passes[index]) {
-            m_passes[index] = new mge::pass(this, index);
-        }
-        return *(m_passes[index]);
+        return m_passes[index];
     }
 
 } // namespace mge
