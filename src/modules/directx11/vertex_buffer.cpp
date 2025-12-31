@@ -12,7 +12,10 @@ namespace mge::dx11 {
                                  size_t               data_size)
         : mge::vertex_buffer(context, layout, data_size)
     {
-        context.prepare_frame([this]() { create_buffer(); });
+        context.prepare_frame([this]() {
+            create_buffer();
+            set_ready(true);
+        });
     }
 
     vertex_buffer::~vertex_buffer() {}
@@ -40,6 +43,7 @@ namespace mge::dx11 {
         dx11_context(context())
             .device_context()
             ->UpdateSubresource(m_buffer.get(), 0, &dest_box, data, 0, 0);
+        set_ready(true);
     }
 
     void vertex_buffer::create_buffer()

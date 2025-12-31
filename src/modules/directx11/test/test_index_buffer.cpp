@@ -17,12 +17,23 @@ TEST_F(index_buffer_test, create)
         context.create_index_buffer(mge::data_type::INT32, 400, nullptr);
 
     EXPECT_TRUE(buffer);
+    EXPECT_FALSE(buffer->ready());
+    m_window->render_context().frame();
+    EXPECT_TRUE(buffer->ready());
+    buffer.destroy();
 }
 
-TEST_F(index_buffer_test, set_data)
+TEST_F(index_buffer_test, create_with_data)
 {
     auto& context = m_window->render_context();
-
-    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400);
-    FAIL() << "Setting data on DirectX11 index buffer not implemented yet";
+    int   data[100];
+    for (int i = 0; i < 100; ++i) {
+        data[i] = i;
+    }
+    auto buffer = context.create_index_buffer(mge::data_type::INT32, 400, data);
+    EXPECT_TRUE(buffer);
+    EXPECT_FALSE(buffer->ready());
+    m_window->render_context().frame();
+    EXPECT_TRUE(buffer->ready());
+    buffer.destroy();
 }

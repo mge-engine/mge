@@ -21,7 +21,10 @@ namespace mge::dx11 {
         : mge::index_buffer(context, type, data_size)
         , m_format(dx11_format(type))
     {
-        context.prepare_frame([this]() { this->create_buffer(); });
+        context.prepare_frame([this]() {
+            this->create_buffer();
+            set_ready(true);
+        });
     }
 
     index_buffer::~index_buffer() {}
@@ -68,6 +71,7 @@ namespace mge::dx11 {
         dx11_context(context())
             .device_context()
             ->UpdateSubresource(m_buffer.get(), 0, &dest_box, data, 0, 0);
+        set_ready(true);
     }
 
 } // namespace mge::dx11
