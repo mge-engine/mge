@@ -68,10 +68,12 @@ TEST_F(shader_test, set_code_failed)
     auto& context = m_window->render_context();
     auto  shader = context.create_shader(mge::shader_type::VERTEX);
 
-    auto        bogus = "bogus"sv;
-    mge::buffer code(bogus.begin(), bogus.end());
+    auto            bogus = "bogus"sv;
+    mge::buffer_ref code = mge::make_buffer(
+        reinterpret_cast<const std::byte*>(bogus.data()),
+        reinterpret_cast<const std::byte*>(bogus.data() + bogus.size()));
     try {
-        shader->set_code(code);
+        shader->set_code(*code);
         context.frame();
         FAIL() << "Expected set_code to fail";
     } catch (const mge::exception&) {

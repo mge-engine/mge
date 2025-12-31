@@ -49,24 +49,28 @@ namespace mge {
 
         void* vertex_data() const override
         {
-            return static_cast<void*>(const_cast<uint8_t*>(m_vertices->data()));
+            return static_cast<void*>(
+                const_cast<std::byte*>(m_vertices->data()));
         }
 
         void* index_data() const override
         {
-            return static_cast<void*>(const_cast<uint8_t*>(m_indices->data()));
+            return static_cast<void*>(
+                const_cast<std::byte*>(m_indices->data()));
         }
 
-        std::span<uint8_t> vertex_data_span() const override
+        std::span<std::byte> vertex_data_span() const override
         {
-            return std::span<uint8_t>(const_cast<uint8_t*>(m_vertices->data()),
-                                      m_vertices->size());
+            return std::span<std::byte>(
+                const_cast<std::byte*>(m_vertices->data()),
+                m_vertices->size());
         }
 
-        std::span<uint8_t> index_data_span() const override
+        std::span<std::byte> index_data_span() const override
         {
-            return std::span<uint8_t>(const_cast<uint8_t*>(m_indices->data()),
-                                      m_indices->size());
+            return std::span<std::byte>(
+                const_cast<std::byte*>(m_indices->data()),
+                m_indices->size());
         }
 
     private:

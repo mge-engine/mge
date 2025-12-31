@@ -6,6 +6,8 @@
 #include "mge/core/format.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/vertex_layout.hpp"
+
+#include <cstddef>
 #include <span>
 
 namespace mge {
@@ -72,14 +74,14 @@ namespace mge {
          *
          * @return vertex data of the mesh
          */
-        virtual std::span<uint8_t> vertex_data_span() const = 0;
+        virtual std::span<std::byte> vertex_data_span() const = 0;
 
         /**
          * @brief Index data of the mesh.
          *
          * @return index data of the mesh
          */
-        virtual std::span<uint8_t> index_data_span() const = 0;
+        virtual std::span<std::byte> index_data_span() const = 0;
 
         /**
          * @brief Get the vertex buffer as buffer reference.
