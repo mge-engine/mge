@@ -16,13 +16,12 @@ namespace mge {
     class vertex_buffer;
     class shader;
     class program;
+    class frame_buffer;
+
     class command_list;
     class frame_command_list;
     MGE_DECLARE_REF(texture);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);
-
-    // shader_handle is a type alias, not a class; include its header where
-    // needed
 
 } // namespace mge
