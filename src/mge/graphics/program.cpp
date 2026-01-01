@@ -44,6 +44,7 @@ namespace mge {
             context().prepare_frame([this]() {
                 this->on_link();
                 this->m_needs_link = false;
+                set_ready(true);
             });
         }
     }

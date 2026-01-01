@@ -19,6 +19,7 @@ namespace mge {
         context().prepare_frame([this, src]() {
             this->on_compile(*src);
             this->m_initialized = true;
+            set_ready(true);
         });
     }
 
@@ -29,6 +30,7 @@ namespace mge {
         context().prepare_frame([this, c]() {
             this->on_set_code(*c);
             this->m_initialized = true;
+            set_ready(true);
         });
     }
 
