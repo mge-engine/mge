@@ -70,6 +70,8 @@ namespace mge::dx11 {
 
         mge::rectangle default_scissor() const;
 
+        void render(const mge::pass& p) override;
+
     private:
         void create_swap_chain();
 

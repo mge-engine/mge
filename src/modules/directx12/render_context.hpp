@@ -114,6 +114,8 @@ namespace mge::dx12 {
         void before_present();
         void after_present();
 
+        void render(const mge::pass& p) override;
+
     private:
         friend class swap_chain;
 

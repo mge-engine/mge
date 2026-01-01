@@ -213,4 +213,16 @@ namespace mge::dx11 {
         return mge::rectangle(m_window.position(), m_window.extent());
     }
 
+    void render_context::render(const mge::pass& p)
+    {
+        if (p.clear_color_enabled()) {
+            float clearcolor[4] = {p.clear_color_value().r,
+                                   p.clear_color_value().g,
+                                   p.clear_color_value().b,
+                                   p.clear_color_value().a};
+            m_device_context->ClearRenderTargetView(m_render_target_view.get(),
+                                                    clearcolor);
+        }
+    }
+
 } // namespace mge::dx11

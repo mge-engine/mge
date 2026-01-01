@@ -701,4 +701,6 @@ namespace mge::dx12 {
         }
     }
 
+    void render_context::render(const mge::pass& p) {}
+
 } // namespace mge::dx12
