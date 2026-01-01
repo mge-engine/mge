@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "command_list.hpp"
+#include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
@@ -186,6 +187,20 @@ namespace mge::opengl {
         return m_window->extent().height;
     }
 
-    void render_context::render(const mge::pass& p) {}
+    void render_context::render(const mge::pass& p)
+    {
+
+        // if (pass.frame_buffer()) {
+        //    // bind frame buffer
+        // }
+
+        if (p.clear_color_enabled()) {
+            const rgba_color& c = p.clear_color_value();
+            glClearColor(c.r, c.g, c.b, c.a);
+            CHECK_OPENGL_ERROR(glClearColor);
+            glClear(GL_COLOR_BUFFER_BIT);
+            CHECK_OPENGL_ERROR(glClear);
+        }
+    }
 
 } // namespace mge::opengl
