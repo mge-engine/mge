@@ -77,4 +77,10 @@ namespace mge {
         m_clear_stencil_enabled = false;
     }
 
+    void pass::set_frame_buffer(const frame_buffer_handle& fb) noexcept
+    {
+        m_frame_buffer = fb;
+        // setting frame buffer does not make a pass active
+    }
+
 } // namespace mge

@@ -4,6 +4,7 @@
 /** @file */
 #pragma once
 #include "mge/graphics/dllexport.hpp"
+#include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
@@ -50,6 +51,8 @@ namespace mge {
 
         void clear_stencil(int32_t stencil);
         void disable_clear_stencil();
+
+        void set_frame_buffer(const frame_buffer_handle& fb) noexcept;
 
         void reset();
 
@@ -100,21 +103,27 @@ namespace mge {
             return m_clear_stencil_enabled;
         }
 
+        frame_buffer_handle frame_buffer() const noexcept
+        {
+            return m_frame_buffer;
+        }
+
     private:
         friend class render_context;
         pass(mge::render_context* context, uint32_t index) noexcept;
 
-        mge::render_context* m_context{nullptr};
-        mge::rectangle       m_rect{};
-        mge::rectangle       m_scissor{};
-        rgba_color           m_clear_color{0.0f, 0.0f, 0.0f, 1.0f};
-        float                m_clear_depth{1.0f};
-        int32_t              m_clear_stencil{0};
-        uint32_t             m_index{0};
-        bool                 m_active{false};
-        bool                 m_clear_color_enabled{false};
-        bool                 m_clear_depth_enabled{false};
-        bool                 m_clear_stencil_enabled{false};
+        mge::render_context*     m_context{nullptr};
+        mge::frame_buffer_handle m_frame_buffer;
+        mge::rectangle           m_rect{};
+        mge::rectangle           m_scissor{};
+        rgba_color               m_clear_color{0.0f, 0.0f, 0.0f, 1.0f};
+        float                    m_clear_depth{1.0f};
+        int32_t                  m_clear_stencil{0};
+        uint32_t                 m_index{0};
+        bool                     m_active{false};
+        bool                     m_clear_color_enabled{false};
+        bool                     m_clear_depth_enabled{false};
+        bool                     m_clear_stencil_enabled{false};
     };
 
 } // namespace mge
