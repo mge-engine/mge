@@ -35,6 +35,7 @@ SET(mgegraphics_sources
     memory_mesh.cpp
     uniform_binding.cpp
     pass.cpp
+    frame_buffer.cpp
 )
 
 SET(mgegraphics_headers
@@ -79,6 +80,7 @@ SET(mgegraphics_headers
     rectangle.hpp
     viewport.hpp
     pass.hpp
+    frame_buffer.hpp
 )
 
 MGE_LIBRARY(
