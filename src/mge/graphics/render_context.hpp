@@ -7,6 +7,7 @@
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
+#include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/index_buffer_handle.hpp"
 #include "mge/graphics/pass.hpp"
@@ -116,6 +117,9 @@ namespace mge {
          */
         virtual void on_destroy_program(program* p);
 
+        virtual frame_buffer* on_create_frame_buffer();
+        virtual void          on_destroy_frame_buffer(frame_buffer* fb);
+
     public:
         /**
          * @brief Create a shader object.
@@ -127,6 +131,13 @@ namespace mge {
          * @brief Create a program object.
          */
         program_handle create_program();
+
+        /**
+         * @brief Create a frame buffer object.
+         *
+         * @return created frame buffer
+         */
+        frame_buffer_handle create_frame_buffer();
 
         /**
          * @brief Create a command list object.
@@ -272,6 +283,11 @@ namespace mge {
                         m_vertex_buffers[object_index]));
                     m_vertex_buffers[object_index] = nullptr;
                 }
+            } else if constexpr (std::is_same_v<T, frame_buffer>) {
+                if (object_index < m_frame_buffers.size()) {
+                    on_destroy_frame_buffer(m_frame_buffers[object_index]);
+                    m_frame_buffers[object_index] = nullptr;
+                }
             }
         }
 
@@ -297,6 +313,7 @@ namespace mge {
         std::vector<program*>       m_programs;
         std::vector<index_buffer*>  m_index_buffers;
         std::vector<vertex_buffer*> m_vertex_buffers;
+        std::vector<frame_buffer*>  m_frame_buffers;
 
         using prepare_frame_action = std::function<void()>;
 

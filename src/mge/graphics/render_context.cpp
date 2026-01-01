@@ -8,6 +8,7 @@
 #include "mge/core/singleton.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
+#include "mge/graphics/frame_buffer.hpp"
 #include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"
@@ -186,17 +187,16 @@ namespace mge {
             m_prepare_frame_actions.clear();
             m_prepare_frame_resource.release();
         }
+        bool rendered = false;
         if (m_passes.size() > 0) {
-            bool rendered = false;
-            for (auto it = m_passes.rbegin(); it != m_passes.rend(); ++it) {
-                if (it->active()) {
-                    render(*it);
+            for (const auto& p : m_passes)
+                if (p.active()) {
+                    render(p);
                     rendered = true;
                 }
-            }
-            if (rendered && m_swap_chain) {
-                m_swap_chain->present();
-            }
+        }
+        if (rendered && m_swap_chain) {
+            m_swap_chain->present();
         }
     }
 
@@ -236,6 +236,17 @@ namespace mge {
     void render_context::on_destroy_program(program* p)
     {
         delete p;
+    }
+
+    frame_buffer* render_context::on_create_frame_buffer()
+    {
+        MGE_THROW_NOT_IMPLEMENTED << "frame buffer creation not implemented";
+        return nullptr;
+    }
+
+    void render_context::on_destroy_frame_buffer(frame_buffer* fb)
+    {
+        delete fb;
     }
 
     shader_handle render_context::create_shader(shader_type t)
@@ -309,6 +320,21 @@ namespace mge {
             return handle;
         } else {
             return vertex_buffer_handle();
+        }
+    }
+
+    frame_buffer_handle render_context::create_frame_buffer()
+    {
+        std::unique_ptr<frame_buffer> ptr{on_create_frame_buffer()};
+        if (ptr) {
+            frame_buffer_handle handle{
+                index(),
+                0,
+                static_cast<uint32_t>(m_frame_buffers.size())};
+            m_frame_buffers.emplace_back(ptr.release());
+            return handle;
+        } else {
+            return frame_buffer_handle();
         }
     }
 
