@@ -186,4 +186,6 @@ namespace mge::opengl {
         return m_window->extent().height;
     }
 
+    void render_context::render(const mge::pass& p) {}
+
 } // namespace mge::opengl

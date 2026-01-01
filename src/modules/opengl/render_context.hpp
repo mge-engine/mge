@@ -30,6 +30,8 @@ namespace mge {
             on_create_vertex_buffer(const mge::vertex_layout& layout,
                                     size_t data_size) override;
 
+            void render(const mge::pass& p) override;
+
             opengl_info& gl_info()
             {
                 return *s_glinfo;
