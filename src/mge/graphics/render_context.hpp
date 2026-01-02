@@ -193,7 +193,12 @@ namespace mge {
         virtual void render(const mge::pass& p);
 
     public:
-        image_ref screenshot();
+        /**
+         * @brief Take a screenshot of the current frame buffer.
+         *
+         * @return image containing the screenshot
+         */
+        virtual image_ref screenshot() = 0;
 
         /**
          * @brief Get the index of this render context.
@@ -292,7 +297,6 @@ namespace mge {
 
     protected:
         mge::extent    m_extent;
-        swap_chain_ref m_swap_chain;    //!< swap chain of this context
         uint16_t       m_index{0xFFFF}; //!< index in registry
 
         std::vector<shader*>        m_shaders;

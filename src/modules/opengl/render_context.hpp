@@ -38,6 +38,9 @@ namespace mge {
             mge::shader*       on_create_shader(shader_type t) override;
             mge::program*      on_create_program() override;
             mge::texture_ref create_texture(texture_type type) override;
+            mge::image_ref   screenshot() override;
+
+
             mge::rectangle   default_scissor() const;
             uint32_t         window_height() const;
 #ifdef MGE_OS_WINDOWS
@@ -47,7 +50,6 @@ namespace mge {
                 return m_hdc;
             }
 
-            void create_swap_chain(); // needed for two-step initialization
         private:
             void select_pixel_format();
             void create_primary_glrc();

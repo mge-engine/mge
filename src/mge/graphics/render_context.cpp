@@ -122,22 +122,11 @@ namespace mge {
                     rendered = true;
                 }
         }
-        if (rendered && m_swap_chain) {
-            m_swap_chain->present();
-        }
     }
 
     void render_context::render(const mge::pass& p)
     {
         // to be implemented by subclasses
-    }
-
-    image_ref render_context::screenshot()
-    {
-        if (m_swap_chain) {
-            return m_swap_chain->screenshot();
-        }
-        return image_ref();
     }
 
     render_context* render_context::get(uint16_t index)

@@ -26,7 +26,6 @@ SET(mge_vulkan_module_SOURCES
     render_system.cpp
     render_context.cpp
     window.cpp
-    swap_chain.cpp
     shader.cpp
     vulkan_memory_allocator.cpp
     program.cpp

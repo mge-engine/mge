@@ -29,6 +29,8 @@ namespace mge::dx11 {
         mge::shader*       on_create_shader(mge::shader_type t) override;
         mge::program*      on_create_program() override;
         mge::texture_ref create_texture(mge::texture_type type) override;
+        mge::image_ref   screenshot() override;
+
 
         const ::mge::dx11::window& window() const
         {
@@ -74,7 +76,12 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11Device>           m_device;
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
-        com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
+
+        com_unique_ptr<IDXGISwapChain>          m_swap_chain;
+        com_unique_ptr<ID3D11Texture2D>         m_back_buffer;
+        com_unique_ptr<ID3D11Texture2D>         m_depth_stencil_buffer;
+        com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state;
+        com_unique_ptr<ID3D11DepthStencilView>  m_depth_stencil_view;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

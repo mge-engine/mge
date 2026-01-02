@@ -39,6 +39,7 @@ namespace mge::dx12 {
         mge::shader*       on_create_shader(shader_type t) override;
         mge::program*      on_create_program() override;
         mge::texture_ref create_texture(texture_type type) override;
+        mge::image_ref   screenshot() override;
 
         const mge::dx12::window& window() const
         {
@@ -121,12 +122,11 @@ namespace mge::dx12 {
         void create_device();
         void enable_debug_messages();
         void create_command_queue();
-
         void create_descriptor_heap();
-        void update_render_target_views(
-            const std::shared_ptr<mge::dx12::swap_chain>& swap_chain);
-
+        void create_swap_chain();
+        void update_render_target_views();
         void     create_command_lists();
+
         uint32_t current_back_buffer_index() const;
 
         void tmp_draw();
@@ -158,6 +158,7 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
         mge::com_ptr<ID3D12DescriptorHeap>        m_dsv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
+        mge::com_ptr<IDXGISwapChain4>             m_swap_chain;
 
         mge::com_ptr<ID3D12CommandAllocator>    m_begin_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_begin_command_list;
@@ -189,12 +190,6 @@ namespace mge::dx12 {
 
         draw_state m_draw_state{draw_state::NONE};
         mge::mutex m_data_lock;
-        std::unordered_map<mge::command_list*,
-                           std::unique_ptr<mge::command_list>>
-            m_command_lists;
-        std::unordered_map<mge::frame_command_list*,
-                           std::unique_ptr<mge::frame_command_list>>
-            m_managed_frame_command_lists;
     };
 
     inline render_context& dx12_context(mge::render_context& context)

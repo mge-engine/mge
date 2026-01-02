@@ -24,6 +24,7 @@ namespace mge::vulkan {
         mge::shader*        on_create_shader(shader_type t) override;
         mge::program*       on_create_program() override;
         mge::texture_ref   create_texture(texture_type type) override;
+        mge::image_ref     screenshot() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -62,8 +63,6 @@ namespace mge::vulkan {
         }
 
         void present();
-
-        void init_swap_chain();
 
         uint32_t current_image_index() const noexcept
         {
@@ -125,6 +124,7 @@ namespace mge::vulkan {
         void create_framebuffers();
         void create_fence();
         void create_semaphores();
+
         void teardown();
         void resolve_device_functions();
         void clear_functions();

@@ -49,18 +49,6 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::init_swap_chain()
-    {
-        try {
-            // called after construction, as otherwise the shared_from_this()
-            // call would fail
-            m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
-        } catch (...) {
-            teardown();
-            throw;
-        }
-    }
-
     render_context::~render_context()
     {
         teardown();
@@ -1044,6 +1032,11 @@ namespace mge::vulkan {
             }
         }
         m_deleted_command_buffers.swap(new_deleted);
+    }
+
+    mge::image_ref render_context::screenshot()
+    {
+        return mge::image_ref();
     }
 
 } // namespace mge::vulkan

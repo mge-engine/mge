@@ -95,11 +95,6 @@ namespace mge::opengl {
         }
     }
 
-    void render_context::create_swap_chain()
-    {
-        m_swap_chain = std::make_shared<mge::opengl::swap_chain>(*this);
-    }
-
     void render_context::collect_opengl_info()
     {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
@@ -169,6 +164,11 @@ namespace mge::opengl {
             glClear(GL_COLOR_BUFFER_BIT);
             CHECK_OPENGL_ERROR(glClear);
         }
+    }
+
+    mge::image_ref render_context::screenshot()
+    {
+        return image_ref();
     }
 
 } // namespace mge::opengl
