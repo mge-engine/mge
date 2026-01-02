@@ -122,6 +122,9 @@ namespace mge {
                     rendered = true;
                 }
         }
+        if (rendered) {
+            on_frame_present();
+        }
     }
 
     void render_context::render(const mge::pass& p)

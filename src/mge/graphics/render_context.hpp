@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/core/buffer.hpp"
 #include "mge/core/callable.hpp"
+#include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
@@ -17,7 +18,6 @@
 #include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
-#include "mge/graphics/command_buffer.hpp"
 
 #include <memory>
 #include <memory_resource>
@@ -187,6 +187,11 @@ namespace mge {
 
     protected:
         /**
+         * @brief Called when a frame is being presented.
+         */
+        virtual void on_frame_present() = 0;
+
+        /**
          * @brief Render a pass.
          * @param p pass to render
          */
@@ -296,8 +301,8 @@ namespace mge {
         }
 
     protected:
-        mge::extent    m_extent;
-        uint16_t       m_index{0xFFFF}; //!< index in registry
+        mge::extent m_extent;
+        uint16_t    m_index{0xFFFF}; //!< index in registry
 
         std::vector<shader*>        m_shaders;
         std::vector<program*>       m_programs;
@@ -311,7 +316,7 @@ namespace mge {
         std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;
         std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
 
-        std::vector<mge::pass> m_passes;
+        std::vector<mge::pass>               m_passes;
         std::unique_ptr<mge::command_buffer> m_command_buffer;
     };
 

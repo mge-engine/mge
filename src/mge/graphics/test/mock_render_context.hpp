@@ -28,6 +28,8 @@ public:
     MOCK_METHOD(mge::program*, on_create_program, (), ());
     MOCK_METHOD(void, on_destroy_program, (mge::program * p), ());
 
+    MOCK_METHOD(void, on_frame_present, (), ());
+
     MOCK_METHOD(mge::image_ref, screenshot, (), ());
 
     MOCK_METHOD(mge::texture_ref, create_texture, (mge::texture_type), ());

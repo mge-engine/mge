@@ -77,7 +77,6 @@ namespace mge::vulkan {
         return new mge::vulkan::program(*this);
     }
 
-
     mge::texture_ref render_context::create_texture(texture_type type)
     {
         mge::texture_ref result;
@@ -1038,5 +1037,7 @@ namespace mge::vulkan {
     {
         return mge::image_ref();
     }
+
+    void render_context::on_frame_present() {}
 
 } // namespace mge::vulkan

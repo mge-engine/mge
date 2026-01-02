@@ -36,8 +36,10 @@ namespace mge::dx12 {
         on_create_vertex_buffer(const mge::vertex_layout& layout,
                                 size_t                    data_size) override;
 
-        mge::shader*       on_create_shader(shader_type t) override;
-        mge::program*      on_create_program() override;
+        mge::shader*  on_create_shader(shader_type t) override;
+        mge::program* on_create_program() override;
+        void          on_frame_present() override;
+
         mge::texture_ref create_texture(texture_type type) override;
         mge::image_ref   screenshot() override;
 
@@ -125,7 +127,7 @@ namespace mge::dx12 {
         void create_descriptor_heap();
         void create_swap_chain();
         void update_render_target_views();
-        void     create_command_lists();
+        void create_command_lists();
 
         uint32_t current_back_buffer_index() const;
 

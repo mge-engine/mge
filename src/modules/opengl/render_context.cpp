@@ -105,9 +105,7 @@ namespace mge::opengl {
 #    error Missing port
 #endif
 
-    render_context::~render_context()
-    {
-    }
+    render_context::~render_context() {}
 
     singleton<opengl_info> render_context::s_glinfo;
 
@@ -169,6 +167,15 @@ namespace mge::opengl {
     mge::image_ref render_context::screenshot()
     {
         return image_ref();
+    }
+
+    void render_context::on_frame_present()
+    {
+#ifdef MGE_OS_WINDOWS
+        SwapBuffers(m_hdc);
+#else
+#    error Missing port
+#endif
     }
 
 } // namespace mge::opengl

@@ -28,9 +28,7 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11, "Create render context");
     }
 
-    render_context::~render_context()
-    {
-    }
+    render_context::~render_context() {}
 
     void render_context::initialize()
     {
@@ -115,7 +113,9 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11, "Creating depth/stencil buffer texture");
         ID3D11Texture2D* tmp_depth_stencil_buffer;
 
-        rc = m_device->CreateTexture2D(&depth_buffer_desc, nullptr, &tmp_depth_stencil_buffer);
+        rc = m_device->CreateTexture2D(&depth_buffer_desc,
+                                       nullptr,
+                                       &tmp_depth_stencil_buffer);
         CHECK_HRESULT(rc,
                       ID3D11Device,
                       CreateTexture2D(D3D11_BIND_DEPTH_STENCIL));
@@ -148,9 +148,8 @@ namespace mge::dx11 {
         depth_stencil_state_desc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
         depth_stencil_state_desc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
         ID3D11DepthStencilState* tmp_depth_stencil_state = nullptr;
-        rc =
-            m_device->CreateDepthStencilState(&depth_stencil_state_desc,
-                                              &tmp_depth_stencil_state);
+        rc = m_device->CreateDepthStencilState(&depth_stencil_state_desc,
+                                               &tmp_depth_stencil_state);
         CHECK_HRESULT(rc, ID3D11Device, CreateDeptHStencilState);
         m_depth_stencil_state.reset(tmp_depth_stencil_state);
 
@@ -177,10 +176,9 @@ namespace mge::dx11 {
 
         MGE_DEBUG_TRACE(DX11, "Creating depth stencil view");
         ID3D11DepthStencilView* tmp_depth_stencil_view = nullptr;
-        rc =
-            m_device->CreateDepthStencilView(m_depth_stencil_buffer.get(),
-                                             nullptr,
-                                             &tmp_depth_stencil_view);
+        rc = m_device->CreateDepthStencilView(m_depth_stencil_buffer.get(),
+                                              nullptr,
+                                              &tmp_depth_stencil_view);
         CHECK_HRESULT(rc, ID3D11Device, CreateDepthStencilView);
         m_depth_stencil_view.reset(tmp_depth_stencil_view);
 
@@ -256,5 +254,7 @@ namespace mge::dx11 {
     {
         return mge::image_ref();
     }
+
+    void render_context::on_frame_present() {}
 
 } // namespace mge::dx11

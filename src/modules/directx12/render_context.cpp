@@ -161,19 +161,18 @@ namespace mge::dx12 {
         swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         swap_chain_desc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
         swap_chain_desc.Flags = 0;
-            // DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING
+        // DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING
         mge::com_ptr<IDXGISwapChain1> swap_chain1;
-        auto rc = m_factory->CreateSwapChainForHwnd(
-            m_command_queue.Get(),
-            m_window.hwnd(),
-            &swap_chain_desc,
-            nullptr,
-            nullptr,
-            &swap_chain1);
+        auto rc = m_factory->CreateSwapChainForHwnd(m_command_queue.Get(),
+                                                    m_window.hwnd(),
+                                                    &swap_chain_desc,
+                                                    nullptr,
+                                                    nullptr,
+                                                    &swap_chain1);
         CHECK_HRESULT(rc, IDXGIFactory4, CreateSwapChainForHwnd);
 
-        rc = m_factory->MakeWindowAssociation(
-            m_window.hwnd(), DXGI_MWA_NO_ALT_ENTER);
+        rc = m_factory->MakeWindowAssociation(m_window.hwnd(),
+                                              DXGI_MWA_NO_ALT_ENTER);
         CHECK_HRESULT(rc, IDXGIFactory4, MakeWindowAssociation);
 
         rc = swap_chain1.As(&m_swap_chain);
@@ -219,9 +218,7 @@ namespace mge::dx12 {
                 "Create render target view for back buffer #{} of swap chain",
                 i);
             mge::com_ptr<ID3D12Resource> backbuffer;
-            auto rc = m_swap_chain->GetBuffer(
-                i,
-                IID_PPV_ARGS(&backbuffer));
+            auto rc = m_swap_chain->GetBuffer(i, IID_PPV_ARGS(&backbuffer));
             std::wstringstream ws;
             ws << "mge::dx12::render_context::backbuffer#" << i;
             backbuffer->SetName(ws.str().c_str());
@@ -751,5 +748,7 @@ namespace mge::dx12 {
     {
         return mge::image_ref();
     }
+
+    void render_context::on_frame_present() {}
 
 } // namespace mge::dx12
