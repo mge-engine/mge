@@ -258,6 +258,9 @@ namespace mge::dx12 {
         m_xfer_command_allocator =
             create_command_allocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      "resource transfer");
+        m_command_allocator =
+            create_command_allocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                     "main command allocator");
 
         m_begin_command_list =
             create_dx12_command_list(m_begin_command_allocator.Get(),
@@ -271,6 +274,10 @@ namespace mge::dx12 {
             create_dx12_command_list(m_xfer_command_allocator.Get(),
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      "resource transfer");
+        m_command_list =
+            create_dx12_command_list(m_command_allocator.Get(),
+                                     D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                     "main command list");
         wait_for_command_queue();
     }
 
@@ -466,6 +473,11 @@ namespace mge::dx12 {
         rc = m_end_command_allocator->Reset();
         CHECK_HRESULT(rc, ID3D12GraphicsCommandAllocator, Reset);
         rc = m_end_command_list->Reset(m_end_command_allocator.Get(), nullptr);
+        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+
+        rc = m_command_allocator->Reset();
+        CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+        rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
         CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
     }
 
@@ -701,6 +713,10 @@ namespace mge::dx12 {
         }
     }
 
-    void render_context::render(const mge::pass& p) {}
+    void render_context::render(const mge::pass& p)
+    {
+        if (!p.frame_buffer()) {
+                }
+    }
 
 } // namespace mge::dx12

@@ -169,6 +169,9 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12CommandAllocator>    m_end_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_end_command_list;
 
+        mge::com_ptr<ID3D12CommandAllocator>    m_command_allocator;
+        mge::com_ptr<ID3D12GraphicsCommandList> m_command_list;
+
         mge::com_ptr<ID3D12CommandAllocator>    m_xfer_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_xfer_command_list;
 
