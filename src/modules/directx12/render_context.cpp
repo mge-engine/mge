@@ -259,7 +259,7 @@ namespace mge::dx12 {
         }
         mge::com_ptr<ID3D12GraphicsCommandList> result;
         auto rc = m_device->CreateCommandList(0,
-                                              D3D12_COMMAND_LIST_TYPE_DIRECT,
+                                              type,
                                               allocator,
                                               nullptr,
                                               IID_PPV_ARGS(&result));
@@ -279,12 +279,6 @@ namespace mge::dx12 {
 
     void render_context::create_command_lists()
     {
-        m_begin_command_allocator =
-            create_command_allocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                     "begin of drawing");
-        m_end_command_allocator =
-            create_command_allocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                     "end of drawing");
         m_xfer_command_allocator =
             create_command_allocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      "resource transfer");
@@ -292,14 +286,6 @@ namespace mge::dx12 {
             create_command_allocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      "main command allocator");
 
-        m_begin_command_list =
-            create_dx12_command_list(m_begin_command_allocator.Get(),
-                                     D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                     "begin of drawing");
-        m_end_command_list =
-            create_dx12_command_list(m_end_command_allocator.Get(),
-                                     D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                     "end of drawing");
         m_xfer_command_list =
             create_dx12_command_list(m_xfer_command_allocator.Get(),
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
@@ -308,7 +294,6 @@ namespace mge::dx12 {
             create_dx12_command_list(m_command_allocator.Get(),
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
                                      "main command list");
-        wait_for_command_queue();
     }
 
     void render_context::initialize()
@@ -505,6 +490,7 @@ namespace mge::dx12 {
 
     void render_context::begin_draw()
     {
+#if 0        
         uint32_t current_buffer_index = current_back_buffer_index();
         // no wait in the beginning
         // setup draw
@@ -534,6 +520,7 @@ namespace mge::dx12 {
         m_begin_command_list->Close();
         m_frame_command_lists.push_back(m_begin_command_list.Get());
         m_draw_state = draw_state::DRAW;
+#endif
     }
 
     mge::texture_ref render_context::create_texture(texture_type type)

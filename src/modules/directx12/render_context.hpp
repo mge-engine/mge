@@ -6,8 +6,6 @@
 #include "error.hpp"
 #include "mge/config.hpp"
 #include "mge/core/mutex.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_ptr.hpp"
@@ -159,12 +157,6 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12DescriptorHeap>        m_dsv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
         mge::com_ptr<IDXGISwapChain4>             m_swap_chain;
-
-        mge::com_ptr<ID3D12CommandAllocator>    m_begin_command_allocator;
-        mge::com_ptr<ID3D12GraphicsCommandList> m_begin_command_list;
-
-        mge::com_ptr<ID3D12CommandAllocator>    m_end_command_allocator;
-        mge::com_ptr<ID3D12GraphicsCommandList> m_end_command_list;
 
         mge::com_ptr<ID3D12CommandAllocator>    m_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_command_list;
