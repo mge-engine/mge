@@ -16,9 +16,7 @@
 namespace mge::dx12 {
     class window;
     class render_system;
-    class swap_chain;
-    class command_list;
-    class frame_command_list;
+
     class render_context : public mge::render_context
     {
     public:
