@@ -261,6 +261,10 @@ namespace mge::dx11 {
         return mge::image_ref();
     }
 
-    void render_context::on_frame_present() {}
+    void render_context::on_frame_present() 
+    {
+        auto rc = m_swap_chain->Present(0, 0);
+        CHECK_HRESULT(rc, IDXGISwapChain, Present);
+    }
 
 } // namespace mge::dx11
