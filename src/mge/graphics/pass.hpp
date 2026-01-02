@@ -8,6 +8,7 @@
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/rgba_color.hpp"
+#include "mge/graphics/command_buffer.hpp"
 
 namespace mge {
 
@@ -107,6 +108,8 @@ namespace mge {
         {
             return m_frame_buffer;
         }
+
+        void submit(const command_buffer& command_buffer);
 
     private:
         friend class render_context;

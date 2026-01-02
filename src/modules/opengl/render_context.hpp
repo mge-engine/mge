@@ -5,8 +5,6 @@
 #include "mge/core/mutex.hpp"
 #include "mge/core/singleton.hpp"
 #include "mge/core/thread.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "opengl.hpp"
@@ -39,12 +37,6 @@ namespace mge {
 
             mge::shader*       on_create_shader(shader_type t) override;
             mge::program*      on_create_program() override;
-            mge::command_list* create_command_list() override;
-            void destroy_command_list(mge::command_list* cl) override;
-            mge::frame_command_list*
-            create_current_frame_command_list() override;
-            void
-            destroy_frame_command_list(mge::frame_command_list* fcl) override;
             mge::texture_ref create_texture(texture_type type) override;
             mge::rectangle   default_scissor() const;
             uint32_t         window_height() const;
@@ -72,15 +64,6 @@ namespace mge {
 #    error Missing port
 #endif
             static singleton<opengl_info> s_glinfo;
-            std::unordered_map<mge::vertex_buffer*,
-                               std::unique_ptr<mge::vertex_buffer>>
-                m_vertex_buffers;
-            std::unordered_map<mge::command_list*,
-                               std::unique_ptr<mge::command_list>>
-                m_command_lists;
-            std::unordered_map<mge::frame_command_list*,
-                               std::unique_ptr<mge::frame_command_list>>
-                m_frame_command_lists;
         };
     } // namespace opengl
 } // namespace mge

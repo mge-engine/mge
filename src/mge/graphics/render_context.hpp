@@ -17,6 +17,8 @@
 #include "mge/graphics/texture_type.hpp"
 #include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
+#include "mge/graphics/command_buffer.hpp"
+
 #include <memory>
 #include <memory_resource>
 
@@ -140,29 +142,6 @@ namespace mge {
         frame_buffer_handle create_frame_buffer();
 
         /**
-         * @brief Create a command list object.
-         *
-         * @return command list
-         */
-        virtual command_list* create_command_list() = 0;
-        /**
-         * @brief Destroy a command list.
-         * @param cl command list to destroy
-         */
-        virtual void destroy_command_list(command_list* cl) = 0;
-
-        /**
-         * @brief Create a command list object for the current frame.
-         * @return command list
-         */
-        virtual frame_command_list* create_current_frame_command_list();
-        /**
-         * @brief Destroy a frame command list.
-         * @param fcl frame command list to destroy
-         */
-        virtual void destroy_frame_command_list(frame_command_list* fcl) = 0;
-
-        /**
          * @brief Create a texture object.
          *
          * @param type texture type
@@ -187,6 +166,13 @@ namespace mge {
          * @return reference to pass
          */
         mge::pass& pass(uint32_t index);
+
+        /**
+         * @brief Get the current command buffer.
+         *
+         * @return command buffer
+         */
+        mge::command_buffer& command_buffer();
 
         /**
          * @brief Render a frame.
@@ -322,6 +308,7 @@ namespace mge {
         std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
 
         std::vector<mge::pass> m_passes;
+        std::unique_ptr<mge::command_buffer> m_command_buffer;
     };
 
 } // namespace mge

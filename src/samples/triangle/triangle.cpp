@@ -52,9 +52,6 @@ namespace mge {
                     }
                 });
 
-            m_clear_commands = m_window->render_context().create_command_list();
-            m_clear_commands->clear(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
-            m_clear_commands->finish();
 
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 this->draw(cycle, delta);
@@ -76,19 +73,18 @@ namespace mge {
         void draw(uint64_t cycle, double delta)
         {
             if (m_initialized) {
-                auto draw_commands = m_window->render_context()
-                                         .create_current_frame_command_list();
-                draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-                draw_commands->clear_depth(1.0f);
-                draw_commands->default_scissor();
-                draw_commands->draw(
-                    mge::draw_command(m_program.get(),
-                                      m_vertices.get(),
-                                      m_indices.get(),
-                                      mge::topology::TRIANGLES));
-                draw_commands->finish();
-                draw_commands->execute();
-                draw_commands->destroy();
+                auto& pass = m_window->render_context().pass(0);
+
+                pass.clear_color(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
+                pass.clear_depth(1.0f);
+
+                auto& command_buffer = m_window->render_context().command_buffer();
+                command_buffer.draw(m_program, m_vertices, m_indices);
+                pass.submit(command_buffer);
+            } else {
+                auto& pass = m_window->render_context().pass(0);
+                pass.clear_color(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                pass.touch();
             }
             m_window->render_context().frame();
         }
@@ -210,15 +206,7 @@ namespace mge {
                 mge::data_type::INT32,
                 sizeof(triangle_indices),
                 mge::make_buffer(triangle_indices));
-            m_draw_commands = m_window->render_context().create_command_list();
-            m_draw_commands->clear(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
-            m_draw_commands->draw(mge::draw_command(m_program.get(),
-                                                    m_vertices.get(),
-                                                    m_indices.get(),
-                                                    mge::topology::TRIANGLES));
-            m_draw_commands->finish();
             MGE_DEBUG_TRACE(TRIANGLE, "Initializing objects done");
-
             m_initialized = true;
         }
 
@@ -226,8 +214,6 @@ namespace mge {
         render_system_ref    m_render_system;
         window_ref           m_window;
         std::atomic<bool>    m_initialized;
-        command_list*        m_clear_commands;
-        command_list*        m_draw_commands;
         program_handle       m_program;
         vertex_buffer_handle m_vertices;
         index_buffer_handle  m_indices;

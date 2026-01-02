@@ -23,10 +23,6 @@ namespace mge::vulkan {
                                                     size_t data_size) override;
         mge::shader*        on_create_shader(shader_type t) override;
         mge::program*       on_create_program() override;
-        mge::frame_command_list* create_current_frame_command_list() override;
-        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-        mge::command_list* create_command_list() override;
-        void               destroy_command_list(mge::command_list* cl) override;
         mge::texture_ref   create_texture(texture_type type) override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -189,14 +185,5 @@ namespace mge::vulkan {
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
-        std::unordered_map<mge::vertex_buffer*,
-                           std::unique_ptr<mge::vertex_buffer>>
-            m_vertex_buffers;
-        std::unordered_map<mge::command_list*,
-                           std::unique_ptr<mge::command_list>>
-            m_command_lists;
-        std::unordered_map<mge::frame_command_list*,
-                           std::unique_ptr<mge::frame_command_list>>
-            m_frame_command_lists;
     };
 } // namespace mge::vulkan

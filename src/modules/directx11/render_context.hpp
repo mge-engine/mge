@@ -3,8 +3,6 @@
 // All rights reserved.
 #pragma once
 #include "dx11.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/rectangle.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/win32/com_unique_ptr.hpp"
@@ -30,10 +28,6 @@ namespace mge::dx11 {
 
         mge::shader*       on_create_shader(mge::shader_type t) override;
         mge::program*      on_create_program() override;
-        mge::command_list* create_command_list() override;
-        void               destroy_command_list(mge::command_list* cl) override;
-        mge::frame_command_list* create_current_frame_command_list() override;
-        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
         mge::texture_ref create_texture(mge::texture_type type) override;
 
         const ::mge::dx11::window& window() const
@@ -81,15 +75,6 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11DeviceContext>    m_device_context;
         com_unique_ptr<ID3D11RenderTargetView> m_render_target_view;
         com_unique_ptr<ID3D11DepthStencilView> m_depth_stencil_view;
-        std::unordered_map<mge::vertex_buffer*,
-                           std::unique_ptr<mge::vertex_buffer>>
-            m_vertex_buffers;
-        std::unordered_map<mge::command_list*,
-                           std::unique_ptr<mge::command_list>>
-            m_command_lists;
-        std::unordered_map<mge::frame_command_list*,
-                           std::unique_ptr<mge::frame_command_list>>
-            m_frame_command_lists;
     };
 
     inline render_context& dx11_context(mge::render_context& context)

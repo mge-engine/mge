@@ -8,8 +8,6 @@ SET(mge_dx12_module_SOURCES
     render_system.cpp
     render_context.cpp
     swap_chain.cpp
-    command_list.cpp
-    frame_command_list.cpp
     shader.cpp
     program.cpp
     vertex_buffer.cpp

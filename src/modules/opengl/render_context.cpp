@@ -112,11 +112,6 @@ namespace mge::opengl {
 
     render_context::~render_context()
     {
-        m_frame_command_lists.clear();
-        m_command_lists.clear();
-        m_programs.clear();
-        m_shaders.clear();
-        m_vertex_buffers.clear();
     }
 
     singleton<opengl_info> render_context::s_glinfo;
@@ -142,33 +137,6 @@ namespace mge::opengl {
     mge::program* render_context::on_create_program()
     {
         return new mge::opengl::program(*this);
-    }
-
-    mge::command_list* render_context::create_command_list()
-    {
-        auto  ptr = std::make_unique<command_list>(*this);
-        auto* result = ptr.get();
-        m_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void render_context::destroy_command_list(mge::command_list* cl)
-    {
-        m_command_lists.erase(cl);
-    }
-
-    mge::frame_command_list* render_context::create_current_frame_command_list()
-    {
-        auto* result = mge::render_context::create_current_frame_command_list();
-        m_frame_command_lists[result] =
-            std::unique_ptr<mge::frame_command_list>(result);
-        return result;
-    }
-
-    void
-    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
-    {
-        m_frame_command_lists.erase(fcl);
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)

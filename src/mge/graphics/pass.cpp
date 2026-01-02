@@ -83,4 +83,9 @@ namespace mge {
         // setting frame buffer does not make a pass active
     }
 
+    void pass::submit(const command_buffer& command_buffer)
+    {
+        m_active = true;
+    }
+
 } // namespace mge

@@ -28,15 +28,5 @@ public:
     MOCK_METHOD(mge::program*, on_create_program, (), ());
     MOCK_METHOD(void, on_destroy_program, (mge::program * p), ());
 
-    MOCK_METHOD(mge::command_list*, create_command_list, (), ());
-    MOCK_METHOD(void, destroy_command_list, (mge::command_list * cl), ());
-    MOCK_METHOD(mge::frame_command_list*,
-                create_current_frame_command_list,
-                (),
-                ());
-    MOCK_METHOD(void,
-                destroy_frame_command_list,
-                (mge::frame_command_list * fcl),
-                ());
     MOCK_METHOD(mge::texture_ref, create_texture, (mge::texture_type), ());
 };

@@ -18,8 +18,6 @@ namespace mge {
     class program;
     class frame_buffer;
 
-    class command_list;
-    class frame_command_list;
     MGE_DECLARE_REF(texture);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);

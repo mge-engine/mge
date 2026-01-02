@@ -331,48 +331,6 @@ namespace mge::dx12 {
         return new dx12::program(*this);
     }
 
-    mge::command_list* render_context::create_command_list()
-    {
-        auto  ptr = std::make_unique<dx12::command_list>(*this);
-        auto* result = ptr.get();
-        m_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void render_context::destroy_command_list(mge::command_list* cl)
-    {
-        m_command_lists.erase(cl);
-    }
-
-    mge::frame_command_list* render_context::create_current_frame_command_list()
-    {
-        switch (m_draw_state) {
-        case draw_state::NONE:
-            begin_draw();
-            m_begin_command_list->Close();
-            m_frame_command_lists.push_back(m_begin_command_list.Get());
-            break;
-        case draw_state::DRAW:
-            break;
-        case draw_state::SUBMIT:
-            MGE_THROW(error) << "Invalid draw state for frame command list: "
-                             << m_draw_state;
-        }
-
-        auto ptr = std::make_unique<dx12::frame_command_list>(
-            *this,
-            current_back_buffer_index());
-        auto* result = ptr.get();
-        m_managed_frame_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void
-    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
-    {
-        m_managed_frame_command_lists.erase(fcl);
-    }
-
     void render_context::copy_resource_sync(ID3D12Resource*       dst,
                                             ID3D12Resource*       src,
                                             D3D12_RESOURCE_STATES state_after)
