@@ -412,6 +412,7 @@ namespace mge::dx12 {
     {
         // wait for frame
         auto fence = m_command_queue_fence_value++;
+        // MGE_DEBUG_TRACE(DX12, "Waiting for command queue fence: {}", fence);
         auto rc = m_command_queue->Signal(m_command_queue_fence.Get(), fence);
         CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
         uint64_t fence_completed_value =
@@ -433,8 +434,7 @@ namespace mge::dx12 {
                 MGE_CHECK_SYSTEM_ERROR(ResetEvent);
             }
         }
-        // MGE_DEBUG_TRACE(DX12)
-        //     << "Frame completed: " << m_command_queue_fence_value;
+        // MGE_DEBUG_TRACE(DX12, "Frame completed: {}",m_command_queue_fence_value);
     }
 
     void render_context::clear_frame_resources()
@@ -465,13 +465,6 @@ namespace mge::dx12 {
 
     void render_context::before_present()
     {
-#if 0
-        if (m_draw_state == draw_state::NONE) {
-            begin_draw();
-        }
-        end_draw();
-        execute_frame_commands();
-#endif
         m_command_list->Close();
         ID3D12CommandList* lists[] = {m_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
@@ -702,12 +695,15 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
+        MGE_DEBUG_TRACE(DX12, "Render pass");
         ID3D12GraphicsCommandList* pass_command_list = nullptr;
         uint32_t                   current_buffer_index = 0;
 
         if (!p.frame_buffer()) {
             pass_command_list = m_command_list.Get();
             if (m_draw_state != draw_state::DRAW) {
+                MGE_DEBUG_TRACE(DX12,
+                                  "Setup resource barrier present to render");
                 D3D12_RESOURCE_BARRIER present_to_render = {
                     .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
                     .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
@@ -749,6 +745,29 @@ namespace mge::dx12 {
         return mge::image_ref();
     }
 
-    void render_context::on_frame_present() {}
+    void render_context::on_frame_present() 
+    {
+        D3D12_RESOURCE_BARRIER render_to_present = {
+            .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
+            .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
+            .Transition = {
+                .pResource = m_backbuffers[m_swap_chain->GetCurrentBackBufferIndex()].Get(),
+                .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
+                .StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET,
+                .StateAfter = D3D12_RESOURCE_STATE_PRESENT}};
+        m_command_list->ResourceBarrier(1, &render_to_present);
+
+        m_command_list->Close();
+        ID3D12CommandList* lists[] = {m_command_list.Get()};
+        m_command_queue->ExecuteCommandLists(1, lists);
+        m_draw_state = draw_state::SUBMIT;
+
+        m_swap_chain->Present(0, 0);
+
+        wait_for_command_queue();
+        reset_draw();
+
+        m_draw_state = draw_state::NONE;
+    }
 
 } // namespace mge::dx12
