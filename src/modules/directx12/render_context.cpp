@@ -464,6 +464,7 @@ namespace mge::dx12 {
 
     void render_context::reset_draw()
     {
+#if 0
         auto rc = m_begin_command_allocator->Reset();
         CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
         rc = m_begin_command_list->Reset(m_begin_command_allocator.Get(),
@@ -474,8 +475,8 @@ namespace mge::dx12 {
         CHECK_HRESULT(rc, ID3D12GraphicsCommandAllocator, Reset);
         rc = m_end_command_list->Reset(m_end_command_allocator.Get(), nullptr);
         CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
-
-        rc = m_command_allocator->Reset();
+#endif
+        auto rc = m_command_allocator->Reset();
         CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
         rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
         CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
@@ -483,11 +484,16 @@ namespace mge::dx12 {
 
     void render_context::before_present()
     {
+#if 0
         if (m_draw_state == draw_state::NONE) {
             begin_draw();
         }
         end_draw();
         execute_frame_commands();
+#endif
+        m_command_list->Close();
+        ID3D12CommandList* lists[] = {m_command_list.Get()};
+        m_command_queue->ExecuteCommandLists(1, lists);
         m_draw_state = draw_state::SUBMIT;
     }
 
@@ -715,8 +721,46 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
+        ID3D12GraphicsCommandList* pass_command_list = nullptr;
+        uint32_t                   current_buffer_index = 0;
+
         if (!p.frame_buffer()) {
-                }
+            pass_command_list = m_command_list.Get();
+            if (m_draw_state != draw_state::DRAW) {
+                D3D12_RESOURCE_BARRIER present_to_render = {
+                    .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
+                    .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
+                    .Transition =
+                        {.pResource = m_backbuffers[current_buffer_index].Get(),
+                         .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
+                         .StateBefore = D3D12_RESOURCE_STATE_PRESENT,
+                         .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
+                };
+                pass_command_list->ResourceBarrier(1, &present_to_render);
+                D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
+                    m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
+                rtv_handle.ptr += m_rtv_descriptor_size * current_buffer_index;
+
+                pass_command_list->OMSetRenderTargets(1,
+                                                      &rtv_handle,
+                                                      FALSE,
+                                                      nullptr);
+                m_draw_state = draw_state::DRAW;
+            }
+            current_buffer_index = current_back_buffer_index();
+        } else {
+            // frame buffer specific command list
+        }
+
+        if (p.clear_color_enabled()) {
+            const auto& color = p.clear_color_value();
+            FLOAT       clear_color[4] = {color.r, color.g, color.b, color.a};
+            pass_command_list->ClearRenderTargetView(
+                rtv_handle(current_buffer_index),
+                clear_color,
+                0,
+                nullptr);
+        }
     }
 
 } // namespace mge::dx12
