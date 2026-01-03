@@ -24,7 +24,7 @@ namespace mge::dx12 {
                 .set_info(mge::exception::stack(mge::stacktrace()))
                 .set_info(
                     mge::exception::type_name(mge::type_name<dx12::error>()))
-            << "Call to " << called_function << " failed: " << std::hex << rc;
+            << "Call to " << called_function << " failed: " << std::hex << rc << std::dec;
         return *this;
     }
 
@@ -119,7 +119,7 @@ namespace mge::dx12 {
                     .set_info(mge::exception::type_name(
                         mge::type_name<dx12::error>()))
                 << "Call to " << called_function << " failed: " << std::hex
-                << rc << " (" << dxgi_message(rc) << ")";
+                << rc << std::dec << " (" << dxgi_message(rc) << ")";
         }
     }
 
