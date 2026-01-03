@@ -88,32 +88,12 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12GraphicsCommandList>
         create_dx12_command_list(ID3D12CommandAllocator* allocator,
                                  D3D12_COMMAND_LIST_TYPE type,
-                                 const char*             purpose = nullptr);
-
-        template <typename T>
-        void add_frame_resource(const mge::com_ptr<T>& resource)
-        {
-            mge::com_ptr<IUnknown> unknown;
-            auto                   rc = resource.As(&unknown);
-            if (FAILED(rc)) {
-                MGE_THROW(dx12::error) << "Failed to add frame resource";
-            }
-            m_frame_resources.push_back(unknown);
-        }
-
-        void execute_dx12_command_list(ID3D12CommandList* list)
-        {
-            m_frame_command_lists.push_back(list);
-        }
-
-        void before_present();
-        void after_present();
+                                 const char*             purpose = nullptr,
+                                 bool                    reset   = true);
 
         void render(const mge::pass& p) override;
 
     private:
-        friend class swap_chain;
-
         void enable_debug_layer();
         void create_factory();
         void create_adapter();
@@ -124,16 +104,6 @@ namespace mge::dx12 {
         void create_swap_chain();
         void update_render_target_views();
         void create_command_lists();
-
-        uint32_t current_back_buffer_index() const;
-
-        void tmp_draw();
-
-        void begin_draw();
-        void end_draw();
-        void execute_frame_commands();
-        void clear_frame_resources();
-        void reset_draw();
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
                                  D3D12_MESSAGE_SEVERITY severity,
@@ -169,9 +139,6 @@ namespace mge::dx12 {
         uint32_t       m_rtv_descriptor_size;
         uint32_t       m_dsv_descriptor_size;
         DWORD          m_callback_cookie;
-
-        std::vector<mge::com_ptr<IUnknown>> m_frame_resources;
-        std::vector<ID3D12CommandList*>     m_frame_command_lists;
 
         enum class draw_state
         {

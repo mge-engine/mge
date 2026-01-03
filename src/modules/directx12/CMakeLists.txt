@@ -7,7 +7,6 @@ SET(mge_dx12_module_SOURCES
     error.cpp
     render_system.cpp
     render_context.cpp
-    swap_chain.cpp
     shader.cpp
     program.cpp
     vertex_buffer.cpp

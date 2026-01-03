@@ -252,7 +252,8 @@ namespace mge::dx12 {
     mge::com_ptr<ID3D12GraphicsCommandList>
     render_context::create_dx12_command_list(ID3D12CommandAllocator* allocator,
                                              D3D12_COMMAND_LIST_TYPE type,
-                                             const char*             purpose)
+                                             const char*             purpose,
+                                             bool reset)
     {
         if (purpose) {
             MGE_DEBUG_TRACE(DX12, "Create command list for {}", purpose);
@@ -269,6 +270,11 @@ namespace mge::dx12 {
         //     ws << "mge::dx12::render_context::command_list#" << purpose;
         //     result->SetName(ws.str().c_str());
         // }
+
+        if (!reset) {
+            return result;
+        }
+
         result->Close();
         rc = allocator->Reset();
         CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
@@ -293,7 +299,9 @@ namespace mge::dx12 {
         m_command_list =
             create_dx12_command_list(m_command_allocator.Get(),
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                     "main command list");
+                                     "main command list", 
+                                     false);
+        m_command_list->Close();
     }
 
     void render_context::initialize()
@@ -388,15 +396,11 @@ namespace mge::dx12 {
         return result;
     }
 
-    uint32_t render_context::current_back_buffer_index() const
-    {
-        return m_swap_chain->GetCurrentBackBufferIndex();
-    }
 
     void render_context::wait_for_command_queue()
     {
         // wait for frame
-        auto fence = m_command_queue_fence_value++;
+        auto fence = ++m_command_queue_fence_value;
         // MGE_DEBUG_TRACE(DX12, "Waiting for command queue fence: {}", fence);
         auto rc = m_command_queue->Signal(m_command_queue_fence.Get(), fence);
         CHECK_HRESULT(rc, ID3D12CommandQueue, Signal);
@@ -420,107 +424,6 @@ namespace mge::dx12 {
             }
         }
         // MGE_DEBUG_TRACE(DX12, "Frame completed: {}",m_command_queue_fence_value);
-    }
-
-    void render_context::clear_frame_resources()
-    {
-        m_frame_resources.clear();
-        m_frame_command_lists.clear();
-    }
-
-    void render_context::reset_draw()
-    {
-#if 0
-        auto rc = m_begin_command_allocator->Reset();
-        CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
-        rc = m_begin_command_list->Reset(m_begin_command_allocator.Get(),
-                                         nullptr);
-        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
-
-        rc = m_end_command_allocator->Reset();
-        CHECK_HRESULT(rc, ID3D12GraphicsCommandAllocator, Reset);
-        rc = m_end_command_list->Reset(m_end_command_allocator.Get(), nullptr);
-        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
-#endif
-        auto rc = m_command_allocator->Reset();
-        CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
-        rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
-        CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
-    }
-
-    void render_context::before_present()
-    {
-        m_command_list->Close();
-        ID3D12CommandList* lists[] = {m_command_list.Get()};
-        m_command_queue->ExecuteCommandLists(1, lists);
-        m_draw_state = draw_state::SUBMIT;
-    }
-
-    void render_context::after_present()
-    {
-        wait_for_command_queue();
-        reset_draw();
-        clear_frame_resources();
-        m_draw_state = draw_state::NONE;
-    }
-
-    void render_context::execute_frame_commands()
-    {
-        m_command_queue->ExecuteCommandLists(
-            static_cast<UINT>(m_frame_command_lists.size()),
-            m_frame_command_lists.data());
-    }
-
-    void render_context::end_draw()
-    {
-#if 0        
-        D3D12_RESOURCE_BARRIER render_to_present = {
-            .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
-            .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
-            .Transition = {
-                .pResource = m_backbuffers[m_swap_chain->GetCurrentBackBufferIndex()].Get(),
-                .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
-                .StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET,
-                .StateAfter = D3D12_RESOURCE_STATE_PRESENT}};
-        m_end_command_list->ResourceBarrier(1, &render_to_present);
-        m_end_command_list->Close();
-        m_frame_command_lists.push_back(m_end_command_list.Get());
-#endif
-    }
-
-    void render_context::begin_draw()
-    {
-#if 0        
-        uint32_t current_buffer_index = current_back_buffer_index();
-        // no wait in the beginning
-        // setup draw
-        D3D12_RESOURCE_BARRIER present_to_render = {
-            .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
-            .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
-            .Transition = {.pResource =
-                               m_backbuffers[current_buffer_index].Get(),
-                           .Subresource =
-                               D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
-                           .StateBefore = D3D12_RESOURCE_STATE_PRESENT,
-                           .StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET},
-        };
-        m_begin_command_list->ResourceBarrier(1, &present_to_render);
-
-        D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle =
-            m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
-        rtv_handle.ptr += m_rtv_descriptor_size * current_buffer_index;
-
-        m_begin_command_list->OMSetRenderTargets(1,
-                                                 &rtv_handle,
-                                                 FALSE,
-                                                 nullptr);
-        m_begin_command_list->RSSetViewports(1, &m_viewport);
-        m_begin_command_list->RSSetScissorRects(1, &m_scissor_rect);
-
-        m_begin_command_list->Close();
-        m_frame_command_lists.push_back(m_begin_command_list.Get());
-        m_draw_state = draw_state::DRAW;
-#endif
     }
 
     mge::texture_ref render_context::create_texture(texture_type type)
@@ -682,15 +585,22 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
-        MGE_DEBUG_TRACE(DX12, "Render pass");
+        // MGE_DEBUG_TRACE(DX12, "Render pass");
         ID3D12GraphicsCommandList* pass_command_list = nullptr;
         uint32_t                   current_buffer_index = 0;
 
         if (!p.frame_buffer()) {
             pass_command_list = m_command_list.Get();
+            current_buffer_index = m_swap_chain->GetCurrentBackBufferIndex();
             if (m_draw_state != draw_state::DRAW) {
-                MGE_DEBUG_TRACE(DX12,
-                                  "Setup resource barrier present to render");
+                //MGE_DEBUG_TRACE(DX12, "Waiting for frame to be finished");
+                wait_for_command_queue();
+                // MGE_DEBUG_TRACE(DX12, "Reset command list for new frame");
+                auto rc = m_command_allocator->Reset();
+                CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
+                rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
+                CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
+                // MGE_DEBUG_TRACE(DX12, "Setup resource barrier present to render");
                 D3D12_RESOURCE_BARRIER present_to_render = {
                     .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
                     .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
@@ -711,7 +621,6 @@ namespace mge::dx12 {
                                                       nullptr);
                 m_draw_state = draw_state::DRAW;
             }
-            current_buffer_index = current_back_buffer_index();
         } else {
             // frame buffer specific command list
         }
@@ -748,12 +657,7 @@ namespace mge::dx12 {
         ID3D12CommandList* lists[] = {m_command_list.Get()};
         m_command_queue->ExecuteCommandLists(1, lists);
         m_draw_state = draw_state::SUBMIT;
-
         m_swap_chain->Present(0, 0);
-
-        wait_for_command_queue();
-        reset_draw();
-
         m_draw_state = draw_state::NONE;
     }
 
