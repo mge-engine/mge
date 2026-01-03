@@ -481,40 +481,26 @@ of a render context.</p>
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_buffer3mapEv">
-<span id="_CPPv3N3mge15hardware_buffer3mapEv"></span><span id="_CPPv2N3mge15hardware_buffer3mapEv"></span><span id="mge::hardware_buffer::map"></span><span class="target" id="classmge_1_1hardware__buffer_1a1a429949ac06a8b134e0048e95f4cfdc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">map</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer3mapEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Maps the buffer. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>mapped buffer </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_buffer5unmapEv">
-<span id="_CPPv3N3mge15hardware_buffer5unmapEv"></span><span id="_CPPv2N3mge15hardware_buffer5unmapEv"></span><span id="mge::hardware_buffer::unmap"></span><span class="target" id="classmge_1_1hardware__buffer_1ae07f465ddbb1416d08f59bec1f590373"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unmap</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer5unmapEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Unmaps the buffer. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge15hardware_buffer6mappedEv">
-<span id="_CPPv3NK3mge15hardware_buffer6mappedEv"></span><span id="_CPPv2NK3mge15hardware_buffer6mappedEv"></span><span id="mge::hardware_buffer::mappedC"></span><span class="target" id="classmge_1_1hardware__buffer_1a72e0224ffa68ca58fdce741008563ee5"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mapped</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer6mappedEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Return whether buffer is currently mapped. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if mapped </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge15hardware_buffer4typeEv">
 <span id="_CPPv3NK3mge15hardware_buffer4typeEv"></span><span id="_CPPv2NK3mge15hardware_buffer4typeEv"></span><span id="mge::hardware_buffer::typeC"></span><span class="target" id="classmge_1_1hardware__buffer_1acd27a65e53d252faddaebf2da4f8cc73"></span><a class="reference internal" href="#_CPPv4N3mge11buffer_typeE" title="mge::buffer_type"><span class="n"><span class="pre">buffer_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15hardware_buffer4typeEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Hardware buffer type. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>buffer type </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15hardware_buffer11on_set_dataEPv6size_t">
+<span id="_CPPv3N3mge15hardware_buffer11on_set_dataEPv6size_t"></span><span id="_CPPv2N3mge15hardware_buffer11on_set_dataEPv6size_t"></span><span id="mge::hardware_buffer::on_set_data__voidP.s"></span><span class="target" id="classmge_1_1hardware__buffer_1af771ff9b075d7d00e1f02fa92d0b5120"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">on_set_data</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">data</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">data_size</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge15hardware_buffer11on_set_dataEPv6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Set the data of the hardware buffer. The data must be set synchronously and available when this method returns. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – Pointer to the data to set </p></li>
+<li><p><strong>data_size</strong> – Size of the data in bytes </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -928,13 +914,6 @@ is a list of vertex formats, and an added attribute semantic.</p>
 <dd class="field-odd"><p>number of elements (vertices) </p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge13vertex_buffer7destroyEv">
-<span id="_CPPv3N3mge13vertex_buffer7destroyEv"></span><span id="_CPPv2N3mge13vertex_buffer7destroyEv"></span><span id="mge::vertex_buffer::destroy"></span><span class="target" id="classmge_1_1vertex__buffer_1a3f1df34a67cef11a2edecde0f3d4c1a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13vertex_buffer7destroyEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Destroy the vertex buffer. </p>
-<p>The vertex buffer is removed from the context and its resources are freed. Afterwards, the pointer to the vertex buffer is invalid. </p>
 </dd></dl>
 
 </div>

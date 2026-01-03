@@ -64,25 +64,7 @@
 <li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mesh.html">Mesh</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Command Lists</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge12command_listE"><code class="docutils literal notranslate"><span class="pre">mge::command_list</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_listD0Ev"><code class="docutils literal notranslate"><span class="pre">~command_list()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list8viewportERKN3mge8viewportE"><code class="docutils literal notranslate"><span class="pre">viewport()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7scissorERK9rectangle"><code class="docutils literal notranslate"><span class="pre">scissor()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list15default_scissorEv"><code class="docutils literal notranslate"><span class="pre">default_scissor()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge12command_list6nativeEv"><code class="docutils literal notranslate"><span class="pre">native()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list5clearERK10rgba_color"><code class="docutils literal notranslate"><span class="pre">clear()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list11clear_depthEf"><code class="docutils literal notranslate"><span class="pre">clear_depth()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list13clear_stencilE7int32_t"><code class="docutils literal notranslate"><span class="pre">clear_stencil()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list4drawERK12draw_command"><code class="docutils literal notranslate"><span class="pre">draw()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list6finishEv"><code class="docutils literal notranslate"><span class="pre">finish()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7executeEv"><code class="docutils literal notranslate"><span class="pre">execute()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12command_list7destroyEv"><code class="docutils literal notranslate"><span class="pre">destroy()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge18frame_command_listE"><code class="docutils literal notranslate"><span class="pre">mge::frame_command_list</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Command Lists</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
@@ -125,135 +107,17 @@
 <p>They are used to record commands that will be sent to the GPU. In a multi-threaded
 application, command lists can be recorded on multiple threads and then submitted
 to the GPU on a single thread.</p>
-<dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_listE">
-<span id="_CPPv3N3mge12command_listE"></span><span id="_CPPv2N3mge12command_listE"></span><span id="mge::command_list"></span><span class="target" id="classmge_1_1command__list"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">command_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge12command_listE" title="Link to this definition"></a><br /></dt>
-<dd><p>A sequence of state changes. </p>
-<p>A list of state-changing commands which can be applied to a render context. </p>
-<p>Subclassed by <a class="reference internal" href="#classmge_1_1frame__command__list"><span class="std std-ref">mge::frame_command_list</span></a></p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_listD0Ev">
-<span id="_CPPv3N3mge12command_listD0Ev"></span><span id="_CPPv2N3mge12command_listD0Ev"></span><span id="mge::command_list::~command_list"></span><span class="target" id="classmge_1_1command__list_1a7c32d9b7c306ad55618c21d79674a7af"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~command_list</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_listD0Ev" title="Link to this definition"></a><br /></dt>
-<dd><p>Destructor. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list8viewportERKN3mge8viewportE">
-<span id="_CPPv3N3mge12command_list8viewportERKN3mge8viewportE"></span><span id="_CPPv2N3mge12command_list8viewportERKN3mge8viewportE"></span><span id="mge::command_list::viewport__mge::viewportCR"></span><span class="target" id="classmge_1_1command__list_1afac9925f251e33207a35e904f28f8cfa"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">viewport</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="datastructures.html#_CPPv4N3mge8viewportE" title="mge::viewport"><span class="n"><span class="pre">viewport</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">vp</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list8viewportERKN3mge8viewportE" title="Link to this definition"></a><br /></dt>
-<dd><p>Set viewport. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>vp</strong> – viewport </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list7scissorERK9rectangle">
-<span id="_CPPv3N3mge12command_list7scissorERK9rectangle"></span><span id="_CPPv2N3mge12command_list7scissorERK9rectangle"></span><span id="mge::command_list::scissor__rectangleCR"></span><span class="target" id="classmge_1_1command__list_1a00e23476e7c18d95640e64f093dcea8e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scissor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge9rectangleE" title="mge::rectangle"><span class="n"><span class="pre">rectangle</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rect</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list7scissorERK9rectangle" title="Link to this definition"></a><br /></dt>
-<dd><p>Set scissor rectangle. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rect</strong> – scissor rectangle </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list15default_scissorEv">
-<span id="_CPPv3N3mge12command_list15default_scissorEv"></span><span id="_CPPv2N3mge12command_list15default_scissorEv"></span><span id="mge::command_list::default_scissor"></span><span class="target" id="classmge_1_1command__list_1aaaed2b5f5ea3ad83a24cd3e4d02990d8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">default_scissor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list15default_scissorEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Set default scissor for the render context. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK3mge12command_list6nativeEv">
-<span id="_CPPv3NK3mge12command_list6nativeEv"></span><span id="_CPPv2NK3mge12command_list6nativeEv"></span><span id="mge::command_list::nativeC"></span><span class="target" id="classmge_1_1command__list_1a37c7f1d24e5b72f0d34a9d28b4c07b45"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">native</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge12command_list6nativeEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Returns whether this command list is native. </p>
-<p>Some render APIs support command list objects on their API level. If the command list is mapped to such an object, a command list is native.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if native </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list5clearERK10rgba_color">
-<span id="_CPPv3N3mge12command_list5clearERK10rgba_color"></span><span id="_CPPv2N3mge12command_list5clearERK10rgba_color"></span><span id="mge::command_list::clear__rgba_colorCR"></span><span class="target" id="classmge_1_1command__list_1af14590f796284f0d93c93711eaf05b0e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="datastructures.html#_CPPv4N3mge10rgba_colorE" title="mge::rgba_color"><span class="n"><span class="pre">rgba_color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">color</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list5clearERK10rgba_color" title="Link to this definition"></a><br /></dt>
-<dd><p>Clears the color buffer with the requested color. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>color</strong> – clear color </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list11clear_depthEf">
-<span id="_CPPv3N3mge12command_list11clear_depthEf"></span><span id="_CPPv2N3mge12command_list11clear_depthEf"></span><span id="mge::command_list::clear_depth__float"></span><span class="target" id="classmge_1_1command__list_1a35d0029b8af9e325ae22708192700eec"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_depth</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">depth</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list11clear_depthEf" title="Link to this definition"></a><br /></dt>
-<dd><p>Clears the depth buffer with the requested value. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>depth</strong> – clear depth value </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list13clear_stencilE7int32_t">
-<span id="_CPPv3N3mge12command_list13clear_stencilE7int32_t"></span><span id="_CPPv2N3mge12command_list13clear_stencilE7int32_t"></span><span id="mge::command_list::clear_stencil__int32_t"></span><span class="target" id="classmge_1_1command__list_1aaec870184f7d6ec76f6ff91e186423f9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear_stencil</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">int32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">stencil</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list13clear_stencilE7int32_t" title="Link to this definition"></a><br /></dt>
-<dd><p>Clears the stencil buffer with the requested value. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>stencil</strong> – clear stencil value </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list4drawERK12draw_command">
-<span id="_CPPv3N3mge12command_list4drawERK12draw_command"></span><span id="_CPPv2N3mge12command_list4drawERK12draw_command"></span><span id="mge::command_list::draw__draw_commandCR"></span><span class="target" id="classmge_1_1command__list_1a08b2ce9d74d11f3164172f7b87544d5b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">draw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">draw_command</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">command</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list4drawERK12draw_command" title="Link to this definition"></a><br /></dt>
-<dd><p>Draws a draw command. </p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>command</strong> – draw command </p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list6finishEv">
-<span id="_CPPv3N3mge12command_list6finishEv"></span><span id="_CPPv2N3mge12command_list6finishEv"></span><span id="mge::command_list::finish"></span><span class="target" id="classmge_1_1command__list_1ae74f0b9474fa2836c77ff40b73bf26bd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">finish</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_list6finishEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Finishes filling the command list. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list7executeEv">
-<span id="_CPPv3N3mge12command_list7executeEv"></span><span id="_CPPv2N3mge12command_list7executeEv"></span><span id="mge::command_list::execute"></span><span class="target" id="classmge_1_1command__list_1abeff64edccf89796e95f09bd486019df"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">execute</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge12command_list7executeEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Executes this command list. </p>
-</dd></dl>
-
-<dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge12command_list7destroyEv">
-<span id="_CPPv3N3mge12command_list7destroyEv"></span><span id="_CPPv2N3mge12command_list7destroyEv"></span><span id="mge::command_list::destroy"></span><span class="target" id="classmge_1_1command__list_1a95fbe6b69ad4345b6ea3d221ae426a72"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">destroy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12command_list7destroyEv" title="Link to this definition"></a><br /></dt>
-<dd><p>Destroy the command list. </p>
-<p>The command list is removed from the context and its resources are freed. Afterwards, the pointer to the command list is invalid. </p>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::command_list” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
 </div>
-</dd></dl>
-
 <p>Often, recording will be done in the context of the current frame, or
 a target frame buffer. In this case, a frame command list should be used
 for performance reasons.</p>
-<dl class="cpp class">
-<dt class="sig sig-object cpp" id="_CPPv4N3mge18frame_command_listE">
-<span id="_CPPv3N3mge18frame_command_listE"></span><span id="_CPPv2N3mge18frame_command_listE"></span><span id="mge::frame_command_list"></span><span class="target" id="classmge_1_1frame__command__list"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_command_list</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge12command_listE" title="mge::command_list"><span class="n"><span class="pre">command_list</span></span></a><a class="headerlink" href="#_CPPv4N3mge18frame_command_listE" title="Link to this definition"></a><br /></dt>
-<dd><p>A command list for a frame. </p>
-</dd></dl>
-
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::frame_command_list” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
 </section>
 
 
