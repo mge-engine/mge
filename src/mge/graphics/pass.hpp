@@ -65,17 +65,17 @@ namespace mge {
             return m_active;
         }
 
-        const viewport& viewport() const noexcept
+        const mge::viewport& viewport() const noexcept
         {
             return m_viewport;
         }
-        
-        const rectangle& scissor() const noexcept
+
+        const mge::rectangle& scissor() const noexcept
         {
             return m_scissor;
         }
 
-        const rgba_color& clear_color_value() const noexcept
+        const mge::rgba_color& clear_color_value() const noexcept
         {
             return m_clear_color;
         }
