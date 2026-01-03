@@ -691,7 +691,6 @@ namespace mge::vulkan {
 
     void render_context::acquire_next_image()
     {
-        // acquire next swap chain image
         CHECK_VK_CALL(
             vkAcquireNextImageKHR(m_device,
                                   m_swap_chain_khr,
@@ -1038,6 +1037,28 @@ namespace mge::vulkan {
         return mge::image_ref();
     }
 
-    void render_context::on_frame_present() {}
+    void render_context::render(const mge::pass& p)
+    {
+        if (m_current_frame_state == frame_state::BEFORE_DRAW) {
+            wait_for_frame_finished();
+            acquire_next_image();
+
+        }
+        m_current_frame_state = frame_state::DRAW;
+    }
+
+    void render_context::on_frame_present()
+    {
+        VkSemaphore      wait_semaphores[] = {m_render_finished_semaphore};
+        VkPresentInfoKHR present_info = {};
+        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        present_info.waitSemaphoreCount = 1;
+        present_info.pWaitSemaphores = wait_semaphores;
+        present_info.swapchainCount = 1;
+        present_info.pSwapchains = &m_swap_chain_khr;
+        present_info.pImageIndices = &m_current_image_index;
+        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
+        m_current_frame_state = frame_state::BEFORE_DRAW;
+    }
 
 } // namespace mge::vulkan

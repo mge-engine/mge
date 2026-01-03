@@ -23,7 +23,9 @@ namespace mge::vulkan {
                                                     size_t data_size) override;
         mge::shader*        on_create_shader(shader_type t) override;
         mge::program*       on_create_program() override;
-        void                on_frame_present() override;
+
+        void on_frame_present() override;
+        void render(const mge::pass& p) override;
 
         mge::texture_ref create_texture(texture_type type) override;
         mge::image_ref   screenshot() override;
@@ -45,7 +47,7 @@ namespace mge::vulkan {
         {
             return m_queue;
         }
-        // TODO: support different present queue
+
         VkQueue present_queue() const noexcept
         {
             return m_queue;
