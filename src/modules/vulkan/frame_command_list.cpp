@@ -176,7 +176,6 @@ namespace mge::vulkan {
             input_assembly_state_create_info = {};
         input_assembly_state_create_info.sType =
             VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-        // TODO: Vulkan: use topology from draw_command
         input_assembly_state_create_info.topology =
             VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         input_assembly_state_create_info.primitiveRestartEnable = VK_FALSE;

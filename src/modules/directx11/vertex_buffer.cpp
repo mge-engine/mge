@@ -49,7 +49,6 @@ namespace mge::dx11 {
     void vertex_buffer::create_buffer()
     {
         D3D11_BUFFER_DESC buffer_desc = {};
-        // TODO: #113 DirectX11 buffer usage support
         buffer_desc.Usage = D3D11_USAGE_DEFAULT;
         buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         buffer_desc.ByteWidth = mge::checked_cast<UINT>(size());

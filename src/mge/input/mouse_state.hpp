@@ -7,7 +7,6 @@
 #include <cstdint>
 namespace mge {
 
-    // TODO: Mouse wheel support
     /**
      * @brief Current state of mouse input.
      *

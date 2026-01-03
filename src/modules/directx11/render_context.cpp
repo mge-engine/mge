@@ -44,9 +44,8 @@ namespace mge::dx11 {
         swap_chain_desc.BufferDesc.Width = m_window.extent().width;
         swap_chain_desc.BufferDesc.Height = m_window.extent().height;
         swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        swap_chain_desc.SampleDesc.Count =
-            1; // TODO: #121 multisampling configurable
-        swap_chain_desc.Windowed = TRUE; // TODO: #122 fullscreen
+        swap_chain_desc.SampleDesc.Count = 1;
+        swap_chain_desc.Windowed = TRUE;
 
         swap_chain_desc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
         swap_chain_desc.OutputWindow = m_window.hwnd();
@@ -261,7 +260,7 @@ namespace mge::dx11 {
         return mge::image_ref();
     }
 
-    void render_context::on_frame_present() 
+    void render_context::on_frame_present()
     {
         auto rc = m_swap_chain->Present(0, 0);
         CHECK_HRESULT(rc, IDXGISwapChain, Present);

@@ -153,7 +153,7 @@ namespace mge::dx12 {
         swap_chain_desc.Height = m_window.extent().height;
         swap_chain_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
         swap_chain_desc.Stereo = FALSE;
-        swap_chain_desc.SampleDesc.Count = 1; // TODO: #121 multisampling
+        swap_chain_desc.SampleDesc.Count = 1;
         swap_chain_desc.SampleDesc.Quality = 0;
         swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swap_chain_desc.BufferCount = buffer_count;
@@ -253,7 +253,7 @@ namespace mge::dx12 {
     render_context::create_dx12_command_list(ID3D12CommandAllocator* allocator,
                                              D3D12_COMMAND_LIST_TYPE type,
                                              const char*             purpose,
-                                             bool reset)
+                                             bool                    reset)
     {
         if (purpose) {
             MGE_DEBUG_TRACE(DX12, "Create command list for {}", purpose);
@@ -299,7 +299,7 @@ namespace mge::dx12 {
         m_command_list =
             create_dx12_command_list(m_command_allocator.Get(),
                                      D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                     "main command list", 
+                                     "main command list",
                                      false);
         m_command_list->Close();
     }
@@ -396,7 +396,6 @@ namespace mge::dx12 {
         return result;
     }
 
-
     void render_context::wait_for_command_queue()
     {
         // wait for frame
@@ -423,7 +422,8 @@ namespace mge::dx12 {
                 MGE_CHECK_SYSTEM_ERROR(ResetEvent);
             }
         }
-        // MGE_DEBUG_TRACE(DX12, "Frame completed: {}",m_command_queue_fence_value);
+        // MGE_DEBUG_TRACE(DX12, "Frame completed:
+        // {}",m_command_queue_fence_value);
     }
 
     mge::texture_ref render_context::create_texture(texture_type type)
@@ -593,14 +593,15 @@ namespace mge::dx12 {
             pass_command_list = m_command_list.Get();
             current_buffer_index = m_swap_chain->GetCurrentBackBufferIndex();
             if (m_draw_state != draw_state::DRAW) {
-                //MGE_DEBUG_TRACE(DX12, "Waiting for frame to be finished");
+                // MGE_DEBUG_TRACE(DX12, "Waiting for frame to be finished");
                 wait_for_command_queue();
                 // MGE_DEBUG_TRACE(DX12, "Reset command list for new frame");
                 auto rc = m_command_allocator->Reset();
                 CHECK_HRESULT(rc, ID3D12CommandAllocator, Reset);
                 rc = m_command_list->Reset(m_command_allocator.Get(), nullptr);
                 CHECK_HRESULT(rc, ID3D12GraphicsCommandList, Reset);
-                // MGE_DEBUG_TRACE(DX12, "Setup resource barrier present to render");
+                // MGE_DEBUG_TRACE(DX12, "Setup resource barrier present to
+                // render");
                 D3D12_RESOURCE_BARRIER present_to_render = {
                     .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
                     .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
@@ -641,13 +642,15 @@ namespace mge::dx12 {
         return mge::image_ref();
     }
 
-    void render_context::on_frame_present() 
+    void render_context::on_frame_present()
     {
         D3D12_RESOURCE_BARRIER render_to_present = {
             .Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION,
             .Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE,
             .Transition = {
-                .pResource = m_backbuffers[m_swap_chain->GetCurrentBackBufferIndex()].Get(),
+                .pResource =
+                    m_backbuffers[m_swap_chain->GetCurrentBackBufferIndex()]
+                        .Get(),
                 .Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES,
                 .StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET,
                 .StateAfter = D3D12_RESOURCE_STATE_PRESENT}};

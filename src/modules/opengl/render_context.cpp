@@ -150,10 +150,11 @@ namespace mge::opengl {
 
     void render_context::render(const mge::pass& p)
     {
-
-        // if (pass.frame_buffer()) {
-        //    // bind frame buffer
-        // }
+        GLuint fb = 0;
+        if (p.frame_buffer()) {
+            MGE_THROW_NOT_IMPLEMENTED
+                << "Rendering to custom frame buffers not implemented";
+        }
 
         if (p.clear_color_enabled()) {
             const rgba_color& c = p.clear_color_value();
