@@ -42,7 +42,9 @@ namespace mge {
         ~pass();
 
         void set_rect(const mge::rectangle& r);
-
+        void set_viewport(const mge::viewport& v);
+        void default_viewport();
+        
         void set_scissor(const mge::rectangle& r);
 
         void clear_color(const rgba_color& color);

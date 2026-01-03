@@ -159,6 +159,8 @@ namespace mge {
             return m_extent;
         }
 
+        mge::viewport default_viewport() const;
+
         /**
          * @brief Get a pass by its index. If the pass does not exist, it is
          * created.

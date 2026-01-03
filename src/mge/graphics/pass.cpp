@@ -23,6 +23,16 @@ namespace mge {
         m_viewport.set_rect(r);
     }
 
+    void pass::set_viewport(const mge::viewport& v)
+    {
+        m_viewport = v;
+    }
+
+    void pass::default_viewport()
+    {
+        m_viewport = m_context->default_viewport();
+    }
+
     void pass::set_scissor(const mge::rectangle& r)
     {
         m_scissor = r;
