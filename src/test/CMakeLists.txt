@@ -7,5 +7,5 @@ MGE_LIBRARY(
     TYPE    STATIC
     SOURCES
         benchmark.cpp)
-
+TARGET_LINK_LIBRARIES(benchmark PRIVATE nanobench::nanobench)
 ADD_SUBDIRECTORY(test)

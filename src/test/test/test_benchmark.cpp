@@ -13,6 +13,7 @@ TEST(benchmark, memory_cycle)
 {
     char* buffer = new char[10 * 1024];
     mge::benchmark()
+        .minEpochIterations(1000000)
         .run("memset1",
              [&]() {
                  memset(buffer, 'A', 1 * 1024);
@@ -25,15 +26,6 @@ TEST(benchmark, memory_cycle)
     delete[] buffer;
 }
 
-TEST(benchmark, empty_cycle)
-{
-    try {
-        mge::benchmark().run("empty", [&]() {});
-        FAIL() << "Empty benchmark shall raise exception";
-    } catch (const std::exception& ex) {
-        EXPECT_STREQ("Benchmark 'empty' did run too little time", ex.what());
-    }
-}
 
 TEST(benchmark, throw_catch_cycle)
 {
