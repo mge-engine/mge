@@ -7,6 +7,7 @@
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
+#include "mge/graphics/viewport.hpp"
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/command_buffer.hpp"
 
@@ -64,11 +65,11 @@ namespace mge {
             return m_active;
         }
 
-        const rectangle& rect() const noexcept
+        const viewport& viewport() const noexcept
         {
-            return m_rect;
+            return m_viewport;
         }
-
+        
         const rectangle& scissor() const noexcept
         {
             return m_scissor;
@@ -117,7 +118,7 @@ namespace mge {
 
         mge::render_context*     m_context{nullptr};
         mge::frame_buffer_handle m_frame_buffer;
-        mge::rectangle           m_rect{};
+        mge::viewport            m_viewport{};
         mge::rectangle           m_scissor{};
         rgba_color               m_clear_color{0.0f, 0.0f, 0.0f, 1.0f};
         float                    m_clear_depth{1.0f};

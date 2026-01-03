@@ -7,6 +7,8 @@
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/point.hpp"
+#include "mge/graphics/rectangle.hpp"
+
 #include <cstdint>
 
 namespace mge {
@@ -59,6 +61,33 @@ namespace mge {
         viewport(viewport&&) = default;
         viewport& operator=(const viewport&) = default;
         viewport& operator=(viewport&&) = default;
+
+        void set_rect(float x_,
+                      float y_,
+                      float width_,
+                      float height_)
+        {
+            x         = x_;
+            y         = y_;
+            width     = width_;
+            height    = height_;
+        }
+
+        void set_rect(const mge::extent& ext)
+        {
+            x         = 0.0f;
+            y         = 0.0f;
+            width     = static_cast<float>(ext.width);
+            height    = static_cast<float>(ext.height);
+        }
+
+        void set_rect(const mge::rectangle& rect)
+        {
+            x         = static_cast<float>(rect.left);
+            y         = static_cast<float>(rect.top);
+            width     = static_cast<float>(rect.width());
+            height    = static_cast<float>(rect.height());
+        }
 
         /**
          * Pointer to beginning of data.

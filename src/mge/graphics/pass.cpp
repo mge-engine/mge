@@ -20,7 +20,7 @@ namespace mge {
 
     void pass::set_rect(const mge::rectangle& r)
     {
-        m_rect = r;
+        m_viewport.set_rect(r);
     }
 
     void pass::set_scissor(const mge::rectangle& r)
@@ -31,7 +31,7 @@ namespace mge {
     void pass::reset()
     {
         m_active = false;
-        m_rect = mge::rectangle{0, 0, 1, 1};
+        m_viewport = mge::viewport{0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
         m_scissor = mge::rectangle{0, 0, 1, 1};
         m_clear_color = rgba_color{0.0f, 0.0f, 0.0f, 1.0f};
         m_clear_depth = 1.0f;
