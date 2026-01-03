@@ -156,6 +156,16 @@ namespace mge::opengl {
                 << "Rendering to custom frame buffers not implemented";
         }
 
+        glBindFramebuffer(GL_FRAMEBUFFER, fb);
+        CHECK_OPENGL_ERROR(glBindFramebuffer);
+
+        const auto& vp = p.viewport();
+        glViewport(static_cast<const GLint>(vp.x),
+                   static_cast<const GLint>(vp.y),
+                   static_cast<const GLsizei>(vp.width),
+                   static_cast<const GLsizei>(vp.height));
+        CHECK_OPENGL_ERROR(glViewport);
+
         if (p.clear_color_enabled()) {
             const rgba_color& c = p.clear_color_value();
             glClearColor(c.r, c.g, c.b, c.a);

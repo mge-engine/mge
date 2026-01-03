@@ -274,4 +274,9 @@ namespace mge {
         return *m_command_buffer;
     }
 
+    mge::viewport render_context::default_viewport() const
+    {
+        return mge::viewport{0.0f, 0.0f, static_cast<float>(m_extent.width), static_cast<float>(m_extent.height)  , 0.0f, 1.0f};
+    }
+
 } // namespace mge

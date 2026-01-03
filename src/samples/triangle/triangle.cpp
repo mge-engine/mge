@@ -74,7 +74,7 @@ namespace mge {
         {
             if (m_initialized) {
                 auto& pass = m_window->render_context().pass(0);
-
+                pass.default_viewport();
                 pass.clear_color(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
                 pass.clear_depth(1.0f);
 
@@ -83,6 +83,7 @@ namespace mge {
                 pass.submit(command_buffer);
             } else {
                 auto& pass = m_window->render_context().pass(0);
+                pass.default_viewport();
                 pass.clear_color(rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
                 pass.touch();
             }

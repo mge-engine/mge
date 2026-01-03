@@ -35,6 +35,7 @@ namespace mge {
 
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 auto& pass = m_window->render_context().pass(0);
+                pass.default_viewport();
                 pass.clear_color(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
                 pass.touch();
 
