@@ -9,6 +9,7 @@ namespace mge {
 
     context_object::context_object(render_context& context)
         : m_context(context)
+        , m_ready(false)
     {}
 
     context_object::~context_object() {}
@@ -44,6 +45,13 @@ namespace mge {
             MGE_THROW(null_pointer) << "Cannot check null reference";
         }
         assert_same_context(*cobj);
+    }
+
+    void context_object::assert_ready() const
+    {
+        if (!m_ready) {
+            MGE_THROW(illegal_state) << "Context object not ready";
+        }
     }
 
 } // namespace mge

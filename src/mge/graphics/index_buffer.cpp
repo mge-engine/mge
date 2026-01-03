@@ -8,9 +8,8 @@ namespace mge {
 
     index_buffer::index_buffer(render_context& context,
                                data_type       dt,
-                               size_t          data_size,
-                               void*           data)
-        : hardware_buffer(context, buffer_type::INDEX, data_size, data)
+                               size_t          data_size)
+        : hardware_buffer(context, buffer_type::INDEX, data_size)
         , m_data_type(dt)
     {}
 
@@ -24,11 +23,6 @@ namespace mge {
     size_t index_buffer::element_count() const
     {
         return size() / data_type_size(m_data_type);
-    }
-
-    void index_buffer::destroy()
-    {
-        context().destroy_index_buffer(this);
     }
 
 } // namespace mge

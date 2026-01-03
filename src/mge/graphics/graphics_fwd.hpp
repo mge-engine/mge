@@ -11,12 +11,13 @@ namespace mge {
     MGE_DECLARE_REF(monitor);
     MGE_DECLARE_REF(render_context);
     MGE_DECLARE_REF(swap_chain);
+    class hardware_buffer;
     class index_buffer;
     class vertex_buffer;
     class shader;
     class program;
-    class command_list;
-    class frame_command_list;
+    class frame_buffer;
+
     MGE_DECLARE_REF(texture);
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);

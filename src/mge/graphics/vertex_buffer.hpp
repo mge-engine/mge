@@ -21,12 +21,10 @@ namespace mge {
          * @param context render context
          * @param layout vertex layout
          * @param data_size size in bytes
-         * @param initial_data optional initial data
          */
         vertex_buffer(render_context&      context,
                       const vertex_layout& layout,
-                      size_t               data_size,
-                      void*                initial_data = nullptr);
+                      size_t               data_size);
 
     public:
         ~vertex_buffer();
@@ -44,15 +42,6 @@ namespace mge {
          * @return number of elements (vertices)
          */
         size_t element_count() const;
-
-        /**
-         * @brief Destroy the vertex buffer.
-         *
-         * The vertex buffer is removed from the context and
-         * its resources are freed. Afterwards, the pointer to the
-         * vertex buffer is invalid.
-         */
-        void destroy();
 
     private:
         vertex_layout m_layout;

@@ -25,6 +25,7 @@ TEST(uniform_binding, create_from_program_ref)
     MOCK_program* program = new MOCK_program(*context);
     EXPECT_CALL(*program, on_link()).Times(1);
     program->link();
+    context->frame();
     mge::uniform_binding binding(program);
     delete program;
 }

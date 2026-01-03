@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/core/thread.hpp"
+#include "mge/core/crash.hpp"
 #include <atomic>
 #include <sstream>
 
@@ -72,7 +73,8 @@ namespace mge {
     void thread::assert_this_thread_is_this_thread()
     {
         if (t_this_thread != this) {
-            // todo: crash because thread inconsistency
+            mge::crash(
+                "Thread assertion failed: this_thread() does not match this");
         }
     }
 

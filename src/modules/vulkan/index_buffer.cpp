@@ -9,18 +9,13 @@ namespace mge::vulkan {
 
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  type,
-                               size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, type, data_size, data)
+                               size_t          data_size)
+        : mge::index_buffer(context, type, data_size)
         , m_vulkan_context(context)
     {
+        // can directly create buffer from any thread
         create_buffer();
-        // TODO: maybe use staging buffer
-        if (data) {
-            void* mapped_data = map();
-            memcpy(mapped_data, data, size());
-            unmap();
-        }
+        set_ready(true);
     }
 
     void index_buffer::create_buffer()
@@ -55,20 +50,29 @@ namespace mge::vulkan {
         }
     }
 
-    void* index_buffer::on_map()
+    void index_buffer::on_set_data(void* data, size_t data_size)
     {
-        void* data = nullptr;
-        CHECK_VK_CALL(
-            vmaMapMemory(m_vulkan_context.allocator(), m_allocation, &data));
-        return data;
-    }
+        if (!data || data_size == 0) {
+            return;
+        }
 
-    void index_buffer::on_unmap()
-    {
+        if (data_size > size()) {
+            MGE_THROW(vulkan::error) << "Data size " << data_size
+                                     << " exceeds buffer size " << size();
+        }
+
+        void* mapped_data = nullptr;
+        CHECK_VK_CALL(vmaMapMemory(m_vulkan_context.allocator(),
+                                   m_allocation,
+                                   &mapped_data));
+
+        memcpy(mapped_data, data, data_size);
+
         CHECK_VK_CALL(vmaFlushAllocation(m_vulkan_context.allocator(),
                                          m_allocation,
                                          0,
-                                         VK_WHOLE_SIZE));
+                                         data_size));
+        set_ready(true);
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
 

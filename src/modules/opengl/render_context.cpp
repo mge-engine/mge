@@ -3,6 +3,7 @@
 // All rights reserved.
 #include "render_context.hpp"
 #include "command_list.hpp"
+#include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
@@ -94,11 +95,6 @@ namespace mge::opengl {
         }
     }
 
-    void render_context::create_swap_chain()
-    {
-        m_swap_chain = std::make_shared<mge::opengl::swap_chain>(*this);
-    }
-
     void render_context::collect_opengl_info()
     {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
@@ -109,122 +105,31 @@ namespace mge::opengl {
 #    error Missing port
 #endif
 
-    render_context::~render_context()
-    {
-        m_frame_command_lists.clear();
-        m_command_lists.clear();
-        m_programs.clear();
-        m_shaders.clear();
-        m_vertex_buffers.clear();
-        m_index_buffers.clear();
-    }
+    render_context::~render_context() {}
 
     singleton<opengl_info> render_context::s_glinfo;
 
-    mge::index_buffer* render_context::create_index_buffer(mge::data_type dt,
-                                                           size_t data_size,
-                                                           void*  data)
+    mge::index_buffer* render_context::on_create_index_buffer(mge::data_type dt,
+                                                              size_t data_size)
     {
-        auto result =
-            std::make_unique<index_buffer>(*this, dt, data_size, data);
-        auto ptr = result.get();
-        m_index_buffers[ptr] = std::move(result);
-        return ptr;
+        return new index_buffer(*this, dt, data_size);
     }
 
-    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    mge::vertex_buffer*
+    render_context::on_create_vertex_buffer(const mge::vertex_layout& layout,
+                                            size_t                    data_size)
     {
-        auto it = m_index_buffers.find(ib);
-        if (it != m_index_buffers.end()) {
-            m_index_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown index buffer";
-        }
+        return new mge::opengl::vertex_buffer(*this, layout, data_size);
     }
 
-    mge::vertex_buffer* render_context::create_vertex_buffer(
-        const mge::vertex_layout& layout, size_t data_size, void* data)
+    mge::shader* render_context::on_create_shader(mge::shader_type t)
     {
-        auto result =
-            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
-        auto ptr = result.get();
-        m_vertex_buffers[ptr] = std::move(result);
-        return ptr;
+        return new shader(*this, t);
     }
 
-    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
+    mge::program* render_context::on_create_program()
     {
-        auto it = m_vertex_buffers.find(vb);
-        if (it != m_vertex_buffers.end()) {
-            m_vertex_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown vertex buffer";
-        }
-    }
-
-    mge::shader* render_context::create_shader(mge::shader_type t)
-    {
-        auto result = std::make_unique<shader>(*this, t);
-        auto ptr = result.get();
-        m_shaders[ptr] = std::move(result);
-        return ptr;
-    }
-
-    void render_context::destroy_shader(mge::shader* s)
-    {
-        auto it = m_shaders.find(s);
-        if (it != m_shaders.end()) {
-            m_shaders.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
-        }
-    }
-
-    mge::program* render_context::create_program()
-    {
-        auto result = std::make_unique<program>(*this);
-        auto ptr = result.get();
-        m_programs[ptr] = std::move(result);
-        return ptr;
-    }
-
-    void render_context::destroy_program(mge::program* p)
-    {
-        auto it = m_programs.find(p);
-        if (it != m_programs.end()) {
-            m_programs.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
-        }
-    }
-
-    mge::command_list* render_context::create_command_list()
-    {
-        auto  ptr = std::make_unique<command_list>(*this);
-        auto* result = ptr.get();
-        m_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void render_context::destroy_command_list(mge::command_list* cl)
-    {
-        m_command_lists.erase(cl);
-    }
-
-    mge::frame_command_list* render_context::create_current_frame_command_list()
-    {
-        auto* result = mge::render_context::create_current_frame_command_list();
-        m_frame_command_lists[result] =
-            std::unique_ptr<mge::frame_command_list>(result);
-        return result;
-    }
-
-    void
-    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
-    {
-        m_frame_command_lists.erase(fcl);
+        return new mge::opengl::program(*this);
     }
 
     mge::texture_ref render_context::create_texture(mge::texture_type type)
@@ -241,6 +146,37 @@ namespace mge::opengl {
     uint32_t render_context::window_height() const
     {
         return m_window->extent().height;
+    }
+
+    void render_context::render(const mge::pass& p)
+    {
+        GLuint fb = 0;
+        if (p.frame_buffer()) {
+            MGE_THROW_NOT_IMPLEMENTED
+                << "Rendering to custom frame buffers not implemented";
+        }
+
+        if (p.clear_color_enabled()) {
+            const rgba_color& c = p.clear_color_value();
+            glClearColor(c.r, c.g, c.b, c.a);
+            CHECK_OPENGL_ERROR(glClearColor);
+            glClear(GL_COLOR_BUFFER_BIT);
+            CHECK_OPENGL_ERROR(glClear);
+        }
+    }
+
+    mge::image_ref render_context::screenshot()
+    {
+        return image_ref();
+    }
+
+    void render_context::on_frame_present()
+    {
+#ifdef MGE_OS_WINDOWS
+        SwapBuffers(m_hdc);
+#else
+#    error Missing port
+#endif
     }
 
 } // namespace mge::opengl

@@ -49,146 +49,33 @@ namespace mge::vulkan {
         }
     }
 
-    void render_context::init_swap_chain()
-    {
-        try {
-            // called after construction, as otherwise the shared_from_this()
-            // call would fail
-            m_swap_chain = std::make_shared<mge::vulkan::swap_chain>(*this);
-        } catch (...) {
-            teardown();
-            throw;
-        }
-    }
-
     render_context::~render_context()
     {
-        m_frame_command_lists.clear();
-        m_command_lists.clear();
-        m_programs.clear();
-        m_shaders.clear();
-        m_vertex_buffers.clear();
-        m_index_buffers.clear();
+        wait_for_frame_finished();
         teardown();
     }
 
-    mge::index_buffer* render_context::create_index_buffer(data_type dt,
-                                                           size_t    data_size,
-                                                           void*     data)
+    mge::index_buffer* render_context::on_create_index_buffer(data_type dt,
+                                                              size_t data_size)
     {
-        auto result =
-            std::make_unique<index_buffer>(*this, dt, data_size, data);
-        auto ptr = result.get();
-        m_index_buffers[ptr] = std::move(result);
-        return ptr;
+        return new index_buffer(*this, dt, data_size);
     }
 
-    void render_context::destroy_index_buffer(mge::index_buffer* ib)
+    mge::vertex_buffer*
+    render_context::on_create_vertex_buffer(const vertex_layout& layout,
+                                            size_t               data_size)
     {
-        auto it = m_index_buffers.find(ib);
-        if (it != m_index_buffers.end()) {
-            m_index_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown index buffer";
-        }
+        return new mge::vulkan::vertex_buffer(*this, layout, data_size);
     }
 
-    mge::vertex_buffer* render_context::create_vertex_buffer(
-        const vertex_layout& layout, size_t data_size, void* data)
+    mge::shader* render_context::on_create_shader(shader_type t)
     {
-        auto result =
-            std::make_unique<vertex_buffer>(*this, layout, data_size, data);
-        auto ptr = result.get();
-        m_vertex_buffers[ptr] = std::move(result);
-        return ptr;
+        return new shader(*this, t);
     }
 
-    void render_context::destroy_vertex_buffer(mge::vertex_buffer* vb)
+    mge::program* render_context::on_create_program()
     {
-        auto it = m_vertex_buffers.find(vb);
-        if (it != m_vertex_buffers.end()) {
-            m_vertex_buffers.erase(it);
-        } else {
-            MGE_THROW(illegal_state)
-                << "Attempt to destroy unknown vertex buffer";
-        }
-    }
-
-    mge::shader* render_context::create_shader(shader_type t)
-    {
-        auto result = std::make_unique<shader>(*this, t);
-        auto ptr = result.get();
-        m_shaders[ptr] = std::move(result);
-        return ptr;
-    }
-
-    void render_context::destroy_shader(mge::shader* s)
-    {
-        auto it = m_shaders.find(s);
-        if (it != m_shaders.end()) {
-            m_shaders.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown shader";
-        }
-    }
-
-    mge::program* render_context::create_program()
-    {
-        auto result = std::make_unique<program>(*this);
-        auto ptr = result.get();
-        m_programs[ptr] = std::move(result);
-        return ptr;
-    }
-
-    void render_context::destroy_program(mge::program* p)
-    {
-        auto it = m_programs.find(p);
-        if (it != m_programs.end()) {
-            m_programs.erase(it);
-        } else {
-            MGE_THROW(illegal_state) << "Attempt to destroy unknown program";
-        }
-    }
-
-    mge::command_list* render_context::create_command_list()
-    {
-        auto  ptr = std::make_unique<mge::vulkan::command_list>(*this);
-        auto* result = ptr.get();
-        m_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void render_context::destroy_command_list(mge::command_list* cl)
-    {
-        m_command_lists.erase(cl);
-    }
-
-    mge::frame_command_list* render_context::create_current_frame_command_list()
-    {
-        if (!m_drawing_initialized) {
-            initialize_drawing();
-        }
-        if (m_current_frame_state == frame_state::BEFORE_DRAW) {
-            begin_frame();
-            begin_draw();
-        } else if (m_current_frame_state != frame_state::DRAW) {
-            MGE_THROW(error)
-                << "Invalid frame state for frame command list creation: "
-                << m_current_frame_state;
-        }
-        auto  ptr = std::make_unique<frame_command_list>(*this,
-                                                        m_frame,
-                                                        m_current_image_index);
-        auto* result = ptr.get();
-        m_frame_command_lists[result] = std::move(ptr);
-        return result;
-    }
-
-    void
-    render_context::destroy_frame_command_list(mge::frame_command_list* fcl)
-    {
-        m_frame_command_lists.erase(fcl);
+        return new mge::vulkan::program(*this);
     }
 
     mge::texture_ref render_context::create_texture(texture_type type)
@@ -268,18 +155,6 @@ namespace mge::vulkan {
 
     void render_context::teardown()
     {
-        // Clean up any deleted pipelines before destroying device
-        for (auto& pipeline : m_deleted_pipelines) {
-            destroy_pipeline(pipeline.second);
-        }
-        m_deleted_pipelines.clear();
-        
-        // Clean up any deleted command buffers before destroying device
-        for (auto& cb : m_deleted_command_buffers) {
-            destroy_command_buffer(cb.second);
-        }
-        m_deleted_command_buffers.clear();
-        
         if (vkDestroySemaphore) {
             if (m_image_available_semaphore) {
                 vkDestroySemaphore(m_device,
@@ -654,7 +529,6 @@ namespace mge::vulkan {
         VkAttachmentDescription color_attachment = {};
         // single color buffer used for presentation
         color_attachment.format = m_used_surface_format.format;
-        // TODO: multisampling in vulkan
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
         // don't care about content of the image at beginning
         color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -788,10 +662,6 @@ namespace mge::vulkan {
 
     void render_context::wait_for_frame_finished()
     {
-        if (m_deleted_command_buffers.size() + m_deleted_pipelines.size() >=
-            5) {
-            gc();
-        };
         // wait for finish of last frame
         CHECK_VK_CALL(vkWaitForFences(m_device,
                                       1,
@@ -805,7 +675,6 @@ namespace mge::vulkan {
 
     void render_context::acquire_next_image()
     {
-        // acquire next swap chain image
         CHECK_VK_CALL(
             vkAcquireNextImageKHR(m_device,
                                   m_swap_chain_khr,
@@ -815,12 +684,7 @@ namespace mge::vulkan {
                                   &m_current_image_index));
     }
 
-    void render_context::begin_frame()
-    {
-        wait_for_frame_finished();
-        acquire_next_image();
-    }
-
+#if 0
     void render_context::begin_draw()
     {
         if (m_current_frame_state != frame_state::BEFORE_DRAW) {
@@ -857,53 +721,7 @@ namespace mge::vulkan {
         m_current_frame_state = frame_state::DRAW;
         // MGE_DEBUG_TRACE(VULKAN) << "Begin draw";
     }
-
-    void
-    render_context::execute_frame_command_buffer(VkCommandBuffer command_buffer)
-    {
-        if (m_current_frame_state != frame_state::DRAW) {
-            MGE_THROW(error)
-                << "Invalid frame state for execution of frame command buffer: "
-                << m_current_frame_state;
-        }
-        m_pending_command_buffers.push_back(command_buffer);
-    }
-
-    void render_context::end_draw()
-    {
-        if (m_pending_command_buffers.size() > 0) {
-            // MGE_DEBUG_TRACE(VULKAN)
-            //    << "Execute " << m_pending_command_buffers.size()
-            //    << " secondary command buffers";
-            vkCmdExecuteCommands(
-                current_primary_command_buffer(),
-                mge::checked_cast<uint32_t>(m_pending_command_buffers.size()),
-                m_pending_command_buffers.data());
-        }
-        //  MGE_DEBUG_TRACE(VULKAN) << "End render pass";
-        vkCmdEndRenderPass(current_primary_command_buffer());
-        CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
-
-        VkSubmitInfo submit_info{};
-        submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore     wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore     signal_semaphores[] = {m_render_finished_semaphore};
-        VkCommandBuffer command_buffers[] = {current_primary_command_buffer()};
-        VkPipelineStageFlags wait_stages[] = {
-            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-        submit_info.waitSemaphoreCount = 1;
-        submit_info.pWaitSemaphores = wait_semaphores;
-        submit_info.pWaitDstStageMask = wait_stages;
-        submit_info.signalSemaphoreCount = 1;
-        submit_info.pSignalSemaphores = signal_semaphores;
-        submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = command_buffers;
-
-        CHECK_VK_CALL(
-            vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
-        m_current_frame_state = frame_state::DRAW_FINISHED;
-        m_pending_command_buffers.clear();
-    }
+#endif
 #if 0
     void render_context::tmp_draw_all()
     {
@@ -984,31 +802,33 @@ namespace mge::vulkan {
     }
 #endif
 
-    void render_context::initialize_drawing()
+    mge::image_ref render_context::screenshot()
     {
-        // draw one frame to boot up the acquire/release cycle
-        wait_for_frame_finished();
-        acquire_next_image();
+        return mge::image_ref();
+    }
 
-        VkCommandBuffer             tmp_command_buffer;
-        VkCommandBufferAllocateInfo alloc_info = {};
-        alloc_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-        alloc_info.commandPool = m_graphics_command_pool;
-        alloc_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-        alloc_info.commandBufferCount = 1;
-
-        CHECK_VK_CALL(vkAllocateCommandBuffers(m_device,
-                                               &alloc_info,
-                                               &tmp_command_buffer));
-
-        CHECK_VK_CALL(vkResetCommandBuffer(tmp_command_buffer, 0));
-
-        // begin command buffer recording
-        VkCommandBufferBeginInfo begin_info = {};
-        begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-        begin_info.flags = 0;
-        begin_info.pInheritanceInfo = nullptr;
-        CHECK_VK_CALL(vkBeginCommandBuffer(tmp_command_buffer, &begin_info));
+    void render_context::render(const mge::pass& p)
+    {
+        if (m_current_frame_state == frame_state::BEFORE_DRAW) {
+            wait_for_frame_finished();
+            acquire_next_image();
+        }
+        VkCommandBuffer command_buffer = VK_NULL_HANDLE;
+        if (!p.frame_buffer()) {
+            command_buffer = current_primary_command_buffer();
+            if (m_current_frame_state == frame_state::BEFORE_DRAW) {
+                CHECK_VK_CALL(vkResetCommandBuffer(command_buffer, 0));
+                VkCommandBufferBeginInfo begin_info = {};
+                begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+                begin_info.flags = 0;
+                begin_info.pInheritanceInfo = nullptr;
+                CHECK_VK_CALL(
+                    vkBeginCommandBuffer(command_buffer, &begin_info));
+            }
+        } else {
+            MGE_THROW_NOT_IMPLEMENTED << "Rendering to custom frame buffers "
+                                         "not implemented in Vulkan yet";
+        }
 
         VkRenderPassBeginInfo render_pass_info{};
         render_pass_info.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -1019,35 +839,35 @@ namespace mge::vulkan {
         render_pass_info.renderArea.offset = {0, 0};
         render_pass_info.renderArea.extent = m_extent;
 
-        VkClearValue clear_color = {{{0.0f, 0.0f, 0.0f, 1.0f}}};
-        render_pass_info.clearValueCount = 1;
-        render_pass_info.pClearValues = &clear_color;
+        VkClearValue clear_color = {};
+        if (p.clear_color_enabled()) {
+            const auto& c = p.clear_color_value();
+            clear_color.color.float32[0] = c.r;
+            clear_color.color.float32[1] = c.g;
+            clear_color.color.float32[2] = c.b;
+            clear_color.color.float32[3] = c.a;
+            render_pass_info.clearValueCount = 1;
+            render_pass_info.pClearValues = &clear_color;
+        }
 
-        vkCmdBeginRenderPass(tmp_command_buffer,
+        vkCmdBeginRenderPass(command_buffer,
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_INLINE);
 
-        VkViewport viewport{};
-        viewport.x = 0.0f;
-        viewport.y = 0.0f;
-        viewport.width = static_cast<float>(m_extent.width);
-        viewport.height = static_cast<float>(m_extent.height);
-        viewport.minDepth = 0.0f;
-        viewport.maxDepth = 1.0f;
-        vkCmdSetViewport(tmp_command_buffer, 0, 1, &viewport);
+        vkCmdEndRenderPass(command_buffer);
+        m_current_frame_state = frame_state::DRAW;
+    }
 
-        VkRect2D scissor{};
-        scissor.offset = {0, 0};
-        scissor.extent = m_extent;
-        vkCmdSetScissor(tmp_command_buffer, 0, 1, &scissor);
+    void render_context::on_frame_present()
+    {
+        // MGE_DEBUG_TRACE(VULKAN, "Present frame");
 
-        vkCmdEndRenderPass(tmp_command_buffer);
-        CHECK_VK_CALL(vkEndCommandBuffer(tmp_command_buffer));
-
+        CHECK_VK_CALL(vkEndCommandBuffer(current_primary_command_buffer()));
         VkSubmitInfo submit_info{};
         submit_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        VkSemaphore wait_semaphores[] = {m_image_available_semaphore};
-        VkSemaphore signal_semaphores[] = {m_render_finished_semaphore};
+        VkSemaphore     wait_semaphores[] = {m_image_available_semaphore};
+        VkSemaphore     signal_semaphores[] = {m_render_finished_semaphore};
+        VkCommandBuffer command_buffers[] = {current_primary_command_buffer()};
         VkPipelineStageFlags wait_stages[] = {
             VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
         submit_info.waitSemaphoreCount = 1;
@@ -1056,95 +876,22 @@ namespace mge::vulkan {
         submit_info.signalSemaphoreCount = 1;
         submit_info.pSignalSemaphores = signal_semaphores;
         submit_info.commandBufferCount = 1;
-        submit_info.pCommandBuffers = &tmp_command_buffer;
+        submit_info.pCommandBuffers = command_buffers;
 
         CHECK_VK_CALL(
             vkQueueSubmit(m_queue, 1, &submit_info, m_frame_finished_fence));
+        m_current_frame_state = frame_state::DRAW_FINISHED;
 
+        VkSemaphore present_wait_semaphores[] = {m_render_finished_semaphore};
         VkPresentInfoKHR present_info = {};
         present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
         present_info.waitSemaphoreCount = 1;
-        present_info.pWaitSemaphores = signal_semaphores;
+        present_info.pWaitSemaphores = present_wait_semaphores;
         present_info.swapchainCount = 1;
         present_info.pSwapchains = &m_swap_chain_khr;
         present_info.pImageIndices = &m_current_image_index;
         CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
-
-        // schedule command buffer for gc
-        m_deleted_command_buffers.emplace_back(0, tmp_command_buffer);
-
-        m_drawing_initialized = true;
-    }
-
-    void render_context::present()
-    {
-        switch (m_current_frame_state) {
-        case frame_state::BEFORE_DRAW:
-            begin_frame();
-            [[fallthrough]];
-        case frame_state::DRAW:
-            end_draw();
-            [[fallthrough]];
-        case frame_state::DRAW_FINISHED:
-            break;
-        }
-
-        VkSemaphore      wait_semaphores[] = {m_render_finished_semaphore};
-        VkPresentInfoKHR present_info = {};
-        present_info.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-        present_info.waitSemaphoreCount = 1;
-        present_info.pWaitSemaphores = wait_semaphores;
-        present_info.swapchainCount = 1;
-        present_info.pSwapchains = &m_swap_chain_khr;
-        present_info.pImageIndices = &m_current_image_index;
-        CHECK_VK_CALL(vkQueuePresentKHR(m_queue, &present_info));
-
         m_current_frame_state = frame_state::BEFORE_DRAW;
-    }
-
-    void render_context::discard_command_buffer(uint64_t        frame,
-                                                VkCommandBuffer command_buffer)
-    {
-        if (frame < m_frame) {
-            destroy_command_buffer(command_buffer);
-        } else {
-            m_deleted_command_buffers.emplace_back(frame, command_buffer);
-        }
-    }
-
-    void render_context::discard_pipeline(uint64_t frame, VkPipeline pipeline)
-    {
-        if (frame < m_frame) {
-            destroy_pipeline(pipeline);
-        } else {
-            m_deleted_pipelines.emplace_back(frame, pipeline);
-        }
-    }
-
-    void render_context::destroy_pipeline(VkPipeline pipeline)
-    {
-        vkDestroyPipeline(m_device, pipeline, nullptr);
-    }
-
-    void render_context::destroy_command_buffer(VkCommandBuffer command_buffer)
-    {
-        vkFreeCommandBuffers(m_device,
-                             m_graphics_command_pool,
-                             1,
-                             &command_buffer);
-    }
-
-    void render_context::gc()
-    {
-        std::vector<std::pair<uint64_t, VkCommandBuffer>> new_deleted;
-        for (auto& cb : m_deleted_command_buffers) {
-            if (cb.first < m_frame) {
-                destroy_command_buffer(cb.second);
-            } else {
-                new_deleted.push_back(cb);
-            }
-        }
-        m_deleted_command_buffers.swap(new_deleted);
     }
 
 } // namespace mge::vulkan

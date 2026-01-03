@@ -14,8 +14,7 @@ namespace mge::dx11 {
     public:
         vertex_buffer(render_context&      context,
                       const vertex_layout& layout,
-                      size_t               data_size,
-                      void*                initial_data);
+                      size_t               data_size);
         ~vertex_buffer();
 
         ID3D11Buffer* buffer() const
@@ -23,15 +22,12 @@ namespace mge::dx11 {
             return m_buffer.get();
         }
 
-    protected:
-        void* on_map() override;
-        void  on_unmap() override;
+        void on_set_data(void* data, size_t data_size) override;
 
     private:
-        void create_buffer(void* data);
+        void create_buffer();
 
         mge::com_unique_ptr<ID3D11Buffer> m_buffer;
-        void*                             m_mapped_memory;
     };
 
 } // namespace mge::dx11

@@ -2,15 +2,25 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
+#include "mge/core/buffer.hpp"
+#include "mge/core/callable.hpp"
+#include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/extent.hpp"
+#include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
+#include "mge/graphics/index_buffer_handle.hpp"
+#include "mge/graphics/pass.hpp"
+#include "mge/graphics/program_handle.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/shader_type.hpp"
 #include "mge/graphics/texture_type.hpp"
+#include "mge/graphics/vertex_buffer_handle.hpp"
 #include "mge/graphics/vertex_layout.hpp"
 
 #include <memory>
+#include <memory_resource>
 
 namespace mge {
 
@@ -19,8 +29,8 @@ namespace mge {
      * of the render pipeline are created - such as shader programs,
      * textures and buffers.
      *
-     * A render context has a swap chain to facilitate presentation
-     * of the rendered frames.
+     * A render context also manages the submission of rendering commands
+     * of the rendered frames by using the @c frame() method.
      */
     class MGEGRAPHICS_EXPORT render_context
     {
@@ -28,8 +38,9 @@ namespace mge {
         render_context(const mge::extent& ext);
 
     public:
-        virtual ~render_context() = default;
+        virtual ~render_context();
 
+    protected:
         /**
          * @brief Create a index buffer.
          *
@@ -38,79 +49,97 @@ namespace mge {
          * @param data          initial data
          * @return created index buffer
          */
-        virtual index_buffer* create_index_buffer(data_type dt,
-                                                  size_t    data_size,
-                                                  void*     data = nullptr) = 0;
+        virtual index_buffer* on_create_index_buffer(data_type dt,
+                                                     size_t    data_size) = 0;
         /**
          * @brief Destroy an index buffer.
          * @param ib index buffer to destroy
          */
-        virtual void destroy_index_buffer(index_buffer* ib) = 0;
+        virtual void on_destroy_index_buffer(index_buffer* ib);
 
+    public:
+        index_buffer_handle create_index_buffer(data_type         dt,
+                                                size_t            data_size,
+                                                const buffer_ref& data);
+
+    protected:
         /**
          * @brief Create a vertex buffer object.
          *
          * @param layout    vertex buffer layout
          * @param data_size size in bytes
-         * @param data      initial data
          * @return created vertex buffer
          */
-        virtual vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
-                                                    size_t data_size,
-                                                    void*  data = nullptr) = 0;
+        virtual vertex_buffer*
+        on_create_vertex_buffer(const vertex_layout& layout,
+                                size_t               data_size) = 0;
+
         /**
          * @brief Destroy a vertex buffer.
          * @param vb vertex buffer to destroy
          */
-        virtual void destroy_vertex_buffer(vertex_buffer* vb) = 0;
+        virtual void on_destroy_vertex_buffer(vertex_buffer* vb);
 
+    public:
+        /**
+         * @brief Create a vertex buffer object.
+         * @param layout    vertex buffer layout
+         * @param data_size size in bytes
+         * @param data      initial data
+         * @return created vertex buffer
+         */
+        vertex_buffer_handle create_vertex_buffer(const vertex_layout& layout,
+                                                  size_t            data_size,
+                                                  const buffer_ref& data);
+
+    protected:
         /**
          * @brief Create a shader object.
          *
          * @param t             shader type
          * @return created shader
          */
-        virtual shader* create_shader(shader_type t) = 0;
+        virtual shader* on_create_shader(shader_type t) = 0;
+
         /**
          * @brief Destroy a shader.
          * @param s shader to destroy
          */
-        virtual void destroy_shader(shader* s) = 0;
+        virtual void on_destroy_shader(shader* s);
 
         /**
          * @brief Create a program object.
          *
          * @return created program
          */
-        virtual program* create_program() = 0;
+        virtual program* on_create_program() = 0;
         /**
          * @brief Destroy a program.
          * @param p program to destroy
          */
-        virtual void destroy_program(program* p) = 0;
+        virtual void on_destroy_program(program* p);
+
+        virtual frame_buffer* on_create_frame_buffer();
+        virtual void          on_destroy_frame_buffer(frame_buffer* fb);
+
+    public:
+        /**
+         * @brief Create a shader object.
+         * @param t             shader type
+         */
+        shader_handle create_shader(shader_type t);
 
         /**
-         * @brief Create a command list object.
+         * @brief Create a program object.
+         */
+        program_handle create_program();
+
+        /**
+         * @brief Create a frame buffer object.
          *
-         * @return command list
+         * @return created frame buffer
          */
-        virtual command_list* create_command_list() = 0;
-        /**
-         * @brief Destroy a command list.
-         * @param cl command list to destroy
-         */
-        virtual void destroy_command_list(command_list* cl) = 0;
-
-        /**
-         * @brief Create a command list object for the current frame.
-         * @return command list
-         */
-        virtual frame_command_list* create_current_frame_command_list();
-        /**
-         * @brief Destroy a frame command list.
-         * @param fcl frame command list to destroy
-         */
-        virtual void destroy_frame_command_list(frame_command_list* fcl) = 0;
+        frame_buffer_handle create_frame_buffer();
 
         /**
          * @brief Create a texture object.
@@ -119,13 +148,6 @@ namespace mge {
          * @return created texture
          */
         virtual texture_ref create_texture(texture_type type) = 0;
-
-        /**
-         * @brief Get swap chain of context.
-         *
-         * @return swap chain
-         */
-        const swap_chain_ref& swap_chain() const;
 
         /**
          * @brief Get the extent of the render context.
@@ -137,8 +159,165 @@ namespace mge {
             return m_extent;
         }
 
+        /**
+         * @brief Get a pass by its index. If the pass does not exist, it is
+         * created.
+         * @param index pass index
+         * @return reference to pass
+         */
+        mge::pass& pass(uint32_t index);
+
+        /**
+         * @brief Get the current command buffer.
+         *
+         * @return command buffer
+         */
+        mge::command_buffer& command_buffer();
+
+        /**
+         * @brief Render a frame.
+         *
+         * This method does the following to process a frame:
+         * - Calls all registered prepare frame actions.
+         * - Draws all active passes in order.
+         * - If any pass was active, presents the swap chain.
+         *
+         */
+        void frame();
+
     protected:
-        mge::extent    m_extent;
-        swap_chain_ref m_swap_chain; //!< swap chain of this context
+        /**
+         * @brief Called when a frame is being presented.
+         */
+        virtual void on_frame_present() = 0;
+
+        /**
+         * @brief Render a pass.
+         * @param p pass to render
+         */
+        virtual void render(const mge::pass& p);
+
+    public:
+        /**
+         * @brief Take a screenshot of the current frame buffer.
+         *
+         * @return image containing the screenshot
+         */
+        virtual image_ref screenshot() = 0;
+
+        /**
+         * @brief Get the index of this render context.
+         * @return context index
+         */
+        uint16_t index() const noexcept
+        {
+            return m_index;
+        }
+
+        /**
+         * @brief Get render context by index.
+         * @param index context index
+         * @return render context or nullptr if not found
+         */
+        static render_context* get(uint16_t index);
+
+        /**
+         * @brief Get an object by its handle.
+         *
+         * @tparam T object type
+         * @param index context index
+         * @param flags object flags
+         * @param object_index object index
+         * @return object pointer or nullptr if not found
+         */
+        template <typename T>
+        T* object(uint16_t index, uint16_t flags, uint32_t object_index)
+        {
+            if constexpr (std::is_same_v<T, shader>) {
+                if (object_index < m_shaders.size()) {
+                    return m_shaders[object_index];
+                }
+            } else if constexpr (std::is_same_v<T, program>) {
+                if (object_index < m_programs.size()) {
+                    return m_programs[object_index];
+                }
+            } else if constexpr (std::is_same_v<T, index_buffer>) {
+                if (object_index < m_index_buffers.size()) {
+                    return m_index_buffers[object_index];
+                }
+            } else if constexpr (std::is_same_v<T, vertex_buffer>) {
+                if (object_index < m_vertex_buffers.size()) {
+                    return static_cast<vertex_buffer*>(
+                        m_vertex_buffers[object_index]);
+                }
+            }
+            return nullptr;
+        }
+
+        template <typename T>
+        void
+        destroy_object(uint16_t index, uint16_t flags, uint32_t object_index)
+        {
+            if constexpr (std::is_same_v<T, shader>) {
+                if (object_index < m_shaders.size()) {
+                    on_destroy_shader(m_shaders[object_index]);
+                    m_shaders[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, program>) {
+                if (object_index < m_programs.size()) {
+                    on_destroy_program(m_programs[object_index]);
+                    m_programs[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, index_buffer>) {
+                if (object_index < m_index_buffers.size()) {
+                    on_destroy_index_buffer(m_index_buffers[object_index]);
+                    m_index_buffers[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, vertex_buffer>) {
+                if (object_index < m_vertex_buffers.size()) {
+                    on_destroy_vertex_buffer(static_cast<vertex_buffer*>(
+                        m_vertex_buffers[object_index]));
+                    m_vertex_buffers[object_index] = nullptr;
+                }
+            } else if constexpr (std::is_same_v<T, frame_buffer>) {
+                if (object_index < m_frame_buffers.size()) {
+                    on_destroy_frame_buffer(m_frame_buffers[object_index]);
+                    m_frame_buffers[object_index] = nullptr;
+                }
+            }
+        }
+
+        /**
+         * @brief Prepare the frame by registering an action to be called
+         * before rendering the frame.
+         *
+         * @param action action to be called
+         */
+        template <mge::callable ActionType>
+        void prepare_frame(ActionType&& action)
+        {
+            m_prepare_frame_actions.emplace_back(
+                std::forward<ActionType>(action));
+        }
+
+    protected:
+        mge::extent m_extent;
+        uint16_t    m_index{0xFFFF}; //!< index in registry
+
+        std::vector<shader*>        m_shaders;
+        std::vector<program*>       m_programs;
+        std::vector<index_buffer*>  m_index_buffers;
+        std::vector<vertex_buffer*> m_vertex_buffers;
+        std::vector<frame_buffer*>  m_frame_buffers;
+
+        using prepare_frame_action = std::function<void()>;
+
+        std::array<std::byte, 65536>           m_prepare_frame_memory;
+        std::pmr::monotonic_buffer_resource    m_prepare_frame_resource;
+        std::pmr::vector<prepare_frame_action> m_prepare_frame_actions;
+
+        std::vector<mge::pass>               m_passes;
+        std::unique_ptr<mge::command_buffer> m_command_buffer;
     };
+
 } // namespace mge

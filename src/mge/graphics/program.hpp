@@ -9,6 +9,7 @@
 #include "mge/graphics/data_type.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/shader.hpp"
+#include "mge/graphics/shader_handle.hpp"
 #include "mge/graphics/uniform_data_type.hpp"
 
 #include <iosfwd>
@@ -77,21 +78,12 @@ namespace mge {
         virtual ~program();
 
         /**
-         * @brief Destroy the program.
-         *
-         * The program is removed from the context and
-         * its resources are freed. Afterwards, the pointer to the
-         * program is invalid.
-         */
-        void destroy();
-
-        /**
          * Set a shader object. The shader object must be a shader designated
          * for the graphics program (not a compute shader).
          *
          * @param shader shader object that is set
          */
-        void set_shader(shader* shader);
+        void set_shader(shader_handle shader);
 
         /**
          * Links the program. A program must be linked after setting all

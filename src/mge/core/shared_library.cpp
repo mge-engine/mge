@@ -51,10 +51,8 @@ namespace mge {
 #ifdef MGE_OS_WINDOWS
                 FreeLibrary(handle);
 #elif defined(MGE_OS_LINUX)
-                // TODO: return value of dlclose?
                 dlclose(handle);
 #elif defined(MGE_OS_MACOSX)
-                // TODO: return value of dlclose?
                 dlclose(handle);
 #else
 #    error Missing Port

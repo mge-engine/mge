@@ -17,23 +17,18 @@ namespace mge::vulkan {
         render_context(render_system& render_system_, window& window_);
         ~render_context();
 
-        mge::index_buffer* create_index_buffer(data_type dt,
-                                               size_t    data_size,
-                                               void*     data) override;
-        void               destroy_index_buffer(mge::index_buffer* ib) override;
-        mge::vertex_buffer* create_vertex_buffer(const vertex_layout& layout,
-                                                 size_t               data_size,
-                                                 void* data) override;
-        void          destroy_vertex_buffer(mge::vertex_buffer* vb) override;
-        mge::shader*  create_shader(shader_type t) override;
-        void          destroy_shader(mge::shader* s) override;
-        mge::program* create_program() override;
-        void          destroy_program(mge::program* p) override;
-        mge::frame_command_list* create_current_frame_command_list() override;
-        void destroy_frame_command_list(mge::frame_command_list* fcl) override;
-        mge::command_list* create_command_list() override;
-        void               destroy_command_list(mge::command_list* cl) override;
-        mge::texture_ref   create_texture(texture_type type) override;
+        mge::index_buffer*  on_create_index_buffer(data_type dt,
+                                                   size_t    data_size) override;
+        mge::vertex_buffer* on_create_vertex_buffer(const vertex_layout& layout,
+                                                    size_t data_size) override;
+        mge::shader*        on_create_shader(shader_type t) override;
+        mge::program*       on_create_program() override;
+
+        void on_frame_present() override;
+        void render(const mge::pass& p) override;
+
+        mge::texture_ref create_texture(texture_type type) override;
+        mge::image_ref   screenshot() override;
 
 #define BASIC_INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
 #define INSTANCE_FUNCTION(X) PFN_##X X{nullptr};
@@ -52,7 +47,7 @@ namespace mge::vulkan {
         {
             return m_queue;
         }
-        // TODO: support different present queue
+
         VkQueue present_queue() const noexcept
         {
             return m_queue;
@@ -72,8 +67,6 @@ namespace mge::vulkan {
         }
 
         void present();
-
-        void init_swap_chain();
 
         uint32_t current_image_index() const noexcept
         {
@@ -110,16 +103,6 @@ namespace mge::vulkan {
             return m_allocator;
         }
 
-        void execute_frame_command_buffer(VkCommandBuffer command_buffer);
-        void discard_command_buffer(uint64_t        frame,
-                                    VkCommandBuffer command_buffer);
-        void destroy_command_buffer(VkCommandBuffer command_buffer);
-
-        void discard_pipeline(uint64_t frame, VkPipeline command_buffer);
-        void destroy_pipeline(VkPipeline command_buffer);
-
-        void gc();
-
     private:
         void create_surface();
         void create_device();
@@ -135,18 +118,13 @@ namespace mge::vulkan {
         void create_framebuffers();
         void create_fence();
         void create_semaphores();
+
         void teardown();
         void resolve_device_functions();
         void clear_functions();
 
         void wait_for_frame_finished();
         void acquire_next_image();
-
-        // void tmp_draw_all();
-        void begin_draw();
-        void end_draw();
-        void begin_frame();
-        void initialize_drawing();
 
         VkCommandBuffer current_primary_command_buffer() const
         {
@@ -184,32 +162,10 @@ namespace mge::vulkan {
         std::vector<VkImageView>        m_swap_chain_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
-        std::vector<VkCommandBuffer>    m_pending_command_buffers;
 
         std::atomic<uint64_t> m_frame{0};
 
-        std::vector<std::pair<uint64_t, VkCommandBuffer>>
-                                                     m_deleted_command_buffers;
-        std::vector<std::pair<uint64_t, VkPipeline>> m_deleted_pipelines;
-
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
-        bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
-        std::unordered_map<mge::index_buffer*,
-                           std::unique_ptr<mge::index_buffer>>
-            m_index_buffers;
-        std::unordered_map<mge::vertex_buffer*,
-                           std::unique_ptr<mge::vertex_buffer>>
-            m_vertex_buffers;
-        std::unordered_map<mge::shader*, std::unique_ptr<mge::shader>>
-            m_shaders;
-        std::unordered_map<mge::program*, std::unique_ptr<mge::program>>
-            m_programs;
-        std::unordered_map<mge::command_list*,
-                           std::unique_ptr<mge::command_list>>
-            m_command_lists;
-        std::unordered_map<mge::frame_command_list*,
-                           std::unique_ptr<mge::frame_command_list>>
-            m_frame_command_lists;
     };
 } // namespace mge::vulkan

@@ -3,12 +3,9 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/core/trace.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
 #include "mge/graphics/rgba_color.hpp"
-#include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/window.hpp"
 
 namespace mge {
@@ -37,13 +34,11 @@ namespace mge {
                 });
 
             add_redraw_listener([&](uint64_t cycle, double delta) {
-                auto clear_commands = m_window->render_context()
-                                          .create_current_frame_command_list();
-                clear_commands->clear(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
-                clear_commands->finish();
-                clear_commands->execute();
-                clear_commands->destroy();
-                m_window->render_context().swap_chain()->present();
+                auto& pass = m_window->render_context().pass(0);
+                pass.clear_color(mge::rgba_color(0.0f, 0.0f, 0.0f, 1.0f));
+                pass.touch();
+
+                m_window->render_context().frame();
             });
 
             m_window->show();

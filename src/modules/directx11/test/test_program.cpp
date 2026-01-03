@@ -43,4 +43,5 @@ TEST_F(program_test, link_program)
     program->set_shader(vs);
     program->set_shader(fs);
     program->link();
+    context.frame();
 }

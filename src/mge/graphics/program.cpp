@@ -14,13 +14,10 @@ namespace mge {
 
     program::~program() {}
 
-    void program::destroy()
+    void program::set_shader(shader_handle shader)
     {
-        context().destroy_program(this);
-    }
+        mge::shader* s = shader.get();
 
-    void program::set_shader(shader* s)
-    {
         if (!s) {
             MGE_THROW_ARGUMENT_NOT_NULL(shader);
         }
@@ -30,20 +27,25 @@ namespace mge {
                 << "Shader type must not be shader_type::COMPUTE";
         }
 
-        if (!s->initialized()) {
-            MGE_THROW(mge::illegal_argument)
-                << "Shader must be initialized before attaching to program";
-        }
-
-        on_set_shader(s);
-        m_needs_link = true;
+        context().prepare_frame([this, s]() {
+            if (!s->initialized()) {
+                MGE_THROW(mge::illegal_argument)
+                    << "Shader must be initialized before attaching to "
+                       "program";
+            }
+            this->on_set_shader(s);
+            this->m_needs_link = true;
+        });
     }
 
     void program::link()
     {
         if (m_needs_link) {
-            on_link();
-            m_needs_link = false;
+            context().prepare_frame([this]() {
+                this->on_link();
+                this->m_needs_link = false;
+                set_ready(true);
+            });
         }
     }
 

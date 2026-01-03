@@ -10,7 +10,6 @@ SET(mge_opengl_module_SOURCES
     swap_chain.cpp
     index_buffer.cpp
     vertex_buffer.cpp
-    command_list.cpp
     shader.cpp
     error.cpp
     common.cpp

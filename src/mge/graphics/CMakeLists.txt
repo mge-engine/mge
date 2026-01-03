@@ -10,8 +10,6 @@ SET(mgegraphics_sources
     render_context.cpp
     shader_language.cpp
     context_object.cpp
-    command_list.cpp
-    frame_command_list.cpp
     color_names.cpp
     rgb_color.cpp
     rgba_color.cpp
@@ -34,6 +32,9 @@ SET(mgegraphics_sources
     mesh.cpp
     memory_mesh.cpp
     uniform_binding.cpp
+    pass.cpp
+    frame_buffer.cpp
+    command_buffer.cpp
 )
 
 SET(mgegraphics_headers
@@ -49,8 +50,6 @@ SET(mgegraphics_headers
     shader_type.hpp
     shader_language.hpp
     context_object.hpp
-    command_list.hpp
-    frame_command_list.hpp
     rgb_color.hpp
     rgba_color.hpp
     buffer_type.hpp
@@ -77,6 +76,9 @@ SET(mgegraphics_headers
     uniform_binding.hpp
     rectangle.hpp
     viewport.hpp
+    pass.hpp
+    frame_buffer.hpp
+    command_buffer.hpp
 )
 
 MGE_LIBRARY(

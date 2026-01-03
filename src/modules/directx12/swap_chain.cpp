@@ -24,8 +24,7 @@ namespace mge::dx12 {
         desc.Stereo = FALSE;
         desc.SampleDesc = {1, 0};
         desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-        desc.BufferCount =
-            render_context::buffer_count; // TODO: multi-buffering for DirectX12
+        desc.BufferCount = render_context::buffer_count;
         desc.Scaling = DXGI_SCALING_STRETCH;
         desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         desc.AlphaMode = DXGI_ALPHA_MODE_UNSPECIFIED;
@@ -40,8 +39,6 @@ namespace mge::dx12 {
             nullptr,
             &swapchain1);
         CHECK_HRESULT(rc, IDXGIFactory4, CreateSwapChainForHwnd);
-        // TODO: #123 Support Alt+Enter handling for window size change back and
-        // forth
         rc = context.factory()->MakeWindowAssociation(context.window().hwnd(),
                                                       DXGI_MWA_NO_ALT_ENTER);
 

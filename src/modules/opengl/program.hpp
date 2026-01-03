@@ -17,7 +17,7 @@ namespace mge::opengl {
         virtual ~program();
 
         void on_link() override;
-        void on_set_shader(shader* shader) override;
+        void on_set_shader(mge::shader* shader) override;
 
         GLuint program_name() const noexcept
         {

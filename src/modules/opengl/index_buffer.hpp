@@ -14,8 +14,7 @@ namespace mge::opengl {
     public:
         index_buffer(render_context& context,
                      mge::data_type  dt,
-                     size_t          data_size,
-                     void*           initial_data);
+                     size_t          data_size);
         virtual ~index_buffer();
 
         inline GLuint buffer_name() const noexcept
@@ -23,9 +22,7 @@ namespace mge::opengl {
             return m_buffer;
         }
 
-    protected:
-        void* on_map() override;
-        void  on_unmap() override;
+        void on_set_data(void* data, size_t size) override;
 
     private:
         GLuint m_buffer;

@@ -6,42 +6,39 @@
 #include "mge/core/checked_cast.hpp"
 #include "render_context.hpp"
 namespace mge::opengl {
+
     index_buffer::index_buffer(render_context& context,
                                mge::data_type  dt,
-                               size_t          data_size,
-                               void*           data)
-        : mge::index_buffer(context, dt, data_size, data)
+                               size_t          data_size)
+        : mge::index_buffer(context, dt, data_size)
         , m_buffer(0)
     {
-        glCreateBuffers(1, &m_buffer);
-        CHECK_OPENGL_ERROR(glCreateBuffers);
-        // TODO #112 Support different index buffer usage
-        glNamedBufferData(m_buffer,
-                          mge::checked_cast<GLsizeiptr>(size()),
-                          data,
-                          GL_STATIC_DRAW);
-        CHECK_OPENGL_ERROR(glNamedBufferData);
+        context.prepare_frame([this]() {
+            glCreateBuffers(1, &this->m_buffer);
+            CHECK_OPENGL_ERROR(glCreateBuffers);
+            set_ready(true);
+        });
     }
 
     index_buffer::~index_buffer()
     {
         if (m_buffer) {
-            glDeleteBuffers(1, &m_buffer);
-            TRACE_OPENGL_ERROR(glDeleteBuffers);
+            set_ready(false);
+            GLuint buffer_to_del = m_buffer;
+            context().prepare_frame([buffer_to_del]() {
+                glDeleteBuffers(1, &buffer_to_del);
+                TRACE_OPENGL_ERROR(glDeleteBuffers);
+            });
         }
     }
-
-    void* index_buffer::on_map()
+    void index_buffer::on_set_data(void* data, size_t size)
     {
-        void* result = glMapNamedBuffer(m_buffer, GL_READ_WRITE);
-        CHECK_OPENGL_ERROR(glMapNamedBuffer);
-        return result;
-    }
-
-    void index_buffer::on_unmap()
-    {
-        glUnmapNamedBuffer(m_buffer);
-        CHECK_OPENGL_ERROR(glUnmapNamedBuffer);
+        glNamedBufferData(m_buffer,
+                          mge::checked_cast<GLsizeiptr>(size),
+                          data,
+                          GL_STATIC_DRAW);
+        CHECK_OPENGL_ERROR(glNamedBufferData);
+        set_ready(true);
     }
 
 } // namespace mge::opengl

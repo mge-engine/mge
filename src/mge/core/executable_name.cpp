@@ -84,7 +84,6 @@ namespace mge {
 #elif defined(MGE_OS_LINUX)
         char    buffer[2048];
         ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
-        // TODO: error handling
         if (len == -1) {
             len = 0;
             buffer[0] = '\0';

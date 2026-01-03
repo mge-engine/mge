@@ -14,8 +14,7 @@ namespace mge::vulkan {
     public:
         index_buffer(render_context& context,
                      mge::data_type  typem,
-                     size_t          data_size,
-                     void*           data);
+                     size_t          data_size);
 
         ~index_buffer();
 
@@ -23,11 +22,10 @@ namespace mge::vulkan {
         {
             return m_buffer;
         }
+
         VkIndexType vk_index_type() const;
 
-    protected:
-        virtual void* on_map() override;
-        virtual void  on_unmap() override;
+        void on_set_data(void* data, size_t data_size) override;
 
     private:
         void create_buffer();
