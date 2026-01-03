@@ -103,16 +103,6 @@ namespace mge::vulkan {
             return m_allocator;
         }
 
-        void execute_frame_command_buffer(VkCommandBuffer command_buffer);
-        void discard_command_buffer(uint64_t        frame,
-                                    VkCommandBuffer command_buffer);
-        void destroy_command_buffer(VkCommandBuffer command_buffer);
-
-        void discard_pipeline(uint64_t frame, VkPipeline command_buffer);
-        void destroy_pipeline(VkPipeline command_buffer);
-
-        void gc();
-
     private:
         void create_surface();
         void create_device();
@@ -135,12 +125,6 @@ namespace mge::vulkan {
 
         void wait_for_frame_finished();
         void acquire_next_image();
-
-        // void tmp_draw_all();
-        void begin_draw();
-        void end_draw();
-        void begin_frame();
-        void initialize_drawing();
 
         VkCommandBuffer current_primary_command_buffer() const
         {
@@ -178,16 +162,10 @@ namespace mge::vulkan {
         std::vector<VkImageView>        m_swap_chain_image_views;
         std::vector<VkFramebuffer>      m_swap_chain_framebuffers;
         std::vector<VkCommandBuffer>    m_primary_command_buffers;
-        std::vector<VkCommandBuffer>    m_pending_command_buffers;
 
         std::atomic<uint64_t> m_frame{0};
 
-        std::vector<std::pair<uint64_t, VkCommandBuffer>>
-                                                     m_deleted_command_buffers;
-        std::vector<std::pair<uint64_t, VkPipeline>> m_deleted_pipelines;
-
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
-        bool        m_drawing_initialized{false};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
     };
 } // namespace mge::vulkan
