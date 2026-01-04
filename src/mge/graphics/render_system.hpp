@@ -103,7 +103,13 @@ namespace mge {
          */
         const mge::render_system::capabilities& system_capabilities() const;
 
+        /**
+         * @brief Get the frame debugger available for this render system.
+         */
+        frame_debugger_ref frame_debugger() const;
+
     protected:
         std::unique_ptr<mge::render_system::capabilities> m_capabilities;
+        frame_debugger_ref                                m_frame_debugger;
     };
 } // namespace mge

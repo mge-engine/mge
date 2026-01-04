@@ -1,7 +1,12 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+
+namespace mge {
+    MGE_DEFINE_TRACE(RENDERDOC);
+}
 
 namespace mge::renderdoc {
     class renderdoc_frame_debugger : public mge::frame_debugger
@@ -10,7 +15,7 @@ namespace mge::renderdoc {
         renderdoc_frame_debugger();
         virtual ~renderdoc_frame_debugger();
 
-        virtual std::string_view name() const noexcept override;
+        virtual std::string_view      name() const noexcept override;
         virtual mge::semantic_version version() const noexcept override;
 
         virtual void configure() override;
@@ -19,11 +24,9 @@ namespace mge::renderdoc {
         virtual void capture() override;
     };
 
-    renderdoc_frame_debugger::renderdoc_frame_debugger()
-    {}
+    renderdoc_frame_debugger::renderdoc_frame_debugger() {}
 
-    renderdoc_frame_debugger::~renderdoc_frame_debugger()
-    {}
+    renderdoc_frame_debugger::~renderdoc_frame_debugger() {}
 
     std::string_view renderdoc_frame_debugger::name() const noexcept
     {
@@ -55,9 +58,8 @@ namespace mge::renderdoc {
         // Code to capture a frame with RenderDoc would go here
     }
 
-
-    MGE_REGISTER_IMPLEMENTATION(
-        renderdoc_frame_debugger, mge::frame_debugger, renderdoc);
+    MGE_REGISTER_IMPLEMENTATION(renderdoc_frame_debugger,
+                                mge::frame_debugger,
+                                renderdoc);
 
 } // namespace mge::renderdoc
-

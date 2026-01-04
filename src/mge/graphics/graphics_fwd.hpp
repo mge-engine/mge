@@ -22,4 +22,5 @@ namespace mge {
     MGE_DECLARE_REF(image);
     MGE_DECLARE_REF(mesh);
 
+    MGE_DECLARE_REF(frame_debugger);
 } // namespace mge
