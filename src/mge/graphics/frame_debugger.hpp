@@ -4,6 +4,7 @@
 #pragma once
 #include "mge/graphics/dllexport.hpp"
 #include "mge/core/component.hpp"
+#include "mge/core/semantic_version.hpp"
 
 namespace mge {
     class render_context;
@@ -28,5 +29,39 @@ namespace mge {
          * @brief Destroys the frame debugger.
          */
         virtual ~frame_debugger() override;
+
+        /**
+         * @brief Get the name of the frame debugger.
+         *
+         * @return name of the frame debugger
+         */
+        virtual std::string_view name() const noexcept = 0;
+
+        /**
+         * @brief Get the version of the frame debugger.
+         *
+         * @return semantic version
+         */
+        virtual semantic_version version() const noexcept = 0;
+
+        /**
+         * @brief Configure the frame debugger.
+         */
+        virtual void configure() = 0;
+
+        /**
+         * @brief Start capturing frames.
+         */
+        virtual void start_capture() = 0;
+
+        /**
+         * @brief End capturing frames.
+         */
+        virtual void end_capture() = 0;
+
+        /**
+         * @brief Capture a frame.
+         */
+        virtual void capture() = 0;
     };
 } // namespace mge
