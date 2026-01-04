@@ -159,4 +159,24 @@ namespace mge {
 #endif
     }
 
+    bool shared_library::loaded(const std::filesystem::path& name)
+    {
+#ifdef MGE_OS_WINDOWS
+        HMODULE handle =
+            GetModuleHandleW(std::filesystem::canonical(name).c_str());
+        return handle != nil_handle;
+#elif defined(MGE_OS_LINUX) || defined(MGE_OS_MACOSX)
+        void* handle = dlopen(std::filesystem::canonical(name).c_str(),
+                              RTLD_LAZY | RTLD_NOLOAD);
+        if (handle) {
+            dlclose(handle);
+            return true;
+        } else {
+            return false;
+        }
+#else
+#    error Missing port
+#endif
+    }
+
 } // namespace mge
