@@ -35,6 +35,7 @@ SET(mgegraphics_sources
     pass.cpp
     frame_buffer.cpp
     command_buffer.cpp
+    frame_debugger.cpp
 )
 
 SET(mgegraphics_headers
@@ -79,6 +80,7 @@ SET(mgegraphics_headers
     pass.hpp
     frame_buffer.hpp
     command_buffer.hpp
+    frame_debugger.hpp
 )
 
 MGE_LIBRARY(
