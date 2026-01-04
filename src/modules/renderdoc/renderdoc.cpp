@@ -1,8 +1,12 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
+#include "mge/config.hpp"
+#include "mge/core/shared_library.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
+
+#include "renderdoc_app.h"
 
 namespace mge {
     MGE_DEFINE_TRACE(RENDERDOC);
@@ -22,6 +26,14 @@ namespace mge::renderdoc {
         virtual void start_capture() override;
         virtual void end_capture() override;
         virtual void capture() override;
+
+    private:
+        bool renderdoc_library_loaded();
+        bool try_load_renderdoc_library(const std::filesystem::path& path);
+
+        bool                                 m_enabled{false};
+        std::unique_ptr<mge::shared_library> m_library;
+        RENDERDOC_API_1_6_0*                 m_renderdoc_api{nullptr};
     };
 
     renderdoc_frame_debugger::renderdoc_frame_debugger() {}
@@ -38,24 +50,104 @@ namespace mge::renderdoc {
         return mge::semantic_version(1, 0, 0);
     }
 
+    bool renderdoc_frame_debugger::renderdoc_library_loaded()
+    {
+
+#ifdef MGE_OS_WINDOWS
+        const std::filesystem::path renderdoc_lib_name = "renderdoc.dll";
+        return shared_library::loaded(renderdoc_lib_name);
+#elif defined(MGE_OS_LINUX)
+        const std::filesystem::path renderdoc_lib_name = "librenderdoc.so";
+        return shared_library::loaded(renderdoc_lib_name);
+#else
+#    error RenderDoc not supported on this platform
+#endif
+    }
+
+    bool renderdoc_frame_debugger::try_load_renderdoc_library(
+        const std::filesystem::path& path)
+    {
+        try {
+            m_library = std::make_unique<shared_library>(
+                path,
+                shared_library::use_search_path{});
+            MGE_DEBUG_TRACE(RENDERDOC,
+                            "Successfully loaded RenderDoc library from {}",
+                            path.string());
+            return true;
+        } catch (const mge::exception& e) {
+            MGE_DEBUG_TRACE(RENDERDOC,
+                            "Failed to load RenderDoc library from {}: {}",
+                            path.string(),
+                            e.what());
+        }
+        return false;
+    }
+
     void renderdoc_frame_debugger::configure()
     {
-        // Configuration code for RenderDoc integration would go here
+        if (renderdoc_library_loaded()) {
+            m_enabled = false;
+            MGE_DEBUG_TRACE(
+                RENDERDOC,
+                "RenderDoc library was loaded already, skipping setup");
+            return;
+        }
+        MGE_DEBUG_TRACE(RENDERDOC, "Configuring RenderDoc frame debugger");
+
+        if (!try_load_renderdoc_library("renderdoc.dll")) {
+            if (!try_load_renderdoc_library("C:"
+                                            "\\Users\\schro\\scoop\\apps\\rende"
+                                            "rdoc\\current\\renderdoc.dll")) {
+                MGE_DEBUG_TRACE(RENDERDOC,
+                                "Could not load RenderDoc library, disabling "
+                                "frame debugger");
+                m_enabled = false;
+                return;
+            }
+        }
+        pRENDERDOC_GetAPI get_api = nullptr;
+        get_api = reinterpret_cast<pRENDERDOC_GetAPI>(
+            m_library->symbol("RENDERDOC_GetAPI"));
+        if (!get_api) {
+            MGE_DEBUG_TRACE(RENDERDOC,
+                            "Could not find RENDERDOC_GetAPI symbol, disabling "
+                            "frame debugger");
+            m_enabled = false;
+            return;
+        }
+
+        int ret = get_api(eRENDERDOC_API_Version_1_6_0,
+                          reinterpret_cast<void**>(&m_renderdoc_api));
+        if (ret != 1) {
+            MGE_DEBUG_TRACE(RENDERDOC,
+                            "Could not get RenderDoc API, disabling frame "
+                            "debugger");
+            m_enabled = false;
+            return;
+        }
+        m_enabled = true;
     }
 
     void renderdoc_frame_debugger::start_capture()
     {
-        // Code to start frame capture with RenderDoc would go here
+        if (m_renderdoc_api) {
+            m_renderdoc_api->StartFrameCapture(nullptr, nullptr);
+        }
     }
 
     void renderdoc_frame_debugger::end_capture()
     {
-        // Code to end frame capture with RenderDoc would go here
+        if (m_renderdoc_api) {
+            m_renderdoc_api->EndFrameCapture(nullptr, nullptr);
+        }   
     }
 
     void renderdoc_frame_debugger::capture()
     {
-        // Code to capture a frame with RenderDoc would go here
+        if (m_renderdoc_api) {
+            m_renderdoc_api->TriggerCapture();
+        }
     }
 
     MGE_REGISTER_IMPLEMENTATION(renderdoc_frame_debugger,
