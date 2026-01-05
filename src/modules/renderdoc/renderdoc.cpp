@@ -35,6 +35,13 @@ namespace mge::renderdoc {
         std::unique_ptr<mge::shared_library> m_library;
         RENDERDOC_API_1_6_0*                 m_renderdoc_api{nullptr};
     };
+#ifdef MGE_OS_WINDOWS
+    const std::filesystem::path renderdoc_lib_name = "renderdoc.dll";
+#elif defined(MGE_OS_LINUX)
+    const std::filesystem::path renderdoc_lib_name = "librenderdoc.so";
+#else
+#    error RenderDoc not supported on this platform
+#endif
 
     renderdoc_frame_debugger::renderdoc_frame_debugger() {}
 
@@ -52,16 +59,7 @@ namespace mge::renderdoc {
 
     bool renderdoc_frame_debugger::renderdoc_library_loaded()
     {
-
-#ifdef MGE_OS_WINDOWS
-        const std::filesystem::path renderdoc_lib_name = "renderdoc.dll";
         return shared_library::loaded(renderdoc_lib_name);
-#elif defined(MGE_OS_LINUX)
-        const std::filesystem::path renderdoc_lib_name = "librenderdoc.so";
-        return shared_library::loaded(renderdoc_lib_name);
-#else
-#    error RenderDoc not supported on this platform
-#endif
     }
 
     bool renderdoc_frame_debugger::try_load_renderdoc_library(
@@ -95,16 +93,28 @@ namespace mge::renderdoc {
         }
         MGE_DEBUG_TRACE(RENDERDOC, "Configuring RenderDoc frame debugger");
 
-        if (!try_load_renderdoc_library("renderdoc.dll")) {
-            if (!try_load_renderdoc_library("C:"
-                                            "\\Users\\schro\\scoop\\apps\\rende"
-                                            "rdoc\\current\\renderdoc.dll")) {
+        if (!try_load_renderdoc_library(renderdoc_lib_name)) {
+
+            const char* env_path = std::getenv("MGE_RENDERDOC_LIBRARY_PATH");
+            if (env_path) {
                 MGE_DEBUG_TRACE(RENDERDOC,
-                                "Could not load RenderDoc library, disabling "
-                                "frame debugger");
-                m_enabled = false;
-                return;
-            }
+                                "Trying to load RenderDoc library from "
+                                "MGE_RENDERDOC_LIBRARY_PATH: {}",
+                                env_path);
+                std::filesystem::path env_path_fs(env_path);
+                
+                if (env_path_fs.filename() != renderdoc_lib_name) {
+                    env_path_fs /= renderdoc_lib_name;
+                }
+                if (!try_load_renderdoc_library(env_path_fs)) {
+                    MGE_DEBUG_TRACE(RENDERDOC,
+                                    "Could not load RenderDoc library from "
+                                    "MGE_RENDERDOC_LIBRARY_PATH, disabling "
+                                    "frame debugger");
+                    m_enabled = false;
+                    return;
+                }
+            } 
         }
         pRENDERDOC_GetAPI get_api = nullptr;
         get_api = reinterpret_cast<pRENDERDOC_GetAPI>(
@@ -126,6 +136,8 @@ namespace mge::renderdoc {
             m_enabled = false;
             return;
         }
+        
+
         m_enabled = true;
     }
 
