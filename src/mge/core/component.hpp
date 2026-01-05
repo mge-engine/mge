@@ -88,6 +88,15 @@ namespace mge {
             }
         }
 
+        inline std::string_view alias_names() const noexcept
+        {
+            if (m_impl_regentry) {
+                return m_impl_regentry->alias_names();
+            } else {
+                return ""sv;
+            }
+        }
+
     private:
         friend class component_registry;
 
