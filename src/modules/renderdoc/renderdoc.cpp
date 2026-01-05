@@ -136,6 +136,11 @@ namespace mge::renderdoc {
             m_enabled = false;
             return;
         }
+        auto lfp = m_renderdoc_api->GetLogFilePathTemplate();
+        MGE_DEBUG_TRACE(RENDERDOC,
+                        "RenderDoc frame debugger configured, log file path "
+                        "template: {}",
+                        lfp);
         
 
         m_enabled = true;
