@@ -56,7 +56,10 @@ namespace mge {
             virtual std::span<const shader_format> shader_formats() const;
         };
 
-        virtual ~render_system() = default;
+        /**
+         * Destructor, will stop frame recording if active.
+         */
+        virtual ~render_system();
 
         /**
          * @brief Create window with default settings.
@@ -105,6 +108,7 @@ namespace mge {
 
         /**
          * @brief Get the frame debugger available for this render system.
+         * @return frame debugger if available
          */
         frame_debugger_ref frame_debugger() const;
 

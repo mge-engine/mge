@@ -63,5 +63,11 @@ namespace mge {
          * @brief Capture a frame.
          */
         virtual void capture() = 0;
+
+        /**
+         * @brief Get whether a frame is currently being captured.
+         * @return true if a frame is being captured
+         */
+        virtual bool capturing() const = 0;
     };
 } // namespace mge

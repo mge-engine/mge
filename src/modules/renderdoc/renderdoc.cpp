@@ -2,6 +2,7 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/config.hpp"
+#include "mge/core/executable_name.hpp"
 #include "mge/core/shared_library.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
@@ -26,6 +27,7 @@ namespace mge::renderdoc {
         virtual void start_capture() override;
         virtual void end_capture() override;
         virtual void capture() override;
+        virtual bool capturing() const override;
 
     private:
         bool renderdoc_library_loaded();
@@ -102,7 +104,7 @@ namespace mge::renderdoc {
                                 "MGE_RENDERDOC_LIBRARY_PATH: {}",
                                 env_path);
                 std::filesystem::path env_path_fs(env_path);
-                
+
                 if (env_path_fs.filename() != renderdoc_lib_name) {
                     env_path_fs /= renderdoc_lib_name;
                 }
@@ -114,7 +116,7 @@ namespace mge::renderdoc {
                     m_enabled = false;
                     return;
                 }
-            } 
+            }
         }
         pRENDERDOC_GetAPI get_api = nullptr;
         get_api = reinterpret_cast<pRENDERDOC_GetAPI>(
@@ -136,12 +138,15 @@ namespace mge::renderdoc {
             m_enabled = false;
             return;
         }
+
+        auto executable_name = mge::executable_name();
+        m_renderdoc_api->SetCaptureFilePathTemplate((executable_name).c_str());
+
         auto lfp = m_renderdoc_api->GetLogFilePathTemplate();
         MGE_DEBUG_TRACE(RENDERDOC,
                         "RenderDoc frame debugger configured, log file path "
                         "template: {}",
                         lfp);
-        
 
         m_enabled = true;
     }
@@ -157,7 +162,7 @@ namespace mge::renderdoc {
     {
         if (m_renderdoc_api) {
             m_renderdoc_api->EndFrameCapture(nullptr, nullptr);
-        }   
+        }
     }
 
     void renderdoc_frame_debugger::capture()
@@ -165,6 +170,14 @@ namespace mge::renderdoc {
         if (m_renderdoc_api) {
             m_renderdoc_api->TriggerCapture();
         }
+    }
+
+    bool renderdoc_frame_debugger::capturing() const
+    {
+        if (m_renderdoc_api) {
+            return m_renderdoc_api->IsFrameCapturing() != 0;
+        }
+        return false;
     }
 
     MGE_REGISTER_IMPLEMENTATION(renderdoc_frame_debugger,
