@@ -162,6 +162,7 @@ namespace mge::renderdoc {
     void renderdoc_frame_debugger::start_capture()
     {
         if (m_renderdoc_api) {
+            MGE_DEBUG_TRACE(RENDERDOC, "Starting frame capture");
             m_renderdoc_api->StartFrameCapture(nullptr, nullptr);
         }
     }
@@ -169,6 +170,7 @@ namespace mge::renderdoc {
     void renderdoc_frame_debugger::end_capture()
     {
         if (m_renderdoc_api) {
+            MGE_DEBUG_TRACE(RENDERDOC, "Ending frame capture");
             m_renderdoc_api->EndFrameCapture(nullptr, nullptr);
         }
     }

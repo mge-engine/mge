@@ -64,14 +64,13 @@ namespace mge {
 
                         result->m_frame_debugger = frame_debugger;
 
-                        if (MGE_PARAMETER(graphics, record_frames).get()) {
+                        if (true) { 
                             MGE_DEBUG_TRACE(GRAPHICS,
                                             "Enabling frame recording in frame "
                                             "debugger: {}",
                                             frame_debugger_name);
                             frame_debugger->start_capture();
                         }
-
                     } catch (const std::exception& e) {
                         MGE_ERROR_TRACE(
                             GRAPHICS,
