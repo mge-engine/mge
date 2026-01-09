@@ -56,7 +56,15 @@ namespace mge::renderdoc {
 
     mge::semantic_version renderdoc_frame_debugger::version() const noexcept
     {
-        return mge::semantic_version(1, 0, 0);
+        if (m_renderdoc_api) {
+            int major = 0;
+            int minor = 0;
+            int patch = 0;
+            m_renderdoc_api->GetAPIVersion(&major, &minor, &patch);
+            return mge::semantic_version(major, minor, patch);
+        } else {
+            return mge::semantic_version(0, 0, 0);
+        }
     }
 
     bool renderdoc_frame_debugger::renderdoc_library_loaded()

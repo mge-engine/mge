@@ -54,16 +54,14 @@ namespace mge {
                 auto frame_debugger =
                     mge::frame_debugger::create(frame_debugger_name);
                 if (frame_debugger) {
-                    MGE_DEBUG_TRACE(GRAPHICS,
+                    try {
+                        frame_debugger->configure();
+                        MGE_DEBUG_TRACE(GRAPHICS,
                                     "Using frame debugger: {} - {} {}",
                                     frame_debugger_name,
                                     frame_debugger->name(),
                                     frame_debugger->version());
-                    try {
-                        MGE_DEBUG_TRACE(GRAPHICS,
-                                        "Configuring frame debugger: {}",
-                                        frame_debugger_name);
-                        frame_debugger->configure();
+
                         result->m_frame_debugger = frame_debugger;
 
                         if (MGE_PARAMETER(graphics, record_frames).get()) {
