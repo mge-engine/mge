@@ -16,12 +16,14 @@
 
 #ifdef MGE_OS_WINDOWS
 // WGL extension constants and types
-#define WGL_CONTEXT_MAJOR_VERSION_ARB 0x2091
-#define WGL_CONTEXT_MINOR_VERSION_ARB 0x2092
-#define WGL_CONTEXT_PROFILE_MASK_ARB 0x9126
-#define WGL_CONTEXT_CORE_PROFILE_BIT_ARB 0x00000001
+#    define WGL_CONTEXT_MAJOR_VERSION_ARB 0x2091
+#    define WGL_CONTEXT_MINOR_VERSION_ARB 0x2092
+#    define WGL_CONTEXT_PROFILE_MASK_ARB 0x9126
+#    define WGL_CONTEXT_CORE_PROFILE_BIT_ARB 0x00000001
 
-typedef HGLRC (WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC hDC, HGLRC hShareContext, const int *attribList);
+typedef HGLRC(WINAPI* PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC   hDC,
+                                                         HGLRC hShareContext,
+                                                         const int* attribList);
 #endif
 
 namespace mge {
@@ -86,33 +88,44 @@ namespace mge::opengl {
         }
 
         // Load wglCreateContextAttribsARB
-#pragma warning(push)
-#pragma warning(disable : 4191) // unsafe conversion from PROC
+#    pragma warning(push)
+#    pragma warning(disable : 4191) // unsafe conversion from PROC
         PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
             (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress(
                 "wglCreateContextAttribsARB");
-#pragma warning(pop)
+#    pragma warning(pop)
 
         HGLRC hglrc = nullptr;
         if (wglCreateContextAttribsARB) {
-            // Create a modern OpenGL context
-            const int attribs[] = {
-                WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-                WGL_CONTEXT_MINOR_VERSION_ARB, 3,
-                WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-                0
-            };
+            // Create a modern OpenGL 4.6 context
+            const int attribs[] = {WGL_CONTEXT_MAJOR_VERSION_ARB,
+                                   4,
+                                   WGL_CONTEXT_MINOR_VERSION_ARB,
+                                   6,
+                                   WGL_CONTEXT_PROFILE_MASK_ARB,
+                                   WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                                   0};
             hglrc = wglCreateContextAttribsARB(m_hdc, 0, attribs);
+            if (!hglrc) {
+                MGE_THROW(system_error)
+                    << MGE_CALLED_FUNCTION(wglCreateContextAttribsARB);
+            }
+
+        } else {
+            MGE_DEBUG_TRACE(OPENGL,
+                            "wglCreateContextAttribsARB not available, "
+                            "falling back to legacy context");
+            // Fallback: Create a legacy context
+            hglrc = wglCreateContext(m_hdc);
+            if (!hglrc) {
+                MGE_THROW(system_error)
+                    << MGE_CALLED_FUNCTION(wglCreateContext);
+            }
         }
 
         // Delete temporary context
         wglMakeCurrent(NULL, NULL);
         wglDeleteContext(temp_context);
-
-        if (!hglrc) {
-            MGE_THROW(system_error) 
-                << MGE_CALLED_FUNCTION(wglCreateContextAttribsARB);
-        }
 
         if (!wglMakeCurrent(m_hdc, hglrc)) {
             wglDeleteContext(hglrc);
@@ -211,7 +224,7 @@ namespace mge::opengl {
                    static_cast<const GLsizei>(vp.width),
                    static_cast<const GLsizei>(vp.height));
         CHECK_OPENGL_ERROR(glViewport);
-        
+
         glDepthRangef(vp.min_depth, vp.max_depth);
         CHECK_OPENGL_ERROR(glDepthRangef);
 
