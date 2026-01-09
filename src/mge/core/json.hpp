@@ -99,9 +99,12 @@ namespace mge {
     }
 
     template <typename T>
-        requires mge::is_container<T> && ((!std::is_same_v<T, std::string>) &&
-                                          (!std::is_same_v<T, std::wstring>) &&
-                                          (!is_associative_container<T>))
+        requires mge::is_container<T> &&
+                 ((!std::is_same_v<T, std::string>) &&
+                  (!std::is_same_v<T, std::wstring>) &&
+                  (!std::is_same_v<T, std::string_view>) &&
+                  (!std::is_same_v<T, std::wstring_view>) &&
+                  (!is_associative_container<T>))
     inline void to_json(json::json& j, const T& v)
     {
         for (const auto& e : v) {

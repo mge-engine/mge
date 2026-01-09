@@ -1,6 +1,6 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
-# All rights reserved.
+# All rights reserved.  
 
 SET(mgegraphics_sources
     render_system.cpp
