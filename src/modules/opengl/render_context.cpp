@@ -14,6 +14,16 @@
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 
+#ifdef MGE_OS_WINDOWS
+// WGL extension constants and types
+#define WGL_CONTEXT_MAJOR_VERSION_ARB 0x2091
+#define WGL_CONTEXT_MINOR_VERSION_ARB 0x2092
+#define WGL_CONTEXT_PROFILE_MASK_ARB 0x9126
+#define WGL_CONTEXT_CORE_PROFILE_BIT_ARB 0x00000001
+
+typedef HGLRC (WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC hDC, HGLRC hShareContext, const int *attribList);
+#endif
+
 namespace mge {
     MGE_USE_TRACE(OPENGL);
 }
@@ -65,11 +75,47 @@ namespace mge::opengl {
 
     void render_context::create_primary_glrc()
     {
-        HGLRC hglrc = wglCreateContext(m_hdc);
-        if (!hglrc) {
+        // Create a temporary legacy context to load WGL extensions
+        HGLRC temp_context = wglCreateContext(m_hdc);
+        if (!temp_context) {
             MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglCreateContext);
         }
+        if (!wglMakeCurrent(m_hdc, temp_context)) {
+            wglDeleteContext(temp_context);
+            MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglMakeCurrent);
+        }
+
+        // Load wglCreateContextAttribsARB
+#pragma warning(push)
+#pragma warning(disable : 4191) // unsafe conversion from PROC
+        PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
+            (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress(
+                "wglCreateContextAttribsARB");
+#pragma warning(pop)
+
+        HGLRC hglrc = nullptr;
+        if (wglCreateContextAttribsARB) {
+            // Create a modern OpenGL context
+            const int attribs[] = {
+                WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
+                WGL_CONTEXT_MINOR_VERSION_ARB, 3,
+                WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                0
+            };
+            hglrc = wglCreateContextAttribsARB(m_hdc, 0, attribs);
+        }
+
+        // Delete temporary context
+        wglMakeCurrent(NULL, NULL);
+        wglDeleteContext(temp_context);
+
+        if (!hglrc) {
+            MGE_THROW(system_error) 
+                << MGE_CALLED_FUNCTION(wglCreateContextAttribsARB);
+        }
+
         if (!wglMakeCurrent(m_hdc, hglrc)) {
+            wglDeleteContext(hglrc);
             MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglMakeCurrent);
         }
         {

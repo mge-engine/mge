@@ -70,20 +70,17 @@ namespace mge::opengl {
             }
         }
 
-        std::string extension_string =
-            ((const char*)glGetString(GL_EXTENSIONS));
-
-        auto it =
-            boost::make_split_iterator(extension_string,
-                                       boost::token_finder(boost::is_space()));
+        // In OpenGL 3.0+ core profile, use glGetStringi instead of glGetString(GL_EXTENSIONS)
+        GLint num_extensions = 0;
+        glGetIntegerv(GL_NUM_EXTENSIONS, &num_extensions);
 
         MGE_TRACE_OBJECT(OPENGL, INFO) << "OpenGL extensions:";
-        while (!it.eof()) {
-            if (!it->empty()) {
-                MGE_TRACE_OBJECT(OPENGL, INFO) << *it;
-                extensions.insert(std::string(it->begin(), it->end()));
+        for (GLint i = 0; i < num_extensions; ++i) {
+            const char* ext = (const char*)glGetStringi(GL_EXTENSIONS, i);
+            if (ext) {
+                MGE_TRACE_OBJECT(OPENGL, INFO) << ext;
+                extensions.insert(ext);
             }
-            ++it;
         }
 
         if (/* MGE_PARAMETER(opengl, debug).get() && */
