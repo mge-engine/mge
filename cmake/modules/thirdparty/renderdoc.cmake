@@ -20,3 +20,4 @@ if(RENDERDOCCMD_EXECUTABLE)
 else()
     MESSAGE(STATUS "RenderDoc not found")
 endif()
+ 
