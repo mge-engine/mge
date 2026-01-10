@@ -5,10 +5,12 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "mge/core/parameter.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
 #include "program.hpp"
+#include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
 #include "texture.hpp"
@@ -32,8 +34,9 @@ namespace mge {
 
 namespace mge::opengl {
 #ifdef MGE_OS_WINDOWS
-    render_context::render_context(mge::opengl::window* context_window)
-        : mge::render_context(context_window->extent())
+    render_context::render_context(mge::opengl::render_system& render_system_,
+                                   mge::opengl::window*        context_window)
+        : mge::render_context(render_system_, context_window->extent())
         , m_window(context_window)
         , m_hwnd(context_window->hwnd())
         , m_hdc(0)
@@ -48,6 +51,7 @@ namespace mge::opengl {
         create_primary_glrc();
         init_gl3w();
         collect_opengl_info();
+        refresh_frame_debugger();
     }
 
     void render_context::select_pixel_format()
@@ -159,6 +163,8 @@ namespace mge::opengl {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
         s_glinfo.ptr();
     }
+
+    void render_context::refresh_frame_debugger() {}
 
 #else
 #    error Missing port

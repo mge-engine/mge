@@ -1,7 +1,7 @@
 // mge - Modern Game Engine
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
-#include "mge/graphics/render_system.hpp"
+#include "render_system.hpp"
 #include "mge/core/trace.hpp"
 #include "render_context.hpp"
 #include "window.hpp"
@@ -15,65 +15,60 @@ namespace mge {
     MGE_USE_TRACE(OPENGL);
 
     namespace opengl {
-        class render_system : public mge::render_system
+
+        render_system::render_system()
+        {
+            MGE_INFO_TRACE(OPENGL, "Creating opengl render system");
+            init_capabilities();
+        }
+
+        mge::window_ref
+        render_system::create_window(const mge::extent&         extent,
+                                     const mge::window_options& options)
+        {
+            auto ref =
+                std::make_shared<mge::opengl::window>(*this, extent, options);
+            return ref;
+        }
+
+        std::span<mge::monitor_ref> render_system::monitors()
+        {
+#ifdef MGE_OS_WINDOWS
+            return mge::win32::monitor::all_monitors();
+#endif
+        }
+
+        class render_system::capabilities
+            : public mge::render_system::capabilities
         {
         public:
-            using mge::render_system::create_window;
+            capabilities(render_system* system);
+            ~capabilities() = default;
 
-            render_system()
+            std::span<const mge::shader_language>
+            shader_languages() const override
             {
-                MGE_INFO_TRACE(OPENGL, "Creating opengl render system");
-                init_capabilities();
-            }
-            ~render_system() = default;
-
-            mge::window_ref create_window(const mge::extent&         extent,
-                                          const mge::window_options& options)
-            {
-                auto ref =
-                    std::make_shared<mge::opengl::window>(extent, options);
-                return ref;
+                return std::span<const mge::shader_language>(
+                    m_shader_languages.data(),
+                    m_shader_languages.size());
             }
 
-            std::span<mge::monitor_ref> monitors() override
+            std::span<const mge::shader_format> shader_formats() const override
             {
-#ifdef MGE_OS_WINDOWS
-                return mge::win32::monitor::all_monitors();
-#endif
+                return std::span<const mge::shader_format>(
+                    m_shader_formats.data(),
+                    m_shader_formats.size());
             }
 
-            class capabilities : public mge::render_system::capabilities
-            {
-            public:
-                capabilities(render_system* system);
-                ~capabilities() = default;
-
-                std::span<const mge::shader_language>
-                shader_languages() const override
-                {
-                    return std::span<const mge::shader_language>(
-                        m_shader_languages.data(),
-                        m_shader_languages.size());
-                }
-
-                std::span<const mge::shader_format>
-                shader_formats() const override
-                {
-                    return std::span<const mge::shader_format>(
-                        m_shader_formats.data(),
-                        m_shader_formats.size());
-                }
-
-            private:
-                std::vector<mge::shader_language> m_shader_languages;
-                std::vector<mge::shader_format>   m_shader_formats;
-            };
-
-            void init_capabilities()
-            {
-                m_capabilities = std::make_unique<capabilities>(this);
-            }
+        private:
+            std::vector<mge::shader_language> m_shader_languages;
+            std::vector<mge::shader_format>   m_shader_formats;
         };
+
+        void render_system::init_capabilities()
+        {
+            m_capabilities = std::make_unique<capabilities>(this);
+        }
 
         render_system::capabilities::capabilities(render_system* system)
         {

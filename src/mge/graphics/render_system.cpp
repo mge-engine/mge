@@ -57,14 +57,15 @@ namespace mge {
                     try {
                         frame_debugger->configure();
                         MGE_DEBUG_TRACE(GRAPHICS,
-                                    "Using frame debugger: {} - {} {}",
-                                    frame_debugger_name,
-                                    frame_debugger->name(),
-                                    frame_debugger->version());
+                                        "Using frame debugger: {} - {} {}",
+                                        frame_debugger_name,
+                                        frame_debugger->name(),
+                                        frame_debugger->version());
 
                         result->m_frame_debugger = frame_debugger;
-
-                        if (true) { 
+                        auto record =
+                            MGE_PARAMETER(graphics, record_frames).get();
+                        if (record) {
                             MGE_DEBUG_TRACE(GRAPHICS,
                                             "Enabling frame recording in frame "
                                             "debugger: {}",

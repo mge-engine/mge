@@ -14,10 +14,13 @@
 namespace mge {
 
     namespace opengl {
+        class render_system;
+
         class render_context : public mge::render_context
         {
         public:
-            render_context(mge::opengl::window* context_window);
+            render_context(mge::opengl::render_system& render_system_,
+                           mge::opengl::window*        context_window);
             virtual ~render_context();
 
             mge::index_buffer*
@@ -56,6 +59,7 @@ namespace mge {
             void create_primary_glrc();
             void init_gl3w();
             void collect_opengl_info();
+            void refresh_frame_debugger();
 
             mge::opengl::window*        m_window;
             HWND                        m_hwnd;

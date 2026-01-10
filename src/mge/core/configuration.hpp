@@ -35,6 +35,17 @@ namespace mge {
                                                std::string_view name);
 
         /**
+         *  Access to parameter by section and name.
+         * @param section   parameter section
+         * @param name      parameter name
+         * @return parameter as registered
+         */
+        static auto& get(std::string_view section, std::string_view name)
+        {
+            return find_parameter(section, name);
+        }
+
+        /**
          * @brief Find a parameter,
          *
          * @param section   parameter section

@@ -35,7 +35,7 @@ namespace mge {
     class MGEGRAPHICS_EXPORT render_context
     {
     protected:
-        render_context(const mge::extent& ext);
+        render_context(mge::render_system& rs, const mge::extent& ext);
 
     public:
         virtual ~render_context();
@@ -303,8 +303,9 @@ namespace mge {
         }
 
     protected:
-        mge::extent m_extent;
-        uint16_t    m_index{0xFFFF}; //!< index in registry
+        mge::render_system& m_render_system;
+        mge::extent         m_extent;
+        uint16_t            m_index{0xFFFF}; //!< index in registry
 
         std::vector<shader*>        m_shaders;
         std::vector<program*>       m_programs;

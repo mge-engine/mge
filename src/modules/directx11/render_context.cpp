@@ -21,7 +21,7 @@ namespace mge {
 namespace mge::dx11 {
     render_context::render_context(mge::dx11::render_system& render_system_,
                                    mge::dx11::window&        window_)
-        : mge::render_context(window_.extent())
+        : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_)
         , m_window(window_)
     {

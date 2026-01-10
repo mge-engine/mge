@@ -3,13 +3,14 @@
 // All rights reserved.
 #pragma once
 #include "mge/graphics/render_context.hpp"
+#include "mock_render_system.hpp"
 #include "test/googlemock.hpp"
 
 class MOCK_render_context : public mge::render_context
 {
 public:
-    MOCK_render_context()
-        : mge::render_context(mge::extent(800, 600))
+    MOCK_render_context(mge::render_system& rs)
+        : mge::render_context(rs, mge::extent(800, 600))
     {}
     ~MOCK_render_context() {}
 
