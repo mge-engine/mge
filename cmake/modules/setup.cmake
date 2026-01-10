@@ -42,6 +42,4 @@ INCLUDE(thirdparty/assimp)
 INCLUDE(thirdparty/sqlite3)
 INCLUDE(thirdparty/fmt)
 INCLUDE(thirdparty/nanobench)
-INCLUDE(thirdparty/scoop)
-INCLUDE(thirdparty/renderdoc)
 
