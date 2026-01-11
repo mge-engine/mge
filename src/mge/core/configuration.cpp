@@ -313,7 +313,7 @@ namespace mge {
         auto it = cmdline.begin();
         ++it;
         while (it != cmdline.end()) {
-            if (*it == "--config"sv) {
+            if (*it == "--config"sv || *it == "-c"sv) {
                 ++it;
                 if (it != cmdline.end()) {
                     std::string_view cfgval = *it;
