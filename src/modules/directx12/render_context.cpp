@@ -8,9 +8,11 @@
 #include "index_buffer.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -51,6 +53,27 @@ namespace mge::dx12 {
         create_factory();
         create_adapter();
         create_device();
+
+        auto fd = m_render_system.frame_debugger();
+        if (fd) {
+            fd->set_context(
+                frame_debugger::capture_context{m_device.Get(), m_window.hwnd()});
+        }
+
+        try {
+            m_record_frames = std::any_cast<bool>(
+                configuration::get("graphics", "record_frames").value());
+            if (m_record_frames) {
+                MGE_INFO_TRACE(DX12, "Frame recording is enabled");
+            } else {
+                MGE_INFO_TRACE(DX12, "Frame recording is disabled");
+            }
+        } catch (const mge::exception& e) {
+            MGE_WARNING_TRACE(DX12,
+                              "Error reading frame recording configuration: {}",
+                              e.what());
+        }
+
         enable_debug_messages();
         create_command_queue();
     }
@@ -318,6 +341,14 @@ namespace mge::dx12 {
 
     render_context::~render_context()
     {
+        if (m_render_system.frame_debugger()) {
+            auto fd = m_render_system.frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(DX12, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+
         if (m_info_queue && m_callback_cookie != 0) {
             m_info_queue->UnregisterMessageCallback(m_callback_cookie);
         }
@@ -585,6 +616,17 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
+        if (m_first_frame) {
+            m_first_frame = false;
+            if (m_record_frames) {
+                auto fd = m_render_system.frame_debugger();
+                if (fd) {
+                    MGE_INFO_TRACE(DX12, "Starting frame recording");
+                    fd->begin_capture();
+                }
+            }
+        }
+
         // MGE_DEBUG_TRACE(DX12, "Render pass");
         ID3D12GraphicsCommandList* pass_command_list = nullptr;
         uint32_t                   current_buffer_index = 0;
