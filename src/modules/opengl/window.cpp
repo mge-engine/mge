@@ -26,7 +26,7 @@ namespace mge {
             MGE_DEBUG_TRACE(OPENGL, "Creating render context");
             auto context =
                 std::make_shared<mge::opengl::render_context>(system,
-                                                              *this);
+                                                              this);
             m_render_context = context;
         }
     } // namespace opengl
