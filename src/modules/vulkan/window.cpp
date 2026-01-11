@@ -9,23 +9,22 @@ namespace mge {
 }
 
 namespace mge::vulkan {
-    window::window(render_system&             render_system_,
+    window::window(render_system&             system,
                    const mge::extent&         extent,
                    const mge::window_options& options)
-        : platform::window(extent, options)
-        , m_render_system(render_system_)
+        : platform::window(system, extent, options)
     {
         MGE_DEBUG_TRACE(VULKAN, "Create window");
-        create_render_context();
+        create_render_context(system);
     }
 
     window::~window() {}
 
-    void window::create_render_context()
+    void window::create_render_context(render_system& system)
     {
         MGE_DEBUG_TRACE(VULKAN, "Create render context");
         auto context =
-            std::make_shared<::mge::vulkan::render_context>(m_render_system,
+            std::make_shared<::mge::vulkan::render_context>(system,
                                                             *this);
         m_render_context = context;
     }

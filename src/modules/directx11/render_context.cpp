@@ -6,6 +6,7 @@
 #include "error.hpp"
 #include "index_buffer.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
@@ -13,7 +14,6 @@
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
-
 namespace mge {
     MGE_USE_TRACE(DX11);
 }
@@ -182,6 +182,7 @@ namespace mge::dx11 {
         m_depth_stencil_view.reset(tmp_depth_stencil_view);
 
         setup_context(*m_device_context);
+        refresh_frame_debugger();
     }
 
     void render_context::setup_context(ID3D11DeviceContext& context)
@@ -264,6 +265,24 @@ namespace mge::dx11 {
     {
         auto rc = m_swap_chain->Present(0, 0);
         CHECK_HRESULT(rc, IDXGISwapChain, Present);
+    }
+
+    void render_context::refresh_frame_debugger()
+    {
+        try {
+            if (m_render_system.frame_debugger()) {
+                auto enabled = std::any_cast<bool>(
+                    mge::configuration::get("graphics", "record_frames")
+                        .value());
+                if (enabled) {
+                    m_render_system.frame_debugger()->start_capture();
+                }
+            }
+        } catch (const mge::exception& e) {
+            MGE_DEBUG_TRACE(DX11,
+                            "Could not refresh frame debugger: {} ",
+                            e.what());
+        }
     }
 
 } // namespace mge::dx11

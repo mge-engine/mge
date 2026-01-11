@@ -2,9 +2,9 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/dllexport.hpp"
 #include "mge/core/component.hpp"
 #include "mge/core/semantic_version.hpp"
+#include "mge/graphics/dllexport.hpp"
 
 namespace mge {
     class render_context;
@@ -15,7 +15,8 @@ namespace mge {
      * by hooking into the rendering process and capturing frames for later
      * inspection.
      */
-    class MGEGRAPHICS_EXPORT frame_debugger : public mge::component<frame_debugger>
+    class MGEGRAPHICS_EXPORT frame_debugger
+        : public mge::component<frame_debugger>
     {
     public:
         /**
@@ -51,13 +52,15 @@ namespace mge {
 
         /**
          * @brief Start capturing frames.
+         * @param native_window_handle optional native window handle
          */
-        virtual void start_capture() = 0;
+        virtual void start_capture(void* native_window_handle = nullptr) = 0;
 
         /**
          * @brief End capturing frames.
+         * @param native_window_handle optional native window handle
          */
-        virtual void end_capture() = 0;
+        virtual void end_capture(void* native_window_handle = nullptr) = 0;
 
         /**
          * @brief Capture a frame.

@@ -15,15 +15,13 @@ namespace mge {
         class window : public platform::window
         {
         public:
-            window(render_system&               system,
+            window(mge::opengl::render_system&               system,
                    const ::mge::extent&         extent,
                    const ::mge::window_options& options);
             ~window();
 
         private:
-            void create_render_context();
-
-            render_system& m_render_system;
+            void create_render_context(mge::opengl::render_system& system);
         };
 
     } // namespace opengl

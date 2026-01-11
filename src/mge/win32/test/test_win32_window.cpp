@@ -7,6 +7,7 @@
 #include "mge/win32/window.hpp"
 #include "test/applicationtest.hpp"
 #include "test/googletest.hpp"
+#include "mge/graphics/test/mock_render_system.hpp"
 
 class windowtest_application : public mge::test_application
 {
@@ -14,11 +15,12 @@ public:
     void setup()
     {
         m_window = std::make_shared<mge::win32::window>(
+            m_mock_render_system,
             mge::extent(640, 480),
             mge::window_options::standard_options());
         m_window->show();
     }
-
+    MOCK_render_system m_mock_render_system;
     mge::window_ref m_window;
 };
 

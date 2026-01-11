@@ -63,15 +63,6 @@ namespace mge {
                                         frame_debugger->version());
 
                         result->m_frame_debugger = frame_debugger;
-                        auto record =
-                            MGE_PARAMETER(graphics, record_frames).get();
-                        if (record) {
-                            MGE_DEBUG_TRACE(GRAPHICS,
-                                            "Enabling frame recording in frame "
-                                            "debugger: {}",
-                                            frame_debugger_name);
-                            frame_debugger->start_capture();
-                        }
                     } catch (const std::exception& e) {
                         MGE_ERROR_TRACE(
                             GRAPHICS,

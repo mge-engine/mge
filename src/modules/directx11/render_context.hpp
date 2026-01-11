@@ -71,6 +71,7 @@ namespace mge::dx11 {
 
     private:
         void create_swap_chain();
+        void refresh_frame_debugger();
 
         mge::dx11::render_system&              m_render_system;
         mge::dx11::window&                     m_window;

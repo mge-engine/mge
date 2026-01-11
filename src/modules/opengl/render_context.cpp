@@ -165,16 +165,20 @@ namespace mge::opengl {
         s_glinfo.ptr();
     }
 
-    void render_context::refresh_frame_debugger() {
+    void render_context::refresh_frame_debugger()
+    {
         try {
-        if(m_render_system.frame_debugger()) {
-            auto enabled = std::any_cast<bool>(mge::configuration::get("graphics", "record_frames").value());
-            if (enabled) {
-                m_render_system.frame_debugger()->start_capture();
+            if (m_render_system.frame_debugger()) {
+                auto enabled = std::any_cast<bool>(
+                    mge::configuration::get("graphics", "record_frames")
+                        .value());
+                if (enabled) {
+                    m_render_system.frame_debugger()->start_capture();
+                }
             }
-        }
-        } catch(const mge::exception& e) {
-            MGE_DEBUG_TRACE(OPENGL, "Could not refresh frame debugger{} ",
+        } catch (const mge::exception& e) {
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Could not refresh frame debugger: {} ",
                             e.what());
         }
     }

@@ -22,9 +22,7 @@ namespace mge::dx12 {
         ~window() = default;
 
     private:
-        void create_render_context();
-
-        render_system& m_render_system;
+        void create_render_context(render_system& system);
     };
 
 } // namespace mge::dx12

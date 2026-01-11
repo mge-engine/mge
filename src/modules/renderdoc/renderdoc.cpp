@@ -24,8 +24,9 @@ namespace mge::renderdoc {
         virtual mge::semantic_version version() const noexcept override;
 
         virtual void configure() override;
-        virtual void start_capture() override;
-        virtual void end_capture() override;
+        virtual void
+        start_capture(void* native_window_handle = nullptr) override;
+        virtual void end_capture(void* native_window_handle = nullptr) override;
         virtual void capture() override;
         virtual bool capturing() const override;
 
@@ -159,19 +160,19 @@ namespace mge::renderdoc {
         m_enabled = true;
     }
 
-    void renderdoc_frame_debugger::start_capture()
+    void renderdoc_frame_debugger::start_capture(void* native_window_handle)
     {
         if (m_renderdoc_api) {
             MGE_DEBUG_TRACE(RENDERDOC, "Starting frame capture");
-            m_renderdoc_api->StartFrameCapture(nullptr, nullptr);
+            m_renderdoc_api->StartFrameCapture(nullptr, native_window_handle);
         }
     }
 
-    void renderdoc_frame_debugger::end_capture()
+    void renderdoc_frame_debugger::end_capture(void* native_window_handle)
     {
         if (m_renderdoc_api) {
             MGE_DEBUG_TRACE(RENDERDOC, "Ending frame capture");
-            m_renderdoc_api->EndFrameCapture(nullptr, nullptr);
+            m_renderdoc_api->EndFrameCapture(nullptr, native_window_handle);
         }
     }
 
