@@ -178,6 +178,12 @@ namespace mge::renderdoc {
                         "template: {}",
                         lfp);
 
+        // Enable the overlay with default settings
+        m_renderdoc_api->MaskOverlayBits(~0U, eRENDERDOC_Overlay_Default);
+        MGE_DEBUG_TRACE(RENDERDOC,
+                        "RenderDoc overlay enabled with bits: 0x{:x}",
+                        m_renderdoc_api->GetOverlayBits());
+
         m_enabled = true;
     }
 
@@ -195,6 +201,9 @@ namespace mge::renderdoc {
                     m_renderdoc_api->EndFrameCapture(m_capture_context.context,
                                                      m_capture_context.window);
                 }
+                // Set this window as active to enable RenderDoc overlay
+                MGE_DEBUG_TRACE(RENDERDOC, "Setting RenderDoc active window");
+                m_renderdoc_api->SetActiveWindow(ctx.context, ctx.window);
             }
         }
     }

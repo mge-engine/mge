@@ -14,7 +14,9 @@
 #include "vertex_buffer.hpp"
 #include "window.hpp"
 
+#include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -32,6 +34,43 @@ namespace mge::vulkan {
             create_device();
             resolve_device_functions();
             create_allocator();
+
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                // For Vulkan, RenderDoc needs the VkInstance dispatch table
+                // pointer This is the first pointer-sized object in the
+                // VkInstance memory
+                VkInstance instance = m_render_system->instance();
+                m_renderdoc_device_ptr = *((void**)instance);
+                MGE_INFO_TRACE(
+                    VULKAN,
+                    "Setting frame debugger context for Vulkan: instance={}, "
+                    "dispatch_ptr={}, hwnd={}",
+                    (void*)instance,
+                    m_renderdoc_device_ptr,
+                    (void*)m_window.hwnd());
+                fd->set_context(
+                    frame_debugger::capture_context{m_renderdoc_device_ptr,
+                                                    m_window.hwnd()});
+            } else {
+                MGE_INFO_TRACE(VULKAN, "No frame debugger available");
+            }
+
+            try {
+                m_record_frames = std::any_cast<bool>(
+                    configuration::get("graphics", "record_frames").value());
+                if (m_record_frames) {
+                    MGE_INFO_TRACE(VULKAN, "Frame recording is enabled");
+                } else {
+                    MGE_INFO_TRACE(VULKAN, "Frame recording is disabled");
+                }
+            } catch (const mge::exception& e) {
+                MGE_WARNING_TRACE(
+                    VULKAN,
+                    "Error reading frame recording configuration: {}",
+                    e.what());
+            }
+
             get_device_queue();
             fetch_surface_capabilities();
             choose_extent();
@@ -51,6 +90,14 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
+        if (m_render_system->frame_debugger()) {
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(VULKAN, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+
         wait_for_frame_finished();
         teardown();
     }
@@ -809,6 +856,17 @@ namespace mge::vulkan {
 
     void render_context::render(const mge::pass& p)
     {
+        if (m_first_frame) {
+            m_first_frame = false;
+            if (m_record_frames) {
+                auto fd = m_render_system->frame_debugger();
+                if (fd) {
+                    MGE_INFO_TRACE(VULKAN, "Starting frame recording");
+                    fd->begin_capture();
+                }
+            }
+        }
+
         if (m_current_frame_state == frame_state::BEFORE_DRAW) {
             wait_for_frame_finished();
             acquire_next_image();

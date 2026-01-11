@@ -89,7 +89,7 @@ namespace mge::dx12 {
         create_dx12_command_list(ID3D12CommandAllocator* allocator,
                                  D3D12_COMMAND_LIST_TYPE type,
                                  const char*             purpose = nullptr,
-                                 bool                    reset   = true);
+                                 bool                    reset = true);
 
         void render(const mge::pass& p) override;
 

@@ -56,8 +56,8 @@ namespace mge::dx12 {
 
         auto fd = m_render_system.frame_debugger();
         if (fd) {
-            fd->set_context(
-                frame_debugger::capture_context{m_device.Get(), m_window.hwnd()});
+            fd->set_context(frame_debugger::capture_context{m_device.Get(),
+                                                            m_window.hwnd()});
         }
 
         try {
