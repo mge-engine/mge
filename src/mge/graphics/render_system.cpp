@@ -31,6 +31,39 @@ namespace mge {
 
     render_system_ref render_system::create()
     {
+        mge::frame_debugger_ref frame_debugger;
+        const char* frame_debugger_env = std::getenv("MGE_FRAME_DEBUGGER");
+        std::string frame_debugger_name =
+            frame_debugger_env == nullptr
+                ? MGE_PARAMETER(graphics, frame_debugger).get()
+                : frame_debugger_env;
+        if (!frame_debugger_name.empty()) {
+            frame_debugger = mge::frame_debugger::create(frame_debugger_name);
+            if (frame_debugger) {
+                try {
+                    frame_debugger->configure();
+                    MGE_DEBUG_TRACE(GRAPHICS,
+                                    "Using frame debugger: {} - {} {}",
+                                    frame_debugger_name,
+                                    frame_debugger->name(),
+                                    frame_debugger->version());
+
+                } catch (const std::exception& e) {
+                    MGE_ERROR_TRACE(
+                        GRAPHICS,
+                        "Could not configure frame debugger '{}': {}",
+                        frame_debugger_name,
+                        e.what());
+                }
+            } else {
+                MGE_WARNING_TRACE(GRAPHICS,
+                                  "Frame debugger '{}' could not be created",
+                                  frame_debugger_name);
+            }
+        } else {
+            MGE_DEBUG_TRACE(GRAPHICS, "No frame debugger specified");
+        }
+
         const char* env_value = std::getenv("MGE_RENDER_SYSTEM");
         std::string implementation_name;
         if (env_value == nullptr) {
@@ -44,40 +77,7 @@ namespace mge {
         auto result = component<render_system>::create(implementation_name);
 
         if (result) {
-            const char* frame_debugger_env = std::getenv("MGE_FRAME_DEBUGGER");
-            std::string frame_debugger_name =
-                frame_debugger_env == nullptr
-                    ? MGE_PARAMETER(graphics, frame_debugger).get()
-                    : frame_debugger_env;
-            if (!frame_debugger_name.empty()) {
-                auto frame_debugger =
-                    mge::frame_debugger::create(frame_debugger_name);
-                if (frame_debugger) {
-                    try {
-                        frame_debugger->configure();
-                        MGE_DEBUG_TRACE(GRAPHICS,
-                                        "Using frame debugger: {} - {} {}",
-                                        frame_debugger_name,
-                                        frame_debugger->name(),
-                                        frame_debugger->version());
-
-                        result->m_frame_debugger = frame_debugger;
-                    } catch (const std::exception& e) {
-                        MGE_ERROR_TRACE(
-                            GRAPHICS,
-                            "Could not configure frame debugger '{}': {}",
-                            frame_debugger_name,
-                            e.what());
-                    }
-                } else {
-                    MGE_WARNING_TRACE(
-                        GRAPHICS,
-                        "Frame debugger '{}' could not be created",
-                        frame_debugger_name);
-                }
-            } else {
-                MGE_DEBUG_TRACE(GRAPHICS, "No frame debugger specified");
-            }
+            result->m_frame_debugger = frame_debugger;
         }
 
         return result;

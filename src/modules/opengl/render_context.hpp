@@ -66,8 +66,6 @@ namespace mge {
             HGLRC                       m_primary_hglrc;
             mge::mutex                  m_lock;
             std::map<thread::id, HGLRC> m_thread_glrcs;
-            bool                        m_record_frames{false};
-            bool                        m_first_frame{true};
 #else
 #    error Missing port
 #endif

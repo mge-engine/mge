@@ -35,27 +35,6 @@ namespace mge::vulkan {
             resolve_device_functions();
             create_allocator();
 
-            auto fd = m_render_system->frame_debugger();
-            if (fd) {
-                // For Vulkan, RenderDoc needs the VkInstance dispatch table
-                // pointer This is the first pointer-sized object in the
-                // VkInstance memory
-                VkInstance instance = m_render_system->instance();
-                m_renderdoc_device_ptr = *((void**)instance);
-                MGE_INFO_TRACE(
-                    VULKAN,
-                    "Setting frame debugger context for Vulkan: instance={}, "
-                    "dispatch_ptr={}, hwnd={}",
-                    (void*)instance,
-                    m_renderdoc_device_ptr,
-                    (void*)m_window.hwnd());
-                fd->set_context(
-                    frame_debugger::capture_context{m_renderdoc_device_ptr,
-                                                    m_window.hwnd()});
-            } else {
-                MGE_INFO_TRACE(VULKAN, "No frame debugger available");
-            }
-
             try {
                 m_record_frames = std::any_cast<bool>(
                     configuration::get("graphics", "record_frames").value());
@@ -82,6 +61,17 @@ namespace mge::vulkan {
             create_framebuffers();
             create_fence();
             create_semaphores();
+
+            // For Vulkan, RenderDoc must be injected before vkCreateInstance
+            // So we don't set the context programmatically - instead launch
+            // the application through RenderDoc UI or renderdoccmd
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(
+                    VULKAN,
+                    "Note: For Vulkan, launch application through RenderDoc "
+                    "to enable frame capture");
+            }
         } catch (...) {
             teardown();
             throw;
@@ -856,17 +846,6 @@ namespace mge::vulkan {
 
     void render_context::render(const mge::pass& p)
     {
-        if (m_first_frame) {
-            m_first_frame = false;
-            if (m_record_frames) {
-                auto fd = m_render_system->frame_debugger();
-                if (fd) {
-                    MGE_INFO_TRACE(VULKAN, "Starting frame recording");
-                    fd->begin_capture();
-                }
-            }
-        }
-
         if (m_current_frame_state == frame_state::BEFORE_DRAW) {
             wait_for_frame_finished();
             acquire_next_image();

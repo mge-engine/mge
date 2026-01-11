@@ -616,17 +616,6 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
-        if (m_first_frame) {
-            m_first_frame = false;
-            if (m_record_frames) {
-                auto fd = m_render_system.frame_debugger();
-                if (fd) {
-                    MGE_INFO_TRACE(DX12, "Starting frame recording");
-                    fd->begin_capture();
-                }
-            }
-        }
-
         // MGE_DEBUG_TRACE(DX12, "Render pass");
         ID3D12GraphicsCommandList* pass_command_list = nullptr;
         uint32_t                   current_buffer_index = 0;

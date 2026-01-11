@@ -321,6 +321,9 @@ namespace mge {
 
         std::vector<mge::pass>               m_passes;
         std::unique_ptr<mge::command_buffer> m_command_buffer;
+
+        bool m_record_frames{false};
+        bool m_first_frame{true};
     };
 
 } // namespace mge

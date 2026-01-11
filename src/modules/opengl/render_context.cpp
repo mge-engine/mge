@@ -53,22 +53,9 @@ namespace mge::opengl {
         init_gl3w();
         collect_opengl_info();
         auto fd = render_system_.frame_debugger();
-        // if (fd) {
-        //     fd->set_context(frame_debugger::capture_context{nullptr,
-        //     m_hwnd});
-        // }
-        try {
-            m_record_frames = std::any_cast<bool>(
-                configuration::get("graphics", "record_frames").value());
-            if (m_record_frames) {
-                MGE_INFO_TRACE(OPENGL, "Frame recording is enabled");
-            } else {
-                MGE_INFO_TRACE(OPENGL, "Frame recording is disabled");
-            }
-        } catch (const mge::exception& e) {
-            MGE_WARNING_TRACE(OPENGL,
-                              "Error reading frame recording configuration: {}",
-                              e.what());
+        if (fd) {
+            fd->set_context(
+                frame_debugger::capture_context{m_primary_hglrc, nullptr});
         }
     }
 
@@ -239,18 +226,6 @@ namespace mge::opengl {
 
     void render_context::render(const mge::pass& p)
     {
-        if (m_first_frame) {
-            m_first_frame = false;
-            if (m_record_frames) {
-                auto fd = m_render_system.frame_debugger();
-                if (fd) {
-                    MGE_INFO_TRACE(OPENGL, "Starting frame recording");
-                    fd->begin_capture();
-                }
-            }
-            m_first_frame = false;
-        }
-
         GLuint fb = 0;
         if (p.frame_buffer()) {
             MGE_THROW_NOT_IMPLEMENTED

@@ -269,17 +269,6 @@ namespace mge::dx11 {
 
     void render_context::render(const mge::pass& p)
     {
-        if (m_first_frame) {
-            m_first_frame = false;
-            if (m_record_frames) {
-                auto fd = m_render_system.frame_debugger();
-                if (fd) {
-                    MGE_INFO_TRACE(DX11, "Starting frame recording");
-                    fd->begin_capture();
-                }
-            }
-        }
-
         ID3D11RenderTargetView* rtv = nullptr;
         if (p.frame_buffer()) {
             // support custom frame buffers
