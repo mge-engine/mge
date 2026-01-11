@@ -24,11 +24,32 @@ namespace mge::renderdoc {
         virtual mge::semantic_version version() const noexcept override;
 
         virtual void configure() override;
-        virtual void
-        start_capture(void* native_window_handle = nullptr) override;
-        virtual void end_capture(void* native_window_handle = nullptr) override;
-        virtual void capture() override;
-        virtual bool capturing() const override;
+        virtual void on_set_context(capture_context ctx) override;
+        virtual bool capturing() const override
+        {
+            if (m_enabled && m_renderdoc_api) {
+                return m_renderdoc_api->IsFrameCapturing() == 1;
+            }
+            return false;
+        }
+
+        virtual void begin_capture() override
+        {
+            if (m_enabled && m_renderdoc_api) {
+                MGE_DEBUG_TRACE(RENDERDOC, "Starting RenderDoc frame capture");
+                m_renderdoc_api->StartFrameCapture(m_capture_context.context,
+                                                   m_capture_context.window);
+            }
+        }
+
+        virtual void end_capture() override
+        {
+            if (m_enabled && m_renderdoc_api) {
+                MGE_DEBUG_TRACE(RENDERDOC, "Ending RenderDoc frame capture");
+                m_renderdoc_api->EndFrameCapture(m_capture_context.context,
+                                                 m_capture_context.window);
+            }
+        }
 
     private:
         bool renderdoc_library_loaded();
@@ -160,35 +181,22 @@ namespace mge::renderdoc {
         m_enabled = true;
     }
 
-    void renderdoc_frame_debugger::start_capture(void* native_window_handle)
+    void renderdoc_frame_debugger::on_set_context(capture_context ctx)
     {
-        if (m_renderdoc_api) {
-            MGE_DEBUG_TRACE(RENDERDOC, "Starting frame capture");
-            m_renderdoc_api->StartFrameCapture(nullptr, native_window_handle);
+        if (ctx != m_capture_context) {
+            if (m_enabled && m_renderdoc_api) {
+                MGE_DEBUG_TRACE(RENDERDOC,
+                                "Setting RenderDoc capture context: {} {}",
+                                ctx.context,
+                                ctx.window);
+                if (m_renderdoc_api->IsFrameCapturing()) {
+                    MGE_DEBUG_TRACE(RENDERDOC,
+                                    "Ending previous RenderDoc capture");
+                    m_renderdoc_api->EndFrameCapture(m_capture_context.context,
+                                                     m_capture_context.window);
+                }
+            }
         }
-    }
-
-    void renderdoc_frame_debugger::end_capture(void* native_window_handle)
-    {
-        if (m_renderdoc_api) {
-            MGE_DEBUG_TRACE(RENDERDOC, "Ending frame capture");
-            m_renderdoc_api->EndFrameCapture(nullptr, native_window_handle);
-        }
-    }
-
-    void renderdoc_frame_debugger::capture()
-    {
-        if (m_renderdoc_api) {
-            m_renderdoc_api->TriggerCapture();
-        }
-    }
-
-    bool renderdoc_frame_debugger::capturing() const
-    {
-        if (m_renderdoc_api) {
-            return m_renderdoc_api->IsFrameCapturing() != 0;
-        }
-        return false;
     }
 
     MGE_REGISTER_IMPLEMENTATION(renderdoc_frame_debugger,

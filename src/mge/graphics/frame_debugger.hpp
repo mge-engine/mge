@@ -19,6 +19,22 @@ namespace mge {
         : public mge::component<frame_debugger>
     {
     public:
+        struct capture_context
+        {
+            void* context;
+            void* window;
+
+            inline bool operator==(const capture_context& other) const noexcept
+            {
+                return context == other.context && window == other.window;
+            }
+
+            inline bool operator!=(const capture_context& other) const noexcept
+            {
+                return !(*this == other);
+            }
+        };
+
         /**
          * @brief Constructs a frame debugger for the given render context.
          *
@@ -51,26 +67,34 @@ namespace mge {
         virtual void configure() = 0;
 
         /**
-         * @brief Start capturing frames.
-         * @param native_window_handle optional native window handle
+         * @brief Set the context for capturing.
+         *
+         * @param ctx capture context
          */
-        virtual void start_capture(void* native_window_handle = nullptr) = 0;
+        void set_context(capture_context ctx) noexcept
+        {
+            on_set_context(ctx);
+            m_capture_context = ctx;
+        }
+
+        /**
+         * @brief Check whether a frame capture is in progress.
+         */
+        virtual bool capturing() const = 0;
+
+        /**
+         * @brief Begin capturing frames.
+         */
+        virtual void begin_capture() = 0;
 
         /**
          * @brief End capturing frames.
-         * @param native_window_handle optional native window handle
          */
-        virtual void end_capture(void* native_window_handle = nullptr) = 0;
+        virtual void end_capture() = 0;
 
-        /**
-         * @brief Capture a frame.
-         */
-        virtual void capture() = 0;
+    protected:
+        virtual void on_set_context(capture_context ctx) {}
 
-        /**
-         * @brief Get whether a frame is currently being captured.
-         * @return true if a frame is being captured
-         */
-        virtual bool capturing() const = 0;
+        capture_context m_capture_context;
     };
 } // namespace mge

@@ -59,7 +59,6 @@ namespace mge {
             void create_primary_glrc();
             void init_gl3w();
             void collect_opengl_info();
-            void refresh_frame_debugger();
 
             mge::opengl::window*        m_window;
             HWND                        m_hwnd;
@@ -67,6 +66,8 @@ namespace mge {
             HGLRC                       m_primary_hglrc;
             mge::mutex                  m_lock;
             std::map<thread::id, HGLRC> m_thread_glrcs;
+            bool                        m_record_frames{false};
+            bool                        m_first_frame{true};
 #else
 #    error Missing port
 #endif

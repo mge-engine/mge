@@ -134,6 +134,23 @@ namespace mge {
          */
         virtual std::any value() const = 0;
 
+        /**
+         * @brief Get parameter value as specific type.
+         * @tparam T desired type
+         * @return parameter value as type T
+         */
+        template <typename T> T as() const
+        {
+            std::any val = value();
+            if (val.type() == typeid(T)) {
+                return std::any_cast<T>(val);
+            } else {
+                MGE_THROW(illegal_argument)
+                    << "Invalid type for parameter " << path() << ", expected "
+                    << typeid(T).name() << ", got " << val.type().name();
+            }
+        }
+
     protected:
         read_function  m_read_function;
         write_function m_write_function;

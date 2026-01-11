@@ -24,9 +24,8 @@ namespace mge {
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(bool,
                                       graphics,
                                       record_frames,
-                                      "Record work using the frame debugger",
+                                      "Record frames using frame debugger",
                                       false);
-
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
         bool, graphics, vsync, "Honor vertical sync in screen update", false);
 
@@ -123,14 +122,6 @@ namespace mge {
         return m_frame_debugger;
     }
 
-    render_system::~render_system()
-    {
-        if (m_frame_debugger && m_frame_debugger->capturing()) {
-            MGE_DEBUG_TRACE(GRAPHICS,
-                            "Stopping recording in frame debugger: {}",
-                            m_frame_debugger->name());
-            m_frame_debugger->end_capture();
-        }
-    }
+    render_system::~render_system() {}
 
 } // namespace mge

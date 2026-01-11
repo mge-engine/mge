@@ -52,7 +52,24 @@ namespace mge::opengl {
         create_primary_glrc();
         init_gl3w();
         collect_opengl_info();
-        refresh_frame_debugger();
+        auto fd = render_system_.frame_debugger();
+        // if (fd) {
+        //     fd->set_context(frame_debugger::capture_context{nullptr,
+        //     m_hwnd});
+        // }
+        try {
+            m_record_frames = std::any_cast<bool>(
+                configuration::get("graphics", "record_frames").value());
+            if (m_record_frames) {
+                MGE_INFO_TRACE(OPENGL, "Frame recording is enabled");
+            } else {
+                MGE_INFO_TRACE(OPENGL, "Frame recording is disabled");
+            }
+        } catch (const mge::exception& e) {
+            MGE_WARNING_TRACE(OPENGL,
+                              "Error reading frame recording configuration: {}",
+                              e.what());
+        }
     }
 
     void render_context::select_pixel_format()
@@ -164,29 +181,20 @@ namespace mge::opengl {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
         s_glinfo.ptr();
     }
-
-    void render_context::refresh_frame_debugger()
-    {
-        try {
-            if (m_render_system.frame_debugger()) {
-                auto enabled = std::any_cast<bool>(
-                    mge::configuration::get("graphics", "record_frames")
-                        .value());
-                if (enabled) {
-                    m_render_system.frame_debugger()->start_capture();
-                }
-            }
-        } catch (const mge::exception& e) {
-            MGE_DEBUG_TRACE(OPENGL,
-                            "Could not refresh frame debugger: {} ",
-                            e.what());
-        }
-    }
 #else
 #    error Missing port
 #endif
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        if (m_render_system.frame_debugger()) {
+            auto fd = m_render_system.frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(OPENGL, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+    }
 
     singleton<opengl_info> render_context::s_glinfo;
 
@@ -231,6 +239,18 @@ namespace mge::opengl {
 
     void render_context::render(const mge::pass& p)
     {
+        if (m_first_frame) {
+            m_first_frame = false;
+            if (m_record_frames) {
+                auto fd = m_render_system.frame_debugger();
+                if (fd) {
+                    MGE_INFO_TRACE(OPENGL, "Starting frame recording");
+                    fd->begin_capture();
+                }
+            }
+            m_first_frame = false;
+        }
+
         GLuint fb = 0;
         if (p.frame_buffer()) {
             MGE_THROW_NOT_IMPLEMENTED
