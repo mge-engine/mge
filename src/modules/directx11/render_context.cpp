@@ -5,6 +5,7 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "program.hpp"
@@ -28,7 +29,16 @@ namespace mge::dx11 {
         MGE_DEBUG_TRACE(DX11, "Create render context");
     }
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        if (m_render_system.frame_debugger()) {
+            auto fd = m_render_system.frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(DX11, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+    }
 
     void render_context::initialize()
     {
@@ -70,6 +80,26 @@ namespace mge::dx11 {
 
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
+
+        auto fd = m_render_system.frame_debugger();
+        if (fd) {
+            fd->set_context(frame_debugger::capture_context{m_device.get(),
+                                                            m_window.hwnd()});
+        }
+
+        try {
+            m_record_frames = std::any_cast<bool>(
+                configuration::get("graphics", "record_frames").value());
+            if (m_record_frames) {
+                MGE_INFO_TRACE(DX11, "Frame recording is enabled");
+            } else {
+                MGE_INFO_TRACE(DX11, "Frame recording is disabled");
+            }
+        } catch (const mge::exception& e) {
+            MGE_WARNING_TRACE(DX11,
+                              "Error reading frame recording configuration: {}",
+                              e.what());
+        }
 
         if (m_render_system.debug()) {
             MGE_DEBUG_TRACE(DX11, "Enable debug breaks");
@@ -239,6 +269,17 @@ namespace mge::dx11 {
 
     void render_context::render(const mge::pass& p)
     {
+        if (m_first_frame) {
+            m_first_frame = false;
+            if (m_record_frames) {
+                auto fd = m_render_system.frame_debugger();
+                if (fd) {
+                    MGE_INFO_TRACE(DX11, "Starting frame recording");
+                    fd->begin_capture();
+                }
+            }
+        }
+
         ID3D11RenderTargetView* rtv = nullptr;
         if (p.frame_buffer()) {
             // support custom frame buffers

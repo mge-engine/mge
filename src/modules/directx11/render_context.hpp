@@ -83,6 +83,8 @@ namespace mge::dx11 {
         com_unique_ptr<ID3D11Texture2D>         m_depth_stencil_buffer;
         com_unique_ptr<ID3D11DepthStencilState> m_depth_stencil_state;
         com_unique_ptr<ID3D11DepthStencilView>  m_depth_stencil_view;
+        bool                                    m_record_frames{false};
+        bool                                    m_first_frame{true};
     };
 
     inline render_context& dx11_context(mge::render_context& context)
