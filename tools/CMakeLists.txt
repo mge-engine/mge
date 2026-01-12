@@ -24,8 +24,9 @@ IF(WIN32)
     ENDFOREACH()
 
     IF(RENDERDOCCMD_EXECUTABLE)
-        CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/run_rdoc.cmd.in"
-                  "${CMAKE_BINARY_DIR}/run_rdoc.cmd")
+        FILE(TO_NATIVE_PATH "${RENDERDOCCMD_EXECUTABLE}" RENDERDOCCMD)
+        CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/rdoc.cmd.in"
+                  "${CMAKE_BINARY_DIR}/rdoc.cmd" @ONLY)
     ENDIF()
 
 ENDIF()
