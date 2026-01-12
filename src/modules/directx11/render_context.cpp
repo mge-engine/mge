@@ -87,20 +87,6 @@ namespace mge::dx11 {
                                                             m_window.hwnd()});
         }
 
-        try {
-            m_record_frames = std::any_cast<bool>(
-                configuration::get("graphics", "record_frames").value());
-            if (m_record_frames) {
-                MGE_INFO_TRACE(DX11, "Frame recording is enabled");
-            } else {
-                MGE_INFO_TRACE(DX11, "Frame recording is disabled");
-            }
-        } catch (const mge::exception& e) {
-            MGE_WARNING_TRACE(DX11,
-                              "Error reading frame recording configuration: {}",
-                              e.what());
-        }
-
         if (m_render_system.debug()) {
             MGE_DEBUG_TRACE(DX11, "Enable debug breaks");
             ID3D11Debug* d3d_debug = nullptr;

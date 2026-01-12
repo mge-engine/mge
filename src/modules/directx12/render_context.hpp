@@ -149,8 +149,6 @@ namespace mge::dx12 {
 
         draw_state m_draw_state{draw_state::NONE};
         mge::mutex m_data_lock;
-        bool       m_record_frames{false};
-        bool       m_first_frame{true};
     };
 
     inline render_context& dx12_context(mge::render_context& context)

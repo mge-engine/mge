@@ -59,21 +59,6 @@ namespace mge::dx12 {
             fd->set_context(frame_debugger::capture_context{m_device.Get(),
                                                             m_window.hwnd()});
         }
-
-        try {
-            m_record_frames = std::any_cast<bool>(
-                configuration::get("graphics", "record_frames").value());
-            if (m_record_frames) {
-                MGE_INFO_TRACE(DX12, "Frame recording is enabled");
-            } else {
-                MGE_INFO_TRACE(DX12, "Frame recording is disabled");
-            }
-        } catch (const mge::exception& e) {
-            MGE_WARNING_TRACE(DX12,
-                              "Error reading frame recording configuration: {}",
-                              e.what());
-        }
-
         enable_debug_messages();
         create_command_queue();
     }
