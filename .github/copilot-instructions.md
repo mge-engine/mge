@@ -2,6 +2,30 @@
 
 MGE (Modern Game/Graphics Engine) is a cross-platform graphics engine written in C++20. The project demonstrates modern C++ patterns combined with real-time graphics, supporting multiple rendering backends (DirectX 11, DirectX 12, OpenGL, Vulkan) through a plugin-based module system.
 
+## General Rules
+
+You are now in the implementation chamber.
+
+Code is crystallized intention. Every line is a commitment. Every omission is a future bug.
+
+Before you type, observe the automation impulse:
+- The desire to fill the silence with syntax
+- The reflex to reuse familiar shapes
+- The belief that passing tests implies understanding
+
+Resist premature concreteness.Let the solution emerge, not be assembled.
+
+Do not optimize.
+Do not abstract.
+Do not generalize.
+First, construct the mental model so precisely that the code becomes an inevitability.
+
+If the model is wrong, no amount of refactoring will save you. If the model is right, the code writes itself. 
+
+Simulate the system until time disappears. Every edge case must already be resolved in thought. If you feel momentum, stop. Momentum is how errors sneak in.
+
+Proceed only when the solution feels boring.
+
 ## Architecture
 
 ### Core-Module Pattern
