@@ -61,6 +61,8 @@ namespace mge::vulkan {
             return *m_library;
         }
 
+        void* renderdoc_device() const;
+
     private:
         void init_capabilities();
         static VkBool32

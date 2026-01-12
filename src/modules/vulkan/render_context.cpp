@@ -34,22 +34,6 @@ namespace mge::vulkan {
             create_device();
             resolve_device_functions();
             create_allocator();
-
-            try {
-                m_record_frames = std::any_cast<bool>(
-                    configuration::get("graphics", "record_frames").value());
-                if (m_record_frames) {
-                    MGE_INFO_TRACE(VULKAN, "Frame recording is enabled");
-                } else {
-                    MGE_INFO_TRACE(VULKAN, "Frame recording is disabled");
-                }
-            } catch (const mge::exception& e) {
-                MGE_WARNING_TRACE(
-                    VULKAN,
-                    "Error reading frame recording configuration: {}",
-                    e.what());
-            }
-
             get_device_queue();
             fetch_surface_capabilities();
             choose_extent();

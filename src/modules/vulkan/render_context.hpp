@@ -169,6 +169,5 @@ namespace mge::vulkan {
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
         bool        m_record_frames{false};
         bool        m_first_frame{true};
-        void*       m_renderdoc_device_ptr{nullptr};
     };
 } // namespace mge::vulkan
