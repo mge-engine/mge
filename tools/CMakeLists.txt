@@ -3,6 +3,7 @@
 # All rights reserved.
 IF(WIN32)
     SET(helper_scripts
+        enable.cmd
         enable_trace.cmd
         enable_trace.ps1
         disable_trace.cmd
