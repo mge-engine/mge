@@ -20,6 +20,8 @@ namespace mge {
 
     MGE_USE_TRACE(CORE);
 
+    MGE_DEFINE_TRACE(CONFIG);
+
     class configuration_instance
     {
     public:
@@ -149,7 +151,7 @@ namespace mge {
     {
         const char* suffixes[] = {"json", 0};
         std::string base_name = config_name;
-        if (!base_name.empty()) {
+        if (base_name.empty()) {
             base_name = executable_name();
         }
         if (fs::is_directory("config")) {
@@ -234,6 +236,10 @@ namespace mge {
             parameter_path /= c.string();
         }
         if (m_raw_settings.contains(parameter_path)) {
+            MGE_DEBUG_TRACE(CONFIG,
+                            "Fetch parameter value for {} : {}",
+                            p.path().generic_string(),
+                            m_raw_settings[parameter_path].dump());
             p.read_value(m_raw_settings.at(parameter_path));
         }
         p.notify_change();

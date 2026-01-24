@@ -1,0 +1,108 @@
+# Header
+- Driver: OpenGL
+# Frames
+## Frame 1
+- Call: Internal::Context Configuration
+  - Context: _ignored_
+  - FBO: _ignored_
+  - InitParams: _ignored_
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: _ignored_
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: SwapBuffers
+## Frame 2
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: _ignored_
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: SwapBuffers
+## Frame 3
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: _ignored_
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: SwapBuffers
+## Frame 4
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: _ignored_
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: SwapBuffers
+## Frame 5
+- Call: glBindFramebuffer
+  - target: GL_FRAMEBUFFER
+  - framebuffer: _ignored_
+- Call: glViewport
+  - x: 0
+  - y: 0
+  - width: 800
+  - height: 600
+- Call: glDepthRangef
+  - nearVal: 0
+  - farVal: 1
+- Call: glClearColor
+  - red: 0
+  - green: 0
+  - blue: 0
+  - alpha: 1
+- Call: glClear
+  - mask: GL_COLOR_BUFFER_BIT
+- Call: SwapBuffers
+
