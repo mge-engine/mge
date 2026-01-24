@@ -205,10 +205,10 @@ if __name__ == '__main__':
         if len(sanitized_lines) != len(reference_lines):
             differences.append(f"File length differs: Sanitized has {len(sanitized_lines)} lines, Reference has {len(reference_lines)} lines.")
         if not differences:
-            print("✓ Captures match!")
+            print("SUCCESS: Captures match the reference!")
             sys.exit(0)
         else:
-            print(f"✗ Found {len(differences)} difference(s):")
+            print(f"FAIL: Found {len(differences)} difference(s):")
             for diff in differences:
                 print(diff)
             sys.exit(1)

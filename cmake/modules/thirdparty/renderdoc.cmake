@@ -1,6 +1,8 @@
 # mge - Modern Game Engine
 # Copyright (c) 2017-2023 by Alexander Schroeder
 # All rights reserved.
+INCLUDE_GUARD(GLOBAL)
+
 INCLUDE(thirdparty/scoop)
 IF(WIN32 AND SCOOP_EXECUTABLE)
     EXECUTE_PROCESS(COMMAND cmd /c "${SCOOP_EXECUTABLE}" prefix renderdoc
