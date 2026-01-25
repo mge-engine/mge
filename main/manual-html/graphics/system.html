@@ -8,14 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Render System &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=2709fde1"></script>
-      <script src="../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -56,10 +56,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Render System</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge13render_systemE"><code class="docutils literal notranslate"><span class="pre">mge::render_system</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_systemD0Ev"><code class="docutils literal notranslate"><span class="pre">~render_system()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowEv"><code class="docutils literal notranslate"><span class="pre">create_window()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system13create_windowERK6extentRK14window_options"><code class="docutils literal notranslate"><span class="pre">create_window()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system8monitorsEv"><code class="docutils literal notranslate"><span class="pre">monitors()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge13render_system19system_capabilitiesEv"><code class="docutils literal notranslate"><span class="pre">system_capabilities()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge13render_system14frame_debuggerEv"><code class="docutils literal notranslate"><span class="pre">frame_debugger()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system6createEv"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system6createENSt11string_viewE"><code class="docutils literal notranslate"><span class="pre">create()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13render_system12capabilitiesE"><code class="docutils literal notranslate"><span class="pre">mge::render_system::capabilities</span></code></a></li>
@@ -144,6 +146,12 @@ or “vulkan”.</p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13render_systemD0Ev">
+<span id="_CPPv3N3mge13render_systemD0Ev"></span><span id="_CPPv2N3mge13render_systemD0Ev"></span><span id="mge::render_system::~render_system"></span><span class="target" id="classmge_1_1render__system_1af1f576bfa9756ca5bb9191c3d6a4eb71"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~render_system</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_systemD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor, will stop frame recording if active. </p>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13render_system13create_windowEv">
 <span id="_CPPv3N3mge13render_system13create_windowEv"></span><span id="_CPPv2N3mge13render_system13create_windowEv"></span><span id="mge::render_system::create_window"></span><span class="target" id="classmge_1_1render__system_1affd339a873845398b4d64861a2a74e34"></span><span class="n"><span class="pre">window_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">create_window</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13render_system13create_windowEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Create window with default settings. </p>
@@ -189,6 +197,17 @@ or “vulkan”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>render system capabilities </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13render_system14frame_debuggerEv">
+<span id="_CPPv3NK3mge13render_system14frame_debuggerEv"></span><span id="_CPPv2NK3mge13render_system14frame_debuggerEv"></span><span id="mge::render_system::frame_debuggerC"></span><span class="target" id="classmge_1_1render__system_1af48db37528ed50e82c2c02591f04fada"></span><span class="n"><span class="pre">frame_debugger_ref</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_debugger</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13render_system14frame_debuggerEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the frame debugger available for this render system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>frame debugger if available </p>
 </dd>
 </dl>
 </dd></dl>
