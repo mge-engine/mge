@@ -38,6 +38,11 @@ namespace mge {
         m_scissor = r;
     }
 
+    void pass::default_scissor()
+    {
+        m_scissor = m_context->default_scissor();
+    }
+
     void pass::reset()
     {
         m_active = false;

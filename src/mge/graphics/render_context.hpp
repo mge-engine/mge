@@ -159,7 +159,19 @@ namespace mge {
             return m_extent;
         }
 
+        /**
+         * @brief Get the default viewport for this render context.
+         *
+         * @return default viewport
+         */
         mge::viewport default_viewport() const;
+
+        /**
+         * @brief Get the default scissor rectangle for this render context.
+         *
+         * @return default scissor rectangle
+         */
+        mge::rectangle default_scissor() const;
 
         /**
          * @brief Get a pass by its index. If the pass does not exist, it is

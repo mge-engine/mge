@@ -448,14 +448,6 @@ namespace mge::dx12 {
         return result;
     }
 
-    mge::rectangle render_context::default_scissor() const
-    {
-        return mge::rectangle(m_scissor_rect.left,
-                              m_scissor_rect.top,
-                              m_scissor_rect.right,
-                              m_scissor_rect.bottom);
-    }
-
     void render_context::enable_debug_layer()
     {
         if (m_render_system.debug()) {

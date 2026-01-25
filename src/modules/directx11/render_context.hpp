@@ -65,8 +65,6 @@ namespace mge::dx11 {
 
         void setup_context(ID3D11DeviceContext& context);
 
-        mge::rectangle default_scissor() const;
-
         void render(const mge::pass& p) override;
 
     private:

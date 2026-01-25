@@ -248,11 +248,6 @@ namespace mge::dx11 {
         return result;
     }
 
-    mge::rectangle render_context::default_scissor() const
-    {
-        return mge::rectangle(m_window.position(), m_window.extent());
-    }
-
     void render_context::render(const mge::pass& p)
     {
         ID3D11RenderTargetView* rtv = nullptr;

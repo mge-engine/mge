@@ -3,13 +3,14 @@
 // All rights reserved.
 /** @file */
 #pragma once
+#include "mge/graphics/command_buffer.hpp"
 #include "mge/graphics/dllexport.hpp"
 #include "mge/graphics/frame_buffer_handle.hpp"
 #include "mge/graphics/graphics_fwd.hpp"
 #include "mge/graphics/rectangle.hpp"
-#include "mge/graphics/viewport.hpp"
 #include "mge/graphics/rgba_color.hpp"
-#include "mge/graphics/command_buffer.hpp"
+#include "mge/graphics/viewport.hpp"
+
 
 namespace mge {
 
@@ -44,8 +45,9 @@ namespace mge {
         void set_rect(const mge::rectangle& r);
         void set_viewport(const mge::viewport& v);
         void default_viewport();
-        
+
         void set_scissor(const mge::rectangle& r);
+        void default_scissor();
 
         void clear_color(const rgba_color& color);
         void disable_clear_color();

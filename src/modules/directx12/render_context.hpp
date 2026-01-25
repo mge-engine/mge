@@ -76,7 +76,6 @@ namespace mge::dx12 {
             return m_scissor_rect;
         }
 
-        mge::rectangle              default_scissor() const;
         D3D12_CPU_DESCRIPTOR_HANDLE rtv_handle(uint32_t index) const;
         D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle(uint32_t index) const;
 

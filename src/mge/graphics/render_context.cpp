@@ -313,4 +313,9 @@ namespace mge {
                              1.0f};
     }
 
+    mge::rectangle render_context::default_scissor() const
+    {
+        return mge::rectangle{0, 0, m_extent.width, m_extent.height};
+    }
+
 } // namespace mge
