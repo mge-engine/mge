@@ -257,9 +257,6 @@ namespace mge::opengl {
                                        const vertex_buffer_handle& vertices,
                                        const index_buffer_handle&  indices) {
             auto program = program_handle.get();
-            MGE_DEBUG_TRACE(OPENGL,
-                            "Rendering draw command with program {}",
-                            (void*)program);
             if (!program) {
                 MGE_THROW(illegal_state)
                     << "Draw command has no program assigned";
@@ -297,14 +294,6 @@ namespace mge::opengl {
             } else {
                 vao = create_vao(gl_vb, gl_ib);
             }
-            MGE_DEBUG_TRACE(OPENGL,
-                            "Using VAO {} for VB {} and IB {}",
-                            vao,
-                            gl_vb.buffer_name(),
-                            gl_ib.buffer_name());
-            MGE_DEBUG_TRACE(OPENGL,
-                            "Drawing {} elements",
-                            gl_ib.element_count());
             glBindVertexArray(vao);
             CHECK_OPENGL_ERROR(glBindVertexArray);
             glDrawElements(GL_TRIANGLES,

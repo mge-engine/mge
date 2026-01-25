@@ -36,11 +36,11 @@ namespace mge::opengl {
 
     void vertex_buffer::on_set_data(void* data, size_t data_size)
     {
-        glNamedBufferSubData(m_buffer,
-                             0,
-                             mge::checked_cast<GLsizeiptr>(data_size),
-                             data);
-        CHECK_OPENGL_ERROR(glNamedBufferSubData);
+        glNamedBufferData(m_buffer,
+                          mge::checked_cast<GLsizeiptr>(data_size),
+                          data,
+                          GL_STATIC_DRAW);
+        CHECK_OPENGL_ERROR(glNamedBufferData);
         set_ready(true);
     }
 

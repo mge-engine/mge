@@ -237,7 +237,7 @@ namespace mge {
                 static_cast<uint32_t>(m_index_buffers.size())};
             if (data) {
                 index_buffer* ib = ptr.get();
-                prepare_frame_action([ib, data]() {
+                prepare_frame([ib, data]() {
                     ib->on_set_data(data->data(), data->size());
                 });
             }
@@ -260,7 +260,7 @@ namespace mge {
                 static_cast<uint32_t>(m_vertex_buffers.size())};
             if (data) {
                 vertex_buffer* vb = ptr.get();
-                prepare_frame_action([vb, data]() {
+                prepare_frame([vb, data]() {
                     vb->on_set_data(data->data(), data->size());
                 });
             }
