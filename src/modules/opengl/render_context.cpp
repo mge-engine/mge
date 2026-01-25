@@ -252,6 +252,71 @@ namespace mge::opengl {
             glClear(GL_COLOR_BUFFER_BIT);
             CHECK_OPENGL_ERROR(glClear);
         }
+
+        p.for_each_draw_command([this](const program_handle& program_handle,
+                                       const vertex_buffer_handle& vertices,
+                                       const index_buffer_handle&  indices) {
+            auto program = program_handle.get();
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Rendering draw command with program {}",
+                            (void*)program);
+            if (!program) {
+                MGE_THROW(illegal_state)
+                    << "Draw command has no program assigned";
+            }
+            if (program->needs_link()) {
+                MGE_THROW(illegal_state) << "Draw command has unlinked program "
+                                         << (void*)program << " assigned";
+            }
+            mge::opengl::program& gl_program =
+                static_cast<opengl::program&>(*program);
+            glUseProgram(gl_program.program_name());
+            CHECK_OPENGL_ERROR(glUseProgram);
+            auto vb = vertices.get();
+            if (!vb) {
+                MGE_THROW(illegal_state)
+                    << "Draw command has invalid vertex buffer";
+            }
+            auto ib = indices.get();
+            if (!ib) {
+                MGE_THROW(illegal_state)
+                    << "Draw command has invalid index buffer";
+            }
+
+            mge::opengl::vertex_buffer& gl_vb =
+                static_cast<opengl::vertex_buffer&>(*vb);
+            mge::opengl::index_buffer& gl_ib =
+                static_cast<opengl::index_buffer&>(*ib);
+
+            vao_key key =
+                std::make_tuple(gl_vb.buffer_name(), gl_ib.buffer_name());
+            GLuint vao = 0;
+            auto   it = m_vaos.find(key);
+            if (it != m_vaos.end()) {
+                vao = it->second;
+            } else {
+                vao = create_vao(gl_vb, gl_ib);
+            }
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Using VAO {} for VB {} and IB {}",
+                            vao,
+                            gl_vb.buffer_name(),
+                            gl_ib.buffer_name());
+            MGE_DEBUG_TRACE(OPENGL,
+                            "Drawing {} elements",
+                            gl_ib.element_count());
+            glBindVertexArray(vao);
+            CHECK_OPENGL_ERROR(glBindVertexArray);
+            glDrawElements(GL_TRIANGLES,
+                           static_cast<GLsizei>(gl_ib.element_count()),
+                           GL_UNSIGNED_INT,
+                           nullptr);
+            CHECK_OPENGL_ERROR(glDrawElements);
+            glBindVertexArray(0);
+            CHECK_OPENGL_ERROR(glBindVertexArray(0));
+            glUseProgram(0);
+            CHECK_OPENGL_ERROR(glUseProgram(0));
+        });
     }
 
     mge::image_ref render_context::screenshot()
@@ -266,6 +331,47 @@ namespace mge::opengl {
 #else
 #    error Missing port
 #endif
+    }
+
+    GLuint render_context::create_vao(mge::opengl::vertex_buffer& vb,
+                                      mge::opengl::index_buffer&  ib)
+    {
+        vao_key key = std::make_tuple(vb.buffer_name(), ib.buffer_name());
+        GLuint  vao = 0;
+        glCreateVertexArrays(1, &vao);
+        CHECK_OPENGL_ERROR(glCreateVertexArrays);
+        glBindVertexArray(vao);
+        CHECK_OPENGL_ERROR(glBindVertexArray);
+        glBindBuffer(GL_ARRAY_BUFFER, vb.buffer_name());
+        CHECK_OPENGL_ERROR(glBindBuffer(GL_ARRAY_BUFFER));
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib.buffer_name());
+        CHECK_OPENGL_ERROR(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER));
+
+        const auto& layout = vb.layout();
+        uint32_t    index = 0;
+        for (const auto& f : layout.formats()) {
+            glEnableVertexAttribArray(index);
+            CHECK_OPENGL_ERROR(glEnableVertexAttribArray);
+            switch (f.type()) {
+            case mge::data_type::FLOAT:
+                glVertexAttribPointer(index,
+                                      f.size(),
+                                      GL_FLOAT,
+                                      GL_FALSE,
+                                      0,
+                                      nullptr);
+                CHECK_OPENGL_ERROR(glVertexAttribPointer);
+                break;
+            default:
+                MGE_THROW(opengl::error)
+                    << "Unsupported vertex array element type " << f.type();
+            }
+            ++index;
+        }
+        glBindVertexArray(0);
+        CHECK_OPENGL_ERROR(glBindVertexArray(0));
+
+        return m_vaos[key] = vao;
     }
 
 } // namespace mge::opengl

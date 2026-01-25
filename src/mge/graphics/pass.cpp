@@ -98,8 +98,16 @@ namespace mge {
         // setting frame buffer does not make a pass active
     }
 
-    void pass::submit(const command_buffer& command_buffer)
+    void pass::submit(const command_buffer& cb)
     {
+        if (!cb.empty()) {
+            cb.for_each([this](const program_handle&       program,
+                               const vertex_buffer_handle& vertices,
+                               const index_buffer_handle&  indices) {
+                m_draw_commands.push_back(
+                    draw_command{program, vertices, indices});
+            });
+        }
         m_active = true;
     }
 

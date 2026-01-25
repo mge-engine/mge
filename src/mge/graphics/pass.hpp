@@ -11,7 +11,6 @@
 #include "mge/graphics/rgba_color.hpp"
 #include "mge/graphics/viewport.hpp"
 
-
 namespace mge {
 
     /**
@@ -116,6 +115,13 @@ namespace mge {
 
         void submit(const command_buffer& command_buffer);
 
+        template <typename F> void for_each_draw_command(F&& f) const
+        {
+            for (const auto& cmd : m_draw_commands) {
+                f(cmd.program, cmd.vertices, cmd.indices);
+            }
+        }
+
     private:
         friend class render_context;
         pass(mge::render_context* context, uint32_t index) noexcept;
@@ -132,6 +138,15 @@ namespace mge {
         bool                     m_clear_color_enabled{false};
         bool                     m_clear_depth_enabled{false};
         bool                     m_clear_stencil_enabled{false};
+
+        struct draw_command
+        {
+            program_handle       program;
+            vertex_buffer_handle vertices;
+            index_buffer_handle  indices;
+        };
+
+        std::vector<draw_command> m_draw_commands;
     };
 
 } // namespace mge
