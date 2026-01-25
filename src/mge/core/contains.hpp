@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <array>
 #include <vector>
+#include <list>
 
 namespace mge {
 
@@ -25,6 +26,19 @@ namespace mge {
     }
 
     template <typename Element, class Alloc>
+    inline bool contains(const std::list<Element, Alloc>& c, const Element& e)
+    {
+        auto it = c.begin();
+        while (it != c.end()) {
+            if (*it == e) {
+                return true;
+            }
+            ++it;
+        }
+        return false;
+    }
+
+    template <typename Element, class Alloc>
     inline bool contains(const std::vector<Element, Alloc>& c, const Element& e)
     {
         auto it = c.begin();
@@ -32,6 +46,7 @@ namespace mge {
             if (*it == e) {
                 return true;
             }
+            ++it;
         }
         return false;
     }
@@ -45,6 +60,7 @@ namespace mge {
             if (*it == e) {
                 return true;
             }
+            ++it;
         }
         return false;
     }
@@ -57,6 +73,7 @@ namespace mge {
             if (*it == e) {
                 return true;
             }
+            ++it;
         }
         return false;
     }

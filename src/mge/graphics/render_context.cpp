@@ -10,8 +10,10 @@
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer.hpp"
 #include "mge/graphics/frame_command_list.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"
+#include "mge/graphics/render_system.hpp"
 #include "mge/graphics/shader.hpp"
 #include "mge/graphics/swap_chain.hpp"
 #include "mge/graphics/vertex_buffer.hpp"
@@ -85,13 +87,29 @@ namespace mge {
 
     mge::singleton<render_context_registry> render_context_registry::instance;
 
-    render_context::render_context(const mge::extent& ext)
-        : m_extent(ext)
+    render_context::render_context(mge::render_system& rs,
+                                   const mge::extent&  ext)
+        : m_render_system(rs)
+        , m_extent(ext)
         , m_prepare_frame_resource(m_prepare_frame_memory.data(),
                                    m_prepare_frame_memory.size())
         , m_prepare_frame_actions(&m_prepare_frame_resource)
     {
         m_index = render_context_registry::instance->register_context(this);
+
+        try {
+            m_record_frames = std::any_cast<bool>(
+                configuration::get("graphics", "record_frames").value());
+            if (m_record_frames) {
+                MGE_INFO_TRACE(GRAPHICS, "Frame recording is enabled");
+            } else {
+                MGE_INFO_TRACE(GRAPHICS, "Frame recording is disabled");
+            }
+        } catch (const mge::exception& e) {
+            MGE_WARNING_TRACE(GRAPHICS,
+                              "Error reading frame recording configuration: {}",
+                              e.what());
+        }
     }
 
     render_context::~render_context()
@@ -101,6 +119,17 @@ namespace mge {
 
     void render_context::frame()
     {
+        if (m_first_frame) {
+            m_first_frame = false;
+            if (m_record_frames) {
+                auto fd = m_render_system.frame_debugger();
+                if (fd) {
+                    MGE_INFO_TRACE(GRAPHICS, "Starting frame recording");
+                    fd->begin_capture();
+                }
+            }
+        }
+
         if (!m_prepare_frame_actions.empty()) {
             try {
                 for (const auto& action : m_prepare_frame_actions) {
@@ -276,7 +305,12 @@ namespace mge {
 
     mge::viewport render_context::default_viewport() const
     {
-        return mge::viewport{0.0f, 0.0f, static_cast<float>(m_extent.width), static_cast<float>(m_extent.height)  , 0.0f, 1.0f};
+        return mge::viewport{0.0f,
+                             0.0f,
+                             static_cast<float>(m_extent.width),
+                             static_cast<float>(m_extent.height),
+                             0.0f,
+                             1.0f};
     }
 
 } // namespace mge

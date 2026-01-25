@@ -91,8 +91,7 @@ namespace mge {
         if (handle == nil_handle) {
             handle = LoadLibraryW(m_name.c_str());
             if (!handle) {
-                MGE_THROW(system_error)
-                    << "Cannot load library '" << m_name << "'";
+                MGE_THROW(system_error) << "Cannot load library: " << m_name;
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
         }
@@ -104,7 +103,7 @@ namespace mge {
             handle = dlopen(m_name.c_str(), RTLD_LAZY);
             if (!handle) {
                 MGE_THROW(system_error)
-                    << "Cannot load library '" << m_name << "': " << dlerror();
+                    << "Cannot load library: " << m_name << ": " << dlerror();
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
         }
@@ -116,7 +115,7 @@ namespace mge {
             handle = dlopen(m_name.c_str(), RTLD_LAZY);
             if (!handle) {
                 MGE_THROW(system_error)
-                    << "Cannot load library '" << m_name << "': " << dlerror();
+                    << "Cannot load library: " << m_name << ": " << dlerror();
             }
             handle = s_loaded_libraries->try_put(m_name, handle);
         }
@@ -154,6 +153,24 @@ namespace mge {
 #elif defined(MGE_OS_MACOSX)
         auto address = dlsym(m_handle, name.c_str());
         return reinterpret_cast<void*>(address);
+#else
+#    error Missing port
+#endif
+    }
+
+    bool shared_library::loaded(const std::filesystem::path& name)
+    {
+#ifdef MGE_OS_WINDOWS
+        HMODULE handle = GetModuleHandleW(name.c_str());
+        return handle != nil_handle;
+#elif defined(MGE_OS_LINUX) || defined(MGE_OS_MACOSX)
+        void* handle = dlopen(name.c_str(), RTLD_LAZY | RTLD_NOLOAD);
+        if (handle) {
+            dlclose(handle);
+            return true;
+        } else {
+            return false;
+        }
 #else
 #    error Missing port
 #endif

@@ -89,6 +89,11 @@ namespace mge {
          */
         void* symbol(const std::string& name) const;
 
+        /**
+         * @brief Return whether the shared library is loaded.
+         */
+        static bool loaded(const std::filesystem::path& name);
+
     private:
         void load();
 

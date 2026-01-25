@@ -2,9 +2,12 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "mge/graphics/render_system.hpp"
+#include "mge/graphics/frame_debugger.hpp"
+
 #include "mge/core/parameter.hpp"
 #include "mge/core/stdexceptions.hpp"
 #include "mge/core/trace.hpp"
+
 namespace mge {
     MGE_DEFINE_TRACE(GRAPHICS);
     MGE_REGISTER_COMPONENT(render_system);
@@ -13,11 +16,54 @@ namespace mge {
                                       render_system,
                                       "Render system implementation",
                                       "opengl");
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(std::string,
+                                      graphics,
+                                      frame_debugger,
+                                      "Frame debugger implementation",
+                                      "");
+    MGE_DEFINE_PARAMETER_WITH_DEFAULT(bool,
+                                      graphics,
+                                      record_frames,
+                                      "Record frames using frame debugger",
+                                      false);
     MGE_DEFINE_PARAMETER_WITH_DEFAULT(
         bool, graphics, vsync, "Honor vertical sync in screen update", false);
 
     render_system_ref render_system::create()
     {
+        mge::frame_debugger_ref frame_debugger;
+        const char* frame_debugger_env = std::getenv("MGE_FRAME_DEBUGGER");
+        std::string frame_debugger_name =
+            frame_debugger_env == nullptr
+                ? MGE_PARAMETER(graphics, frame_debugger).get()
+                : frame_debugger_env;
+        if (!frame_debugger_name.empty()) {
+            frame_debugger = mge::frame_debugger::create(frame_debugger_name);
+            if (frame_debugger) {
+                try {
+                    frame_debugger->configure();
+                    MGE_DEBUG_TRACE(GRAPHICS,
+                                    "Using frame debugger: {} - {} {}",
+                                    frame_debugger_name,
+                                    frame_debugger->name(),
+                                    frame_debugger->version());
+
+                } catch (const std::exception& e) {
+                    MGE_ERROR_TRACE(
+                        GRAPHICS,
+                        "Could not configure frame debugger '{}': {}",
+                        frame_debugger_name,
+                        e.what());
+                }
+            } else {
+                MGE_WARNING_TRACE(GRAPHICS,
+                                  "Frame debugger '{}' could not be created",
+                                  frame_debugger_name);
+            }
+        } else {
+            MGE_DEBUG_TRACE(GRAPHICS, "No frame debugger specified");
+        }
+
         const char* env_value = std::getenv("MGE_RENDER_SYSTEM");
         std::string implementation_name;
         if (env_value == nullptr) {
@@ -28,7 +74,13 @@ namespace mge {
                             env_value);
             implementation_name = env_value;
         }
-        return component<render_system>::create(implementation_name);
+        auto result = component<render_system>::create(implementation_name);
+
+        if (result) {
+            result->m_frame_debugger = frame_debugger;
+        }
+
+        return result;
     }
 
     render_system_ref render_system::create(std::string_view implementation)
@@ -64,5 +116,12 @@ namespace mge {
     {
         return std::span<const shader_format>();
     }
+
+    frame_debugger_ref render_system::frame_debugger() const
+    {
+        return m_frame_debugger;
+    }
+
+    render_system::~render_system() {}
 
 } // namespace mge

@@ -5,14 +5,29 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "mge/core/parameter.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/core/zero_memory.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "program.hpp"
+#include "render_system.hpp"
 #include "shader.hpp"
 #include "swap_chain.hpp"
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
+
+#ifdef MGE_OS_WINDOWS
+// WGL extension constants and types
+#    define WGL_CONTEXT_MAJOR_VERSION_ARB 0x2091
+#    define WGL_CONTEXT_MINOR_VERSION_ARB 0x2092
+#    define WGL_CONTEXT_PROFILE_MASK_ARB 0x9126
+#    define WGL_CONTEXT_CORE_PROFILE_BIT_ARB 0x00000001
+
+typedef HGLRC(WINAPI* PFNWGLCREATECONTEXTATTRIBSARBPROC)(HDC   hDC,
+                                                         HGLRC hShareContext,
+                                                         const int* attribList);
+#endif
 
 namespace mge {
     MGE_USE_TRACE(OPENGL);
@@ -20,8 +35,9 @@ namespace mge {
 
 namespace mge::opengl {
 #ifdef MGE_OS_WINDOWS
-    render_context::render_context(mge::opengl::window* context_window)
-        : mge::render_context(context_window->extent())
+    render_context::render_context(mge::opengl::render_system& render_system_,
+                                   mge::opengl::window*        context_window)
+        : mge::render_context(render_system_, context_window->extent())
         , m_window(context_window)
         , m_hwnd(context_window->hwnd())
         , m_hdc(0)
@@ -36,6 +52,11 @@ namespace mge::opengl {
         create_primary_glrc();
         init_gl3w();
         collect_opengl_info();
+        auto fd = render_system_.frame_debugger();
+        if (fd) {
+            fd->set_context(
+                frame_debugger::capture_context{m_primary_hglrc, nullptr});
+        }
     }
 
     void render_context::select_pixel_format()
@@ -65,11 +86,58 @@ namespace mge::opengl {
 
     void render_context::create_primary_glrc()
     {
-        HGLRC hglrc = wglCreateContext(m_hdc);
-        if (!hglrc) {
+        // Create a temporary legacy context to load WGL extensions
+        HGLRC temp_context = wglCreateContext(m_hdc);
+        if (!temp_context) {
             MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglCreateContext);
         }
+        if (!wglMakeCurrent(m_hdc, temp_context)) {
+            wglDeleteContext(temp_context);
+            MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglMakeCurrent);
+        }
+
+        // Load wglCreateContextAttribsARB
+#    pragma warning(push)
+#    pragma warning(disable : 4191) // unsafe conversion from PROC
+        PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB =
+            (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress(
+                "wglCreateContextAttribsARB");
+#    pragma warning(pop)
+
+        HGLRC hglrc = nullptr;
+        if (wglCreateContextAttribsARB) {
+            // Create a modern OpenGL 4.6 context
+            const int attribs[] = {WGL_CONTEXT_MAJOR_VERSION_ARB,
+                                   4,
+                                   WGL_CONTEXT_MINOR_VERSION_ARB,
+                                   6,
+                                   WGL_CONTEXT_PROFILE_MASK_ARB,
+                                   WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+                                   0};
+            hglrc = wglCreateContextAttribsARB(m_hdc, 0, attribs);
+            if (!hglrc) {
+                MGE_THROW(system_error)
+                    << MGE_CALLED_FUNCTION(wglCreateContextAttribsARB);
+            }
+
+        } else {
+            MGE_DEBUG_TRACE(OPENGL,
+                            "wglCreateContextAttribsARB not available, "
+                            "falling back to legacy context");
+            // Fallback: Create a legacy context
+            hglrc = wglCreateContext(m_hdc);
+            if (!hglrc) {
+                MGE_THROW(system_error)
+                    << MGE_CALLED_FUNCTION(wglCreateContext);
+            }
+        }
+
+        // Delete temporary context
+        wglMakeCurrent(NULL, NULL);
+        wglDeleteContext(temp_context);
+
         if (!wglMakeCurrent(m_hdc, hglrc)) {
+            wglDeleteContext(hglrc);
             MGE_THROW(system_error) << MGE_CALLED_FUNCTION(wglMakeCurrent);
         }
         {
@@ -100,12 +168,20 @@ namespace mge::opengl {
         MGE_INFO_TRACE(OPENGL, "Collecting OpenGL information");
         s_glinfo.ptr();
     }
-
 #else
 #    error Missing port
 #endif
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        if (m_render_system.frame_debugger()) {
+            auto fd = m_render_system.frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(OPENGL, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+    }
 
     singleton<opengl_info> render_context::s_glinfo;
 
@@ -165,7 +241,7 @@ namespace mge::opengl {
                    static_cast<const GLsizei>(vp.width),
                    static_cast<const GLsizei>(vp.height));
         CHECK_OPENGL_ERROR(glViewport);
-        
+
         glDepthRangef(vp.min_depth, vp.max_depth);
         CHECK_OPENGL_ERROR(glDepthRangef);
 

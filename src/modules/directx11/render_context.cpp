@@ -5,7 +5,9 @@
 #include "command_list.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
 #include "shader.hpp"
@@ -13,7 +15,6 @@
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
-
 namespace mge {
     MGE_USE_TRACE(DX11);
 }
@@ -21,14 +22,23 @@ namespace mge {
 namespace mge::dx11 {
     render_context::render_context(mge::dx11::render_system& render_system_,
                                    mge::dx11::window&        window_)
-        : mge::render_context(window_.extent())
+        : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_)
         , m_window(window_)
     {
         MGE_DEBUG_TRACE(DX11, "Create render context");
     }
 
-    render_context::~render_context() {}
+    render_context::~render_context()
+    {
+        if (m_render_system.frame_debugger()) {
+            auto fd = m_render_system.frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(DX11, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+    }
 
     void render_context::initialize()
     {
@@ -70,6 +80,12 @@ namespace mge::dx11 {
 
         m_device.reset(tmp_device);
         m_device_context.reset(tmp_device_context);
+
+        auto fd = m_render_system.frame_debugger();
+        if (fd) {
+            fd->set_context(frame_debugger::capture_context{m_device.get(),
+                                                            m_window.hwnd()});
+        }
 
         if (m_render_system.debug()) {
             MGE_DEBUG_TRACE(DX11, "Enable debug breaks");
@@ -265,5 +281,4 @@ namespace mge::dx11 {
         auto rc = m_swap_chain->Present(0, 0);
         CHECK_HRESULT(rc, IDXGISwapChain, Present);
     }
-
 } // namespace mge::dx11

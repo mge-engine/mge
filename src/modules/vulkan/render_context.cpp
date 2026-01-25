@@ -14,7 +14,9 @@
 #include "vertex_buffer.hpp"
 #include "window.hpp"
 
+#include "mge/core/configuration.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
@@ -23,7 +25,7 @@ namespace mge::vulkan {
 
     render_context::render_context(render_system& render_system_,
                                    window&        window_)
-        : mge::render_context(window_.extent())
+        : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_.shared_from_this())
         , m_window(window_)
     {
@@ -43,6 +45,17 @@ namespace mge::vulkan {
             create_framebuffers();
             create_fence();
             create_semaphores();
+
+            // For Vulkan, RenderDoc must be injected before vkCreateInstance
+            // So we don't set the context programmatically - instead launch
+            // the application through RenderDoc UI or renderdoccmd
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(
+                    VULKAN,
+                    "Note: For Vulkan, launch application through RenderDoc "
+                    "to enable frame capture");
+            }
         } catch (...) {
             teardown();
             throw;
@@ -51,6 +64,14 @@ namespace mge::vulkan {
 
     render_context::~render_context()
     {
+        if (m_render_system->frame_debugger()) {
+            auto fd = m_render_system->frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(VULKAN, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+
         wait_for_frame_finished();
         teardown();
     }

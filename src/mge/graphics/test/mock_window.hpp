@@ -7,8 +7,9 @@
 class MOCK_window : public mge::window
 {
 public:
-    MOCK_window()
-        : mge::window(mge::extent(800, 600),
+    MOCK_window(mge::render_system& render_system)
+        : mge::window(render_system,
+                      mge::extent(800, 600),
                       mge::window_options::standard_options())
     {}
 

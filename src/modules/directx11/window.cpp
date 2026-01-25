@@ -15,17 +15,16 @@ namespace mge::dx11 {
     window::window(render_system&             system,
                    const mge::extent&         extent,
                    const mge::window_options& options)
-        : platform::window(extent, options)
-        , m_render_system(system)
+        : platform::window(system, extent, options)
     {
         MGE_DEBUG_TRACE(DX11, "Create window");
-        create_render_context();
+        create_render_context(system);
     }
 
-    void window::create_render_context()
+    void window::create_render_context(render_system& system)
     {
         auto context =
-            std::make_shared<::mge::dx11::render_context>(m_render_system,
+            std::make_shared<::mge::dx11::render_context>(system,
                                                           *this);
         context->initialize();
         m_render_context = context;

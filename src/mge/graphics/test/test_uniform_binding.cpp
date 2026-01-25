@@ -5,6 +5,7 @@
 #include "mge/graphics/uniform_binding.hpp"
 #include "mock_program.hpp"
 #include "mock_render_context.hpp"
+#include "mock_render_system.hpp"
 #include "test/googlemock.hpp"
 #include "test/googletest.hpp"
 
@@ -21,7 +22,8 @@ TEST(uniform_binding, create_from_null_ref)
 
 TEST(uniform_binding, create_from_program_ref)
 {
-    auto          context = std::make_shared<MOCK_render_context>();
+    auto          rs = std::make_shared<MOCK_render_system>();
+    auto          context = std::make_shared<MOCK_render_context>(*rs);
     MOCK_program* program = new MOCK_program(*context);
     EXPECT_CALL(*program, on_link()).Times(1);
     program->link();
@@ -32,7 +34,8 @@ TEST(uniform_binding, create_from_program_ref)
 
 TEST(uniform_binding, create_from_program_ref_with_no_link)
 {
-    auto          context = std::make_shared<MOCK_render_context>();
+    auto          rs = std::make_shared<MOCK_render_system>();
+    auto          context = std::make_shared<MOCK_render_context>(*rs);
     MOCK_program* program = new MOCK_program(*context);
     try {
         mge::uniform_binding binding(program);

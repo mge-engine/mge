@@ -1,0 +1,209 @@
+# Header
+- Driver: D3D12
+# Frames
+## Frame 1
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 1
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: null
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 2
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 2
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: null
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 3
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 3
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: null
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 4
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 4
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: null
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 5
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 5
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: null
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+

@@ -127,6 +127,30 @@ namespace mge {
          */
         void set_value(const std::any& value);
 
+        /**
+         * @brief Get parameter value.
+         *
+         * @return parameter value
+         */
+        virtual std::any value() const = 0;
+
+        /**
+         * @brief Get parameter value as specific type.
+         * @tparam T desired type
+         * @return parameter value as type T
+         */
+        template <typename T> T as() const
+        {
+            std::any val = value();
+            if (val.type() == typeid(T)) {
+                return std::any_cast<T>(val);
+            } else {
+                MGE_THROW(illegal_argument)
+                    << "Invalid type for parameter " << path() << ", expected "
+                    << typeid(T).name() << ", got " << val.type().name();
+            }
+        }
+
     protected:
         read_function  m_read_function;
         write_function m_write_function;
@@ -345,6 +369,18 @@ namespace mge {
             }
         }
 
+        std::any value() const override
+        {
+            if (has_value()) {
+                return m_value;
+            } else if (m_default_value.has_value()) {
+                return m_default_value.value();
+            } else {
+                MGE_THROW(illegal_state)
+                    << "Parameter " << path() << " has no value";
+            }
+        }
+
     private:
         T                m_value;
         std::optional<T> m_default_value;
@@ -379,10 +415,11 @@ namespace mge {
                                           NAME,                                \
                                           DESCRIPTION,                         \
                                           DEFAULT)                             \
-    ::mge::parameter<TYPE> p_##SECTION##_##NAME(#SECTION,                      \
-                                                #NAME,                         \
-                                                DESCRIPTION,                   \
-                                                DEFAULT);
+    ::mge::parameter<BOOST_PP_REMOVE_PARENS(TYPE)> p_##SECTION##_##NAME(       \
+        #SECTION,                                                              \
+        #NAME,                                                                 \
+        DESCRIPTION,                                                           \
+        DEFAULT);
 
 /**
  * @def MGE_PARAMETER

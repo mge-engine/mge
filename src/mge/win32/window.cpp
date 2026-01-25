@@ -20,8 +20,10 @@ namespace mge {
 
         static LPCWSTR mge_class_name = L"mge";
 
-        window::window(const mge::extent& extent, const window_options& options)
-            : mge::window(extent, options)
+        window::window(mge::render_system&   render_system,
+                       const mge::extent&    extent,
+                       const window_options& options)
+            : mge::window(render_system, extent, options)
             , m_hwnd(0)
             , m_quit_listener(0)
             , m_process_input_listener(0)

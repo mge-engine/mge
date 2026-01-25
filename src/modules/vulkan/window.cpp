@@ -2,31 +2,38 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "window.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "render_context.hpp"
 #include "render_system.hpp"
+
+
 namespace mge {
     MGE_USE_TRACE(VULKAN);
 }
 
 namespace mge::vulkan {
-    window::window(render_system&             render_system_,
+    window::window(render_system&             system,
                    const mge::extent&         extent,
                    const mge::window_options& options)
-        : platform::window(extent, options)
-        , m_render_system(render_system_)
+        : platform::window(system, extent, options)
     {
         MGE_DEBUG_TRACE(VULKAN, "Create window");
-        create_render_context();
+        create_render_context(system);
+        auto fd = system.frame_debugger();
+        if (fd) {
+            fd->set_context(
+                frame_debugger::capture_context{system.renderdoc_device(),
+                                                hwnd()});
+        }
     }
 
     window::~window() {}
 
-    void window::create_render_context()
+    void window::create_render_context(render_system& system)
     {
         MGE_DEBUG_TRACE(VULKAN, "Create render context");
         auto context =
-            std::make_shared<::mge::vulkan::render_context>(m_render_system,
-                                                            *this);
+            std::make_shared<::mge::vulkan::render_context>(system, *this);
         m_render_context = context;
     }
 

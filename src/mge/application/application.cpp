@@ -127,12 +127,23 @@ namespace mge {
         std::string_view used_application_name(application_name);
         std::string      application_name_parameter_value;
         try {
-            if (!configuration::loaded()) {
-                configuration::load();
-            }
             std::vector<const char*> new_argv;
+            std::string              config_name;
             for (int i = 0; i < argc; ++i) {
                 new_argv.push_back(argv[i]);
+                if (std::string_view(argv[i]) == "--application-name" &&
+                    i + 1 < argc) {
+                    used_application_name = argv[i + 1];
+                    ++i;
+                } else if (std::string_view(argv[i]) == "--config-name" &&
+                           i + 1 < argc) {
+                    config_name = argv[i + 1];
+                    ++i;
+                }
+            }
+
+            if (!configuration::loaded()) {
+                configuration::load(config_name);
             }
             module::load_all();
             configuration::evaluate_command_line(new_argv);

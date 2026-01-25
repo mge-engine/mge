@@ -35,6 +35,17 @@ namespace mge {
                                                std::string_view name);
 
         /**
+         *  Access to parameter by section and name.
+         * @param section   parameter section
+         * @param name      parameter name
+         * @return parameter as registered
+         */
+        static auto& get(std::string_view section, std::string_view name)
+        {
+            return find_parameter(section, name);
+        }
+
+        /**
          * @brief Find a parameter,
          *
          * @param section   parameter section
@@ -45,9 +56,18 @@ namespace mge {
         static basic_parameter& find_parameter(const mge::path& path);
 
         /**
-         * @brief Load configuration.
+         * @brief Load configuration. Configuration file name is derived from
+         * executable name.
          */
         static void load();
+
+        /**
+         * @brief Load configuration from specific file.
+         *
+         * @param config_name configuration base name to use instead of program
+         * name
+         */
+        static void load(const std::string& config_name);
 
         /**
          * @brief Evaluates the command line for configuration changes.

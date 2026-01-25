@@ -16,7 +16,6 @@ ENDIF()
 # - enable exporting compile_commands.json (for editors etc.)
 ENABLE_TESTING()
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 SET(CMAKE_CXX_STANDARD 20)
 SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 

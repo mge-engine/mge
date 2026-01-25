@@ -592,5 +592,15 @@ namespace mge::vulkan {
         }
     }
 
+    void* render_system::renderdoc_device() const
+    {
+        if (m_instance != VK_NULL_HANDLE) {
+#define INSTANCE_FOR_RENDERDOC(inst) (*((void**)(inst)))
+            return INSTANCE_FOR_RENDERDOC(m_instance);
+#undef INSTANCE_FOR_RENDERDOC
+        }
+        return nullptr;
+    }
+
     MGE_REGISTER_IMPLEMENTATION(render_system, mge::render_system, vulkan, vk);
 } // namespace mge::vulkan

@@ -3,6 +3,7 @@
 # All rights reserved.
 IF(WIN32)
     SET(helper_scripts
+        enable.cmd
         enable_trace.cmd
         enable_trace.ps1
         disable_trace.cmd
@@ -23,5 +24,11 @@ IF(WIN32)
                   "${CMAKE_BINARY_DIR}/${FILE}")
     ENDFOREACH()
 
+    IF(RENDERDOCCMD_EXECUTABLE)
+        FILE(TO_NATIVE_PATH "${RENDERDOCCMD_EXECUTABLE}" RENDERDOCCMD)
+        CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/rdoc.cmd.in"
+                  "${CMAKE_BINARY_DIR}/rdoc.cmd" @ONLY)
     ENDIF()
+
+ENDIF()
 

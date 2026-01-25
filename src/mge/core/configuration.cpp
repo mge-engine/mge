@@ -20,6 +20,8 @@ namespace mge {
 
     MGE_USE_TRACE(CORE);
 
+    MGE_DEFINE_TRACE(CONFIG);
+
     class configuration_instance
     {
     public:
@@ -40,7 +42,7 @@ namespace mge {
         std::optional<std::reference_wrapper<basic_parameter>>
              find_optional_parameter(std::string_view section,
                                      std::string_view name);
-        void load();
+        void load(const std::string& config_name);
         void store();
         bool loaded() const
         {
@@ -56,7 +58,7 @@ namespace mge {
         }
 
     private:
-        fs::path find_config_file();
+        fs::path find_config_file(const std::string& config_name);
         void     set_registered_parameters();
         void     fetch_parameter(basic_parameter& p);
         void     write_parameter(basic_parameter& p);
@@ -144,11 +146,14 @@ namespace mge {
             << "Unknown parameter " << section << "/" << name;
     }
 
-    fs::path configuration_instance::find_config_file()
+    fs::path
+    configuration_instance::find_config_file(const std::string& config_name)
     {
         const char* suffixes[] = {"json", 0};
-        auto        base_name = executable_name();
-
+        std::string base_name = config_name;
+        if (base_name.empty()) {
+            base_name = executable_name();
+        }
         if (fs::is_directory("config")) {
             fs::path dir("config");
 
@@ -175,9 +180,9 @@ namespace mge {
         return fs::path();
     }
 
-    void configuration_instance::load()
+    void configuration_instance::load(const std::string& config_name)
     {
-        auto configfile_path = find_config_file();
+        auto configfile_path = find_config_file(config_name);
 
         if (!configfile_path.empty()) {
             std::ifstream ifs(configfile_path);
@@ -231,6 +236,10 @@ namespace mge {
             parameter_path /= c.string();
         }
         if (m_raw_settings.contains(parameter_path)) {
+            MGE_DEBUG_TRACE(CONFIG,
+                            "Fetch parameter value for {} : {}",
+                            p.path().generic_string(),
+                            m_raw_settings[parameter_path].dump());
             p.read_value(m_raw_settings.at(parameter_path));
         }
         p.notify_change();
@@ -298,7 +307,12 @@ namespace mge {
 
     void configuration::load()
     {
-        s_configuration_instance->load();
+        s_configuration_instance->load("");
+    }
+
+    void configuration::load(const std::string& config_name)
+    {
+        s_configuration_instance->load(config_name);
     }
 
     void configuration::evaluate_command_line(
@@ -313,7 +327,7 @@ namespace mge {
         auto it = cmdline.begin();
         ++it;
         while (it != cmdline.end()) {
-            if (*it == "--config"sv) {
+            if (*it == "--config"sv || *it == "-c"sv) {
                 ++it;
                 if (it != cmdline.end()) {
                     std::string_view cfgval = *it;

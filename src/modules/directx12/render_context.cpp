@@ -8,9 +8,11 @@
 #include "index_buffer.hpp"
 #include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
+#include "mge/core/configuration.hpp"
 #include "mge/core/parameter.hpp"
 #include "mge/core/system_error.hpp"
 #include "mge/core/trace.hpp"
+#include "mge/graphics/frame_debugger.hpp"
 #include "mge/win32/com_ptr.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
@@ -27,7 +29,7 @@ namespace mge::dx12 {
 
     render_context::render_context(mge::dx12::render_system& render_system_,
                                    mge::dx12::window&        window_)
-        : mge::render_context(window_.extent())
+        : mge::render_context(render_system_, window_.extent())
         , m_render_system(render_system_)
         , m_window(window_)
         , m_command_queue_fence_value(0)
@@ -51,6 +53,12 @@ namespace mge::dx12 {
         create_factory();
         create_adapter();
         create_device();
+
+        auto fd = m_render_system.frame_debugger();
+        if (fd) {
+            fd->set_context(frame_debugger::capture_context{m_device.Get(),
+                                                            m_window.hwnd()});
+        }
         enable_debug_messages();
         create_command_queue();
     }
@@ -318,6 +326,14 @@ namespace mge::dx12 {
 
     render_context::~render_context()
     {
+        if (m_render_system.frame_debugger()) {
+            auto fd = m_render_system.frame_debugger();
+            if (fd) {
+                MGE_INFO_TRACE(DX12, "Ending frame recording");
+                fd->end_capture();
+            }
+        }
+
         if (m_info_queue && m_callback_cookie != 0) {
             m_info_queue->UnregisterMessageCallback(m_callback_cookie);
         }
