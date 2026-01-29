@@ -152,6 +152,17 @@ FUNCTION(MGE_CAPTURE_TEST)
                     --reference-dir "${CMAKE_SOURCE_DIR}/src/test/graphics"
                 WORKING_DIRECTORY "${_BINARY_DIR}"
             )
+            ADD_CUSTOM_TARGET(capture-${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}
+                COMMAND "${Python3_EXECUTABLE}" 
+                    "${CMAKE_BINARY_DIR}/capturetest.py"
+                    --test "$<TARGET_FILE:${MGE_CAPTURE_TEST_TARGET}>"
+                    --renderdoccmd "${RENDERDOCCMD_EXECUTABLE}"
+                    --render-system "${RENDER_SYSTEM}"
+                    --frame-count 5
+                    --reference-dir "${CMAKE_SOURCE_DIR}/src/test/graphics"
+                    --generate-reference true
+                WORKING_DIRECTORY "${_BINARY_DIR}"
+            )
         ENDFOREACH()
     ELSE()
         MESSAGE("-- Skipping capture tests for target ${MGE_CAPTURE_TEST_TARGET}")

@@ -12,3 +12,5 @@ TARGET_LINK_LIBRARIES(triangle
     mgeinput
     mgegraphics
     mgeasset)
+
+#MGE_CAPTURE_TEST(TARGET triangle)
