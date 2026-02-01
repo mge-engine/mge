@@ -148,6 +148,7 @@ if __name__ == '__main__':
         rdc_file.unlink()
     test_env = os.environ.copy()
     test_env["MGE_RENDERDOC_LIBRARY_PATH"] = str(Path(options.renderdoccmd).resolve().parent)
+    test_env.pop("MGE_RENDER_SYSTEM", None)
     process = subprocess.Popen([str(test_exe), "--config-name", f"test_{test_exe.stem}"], cwd=test_dir, env=test_env)
     process.wait()
     if process.returncode != 0:
@@ -160,7 +161,7 @@ if __name__ == '__main__':
         sys.exit(1)
     print(f"Found capture file: {rdc_file}")
     # convert capture to xml
-    xml_file = test_dir / f"{test_exe.stem}_capture.xml"
+    xml_file = test_dir / f"{test_exe.stem}_{options.render_system}_capture.xml"
     if xml_file.exists():
         print(f"Removing existing XML file: {xml_file}")
         xml_file.unlink()   
