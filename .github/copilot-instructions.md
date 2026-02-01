@@ -1,8 +1,12 @@
-#Project Overview 
+ALWAYS ANSWER IN SHORTEST POSSIBLE WAY THAT IS STILL COMPLETE AND CLEAR
+AND USES THE FEWEST TOKENS POSSIBLE.
 
-* MGE (Modern Game/Graphics Engine) is a 
+# Project Overview 
+
+* MGE (Modern Game/Graphics Engine) is a framework having the following goals:
 * cross-platform, C++20
-* plugin module system
+* modular (plugins)
+
 
 ## General Rules
 
