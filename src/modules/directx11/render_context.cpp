@@ -261,6 +261,13 @@ namespace mge::dx11 {
             {vp.x, vp.y, vp.width, vp.height, vp.min_depth, vp.max_depth};
         m_device_context->RSSetViewports(1, &dx11_vp);
 
+        const auto& sc = p.scissor();
+        D3D11_RECT  scissor_rect = {.left = static_cast<LONG>(sc.left),
+                                    .top = static_cast<LONG>(sc.top),
+                                    .right = static_cast<LONG>(sc.right),
+                                    .bottom = static_cast<LONG>(sc.bottom)};
+        m_device_context->RSSetScissorRects(1, &scissor_rect);
+
         if (p.clear_color_enabled()) {
             float clearcolor[4] = {p.clear_color_value().r,
                                    p.clear_color_value().g,

@@ -14,4 +14,4 @@ TARGET_LINK_LIBRARIES(triangle
     mgeasset)
 
 MGE_CAPTURE_TEST(TARGET triangle
-                 RENDER_SYSTEMS opengl)
+                 RENDER_SYSTEMS opengl directx11)

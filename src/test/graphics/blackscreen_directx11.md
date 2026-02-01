@@ -6,6 +6,10 @@
   - Context: _ignored_
   - NumViewports: 1
   - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -19,6 +23,10 @@
   - Context: _ignored_
   - NumViewports: 1
   - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -32,6 +40,10 @@
   - Context: _ignored_
   - NumViewports: 1
   - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -45,6 +57,10 @@
   - Context: _ignored_
   - NumViewports: 1
   - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -58,6 +74,10 @@
   - Context: _ignored_
   - NumViewports: 1
   - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
