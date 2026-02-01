@@ -19,6 +19,7 @@
 #include "mge/graphics/vertex_buffer.hpp"
 
 namespace mge {
+    extern parameter<bool> p_graphics_record_frames;
 
     class render_context_registry
     {
@@ -97,18 +98,12 @@ namespace mge {
     {
         m_index = render_context_registry::instance->register_context(this);
 
-        try {
-            m_record_frames = std::any_cast<bool>(
-                configuration::get("graphics", "record_frames").value());
-            if (m_record_frames) {
-                MGE_INFO_TRACE(GRAPHICS, "Frame recording is enabled");
-            } else {
-                MGE_INFO_TRACE(GRAPHICS, "Frame recording is disabled");
-            }
-        } catch (const mge::exception& e) {
-            MGE_WARNING_TRACE(GRAPHICS,
-                              "Error reading frame recording configuration: {}",
-                              e.what());
+        m_record_frames = MGE_PARAMETER(graphics, record_frames).get();
+
+        if (m_record_frames) {
+            MGE_INFO_TRACE(GRAPHICS, "Frame recording is enabled");
+        } else {
+            MGE_DEBUG_TRACE(GRAPHICS, "Frame recording is disabled");
         }
     }
 
@@ -150,6 +145,9 @@ namespace mge {
                     render(p);
                     rendered = true;
                 }
+            for (auto& p : m_passes) {
+                p.reset();
+            }
         }
         if (rendered) {
             on_frame_present();
@@ -295,10 +293,14 @@ namespace mge {
         return m_passes[index];
     }
 
-    mge::command_buffer& render_context::command_buffer()
+    mge::command_buffer& render_context::command_buffer(bool clear)
     {
-        if (!m_command_buffer) {
-            m_command_buffer = std::make_unique<mge::command_buffer>();
+        if (clear) {
+            if (!m_command_buffer) {
+                m_command_buffer = std::make_unique<mge::command_buffer>();
+            } else {
+                m_command_buffer->clear();
+            }
         }
         return *m_command_buffer;
     }

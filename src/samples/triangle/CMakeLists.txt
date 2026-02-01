@@ -13,4 +13,5 @@ TARGET_LINK_LIBRARIES(triangle
     mgegraphics
     mgeasset)
 
-#MGE_CAPTURE_TEST(TARGET triangle)
+MGE_CAPTURE_TEST(TARGET triangle
+                 RENDER_SYSTEMS opengl)

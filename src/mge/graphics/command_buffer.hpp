@@ -48,6 +48,13 @@ namespace mge {
             return m_programs.empty();
         }
 
+        void clear() noexcept
+        {
+            m_programs.clear();
+            m_vertex_buffers.clear();
+            m_index_buffers.clear();
+        }
+
     private:
         std::vector<program_handle>       m_programs;
         std::vector<vertex_buffer_handle> m_vertex_buffers;

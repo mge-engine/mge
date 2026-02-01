@@ -78,7 +78,7 @@ namespace mge {
                 pass.clear_depth(1.0f);
 
                 auto& command_buffer =
-                    m_window->render_context().command_buffer();
+                    m_window->render_context().command_buffer(true);
                 command_buffer.draw(m_program, m_vertices, m_indices);
                 pass.submit(command_buffer);
             } else {

@@ -54,6 +54,7 @@ namespace mge {
         m_clear_color_enabled = false;
         m_clear_depth_enabled = false;
         m_clear_stencil_enabled = false;
+        m_draw_commands.clear();
     }
 
     void pass::clear_color(const rgba_color& color)
@@ -98,7 +99,7 @@ namespace mge {
         // setting frame buffer does not make a pass active
     }
 
-    void pass::submit(const command_buffer& cb)
+    void pass::submit(command_buffer& cb)
     {
         if (!cb.empty()) {
             cb.for_each([this](const program_handle&       program,
@@ -107,6 +108,7 @@ namespace mge {
                 m_draw_commands.push_back(
                     draw_command{program, vertices, indices});
             });
+            cb.clear();
         }
         m_active = true;
     }

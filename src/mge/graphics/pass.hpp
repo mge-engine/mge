@@ -113,7 +113,7 @@ namespace mge {
             return m_frame_buffer;
         }
 
-        void submit(const command_buffer& command_buffer);
+        void submit(command_buffer& command_buffer);
 
         template <typename F> void for_each_draw_command(F&& f) const
         {

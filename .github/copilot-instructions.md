@@ -12,6 +12,12 @@
 * do not omit steps in reasoning
 * do not defer decisions
 
+## Communication
+
+* be explicit
+* short statements
+* no human simulation
+
 ## Architecture
 
 ### Core-Module Pattern

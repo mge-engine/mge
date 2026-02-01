@@ -65,6 +65,8 @@ class Sanitizer:
             return "_ignored_"
         elif param.tag == "struct":
             return "_ignored_"
+        elif param.tag == "buffer":
+            return "_ignored_"
         elif param.tag == "enum":
             return param.get("string", "_unknown_")
         else:

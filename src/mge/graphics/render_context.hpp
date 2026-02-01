@@ -183,10 +183,10 @@ namespace mge {
 
         /**
          * @brief Get the current command buffer.
-         *
+         * @param clear if true, the command buffer is cleared before returning
          * @return command buffer
          */
-        mge::command_buffer& command_buffer();
+        mge::command_buffer& command_buffer(bool clear = false);
 
         /**
          * @brief Render a frame.
