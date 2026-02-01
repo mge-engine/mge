@@ -281,10 +281,12 @@ namespace mge::dx11 {
             m_device_context->ClearRenderTargetView(rtv, clearcolor);
         }
 
-        m_device_context->ClearDepthStencilView(this->depth_stencil_view(),
-                                                D3D11_CLEAR_DEPTH,
-                                                1.0f,
-                                                0);
+        if (p.clear_depth_enabled()) {
+            m_device_context->ClearDepthStencilView(this->depth_stencil_view(),
+                                                    D3D11_CLEAR_DEPTH,
+                                                    p.clear_depth_value(),
+                                                    0);
+        }
 
         p.for_each_draw_command([this](program_handle       program,
                                        vertex_buffer_handle vertices,
