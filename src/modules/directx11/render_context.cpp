@@ -256,6 +256,11 @@ namespace mge::dx11 {
             rtv = m_render_target_view.get();
         }
 
+        const auto&    vp = p.viewport();
+        D3D11_VIEWPORT dx11_vp =
+            {vp.x, vp.y, vp.width, vp.height, vp.min_depth, vp.max_depth};
+        m_device_context->RSSetViewports(1, &dx11_vp);
+
         if (p.clear_color_enabled()) {
             float clearcolor[4] = {p.clear_color_value().r,
                                    p.clear_color_value().g,
@@ -263,6 +268,71 @@ namespace mge::dx11 {
                                    p.clear_color_value().a};
             m_device_context->ClearRenderTargetView(rtv, clearcolor);
         }
+
+        p.for_each_draw_command([this](program_handle       program,
+                                       vertex_buffer_handle vertices,
+                                       index_buffer_handle  indices) {
+            auto prog = program.get();
+            if (!prog) {
+                MGE_THROW(illegal_state)
+                    << "Draw command has no program assigned";
+            }
+            const dx11::program& dx11_prog =
+                static_cast<const dx11::program&>(*prog);
+            const dx11::shader* dx11_vertex_shader =
+                static_cast<const dx11::shader*>(
+                    dx11_prog.program_shader(mge::shader_type::VERTEX));
+            ID3D11InputLayout* input_layout =
+                dx11_vertex_shader->input_layout();
+            if (input_layout == nullptr) {
+                MGE_THROW(mge::illegal_state)
+                    << "No input layout for vertex shader";
+            }
+            m_device_context->IASetInputLayout(input_layout);
+
+            const auto& vertex_buffer = vertices.get();
+            if (!vertex_buffer) {
+                MGE_THROW(illegal_state)
+                    << "Draw command has no vertex buffer assigned";
+            }
+            const dx11::vertex_buffer* dx11_vertex_buffer =
+                static_cast<const dx11::vertex_buffer*>(vertex_buffer);
+            UINT element_size =
+                static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
+            UINT          stride = 0;
+            ID3D11Buffer* vb = dx11_vertex_buffer->buffer();
+            m_device_context->IASetVertexBuffers(0,
+                                                 1,
+                                                 &vb,
+                                                 &element_size,
+                                                 &stride);
+
+            const auto& index_buffer = indices.get();
+            if (!index_buffer) {
+                MGE_THROW(illegal_state)
+                    << "Draw command has no index buffer assigned";
+            }
+            const dx11::index_buffer* dx11_index_buffer =
+                static_cast<const dx11::index_buffer*>(index_buffer);
+            ID3D11Buffer* ib = dx11_index_buffer->buffer();
+            m_device_context->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
+
+            m_device_context->VSSetShader(
+                dx11_vertex_shader->directx_vertex_shader(),
+                nullptr,
+                0);
+
+            const dx11::shader* dx11_pixel_shader =
+                static_cast<const dx11::shader*>(
+                    dx11_prog.program_shader(mge::shader_type::FRAGMENT));
+            m_device_context->PSSetShader(
+                dx11_pixel_shader->directx_pixel_shader(),
+                nullptr,
+                0);
+            UINT element_count =
+                static_cast<UINT>(dx11_index_buffer->element_count());
+            m_device_context->DrawIndexed(element_count, 0, 0);
+        });
     }
 
     mge::image_ref render_context::screenshot()
