@@ -11,9 +11,12 @@
 #include "mge/win32/com_ptr.hpp"
 #include "window.hpp"
 
+#include <unordered_map>
+
 namespace mge::dx12 {
     class window;
     class render_system;
+    class program;
 
     class render_context : public mge::render_context
     {
@@ -92,6 +95,18 @@ namespace mge::dx12 {
 
         void render(const mge::pass& p) override;
 
+        void remove_pipeline_state(mge::dx12::program* program)
+        {
+            std::lock_guard<mge::mutex> lock(m_data_lock);
+            auto it = m_program_pipeline_states.find(program);
+            if (it != m_program_pipeline_states.end()) {
+                m_program_pipeline_states.erase(it);
+            }
+        }
+
+        const mge::com_ptr<ID3D12PipelineState>&
+        static_pipeline_state(mge::dx12::program* program);
+
     private:
         void enable_debug_layer();
         void create_factory();
@@ -135,11 +150,17 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12CommandAllocator>    m_xfer_command_allocator;
         mge::com_ptr<ID3D12GraphicsCommandList> m_xfer_command_list;
 
+        std::unordered_map<void*, mge::com_ptr<ID3D12PipelineState>>
+            m_program_pipeline_states;
+
         D3D12_VIEWPORT m_viewport;
         D3D12_RECT     m_scissor_rect;
         uint32_t       m_rtv_descriptor_size;
         uint32_t       m_dsv_descriptor_size;
         DWORD          m_callback_cookie;
+
+        D3D12_RASTERIZER_DESC m_rasterizer_desc;
+        D3D12_BLEND_DESC      m_blend_desc;
 
         enum class draw_state
         {

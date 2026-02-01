@@ -42,7 +42,7 @@ namespace mge::dx12 {
                       static_cast<float>(window_.extent().width),
                       static_cast<float>(window_.extent().height),
                       0.0f,
-                      0.0f};
+                      1.0f};
         m_scissor_rect = {0,
                           0,
                           static_cast<LONG>(window_.extent().width),
@@ -59,6 +59,34 @@ namespace mge::dx12 {
         }
         enable_debug_messages();
         create_command_queue();
+
+        m_rasterizer_desc = {
+            .FillMode = D3D12_FILL_MODE_SOLID,
+            .CullMode = D3D12_CULL_MODE_BACK,
+            .FrontCounterClockwise = FALSE,
+            .DepthBias = D3D12_DEFAULT_DEPTH_BIAS,
+            .DepthBiasClamp = D3D12_DEFAULT_DEPTH_BIAS_CLAMP,
+            .SlopeScaledDepthBias = D3D12_DEFAULT_SLOPE_SCALED_DEPTH_BIAS,
+            .DepthClipEnable = TRUE,
+            .MultisampleEnable = FALSE,
+            .AntialiasedLineEnable = FALSE,
+            .ForcedSampleCount = 0,
+            .ConservativeRaster = D3D12_CONSERVATIVE_RASTERIZATION_MODE_OFF};
+
+        m_blend_desc = {.AlphaToCoverageEnable = FALSE,
+                        .IndependentBlendEnable = FALSE};
+
+        m_blend_desc.RenderTarget[0] = {.BlendEnable = FALSE,
+                                        .LogicOpEnable = FALSE,
+                                        .SrcBlend = D3D12_BLEND_ONE,
+                                        .DestBlend = D3D12_BLEND_ZERO,
+                                        .BlendOp = D3D12_BLEND_OP_ADD,
+                                        .SrcBlendAlpha = D3D12_BLEND_ONE,
+                                        .DestBlendAlpha = D3D12_BLEND_ZERO,
+                                        .BlendOpAlpha = D3D12_BLEND_OP_ADD,
+                                        .LogicOp = D3D12_LOGIC_OP_NOOP,
+                                        .RenderTargetWriteMask =
+                                            D3D12_COLOR_WRITE_ENABLE_ALL};
     }
 
     void render_context::create_command_queue()
@@ -700,9 +728,9 @@ namespace mge::dx12 {
 
         const auto& sc = p.scissor();
         D3D12_RECT  d3d12_scissor = {static_cast<LONG>(sc.left),
-                         static_cast<LONG>(sc.top),
-                         static_cast<LONG>(sc.right),
-                         static_cast<LONG>(sc.bottom)};
+                                     static_cast<LONG>(sc.top),
+                                     static_cast<LONG>(sc.right),
+                                     static_cast<LONG>(sc.bottom)};
         pass_command_list->RSSetScissorRects(1, &d3d12_scissor);
 
         if (p.clear_color_enabled()) {
@@ -725,6 +753,39 @@ namespace mge::dx12 {
                 0,
                 nullptr);
         }
+
+        p.for_each_draw_command([&](const mge::program_handle&       program,
+                                    const mge::vertex_buffer_handle& vertices,
+                                    const mge::index_buffer_handle&  indices) {
+            auto dx12_program = static_cast<dx12::program*>(program.get());
+            if (!dx12_program) {
+                MGE_THROW(mge::illegal_state)
+                    << "Draw command has no program assigned";
+            }
+            const auto& pipeline_state = static_pipeline_state(dx12_program);
+            if (!pipeline_state.Get()) {
+                MGE_THROW(mge::illegal_state)
+                    << "Failed to get pipeline state for program";
+            }
+            auto root_signature = dx12_program->root_signature();
+            pass_command_list->SetGraphicsRootSignature(root_signature);
+            pass_command_list->SetPipelineState(pipeline_state.Get());
+            pass_command_list->IASetPrimitiveTopology(
+                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            auto dx12_vertices =
+                static_cast<dx12::vertex_buffer*>(vertices.get());
+            pass_command_list->IASetVertexBuffers(0,
+                                                  1,
+                                                  &(dx12_vertices->view()));
+            auto dx12_indices = static_cast<dx12::index_buffer*>(indices.get());
+            pass_command_list->IASetIndexBuffer(&(dx12_indices->view()));
+            pass_command_list->DrawIndexedInstanced(
+                static_cast<UINT>(dx12_indices->element_count()),
+                1,
+                0,
+                0,
+                0);
+        });
     }
 
     mge::image_ref render_context::screenshot()
@@ -752,6 +813,51 @@ namespace mge::dx12 {
         m_draw_state = draw_state::SUBMIT;
         m_swap_chain->Present(0, 0);
         m_draw_state = draw_state::NONE;
+    }
+
+    const mge::com_ptr<ID3D12PipelineState>&
+    render_context::static_pipeline_state(mge::dx12::program* program)
+    {
+        {
+            std::lock_guard<mge::mutex> lock(m_data_lock);
+            auto it = m_program_pipeline_states.find(program);
+            if (it != m_program_pipeline_states.end()) {
+                return it->second;
+            }
+        }
+        auto vs_ptr = program->program_shader(shader_type::VERTEX);
+        auto ps_ptr = program->program_shader(shader_type::FRAGMENT);
+
+        auto& vs = dx12_shader(*vs_ptr);
+        auto& ps = dx12_shader(*ps_ptr);
+        auto  root_signature = program->root_signature();
+        D3D12_GRAPHICS_PIPELINE_STATE_DESC pso_desc = {};
+        pso_desc.InputLayout = {vs.input_layout(), vs.input_layout_count()};
+        pso_desc.pRootSignature = root_signature;
+        pso_desc.VS = {vs.code()->GetBufferPointer(),
+                       vs.code()->GetBufferSize()};
+        pso_desc.PS = {ps.code()->GetBufferPointer(),
+                       ps.code()->GetBufferSize()};
+
+        pso_desc.RasterizerState = m_rasterizer_desc;
+        pso_desc.BlendState = m_blend_desc;
+        pso_desc.DepthStencilState = {.DepthEnable = false,
+                                      .StencilEnable = false};
+        pso_desc.SampleMask = UINT_MAX;
+        pso_desc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+        pso_desc.NumRenderTargets = 1;
+        pso_desc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+        pso_desc.SampleDesc = {.Count = 1, .Quality = 0};
+        mge::com_ptr<ID3D12PipelineState> pipeline_state;
+        auto rc = m_device->CreateGraphicsPipelineState(
+            &pso_desc,
+            IID_PPV_ARGS(&pipeline_state));
+        CHECK_HRESULT(rc, ID3D12Device, CreateGraphicsPipelineState);
+        {
+            std::lock_guard<mge::mutex> lock(m_data_lock);
+            m_program_pipeline_states.emplace(program, pipeline_state);
+            return m_program_pipeline_states[program];
+        }
     }
 
 } // namespace mge::dx12
