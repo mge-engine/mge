@@ -244,6 +244,11 @@ namespace mge::opengl {
         glDepthRangef(vp.min_depth, vp.max_depth);
         CHECK_OPENGL_ERROR(glDepthRangef);
 
+        glScissor(static_cast<const GLint>(p.scissor().left),
+                  static_cast<const GLint>(p.scissor().top),
+                  static_cast<const GLsizei>(p.scissor().width()),
+                  static_cast<const GLsizei>(p.scissor().height()));
+
         if (p.clear_color_enabled()) {
             const rgba_color& c = p.clear_color_value();
             glClearColor(c.r, c.g, c.b, c.a);
