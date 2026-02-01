@@ -19,7 +19,15 @@
   - pCommandList: _ignored_
   - NumRenderTargetDescriptors: 1
   - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: null
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
   - pCommandList: _ignored_
   - RenderTargetView: _ignored_
@@ -60,7 +68,15 @@
   - pCommandList: _ignored_
   - NumRenderTargetDescriptors: 1
   - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: null
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
   - pCommandList: _ignored_
   - RenderTargetView: _ignored_
@@ -101,7 +117,15 @@
   - pCommandList: _ignored_
   - NumRenderTargetDescriptors: 1
   - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: null
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
   - pCommandList: _ignored_
   - RenderTargetView: _ignored_
@@ -142,7 +166,15 @@
   - pCommandList: _ignored_
   - NumRenderTargetDescriptors: 1
   - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: null
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
   - pCommandList: _ignored_
   - RenderTargetView: _ignored_
@@ -183,7 +215,15 @@
   - pCommandList: _ignored_
   - NumRenderTargetDescriptors: 1
   - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: null
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D12GraphicsCommandList::ClearRenderTargetView
   - pCommandList: _ignored_
   - RenderTargetView: _ignored_

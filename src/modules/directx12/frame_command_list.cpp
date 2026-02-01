@@ -25,7 +25,8 @@ namespace mge::dx12 {
             D3D12_COMMAND_LIST_TYPE_DIRECT);
 
         auto rtv_handle = m_dx12_context.rtv_handle(backbuffer_index);
-        m_command_list->OMSetRenderTargets(1, &rtv_handle, FALSE, nullptr);
+        auto dsv_handle = m_dx12_context.dsv_handle(backbuffer_index);
+        m_command_list->OMSetRenderTargets(1, &rtv_handle, FALSE, &dsv_handle);
 
         m_command_list->RSSetScissorRects(1, &m_dx12_context.scissor_rect());
         m_command_list->RSSetViewports(1, &m_dx12_context.viewport());

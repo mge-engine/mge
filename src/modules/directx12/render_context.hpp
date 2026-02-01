@@ -102,6 +102,7 @@ namespace mge::dx12 {
         void create_descriptor_heap();
         void create_swap_chain();
         void update_render_target_views();
+        void create_depth_stencil_views();
         void create_command_lists();
 
         static void message_func(D3D12_MESSAGE_CATEGORY category,
@@ -125,6 +126,7 @@ namespace mge::dx12 {
         mge::com_ptr<ID3D12DescriptorHeap>        m_rtv_heap;
         mge::com_ptr<ID3D12DescriptorHeap>        m_dsv_heap;
         std::vector<mge::com_ptr<ID3D12Resource>> m_backbuffers;
+        std::vector<mge::com_ptr<ID3D12Resource>> m_depth_buffers;
         mge::com_ptr<IDXGISwapChain4>             m_swap_chain;
 
         mge::com_ptr<ID3D12CommandAllocator>    m_command_allocator;

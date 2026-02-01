@@ -237,6 +237,64 @@ namespace mge::dx12 {
         }
     }
 
+    void render_context::create_depth_stencil_views()
+    {
+        D3D12_CPU_DESCRIPTOR_HANDLE dsv_handle =
+            m_dsv_heap->GetCPUDescriptorHandleForHeapStart();
+
+        for (uint32_t i = 0; i < buffer_count; ++i) {
+            D3D12_RESOURCE_DESC depth_desc = {};
+            depth_desc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+            depth_desc.Alignment = 0;
+            depth_desc.Width = m_window.extent().width;
+            depth_desc.Height = m_window.extent().height;
+            depth_desc.DepthOrArraySize = 1;
+            depth_desc.MipLevels = 1;
+            depth_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+            depth_desc.SampleDesc.Count = 1;
+            depth_desc.SampleDesc.Quality = 0;
+            depth_desc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
+            depth_desc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+
+            D3D12_CLEAR_VALUE clear_value = {};
+            clear_value.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+            clear_value.DepthStencil.Depth = 1.0f;
+            clear_value.DepthStencil.Stencil = 0;
+
+            D3D12_HEAP_PROPERTIES heap_props = {};
+            heap_props.Type = D3D12_HEAP_TYPE_DEFAULT;
+            heap_props.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+            heap_props.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+            heap_props.CreationNodeMask = 1;
+            heap_props.VisibleNodeMask = 1;
+
+            mge::com_ptr<ID3D12Resource> depth_buffer;
+            auto                         rc = m_device->CreateCommittedResource(
+                &heap_props,
+                D3D12_HEAP_FLAG_NONE,
+                &depth_desc,
+                D3D12_RESOURCE_STATE_DEPTH_WRITE,
+                &clear_value,
+                IID_PPV_ARGS(&depth_buffer));
+            CHECK_HRESULT(rc, ID3D12Device, CreateCommittedResource);
+
+            std::wstringstream ws;
+            ws << "mge::dx12::render_context::depth_buffer#" << i;
+            depth_buffer->SetName(ws.str().c_str());
+
+            D3D12_DEPTH_STENCIL_VIEW_DESC dsv_desc = {};
+            dsv_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+            dsv_desc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+            dsv_desc.Flags = D3D12_DSV_FLAG_NONE;
+
+            m_device->CreateDepthStencilView(depth_buffer.Get(),
+                                             &dsv_desc,
+                                             dsv_handle);
+            m_depth_buffers.emplace_back(depth_buffer);
+            dsv_handle.ptr += m_dsv_descriptor_size;
+        }
+    }
+
     mge::com_ptr<ID3D12CommandAllocator>
     render_context::create_command_allocator(D3D12_COMMAND_LIST_TYPE type,
                                              const char*             purpose)
@@ -318,6 +376,8 @@ namespace mge::dx12 {
         create_descriptor_heap();
         MGE_DEBUG_TRACE(DX12, "Update render target views");
         update_render_target_views();
+        MGE_DEBUG_TRACE(DX12, "Create depth stencil views");
+        create_depth_stencil_views();
         MGE_DEBUG_TRACE(DX12, "Create direct command lists");
         create_command_lists();
     }
@@ -591,7 +651,6 @@ namespace mge::dx12 {
 
     void render_context::render(const mge::pass& p)
     {
-        // MGE_DEBUG_TRACE(DX12, "Render pass");
         ID3D12GraphicsCommandList* pass_command_list = nullptr;
         uint32_t                   current_buffer_index = 0;
 
@@ -622,15 +681,29 @@ namespace mge::dx12 {
                     m_rtv_heap->GetCPUDescriptorHandleForHeapStart();
                 rtv_handle.ptr += m_rtv_descriptor_size * current_buffer_index;
 
+                D3D12_CPU_DESCRIPTOR_HANDLE dsv =
+                    dsv_handle(current_buffer_index);
                 pass_command_list->OMSetRenderTargets(1,
                                                       &rtv_handle,
                                                       FALSE,
-                                                      nullptr);
+                                                      &dsv);
                 m_draw_state = draw_state::DRAW;
             }
         } else {
             // frame buffer specific command list
         }
+
+        const auto&    vp = p.viewport();
+        D3D12_VIEWPORT d3d12_viewport =
+            {vp.x, vp.y, vp.width, vp.height, vp.min_depth, vp.max_depth};
+        pass_command_list->RSSetViewports(1, &d3d12_viewport);
+
+        const auto& sc = p.scissor();
+        D3D12_RECT  d3d12_scissor = {static_cast<LONG>(sc.left),
+                         static_cast<LONG>(sc.top),
+                         static_cast<LONG>(sc.right),
+                         static_cast<LONG>(sc.bottom)};
+        pass_command_list->RSSetScissorRects(1, &d3d12_scissor);
 
         if (p.clear_color_enabled()) {
             const auto& color = p.clear_color_value();
@@ -638,6 +711,17 @@ namespace mge::dx12 {
             pass_command_list->ClearRenderTargetView(
                 rtv_handle(current_buffer_index),
                 clear_color,
+                0,
+                nullptr);
+        }
+
+        if (p.clear_depth_enabled()) {
+            FLOAT depth_value = static_cast<FLOAT>(p.clear_depth_value());
+            pass_command_list->ClearDepthStencilView(
+                dsv_handle(current_buffer_index),
+                D3D12_CLEAR_FLAG_DEPTH,
+                depth_value,
+                0,
                 0,
                 nullptr);
         }
