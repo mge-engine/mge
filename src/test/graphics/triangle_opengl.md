@@ -29,6 +29,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -89,6 +93,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -127,6 +135,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -165,6 +177,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
@@ -203,6 +219,10 @@
   - alpha: 1
 - Call: glClear
   - mask: GL_COLOR_BUFFER_BIT
+- Call: glClearDepthf
+  - depth: 1
+- Call: glClear
+  - mask: GL_DEPTH_BUFFER_BIT
 - Call: glUseProgram
   - program: _ignored_
 - Call: glBindVertexArray
