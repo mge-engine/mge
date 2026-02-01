@@ -14,6 +14,9 @@
 #include "texture.hpp"
 #include "vertex_buffer.hpp"
 #include "window.hpp"
+
+#include "mge/core/debugging.hpp"
+
 namespace mge {
     MGE_USE_TRACE(DX11);
 }
@@ -249,6 +252,8 @@ namespace mge::dx11 {
 
     void render_context::render(const mge::pass& p)
     {
+        breakpoint_if_debugging();
+
         ID3D11RenderTargetView* rtv = nullptr;
         if (p.frame_buffer()) {
             // support custom frame buffers
@@ -276,6 +281,11 @@ namespace mge::dx11 {
             m_device_context->ClearRenderTargetView(rtv, clearcolor);
         }
 
+        m_device_context->ClearDepthStencilView(this->depth_stencil_view(),
+                                                D3D11_CLEAR_DEPTH,
+                                                1.0f,
+                                                0);
+
         p.for_each_draw_command([this](program_handle       program,
                                        vertex_buffer_handle vertices,
                                        index_buffer_handle  indices) {
@@ -296,6 +306,8 @@ namespace mge::dx11 {
                     << "No input layout for vertex shader";
             }
             m_device_context->IASetInputLayout(input_layout);
+            m_device_context->IASetPrimitiveTopology(
+                D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
             const auto& vertex_buffer = vertices.get();
             if (!vertex_buffer) {
@@ -306,13 +318,13 @@ namespace mge::dx11 {
                 static_cast<const dx11::vertex_buffer*>(vertex_buffer);
             UINT element_size =
                 static_cast<UINT>(dx11_vertex_buffer->layout().binary_size());
-            UINT          stride = 0;
+            UINT          dummy_offset = 0;
             ID3D11Buffer* vb = dx11_vertex_buffer->buffer();
             m_device_context->IASetVertexBuffers(0,
                                                  1,
                                                  &vb,
                                                  &element_size,
-                                                 &stride);
+                                                 &dummy_offset);
 
             const auto& index_buffer = indices.get();
             if (!index_buffer) {

@@ -257,6 +257,13 @@ namespace mge::opengl {
             CHECK_OPENGL_ERROR(glClear);
         }
 
+        if (p.clear_depth_enabled()) {
+            glClearDepthf(static_cast<GLfloat>(p.clear_depth_value()));
+            CHECK_OPENGL_ERROR(glClearDepthf);
+            glClear(GL_DEPTH_BUFFER_BIT);
+            CHECK_OPENGL_ERROR(glClear);
+        }
+
         p.for_each_draw_command([this](const program_handle& program_handle,
                                        const vertex_buffer_handle& vertices,
                                        const index_buffer_handle&  indices) {
