@@ -21,6 +21,22 @@
   - commandBuffer: _ignored_
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: _ignored_
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: _ignored_
+- Call: vkCmdSetScissor
+  - commandBuffer: _ignored_
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -54,6 +70,22 @@
   - commandBuffer: _ignored_
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: _ignored_
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: _ignored_
+- Call: vkCmdSetScissor
+  - commandBuffer: _ignored_
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -87,6 +119,22 @@
   - commandBuffer: _ignored_
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: _ignored_
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: _ignored_
+- Call: vkCmdSetScissor
+  - commandBuffer: _ignored_
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -120,6 +168,22 @@
   - commandBuffer: _ignored_
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: _ignored_
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: _ignored_
+- Call: vkCmdSetScissor
+  - commandBuffer: _ignored_
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -153,6 +217,22 @@
   - commandBuffer: _ignored_
   - RenderPassBegin: _ignored_
   - contents: VK_SUBPASS_CONTENTS_INLINE
+- Call: vkCmdSetViewport
+  - commandBuffer: _ignored_
+  - firstViewport: 0
+  - viewportCount: 1
+  - pViewports: _ignored_
+- Call: vkCmdSetScissor
+  - commandBuffer: _ignored_
+  - firstScissor: 0
+  - scissorCount: 1
+  - pScissors: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer

@@ -549,8 +549,8 @@ namespace mge::vulkan {
         // single color buffer used for presentation
         color_attachment.format = m_used_surface_format.format;
         color_attachment.samples = VK_SAMPLE_COUNT_1_BIT;
-        // don't care about content of the image at beginning
-        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        // explicit clear via vkCmdClearAttachments
+        color_attachment.loadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
         // store content of the image for later
         color_attachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
         // nothing needed for stencil
@@ -858,20 +858,74 @@ namespace mge::vulkan {
         render_pass_info.renderArea.offset = {0, 0};
         render_pass_info.renderArea.extent = m_extent;
 
-        VkClearValue clear_color = {};
-        if (p.clear_color_enabled()) {
-            const auto& c = p.clear_color_value();
-            clear_color.color.float32[0] = c.r;
-            clear_color.color.float32[1] = c.g;
-            clear_color.color.float32[2] = c.b;
-            clear_color.color.float32[3] = c.a;
-            render_pass_info.clearValueCount = 1;
-            render_pass_info.pClearValues = &clear_color;
-        }
-
         vkCmdBeginRenderPass(command_buffer,
                              &render_pass_info,
                              VK_SUBPASS_CONTENTS_INLINE);
+
+        // use flipped view port to align with opengl and dx
+        // https://www.saschawillems.de/blog/2019/03/29/flipping-the-vulkan-viewport/#:~:text=The%20cause%20for%20this%20is,scene%20is%20rendered%20upside%20down.
+        const auto& vp = p.viewport();
+        VkViewport  viewport{};
+        viewport.x = static_cast<float>(vp.x);
+        viewport.y = static_cast<float>(vp.y) + static_cast<float>(vp.height);
+        viewport.width = static_cast<float>(vp.width);
+        viewport.height = -static_cast<float>(vp.height);
+        viewport.minDepth = vp.min_depth;
+        viewport.maxDepth = vp.max_depth;
+        vkCmdSetViewport(command_buffer, 0, 1, &viewport);
+
+        const auto& sr = p.scissor();
+        VkRect2D    scissor{};
+        scissor.offset = {static_cast<int32_t>(sr.left),
+                          static_cast<int32_t>(sr.top)};
+        scissor.extent = {static_cast<uint32_t>(sr.right - sr.left),
+                          static_cast<uint32_t>(sr.bottom - sr.top)};
+        vkCmdSetScissor(command_buffer, 0, 1, &scissor);
+
+        if (p.clear_color_enabled()) {
+            const auto&  c = p.clear_color_value();
+            VkClearValue clear_color = {};
+            clear_color.color = {{c.r, c.g, c.b, c.a}};
+            VkClearAttachment clear_attachment = {};
+            clear_attachment.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+            clear_attachment.colorAttachment = 0;
+            clear_attachment.clearValue = clear_color;
+            VkClearRect clear_rect = {};
+            clear_rect.rect.offset = {0, 0};
+            clear_rect.rect.extent = extent();
+            clear_rect.baseArrayLayer = 0;
+            clear_rect.layerCount = 1;
+            vkCmdClearAttachments(command_buffer,
+                                  1,
+                                  &clear_attachment,
+                                  1,
+                                  &clear_rect);
+        }
+
+        if (p.clear_depth_enabled() || p.clear_stencil_enabled()) {
+            VkClearValue      clear_depth_stencil = {};
+            VkClearAttachment clear_attachment = {};
+            if (p.clear_depth_enabled()) {
+                clear_depth_stencil.depthStencil.depth = p.clear_depth_value();
+                clear_attachment.aspectMask |= VK_IMAGE_ASPECT_DEPTH_BIT;
+            }
+            if (p.clear_stencil_enabled()) {
+                clear_depth_stencil.depthStencil.stencil =
+                    p.clear_stencil_value();
+                clear_attachment.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+            }
+            clear_attachment.clearValue = clear_depth_stencil;
+            VkClearRect clear_rect = {};
+            clear_rect.rect.offset = {0, 0};
+            clear_rect.rect.extent = m_extent;
+            clear_rect.baseArrayLayer = 0;
+            clear_rect.layerCount = 1;
+            vkCmdClearAttachments(command_buffer,
+                                  1,
+                                  &clear_attachment,
+                                  1,
+                                  &clear_rect);
+        }
 
         vkCmdEndRenderPass(command_buffer);
         m_current_frame_state = frame_state::DRAW;
