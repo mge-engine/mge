@@ -17,6 +17,11 @@
 - Call: glDepthRangef
   - nearVal: 0
   - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 0
+  - height: 0
 - Call: glClearColor
   - red: 0
   - green: 0
@@ -37,6 +42,11 @@
 - Call: glDepthRangef
   - nearVal: 0
   - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 1
+  - height: 1
 - Call: glClearColor
   - red: 0
   - green: 0
@@ -57,6 +67,11 @@
 - Call: glDepthRangef
   - nearVal: 0
   - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 1
+  - height: 1
 - Call: glClearColor
   - red: 0
   - green: 0
@@ -77,6 +92,11 @@
 - Call: glDepthRangef
   - nearVal: 0
   - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 1
+  - height: 1
 - Call: glClearColor
   - red: 0
   - green: 0
@@ -97,6 +117,11 @@
 - Call: glDepthRangef
   - nearVal: 0
   - farVal: 1
+- Call: glScissor
+  - x: 0
+  - y: 0
+  - width: 1
+  - height: 1
 - Call: glClearColor
   - red: 0
   - green: 0
