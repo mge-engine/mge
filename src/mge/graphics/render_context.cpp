@@ -9,7 +9,6 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"

@@ -2,8 +2,6 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "vulkan.hpp"
 

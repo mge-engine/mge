@@ -2,10 +2,8 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #include "render_context.hpp"
-#include "command_list.hpp"
 #include "enumerate.hpp"
 #include "error.hpp"
-#include "frame_command_list.hpp"
 #include "index_buffer.hpp"
 #include "program.hpp"
 #include "render_system.hpp"
