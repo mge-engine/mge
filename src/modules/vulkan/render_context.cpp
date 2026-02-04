@@ -967,4 +967,28 @@ namespace mge::vulkan {
         m_current_frame_state = frame_state::BEFORE_DRAW;
     }
 
+    const std::vector<VkVertexInputAttributeDescription>&
+    render_context::vertex_input_attribute_descriptions(
+        const mge::vertex_layout& layout)
+    {
+        auto it = m_vertex_input_attribute_descriptions.find(layout);
+        if (it != m_vertex_input_attribute_descriptions.end()) {
+            return it->second;
+        }
+        std::vector<VkVertexInputAttributeDescription> descriptions;
+        uint32_t                                       offset = 0;
+        uint32_t                                       location = 0;
+        for (const auto& el : layout) {
+            VkVertexInputAttributeDescription desc;
+            desc.binding = 0;
+            desc.location = location++;
+            desc.format = vk_format(el.format);
+            desc.offset = offset;
+            descriptions.emplace_back(desc);
+            offset += static_cast<uint32_t>(el.format.binary_size());
+        }
+        return m_vertex_input_attribute_descriptions[layout] =
+                   std::move(descriptions);
+    }
+
 } // namespace mge::vulkan

@@ -5,6 +5,8 @@
 #include "mge/graphics/render_context.hpp"
 #include "vulkan.hpp"
 
+#include <unordered_map>
+
 namespace mge::vulkan {
     class render_system;
     class window;
@@ -101,6 +103,9 @@ namespace mge::vulkan {
             return m_allocator;
         }
 
+        const std::vector<VkVertexInputAttributeDescription>&
+        vertex_input_attribute_descriptions(const mge::vertex_layout& layout);
+
     private:
         void create_surface();
         void create_device();
@@ -165,5 +170,9 @@ namespace mge::vulkan {
 
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
+
+        std::unordered_map<mge::vertex_layout,
+                           std::vector<VkVertexInputAttributeDescription>>
+            m_vertex_input_attribute_descriptions;
     };
 } // namespace mge::vulkan

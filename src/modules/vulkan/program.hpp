@@ -22,8 +22,12 @@ namespace mge::vulkan {
         virtual void on_link() override;
         virtual void on_set_shader(mge::shader* shader) override;
 
+    private:
+        void create_pipeline_layout();
+
         std::vector<VkPipelineShaderStageCreateInfo>
                                           m_shader_stage_create_infos;
         std::vector<mge::vulkan::shader*> m_shaders;
+        VkPipelineLayout                  m_pipeline_layout{VK_NULL_HANDLE};
     };
 } // namespace mge::vulkan
