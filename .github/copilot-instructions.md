@@ -7,7 +7,6 @@ AND USES THE FEWEST TOKENS POSSIBLE.
 * cross-platform, C++20
 * modular (plugins)
 
-
 ## General Rules
 
 * do not optimize
@@ -15,6 +14,7 @@ AND USES THE FEWEST TOKENS POSSIBLE.
 * do not generalize
 * do not omit steps in reasoning
 * do not defer decisions
+* verify more, assume less, and communicate uncertainty clearly
 
 ## Communication
 
