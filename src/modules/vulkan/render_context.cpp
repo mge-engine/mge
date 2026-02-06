@@ -991,4 +991,20 @@ namespace mge::vulkan {
                    std::move(descriptions);
     }
 
+    VkPipeline render_context::pipeline(const vertex_buffer& buffer,
+                                        const program&       program)
+    {
+        // binding_description
+        // attribute_descriptions -> layout
+        // program (pipeline layout)
+        // render pass - always the same for now
+        std::tuple<VkBuffer, VkPipelineLayout> key{buffer.vk_buffer(),
+                                                   program.pipeline_layout()};
+
+        VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
+                                           VK_DYNAMIC_STATE_SCISSOR};
+
+        return VK_NULL_HANDLE;
+    }
+
 } // namespace mge::vulkan

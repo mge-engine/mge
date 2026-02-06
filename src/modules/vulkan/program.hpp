@@ -18,6 +18,11 @@ namespace mge::vulkan {
             return m_shader_stage_create_infos;
         }
 
+        VkPipelineLayout pipeline_layout() const noexcept
+        {
+            return m_pipeline_layout;
+        }
+
     protected:
         virtual void on_link() override;
         virtual void on_set_shader(mge::shader* shader) override;
