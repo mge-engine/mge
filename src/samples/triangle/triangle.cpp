@@ -4,10 +4,7 @@
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_source.hpp"
-#include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "mge/graphics/render_system.hpp"
@@ -52,7 +49,6 @@ namespace mge {
                     }
                 });
 
-
             add_redraw_listener([&](uint64_t cycle, double delta) {
                 this->draw(cycle, delta);
             });
@@ -75,10 +71,12 @@ namespace mge {
             if (m_initialized) {
                 auto& pass = m_window->render_context().pass(0);
                 pass.default_viewport();
+                pass.default_scissor();
                 pass.clear_color(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
                 pass.clear_depth(1.0f);
 
-                auto& command_buffer = m_window->render_context().command_buffer();
+                auto& command_buffer =
+                    m_window->render_context().command_buffer(true);
                 command_buffer.draw(m_program, m_vertices, m_indices);
                 pass.submit(command_buffer);
             } else {
@@ -180,7 +178,10 @@ namespace mge {
             m_program->set_shader(vertex_shader);
             MGE_DEBUG_TRACE(TRIANGLE, "Linking program");
             m_program->link();
-            MGE_DEBUG_TRACE(TRIANGLE, "Program linked");
+            MGE_DEBUG_TRACE(TRIANGLE,
+                            "Program linked: {}",
+                            m_program->needs_link() ? "needs link"
+                                                    : "linked successfully");
 
             float triangle_coords[] = {
                 0.0f,

@@ -42,6 +42,7 @@ namespace mge {
     {
         if (m_needs_link) {
             context().prepare_frame([this]() {
+                MGE_DEBUG_TRACE(GRAPHICS, "Linking program {}", (void*)this);
                 this->on_link();
                 this->m_needs_link = false;
                 set_ready(true);

@@ -127,11 +127,16 @@ ENDFUNCTION()
 FUNCTION(MGE_CAPTURE_TEST)
     # SET(OPTIONS)
     SET(ONE_VALUE_ARGS TARGET)
-    #SET(MULTI_VALUE_ARGS SOURCES LIBRARIES)
+    SET(MULTI_VALUE_ARGS RENDER_SYSTEMS)
     CMAKE_PARSE_ARGUMENTS(MGE_CAPTURE_TEST "${OPTIONS}" "${ONE_VALUE_ARGS}"
         "${MULTI_VALUE_ARGS}" "${ARGN}")
     IF(NOT DEFINED MGE_CAPTURE_TEST_TARGET)
         MESSAGE(FATAL_ERROR "TARGET missing in call to MGE_CAPTURE_TEST")
+    ENDIF()
+    IF(NOT DEFINED MGE_CAPTURE_TEST_RENDER_SYSTEMS)
+        SET(USED_RENDER_SYSTEMS ${MGE_RENDER_SYSTEMS})           
+    ELSE()
+        SET(USED_RENDER_SYSTEMS ${MGE_CAPTURE_TEST_RENDER_SYSTEMS})
     ENDIF()
     GET_FILENAME_COMPONENT(_PLAIN_MAKE_PROGRAM "${CMAKE_MAKE_PROGRAM}" NAME)
     IF("${_PLAIN_MAKE_PROGRAM}" STREQUAL "MSBuild.exe")
@@ -139,8 +144,9 @@ FUNCTION(MGE_CAPTURE_TEST)
     ELSE()
         SET(_BINARY_DIR "${CMAKE_BINARY_DIR}")
     ENDIF()
+
     IF(NOT MGE_NO_CAPTURE_TESTS)
-        FOREACH(RENDER_SYSTEM ${MGE_RENDER_SYSTEMS})
+        FOREACH(RENDER_SYSTEM ${USED_RENDER_SYSTEMS})
             ADD_TEST(
                 NAME test_${MGE_CAPTURE_TEST_TARGET}_capture_${RENDER_SYSTEM}
                 COMMAND "${Python3_EXECUTABLE}" 
@@ -150,6 +156,17 @@ FUNCTION(MGE_CAPTURE_TEST)
                     --render-system "${RENDER_SYSTEM}"
                     --frame-count 5
                     --reference-dir "${CMAKE_SOURCE_DIR}/src/test/graphics"
+                WORKING_DIRECTORY "${_BINARY_DIR}"
+            )
+            ADD_CUSTOM_TARGET(capture-${MGE_CAPTURE_TEST_TARGET}-${RENDER_SYSTEM}
+                COMMAND "${Python3_EXECUTABLE}" 
+                    "${CMAKE_BINARY_DIR}/capturetest.py"
+                    --test "$<TARGET_FILE:${MGE_CAPTURE_TEST_TARGET}>"
+                    --renderdoccmd "${RENDERDOCCMD_EXECUTABLE}"
+                    --render-system "${RENDER_SYSTEM}"
+                    --frame-count 5
+                    --reference-dir "${CMAKE_SOURCE_DIR}/src/test/graphics"
+                    --generate-reference true
                 WORKING_DIRECTORY "${_BINARY_DIR}"
             )
         ENDFOREACH()

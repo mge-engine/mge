@@ -17,43 +17,8 @@ namespace mge::vulkan {
         m_binding_description.binding = 0;
         m_binding_description.stride = static_cast<uint32_t>(layout.stride());
         m_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-        fill_attribute_descriptions();
         set_ready(true);
     }
-
-    static inline VkFormat vk_format(const mge::vertex_format& fmt)
-    {
-        if (fmt.type() == mge::data_type::FLOAT) {
-            switch (fmt.size()) {
-            case 1:
-                return VK_FORMAT_R32_SFLOAT;
-            case 2:
-                return VK_FORMAT_R32G32_SFLOAT;
-            case 3:
-                return VK_FORMAT_R32G32B32_SFLOAT;
-            case 4:
-                return VK_FORMAT_R32G32B32A32_SFLOAT;
-            }
-        }
-        return VK_FORMAT_UNDEFINED;
-    }
-
-    void vertex_buffer::fill_attribute_descriptions()
-    {
-        m_attribute_descriptions.clear();
-        uint32_t offset = 0;
-        uint32_t location = 0;
-        for (const auto& el : layout()) {
-            VkVertexInputAttributeDescription desc;
-            desc.binding = 0;
-            desc.location = location++;
-            desc.format = vk_format(el.format);
-            desc.offset = offset;
-            m_attribute_descriptions.push_back(desc);
-            offset += static_cast<uint32_t>(el.format.binary_size());
-        }
-    }
-
     void vertex_buffer::create_buffer()
     {
         VkBufferCreateInfo buffer_info{};
@@ -99,6 +64,12 @@ namespace mge::vulkan {
                                          VK_WHOLE_SIZE));
         set_ready(true);
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
+    }
+
+    const std::vector<VkVertexInputAttributeDescription>&
+    vertex_buffer::attribute_descriptions() const
+    {
+        return m_vulkan_context.vertex_input_attribute_descriptions(layout());
     }
 
 } // namespace mge::vulkan

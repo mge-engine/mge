@@ -9,7 +9,6 @@
 #include "mge/core/trace.hpp"
 #include "mge/graphics/extent.hpp"
 #include "mge/graphics/frame_buffer.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/frame_debugger.hpp"
 #include "mge/graphics/index_buffer.hpp"
 #include "mge/graphics/program.hpp"
@@ -19,6 +18,7 @@
 #include "mge/graphics/vertex_buffer.hpp"
 
 namespace mge {
+    extern parameter<bool> p_graphics_record_frames;
 
     class render_context_registry
     {
@@ -97,18 +97,12 @@ namespace mge {
     {
         m_index = render_context_registry::instance->register_context(this);
 
-        try {
-            m_record_frames = std::any_cast<bool>(
-                configuration::get("graphics", "record_frames").value());
-            if (m_record_frames) {
-                MGE_INFO_TRACE(GRAPHICS, "Frame recording is enabled");
-            } else {
-                MGE_INFO_TRACE(GRAPHICS, "Frame recording is disabled");
-            }
-        } catch (const mge::exception& e) {
-            MGE_WARNING_TRACE(GRAPHICS,
-                              "Error reading frame recording configuration: {}",
-                              e.what());
+        m_record_frames = MGE_PARAMETER(graphics, record_frames).get();
+
+        if (m_record_frames) {
+            MGE_INFO_TRACE(GRAPHICS, "Frame recording is enabled");
+        } else {
+            MGE_DEBUG_TRACE(GRAPHICS, "Frame recording is disabled");
         }
     }
 
@@ -150,6 +144,9 @@ namespace mge {
                     render(p);
                     rendered = true;
                 }
+            for (auto& p : m_passes) {
+                p.reset();
+            }
         }
         if (rendered) {
             on_frame_present();
@@ -237,7 +234,7 @@ namespace mge {
                 static_cast<uint32_t>(m_index_buffers.size())};
             if (data) {
                 index_buffer* ib = ptr.get();
-                prepare_frame_action([ib, data]() {
+                prepare_frame([ib, data]() {
                     ib->on_set_data(data->data(), data->size());
                 });
             }
@@ -260,7 +257,7 @@ namespace mge {
                 static_cast<uint32_t>(m_vertex_buffers.size())};
             if (data) {
                 vertex_buffer* vb = ptr.get();
-                prepare_frame_action([vb, data]() {
+                prepare_frame([vb, data]() {
                     vb->on_set_data(data->data(), data->size());
                 });
             }
@@ -295,10 +292,14 @@ namespace mge {
         return m_passes[index];
     }
 
-    mge::command_buffer& render_context::command_buffer()
+    mge::command_buffer& render_context::command_buffer(bool clear)
     {
-        if (!m_command_buffer) {
-            m_command_buffer = std::make_unique<mge::command_buffer>();
+        if (clear) {
+            if (!m_command_buffer) {
+                m_command_buffer = std::make_unique<mge::command_buffer>();
+            } else {
+                m_command_buffer->clear();
+            }
         }
         return *m_command_buffer;
     }

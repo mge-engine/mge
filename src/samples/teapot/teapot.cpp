@@ -3,10 +3,7 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
-#include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
 #include "mge/graphics/mesh.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
@@ -52,14 +49,14 @@ namespace mge {
 
         void draw(uint64_t cycle, double delta)
         {
-            auto &ctx = m_window->render_context();
+            auto& ctx = m_window->render_context();
 
             if (m_initialized) {
-                auto& pass = ctx.pass(0);    
+                auto& pass = ctx.pass(0);
                 pass.default_viewport();
                 pass.clear_color(rgba_color(0.0f, 0.0f, 1.0f, 1.0f));
                 auto& command_buffer = ctx.command_buffer();
-                command_buffer.draw(m_program, m_vertices, m_indices); 
+                command_buffer.draw(m_program, m_vertices, m_indices);
                 pass.submit(command_buffer);
             } else {
                 auto& pass = ctx.pass(0);

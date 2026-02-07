@@ -15,6 +15,8 @@ namespace mge {
 
     namespace opengl {
         class render_system;
+        class vertex_buffer;
+        class index_buffer;
 
         class render_context : public mge::render_context
         {
@@ -55,10 +57,12 @@ namespace mge {
             }
 
         private:
-            void select_pixel_format();
-            void create_primary_glrc();
-            void init_gl3w();
-            void collect_opengl_info();
+            void   select_pixel_format();
+            void   create_primary_glrc();
+            void   init_gl3w();
+            void   collect_opengl_info();
+            GLuint create_vao(mge::opengl::vertex_buffer& vb,
+                              mge::opengl::index_buffer&  ib);
 
             mge::opengl::window*        m_window;
             HWND                        m_hwnd;
@@ -70,6 +74,9 @@ namespace mge {
 #    error Missing port
 #endif
             static singleton<opengl_info> s_glinfo;
+
+            using vao_key = std::tuple<GLuint, GLuint>;
+            std::map<vao_key, GLuint> m_vaos;
         };
     } // namespace opengl
 } // namespace mge

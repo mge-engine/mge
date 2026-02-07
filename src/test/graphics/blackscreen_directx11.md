@@ -2,6 +2,14 @@
 - Driver: D3D11
 # Frames
 ## Frame 1
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -11,6 +19,14 @@
   - SyncInterval: 0
   - Flags: 0
 ## Frame 2
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -20,6 +36,14 @@
   - SyncInterval: 0
   - Flags: 0
 ## Frame 3
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -29,6 +53,14 @@
   - SyncInterval: 0
   - Flags: 0
 ## Frame 4
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_
@@ -38,6 +70,14 @@
   - SyncInterval: 0
   - Flags: 0
 ## Frame 5
+- Call: ID3D11DeviceContext::RSSetViewports
+  - Context: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D11DeviceContext::RSSetScissors
+  - Context: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
 - Call: ID3D11DeviceContext::ClearRenderTargetView
   - Context: _ignored_
   - pRenderTargetView: _ignored_

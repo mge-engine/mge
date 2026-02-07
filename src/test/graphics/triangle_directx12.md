@@ -2,6 +2,32 @@
 - Driver: D3D12
 # Frames
 ## Frame 1
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12Resource::Unmap
+  - Resource: _ignored_
+  - Subresource: 0
+  - MappedData: _ignored_
+  - range: _ignored_
+- Call: ID3D12GraphicsCommandList::CopyResource
+  - pCommandList: _ignored_
+  - pDstResource: _ignored_
+  - pSrcResource: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
 - Call: ID3D12CommandQueue::Signal
   - pQueue: _ignored_
   - pFence: _ignored_
@@ -11,29 +37,15 @@
   - CommandList: _ignored_
   - pAllocator: _ignored_
   - pInitialState: _ignored_
-- Call: ID3D12GraphicsCommandList::ResourceBarrier
+- Call: ID3D12Resource::Unmap
+  - Resource: _ignored_
+  - Subresource: 0
+  - MappedData: _ignored_
+  - range: _ignored_
+- Call: ID3D12GraphicsCommandList::CopyResource
   - pCommandList: _ignored_
-  - NumBarriers: 1
-  - pBarriers: _ignored_
-- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
-  - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
-- Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
-  - NumViewports: 1
-  - pViewports: _ignored_
-- Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
-  - NumRects: 1
-  - pRects: _ignored_
-- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
-  - NumRects: 0
-  - pRects: _ignored_
+  - pDstResource: _ignored_
+  - pSrcResource: _ignored_
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
   - pCommandList: _ignored_
   - NumBarriers: 1
@@ -46,60 +58,10 @@
   - NumCommandLists: 1
   - ppCommandLists: _ignored_
   - DebugMessages: _ignored_
-- Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
-  - SyncInterval: 0
-  - Flags: 0
-## Frame 2
 - Call: ID3D12CommandQueue::Signal
   - pQueue: _ignored_
   - pFence: _ignored_
   - Value: 2
-- Call: ID3D12GraphicsCommandList::Reset
-  - BakedCommandList: _ignored_
-  - CommandList: _ignored_
-  - pAllocator: _ignored_
-  - pInitialState: _ignored_
-- Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
-  - NumBarriers: 1
-  - pBarriers: _ignored_
-- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
-  - pCommandList: _ignored_
-  - NumRenderTargetDescriptors: 1
-  - pRenderTargetDescriptors: _ignored_
-  - pDepthStencilDescriptor: _ignored_
-- Call: ID3D12GraphicsCommandList::RSSetViewports
-  - pCommandList: _ignored_
-  - NumViewports: 1
-  - pViewports: _ignored_
-- Call: ID3D12GraphicsCommandList::RSSetScissorRects
-  - pCommandList: _ignored_
-  - NumRects: 1
-  - pRects: _ignored_
-- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
-  - pCommandList: _ignored_
-  - RenderTargetView: _ignored_
-  - ColorRGBA: _ignored_
-  - NumRects: 0
-  - pRects: _ignored_
-- Call: ID3D12GraphicsCommandList::ResourceBarrier
-  - pCommandList: _ignored_
-  - NumBarriers: 1
-  - pBarriers: _ignored_
-- Call: ID3D12GraphicsCommandList::Close
-  - CommandList: _ignored_
-  - BakedCommandList: _ignored_
-- Call: ID3D12CommandQueue::ExecuteCommandLists
-  - pQueue: _ignored_
-  - NumCommandLists: 1
-  - ppCommandLists: _ignored_
-  - DebugMessages: _ignored_
-- Call: IDXGISwapChain::Present
-  - PresentedBackbuffer: _ignored_
-  - SyncInterval: 0
-  - Flags: 0
-## Frame 3
 - Call: ID3D12CommandQueue::Signal
   - pQueue: _ignored_
   - pFence: _ignored_
@@ -132,6 +94,38 @@
   - ColorRGBA: _ignored_
   - NumRects: 0
   - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearDepthStencilView
+  - pCommandList: _ignored_
+  - DepthStencilView: _ignored_
+  - ClearFlags: D3D12_CLEAR_FLAG_DEPTH
+  - Depth: 1
+  - Stencil: 0
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootSignature
+  - pCommandList: _ignored_
+  - pRootSignature: _ignored_
+- Call: ID3D12GraphicsCommandList::SetPipelineState
+  - pCommandList: _ignored_
+  - pPipelineState: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
+  - pCommandList: _ignored_
+  - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+- Call: ID3D12GraphicsCommandList::IASetVertexBuffers
+  - pCommandList: _ignored_
+  - StartSlot: 0
+  - NumViews: 1
+  - pViews: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetIndexBuffer
+  - pCommandList: _ignored_
+  - pView: _ignored_
+- Call: ID3D12GraphicsCommandList::DrawIndexedInstanced
+  - pCommandList: _ignored_
+  - IndexCountPerInstance: 3
+  - InstanceCount: 1
+  - StartIndexLocation: 0
+  - BaseVertexLocation: 0
+  - StartInstanceLocation: 0
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
   - pCommandList: _ignored_
   - NumBarriers: 1
@@ -148,7 +142,7 @@
   - PresentedBackbuffer: _ignored_
   - SyncInterval: 0
   - Flags: 0
-## Frame 4
+## Frame 2
 - Call: ID3D12CommandQueue::Signal
   - pQueue: _ignored_
   - pFence: _ignored_
@@ -181,6 +175,38 @@
   - ColorRGBA: _ignored_
   - NumRects: 0
   - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearDepthStencilView
+  - pCommandList: _ignored_
+  - DepthStencilView: _ignored_
+  - ClearFlags: D3D12_CLEAR_FLAG_DEPTH
+  - Depth: 1
+  - Stencil: 0
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootSignature
+  - pCommandList: _ignored_
+  - pRootSignature: _ignored_
+- Call: ID3D12GraphicsCommandList::SetPipelineState
+  - pCommandList: _ignored_
+  - pPipelineState: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
+  - pCommandList: _ignored_
+  - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+- Call: ID3D12GraphicsCommandList::IASetVertexBuffers
+  - pCommandList: _ignored_
+  - StartSlot: 0
+  - NumViews: 1
+  - pViews: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetIndexBuffer
+  - pCommandList: _ignored_
+  - pView: _ignored_
+- Call: ID3D12GraphicsCommandList::DrawIndexedInstanced
+  - pCommandList: _ignored_
+  - IndexCountPerInstance: 3
+  - InstanceCount: 1
+  - StartIndexLocation: 0
+  - BaseVertexLocation: 0
+  - StartInstanceLocation: 0
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
   - pCommandList: _ignored_
   - NumBarriers: 1
@@ -197,7 +223,7 @@
   - PresentedBackbuffer: _ignored_
   - SyncInterval: 0
   - Flags: 0
-## Frame 5
+## Frame 3
 - Call: ID3D12CommandQueue::Signal
   - pQueue: _ignored_
   - pFence: _ignored_
@@ -230,6 +256,200 @@
   - ColorRGBA: _ignored_
   - NumRects: 0
   - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearDepthStencilView
+  - pCommandList: _ignored_
+  - DepthStencilView: _ignored_
+  - ClearFlags: D3D12_CLEAR_FLAG_DEPTH
+  - Depth: 1
+  - Stencil: 0
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootSignature
+  - pCommandList: _ignored_
+  - pRootSignature: _ignored_
+- Call: ID3D12GraphicsCommandList::SetPipelineState
+  - pCommandList: _ignored_
+  - pPipelineState: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
+  - pCommandList: _ignored_
+  - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+- Call: ID3D12GraphicsCommandList::IASetVertexBuffers
+  - pCommandList: _ignored_
+  - StartSlot: 0
+  - NumViews: 1
+  - pViews: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetIndexBuffer
+  - pCommandList: _ignored_
+  - pView: _ignored_
+- Call: ID3D12GraphicsCommandList::DrawIndexedInstanced
+  - pCommandList: _ignored_
+  - IndexCountPerInstance: 3
+  - InstanceCount: 1
+  - StartIndexLocation: 0
+  - BaseVertexLocation: 0
+  - StartInstanceLocation: 0
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 4
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 6
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearDepthStencilView
+  - pCommandList: _ignored_
+  - DepthStencilView: _ignored_
+  - ClearFlags: D3D12_CLEAR_FLAG_DEPTH
+  - Depth: 1
+  - Stencil: 0
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootSignature
+  - pCommandList: _ignored_
+  - pRootSignature: _ignored_
+- Call: ID3D12GraphicsCommandList::SetPipelineState
+  - pCommandList: _ignored_
+  - pPipelineState: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
+  - pCommandList: _ignored_
+  - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+- Call: ID3D12GraphicsCommandList::IASetVertexBuffers
+  - pCommandList: _ignored_
+  - StartSlot: 0
+  - NumViews: 1
+  - pViews: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetIndexBuffer
+  - pCommandList: _ignored_
+  - pView: _ignored_
+- Call: ID3D12GraphicsCommandList::DrawIndexedInstanced
+  - pCommandList: _ignored_
+  - IndexCountPerInstance: 3
+  - InstanceCount: 1
+  - StartIndexLocation: 0
+  - BaseVertexLocation: 0
+  - StartInstanceLocation: 0
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::Close
+  - CommandList: _ignored_
+  - BakedCommandList: _ignored_
+- Call: ID3D12CommandQueue::ExecuteCommandLists
+  - pQueue: _ignored_
+  - NumCommandLists: 1
+  - ppCommandLists: _ignored_
+  - DebugMessages: _ignored_
+- Call: IDXGISwapChain::Present
+  - PresentedBackbuffer: _ignored_
+  - SyncInterval: 0
+  - Flags: 0
+## Frame 5
+- Call: ID3D12CommandQueue::Signal
+  - pQueue: _ignored_
+  - pFence: _ignored_
+  - Value: 7
+- Call: ID3D12GraphicsCommandList::Reset
+  - BakedCommandList: _ignored_
+  - CommandList: _ignored_
+  - pAllocator: _ignored_
+  - pInitialState: _ignored_
+- Call: ID3D12GraphicsCommandList::ResourceBarrier
+  - pCommandList: _ignored_
+  - NumBarriers: 1
+  - pBarriers: _ignored_
+- Call: ID3D12GraphicsCommandList::OMSetRenderTargets
+  - pCommandList: _ignored_
+  - NumRenderTargetDescriptors: 1
+  - pRenderTargetDescriptors: _ignored_
+  - pDepthStencilDescriptor: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetViewports
+  - pCommandList: _ignored_
+  - NumViewports: 1
+  - pViewports: _ignored_
+- Call: ID3D12GraphicsCommandList::RSSetScissorRects
+  - pCommandList: _ignored_
+  - NumRects: 1
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearRenderTargetView
+  - pCommandList: _ignored_
+  - RenderTargetView: _ignored_
+  - ColorRGBA: _ignored_
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::ClearDepthStencilView
+  - pCommandList: _ignored_
+  - DepthStencilView: _ignored_
+  - ClearFlags: D3D12_CLEAR_FLAG_DEPTH
+  - Depth: 1
+  - Stencil: 0
+  - NumRects: 0
+  - pRects: _ignored_
+- Call: ID3D12GraphicsCommandList::SetGraphicsRootSignature
+  - pCommandList: _ignored_
+  - pRootSignature: _ignored_
+- Call: ID3D12GraphicsCommandList::SetPipelineState
+  - pCommandList: _ignored_
+  - pPipelineState: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetPrimitiveTopology
+  - pCommandList: _ignored_
+  - PrimitiveTopology: D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+- Call: ID3D12GraphicsCommandList::IASetVertexBuffers
+  - pCommandList: _ignored_
+  - StartSlot: 0
+  - NumViews: 1
+  - pViews: _ignored_
+- Call: ID3D12GraphicsCommandList::IASetIndexBuffer
+  - pCommandList: _ignored_
+  - pView: _ignored_
+- Call: ID3D12GraphicsCommandList::DrawIndexedInstanced
+  - pCommandList: _ignored_
+  - IndexCountPerInstance: 3
+  - InstanceCount: 1
+  - StartIndexLocation: 0
+  - BaseVertexLocation: 0
+  - StartInstanceLocation: 0
 - Call: ID3D12GraphicsCommandList::ResourceBarrier
   - pCommandList: _ignored_
   - NumBarriers: 1

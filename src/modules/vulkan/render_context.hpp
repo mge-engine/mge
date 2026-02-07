@@ -2,14 +2,17 @@
 // Copyright (c) 2017-2023 by Alexander Schroeder
 // All rights reserved.
 #pragma once
-#include "mge/graphics/command_list.hpp"
-#include "mge/graphics/frame_command_list.hpp"
+#include "mge/core/tuple_hash.hpp"
 #include "mge/graphics/render_context.hpp"
 #include "vulkan.hpp"
+
+#include <unordered_map>
 
 namespace mge::vulkan {
     class render_system;
     class window;
+    class vertex_buffer;
+    class program;
 
     class render_context : public mge::render_context
     {
@@ -103,6 +106,12 @@ namespace mge::vulkan {
             return m_allocator;
         }
 
+        const std::vector<VkVertexInputAttributeDescription>&
+        vertex_input_attribute_descriptions(const mge::vertex_layout& layout);
+
+        VkPipeline pipeline(const vertex_buffer& buffer,
+                            const program&       program);
+
     private:
         void create_surface();
         void create_device();
@@ -167,5 +176,16 @@ namespace mge::vulkan {
 
         uint32_t    m_current_image_index{std::numeric_limits<uint32_t>::max()};
         frame_state m_current_frame_state{frame_state::BEFORE_DRAW};
+
+        std::unordered_map<mge::vertex_layout,
+                           std::vector<VkVertexInputAttributeDescription>>
+            m_vertex_input_attribute_descriptions;
+
+        using pipeline_key_type = std::tuple<VkBuffer, VkPipelineLayout>;
+        using pipeline_cache_type =
+            std::unordered_map<pipeline_key_type,
+                               VkPipeline,
+                               std::hash<pipeline_key_type>>;
+        pipeline_cache_type m_pipelines;
     };
 } // namespace mge::vulkan

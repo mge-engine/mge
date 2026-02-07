@@ -2,6 +2,18 @@
 - Driver: Vulkan
 # Frames
 ## Frame 1
+- Call: vkUnmapMemory
+  - device: _ignored_
+  - memory: _ignored_
+  - MapOffset: 0
+  - MapSize: 33554432
+  - MapData: _ignored_
+- Call: vkUnmapMemory
+  - device: _ignored_
+  - memory: _ignored_
+  - MapOffset: 0
+  - MapSize: 33554432
+  - MapData: _ignored_
 - Call: vkWaitForFences
   - device: _ignored_
   - fenceCount: 1
@@ -37,6 +49,34 @@
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
+- Call: vkCmdBindPipeline
+  - commandBuffer: _ignored_
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: _ignored_
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: _ignored_
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: _ignored_
+  - pOffsets: _ignored_
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: _ignored_
+  - buffer: _ignored_
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: _ignored_
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -86,6 +126,34 @@
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
+- Call: vkCmdBindPipeline
+  - commandBuffer: _ignored_
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: _ignored_
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: _ignored_
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: _ignored_
+  - pOffsets: _ignored_
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: _ignored_
+  - buffer: _ignored_
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: _ignored_
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -135,6 +203,34 @@
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
+- Call: vkCmdBindPipeline
+  - commandBuffer: _ignored_
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: _ignored_
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: _ignored_
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: _ignored_
+  - pOffsets: _ignored_
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: _ignored_
+  - buffer: _ignored_
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: _ignored_
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -184,6 +280,34 @@
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
+- Call: vkCmdBindPipeline
+  - commandBuffer: _ignored_
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: _ignored_
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: _ignored_
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: _ignored_
+  - pOffsets: _ignored_
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: _ignored_
+  - buffer: _ignored_
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: _ignored_
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer
@@ -233,6 +357,34 @@
   - pAttachments: _ignored_
   - rectCount: 1
   - pRects: _ignored_
+- Call: vkCmdClearAttachments
+  - commandBuffer: _ignored_
+  - attachmentCount: 1
+  - pAttachments: _ignored_
+  - rectCount: 1
+  - pRects: _ignored_
+- Call: vkCmdBindPipeline
+  - commandBuffer: _ignored_
+  - pipelineBindPoint: VK_PIPELINE_BIND_POINT_GRAPHICS
+  - pipeline: _ignored_
+- Call: vkCmdBindVertexBuffers
+  - commandBuffer: _ignored_
+  - firstBinding: 0
+  - bindingCount: 1
+  - pBuffers: _ignored_
+  - pOffsets: _ignored_
+- Call: vkCmdBindIndexBuffer
+  - commandBuffer: _ignored_
+  - buffer: _ignored_
+  - offset: 0
+  - indexType: VK_INDEX_TYPE_UINT32
+- Call: vkCmdDrawIndexed
+  - commandBuffer: _ignored_
+  - indexCount: 3
+  - instanceCount: 1
+  - firstIndex: 0
+  - vertexOffset: 0
+  - firstInstance: 1
 - Call: vkCmdEndRenderPass
   - commandBuffer: _ignored_
 - Call: vkEndCommandBuffer

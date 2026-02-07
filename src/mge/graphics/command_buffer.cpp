@@ -9,7 +9,9 @@ namespace mge {
                               const vertex_buffer_handle& vertices,
                               const index_buffer_handle&  indices)
     {
-        // Implementation would go here
+        m_programs.push_back(program);
+        m_vertex_buffers.push_back(vertices);
+        m_index_buffers.push_back(indices);
     }
 
 } // namespace mge

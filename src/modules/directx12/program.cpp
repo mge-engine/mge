@@ -14,7 +14,11 @@ namespace mge::dx12 {
         : ::mge::program(context)
     {}
 
-    program::~program() {}
+    program::~program()
+    {
+        auto dx12_context = static_cast<dx12::render_context*>(&context());
+        dx12_context->remove_pipeline_state(this);
+    }
 
     void program::on_link()
     {
@@ -84,4 +88,5 @@ namespace mge::dx12 {
             IID_PPV_ARGS(&m_root_signature));
         CHECK_HRESULT(rc, ID3D12Device, CreateRootSignature);
     }
+
 } // namespace mge::dx12

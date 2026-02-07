@@ -1,53 +1,49 @@
-# Project Overview
+ALWAYS ANSWER IN SHORTEST POSSIBLE WAY THAT IS STILL COMPLETE AND CLEAR
+AND USES THE FEWEST TOKENS POSSIBLE.
 
-MGE (Modern Game/Graphics Engine) is a cross-platform graphics engine written in C++20. The project demonstrates modern C++ patterns combined with real-time graphics, supporting multiple rendering backends (DirectX 11, DirectX 12, OpenGL, Vulkan) through a plugin-based module system.
+# Project Overview 
+
+* MGE (Modern Game/Graphics Engine) is a framework having the following goals:
+* cross-platform, C++20
+* modular (plugins)
 
 ## General Rules
 
-You are now in the implementation chamber.
+* do not optimize
+* do not abstract
+* do not generalize
+* do not omit steps in reasoning
+* do not defer decisions
+* verify more, assume less, and communicate uncertainty clearly
 
-Code is crystallized intention. Every line is a commitment. Every omission is a future bug.
+## Communication
 
-Before you type, observe the automation impulse:
-- The desire to fill the silence with syntax
-- The reflex to reuse familiar shapes
-- The belief that passing tests implies understanding
-
-Resist premature concreteness.Let the solution emerge, not be assembled.
-
-Do not optimize.
-Do not abstract.
-Do not generalize.
-First, construct the mental model so precisely that the code becomes an inevitability.
-
-If the model is wrong, no amount of refactoring will save you. If the model is right, the code writes itself. 
-
-Simulate the system until time disappears. Every edge case must already be resolved in thought. If you feel momentum, stop. Momentum is how errors sneak in.
-
-Proceed only when the solution feels boring.
+* be explicit
+* short statements
+* no human simulation
 
 ## Architecture
 
 ### Core-Module Pattern
-- **Core libraries** (`src/mge/`): Platform-independent abstractions for graphics, application, input, math, asset management
-- **Backend modules** (`src/modules/`): Rendering implementations loaded as shared libraries (`.dll`/`.so`)
-  - Modules register as `component` implementations at runtime (see `src/mge/core/component.hpp`)
-  - Switch backends via environment variable: `$env:MGE_RENDER_SYSTEM = "dx11"` (or `vulkan`, `dx12`, `opengl`)
-  - Scripts in `tools/` (e.g., [enable_dx11.ps1](tools/enable_dx11.ps1), [reset_render_system.ps1](tools/reset_render_system.ps1))
+
+- core libraries (`src/mge/`): abstractions for graphics, application, input, math, asset mgmt, scenes, etc.
+- modules (`src/modules/`): modules register as `component` implementations at runtime
+- 
 
 ### Key Abstractions
-- **Reference types**: Use `MGE_DECLARE_REF(type)` macro to generate `type_ref` as `std::shared_ptr<type>`
-- **Component system**: Plugin architecture for render systems, asset loaders, etc. (see `src/mge/core/component.hpp`)
+- Reference types: `MGE_DECLARE_REF(type)` macro generates `type_ref` as `std::shared_ptr<type>`
+- **Component system**: Plugin architecture (see `src/mge/core/component.hpp`)
 - **Tracing**: Structured logging via `MGE_USE_TRACE(TOPIC)`, `MGE_DEBUG_TRACE(TOPIC, message)`, `MGE_INFO_TRACE(TOPIC, message)`
   - Define topics per subsystem (DX11, OPENGL, CORE, etc.)
   - Enable at runtime: `$env:MGE_TRACE_ENABLED=1; $env:MGE_TRACE_TO_STDOUT=1`
 
 ### Dependencies
-Managed via vcpkg ([vcpkg.json](vcpkg.json)): GLM, Assimp, Boost, STB, glslang, Vulkan Memory Allocator, etc.
+  - use vcpkg ([vcpkg.json](vcpkg.json))
 
 ## Build & Test Workflow
 
 ### Standard Build
+- Invoke in project directory:
 ```powershell
 cmake --build build          # Multi-threaded build
 cmake --build build -j 1     # Single-threaded for debugging errors
@@ -55,10 +51,10 @@ ctest --output-on-failure --test-dir build
 ```
 
 ### CMake Structure
-- **Presets**: [CMakePresets.json](CMakePresets.json) defines `default` (local dev) and `ci-build` (headless CI)
+- use CMakePresets.json for settings
 - **Custom macros**: [cmake/modules/macros/](cmake/modules/macros/)
-  - `MGE_LIBRARY()`: Creates libraries with auto-defined `BUILD_<TARGET>` flags
-  - `MGE_TEST()`: Google Test integration with display/headless environment handling
+  - `MGE_LIBRARY()`: library with auto-defined `BUILD_<TARGET>` flags
+  - `MGE_TEST()`: Google Test integration with display/headless env handling
   - Tests requiring display use `NEEDSDISPLAY` flag (see [cmake/modules/macros/test.cmake](cmake/modules/macros/test.cmake))
 
 ### Module Development
@@ -85,7 +81,6 @@ Enforced by [.clang-format](.clang-format):
 - Braces: Allman style for classes/functions, K&R for control flow
 - Constructor initializers: break before comma (`,` starts continuation lines)
 - 80-character line limit
-- See [doc/design/ProjectStructure.md](doc/design/ProjectStructure.md) for detailed conventions
 
 ### Namespaces
 - All code in `namespace mge`
@@ -99,16 +94,18 @@ namespace mge {
     MGE_USE_TRACE(DX11);  // Declare once per file
 }
 ```
-Use structured tracing instead of `std::cout`:
-```cpp
-MGE_DEBUG_TRACE(DX11, "Creating render context");
-MGE_INFO_TRACE(OPENGL, "Frame recording is {}", enabled ? "enabled" : "disabled");
-```
+- Use structured tracing instead of `std::cout`:
 
 ### Testing
 - Unit tests use Google Test via `MGE_TEST()` macro in `src/test/`
 - Test structure: `src/test/<component>/test_<feature>.cpp`
 - Example: `TEST(benchmark, memory_cycle) { ... }` in [src/test/test/test_benchmark.cpp](src/test/test/test_benchmark.cpp)
+
+### Sample Tests
+- in `src/samples` directory
+- demonstrate module usage and integration
+- full applications
+- configured via json config when running
 
 ## Common Pitfalls
 - Don't create in-source builds (CMake rejects them)
