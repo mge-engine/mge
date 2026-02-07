@@ -25,3 +25,5 @@ BROWSE*.DB-shm
 BROWSE*.DB-wal
 # -- sphinx venv
 sphinx/**/*
+# -- claude temporary files
+tmpclaude-*
