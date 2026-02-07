@@ -67,4 +67,6 @@ If it was not loaded before, a `<executable_name>.json` file is created.
 Configuration Exception
 ========================
 
-.. doxygenclass:: mge::bad_configuration
+.. cpp:class:: mge::bad_configuration : public mge::exception
+
+    Exception thrown when a configuration does not fulfill constraints.

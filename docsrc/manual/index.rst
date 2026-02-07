@@ -19,12 +19,7 @@ Welcome to MGE, a modern graphics/game engine.
     :caption: Reference
     :maxdepth: 1
 
-    mgecore
-    mgemath
-    mgegraphics
-    mgeinput
-    mgeapplication
-    mgeasset
+    reference
 
 .. toctree::
     :caption: Appendix
