@@ -67,6 +67,7 @@ SET(mgegraphics_headers
     attribute_semantic.hpp
     texture_type.hpp
     texture.hpp
+    topology.hpp
     image.hpp
     image_format.hpp
     memory_image.hpp
