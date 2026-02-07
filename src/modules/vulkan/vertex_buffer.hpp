@@ -45,7 +45,8 @@ namespace mge::vulkan {
             return m_binding_description;
         }
 
-        const auto& attribute_descriptions() const;
+        const std::vector<VkVertexInputAttributeDescription>&
+        attribute_descriptions() const;
 
         void on_set_data(void* data, size_t data_size) override;
 

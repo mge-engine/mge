@@ -181,9 +181,11 @@ namespace mge::vulkan {
                            std::vector<VkVertexInputAttributeDescription>>
             m_vertex_input_attribute_descriptions;
 
-        std::unordered_map<std::tuple<VkBuffer, VkPipelineLayout>,
-                           VkPipeline,
-                           std::hash<std::tuple<VkBuffer, VkPipelineLayout>>>
-            m_pipelines;
+        using pipeline_key_type = std::tuple<VkBuffer, VkPipelineLayout>;
+        using pipeline_cache_type =
+            std::unordered_map<pipeline_key_type,
+                               VkPipeline,
+                               std::hash<pipeline_key_type>>;
+        pipeline_cache_type m_pipelines;
     };
 } // namespace mge::vulkan

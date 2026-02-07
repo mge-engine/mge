@@ -66,7 +66,8 @@ namespace mge::vulkan {
         vmaUnmapMemory(m_vulkan_context.allocator(), m_allocation);
     }
 
-    const auto& vertex_buffer::attribute_descriptions() const
+    const std::vector<VkVertexInputAttributeDescription>&
+    vertex_buffer::attribute_descriptions() const
     {
         return m_vulkan_context.vertex_input_attribute_descriptions(layout());
     }

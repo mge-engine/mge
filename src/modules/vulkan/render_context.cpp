@@ -998,13 +998,147 @@ namespace mge::vulkan {
         // attribute_descriptions -> layout
         // program (pipeline layout)
         // render pass - always the same for now
-        std::tuple<VkBuffer, VkPipelineLayout> key{buffer.vk_buffer(),
-                                                   program.pipeline_layout()};
+        pipeline_key_type key{buffer.vk_buffer(), program.pipeline_layout()};
+
+        auto it = m_pipelines.find(key);
+        if (it != m_pipelines.end()) {
+            return it->second;
+        }
 
         VkDynamicState dynamic_states[] = {VK_DYNAMIC_STATE_VIEWPORT,
                                            VK_DYNAMIC_STATE_SCISSOR};
+        VkPipelineDynamicStateCreateInfo dynamic_state_create_info = {};
+        dynamic_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+        dynamic_state_create_info.dynamicStateCount = std::size(dynamic_states);
+        dynamic_state_create_info.pDynamicStates = dynamic_states;
 
-        return VK_NULL_HANDLE;
+        VkPipelineVertexInputStateCreateInfo vertex_input_state_create_info =
+            {};
+        vertex_input_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+        vertex_input_state_create_info.vertexBindingDescriptionCount = 1;
+        vertex_input_state_create_info.pVertexBindingDescriptions =
+            &buffer.binding_description();
+        vertex_input_state_create_info.vertexAttributeDescriptionCount =
+            static_cast<uint32_t>(buffer.attribute_descriptions().size());
+        vertex_input_state_create_info.pVertexAttributeDescriptions =
+            buffer.attribute_descriptions().data();
+
+        VkPipelineInputAssemblyStateCreateInfo
+            input_assembly_state_create_info = {};
+        input_assembly_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+        input_assembly_state_create_info.topology =
+            VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
+        input_assembly_state_create_info.primitiveRestartEnable = VK_FALSE;
+
+        VkPipelineViewportStateCreateInfo viewport_state_create_info{};
+        viewport_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        viewport_state_create_info.viewportCount = 1;
+        viewport_state_create_info.scissorCount = 1;
+
+        VkPipelineRasterizationStateCreateInfo rasterization_state_create_info =
+            {};
+        rasterization_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+        rasterization_state_create_info.depthClampEnable =
+            VK_FALSE; // discard elements out of depth range
+        rasterization_state_create_info.rasterizerDiscardEnable =
+            VK_FALSE; // allow elements to pass rasterizer stage
+        rasterization_state_create_info.polygonMode =
+            VK_POLYGON_MODE_FILL; // fill the polygon drawn
+        rasterization_state_create_info.lineWidth = 1.0f;
+
+        rasterization_state_create_info.cullMode =
+            VK_CULL_MODE_NONE; // cull back faces
+        rasterization_state_create_info.frontFace =
+            VK_FRONT_FACE_CLOCKWISE; // clockwise front face
+
+        // no depth bias, that's only used in shadow mapping
+        rasterization_state_create_info.depthBiasEnable = VK_FALSE;
+        rasterization_state_create_info.depthBiasConstantFactor = 0.0f;
+        rasterization_state_create_info.depthBiasClamp = 0.0f;
+        rasterization_state_create_info.depthBiasSlopeFactor = 0.0f;
+
+        VkPipelineMultisampleStateCreateInfo multisampling_create_info{};
+        multisampling_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+        multisampling_create_info.sampleShadingEnable = VK_FALSE;
+        multisampling_create_info.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
+        multisampling_create_info.minSampleShading = 1.0f;
+        multisampling_create_info.pSampleMask = nullptr;
+        multisampling_create_info.alphaToCoverageEnable = VK_FALSE;
+        multisampling_create_info.alphaToOneEnable = VK_FALSE;
+
+        // no depth stencil tests
+        // VkPipelineDepthStencilStateCreateInfo depth_stencil_state_create_info
+        // =
+        //    {};
+        // depth_stencil_state_create_info.sType =
+        //    VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+
+        // color blending
+        VkPipelineColorBlendAttachmentState color_blend_attachment_state = {};
+        color_blend_attachment_state.colorWriteMask =
+            VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT |
+            VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        color_blend_attachment_state.blendEnable = VK_FALSE;
+        color_blend_attachment_state.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;
+        color_blend_attachment_state.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+        color_blend_attachment_state.colorBlendOp = VK_BLEND_OP_ADD;
+        color_blend_attachment_state.srcAlphaBlendFactor = VK_BLEND_FACTOR_ONE;
+        color_blend_attachment_state.dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+        color_blend_attachment_state.alphaBlendOp = VK_BLEND_OP_ADD;
+
+        VkPipelineColorBlendStateCreateInfo color_blend_state_create_info = {};
+        color_blend_state_create_info.sType =
+            VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+        color_blend_state_create_info.logicOpEnable = VK_FALSE;
+        color_blend_state_create_info.logicOp = VK_LOGIC_OP_COPY;
+        color_blend_state_create_info.attachmentCount = 1;
+        color_blend_state_create_info.pAttachments =
+            &color_blend_attachment_state;
+        color_blend_state_create_info.blendConstants[0] = 0.0f;
+        color_blend_state_create_info.blendConstants[1] = 0.0f;
+        color_blend_state_create_info.blendConstants[2] = 0.0f;
+        color_blend_state_create_info.blendConstants[3] = 0.0f;
+
+        VkPipelineLayout pipeline_layout{program.pipeline_layout()};
+
+        VkGraphicsPipelineCreateInfo pipeline_create_info = {};
+        pipeline_create_info.sType =
+            VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+        pipeline_create_info.stageCount =
+            static_cast<uint32_t>(program.shader_stage_create_infos().size());
+        pipeline_create_info.pStages =
+            program.shader_stage_create_infos().data();
+        pipeline_create_info.pVertexInputState =
+            &vertex_input_state_create_info;
+        pipeline_create_info.pInputAssemblyState =
+            &input_assembly_state_create_info;
+        pipeline_create_info.pViewportState = &viewport_state_create_info;
+        pipeline_create_info.pRasterizationState =
+            &rasterization_state_create_info;
+        pipeline_create_info.pMultisampleState = &multisampling_create_info;
+        pipeline_create_info.pDepthStencilState = nullptr;
+        pipeline_create_info.pColorBlendState = &color_blend_state_create_info;
+        pipeline_create_info.pDynamicState = &dynamic_state_create_info;
+        pipeline_create_info.layout = pipeline_layout;
+        pipeline_create_info.renderPass = render_pass();
+        pipeline_create_info.subpass = 0;
+        pipeline_create_info.basePipelineHandle = VK_NULL_HANDLE;
+        pipeline_create_info.basePipelineIndex = -1;
+
+        VkPipeline pipeline{VK_NULL_HANDLE};
+        CHECK_VK_CALL(vkCreateGraphicsPipelines(device(),
+                                                VK_NULL_HANDLE,
+                                                1,
+                                                &pipeline_create_info,
+                                                nullptr,
+                                                &pipeline));
+        return m_pipelines[key] = pipeline;
     }
 
 } // namespace mge::vulkan
