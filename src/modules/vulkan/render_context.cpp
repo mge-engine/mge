@@ -927,6 +927,39 @@ namespace mge::vulkan {
                                   &clear_rect);
         }
 
+        p.for_each_draw_command([this, command_buffer](
+                                    const program_handle&       program,
+                                    const vertex_buffer_handle& vertex_buffer,
+                                    const index_buffer_handle&  index_buffer) {
+            mge::vulkan::program* vk_program =
+                static_cast<mge::vulkan::program*>(program.get());
+            mge::vulkan::vertex_buffer* vk_vertex_buffer =
+                static_cast<mge::vulkan::vertex_buffer*>(vertex_buffer.get());
+            mge::vulkan::index_buffer* vk_index_buffer =
+                static_cast<mge::vulkan::index_buffer*>(index_buffer.get());
+
+            VkPipeline pipeline =
+                this->pipeline(*vk_vertex_buffer, *vk_program);
+            vkCmdBindPipeline(command_buffer,
+                              VK_PIPELINE_BIND_POINT_GRAPHICS,
+                              pipeline);
+
+            VkDeviceSize offsets[1]{0};
+            VkBuffer     buffers[1]{vk_vertex_buffer->vk_buffer()};
+            vkCmdBindVertexBuffers(command_buffer, 0, 1, buffers, offsets);
+            vkCmdBindIndexBuffer(command_buffer,
+                                 vk_index_buffer->vk_buffer(),
+                                 0,
+                                 vk_index_buffer->vk_index_type());
+            vkCmdDrawIndexed(
+                command_buffer,
+                static_cast<uint32_t>(vk_index_buffer->element_count()),
+                1,
+                0,
+                0,
+                1);
+        });
+
         vkCmdEndRenderPass(command_buffer);
         m_current_frame_state = frame_state::DRAW;
     }
