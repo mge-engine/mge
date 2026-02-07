@@ -65,6 +65,9 @@ SET(mgegraphics_headers
     shader_format.hpp
     uniform_data_type.hpp
     attribute_semantic.hpp
+    blend_factor.hpp
+    blend_operation.hpp
+    color_write_mask.hpp
     texture_type.hpp
     texture.hpp
     topology.hpp
