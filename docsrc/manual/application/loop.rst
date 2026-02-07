@@ -37,6 +37,11 @@ The loop itself is implemented by implementing a component of ``mge::loop`` inte
 ..  doxygenclass:: mge::loop
     :members:
 
+The loop context provides information about the current state of the loop:
+
+..  doxygenclass:: mge::loop_context
+    :members:
+
 Simple Loop
 ===========
 
@@ -50,3 +55,18 @@ The simple loop processes the interaction loop as follows:
 * ``update`` will be called with the delta time compared with
   previous frame
 * ``present`` will always be called with a peek value of ``0.0``.
+
+Fixed Step Loop
+===============
+
+A fixed step loop is provided which uses a fixed time step for updates::
+
+    auto fixed_step_loop = mge::loop::create("fixed_step");
+
+The fixed step loop processes the interaction loop as follows:
+
+* ``update`` will be called with a fixed time step, potentially multiple 
+  times per frame if the frame takes longer than the time step
+* ``present`` will be called with a peek value indicating the interpolation
+  factor between current and next state, allowing smooth rendering between
+  fixed update steps
