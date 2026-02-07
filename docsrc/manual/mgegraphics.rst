@@ -4,8 +4,7 @@
 Graphics Library
 ****************
 
-The graphics library covers the plain graphics API
-abstraction.
+The graphics library covers the plain graphics API abstraction.
 
 .. toctree::
     :maxdepth: 1
@@ -20,5 +19,5 @@ abstraction.
     graphics/texture.rst
     graphics/image.rst
     graphics/mesh.rst
-    graphics/command_list.rst
+    graphics/command_buffer.rst
 

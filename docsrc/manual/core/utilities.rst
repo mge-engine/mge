@@ -59,6 +59,79 @@ A property map allows to manage key-value pairs of strings.
 .. doxygenclass:: mge::properties
     :members:
 
+Property Object
+---------------
+
+The property object provides a base class for objects that support property
+management with type-safe accessors.
+
+.. doxygenclass:: mge::property_object
+    :members:
+
+Enumeration Utilities
+=====================
+
+Enum Set
+--------
+
+The :cpp:class:`mge::enum_set` template provides a type-safe bitset indexed
+by enum values.
+
+.. doxygenclass:: mge::enum_set
+    :members:
+
+Magic Enum Integration
+----------------------
+
+MGE integrates the magic_enum library to provide reflection capabilities for
+enumerations. The following utilities are available in the :cpp:any:`mge`
+namespace:
+
+Type Traits:
+
+- :cpp:any:`mge::is_scoped_enum` - Check if enum is scoped
+- :cpp:any:`mge::is_scoped_enum_v` - Variable template version
+- :cpp:any:`mge::is_unscoped_enum` - Check if enum is unscoped
+- :cpp:any:`mge::is_unscoped_enum_v` - Variable template version
+- :cpp:any:`mge::underlying_type` - Get underlying type of enum
+- :cpp:any:`mge::underlying_type_t` - Alias template for underlying type
+
+Enum Functions:
+
+- :cpp:any:`mge::enum_cast` - Convert string to enum value
+- :cpp:any:`mge::enum_name` - Get name of enum value
+- :cpp:any:`mge::enum_type_name` - Get name of enum type
+- :cpp:any:`mge::enum_contains` - Check if value is valid enum
+- :cpp:any:`mge::enum_count` - Get number of enum values
+- :cpp:any:`mge::enum_values` - Get array of all enum values
+- :cpp:any:`mge::enum_entries` - Get array of name-value pairs
+- :cpp:any:`mge::enum_index` - Get index of enum value
+- :cpp:any:`mge::enum_integer` - Convert enum to integer
+
+Flags Functions:
+
+- :cpp:any:`mge::enum_flags_cast` - Convert string to enum flags
+- :cpp:any:`mge::enum_flags_name` - Get name of enum flags
+- :cpp:any:`mge::enum_flags_contains` - Check flags contain value
+
+To Underlying
+-------------
+
+Convert enum values to their underlying integer type.
+
+.. doxygenfunction:: mge::to_underlying
+
+Cleanup Handlers
+================
+
+AtExit
+------
+
+Register callbacks to be executed at program termination.
+
+.. doxygenclass:: mge::atexit
+    :members:
+
 Programming Helpers
 ===================
 
@@ -153,13 +226,16 @@ The proposed API is implemented in the ``mge`` namespace.
 
 .. doxygenfunction:: mge::is_debugger_present
 
-Closure
--------
+Iterator Utilities
+------------------
 
-A closure is a function object that captures its environment. While 
-C++ makes this easy with lambdas, such a lambda cannot be used in place
-of a function pointer. :any:`mge::closure` provides a way to create
-a closure that can be used as a function pointer.
+Convert iterator to index within container.
 
-.. doxygenclass:: mge::closure
-    :members:
+.. doxygenfunction:: mge::iterator_index
+
+Lexical Cast
+------------
+
+Convert between types using string representation.
+
+.. doxygenfunction:: mge::lexical_cast
