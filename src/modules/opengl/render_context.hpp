@@ -61,8 +61,12 @@ namespace mge {
             void   create_primary_glrc();
             void   init_gl3w();
             void   collect_opengl_info();
-            GLuint create_vao(mge::opengl::vertex_buffer& vb,
-                              mge::opengl::index_buffer&  ib);
+            GLuint create_vao(mge::opengl::vertex_buffer* vb,
+                              mge::opengl::index_buffer*  ib);
+
+            void draw_geometry(mge::program*       program,
+                               mge::vertex_buffer* vb,
+                               mge::index_buffer*  ib);
 
             mge::opengl::window*        m_window;
             HWND                        m_hwnd;
