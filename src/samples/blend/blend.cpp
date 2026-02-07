@@ -181,13 +181,13 @@ namespace mge {
             float triangle1_coords[] = {
                 -0.5f,
                 0.5f,
-                0.0f, // top left
+                0.5f, // top left
                 -0.1f,
                 0.5f,
-                0.0f, // top right
+                0.5f, // top right
                 -0.3f,
                 -0.5f,
-                0.0f, // bottom
+                0.5f, // bottom
             };
 
             // Second triangle (right side, overlapping in the middle)
