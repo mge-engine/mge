@@ -9,6 +9,9 @@ A 'memory_image' is an image that owns its own memory.
 Types and Definitions
 =====================
 
+.. doxygenclass:: mge::image_format
+    :members:
+
 .. doxygenclass:: mge::image
     :members:
 

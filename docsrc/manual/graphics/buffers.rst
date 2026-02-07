@@ -19,6 +19,14 @@ Buffers are defined by buffer type.
 
 .. doxygenfunction:: mge::data_type_size
 
+.. doxygenenum:: mge::topology
+
+Uniform data types specify data types for shader uniform variables.
+
+.. doxygenenum:: mge::uniform_data_type
+
+.. doxygenfunction:: mge::uniform_data_type_size
+
 Hardware Buffer
 ===============
 

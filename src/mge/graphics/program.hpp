@@ -19,7 +19,7 @@
 namespace mge {
 
     /**
-     * A program represents the stages in the drawing process.
+     * @brief A program represents the stages in the drawing process.
      *
      * When applied to a render command list, a program executes several
      * stages:
