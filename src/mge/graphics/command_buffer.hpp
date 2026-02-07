@@ -109,6 +109,7 @@ namespace mge {
             m_programs.clear();
             m_vertex_buffers.clear();
             m_index_buffers.clear();
+            m_blend_states.clear();
         }
 
     private:

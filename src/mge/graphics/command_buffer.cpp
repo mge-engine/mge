@@ -12,6 +12,7 @@ namespace mge {
         m_programs.push_back(program);
         m_vertex_buffers.push_back(vertices);
         m_index_buffers.push_back(indices);
+        m_blend_states.push_back(m_current_blend_state);
     }
 
 } // namespace mge

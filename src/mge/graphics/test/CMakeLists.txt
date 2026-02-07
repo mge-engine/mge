@@ -19,6 +19,7 @@ SET(MGEGRAPHICS_TEST_SOURCES
     test_uniform_binding.cpp
     test_viewport.cpp
     test_shader.cpp
+    test_command_buffer.cpp
 )
 
 MGE_TEST(
