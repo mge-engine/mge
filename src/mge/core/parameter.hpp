@@ -331,6 +331,10 @@ namespace mge {
             m_has_value = false;
         }
 
+        /**
+         * @brief Access stored value for modification.
+         * @return reference to stored value
+         */
         T& value()
         {
             m_has_value = true;

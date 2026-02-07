@@ -31,6 +31,9 @@ namespace mge {
         using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
 
+        /**
+         * @brief Construct empty callback map.
+         */
         callback_map() {}
 
         /**
@@ -69,6 +72,10 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Invoke all callbacks.
+         * @param args arguments to pass to callbacks
+         */
         void operator()(Args... args) const
         {
             m_calling = true;
@@ -95,6 +102,9 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Remove all callbacks.
+         */
         void clear()
         {
             m_data.clear();
@@ -118,6 +128,9 @@ namespace mge {
         using container_type = std::map<key_type, function_type>;
         using key_container_type = std::vector<key_type>;
 
+        /**
+         * @brief Construct empty callback map.
+         */
         callback_map() {}
 
         /**
@@ -156,6 +169,9 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Invoke all callbacks.
+         */
         void operator()(void) const
         {
             m_calling = true;
@@ -182,6 +198,9 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Remove all callbacks.
+         */
         void clear()
         {
             m_data.clear();

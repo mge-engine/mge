@@ -20,7 +20,15 @@ namespace mge {
     class MGECORE_EXPORT configuration
     {
     public:
+        /**
+         * @brief Register parameter for configuration management.
+         * @param p parameter to register
+         */
         static void register_parameter(basic_parameter& p);
+        /**
+         * @brief Unregister parameter from configuration management.
+         * @param p parameter to unregister
+         */
         static void unregister_parameter(basic_parameter& p);
 
         /**

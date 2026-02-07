@@ -63,3 +63,8 @@ For loading the configuration, the following process is used:
 
 If a configuration was loaded, the same file type is used when storing it.
 If it was not loaded before, a `<executable_name>.json` file is created.
+
+Configuration Exception
+========================
+
+.. doxygenclass:: mge::bad_configuration

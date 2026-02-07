@@ -59,6 +59,12 @@ namespace mge {
                 create(type_name<T>(), implementation_name));
         }
 
+        /**
+         * @brief Create component instance.
+         * @param component_name component name
+         * @param implementation_name implementation name
+         * @return created component instance
+         */
         static std::shared_ptr<component_base>
         create(std::string_view component_name,
                std::string_view implementation_name);
@@ -70,15 +76,35 @@ namespace mge {
             implementations(type_name<T>(), callback);
         }
 
+        /**
+         * @brief Enumerate available implementations.
+         * @param component_name component name
+         * @param callback callback invoked for each implementation
+         */
         static void
         implementations(std::string_view component_name,
                         const std::function<void(std::string_view)>& callback);
 
+        /**
+         * @brief Check if component is registered.
+         * @param name component name
+         * @return true if component is registered
+         */
         static bool component_registered(std::string_view name);
+        /**
+         * @brief Check if implementation is registered.
+         * @param component_name component name
+         * @param implementation_name implementation name
+         * @return true if implementation is registered
+         */
         static bool
         implementation_registered(std::string_view component_name,
                                   std::string_view implementation_name);
 
+        /**
+         * @brief Get implementation name.
+         * @return implementation name or empty string if not registered
+         */
         inline std::string_view implementation_name() const noexcept
         {
             if (m_impl_regentry) {
