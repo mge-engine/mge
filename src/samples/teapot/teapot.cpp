@@ -3,7 +3,6 @@
 // All rights reserved.
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
-#include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/mesh.hpp"
 #include "mge/graphics/program.hpp"

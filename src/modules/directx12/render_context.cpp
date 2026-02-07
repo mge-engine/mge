@@ -4,7 +4,6 @@
 #include "render_context.hpp"
 #include "error.hpp"
 #include "index_buffer.hpp"
-#include "mge/core/array_size.hpp"
 #include "mge/core/checked_cast.hpp"
 #include "mge/core/configuration.hpp"
 #include "mge/core/parameter.hpp"

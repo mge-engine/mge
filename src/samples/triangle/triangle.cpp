@@ -4,7 +4,6 @@
 #include "mge/application/application.hpp"
 #include "mge/asset/asset.hpp"
 #include "mge/asset/asset_source.hpp"
-#include "mge/core/array_size.hpp"
 #include "mge/core/trace.hpp"
 #include "mge/graphics/program.hpp"
 #include "mge/graphics/render_context.hpp"
