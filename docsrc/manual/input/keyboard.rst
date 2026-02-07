@@ -38,3 +38,21 @@ Modifiers are captured in the modifier set.
     ..  cpp:enumerator:: ALT
 
         Alt key.
+
+Key actions are captured in the key action enumeration.
+
+..  cpp:enum-class:: mge::key_action
+
+    Key action events.
+
+    ..  cpp:enumerator:: PRESS
+
+        Key pressed down.
+
+    ..  cpp:enumerator:: RELEASE
+
+        Key released.
+
+    ..  cpp:enumerator:: REPEAT
+
+        Key held down (repeat event).

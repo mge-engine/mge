@@ -105,16 +105,30 @@ namespace mge {
                 return it->second;
             }
 
+            /**
+             * @brief Access value of positional option.
+             * @param name option name
+             * @return option value reference
+             */
             std::any& positional(const std::string& name)
             {
                 return m_positional_options[name];
             }
 
+            /**
+             * @brief Access value of option.
+             * @param name option name
+             * @return option value reference
+             */
             std::any& option(const std::string& name)
             {
                 return m_options[name];
             }
 
+            /**
+             * @brief Access unrecognized options.
+             * @return unrecognized options
+             */
             std::vector<std::string>& unrecognized()
             {
                 return m_unrecognized_options;
@@ -203,6 +217,12 @@ namespace mge {
         program_options() = default;
         ~program_options() = default;
 
+        /**
+         * @brief Define command-line option.
+         * @param name option name
+         * @param description option description
+         * @return reference to this object for chaining
+         */
         inline program_options& option(const char* name,
                                        const char* description)
         {
@@ -210,6 +230,14 @@ namespace mge {
             return *this;
         }
 
+        /**
+         * @brief Define command-line option with value.
+         * @tparam T value type
+         * @param name option name
+         * @param description option description
+         * @param value option value specification
+         * @return reference to this object for chaining
+         */
         template <typename T>
         program_options& option(const char*                      name,
                                 const char*                      description,
@@ -222,6 +250,14 @@ namespace mge {
             return *this;
         }
 
+        /**
+         * @brief Define positional option.
+         * @tparam T value type
+         * @param name option name
+         * @param description option description
+         * @param value option value specification
+         * @return reference to this object for chaining
+         */
         template <typename T>
         program_options& positional(const char* name,
                                     const char* description,
@@ -234,22 +270,45 @@ namespace mge {
             return *this;
         }
 
+        /**
+         * @brief Store unrecognized options instead of throwing.
+         * @return reference to this object for chaining
+         */
         program_options& stored_unrecognized()
         {
             m_store_unrecognized = true;
             return *this;
         }
 
+        /**
+         * @brief Get number of defined options.
+         * @return option count
+         */
         size_t size() const noexcept
         {
             return m_options.size();
         }
 
+        /**
+         * @brief Print help information.
+         * @param os output stream
+         */
         void print(std::ostream& os) const;
 
+        /**
+         * @brief Parse command-line arguments.
+         * @param argc argument count
+         * @param argv argument vector
+         * @param o parsed options output
+         */
         void
         parse(int argc, const char** argv, program_options::options& o) const;
 
+        /**
+         * @brief Parse command-line arguments.
+         * @param args argument vector
+         * @param o parsed options output
+         */
         void parse(const std::vector<std::string>& args,
                    program_options::options&       o) const;
 

@@ -18,7 +18,7 @@ namespace mge {
 #endif
 
     /**
-     * A rectangle.
+     * @brief A rectangle defined by left, top, right, and bottom coordinates.
      */
     class MGEGRAPHICS_EXPORT rectangle
     {

@@ -16,7 +16,7 @@ namespace mge {
 #endif
 
     /**
-     * A point.
+     * @brief A point in 2D space with integer coordinates.
      */
     class MGEGRAPHICS_EXPORT point
     {

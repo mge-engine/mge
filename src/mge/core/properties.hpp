@@ -28,30 +28,80 @@ namespace mge {
         using iterator = map_type::iterator;
         using value_type = map_type::value_type;
 
+        /**
+         * @brief Construct empty properties.
+         */
         properties();
+        /**
+         * @brief Copy constructor.
+         * @param p properties to copy
+         */
         properties(const properties& p);
+        /**
+         * @brief Move constructor.
+         * @param p properties to move
+         */
         properties(properties&& p);
+        /**
+         * @brief Load properties from input stream.
+         * @param input input stream
+         */
         properties(std::istream& input);
+        /**
+         * @brief Load properties from input stream.
+         * @param input input stream
+         */
         properties(const input_stream_ref& input);
 
+        /**
+         * @brief Copy assignment.
+         * @param p properties to copy
+         * @return reference to this
+         */
         properties& operator=(const properties& p);
+        /**
+         * @brief Move assignment.
+         * @param p properties to move
+         * @return reference to this
+         */
         properties& operator=(properties&& p);
 
+        /**
+         * @brief Check if property exists.
+         * @param key property key
+         * @return true if property exists
+         */
         bool exists(const char* key) const
         {
             return m_data.find(key) != m_data.end();
         }
 
+        /**
+         * @brief Check if property exists.
+         * @param key property key
+         * @return true if property exists
+         */
         bool exists(const std::string_view& key) const
         {
             return m_data.find(key) != m_data.end();
         }
 
+        /**
+         * @brief Check if property exists.
+         * @param key property key
+         * @return true if property exists
+         */
         bool exists(const std::string& key) const
         {
             return m_data.find(key) != m_data.end();
         }
 
+        /**
+         * @brief Get property value.
+         * @tparam T value type
+         * @param key property key
+         * @return property value
+         */
         template <typename T> T get(const char* key) const
         {
             if (key == nullptr) {
@@ -64,6 +114,14 @@ namespace mge {
             MGE_THROW(no_such_element) << "No property '" << key << "' found";
         }
 
+        /**
+         * @brief Get property value with default.
+         * @tparam T value type
+         * @tparam D default value type
+         * @param key property key
+         * @param default_value default value if property not found
+         * @return property value or default
+         */
         template <typename T, typename D>
         T get(const char* key, const D& default_value) const
         {
@@ -78,6 +136,12 @@ namespace mge {
                 return default_value;
             }
         }
+        /**
+         * @brief Get property value.
+         * @tparam T value type
+         * @param key property key
+         * @return property value
+         */
         template <typename T> T get(std::string_view key) const
         {
             if (key.data() == nullptr) {
@@ -91,6 +155,14 @@ namespace mge {
             MGE_THROW(no_such_element) << "No property '" << key << "' found";
         }
 
+        /**
+         * @brief Get property value with default.
+         * @tparam T value type
+         * @tparam D default value type
+         * @param key property key
+         * @param default_value default value if property not found
+         * @return property value or default
+         */
         template <typename T, typename D>
         T get(std::string_view key, const D& default_value) const
         {
@@ -106,6 +178,12 @@ namespace mge {
             }
         }
 
+        /**
+         * @brief Get property value.
+         * @tparam T value type
+         * @param key property key
+         * @return property value
+         */
         template <typename T> T get(const std::string& key) const
         {
             auto it = m_data.find(key);
@@ -115,6 +193,14 @@ namespace mge {
             MGE_THROW(no_such_element) << "No property '" << key << "' found";
         }
 
+        /**
+         * @brief Get property value with default.
+         * @tparam T value type
+         * @tparam D default value type
+         * @param key property key
+         * @param default_value default value if property not found
+         * @return property value or default
+         */
         template <typename T, typename D>
         T get(const std::string& key, const D& default_value) const
         {
@@ -139,6 +225,12 @@ namespace mge {
             put(std::forward<K>(k), std::forward<T>(value));
         }
 
+        /**
+         * @brief Set property value.
+         * @tparam T value type
+         * @param key property key
+         * @param value property value
+         */
         template <typename T> inline void put(const char* key, const T& value)
         {
             std::stringstream ss;
@@ -146,6 +238,12 @@ namespace mge {
             m_data[key] = ss.str();
         }
 
+        /**
+         * @brief Set property value.
+         * @tparam T value type
+         * @param key property key
+         * @param value property value
+         */
         template <typename T>
         inline void put(std::string_view key, const T& value)
         {
@@ -154,6 +252,12 @@ namespace mge {
             m_data[std::string(key)] = ss.str();
         }
 
+        /**
+         * @brief Set property value.
+         * @tparam T value type
+         * @param key property key
+         * @param value property value
+         */
         template <typename T>
         inline void put(const std::string& key, const T& value)
         {
@@ -162,39 +266,87 @@ namespace mge {
             m_data[key] = ss.str();
         }
 
+        /**
+         * @brief Remove property.
+         * @param key property key
+         */
         void erase(std::string_view key);
+        /**
+         * @brief Remove property.
+         * @param key property key
+         */
         void erase(const std::string& key);
 
+        /**
+         * @brief Remove all properties.
+         */
         void clear();
 
+        /**
+         * @brief Load properties from stream.
+         * @param s input stream
+         */
         void load(std::istream& s);
+        /**
+         * @brief Save properties to stream.
+         * @param s output stream
+         */
         void store(std::ostream& s) const;
 
+        /**
+         * @brief Get iterator to beginning.
+         * @return iterator
+         */
         iterator begin()
         {
             return m_data.begin();
         }
+        /**
+         * @brief Get iterator to end.
+         * @return iterator
+         */
         iterator end()
         {
             return m_data.end();
         }
+        /**
+         * @brief Get const iterator to beginning.
+         * @return const iterator
+         */
         const_iterator cbegin() const
         {
             return m_data.cbegin();
         }
+        /**
+         * @brief Get const iterator to end.
+         * @return const iterator
+         */
         const_iterator cend() const
         {
             return m_data.cend();
         }
+        /**
+         * @brief Get const iterator to beginning.
+         * @return const iterator
+         */
         const_iterator begin() const
         {
             return cbegin();
         }
+        /**
+         * @brief Get const iterator to end.
+         * @return const iterator
+         */
         const_iterator end() const
         {
             return cend();
         }
 
+        /**
+         * @brief Equality comparison.
+         * @param p properties to compare
+         * @return true if properties are equal
+         */
         inline bool operator==(const properties& p) const
         {
             return m_data == p.m_data;

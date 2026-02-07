@@ -7,6 +7,7 @@ SET(mgeapplication_headers
     application.hpp
     loop_target.hpp
     loop.hpp
+    loop_context.hpp
 )
 
 SET(mgeapplication_sources
