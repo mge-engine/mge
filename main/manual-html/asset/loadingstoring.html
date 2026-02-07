@@ -9,6 +9,7 @@
   <title>Asset Loading and Storing &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,32 +52,23 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgeasset.html">Asset Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="asset.html">Asset Management</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Asset Loading and Storing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#supported-asset-sources">Supported Asset Sources</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#file-asset-source">File Asset Source</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#zip-asset-source">Zip Asset Source</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#implementing-an-asset-source">Implementing an Asset Source</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_sourceE"><code class="docutils literal notranslate"><span class="pre">mge::asset_source</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12asset_accessE"><code class="docutils literal notranslate"><span class="pre">mge::asset_access</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#asset-handlers">Asset Handlers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13asset_handlerE"><code class="docutils literal notranslate"><span class="pre">mge::asset_handler</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgeasset.html">Asset Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="asset.html">Asset Management</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Asset Loading and Storing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="assettool.html">Asset Tool</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="assettool.html">Asset Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
 </ul>
@@ -99,6 +91,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgeasset.html">Asset Library</a></li>
       <li class="breadcrumb-item active">Asset Loading and Storing</li>
       <li class="wy-breadcrumbs-aside">
@@ -118,38 +111,144 @@
 virtual filesystem managed by the asset subsystem.</p>
 <p>Asset access factories are mounted at specific directories and are responsible
 for loading assets having paths that start with the directory they are mounted.</p>
-<p>The asset subsystem is configured in the configuration by the <cite>asset/repository</cite>
-parameter, which manages a list of mounted asset repositories.</p>
-<p>The following properties have to be specified for each mounted repository:</p>
+<section id="configuration-file">
+<h3>Configuration File<a class="headerlink" href="#configuration-file" title="Link to this heading"></a></h3>
+<p>The asset subsystem is configured in the executable configuration under the
+<code class="docutils literal notranslate"><span class="pre">asset</span></code> section, using the <code class="docutils literal notranslate"><span class="pre">repositories</span></code> parameter which manages a list
+of mounted asset repositories.</p>
+<p>The configuration is read from the application’s JSON configuration file and
+can be dynamically updated at runtime through the configuration system.</p>
+<section id="required-repository-properties">
+<h4>Required Repository Properties<a class="headerlink" href="#required-repository-properties" title="Link to this heading"></a></h4>
+<p>Each repository entry must specify:</p>
 <dl class="simple">
-<dt>type</dt><dd><p>The type defines the factory used to load the assets.</p>
+<dt>type</dt><dd><p>The type defines the factory used to load the assets (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;file&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;zip&quot;</span></code>).</p>
 </dd>
-<dt>mount_point</dt><dd><p>The directory where the asset repository is mounted.</p>
+<dt>mount_point</dt><dd><p>The virtual path where the asset repository is mounted (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;/&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;/assets&quot;</span></code>).</p>
 </dd>
 </dl>
-<p>Additional properties specific to the type can be specified too,
-as can be seen in following example:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;repositories&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="nt">&quot;/assets&quot;</span>
-<span class="w">            </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assets&quot;</span>
-<span class="w">        </span><span class="p">},</span>
-<span class="w">        </span><span class="p">{</span>
-<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zip&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/zipassets&quot;</span><span class="p">,</span>
-<span class="w">            </span><span class="nt">&quot;file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assets.zip&quot;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">]</span>
+</section>
+<section id="optional-repository-properties">
+<h4>Optional Repository Properties<a class="headerlink" href="#optional-repository-properties" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>mode</dt><dd><p>Access mode for the repository. Valid values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code> - Read-only access (default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;w&quot;</span></code> - Write-only access</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;rw&quot;</span></code> - Read-write access</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="type-specific-properties">
+<h4>Type-Specific Properties<a class="headerlink" href="#type-specific-properties" title="Link to this heading"></a></h4>
+<p>Additional properties specific to each repository type can be specified.
+These properties are passed to the asset source implementation during
+configuration.</p>
+<dl class="simple">
+<dt>For <code class="docutils literal notranslate"><span class="pre">file</span></code> type:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">directory</span></code> - Filesystem path to the directory containing assets</p>
+</dd>
+<dt>For <code class="docutils literal notranslate"><span class="pre">zip</span></code> type:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">file</span></code> - Path to the ZIP archive file</p>
+</dd>
+</dl>
+</section>
+<section id="configuration-example">
+<h4>Configuration Example<a class="headerlink" href="#configuration-example" title="Link to this heading"></a></h4>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;asset&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;repositories&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/assets&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assets&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/temp&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;rw&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;directory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/tmp/game_assets&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;zip&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;mount_point&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/zipassets&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;file&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;assets.zip&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+</section>
+<section id="dynamic-reconfiguration">
+<h4>Dynamic Reconfiguration<a class="headerlink" href="#dynamic-reconfiguration" title="Link to this heading"></a></h4>
+<p>The asset configuration supports dynamic updates through the configuration
+system’s change handler mechanism. When the <code class="docutils literal notranslate"><span class="pre">asset.repositories</span></code> parameter
+is modified, the mount table is automatically reconfigured:</p>
+<ul class="simple">
+<li><p>Unchanged mount points are preserved</p></li>
+<li><p>Modified mount points are remounted with new settings</p></li>
+<li><p>Removed mount points are automatically unmounted</p></li>
+</ul>
+<p>This allows runtime modification of asset sources without restarting the
+application.</p>
+<p>The configuration parameter can be accessed programmatically:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;mge/core/configuration.hpp&quot;</span>
+
+<span class="c1">// Access the repositories parameter</span>
+<span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">repos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MGE_PARAMETER</span><span class="p">(</span><span class="n">asset</span><span class="p">,</span><span class="w"> </span><span class="n">repositories</span><span class="p">);</span>
+
+<span class="c1">// Modification triggers automatic reconfiguration</span>
+<span class="c1">// through the registered change handler</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-validation">
+<h4>Configuration Validation<a class="headerlink" href="#configuration-validation" title="Link to this heading"></a></h4>
+<p>The asset configuration system validates repository entries during loading:</p>
+<ul class="simple">
+<li><p><strong>Missing required properties</strong>: Repository entries without <code class="docutils literal notranslate"><span class="pre">mount_point</span></code>
+or <code class="docutils literal notranslate"><span class="pre">type</span></code> are logged as errors and skipped.</p></li>
+<li><p><strong>Invalid access mode</strong>: An invalid <code class="docutils literal notranslate"><span class="pre">mode</span></code> value throws an <code class="docutils literal notranslate"><span class="pre">illegal_argument</span></code>
+exception. Valid values are <code class="docutils literal notranslate"><span class="pre">&quot;r&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;w&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;rw&quot;</span></code>.</p></li>
+<li><p><strong>Invalid type</strong>: Attempting to mount an unknown asset source type throws
+an <code class="docutils literal notranslate"><span class="pre">illegal_state</span></code> exception.</p></li>
+</ul>
+<p>Error messages are logged through the <code class="docutils literal notranslate"><span class="pre">ASSET</span></code> trace topic. Enable asset
+tracing to diagnose configuration issues:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Windows PowerShell</span>
+<span class="nv">$env</span>:MGE_TRACE_ENABLED<span class="o">=</span><span class="m">1</span>
+<span class="nv">$env</span>:MGE_TRACE_TOPIC_ASSET<span class="o">=</span><span class="m">1</span>
+<span class="nv">$env</span>:MGE_TRACE_TO_STDOUT<span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</section>
+<section id="path-resolution">
+<h4>Path Resolution<a class="headerlink" href="#path-resolution" title="Link to this heading"></a></h4>
+<p>When an asset is accessed by path, the mount table resolves it to the
+appropriate asset source using the following algorithm:</p>
+<ol class="arabic simple">
+<li><p>Find the longest mount point that is a prefix of the requested asset path</p></li>
+<li><p>Check that the access mode is compatible with the requested operation
+(load requires READ or READ_WRITE, store requires WRITE or READ_WRITE)</p></li>
+<li><p>Delegate to the matched asset source’s <code class="docutils literal notranslate"><span class="pre">access()</span></code> method</p></li>
+</ol>
+<p>For example, with mount points <code class="docutils literal notranslate"><span class="pre">/</span></code> and <code class="docutils literal notranslate"><span class="pre">/assets/textures</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/assets/textures/brick.png</span></code> → uses <code class="docutils literal notranslate"><span class="pre">/assets/textures</span></code> mount</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/assets/models/box.obj</span></code> → uses <code class="docutils literal notranslate"><span class="pre">/</span></code> mount</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/config.json</span></code> → uses <code class="docutils literal notranslate"><span class="pre">/</span></code> mount</p></li>
+</ul>
+<p>This allows hierarchical organization of asset sources with more specific
+mount points taking precedence over general ones.</p>
+</section>
+</section>
 </section>
 <section id="supported-asset-sources">
 <h2>Supported Asset Sources<a class="headerlink" href="#supported-asset-sources" title="Link to this heading"></a></h2>
@@ -162,6 +261,30 @@ the following properties:</p>
 <dt>directory</dt><dd><p>The directory from which to load assets.</p>
 </dd>
 </dl>
+<section id="access-mode">
+<h4>Access Mode<a class="headerlink" href="#access-mode" title="Link to this heading"></a></h4>
+<p>Asset sources can be mounted in different access modes:</p>
+<dl class="simple">
+<dt>READ</dt><dd><p>Read-only access to assets (default).</p>
+</dd>
+<dt>WRITE</dt><dd><p>Write-only access (for storing assets).</p>
+</dd>
+<dt>READ_WRITE</dt><dd><p>Both reading and writing allowed.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">mge</span><span class="o">::</span><span class="n">properties</span><span class="w"> </span><span class="n">p</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;directory&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./assets&quot;</span><span class="p">);</span>
+
+<span class="c1">// Mount read-only (default)</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">mount</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+
+<span class="c1">// Mount with read-write access</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">mount</span><span class="p">(</span><span class="s">&quot;/temp&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">mge</span><span class="o">::</span><span class="n">asset_source</span><span class="o">::</span><span class="n">access_mode</span><span class="o">::</span><span class="n">READ_WRITE</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="zip-asset-source">
 <h3>Zip Asset Source<a class="headerlink" href="#zip-asset-source" title="Link to this heading"></a></h3>
@@ -171,6 +294,11 @@ following properties:</p>
 <dt>file</dt><dd><p>The zip file from which to load assets.</p>
 </dd>
 </dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Zip asset source implementation status may vary. Check source code for
+current availability.</p>
+</div>
 </section>
 </section>
 <section id="implementing-an-asset-source">
@@ -179,7 +307,7 @@ following properties:</p>
 the <cite>asset_source</cite> interface and register it as a component.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge12asset_sourceE">
-<span id="_CPPv3N3mge12asset_sourceE"></span><span id="_CPPv2N3mge12asset_sourceE"></span><span id="mge::asset_source"></span><span class="target" id="classmge_1_1asset__source"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_source</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge12asset_sourceE" title="mge::asset_source"><span class="n"><span class="pre">asset_source</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_sourceE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge12asset_sourceE"></span><span id="_CPPv2N3mge12asset_sourceE"></span><span id="mge::asset_source"></span><span class="target" id="classmge_1_1asset__source"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_source</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge12asset_sourceE" title="mge::asset_source"><span class="n"><span class="pre">asset_source</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge12asset_sourceE" title="Link to this definition"></a><br /></dt>
 <dd><p>An asset access factory. </p>
 <p>An asset access factory is ‘mounted’ below a specific path, and serves all assets that are looked for beneath this path. </p>
 <p>Subclassed by mge::file_asset_source</p>
@@ -425,7 +553,7 @@ like e.g. ‘text/plain’ by providing a more specific type, such as ‘model/o
 by further inspection of the asset data.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13asset_handlerE">
-<span id="_CPPv3N3mge13asset_handlerE"></span><span id="_CPPv2N3mge13asset_handlerE"></span><span id="mge::asset_handler"></span><span class="target" id="classmge_1_1asset__handler"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13asset_handlerE" title="mge::asset_handler"><span class="n"><span class="pre">asset_handler</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13asset_handlerE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge13asset_handlerE"></span><span id="_CPPv2N3mge13asset_handlerE"></span><span id="mge::asset_handler"></span><span class="target" id="classmge_1_1asset__handler"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">asset_handler</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge13asset_handlerE" title="mge::asset_handler"><span class="n"><span class="pre">asset_handler</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge13asset_handlerE" title="Link to this definition"></a><br /></dt>
 <dd><p>Interface for asset handlers. </p>
 <p>An asset handler is responsible for loading an asset. Assets can be loaded as raw streams, but usually one wants to load an asset in a structured way, e.g. as a image, a mesh, a shader etc. </p>
 <p>Subclassed by mge::application_octet_stream_handler</p>
@@ -514,6 +642,143 @@ by further inspection of the asset data.</p>
 </div>
 </dd></dl>
 
+<section id="built-in-asset-handlers">
+<h3>Built-in Asset Handlers<a class="headerlink" href="#built-in-asset-handlers" title="Link to this heading"></a></h3>
+<section id="octet-stream-handler">
+<h4>Octet Stream Handler<a class="headerlink" href="#octet-stream-handler" title="Link to this heading"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">application_octet_stream_handler</span></code> provides generic handling for binary
+assets. It loads assets as raw byte buffers and is used as a fallback when no
+more specific handler is available.</p>
+<dl class="simple">
+<dt>Handled types:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">application/octet-stream</span></code></p>
+</dd>
+<dt>Loaded as:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">std::shared_ptr&lt;mge::buffer&gt;</span></code></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">mge</span><span class="o">::</span><span class="nn">literals</span><span class="p">;</span>
+
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">shader</span><span class="p">(</span><span class="s">&quot;/shaders/fragment.spv&quot;</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">shader</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">any_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">mge</span><span class="o">::</span><span class="n">buffer</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="type-improvement">
+<h4>Type Improvement<a class="headerlink" href="#type-improvement" title="Link to this heading"></a></h4>
+<p>Asset handlers can improve generic asset types by inspecting the asset data.
+For example, a generic <code class="docutils literal notranslate"><span class="pre">text/plain</span></code> type might be improved to <code class="docutils literal notranslate"><span class="pre">model/obj</span></code>
+by checking for OBJ file markers.</p>
+<p>The type improvement mechanism works as follows:</p>
+<ol class="arabic simple">
+<li><p>Asset source provides initial type (often via file extension or MIME magic)</p></li>
+<li><p>Handlers are queried via <code class="docutils literal notranslate"><span class="pre">can_improve()</span></code> to see if they can refine the type</p></li>
+<li><p>If a handler can improve the type, <code class="docutils literal notranslate"><span class="pre">improve()</span></code> is called to get the refined type</p></li>
+</ol>
+</section>
+</section>
+<section id="implementation-details">
+<h3>Implementation Details<a class="headerlink" href="#implementation-details" title="Link to this heading"></a></h3>
+<section id="type-detection">
+<h4>Type Detection<a class="headerlink" href="#type-detection" title="Link to this heading"></a></h4>
+<p>The asset library uses <code class="docutils literal notranslate"><span class="pre">libmagic</span></code> for automatic type detection based on file
+content. This allows assets to be correctly identified even without relying on
+file extensions.</p>
+</section>
+<section id="handler-registration">
+<h4>Handler Registration<a class="headerlink" href="#handler-registration" title="Link to this heading"></a></h4>
+<p>Asset handlers register themselves as component implementations:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">my_handler</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">asset_handler</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Implementation...</span>
+<span class="p">};</span>
+
+<span class="n">MGE_REGISTER_IMPLEMENTATION</span><span class="p">(</span><span class="n">my_handler</span><span class="p">,</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">asset_handler</span><span class="p">,</span><span class="w"> </span><span class="n">my_handler_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="practical-examples">
+<h2>Practical Examples<a class="headerlink" href="#practical-examples" title="Link to this heading"></a></h2>
+<section id="loading-assets">
+<h3>Loading Assets<a class="headerlink" href="#loading-assets" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">mge</span><span class="o">::</span><span class="nn">literals</span><span class="p">;</span>
+
+<span class="c1">// Load an image</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">image_asset</span><span class="p">(</span><span class="s">&quot;/textures/brick.png&quot;</span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">image_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">image_asset</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">any_cast</span><span class="o">&lt;</span><span class="n">mge</span><span class="o">::</span><span class="n">image_ref</span><span class="o">&gt;</span><span class="p">(</span><span class="n">image_data</span><span class="p">);</span>
+
+<span class="c1">// Load a model</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">model_asset</span><span class="p">(</span><span class="s">&quot;/models/teapot.obj&quot;</span><span class="p">);</span>
+<span class="n">EXPECT_EQ</span><span class="p">(</span><span class="s">&quot;model/obj&quot;</span><span class="n">_at</span><span class="p">,</span><span class="w"> </span><span class="n">model_asset</span><span class="p">.</span><span class="n">type</span><span class="p">());</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">mesh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">any_cast</span><span class="o">&lt;</span><span class="n">mge</span><span class="o">::</span><span class="n">mesh_ref</span><span class="o">&gt;</span><span class="p">(</span><span class="n">model_asset</span><span class="p">.</span><span class="n">load</span><span class="p">());</span>
+</pre></div>
+</div>
+</section>
+<section id="storing-assets">
+<h3>Storing Assets<a class="headerlink" href="#storing-assets" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">mge</span><span class="o">::</span><span class="nn">literals</span><span class="p">;</span>
+
+<span class="c1">// Create or modify an image</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">image_ref</span><span class="w"> </span><span class="n">my_image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_image</span><span class="p">();</span>
+
+<span class="c1">// Store as PNG</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">output</span><span class="p">(</span><span class="s">&quot;/output/result.png&quot;</span><span class="p">);</span>
+<span class="n">output</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="s">&quot;image/png&quot;</span><span class="n">_at</span><span class="p">,</span><span class="w"> </span><span class="n">my_image</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="mounting-and-unmounting">
+<h3>Mounting and Unmounting<a class="headerlink" href="#mounting-and-unmounting" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Mount filesystem directory</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">properties</span><span class="w"> </span><span class="n">fs_props</span><span class="p">;</span>
+<span class="n">fs_props</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;directory&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;./game_assets&quot;</span><span class="p">);</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">mount</span><span class="p">(</span><span class="s">&quot;/game&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;file&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fs_props</span><span class="p">);</span>
+
+<span class="c1">// Mount with write access</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">properties</span><span class="w"> </span><span class="n">temp_props</span><span class="p">;</span>
+<span class="n">temp_props</span><span class="p">.</span><span class="n">set</span><span class="p">(</span><span class="s">&quot;directory&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">temp_directory_path</span><span class="p">().</span><span class="n">string</span><span class="p">());</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">mount</span><span class="p">(</span><span class="s">&quot;/temp&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">mge</span><span class="o">::</span><span class="n">asset_source</span><span class="o">::</span><span class="n">access_mode</span><span class="o">::</span><span class="n">READ_WRITE</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">temp_props</span><span class="p">);</span>
+
+<span class="c1">// Use assets</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">level_data</span><span class="p">(</span><span class="s">&quot;/game/levels/level1.dat&quot;</span><span class="p">);</span>
+<span class="c1">// ...</span>
+
+<span class="c1">// Clean up</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">unmount</span><span class="p">(</span><span class="s">&quot;/temp&quot;</span><span class="p">);</span>
+<span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">unmount</span><span class="p">(</span><span class="s">&quot;/game&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<section id="programmatic-vs-configuration-file-mounting">
+<h4>Programmatic vs. Configuration File Mounting<a class="headerlink" href="#programmatic-vs-configuration-file-mounting" title="Link to this heading"></a></h4>
+<p>Asset sources can be mounted in two ways:</p>
+<ol class="arabic simple">
+<li><p><strong>Configuration file</strong>: Repositories listed in the <code class="docutils literal notranslate"><span class="pre">asset.repositories</span></code>
+configuration parameter are automatically mounted at application startup
+and can be dynamically reconfigured.</p></li>
+<li><p><strong>Programmatic mounting</strong>: Using <code class="docutils literal notranslate"><span class="pre">mge::asset::mount()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">mge::asset::unmount()</span></code> provides runtime control over mount points,
+useful for temporary asset sources or conditional mounting.</p></li>
+</ol>
+<p>Both methods can be used together. Programmatic mounts are independent of
+the configuration file and persist until explicitly unmounted or until
+application shutdown.</p>
+</section>
+</section>
+<section id="locating-assets-by-name">
+<h3>Locating Assets by Name<a class="headerlink" href="#locating-assets-by-name" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">locate()</span></code> method finds assets by name rather than explicit path,
+useful for font families or other named resources:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">mge</span><span class="o">::</span><span class="nn">literals</span><span class="p">;</span>
+
+<span class="c1">// Find a font by family name</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">font</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="o">::</span><span class="n">locate</span><span class="p">(</span><span class="s">&quot;Arial&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;font/truetype&quot;</span><span class="n">_at</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 

@@ -9,6 +9,7 @@
   <title>Buffers &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,49 +52,33 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Buffers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11buffer_typeE"><code class="docutils literal notranslate"><span class="pre">buffer_type</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge9data_typeE"><code class="docutils literal notranslate"><span class="pre">data_type</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14data_type_sizeE9data_type"><code class="docutils literal notranslate"><span class="pre">data_type_size()</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="texture.html">Texture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html">Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="command_buffer.html">Command Buffers</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#hardware-buffer">Hardware Buffer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge15hardware_bufferE"><code class="docutils literal notranslate"><span class="pre">mge::hardware_buffer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#vertex-buffer">Vertex Buffer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13vertex_formatE"><code class="docutils literal notranslate"><span class="pre">mge::vertex_format</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge18attribute_semanticE"><code class="docutils literal notranslate"><span class="pre">attribute_semantic</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13vertex_layoutE"><code class="docutils literal notranslate"><span class="pre">mge::vertex_layout</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13vertex_bufferE"><code class="docutils literal notranslate"><span class="pre">mge::vertex_buffer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#index-buffer">Index Buffer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge12index_bufferE"><code class="docutils literal notranslate"><span class="pre">mge::index_buffer</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#constant-buffer">Constant Buffer</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mesh.html">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -114,6 +99,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
       <li class="breadcrumb-item active">Buffers</li>
       <li class="wy-breadcrumbs-aside">
@@ -439,6 +425,302 @@ of a render context.</p>
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14data_type_sizeE9data_type">
 <span id="_CPPv3N3mge14data_type_sizeE9data_type"></span><span id="_CPPv2N3mge14data_type_sizeE9data_type"></span><span id="mge::data_type_size__data_type"></span><span class="target" id="namespacemge_1a6f6dae9a23c34565e06ef3a55efcb249"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">data_type_size</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14data_type_sizeE9data_type" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the size of one data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>size_t </p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenenum: Cannot find enum “mge::topology” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
+<p>Uniform data types specify data types for shader uniform variables.</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_typeE">
+<span id="_CPPv3N3mge17uniform_data_typeE"></span><span id="_CPPv2N3mge17uniform_data_typeE"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eec"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">uniform_data_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint8_t</span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Data type. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type7UNKNOWNE">
+<span id="_CPPv3N3mge17uniform_data_type7UNKNOWNE"></span><span id="_CPPv2N3mge17uniform_data_type7UNKNOWNE"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca696b031073e74bf2cb98e5ef201d4aa3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNKNOWN</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type7UNKNOWNE" title="Link to this definition"></a><br /></dt>
+<dd><p>unknown type </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type4INT8E">
+<span id="_CPPv3N3mge17uniform_data_type4INT8E"></span><span id="_CPPv2N3mge17uniform_data_type4INT8E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecaee9d73311ff0658494edfff14c3ec1e3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT8</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type4INT8E" title="Link to this definition"></a><br /></dt>
+<dd><p>int8_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type5UINT8E">
+<span id="_CPPv3N3mge17uniform_data_type5UINT8E"></span><span id="_CPPv2N3mge17uniform_data_type5UINT8E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecaecfc091ed2a607335524c8389cfa41b5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT8</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type5UINT8E" title="Link to this definition"></a><br /></dt>
+<dd><p>uint8_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type5INT16E">
+<span id="_CPPv3N3mge17uniform_data_type5INT16E"></span><span id="_CPPv2N3mge17uniform_data_type5INT16E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca5f90af42814c0a419d715d43ae54fd7a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT16</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type5INT16E" title="Link to this definition"></a><br /></dt>
+<dd><p>int16_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type6UINT16E">
+<span id="_CPPv3N3mge17uniform_data_type6UINT16E"></span><span id="_CPPv2N3mge17uniform_data_type6UINT16E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca48d8f1a723d44ff4a87db1bb6c551c62"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT16</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type6UINT16E" title="Link to this definition"></a><br /></dt>
+<dd><p>uint16_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type5INT32E">
+<span id="_CPPv3N3mge17uniform_data_type5INT32E"></span><span id="_CPPv2N3mge17uniform_data_type5INT32E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca6495adba09844fac8eeb0aba86e6f1bf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT32</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type5INT32E" title="Link to this definition"></a><br /></dt>
+<dd><p>int32_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type6UINT32E">
+<span id="_CPPv3N3mge17uniform_data_type6UINT32E"></span><span id="_CPPv2N3mge17uniform_data_type6UINT32E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca17266551181f69a1b4a3ad5c9e270afc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT32</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type6UINT32E" title="Link to this definition"></a><br /></dt>
+<dd><p>uint32_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type5INT64E">
+<span id="_CPPv3N3mge17uniform_data_type5INT64E"></span><span id="_CPPv2N3mge17uniform_data_type5INT64E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca4e866b275c85fbb439f6484251cfb31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT64</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type5INT64E" title="Link to this definition"></a><br /></dt>
+<dd><p>int64_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type6UINT64E">
+<span id="_CPPv3N3mge17uniform_data_type6UINT64E"></span><span id="_CPPv2N3mge17uniform_data_type6UINT64E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca6de7acf711860176ba606e9aa2b85d5f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT64</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type6UINT64E" title="Link to this definition"></a><br /></dt>
+<dd><p>uint64_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type6INT128E">
+<span id="_CPPv3N3mge17uniform_data_type6INT128E"></span><span id="_CPPv2N3mge17uniform_data_type6INT128E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecac41709f50c4690286b811f5c609b1bba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT128</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type6INT128E" title="Link to this definition"></a><br /></dt>
+<dd><p>int128_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type7UINT128E">
+<span id="_CPPv3N3mge17uniform_data_type7UINT128E"></span><span id="_CPPv2N3mge17uniform_data_type7UINT128E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecad347d28b256daedf5e51278a150457d8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT128</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type7UINT128E" title="Link to this definition"></a><br /></dt>
+<dd><p>int128_t </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type4HALFE">
+<span id="_CPPv3N3mge17uniform_data_type4HALFE"></span><span id="_CPPv2N3mge17uniform_data_type4HALFE"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca87e955627b59c274ec4cbdd3a130f9bb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HALF</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type4HALFE" title="Link to this definition"></a><br /></dt>
+<dd><p>half precision float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type5FLOATE">
+<span id="_CPPv3N3mge17uniform_data_type5FLOATE"></span><span id="_CPPv2N3mge17uniform_data_type5FLOATE"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecae738c26bf4ce1037fa81b039a915cbf6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type5FLOATE" title="Link to this definition"></a><br /></dt>
+<dd><p>float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type6DOUBLEE">
+<span id="_CPPv3N3mge17uniform_data_type6DOUBLEE"></span><span id="_CPPv2N3mge17uniform_data_type6DOUBLEE"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecafd3e4ece78a7d422280d5ed379482229"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type6DOUBLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11LONG_DOUBLEE">
+<span id="_CPPv3N3mge17uniform_data_type11LONG_DOUBLEE"></span><span id="_CPPv2N3mge17uniform_data_type11LONG_DOUBLEE"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecaa30ec41f6da736498c907ffd7b0a082b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LONG_DOUBLE</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11LONG_DOUBLEE" title="Link to this definition"></a><br /></dt>
+<dd><p>long double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type10FLOAT_VEC2E">
+<span id="_CPPv3N3mge17uniform_data_type10FLOAT_VEC2E"></span><span id="_CPPv2N3mge17uniform_data_type10FLOAT_VEC2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecacd312e678112ac64cb0dab9357313580"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_VEC2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type10FLOAT_VEC2E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D vector of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type10FLOAT_VEC3E">
+<span id="_CPPv3N3mge17uniform_data_type10FLOAT_VEC3E"></span><span id="_CPPv2N3mge17uniform_data_type10FLOAT_VEC3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca092cc4f7a45b9cc619f0612470af1bd2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_VEC3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type10FLOAT_VEC3E" title="Link to this definition"></a><br /></dt>
+<dd><p>3D vector of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type10FLOAT_VEC4E">
+<span id="_CPPv3N3mge17uniform_data_type10FLOAT_VEC4E"></span><span id="_CPPv2N3mge17uniform_data_type10FLOAT_VEC4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecad27c1fe06dfd9a41ccd990db0db5ad5d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_VEC4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type10FLOAT_VEC4E" title="Link to this definition"></a><br /></dt>
+<dd><p>4D vector of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type10FLOAT_MAT2E">
+<span id="_CPPv3N3mge17uniform_data_type10FLOAT_MAT2E"></span><span id="_CPPv2N3mge17uniform_data_type10FLOAT_MAT2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca6c4b8736dad72bd1cfa83c7327f3a585"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type10FLOAT_MAT2E" title="Link to this definition"></a><br /></dt>
+<dd><p>2x2 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type10FLOAT_MAT3E">
+<span id="_CPPv3N3mge17uniform_data_type10FLOAT_MAT3E"></span><span id="_CPPv2N3mge17uniform_data_type10FLOAT_MAT3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca8b8a80899caa88a18c5e6fe3f5471b6e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type10FLOAT_MAT3E" title="Link to this definition"></a><br /></dt>
+<dd><p>3x3 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type10FLOAT_MAT4E">
+<span id="_CPPv3N3mge17uniform_data_type10FLOAT_MAT4E"></span><span id="_CPPv2N3mge17uniform_data_type10FLOAT_MAT4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecac76f22aff2eea8e58016e484a127453a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type10FLOAT_MAT4E" title="Link to this definition"></a><br /></dt>
+<dd><p>4x4 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type12FLOAT_MAT2x3E">
+<span id="_CPPv3N3mge17uniform_data_type12FLOAT_MAT2x3E"></span><span id="_CPPv2N3mge17uniform_data_type12FLOAT_MAT2x3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecae7d73d6b5906a374851cdf28df7511c6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT2x3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type12FLOAT_MAT2x3E" title="Link to this definition"></a><br /></dt>
+<dd><p>2x3 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type12FLOAT_MAT2x4E">
+<span id="_CPPv3N3mge17uniform_data_type12FLOAT_MAT2x4E"></span><span id="_CPPv2N3mge17uniform_data_type12FLOAT_MAT2x4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca31d7efbac1f007c280665e8573aa3b33"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT2x4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type12FLOAT_MAT2x4E" title="Link to this definition"></a><br /></dt>
+<dd><p>2x4 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type12FLOAT_MAT3x2E">
+<span id="_CPPv3N3mge17uniform_data_type12FLOAT_MAT3x2E"></span><span id="_CPPv2N3mge17uniform_data_type12FLOAT_MAT3x2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecaacd68897f21fbcf7b6eb838f62016833"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT3x2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type12FLOAT_MAT3x2E" title="Link to this definition"></a><br /></dt>
+<dd><p>3x2 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type12FLOAT_MAT3x4E">
+<span id="_CPPv3N3mge17uniform_data_type12FLOAT_MAT3x4E"></span><span id="_CPPv2N3mge17uniform_data_type12FLOAT_MAT3x4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca51fe112e2d5b3fa2a9a21bc815bb500d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT3x4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type12FLOAT_MAT3x4E" title="Link to this definition"></a><br /></dt>
+<dd><p>3x4 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type12FLOAT_MAT4x2E">
+<span id="_CPPv3N3mge17uniform_data_type12FLOAT_MAT4x2E"></span><span id="_CPPv2N3mge17uniform_data_type12FLOAT_MAT4x2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca0c222464b35aa6eba5e92a547e0d5128"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT4x2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type12FLOAT_MAT4x2E" title="Link to this definition"></a><br /></dt>
+<dd><p>4x2 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type12FLOAT_MAT4x3E">
+<span id="_CPPv3N3mge17uniform_data_type12FLOAT_MAT4x3E"></span><span id="_CPPv2N3mge17uniform_data_type12FLOAT_MAT4x3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca2d05400824d51f0e31608f850c1425f1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOAT_MAT4x3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type12FLOAT_MAT4x3E" title="Link to this definition"></a><br /></dt>
+<dd><p>4x3 matrix of float </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type8INT_VEC2E">
+<span id="_CPPv3N3mge17uniform_data_type8INT_VEC2E"></span><span id="_CPPv2N3mge17uniform_data_type8INT_VEC2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecaa855d2497f448891e12e8d883de6f733"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT_VEC2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type8INT_VEC2E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D vector of int </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type8INT_VEC3E">
+<span id="_CPPv3N3mge17uniform_data_type8INT_VEC3E"></span><span id="_CPPv2N3mge17uniform_data_type8INT_VEC3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca434a9428ba822675515a1e01cc344c59"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT_VEC3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type8INT_VEC3E" title="Link to this definition"></a><br /></dt>
+<dd><p>3D vector of int </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type8INT_VEC4E">
+<span id="_CPPv3N3mge17uniform_data_type8INT_VEC4E"></span><span id="_CPPv2N3mge17uniform_data_type8INT_VEC4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecafbb8a6775fdcbd11112543e2f9b9335c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INT_VEC4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type8INT_VEC4E" title="Link to this definition"></a><br /></dt>
+<dd><p>4D vector of int </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type9UINT_VEC2E">
+<span id="_CPPv3N3mge17uniform_data_type9UINT_VEC2E"></span><span id="_CPPv2N3mge17uniform_data_type9UINT_VEC2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca378432da4bd306e9b8ea51706441babc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT_VEC2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type9UINT_VEC2E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D vector of uint </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type9UINT_VEC3E">
+<span id="_CPPv3N3mge17uniform_data_type9UINT_VEC3E"></span><span id="_CPPv2N3mge17uniform_data_type9UINT_VEC3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca3ade1baa88bc74736977a9c15053ce7e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT_VEC3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type9UINT_VEC3E" title="Link to this definition"></a><br /></dt>
+<dd><p>3D vector of uint </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type9UINT_VEC4E">
+<span id="_CPPv3N3mge17uniform_data_type9UINT_VEC4E"></span><span id="_CPPv2N3mge17uniform_data_type9UINT_VEC4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca5d087d46ef04ae6b21d237a69c3bbc89"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UINT_VEC4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type9UINT_VEC4E" title="Link to this definition"></a><br /></dt>
+<dd><p>4D vector of uint </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11DOUBLE_VEC2E">
+<span id="_CPPv3N3mge17uniform_data_type11DOUBLE_VEC2E"></span><span id="_CPPv2N3mge17uniform_data_type11DOUBLE_VEC2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecae9d73b894dde61b6e08d1d90aca60bca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_VEC2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11DOUBLE_VEC2E" title="Link to this definition"></a><br /></dt>
+<dd><p>2D vector of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11DOUBLE_VEC3E">
+<span id="_CPPv3N3mge17uniform_data_type11DOUBLE_VEC3E"></span><span id="_CPPv2N3mge17uniform_data_type11DOUBLE_VEC3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca28862bc4d17c9445fbd2ad4d742d7ae4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_VEC3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11DOUBLE_VEC3E" title="Link to this definition"></a><br /></dt>
+<dd><p>3D vector of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11DOUBLE_VEC4E">
+<span id="_CPPv3N3mge17uniform_data_type11DOUBLE_VEC4E"></span><span id="_CPPv2N3mge17uniform_data_type11DOUBLE_VEC4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca37f1b5ca757dd334b300e727f921c432"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_VEC4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11DOUBLE_VEC4E" title="Link to this definition"></a><br /></dt>
+<dd><p>4D vector of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11DOUBLE_MAT2E">
+<span id="_CPPv3N3mge17uniform_data_type11DOUBLE_MAT2E"></span><span id="_CPPv2N3mge17uniform_data_type11DOUBLE_MAT2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecae865b5c38e048d1c30a5519d000ab54f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11DOUBLE_MAT2E" title="Link to this definition"></a><br /></dt>
+<dd><p>2x2 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11DOUBLE_MAT3E">
+<span id="_CPPv3N3mge17uniform_data_type11DOUBLE_MAT3E"></span><span id="_CPPv2N3mge17uniform_data_type11DOUBLE_MAT3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca3f29c0fb42cfa26fdeefdc7af9ab1b42"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11DOUBLE_MAT3E" title="Link to this definition"></a><br /></dt>
+<dd><p>3x3 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type11DOUBLE_MAT4E">
+<span id="_CPPv3N3mge17uniform_data_type11DOUBLE_MAT4E"></span><span id="_CPPv2N3mge17uniform_data_type11DOUBLE_MAT4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecab6b23ba6ad66a822dace1d814770bcca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type11DOUBLE_MAT4E" title="Link to this definition"></a><br /></dt>
+<dd><p>4x4 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type13DOUBLE_MAT2x3E">
+<span id="_CPPv3N3mge17uniform_data_type13DOUBLE_MAT2x3E"></span><span id="_CPPv2N3mge17uniform_data_type13DOUBLE_MAT2x3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecaf9319166e81f1ae5147209bda54fb72c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT2x3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT2x3E" title="Link to this definition"></a><br /></dt>
+<dd><p>2x3 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type13DOUBLE_MAT2x4E">
+<span id="_CPPv3N3mge17uniform_data_type13DOUBLE_MAT2x4E"></span><span id="_CPPv2N3mge17uniform_data_type13DOUBLE_MAT2x4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca575626d5018442ea55c48bb6ad360784"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT2x4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT2x4E" title="Link to this definition"></a><br /></dt>
+<dd><p>2x4 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type13DOUBLE_MAT3x2E">
+<span id="_CPPv3N3mge17uniform_data_type13DOUBLE_MAT3x2E"></span><span id="_CPPv2N3mge17uniform_data_type13DOUBLE_MAT3x2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecabc86061fcfcafa63bfcc608176c607c8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT3x2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT3x2E" title="Link to this definition"></a><br /></dt>
+<dd><p>3x2 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type13DOUBLE_MAT3x4E">
+<span id="_CPPv3N3mge17uniform_data_type13DOUBLE_MAT3x4E"></span><span id="_CPPv2N3mge17uniform_data_type13DOUBLE_MAT3x4E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca7bedbc6299db91bb5ea1cbf4723f6096"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT3x4</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT3x4E" title="Link to this definition"></a><br /></dt>
+<dd><p>3x4 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type13DOUBLE_MAT4x2E">
+<span id="_CPPv3N3mge17uniform_data_type13DOUBLE_MAT4x2E"></span><span id="_CPPv2N3mge17uniform_data_type13DOUBLE_MAT4x2E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eeca4589090e8439ff366d2f8401e5e135ba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT4x2</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT4x2E" title="Link to this definition"></a><br /></dt>
+<dd><p>4x2 matrix of double </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17uniform_data_type13DOUBLE_MAT4x3E">
+<span id="_CPPv3N3mge17uniform_data_type13DOUBLE_MAT4x3E"></span><span id="_CPPv2N3mge17uniform_data_type13DOUBLE_MAT4x3E"></span><span class="target" id="namespacemge_1ad35d96560f913cb7c4f94585f41f5eecab03c6cc5a2f036fd08cb8c2dfc016ff3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_MAT4x3</span></span></span><a class="headerlink" href="#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT4x3E" title="Link to this definition"></a><br /></dt>
+<dd><p>4x3 matrix of double </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge22uniform_data_type_sizeE17uniform_data_type">
+<span id="_CPPv3N3mge22uniform_data_type_sizeE17uniform_data_type"></span><span id="_CPPv2N3mge22uniform_data_type_sizeE17uniform_data_type"></span><span id="mge::uniform_data_type_size__uniform_data_type"></span><span class="target" id="namespacemge_1a38e4a86fb8e8c4568526d1bc0d42f5da"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">uniform_data_type_size</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge17uniform_data_typeE" title="mge::uniform_data_type"><span class="n"><span class="pre">uniform_data_type</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge22uniform_data_type_sizeE17uniform_data_type" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the size of one data. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

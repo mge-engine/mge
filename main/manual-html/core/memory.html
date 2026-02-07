@@ -9,6 +9,7 @@
   <title>Memory Management &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -19,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Statistics" href="statistics.html" />
-    <link rel="prev" title="Configuration" href="configuration.html" /> 
+    <link rel="next" title="Streams" href="streams.html" />
+    <link rel="prev" title="Exception Handling" href="exception.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,36 +52,38 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Memory Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge6mallocE6size_t"><code class="docutils literal notranslate"><span class="pre">malloc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge7reallocEPv6size_t"><code class="docutils literal notranslate"><span class="pre">realloc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge4freeEPv"><code class="docutils literal notranslate"><span class="pre">free()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge15memory_resourceE"><code class="docutils literal notranslate"><span class="pre">mge::memory_resource</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge15memory_resource8instanceE"><code class="docutils literal notranslate"><span class="pre">instance</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge15memory_resource9allocatorE"><code class="docutils literal notranslate"><span class="pre">allocator</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Version Tracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -101,6 +104,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
       <li class="breadcrumb-item active">Memory Management</li>
       <li class="wy-breadcrumbs-aside">
@@ -120,7 +124,7 @@
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6mallocE6size_t">
 <span id="_CPPv3N3mge6mallocE6size_t"></span><span id="_CPPv2N3mge6mallocE6size_t"></span><span id="mge::malloc__s"></span><span class="target" id="namespacemge_1aee5fc8753d6dd5b00cf894b3b07b1155"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">malloc</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge6mallocE6size_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Allocate memory. </p>
-<p>An :any:<code class="docutils literal notranslate"><span class="pre">mge::out_of_memory</span></code> exception is thrown in case memory cannot be allocated.</p>
+<p>An <a class="reference internal" href="exception.html#classmge_1_1out__of__memory"><span class="std std-ref">mge::out_of_memory</span></a> exception is thrown in case memory cannot be allocated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>size</strong> – number of bytes to allocate </p>
@@ -135,7 +139,7 @@
 <dt class="sig sig-object cpp" id="_CPPv4N3mge7reallocEPv6size_t">
 <span id="_CPPv3N3mge7reallocEPv6size_t"></span><span id="_CPPv2N3mge7reallocEPv6size_t"></span><span id="mge::realloc__voidP.s"></span><span class="target" id="namespacemge_1a2e9279f7ec90dac6cf254ec56ed95133"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">realloc</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ptr</span></span>, <span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">size</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7reallocEPv6size_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Reallocate memory. </p>
-<p>This function is similar to :any:<code class="docutils literal notranslate"><span class="pre">realloc</span></code> from the C standard library. If the pointer is :any:<code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the function behaves like :any:<code class="docutils literal notranslate"><span class="pre">malloc</span></code>. If the size is 0, the function behaves like :any:<code class="docutils literal notranslate"><span class="pre">free</span></code>.</p>
+<p>This function is similar to <code class="docutils literal notranslate"><span class="pre">realloc</span></code> from the C standard library. If the pointer is <code class="docutils literal notranslate"><span class="pre">nullptr</span></code>, the function behaves like <a class="reference internal" href="#namespacemge_1aee5fc8753d6dd5b00cf894b3b07b1155"><span class="std std-ref">mge::malloc</span></a>. If the size is 0, the function behaves like <a class="reference internal" href="#namespacemge_1ab188ee512fbcc943b0fb272a6e5c21fc"><span class="std std-ref">mge::free</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -153,7 +157,7 @@
 <dt class="sig sig-object cpp" id="_CPPv4N3mge4freeEPv">
 <span id="_CPPv3N3mge4freeEPv"></span><span id="_CPPv2N3mge4freeEPv"></span><span id="mge::free__voidP"></span><span class="target" id="namespacemge_1ab188ee512fbcc943b0fb272a6e5c21fc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">free</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">ptr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4freeEPv" title="Link to this definition"></a><br /></dt>
 <dd><p>Frees allocated memory. </p>
-<p>Passing a :any:<code class="docutils literal notranslate"><span class="pre">nullptr</span></code> to the function is safe, no operation is performed in this case.</p>
+<p>Passing a <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> to the function is safe, no operation is performed in this case.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ptr</strong> – pointer to memory to free. </p>
@@ -190,8 +194,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="configuration.html" class="btn btn-neutral float-left" title="Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="statistics.html" class="btn btn-neutral float-right" title="Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="exception.html" class="btn btn-neutral float-left" title="Exception Handling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="streams.html" class="btn btn-neutral float-right" title="Streams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

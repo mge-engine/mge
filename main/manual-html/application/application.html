@@ -9,6 +9,7 @@
   <title>Application &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,43 +52,24 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgeapplication.html">Application Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="loop.html">Interaction Loop</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Application</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge11applicationE"><code class="docutils literal notranslate"><span class="pre">mge::application</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11application4argcEv"><code class="docutils literal notranslate"><span class="pre">argc()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11application4argvEi"><code class="docutils literal notranslate"><span class="pre">argv()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge11application7is_quitEv"><code class="docutils literal notranslate"><span class="pre">is_quit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application8set_quitEv"><code class="docutils literal notranslate"><span class="pre">set_quit()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application5setupEv"><code class="docutils literal notranslate"><span class="pre">setup()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application11async_setupEv"><code class="docutils literal notranslate"><span class="pre">async_setup()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application8teardownEv"><code class="docutils literal notranslate"><span class="pre">teardown()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application3runEv"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application5inputE8uint64_t"><code class="docutils literal notranslate"><span class="pre">input()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application6updateE8uint64_tdd"><code class="docutils literal notranslate"><span class="pre">update()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application7presentE8uint64_td"><code class="docutils literal notranslate"><span class="pre">present()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application18add_input_listenerERK14input_listener"><code class="docutils literal notranslate"><span class="pre">add_input_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application21remove_input_listenerE18input_listener_key"><code class="docutils literal notranslate"><span class="pre">remove_input_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application19add_update_listenerERK15update_listener"><code class="docutils literal notranslate"><span class="pre">add_update_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application22remove_update_listenerE19update_listener_key"><code class="docutils literal notranslate"><span class="pre">remove_update_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application19add_redraw_listenerERK15redraw_listener"><code class="docutils literal notranslate"><span class="pre">add_redraw_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application22remove_redraw_listenerE19redraw_listener_key"><code class="docutils literal notranslate"><span class="pre">remove_redraw_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application17add_quit_listenerERK13quit_listener"><code class="docutils literal notranslate"><span class="pre">add_quit_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application20remove_quit_listenerE17quit_listener_key"><code class="docutils literal notranslate"><span class="pre">remove_quit_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application4mainENSt11string_viewEiPPKc"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application4mainEiPPKc"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11application8instanceEv"><code class="docutils literal notranslate"><span class="pre">instance()</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgeapplication.html">Application Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="loop.html">Interaction Loop</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Application</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -108,6 +90,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgeapplication.html">Application Library</a></li>
       <li class="breadcrumb-item active">Application</li>
       <li class="wy-breadcrumbs-aside">
@@ -125,7 +108,7 @@
 typical MGE application.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge11applicationE">
-<span id="_CPPv3N3mge11applicationE"></span><span id="_CPPv2N3mge11applicationE"></span><span id="mge::application"></span><span class="target" id="classmge_1_1application"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="n"><span class="pre">application</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="loop.html#_CPPv4N3mge11loop_targetE" title="mge::loop_target"><span class="n"><span class="pre">loop_target</span></span></a><a class="headerlink" href="#_CPPv4N3mge11applicationE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge11applicationE"></span><span id="_CPPv2N3mge11applicationE"></span><span id="mge::application"></span><span class="target" id="classmge_1_1application"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">application</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge11applicationE" title="mge::application"><span class="n"><span class="pre">application</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="loop.html#_CPPv4N3mge11loop_targetE" title="mge::loop_target"><span class="n"><span class="pre">loop_target</span></span></a><a class="headerlink" href="#_CPPv4N3mge11applicationE" title="Link to this definition"></a><br /></dt>
 <dd><p>Application framework. </p>
 <p>An application allows to attach input, update, and redraw listeners which are called during the update loop.</p>
 <p>Also a quit listener can be attached which is called when the application is terminating. </p>

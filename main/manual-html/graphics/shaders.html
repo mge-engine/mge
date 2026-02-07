@@ -9,6 +9,7 @@
   <title>Shader Programs &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,32 +52,33 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Shader Programs</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#types-and-definitions">Types and Definitions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#shader-types">Shader Types</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#shader">Shader</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Shader Programs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="texture.html">Texture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html">Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="command_buffer.html">Command Buffers</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mesh.html">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -97,6 +99,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
       <li class="breadcrumb-item active">Shader Programs</li>
       <li class="wy-breadcrumbs-aside">
@@ -165,11 +168,216 @@ render pipeline on a graphics card.</p>
 </dd></dl>
 
 </section>
+<section id="shader-language">
+<h3>Shader Language<a class="headerlink" href="#shader-language" title="Link to this heading"></a></h3>
+<p>Shader languages are used to write shader source code. Examples include GLSL and HLSL.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15shader_languageE">
+<span id="_CPPv3N3mge15shader_languageE"></span><span id="_CPPv2N3mge15shader_languageE"></span><span id="mge::shader_language"></span><span class="target" id="classmge_1_1shader__language"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader_language</span></span></span><a class="headerlink" href="#_CPPv4N3mge15shader_languageE" title="Link to this definition"></a><br /></dt>
+<dd><p>A shader language. </p>
+<p>A shader language consists of a name and a version. Well known shader languages are HLSL and glsl. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15shader_language15shader_languageEv">
+<span id="_CPPv3N3mge15shader_language15shader_languageEv"></span><span id="_CPPv2N3mge15shader_language15shader_languageEv"></span><span id="mge::shader_language::shader_language"></span><span class="target" id="classmge_1_1shader__language_1a48db849ef41a0261011bad7c3ff0a47e"></span><span class="sig-name descname"><span class="n"><span class="pre">shader_language</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge15shader_language15shader_languageEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct an empty uninitialized language object. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15shader_language15shader_languageENSt11string_viewERK16semantic_version">
+<span id="_CPPv3N3mge15shader_language15shader_languageENSt11string_viewERK16semantic_version"></span><span id="_CPPv2N3mge15shader_language15shader_languageENSt11string_viewERK16semantic_version"></span><span id="mge::shader_language::shader_language__std::string_view.semantic_versionCR"></span><span class="target" id="classmge_1_1shader__language_1af379baaec0c28b4e574d9e277897940b"></span><span class="sig-name descname"><span class="n"><span class="pre">shader_language</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../core/version.html#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">version</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15shader_language15shader_languageENSt11string_viewERK16semantic_version" title="Link to this definition"></a><br /></dt>
+<dd><p>Create a shader language object. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shader language name </p></li>
+<li><p><strong>version</strong> – shader language version </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15shader_languageD0Ev">
+<span id="_CPPv3N3mge15shader_languageD0Ev"></span><span id="_CPPv2N3mge15shader_languageD0Ev"></span><span id="mge::shader_language::~shader_language"></span><span class="target" id="classmge_1_1shader__language_1af976b02a805bc7b5780e9eb6a987c15e"></span><span class="sig-name descname"><span class="n"><span class="pre">~shader_language</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge15shader_languageD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Default destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15shader_language4nameEv">
+<span id="_CPPv3NK3mge15shader_language4nameEv"></span><span id="_CPPv2NK3mge15shader_language4nameEv"></span><span id="mge::shader_language::nameC"></span><span class="target" id="classmge_1_1shader__language_1a81af07026409bcd22524116655a245f5"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15shader_language4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get shader language name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shader language name </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15shader_language7versionEv">
+<span id="_CPPv3NK3mge15shader_language7versionEv"></span><span id="_CPPv2NK3mge15shader_language7versionEv"></span><span id="mge::shader_language::versionC"></span><span class="target" id="classmge_1_1shader__language_1a4f63cbf6d1bc552172fd8639333bc651"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../core/version.html#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15shader_language7versionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get shader language version. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shader language version </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15shader_languageeqERK15shader_language">
+<span id="_CPPv3NK3mge15shader_languageeqERK15shader_language"></span><span id="_CPPv2NK3mge15shader_languageeqERK15shader_language"></span><span id="mge::shader_language::eq-operator__shader_languageCRC"></span><span class="target" id="classmge_1_1shader__language_1a0677a0cbc2659458b25304b5b4e72430"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15shader_languageE" title="mge::shader_language"><span class="n"><span class="pre">shader_language</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15shader_languageeqERK15shader_language" title="Link to this definition"></a><br /></dt>
+<dd><p>Comparison operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> – compared language </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if equal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15shader_languageneERK15shader_language">
+<span id="_CPPv3NK3mge15shader_languageneERK15shader_language"></span><span id="_CPPv2NK3mge15shader_languageneERK15shader_language"></span><span id="mge::shader_language::neq-operator__shader_languageCRC"></span><span class="target" id="classmge_1_1shader__language_1a68dd676651a7c3c23cab146dd6acecd1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15shader_languageE" title="mge::shader_language"><span class="n"><span class="pre">shader_language</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">l</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15shader_languageneERK15shader_language" title="Link to this definition"></a><br /></dt>
+<dd><p>Comparison operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> – compared language </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if not equal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15shader_language10compatibleERK15shader_language">
+<span id="_CPPv3NK3mge15shader_language10compatibleERK15shader_language"></span><span id="_CPPv2NK3mge15shader_language10compatibleERK15shader_language"></span><span id="mge::shader_language::compatible__shader_languageCRC"></span><span class="target" id="classmge_1_1shader__language_1a0e6ecd54a93b633859ebe8834e3fa1c7"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">compatible</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15shader_languageE" title="mge::shader_language"><span class="n"><span class="pre">shader_language</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15shader_language10compatibleERK15shader_language" title="Link to this definition"></a><br /></dt>
+<dd><p>Return this language is compatible with the other. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if compatible, i.e. same name, and this has less or equal version. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="shader-format">
+<h3>Shader Format<a class="headerlink" href="#shader-format" title="Link to this heading"></a></h3>
+<p>Shader formats define the binary format of compiled shaders. Examples include SPIR-V and DXBC.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13shader_formatE">
+<span id="_CPPv3N3mge13shader_formatE"></span><span id="_CPPv2N3mge13shader_formatE"></span><span id="mge::shader_format"></span><span class="target" id="classmge_1_1shader__format"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader_format</span></span></span><a class="headerlink" href="#_CPPv4N3mge13shader_formatE" title="Link to this definition"></a><br /></dt>
+<dd><p>Shader format. </p>
+<p>A shader format describes the binary format accepted by the graphics engine to define shader programs. Well-known formats are HLSL and SPIRV. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13shader_format13shader_formatEv">
+<span id="_CPPv3N3mge13shader_format13shader_formatEv"></span><span id="_CPPv2N3mge13shader_format13shader_formatEv"></span><span id="mge::shader_format::shader_format"></span><span class="target" id="classmge_1_1shader__format_1abc71d0bd3edb0df229983098d174ed4f"></span><span class="sig-name descname"><span class="n"><span class="pre">shader_format</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13shader_format13shader_formatEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct an empty uninitialized format. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13shader_format13shader_formatENSt11string_viewE">
+<span id="_CPPv3N3mge13shader_format13shader_formatENSt11string_viewE"></span><span id="_CPPv2N3mge13shader_format13shader_formatENSt11string_viewE"></span><span id="mge::shader_format::shader_format__std::string_view"></span><span class="target" id="classmge_1_1shader__format_1a5ca14561735a46e1929a99074f5e278e"></span><span class="sig-name descname"><span class="n"><span class="pre">shader_format</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13shader_format13shader_formatENSt11string_viewE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a shader format. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – shader format name </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13shader_format13shader_formatENSt11string_viewERK16semantic_version">
+<span id="_CPPv3N3mge13shader_format13shader_formatENSt11string_viewERK16semantic_version"></span><span id="_CPPv2N3mge13shader_format13shader_formatENSt11string_viewERK16semantic_version"></span><span id="mge::shader_format::shader_format__std::string_view.semantic_versionCR"></span><span class="target" id="classmge_1_1shader__format_1a56b00bb45231feab39bdd2fae85d85d9"></span><span class="sig-name descname"><span class="n"><span class="pre">shader_format</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../core/version.html#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">version</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13shader_format13shader_formatENSt11string_viewERK16semantic_version" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a shader format. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – shader format name </p></li>
+<li><p><strong>version</strong> – shader format version </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13shader_formatD0Ev">
+<span id="_CPPv3N3mge13shader_formatD0Ev"></span><span id="_CPPv2N3mge13shader_formatD0Ev"></span><span id="mge::shader_format::~shader_format"></span><span class="target" id="classmge_1_1shader__format_1a66d4d83cb815c1392ba1632d8fbc1fc8"></span><span class="sig-name descname"><span class="n"><span class="pre">~shader_format</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge13shader_formatD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13shader_formateqERK13shader_format">
+<span id="_CPPv3NK3mge13shader_formateqERK13shader_format"></span><span id="_CPPv2NK3mge13shader_formateqERK13shader_format"></span><span id="mge::shader_format::eq-operator__shader_formatCRC"></span><span class="target" id="classmge_1_1shader__format_1a8bf7f8c26aad947f96ad5ff7e18da218"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13shader_formatE" title="mge::shader_format"><span class="n"><span class="pre">shader_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13shader_formateqERK13shader_format" title="Link to this definition"></a><br /></dt>
+<dd><p>Comparison operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – compared shader format </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if equal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13shader_formatneERK13shader_format">
+<span id="_CPPv3NK3mge13shader_formatneERK13shader_format"></span><span id="_CPPv2NK3mge13shader_formatneERK13shader_format"></span><span id="mge::shader_format::neq-operator__shader_formatCRC"></span><span class="target" id="classmge_1_1shader__format_1af0a812dd19d7f439d6a4f87e579d143a"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">!=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge13shader_formatE" title="mge::shader_format"><span class="n"><span class="pre">shader_format</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13shader_formatneERK13shader_format" title="Link to this definition"></a><br /></dt>
+<dd><p>Comparison operator. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – compared shader format </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if not equal </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13shader_format4nameEv">
+<span id="_CPPv3NK3mge13shader_format4nameEv"></span><span id="_CPPv2NK3mge13shader_format4nameEv"></span><span id="mge::shader_format::nameC"></span><span class="target" id="classmge_1_1shader__format_1acb1068b75e546a5a104305d8bd7957ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13shader_format4nameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get shader format name. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shader format name </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge13shader_format7versionEv">
+<span id="_CPPv3NK3mge13shader_format7versionEv"></span><span id="_CPPv2NK3mge13shader_format7versionEv"></span><span id="mge::shader_format::versionC"></span><span class="target" id="classmge_1_1shader__format_1ad5d62b4314ecf5ca6fbf716f47a15efa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../core/version.html#_CPPv4N3mge16semantic_versionE" title="mge::semantic_version"><span class="n"><span class="pre">semantic_version</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">version</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge13shader_format7versionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get shader format version. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>shader format version </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
 <section id="shader">
 <h3>Shader<a class="headerlink" href="#shader" title="Link to this heading"></a></h3>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge6shaderE">
-<span id="_CPPv3N3mge6shaderE"></span><span id="_CPPv2N3mge6shaderE"></span><span id="mge::shader"></span><span class="target" id="classmge_1_1shader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">property_object</span></span><a class="headerlink" href="#_CPPv4N3mge6shaderE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge6shaderE"></span><span id="_CPPv2N3mge6shaderE"></span><span id="mge::shader"></span><span class="target" id="classmge_1_1shader"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shader</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge15property_objectE" title="mge::property_object"><span class="n"><span class="pre">property_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge6shaderE" title="Link to this definition"></a><br /></dt>
 <dd><p>A shader is a piece of code executed in the graphics pipeline. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
@@ -224,6 +432,155 @@ render pipeline on a graphics card.</p>
 </dd></dl>
 
 </div>
+</dd></dl>
+
+</section>
+<section id="program">
+<h3>Program<a class="headerlink" href="#program" title="Link to this heading"></a></h3>
+<p>A program combines multiple shader stages into a complete rendering pipeline.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7programE">
+<span id="_CPPv3N3mge7programE"></span><span id="_CPPv2N3mge7programE"></span><span id="mge::program"></span><span class="target" id="classmge_1_1program"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">program</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="render_context.html#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge7programE" title="Link to this definition"></a><br /></dt>
+<dd><p>A program represents the stages in the drawing process. </p>
+<p>When applied to a render command list, a program executes several stages:<ul class="simple">
+<li><p>input assembly, where bound buffers are processed and vertices are generated depending on the drawing instructions</p></li>
+<li><p>vertex processing, where vertex, tessellation and geometry shaders are executed, resulting in transformed output vertices</p></li>
+<li><p>clipping, where a subset of vertices is selected for further processing</p></li>
+<li><p>rasterization, where frame buffer addresses (fragments) are computed</p></li>
+<li><p>fragment processing, where fragment (pixel) shaders are executed for each fragment</p></li>
+<li><p>frame buffer operations, where the computed fragment is applied to the frame buffer, with possible depth buffering, blending, masking, stenciling or other similar operations</p></li>
+</ul>
+</p>
+<p>programs are either implemented with corresponding objects in the render system, or handled in software by executing a number of calls that implement the mentioned stages. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program10set_shaderE13shader_handle">
+<span id="_CPPv3N3mge7program10set_shaderE13shader_handle"></span><span id="_CPPv2N3mge7program10set_shaderE13shader_handle"></span><span id="mge::program::set_shader__shader_handle"></span><span class="target" id="classmge_1_1program_1ac62395269397a4a25c29c8eb3d7e656a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_shader</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">shader_handle</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shader</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7program10set_shaderE13shader_handle" title="Link to this definition"></a><br /></dt>
+<dd><p>Set a shader object. The shader object must be a shader designated for the graphics program (not a compute shader).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>shader</strong> – shader object that is set </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program4linkEv">
+<span id="_CPPv3N3mge7program4linkEv"></span><span id="_CPPv2N3mge7program4linkEv"></span><span id="mge::program::link"></span><span class="target" id="classmge_1_1program_1a8b98513effd63a596648e50550951734"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">link</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7program4linkEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Links the program. A program must be linked after setting all shader programs. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7program10needs_linkEv">
+<span id="_CPPv3NK3mge7program10needs_linkEv"></span><span id="_CPPv2NK3mge7program10needs_linkEv"></span><span id="mge::program::needs_linkC"></span><span class="target" id="classmge_1_1program_1a66a996aac1c10110403c55d9bb7c5427"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">needs_link</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge7program10needs_linkEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return whether this program needs the link step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">true</span></code> if program needs to be linked </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7program10attributesEv">
+<span id="_CPPv3NK3mge7program10attributesEv"></span><span id="_CPPv2NK3mge7program10attributesEv"></span><span id="mge::program::attributesC"></span><span class="target" id="classmge_1_1program_1ac4e9548d70c7f95cd1d1ef082fe3b712"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">attribute_list</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">attributes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program10attributesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get meta data of the attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>attributes </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7program8uniformsEv">
+<span id="_CPPv3NK3mge7program8uniformsEv"></span><span id="_CPPv2NK3mge7program8uniformsEv"></span><span id="mge::program::uniformsC"></span><span class="target" id="classmge_1_1program_1a2c4ccf3e974e6dfd94dcf89fd43cb1b3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uniform_list</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uniforms</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program8uniformsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get meta data of uniforms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>uniforms </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7program15uniform_buffersEv">
+<span id="_CPPv3NK3mge7program15uniform_buffersEv"></span><span id="_CPPv2NK3mge7program15uniform_buffersEv"></span><span id="mge::program::uniform_buffersC"></span><span class="target" id="classmge_1_1program_1a0f9651460a5efec0de303e7a95636161"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">uniform_buffer_list</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">uniform_buffers</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7program15uniform_buffersEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get uniform buffer meta data. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>uniform buffers </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program9attributeE">
+<span id="_CPPv3N3mge7program9attributeE"></span><span id="_CPPv2N3mge7program9attributeE"></span><span id="mge::program::attribute"></span><span class="target" id="structmge_1_1program_1_1attribute"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">attribute</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program9attributeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Attribute description. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program9attribute4nameE">
+<span id="_CPPv3N3mge7program9attribute4nameE"></span><span id="_CPPv2N3mge7program9attribute4nameE"></span><span id="mge::program::attribute::name__ss"></span><span class="target" id="structmge_1_1program_1_1attribute_1a43ff1a040cb65ecceba43a5c4511eed7"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program9attribute4nameE" title="Link to this definition"></a><br /></dt>
+<dd><p>attribute name </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program9attribute4typeE">
+<span id="_CPPv3N3mge7program9attribute4typeE"></span><span id="_CPPv2N3mge7program9attribute4typeE"></span><span id="mge::program::attribute::type__data_type"></span><span class="target" id="structmge_1_1program_1_1attribute_1a9751b662a8863467e074f0bac81d0108"></span><a class="reference internal" href="buffers.html#_CPPv4N3mge9data_typeE" title="mge::data_type"><span class="n"><span class="pre">data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program9attribute4typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>attribute type </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program9attribute4sizeE">
+<span id="_CPPv3N3mge7program9attribute4sizeE"></span><span id="_CPPv2N3mge7program9attribute4sizeE"></span><span id="mge::program::attribute::size__uint8_t"></span><span class="target" id="structmge_1_1program_1_1attribute_1ac5d7c4950da5d44f5da4483b558a675c"></span><span class="n"><span class="pre">uint8_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program9attribute4sizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>attribute size (array size) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program7uniformE">
+<span id="_CPPv3N3mge7program7uniformE"></span><span id="_CPPv2N3mge7program7uniformE"></span><span id="mge::program::uniform"></span><span class="target" id="structmge_1_1program_1_1uniform"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uniform</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program7uniformE" title="Link to this definition"></a><br /></dt>
+<dd><p>Uniform description. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program7uniform4nameE">
+<span id="_CPPv3N3mge7program7uniform4nameE"></span><span id="_CPPv2N3mge7program7uniform4nameE"></span><span id="mge::program::uniform::name__ss"></span><span class="target" id="structmge_1_1program_1_1uniform_1a50320e1be3903eaedb2ac46045dd0bd6"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program7uniform4nameE" title="Link to this definition"></a><br /></dt>
+<dd><p>uniform name </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program7uniform4typeE">
+<span id="_CPPv3N3mge7program7uniform4typeE"></span><span id="_CPPv2N3mge7program7uniform4typeE"></span><span id="mge::program::uniform::type__uniform_data_type"></span><span class="target" id="structmge_1_1program_1_1uniform_1ac4a21fe1a7eed47fdb1f50bd62a97949"></span><a class="reference internal" href="buffers.html#_CPPv4N3mge17uniform_data_typeE" title="mge::uniform_data_type"><span class="n"><span class="pre">uniform_data_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program7uniform4typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>uniform type </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program7uniform10array_sizeE">
+<span id="_CPPv3N3mge7program7uniform10array_sizeE"></span><span id="_CPPv2N3mge7program7uniform10array_sizeE"></span><span id="mge::program::uniform::array_size__uint32_t"></span><span class="target" id="structmge_1_1program_1_1uniform_1a22a6fe426924af086b96d9d2d0d478e7"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">array_size</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program7uniform10array_sizeE" title="Link to this definition"></a><br /></dt>
+<dd><p>uniform array size </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program7uniform8locationE">
+<span id="_CPPv3N3mge7program7uniform8locationE"></span><span id="_CPPv2N3mge7program7uniform8locationE"></span><span id="mge::program::uniform::location__uint32_t"></span><span class="target" id="structmge_1_1program_1_1uniform_1ad0159631374bc4054d6de0b5b5219b8b"></span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">location</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program7uniform8locationE" title="Link to this definition"></a><br /></dt>
+<dd><p>uniform location </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7program14uniform_bufferE">
+<span id="_CPPv3N3mge7program14uniform_bufferE"></span><span id="_CPPv2N3mge7program14uniform_bufferE"></span><span id="mge::program::uniform_buffer"></span><span class="target" id="structmge_1_1program_1_1uniform__buffer"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">uniform_buffer</span></span></span><a class="headerlink" href="#_CPPv4N3mge7program14uniform_bufferE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>

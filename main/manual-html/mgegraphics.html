@@ -9,6 +9,7 @@
   <title>Graphics Library &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e486641d" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -51,25 +52,33 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Graphics Library</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="graphics/system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/window.html">Window</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/datastructures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/shaders.html">Shader Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/buffers.html">Buffers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/texture.html">Texture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/image.html">Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/mesh.html">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="graphics/command_list.html">Command Lists</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Graphics Library</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics/system.html">Render System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/monitor.html">Monitor Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/window.html">Window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/render_context.html">Render Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/datastructures.html">Data Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/shaders.html">Shader Programs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/buffers.html">Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/texture.html">Texture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/image.html">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/mesh.html">Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics/command_buffer.html">Command Buffers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeasset.html">Asset Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mgeasset.html">Asset Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#example-programs">Example Programs</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -90,6 +99,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="reference.html">Reference</a></li>
       <li class="breadcrumb-item active">Graphics Library</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/mgegraphics.rst.txt" rel="nofollow"> View page source</a>
@@ -102,8 +112,7 @@
              
   <section id="graphics-library">
 <span id="mge-graphics"></span><h1>Graphics Library<a class="headerlink" href="#graphics-library" title="Link to this heading"></a></h1>
-<p>The graphics library covers the plain graphics API
-abstraction.</p>
+<p>The graphics library covers the plain graphics API abstraction.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="graphics/system.html">Render System</a></li>
@@ -116,7 +125,7 @@ abstraction.</p>
 <li class="toctree-l1"><a class="reference internal" href="graphics/texture.html">Texture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graphics/image.html">Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="graphics/mesh.html">Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="graphics/command_list.html">Command Lists</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphics/command_buffer.html">Command Buffers</a></li>
 </ul>
 </div>
 </section>

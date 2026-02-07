@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Template Metaprogramming &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utilities" href="utilities.html" />
+    <link rel="prev" title="Functional Programming Patterns" href="functional.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Template Metaprogramming</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/metaprogramming.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="template-metaprogramming">
+<h1>Template Metaprogramming<a class="headerlink" href="#template-metaprogramming" title="Link to this heading"></a></h1>
+<p>MGE provides type traits, concepts, and template metaprogramming utilities that
+enable compile-time introspection and type manipulation.</p>
+<section id="callable-detection">
+<h2>Callable Detection<a class="headerlink" href="#callable-detection" title="Link to this heading"></a></h2>
+<p>Type trait and concept for detecting if a type is callable.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge11is_callableE">
+<span id="_CPPv3I0EN3mge11is_callableE"></span><span id="_CPPv2I0EN3mge11is_callableE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_callable</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge11is_callableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type trait to check if a type is callable.</p>
+<dl class="cpp member">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11is_callable5valueE">
+<span id="_CPPv3N3mge11is_callable5valueE"></span><span id="_CPPv2N3mge11is_callable5valueE"></span><span id="mge::is_callable::value__b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#_CPPv4N3mge11is_callable5valueE" title="Link to this definition"></a><br /></dt>
+<dd><p>True if T is callable, false otherwise.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge13is_callable_vE">
+<span id="_CPPv3I0EN3mge13is_callable_vE"></span><span id="_CPPv2I0EN3mge13is_callable_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_callable_v</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge13is_callable_vE" title="Link to this definition"></a><br /></dt>
+<dd><p>Helper variable template to check if a type is callable.</p>
+</dd></dl>
+
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge8callableE">
+<span id="_CPPv3I0EN3mge8callableE"></span><span id="_CPPv2I0EN3mge8callableE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">callable</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge8callableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Concept to check if a type is callable.</p>
+</dd></dl>
+
+</section>
+<section id="function-introspection">
+<h2>Function Introspection<a class="headerlink" href="#function-introspection" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">mge::function_traits</span></code> template provides compile-time
+introspection of callable types, extracting information about return type,
+argument count (arity), and individual argument types.</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge15function_traitsE">
+<span id="_CPPv3I0EN3mge15function_traitsE"></span><span id="_CPPv2I0EN3mge15function_traitsE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">function_traits</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge15function_traitsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Function traits for compile-time introspection.</p>
+<dl class="cpp member">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15function_traits5arityE">
+<span id="_CPPv3N3mge15function_traits5arityE"></span><span id="_CPPv2N3mge15function_traits5arityE"></span><span id="mge::function_traits::arity__auto"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">auto</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arity</span></span></span><a class="headerlink" href="#_CPPv4N3mge15function_traits5arityE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of arguments.</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15function_traits11result_typeE">
+<span id="_CPPv3N3mge15function_traits11result_typeE"></span><span id="_CPPv2N3mge15function_traits11result_typeE"></span><span id="mge::function_traits::result_type"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">result_type</span></span></span><a class="headerlink" href="#_CPPv4N3mge15function_traits11result_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return type of the function.</p>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I_6size_tEN3mge15function_traits3argE">
+<span id="_CPPv3I_6size_tEN3mge15function_traits3argE"></span><span id="_CPPv2I_6size_tEN3mge15function_traits3argE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">I</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">arg</span></span></span><a class="headerlink" href="#_CPPv4I_6size_tEN3mge15function_traits3argE" title="Link to this definition"></a><br /></dt>
+<dd><p>Argument type accessor.</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15function_traits3arg4typeE">
+<span id="_CPPv3N3mge15function_traits3arg4typeE"></span><span id="_CPPv2N3mge15function_traits3arg4typeE"></span><span id="mge::function_traits::arg::type"></span><span class="k"><span class="pre">type</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">type</span></span></span><a class="headerlink" href="#_CPPv4N3mge15function_traits3arg4typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type of the I-th argument.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<p>Example usage:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span><span class="w"> </span><span class="n">lambda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[](</span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+<span class="k">using</span><span class="w"> </span><span class="n">traits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">function_traits</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">lambda</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">static_assert</span><span class="p">(</span><span class="n">traits</span><span class="o">::</span><span class="n">arity</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">traits</span><span class="o">::</span><span class="n">result_type</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">traits</span><span class="o">::</span><span class="n">arg</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">traits</span><span class="o">::</span><span class="n">arg</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="container-type-traits">
+<h2>Container Type Traits<a class="headerlink" href="#container-type-traits" title="Link to this heading"></a></h2>
+<section id="container-concept">
+<h3>Container Concept<a class="headerlink" href="#container-concept" title="Link to this heading"></a></h3>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge12is_containerE">
+<span id="_CPPv3I0EN3mge12is_containerE"></span><span id="_CPPv2I0EN3mge12is_containerE"></span><span class="target" id="conceptmge_1_1is__container"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_container</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge12is_containerE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;is_container.hpp&gt;</em></div>
+</dd></dl>
+
+<p>The <a class="reference internal" href="#_CPPv4I0EN3mge12is_containerE" title="mge::is_container"><code class="xref cpp cpp-concept docutils literal notranslate"><span class="pre">mge::is_container</span></code></a> concept identifies types that satisfy
+the requirements of a standard container, including iterator support, size
+queries, and element access. String types are explicitly excluded.</p>
+</section>
+<section id="sequence-container-concept">
+<h3>Sequence Container Concept<a class="headerlink" href="#sequence-container-concept" title="Link to this heading"></a></h3>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge21is_sequence_containerE">
+<span id="_CPPv3I0EN3mge21is_sequence_containerE"></span><span id="_CPPv2I0EN3mge21is_sequence_containerE"></span><span class="target" id="conceptmge_1_1is__sequence__container"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_sequence_container</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge21is_sequence_containerE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;is_container.hpp&gt;</em></div>
+</dd></dl>
+
+<p>The <a class="reference internal" href="#_CPPv4I0EN3mge21is_sequence_containerE" title="mge::is_sequence_container"><code class="xref cpp cpp-concept docutils literal notranslate"><span class="pre">mge::is_sequence_container</span></code></a> concept identifies sequence
+containers that support element insertion and removal operations.</p>
+</section>
+<section id="associative-container-concept">
+<h3>Associative Container Concept<a class="headerlink" href="#associative-container-concept" title="Link to this heading"></a></h3>
+<dl class="cpp concept">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge24is_associative_containerE">
+<span id="_CPPv3I0EN3mge24is_associative_containerE"></span><span id="_CPPv2I0EN3mge24is_associative_containerE"></span><span class="target" id="conceptmge_1_1is__associative__container"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">concept</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">is_associative_container</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge24is_associative_containerE" title="Link to this definition"></a><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;is_associative_container.hpp&gt;</em></div>
+</dd></dl>
+
+<p>The <a class="reference internal" href="#_CPPv4I0EN3mge24is_associative_containerE" title="mge::is_associative_container"><code class="xref cpp cpp-concept docutils literal notranslate"><span class="pre">mge::is_associative_container</span></code></a> concept identifies associative
+containers (like <code class="docutils literal notranslate"><span class="pre">std::map</span></code>) that support key-based element access.</p>
+</section>
+</section>
+<section id="shared-pointer-detection">
+<h2>Shared Pointer Detection<a class="headerlink" href="#shared-pointer-detection" title="Link to this heading"></a></h2>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge13is_shared_ptrE">
+<span id="_CPPv3I0EN3mge13is_shared_ptrE"></span><span id="_CPPv2I0EN3mge13is_shared_ptrE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_shared_ptr</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge13is_shared_ptrE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type trait to detect std::shared_ptr types.</p>
+<dl class="cpp member">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13is_shared_ptr5valueE">
+<span id="_CPPv3N3mge13is_shared_ptr5valueE"></span><span id="_CPPv2N3mge13is_shared_ptr5valueE"></span><span id="mge::is_shared_ptr::value__b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#_CPPv4N3mge13is_shared_ptr5valueE" title="Link to this definition"></a><br /></dt>
+<dd><p>True if T is std::shared_ptr, false otherwise.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge15is_shared_ptr_vE">
+<span id="_CPPv3I0EN3mge15is_shared_ptr_vE"></span><span id="_CPPv2I0EN3mge15is_shared_ptr_vE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">is_shared_ptr_v</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge15is_shared_ptr_vE" title="Link to this definition"></a><br /></dt>
+<dd><p>Helper variable template for shared pointer detection.</p>
+</dd></dl>
+
+</section>
+<section id="type-pack-utilities">
+<h2>Type Pack Utilities<a class="headerlink" href="#type-pack-utilities" title="Link to this heading"></a></h2>
+<section id="nth-type-extraction">
+<h3>Nth Type Extraction<a class="headerlink" href="#nth-type-extraction" title="Link to this heading"></a></h3>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I_NSt6size_tEDpEN3mge8nth_typeE">
+<span id="_CPPv3I_NSt6size_tEDpEN3mge8nth_typeE"></span><span id="_CPPv2I_NSt6size_tEDpEN3mge8nth_typeE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Ts</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">nth_type</span></span></span><a class="headerlink" href="#_CPPv4I_NSt6size_tEDpEN3mge8nth_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Extract the type at index N from a template parameter pack.</p>
+</dd></dl>
+
+<p>Example usage:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">nth_type</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">static_assert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">is_same_v</span><span class="o">&lt;</span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="functional.html" class="btn btn-neutral float-left" title="Functional Programming Patterns" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utilities.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

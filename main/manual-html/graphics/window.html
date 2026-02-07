@@ -9,6 +9,7 @@
   <title>Window &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,48 +52,33 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Window</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge6windowE"><code class="docutils literal notranslate"><span class="pre">mge::window</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window14close_listenerE"><code class="docutils literal notranslate"><span class="pre">close_listener</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window16closing_listenerE"><code class="docutils literal notranslate"><span class="pre">closing_listener</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window8positionEv"><code class="docutils literal notranslate"><span class="pre">position()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window6extentEv"><code class="docutils literal notranslate"><span class="pre">extent()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window4showEv"><code class="docutils literal notranslate"><span class="pre">show()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window4hideEv"><code class="docutils literal notranslate"><span class="pre">hide()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window7visibleEv"><code class="docutils literal notranslate"><span class="pre">visible()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window14render_contextEv"><code class="docutils literal notranslate"><span class="pre">render_context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge6window14render_contextEv"><code class="docutils literal notranslate"><span class="pre">render_context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window18set_close_listenerERK14close_listener"><code class="docutils literal notranslate"><span class="pre">set_close_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window20clear_close_listenerEv"><code class="docutils literal notranslate"><span class="pre">clear_close_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window20set_closing_listenerERK16closing_listener"><code class="docutils literal notranslate"><span class="pre">set_closing_listener()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge6window22clear_closing_listenerEv"><code class="docutils literal notranslate"><span class="pre">clear_closing_listener()</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Window</a></li>
+<li class="toctree-l4"><a class="reference internal" href="render_context.html">Render Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="texture.html">Texture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html">Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="command_buffer.html">Command Buffers</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14window_optionsE"><code class="docutils literal notranslate"><span class="pre">mge::window_options</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14window_options16standard_optionsEv"><code class="docutils literal notranslate"><span class="pre">standard_options()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14window_options18fullscreen_optionsEv"><code class="docutils literal notranslate"><span class="pre">fullscreen_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="render_context.html">Render Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mesh.html">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -113,6 +99,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
       <li class="breadcrumb-item active">Window</li>
       <li class="wy-breadcrumbs-aside">

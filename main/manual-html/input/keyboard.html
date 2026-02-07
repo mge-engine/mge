@@ -9,6 +9,7 @@
   <title>Keyboard Handling &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,28 +52,26 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgeinput.html">Input Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="state.html">Input State</a></li>
-<li class="toctree-l2"><a class="reference internal" href="handler.html">Input Handler</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Keyboard Handling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge3keyE"><code class="docutils literal notranslate"><span class="pre">key</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge8modifierE"><code class="docutils literal notranslate"><span class="pre">modifier</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE"><code class="docutils literal notranslate"><span class="pre">modifier_value</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14modifier_value7CONTROLE"><code class="docutils literal notranslate"><span class="pre">modifier_value::CONTROL</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14modifier_value5SHIFTE"><code class="docutils literal notranslate"><span class="pre">modifier_value::SHIFT</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14modifier_value3ALTE"><code class="docutils literal notranslate"><span class="pre">modifier_value::ALT</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgeinput.html">Input Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="state.html">Input State</a></li>
+<li class="toctree-l4"><a class="reference internal" href="handler.html">Input Handler</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Keyboard Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mouse.html">Mouse Handling</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="mouse.html">Mouse Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -93,6 +92,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgeinput.html">Input Library</a></li>
       <li class="breadcrumb-item active">Keyboard Handling</li>
       <li class="wy-breadcrumbs-aside">
@@ -126,7 +126,7 @@ e.g <cite>mge::key::A</cite> has a value of 0x41</p></li>
 <p>Modifiers are captured in the modifier set.</p>
 <dl class="cpp type">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge8modifierE">
-<span id="_CPPv3N3mge8modifierE"></span><span id="_CPPv2N3mge8modifierE"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">modifier</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enum_set</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value"><span class="n"><span class="pre">modifier_value</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value"><span class="n"><span class="pre">modifier_value</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14modifier_value3ALTE" title="mge::modifier_value::ALT"><span class="n"><span class="pre">ALT</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge8modifierE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge8modifierE"></span><span id="_CPPv2N3mge8modifierE"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">modifier</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4I0_1EEN3mge8enum_setE" title="mge::enum_set"><span class="n"><span class="pre">enum_set</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value"><span class="n"><span class="pre">modifier_value</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14modifier_valueE" title="mge::modifier_value"><span class="n"><span class="pre">modifier_value</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14modifier_value3ALTE" title="mge::modifier_value::ALT"><span class="n"><span class="pre">ALT</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge8modifierE" title="Link to this definition"></a><br /></dt>
 <dd><p>Modifiers.</p>
 </dd></dl>
 
@@ -150,6 +150,31 @@ e.g <cite>mge::key::A</cite> has a value of 0x41</p></li>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14modifier_value3ALTE">
 <span id="_CPPv3N3mge14modifier_value3ALTE"></span><span id="_CPPv2N3mge14modifier_value3ALTE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ALT</span></span></span><a class="headerlink" href="#_CPPv4N3mge14modifier_value3ALTE" title="Link to this definition"></a><br /></dt>
 <dd><p>Alt key.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Key actions are captured in the key action enumeration.</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10key_actionE">
+<span id="_CPPv3N3mge10key_actionE"></span><span id="_CPPv2N3mge10key_actionE"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">key_action</span></span></span><a class="headerlink" href="#_CPPv4N3mge10key_actionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key action events.</p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10key_action5PRESSE">
+<span id="_CPPv3N3mge10key_action5PRESSE"></span><span id="_CPPv2N3mge10key_action5PRESSE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PRESS</span></span></span><a class="headerlink" href="#_CPPv4N3mge10key_action5PRESSE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key pressed down.</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10key_action7RELEASEE">
+<span id="_CPPv3N3mge10key_action7RELEASEE"></span><span id="_CPPv2N3mge10key_action7RELEASEE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RELEASE</span></span></span><a class="headerlink" href="#_CPPv4N3mge10key_action7RELEASEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key released.</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge10key_action6REPEATE">
+<span id="_CPPv3N3mge10key_action6REPEATE"></span><span id="_CPPv2N3mge10key_action6REPEATE"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPEAT</span></span></span><a class="headerlink" href="#_CPPv4N3mge10key_action6REPEATE" title="Link to this definition"></a><br /></dt>
+<dd><p>Key held down (repeat event).</p>
 </dd></dl>
 
 </dd></dl>

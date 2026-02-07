@@ -9,6 +9,7 @@
   <title>Asset Management &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,25 +52,23 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgeasset.html">Asset Library</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Asset Management</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#asset-type">Asset Type</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10asset_typeE"><code class="docutils literal notranslate"><span class="pre">mge::asset_type</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgeasset.html">Asset Library</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Asset Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadingstoring.html">Asset Loading and Storing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="assettool.html">Asset Tool</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#asset">Asset</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge5assetE"><code class="docutils literal notranslate"><span class="pre">mge::asset</span></code></a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="loadingstoring.html">Asset Loading and Storing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="assettool.html">Asset Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
 </ul>
@@ -92,6 +91,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgeasset.html">Asset Library</a></li>
       <li class="breadcrumb-item active">Asset Management</li>
       <li class="wy-breadcrumbs-aside">
@@ -513,6 +513,97 @@ Assets are identified by a unique path.</p>
 </div>
 </dd></dl>
 
+<section id="asset-properties">
+<h3>Asset Properties<a class="headerlink" href="#asset-properties" title="Link to this heading"></a></h3>
+<p>Assets can have associated metadata stored as properties. These properties
+provide additional information about the asset beyond its raw data.</p>
+<section id="checking-for-properties">
+<h4>Checking for Properties<a class="headerlink" href="#checking-for-properties" title="Link to this heading"></a></h4>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;/images/photo.jpg&quot;</span><span class="p">);</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">has_properties</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">props</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">properties</span><span class="p">();</span>
+<span class="w">    </span><span class="c1">// Access property values</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="common-use-cases">
+<h4>Common Use Cases<a class="headerlink" href="#common-use-cases" title="Link to this heading"></a></h4>
+<p>Properties can store:</p>
+<ul class="simple">
+<li><p>Image dimensions and color space information</p></li>
+<li><p>Model vertex/face counts and bounding boxes</p></li>
+<li><p>Audio sample rates and channel counts</p></li>
+<li><p>Custom application-specific metadata</p></li>
+</ul>
+<p>Properties are managed by the <code class="docutils literal notranslate"><span class="pre">asset_access</span></code> implementation and may be
+automatically populated by asset handlers during loading.</p>
+</section>
+</section>
+</section>
+<section id="asset-literals">
+<h2>Asset Literals<a class="headerlink" href="#asset-literals" title="Link to this heading"></a></h2>
+<p>For convenience, the asset library provides user-defined literals to construct
+assets and asset types directly from string constants.</p>
+<section id="asset-type-literal">
+<h3>Asset Type Literal<a class="headerlink" href="#asset-type-literal" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">_at</span></code> literal creates an <code class="docutils literal notranslate"><span class="pre">asset_type</span></code> from a string in MIME type format:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">mge</span><span class="o">::</span><span class="nn">literals</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">image_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;image/png&quot;</span><span class="n">_at</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">model_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;model/obj&quot;</span><span class="n">_at</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">shader_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;application/x-spirv&quot;</span><span class="n">_at</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="asset-path-literal">
+<h3>Asset Path Literal<a class="headerlink" href="#asset-path-literal" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">_asset</span></code> literal creates an <code class="docutils literal notranslate"><span class="pre">asset</span></code> from a path string:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">mge</span><span class="o">::</span><span class="nn">string_literals</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/textures/brick.png&quot;</span><span class="n">_asset</span><span class="p">;</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/models/character.obj&quot;</span><span class="n">_asset</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="exception-classes">
+<h2>Exception Classes<a class="headerlink" href="#exception-classes" title="Link to this heading"></a></h2>
+<p>The asset library defines specific exception types for error handling.</p>
+<section id="asset-not-found">
+<h3>Asset Not Found<a class="headerlink" href="#asset-not-found" title="Link to this heading"></a></h3>
+<p>Thrown when an asset cannot be located at the specified path.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::asset_not_found” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
+</section>
+<section id="asset-corrupted">
+<h3>Asset Corrupted<a class="headerlink" href="#asset-corrupted" title="Link to this heading"></a></h3>
+<p>Thrown when an asset exists but its data is corrupted or cannot be parsed.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>doxygenclass: Cannot find class “mge::asset_corrupted” in doxygen xml output for project “mge” from directory: D:/a/mge/mge/build/docsrc/manual/doxygen/xml</p>
+</div>
+</section>
+<section id="example-usage">
+<h3>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">mge</span><span class="o">::</span><span class="n">asset</span><span class="w"> </span><span class="n">a</span><span class="p">(</span><span class="s">&quot;/images/missing.png&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">a</span><span class="p">.</span><span class="n">exists</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Handle non-existent asset</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">asset_not_found</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Asset path not found</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Asset not found: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">mge</span><span class="o">::</span><span class="n">asset_corrupted</span><span class="o">&amp;</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Asset data is corrupted</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Asset corrupted: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 

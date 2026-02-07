@@ -9,6 +9,7 @@
   <title>Configuration &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -19,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Memory Management" href="memory.html" />
-    <link rel="prev" title="Tracing" href="tracing.html" /> 
+    <link rel="next" title="Statistics" href="statistics.html" />
+    <link rel="prev" title="Command Line and User Input" href="commandline.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,38 +52,38 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#parameter-definition">Parameter Definition</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#parameter-interface">Parameter Interface</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#typed-parameter">Typed Parameter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#helper-macros">Helper Macros</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#configuration-management">Configuration Management</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13configurationE"><code class="docutils literal notranslate"><span class="pre">mge::configuration</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="memory.html">Memory Management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Version Tracking</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -103,6 +104,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
       <li class="breadcrumb-item active">Configuration</li>
       <li class="wy-breadcrumbs-aside">
@@ -420,6 +422,17 @@ value.</p>
 </dd></dl>
 
 <dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge9parameter5valueEv">
+<span id="_CPPv3N3mge9parameter5valueEv"></span><span id="_CPPv2N3mge9parameter5valueEv"></span><span id="mge::parameter::value"></span><span class="target" id="classmge_1_1parameter_1ada01df72b984b854f932ae539bfbab77"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge9parameter5valueEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Access stored value for modification. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to stored value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4NK3mge9parameter3getEv">
 <span id="_CPPv3NK3mge9parameter3getEv"></span><span id="_CPPv2NK3mge9parameter3getEv"></span><span id="mge::parameter::getC"></span><span class="target" id="classmge_1_1parameter_1ac189d8abda20ddcba0d64a307adc676c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN3mge9parameterE" title="mge::parameter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge9parameter3getEv" title="Link to this definition"></a><br /></dt>
 <dd><p>Retrieve typed value. </p>
@@ -505,6 +518,28 @@ are intentionally meant to be value within their compilation unit only.</p>
 <dd><p>Configuration management. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration18register_parameterER15basic_parameter">
+<span id="_CPPv3N3mge13configuration18register_parameterER15basic_parameter"></span><span id="_CPPv2N3mge13configuration18register_parameterER15basic_parameter"></span><span id="mge::configuration::register_parameter__basic_parameterR"></span><span class="target" id="classmge_1_1configuration_1a6c7b00ccafbf459552a532d9e7ae84c7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">register_parameter</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="mge::basic_parameter"><span class="n"><span class="pre">basic_parameter</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration18register_parameterER15basic_parameter" title="Link to this definition"></a><br /></dt>
+<dd><p>Register parameter for configuration management. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – parameter to register </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration20unregister_parameterER15basic_parameter">
+<span id="_CPPv3N3mge13configuration20unregister_parameterER15basic_parameter"></span><span id="_CPPv2N3mge13configuration20unregister_parameterER15basic_parameter"></span><span id="mge::configuration::unregister_parameter__basic_parameterR"></span><span class="target" id="classmge_1_1configuration_1ab7eae04f05033c186da2610dfc1609a9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unregister_parameter</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="mge::basic_parameter"><span class="n"><span class="pre">basic_parameter</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration20unregister_parameterER15basic_parameter" title="Link to this definition"></a><br /></dt>
+<dd><p>Unregister parameter from configuration management. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – parameter to unregister </p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge13configuration14find_parameterENSt11string_viewENSt11string_viewE">
 <span id="_CPPv3N3mge13configuration14find_parameterENSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N3mge13configuration14find_parameterENSt11string_viewENSt11string_viewE"></span><span id="mge::configuration::find_parameter__std::string_view.std::string_view"></span><span class="target" id="classmge_1_1configuration_1a3b820e9697ac8eb837c94a161fd11007"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15basic_parameterE" title="mge::basic_parameter"><span class="n"><span class="pre">basic_parameter</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">find_parameter</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">section</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge13configuration14find_parameterENSt11string_viewENSt11string_viewE" title="Link to this definition"></a><br /></dt>
@@ -621,14 +656,23 @@ of the configuration</p></li>
 <p>If a configuration was loaded, the same file type is used when storing it.
 If it was not loaded before, a <cite>&lt;executable_name&gt;.json</cite> file is created.</p>
 </section>
+<section id="configuration-exception">
+<h2>Configuration Exception<a class="headerlink" href="#configuration-exception" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17bad_configurationE">
+<span id="_CPPv3N3mge17bad_configurationE"></span><span id="_CPPv2N3mge17bad_configurationE"></span><span id="mge::bad_configuration"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">bad_configuration</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="exception.html#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge17bad_configurationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Exception thrown when a configuration does not fulfill constraints.</p>
+</dd></dl>
+
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tracing.html" class="btn btn-neutral float-left" title="Tracing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="memory.html" class="btn btn-neutral float-right" title="Memory Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="commandline.html" class="btn btn-neutral float-left" title="Command Line and User Input" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="statistics.html" class="btn btn-neutral float-right" title="Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

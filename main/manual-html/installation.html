@@ -9,6 +9,7 @@
   <title>Installation &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e486641d" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -19,7 +20,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Core Library" href="mgecore.html" />
+    <link rel="next" title="Reference" href="reference.html" />
     <link rel="prev" title="Introduction" href="introduction.html" /> 
 </head>
 
@@ -50,7 +51,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#sdk-and-engine-installation">SDK and Engine Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-from-source">Building From Source</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#microsoft-windows">Microsoft Windows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#build-steps">Build Steps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#obtaining-the-source">Obtaining the Source</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#configuring-third-party-libraries">Configuring Third-Party Libraries</a></li>
@@ -68,12 +74,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -118,9 +119,12 @@ yet. Please build the MGE engine and libraries from source.</p>
 <h2>Building From Source<a class="headerlink" href="#building-from-source" title="Link to this heading"></a></h2>
 <section id="prerequisites">
 <h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h3>
-<p>MGE depends ony a number of tools and packages, which need to be installed
-before building:</p>
-<dl class="simple">
+<p>MGE depends on a number of tools and packages, which need to be installed
+before building. The following subsections detail the requirements for each
+supported platform.</p>
+<section id="microsoft-windows">
+<h4>Microsoft Windows<a class="headerlink" href="#microsoft-windows" title="Link to this heading"></a></h4>
+<dl>
 <dt>Microsoft Visual C++ 2022</dt><dd><p>MGE currently is built using this compile tool chain.
 The <em>Community Edition</em> that can be obtained at
 <a class="reference external" href="https://visualstudio.microsoft.com/">https://visualstudio.microsoft.com</a>
@@ -138,10 +142,18 @@ build system for your platform.</p>
 the Vulkan API helper functions.</p>
 </dd>
 <dt><a class="reference external" href="https://vulkan.lunarg.com/sdk/home">Vulkan SDK</a></dt><dd><p>Vulkan is a low-overhead, cross-platform graphics and computing API. It is
-used as a possible graphics backend of MGE.</p>
+used as a possible graphics backend of MGE. The SDK can be installed using
+the provided helper script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">python</span> <span class="n">tools</span>\<span class="n">ci</span>\<span class="n">vulkan</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
 </dd>
 <dt><a class="reference external" href="https://ninja-build.org/">Ninja</a></dt><dd><p>While cmake can be used to generate Visual Studio project files, or also
-a build environment suitable for <em>nmake</em>, ninja is the preferred build tool.</p>
+a build environment suitable for <em>nmake</em>, ninja is the preferred build tool.
+Install via Chocolatey:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">choco</span> <span class="n">install</span> <span class="n">ninja</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 <div class="admonition note">
@@ -150,6 +162,91 @@ a build environment suitable for <em>nmake</em>, ninja is the preferred build to
 <a class="reference external" href="https://chocolatey.org/">Chocolatey</a> for installing the required tools,
 to keep them up to date and install updates easily.</p>
 </div>
+</section>
+<section id="linux">
+<h4>Linux<a class="headerlink" href="#linux" title="Link to this heading"></a></h4>
+<p>MGE is currently supported only on Debian/Ubuntu based distributions.</p>
+<dl>
+<dt>GCC 14 Compiler</dt><dd><p>MGE requires GCC 14 or later. For Ubuntu:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install gcc-14 g++-14
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://git-scm.com/">Git</a></dt><dd><p>Git is typically included in most distributions or can be installed via
+the package manager:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install git  # Debian/Ubuntu
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://cmake.org/">CMake</a></dt><dd><p>Install CMake from your distribution’s package manager. For Ubuntu, using
+snap is recommended:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo snap install cmake --classic
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://www.python.org/">Python 3</a></dt><dd><p>Python 3 is typically pre-installed on most Linux distributions.</p>
+</dd>
+<dt><a class="reference external" href="https://vulkan.lunarg.com/sdk/home">Vulkan SDK</a></dt><dd><p>Download and install the Vulkan SDK from the LunarG website, or install
+via package manager if available.</p>
+</dd>
+<dt><a class="reference external" href="https://ninja-build.org/">Ninja</a></dt><dd><p>Install Ninja build system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install ninja-build  # Debian/Ubuntu
+</pre></div>
+</div>
+</dd>
+<dt>Build Tools</dt><dd><p>Install automake and related tools, they are required for building some of the third-party dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo apt-get install automake autoconf autoconf-archive libtool
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<section id="mac-os-x">
+<h4>Mac OS X<a class="headerlink" href="#mac-os-x" title="Link to this heading"></a></h4>
+<dl>
+<dt>Xcode Command Line Tools</dt><dd><p>Install the Xcode Command Line Tools:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ xcode-select --install
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://brew.sh/">Homebrew</a></dt><dd><p>Homebrew is recommended as a package manager for macOS. Install it if
+you don’t have it already.</p>
+</dd>
+<dt><a class="reference external" href="https://git-scm.com/">Git</a></dt><dd><p>Git is included with Xcode Command Line Tools, or install via Homebrew:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ brew install git
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://cmake.org/">CMake</a></dt><dd><p>Install CMake via Homebrew:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ brew install cmake
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://www.python.org/">Python 3</a></dt><dd><p>Install Python 3 via Homebrew:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ brew install python3
+</pre></div>
+</div>
+</dd>
+<dt><a class="reference external" href="https://vulkan.lunarg.com/sdk/home">Vulkan SDK</a></dt><dd><p>Download and install the Vulkan SDK from the LunarG website. On Mac OS X,
+Vulkan is implemented via MoltenVK which translates Vulkan to Metal.</p>
+</dd>
+</dl>
+<p><a class="reference external" href="https://ninja-build.org/">Ninja</a></p>
+<blockquote>
+<div><p>Install Ninja build system:
+.. code-block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ brew install ninja
+</pre></div>
+</div>
+</div></blockquote>
+<dl>
+<dt>Automake and related tools</dt><dd><p>Install automake and related tools via Homebrew:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ brew install automake autoconf autoconf-archive libtool
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
 </section>
 <section id="build-steps">
 <h3>Build Steps<a class="headerlink" href="#build-steps" title="Link to this heading"></a></h3>
@@ -188,57 +285,112 @@ install the needed python packages there.</p>
 </section>
 <section id="configuring-the-build">
 <h4>Configuring the Build<a class="headerlink" href="#configuring-the-build" title="Link to this heading"></a></h4>
-<p>To configure, you need to ensure that you are in a <cite>cmd</cite> environment that
-has the correct settings</p>
+<section id="id11">
+<h5>Microsoft Windows<a class="headerlink" href="#id11" title="Link to this heading"></a></h5>
+<p>Ensure you are in a properly configured Visual Studio environment. The MSVC
+compiler and environment need to be set up:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">INCLUDE</span><span class="o">=</span>
 <span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">LIB</span><span class="o">=</span>
-<span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">CALL</span> <span class="s2">&quot;C:\Program Files (x86)\Microsoft Visual Studio</span><span class="se">\201</span><span class="s2">9\Community\VC\Auxiliary\Build</span><span class="se">\v</span><span class="s2">cvars64.bat&quot;</span>
-<span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">CXX</span><span class="o">=</span><span class="n">cl</span>
+<span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">CALL</span> <span class="s2">&quot;C:\Program Files\Microsoft Visual Studio</span><span class="se">\202</span><span class="s2">2\Community\VC\Auxiliary\Build</span><span class="se">\v</span><span class="s2">cvars64.bat&quot;</span>
+<span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">CXX</span><span class="o">=</span><span class="n">cl</span><span class="o">.</span><span class="n">exe</span>
+<span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">CC</span><span class="o">=</span><span class="n">cl</span><span class="o">.</span><span class="n">exe</span>
 <span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">VCPKG_ROOT</span><span class="o">=</span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span>\<span class="n">vcpkg</span>
 <span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">SET</span> <span class="n">PATH</span><span class="o">=%</span><span class="n">VCPKG_ROOT</span><span class="o">%</span><span class="p">;</span><span class="o">%</span><span class="n">PATH</span><span class="o">%</span>
 </pre></div>
 </div>
-<p>and if you want to build the documentation:</p>
+<p>If building documentation, activate the Sphinx environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">sphinx</span>\<span class="n">Scripts</span>\<span class="n">activate</span><span class="o">.</span><span class="n">bat</span>
 </pre></div>
 </div>
-<p>Note the file for setting the Microsoft Visual Studio command prompt may be at
-a different location, depending on your installation.</p>
-<p>Make sure <cite>cmake</cite> and Python 3 are also in the PATH and can be called, and make
-sure the <cite>cmake</cite> executable is the one you want to use, as multiple programs may
-install an own version of the tool. The same is valid for <cite>vcpkg</cite>.</p>
-<p>MGE does not support so-called <em>in-source</em> builds, but comes with a respective
-setup:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">mkdir</span> <span class="n">build</span>
-<span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cd</span> <span class="n">build</span>
+<p>Set up the Vulkan SDK:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">SET</span> <span class="n">VULKAN_SDK</span><span class="o">=</span><span class="n">C</span><span class="p">:</span>\<span class="n">VulkanSDK</span>\<span class="mf">1.4.309.0</span>
 </pre></div>
 </div>
-<p>Within the <cite>build</cite> directory, use <cite>cmake</cite> to configure the build:</p>
+<p>Configure the build using CMake:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">preset</span><span class="o">=</span><span class="n">default</span>
 </pre></div>
 </div>
-<p>This configures the build for the <cite>RelWithDebInfo</cite> configuration. It will
-install also all dependencies using <cite>vcpkg</cite>. It may take a while.</p>
+<p>This configures the build for the <cite>RelWithDebInfo</cite> configuration and installs
+all dependencies using <cite>vcpkg</cite>. It may take a while.</p>
+</section>
+<section id="id12">
+<h5>Linux<a class="headerlink" href="#id12" title="Link to this heading"></a></h5>
+<p>Set the compiler to GCC 14:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ export CC=gcc-14
+$ export CXX=g++-14
+$ export VCPKG_ROOT=$HOME/mge/vcpkg
+</pre></div>
+</div>
+<p>Configure the build using CMake:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cmake --preset=default
+</pre></div>
+</div>
+<p>This configures the build and installs all dependencies using <cite>vcpkg</cite>. It may
+take a while.</p>
+</section>
+<section id="id13">
+<h5>Mac OS X<a class="headerlink" href="#id13" title="Link to this heading"></a></h5>
+<p>Set up the vcpkg root:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ export VCPKG_ROOT=$HOME/mge/vcpkg
+</pre></div>
+</div>
+<p>Configure the build using CMake:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cmake --preset=default
+</pre></div>
+</div>
+<p>This configures the build and installs all dependencies using <cite>vcpkg</cite>. It may
+take a while.</p>
+</section>
 </section>
 <section id="build-mge">
 <h4>Build MGE<a class="headerlink" href="#build-mge" title="Link to this heading"></a></h4>
-<p>The build can simply be started after successful configuring by also
-calling <cite>cmake</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span> <span class="o">--</span><span class="n">target</span> <span class="nb">all</span>
+<section id="id14">
+<h5>Microsoft Windows<a class="headerlink" href="#id14" title="Link to this heading"></a></h5>
+<p>Build the project using CMake:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span><span class="o">&gt;</span><span class="n">cmake</span> <span class="o">--</span><span class="n">build</span> <span class="n">build</span> <span class="o">--</span><span class="n">parallel</span> <span class="mi">8</span> <span class="o">--</span><span class="n">target</span> <span class="nb">all</span>
 </pre></div>
 </div>
-<p>Again, this may take a while.</p>
+</section>
+<section id="id15">
+<h5>Linux<a class="headerlink" href="#id15" title="Link to this heading"></a></h5>
+<p>Build the project using CMake:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cmake --build build --parallel 8 --target all
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h5>Mac OS X<a class="headerlink" href="#id16" title="Link to this heading"></a></h5>
+<p>Build the project using CMake:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cmake --build build --parallel 4 --target all
+</pre></div>
+</div>
+</section>
 </section>
 <section id="test-mge">
 <h4>Test MGE<a class="headerlink" href="#test-mge" title="Link to this heading"></a></h4>
-<p>After building, you may want to run the unit-tests to ensure a clean build, or
-also to ensure proper quality if you have made a change to the source code:</p>
-<p>The tests can be simply started by running <cite>ctest</cite>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span>\<span class="n">build</span><span class="o">&gt;</span><span class="n">ctest</span>
+<p>After building, run the unit tests to ensure a clean build:</p>
+<section id="id17">
+<h5>Microsoft Windows<a class="headerlink" href="#id17" title="Link to this heading"></a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="p">:</span>\<span class="n">mge</span>\<span class="n">build</span><span class="o">&gt;</span><span class="n">ctest</span> <span class="o">--</span><span class="n">verbose</span>
+</pre></div>
+</div>
+</section>
+<section id="id18">
+<h5>Linux<a class="headerlink" href="#id18" title="Link to this heading"></a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd build
+$ ctest --verbose
+</pre></div>
+</div>
+</section>
+<section id="id19">
+<h5>Mac OS X<a class="headerlink" href="#id19" title="Link to this heading"></a></h5>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd build
+$ ctest --verbose
 </pre></div>
 </div>
 <p>All unit test programs start with <cite>test_</cite> and are located in the main build
-directory, and can be also simply executed and debugged on their own.</p>
+directory, and can also be executed individually for debugging.</p>
+</section>
 </section>
 <section id="building-documentation">
 <h4>Building Documentation<a class="headerlink" href="#building-documentation" title="Link to this heading"></a></h4>
@@ -258,7 +410,7 @@ the build directory.</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="introduction.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="mgecore.html" class="btn btn-neutral float-right" title="Core Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="reference.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

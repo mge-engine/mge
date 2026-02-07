@@ -8,6 +8,7 @@
   <title>Index &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=e486641d" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
@@ -48,12 +49,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mgeasset.html">Asset Library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -259,6 +255,12 @@
 </li>
       <li><a href="asset/asset.html#_CPPv4NK3mge10asset_type4typeEv">mge::asset_type::type (C++ function)</a>
 </li>
+      <li><a href="core/utilities.html#_CPPv4N3mge6atexitE">mge::atexit (C++ class)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge6atexit3runERR8callback">mge::atexit::run (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge6atexit15stop_processingEv">mge::atexit::stop_processing (C++ function)</a>
+</li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge18attribute_semanticE">mge::attribute_semantic (C++ enum)</a>
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge18attribute_semantic3ANYE">mge::attribute_semantic::ANY (C++ enumerator)</a>
@@ -274,6 +276,10 @@
       <li><a href="graphics/buffers.html#_CPPv4N3mge18attribute_semantic7TANGENTE">mge::attribute_semantic::TANGENT (C++ enumerator)</a>
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge18attribute_semantic8TEXCOORDE">mge::attribute_semantic::TEXCOORD (C++ enumerator)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge8bad_castE">mge::bad_cast (C++ class)</a>
+</li>
+      <li><a href="core/configuration.html#_CPPv4N3mge17bad_configurationE">mge::bad_configuration (C++ class)</a>
 </li>
       <li><a href="core/utilities.html#_CPPv4I0EN3mge14base_type_nameENSt6stringEv">mge::base_type_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge14base_type_nameERKNSt9type_infoE">[1]</a>
 </li>
@@ -317,35 +323,55 @@
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge11buffer_type6VERTEXE">mge::buffer_type::VERTEX (C++ enumerator)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4IDpEN3mge12callback_mapE">mge::callback_map (C++ class)</a>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge8callableE">mge::callable (C++ concept)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4N3mge12callback_map5eraseE8key_type">mge::callback_map::erase (C++ function)</a>
+      <li><a href="core/containers.html#_CPPv4IDpEN3mge12callback_mapE">mge::callback_map (C++ class)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4N3mge12callback_map6insertERK13function_type">mge::callback_map::insert (C++ function)</a>
+      <li><a href="core/containers.html#_CPPv4N3mge12callback_map12callback_mapEv">mge::callback_map::callback_map (C++ function)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4N3mge12callback_map5clearEv">mge::callback_map::clear (C++ function)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4N3mge12callback_map5eraseE8key_type">mge::callback_map::erase (C++ function)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4N3mge12callback_map6insertERK13function_type">mge::callback_map::insert (C++ function)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4NK3mge12callback_mapclEDp4Args">mge::callback_map::operator() (C++ function)</a>
 </li>
       <li><a href="core/utilities.html#_CPPv4I00EN3mge12checked_castE1T1S">mge::checked_cast (C++ function)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4I0DpEN3mge7closureE">mge::closure (C++ class)</a>
+      <li><a href="core/functional.html#_CPPv4I0DpEN3mge7closureE">mge::closure (C++ class)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4N3mge7closure7closureEv">mge::closure::closure (C++ function)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge7closure7closureEv">mge::closure::closure (C++ function)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4N3mge7closure7executeEDp4Args">mge::closure::execute (C++ function)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge7closure7executeEDp4Args">mge::closure::execute (C++ function)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4NK3mge7closure8functionEv">mge::closure::function (C++ function)</a>
+      <li><a href="core/functional.html#_CPPv4NK3mge7closure8functionEv">mge::closure::function (C++ function)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4N3mge7closure13function_typeE">mge::closure::function_type (C++ type)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge7closure13function_typeE">mge::closure::function_type (C++ type)</a>
 </li>
-      <li><a href="core/utilities.html#_CPPv4N3mge7closureD0Ev">mge::closure::~closure (C++ function)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge7closureD0Ev">mge::closure::~closure (C++ function)</a>
 </li>
-      <li><a href="core/component.html#_CPPv4I0EN3mge9componentE">mge::component (C++ class)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge12closure_baseE">mge::closure_base (C++ class)</a>
 </li>
-      <li><a href="core/component.html#_CPPv4N3mge9component6createENSt11string_viewE">mge::component::create (C++ function)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge12closure_base12closure_baseEv">mge::closure_base::closure_base (C++ function)</a>
 </li>
-      <li><a href="core/component.html#_CPPv4N3mge9component15implementationsERKNSt8functionIFvNSt11string_viewEEEE">mge::component::implementations (C++ function)</a>
+      <li><a href="core/functional.html#_CPPv4N3mge12closure_baseD0Ev">mge::closure_base::~closure_base (C++ function)</a>
 </li>
-      <li><a href="core/component.html#_CPPv4NK3mge9component4selfEv">mge::component::self (C++ function)</a>
+      <li><a href="graphics/command_buffer.html#_CPPv4N3mge14command_bufferE">mge::command_buffer (C++ class)</a>
 </li>
-      <li><a href="core/component.html#_CPPv4N3mge9componentD0Ev">mge::component::~component (C++ function)</a>
+      <li><a href="graphics/command_buffer.html#_CPPv4N3mge14command_buffer4drawERK14program_handleRK20vertex_buffer_handleRK19index_buffer_handle">mge::command_buffer::draw (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge14component_baseE">mge::component_base (C++ class)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge14component_base20component_registeredENSt11string_viewE">mge::component_base::component_registered (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge14component_base6createENSt11string_viewENSt11string_viewE">mge::component_base::create (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4NK3mge14component_base19implementation_nameEv">mge::component_base::implementation_name (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge14component_base25implementation_registeredENSt11string_viewENSt11string_viewE">mge::component_base::implementation_registered (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge14component_base15implementationsENSt11string_viewERKNSt8functionIFvNSt11string_viewEEEE">mge::component_base::implementations (C++ function)</a>
 </li>
       <li><a href="core/configuration.html#_CPPv4N3mge13configurationE">mge::configuration (C++ class)</a>
 </li>
@@ -359,9 +385,13 @@
 </li>
       <li><a href="core/configuration.html#_CPPv4N3mge13configuration6loadedEv">mge::configuration::loaded (C++ function)</a>
 </li>
+      <li><a href="core/configuration.html#_CPPv4N3mge13configuration18register_parameterER15basic_parameter">mge::configuration::register_parameter (C++ function)</a>
+</li>
       <li><a href="core/configuration.html#_CPPv4N3mge13configuration4rootEv">mge::configuration::root (C++ function)</a>
 </li>
       <li><a href="core/configuration.html#_CPPv4N3mge13configuration5storeEv">mge::configuration::store (C++ function)</a>
+</li>
+      <li><a href="core/configuration.html#_CPPv4N3mge13configuration20unregister_parameterER15basic_parameter">mge::configuration::unregister_parameter (C++ function)</a>
 </li>
       <li><a href="core/utilities.html#_CPPv4I00EN3mge8containsEbRK9ContainerRK7Element">mge::contains (C++ function)</a>
 </li>
@@ -473,6 +503,10 @@
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge14data_type_sizeE9data_type">mge::data_type_size (C++ function)</a>
 </li>
+      <li><a href="core/exception.html#_CPPv4N3mge17duplicate_elementE">mge::duplicate_element (C++ class)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4I0_1EEN3mge8enum_setE">mge::enum_set (C++ class)</a>
+</li>
       <li><a href="core/exception.html#_CPPv4N3mge9exceptionE">mge::exception (C++ class)</a>
 </li>
       <li><a href="core/exception.html#_CPPv4N3mge9exception15called_functionE">mge::exception::called_function (C++ struct)</a>
@@ -537,13 +571,27 @@
 </li>
       <li><a href="graphics/datastructures.html#_CPPv4N3mge6extentE">mge::extent (C++ class)</a>
 </li>
+      <li><a href="graphics/render_context.html#_CPPv4N3mge12frame_bufferE">mge::frame_buffer (C++ class)</a>
+</li>
       <li><a href="core/memory.html#_CPPv4N3mge4freeEPv">mge::free (C++ function)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge15function_traitsE">mge::function_traits (C++ struct)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I_6size_tEN3mge15function_traits3argE">mge::function_traits::arg (C++ struct)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4N3mge15function_traits3arg4typeE">mge::function_traits::arg::type (C++ type)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4N3mge15function_traits5arityE">mge::function_traits::arity (C++ member)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4N3mge15function_traits11result_typeE">mge::function_traits::result_type (C++ type)</a>
 </li>
       <li><a href="math/vector.html#_CPPv4N3mge5fvec2E">mge::fvec2 (C++ class)</a>
 </li>
       <li><a href="math/vector.html#_CPPv4N3mge5fvec3E">mge::fvec3 (C++ class)</a>
 </li>
       <li><a href="math/vector.html#_CPPv4N3mge5fvec4E">mge::fvec4 (C++ class)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4I00EN3mge6handleE">mge::handle (C++ class)</a>
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge15hardware_bufferE">mge::hardware_buffer (C++ class)</a>
 </li>
@@ -555,6 +603,8 @@
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge15hardware_bufferD0Ev">mge::hardware_buffer::~hardware_buffer (C++ function)</a>
 </li>
+      <li><a href="core/exception.html#_CPPv4N3mge16illegal_argumentE">mge::illegal_argument (C++ class)</a>
+</li>
       <li><a href="core/exception.html#_CPPv4N3mge13illegal_stateE">mge::illegal_state (C++ class)</a>
 </li>
       <li><a href="graphics/image.html#_CPPv4N3mge5imageE">mge::image (C++ class)</a>
@@ -562,6 +612,8 @@
       <li><a href="graphics/image.html#_CPPv4NK3mge5image6extentEv">mge::image::extent (C++ function)</a>
 </li>
       <li><a href="graphics/image.html#_CPPv4NK3mge5image6formatEv">mge::image::format (C++ function)</a>
+</li>
+      <li><a href="graphics/image.html#_CPPv4N3mge12image_formatE">mge::image_format (C++ class)</a>
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge12index_bufferE">mge::index_buffer (C++ class)</a>
 </li>
@@ -655,9 +707,37 @@
 </li>
       <li><a href="core/streams.html#_CPPv4N3mge12input_streamD0Ev">mge::input_stream::~input_stream (C++ function)</a>
 </li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge24is_associative_containerE">mge::is_associative_container (C++ concept)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge11is_callableE">mge::is_callable (C++ class)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4N3mge11is_callable5valueE">mge::is_callable::value (C++ member)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge13is_callable_vE">mge::is_callable_v (C++ member)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge12is_containerE">mge::is_container (C++ concept)</a>
+</li>
       <li><a href="core/utilities.html#_CPPv4N3mge19is_debugger_presentEv">mge::is_debugger_present (C++ function)</a>
 </li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge21is_sequence_containerE">mge::is_sequence_container (C++ concept)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge13is_shared_ptrE">mge::is_shared_ptr (C++ struct)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4N3mge13is_shared_ptr5valueE">mge::is_shared_ptr::value (C++ member)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I0EN3mge15is_shared_ptr_vE">mge::is_shared_ptr_v (C++ member)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4I0EN3mge14iterator_indexEN1C9size_typeERK1CRKN1C14const_iteratorE">mge::iterator_index (C++ function)</a>
+</li>
       <li><a href="input/keyboard.html#_CPPv4N3mge3keyE">mge::key (C++ enum)</a>
+</li>
+      <li><a href="input/keyboard.html#_CPPv4N3mge10key_actionE">mge::key_action (C++ enum)</a>
+</li>
+      <li><a href="input/keyboard.html#_CPPv4N3mge10key_action5PRESSE">mge::key_action::PRESS (C++ enumerator)</a>
+</li>
+      <li><a href="input/keyboard.html#_CPPv4N3mge10key_action7RELEASEE">mge::key_action::RELEASE (C++ enumerator)</a>
+</li>
+      <li><a href="input/keyboard.html#_CPPv4N3mge10key_action6REPEATE">mge::key_action::REPEAT (C++ enumerator)</a>
 </li>
       <li><a href="input/state.html#_CPPv4N3mge14keyboard_stateE">mge::keyboard_state (C++ class)</a>
 </li>
@@ -673,9 +753,31 @@
 </li>
       <li><a href="input/state.html#_CPPv4N3mge14keyboard_stateD0Ev">mge::keyboard_state::~keyboard_state (C++ function)</a>
 </li>
+      <li><a href="core/utilities.html#_CPPv4I00EN3mge12lexical_castE6TargetRK6Source">mge::lexical_cast (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge11line_editorE">mge::line_editor (C++ class)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge11line_editor4lineEv">mge::line_editor::line (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge11line_editor11line_editorERKNSt6stringE">mge::line_editor::line_editor (C++ function)</a>, <a href="core/commandline.html#_CPPv4N3mge11line_editor11line_editorEv">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge11line_editor6promptEv">mge::line_editor::prompt (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge11line_editor10set_promptEPKc">mge::line_editor::set_prompt (C++ function)</a>, <a href="core/commandline.html#_CPPv4N3mge11line_editor10set_promptERKNSt6stringE">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge11line_editorD0Ev">mge::line_editor::~line_editor (C++ function)</a>
+</li>
       <li><a href="application/loop.html#_CPPv4N3mge4loopE">mge::loop (C++ class)</a>
 </li>
       <li><a href="application/loop.html#_CPPv4N3mge4loop3runER11loop_target">mge::loop::run (C++ function)</a>
+</li>
+      <li><a href="application/loop.html#_CPPv4N3mge12loop_contextE">mge::loop_context (C++ class)</a>
+</li>
+      <li><a href="application/loop.html#_CPPv4N3mge12loop_context5cycleE">mge::loop_context::cycle (C++ member)</a>
+</li>
+      <li><a href="application/loop.html#_CPPv4N3mge12loop_context5deltaE">mge::loop_context::delta (C++ member)</a>
+</li>
+      <li><a href="application/loop.html#_CPPv4N3mge12loop_context4peekE">mge::loop_context::peek (C++ member)</a>
 </li>
       <li><a href="application/loop.html#_CPPv4N3mge11loop_targetE">mge::loop_target (C++ class)</a>
 </li>
@@ -686,6 +788,8 @@
       <li><a href="application/loop.html#_CPPv4N3mge11loop_target7presentE8uint64_td">mge::loop_target::present (C++ function)</a>
 </li>
       <li><a href="application/loop.html#_CPPv4N3mge11loop_target6updateE8uint64_tdd">mge::loop_target::update (C++ function)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4I00EN3mge9lru_cacheE">mge::lru_cache (C++ class)</a>
 </li>
       <li><a href="core/memory.html#_CPPv4N3mge6mallocE6size_t">mge::malloc (C++ function)</a>
 </li>
@@ -747,6 +851,18 @@
 </li>
       <li><a href="input/keyboard.html#_CPPv4N3mge14modifier_value5SHIFTE">mge::modifier_value::SHIFT (C++ enumerator)</a>
 </li>
+      <li><a href="core/component.html#_CPPv4N3mge6moduleE">mge::module (C++ class)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4NK3mge6module7libraryEv">mge::module::library (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge6module8load_allEv">mge::module::load_all (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge6module6moduleERKNSt10filesystem4pathE">mge::module::module (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4NK3mge6module4nameEv">mge::module::name (C++ function)</a>
+</li>
+      <li><a href="core/component.html#_CPPv4N3mge6moduleD0Ev">mge::module::~module (C++ function)</a>
+</li>
       <li><a href="graphics/monitor.html#_CPPv4N3mge7monitorE">mge::monitor (C++ class)</a>
 </li>
       <li><a href="graphics/monitor.html#_CPPv4NK3mge7monitor12current_modeEv">mge::monitor::current_mode (C++ function)</a>
@@ -799,8 +915,6 @@
 </li>
       <li><a href="core/concurrency.html#_CPPv4N3mge5mutex4lockEv">mge::mutex::lock (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="core/concurrency.html#_CPPv4N3mge5mutex5mutexEPKc">mge::mutex::mutex (C++ function)</a>
 </li>
       <li><a href="core/concurrency.html#_CPPv4N3mge5mutex8try_lockEv">mge::mutex::try_lock (C++ function)</a>
@@ -811,7 +925,25 @@
 </li>
       <li><a href="core/utilities.html#_CPPv4I0EN3mge14namespace_nameENSt6stringEv">mge::namespace_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge14namespace_nameERKNSt9type_infoE">[1]</a>
 </li>
+      <li><a href="core/exception.html#_CPPv4N3mge15no_such_elementE">mge::no_such_element (C++ class)</a>
+</li>
       <li><a href="core/utilities.html#_CPPv4N3mge11noncopyableE">mge::noncopyable (C++ class)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge15not_implementedE">mge::not_implemented (C++ class)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge19not_yet_implementedE">mge::not_yet_implemented (C++ class)</a>
+</li>
+      <li><a href="core/metaprogramming.html#_CPPv4I_NSt6size_tEDpEN3mge8nth_typeE">mge::nth_type (C++ type)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge12null_pointerE">mge::null_pointer (C++ class)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge16numeric_overflowE">mge::numeric_overflow (C++ class)</a>
+</li>
+      <li><a href="core/functional.html#_CPPv4I0EN3mge8on_leaveE">mge::on_leave (C++ class)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge13out_of_memoryE">mge::out_of_memory (C++ class)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge12out_of_rangeE">mge::out_of_range (C++ class)</a>
 </li>
       <li><a href="core/streams.html#_CPPv4N3mge13output_streamE">mge::output_stream (C++ class)</a>
 </li>
@@ -833,6 +965,8 @@
 </li>
       <li><a href="core/streams.html#_CPPv4N3mge13output_streamD0Ev">mge::output_stream::~output_stream (C++ function)</a>
 </li>
+      <li><a href="core/functional.html#_CPPv4IDpEN3mge10overloadedE">mge::overloaded (C++ struct)</a>
+</li>
       <li><a href="core/version.html#_CPPv4N3mge7packageE">mge::package (C++ class)</a>
 </li>
       <li><a href="core/version.html#_CPPv4NK3mge7package5buildEv">mge::package::build (C++ function)</a>
@@ -853,8 +987,14 @@
 </li>
       <li><a href="core/configuration.html#_CPPv4N3mge9parameter5resetEv">mge::parameter::reset (C++ function)</a>
 </li>
-      <li><a href="core/configuration.html#_CPPv4NK3mge9parameter5valueEv">mge::parameter::value (C++ function)</a>
+      <li><a href="core/configuration.html#_CPPv4N3mge9parameter5valueEv">mge::parameter::value (C++ function)</a>, <a href="core/configuration.html#_CPPv4NK3mge9parameter5valueEv">[1]</a>
 </li>
+      <li><a href="graphics/render_context.html#_CPPv4N3mge4passE">mge::pass (C++ class)</a>
+</li>
+      <li><a href="graphics/render_context.html#_CPPv4N3mge4passD0Ev">mge::pass::~pass (C++ function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="graphics/datastructures.html#_CPPv4N3mge5pointE">mge::point (C++ class)</a>
 </li>
       <li><a href="graphics/datastructures.html#_CPPv4N3mge5point5pointE8uint32_t8uint32_t">mge::point::point (C++ function)</a>
@@ -863,9 +1003,119 @@
 </li>
       <li><a href="graphics/datastructures.html#_CPPv4N3mge5point1yE">mge::point::y (C++ member)</a>
 </li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7programE">mge::program (C++ class)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program9attributeE">mge::program::attribute (C++ struct)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program9attribute4nameE">mge::program::attribute::name (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program9attribute4sizeE">mge::program::attribute::size (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program9attribute4typeE">mge::program::attribute::type (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge7program10attributesEv">mge::program::attributes (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program4linkEv">mge::program::link (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge7program10needs_linkEv">mge::program::needs_link (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program10set_shaderE13shader_handle">mge::program::set_shader (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program7uniformE">mge::program::uniform (C++ struct)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program7uniform10array_sizeE">mge::program::uniform::array_size (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program7uniform8locationE">mge::program::uniform::location (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program7uniform4nameE">mge::program::uniform::name (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program7uniform4typeE">mge::program::uniform::type (C++ member)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge7program14uniform_bufferE">mge::program::uniform_buffer (C++ struct)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge7program15uniform_buffersEv">mge::program::uniform_buffers (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge7program8uniformsEv">mge::program::uniforms (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge15program_optionsE">mge::program_options (C++ class)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4I0EN3mge15program_options6optionER15program_optionsPKcPKcRKN15program_options5valueI1TEE">mge::program_options::option (C++ function)</a>, <a href="core/commandline.html#_CPPv4N3mge15program_options6optionEPKcPKc">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge15program_options7optionsE">mge::program_options::options (C++ class)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge15program_options7options20has_any_unrecognizedEv">mge::program_options::options::has_any_unrecognized (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge15program_options7options10has_optionERKNSt6stringE">mge::program_options::options::has_option (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge15program_options7options14has_positionalERKNSt6stringE">mge::program_options::options::has_positional (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge15program_options7options6optionERKNSt6stringE">mge::program_options::options::option (C++ function)</a>, <a href="core/commandline.html#_CPPv4NK3mge15program_options7options6optionERKNSt6stringE">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge15program_options7options10positionalERKNSt6stringE">mge::program_options::options::positional (C++ function)</a>, <a href="core/commandline.html#_CPPv4NK3mge15program_options7options10positionalERKNSt6stringE">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge15program_options7options12unrecognizedEv">mge::program_options::options::unrecognized (C++ function)</a>, <a href="core/commandline.html#_CPPv4NK3mge15program_options7options12unrecognizedEv">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge15program_options5parseERKNSt6vectorINSt6stringEEERN15program_options7optionsE">mge::program_options::parse (C++ function)</a>, <a href="core/commandline.html#_CPPv4NK3mge15program_options5parseEiPPKcRN15program_options7optionsE">[1]</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4I0EN3mge15program_options10positionalER15program_optionsPKcPKcRKN15program_options5valueI1TEE">mge::program_options::positional (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge15program_options5printERNSt7ostreamE">mge::program_options::print (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4NK3mge15program_options4sizeEv">mge::program_options::size (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge15program_options19stored_unrecognizedEv">mge::program_options::stored_unrecognized (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4I0EN3mge15program_options5valueE">mge::program_options::value (C++ struct)</a>
+</li>
       <li><a href="core/utilities.html#_CPPv4N3mge10propertiesE">mge::properties (C++ class)</a>
 </li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10properties5beginEv">mge::properties::begin (C++ function)</a>, <a href="core/utilities.html#_CPPv4NK3mge10properties5beginEv">[1]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge10properties6cbeginEv">mge::properties::cbegin (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge10properties4cendEv">mge::properties::cend (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10properties5clearEv">mge::properties::clear (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10properties3endEv">mge::properties::end (C++ function)</a>, <a href="core/utilities.html#_CPPv4NK3mge10properties3endEv">[1]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10properties5eraseENSt11string_viewE">mge::properties::erase (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge10properties5eraseERKNSt6stringE">[1]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge10properties6existsEPKc">mge::properties::exists (C++ function)</a>, <a href="core/utilities.html#_CPPv4NK3mge10properties6existsERKNSt11string_viewE">[1]</a>, <a href="core/utilities.html#_CPPv4NK3mge10properties6existsERKNSt6stringE">[2]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4I00ENK3mge10properties3getE1TNSt11string_viewERK1D">mge::properties::get (C++ function)</a>, <a href="core/utilities.html#_CPPv4I00ENK3mge10properties3getE1TPKcRK1D">[1]</a>, <a href="core/utilities.html#_CPPv4I00ENK3mge10properties3getE1TRKNSt6stringERK1D">[2]</a>, <a href="core/utilities.html#_CPPv4I0ENK3mge10properties3getE1TNSt11string_viewE">[3]</a>, <a href="core/utilities.html#_CPPv4I0ENK3mge10properties3getE1TPKc">[4]</a>, <a href="core/utilities.html#_CPPv4I0ENK3mge10properties3getE1TRKNSt6stringE">[5]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10properties4loadERNSt7istreamE">mge::properties::load (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10propertiesaSERK10properties">mge::properties::operator= (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge10propertiesaSERR10properties">[1]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge10propertieseqERK10properties">mge::properties::operator== (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge10properties10propertiesERK10properties">mge::properties::properties (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge10properties10propertiesERK16input_stream_ref">[1]</a>, <a href="core/utilities.html#_CPPv4N3mge10properties10propertiesERNSt7istreamE">[2]</a>, <a href="core/utilities.html#_CPPv4N3mge10properties10propertiesERR10properties">[3]</a>, <a href="core/utilities.html#_CPPv4N3mge10properties10propertiesEv">[4]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4I0EN3mge10properties3putEvNSt11string_viewERK1T">mge::properties::put (C++ function)</a>, <a href="core/utilities.html#_CPPv4I0EN3mge10properties3putEvPKcRK1T">[1]</a>, <a href="core/utilities.html#_CPPv4I0EN3mge10properties3putEvRKNSt6stringERK1T">[2]</a>
+</li>
       <li><a href="core/utilities.html#_CPPv4I00EN3mge10properties3setEvRR1KRR1T">mge::properties::set (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge10properties5storeERNSt7ostreamE">mge::properties::store (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge15property_objectE">mge::property_object (C++ class)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge15property_object16clear_propertiesEv">mge::property_object::clear_properties (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge15property_object14erase_propertyERKNSt6stringE">mge::property_object::erase_property (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge15property_object15exists_propertyERKNSt6stringE">mge::property_object::exists_property (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4I00ENK3mge15property_object12get_propertyE1TRKNSt6stringERK1U">mge::property_object::get_property (C++ function)</a>, <a href="core/utilities.html#_CPPv4I0ENK3mge15property_object12get_propertyE1TRKNSt6stringE">[1]</a>, <a href="core/utilities.html#_CPPv4NK3mge15property_object12get_propertyERKNSt6stringE">[2]</a>, <a href="core/utilities.html#_CPPv4NK3mge15property_object12get_propertyERKNSt6stringERKNSt6stringE">[3]</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4NK3mge15property_object10propertiesEv">mge::property_object::properties (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge15property_object15property_objectEv">mge::property_object::property_object (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4N3mge15property_objectD0Ev">mge::property_object::~property_object (C++ function)</a>
+</li>
+      <li><a href="core/exception.html#_CPPv4N3mge19pure_virtual_methodE">mge::pure_virtual_method (C++ class)</a>
 </li>
       <li><a href="core/memory.html#_CPPv4N3mge7reallocEPv6size_t">mge::realloc (C++ function)</a>
 </li>
@@ -973,6 +1223,8 @@
 </li>
       <li><a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEKfKf">mge::rgba_color::rgba_color (C++ function)</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEPKcf">[1]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEPKf">[2]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorERK10rgba_color">[3]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEffff">[4]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEj">[5]</a>, <a href="graphics/datastructures.html#_CPPv4N3mge10rgba_color10rgba_colorEv">[6]</a>
 </li>
+      <li><a href="core/exception.html#_CPPv4N3mge17runtime_exceptionE">mge::runtime_exception (C++ class)</a>
+</li>
       <li><a href="core/version.html#_CPPv4N3mge16semantic_versionE">mge::semantic_version (C++ class)</a>
 </li>
       <li><a href="core/version.html#_CPPv4NK3mge16semantic_version5emptyEv">mge::semantic_version::empty (C++ function)</a>
@@ -991,6 +1243,8 @@
 </li>
       <li><a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionE8uint32_t8uint32_t8uint32_t">mge::semantic_version::semantic_version (C++ function)</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionENSt11string_viewE">[1]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionERK16semantic_version">[2]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionERR16semantic_version">[3]</a>, <a href="core/version.html#_CPPv4N3mge16semantic_version16semantic_versionEv">[4]</a>
 </li>
+      <li><a href="core/containers.html#_CPPv4I0EN3mge9sequencedE">mge::sequenced (C++ class)</a>
+</li>
       <li><a href="graphics/shaders.html#_CPPv4N3mge6shaderE">mge::shader (C++ class)</a>
 </li>
       <li><a href="graphics/shaders.html#_CPPv4N3mge6shader7compileENSt11string_viewE">mge::shader::compile (C++ function)</a>
@@ -1002,6 +1256,36 @@
       <li><a href="graphics/shaders.html#_CPPv4NK3mge6shader4typeEv">mge::shader::type (C++ function)</a>
 </li>
       <li><a href="graphics/shaders.html#_CPPv4N3mge6shaderD0Ev">mge::shader::~shader (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge13shader_formatE">mge::shader_format (C++ class)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge13shader_format4nameEv">mge::shader_format::name (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge13shader_formatneERK13shader_format">mge::shader_format::operator!= (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge13shader_formateqERK13shader_format">mge::shader_format::operator== (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge13shader_format13shader_formatENSt11string_viewE">mge::shader_format::shader_format (C++ function)</a>, <a href="graphics/shaders.html#_CPPv4N3mge13shader_format13shader_formatENSt11string_viewERK16semantic_version">[1]</a>, <a href="graphics/shaders.html#_CPPv4N3mge13shader_format13shader_formatEv">[2]</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge13shader_format7versionEv">mge::shader_format::version (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge13shader_formatD0Ev">mge::shader_format::~shader_format (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge15shader_languageE">mge::shader_language (C++ class)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge15shader_language10compatibleERK15shader_language">mge::shader_language::compatible (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge15shader_language4nameEv">mge::shader_language::name (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge15shader_languageneERK15shader_language">mge::shader_language::operator!= (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge15shader_languageeqERK15shader_language">mge::shader_language::operator== (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge15shader_language15shader_languageENSt11string_viewERK16semantic_version">mge::shader_language::shader_language (C++ function)</a>, <a href="graphics/shaders.html#_CPPv4N3mge15shader_language15shader_languageEv">[1]</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4NK3mge15shader_language7versionEv">mge::shader_language::version (C++ function)</a>
+</li>
+      <li><a href="graphics/shaders.html#_CPPv4N3mge15shader_languageD0Ev">mge::shader_language::~shader_language (C++ function)</a>
 </li>
       <li><a href="graphics/shaders.html#_CPPv4N3mge11shader_typeE">mge::shader_type (C++ enum)</a>
 </li>
@@ -1056,6 +1340,8 @@
       <li><a href="core/utilities.html#_CPPv4N3mge9singleton10value_typeE">mge::singleton::value_type (C++ type)</a>
 </li>
       <li><a href="core/utilities.html#_CPPv4N3mge9singletonD0Ev">mge::singleton::~singleton (C++ function)</a>
+</li>
+      <li><a href="core/containers.html#_CPPv4I0_6size_t0EN3mge12small_vectorE">mge::small_vector (C++ class)</a>
 </li>
       <li><a href="math/functions.html#_CPPv4N3mge14squared_lengthERKN3mge5fvec2E">mge::squared_length (C++ function)</a>, <a href="math/functions.html#_CPPv4N3mge14squared_lengthERKN3mge5fvec3E">[1]</a>, <a href="math/functions.html#_CPPv4N3mge14squared_lengthERKN3mge5fvec4E">[2]</a>
 </li>
@@ -1229,6 +1515,16 @@
 </li>
       <li><a href="core/concurrency.html#_CPPv4N3mge12thread_groupE">mge::thread_group (C++ class)</a>
 </li>
+      <li><a href="core/concurrency.html#_CPPv4NK3mge12thread_group6activeEv">mge::thread_group::active (C++ function)</a>
+</li>
+      <li><a href="core/concurrency.html#_CPPv4NK3mge12thread_group4sizeEv">mge::thread_group::size (C++ function)</a>
+</li>
+      <li><a href="core/concurrency.html#_CPPv4N3mge12thread_group12thread_groupERKNSt6stringE">mge::thread_group::thread_group (C++ function)</a>, <a href="core/concurrency.html#_CPPv4N3mge12thread_group12thread_groupEv">[1]</a>
+</li>
+      <li><a href="core/concurrency.html#_CPPv4N3mge12thread_groupD0Ev">mge::thread_group::~thread_group (C++ function)</a>
+</li>
+      <li><a href="core/utilities.html#_CPPv4I0EN3mge13to_underlyingENSt15underlying_typeI1EE4typeE1E">mge::to_underlying (C++ function)</a>
+</li>
       <li><a href="core/tracing.html#_CPPv4N3mge5traceE">mge::trace (C++ class)</a>
 </li>
       <li><a href="core/tracing.html#_CPPv4I0EN3mge5tracelsER5traceRR1T">mge::trace::operator&lt;&lt; (C++ function)</a>, <a href="core/tracing.html#_CPPv4N3mge5tracelsERKNSt7wstringE">[1]</a>
@@ -1308,6 +1604,102 @@
       <li><a href="core/tracing.html#_CPPv4I_NSt6size_tEEN3mge11trace_topic11trace_topicERA1N_Kc">mge::trace_topic::trace_topic (C++ function)</a>
 </li>
       <li><a href="core/utilities.html#_CPPv4I0EN3mge9type_nameENSt11string_viewEv">mge::type_name (C++ function)</a>, <a href="core/utilities.html#_CPPv4N3mge9type_nameERKNSt9type_infoE">[1]</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_typeE">mge::uniform_data_type (C++ enum)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type6DOUBLEE">mge::uniform_data_type::DOUBLE (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11DOUBLE_MAT2E">mge::uniform_data_type::DOUBLE_MAT2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT2x3E">mge::uniform_data_type::DOUBLE_MAT2x3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT2x4E">mge::uniform_data_type::DOUBLE_MAT2x4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11DOUBLE_MAT3E">mge::uniform_data_type::DOUBLE_MAT3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT3x2E">mge::uniform_data_type::DOUBLE_MAT3x2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT3x4E">mge::uniform_data_type::DOUBLE_MAT3x4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11DOUBLE_MAT4E">mge::uniform_data_type::DOUBLE_MAT4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT4x2E">mge::uniform_data_type::DOUBLE_MAT4x2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type13DOUBLE_MAT4x3E">mge::uniform_data_type::DOUBLE_MAT4x3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11DOUBLE_VEC2E">mge::uniform_data_type::DOUBLE_VEC2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11DOUBLE_VEC3E">mge::uniform_data_type::DOUBLE_VEC3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11DOUBLE_VEC4E">mge::uniform_data_type::DOUBLE_VEC4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type5FLOATE">mge::uniform_data_type::FLOAT (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type10FLOAT_MAT2E">mge::uniform_data_type::FLOAT_MAT2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type12FLOAT_MAT2x3E">mge::uniform_data_type::FLOAT_MAT2x3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type12FLOAT_MAT2x4E">mge::uniform_data_type::FLOAT_MAT2x4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type10FLOAT_MAT3E">mge::uniform_data_type::FLOAT_MAT3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type12FLOAT_MAT3x2E">mge::uniform_data_type::FLOAT_MAT3x2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type12FLOAT_MAT3x4E">mge::uniform_data_type::FLOAT_MAT3x4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type10FLOAT_MAT4E">mge::uniform_data_type::FLOAT_MAT4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type12FLOAT_MAT4x2E">mge::uniform_data_type::FLOAT_MAT4x2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type12FLOAT_MAT4x3E">mge::uniform_data_type::FLOAT_MAT4x3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type10FLOAT_VEC2E">mge::uniform_data_type::FLOAT_VEC2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type10FLOAT_VEC3E">mge::uniform_data_type::FLOAT_VEC3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type10FLOAT_VEC4E">mge::uniform_data_type::FLOAT_VEC4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type4HALFE">mge::uniform_data_type::HALF (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type6INT128E">mge::uniform_data_type::INT128 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type5INT16E">mge::uniform_data_type::INT16 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type5INT32E">mge::uniform_data_type::INT32 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type5INT64E">mge::uniform_data_type::INT64 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type4INT8E">mge::uniform_data_type::INT8 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type8INT_VEC2E">mge::uniform_data_type::INT_VEC2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type8INT_VEC3E">mge::uniform_data_type::INT_VEC3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type8INT_VEC4E">mge::uniform_data_type::INT_VEC4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type11LONG_DOUBLEE">mge::uniform_data_type::LONG_DOUBLE (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type7UINT128E">mge::uniform_data_type::UINT128 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type6UINT16E">mge::uniform_data_type::UINT16 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type6UINT32E">mge::uniform_data_type::UINT32 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type6UINT64E">mge::uniform_data_type::UINT64 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type5UINT8E">mge::uniform_data_type::UINT8 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type9UINT_VEC2E">mge::uniform_data_type::UINT_VEC2 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type9UINT_VEC3E">mge::uniform_data_type::UINT_VEC3 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type9UINT_VEC4E">mge::uniform_data_type::UINT_VEC4 (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge17uniform_data_type7UNKNOWNE">mge::uniform_data_type::UNKNOWN (C++ enumerator)</a>
+</li>
+      <li><a href="graphics/buffers.html#_CPPv4N3mge22uniform_data_type_sizeE17uniform_data_type">mge::uniform_data_type_size (C++ function)</a>
+</li>
+      <li><a href="core/commandline.html#_CPPv4N3mge14unknown_optionE">mge::unknown_option (C++ class)</a>
 </li>
       <li><a href="graphics/buffers.html#_CPPv4N3mge13vertex_bufferE">mge::vertex_buffer (C++ class)</a>
 </li>

@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Functional Programming Patterns &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Template Metaprogramming" href="metaprogramming.html" />
+    <link rel="prev" title="Container Data Types" href="containers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Functional Programming Patterns</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/functional.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="functional-programming-patterns">
+<h1>Functional Programming Patterns<a class="headerlink" href="#functional-programming-patterns" title="Link to this heading"></a></h1>
+<p>MGE provides utilities that enable functional programming patterns and idioms
+in C++.</p>
+<section id="closures">
+<h2>Closures<a class="headerlink" href="#closures" title="Link to this heading"></a></h2>
+<p>The closure system provides a mechanism to create function pointers that can
+bind to C++ lambdas and member functions, using libffi for dynamic code
+generation. This enables interoperability with C APIs that expect function
+pointers.</p>
+<section id="base-class">
+<h3>Base Class<a class="headerlink" href="#base-class" title="Link to this heading"></a></h3>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12closure_baseE">
+<span id="_CPPv3N3mge12closure_baseE"></span><span id="_CPPv2N3mge12closure_baseE"></span><span id="mge::closure_base"></span><span class="target" id="classmge_1_1closure__base"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closure_base</span></span></span><a class="headerlink" href="#_CPPv4N3mge12closure_baseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Subclassed by <a class="reference internal" href="#classmge_1_1closure"><span class="std std-ref">mge::closure&lt; R, Args &gt;</span></a>, mge::closure&lt; void, Args… &gt;, mge::closure&lt; void, void &gt;</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12closure_base12closure_baseEv">
+<span id="_CPPv3N3mge12closure_base12closure_baseEv"></span><span id="_CPPv2N3mge12closure_base12closure_baseEv"></span><span id="mge::closure_base::closure_base"></span><span class="target" id="classmge_1_1closure__base_1aa3f80cc3ce9389ee81fb7bb92e8017f0"></span><span class="sig-name descname"><span class="n"><span class="pre">closure_base</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12closure_base12closure_baseEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct closure. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12closure_baseD0Ev">
+<span id="_CPPv3N3mge12closure_baseD0Ev"></span><span id="_CPPv2N3mge12closure_baseD0Ev"></span><span id="mge::closure_base::~closure_base"></span><span class="target" id="classmge_1_1closure__base_1ad5859beb312477af57d915829091d364"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~closure_base</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge12closure_baseD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="closure-template">
+<h3>Closure Template<a class="headerlink" href="#closure-template" title="Link to this heading"></a></h3>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0DpEN3mge7closureE">
+<span id="_CPPv3I0DpEN3mge7closureE"></span><span id="_CPPv2I0DpEN3mge7closureE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1closure"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closure</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge12closure_baseE" title="mge::closure_base"><span class="n"><span class="pre">closure_base</span></span></a><a class="headerlink" href="#_CPPv4I0DpEN3mge7closureE" title="Link to this definition"></a><br /></dt>
+<dd><p>Base class for closures. A closure is a function object that exposes a function pointer to be called from C code.</p>
+<p>To create a closure, derive from this class and implement the <code class="docutils literal notranslate"><span class="pre">execute</span></code> method.</p>
+<p>Note that the closure object must be kept alive as long as the function pointer is used. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closure13function_typeE">
+<span id="_CPPv3N3mge7closure13function_typeE"></span><span id="_CPPv2N3mge7closure13function_typeE"></span><span class="target" id="classmge_1_1closure_1a3bffd8d09a6388755cf3a097f61fb338"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function_type</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::R"><span class="n"><span class="pre">R</span></span></a><span class="w"> </span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N3mge7closure13function_typeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Type of the function pointer. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closure7closureEv">
+<span id="_CPPv3N3mge7closure7closureEv"></span><span id="_CPPv2N3mge7closure7closureEv"></span><span id="mge::closure::closure"></span><span class="target" id="classmge_1_1closure_1a397e7a774ac2d08f4a740a168c5f9a9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">closure</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge7closure7closureEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closureD0Ev">
+<span id="_CPPv3N3mge7closureD0Ev"></span><span id="_CPPv2N3mge7closureD0Ev"></span><span id="mge::closure::~closure"></span><span class="target" id="classmge_1_1closure_1a0fda7356e75ddc1e44d467aa5ab3d828"></span><span class="sig-name descname"><span class="n"><span class="pre">~closure</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N3mge7closureD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge7closure7executeEDp4Args">
+<span id="_CPPv3N3mge7closure7executeEDp4Args"></span><span id="_CPPv2N3mge7closure7executeEDp4Args"></span><span id="mge::closure::execute__ArgsDp"></span><span class="target" id="classmge_1_1closure_1a82f6ee6a3f2da8ed911244566fb71110"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::R"><span class="n"><span class="pre">R</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">execute</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN3mge7closureE" title="mge::closure::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">...</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N3mge7closure7executeEDp4Args" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute the closure. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge7closure8functionEv">
+<span id="_CPPv3NK3mge7closure8functionEv"></span><span id="_CPPv2NK3mge7closure8functionEv"></span><span id="mge::closure::functionC"></span><span class="target" id="classmge_1_1closure_1a7a73d684358075dab402dc2676cb2f8b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge7closure13function_typeE" title="mge::closure::function_type"><span class="n"><span class="pre">function_type</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">function</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge7closure8functionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns the function pointer. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function pointer </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="scope-guards">
+<h2>Scope Guards<a class="headerlink" href="#scope-guards" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4I0EN3mge8on_leaveE" title="mge::on_leave"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::on_leave</span></code></a> template implements the scope guard pattern,
+executing a callable when the object leaves scope. This is useful for resource
+cleanup and ensuring actions are performed regardless of how a scope is exited.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge8on_leaveE">
+<span id="_CPPv3I0EN3mge8on_leaveE"></span><span id="_CPPv2I0EN3mge8on_leaveE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Callable</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">on_leave</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge8on_leaveE" title="Link to this definition"></a><br /></dt>
+<dd><p>Execute a callable on leaving the current scope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Callable</strong> – Type of callable to execute</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Example usage:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;file.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">mge</span><span class="o">::</span><span class="n">on_leave</span><span class="w"> </span><span class="nf">cleanup</span><span class="p">([</span><span class="n">f</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="c1">// ... work with file ...</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// cleanup is called automatically</span>
+</pre></div>
+</div>
+</section>
+<section id="visitor-pattern-helper">
+<h2>Visitor Pattern Helper<a class="headerlink" href="#visitor-pattern-helper" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4IDpEN3mge10overloadedE" title="mge::overloaded"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::overloaded</span></code></a> struct template simplifies the visitor pattern
+by combining multiple lambda expressions or functors into a single overload set.
+This is particularly useful with <code class="docutils literal notranslate"><span class="pre">std::variant</span></code> and <code class="docutils literal notranslate"><span class="pre">std::visit</span></code>.</p>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN3mge10overloadedE">
+<span id="_CPPv3IDpEN3mge10overloadedE"></span><span id="_CPPv2IDpEN3mge10overloadedE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Ts</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structmge_1_1overloaded"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">overloaded</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Ts</span></span><a class="headerlink" href="#_CPPv4IDpEN3mge10overloadedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Helper class for visitor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Ts</strong> – types composing the visitor </p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Example usage:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">variant</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">visit</span><span class="p">(</span><span class="n">mge</span><span class="o">::</span><span class="n">overloaded</span><span class="p">{</span>
+<span class="w">    </span><span class="p">[](</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;int: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[](</span><span class="kt">float</span><span class="w"> </span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;float: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">f</span><span class="p">;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;string: &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">},</span><span class="w"> </span><span class="n">v</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="containers.html" class="btn btn-neutral float-left" title="Container Data Types" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metaprogramming.html" class="btn btn-neutral float-right" title="Template Metaprogramming" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

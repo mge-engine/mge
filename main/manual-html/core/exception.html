@@ -9,6 +9,7 @@
   <title>Exception Handling &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -19,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Components" href="component.html" />
-    <link rel="prev" title="Statistics" href="statistics.html" /> 
+    <link rel="next" title="Memory Management" href="memory.html" />
+    <link rel="prev" title="Tracing" href="tracing.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,42 +52,38 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tracing.html">Tracing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="memory.html">Memory Management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Exception Handling</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#base-exception-class">Base Exception class</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge9exceptionE"><code class="docutils literal notranslate"><span class="pre">mge::exception</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#throwing-exceptions">Throwing Exceptions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_THROW"><code class="docutils literal notranslate"><span class="pre">MGE_THROW</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_THROW_WITH_CAUSE"><code class="docutils literal notranslate"><span class="pre">MGE_THROW_WITH_CAUSE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_CALLED_FUNCTION"><code class="docutils literal notranslate"><span class="pre">MGE_CALLED_FUNCTION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#standard-exceptions">Standard Exceptions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge13illegal_stateE"><code class="docutils literal notranslate"><span class="pre">mge::illegal_state</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Version Tracking</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -107,6 +104,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
       <li class="breadcrumb-item active">Exception Handling</li>
       <li class="wy-breadcrumbs-aside">
@@ -128,7 +126,7 @@ informations to the exception, such as location information and stack traces.</p
 <dt class="sig sig-object cpp" id="_CPPv4N3mge9exceptionE">
 <span id="_CPPv3N3mge9exceptionE"></span><span id="_CPPv2N3mge9exceptionE"></span><span id="mge::exception"></span><span class="target" id="classmge_1_1exception"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">exception</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">exception</span></span><a class="headerlink" href="#_CPPv4N3mge9exceptionE" title="Link to this definition"></a><br /></dt>
 <dd><p>An exception. </p>
-<p>Subclassed by mge::bad_cast, mge::duplicate_element, mge::illegal_argument, <a class="reference internal" href="#classmge_1_1illegal__state"><span class="std std-ref">mge::illegal_state</span></a>, mge::no_such_element, mge::not_implemented, mge::not_yet_implemented, mge::null_pointer, mge::numeric_overflow, mge::out_of_memory, mge::out_of_range, mge::pure_virtual_method, mge::runtime_exception, <a class="reference internal" href="system.html#classmge_1_1system__error"><span class="std std-ref">mge::system_error</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1bad__cast"><span class="std std-ref">mge::bad_cast</span></a>, <a class="reference internal" href="#classmge_1_1duplicate__element"><span class="std std-ref">mge::duplicate_element</span></a>, <a class="reference internal" href="#classmge_1_1illegal__argument"><span class="std std-ref">mge::illegal_argument</span></a>, <a class="reference internal" href="#classmge_1_1illegal__state"><span class="std std-ref">mge::illegal_state</span></a>, <a class="reference internal" href="#classmge_1_1no__such__element"><span class="std std-ref">mge::no_such_element</span></a>, <a class="reference internal" href="#classmge_1_1not__implemented"><span class="std std-ref">mge::not_implemented</span></a>, <a class="reference internal" href="#classmge_1_1not__yet__implemented"><span class="std std-ref">mge::not_yet_implemented</span></a>, <a class="reference internal" href="#classmge_1_1null__pointer"><span class="std std-ref">mge::null_pointer</span></a>, <a class="reference internal" href="#classmge_1_1numeric__overflow"><span class="std std-ref">mge::numeric_overflow</span></a>, <a class="reference internal" href="#classmge_1_1out__of__memory"><span class="std std-ref">mge::out_of_memory</span></a>, <a class="reference internal" href="#classmge_1_1out__of__range"><span class="std std-ref">mge::out_of_range</span></a>, <a class="reference internal" href="#classmge_1_1pure__virtual__method"><span class="std std-ref">mge::pure_virtual_method</span></a>, <a class="reference internal" href="#classmge_1_1runtime__exception"><span class="std std-ref">mge::runtime_exception</span></a>, <a class="reference internal" href="system.html#classmge_1_1system__error"><span class="std std-ref">mge::system_error</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -567,6 +565,78 @@ can be used like this:</p>
 <dd><p>Thrown if the program detects an illegal state. </p>
 </dd></dl>
 
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16illegal_argumentE">
+<span id="_CPPv3N3mge16illegal_argumentE"></span><span id="_CPPv2N3mge16illegal_argumentE"></span><span id="mge::illegal_argument"></span><span class="target" id="classmge_1_1illegal__argument"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">illegal_argument</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge16illegal_argumentE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown an invalid argument is passed to a function. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12out_of_rangeE">
+<span id="_CPPv3N3mge12out_of_rangeE"></span><span id="_CPPv2N3mge12out_of_rangeE"></span><span id="mge::out_of_range"></span><span class="target" id="classmge_1_1out__of__range"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_range</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge12out_of_rangeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a container is accessed outside its defined range. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17duplicate_elementE">
+<span id="_CPPv3N3mge17duplicate_elementE"></span><span id="_CPPv2N3mge17duplicate_elementE"></span><span id="mge::duplicate_element"></span><span class="target" id="classmge_1_1duplicate__element"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">duplicate_element</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge17duplicate_elementE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if an element is duplicated in a data structure that is required to be unique. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge8bad_castE">
+<span id="_CPPv3N3mge8bad_castE"></span><span id="_CPPv2N3mge8bad_castE"></span><span id="mge::bad_cast"></span><span class="target" id="classmge_1_1bad__cast"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bad_cast</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge8bad_castE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a type cast fails. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15no_such_elementE">
+<span id="_CPPv3N3mge15no_such_elementE"></span><span id="_CPPv2N3mge15no_such_elementE"></span><span id="mge::no_such_element"></span><span class="target" id="classmge_1_1no__such__element"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">no_such_element</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge15no_such_elementE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if an expected element is not found in a container. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge17runtime_exceptionE">
+<span id="_CPPv3N3mge17runtime_exceptionE"></span><span id="_CPPv2N3mge17runtime_exceptionE"></span><span id="mge::runtime_exception"></span><span class="target" id="classmge_1_1runtime__exception"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">runtime_exception</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge17runtime_exceptionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if an error is detected at runtime. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge19not_yet_implementedE">
+<span id="_CPPv3N3mge19not_yet_implementedE"></span><span id="_CPPv2N3mge19not_yet_implementedE"></span><span id="mge::not_yet_implemented"></span><span class="target" id="classmge_1_1not__yet__implemented"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">not_yet_implemented</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge19not_yet_implementedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a functionality is not (yet) implemented. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12null_pointerE">
+<span id="_CPPv3N3mge12null_pointerE"></span><span id="_CPPv2N3mge12null_pointerE"></span><span id="mge::null_pointer"></span><span class="target" id="classmge_1_1null__pointer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">null_pointer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge12null_pointerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a null pointer is detected but not allowed. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge13out_of_memoryE">
+<span id="_CPPv3N3mge13out_of_memoryE"></span><span id="_CPPv2N3mge13out_of_memoryE"></span><span id="mge::out_of_memory"></span><span class="target" id="classmge_1_1out__of__memory"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">out_of_memory</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge13out_of_memoryE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if an out of memory situation is detected. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge16numeric_overflowE">
+<span id="_CPPv3N3mge16numeric_overflowE"></span><span id="_CPPv2N3mge16numeric_overflowE"></span><span id="mge::numeric_overflow"></span><span class="target" id="classmge_1_1numeric__overflow"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">numeric_overflow</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge16numeric_overflowE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a number overflow is detected. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15not_implementedE">
+<span id="_CPPv3N3mge15not_implementedE"></span><span id="_CPPv2N3mge15not_implementedE"></span><span id="mge::not_implemented"></span><span class="target" id="classmge_1_1not__implemented"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">not_implemented</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge15not_implementedE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a method is not implemented. </p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge19pure_virtual_methodE">
+<span id="_CPPv3N3mge19pure_virtual_methodE"></span><span id="_CPPv2N3mge19pure_virtual_methodE"></span><span id="mge::pure_virtual_method"></span><span class="target" id="classmge_1_1pure__virtual__method"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pure_virtual_method</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge19pure_virtual_methodE" title="Link to this definition"></a><br /></dt>
+<dd><p>Thrown if a method is logically pure virtual, but has an actual implementation for technical reasons. </p>
+</dd></dl>
+
 </section>
 </section>
 
@@ -574,8 +644,8 @@ can be used like this:</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="statistics.html" class="btn btn-neutral float-left" title="Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="component.html" class="btn btn-neutral float-right" title="Components" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tracing.html" class="btn btn-neutral float-left" title="Tracing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="memory.html" class="btn btn-neutral float-right" title="Memory Management" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

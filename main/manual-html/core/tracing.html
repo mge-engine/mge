@@ -9,6 +9,7 @@
   <title>Tracing &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -19,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="next" title="Exception Handling" href="exception.html" />
     <link rel="prev" title="Definitions" href="definitions.html" /> 
 </head>
 
@@ -51,60 +52,38 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="definitions.html">Definitions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Tracing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#severity">Severity</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11trace_levelE"><code class="docutils literal notranslate"><span class="pre">trace_level</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="commandline.html">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#trace-topic">Trace Topic</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#defining-a-trace-topic">Defining a Trace Topic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#using-a-trace-topic">Using a Trace Topic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#trace-topic-reference">Trace Topic Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#writing-trace-messages">Writing Trace Messages</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge5traceE"><code class="docutils literal notranslate"><span class="pre">mge::trace</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_TRACE"><code class="docutils literal notranslate"><span class="pre">MGE_TRACE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_DEBUG_TRACE"><code class="docutils literal notranslate"><span class="pre">MGE_DEBUG_TRACE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_INFO_TRACE"><code class="docutils literal notranslate"><span class="pre">MGE_INFO_TRACE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_WARNING_TRACE"><code class="docutils literal notranslate"><span class="pre">MGE_WARNING_TRACE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_ERROR_TRACE"><code class="docutils literal notranslate"><span class="pre">MGE_ERROR_TRACE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_FATAL_TRACE"><code class="docutils literal notranslate"><span class="pre">MGE_FATAL_TRACE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_DEBUG_TRACE_ENABLED"><code class="docutils literal notranslate"><span class="pre">MGE_DEBUG_TRACE_ENABLED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_INFO_TRACE_ENABLED"><code class="docutils literal notranslate"><span class="pre">MGE_INFO_TRACE_ENABLED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_WARNING_TRACE_ENABLED"><code class="docutils literal notranslate"><span class="pre">MGE_WARNING_TRACE_ENABLED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_ERROR_TRACE_ENABLED"><code class="docutils literal notranslate"><span class="pre">MGE_ERROR_TRACE_ENABLED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_FATAL_TRACE_ENABLED"><code class="docutils literal notranslate"><span class="pre">MGE_FATAL_TRACE_ENABLED</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#c.MGE_XDEBUG"><code class="docutils literal notranslate"><span class="pre">MGE_XDEBUG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#trace-processing">Trace Processing</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#trace-record">Trace Record</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#trace-sink">Trace Sink</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#trace-formatter">Trace Formatter</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html">Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="memory.html">Memory Management</a></li>
-<li class="toctree-l2"><a class="reference internal" href="statistics.html">Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="exception.html">Exception Handling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="component.html">Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="system.html">System Abstractions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="streams.html">Streams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="version.html">Version Tracking</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -125,6 +104,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
       <li class="breadcrumb-item active">Tracing</li>
       <li class="wy-breadcrumbs-aside">
@@ -1010,7 +990,7 @@ of the <a class="reference internal" href="#_CPPv4N3mge15trace_formatterE" title
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="definitions.html" class="btn btn-neutral float-left" title="Definitions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="exception.html" class="btn btn-neutral float-right" title="Exception Handling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

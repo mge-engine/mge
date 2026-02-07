@@ -9,6 +9,7 @@
   <title>Interaction Loop &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,25 +52,24 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgeapplication.html">Application Library</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Interaction Loop</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#game-loop-concept">Game Loop Concept</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#abstractions">Abstractions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge11loop_targetE"><code class="docutils literal notranslate"><span class="pre">mge::loop_target</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge4loopE"><code class="docutils literal notranslate"><span class="pre">mge::loop</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgeapplication.html">Application Library</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Interaction Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html">Application</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#simple-loop">Simple Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="application.html">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -90,6 +90,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgeapplication.html">Application Library</a></li>
       <li class="breadcrumb-item active">Interaction Loop</li>
       <li class="wy-breadcrumbs-aside">
@@ -191,7 +192,7 @@ steps in a loop:</p>
 <p>The loop itself is implemented by implementing a component of <code class="docutils literal notranslate"><span class="pre">mge::loop</span></code> interface:</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge4loopE">
-<span id="_CPPv3N3mge4loopE"></span><span id="_CPPv2N3mge4loopE"></span><span id="mge::loop"></span><span class="target" id="classmge_1_1loop"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loop</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/component.html#_CPPv4I0EN3mge9componentE" title="mge::component"><span class="n"><span class="pre">component</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge4loopE" title="mge::loop"><span class="n"><span class="pre">loop</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge4loopE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge4loopE"></span><span id="_CPPv2N3mge4loopE"></span><span id="mge::loop"></span><span class="target" id="classmge_1_1loop"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loop</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">component</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N3mge4loopE" title="mge::loop"><span class="n"><span class="pre">loop</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N3mge4loopE" title="Link to this definition"></a><br /></dt>
 <dd><p>Interaction loop abstraction. </p>
 <p>While the loop target does not signal quitting, input is collected from target, state is updated and presented. </p>
 <p>Subclassed by mge::fixed_step_loop, mge::simple_loop</p>
@@ -211,6 +212,34 @@ steps in a loop:</p>
 </div>
 </dd></dl>
 
+<p>The loop context provides information about the current state of the loop:</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12loop_contextE">
+<span id="_CPPv3N3mge12loop_contextE"></span><span id="_CPPv2N3mge12loop_contextE"></span><span id="mge::loop_context"></span><span class="target" id="classmge_1_1loop__context"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">loop_context</span></span></span><a class="headerlink" href="#_CPPv4N3mge12loop_contextE" title="Link to this definition"></a><br /></dt>
+<dd><p>Context of current loop. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12loop_context5cycleE">
+<span id="_CPPv3N3mge12loop_context5cycleE"></span><span id="_CPPv2N3mge12loop_context5cycleE"></span><span id="mge::loop_context::cycle__uint64_t"></span><span class="target" id="classmge_1_1loop__context_1aadaceb6a8e7ac13062c721b56912841a"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cycle</span></span></span><a class="headerlink" href="#_CPPv4N3mge12loop_context5cycleE" title="Link to this definition"></a><br /></dt>
+<dd><p>Frame counter. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12loop_context5deltaE">
+<span id="_CPPv3N3mge12loop_context5deltaE"></span><span id="_CPPv2N3mge12loop_context5deltaE"></span><span id="mge::loop_context::delta__double"></span><span class="target" id="classmge_1_1loop__context_1a71aee6947ffec1e6131fc04fc9e1c4a7"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">delta</span></span></span><a class="headerlink" href="#_CPPv4N3mge12loop_context5deltaE" title="Link to this definition"></a><br /></dt>
+<dd><p>Delta time in seconds since last update. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12loop_context4peekE">
+<span id="_CPPv3N3mge12loop_context4peekE"></span><span id="_CPPv2N3mge12loop_context4peekE"></span><span id="mge::loop_context::peek__double"></span><span class="target" id="classmge_1_1loop__context_1aefd85eb3f7d23231f25b1dbbe6754bbf"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">peek</span></span></span><a class="headerlink" href="#_CPPv4N3mge12loop_context4peekE" title="Link to this definition"></a><br /></dt>
+<dd><p>Peek value for interpolation [0,1) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
 </section>
 <section id="simple-loop">
 <h2>Simple Loop<a class="headerlink" href="#simple-loop" title="Link to this heading"></a></h2>
@@ -224,6 +253,21 @@ does not provide any peek on presentation.:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> will be called with the delta time compared with
 previous frame</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">present</span></code> will always be called with a peek value of <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+</ul>
+</section>
+<section id="fixed-step-loop">
+<h2>Fixed Step Loop<a class="headerlink" href="#fixed-step-loop" title="Link to this heading"></a></h2>
+<p>A fixed step loop is provided which uses a fixed time step for updates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">auto</span> <span class="n">fixed_step_loop</span> <span class="o">=</span> <span class="n">mge</span><span class="p">::</span><span class="n">loop</span><span class="p">::</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;fixed_step&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The fixed step loop processes the interaction loop as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">update</span></code> will be called with a fixed time step, potentially multiple
+times per frame if the frame takes longer than the time step</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">present</span></code> will be called with a peek value indicating the interpolation
+factor between current and next state, allowing smooth rendering between
+fixed update steps</p></li>
 </ul>
 </section>
 </section>

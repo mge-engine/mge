@@ -40,3 +40,27 @@ Standard Exceptions
 For a lot of use cases, standard exceptions are provided.
 
 .. doxygenclass:: mge::illegal_state
+
+.. doxygenclass:: mge::illegal_argument
+
+.. doxygenclass:: mge::out_of_range
+
+.. doxygenclass:: mge::duplicate_element
+
+.. doxygenclass:: mge::bad_cast
+
+.. doxygenclass:: mge::no_such_element
+
+.. doxygenclass:: mge::runtime_exception
+
+.. doxygenclass:: mge::not_yet_implemented
+
+.. doxygenclass:: mge::null_pointer
+
+.. doxygenclass:: mge::out_of_memory
+
+.. doxygenclass:: mge::numeric_overflow
+
+.. doxygenclass:: mge::not_implemented
+
+.. doxygenclass:: mge::pure_virtual_method

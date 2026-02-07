@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Line and User Input &mdash; MGE 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Utilities" href="utilities.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            MGE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User Manual</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../mgecore.html">Core Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="definitions.html">Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tracing.html">Tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exception.html">Exception Handling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory.html">Memory Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="streams.html">Streams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="containers.html">Container Data Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="functional.html">Functional Programming Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metaprogramming.html">Template Metaprogramming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Command Line and User Input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="statistics.html">Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="component.html">Components</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system.html">System Abstractions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="concurrency.html">Concurrency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="version.html">Version Tracking</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MGE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
+          <li class="breadcrumb-item"><a href="../mgecore.html">Core Library</a></li>
+      <li class="breadcrumb-item active">Command Line and User Input</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/core/commandline.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="command-line-and-user-input">
+<h1>Command Line and User Input<a class="headerlink" href="#command-line-and-user-input" title="Link to this heading"></a></h1>
+<p>MGE provides utilities for parsing command-line arguments and handling
+interactive console input.</p>
+<section id="program-options">
+<h2>Program Options<a class="headerlink" href="#program-options" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::program_options</span></code></a> class provides a flexible framework for
+defining and parsing command-line options. It supports named options, positional
+arguments, and option values with type safety.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_optionsE">
+<span id="_CPPv3N3mge15program_optionsE"></span><span id="_CPPv2N3mge15program_optionsE"></span><span id="mge::program_options"></span><span class="target" id="classmge_1_1program__options"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">program_options</span></span></span><a class="headerlink" href="#_CPPv4N3mge15program_optionsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Program options. </p>
+<p>Description of command line options. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_options6optionEPKcPKc">
+<span id="_CPPv3N3mge15program_options6optionEPKcPKc"></span><span id="_CPPv2N3mge15program_options6optionEPKcPKc"></span><span id="mge::program_options::option__cCP.cCP"></span><span class="target" id="classmge_1_1program__options_1a7c5341d2dcfbf86dea5a837c99eceb65"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">option</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">description</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15program_options6optionEPKcPKc" title="Link to this definition"></a><br /></dt>
+<dd><p>Define command-line option. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – option name </p></li>
+<li><p><strong>description</strong> – option description </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>reference to this object for chaining </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge15program_options6optionER15program_optionsPKcPKcRKN15program_options5valueI1TEE">
+<span id="_CPPv3I0EN3mge15program_options6optionEPKcPKcRKN15program_options5valueI1TEE"></span><span id="_CPPv2I0EN3mge15program_options6optionEPKcPKcRKN15program_options5valueI1TEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1program__options_1aba3d18a2c5a29c982a38dab3afe3f503"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">option</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">description</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN3mge15program_options5valueE" title="mge::program_options::value"><span class="n"><span class="pre">value</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3mge15program_options6optionER15program_optionsPKcPKcRKN15program_options5valueI1TEE" title="mge::program_options::option::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge15program_options6optionER15program_optionsPKcPKcRKN15program_options5valueI1TEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Define command-line option with value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – value type </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>name</strong> – option name </p></li>
+<li><p><strong>description</strong> – option description </p></li>
+<li><p><strong>value</strong> – option value specification </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this object for chaining </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge15program_options10positionalER15program_optionsPKcPKcRKN15program_options5valueI1TEE">
+<span id="_CPPv3I0EN3mge15program_options10positionalEPKcPKcRKN15program_options5valueI1TEE"></span><span id="_CPPv2I0EN3mge15program_options10positionalEPKcPKcRKN15program_options5valueI1TEE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1program__options_1ae3aa7ee2c37cf312e6275da60c61c677"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">positional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">name</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">description</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I0EN3mge15program_options5valueE" title="mge::program_options::value"><span class="n"><span class="pre">value</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN3mge15program_options10positionalER15program_optionsPKcPKcRKN15program_options5valueI1TEE" title="mge::program_options::positional::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN3mge15program_options10positionalER15program_optionsPKcPKcRKN15program_options5valueI1TEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Define positional option. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – value type </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>name</strong> – option name </p></li>
+<li><p><strong>description</strong> – option description </p></li>
+<li><p><strong>value</strong> – option value specification </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this object for chaining </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_options19stored_unrecognizedEv">
+<span id="_CPPv3N3mge15program_options19stored_unrecognizedEv"></span><span id="_CPPv2N3mge15program_options19stored_unrecognizedEv"></span><span id="mge::program_options::stored_unrecognized"></span><span class="target" id="classmge_1_1program__options_1ae9683fe7db43e3a7f9d1b1aca3d221f1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">stored_unrecognized</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15program_options19stored_unrecognizedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Store unrecognized options instead of throwing. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>reference to this object for chaining </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options4sizeEv">
+<span id="_CPPv3NK3mge15program_options4sizeEv"></span><span id="_CPPv2NK3mge15program_options4sizeEv"></span><span id="mge::program_options::sizeC"></span><span class="target" id="classmge_1_1program__options_1ae0e0d55ce106cccc2e375ee2989bc097"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">size</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">noexcept</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options4sizeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get number of defined options. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>option count </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options5printERNSt7ostreamE">
+<span id="_CPPv3NK3mge15program_options5printERNSt7ostreamE"></span><span id="_CPPv2NK3mge15program_options5printERNSt7ostreamE"></span><span id="mge::program_options::print__osRC"></span><span class="target" id="classmge_1_1program__options_1a3906d7da10122e3549925f7f3812b8f4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">print</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ostream</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">os</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options5printERNSt7ostreamE" title="Link to this definition"></a><br /></dt>
+<dd><p>Print help information. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>os</strong> – output stream </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options5parseEiPPKcRN15program_options7optionsE">
+<span id="_CPPv3NK3mge15program_options5parseEiPPKcRN15program_options7optionsE"></span><span id="_CPPv2NK3mge15program_options5parseEiPPKcRN15program_options7optionsE"></span><span id="mge::program_options::parse__i.cCPP.program_options::optionsRC"></span><span class="target" id="classmge_1_1program__options_1a05b695c2eed4a6ddd09dac16fc746720"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parse</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">argc</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">argv</span></span>, <a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15program_options7optionsE" title="mge::program_options::options"><span class="n"><span class="pre">options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">o</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options5parseEiPPKcRN15program_options7optionsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Parse command-line arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>argc</strong> – argument count </p></li>
+<li><p><strong>argv</strong> – argument vector </p></li>
+<li><p><strong>o</strong> – parsed options output </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options5parseERKNSt6vectorINSt6stringEEERN15program_options7optionsE">
+<span id="_CPPv3NK3mge15program_options5parseERKNSt6vectorINSt6stringEEERN15program_options7optionsE"></span><span id="_CPPv2NK3mge15program_options5parseERKNSt6vectorINSt6stringEEERN15program_options7optionsE"></span><span id="mge::program_options::parse__std::vector:ss:CR.program_options::optionsRC"></span><span class="target" id="classmge_1_1program__options_1a6caf3c94f093dddf741e42148fe7ee61"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">parse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">args</span></span>, <a class="reference internal" href="#_CPPv4N3mge15program_optionsE" title="mge::program_options"><span class="n"><span class="pre">program_options</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge15program_options7optionsE" title="mge::program_options::options"><span class="n"><span class="pre">options</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">o</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options5parseERKNSt6vectorINSt6stringEEERN15program_options7optionsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Parse command-line arguments. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – argument vector </p></li>
+<li><p><strong>o</strong> – parsed options output </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_options7optionsE">
+<span id="_CPPv3N3mge15program_options7optionsE"></span><span id="_CPPv2N3mge15program_options7optionsE"></span><span id="mge::program_options::options"></span><span class="target" id="classmge_1_1program__options_1_1options"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">options</span></span></span><a class="headerlink" href="#_CPPv4N3mge15program_options7optionsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Storage of option values. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options7options10has_optionERKNSt6stringE">
+<span id="_CPPv3NK3mge15program_options7options10has_optionERKNSt6stringE"></span><span id="_CPPv2NK3mge15program_options7options10has_optionERKNSt6stringE"></span><span id="mge::program_options::options::has_option__ssCRC"></span><span class="target" id="classmge_1_1program__options_1_1options_1ab16c0979f9d5178fba607292763c6c2d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_option</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options7options10has_optionERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return true if the option with the given name is present. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – option name </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options7options14has_positionalERKNSt6stringE">
+<span id="_CPPv3NK3mge15program_options7options14has_positionalERKNSt6stringE"></span><span id="_CPPv2NK3mge15program_options7options14has_positionalERKNSt6stringE"></span><span id="mge::program_options::options::has_positional__ssCRC"></span><span class="target" id="classmge_1_1program__options_1_1options_1a30c1d113e3b2dc8453559cd50afc67ec"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_positional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options7options14has_positionalERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Return true if the positional option with the given name is present. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – option name </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options7options20has_any_unrecognizedEv">
+<span id="_CPPv3NK3mge15program_options7options20has_any_unrecognizedEv"></span><span id="_CPPv2NK3mge15program_options7options20has_any_unrecognizedEv"></span><span id="mge::program_options::options::has_any_unrecognizedC"></span><span class="target" id="classmge_1_1program__options_1_1options_1afe073dcfff0da4b3f58252b75414e33b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">has_any_unrecognized</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options7options20has_any_unrecognizedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Return true if amy unrecognized option is present. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options7options10positionalERKNSt6stringE">
+<span id="_CPPv3NK3mge15program_options7options10positionalERKNSt6stringE"></span><span id="_CPPv2NK3mge15program_options7options10positionalERKNSt6stringE"></span><span id="mge::program_options::options::positional__ssCRC"></span><span class="target" id="classmge_1_1program__options_1_1options_1a2383237cb22356c5202c23a9e0d618df"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">positional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options7options10positionalERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Access value of positional option. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – option name </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>option value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options7options6optionERKNSt6stringE">
+<span id="_CPPv3NK3mge15program_options7options6optionERKNSt6stringE"></span><span id="_CPPv2NK3mge15program_options7options6optionERKNSt6stringE"></span><span id="mge::program_options::options::option__ssCRC"></span><span class="target" id="classmge_1_1program__options_1_1options_1aed47d558607c773b18218592a6238256"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">option</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options7options6optionERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Access value of option. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – option name </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>option value </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_options7options10positionalERKNSt6stringE">
+<span id="_CPPv3N3mge15program_options7options10positionalERKNSt6stringE"></span><span id="_CPPv2N3mge15program_options7options10positionalERKNSt6stringE"></span><span id="mge::program_options::options::positional__ssCR"></span><span class="target" id="classmge_1_1program__options_1_1options_1a71fa6fbf598435719e3b69aa1495e295"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">positional</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15program_options7options10positionalERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Access value of positional option. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – option name </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>option value reference </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_options7options6optionERKNSt6stringE">
+<span id="_CPPv3N3mge15program_options7options6optionERKNSt6stringE"></span><span id="_CPPv2N3mge15program_options7options6optionERKNSt6stringE"></span><span id="mge::program_options::options::option__ssCR"></span><span class="target" id="classmge_1_1program__options_1_1options_1a33835e1eb3c724f9aaf4fc218ad5ea3f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">any</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">option</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15program_options7options6optionERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Access value of option. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – option name </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>option value reference </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge15program_options7options12unrecognizedEv">
+<span id="_CPPv3N3mge15program_options7options12unrecognizedEv"></span><span id="_CPPv2N3mge15program_options7options12unrecognizedEv"></span><span id="mge::program_options::options::unrecognized"></span><span class="target" id="classmge_1_1program__options_1_1options_1af31f0c686230c3175d43fbb3f493d2d1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">unrecognized</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge15program_options7options12unrecognizedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Access unrecognized options. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>unrecognized options </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge15program_options7options12unrecognizedEv">
+<span id="_CPPv3NK3mge15program_options7options12unrecognizedEv"></span><span id="_CPPv2NK3mge15program_options7options12unrecognizedEv"></span><span id="mge::program_options::options::unrecognizedC"></span><span class="target" id="classmge_1_1program__options_1_1options_1a43a15207e1700dbb0993a162a5be3590"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">unrecognized</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge15program_options7options12unrecognizedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Access unrecognized options. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>unrecognized options </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN3mge15program_options5valueE">
+<span id="_CPPv3I0EN3mge15program_options5valueE"></span><span id="_CPPv2I0EN3mge15program_options5valueE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="structmge_1_1program__options_1_1value"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">value</span></span></span><a class="headerlink" href="#_CPPv4I0EN3mge15program_options5valueE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<section id="unknown-option-exception">
+<h3>Unknown Option Exception<a class="headerlink" href="#unknown-option-exception" title="Link to this heading"></a></h3>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge14unknown_optionE">
+<span id="_CPPv3N3mge14unknown_optionE"></span><span id="_CPPv2N3mge14unknown_optionE"></span><span id="mge::unknown_option"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-prename descclassname"><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">unknown_option</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="exception.html#_CPPv4N3mge9exceptionE" title="mge::exception"><span class="n"><span class="pre">exception</span></span></a><a class="headerlink" href="#_CPPv4N3mge14unknown_optionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Exception thrown when an unknown command-line option is specified.</p>
+</dd></dl>
+
+</section>
+</section>
+<section id="line-editor">
+<h2>Line Editor<a class="headerlink" href="#line-editor" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="#_CPPv4N3mge11line_editorE" title="mge::line_editor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">mge::line_editor</span></code></a> class provides interactive line input with
+prompt support for console applications. Only one line editor instance can
+exist at a time.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editorE">
+<span id="_CPPv3N3mge11line_editorE"></span><span id="_CPPv2N3mge11line_editorE"></span><span id="mge::line_editor"></span><span class="target" id="classmge_1_1line__editor"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">line_editor</span></span></span><a class="headerlink" href="#_CPPv4N3mge11line_editorE" title="Link to this definition"></a><br /></dt>
+<dd><p>A line editor. </p>
+<p>A line editor handles the input in the console. Only one line editor can exist at the same time. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editor11line_editorEv">
+<span id="_CPPv3N3mge11line_editor11line_editorEv"></span><span id="_CPPv2N3mge11line_editor11line_editorEv"></span><span id="mge::line_editor::line_editor"></span><span class="target" id="classmge_1_1line__editor_1ad9d76e3e047057f9235ee4edf9b81382"></span><span class="sig-name descname"><span class="n"><span class="pre">line_editor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11line_editor11line_editorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct line editor with empty prompt. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editor11line_editorERKNSt6stringE">
+<span id="_CPPv3N3mge11line_editor11line_editorERKNSt6stringE"></span><span id="_CPPv2N3mge11line_editor11line_editorERKNSt6stringE"></span><span id="mge::line_editor::line_editor__ssCR"></span><span class="target" id="classmge_1_1line__editor_1abfbd56062c85755e598364f4d50ea961"></span><span class="sig-name descname"><span class="n"><span class="pre">line_editor</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">prompt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11line_editor11line_editorERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct line editor with given prompt. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> – prompt to display. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editorD0Ev">
+<span id="_CPPv3N3mge11line_editorD0Ev"></span><span id="_CPPv2N3mge11line_editorD0Ev"></span><span id="mge::line_editor::~line_editor"></span><span class="target" id="classmge_1_1line__editor_1af3f3b6415ea2c77cc02b1fb04058bf61"></span><span class="sig-name descname"><span class="n"><span class="pre">~line_editor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11line_editorD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destroy the line editor object. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editor4lineEv">
+<span id="_CPPv3N3mge11line_editor4lineEv"></span><span id="_CPPv2N3mge11line_editor4lineEv"></span><span id="mge::line_editor::line"></span><span class="target" id="classmge_1_1line__editor_1a9769f17c575a4c0df39007b697a28809"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">line</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11line_editor4lineEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Read next line from line editor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>line read </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK3mge11line_editor6promptEv">
+<span id="_CPPv3NK3mge11line_editor6promptEv"></span><span id="_CPPv2NK3mge11line_editor6promptEv"></span><span id="mge::line_editor::promptC"></span><span class="target" id="classmge_1_1line__editor_1a9d7251585df9b8d8e8273088db3d09ed"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">prompt</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK3mge11line_editor6promptEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Get current prompt. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>current prompt </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editor10set_promptERKNSt6stringE">
+<span id="_CPPv3N3mge11line_editor10set_promptERKNSt6stringE"></span><span id="_CPPv2N3mge11line_editor10set_promptERKNSt6stringE"></span><span id="mge::line_editor::set_prompt__ssCR"></span><span class="target" id="classmge_1_1line__editor_1a23f5adaefc8e3f44ac39000ade7d1359"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_prompt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11line_editor10set_promptERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Set prompt. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – new prompt </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge11line_editor10set_promptEPKc">
+<span id="_CPPv3N3mge11line_editor10set_promptEPKc"></span><span id="_CPPv2N3mge11line_editor10set_promptEPKc"></span><span id="mge::line_editor::set_prompt__cCP"></span><span class="target" id="classmge_1_1line__editor_1a097c84ae08b6de6a9911176a66c7393b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">set_prompt</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge11line_editor10set_promptEPKc" title="Link to this definition"></a><br /></dt>
+<dd><p>Set prompt. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>p</strong> – new prompt </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="utilities.html" class="btn btn-neutral float-left" title="Utilities" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Alexander Schroeder.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

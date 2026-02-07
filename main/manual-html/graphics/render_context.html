@@ -9,6 +9,7 @@
   <title>Render Context &mdash; MGE 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=e486641d" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -51,63 +52,33 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="system.html">Render System</a></li>
-<li class="toctree-l2"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
-<li class="toctree-l2"><a class="reference internal" href="window.html">Window</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Render Context</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14render_contextE"><code class="docutils literal notranslate"><span class="pre">mge::render_context</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context20create_vertex_bufferERK13vertex_layout6size_tRK10buffer_ref"><code class="docutils literal notranslate"><span class="pre">create_vertex_buffer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context13create_shaderE11shader_type"><code class="docutils literal notranslate"><span class="pre">create_shader()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context14create_programEv"><code class="docutils literal notranslate"><span class="pre">create_program()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context19create_frame_bufferEv"><code class="docutils literal notranslate"><span class="pre">create_frame_buffer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context14create_textureE12texture_type"><code class="docutils literal notranslate"><span class="pre">create_texture()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context6extentEv"><code class="docutils literal notranslate"><span class="pre">extent()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context16default_viewportEv"><code class="docutils literal notranslate"><span class="pre">default_viewport()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context15default_scissorEv"><code class="docutils literal notranslate"><span class="pre">default_scissor()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context4passE8uint32_t"><code class="docutils literal notranslate"><span class="pre">pass()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context14command_bufferEb"><code class="docutils literal notranslate"><span class="pre">command_buffer()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context5frameEv"><code class="docutils literal notranslate"><span class="pre">frame()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context10screenshotEv"><code class="docutils literal notranslate"><span class="pre">screenshot()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14render_context5indexEv"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I0EN3mge14render_context6objectEP1T8uint16_t8uint16_t8uint32_t"><code class="docutils literal notranslate"><span class="pre">object()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType"><code class="docutils literal notranslate"><span class="pre">prepare_frame()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14render_context3getE8uint16_t"><code class="docutils literal notranslate"><span class="pre">get()</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../reference.html">Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../reference.html#libraries">Libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../mgecore.html">Core Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgemath.html">Mathematics Library</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../mgegraphics.html">Graphics Library</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="system.html">Render System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="monitor.html">Monitor Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="window.html">Window</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Render Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buffers.html">Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="texture.html">Texture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mesh.html">Mesh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="command_buffer.html">Command Buffers</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge14context_objectE"><code class="docutils literal notranslate"><span class="pre">mge::context_object</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14context_objectD0Ev"><code class="docutils literal notranslate"><span class="pre">~context_object()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14context_object7contextEv"><code class="docutils literal notranslate"><span class="pre">context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge14context_object7contextEv"><code class="docutils literal notranslate"><span class="pre">context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14context_object19assert_same_contextERK14render_context"><code class="docutils literal notranslate"><span class="pre">assert_same_context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14context_object19assert_same_contextERK14context_object"><code class="docutils literal notranslate"><span class="pre">assert_same_context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14context_object19assert_same_contextERKNSt10shared_ptrI14context_objectEE"><code class="docutils literal notranslate"><span class="pre">assert_same_context()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14context_object5readyEv"><code class="docutils literal notranslate"><span class="pre">ready()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge14context_object12assert_readyEv"><code class="docutils literal notranslate"><span class="pre">assert_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N3mge10swap_chainE"><code class="docutils literal notranslate"><span class="pre">mge::swap_chain</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10swap_chain7presentEv"><code class="docutils literal notranslate"><span class="pre">present()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4NK3mge10swap_chain25current_back_buffer_indexEv"><code class="docutils literal notranslate"><span class="pre">current_back_buffer_index()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#_CPPv4N3mge10swap_chain10screenshotEv"><code class="docutils literal notranslate"><span class="pre">screenshot()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#parameters">Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference.html#example-programs">Example Programs</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="datastructures.html">Data Structures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="shaders.html">Shader Programs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="buffers.html">Buffers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="texture.html">Texture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="image.html">Image</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mesh.html">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="command_list.html">Command Lists</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeinput.html">Input Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeapplication.html">Application Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mgeasset.html">Asset Library</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Appendix</span></p>
 <ul>
@@ -128,6 +99,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../reference.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../mgegraphics.html">Graphics Library</a></li>
       <li class="breadcrumb-item active">Render Context</li>
       <li class="wy-breadcrumbs-aside">
@@ -246,7 +218,7 @@ has a 1:1 relationship with the window.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context4passE8uint32_t">
-<span id="_CPPv3N3mge14render_context4passE8uint32_t"></span><span id="_CPPv2N3mge14render_context4passE8uint32_t"></span><span id="mge::render_context::pass__uint32_t"></span><span class="target" id="classmge_1_1render__context_1a0d6b237aa62137956428974224a1dbc3"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pass</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">pass</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context4passE8uint32_t" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge14render_context4passE8uint32_t"></span><span id="_CPPv2N3mge14render_context4passE8uint32_t"></span><span id="mge::render_context::pass__uint32_t"></span><span class="target" id="classmge_1_1render__context_1a0d6b237aa62137956428974224a1dbc3"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge4passE" title="mge::pass"><span class="n"><span class="pre">pass</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">pass</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint32_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">index</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context4passE8uint32_t" title="Link to this definition"></a><br /></dt>
 <dd><p>Get a pass by its index. If the pass does not exist, it is created. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -260,7 +232,7 @@ has a 1:1 relationship with the window.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14render_context14command_bufferEb">
-<span id="_CPPv3N3mge14render_context14command_bufferEb"></span><span id="_CPPv2N3mge14render_context14command_bufferEb"></span><span id="mge::render_context::command_buffer__b"></span><span class="target" id="classmge_1_1render__context_1aac68c0eb9a80ece9499160e97cd427c6"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">command_buffer</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">command_buffer</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">clear</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context14command_bufferEb" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N3mge14render_context14command_bufferEb"></span><span id="_CPPv2N3mge14render_context14command_bufferEb"></span><span id="mge::render_context::command_buffer__b"></span><span class="target" id="classmge_1_1render__context_1aac68c0eb9a80ece9499160e97cd427c6"></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="command_buffer.html#_CPPv4N3mge14command_bufferE" title="mge::command_buffer"><span class="n"><span class="pre">command_buffer</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">command_buffer</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">clear</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge14render_context14command_bufferEb" title="Link to this definition"></a><br /></dt>
 <dd><p>Get the current command buffer. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -329,7 +301,7 @@ has a 1:1 relationship with the window.</p>
 
 <dl class="cpp function">
 <dt class="sig sig-object cpp" id="_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType">
-<span id="_CPPv3I_N3mge8callableEEN3mge14render_context13prepare_frameERR10ActionType"></span><span id="_CPPv2I_N3mge8callableEEN3mge14render_context13prepare_frameERR10ActionType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">callable</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ActionType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1render__context_1add43372292182fce05340755ea90c3ee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prepare_frame</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType" title="mge::render_context::prepare_frame::ActionType"><span class="n"><span class="pre">ActionType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">action</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3I_N3mge8callableEEN3mge14render_context13prepare_frameERR10ActionType"></span><span id="_CPPv2I_N3mge8callableEEN3mge14render_context13prepare_frameERR10ActionType"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/metaprogramming.html#_CPPv4I0EN3mge8callableE" title="mge::callable"><span class="n"><span class="pre">callable</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ActionType</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classmge_1_1render__context_1add43372292182fce05340755ea90c3ee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prepare_frame</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType" title="mge::render_context::prepare_frame::ActionType"><span class="n"><span class="pre">ActionType</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">action</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_N3mge8callableEEN3mge14render_context13prepare_frameEvRR10ActionType" title="Link to this definition"></a><br /></dt>
 <dd><p>Prepare the frame by registering an action to be called before rendering the frame. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -365,7 +337,7 @@ only.</p>
 <dt class="sig sig-object cpp" id="_CPPv4N3mge14context_objectE">
 <span id="_CPPv3N3mge14context_objectE"></span><span id="_CPPv2N3mge14context_objectE"></span><span id="mge::context_object"></span><span class="target" id="classmge_1_1context__object"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">context_object</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../core/utilities.html#_CPPv4N3mge11noncopyableE" title="mge::noncopyable"><span class="n"><span class="pre">noncopyable</span></span></a><a class="headerlink" href="#_CPPv4N3mge14context_objectE" title="Link to this definition"></a><br /></dt>
 <dd><p>An object that is valid in the context of a <code class="docutils literal notranslate"><a class="reference internal" href="#classmge_1_1render__context"><span class="std std-ref"><span class="pre">render_context</span></span></a></code> like a shader program, a texture, or a buffer. </p>
-<p>Subclassed by mge::frame_buffer, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, mge::program, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a>, <a class="reference internal" href="texture.html#classmge_1_1texture"><span class="std std-ref">mge::texture</span></a></p>
+<p>Subclassed by <a class="reference internal" href="#classmge_1_1frame__buffer"><span class="std std-ref">mge::frame_buffer</span></a>, <a class="reference internal" href="buffers.html#classmge_1_1hardware__buffer"><span class="std std-ref">mge::hardware_buffer</span></a>, <a class="reference internal" href="shaders.html#classmge_1_1program"><span class="std std-ref">mge::program</span></a>, <a class="reference internal" href="shaders.html#classmge_1_1shader"><span class="std std-ref">mge::shader</span></a>, <a class="reference internal" href="#classmge_1_1swap__chain"><span class="std std-ref">mge::swap_chain</span></a>, <a class="reference internal" href="texture.html#classmge_1_1texture"><span class="std std-ref">mge::texture</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
 <dl class="cpp function">
@@ -493,6 +465,43 @@ rates and enable presenting frames.</p>
 </div>
 </dd></dl>
 
+<section id="render-pass">
+<h2>Render Pass<a class="headerlink" href="#render-pass" title="Link to this heading"></a></h2>
+<p>A pass organizes rendering commands with specific state settings for clear
+operations, viewports, and scissor rectangles.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4passE">
+<span id="_CPPv3N3mge4passE"></span><span id="_CPPv2N3mge4passE"></span><span id="mge::pass"></span><span class="target" id="classmge_1_1pass"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pass</span></span></span><a class="headerlink" href="#_CPPv4N3mge4passE" title="Link to this definition"></a><br /></dt>
+<dd><p>A pass is a bucket for draw, resource and compute commands. </p>
+<p>A pass also contains some state information that is set when it is executed:<ul class="simple">
+<li><p>the rectangle to render to</p></li>
+<li><p>the scissor rectangle</p></li>
+<li><p>clear color, depth and stencil values</p></li>
+<li><p>whether to clear color, depth and stencil buffers</p></li>
+</ul>
+</p>
+<p>A pass is created by a render context and can be used to organize rendering into multiple passes, each with their own clear settings and scissor/viewport rectangles. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge4passD0Ev">
+<span id="_CPPv3N3mge4passD0Ev"></span><span id="_CPPv2N3mge4passD0Ev"></span><span id="mge::pass::~pass"></span><span class="target" id="classmge_1_1pass_1a3e2144f474140f20d76433021f35e46e"></span><span class="sig-name descname"><span class="n"><span class="pre">~pass</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N3mge4passD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Default destructor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+<section id="frame-buffer">
+<h2>Frame Buffer<a class="headerlink" href="#frame-buffer" title="Link to this heading"></a></h2>
+<p>A frame buffer is collection of render targets for rendering operations.</p>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mge12frame_bufferE">
+<span id="_CPPv3N3mge12frame_bufferE"></span><span id="_CPPv2N3mge12frame_bufferE"></span><span id="mge::frame_buffer"></span><span class="target" id="classmge_1_1frame__buffer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">frame_buffer</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">mge</span></span><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mge14context_objectE" title="mge::context_object"><span class="n"><span class="pre">context_object</span></span></a><a class="headerlink" href="#_CPPv4N3mge12frame_bufferE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</section>
 </section>
 
 
