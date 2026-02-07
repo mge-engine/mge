@@ -14,9 +14,10 @@ namespace mge {
      * The blend equation combines source and destination colors using the
      * specified operation and blend factors.
      */
-    enum class blend_operation
+    enum class blend_operation : uint8_t
     {
-        ADD, //!< Add source and destination: src * srcFactor + dst * dstFactor
+        NONE, //!< No blending, source color is used directly
+        ADD,  //!< Add source and destination: src * srcFactor + dst * dstFactor
         SUBTRACT, //!< Subtract destination from source: src * srcFactor - dst *
                   //!< dstFactor
         REVERSE_SUBTRACT, //!< Subtract source from destination: dst * dstFactor

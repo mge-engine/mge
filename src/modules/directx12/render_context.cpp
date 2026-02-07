@@ -753,38 +753,42 @@ namespace mge::dx12 {
                 nullptr);
         }
 
-        p.for_each_draw_command([&](const mge::program_handle&       program,
-                                    const mge::vertex_buffer_handle& vertices,
-                                    const mge::index_buffer_handle&  indices) {
-            auto dx12_program = static_cast<dx12::program*>(program.get());
-            if (!dx12_program) {
-                MGE_THROW(mge::illegal_state)
-                    << "Draw command has no program assigned";
-            }
-            const auto& pipeline_state = static_pipeline_state(dx12_program);
-            if (!pipeline_state.Get()) {
-                MGE_THROW(mge::illegal_state)
-                    << "Failed to get pipeline state for program";
-            }
-            auto root_signature = dx12_program->root_signature();
-            pass_command_list->SetGraphicsRootSignature(root_signature);
-            pass_command_list->SetPipelineState(pipeline_state.Get());
-            pass_command_list->IASetPrimitiveTopology(
-                D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-            auto dx12_vertices =
-                static_cast<dx12::vertex_buffer*>(vertices.get());
-            pass_command_list->IASetVertexBuffers(0,
-                                                  1,
-                                                  &(dx12_vertices->view()));
-            auto dx12_indices = static_cast<dx12::index_buffer*>(indices.get());
-            pass_command_list->IASetIndexBuffer(&(dx12_indices->view()));
-            pass_command_list->DrawIndexedInstanced(
-                static_cast<UINT>(dx12_indices->element_count()),
-                1,
-                0,
-                0,
-                0);
-        });
+        p.for_each_draw_command(
+            [&](const mge::program_handle&         program,
+                const mge::vertex_buffer_handle&   vertices,
+                const mge::index_buffer_handle&    indices,
+                const command_buffer::blend_state& blend_state) {
+                auto dx12_program = static_cast<dx12::program*>(program.get());
+                if (!dx12_program) {
+                    MGE_THROW(mge::illegal_state)
+                        << "Draw command has no program assigned";
+                }
+                const auto& pipeline_state =
+                    static_pipeline_state(dx12_program);
+                if (!pipeline_state.Get()) {
+                    MGE_THROW(mge::illegal_state)
+                        << "Failed to get pipeline state for program";
+                }
+                auto root_signature = dx12_program->root_signature();
+                pass_command_list->SetGraphicsRootSignature(root_signature);
+                pass_command_list->SetPipelineState(pipeline_state.Get());
+                pass_command_list->IASetPrimitiveTopology(
+                    D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+                auto dx12_vertices =
+                    static_cast<dx12::vertex_buffer*>(vertices.get());
+                pass_command_list->IASetVertexBuffers(0,
+                                                      1,
+                                                      &(dx12_vertices->view()));
+                auto dx12_indices =
+                    static_cast<dx12::index_buffer*>(indices.get());
+                pass_command_list->IASetIndexBuffer(&(dx12_indices->view()));
+                pass_command_list->DrawIndexedInstanced(
+                    static_cast<UINT>(dx12_indices->element_count()),
+                    1,
+                    0,
+                    0,
+                    0);
+            });
     }
 
     mge::image_ref render_context::screenshot()
